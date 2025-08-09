@@ -67,6 +67,7 @@ dependencies:
   
   # Environment Variables
   flutter_dotenv: ^5.1.0
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   flutter_test:
@@ -81,9 +82,8 @@ dev_dependencies:
   
   # Code Generation
   riverpod_generator: ^2.6.2
-  build_runner: ^2.4.13
-  json_annotation: ^4.9.0
-  json_serializable: ^6.9.2
+  build_runner: ^2.5.4
+  json_serializable: ^6.9.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
