@@ -9,6 +9,7 @@ import '../screens/beep/beep_screen.dart';
 import '../screens/chat/chat_screen.dart';
 import '../screens/compass/compass_screen.dart';
 import '../screens/profile/profile_screen.dart';
+import '../screens/profile/registration_screen.dart';
 import '../screens/splash/splash_screen.dart';
 
 part 'app_router.g.dart';
@@ -85,6 +86,13 @@ GoRouter appRouter(AppRouterRef ref) {
             builder: (context, state) => const ProfileScreen(),
           ),
         ],
+      ),
+
+      // Registration Screen
+      GoRoute(
+        path: '/register',
+        name: 'register',
+        builder: (context, state) => const RegistrationScreen(),
       ),
 
       // Standalone Alerts List (if needed)
