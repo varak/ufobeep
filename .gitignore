@@ -1,4 +1,27 @@
 # Node, Python, Flutter ignores
 node_modules/
 __pycache__/
-build/
+build/# Flutter / Android / iOS
+**/build/
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/android/.gradle/
+**/android/local.properties
+**/ios/Pods/
+**/*.keystore
+
+# Node/Next.js
+web/node_modules/
+web/.next/
+web/.turbo/
+
+# Python
+api/.venv/
+api/venv/
+__pycache__/
+
+# Env & secrets
+*.env
+.env*
+*.secret
