@@ -10,6 +10,7 @@ import '../screens/chat/chat_screen.dart';
 import '../screens/compass/compass_screen.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/profile/registration_screen.dart';
+import '../screens/profile/language_settings_screen.dart';
 import '../screens/splash/splash_screen.dart';
 
 part 'app_router.g.dart';
@@ -84,6 +85,14 @@ GoRouter appRouter(AppRouterRef ref) {
             path: '/profile',
             name: 'profile',
             builder: (context, state) => const ProfileScreen(),
+            routes: [
+              // Language Settings
+              GoRoute(
+                path: 'language',
+                name: 'language-settings',
+                builder: (context, state) => const LanguageSettingsScreen(),
+              ),
+            ],
           ),
         ],
       ),

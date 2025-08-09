@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import '../models/user_preferences.dart';
 import '../config/environment.dart';
+import '../config/locale_config.dart';
 
 // SharedPreferences provider
 final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
@@ -280,4 +282,13 @@ class RegistrationNotifier extends StateNotifier<RegistrationData> {
 
 final registrationProvider = StateNotifierProvider<RegistrationNotifier, RegistrationData>((ref) {
   return RegistrationNotifier();
+});
+
+// Current locale provider
+final currentLocaleProvider = Provider<Locale>((ref) {
+  final language = ref.watch(userLanguageProvider);
+  return LocaleConfig.supportedLocales.firstWhere(
+    (locale) => locale.languageCode == language,
+    orElse: () => LocaleConfig.defaultLocale,
+  );
 });

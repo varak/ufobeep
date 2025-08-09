@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'config/environment.dart';
 import 'config/locale_config.dart';
+import 'l10n/generated/app_localizations.dart';
 import 'providers/user_preferences_provider.dart';
 import 'routing/app_router.dart';
 import 'theme/app_theme.dart';
@@ -37,6 +38,7 @@ class UFOBeepApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(appRouterProvider);
+    final currentLocale = ref.watch(currentLocaleProvider);
 
     return MaterialApp.router(
       title: AppEnvironment.appName,
@@ -46,14 +48,16 @@ class UFOBeepApp extends ConsumerWidget {
       routerConfig: router,
       
       // Internationalization
+      locale: currentLocale,
       supportedLocales: LocaleConfig.supportedLocales,
       localizationsDelegates: const [
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
       localeResolutionCallback: (locales, supportedLocales) =>
-          LocaleConfig.localeResolutionCallback(locales, supportedLocales),
+          LocaleConfig.localeResolutionCallback(locales != null ? [locales] : null, supportedLocales),
     );
   }
 }

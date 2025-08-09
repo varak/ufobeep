@@ -1,0 +1,289 @@
+{
+  "@@locale": "en",
+  "appTitle": "UFOBeep",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  
+  "homeTitle": "Alerts",
+  "@homeTitle": {
+    "description": "Title for the home/alerts screen"
+  },
+  
+  "beepTitle": "Report Sighting",
+  "@beepTitle": {
+    "description": "Title for the beep/report screen"
+  },
+  
+  "chatTitle": "Chat",
+  "@chatTitle": {
+    "description": "Title for the chat screen"
+  },
+  
+  "compassTitle": "Compass",
+  "@compassTitle": {
+    "description": "Title for the compass screen"
+  },
+  
+  "profileTitle": "Profile",
+  "@profileTitle": {
+    "description": "Title for the profile screen"
+  },
+  
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
+    "description": "Title for the settings screen"
+  },
+  
+  "languageTitle": "Language",
+  "@languageTitle": {
+    "description": "Title for language selection"
+  },
+  
+  "compassStandardMode": "Standard Mode",
+  "@compassStandardMode": {
+    "description": "Standard compass mode label"
+  },
+  
+  "compassPilotMode": "Pilot Mode",
+  "@compassPilotMode": {
+    "description": "Pilot compass mode label"
+  },
+  
+  "compassStandardDescription": "Basic heading and navigation",
+  "@compassStandardDescription": {
+    "description": "Description of standard compass mode"
+  },
+  
+  "compassPilotDescription": "Advanced navigation with ETA and vectoring",
+  "@compassPilotDescription": {
+    "description": "Description of pilot compass mode"
+  },
+  
+  "compassArView": "AR View",
+  "@compassArView": {
+    "description": "AR view button tooltip"
+  },
+  
+  "compassCompassView": "Compass View",
+  "@compassCompassView": {
+    "description": "Compass view button tooltip"
+  },
+  
+  "compassSettings": "Compass Settings",
+  "@compassSettings": {
+    "description": "Compass settings button tooltip"
+  },
+  
+  "compassMode": "Compass Mode",
+  "@compassMode": {
+    "description": "Compass mode selection dialog title"
+  },
+  
+  "calibrateCompass": "Calibrate Compass",
+  "@calibrateCompass": {
+    "description": "Calibrate compass dialog title"
+  },
+  
+  "windInformation": "Wind Information",
+  "@windInformation": {
+    "description": "Wind information dialog title"
+  },
+  
+  "noDataAvailable": "No data available",
+  "@noDataAvailable": {
+    "description": "Generic message when data is not available"
+  },
+  
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Loading state message"
+  },
+  
+  "error": "Error",
+  "@error": {
+    "description": "Generic error message"
+  },
+  
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button label"
+  },
+  
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button label"
+  },
+  
+  "save": "Save",
+  "@save": {
+    "description": "Save button label"
+  },
+  
+  "close": "Close",
+  "@close": {
+    "description": "Close button label"
+  },
+  
+  "gotIt": "Got it",
+  "@gotIt": {
+    "description": "Acknowledgment button label"
+  },
+  
+  "compassUnavailable": "Compass Unavailable",
+  "@compassUnavailable": {
+    "description": "Error message when compass is unavailable"
+  },
+  
+  "initializingCompass": "Initializing Compass...",
+  "@initializingCompass": {
+    "description": "Loading message for compass initialization"
+  },
+  
+  "accessingSensors": "Accessing magnetometer and GPS sensors",
+  "@accessingSensors": {
+    "description": "Loading subtitle for sensor access"
+  },
+  
+  "unableToAccessSensors": "Unable to access compass sensors: {error}",
+  "@unableToAccessSensors": {
+    "description": "Error message when sensor access fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "The error message"
+      }
+    }
+  },
+  
+  "navigationTo": "Navigation to {target}",
+  "@navigationTo": {
+    "description": "Navigation section title with target name",
+    "placeholders": {
+      "target": {
+        "type": "String",
+        "description": "The navigation target name"
+      }
+    }
+  },
+  
+  "degrees": "°",
+  "@degrees": {
+    "description": "Degrees symbol"
+  },
+  
+  "degreesTrue": "°T",
+  "@degreesTrue": {
+    "description": "Degrees True symbol"
+  },
+  
+  "degreesMagnetic": "°M",
+  "@degreesMagnetic": {
+    "description": "Degrees Magnetic symbol"
+  },
+  
+  "heading": "Heading",
+  "@heading": {
+    "description": "Heading label"
+  },
+  
+  "groundSpeed": "Ground Speed",
+  "@groundSpeed": {
+    "description": "Ground speed label"
+  },
+  
+  "altitude": "Altitude",
+  "@altitude": {
+    "description": "Altitude label"
+  },
+  
+  "bearing": "Bearing",
+  "@bearing": {
+    "description": "Bearing label"
+  },
+  
+  "distance": "Distance",
+  "@distance": {
+    "description": "Distance label"
+  },
+  
+  "wind": "Wind",
+  "@wind": {
+    "description": "Wind label"
+  },
+  
+  "component": "Component",
+  "@component": {
+    "description": "Wind component label"
+  },
+  
+  "noWindData": "No wind data available",
+  "@noWindData": {
+    "description": "Message when wind data is unavailable"
+  },
+  
+  "currentWind": "Current Wind:",
+  "@currentWind": {
+    "description": "Current wind label"
+  },
+  
+  "windComponentHelp": "H=Headwind T=Tailwind X=Crosswind",
+  "@windComponentHelp": {
+    "description": "Help text explaining wind component abbreviations"
+  },
+  
+  "performance": "Performance",
+  "@performance": {
+    "description": "Performance section label"
+  },
+  
+  "flightInstruments": "Flight Instruments",
+  "@flightInstruments": {
+    "description": "Flight instruments section label"
+  },
+  
+  "calibrationInstructions": "To improve compass accuracy:\\n\\n1. Hold device away from metal objects\\n2. Move device in figure-8 pattern\\n3. Rotate in all directions\\n4. Complete 3-4 full rotations",
+  "@calibrationInstructions": {
+    "description": "Instructions for compass calibration"
+  },
+  
+  "alertsFilter": "Filter Alerts",
+  "@alertsFilter": {
+    "description": "Alert filter button label"
+  },
+  
+  "noAlertsFound": "No alerts found",
+  "@noAlertsFound": {
+    "description": "Message when no alerts are available"
+  },
+  
+  "reportSighting": "Report Sighting",
+  "@reportSighting": {
+    "description": "Report sighting button label"
+  },
+  
+  "takePhoto": "Take Photo",
+  "@takePhoto": {
+    "description": "Take photo button label"
+  },
+  
+  "selectFromGallery": "Select from Gallery",
+  "@selectFromGallery": {
+    "description": "Select from gallery button label"
+  },
+  
+  "submit": "Submit",
+  "@submit": {
+    "description": "Submit button label"
+  },
+  
+  "sendMessage": "Send message",
+  "@sendMessage": {
+    "description": "Send message placeholder text"
+  },
+  
+  "typeMessage": "Type a message...",
+  "@typeMessage": {
+    "description": "Message input placeholder"
+  }
+}

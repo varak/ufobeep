@@ -5,6 +5,7 @@ import '../../models/compass_data.dart';
 import '../../models/pilot_data.dart';
 import '../../services/compass_service.dart';
 import '../../theme/app_theme.dart';
+import '../../l10n/generated/app_localizations.dart';
 import '../../widgets/compass/compass_display.dart';
 import '../../widgets/compass/compass_info.dart';
 import '../../widgets/compass/pilot_compass_display.dart';
@@ -70,6 +71,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
   }
 
   void _showModeSettings() {
+    final l10n = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       backgroundColor: AppColors.darkSurface,
@@ -81,8 +83,8 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Compass Mode',
+            Text(
+              l10n.compassMode,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
@@ -98,12 +100,12 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
                     ? AppColors.brandPrimary 
                     : AppColors.textTertiary,
               ),
-              title: const Text(
-                'Standard Mode',
+              title: Text(
+                l10n.compassStandardMode,
                 style: TextStyle(color: AppColors.textPrimary),
               ),
-              subtitle: const Text(
-                'Basic heading and navigation',
+              subtitle: Text(
+                l10n.compassStandardDescription,
                 style: TextStyle(color: AppColors.textSecondary),
               ),
               trailing: _mode == CompassMode.standard
@@ -124,12 +126,12 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
                     ? AppColors.brandPrimary 
                     : AppColors.textTertiary,
               ),
-              title: const Text(
-                'Pilot Mode',
+              title: Text(
+                l10n.compassPilotMode,
                 style: TextStyle(color: AppColors.textPrimary),
               ),
-              subtitle: const Text(
-                'Advanced navigation with ETA and vectoring',
+              subtitle: Text(
+                l10n.compassPilotDescription,
                 style: TextStyle(color: AppColors.textSecondary),
               ),
               trailing: _mode == CompassMode.pilot
@@ -151,11 +153,12 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
   @override
   Widget build(BuildContext context) {
     final compassDataAsync = ref.watch(compassDataProvider);
+    final l10n = AppLocalizations.of(context);
     
     return Scaffold(
       backgroundColor: AppColors.darkBackground,
       appBar: AppBar(
-        title: Text('Compass - ${_mode == CompassMode.standard ? 'Standard' : 'Pilot'} Mode'),
+        title: Text('${l10n.compassTitle} - ${_mode == CompassMode.standard ? l10n.compassStandardMode : l10n.compassPilotMode}'),
         actions: [
           // Toggle between compass and AR view
           IconButton(
@@ -167,14 +170,14 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
                     : CompassView.compass;
               });
             },
-            tooltip: _view == CompassView.compass ? 'AR View' : 'Compass View',
+            tooltip: _view == CompassView.compass ? l10n.compassArView : l10n.compassCompassView,
           ),
           
           // Settings
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: _showModeSettings,
-            tooltip: 'Compass Settings',
+            tooltip: l10n.compassSettings,
           ),
         ],
       ),
