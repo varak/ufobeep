@@ -39,6 +39,8 @@ class EnvironmentConfig {
         return Environment.PRODUCTION;
       case 'staging':
         return Environment.STAGING;
+      case 'development':
+        return Environment.DEVELOPMENT;
       default:
         return Environment.DEVELOPMENT;
     }

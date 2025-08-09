@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-const { getNextjsLocaleConfig } = require('./src/config/locales');
-
 const nextConfig = {
   // Experimental features
   experimental: {
@@ -17,8 +15,12 @@ const nextConfig = {
     formats: ['image/webp', 'image/avif'],
   },
   
-  // Internationalization
-  ...getNextjsLocaleConfig(),
+  // Internationalization (using i18n instead of spread)
+  i18n: {
+    locales: ['en', 'es', 'de'],
+    defaultLocale: 'en',
+    localeDetection: false,
+  },
   
   // Headers for security and performance
   async headers() {

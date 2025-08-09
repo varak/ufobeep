@@ -1,4 +1,6 @@
 import Link from 'next/link'
+import MiniMap from '@/components/MiniMap'
+import AppDownloadCTA from '@/components/AppDownloadCTA'
 
 export default function Home() {
   return (
@@ -19,13 +21,107 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mb-16">
             <Link href="/app">
-              <button className="bg-brand-primary text-text-inverse px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary-dark transition-colors shadow-glow">
+              <button className="bg-brand-primary text-text-inverse px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary-dark transition-all duration-300 shadow-glow hover:shadow-xl hover:scale-105 transform">
                 Download App
               </button>
             </Link>
-            <button className="border border-brand-primary text-brand-primary px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary hover:text-text-inverse transition-colors">
-              View Recent Alerts
+            <button className="border border-brand-primary text-brand-primary px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary hover:text-text-inverse transition-all duration-300 hover:scale-105 transform">
+              View Live Map
             </button>
+          </div>
+          
+          {/* Trust indicators */}
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 text-sm text-text-tertiary">
+            <div className="flex items-center gap-2">
+              <span className="text-brand-primary">✓</span>
+              <span className="whitespace-nowrap">15,000+ Active Users</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-brand-primary">✓</span>
+              <span className="whitespace-nowrap">Real-time Global Network</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-brand-primary">✓</span>
+              <span className="whitespace-nowrap">Privacy-First Design</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Live Map Section */}
+      <section className="py-20 px-6 md:px-24 bg-dark-background">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-text-primary">
+              Global Sighting Network
+            </h2>
+            <p className="text-lg text-text-secondary max-w-3xl mx-auto">
+              Explore real-time reports from observers around the world. Each pin represents a verified 
+              sighting with community discussion, enrichment data, and navigation assistance.
+            </p>
+          </div>
+          
+          <div className="grid lg:grid-cols-3 gap-8 items-start">
+            {/* Mini Map - takes up 2/3 on desktop */}
+            <div className="lg:col-span-2">
+              <MiniMap className="w-full" />
+            </div>
+            
+            {/* Recent Activity Sidebar */}
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold text-text-primary mb-4">Latest Activity</h3>
+              
+              <div className="space-y-3">
+                <div className="p-4 bg-dark-surface rounded-lg border border-dark-border hover:border-brand-primary transition-colors">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h4 className="font-medium text-text-primary text-sm">Triangle Formation</h4>
+                      <p className="text-text-secondary text-xs mt-1">Phoenix, AZ</p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="text-brand-primary text-xs">⚡ Live Chat Active</span>
+                        <span className="text-text-tertiary text-xs">•</span>
+                        <span className="text-text-tertiary text-xs">12 min ago</span>
+                      </div>
+                    </div>
+                    <div className="w-2 h-2 bg-brand-primary rounded-full animate-pulse"></div>
+                  </div>
+                </div>
+                
+                <div className="p-4 bg-dark-surface rounded-lg border border-dark-border hover:border-brand-primary transition-colors">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h4 className="font-medium text-text-primary text-sm">Bright Flash</h4>
+                      <p className="text-text-secondary text-xs mt-1">London, UK</p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="text-semantic-warning text-xs">📊 Analyzing</span>
+                        <span className="text-text-tertiary text-xs">•</span>
+                        <span className="text-text-tertiary text-xs">1h ago</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="p-4 bg-dark-surface rounded-lg border border-dark-border hover:border-brand-primary transition-colors">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h4 className="font-medium text-text-primary text-sm">Silent Object</h4>
+                      <p className="text-text-secondary text-xs mt-1">Tokyo, Japan</p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="text-semantic-info text-xs">✓ Verified</span>
+                        <span className="text-text-tertiary text-xs">•</span>
+                        <span className="text-text-tertiary text-xs">3h ago</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <Link href="/alerts">
+                <button className="w-full mt-4 p-3 border border-brand-primary text-brand-primary rounded-lg hover:bg-brand-primary hover:text-text-inverse transition-colors font-medium">
+                  View All Reports →
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -76,14 +172,16 @@ export default function Home() {
             share experiences, and help verify sightings through community moderation.
           </p>
           <div className="grid sm:grid-cols-2 gap-6 mb-12">
-            <div className="bg-dark-surface p-6 rounded-lg border border-dark-border">
+            <div className="bg-dark-surface p-6 rounded-lg border border-dark-border hover:border-brand-primary transition-colors group">
+              <div className="text-3xl mb-4 group-hover:scale-110 transition-transform">💬</div>
               <h3 className="text-lg font-semibold mb-2 text-brand-primary">Real-time Chat</h3>
               <p className="text-text-secondary">
                 Each sighting gets its own chat room powered by Matrix protocol 
                 for secure, decentralized communication.
               </p>
             </div>
-            <div className="bg-dark-surface p-6 rounded-lg border border-dark-border">
+            <div className="bg-dark-surface p-6 rounded-lg border border-dark-border hover:border-brand-primary transition-colors group">
+              <div className="text-3xl mb-4 group-hover:scale-110 transition-transform">🔬</div>
               <h3 className="text-lg font-semibold mb-2 text-brand-primary">Smart Enrichment</h3>
               <p className="text-text-secondary">
                 Automatic weather, celestial, and satellite data enrichment 
@@ -91,13 +189,11 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <Link href="/app">
-            <button className="bg-brand-primary text-text-inverse px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary-dark transition-colors">
-              Get Started Now
-            </button>
-          </Link>
         </div>
       </section>
+
+      {/* Enhanced Download CTA */}
+      <AppDownloadCTA />
 
       {/* Footer */}
       <footer className="bg-dark-surface border-t border-dark-border py-12 px-6 md:px-24">
