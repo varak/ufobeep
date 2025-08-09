@@ -26,7 +26,7 @@ export default function TermsPage() {
           <div className="bg-dark-surface border border-dark-border rounded-lg p-6 mb-8">
             <h2 className="text-2xl font-semibold text-brand-primary mb-4">Welcome to UFOBeep</h2>
             <p className="text-text-secondary">
-              These Terms of Service govern your use of UFOBeep's mobile application, website, 
+              These Terms of Service govern your use of UFOBeep&apos;s mobile application, website, 
               and related services. By using UFOBeep, you agree to these terms in full.
             </p>
           </div>
@@ -40,8 +40,8 @@ export default function TermsPage() {
               </p>
               <ul className="text-text-secondary space-y-2">
                 <li>• You must be at least 13 years old to use UFOBeep</li>
-                <li>• If you're under 18, you need parental consent</li>
-                <li>• You're responsible for maintaining account security</li>
+                <li>• If you&apos;re under 18, you need parental consent</li>
+                <li>• You&apos;re responsible for maintaining account security</li>
                 <li>• One account per person</li>
               </ul>
             </div>
@@ -109,13 +109,13 @@ export default function TermsPage() {
                 <ul className="text-text-secondary space-y-2">
                   <li>• You retain ownership of photos, videos, and descriptions you upload</li>
                   <li>• You grant UFOBeep a license to display and distribute your content</li>
-                  <li>• You're responsible for ensuring you have rights to content you share</li>
+                  <li>• You&apos;re responsible for ensuring you have rights to content you share</li>
                   <li>• You can delete your content at any time through the app</li>
                 </ul>
               </div>
 
               <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
-                <h3 className="text-xl font-medium text-brand-primary mb-3">UFOBeep's Content</h3>
+                <h3 className="text-xl font-medium text-brand-primary mb-3">UFOBeep&apos;s Content</h3>
                 <ul className="text-text-secondary space-y-2">
                   <li>• UFOBeep logo, design, and software are protected by copyright</li>
                   <li>• You may not copy, modify, or distribute our proprietary content</li>
@@ -209,7 +209,7 @@ export default function TermsPage() {
             <div className="bg-semantic-warning bg-opacity-10 border border-semantic-warning border-opacity-20 rounded-lg p-6 mb-6">
               <h3 className="text-lg font-semibold text-semantic-warning mb-3">⚠️ Service Disclaimer</h3>
               <p className="text-text-secondary text-sm mb-3">
-                UFOBeep is provided "as is" without warranties of any kind. We make no guarantees about:
+                UFOBeep is provided &quot;as is&quot; without warranties of any kind. We make no guarantees about:
               </p>
               <ul className="text-text-secondary text-sm space-y-1">
                 <li>• Accuracy of user-generated content</li>

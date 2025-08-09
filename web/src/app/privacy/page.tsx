@@ -40,7 +40,7 @@ export default function PrivacyPage() {
               <ul className="text-text-secondary space-y-2">
                 <li>• <strong>Precise Location:</strong> Used internally for distance calculations and alert targeting</li>
                 <li>• <strong>Jittered Location:</strong> Public coordinates are randomly offset by 100-300 meters</li>
-                <li>• <strong>No Historical Tracking:</strong> We don't store location history or track your movements</li>
+                <li>• <strong>No Historical Tracking:</strong> We don&apos;t store location history or track your movements</li>
                 <li>• <strong>Opt-out Available:</strong> You can disable location services and enter coordinates manually</li>
               </ul>
             </div>
@@ -124,7 +124,7 @@ export default function PrivacyPage() {
               <ul className="text-text-secondary space-y-2">
                 <li>• <strong>End-to-end Encryption:</strong> Your messages are encrypted between participants</li>
                 <li>• <strong>Decentralized:</strong> No single point of control or failure</li>
-                <li>• <strong>Federation:</strong> You can use your existing Matrix account or we'll create one</li>
+                <li>• <strong>Federation:</strong> You can use your existing Matrix account or we&apos;ll create one</li>
                 <li>• <strong>Data Portability:</strong> Your chat history belongs to you</li>
               </ul>
             </div>
@@ -219,10 +219,10 @@ export default function PrivacyPage() {
                 We may update this privacy policy from time to time. When we do:
               </p>
               <ul className="text-text-secondary space-y-2">
-                <li>• We'll update the "Last updated" date at the top</li>
-                <li>• We'll notify users of material changes via email or app notification</li>
+                <li>• We&apos;ll update the &quot;Last updated&quot; date at the top</li>
+                <li>• We&apos;ll notify users of material changes via email or app notification</li>
                 <li>• Previous versions will be available in our GitHub repository</li>
-                <li>• You'll have 30 days to review changes before they take effect</li>
+                <li>• You&apos;ll have 30 days to review changes before they take effect</li>
               </ul>
             </div>
           </section>

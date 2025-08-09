@@ -32,7 +32,7 @@ export default function SafetyPage() {
               </p>
               <ul className="text-text-secondary space-y-2">
                 <li>• If you feel unsafe, leave the area immediately and contact authorities</li>
-                <li>• Don't trespass on private property or enter restricted areas</li>
+                <li>• Don&apos;t trespass on private property or enter restricted areas</li>
                 <li>• Never approach aircraft, vehicles, or unknown objects directly</li>
                 <li>• Use common sense and trust your instincts</li>
               </ul>
@@ -49,10 +49,10 @@ export default function SafetyPage() {
               <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
                 <h3 className="text-lg font-medium text-brand-primary mb-3">Before Investigating</h3>
                 <ul className="text-text-secondary space-y-2">
-                  <li>• Tell someone where you're going and when you'll return</li>
+                  <li>• Tell someone where you&apos;re going and when you&apos;ll return</li>
                   <li>• Bring a fully charged phone and emergency supplies</li>
                   <li>• Check weather conditions and dress appropriately</li>
-                  <li>• Don't investigate alone, especially at night</li>
+                  <li>• Don&apos;t investigate alone, especially at night</li>
                   <li>• Research the area for potential hazards</li>
                 </ul>
               </div>
@@ -61,7 +61,7 @@ export default function SafetyPage() {
                 <h3 className="text-lg font-medium text-brand-primary mb-3">While Investigating</h3>
                 <ul className="text-text-secondary space-y-2">
                   <li>• Maintain a safe distance from any objects or phenomena</li>
-                  <li>• Don't touch or disturb anything you find</li>
+                  <li>• Don&apos;t touch or disturb anything you find</li>
                   <li>• Be aware of your surroundings at all times</li>
                   <li>• If you feel unwell or disoriented, leave immediately</li>
                   <li>• Document from a distance using zoom features</li>
@@ -76,7 +76,7 @@ export default function SafetyPage() {
             <div className="bg-semantic-warning bg-opacity-10 border border-semantic-warning border-opacity-20 rounded-lg p-6 mb-6">
               <h3 className="text-lg font-semibold text-semantic-warning mb-3">⚠️ Compass & AR Navigation Warnings</h3>
               <p className="text-text-secondary mb-3">
-                UFOBeep's compass and AR features are tools to assist navigation, not replace common sense or safety precautions.
+                UFOBeep&apos;s compass and AR features are tools to assist navigation, not replace common sense or safety precautions.
               </p>
             </div>
 
@@ -84,7 +84,7 @@ export default function SafetyPage() {
               <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
                 <h3 className="text-lg font-medium text-brand-primary mb-3">Standard Mode Safety</h3>
                 <ul className="text-text-secondary space-y-2">
-                  <li>• Don't stare at your phone while walking</li>
+                  <li>• Don&apos;t stare at your phone while walking</li>
                   <li>• Look up frequently to avoid obstacles</li>
                   <li>• Use voice navigation when possible</li>
                   <li>• Stop navigation if you enter unsafe terrain</li>
@@ -97,7 +97,7 @@ export default function SafetyPage() {
                 <ul className="text-text-secondary space-y-2">
                   <li>• <strong>Ground use only</strong> - never use while actually piloting</li>
                   <li>• Magnetic declination may affect accuracy</li>
-                  <li>• Don't rely solely on app for aviation navigation</li>
+                  <li>• Don&apos;t rely solely on app for aviation navigation</li>
                   <li>• Follow all aviation regulations and safety protocols</li>
                   <li>• Cross-reference with official aviation tools</li>
                 </ul>
@@ -116,7 +116,7 @@ export default function SafetyPage() {
                   <ul className="text-text-secondary text-sm space-y-1">
                     <li>• Pull over safely to check app notifications</li>
                     <li>• Use hands-free navigation only</li>
-                    <li>• Don't drive to remote areas alone at night</li>
+                    <li>• Don&apos;t drive to remote areas alone at night</li>
                     <li>• Ensure your vehicle is in good condition</li>
                     <li>• Bring emergency supplies and tools</li>
                   </ul>
@@ -125,7 +125,7 @@ export default function SafetyPage() {
                   <h4 className="font-semibold text-text-primary mb-2">Parking & Access:</h4>
                   <ul className="text-text-secondary text-sm space-y-1">
                     <li>• Park legally and safely</li>
-                    <li>• Don't block emergency access roads</li>
+                    <li>• Don&apos;t block emergency access roads</li>
                     <li>• Respect private property boundaries</li>
                     <li>• Leave no trace - clean up after yourself</li>
                     <li>• Be considerate of local residents</li>
@@ -156,19 +156,19 @@ export default function SafetyPage() {
                   <div>
                     <h4 className="font-semibold text-text-primary mb-2">In Chat Rooms:</h4>
                     <ul className="text-text-secondary text-sm space-y-1">
-                      <li>• Don't share personal information</li>
+                      <li>• Don&apos;t share personal information</li>
                       <li>• Report harassment or abuse immediately</li>
                       <li>• Block users who make you uncomfortable</li>
-                      <li>• Don't arrange private meetups with strangers</li>
+                      <li>• Don&apos;t arrange private meetups with strangers</li>
                     </ul>
                   </div>
                   <div>
                     <h4 className="font-semibold text-text-primary mb-2">Sharing Content:</h4>
                     <ul className="text-text-secondary text-sm space-y-1">
                       <li>• Remove identifying details from photos</li>
-                      <li>• Don't include license plates, addresses, or faces</li>
-                      <li>• Be mindful of what's in the background</li>
-                      <li>• Respect others' privacy in your reports</li>
+                      <li>• Don&apos;t include license plates, addresses, or faces</li>
+                      <li>• Be mindful of what&apos;s in the background</li>
+                      <li>• Respect others&apos; privacy in your reports</li>
                     </ul>
                   </div>
                 </div>
@@ -184,7 +184,7 @@ export default function SafetyPage() {
                 <h3 className="text-lg font-medium text-brand-primary mb-3">Property Rights</h3>
                 <ul className="text-text-secondary space-y-2">
                   <li>• Never trespass on private property</li>
-                  <li>• Respect "No Trespassing" signs</li>
+                  <li>• Respect &quot;No Trespassing&quot; signs</li>
                   <li>• Stay on public roads and paths</li>
                   <li>• Ask permission before entering private land</li>
                   <li>• Know your local right-to-roam laws</li>
@@ -195,10 +195,10 @@ export default function SafetyPage() {
                 <h3 className="text-lg font-medium text-brand-primary mb-3">Photography & Recording</h3>
                 <ul className="text-text-secondary space-y-2">
                   <li>• Follow local photography laws</li>
-                  <li>• Don't photograph people without consent</li>
+                  <li>• Don&apos;t photograph people without consent</li>
                   <li>• Respect no-photography zones</li>
                   <li>• Be aware of aviation photography restrictions</li>
-                  <li>• Consider others' privacy when posting</li>
+                  <li>• Consider others&apos; privacy when posting</li>
                 </ul>
               </div>
             </div>
@@ -219,7 +219,7 @@ export default function SafetyPage() {
                 <h3 className="text-xl font-medium text-brand-primary mb-3">Near Airports & Aircraft</h3>
                 <ul className="text-text-secondary space-y-2">
                   <li>• Stay away from active runways and taxiways</li>
-                  <li>• Don't use bright lights or lasers that could blind pilots</li>
+                  <li>• Don&apos;t use bright lights or lasers that could blind pilots</li>
                   <li>• Report suspected drone activity to authorities</li>
                   <li>• Follow all airport perimeter restrictions</li>
                   <li>• Never attempt to approach aircraft</li>
@@ -230,7 +230,7 @@ export default function SafetyPage() {
                 <h3 className="text-xl font-medium text-brand-primary mb-3">Near Military Installations</h3>
                 <ul className="text-text-secondary space-y-2">
                   <li>• Respect all restricted area boundaries</li>
-                  <li>• Don't photograph military equipment or personnel</li>
+                  <li>• Don&apos;t photograph military equipment or personnel</li>
                   <li>• Be aware that some areas have use-of-force authorization</li>
                   <li>• If approached by security, comply immediately</li>
                   <li>• Research restricted areas before traveling</li>
@@ -338,7 +338,7 @@ export default function SafetyPage() {
                     <h4 className="font-semibold text-text-primary mb-2">Online:</h4>
                     <ul className="text-text-secondary text-sm space-y-1">
                       <li>• Report harassment or threats immediately</li>
-                      <li>• Don't share others' personal information</li>
+                      <li>• Don&apos;t share others&apos; personal information</li>
                       <li>• Support newcomers with safety advice</li>
                       <li>• Promote responsible investigation practices</li>
                     </ul>
@@ -354,7 +354,7 @@ export default function SafetyPage() {
                 <ul className="text-text-secondary space-y-2">
                   <li>• Use the in-app reporting feature</li>
                   <li>• Email safety@ufobeep.com with details</li>
-                  <li>• Contact local authorities if there's immediate danger</li>
+                  <li>• Contact local authorities if there&apos;s immediate danger</li>
                   <li>• Document incidents with screenshots when safe to do so</li>
                 </ul>
               </div>
