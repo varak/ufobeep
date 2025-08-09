@@ -1,0 +1,2 @@
+# This file ensures the tests directory is tracked by git
+# API unit tests and integration tests will be stored here
