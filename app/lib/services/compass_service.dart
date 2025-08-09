@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 import '../models/compass_data.dart';
+import '../models/pilot_data.dart';
 
 class CompassService {
   static final CompassService _instance = CompassService._internal();
@@ -246,6 +247,57 @@ class CompassService {
       distance: 5420.0,
       status: CompassTargetStatus.active,
       estimatedArrival: DateTime.now().add(const Duration(minutes: 8)),
+    );
+  }
+
+  // Create navigation solution for pilot mode
+  NavigationSolution? createNavigationSolution(CompassTarget target) {
+    if (_currentLocation == null || _lastCompassData == null) return null;
+    
+    final distance = _currentLocation!.distanceTo(target.location);
+    final bearing = _lastCompassData!.bearingToTarget(target.location);
+    final magneticBearing = bearing - _declination;
+    final relativeBearing = _lastCompassData!.relativeBearing(target.location);
+    
+    // Calculate ETE based on mock ground speed
+    const groundSpeedMS = 25.0; // 50 knots = ~25 m/s
+    final eteSeconds = distance / groundSpeedMS;
+    final estimatedTimeEnroute = Duration(seconds: eteSeconds.round());
+    
+    return NavigationSolution(
+      target: target,
+      distance: distance,
+      bearing: bearing,
+      magneticBearing: magneticBearing,
+      relativeBearing: relativeBearing,
+      estimatedTimeEnroute: estimatedTimeEnroute,
+      desiredTrack: bearing,
+      trackError: 0.0, // On track for direct navigation
+      requiredHeading: bearing, // No wind correction in mock
+    );
+  }
+
+  // Get mock pilot navigation data
+  PilotNavigationData getMockPilotData() {
+    final compassData = getMockCompassData();
+    final target = getMockTarget();
+    final solution = createNavigationSolution(target);
+    
+    return PilotNavigationData(
+      compass: compassData,
+      groundSpeed: 25.0, // 50 knots
+      trueAirspeed: 27.0, // 52 knots
+      altitude: 305.0, // 1000 feet
+      verticalSpeed: 2.5, // 500 fpm climb
+      bankAngle: -15.0, // Left turn
+      pitchAngle: 5.0, // Slight climb
+      wind: WindData(
+        direction: 270.0, // From west
+        speed: 10.0, // 20 knots
+        accuracy: WindAccuracy.estimated,
+        timestamp: DateTime.now(),
+      ),
+      solution: solution,
     );
   }
 

@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/compass_data.dart';
+import '../../models/pilot_data.dart';
 import '../../services/compass_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/compass/compass_display.dart';
 import '../../widgets/compass/compass_info.dart';
+import '../../widgets/compass/pilot_compass_display.dart';
+import '../../widgets/compass/pilot_info.dart';
 import '../../widgets/compass/ar_overlay.dart';
 
 enum CompassMode {
@@ -126,7 +129,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
                 style: TextStyle(color: AppColors.textPrimary),
               ),
               subtitle: const Text(
-                'Advanced navigation features (Task 14)',
+                'Advanced navigation with ETA and vectoring',
                 style: TextStyle(color: AppColors.textSecondary),
               ),
               trailing: _mode == CompassMode.pilot
@@ -137,11 +140,6 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
                   _mode = CompassMode.pilot;
                 });
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Pilot Mode will be available in Task 14'),
-                  ),
-                );
               },
             ),
           ],
@@ -189,6 +187,10 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
   }
 
   Widget _buildCompassContent(CompassData compassData) {
+    if (_mode == CompassMode.pilot) {
+      return _buildPilotModeContent(compassData);
+    }
+
     if (_view == CompassView.ar) {
       return SingleChildScrollView(
         child: Padding(
@@ -257,6 +259,64 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
             // Compass Information
             CompassInfo(
               compassData: compassData,
+              target: _currentTarget,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPilotModeContent(CompassData compassData) {
+    final service = ref.read(compassServiceProvider);
+    final pilotData = service.getMockPilotData();
+    
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // Pilot Compass Display
+            PilotCompassDisplay(
+              pilotData: pilotData,
+              target: _currentTarget,
+            ),
+            
+            const SizedBox(height: 24),
+            
+            // Quick Actions (pilot specific)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildQuickAction(
+                  icon: Icons.gps_fixed,
+                  label: 'Direct',
+                  onTap: _currentTarget != null ? () {
+                    // TODO: Set direct course to target
+                  } : null,
+                ),
+                _buildQuickAction(
+                  icon: Icons.trending_up,
+                  label: 'Vector',
+                  onTap: _currentTarget != null ? () {
+                    // TODO: Calculate intercept vector
+                  } : null,
+                ),
+                _buildQuickAction(
+                  icon: Icons.air,
+                  label: 'Wind',
+                  onTap: () {
+                    _showWindDialog();
+                  },
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 24),
+            
+            // Pilot Information
+            PilotInfo(
+              pilotData: pilotData,
               target: _currentTarget,
             ),
           ],
@@ -438,6 +498,86 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Got it'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showWindDialog() {
+    final service = ref.read(compassServiceProvider);
+    final pilotData = service.getMockPilotData();
+    final wind = pilotData.wind;
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        title: const Text(
+          'Wind Information',
+          style: TextStyle(color: AppColors.textPrimary),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.air,
+              size: 48,
+              color: AppColors.semanticInfo,
+            ),
+            const SizedBox(height: 16),
+            
+            if (wind != null) ...[
+              Text(
+                'Current Wind:',
+                style: TextStyle(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                wind.formattedWind,
+                style: TextStyle(
+                  color: AppColors.brandPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Component for current heading:',
+                style: TextStyle(color: AppColors.textSecondary),
+              ),
+              Text(
+                wind.getWindComponent(pilotData.compass.trueHeading),
+                style: TextStyle(
+                  color: AppColors.semanticInfo,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Source: ${wind.accuracy.displayName}',
+                style: TextStyle(
+                  color: AppColors.textTertiary,
+                  fontSize: 12,
+                ),
+              ),
+            ] else ...[
+              const Text(
+                'No wind data available',
+                style: TextStyle(color: AppColors.textSecondary),
+              ),
+            ],
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
           ),
         ],
       ),
