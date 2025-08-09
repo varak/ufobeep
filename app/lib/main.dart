@@ -52,7 +52,8 @@ class UFOBeepApp extends ConsumerWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      localeResolutionCallback: LocaleConfig.localeResolutionCallback,
+      localeResolutionCallback: (locales, supportedLocales) =>
+          LocaleConfig.localeResolutionCallback(locales, supportedLocales),
     );
   }
 }

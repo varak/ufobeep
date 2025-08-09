@@ -180,7 +180,7 @@ final isRegisteredProvider = Provider<bool>((ref) {
 
 // Registration state
 class RegistrationNotifier extends StateNotifier<RegistrationData> {
-  RegistrationNotifier() : super(const RegistrationData());
+  RegistrationNotifier() : super(const RegistrationData(displayName: ''));
 
   void updateDisplayName(String displayName) {
     state = RegistrationData(
@@ -274,7 +274,7 @@ class RegistrationNotifier extends StateNotifier<RegistrationData> {
   }
 
   void reset() {
-    state = const RegistrationData();
+    state = const RegistrationData(displayName: '');
   }
 }
 

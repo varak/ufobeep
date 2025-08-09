@@ -757,7 +757,7 @@ class _BeepScreenState extends State<BeepScreen> {
                 child: Row(
                   children: [
                     Icon(
-                      categoryData?.icon ?? Icons.help,
+                      (categoryData?.icon as IconData?) ?? Icons.help,
                       color: AppColors.brandPrimary,
                       size: 20,
                     ),
