@@ -37,9 +37,9 @@ class EnvironmentConfig {
     switch (env) {
       case 'production':
         return Environment.PRODUCTION;
-      case 'staging':
-        return Environment.STAGING;
       case 'development':
+        return Environment.DEVELOPMENT;
+      case 'test':
         return Environment.DEVELOPMENT;
       default:
         return Environment.DEVELOPMENT;

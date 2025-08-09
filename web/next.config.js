@@ -2,8 +2,8 @@
 const nextConfig = {
   // Experimental features
   experimental: {
-    // Enable optimizations
-    optimizeCss: true,
+    // Disable problematic optimizations for now
+    // optimizeCss: true,
   },
   
   // Build configuration
