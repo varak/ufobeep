@@ -141,170 +141,24 @@ class _AlertByIdProviderElement extends AutoDisposeProviderElement<Alert?>
   String get alertId => (origin as AlertByIdProvider).alertId;
 }
 
-String _$filteredAlertsHash() => r'cfbe62ddfbd0de500da52f588b57badd8b1677c7';
+String _$filteredAlertsHash() => r'4c257aa9e3b5ba00657ef82fbcb96c5cf2ca228c';
 
 /// See also [filteredAlerts].
 @ProviderFor(filteredAlerts)
-const filteredAlertsProvider = FilteredAlertsFamily();
-
-/// See also [filteredAlerts].
-class FilteredAlertsFamily extends Family<List<Alert>> {
-  /// See also [filteredAlerts].
-  const FilteredAlertsFamily();
-
-  /// See also [filteredAlerts].
-  FilteredAlertsProvider call({
-    String? category,
-    double? maxDistance,
-    bool? verified,
-  }) {
-    return FilteredAlertsProvider(
-      category: category,
-      maxDistance: maxDistance,
-      verified: verified,
-    );
-  }
-
-  @override
-  FilteredAlertsProvider getProviderOverride(
-    covariant FilteredAlertsProvider provider,
-  ) {
-    return call(
-      category: provider.category,
-      maxDistance: provider.maxDistance,
-      verified: provider.verified,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'filteredAlertsProvider';
-}
-
-/// See also [filteredAlerts].
-class FilteredAlertsProvider extends AutoDisposeProvider<List<Alert>> {
-  /// See also [filteredAlerts].
-  FilteredAlertsProvider({
-    String? category,
-    double? maxDistance,
-    bool? verified,
-  }) : this._internal(
-         (ref) => filteredAlerts(
-           ref as FilteredAlertsRef,
-           category: category,
-           maxDistance: maxDistance,
-           verified: verified,
-         ),
-         from: filteredAlertsProvider,
-         name: r'filteredAlertsProvider',
-         debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-             ? null
-             : _$filteredAlertsHash,
-         dependencies: FilteredAlertsFamily._dependencies,
-         allTransitiveDependencies:
-             FilteredAlertsFamily._allTransitiveDependencies,
-         category: category,
-         maxDistance: maxDistance,
-         verified: verified,
-       );
-
-  FilteredAlertsProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.category,
-    required this.maxDistance,
-    required this.verified,
-  }) : super.internal();
-
-  final String? category;
-  final double? maxDistance;
-  final bool? verified;
-
-  @override
-  Override overrideWith(
-    List<Alert> Function(FilteredAlertsRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: FilteredAlertsProvider._internal(
-        (ref) => create(ref as FilteredAlertsRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        category: category,
-        maxDistance: maxDistance,
-        verified: verified,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeProviderElement<List<Alert>> createElement() {
-    return _FilteredAlertsProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is FilteredAlertsProvider &&
-        other.category == category &&
-        other.maxDistance == maxDistance &&
-        other.verified == verified;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, category.hashCode);
-    hash = _SystemHash.combine(hash, maxDistance.hashCode);
-    hash = _SystemHash.combine(hash, verified.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
+final filteredAlertsProvider = AutoDisposeProvider<List<Alert>>.internal(
+  filteredAlerts,
+  name: r'filteredAlertsProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$filteredAlertsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin FilteredAlertsRef on AutoDisposeProviderRef<List<Alert>> {
-  /// The parameter `category` of this provider.
-  String? get category;
-
-  /// The parameter `maxDistance` of this provider.
-  double? get maxDistance;
-
-  /// The parameter `verified` of this provider.
-  bool? get verified;
-}
-
-class _FilteredAlertsProviderElement
-    extends AutoDisposeProviderElement<List<Alert>>
-    with FilteredAlertsRef {
-  _FilteredAlertsProviderElement(super.provider);
-
-  @override
-  String? get category => (origin as FilteredAlertsProvider).category;
-  @override
-  double? get maxDistance => (origin as FilteredAlertsProvider).maxDistance;
-  @override
-  bool? get verified => (origin as FilteredAlertsProvider).verified;
-}
-
-String _$alertsListHash() => r'a3db99b4ff2f15f82c9740362bd47bd93ffd3a15';
+typedef FilteredAlertsRef = AutoDisposeProviderRef<List<Alert>>;
+String _$alertsListHash() => r'3b2ff94061e946e381fea10247763c03087723a5';
 
 /// See also [AlertsList].
 @ProviderFor(AlertsList)
@@ -320,5 +174,38 @@ final alertsListProvider =
     );
 
 typedef _$AlertsList = AutoDisposeNotifier<List<Alert>>;
+String _$alertsFilterStateHash() => r'5e990ab3d1c3ffd6b11c441b8a151b3462beec28';
+
+/// See also [AlertsFilterState].
+@ProviderFor(AlertsFilterState)
+final alertsFilterStateProvider =
+    AutoDisposeNotifierProvider<AlertsFilterState, AlertsFilter>.internal(
+      AlertsFilterState.new,
+      name: r'alertsFilterStateProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$alertsFilterStateHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$AlertsFilterState = AutoDisposeNotifier<AlertsFilter>;
+String _$alertsLoadingStateHash() =>
+    r'de352779e2e2a2420e0855a5d225ddb9e8e1cfef';
+
+/// See also [AlertsLoadingState].
+@ProviderFor(AlertsLoadingState)
+final alertsLoadingStateProvider =
+    AutoDisposeNotifierProvider<AlertsLoadingState, bool>.internal(
+      AlertsLoadingState.new,
+      name: r'alertsLoadingStateProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$alertsLoadingStateHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$AlertsLoadingState = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
