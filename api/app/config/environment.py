@@ -64,6 +64,21 @@ class Settings(BaseSettings):
         env="OPENWEATHER_BASE_URL"
     )
     
+    # === OpenSky Network Configuration ===
+    opensky_client_id: str = Field(env="OPENSKY_CLIENT_ID")
+    opensky_client_secret: str = Field(env="OPENSKY_CLIENT_SECRET")
+    opensky_base_url: str = Field(
+        default="https://opensky-network.org/api",
+        env="OPENSKY_BASE_URL"
+    )
+    
+    # === Plane Matching Configuration ===
+    plane_match_enabled: bool = Field(default=True, env="PLANE_MATCH_ENABLED")
+    plane_match_radius_km: float = Field(default=50.0, env="PLANE_MATCH_RADIUS_KM")  # Max 80km for free tier
+    plane_match_tolerance_deg: float = Field(default=2.5, env="PLANE_MATCH_TOLERANCE_DEG")
+    plane_match_cache_ttl: int = Field(default=10, env="PLANE_MATCH_CACHE_TTL")  # seconds
+    plane_match_time_quantization: int = Field(default=5, env="PLANE_MATCH_TIME_QUANTIZATION")  # seconds
+    
     # === Push Notifications ===
     fcm_server_key: str = Field(env="FCM_SERVER_KEY")
     apns_key_id: str = Field(env="APNS_KEY_ID")

@@ -55,8 +55,10 @@ dependencies:
   # Permissions
   permission_handler: ^11.3.1
   
-  # Geolocation
+  # Geolocation & Sensors
   geolocator: ^13.0.2
+  sensors_plus: ^4.0.2
+  device_info_plus: ^9.1.1
   
   # Internationalization
   flutter_localizations:

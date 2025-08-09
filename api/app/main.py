@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from config.environment import settings
+from routers import plane_match
 
 # Initialize FastAPI app with environment configuration
 app = FastAPI(
@@ -33,3 +34,6 @@ def healthz():
 @app.get("/v1/ping")
 def ping():
     return {"message": "pong"}
+
+# Include routers
+app.include_router(plane_match.router)

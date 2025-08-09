@@ -15,7 +15,19 @@ UFOBeep alerts nearby users to new sightings (UFOs, pets, missing people, unclas
 3) **Chat:** App SSO to Matrix; auto-join per-sighting room; web shows read-only transcript.  
 4) **Compass:** Standard mode (bearing/distance/AR), Pilot Mode (mag/true heading, relative bearing, ETA, bank-aware overlay).
 
+
+## Plane Matching (Free ADS‑B) — New
+When a user captures a sky photo, the mobile client also sends UTC, GPS, compass azimuth, pitch/roll, and camera FOV.
+The backend matches “is it a plane?” and, if so, the most likely flight:
+
+- **Data source (free, non‑commercial):** OpenSky Network `/api/states/all` with OAuth2 client‑credentials; 5‑second time resolution and up to 1‑hour history for authenticated clients. Keep bbox tight to conserve credits.
+- **Algorithm:** Compute device **line‑of‑sight** (bearing/elevation) from pose; fetch nearby aircraft for that time; pick the minimal angular error within a tolerance (≈2–3°); return `{is_plane, matched_flight?, confidence, why}`. No tail-number OCR required.
+- **Fallback (optional):** Airplanes.live REST API (1 req/sec) if OpenSky has gaps; use only if we obtain access.
+- **UX:** If a plane match is found, show a subtle “Likely plane: <callsign/type>” badge and allow the user to reclassify as “plane” instead of UFO.
+
+
 ## API (Sketch)
+- `POST /v1/plane-match` → inputs: {utc, lat, lon, azimuth_deg, pitch_deg, roll_deg?, hfov_deg?}; output: `{is_plane, matched_flight?, confidence, why}`.
 - `POST /v1/auth/register` → user/device + prefs (alerts, range, language, mode).  
 - `POST /v1/upload/request` → presign PUT (content-type validated).  
 - `POST /v1/sightings` → create sighting; jitter public coords; enqueue enrichment; return stub.  
@@ -41,6 +53,9 @@ docs/     # task.md + this file
 ```
 
 ## Notes
+- **Env:** `OPENSKY_CLIENT_ID`, `OPENSKY_CLIENT_SECRET` on API server for OAuth2; small bbox (≤80 km) to stay within free quota.
+- **Licensing:** OpenSky free tier is research/non‑commercial; revisit if we monetize.
+
 - Use true coords privately; public coords jittered 100–300 m.  
 - Enrichment async; progressive UI updates.  
 - Cache weather & TLE; refresh periodically.  

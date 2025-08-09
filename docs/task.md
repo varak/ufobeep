@@ -9,7 +9,14 @@
 05. [NEXTJS] Scaffold Next.js pages: /, /alerts/[id], /app, /privacy, /terms, /safety  
 06. [ALL] Environment config strategy (`API_BASE_URL`, `MATRIX_BASE_URL`, locales)  
 07. [MOBILE] Profile/Registration UI (prefs, range, language)  
-08. [MOBILE] Splash/Startup init & locale load  
+08. [MOBILE] Splash/Startup init & locale load
+08A. [MOBILE] Capture + send sensor payload with photo (UTC, GPS, azimuth, pitch/roll, hfov).  
+08B. [FASTAPI] Implement `/v1/plane-match` (OpenSky OAuth2 client‑credentials, bbox query, LOS math, tolerance).  
+08C. [MOBILE] If capture flagged as sky object, call plane‑match; render “Likely plane …” badge and allow reclassify.  
+08D. [FASTAPI] Quota/rate handling: bbox ≤80 km, 5‑sec time quantization, caching for 10s; config radius/tolerance via env.  
+08E. [DOCS] Add OPENSKY setup steps and `.env` keys; note non‑commercial licensing.  
+08F. [QA] Synthetic fixtures for 3 locations; verify plane vs unknown behavior and graceful fallbacks.  
+08Z. [ALL] **Backfill 1–8**: audit and complete any incomplete items; commit with tag `task-01..08-backfill`.  
 09. [MOBILE] Alerts (Home) list skeleton with filters & Beep button  
 10. [MOBILE] Beep (Capture/Upload) screen with preview & submit  
 11. [MOBILE] Alert Detail skeleton with enrichment placeholders  
