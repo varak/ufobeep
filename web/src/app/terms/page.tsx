@@ -1,4 +1,18 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Terms of Service',
+  description: 'UFOBeep terms of service outlining user responsibilities, community guidelines, and platform usage policies for the real-time sighting alert network.',
+  openGraph: {
+    title: 'Terms of Service | UFOBeep',
+    description: 'Review UFOBeep terms of service for community guidelines and platform usage policies.',
+  },
+  twitter: {
+    title: 'Terms of Service | UFOBeep',
+    description: 'UFOBeep terms of service and community guidelines.',
+  },
+}
 
 export default function TermsPage() {
   return (
@@ -16,9 +30,23 @@ export default function TermsPage() {
           <h1 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">
             Terms of Service
           </h1>
-          <p className="text-lg text-text-secondary">
+          <p className="text-lg text-text-secondary mb-6">
             Last updated: January 15, 2024
           </p>
+          
+          <div className="bg-semantic-info bg-opacity-10 border border-semantic-info border-opacity-20 rounded-lg p-6">
+            <div className="flex items-start gap-3">
+              <div className="text-2xl">🤝</div>
+              <div>
+                <h2 className="text-lg font-semibold text-semantic-info mb-2">Community Guidelines</h2>
+                <p className="text-text-secondary text-sm">
+                  UFOBeep is a community-driven platform. By using our service, you agree to 
+                  contribute respectfully, report accurately, and help maintain a positive 
+                  environment for all users interested in unexplained phenomena.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Content */}

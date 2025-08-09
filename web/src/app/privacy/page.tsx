@@ -1,4 +1,18 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy',
+  description: 'UFOBeep privacy policy explaining how we collect, use, and protect your personal information while providing real-time sighting alerts.',
+  openGraph: {
+    title: 'Privacy Policy | UFOBeep',
+    description: 'Learn how UFOBeep protects your privacy while providing real-time UFO sighting alerts and community features.',
+  },
+  twitter: {
+    title: 'Privacy Policy | UFOBeep',
+    description: 'Learn how UFOBeep protects your privacy while providing real-time UFO sighting alerts.',
+  },
+}
 
 export default function PrivacyPage() {
   return (
@@ -16,9 +30,23 @@ export default function PrivacyPage() {
           <h1 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">
             Privacy Policy
           </h1>
-          <p className="text-lg text-text-secondary">
+          <p className="text-lg text-text-secondary mb-6">
             Last updated: January 15, 2024
           </p>
+          
+          <div className="bg-brand-primary bg-opacity-10 border border-brand-primary border-opacity-20 rounded-lg p-6">
+            <div className="flex items-start gap-3">
+              <div className="text-2xl">🛡️</div>
+              <div>
+                <h2 className="text-lg font-semibold text-brand-primary mb-2">Privacy-First Approach</h2>
+                <p className="text-text-secondary text-sm">
+                  UFOBeep is designed with privacy as a core principle. We collect minimal data, 
+                  protect your location through coordinate jittering, and use end-to-end encryption 
+                  for all communications.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Content */}

@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import type { Metadata } from 'next'
 
 // Mock data for development - Enhanced with more realistic sightings
 const mockAlerts = [
@@ -119,6 +120,42 @@ const mockAlerts = [
 
 interface AlertPageProps {
   params: { id: string }
+}
+
+export async function generateMetadata(
+  { params }: AlertPageProps
+): Promise<Metadata> {
+  const alert = mockAlerts.find(a => a.id === params.id)
+  
+  if (!alert) {
+    return {
+      title: 'Alert Not Found',
+      description: 'The requested sighting alert could not be found.',
+    }
+  }
+  
+  return {
+    title: alert.title,
+    description: alert.description.slice(0, 160) + (alert.description.length > 160 ? '...' : ''),
+    openGraph: {
+      title: `${alert.title} | UFOBeep`,
+      description: alert.description,
+      type: 'article',
+      publishedTime: alert.timestamp,
+      images: alert.mediaUrl ? [{
+        url: alert.mediaUrl,
+        width: 800,
+        height: 600,
+        alt: alert.title,
+      }] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: alert.title,
+      description: alert.description.slice(0, 200),
+      images: alert.mediaUrl ? [alert.mediaUrl] : undefined,
+    },
+  }
 }
 
 export default function AlertPage({ params }: AlertPageProps) {

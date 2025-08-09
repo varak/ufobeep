@@ -1,4 +1,18 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Safety Guidelines',
+  description: 'Essential safety guidelines for UFO and anomaly investigation. Learn how to investigate sightings safely using UFOBeep\'s AR compass and navigation features.',
+  openGraph: {
+    title: 'Safety Guidelines | UFOBeep',
+    description: 'Essential safety guidelines for investigating UFO sightings and anomalous phenomena safely.',
+  },
+  twitter: {
+    title: 'Safety Guidelines | UFOBeep',
+    description: 'Learn how to investigate UFO sightings safely with UFOBeep.',
+  },
+}
 
 export default function SafetyPage() {
   return (
@@ -16,9 +30,23 @@ export default function SafetyPage() {
           <h1 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">
             Safety Guidelines
           </h1>
-          <p className="text-lg text-text-secondary">
+          <p className="text-lg text-text-secondary mb-6">
             Your safety and well-being come first. Always.
           </p>
+          
+          <div className="bg-semantic-warning bg-opacity-10 border border-semantic-warning border-opacity-20 rounded-lg p-6">
+            <div className="flex items-start gap-3">
+              <div className="text-2xl">⚠️</div>
+              <div>
+                <h2 className="text-lg font-semibold text-semantic-warning mb-2">Safety First</h2>
+                <p className="text-text-secondary text-sm">
+                  Your safety is paramount when investigating any sighting. UFOBeep provides 
+                  navigation tools to help you reach locations, but always use common sense, 
+                  follow local laws, and never put yourself in danger.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Critical Safety Notice */}
