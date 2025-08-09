@@ -25,6 +25,12 @@ class AppColors {
   static const Color warning = Color(0xFFFFB814);
   static const Color success = Color(0xFF39FF14);
   static const Color info = Color(0xFF14B8FF);
+  
+  // Semantic aliases for consistency
+  static const Color semanticError = error;
+  static const Color semanticWarning = warning;
+  static const Color semanticSuccess = success;
+  static const Color semanticInfo = info;
 
   // Overlay colors
   static const Color overlayBlack50 = Color(0x80000000);
