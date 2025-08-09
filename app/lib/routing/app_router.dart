@@ -1,0 +1,169 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../screens/home/home_screen.dart';
+import '../screens/alerts/alerts_screen.dart';
+import '../screens/alerts/alert_detail_screen.dart';
+import '../screens/beep/beep_screen.dart';
+import '../screens/chat/chat_screen.dart';
+import '../screens/compass/compass_screen.dart';
+import '../screens/profile/profile_screen.dart';
+import '../screens/splash/splash_screen.dart';
+
+part 'app_router.g.dart';
+
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+
+@riverpod
+GoRouter appRouter(AppRouterRef ref) {
+  return GoRouter(
+    navigatorKey: _rootNavigatorKey,
+    debugLogDiagnostics: true,
+    initialLocation: '/splash',
+    routes: [
+      // Splash Screen
+      GoRoute(
+        path: '/splash',
+        name: 'splash',
+        builder: (context, state) => const SplashScreen(),
+      ),
+
+      // Main App Shell with Bottom Navigation
+      ShellRoute(
+        builder: (context, state, child) {
+          return MainShell(child: child);
+        },
+        routes: [
+          // Home/Alerts Feed
+          GoRoute(
+            path: '/',
+            name: 'home',
+            builder: (context, state) => const HomeScreen(),
+            routes: [
+              // Alert Detail
+              GoRoute(
+                path: 'alert/:id',
+                name: 'alert-detail',
+                builder: (context, state) {
+                  final alertId = state.pathParameters['id']!;
+                  return AlertDetailScreen(alertId: alertId);
+                },
+                routes: [
+                  // Chat for specific alert
+                  GoRoute(
+                    path: 'chat',
+                    name: 'alert-chat',
+                    builder: (context, state) {
+                      final alertId = state.pathParameters['id']!;
+                      return ChatScreen(alertId: alertId);
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+
+          // Beep (Capture/Upload)
+          GoRoute(
+            path: '/beep',
+            name: 'beep',
+            builder: (context, state) => const BeepScreen(),
+          ),
+
+          // Compass
+          GoRoute(
+            path: '/compass',
+            name: 'compass',
+            builder: (context, state) => const CompassScreen(),
+          ),
+
+          // Profile
+          GoRoute(
+            path: '/profile',
+            name: 'profile',
+            builder: (context, state) => const ProfileScreen(),
+          ),
+        ],
+      ),
+
+      // Standalone Alerts List (if needed)
+      GoRoute(
+        path: '/alerts',
+        name: 'alerts',
+        builder: (context, state) => const AlertsScreen(),
+      ),
+    ],
+  );
+}
+
+class MainShell extends StatelessWidget {
+  const MainShell({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: child,
+      bottomNavigationBar: const MainBottomNavBar(),
+    );
+  }
+}
+
+class MainBottomNavBar extends StatelessWidget {
+  const MainBottomNavBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final currentLocation = GoRouterState.of(context).uri.toString();
+    
+    int currentIndex = 0;
+    if (currentLocation.startsWith('/beep')) {
+      currentIndex = 1;
+    } else if (currentLocation.startsWith('/compass')) {
+      currentIndex = 2;
+    } else if (currentLocation.startsWith('/profile')) {
+      currentIndex = 3;
+    }
+
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      currentIndex: currentIndex,
+      onTap: (index) {
+        switch (index) {
+          case 0:
+            context.go('/');
+            break;
+          case 1:
+            context.go('/beep');
+            break;
+          case 2:
+            context.go('/compass');
+            break;
+          case 3:
+            context.go('/profile');
+            break;
+        }
+      },
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Alerts',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.add_a_photo),
+          label: 'Beep',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.explore),
+          label: 'Compass',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'Profile',
+        ),
+      ],
+    );
+  }
+}
