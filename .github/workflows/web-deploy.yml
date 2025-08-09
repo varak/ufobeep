@@ -1,0 +1,16 @@
+
+name: Web • Next.js → Vercel
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'web/**'
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install --prefix web
+      - run: npm run build --prefix web
+      - name: Deploy to Vercel
+        run: npx vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --cwd web

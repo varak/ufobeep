@@ -1,0 +1,4 @@
+# Node, Python, Flutter ignores
+node_modules/
+__pycache__/
+build/

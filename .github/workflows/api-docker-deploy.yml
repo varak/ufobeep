@@ -1,0 +1,31 @@
+
+name: API • Docker Build & Deploy
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'api/**'
+      - '.github/workflows/api-docker-deploy.yml'
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t ufobeep-api ./api
+      - name: Deploy to VPS
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ufobeep
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "api/*"
+          target: "/home/ufobeep/ufobeep/api"
+      - name: Restart API service
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ufobeep
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            sudo systemctl restart ufobeep-api
