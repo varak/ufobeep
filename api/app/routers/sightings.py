@@ -82,6 +82,73 @@ except ImportError:
         is_public: bool = Field(default=True)
         submitted_at: datetime = Field(default_factory=datetime.utcnow)
     
+    # Enrichment data models
+    class WeatherData(BaseModel):
+        temperature_c: Optional[float] = None
+        feels_like_c: Optional[float] = None
+        humidity_percent: Optional[int] = None
+        pressure_hpa: Optional[float] = None
+        wind_speed_ms: Optional[float] = None
+        wind_direction_deg: Optional[int] = None
+        visibility_km: Optional[float] = None
+        cloud_cover_percent: Optional[int] = None
+        weather_condition: Optional[str] = None
+        weather_description: Optional[str] = None
+        precipitation_mm: Optional[float] = None
+        uv_index: Optional[float] = None
+        sunrise: Optional[str] = None
+        sunset: Optional[str] = None
+        
+    class CelestialSummary(BaseModel):
+        twilight_type: Optional[str] = None
+        sun_altitude_deg: Optional[float] = None
+        moon_phase_name: Optional[str] = None
+        moon_illumination: Optional[float] = None
+        visible_planets: Optional[List[str]] = None
+        visible_bright_stars: Optional[int] = None
+        observation_quality: Optional[str] = None
+        
+    class CelestialData(BaseModel):
+        sun: Optional[dict] = None
+        moon: Optional[dict] = None
+        planets: Optional[dict] = None
+        bright_stars: Optional[List[dict]] = None
+        summary: Optional[CelestialSummary] = None
+        
+    class SatellitePass(BaseModel):
+        satellite_name: str
+        norad_id: Optional[int] = None
+        pass_start_utc: str
+        pass_end_utc: str
+        max_elevation_deg: float
+        max_elevation_time_utc: str
+        brightness_magnitude: Optional[float] = None
+        direction: Optional[str] = None
+        is_visible_pass: bool = False
+        
+    class SatelliteData(BaseModel):
+        iss_passes: List[SatellitePass] = Field(default_factory=list)
+        starlink_passes: List[SatellitePass] = Field(default_factory=list)
+        other_satellites: List[SatellitePass] = Field(default_factory=list)
+        summary: Optional[dict] = None
+        
+    class ContentAnalysis(BaseModel):
+        is_safe: bool = True
+        toxicity_score: float = 0.0
+        spam_score: float = 0.0
+        classification: Optional[dict] = None
+        sentiment: Optional[dict] = None
+        language_detected: str = "en"
+        confidence: float = 0.5
+        analysis_method: str = "basic"
+        
+    class EnrichmentData(BaseModel):
+        weather: Optional[WeatherData] = None
+        celestial: Optional[CelestialData] = None
+        satellites: Optional[SatelliteData] = None
+        content_analysis: Optional[ContentAnalysis] = None
+        processing_metadata: Optional[dict] = None
+
     class Sighting(BaseModel):
         id: str
         title: str
@@ -102,6 +169,8 @@ except ImportError:
         verified_at: Optional[datetime] = None
         created_at: datetime = Field(default_factory=datetime.utcnow)
         updated_at: datetime = Field(default_factory=datetime.utcnow)
+        # Enrichment data
+        enrichment: Optional[EnrichmentData] = None
 
 
 # Router configuration
@@ -185,6 +254,68 @@ async def validate_media_files(media_file_ids: List[str]) -> List[MediaFile]:
         media_files.append(mock_media)
     
     return media_files
+
+
+def prepare_enrichment_data(sighting) -> Optional[EnrichmentData]:
+    """Convert database enrichment data to API format"""
+    try:
+        enrichment_data = {}
+        
+        # Weather data
+        if hasattr(sighting, 'weather_data') and sighting.weather_data:
+            enrichment_data['weather'] = WeatherData(**sighting.weather_data)
+        
+        # Celestial data
+        if hasattr(sighting, 'celestial_data') and sighting.celestial_data:
+            celestial_raw = sighting.celestial_data
+            celestial_data = CelestialData(
+                sun=celestial_raw.get('sun'),
+                moon=celestial_raw.get('moon'),
+                planets=celestial_raw.get('planets'),
+                bright_stars=celestial_raw.get('bright_stars'),
+                summary=CelestialSummary(**celestial_raw.get('summary', {})) if celestial_raw.get('summary') else None
+            )
+            enrichment_data['celestial'] = celestial_data
+        
+        # Satellite data  
+        if hasattr(sighting, 'satellite_data') and sighting.satellite_data:
+            satellite_raw = sighting.satellite_data
+            satellite_passes = []
+            
+            # Process ISS passes
+            iss_passes = [SatellitePass(**pass_data) for pass_data in satellite_raw.get('iss_passes', [])]
+            
+            # Process Starlink passes
+            starlink_passes = [SatellitePass(**pass_data) for pass_data in satellite_raw.get('starlink_passes', [])]
+            
+            # Process other satellites
+            other_passes = [SatellitePass(**pass_data) for pass_data in satellite_raw.get('other_satellites', [])]
+            
+            enrichment_data['satellites'] = SatelliteData(
+                iss_passes=iss_passes,
+                starlink_passes=starlink_passes,
+                other_satellites=other_passes,
+                summary=satellite_raw.get('summary')
+            )
+        
+        # Content analysis from enrichment metadata
+        if hasattr(sighting, 'enrichment_metadata') and sighting.enrichment_metadata:
+            metadata = sighting.enrichment_metadata
+            if 'content_analysis' in metadata:
+                content_raw = metadata['content_analysis']
+                enrichment_data['content_analysis'] = ContentAnalysis(**content_raw)
+            
+            # Processing metadata
+            enrichment_data['processing_metadata'] = {
+                k: v for k, v in metadata.items() 
+                if k not in ['content_analysis', 'satellite_data']
+            }
+        
+        return EnrichmentData(**enrichment_data) if enrichment_data else None
+        
+    except Exception as e:
+        logger.error(f"Error preparing enrichment data: {e}")
+        return None
 
 
 def determine_alert_level(submission: SightingSubmission) -> AlertLevel:
@@ -340,8 +471,13 @@ async def get_sighting(
         # Determine if user can see private details
         is_owner = (user_id and sighting.reporter_id == user_id)
         
-        # Prepare response data
+        # Prepare response data with enrichment
         response_data = sighting.dict()
+        
+        # Add enrichment data
+        enrichment_data = prepare_enrichment_data(sighting)
+        if enrichment_data:
+            response_data["enrichment"] = enrichment_data.dict()
         
         # Hide private details for non-owners
         if not is_owner:
@@ -565,6 +701,12 @@ async def list_sightings(
         sighting_data = []
         for sighting in paginated_sightings:
             data = sighting.dict()
+            
+            # Add enrichment data
+            enrichment_data = prepare_enrichment_data(sighting)
+            if enrichment_data:
+                data["enrichment"] = enrichment_data.dict()
+            
             # Always use jittered location for public listings
             data["sensor_data"] = {
                 "timestamp": sighting.sensor_data.timestamp.isoformat(),
@@ -608,11 +750,13 @@ async def process_sighting_async(sighting_id: str):
             logger.error(f"Sighting {sighting_id} not found for processing")
             return
         
-        # TODO: Trigger enrichment pipeline
-        # - Weather data enrichment
-        # - Celestial data enrichment
-        # - Plane matching
-        # - Satellite pass checking
+        # Trigger enrichment pipeline
+        try:
+            from app.worker import trigger_enrichment
+            await trigger_enrichment(sighting_id)
+            logger.info(f"Triggered enrichment for sighting {sighting_id}")
+        except Exception as e:
+            logger.error(f"Failed to trigger enrichment for sighting {sighting_id}: {e}")
         
         # TODO: Create Matrix chat room
         # TODO: Send push notifications to nearby users
@@ -626,6 +770,81 @@ async def process_sighting_async(sighting_id: str):
         
     except Exception as e:
         logger.error(f"Background processing failed for sighting {sighting_id}: {e}")
+
+
+# Enrichment endpoint
+@router.post("/{sighting_id}/enrich")
+async def trigger_sighting_enrichment(
+    sighting_id: str,
+    user_id: Optional[str] = Depends(get_current_user_id)
+):
+    """
+    Manually trigger enrichment for a sighting (owner only)
+    
+    Useful for re-processing a sighting with updated enrichment data
+    or for testing the enrichment pipeline.
+    """
+    try:
+        # Check if sighting exists
+        sighting = sightings_db.get(sighting_id)
+        if not sighting:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail={
+                    "error": "SIGHTING_NOT_FOUND",
+                    "message": f"Sighting {sighting_id} not found"
+                }
+            )
+        
+        # Check authorization - only owner can trigger enrichment
+        if not user_id or sighting.reporter_id != user_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail={
+                    "error": "ACCESS_DENIED",
+                    "message": "Only the reporter can trigger enrichment"
+                }
+            )
+        
+        # Trigger enrichment
+        try:
+            from app.worker import trigger_enrichment
+            await trigger_enrichment(sighting_id)
+            
+            logger.info(f"Manually triggered enrichment for sighting {sighting_id} by user {user_id}")
+            
+            return {
+                "success": True,
+                "data": {
+                    "sighting_id": sighting_id,
+                    "enrichment_status": "queued"
+                },
+                "message": "Enrichment queued successfully",
+                "timestamp": datetime.utcnow().isoformat()
+            }
+            
+        except Exception as e:
+            logger.error(f"Failed to queue enrichment for sighting {sighting_id}: {e}")
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail={
+                    "error": "ENRICHMENT_QUEUE_FAILED",
+                    "message": "Failed to queue enrichment",
+                    "details": str(e)
+                }
+            )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to trigger enrichment for sighting {sighting_id}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "error": "ENRICHMENT_TRIGGER_FAILED",
+                "message": "Failed to trigger enrichment"
+            }
+        )
 
 
 # Health check

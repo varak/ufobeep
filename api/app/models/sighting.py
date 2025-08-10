@@ -181,6 +181,7 @@ class Sighting(Base):
     # Enrichment data (JSON fields)
     weather_data = Column(JSON, nullable=True)
     celestial_data = Column(JSON, nullable=True)
+    satellite_data = Column(JSON, nullable=True)
     plane_match_data = Column(JSON, nullable=True)
     enrichment_metadata = Column(JSON, default=dict, nullable=False)
     

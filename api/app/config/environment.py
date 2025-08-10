@@ -1,7 +1,12 @@
 import os
 from enum import Enum
 from typing import List, Optional
-from pydantic import BaseSettings, Field
+try:
+    from pydantic_settings import BaseSettings
+    from pydantic import Field
+except ImportError:
+    # Fallback for older pydantic versions
+    from pydantic import BaseSettings, Field
 
 
 class Environment(str, Enum):
@@ -62,6 +67,13 @@ class Settings(BaseSettings):
     openweather_base_url: str = Field(
         default="https://api.openweathermap.org/data/2.5",
         env="OPENWEATHER_BASE_URL"
+    )
+    
+    # === HuggingFace Configuration ===
+    huggingface_api_token: Optional[str] = Field(default=None, env="HUGGINGFACE_API_TOKEN")
+    huggingface_model_nsfw: str = Field(
+        default="martin-ha/toxic-comment-model",
+        env="HUGGINGFACE_MODEL_NSFW"
     )
     
     # === OpenSky Network Configuration ===
@@ -130,12 +142,12 @@ class Settings(BaseSettings):
         env_file = ".env"
         env_file_encoding = "utf-8"
         case_sensitive = False
-        
-        @classmethod
-        def parse_env_var(cls, field_name: str, raw_val: str) -> any:
-            if field_name in {"cors_origins", "supported_locales"}:
-                return [x.strip() for x in raw_val.split(",")]
-            return cls.json_loads(raw_val)
+    
+    @classmethod
+    def parse_env_var(cls, field_name: str, raw_val: str) -> any:
+        if field_name in {"cors_origins", "supported_locales"}:
+            return [x.strip() for x in raw_val.split(",")]
+        return raw_val
     
     # Property methods for computed values
     @property
