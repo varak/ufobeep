@@ -1,0 +1,43 @@
+{
+  "name": "ufobeep-e2e",
+  "version": "1.0.0",
+  "description": "End-to-end tests for UFOBeep platform",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report reports/html",
+    "test:mobile": "./scripts/run-tests.sh mobile",
+    "test:desktop": "playwright test --project=chromium --project=firefox --project=webkit",
+    "test:smoke": "./scripts/run-tests.sh smoke",
+    "test:critical": "./scripts/run-tests.sh critical", 
+    "test:acceptance": "./scripts/run-tests.sh acceptance",
+    "test:visual": "./scripts/run-tests.sh visual",
+    "test:i18n": "./scripts/run-tests.sh i18n",
+    "test:full": "./scripts/run-tests.sh full",
+    "test:ac": "playwright test tests/acceptance/",
+    "test:ac1": "playwright test tests/acceptance/ac-01-registration.spec.ts",
+    "test:ac2": "playwright test tests/acceptance/ac-02-capture-sighting.spec.ts",
+    "test:ac3": "playwright test tests/acceptance/ac-03-browse-alerts.spec.ts", 
+    "test:ac4": "playwright test tests/acceptance/ac-04-alert-details.spec.ts",
+    "test:ac5": "playwright test tests/acceptance/ac-05-compass-navigation.spec.ts",
+    "test:ac6": "playwright test tests/acceptance/ac-06-pilot-mode.spec.ts",
+    "codegen": "playwright codegen",
+    "trace": "playwright show-trace",
+    "allure:generate": "allure generate reports/allure-results -o reports/allure-report --clean",
+    "allure:serve": "allure serve reports/allure-results",
+    "install:browsers": "playwright install",
+    "clean": "rm -rf reports/ test-results/ playwright-report/"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.0.0",
+    "dotenv": "^16.3.1",
+    "faker": "^6.6.6"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "matrix-js-sdk": "^30.0.0"
+  }
+}

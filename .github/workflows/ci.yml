@@ -1,0 +1,208 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  # Determine what changed
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      api: ${{ steps.filter.outputs.api }}
+      web: ${{ steps.filter.outputs.web }}
+      app: ${{ steps.filter.outputs.app }}
+      docs: ${{ steps.filter.outputs.docs }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            api:
+              - 'api/**'
+            web:
+              - 'web/**'
+            app:
+              - 'app/**'
+            docs:
+              - 'docs/**'
+              - '*.md'
+
+  # Lint all code
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Lint Python (API)
+        if: needs.changes.outputs.api == 'true'
+        working-directory: ./api
+        run: |
+          pip install ruff black isort
+          ruff check .
+          black --check .
+          isort --check-only .
+        continue-on-error: true
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Lint TypeScript (Web)
+        if: needs.changes.outputs.web == 'true'
+        working-directory: ./web
+        run: |
+          npm ci
+          npm run lint
+        continue-on-error: true
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+      
+      - name: Lint Dart (App)
+        if: needs.changes.outputs.app == 'true'
+        working-directory: ./app
+        run: |
+          flutter pub get
+          flutter analyze
+        continue-on-error: true
+
+  # Security scanning
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+      
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+        continue-on-error: true
+      
+      - name: Check for secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+        continue-on-error: true
+
+  # Test API
+  test-api:
+    needs: [changes, lint]
+    if: needs.changes.outputs.api == 'true'
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test API
+        working-directory: ./api
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost/test
+        run: |
+          pip install -r requirements.txt pytest pytest-cov
+          pytest --cov=app tests/
+
+  # Test Web
+  test-web:
+    needs: [changes, lint]
+    if: needs.changes.outputs.web == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Test Web
+        working-directory: ./web
+        run: |
+          npm ci
+          npm test -- --passWithNoTests
+          npm run build
+
+  # Test App
+  test-app:
+    needs: [changes, lint]
+    if: needs.changes.outputs.app == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+      - name: Test App
+        working-directory: ./app
+        run: |
+          flutter pub get
+          flutter test
+
+  # Build documentation
+  docs:
+    needs: changes
+    if: needs.changes.outputs.docs == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build docs
+        run: |
+          npm install -g @redocly/cli
+          redocly lint docs/api/openapi.yaml
+        continue-on-error: true
+
+  # Summary
+  summary:
+    needs: [test-api, test-web, test-app, security, docs]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Summary
+        run: |
+          echo "## CI Summary" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| API | ${{ needs.test-api.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Web | ${{ needs.test-web.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| App | ${{ needs.test-app.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Security | ${{ needs.security.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Docs | ${{ needs.docs.result }} |" >> $GITHUB_STEP_SUMMARY

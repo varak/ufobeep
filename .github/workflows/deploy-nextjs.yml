@@ -1,0 +1,167 @@
+name: Deploy Next.js to Vercel
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'web/**'
+      - '.github/workflows/deploy-nextjs.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'web/**'
+  workflow_dispatch:
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+      
+      - name: Install dependencies
+        working-directory: ./web
+        run: npm ci
+      
+      - name: Run linter
+        working-directory: ./web
+        run: npm run lint
+        continue-on-error: true
+      
+      - name: Run type check
+        working-directory: ./web
+        run: npx tsc --noEmit
+        continue-on-error: true
+      
+      - name: Run tests
+        working-directory: ./web
+        run: npm test -- --passWithNoTests
+        continue-on-error: true
+      
+      - name: Build application
+        working-directory: ./web
+        env:
+          NEXT_PUBLIC_API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.SITE_URL }}
+          NEXT_PUBLIC_MATRIX_BASE_URL: ${{ secrets.MATRIX_BASE_URL }}
+        run: npm run build
+
+  deploy-preview:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    environment:
+      name: preview
+      url: ${{ steps.deploy.outputs.url }}
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+      
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      
+      - name: Pull Vercel Environment
+        working-directory: ./web
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+      
+      - name: Build Project
+        working-directory: ./web
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+      
+      - name: Deploy to Vercel Preview
+        id: deploy
+        working-directory: ./web
+        run: |
+          url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+          echo "url=$url" >> $GITHUB_OUTPUT
+      
+      - name: Comment PR
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🚀 Preview deployment ready!\n\nURL: ${{ steps.deploy.outputs.url }}'
+            })
+
+  deploy-production:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: production
+      url: https://ufobeep.com
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+      
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      
+      - name: Pull Vercel Environment
+        working-directory: ./web
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+      
+      - name: Build Project
+        working-directory: ./web
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      
+      - name: Deploy to Vercel Production
+        working-directory: ./web
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+      
+      - name: Purge CDN Cache
+        run: |
+          curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}'
+        continue-on-error: true
+      
+      - name: Warm up cache
+        run: |
+          # Warm up important pages
+          curl -s https://ufobeep.com > /dev/null
+          curl -s https://ufobeep.com/alerts > /dev/null
+          curl -s https://ufobeep.com/app > /dev/null
+          curl -s https://ufobeep.com/sitemap.xml > /dev/null
+        continue-on-error: true
+      
+      - name: Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            https://ufobeep.com
+            https://ufobeep.com/alerts
+            https://ufobeep.com/app
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+        continue-on-error: true

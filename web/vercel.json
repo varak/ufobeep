@@ -1,0 +1,79 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm ci",
+  "regions": ["iad1"],
+  "functions": {
+    "src/pages/api/*.ts": {
+      "maxDuration": 10
+    },
+    "src/pages/sitemap.xml.ts": {
+      "maxDuration": 10
+    },
+    "src/pages/robots.txt.ts": {
+      "maxDuration": 5
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(js|css|ico|png|jpg|jpeg|gif|svg|woff|woff2)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/home",
+      "destination": "/",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "/api/robots"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_API_BASE_URL": "@api_base_url",
+    "NEXT_PUBLIC_SITE_URL": "@site_url",
+    "NEXT_PUBLIC_MATRIX_BASE_URL": "@matrix_base_url"
+  },
+  "build": {
+    "env": {
+      "NEXT_PUBLIC_API_BASE_URL": "@api_base_url",
+      "NEXT_PUBLIC_SITE_URL": "@site_url",
+      "NEXT_PUBLIC_MATRIX_BASE_URL": "@matrix_base_url"
+    }
+  }
+}
