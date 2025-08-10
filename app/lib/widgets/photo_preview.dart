@@ -220,37 +220,76 @@ class _PhotoPreviewState extends State<PhotoPreview> {
                 bottomRight: Radius.circular(10),
               ),
             ),
-            child: Row(
+            child: Column(
               children: [
-                if (widget.onRetake != null)
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: widget.onRetake,
-                      icon: const Icon(Icons.camera_alt, size: 16),
-                      label: const Text('Retake'),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColors.textSecondary,
-                        side: const BorderSide(color: AppColors.darkBorder),
-                        padding: const EdgeInsets.symmetric(vertical: 8),
+                // Explanatory text
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                  decoration: BoxDecoration(
+                    color: AppColors.brandPrimary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: AppColors.brandPrimary.withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.send,
+                        color: AppColors.brandPrimary,
+                        size: 16,
+                      ),
+                      const SizedBox(width: 8),
+                      const Text(
+                        'This will be sent with your beep',
+                        style: TextStyle(
+                          color: AppColors.brandPrimary,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+                
+                // Action buttons
+                Row(
+                  children: [
+                    if (widget.onRetake != null)
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: widget.onRetake,
+                          icon: const Icon(Icons.camera_alt, size: 16),
+                          label: const Text('Retake'),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: AppColors.textSecondary,
+                            side: const BorderSide(color: AppColors.darkBorder),
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                          ),
+                        ),
+                      ),
+                    
+                    if (widget.onRetake != null) const SizedBox(width: 12),
+                    
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: _validationResult?.isValid == true 
+                            ? _showFullScreen 
+                            : null,
+                        icon: const Icon(Icons.visibility, size: 16),
+                        label: const Text('Preview'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.brandPrimary,
+                          foregroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                        ),
                       ),
                     ),
-                  ),
-                
-                if (widget.onRetake != null) const SizedBox(width: 12),
-                
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: _validationResult?.isValid == true 
-                        ? _showFullScreen 
-                        : null,
-                    icon: const Icon(Icons.visibility, size: 16),
-                    label: const Text('Preview'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.brandPrimary,
-                      foregroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                    ),
-                  ),
+                  ],
                 ),
               ],
             ),

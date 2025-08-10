@@ -41,11 +41,27 @@ class _BeepScreenState extends State<BeepScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   String _selectedCategory = local.SightingCategory.ufo;
   local.LocationPrivacy _locationPrivacy = local.LocationPrivacy.jittered;
+  
+  // Form validation state
+  bool get _isFormValid {
+    final title = _titleController.text.trim();
+    final description = _descriptionController.text.trim();
+    return title.length >= 5 && description.length >= 10;
+  }
 
   @override
   void initState() {
     super.initState();
     _checkSensorAvailability();
+    
+    // Add listeners to form fields for real-time validation
+    _titleController.addListener(_onFormFieldChanged);
+    _descriptionController.addListener(_onFormFieldChanged);
+  }
+  
+  void _onFormFieldChanged() {
+    // Trigger rebuild when form validity changes
+    setState(() {});
   }
 
   Future<void> _checkSensorAvailability() async {
@@ -234,9 +250,12 @@ class _BeepScreenState extends State<BeepScreen> {
   }
 
   void _showCaptureReview() {
+    debugPrint('BeepScreen: Showing capture review modal for image: ${_currentSubmission?.imageFile?.path}');
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      isDismissible: true,
+      enableDrag: true,
       backgroundColor: AppColors.darkSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -278,7 +297,7 @@ class _BeepScreenState extends State<BeepScreen> {
                 child: Row(
                   children: [
                     Text(
-                      'Complete Sighting Report',
+                      'Complete Your Beep',
                       style: TextStyle(
                         color: AppColors.textPrimary,
                         fontSize: 20,
@@ -418,7 +437,15 @@ class _BeepScreenState extends State<BeepScreen> {
   }
 
   Future<void> _submitSighting() async {
-    if (_currentSubmission?.imageFile == null || _currentSubmission?.sensorData == null) return;
+    if (_currentSubmission?.imageFile == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No image selected. Please capture or select an image first.'),
+          backgroundColor: AppColors.semanticError,
+        ),
+      );
+      return;
+    }
     
     if (_isSubmitting) return;
 
@@ -470,7 +497,7 @@ class _BeepScreenState extends State<BeepScreen> {
         title: title,
         description: description,
         category: category,
-        sensorData: _currentSubmission!.sensorData!,
+        sensorData: _currentSubmission!.sensorData, // Allow null sensor data
         mediaFiles: [_currentSubmission!.imageFile!],
         witnessCount: 1,
         tags: tags,
@@ -541,7 +568,7 @@ class _BeepScreenState extends State<BeepScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Report Sighting'),
+        title: const Text('Send Beep'),
         backgroundColor: AppColors.darkSurface,
         actions: [
           if (_currentSubmission != null)
@@ -741,13 +768,11 @@ class _BeepScreenState extends State<BeepScreen> {
         ),
       ),
       floatingActionButton: _currentSubmission != null ? FloatingActionButton.extended(
-        onPressed: (!_isSubmitting && _titleController.text.trim().length >= 5 && _descriptionController.text.trim().length >= 10) 
-            ? _submitSighting 
-            : null,
-        backgroundColor: (!_isSubmitting && _titleController.text.trim().length >= 5 && _descriptionController.text.trim().length >= 10)
+        onPressed: (!_isSubmitting && _isFormValid) ? _submitSighting : null,
+        backgroundColor: (!_isSubmitting && _isFormValid) 
             ? AppColors.brandPrimary 
             : AppColors.darkBorder,
-        foregroundColor: (!_isSubmitting && _titleController.text.trim().length >= 5 && _descriptionController.text.trim().length >= 10)
+        foregroundColor: (!_isSubmitting && _isFormValid) 
             ? Colors.black 
             : AppColors.textSecondary,
         icon: _isSubmitting
@@ -763,7 +788,9 @@ class _BeepScreenState extends State<BeepScreen> {
         label: Text(
           _isSubmitting 
               ? 'Submitting...' 
-              : 'Submit Report',
+              : _isFormValid 
+                ? 'Send Beep!' 
+                : 'Complete Form',
         ),
       ) : null,
     );
@@ -833,10 +860,20 @@ class _BeepScreenState extends State<BeepScreen> {
                 value: category,
                 child: Row(
                   children: [
-                    Icon(
-                      (categoryData?.icon as IconData?) ?? Icons.help,
-                      color: AppColors.brandPrimary,
-                      size: 20,
+                    SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: categoryData?.icon != null
+                          ? Text(
+                              categoryData!.icon,
+                              style: const TextStyle(fontSize: 16),
+                              textAlign: TextAlign.center,
+                            )
+                          : const Icon(
+                              Icons.help,
+                              color: AppColors.brandPrimary,
+                              size: 20,
+                            ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -901,6 +938,12 @@ class _BeepScreenState extends State<BeepScreen> {
           decoration: InputDecoration(
             hintText: 'Brief description of what you saw...',
             hintStyle: const TextStyle(color: AppColors.textSecondary),
+            helperText: 'Minimum 5 characters',
+            helperStyle: TextStyle(
+              color: _titleController.text.trim().length >= 5 
+                ? AppColors.brandPrimary 
+                : AppColors.textSecondary,
+            ),
             filled: true,
             fillColor: AppColors.darkSurface,
             border: OutlineInputBorder(
@@ -909,7 +952,11 @@ class _BeepScreenState extends State<BeepScreen> {
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.darkBorder),
+              borderSide: BorderSide(
+                color: _titleController.text.trim().length >= 5 
+                  ? AppColors.brandPrimary.withOpacity(0.5) 
+                  : AppColors.darkBorder,
+              ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -945,6 +992,12 @@ class _BeepScreenState extends State<BeepScreen> {
           decoration: InputDecoration(
             hintText: 'Describe what you observed in detail...\n\nInclude details like:\n• Time of observation\n• Weather conditions\n• Object behavior\n• Duration of sighting',
             hintStyle: const TextStyle(color: AppColors.textSecondary),
+            helperText: 'Minimum 10 characters',
+            helperStyle: TextStyle(
+              color: _descriptionController.text.trim().length >= 10 
+                ? AppColors.brandPrimary 
+                : AppColors.textSecondary,
+            ),
             filled: true,
             fillColor: AppColors.darkSurface,
             border: OutlineInputBorder(
@@ -953,7 +1006,11 @@ class _BeepScreenState extends State<BeepScreen> {
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.darkBorder),
+              borderSide: BorderSide(
+                color: _descriptionController.text.trim().length >= 10 
+                  ? AppColors.brandPrimary.withOpacity(0.5) 
+                  : AppColors.darkBorder,
+              ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -1105,6 +1162,8 @@ class _BeepScreenState extends State<BeepScreen> {
 
   @override
   void dispose() {
+    _titleController.removeListener(_onFormFieldChanged);
+    _descriptionController.removeListener(_onFormFieldChanged);
     _titleController.dispose();
     _descriptionController.dispose();
     super.dispose();

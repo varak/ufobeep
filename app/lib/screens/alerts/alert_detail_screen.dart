@@ -14,165 +14,206 @@ class AlertDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final alert = ref.watch(alertByIdProvider(alertId));
+    final alertAsync = ref.watch(alertByIdProvider(alertId));
 
-    if (alert == null) {
-      return Scaffold(
+    return alertAsync.when(
+      data: (alert) {
+        if (alert == null) {
+          return Scaffold(
+            appBar: AppBar(title: const Text('Alert')),
+            body: const Center(
+              child: Text('Alert not found'),
+            ),
+          );
+        }
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(alert.title),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.chat),
+                onPressed: () {
+                  context.go('/alert/$alertId/chat');
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.share),
+                onPressed: () {
+                  // TODO: Share alert
+                },
+              ),
+            ],
+          ),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Media placeholder
+                Container(
+                  width: double.infinity,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: AppColors.darkSurface,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.darkBorder),
+                  ),
+                  child: const Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.image, size: 48, color: AppColors.textTertiary),
+                        SizedBox(height: 8),
+                        Text('Media preview', style: TextStyle(color: AppColors.textTertiary)),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // Category & Verification
+                Row(
+                  children: [
+                    Chip(
+                      label: Text(alert.category.replaceAll('_', ' ').toUpperCase()),
+                    ),
+                    const SizedBox(width: 8),
+                    if (alert.isVerified)
+                      Chip(
+                        label: const Text('VERIFIED'),
+                        backgroundColor: AppColors.brandPrimary.withOpacity(0.2),
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+
+                // Title
+                Text(
+                  alert.title,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                const SizedBox(height: 12),
+
+                // Description
+                Text(
+                  alert.description,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // Location & Time Info
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Details',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        const SizedBox(height: 12),
+                        _DetailRow(
+                          icon: Icons.access_time,
+                          label: 'Time',
+                          value: _formatDateTime(alert.createdAt),
+                        ),
+                        if (alert.distance != null)
+                          _DetailRow(
+                            icon: Icons.location_on,
+                            label: 'Distance',
+                            value: '${alert.distance!.toStringAsFixed(1)} km',
+                          ),
+                        if (alert.bearing != null)
+                          _DetailRow(
+                            icon: Icons.explore,
+                            label: 'Direction',
+                            value: '${alert.bearing!.toStringAsFixed(0)}°',
+                          ),
+                        _DetailRow(
+                          icon: Icons.place,
+                          label: 'Coordinates',
+                          value: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // Enrichment Section
+                EnrichmentSection(
+                  enrichment: _getMockEnrichment(alert.id),
+                ),
+                const SizedBox(height: 24),
+
+                // Action Buttons
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          context.go('/alert/$alertId/chat');
+                        },
+                        icon: const Icon(Icons.chat),
+                        label: const Text('Join Chat'),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () {
+                          // TODO: Navigate to alert location
+                        },
+                        icon: const Icon(Icons.directions),
+                        label: const Text('Navigate'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+      loading: () => Scaffold(
         appBar: AppBar(title: const Text('Alert')),
         body: const Center(
-          child: Text('Alert not found'),
+          child: CircularProgressIndicator(color: AppColors.brandPrimary),
         ),
-      );
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(alert.title),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.chat),
-            onPressed: () {
-              context.go('/alert/$alertId/chat');
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: () {
-              // TODO: Share alert
-            },
-          ),
-        ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Media placeholder
-            Container(
-              width: double.infinity,
-              height: 200,
-              decoration: BoxDecoration(
-                color: AppColors.darkSurface,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.darkBorder),
+      error: (error, stack) => Scaffold(
+        appBar: AppBar(title: const Text('Alert')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.error_outline,
+                color: AppColors.semanticError,
+                size: 64,
               ),
-              child: const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.image, size: 48, color: AppColors.textTertiary),
-                    SizedBox(height: 8),
-                    Text('Media preview', style: TextStyle(color: AppColors.textTertiary)),
-                  ],
-                ),
+              const SizedBox(height: 16),
+              Text(
+                'Failed to load alert',
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
-            ),
-            const SizedBox(height: 24),
-
-            // Category & Verification
-            Row(
-              children: [
-                Chip(
-                  label: Text(alert.category.replaceAll('_', ' ').toUpperCase()),
-                ),
-                const SizedBox(width: 8),
-                if (alert.isVerified)
-                  Chip(
-                    label: const Text('VERIFIED'),
-                    backgroundColor: AppColors.brandPrimary.withOpacity(0.2),
-                  ),
-              ],
-            ),
-            const SizedBox(height: 16),
-
-            // Title
-            Text(
-              alert.title,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 12),
-
-            // Description
-            Text(
-              alert.description,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: AppColors.textSecondary,
+              const SizedBox(height: 8),
+              Text(
+                error.toString(),
+                style: const TextStyle(color: AppColors.textSecondary),
+                textAlign: TextAlign.center,
               ),
-            ),
-            const SizedBox(height: 24),
-
-            // Location & Time Info
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Details',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 12),
-                    _DetailRow(
-                      icon: Icons.access_time,
-                      label: 'Time',
-                      value: _formatDateTime(alert.createdAt),
-                    ),
-                    if (alert.distance != null)
-                      _DetailRow(
-                        icon: Icons.location_on,
-                        label: 'Distance',
-                        value: '${alert.distance!.toStringAsFixed(1)} km',
-                      ),
-                    if (alert.bearing != null)
-                      _DetailRow(
-                        icon: Icons.explore,
-                        label: 'Direction',
-                        value: '${alert.bearing!.toStringAsFixed(0)}°',
-                      ),
-                    _DetailRow(
-                      icon: Icons.place,
-                      label: 'Coordinates',
-                      value: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
-                    ),
-                  ],
-                ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () => ref.invalidate(alertByIdProvider(alertId)),
+                child: const Text('Try Again'),
               ),
-            ),
-            const SizedBox(height: 24),
-
-            // Enrichment Section
-            EnrichmentSection(
-              enrichment: _getMockEnrichment(alert.id),
-            ),
-            const SizedBox(height: 24),
-
-            // Action Buttons
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      context.go('/alert/$alertId/chat');
-                    },
-                    icon: const Icon(Icons.chat),
-                    label: const Text('Join Chat'),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () {
-                      // TODO: Navigate to alert location
-                    },
-                    icon: const Icon(Icons.directions),
-                    label: const Text('Navigate'),
-                  ),
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

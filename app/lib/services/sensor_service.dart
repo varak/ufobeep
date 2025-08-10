@@ -48,20 +48,17 @@ class SensorService {
       // Check if location services are enabled
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        throw Exception('Location services are disabled.');
+        throw Exception('Location services are disabled. Please enable location services in device settings.');
       }
 
-      // Check permissions
+      // Check permissions (should be granted during app initialization)
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          throw Exception('Location permissions are denied');
-        }
+        throw Exception('Location permission was denied. Please restart the app to grant permissions.');
       }
 
       if (permission == LocationPermission.deniedForever) {
-        throw Exception('Location permissions are permanently denied');
+        throw Exception('Location permissions are permanently denied. Please enable location access in device settings.');
       }
 
       // Get current position with high accuracy

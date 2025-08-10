@@ -19,7 +19,8 @@ class AlertsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final alertsAsync = ref.watch(alertsListProvider);
     final filter = ref.watch(alertsFilterStateProvider);
-    final preferences = ref.watch(userPreferencesProvider).value;
+    final preferencesAsync = ref.watch(userPreferencesProvider);
+    final preferences = preferencesAsync;
 
     return Scaffold(
       backgroundColor: AppColors.darkBackground,

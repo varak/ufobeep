@@ -150,7 +150,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       createdAt: matrixMsg.formattedTimestamp ?? 
                  DateTime.fromMillisecondsSinceEpoch(matrixMsg.timestamp),
       type: _getMessageType(matrixMsg.messageType),
-      status: isCurrentUser ? MessageStatus.delivered : null,
+      status: isCurrentUser ? MessageStatus.delivered : MessageStatus.delivered,
     );
   }
   

@@ -381,7 +381,7 @@ final quarantineSummaryProvider =
 // ignore: unused_element
 typedef QuarantineSummaryRef = AutoDisposeFutureProviderRef<QuarantineSummary>;
 String _$enrichedAlertsListHash() =>
-    r'403d84fae6feeba4b8168cda4c121cbe097248c3';
+    r'424f91ebc2502747d002f5c20ce7b0a09835a889';
 
 /// Provider for enriched alerts with quarantine handling
 ///

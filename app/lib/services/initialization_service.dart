@@ -198,38 +198,66 @@ class InitializationService {
   Future<InitializationResult> _checkPermissions() async {
     try {
       final Map<String, bool> permissions = {};
+      final List<String> requestedPermissions = [];
 
-      // Check location permission
-      final locationStatus = await Permission.location.status;
+      // Request location permission (critical for beep submission)
+      var locationStatus = await Permission.location.status;
+      if (!locationStatus.isGranted && !locationStatus.isPermanentlyDenied) {
+        _logInfo('Requesting location permission...');
+        locationStatus = await Permission.location.request();
+        requestedPermissions.add('location');
+      }
       permissions['location'] = locationStatus.isGranted;
 
-      // Check camera permission
-      final cameraStatus = await Permission.camera.status;
+      // Request camera permission (critical for beep submission)
+      var cameraStatus = await Permission.camera.status;
+      if (!cameraStatus.isGranted && !cameraStatus.isPermanentlyDenied) {
+        _logInfo('Requesting camera permission...');
+        cameraStatus = await Permission.camera.request();
+        requestedPermissions.add('camera');
+      }
       permissions['camera'] = cameraStatus.isGranted;
 
-      // Check notification permission
+      // Check notification permission (optional)
       final notificationStatus = await Permission.notification.status;
       permissions['notification'] = notificationStatus.isGranted;
 
-      // Check microphone permission (for video recording)
+      // Check microphone permission (for video recording, optional)
       final microphoneStatus = await Permission.microphone.status;
       permissions['microphone'] = microphoneStatus.isGranted;
 
-      // Check storage permission (for file access)
+      // Request storage permission (needed for photo access)
       Permission storagePermission;
       if (Platform.isAndroid) {
         storagePermission = Permission.storage;
       } else {
         storagePermission = Permission.photos;
       }
-      final storageStatus = await storagePermission.status;
+      var storageStatus = await storagePermission.status;
+      if (!storageStatus.isGranted && !storageStatus.isPermanentlyDenied) {
+        _logInfo('Requesting storage permission...');
+        storageStatus = await storagePermission.request();
+        requestedPermissions.add('storage');
+      }
       permissions['storage'] = storageStatus.isGranted;
 
+      // Log critical permission status
+      final hasCriticalPermissions = permissions['location'] == true && permissions['camera'] == true;
+      if (!hasCriticalPermissions) {
+        _logWarning('Missing critical permissions - Location: ${permissions['location']}, Camera: ${permissions['camera']}');
+      }
+
       _logInfo('Permission check completed: $permissions');
+      _logInfo('Requested permissions during init: $requestedPermissions');
+      
       return InitializationResult(
         success: true,
         lastStep: InitializationStep.permissions,
-        data: {'permissions': permissions},
+        data: {
+          'permissions': permissions,
+          'hasCriticalPermissions': hasCriticalPermissions,
+          'requestedPermissions': requestedPermissions,
+        },
       );
     } catch (e) {
       return InitializationResult(

@@ -240,7 +240,7 @@ class VisibilityBadge extends StatelessWidget {
       switch (category!) {
         case VisibilityCategory.veryPoor:
           badgeColor = AppColors.semanticError;
-          badgeIcon = Icons.fog;
+          badgeIcon = Icons.cloud;
           badgeText = 'Very poor visibility';
           break;
         case VisibilityCategory.poor:

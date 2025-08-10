@@ -601,7 +601,11 @@ class ApiClient {
     return category; // Direct mapping since they're the same enum
   }
 
-  api.SensorDataApi _mapSensorDataToApi(SensorData sensorData) {
+  api.SensorDataApi? _mapSensorDataToApi(SensorData? sensorData) {
+    if (sensorData == null) {
+      return null;
+    }
+    
     return api.SensorDataApi(
       timestamp: sensorData.utc,
       location: api.GeoCoordinates(
@@ -644,7 +648,7 @@ extension ApiClientExtension on ApiClient {
     required String title,
     required String description,
     required api.SightingCategory category,
-    required SensorData sensorData,
+    SensorData? sensorData,
     required List<File> mediaFiles,
     int? durationSeconds,
     int witnessCount = 1,

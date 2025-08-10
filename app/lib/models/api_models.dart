@@ -268,7 +268,7 @@ class SightingSubmission {
   final String description;
   final SightingCategory category;
   @JsonKey(name: 'sensor_data')
-  final SensorDataApi sensorData;
+  final SensorDataApi? sensorData;
   @JsonKey(name: 'media_files')
   final List<String> mediaFiles;
   @JsonKey(name: 'reporter_id')
@@ -287,7 +287,7 @@ class SightingSubmission {
     required this.title,
     required this.description,
     required this.category,
-    required this.sensorData,
+    this.sensorData,
     this.mediaFiles = const [],
     this.reporterId,
     this.durationSeconds,
