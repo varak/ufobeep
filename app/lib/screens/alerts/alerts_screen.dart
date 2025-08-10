@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/alerts_provider.dart';
+import '../../providers/user_preferences_provider.dart';
 import '../../models/alerts_filter.dart';
+import '../../models/user_preferences.dart';
+import '../../models/alert_enrichment.dart';
+import '../../services/visibility_service.dart';
 import '../../widgets/alerts_filter_dialog.dart';
 import '../../widgets/alert_card.dart';
+import '../../widgets/alerts/visibility_indicator.dart';
 import '../../theme/app_theme.dart';
 
 class AlertsScreen extends ConsumerWidget {
@@ -14,6 +19,7 @@ class AlertsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final alertsAsync = ref.watch(alertsListProvider);
     final filter = ref.watch(alertsFilterStateProvider);
+    final preferences = ref.watch(userPreferencesProvider).value;
 
     return Scaffold(
       backgroundColor: AppColors.darkBackground,
@@ -22,7 +28,7 @@ class AlertsScreen extends ConsumerWidget {
         onRefresh: () => ref.read(alertsListProvider.notifier).refresh(),
         backgroundColor: AppColors.darkSurface,
         color: AppColors.brandPrimary,
-        child: _buildBody(context, ref, alertsAsync, filter),
+        child: _buildBody(context, ref, alertsAsync, filter, preferences),
       ),
     );
   }
@@ -90,10 +96,11 @@ class AlertsScreen extends ConsumerWidget {
     BuildContext context, 
     WidgetRef ref, 
     AsyncValue<List<Alert>> alertsAsync, 
-    AlertsFilter filter
+    AlertsFilter filter,
+    UserPreferences? preferences,
   ) {
     return alertsAsync.when(
-      data: (alerts) => _buildAlertsList(context, alerts, filter),
+      data: (alerts) => _buildAlertsList(context, ref, alerts, filter, preferences),
       loading: () => const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -157,26 +164,87 @@ class AlertsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildAlertsList(BuildContext context, List<Alert> alerts, AlertsFilter filter) {
+  Widget _buildAlertsList(
+    BuildContext context, 
+    WidgetRef ref,
+    List<Alert> alerts, 
+    AlertsFilter filter,
+    UserPreferences? preferences,
+  ) {
     if (alerts.isEmpty) {
       return _EmptyAlertsView(hasFilters: filter.hasActiveFilters);
     }
 
+    // Apply visibility filtering if preferences available and enabled
+    List<Alert> visibleAlerts = alerts;
+    WeatherData? currentWeather; // TODO: Get from weather service
+    
+    if (preferences != null && preferences.enableVisibilityFilters) {
+      final visibilityService = VisibilityService();
+      final effectiveRange = visibilityService.calculateEffectiveRange(
+        preferences: preferences,
+        weather: currentWeather,
+      );
+      
+      // Filter alerts by effective range
+      visibleAlerts = alerts.where((alert) {
+        final distance = alert.distance ?? 0.0;
+        return distance <= effectiveRange;
+      }).toList();
+    }
+
     return Column(
       children: [
+        // Visibility filter summary
+        if (preferences != null && preferences.enableVisibilityFilters)
+          VisibilityFilterSummary(
+            preferences: preferences,
+            weather: currentWeather,
+            totalAlerts: alerts.length,
+            filteredAlerts: visibleAlerts.length,
+            onToggleFilters: () {
+              // Toggle visibility filters
+              final updatedPrefs = preferences.copyWith(
+                enableVisibilityFilters: !preferences.enableVisibilityFilters,
+              );
+              ref.read(userPreferencesProvider.notifier).updatePreferences(updatedPrefs);
+            },
+          ),
+        
+        // Visibility status indicator
+        if (preferences != null)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: VisibilityIndicator(
+              preferences: preferences,
+              weather: currentWeather,
+              compact: true,
+            ),
+          ),
+        
         // Results header
         Container(
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
               Text(
-                '${alerts.length} alert${alerts.length != 1 ? 's' : ''} found',
+                '${visibleAlerts.length} alert${visibleAlerts.length != 1 ? 's' : ''} found',
                 style: const TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
               ),
+              if (preferences != null && visibleAlerts.length < alerts.length) ...[
+                const SizedBox(width: 8),
+                Text(
+                  '(${alerts.length - visibleAlerts.length} filtered)',
+                  style: const TextStyle(
+                    color: AppColors.textTertiary,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
             ],
           ),
         ),
@@ -185,9 +253,9 @@ class AlertsScreen extends ConsumerWidget {
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            itemCount: alerts.length,
+            itemCount: visibleAlerts.length,
             itemBuilder: (context, index) {
-              final alert = alerts[index];
+              final alert = visibleAlerts[index];
               return AlertCard(alert: alert);
             },
           ),

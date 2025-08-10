@@ -15,6 +15,8 @@ class UserPreferences {
   final List<String> alertCategories;
   final String units; // 'metric' or 'imperial'
   final bool darkMode;
+  final bool useWeatherVisibility; // Use weather data for visibility calculations
+  final bool enableVisibilityFilters; // Filter alerts based on visibility
   final String? avatarUrl;
   final DateTime? lastUpdated;
 
@@ -30,6 +32,8 @@ class UserPreferences {
     this.alertCategories = const ['ufo', 'anomaly', 'aircraft'],
     this.units = 'metric',
     this.darkMode = true,
+    this.useWeatherVisibility = true,
+    this.enableVisibilityFilters = true,
     this.avatarUrl,
     this.lastUpdated,
   });
@@ -51,6 +55,8 @@ class UserPreferences {
     List<String>? alertCategories,
     String? units,
     bool? darkMode,
+    bool? useWeatherVisibility,
+    bool? enableVisibilityFilters,
     String? avatarUrl,
     DateTime? lastUpdated,
   }) {
@@ -66,6 +72,8 @@ class UserPreferences {
       alertCategories: alertCategories ?? this.alertCategories,
       units: units ?? this.units,
       darkMode: darkMode ?? this.darkMode,
+      useWeatherVisibility: useWeatherVisibility ?? this.useWeatherVisibility,
+      enableVisibilityFilters: enableVisibilityFilters ?? this.enableVisibilityFilters,
       avatarUrl: avatarUrl ?? this.avatarUrl,
       lastUpdated: lastUpdated ?? this.lastUpdated,
     );

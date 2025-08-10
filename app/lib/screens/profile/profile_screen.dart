@@ -6,6 +6,7 @@ import '../../models/user_preferences.dart';
 import '../../providers/user_preferences_provider.dart';
 import '../../widgets/profile/language_selector.dart';
 import '../../widgets/profile/range_selector.dart';
+import '../../widgets/profile/visibility_settings.dart';
 import '../../theme/app_theme.dart';
 import '../../config/environment.dart';
 
@@ -342,6 +343,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 : (_) {},
             enabled: _isEditing,
           ),
+          
+          const SizedBox(height: 24),
+          
+          // Visibility Settings
+          VisibilitySettings(
+            preferences: preferences,
+            onPreferencesChanged: _isEditing
+                ? (updatedPrefs) => _updateVisibilitySettings(updatedPrefs)
+                : (_) {},
+            enabled: _isEditing,
+          ),
         ],
       ),
     );
@@ -535,6 +547,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   void _updateUnits(String units) async {
     final notifier = ref.read(userPreferencesProvider.notifier);
     await notifier.updateUnits(units);
+  }
+
+  void _updateVisibilitySettings(UserPreferences updatedPrefs) async {
+    final notifier = ref.read(userPreferencesProvider.notifier);
+    await notifier.updatePreferences(updatedPrefs);
   }
 
   void _togglePushNotifications(bool value) async {
