@@ -1,0 +1,129 @@
+# UFOBeep App Store Metadata
+
+app_info:
+  name: "UFOBeep"
+  subtitle: "Real-time UFO Alert System"
+  bundle_id: "com.ufobeep.app"
+  category: "Social Networking"
+  age_rating: "4+"
+
+descriptions:
+  short: "Track and share UFO sightings with real-time alerts and community discussion"
+  
+  full: |
+    UFOBeep is the premier app for UFO enthusiasts to document, track, and discuss unidentified aerial phenomena (UAP) sightings worldwide. Join a global community of sky watchers and receive real-time alerts about nearby UFO activity.
+
+    KEY FEATURES:
+    • Real-time UFO sighting alerts within your area
+    • Advanced compass navigation with augmented reality overlay
+    • Professional pilot mode with aviation-grade instruments
+    • Photo and video documentation with automatic metadata
+    • Community discussion rooms for each sighting
+    • Multi-language support (English, Spanish, German)
+    • Offline functionality for remote locations
+    • Enriched data including weather, celestial objects, and aircraft tracking
+
+    PERFECT FOR:
+    • UFO researchers and enthusiasts
+    • Pilots and aviation professionals
+    • Sky watchers and astronomy enthusiasts
+    • Anyone curious about unexplained aerial phenomena
+
+    PRIVACY & SECURITY:
+    • Location data stays on your device unless you choose to share
+    • End-to-end encrypted community discussions
+    • No tracking or advertising
+    • Open source and transparent
+
+    Join thousands of users worldwide in documenting and understanding unexplained aerial phenomena. Together, we can shed light on the mysteries in our skies.
+
+keywords: 
+  - "UFO"
+  - "UAP"
+  - "sighting" 
+  - "aviation"
+  - "pilot"
+  - "compass"
+  - "astronomy"
+  - "sky watching"
+  - "community"
+  - "alerts"
+
+support_url: "https://ufobeep.com/support"
+privacy_policy_url: "https://ufobeep.com/privacy"
+terms_url: "https://ufobeep.com/terms"
+
+# Required App Store Review Information
+review_notes: |
+  UFOBeep is a serious application for documenting and discussing unidentified aerial phenomena. 
+  
+  The app uses location services only when the user explicitly grants permission and only for the specific purpose of:
+  1. Recording coordinates of sighting reports (with user consent)
+  2. Showing nearby sighting alerts within user-specified radius
+  3. Compass navigation features
+  
+  Camera access is used solely for documenting sightings with photos/videos.
+  
+  All community features are moderated and the app promotes scientific inquiry and responsible reporting.
+  
+  Test credentials:
+  - Email: testuser@example.com
+  - Password: TestUser123!
+
+# Screenshots needed (pixels)
+screenshots:
+  ios:
+    iphone_6_5: # iPhone 14 Pro Max, 13 Pro Max, 12 Pro Max
+      - "home_screen_6_5.png" # 1290 x 2796
+      - "alerts_map_6_5.png"
+      - "compass_view_6_5.png" 
+      - "sighting_capture_6_5.png"
+      - "pilot_mode_6_5.png"
+    
+    iphone_5_5: # iPhone 8 Plus
+      - "home_screen_5_5.png" # 1242 x 2208
+      - "alerts_map_5_5.png"
+      - "compass_view_5_5.png"
+      
+    ipad_pro: # iPad Pro 12.9"
+      - "ipad_home_screen.png" # 2048 x 2732
+      - "ipad_split_view.png"
+
+  android:
+    phone: # Pixel-style phones
+      - "android_home.png" # 1080 x 1920
+      - "android_alerts.png"
+      - "android_compass.png"
+      - "android_capture.png"
+      - "android_pilot.png"
+    
+    tablet: # 10" tablets  
+      - "tablet_landscape.png" # 1920 x 1200
+      - "tablet_portrait.png" # 1200 x 1920
+
+# App icon requirements
+icons:
+  ios:
+    app_store: "icon_1024x1024.png" # 1024x1024 PNG
+  android:  
+    play_store: "icon_512x512.png" # 512x512 PNG
+    adaptive: # For Android 8.0+
+      foreground: "adaptive_foreground_108x108.png"
+      background: "adaptive_background_108x108.png"
+
+# Release notes
+release_notes:
+  v1_0_0_beta_1: |
+    🎉 Welcome to UFOBeep Beta!
+    
+    Initial beta release featuring:
+    • Real-time UFO sighting alerts
+    • Advanced compass navigation
+    • Pilot mode with aviation instruments  
+    • Photo/video sighting documentation
+    • Community discussion integration
+    • Multi-language support (EN/ES/DE)
+    
+    This is a beta release for testing. Please report any issues to support@ufobeep.com.
+    
+    Thank you for helping us test UFOBeep!

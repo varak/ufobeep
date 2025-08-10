@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Ufobeep</string>
+	<string>UFOBeep</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>ufobeep</string>
+	<string>UFOBeep</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -45,5 +45,58 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	
+	<!-- Privacy Usage Descriptions -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>UFOBeep needs location access to record sighting coordinates and show nearby UFO alerts.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>UFOBeep needs background location access to send real-time alerts about nearby UFO sightings.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>UFOBeep uses the camera to capture photos and videos of UFO sightings for documentation.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>UFOBeep needs photo library access to save and attach images to sighting reports.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>UFOBeep may use the microphone to record audio notes with sighting reports.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>UFOBeep uses device sensors for compass navigation and augmented reality features.</string>
+	
+	<!-- Background modes -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+		<string>background-processing</string>
+		<string>background-fetch</string>
+	</array>
+	
+	<!-- App Transport Security -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>ufobeep.com</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<false/>
+				<key>NSExceptionMinimumTLSVersion</key>
+				<string>TLSv1.2</string>
+			</dict>
+			<key>localhost</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
+	
+	<!-- Supported device orientations -->
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>gps</string>
+		<string>magnetometer</string>
+		<string>accelerometer</string>
+		<string>gyroscope</string>
+	</array>
 </dict>
 </plist>
