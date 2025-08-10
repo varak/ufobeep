@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../models/chat_message.dart';
 import '../../theme/app_theme.dart';
+import 'moderation_badge.dart';
 
-class MessageBubble extends StatelessWidget {
+class MessageBubble extends StatefulWidget {
   const MessageBubble({
     super.key,
     required this.message,
@@ -15,9 +16,24 @@ class MessageBubble extends StatelessWidget {
   final Function(String emoji)? onReactionTap;
 
   @override
+  State<MessageBubble> createState() => _MessageBubbleState();
+}
+
+class _MessageBubbleState extends State<MessageBubble> {
+  bool _isContentRevealed = false;
+  bool _showModerationDetails = false;
+
+  @override
   Widget build(BuildContext context) {
+    final message = widget.message;
+
     if (message.type == MessageType.system) {
       return _buildSystemMessage();
+    }
+
+    // Don't show hard-deleted messages at all
+    if (message.moderation.isHardDeleted) {
+      return const SizedBox.shrink();
     }
 
     final isFromCurrentUser = message.isFromCurrentUser;
@@ -39,6 +55,8 @@ class MessageBubble extends StatelessWidget {
               children: [
                 if (!isFromCurrentUser) _buildSenderInfo(),
                 _buildMessageBubble(isFromCurrentUser),
+                if (message.isModerated) _buildModerationUI(),
+                if (_showModerationDetails) _buildModerationDetails(),
                 if (message.hasReactions) _buildReactions(),
                 _buildMessageStatus(),
               ],
@@ -54,6 +72,7 @@ class MessageBubble extends StatelessWidget {
   }
 
   Widget _buildAvatar() {
+    final message = widget.message;
     return Container(
       width: 32,
       height: 32,
@@ -85,6 +104,7 @@ class MessageBubble extends StatelessWidget {
   }
 
   Widget _buildSenderInfo() {
+    final message = widget.message;
     return Padding(
       padding: const EdgeInsets.only(left: 12, bottom: 4),
       child: Row(
@@ -123,7 +143,7 @@ class MessageBubble extends StatelessWidget {
 
   Widget _buildMessageBubble(bool isFromCurrentUser) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
@@ -147,7 +167,7 @@ class MessageBubble extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (message.isReply) _buildReplyPreview(),
+            if (widget.message.isReply) _buildReplyPreview(),
             _buildMessageContent(),
           ],
         ),
@@ -181,6 +201,17 @@ class MessageBubble extends StatelessWidget {
   }
 
   Widget _buildMessageContent() {
+    final message = widget.message;
+
+    // Handle moderated content
+    if (message.isRedacted) {
+      return RedactedContentPlaceholder(reason: message.moderation.reason);
+    }
+
+    if (message.isSoftHidden && !_isContentRevealed) {
+      return _buildHiddenContentPlaceholder();
+    }
+
     switch (message.type) {
       case MessageType.text:
         return Text(
@@ -235,7 +266,94 @@ class MessageBubble extends StatelessWidget {
     }
   }
 
+  Widget _buildHiddenContentPlaceholder() {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.darkBackground.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: AppColors.semanticInfo.withOpacity(0.3),
+          style: BorderStyle.solid,
+        ),
+      ),
+      child: Column(
+        children: [
+          Icon(
+            Icons.visibility_off,
+            size: 20,
+            color: AppColors.semanticInfo.withOpacity(0.7),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'Content Hidden',
+            style: TextStyle(
+              color: AppColors.semanticInfo,
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          if (widget.message.moderation.reason?.isNotEmpty == true) ...[
+            const SizedBox(height: 3),
+            Text(
+              widget.message.moderation.reason!,
+              style: TextStyle(
+                color: AppColors.textTertiary,
+                fontSize: 9,
+                fontStyle: FontStyle.italic,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildModerationUI() {
+    return Container(
+      margin: const EdgeInsets.only(top: 6),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ModerationBadge(
+            moderation: widget.message.moderation,
+            compact: true,
+            onTap: () {
+              setState(() {
+                _showModerationDetails = !_showModerationDetails;
+              });
+            },
+          ),
+          if (widget.message.isSoftHidden && widget.message.moderation.canShowOriginal) ...[
+            const SizedBox(width: 8),
+            RevealContentButton(
+              isRevealed: _isContentRevealed,
+              onTap: () {
+                setState(() {
+                  _isContentRevealed = !_isContentRevealed;
+                });
+              },
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildModerationDetails() {
+    return ModerationDetails(
+      moderation: widget.message.moderation,
+      onClose: () {
+        setState(() {
+          _showModerationDetails = false;
+        });
+      },
+    );
+  }
+
   Widget _buildReactions() {
+    final message = widget.message;
     final reactionGroups = <String, List<MessageReaction>>{};
     
     for (final reaction in message.reactions) {
@@ -252,7 +370,7 @@ class MessageBubble extends StatelessWidget {
           final reactions = entry.value;
           
           return GestureDetector(
-            onTap: onReactionTap != null ? () => onReactionTap!(emoji) : null,
+            onTap: widget.onReactionTap != null ? () => widget.onReactionTap!(emoji) : null,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
@@ -287,6 +405,7 @@ class MessageBubble extends StatelessWidget {
   }
 
   Widget _buildMessageStatus() {
+    final message = widget.message;
     if (!message.isFromCurrentUser) return const SizedBox.shrink();
     
     return Padding(
@@ -324,6 +443,7 @@ class MessageBubble extends StatelessWidget {
   }
 
   Widget _buildSystemMessage() {
+    final message = widget.message;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Center(
@@ -347,6 +467,7 @@ class MessageBubble extends StatelessWidget {
   }
 
   IconData _getStatusIcon() {
+    final message = widget.message;
     switch (message.status) {
       case MessageStatus.sending:
         return Icons.access_time;
@@ -360,6 +481,7 @@ class MessageBubble extends StatelessWidget {
   }
 
   Color _getStatusColor() {
+    final message = widget.message;
     switch (message.status) {
       case MessageStatus.sending:
         return AppColors.textTertiary;

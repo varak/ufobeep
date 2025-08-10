@@ -6,7 +6,7 @@ part of 'alerts_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$alertByIdHash() => r'eba7c709e9fdf2702cc5f6ddd95e1c8549588357';
+String _$alertByIdHash() => r'3f0f9865674fff238ad08bdd6ebad9baebbc3e0e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const alertByIdProvider = AlertByIdFamily();
 
 /// See also [alertById].
-class AlertByIdFamily extends Family<Alert?> {
+class AlertByIdFamily extends Family<AsyncValue<Alert?>> {
   /// See also [alertById].
   const AlertByIdFamily();
 
@@ -64,7 +64,7 @@ class AlertByIdFamily extends Family<Alert?> {
 }
 
 /// See also [alertById].
-class AlertByIdProvider extends AutoDisposeProvider<Alert?> {
+class AlertByIdProvider extends AutoDisposeFutureProvider<Alert?> {
   /// See also [alertById].
   AlertByIdProvider(String alertId)
     : this._internal(
@@ -92,7 +92,9 @@ class AlertByIdProvider extends AutoDisposeProvider<Alert?> {
   final String alertId;
 
   @override
-  Override overrideWith(Alert? Function(AlertByIdRef provider) create) {
+  Override overrideWith(
+    FutureOr<Alert?> Function(AlertByIdRef provider) create,
+  ) {
     return ProviderOverride(
       origin: this,
       override: AlertByIdProvider._internal(
@@ -108,7 +110,7 @@ class AlertByIdProvider extends AutoDisposeProvider<Alert?> {
   }
 
   @override
-  AutoDisposeProviderElement<Alert?> createElement() {
+  AutoDisposeFutureProviderElement<Alert?> createElement() {
     return _AlertByIdProviderElement(this);
   }
 
@@ -128,12 +130,12 @@ class AlertByIdProvider extends AutoDisposeProvider<Alert?> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin AlertByIdRef on AutoDisposeProviderRef<Alert?> {
+mixin AlertByIdRef on AutoDisposeFutureProviderRef<Alert?> {
   /// The parameter `alertId` of this provider.
   String get alertId;
 }
 
-class _AlertByIdProviderElement extends AutoDisposeProviderElement<Alert?>
+class _AlertByIdProviderElement extends AutoDisposeFutureProviderElement<Alert?>
     with AlertByIdRef {
   _AlertByIdProviderElement(super.provider);
 
@@ -141,11 +143,11 @@ class _AlertByIdProviderElement extends AutoDisposeProviderElement<Alert?>
   String get alertId => (origin as AlertByIdProvider).alertId;
 }
 
-String _$filteredAlertsHash() => r'4c257aa9e3b5ba00657ef82fbcb96c5cf2ca228c';
+String _$filteredAlertsHash() => r'50c6f8d611fea01fba318024e74fe9d917d7255a';
 
 /// See also [filteredAlerts].
 @ProviderFor(filteredAlerts)
-final filteredAlertsProvider = AutoDisposeProvider<List<Alert>>.internal(
+final filteredAlertsProvider = AutoDisposeFutureProvider<List<Alert>>.internal(
   filteredAlerts,
   name: r'filteredAlertsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -157,13 +159,208 @@ final filteredAlertsProvider = AutoDisposeProvider<List<Alert>>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef FilteredAlertsRef = AutoDisposeProviderRef<List<Alert>>;
-String _$alertsListHash() => r'3b2ff94061e946e381fea10247763c03087723a5';
+typedef FilteredAlertsRef = AutoDisposeFutureProviderRef<List<Alert>>;
+String _$nearbyAlertsHash() => r'a5ed4119c8f6dd47fb581b5eb6ef31ffea8a50cc';
+
+/// See also [nearbyAlerts].
+@ProviderFor(nearbyAlerts)
+const nearbyAlertsProvider = NearbyAlertsFamily();
+
+/// See also [nearbyAlerts].
+class NearbyAlertsFamily extends Family<AsyncValue<List<Alert>>> {
+  /// See also [nearbyAlerts].
+  const NearbyAlertsFamily();
+
+  /// See also [nearbyAlerts].
+  NearbyAlertsProvider call({
+    required double latitude,
+    required double longitude,
+    double radiusKm = 50.0,
+    int? recentHours,
+    String? minAlertLevel,
+  }) {
+    return NearbyAlertsProvider(
+      latitude: latitude,
+      longitude: longitude,
+      radiusKm: radiusKm,
+      recentHours: recentHours,
+      minAlertLevel: minAlertLevel,
+    );
+  }
+
+  @override
+  NearbyAlertsProvider getProviderOverride(
+    covariant NearbyAlertsProvider provider,
+  ) {
+    return call(
+      latitude: provider.latitude,
+      longitude: provider.longitude,
+      radiusKm: provider.radiusKm,
+      recentHours: provider.recentHours,
+      minAlertLevel: provider.minAlertLevel,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'nearbyAlertsProvider';
+}
+
+/// See also [nearbyAlerts].
+class NearbyAlertsProvider extends AutoDisposeFutureProvider<List<Alert>> {
+  /// See also [nearbyAlerts].
+  NearbyAlertsProvider({
+    required double latitude,
+    required double longitude,
+    double radiusKm = 50.0,
+    int? recentHours,
+    String? minAlertLevel,
+  }) : this._internal(
+         (ref) => nearbyAlerts(
+           ref as NearbyAlertsRef,
+           latitude: latitude,
+           longitude: longitude,
+           radiusKm: radiusKm,
+           recentHours: recentHours,
+           minAlertLevel: minAlertLevel,
+         ),
+         from: nearbyAlertsProvider,
+         name: r'nearbyAlertsProvider',
+         debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+             ? null
+             : _$nearbyAlertsHash,
+         dependencies: NearbyAlertsFamily._dependencies,
+         allTransitiveDependencies:
+             NearbyAlertsFamily._allTransitiveDependencies,
+         latitude: latitude,
+         longitude: longitude,
+         radiusKm: radiusKm,
+         recentHours: recentHours,
+         minAlertLevel: minAlertLevel,
+       );
+
+  NearbyAlertsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.latitude,
+    required this.longitude,
+    required this.radiusKm,
+    required this.recentHours,
+    required this.minAlertLevel,
+  }) : super.internal();
+
+  final double latitude;
+  final double longitude;
+  final double radiusKm;
+  final int? recentHours;
+  final String? minAlertLevel;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<Alert>> Function(NearbyAlertsRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: NearbyAlertsProvider._internal(
+        (ref) => create(ref as NearbyAlertsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        latitude: latitude,
+        longitude: longitude,
+        radiusKm: radiusKm,
+        recentHours: recentHours,
+        minAlertLevel: minAlertLevel,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<Alert>> createElement() {
+    return _NearbyAlertsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is NearbyAlertsProvider &&
+        other.latitude == latitude &&
+        other.longitude == longitude &&
+        other.radiusKm == radiusKm &&
+        other.recentHours == recentHours &&
+        other.minAlertLevel == minAlertLevel;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, latitude.hashCode);
+    hash = _SystemHash.combine(hash, longitude.hashCode);
+    hash = _SystemHash.combine(hash, radiusKm.hashCode);
+    hash = _SystemHash.combine(hash, recentHours.hashCode);
+    hash = _SystemHash.combine(hash, minAlertLevel.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin NearbyAlertsRef on AutoDisposeFutureProviderRef<List<Alert>> {
+  /// The parameter `latitude` of this provider.
+  double get latitude;
+
+  /// The parameter `longitude` of this provider.
+  double get longitude;
+
+  /// The parameter `radiusKm` of this provider.
+  double get radiusKm;
+
+  /// The parameter `recentHours` of this provider.
+  int? get recentHours;
+
+  /// The parameter `minAlertLevel` of this provider.
+  String? get minAlertLevel;
+}
+
+class _NearbyAlertsProviderElement
+    extends AutoDisposeFutureProviderElement<List<Alert>>
+    with NearbyAlertsRef {
+  _NearbyAlertsProviderElement(super.provider);
+
+  @override
+  double get latitude => (origin as NearbyAlertsProvider).latitude;
+  @override
+  double get longitude => (origin as NearbyAlertsProvider).longitude;
+  @override
+  double get radiusKm => (origin as NearbyAlertsProvider).radiusKm;
+  @override
+  int? get recentHours => (origin as NearbyAlertsProvider).recentHours;
+  @override
+  String? get minAlertLevel => (origin as NearbyAlertsProvider).minAlertLevel;
+}
+
+String _$alertsListHash() => r'2ad6c94c3eb23eb5a4501161f3c3a1e2eb8dbc27';
 
 /// See also [AlertsList].
 @ProviderFor(AlertsList)
 final alertsListProvider =
-    AutoDisposeNotifierProvider<AlertsList, List<Alert>>.internal(
+    AutoDisposeAsyncNotifierProvider<AlertsList, List<Alert>>.internal(
       AlertsList.new,
       name: r'alertsListProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -173,7 +370,7 @@ final alertsListProvider =
       allTransitiveDependencies: null,
     );
 
-typedef _$AlertsList = AutoDisposeNotifier<List<Alert>>;
+typedef _$AlertsList = AutoDisposeAsyncNotifier<List<Alert>>;
 String _$alertsFilterStateHash() => r'5e990ab3d1c3ffd6b11c441b8a151b3462beec28';
 
 /// See also [AlertsFilterState].
@@ -191,7 +388,7 @@ final alertsFilterStateProvider =
 
 typedef _$AlertsFilterState = AutoDisposeNotifier<AlertsFilter>;
 String _$alertsLoadingStateHash() =>
-    r'de352779e2e2a2420e0855a5d225ddb9e8e1cfef';
+    r'3a8e8035d79c4c54ab5e317f4a5f35bca8ffd05a';
 
 /// See also [AlertsLoadingState].
 @ProviderFor(AlertsLoadingState)

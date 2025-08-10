@@ -23,6 +23,8 @@ UserPreferences _$UserPreferencesFromJson(Map<String, dynamic> json) =>
           const ['ufo', 'anomaly', 'aircraft'],
       units: json['units'] as String? ?? 'metric',
       darkMode: json['darkMode'] as bool? ?? true,
+      useWeatherVisibility: json['useWeatherVisibility'] as bool? ?? true,
+      enableVisibilityFilters: json['enableVisibilityFilters'] as bool? ?? true,
       avatarUrl: json['avatarUrl'] as String?,
       lastUpdated: json['lastUpdated'] == null
           ? null
@@ -42,6 +44,8 @@ Map<String, dynamic> _$UserPreferencesToJson(UserPreferences instance) =>
       'alertCategories': instance.alertCategories,
       'units': instance.units,
       'darkMode': instance.darkMode,
+      'useWeatherVisibility': instance.useWeatherVisibility,
+      'enableVisibilityFilters': instance.enableVisibilityFilters,
       'avatarUrl': instance.avatarUrl,
       'lastUpdated': instance.lastUpdated?.toIso8601String(),
     };

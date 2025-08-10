@@ -30,6 +30,9 @@ ChatMessage _$ChatMessageFromJson(Map<String, dynamic> json) => ChatMessage(
   status:
       $enumDecodeNullable(_$MessageStatusEnumMap, json['status']) ??
       MessageStatus.sent,
+  moderation: json['moderation'] == null
+      ? const ModerationState()
+      : ModerationState.fromJson(json['moderation'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$ChatMessageToJson(ChatMessage instance) =>
@@ -47,6 +50,7 @@ Map<String, dynamic> _$ChatMessageToJson(ChatMessage instance) =>
       'reactions': instance.reactions,
       'replyToId': instance.replyToId,
       'status': _$MessageStatusEnumMap[instance.status]!,
+      'moderation': instance.moderation,
     };
 
 const _$MessageTypeEnumMap = {
@@ -108,4 +112,40 @@ Map<String, dynamic> _$ChatRoomToJson(ChatRoom instance) => <String, dynamic>{
   'lastActivityAt': instance.lastActivityAt?.toIso8601String(),
   'messageCount': instance.messageCount,
   'isActive': instance.isActive,
+};
+
+ModerationState _$ModerationStateFromJson(Map<String, dynamic> json) =>
+    ModerationState(
+      action:
+          $enumDecodeNullable(_$ModerationActionEnumMap, json['action']) ??
+          ModerationAction.none,
+      reason: json['reason'] as String?,
+      moderatorId: json['moderatorId'] as String?,
+      moderatorName: json['moderatorName'] as String?,
+      moderatedAt: json['moderatedAt'] == null
+          ? null
+          : DateTime.parse(json['moderatedAt'] as String),
+      flags:
+          (json['flags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+          const [],
+      canShowOriginal: json['canShowOriginal'] as bool? ?? false,
+    );
+
+Map<String, dynamic> _$ModerationStateToJson(ModerationState instance) =>
+    <String, dynamic>{
+      'action': _$ModerationActionEnumMap[instance.action]!,
+      'reason': instance.reason,
+      'moderatorId': instance.moderatorId,
+      'moderatorName': instance.moderatorName,
+      'moderatedAt': instance.moderatedAt?.toIso8601String(),
+      'flags': instance.flags,
+      'canShowOriginal': instance.canShowOriginal,
+    };
+
+const _$ModerationActionEnumMap = {
+  ModerationAction.none: 'none',
+  ModerationAction.warn: 'warn',
+  ModerationAction.softHide: 'softHide',
+  ModerationAction.redact: 'redact',
+  ModerationAction.delete: 'delete',
 };
