@@ -58,3 +58,10 @@ try:
     app.include_router(media.router)
 except ImportError as e:
     print(f"Warning: Could not import media router: {e}")
+
+# Import and include Matrix router
+try:
+    from app.routers import matrix_api
+    app.include_router(matrix_api.router)
+except ImportError as e:
+    print(f"Warning: Could not import matrix router: {e}")

@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/chat_message.dart';
+import '../../models/api_models.dart';
+import '../../services/matrix_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/chat/chat_timeline.dart';
 import '../../widgets/chat/message_composer.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
-  const ChatScreen({super.key, required this.alertId});
+  const ChatScreen({super.key, required this.alertId, this.matrixRoomId});
 
   final String alertId;
+  final String? matrixRoomId;
 
   @override
   ConsumerState<ChatScreen> createState() => _ChatScreenState();
@@ -20,11 +23,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
   bool _hasMore = true;
+  String? _matrixRoomId;
+  String? _currentUserId;
+  MatrixRoomInfo? _roomInfo;
 
   @override
   void initState() {
     super.initState();
-    _loadMockMessages();
+    _matrixRoomId = widget.matrixRoomId;
+    _currentUserId = 'current_user'; // TODO: Get from auth service
+    _initializeChat();
   }
 
   @override
@@ -33,8 +41,134 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     super.dispose();
   }
 
+  void _initializeChat() async {
+    if (_matrixRoomId == null) {
+      // If no Matrix room ID provided, try to load mock messages for development
+      _loadMockMessages();
+      return;
+    }
+    
+    try {
+      // Generate SSO token if needed
+      await _ensureMatrixAuthentication();
+      
+      // Load room info
+      await _loadRoomInfo();
+      
+      // Load initial messages
+      await _loadMatrixMessages();
+    } catch (e) {
+      print('Failed to initialize Matrix chat: $e');
+      // Fallback to mock messages on error
+      _loadMockMessages();
+    }
+  }
+  
+  Future<void> _ensureMatrixAuthentication() async {
+    if (_currentUserId == null) return;
+    
+    try {
+      // Check for cached SSO token
+      final cachedToken = await matrixService.getCachedSSOToken();
+      if (cachedToken != null) {
+        return; // Already authenticated
+      }
+      
+      // Generate new SSO token
+      await matrixService.generateSSOToken(
+        userId: _currentUserId!,
+        displayName: 'UFOBeep User',
+      );
+    } catch (e) {
+      print('Matrix authentication failed: $e');
+    }
+  }
+  
+  Future<void> _loadRoomInfo() async {
+    if (_matrixRoomId == null) return;
+    
+    try {
+      final roomInfo = await matrixService.getRoomInfo(_matrixRoomId!);
+      setState(() {
+        _roomInfo = roomInfo;
+      });
+    } catch (e) {
+      print('Failed to load room info: $e');
+    }
+  }
+  
+  Future<void> _loadMatrixMessages() async {
+    if (_matrixRoomId == null || _isLoading) return;
+    
+    setState(() {
+      _isLoading = true;
+    });
+    
+    try {
+      final matrixMessages = await matrixService.getRoomTranscript(
+        _matrixRoomId!,
+        limit: 50,
+      );
+      
+      // Convert Matrix messages to ChatMessage format
+      final chatMessages = matrixMessages.map((msg) => _convertMatrixMessage(msg)).toList();
+      
+      setState(() {
+        _messages.clear();
+        _messages.addAll(chatMessages.reversed); // Reverse to show newest last
+        _isLoading = false;
+        _hasMore = chatMessages.length >= 50; // More messages available if we got full limit
+      });
+    } catch (e) {
+      print('Failed to load Matrix messages: $e');
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+  
+  ChatMessage _convertMatrixMessage(MatrixMessage matrixMsg) {
+    // Extract sender display name from Matrix user ID
+    String displayName = matrixMsg.sender;
+    if (displayName.startsWith('@')) {
+      // Remove @ and server part, keep only local part
+      displayName = displayName.substring(1).split(':')[0];
+    }
+    
+    // Determine if this is from current user
+    final isCurrentUser = matrixMsg.sender.contains(_currentUserId ?? '');
+    if (isCurrentUser) {
+      displayName = 'You';
+    }
+    
+    return ChatMessage(
+      id: matrixMsg.eventId,
+      alertId: widget.alertId,
+      senderId: matrixMsg.sender,
+      senderDisplayName: displayName,
+      content: matrixMsg.messageBody,
+      createdAt: matrixMsg.formattedTimestamp ?? 
+                 DateTime.fromMillisecondsSinceEpoch(matrixMsg.timestamp),
+      type: _getMessageType(matrixMsg.messageType),
+      status: isCurrentUser ? MessageStatus.delivered : null,
+    );
+  }
+  
+  MessageType _getMessageType(String matrixType) {
+    switch (matrixType) {
+      case 'm.text':
+        return MessageType.text;
+      case 'm.image':
+        return MessageType.image;
+      case 'm.notice':
+        return MessageType.system;
+      default:
+        return MessageType.text;
+    }
+  }
+  
   void _loadMockMessages() {
-    // Mock messages for demonstration
+    // Mock messages for demonstration when Matrix is not available
     final mockMessages = [
       ChatMessage(
         id: '1',
@@ -63,57 +197,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         content: 'I\'m about 2 miles away. Can anyone else see it right now?',
         createdAt: DateTime.now().subtract(const Duration(minutes: 40)),
         type: MessageType.text,
-        reactions: [
-          MessageReaction(
-            emoji: '👀',
-            userId: 'user1',
-            userDisplayName: 'Sarah Chen',
-            createdAt: DateTime.now().subtract(const Duration(minutes: 39)),
-          ),
-          MessageReaction(
-            emoji: '👍',
-            userId: 'current_user',
-            userDisplayName: 'You',
-            createdAt: DateTime.now().subtract(const Duration(minutes: 38)),
-          ),
-        ],
-      ),
-      ChatMessage(
-        id: '4',
-        alertId: widget.alertId,
-        senderId: 'system',
-        senderDisplayName: 'System',
-        content: 'Alex Johnson joined the chat',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 35)),
-        type: MessageType.system,
-      ),
-      ChatMessage(
-        id: '5',
-        alertId: widget.alertId,
-        senderId: 'user3',
-        senderDisplayName: 'Alex Johnson',
-        content: 'Hi everyone! Just arrived at the location. I don\'t see anything right now but I\'ll keep watching.',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 34)),
-        type: MessageType.text,
-      ),
-      ChatMessage(
-        id: '6',
-        alertId: widget.alertId,
-        senderId: 'user1',
-        senderDisplayName: 'Sarah Chen',
-        content: 'Check the photos I took yesterday - might be related',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
-        type: MessageType.image,
-      ),
-      ChatMessage(
-        id: '7',
-        alertId: widget.alertId,
-        senderId: 'current_user',
-        senderDisplayName: 'You',
-        content: 'Anyone have a telescope or binoculars? Hard to make out details with naked eye.',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 25)),
-        type: MessageType.text,
-        status: MessageStatus.delivered,
       ),
     ];
 
@@ -122,7 +205,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     });
   }
 
-  void _sendMessage(String content) {
+  void _sendMessage(String content) async {
     if (content.trim().isEmpty) return;
 
     final newMessage = ChatMessage(
@@ -140,17 +223,44 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       _messages.add(newMessage);
     });
 
-    // Simulate message being sent
-    Future.delayed(const Duration(seconds: 1), () {
+    try {
+      if (_matrixRoomId != null) {
+        // Send message through Matrix (Note: This would require Matrix SDK integration)
+        // For now, we'll simulate the behavior
+        await Future.delayed(const Duration(seconds: 1));
+        
+        if (mounted) {
+          setState(() {
+            final index = _messages.indexWhere((m) => m.id == newMessage.id);
+            if (index != -1) {
+              _messages[index] = newMessage.copyWith(status: MessageStatus.delivered);
+            }
+          });
+        }
+      } else {
+        // Fallback simulation
+        await Future.delayed(const Duration(seconds: 1));
+        
+        if (mounted) {
+          setState(() {
+            final index = _messages.indexWhere((m) => m.id == newMessage.id);
+            if (index != -1) {
+              _messages[index] = newMessage.copyWith(status: MessageStatus.delivered);
+            }
+          });
+        }
+      }
+    } catch (e) {
+      print('Failed to send message: $e');
       if (mounted) {
         setState(() {
           final index = _messages.indexWhere((m) => m.id == newMessage.id);
           if (index != -1) {
-            _messages[index] = newMessage.copyWith(status: MessageStatus.delivered);
+            _messages[index] = newMessage.copyWith(status: MessageStatus.failed);
           }
         });
       }
-    });
+    }
 
     // Scroll to bottom
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -290,22 +400,43 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     print('Toggle $emoji on message ${message.id}');
   }
 
-  void _loadMoreMessages() {
-    if (_isLoading) return;
+  void _loadMoreMessages() async {
+    if (_isLoading || !_hasMore) return;
     
     setState(() {
       _isLoading = true;
     });
 
-    // Simulate loading more messages
-    Future.delayed(const Duration(seconds: 1), () {
+    try {
+      if (_matrixRoomId != null) {
+        // Load more Matrix messages (would implement pagination in real Matrix SDK)
+        await Future.delayed(const Duration(seconds: 1));
+        
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+            _hasMore = false; // For now, assume no more messages
+          });
+        }
+      } else {
+        // Simulate loading more messages for mock data
+        await Future.delayed(const Duration(seconds: 1));
+        
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+            _hasMore = false;
+          });
+        }
+      }
+    } catch (e) {
+      print('Failed to load more messages: $e');
       if (mounted) {
         setState(() {
           _isLoading = false;
-          _hasMore = false; // No more messages for demo
         });
       }
-    });
+    }
   }
 
   @override
@@ -316,9 +447,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Alert Chat'),
+            Text(_roomInfo?.roomName ?? 'Alert Chat'),
             Text(
-              '${_getUniqueParticipantCount()} participants',
+              _roomInfo != null 
+                  ? '${_roomInfo!.memberCount} participants'
+                  : '${_getUniqueParticipantCount()} participants',
               style: const TextStyle(
                 fontSize: 12,
                 color: AppColors.textSecondary,

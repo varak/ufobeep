@@ -148,6 +148,12 @@ except ImportError:
         satellites: Optional[SatelliteData] = None
         content_analysis: Optional[ContentAnalysis] = None
         processing_metadata: Optional[dict] = None
+        
+    class MatrixRoomData(BaseModel):
+        room_id: Optional[str] = None
+        room_alias: Optional[str] = None
+        join_url: Optional[str] = None
+        matrix_to_url: Optional[str] = None
 
     class Sighting(BaseModel):
         id: str
@@ -171,6 +177,8 @@ except ImportError:
         updated_at: datetime = Field(default_factory=datetime.utcnow)
         # Enrichment data
         enrichment: Optional[EnrichmentData] = None
+        # Matrix room data
+        matrix_room: Optional[MatrixRoomData] = None
 
 
 # Router configuration
@@ -315,6 +323,28 @@ def prepare_enrichment_data(sighting) -> Optional[EnrichmentData]:
         
     except Exception as e:
         logger.error(f"Error preparing enrichment data: {e}")
+        return None
+
+
+def prepare_matrix_room_data(sighting) -> Optional[MatrixRoomData]:
+    """Convert database Matrix room data to API format"""
+    try:
+        if hasattr(sighting, 'matrix_room_id') and sighting.matrix_room_id:
+            from app.config.environment import settings
+            
+            matrix_room_data = {
+                'room_id': sighting.matrix_room_id,
+                'room_alias': getattr(sighting, 'matrix_room_alias', None),
+                'join_url': f"{settings.matrix_base_url}/#/room/{sighting.matrix_room_id}",
+                'matrix_to_url': f"https://matrix.to/#/{sighting.matrix_room_id}"
+            }
+            
+            return MatrixRoomData(**matrix_room_data)
+        
+        return None
+        
+    except Exception as e:
+        logger.error(f"Error preparing Matrix room data: {e}")
         return None
 
 
@@ -478,6 +508,11 @@ async def get_sighting(
         enrichment_data = prepare_enrichment_data(sighting)
         if enrichment_data:
             response_data["enrichment"] = enrichment_data.dict()
+            
+        # Add Matrix room data
+        matrix_room_data = prepare_matrix_room_data(sighting)
+        if matrix_room_data:
+            response_data["matrix_room"] = matrix_room_data.dict()
         
         # Hide private details for non-owners
         if not is_owner:
@@ -706,6 +741,11 @@ async def list_sightings(
             enrichment_data = prepare_enrichment_data(sighting)
             if enrichment_data:
                 data["enrichment"] = enrichment_data.dict()
+                
+            # Add Matrix room data  
+            matrix_room_data = prepare_matrix_room_data(sighting)
+            if matrix_room_data:
+                data["matrix_room"] = matrix_room_data.dict()
             
             # Always use jittered location for public listings
             data["sensor_data"] = {
@@ -758,7 +798,26 @@ async def process_sighting_async(sighting_id: str):
         except Exception as e:
             logger.error(f"Failed to trigger enrichment for sighting {sighting_id}: {e}")
         
-        # TODO: Create Matrix chat room
+        # Create Matrix chat room
+        try:
+            from app.services.matrix_service import create_sighting_matrix_room
+            room_info = await create_sighting_matrix_room(
+                sighting_id=sighting_id,
+                sighting_title=sighting.title,
+                reporter_user_id=sighting.reporter_id
+            )
+            
+            if room_info:
+                # Update sighting with Matrix room information
+                sighting.matrix_room_id = room_info['room_id']
+                sighting.matrix_room_alias = room_info['room_alias']
+                logger.info(f"Created Matrix room {room_info['room_id']} for sighting {sighting_id}")
+            else:
+                logger.warning(f"Failed to create Matrix room for sighting {sighting_id}")
+                
+        except Exception as e:
+            logger.error(f"Matrix room creation failed for sighting {sighting_id}: {e}")
+        
         # TODO: Send push notifications to nearby users
         # TODO: Update search indexes
         
