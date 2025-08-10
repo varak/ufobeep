@@ -1,0 +1,59 @@
+{
+  "site": {
+    "name": "UFOBeep",
+    "description": "Plataforma impulsada por la comunidad para reportar y rastrear fenómenos aéreos inexplicados (UAP) con precisión científica.",
+    "keywords": "OVNI, UAP, avistamientos, fenómenos aéreos inexplicados, reportes comunitarios, observación científica",
+    "author": "Equipo UFOBeep",
+    "type": "website",
+    "locale": "es_ES"
+  },
+  "pages": {
+    "home": {
+      "title": "UFOBeep - Reportar y Rastrear Avistamientos UAP",
+      "description": "Únete a miles de observadores en todo el mundo documentando fenómenos aéreos inexplicados con precisión científica. Descarga nuestra app para comenzar a reportar avistamientos.",
+      "keywords": "avistamientos OVNI, reportes UAP, fenómenos inexplicados, observación del cielo, observación comunitaria"
+    },
+    "app": {
+      "title": "Descargar App UFOBeep - Reportes UAP Móviles",
+      "description": "Obtén la app móvil UFOBeep para reportar avistamientos OVNI con precisión GPS, captura de fotos y discusiones comunitarias en tiempo real.",
+      "keywords": "app UFOBeep, reportes OVNI móviles, avistamientos GPS, app móvil UAP, app observación del cielo"
+    },
+    "alerts": {
+      "title": "Avistamientos OVNI Recientes y Reportes UAP",
+      "description": "Explora los últimos reportes de fenómenos aéreos inexplicados de observadores en todo el mundo. Filtra por ubicación, fecha y tipo de avistamiento.",
+      "keywords": "alertas OVNI, avistamientos recientes, reportes UAP, fenómenos aéreos, base de datos avistamientos"
+    },
+    "privacy": {
+      "title": "Política de Privacidad - UFOBeep",
+      "description": "Aprende cómo UFOBeep protege tu privacidad mientras recolecta y procesa datos de avistamientos UAP para investigación científica.",
+      "keywords": "política de privacidad, protección de datos, privacidad UFOBeep, información personal, seguridad de datos"
+    },
+    "terms": {
+      "title": "Términos de Servicio - UFOBeep",
+      "description": "Términos y condiciones para usar la plataforma UFOBeep para reportar y discutir avistamientos de fenómenos aéreos inexplicados.",
+      "keywords": "términos de servicio, acuerdo de usuario, términos UFOBeep, reglas de plataforma, condiciones de servicio"
+    },
+    "safety": {
+      "title": "Guías de Seguridad para Observadores UAP",
+      "description": "Información esencial de seguridad y mejores prácticas para observar y reportar fenómenos aéreos inexplicados de manera responsable.",
+      "keywords": "seguridad UAP, guías de observación, reportes responsables, seguridad observación del cielo, protección observadores"
+    }
+  },
+  "openGraph": {
+    "siteName": "UFOBeep",
+    "type": "website",
+    "images": {
+      "default": {
+        "url": "/images/og-default-es.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "UFOBeep - Plataforma Comunitaria de Reportes UAP"
+      }
+    }
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "site": "@UFOBeep",
+    "creator": "@UFOBeep"
+  }
+}

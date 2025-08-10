@@ -1,3 +1,5 @@
+const { i18n } = require('./next-i18next.config');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Experimental features
@@ -15,12 +17,8 @@ const nextConfig = {
     formats: ['image/webp', 'image/avif'],
   },
   
-  // Internationalization (using i18n instead of spread)
-  i18n: {
-    locales: ['en', 'es', 'de'],
-    defaultLocale: 'en',
-    localeDetection: false,
-  },
+  // Internationalization
+  i18n,
   
   // Headers for security and performance
   async headers() {

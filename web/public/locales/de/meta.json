@@ -1,0 +1,59 @@
+{
+  "site": {
+    "name": "UFOBeep",
+    "description": "Community-gesteuerte Plattform zur Meldung und Verfolgung unerklärter Luftphänomene (UAP) mit wissenschaftlicher Präzision.",
+    "keywords": "UFO, UAP, Sichtungen, unerklärte Luftphänomene, Community-Meldungen, wissenschaftliche Beobachtung",
+    "author": "UFOBeep Team",
+    "type": "website",
+    "locale": "de_DE"
+  },
+  "pages": {
+    "home": {
+      "title": "UFOBeep - UAP-Sichtungen Melden und Verfolgen",
+      "description": "Schließe dich Tausenden von Beobachtern weltweit an, die unerklärte Luftphänomene mit wissenschaftlicher Präzision dokumentieren. Lade unsere App herunter.",
+      "keywords": "UFO-Sichtungen, UAP-Meldungen, unerklärte Phänomene, Himmelsbeobachtung, Community-Beobachtung"
+    },
+    "app": {
+      "title": "UFOBeep App Herunterladen - Mobile UAP-Meldungen",
+      "description": "Hol dir die UFOBeep Mobile App für UFO-Sichtungsmeldungen mit GPS-Präzision, Fotoaufnahme und Echtzeit-Community-Diskussionen.",
+      "keywords": "UFOBeep App, mobile UFO-Meldungen, GPS-Sichtungen, UAP mobile App, Himmelsbeobachtungs-App"
+    },
+    "alerts": {
+      "title": "Aktuelle UFO-Sichtungen und UAP-Meldungen",
+      "description": "Durchsuche die neuesten Meldungen unerklärter Luftphänomene von Beobachtern weltweit. Filtere nach Ort, Datum und Sichtungstyp.",
+      "keywords": "UFO-Warnungen, aktuelle Sichtungen, UAP-Meldungen, Luftphänomene, Sichtungsdatenbank"
+    },
+    "privacy": {
+      "title": "Datenschutzerklärung - UFOBeep",
+      "description": "Erfahre, wie UFOBeep deine Privatsphäre schützt während UAP-Sichtungsdaten für wissenschaftliche Forschung gesammelt werden.",
+      "keywords": "Datenschutzerklärung, Datenschutz, UFOBeep Privatsphäre, persönliche Informationen, Datensicherheit"
+    },
+    "terms": {
+      "title": "Nutzungsbedingungen - UFOBeep",
+      "description": "Geschäftsbedingungen für die Nutzung der UFOBeep-Plattform zur Meldung und Diskussion unerklärter Luftphänomen-Sichtungen.",
+      "keywords": "Nutzungsbedingungen, Benutzervereinbarung, UFOBeep Bedingungen, Plattformregeln, Service-Bedingungen"
+    },
+    "safety": {
+      "title": "Sicherheitsrichtlinien für UAP-Beobachter",
+      "description": "Wichtige Sicherheitsinformationen und bewährte Praktiken für verantwortungsvolle Beobachtung und Meldung unerklärter Luftphänomene.",
+      "keywords": "UAP-Sicherheit, Beobachtungsrichtlinien, verantwortungsvolle Meldungen, Himmelsbeobachtungs-Sicherheit, Beobachterschutz"
+    }
+  },
+  "openGraph": {
+    "siteName": "UFOBeep",
+    "type": "website",
+    "images": {
+      "default": {
+        "url": "/images/og-default-de.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "UFOBeep - Community UAP-Meldeplattform"
+      }
+    }
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "site": "@UFOBeep",
+    "creator": "@UFOBeep"
+  }
+}

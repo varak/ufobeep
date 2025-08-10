@@ -1,0 +1,19 @@
+{
+  "home": "Home",
+  "alerts": "Alerts",
+  "app": "Get App",
+  "privacy": "Privacy Policy",
+  "terms": "Terms of Service",
+  "safety": "Safety Guidelines",
+  "about": "About",
+  "contact": "Contact",
+  "help": "Help",
+  "login": "Login",
+  "logout": "Logout",
+  "profile": "Profile",
+  "settings": "Settings",
+  "menu": "Menu",
+  "toggleMenu": "Toggle menu",
+  "skipToContent": "Skip to main content",
+  "breadcrumb": "Breadcrumb navigation"
+}

@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "next": "14.2.20",
+    "next-i18next": "^15.4.2",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-i18next": "^15.6.1"
   },
   "devDependencies": {
     "@types/node": "^20",

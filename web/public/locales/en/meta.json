@@ -1,0 +1,76 @@
+{
+  "site": {
+    "name": "UFOBeep",
+    "description": "Community-driven platform for reporting and tracking unexplained aerial phenomena (UAP) with scientific precision.",
+    "keywords": "UFO, UAP, sightings, unexplained aerial phenomena, community reporting, scientific observation",
+    "author": "UFOBeep Team",
+    "type": "website",
+    "locale": "en_US"
+  },
+  "pages": {
+    "home": {
+      "title": "UFOBeep - Report and Track UAP Sightings",
+      "description": "Join thousands of observers worldwide in documenting unexplained aerial phenomena with scientific precision. Download our app to start reporting sightings in your area.",
+      "keywords": "UFO sightings, UAP reports, unexplained phenomena, sky watching, community observation"
+    },
+    "app": {
+      "title": "Download UFOBeep App - Mobile UAP Reporting",
+      "description": "Get the UFOBeep mobile app to report UFO sightings with GPS precision, photo capture, and real-time community discussions. Available for iOS and Android.",
+      "keywords": "UFOBeep app, mobile UFO reporting, GPS sightings, UAP mobile app, sky observation app"
+    },
+    "alerts": {
+      "title": "Recent UFO Sightings and UAP Reports",
+      "description": "Browse the latest unexplained aerial phenomena reports from observers worldwide. Filter by location, date, and sighting type.",
+      "keywords": "UFO alerts, recent sightings, UAP reports, aerial phenomena, sighting database"
+    },
+    "alertDetail": {
+      "title": "UFO Sighting Report #{id}",
+      "description": "Detailed report of unexplained aerial phenomena including witness accounts, location data, and community discussion.",
+      "keywords": "UFO report, UAP sighting details, witness account, aerial phenomena evidence"
+    },
+    "privacy": {
+      "title": "Privacy Policy - UFOBeep",
+      "description": "Learn how UFOBeep protects your privacy while collecting and processing UAP sighting data for scientific research.",
+      "keywords": "privacy policy, data protection, UFOBeep privacy, personal information, data security"
+    },
+    "terms": {
+      "title": "Terms of Service - UFOBeep",
+      "description": "Terms and conditions for using the UFOBeep platform to report and discuss unexplained aerial phenomena sightings.",
+      "keywords": "terms of service, user agreement, UFOBeep terms, platform rules, service conditions"
+    },
+    "safety": {
+      "title": "Safety Guidelines for UAP Observers",
+      "description": "Essential safety information and best practices for observing and reporting unexplained aerial phenomena responsibly.",
+      "keywords": "UAP safety, observation guidelines, responsible reporting, sky watching safety, observer protection"
+    }
+  },
+  "openGraph": {
+    "siteName": "UFOBeep",
+    "type": "website",
+    "images": {
+      "default": {
+        "url": "/images/og-default.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "UFOBeep - Community UAP Reporting Platform"
+      },
+      "home": {
+        "url": "/images/og-home.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "UFOBeep - Report and Track UAP Sightings"
+      },
+      "app": {
+        "url": "/images/og-app.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Download UFOBeep Mobile App"
+      }
+    }
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "site": "@UFOBeep",
+    "creator": "@UFOBeep"
+  }
+}

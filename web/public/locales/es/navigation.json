@@ -1,0 +1,19 @@
+{
+  "home": "Inicio",
+  "alerts": "Avistamientos",
+  "app": "Obtener App",
+  "privacy": "Política de Privacidad",
+  "terms": "Términos de Servicio",
+  "safety": "Guías de Seguridad",
+  "about": "Acerca de",
+  "contact": "Contacto",
+  "help": "Ayuda",
+  "login": "Iniciar Sesión",
+  "logout": "Cerrar Sesión",
+  "profile": "Perfil",
+  "settings": "Configuración",
+  "menu": "Menú",
+  "toggleMenu": "Alternar menú",
+  "skipToContent": "Saltar al contenido principal",
+  "breadcrumb": "Navegación de migas de pan"
+}

@@ -1,0 +1,19 @@
+{
+  "home": "Startseite",
+  "alerts": "Sichtungen",
+  "app": "App Herunterladen",
+  "privacy": "Datenschutzerklärung",
+  "terms": "Nutzungsbedingungen",
+  "safety": "Sicherheitsrichtlinien",
+  "about": "Über Uns",
+  "contact": "Kontakt",
+  "help": "Hilfe",
+  "login": "Anmelden",
+  "logout": "Abmelden",
+  "profile": "Profil",
+  "settings": "Einstellungen",
+  "menu": "Menü",
+  "toggleMenu": "Menü umschalten",
+  "skipToContent": "Zum Hauptinhalt springen",
+  "breadcrumb": "Breadcrumb-Navigation"
+}

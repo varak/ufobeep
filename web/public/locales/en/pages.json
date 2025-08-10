@@ -1,0 +1,134 @@
+{
+  "home": {
+    "title": "UFOBeep - Report and Track UAP Sightings",
+    "subtitle": "Your community-driven platform for documenting unexplained aerial phenomena",
+    "hero": {
+      "title": "Spot Something Strange in the Sky?",
+      "subtitle": "Join thousands of observers worldwide in documenting unexplained aerial phenomena with scientific precision.",
+      "ctaPrimary": "Download App",
+      "ctaSecondary": "View Recent Sightings",
+      "features": {
+        "realtime": "Real-time reporting with GPS precision",
+        "community": "Connect with a global community of observers",
+        "scientific": "Scientific data collection and analysis"
+      }
+    },
+    "recentSightings": {
+      "title": "Recent Sightings",
+      "viewAll": "View All Sightings",
+      "noSightings": "No recent sightings in your area"
+    }
+  },
+  "app": {
+    "title": "Get the UFOBeep App",
+    "subtitle": "Download our mobile app to start reporting sightings",
+    "features": {
+      "title": "App Features",
+      "compass": "Built-in compass for precise directional reporting",
+      "gps": "Automatic GPS location capture",
+      "photos": "Photo and video capture with metadata",
+      "community": "Join discussions with other observers",
+      "offline": "Offline mode for remote observations"
+    },
+    "download": {
+      "title": "Download Now",
+      "ios": "Download for iOS",
+      "android": "Download for Android",
+      "comingSoon": "Coming Soon"
+    },
+    "permissions": {
+      "title": "Required Permissions",
+      "location": "Location access for GPS coordinates",
+      "camera": "Camera access for photo/video capture",
+      "storage": "Storage access to save reports offline",
+      "why": "We need these permissions to provide accurate sighting reports with scientific precision."
+    }
+  },
+  "alerts": {
+    "title": "UFO Sightings and Alerts",
+    "subtitle": "Browse recent unexplained aerial phenomena reports",
+    "filters": {
+      "all": "All Sightings",
+      "recent": "Recent (24h)",
+      "nearby": "Nearby",
+      "category": "By Category"
+    },
+    "categories": {
+      "ufo": "Unidentified Flying Object",
+      "light": "Unexplained Light",
+      "formation": "Formation Flight",
+      "other": "Other Phenomena"
+    },
+    "noAlerts": "No sightings match your current filters",
+    "loadMore": "Load More Sightings"
+  },
+  "alertDetail": {
+    "title": "Sighting Report",
+    "reportedBy": "Reported by",
+    "reportedAt": "Reported at",
+    "coordinates": "Coordinates",
+    "compass": "Compass heading",
+    "witnesses": "Witnesses",
+    "discussion": "Discussion",
+    "joinDiscussion": "Join the discussion about this sighting",
+    "relatedSightings": "Related Sightings",
+    "shareReport": "Share this report",
+    "reportIssue": "Report an issue with this sighting"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated",
+    "sections": {
+      "introduction": "Introduction",
+      "dataCollection": "Data We Collect",
+      "dataUse": "How We Use Your Data",
+      "dataSharing": "Data Sharing",
+      "security": "Data Security",
+      "rights": "Your Rights",
+      "contact": "Contact Us"
+    }
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated",
+    "sections": {
+      "acceptance": "Acceptance of Terms",
+      "description": "Description of Service",
+      "userAccounts": "User Accounts",
+      "conduct": "User Conduct",
+      "content": "User Content",
+      "privacy": "Privacy",
+      "termination": "Termination",
+      "disclaimers": "Disclaimers",
+      "limitation": "Limitation of Liability",
+      "changes": "Changes to Terms"
+    }
+  },
+  "safety": {
+    "title": "Safety Guidelines",
+    "subtitle": "Important safety information for UAP observers",
+    "sections": {
+      "observation": "Safe Observation Practices",
+      "reporting": "Responsible Reporting",
+      "privacy": "Privacy Protection",
+      "legal": "Legal Considerations",
+      "emergency": "Emergency Situations"
+    },
+    "guidelines": {
+      "observation": [
+        "Never trespass on private property to observe phenomena",
+        "Maintain safe distances from airports and restricted airspace",
+        "Use proper safety equipment when observing at night",
+        "Inform someone of your observation location and expected return",
+        "Stay aware of your surroundings and weather conditions"
+      ],
+      "reporting": [
+        "Report only what you personally observed",
+        "Include objective details and measurements when possible",
+        "Respect the privacy of others in your reports",
+        "Do not include personal information of other witnesses",
+        "Be honest about uncertainties in your observations"
+      ]
+    }
+  }
+}
