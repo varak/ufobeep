@@ -6,6 +6,7 @@ import '../screens/home/home_screen.dart';
 import '../screens/alerts/alerts_screen.dart';
 import '../screens/alerts/alert_detail_screen.dart';
 import '../screens/beep/beep_screen.dart';
+import '../screens/beep/beep_composition_screen.dart';
 import '../screens/chat/chat_screen.dart';
 import '../screens/compass/compass_screen.dart';
 import '../screens/profile/profile_screen.dart';
@@ -71,6 +72,21 @@ GoRouter appRouter(AppRouterRef ref) {
             path: '/beep',
             name: 'beep',
             builder: (context, state) => const BeepScreen(),
+            routes: [
+              // Beep Composition
+              GoRoute(
+                path: 'compose',
+                name: 'beep-compose',
+                builder: (context, state) {
+                  final extra = state.extra as Map<String, dynamic>?;
+                  return BeepCompositionScreen(
+                    imageFile: extra?['imageFile'],
+                    sensorData: extra?['sensorData'],
+                    planeMatch: extra?['planeMatch'],
+                  );
+                },
+              ),
+            ],
           ),
 
           // Compass
