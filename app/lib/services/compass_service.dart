@@ -7,6 +7,7 @@ import 'package:sensors_plus/sensors_plus.dart';
 
 import '../models/compass_data.dart';
 import '../models/pilot_data.dart';
+import 'compass_math.dart';
 
 class CompassService {
   static final CompassService _instance = CompassService._internal();
@@ -15,11 +16,21 @@ class CompassService {
 
   StreamController<CompassData>? _compassController;
   StreamSubscription<MagnetometerEvent>? _magnetometerSubscription;
+  StreamSubscription<AccelerometerEvent>? _accelerometerSubscription;
   StreamSubscription<Position>? _locationSubscription;
   
   CompassData? _lastCompassData;
   LocationData? _currentLocation;
   double _declination = 0.0; // Magnetic declination for true north calculation
+  
+  // Sensor data for tilt compensation
+  double _accelerometerX = 0.0;
+  double _accelerometerY = 0.0;
+  double _accelerometerZ = 0.0;
+  
+  // Heading stability tracking
+  final List<double> _recentHeadings = [];
+  final int _maxHeadingHistory = 10;
   
   Stream<CompassData> get compassStream {
     _compassController ??= StreamController<CompassData>.broadcast();
@@ -35,8 +46,9 @@ class CompassService {
       // Start location updates
       await _startLocationUpdates();
       
-      // Start magnetometer updates
+      // Start sensor updates
       await _startMagnetometerUpdates();
+      await _startAccelerometerUpdates();
       
       debugPrint('Compass service started');
     } catch (e) {
@@ -47,8 +59,10 @@ class CompassService {
 
   Future<void> stopListening() async {
     await _magnetometerSubscription?.cancel();
+    await _accelerometerSubscription?.cancel();
     await _locationSubscription?.cancel();
     _magnetometerSubscription = null;
+    _accelerometerSubscription = null;
     _locationSubscription = null;
     
     debugPrint('Compass service stopped');
@@ -85,8 +99,11 @@ class CompassService {
         timestamp: DateTime.now(),
       );
       
-      // Update magnetic declination based on location
-      _updateMagneticDeclination(position.latitude, position.longitude);
+      // Update magnetic declination using improved model
+      _declination = CompassMath.calculateMagneticDeclination(
+        position.latitude, 
+        position.longitude
+      );
       
       // Recalculate compass data with new location
       _updateCompassData();
@@ -104,24 +121,47 @@ class CompassService {
     );
   }
 
+  Future<void> _startAccelerometerUpdates() async {
+    _accelerometerSubscription = accelerometerEvents.listen(
+      (AccelerometerEvent event) {
+        _accelerometerX = event.x;
+        _accelerometerY = event.y;
+        _accelerometerZ = event.z;
+      },
+      onError: (error) {
+        debugPrint('Accelerometer error: $error');
+      },
+    );
+  }
+
   void _processMagnetometerData(double x, double y, double z) {
-    // Calculate magnetic heading from magnetometer data
-    double magneticHeading = math.atan2(y, x) * 180 / math.pi;
+    // Calculate magnetic heading with tilt compensation
+    double magneticHeading = CompassMath.calculateHeadingFromMagnetometer(
+      x, y, z,
+      accelerometerX: _accelerometerX,
+      accelerometerY: _accelerometerY,
+      accelerometerZ: _accelerometerZ,
+    );
     
     // Normalize to 0-360 range
-    if (magneticHeading < 0) {
-      magneticHeading += 360;
-    }
+    magneticHeading = CompassMath.normalizeHeading(magneticHeading);
     
     // Calculate true heading using magnetic declination
-    double trueHeading = magneticHeading + _declination;
-    if (trueHeading >= 360) trueHeading -= 360;
-    if (trueHeading < 0) trueHeading += 360;
+    double trueHeading = CompassMath.normalizeHeading(magneticHeading + _declination);
     
-    // Calculate accuracy based on magnetometer strength
+    // Track heading history for stability analysis
+    _recentHeadings.add(trueHeading);
+    if (_recentHeadings.length > _maxHeadingHistory) {
+      _recentHeadings.removeAt(0);
+    }
+    
+    // Calculate accuracy based on field strength and stability
     final strength = math.sqrt(x * x + y * y + z * z);
-    final accuracy = _calculateAccuracy(strength);
-    final calibration = _assessCalibrationLevel(strength);
+    final accuracy = CompassMath.calculateCompassAccuracy(
+      strength,
+      _recentHeadings,
+    );
+    final calibration = _assessCalibrationLevel(strength, accuracy);
     
     _lastCompassData = CompassData(
       magneticHeading: magneticHeading,
@@ -144,46 +184,20 @@ class CompassService {
     }
   }
 
-  void _updateMagneticDeclination(double latitude, double longitude) {
-    // Simplified magnetic declination calculation
-    // In a real app, you'd use a more accurate model like WMM (World Magnetic Model)
-    // This is a very rough approximation for demonstration
-    
-    // Basic approximation: varies roughly with longitude
-    _declination = longitude * 0.1; // Very rough estimate
-    
-    // Clamp to reasonable range
-    if (_declination > 30) _declination = 30;
-    if (_declination < -30) _declination = -30;
-  }
-
-  double _calculateAccuracy(double magneticStrength) {
-    // Normal Earth's magnetic field strength is around 25-65 μT
-    // Magnetometer usually returns values in μT
-    const normalStrength = 50.0;
-    const minStrength = 20.0;
-    const maxStrength = 80.0;
-    
-    if (magneticStrength < minStrength || magneticStrength > maxStrength) {
-      return 45.0; // Poor accuracy
-    } else if (magneticStrength > normalStrength * 0.8 && 
-               magneticStrength < normalStrength * 1.2) {
-      return 5.0; // Excellent accuracy
-    } else {
-      return 15.0; // Good accuracy
-    }
-  }
-
-  CompassCalibrationLevel _assessCalibrationLevel(double magneticStrength) {
+  CompassCalibrationLevel _assessCalibrationLevel(double magneticStrength, double accuracy) {
+    // Assess calibration based on both field strength and calculated accuracy
     const normalStrength = 50.0;
     
-    if (magneticStrength < 20.0 || magneticStrength > 80.0) {
+    if (magneticStrength < 20.0 || magneticStrength > 80.0 || accuracy > 30.0) {
       return CompassCalibrationLevel.low;
-    } else if (magneticStrength > normalStrength * 0.9 && 
-               magneticStrength < normalStrength * 1.1) {
+    } else if (magneticStrength > normalStrength * 0.85 && 
+               magneticStrength < normalStrength * 1.15 && 
+               accuracy < 10.0) {
       return CompassCalibrationLevel.high;
-    } else {
+    } else if (accuracy < 20.0) {
       return CompassCalibrationLevel.medium;
+    } else {
+      return CompassCalibrationLevel.low;
     }
   }
 

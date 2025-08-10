@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:json_annotation/json_annotation.dart';
+import '../services/compass_math.dart';
 
 part 'compass_data.g.dart';
 
@@ -48,36 +49,23 @@ class CompassData {
   double bearingToTarget(LocationData target) {
     if (location == null) return 0.0;
     
-    final lat1Rad = location!.latitude * math.pi / 180.0;
-    final lat2Rad = target.latitude * math.pi / 180.0;
-    final deltaLonRad = (target.longitude - location!.longitude) * math.pi / 180.0;
-    
-    final y = math.sin(deltaLonRad) * math.cos(lat2Rad);
-    final x = math.cos(lat1Rad) * math.sin(lat2Rad) -
-        math.sin(lat1Rad) * math.cos(lat2Rad) * math.cos(deltaLonRad);
-    
-    double bearing = math.atan2(y, x) * 180.0 / math.pi;
-    return (bearing + 360.0) % 360.0;
+    return CompassMath.calculateBearing(
+      location!.latitude,
+      location!.longitude,
+      target.latitude,
+      target.longitude,
+    );
   }
 
   // Calculate relative bearing (difference between heading and target bearing)
   double relativeBearing(LocationData target) {
     final targetBearing = bearingToTarget(target);
-    double relative = targetBearing - trueHeading;
-    
-    if (relative < -180.0) relative += 360.0;
-    if (relative > 180.0) relative -= 360.0;
-    
-    return relative;
+    return CompassMath.relativeBearing(trueHeading, targetBearing);
   }
 
   // Get cardinal direction as string
   String get cardinalDirection {
-    const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE',
-                       'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
-    
-    final index = ((trueHeading + 11.25) / 22.5).floor() % 16;
-    return directions[index];
+    return CompassMath.degreesToCardinal(trueHeading);
   }
 
   // Format heading as string with degrees
@@ -121,20 +109,12 @@ class LocationData {
 
   // Calculate distance to another location in meters
   double distanceTo(LocationData other) {
-    const earthRadius = 6371000.0; // meters
-    
-    final lat1Rad = latitude * math.pi / 180.0;
-    final lat2Rad = other.latitude * math.pi / 180.0;
-    final deltaLatRad = (other.latitude - latitude) * math.pi / 180.0;
-    final deltaLonRad = (other.longitude - longitude) * math.pi / 180.0;
-    
-    final a = math.sin(deltaLatRad / 2) * math.sin(deltaLatRad / 2) +
-        math.cos(lat1Rad) * math.cos(lat2Rad) *
-        math.sin(deltaLonRad / 2) * math.sin(deltaLonRad / 2);
-    
-    final c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
-    
-    return earthRadius * c;
+    return CompassMath.greatCircleDistance(
+      latitude,
+      longitude,
+      other.latitude,
+      other.longitude,
+    );
   }
 
   String get formattedCoordinates => 

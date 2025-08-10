@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 import '../../models/compass_data.dart';
 import '../../theme/app_theme.dart';
+import '../../services/compass_math.dart';
 
 class AROverlay extends StatelessWidget {
   const AROverlay({
@@ -8,11 +10,17 @@ class AROverlay extends StatelessWidget {
     required this.compassData,
     this.target,
     this.isEnabled = false,
+    this.showCompassRose = true,
+    this.showDistanceRings = true,
+    this.fieldOfView = 60.0,
   });
 
   final CompassData compassData;
   final CompassTarget? target;
   final bool isEnabled;
+  final bool showCompassRose;
+  final bool showDistanceRings;
+  final double fieldOfView; // Camera field of view in degrees
 
   @override
   Widget build(BuildContext context) {
