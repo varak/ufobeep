@@ -38,6 +38,18 @@ class MediaType(str, Enum):
     AUDIO = "audio"
 
 
+class DevicePlatform(str, Enum):
+    IOS = "ios"
+    ANDROID = "android"
+    WEB = "web"
+
+
+class PushProvider(str, Enum):
+    FCM = "fcm"  # Firebase Cloud Messaging (Android & iOS)
+    APNS = "apns"  # Apple Push Notification Service (iOS)
+    WEBPUSH = "webpush"  # Web Push (PWA)
+
+
 # Database Models
 class User(Base):
     """User account model"""
@@ -78,6 +90,61 @@ class User(Base):
     # Relationships
     sightings = relationship("Sighting", back_populates="reporter", cascade="all, delete-orphan")
     media_files = relationship("MediaFile", back_populates="uploaded_by_user", cascade="all, delete-orphan")
+    devices = relationship("Device", back_populates="user", cascade="all, delete-orphan")
+
+
+class Device(Base):
+    """Device model for push notification tokens and device management"""
+    __tablename__ = "devices"
+    
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, index=True)
+    
+    # Device identification
+    device_id = Column(String(255), nullable=False, index=True)  # Unique device identifier
+    device_name = Column(String(255), nullable=True)  # User-friendly device name
+    platform = Column(SQLEnum(DevicePlatform), nullable=False)
+    
+    # Device information
+    app_version = Column(String(50), nullable=True)
+    os_version = Column(String(50), nullable=True)
+    device_model = Column(String(100), nullable=True)
+    manufacturer = Column(String(100), nullable=True)
+    
+    # Push notification configuration
+    push_token = Column(Text, nullable=True)  # FCM/APNS token
+    push_provider = Column(SQLEnum(PushProvider), nullable=True)
+    push_enabled = Column(Boolean, default=True, nullable=False)
+    
+    # Notification preferences (per device)
+    alert_notifications = Column(Boolean, default=True, nullable=False)
+    chat_notifications = Column(Boolean, default=True, nullable=False)
+    system_notifications = Column(Boolean, default=True, nullable=False)
+    
+    # Device status
+    is_active = Column(Boolean, default=True, nullable=False)
+    last_seen = Column(DateTime, nullable=True)
+    timezone = Column(String(50), nullable=True)
+    locale = Column(String(10), nullable=True)
+    
+    # Push notification statistics
+    notifications_sent = Column(Integer, default=0, nullable=False)
+    notifications_opened = Column(Integer, default=0, nullable=False)
+    last_notification_at = Column(DateTime, nullable=True)
+    
+    # Registration and update tracking
+    registered_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    token_updated_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    
+    # Relationships
+    user = relationship("User", back_populates="devices")
+    
+    # Unique constraint for device_id per user
+    __table_args__ = (
+        {"extend_existing": True},
+    )
 
 
 class MediaFile(Base):
@@ -323,3 +390,6 @@ Index('idx_sightings_public_created', Sighting.is_public, Sighting.created_at)
 Index('idx_media_upload_id', MediaFile.upload_id)
 Index('idx_alerts_user_created', Alert.user_id, Alert.created_at)
 Index('idx_comments_sighting_created', SightingComment.sighting_id, SightingComment.created_at)
+Index('idx_devices_user_platform', Device.user_id, Device.platform)
+Index('idx_devices_active_push', Device.is_active, Device.push_enabled)
+Index('idx_devices_last_seen', Device.last_seen)

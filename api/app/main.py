@@ -65,3 +65,10 @@ try:
     app.include_router(matrix_api.router)
 except ImportError as e:
     print(f"Warning: Could not import matrix router: {e}")
+
+# Import and include Devices router
+try:
+    from app.routers import devices
+    app.include_router(devices.router)
+except ImportError as e:
+    print(f"Warning: Could not import devices router: {e}")
