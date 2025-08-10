@@ -38,6 +38,20 @@ def ping():
 # Include routers
 app.include_router(plane_match.router)
 
+# Import and include sightings router
+try:
+    from app.routers import sightings
+    app.include_router(sightings.router)
+except ImportError as e:
+    print(f"Warning: Could not import sightings router: {e}")
+
+# Import and include alerts router
+try:
+    from app.routers import alerts
+    app.include_router(alerts.router)
+except ImportError as e:
+    print(f"Warning: Could not import alerts router: {e}")
+
 # Import and include media router
 try:
     from routers import media

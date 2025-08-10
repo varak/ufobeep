@@ -13,7 +13,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final filteredAlerts = ref.watch(filteredAlertsProvider);
+    final filteredAlertsAsync = ref.watch(filteredAlertsProvider);
     final filter = ref.watch(alertsFilterStateProvider);
     final isLoading = ref.watch(alertsLoadingStateProvider);
 
@@ -24,7 +24,7 @@ class HomeScreen extends ConsumerWidget {
         onRefresh: () => ref.read(alertsLoadingStateProvider.notifier).refresh(),
         backgroundColor: AppColors.darkSurface,
         color: AppColors.brandPrimary,
-        child: _buildBody(context, ref, filteredAlerts, isLoading, filter),
+        child: _buildAsyncBody(context, ref, filteredAlertsAsync, isLoading, filter),
       ),
       floatingActionButton: _buildFAB(context),
     );
@@ -128,6 +128,78 @@ class HomeScreen extends ConsumerWidget {
             tooltip: 'Clear filters',
           ),
       ],
+    );
+  }
+
+  Widget _buildAsyncBody(
+    BuildContext context, 
+    WidgetRef ref, 
+    AsyncValue<List<Alert>> alertsAsync, 
+    bool isLoading, 
+    AlertsFilter filter
+  ) {
+    return alertsAsync.when(
+      data: (alerts) => _buildBody(context, ref, alerts, isLoading, filter),
+      loading: () => const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(color: AppColors.brandPrimary),
+            SizedBox(height: 16),
+            Text(
+              'Loading alerts...',
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+      ),
+      error: (error, stack) => Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.error_outline,
+                color: AppColors.semanticError,
+                size: 64,
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Failed to load alerts',
+                style: TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                error.toString(),
+                style: const TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 14,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              OutlinedButton(
+                onPressed: () {
+                  ref.invalidate(alertsListProvider);
+                },
+                child: const Text('Try Again'),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: AppColors.brandPrimary,
+                  side: const BorderSide(color: AppColors.brandPrimary),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

@@ -442,6 +442,150 @@ class ApiClient {
     }
   }
 
+  // Alerts endpoints
+  Future<Map<String, dynamic>> listAlerts({
+    int limit = 20,
+    int offset = 0,
+    String? category,
+    String? minAlertLevel,
+    double? maxDistanceKm,
+    double? latitude,
+    double? longitude,
+    int? recentHours,
+    bool verifiedOnly = false,
+  }) async {
+    try {
+      final queryParams = <String, dynamic>{
+        'limit': limit,
+        'offset': offset,
+        'verified_only': verifiedOnly,
+      };
+
+      if (category != null) {
+        queryParams['category'] = category.toLowerCase();
+      }
+      if (minAlertLevel != null) {
+        queryParams['min_alert_level'] = minAlertLevel.toLowerCase();
+      }
+      if (maxDistanceKm != null && latitude != null && longitude != null) {
+        queryParams['max_distance_km'] = maxDistanceKm;
+        queryParams['latitude'] = latitude;
+        queryParams['longitude'] = longitude;
+      }
+      if (recentHours != null) {
+        queryParams['recent_hours'] = recentHours;
+      }
+
+      final response = await _dio.get(
+        '/alerts',
+        queryParameters: queryParams,
+      );
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw ApiClientException(
+          'HTTP ${response.statusCode}: ${response.statusMessage}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> getAlertDetails(String alertId) async {
+    try {
+      final response = await _dio.get('/alerts/$alertId');
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw ApiClientException(
+          'HTTP ${response.statusCode}: ${response.statusMessage}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> getNearbyAlerts({
+    required double latitude,
+    required double longitude,
+    double radiusKm = 50.0,
+    int limit = 50,
+    int? recentHours,
+    String? minAlertLevel,
+  }) async {
+    try {
+      final queryParams = <String, dynamic>{
+        'latitude': latitude,
+        'longitude': longitude,
+        'radius_km': radiusKm,
+        'limit': limit,
+      };
+
+      if (recentHours != null) {
+        queryParams['recent_hours'] = recentHours;
+      }
+      if (minAlertLevel != null) {
+        queryParams['min_alert_level'] = minAlertLevel.toLowerCase();
+      }
+
+      final response = await _dio.get(
+        '/alerts/nearby',
+        queryParameters: queryParams,
+      );
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw ApiClientException(
+          'HTTP ${response.statusCode}: ${response.statusMessage}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> triggerAlertProcessing() async {
+    try {
+      final response = await _dio.post('/alerts/trigger');
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw ApiClientException(
+          'HTTP ${response.statusCode}: ${response.statusMessage}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> getAlertsStats() async {
+    try {
+      final response = await _dio.get('/alerts/stats');
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw ApiClientException(
+          'HTTP ${response.statusCode}: ${response.statusMessage}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
   // Health check
   Future<bool> checkHealth() async {
     try {

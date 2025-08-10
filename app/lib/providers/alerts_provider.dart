@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/alerts_filter.dart';
+import '../services/api_client.dart';
 
 part 'alerts_provider.g.dart';
 
@@ -12,11 +13,21 @@ class Alert {
     required this.latitude,
     required this.longitude,
     required this.createdAt,
-    required this.mediaUrl,
     this.distance,
     this.bearing,
     this.category = 'unknown',
-    this.isVerified = false,
+    this.alertLevel = 'low',
+    this.status = 'pending',
+    this.witnessCount = 1,
+    this.viewCount = 0,
+    this.verificationScore = 0.0,
+    this.mediaFiles = const [],
+    this.tags = const [],
+    this.isPublic = true,
+    this.submittedAt,
+    this.processedAt,
+    this.matrixRoomId,
+    this.reporterId,
   });
 
   final String id;
@@ -25,11 +36,26 @@ class Alert {
   final double latitude;
   final double longitude;
   final DateTime createdAt;
-  final String mediaUrl;
   final double? distance;
   final double? bearing;
   final String category;
-  final bool isVerified;
+  final String alertLevel;
+  final String status;
+  final int witnessCount;
+  final int viewCount;
+  final double verificationScore;
+  final List<Map<String, dynamic>> mediaFiles;
+  final List<String> tags;
+  final bool isPublic;
+  final DateTime? submittedAt;
+  final DateTime? processedAt;
+  final String? matrixRoomId;
+  final String? reporterId;
+
+  // Computed properties
+  bool get isVerified => status == 'verified';
+  bool get hasMedia => mediaFiles.isNotEmpty;
+  String get mediaUrl => hasMedia ? (mediaFiles.first['url'] ?? '') : '';
 
   Alert copyWith({
     String? id,
@@ -38,11 +64,21 @@ class Alert {
     double? latitude,
     double? longitude,
     DateTime? createdAt,
-    String? mediaUrl,
     double? distance,
     double? bearing,
     String? category,
-    bool? isVerified,
+    String? alertLevel,
+    String? status,
+    int? witnessCount,
+    int? viewCount,
+    double? verificationScore,
+    List<Map<String, dynamic>>? mediaFiles,
+    List<String>? tags,
+    bool? isPublic,
+    DateTime? submittedAt,
+    DateTime? processedAt,
+    String? matrixRoomId,
+    String? reporterId,
   }) {
     return Alert(
       id: id ?? this.id,
@@ -51,12 +87,79 @@ class Alert {
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
       createdAt: createdAt ?? this.createdAt,
-      mediaUrl: mediaUrl ?? this.mediaUrl,
       distance: distance ?? this.distance,
       bearing: bearing ?? this.bearing,
       category: category ?? this.category,
-      isVerified: isVerified ?? this.isVerified,
+      alertLevel: alertLevel ?? this.alertLevel,
+      status: status ?? this.status,
+      witnessCount: witnessCount ?? this.witnessCount,
+      viewCount: viewCount ?? this.viewCount,
+      verificationScore: verificationScore ?? this.verificationScore,
+      mediaFiles: mediaFiles ?? this.mediaFiles,
+      tags: tags ?? this.tags,
+      isPublic: isPublic ?? this.isPublic,
+      submittedAt: submittedAt ?? this.submittedAt,
+      processedAt: processedAt ?? this.processedAt,
+      matrixRoomId: matrixRoomId ?? this.matrixRoomId,
+      reporterId: reporterId ?? this.reporterId,
     );
+  }
+
+  factory Alert.fromApiJson(Map<String, dynamic> json) {
+    final location = json['location'] as Map<String, dynamic>?;
+    final mediaFiles = json['media_files'] as List<dynamic>?;
+    
+    return Alert(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      latitude: location?['latitude']?.toDouble() ?? 0.0,
+      longitude: location?['longitude']?.toDouble() ?? 0.0,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      distance: json['distance_km']?.toDouble(),
+      bearing: json['bearing_deg']?.toDouble(),
+      category: json['category'] as String? ?? 'unknown',
+      alertLevel: json['alert_level'] as String? ?? 'low',
+      status: json['status'] as String? ?? 'pending',
+      witnessCount: json['witness_count'] as int? ?? 1,
+      viewCount: json['view_count'] as int? ?? 0,
+      verificationScore: json['verification_score']?.toDouble() ?? 0.0,
+      mediaFiles: mediaFiles?.cast<Map<String, dynamic>>() ?? [],
+      tags: (json['tags'] as List<dynamic>?)?.cast<String>() ?? [],
+      isPublic: json['is_public'] as bool? ?? true,
+      submittedAt: json['submitted_at'] != null ? DateTime.parse(json['submitted_at'] as String) : null,
+      processedAt: json['processed_at'] != null ? DateTime.parse(json['processed_at'] as String) : null,
+      matrixRoomId: json['matrix_room_id'] as String?,
+      reporterId: json['reporter_id'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'location': {
+        'latitude': latitude,
+        'longitude': longitude,
+      },
+      'created_at': createdAt.toIso8601String(),
+      if (distance != null) 'distance_km': distance,
+      if (bearing != null) 'bearing_deg': bearing,
+      'category': category,
+      'alert_level': alertLevel,
+      'status': status,
+      'witness_count': witnessCount,
+      'view_count': viewCount,
+      'verification_score': verificationScore,
+      'media_files': mediaFiles,
+      'tags': tags,
+      'is_public': isPublic,
+      if (submittedAt != null) 'submitted_at': submittedAt!.toIso8601String(),
+      if (processedAt != null) 'processed_at': processedAt!.toIso8601String(),
+      if (matrixRoomId != null) 'matrix_room_id': matrixRoomId,
+      if (reporterId != null) 'reporter_id': reporterId,
+    };
   }
 }
 
@@ -64,138 +167,150 @@ class Alert {
 @riverpod
 class AlertsList extends _$AlertsList {
   @override
-  List<Alert> build() {
-    // Enhanced mock data for testing filters and UI
-    return [
-      Alert(
-        id: '1',
-        title: 'Triangle Formation',
-        description: 'Three bright lights in perfect triangular formation, moving silently across the sky at high speed',
-        latitude: 37.7749,
-        longitude: -122.4194,
-        createdAt: DateTime.now().subtract(const Duration(hours: 2)),
-        mediaUrl: 'https://example.com/ufo1.jpg',
-        distance: 2.3,
-        bearing: 45.0,
-        category: 'ufo',
-        isVerified: true,
-      ),
-      Alert(
-        id: '2',
-        title: 'Missing Orange Tabby',
-        description: 'Fluffy orange tabby cat "Whiskers", wearing blue collar, last seen near Dolores Park',
-        latitude: 37.7849,
-        longitude: -122.4094,
-        createdAt: DateTime.now().subtract(const Duration(hours: 5)),
-        mediaUrl: 'https://example.com/cat1.jpg',
-        distance: 1.1,
-        bearing: 120.0,
-        category: 'missing_pet',
-        isVerified: false,
-      ),
-      Alert(
-        id: '3',
-        title: 'Disc-Shaped Craft',
-        description: 'Large metallic disc hovering above the Golden Gate Bridge for approximately 10 minutes',
-        latitude: 37.8199,
-        longitude: -122.4783,
-        createdAt: DateTime.now().subtract(const Duration(minutes: 45)),
-        mediaUrl: 'https://example.com/ufo2.jpg',
-        distance: 8.7,
-        bearing: 315.0,
-        category: 'ufo',
-        isVerified: true,
-      ),
-      Alert(
-        id: '4',
-        title: 'Missing Person - Sarah Chen',
-        description: 'Last seen wearing red jacket near Castro District, 5\'4", black hair, contact police immediately',
-        latitude: 37.7609,
-        longitude: -122.4350,
-        createdAt: DateTime.now().subtract(const Duration(hours: 12)),
-        mediaUrl: 'https://example.com/missing1.jpg',
-        distance: 3.2,
-        bearing: 180.0,
-        category: 'missing_person',
-        isVerified: true,
-      ),
-      Alert(
-        id: '5',
-        title: 'Pulsating Orb',
-        description: 'Bright white orb pulsating with different colors, stationary for 20+ minutes then disappeared instantly',
-        latitude: 37.7849,
-        longitude: -122.4094,
-        createdAt: DateTime.now().subtract(const Duration(hours: 18)),
-        mediaUrl: 'https://example.com/ufo3.jpg',
-        distance: 1.8,
-        bearing: 90.0,
-        category: 'ufo',
-        isVerified: false,
-      ),
-      Alert(
-        id: '6',
-        title: 'Missing Small Dog',
-        description: 'Yorkshire Terrier "Buddy", very friendly, escaped from yard on 24th Street',
-        latitude: 37.7749,
-        longitude: -122.4194,
-        createdAt: DateTime.now().subtract(const Duration(days: 1, hours: 6)),
-        mediaUrl: 'https://example.com/dog1.jpg',
-        distance: 2.3,
-        bearing: 270.0,
-        category: 'missing_pet',
-        isVerified: false,
-      ),
-      Alert(
-        id: '7',
-        title: 'Unusual Aircraft',
-        description: 'Silent triangular craft with no visible propulsion, moving at impossible speeds and angles',
-        latitude: 37.8044,
-        longitude: -122.2712,
-        createdAt: DateTime.now().subtract(const Duration(hours: 8)),
-        mediaUrl: 'https://example.com/ufo4.jpg',
-        distance: 15.2,
-        bearing: 60.0,
-        category: 'ufo',
-        isVerified: false,
-      ),
-      Alert(
-        id: '8',
-        title: 'Suspicious Activity',
-        description: 'Unmarked vans circling neighborhood repeatedly, occupants taking photos of houses',
-        latitude: 37.7749,
-        longitude: -122.4194,
-        createdAt: DateTime.now().subtract(const Duration(hours: 4)),
-        mediaUrl: 'https://example.com/suspicious1.jpg',
-        distance: 0.8,
-        bearing: 225.0,
-        category: 'suspicious',
-        isVerified: false,
-      ),
-    ];
+  Future<List<Alert>> build() async {
+    // Fetch alerts from API
+    return await _fetchAlertsFromApi();
+  }
+
+  Future<List<Alert>> _fetchAlertsFromApi({
+    int limit = 20,
+    int offset = 0,
+    String? category,
+    String? minAlertLevel,
+    double? maxDistanceKm,
+    double? latitude,
+    double? longitude,
+    int? recentHours,
+    bool verifiedOnly = false,
+  }) async {
+    try {
+      final apiClient = ApiClient.instance;
+      
+      final response = await apiClient.listAlerts(
+        limit: limit,
+        offset: offset,
+        category: category,
+        minAlertLevel: minAlertLevel,
+        maxDistanceKm: maxDistanceKm,
+        latitude: latitude,
+        longitude: longitude,
+        recentHours: recentHours,
+        verifiedOnly: verifiedOnly,
+      );
+
+      if (response['success'] == true) {
+        final alertsData = response['data'] as Map<String, dynamic>;
+        final alertsList = alertsData['alerts'] as List<dynamic>;
+        
+        return alertsList
+            .cast<Map<String, dynamic>>()
+            .map((alertJson) => Alert.fromApiJson(alertJson))
+            .toList();
+      } else {
+        throw Exception(response['message'] ?? 'Failed to fetch alerts');
+      }
+    } catch (e) {
+      // On API error, return empty list with error state
+      print('Error fetching alerts: $e');
+      // In production, you might want to set an error state instead
+      return [];
+    }
+  }
+
+  Future<void> refresh({
+    String? category,
+    String? minAlertLevel,
+    double? maxDistanceKm,
+    double? latitude,
+    double? longitude,
+    int? recentHours,
+    bool verifiedOnly = false,
+  }) async {
+    state = const AsyncLoading();
+    
+    final alerts = await _fetchAlertsFromApi(
+      category: category,
+      minAlertLevel: minAlertLevel,
+      maxDistanceKm: maxDistanceKm,
+      latitude: latitude,
+      longitude: longitude,
+      recentHours: recentHours,
+      verifiedOnly: verifiedOnly,
+    );
+    
+    state = AsyncData(alerts);
+  }
+
+  Future<void> loadMore({
+    String? category,
+    String? minAlertLevel,
+    double? maxDistanceKm,
+    double? latitude,
+    double? longitude,
+    int? recentHours,
+    bool verifiedOnly = false,
+  }) async {
+    final currentAlerts = state.value ?? [];
+    
+    final newAlerts = await _fetchAlertsFromApi(
+      offset: currentAlerts.length,
+      category: category,
+      minAlertLevel: minAlertLevel,
+      maxDistanceKm: maxDistanceKm,
+      latitude: latitude,
+      longitude: longitude,
+      recentHours: recentHours,
+      verifiedOnly: verifiedOnly,
+    );
+    
+    state = AsyncData([...currentAlerts, ...newAlerts]);
   }
 
   void addAlert(Alert alert) {
-    state = [alert, ...state];
+    final currentAlerts = state.value ?? [];
+    state = AsyncData([alert, ...currentAlerts]);
   }
 
   void removeAlert(String alertId) {
-    state = state.where((alert) => alert.id != alertId).toList();
+    final currentAlerts = state.value ?? [];
+    state = AsyncData(currentAlerts.where((alert) => alert.id != alertId).toList());
   }
 
   void updateAlert(Alert updatedAlert) {
-    state = state.map((alert) {
+    final currentAlerts = state.value ?? [];
+    state = AsyncData(currentAlerts.map((alert) {
       return alert.id == updatedAlert.id ? updatedAlert : alert;
-    }).toList();
+    }).toList());
   }
 }
 
 // Single Alert Provider
 @riverpod
-Alert? alertById(AlertByIdRef ref, String alertId) {
-  final alerts = ref.watch(alertsListProvider);
+Future<Alert?> alertById(AlertByIdRef ref, String alertId) async {
   try {
-    return alerts.firstWhere((alert) => alert.id == alertId);
+    // First try to get from cached alerts
+    final alertsAsync = ref.watch(alertsListProvider);
+    if (alertsAsync.hasValue) {
+      final alerts = alertsAsync.value!;
+      for (final alert in alerts) {
+        if (alert.id == alertId) {
+          return alert;
+        }
+      }
+    }
+    
+    // If not found in cache, fetch from API
+    final apiClient = ApiClient.instance;
+    final response = await apiClient.getAlertDetails(alertId);
+    
+    if (response['success'] == true) {
+      final alertData = response['data'] as Map<String, dynamic>;
+      return Alert.fromApiJson(alertData);
+    }
+    
+    return null;
   } catch (e) {
+    print('Error fetching alert $alertId: $e');
     return null;
   }
 }
@@ -251,30 +366,33 @@ class AlertsFilterState extends _$AlertsFilterState {
 class AlertsLoadingState extends _$AlertsLoadingState {
   @override
   bool build() {
-    return false;
+    // Watch the alerts list provider and return loading state based on it
+    final alertsAsync = ref.watch(alertsListProvider);
+    return alertsAsync.isLoading;
   }
 
   void setLoading(bool loading) {
-    state = loading;
+    // This is now managed by the AlertsList provider itself
+    // Keep for compatibility but state comes from AlertsList
   }
 
   Future<void> refresh() async {
-    state = true;
-    // Simulate network delay
-    await Future.delayed(const Duration(seconds: 2));
-    
-    // Refresh alerts data
-    ref.invalidate(alertsListProvider);
-    
-    state = false;
+    // Trigger refresh on the alerts list provider
+    await ref.read(alertsListProvider.notifier).refresh();
   }
 }
 
 // Filtered and Sorted Alerts Provider
 @riverpod
-List<Alert> filteredAlerts(FilteredAlertsRef ref) {
-  final alerts = ref.watch(alertsListProvider);
+Future<List<Alert>> filteredAlerts(FilteredAlertsRef ref) async {
+  final alertsAsync = ref.watch(alertsListProvider);
   final filter = ref.watch(alertsFilterStateProvider);
+  
+  if (!alertsAsync.hasValue) {
+    return [];
+  }
+  
+  final alerts = alertsAsync.value!;
   
   // Apply filters
   var filteredAlerts = alerts.where((alert) {
@@ -339,4 +457,42 @@ List<Alert> filteredAlerts(FilteredAlertsRef ref) {
   });
 
   return filteredAlerts;
+}
+
+// Nearby Alerts Provider for compass/map
+@riverpod
+Future<List<Alert>> nearbyAlerts(
+  NearbyAlertsRef ref, {
+  required double latitude,
+  required double longitude,
+  double radiusKm = 50.0,
+  int? recentHours,
+  String? minAlertLevel,
+}) async {
+  try {
+    final apiClient = ApiClient.instance;
+    
+    final response = await apiClient.getNearbyAlerts(
+      latitude: latitude,
+      longitude: longitude,
+      radiusKm: radiusKm,
+      recentHours: recentHours,
+      minAlertLevel: minAlertLevel,
+    );
+
+    if (response['success'] == true) {
+      final alertsData = response['data'] as Map<String, dynamic>;
+      final alertsList = alertsData['alerts'] as List<dynamic>;
+      
+      return alertsList
+          .cast<Map<String, dynamic>>()
+          .map((alertJson) => Alert.fromApiJson(alertJson))
+          .toList();
+    } else {
+      throw Exception(response['message'] ?? 'Failed to fetch nearby alerts');
+    }
+  } catch (e) {
+    print('Error fetching nearby alerts: $e');
+    return [];
+  }
 }
