@@ -14,11 +14,26 @@ export default function AlertDetailPage() {
   const { t } = useTranslation(['pages', 'common', 'navigation', 'meta']);
   const locale = 'en';
   
+  // Mock alert data - in production this would come from your API
+  const mockAlertData = {
+    id: id as string,
+    title: `UFO Sighting Report #${id}`,
+    description: 'Observed a bright, disc-shaped object moving silently across the evening sky at approximately 7:30 PM local time. The object displayed unusual flight characteristics, including rapid acceleration and sudden directional changes that appeared to defy conventional physics.',
+    location: 'San Francisco Bay Area, California, USA',
+    timestamp: '2024-01-10T15:30:00Z',
+    category: 'UAP',
+    imageUrl: '/images/sighting-placeholder.jpg',
+    reporterName: 'Anonymous Observer',
+    witnesses: 3,
+    coordinates: { lat: 37.7749, lng: -122.4194 },
+  };
+
   const metadata = generateLocalizedMetadata({
     page: 'alertDetail',
     t,
     locale,
     params: { id: id as string },
+    alertData: mockAlertData,
   });
   
   const structuredData = generateStructuredData({
@@ -28,10 +43,15 @@ export default function AlertDetailPage() {
     params: { id: id as string },
     additionalData: {
       alert: {
-        title: `UFO Sighting Report #${id}`,
-        description: 'Detailed UAP sighting report with witness accounts and discussion',
-        createdAt: '2024-01-10T15:30:00Z',
-        reporterName: 'Anonymous Observer',
+        title: mockAlertData.title,
+        description: mockAlertData.description,
+        createdAt: mockAlertData.timestamp,
+        updatedAt: mockAlertData.timestamp,
+        reporterName: mockAlertData.reporterName,
+        location: mockAlertData.location,
+        coordinates: mockAlertData.coordinates,
+        imageUrl: mockAlertData.imageUrl,
+        id: mockAlertData.id,
       }
     }
   });
@@ -43,6 +63,54 @@ export default function AlertDetailPage() {
         <meta name="description" content={metadata.description || ''} />
         <meta name="keywords" content={metadata.keywords || ''} />
         
+        {/* Canonical URL */}
+        <link rel="canonical" href={metadata.alternates?.canonical || ''} />
+        
+        {/* Language alternates */}
+        {metadata.alternates?.languages && Object.entries(metadata.alternates.languages).map(([lang, url]) => (
+          <link key={lang} rel="alternate" hrefLang={lang} href={url as string} />
+        ))}
+        
+        {/* OpenGraph tags */}
+        <meta property="og:title" content={metadata.openGraph?.title || ''} />
+        <meta property="og:description" content={metadata.openGraph?.description || ''} />
+        <meta property="og:type" content={metadata.openGraph?.type || ''} />
+        <meta property="og:url" content={metadata.openGraph?.url?.toString() || ''} />
+        <meta property="og:site_name" content={metadata.openGraph?.siteName || ''} />
+        <meta property="og:locale" content={metadata.openGraph?.locale || ''} />
+        {metadata.openGraph?.images?.map((image, index) => (
+          <React.Fragment key={index}>
+            <meta property="og:image" content={image.url?.toString() || ''} />
+            <meta property="og:image:width" content={image.width?.toString() || ''} />
+            <meta property="og:image:height" content={image.height?.toString() || ''} />
+            <meta property="og:image:alt" content={image.alt || ''} />
+          </React.Fragment>
+        ))}
+        
+        {/* Twitter Card tags */}
+        <meta name="twitter:card" content={metadata.twitter?.card || ''} />
+        <meta name="twitter:site" content={metadata.twitter?.site || ''} />
+        <meta name="twitter:creator" content={metadata.twitter?.creator || ''} />
+        <meta name="twitter:title" content={metadata.twitter?.title || ''} />
+        <meta name="twitter:description" content={metadata.twitter?.description || ''} />
+        {metadata.twitter?.images?.[0] && (
+          <meta name="twitter:image" content={metadata.twitter.images[0] as string} />
+        )}
+        
+        {/* Additional SEO meta tags */}
+        <meta name="author" content={mockAlertData.reporterName} />
+        <meta name="geo.region" content="US-CA" />
+        <meta name="geo.position" content={`${mockAlertData.coordinates.lat};${mockAlertData.coordinates.lng}`} />
+        <meta name="ICBM" content={`${mockAlertData.coordinates.lat}, ${mockAlertData.coordinates.lng}`} />
+        
+        {/* Article-specific meta tags */}
+        <meta property="article:published_time" content={mockAlertData.timestamp} />
+        <meta property="article:modified_time" content={mockAlertData.timestamp} />
+        <meta property="article:author" content={mockAlertData.reporterName} />
+        <meta property="article:section" content="UFO Sightings" />
+        <meta property="article:tag" content={mockAlertData.category} />
+        
+        {/* Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

@@ -12,6 +12,21 @@ interface LocalizedMetadataProps {
     height: number;
     alt: string;
   }>;
+  customCanonical?: string;
+  alertData?: AlertMetadata;
+}
+
+interface AlertMetadata {
+  id: string;
+  title: string;
+  description: string;
+  location?: string;
+  timestamp: string;
+  category?: string;
+  imageUrl?: string;
+  reporterName?: string;
+  witnesses?: number;
+  coordinates?: { lat: number; lng: number };
 }
 
 interface OpenGraphImage {
@@ -28,27 +43,51 @@ export function generateLocalizedMetadata({
   locale,
   params = {},
   images,
+  customCanonical,
+  alertData,
 }: LocalizedMetadataProps): Metadata {
   const siteName = t('meta:site.name');
   const siteDescription = t('meta:site.description');
   const author = t('meta:site.author');
   
   // Get page-specific metadata
-  const title = t(`meta:pages.${page}.title`, params);
-  const description = t(`meta:pages.${page}.description`, params);
-  const keywords = t(`meta:pages.${page}.keywords`, params);
+  let title = t(`meta:pages.${page}.title`, params);
+  let description = t(`meta:pages.${page}.description`, params);
+  let keywords = t(`meta:pages.${page}.keywords`, params);
+  
+  // Override with alert-specific data if available
+  if (alertData && page === 'alertDetail') {
+    title = `${alertData.title} - ${siteName}`;
+    description = `${alertData.description} Location: ${alertData.location || 'Unknown'}. Reported: ${new Date(alertData.timestamp).toLocaleDateString()}.`;
+    keywords = `UFO sighting ${alertData.id}, ${alertData.category || 'UAP'}, ${alertData.location || ''}, unexplained aerial phenomena`;
+  }
   
   // Generate canonical URL
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ufobeep.com';
   const localizedPath = locale === 'en' ? '' : `/${locale}`;
-  const pagePath = page === 'home' ? '' : `/${page === 'alertDetail' ? 'alerts' : page}`;
-  const canonicalUrl = `${baseUrl}${localizedPath}${pagePath}`;
+  let pagePath = page === 'home' ? '' : `/${page === 'alertDetail' ? 'alerts' : page}`;
+  
+  // Add alert ID to path if it's an alert detail page
+  if (page === 'alertDetail' && params?.id) {
+    pagePath = `/alerts/${params.id}`;
+  }
+  
+  const canonicalUrl = customCanonical || `${baseUrl}${localizedPath}${pagePath}`;
   
   // Generate OpenGraph images
   const ogImages: OpenGraphImage[] = [];
   
   if (images) {
     ogImages.push(...images);
+  } else if (alertData && alertData.imageUrl) {
+    // Use alert-specific image if available
+    ogImages.push({
+      url: alertData.imageUrl.startsWith('http') ? alertData.imageUrl : `${baseUrl}${alertData.imageUrl}`,
+      width: 1200,
+      height: 630,
+      alt: `UFO Sighting ${alertData.id} - ${alertData.title}`,
+      type: 'image/jpeg',
+    });
   } else {
     // Use default page-specific or fallback image
     const defaultImage = t(`meta:openGraph.images.${page}`, { returnObjects: true, defaultValue: null });
@@ -267,18 +306,45 @@ export function generateStructuredData({
       
     case 'alertDetail':
       if (additionalData.alert) {
+        const alertData = additionalData.alert;
         pageSpecificData = {
           ...pageSpecificData,
           '@type': 'Article',
-          headline: additionalData.alert.title,
-          description: additionalData.alert.description,
-          datePublished: additionalData.alert.createdAt,
+          headline: alertData.title,
+          description: alertData.description,
+          datePublished: alertData.createdAt,
+          dateModified: alertData.updatedAt || alertData.createdAt,
           author: {
             '@type': 'Person',
-            name: additionalData.alert.reporterName || 'Anonymous Observer',
+            name: alertData.reporterName || 'Anonymous Observer',
           },
           publisher: organization,
           mainEntityOfPage: pageUrl,
+          about: {
+            '@type': 'Event',
+            name: `UFO Sighting ${alertData.id}`,
+            description: alertData.description,
+            startDate: alertData.createdAt,
+            location: alertData.location ? {
+              '@type': 'Place',
+              name: alertData.location,
+              geo: alertData.coordinates ? {
+                '@type': 'GeoCoordinates',
+                latitude: alertData.coordinates.lat,
+                longitude: alertData.coordinates.lng,
+              } : undefined,
+            } : undefined,
+            organizer: {
+              '@type': 'Person',
+              name: alertData.reporterName || 'Anonymous Observer',
+            },
+          },
+          image: alertData.imageUrl ? {
+            '@type': 'ImageObject',
+            url: alertData.imageUrl,
+            width: 1200,
+            height: 630,
+          } : undefined,
         };
       }
       break;
