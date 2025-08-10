@@ -304,6 +304,36 @@ export interface MatrixTokenResponse extends DataResponse<{
   expires_at: string
 }> {}
 
+export interface MatrixMessage {
+  event_id: string
+  sender: string
+  timestamp: number
+  content: {
+    body: string
+    msgtype: string
+    [key: string]: any
+  }
+  formatted_timestamp?: string
+}
+
+export interface MatrixRoomInfo {
+  room_id: string
+  room_alias?: string
+  room_name?: string
+  topic?: string
+  member_count: number
+  join_url: string
+  matrix_to_url: string
+}
+
+export interface MatrixTranscriptResponse extends DataResponse<{
+  room_id: string
+  messages: MatrixMessage[]
+  total_messages: number
+}> {}
+
+export interface MatrixRoomInfoResponse extends DataResponse<MatrixRoomInfo> {}
+
 // Utility types
 export type APIError = ErrorResponse
 export type APISuccess<T = any> = DataResponse<T> | PaginatedResponse<T>

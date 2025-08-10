@@ -3,6 +3,8 @@ import 'dart:math' as math;
 import '../../models/compass_data.dart';
 import '../../models/pilot_data.dart';
 import '../../theme/app_theme.dart';
+import '../../services/compass_math.dart';
+import '../../services/pilot_navigation_service.dart';
 
 class PilotCompassDisplay extends StatelessWidget {
   const PilotCompassDisplay({

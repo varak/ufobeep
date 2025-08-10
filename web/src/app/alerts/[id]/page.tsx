@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import MatrixTranscript from '@/components/MatrixTranscript'
+import { getMatrixRoomData, generateMockMatrixData } from '@/lib/matrix-api'
 
 // Mock data for development - Enhanced with more realistic sightings
 const mockAlerts = [
@@ -35,6 +37,7 @@ const mockAlerts = [
       conventionalExplanation: null
     },
     chatRoomId: 'room_abc123',
+    matrixRoomId: '!sighting_abc123_xyz789:ufobeep.com',
     witnessCount: 12,
     mediaCount: 3,
     reporterDistance: '2.1 km',
@@ -73,6 +76,7 @@ const mockAlerts = [
       conventionalExplanation: 'Possible aircraft with unusual lighting'
     },
     chatRoomId: 'room_def456',
+    matrixRoomId: '!sighting_def456_abc123:ufobeep.com',
     witnessCount: 5,
     mediaCount: 2,
     reporterDistance: '150m',
@@ -110,6 +114,7 @@ const mockAlerts = [
       conventionalExplanation: 'Likely Starlink satellite constellation'
     },
     chatRoomId: 'room_ghi789',
+    matrixRoomId: '!sighting_ghi789_def456:ufobeep.com',
     witnessCount: 8,
     mediaCount: 0,
     reporterDistance: 'Overhead',
@@ -158,11 +163,28 @@ export async function generateMetadata(
   }
 }
 
-export default function AlertPage({ params }: AlertPageProps) {
+export default async function AlertPage({ params }: AlertPageProps) {
   const alert = mockAlerts.find(a => a.id === params.id)
 
   if (!alert) {
     notFound()
+  }
+
+  // Fetch Matrix room data for SSR
+  let matrixData;
+  try {
+    // In development, use mock data if Matrix API is not available
+    const isMatrixAvailable = process.env.NODE_ENV === 'production';
+    
+    if (isMatrixAvailable && alert.matrixRoomId) {
+      matrixData = await getMatrixRoomData(alert.matrixRoomId);
+    } else {
+      // Use mock data for development/demo
+      matrixData = generateMockMatrixData();
+    }
+  } catch (error) {
+    console.error('Error fetching Matrix data:', error);
+    matrixData = generateMockMatrixData();
   }
 
   const formatTimestamp = (timestamp: string) => {
@@ -437,95 +459,13 @@ export default function AlertPage({ params }: AlertPageProps) {
               </section>
             )}
 
-            {/* Read-Only Chat Preview */}
-            <section className="bg-dark-surface border border-dark-border rounded-lg p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-text-primary flex items-center gap-2">
-                  💬 Discussion
-                </h2>
-                <div className="flex items-center gap-3">
-                  <span className="text-text-tertiary text-sm">
-                    {alert.witnessCount} participant{alert.witnessCount !== 1 ? 's' : ''}
-                  </span>
-                  <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-semantic-success rounded-full animate-pulse"></div>
-                    <span className="text-semantic-success text-xs">Live</span>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Chat Messages Preview */}
-              <div className="space-y-4 mb-6">
-                <div className="bg-dark-background rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-brand-primary rounded-full flex items-center justify-center text-sm">👤</div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-text-primary font-medium text-sm">witness_sf_2024</span>
-                        <span className="text-text-tertiary text-xs">2 hours ago</span>
-                      </div>
-                      <p className="text-text-secondary text-sm">
-                        I saw the same formation from Crissy Field! The objects were definitely in a perfect triangle pattern.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="bg-dark-background rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-semantic-info rounded-full flex items-center justify-center text-sm">✓</div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-text-primary font-medium text-sm">verified_observer</span>
-                        <span className="text-semantic-info text-xs">Verified</span>
-                        <span className="text-text-tertiary text-xs">1 hour ago</span>
-                      </div>
-                      <p className="text-text-secondary text-sm">
-                        Flight tracking confirms no conventional aircraft in that airspace during the timeframe. Intriguing sighting.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="bg-dark-background rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center text-sm">👁️</div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-text-primary font-medium text-sm">bay_area_watcher</span>
-                        <span className="text-text-tertiary text-xs">45 min ago</span>
-                      </div>
-                      <p className="text-text-secondary text-sm">
-                        Got some video footage from my balcony. Same time, same direction. Uploading now...
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="border-t border-dark-border pt-4">
-                <div className="flex items-center justify-between mb-3">
-                  <p className="text-text-secondary text-sm">
-                    Real-time encrypted discussion via Matrix protocol
-                  </p>
-                  <button className="text-brand-primary hover:text-brand-primary-light text-sm">
-                    View Full Chat →
-                  </button>
-                </div>
-                
-                <div className="bg-dark-background border border-dark-border rounded-lg p-3">
-                  <p className="text-text-tertiary text-xs mb-2">Join the discussion (Matrix account required)</p>
-                  <div className="flex gap-2">
-                    <button className="flex-1 bg-brand-primary text-text-inverse py-2 px-4 rounded text-sm font-medium hover:bg-brand-primary-dark transition-colors">
-                      Join Chat Room
-                    </button>
-                    <button className="bg-dark-surface border border-dark-border text-text-primary py-2 px-4 rounded text-sm hover:bg-dark-border-light transition-colors">
-                      Copy Room ID
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </section>
+            {/* Matrix Transcript */}
+            <MatrixTranscript 
+              messages={matrixData.messages}
+              roomInfo={matrixData.roomInfo}
+              hasMatrixRoom={matrixData.hasMatrixRoom}
+              maxMessages={10}
+            />
           </div>
 
           {/* Sidebar */}
