@@ -1,0 +1,619 @@
+import 'dart:io';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
+
+import '../config/environment.dart';
+import '../models/api_models.dart' as api;
+import '../models/sensor_data.dart';
+import '../models/sighting_submission.dart' as local;
+
+class ApiClientException implements Exception {
+  final String message;
+  final int? statusCode;
+  final Map<String, dynamic>? details;
+
+  ApiClientException(this.message, {this.statusCode, this.details});
+
+  @override
+  String toString() => 'ApiClientException: $message';
+}
+
+class ApiClient {
+  static ApiClient? _instance;
+  late final Dio _dio;
+  String? _authToken;
+
+  // Singleton pattern
+  static ApiClient get instance {
+    _instance ??= ApiClient._internal();
+    return _instance!;
+  }
+
+  ApiClient._internal() {
+    _initializeDio();
+  }
+
+  void _initializeDio() {
+    final baseOptions = BaseOptions(
+      baseUrl: '${AppEnvironment.apiBaseUrl}/v1',
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 30),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'User-Agent': 'UFOBeep/1.0.0 (Flutter)',
+      },
+    );
+
+    _dio = Dio(baseOptions);
+
+    // Add request interceptor for auth
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          if (_authToken != null) {
+            options.headers['Authorization'] = 'Bearer $_authToken';
+          }
+          handler.next(options);
+        },
+        onResponse: (response, handler) {
+          // Log successful responses in debug mode
+          if (AppEnvironment.isDebug) {
+            print('API Response: ${response.requestOptions.method} ${response.requestOptions.path} -> ${response.statusCode}');
+          }
+          handler.next(response);
+        },
+        onError: (error, handler) {
+          // Log errors
+          print('API Error: ${error.requestOptions.method} ${error.requestOptions.path} -> ${error.response?.statusCode}: ${error.message}');
+          handler.next(error);
+        },
+      ),
+    );
+
+    // Add retry interceptor
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onError: (error, handler) async {
+          if (error.response?.statusCode == null && error.type == DioExceptionType.connectionTimeout) {
+            // Retry on connection timeout
+            try {
+              final retryResponse = await _dio.request(
+                error.requestOptions.path,
+                options: Options(
+                  method: error.requestOptions.method,
+                  headers: error.requestOptions.headers,
+                ),
+                data: error.requestOptions.data,
+                queryParameters: error.requestOptions.queryParameters,
+              );
+              handler.resolve(retryResponse);
+              return;
+            } catch (retryError) {
+              // If retry also fails, continue with original error
+            }
+          }
+          handler.next(error);
+        },
+      ),
+    );
+  }
+
+  // Authentication
+  void setAuthToken(String? token) {
+    _authToken = token;
+  }
+
+  String? get authToken => _authToken;
+
+  bool get isAuthenticated => _authToken != null;
+
+  // Helper method to handle API responses
+  T _handleResponse<T>(Response response, T Function(Map<String, dynamic>) fromJson) {
+    if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+      final data = response.data;
+      if (data is Map<String, dynamic>) {
+        if (data['success'] == true) {
+          return fromJson(data);
+        } else {
+          throw ApiClientException(
+            data['message'] ?? 'API request failed',
+            statusCode: response.statusCode,
+            details: data,
+          );
+        }
+      }
+      throw ApiClientException('Invalid response format', statusCode: response.statusCode);
+    } else {
+      throw ApiClientException(
+        'HTTP ${response.statusCode}: ${response.statusMessage}',
+        statusCode: response.statusCode,
+      );
+    }
+  }
+
+  // Handle API errors
+  ApiClientException _handleError(DioException error) {
+    if (error.response != null) {
+      final responseData = error.response!.data;
+      String message = 'API request failed';
+      Map<String, dynamic>? details;
+
+      if (responseData is Map<String, dynamic>) {
+        message = responseData['message'] ?? responseData['detail']?['message'] ?? message;
+        details = responseData['detail'] ?? responseData;
+      }
+
+      return ApiClientException(
+        message,
+        statusCode: error.response!.statusCode,
+        details: details,
+      );
+    } else {
+      switch (error.type) {
+        case DioExceptionType.connectionTimeout:
+        case DioExceptionType.sendTimeout:
+        case DioExceptionType.receiveTimeout:
+          return ApiClientException('Connection timeout. Please check your internet connection.');
+        case DioExceptionType.connectionError:
+          return ApiClientException('Connection error. Please check your internet connection.');
+        case DioExceptionType.cancel:
+          return ApiClientException('Request was cancelled');
+        default:
+          return ApiClientException('Network error: ${error.message}');
+      }
+    }
+  }
+
+  // Sighting endpoints
+  Future<api.CreateSightingResponse> submitSighting(api.SightingSubmission submission) async {
+    try {
+      final response = await _dio.post(
+        '/sightings',
+        data: submission.toJson(),
+      );
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        final data = response.data as Map<String, dynamic>;
+        if (data['success'] == true) {
+          return api.CreateSightingResponse(
+            success: data['success'],
+            message: data['message'] ?? 'Sighting created successfully',
+            timestamp: DateTime.parse(data['timestamp'] ?? DateTime.now().toIso8601String()),
+            data: data['data'] ?? {},
+          );
+        } else {
+          throw ApiClientException(
+            data['message'] ?? 'API request failed',
+            statusCode: response.statusCode,
+            details: data,
+          );
+        }
+      } else {
+        throw ApiClientException(
+          'HTTP ${response.statusCode}: ${response.statusMessage}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  // Simplified sighting list for now - returning raw JSON
+  Future<Map<String, dynamic>> listSightings({
+    int limit = 20,
+    int offset = 0,
+    String? category,
+    String? status,
+    String? minAlertLevel,
+    bool verifiedOnly = false,
+  }) async {
+    try {
+      final queryParams = <String, dynamic>{
+        'limit': limit,
+        'offset': offset,
+        'verified_only': verifiedOnly,
+      };
+
+      if (category != null) {
+        queryParams['category'] = category.toLowerCase();
+      }
+      if (status != null) {
+        queryParams['status'] = status.toLowerCase();
+      }
+      if (minAlertLevel != null) {
+        queryParams['min_alert_level'] = minAlertLevel.toLowerCase();
+      }
+
+      final response = await _dio.get(
+        '/sightings',
+        queryParameters: queryParams,
+      );
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw ApiClientException(
+          'HTTP ${response.statusCode}: ${response.statusMessage}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  // Media upload endpoints
+  Future<api.PresignedUploadResponse> getPresignedUpload(api.PresignedUploadRequest request) async {
+    try {
+      final response = await _dio.post(
+        '/media/presign',
+        data: request.toJson(),
+      );
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        final data = response.data as Map<String, dynamic>;
+        if (data['success'] == true) {
+          return api.PresignedUploadResponse(
+            success: data['success'],
+            message: data['message'] ?? 'Upload URL created successfully',
+            timestamp: DateTime.parse(data['timestamp'] ?? DateTime.now().toIso8601String()),
+            data: api.PresignedUploadData.fromJson(data['data'] as Map<String, dynamic>),
+          );
+        } else {
+          throw ApiClientException(
+            data['message'] ?? 'Failed to create upload URL',
+            statusCode: response.statusCode,
+            details: data,
+          );
+        }
+      } else {
+        throw ApiClientException(
+          'HTTP ${response.statusCode}: ${response.statusMessage}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  Future<api.MediaUploadCompleteResponse> completeMediaUpload(api.MediaUploadCompleteRequest request) async {
+    try {
+      final response = await _dio.post(
+        '/media/complete',
+        data: request.toJson(),
+      );
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        final data = response.data as Map<String, dynamic>;
+        if (data['success'] == true) {
+          return api.MediaUploadCompleteResponse(
+            success: data['success'],
+            message: data['message'] ?? 'Upload completed successfully',
+            timestamp: DateTime.parse(data['timestamp'] ?? DateTime.now().toIso8601String()),
+            data: api.MediaFile.fromJson(data['data'] as Map<String, dynamic>),
+          );
+        } else {
+          throw ApiClientException(
+            data['message'] ?? 'Failed to complete upload',
+            statusCode: response.statusCode,
+            details: data,
+          );
+        }
+      } else {
+        throw ApiClientException(
+          'HTTP ${response.statusCode}: ${response.statusMessage}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  // Simplified bulk upload - returning raw JSON for now
+  Future<Map<String, dynamic>> getBulkPresignedUploads(
+    List<Map<String, dynamic>> requests, {
+    String? sightingId,
+  }) async {
+    try {
+      final bulkRequest = {
+        'files': requests,
+        if (sightingId != null) 'sighting_id': sightingId,
+      };
+
+      final response = await _dio.post(
+        '/media/bulk-presign',
+        data: bulkRequest,
+      );
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw ApiClientException(
+          'HTTP ${response.statusCode}: ${response.statusMessage}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  // File upload to S3/MinIO
+  Future<bool> uploadFileToStorage(
+    String presignedUrl,
+    Map<String, String> fields,
+    File file,
+    String contentType, {
+    Function(int, int)? onProgress,
+  }) async {
+    try {
+      final formData = FormData();
+      
+      // Add all the form fields first
+      fields.forEach((key, value) {
+        formData.fields.add(MapEntry(key, value));
+      });
+      
+      // Add the file last (some S3 implementations require this)
+      formData.files.add(
+        MapEntry(
+          'file',
+          await MultipartFile.fromFile(
+            file.path,
+            filename: fields['x-amz-meta-original-filename'] ?? file.path.split('/').last,
+          ),
+        ),
+      );
+
+      final uploadResponse = await _dio.post(
+        presignedUrl,
+        data: formData,
+        options: Options(
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          followRedirects: true,
+        ),
+        onSendProgress: onProgress,
+      );
+
+      // S3 returns 204 on successful upload
+      return uploadResponse.statusCode == 204 || uploadResponse.statusCode == 200;
+    } on DioException catch (e) {
+      print('File upload failed: ${e.message}');
+      if (e.response != null) {
+        print('Upload error response: ${e.response!.data}');
+      }
+      return false;
+    }
+  }
+
+  // Plane matching endpoint - simplified for now
+  Future<Map<String, dynamic>> checkPlaneMatch({
+    required DateTime timestamp,
+    required double latitude,
+    required double longitude,
+    required double azimuthDeg,
+    required double pitchDeg,
+    double? rollDeg,
+    double? hfovDeg,
+    double? accuracy,
+    double? altitude,
+    String? photoPath,
+    String? description,
+  }) async {
+    try {
+      final request = {
+        'sensor_data': {
+          'utc': timestamp.toIso8601String(),
+          'latitude': latitude,
+          'longitude': longitude,
+          'azimuth_deg': azimuthDeg,
+          'pitch_deg': pitchDeg,
+          if (rollDeg != null) 'roll_deg': rollDeg,
+          if (hfovDeg != null) 'hfov_deg': hfovDeg,
+          if (accuracy != null) 'accuracy': accuracy,
+          if (altitude != null) 'altitude': altitude,
+        },
+        if (photoPath != null) 'photo_path': photoPath,
+        if (description != null) 'description': description,
+      };
+
+      final response = await _dio.post(
+        '/plane-match',
+        data: request,
+      );
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw ApiClientException(
+          'HTTP ${response.statusCode}: ${response.statusMessage}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  // Health check
+  Future<bool> checkHealth() async {
+    try {
+      final response = await _dio.get('/ping');
+      return response.statusCode == 200 && response.data['message'] == 'pong';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // Helper methods for data conversion
+  api.SightingCategory _mapCategoryToApi(api.SightingCategory category) {
+    return category; // Direct mapping since they're the same enum
+  }
+
+  api.SensorDataApi _mapSensorDataToApi(SensorData sensorData) {
+    return api.SensorDataApi(
+      timestamp: sensorData.utc,
+      location: api.GeoCoordinates(
+        latitude: sensorData.latitude,
+        longitude: sensorData.longitude,
+        altitude: sensorData.altitude,
+        accuracy: sensorData.accuracy,
+      ),
+      azimuthDeg: sensorData.azimuthDeg,
+      pitchDeg: sensorData.pitchDeg,
+      rollDeg: sensorData.rollDeg,
+      hfovDeg: sensorData.hfovDeg,
+      vfovDeg: null, // Not available in current SensorData model
+      deviceId: null, // Not available in current SensorData model
+      appVersion: null, // Not available in current SensorData model
+    );
+  }
+
+  // Configuration
+  void updateBaseUrl(String newBaseUrl) {
+    _dio.options.baseUrl = '$newBaseUrl/v1';
+  }
+
+  void setTimeout(Duration timeout) {
+    _dio.options.connectTimeout = timeout;
+    _dio.options.receiveTimeout = timeout;
+  }
+
+  // Cleanup
+  void dispose() {
+    _dio.close();
+    _instance = null;
+  }
+}
+
+// Extension for easier access
+extension ApiClientExtension on ApiClient {
+  /// Upload a complete sighting with media files
+  Future<String> submitSightingWithMedia({
+    required String title,
+    required String description,
+    required api.SightingCategory category,
+    required SensorData sensorData,
+    required List<File> mediaFiles,
+    int? durationSeconds,
+    int witnessCount = 1,
+    List<String> tags = const [],
+    bool isPublic = true,
+    Function(double)? onProgress,
+  }) async {
+    List<String> mediaFileIds = [];
+    
+    // Upload media files first if any
+    if (mediaFiles.isNotEmpty) {
+      double totalProgress = 0.0;
+      int completedUploads = 0;
+      
+      for (final file in mediaFiles) {
+        try {
+          // Get presigned upload URL
+          final presignRequest = api.PresignedUploadRequest(
+            filename: file.path.split('/').last,
+            contentType: _getContentTypeFromFile(file),
+            sizeBytes: await file.length(),
+          );
+          
+          final presignResponse = await getPresignedUpload(presignRequest);
+          final uploadData = presignResponse.data;
+          
+          // Upload file to storage
+          final uploadSuccess = await uploadFileToStorage(
+            uploadData.uploadUrl,
+            uploadData.fields,
+            file,
+            presignRequest.contentType,
+            onProgress: (sent, total) {
+              if (onProgress != null) {
+                final fileProgress = sent / total;
+                final overallProgress = (completedUploads + fileProgress) / mediaFiles.length;
+                onProgress(overallProgress);
+              }
+            },
+          );
+          
+          if (!uploadSuccess) {
+            throw ApiClientException('Failed to upload file: ${file.path}');
+          }
+          
+          // Complete the upload
+          final completeRequest = api.MediaUploadCompleteRequest(
+            uploadId: uploadData.uploadId,
+            mediaType: _getMediaTypeFromFile(file),
+          );
+          
+          final completeResponse = await completeMediaUpload(completeRequest);
+          mediaFileIds.add(completeResponse.data.id);
+          
+          completedUploads++;
+          if (onProgress != null) {
+            onProgress(completedUploads / mediaFiles.length);
+          }
+        } catch (e) {
+          print('Failed to upload media file ${file.path}: $e');
+          // Continue with other files, don't fail the entire submission
+        }
+      }
+    }
+    
+    // Submit sighting
+    final submission = api.SightingSubmission(
+      title: title,
+      description: description,
+      category: category,
+      sensorData: _mapSensorDataToApi(sensorData),
+      mediaFiles: mediaFileIds,
+      durationSeconds: durationSeconds,
+      witnessCount: witnessCount,
+      tags: tags,
+      isPublic: isPublic,
+      submittedAt: DateTime.now(),
+    );
+    
+    final response = await submitSighting(submission);
+    return response.data['sighting_id'] as String;
+  }
+
+  String _getContentTypeFromFile(File file) {
+    final extension = file.path.split('.').last.toLowerCase();
+    switch (extension) {
+      case 'jpg':
+      case 'jpeg':
+        return 'image/jpeg';
+      case 'png':
+        return 'image/png';
+      case 'mp4':
+        return 'video/mp4';
+      case 'mov':
+        return 'video/quicktime';
+      case 'mp3':
+        return 'audio/mpeg';
+      case 'wav':
+        return 'audio/wav';
+      default:
+        return 'application/octet-stream';
+    }
+  }
+
+  api.MediaType _getMediaTypeFromFile(File file) {
+    final extension = file.path.split('.').last.toLowerCase();
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].contains(extension)) {
+      return api.MediaType.photo;
+    } else if (['mp4', 'mov', 'avi', 'mkv'].contains(extension)) {
+      return api.MediaType.video;
+    } else if (['mp3', 'wav', 'aac', 'ogg'].contains(extension)) {
+      return api.MediaType.audio;
+    }
+    return api.MediaType.photo; // Default fallback
+  }
+}

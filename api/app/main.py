@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from config.environment import settings
-from routers import plane_match
+from app.config.environment import settings
+from app.routers import plane_match
 
 # Initialize FastAPI app with environment configuration
 app = FastAPI(
@@ -37,3 +37,10 @@ def ping():
 
 # Include routers
 app.include_router(plane_match.router)
+
+# Import and include media router
+try:
+    from routers import media
+    app.include_router(media.router)
+except ImportError as e:
+    print(f"Warning: Could not import media router: {e}")

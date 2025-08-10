@@ -522,8 +522,8 @@ class DataResponse<T> extends APIResponse {
   ) =>
       _$DataResponseFromJson(json, fromJsonT);
 
-  Map<String, dynamic> toJson(Object Function(T value) toJsonT) =>
-      _$DataResponseToJson(this, toJsonT);
+  @override
+  Map<String, dynamic> toJson() => _$DataResponseToJson(this, (value) => value);
 }
 
 @JsonSerializable()
@@ -573,8 +573,8 @@ class PaginatedResponse<T> extends APIResponse {
   ) =>
       _$PaginatedResponseFromJson(json, fromJsonT);
 
-  Map<String, dynamic> toJson(Object Function(T value) toJsonT) =>
-      _$PaginatedResponseToJson(this, toJsonT);
+  @override
+  Map<String, dynamic> toJson() => _$PaginatedResponseToJson(this, (value) => value);
 }
 
 // API Client helper types

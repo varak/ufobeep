@@ -1,15 +1,16 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../theme/app_theme.dart';
 import '../../config/environment.dart';
 import '../../services/sensor_service.dart';
 import '../../services/plane_match_api_service.dart';
+import '../../services/api_client.dart';
 import '../../models/sensor_data.dart';
-import '../../models/sighting_submission.dart';
+import '../../models/sighting_submission.dart' as local;
 import '../../models/alerts_filter.dart';
+import '../../models/api_models.dart' as api;
 import '../../widgets/plane_badge.dart';
 import '../../widgets/photo_preview.dart';
 
@@ -27,9 +28,10 @@ class _BeepScreenState extends State<BeepScreen> {
       ? MockPlaneMatchApiService() 
       : PlaneMatchApiService();
   
-  SightingSubmission? _currentSubmission;
+  local.SightingSubmission? _currentSubmission;
   bool _isCapturing = false;
   bool _isAnalyzingPlane = false;
+  bool _isSubmitting = false;
   bool _sensorsAvailable = false;
   String? _errorMessage;
   String? _planeMatchError;
@@ -37,8 +39,8 @@ class _BeepScreenState extends State<BeepScreen> {
   // Form fields
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  String _selectedCategory = SightingCategory.ufo;
-  LocationPrivacy _locationPrivacy = LocationPrivacy.jittered;
+  String _selectedCategory = local.SightingCategory.ufo;
+  local.LocationPrivacy _locationPrivacy = local.LocationPrivacy.jittered;
 
   @override
   void initState() {
@@ -97,7 +99,7 @@ class _BeepScreenState extends State<BeepScreen> {
       }
 
       // Create initial submission
-      final submission = SightingSubmission(
+      final submission = local.SightingSubmission(
         imageFile: File(image.path),
         title: '',
         description: '',
@@ -153,7 +155,7 @@ class _BeepScreenState extends State<BeepScreen> {
       }
 
       // Create initial submission for gallery image
-      final submission = SightingSubmission(
+      final submission = local.SightingSubmission(
         imageFile: File(image.path),
         title: '',
         description: '',
@@ -416,10 +418,70 @@ class _BeepScreenState extends State<BeepScreen> {
   }
 
   Future<void> _submitSighting() async {
-    if (_currentSubmission?.imageFile == null) return;
+    if (_currentSubmission?.imageFile == null || _currentSubmission?.sensorData == null) return;
+    
+    if (_isSubmitting) return;
+
+    setState(() {
+      _isSubmitting = true;
+      _errorMessage = null;
+    });
 
     try {
-      // Determine sighting classification
+      // Validate required fields
+      final title = _titleController.text.trim();
+      final description = _descriptionController.text.trim();
+      
+      if (title.isEmpty || title.length < 5) {
+        throw Exception('Title must be at least 5 characters long');
+      }
+      
+      if (description.isEmpty || description.length < 10) {
+        throw Exception('Description must be at least 10 characters long');
+      }
+
+      // Determine category based on plane match results
+      api.SightingCategory category = api.SightingCategory.ufo;
+      List<String> tags = [];
+      
+      if (_currentSubmission!.userReclassifiedAsUFO) {
+        category = api.SightingCategory.ufo;
+        tags.add('user-reclassified');
+      } else if (_currentSubmission!.planeMatch?.isPlane == true && _currentSubmission!.planeMatch!.confidence > 0.7) {
+        category = api.SightingCategory.anomaly; // Classify likely planes as anomalies for review
+        tags.add('likely-aircraft');
+        final flight = _currentSubmission!.planeMatch!.matchedFlight;
+        if (flight != null) {
+          tags.add('flight-${flight.callsign}');
+        }
+      } else if (_currentSubmission!.planeMatch?.isPlane == true) {
+        category = api.SightingCategory.ufo; // Low confidence planes still get UFO category
+        tags.add('possible-aircraft');
+      }
+
+      // Add plane match confidence as tag
+      if (_currentSubmission!.planeMatch != null) {
+        final confidence = (_currentSubmission!.planeMatch!.confidence * 100).round();
+        tags.add('confidence-$confidence');
+      }
+
+      // Submit sighting with media using API client
+      final sightingId = await ApiClient.instance.submitSightingWithMedia(
+        title: title,
+        description: description,
+        category: category,
+        sensorData: _currentSubmission!.sensorData!,
+        mediaFiles: [_currentSubmission!.imageFile!],
+        witnessCount: 1,
+        tags: tags,
+        isPublic: _locationPrivacy != local.LocationPrivacy.hidden,
+        onProgress: (progress) {
+          // Update UI with upload progress if needed
+          debugPrint('Upload progress: ${(progress * 100).toStringAsFixed(1)}%');
+        },
+      );
+
+      // Determine classification for user feedback
       String classification = 'UFO';
       String additionalInfo = '';
 
@@ -436,30 +498,42 @@ class _BeepScreenState extends State<BeepScreen> {
         additionalInfo = ' (low confidence: ${(_currentSubmission!.planeMatch!.confidence * 100).toInt()}%)';
       }
 
-      // TODO: This will be implemented with the full sighting submission endpoint
-      // For now, show comprehensive success message with plane matching results
-      String message = 'Sighting "${_currentSubmission!.title}" submitted as $classification$additionalInfo';
+      // Show success message
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Sighting "$title" submitted successfully as $classification$additionalInfo\n\nSighting ID: $sightingId'),
+            backgroundColor: classification.contains('Aircraft') 
+                ? AppColors.semanticWarning 
+                : AppColors.brandPrimary,
+            duration: const Duration(seconds: 5),
+          ),
+        );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          backgroundColor: classification.contains('Aircraft') 
-              ? AppColors.semanticWarning 
-              : AppColors.brandPrimary,
-          duration: const Duration(seconds: 4),
-        ),
-      );
-
-      // Reset state
+        // Close submission form and reset state
+        Navigator.of(context).pop();
+      }
+      
       _clearCurrentSubmission();
 
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to submit sighting: $e'),
-          backgroundColor: AppColors.semanticError,
-        ),
-      );
+      debugPrint('Sighting submission error: $e');
+      
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to submit sighting: ${e.toString()}'),
+            backgroundColor: AppColors.semanticError,
+            duration: const Duration(seconds: 4),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSubmitting = false;
+        });
+      }
     }
   }
 
@@ -667,14 +741,16 @@ class _BeepScreenState extends State<BeepScreen> {
         ),
       ),
       floatingActionButton: _currentSubmission != null ? FloatingActionButton.extended(
-        onPressed: _currentSubmission?.isReadyToSubmit == true ? _submitSighting : null,
-        backgroundColor: _currentSubmission?.isReadyToSubmit == true 
+        onPressed: (!_isSubmitting && _titleController.text.trim().length >= 5 && _descriptionController.text.trim().length >= 10) 
+            ? _submitSighting 
+            : null,
+        backgroundColor: (!_isSubmitting && _titleController.text.trim().length >= 5 && _descriptionController.text.trim().length >= 10)
             ? AppColors.brandPrimary 
             : AppColors.darkBorder,
-        foregroundColor: _currentSubmission?.isReadyToSubmit == true 
+        foregroundColor: (!_isSubmitting && _titleController.text.trim().length >= 5 && _descriptionController.text.trim().length >= 10)
             ? Colors.black 
             : AppColors.textSecondary,
-        icon: _currentSubmission?.status == SubmissionStatus.validating
+        icon: _isSubmitting
             ? const SizedBox(
                 width: 16,
                 height: 16,
@@ -685,7 +761,7 @@ class _BeepScreenState extends State<BeepScreen> {
               )
             : const Icon(Icons.send),
         label: Text(
-          _currentSubmission?.status == SubmissionStatus.validating 
+          _isSubmitting 
               ? 'Submitting...' 
               : 'Submit Report',
         ),
@@ -697,10 +773,11 @@ class _BeepScreenState extends State<BeepScreen> {
     setState(() {
       _currentSubmission = null;
       _planeMatchError = null;
+      _isSubmitting = false;
       _titleController.clear();
       _descriptionController.clear();
-      _selectedCategory = SightingCategory.ufo;
-      _locationPrivacy = LocationPrivacy.jittered;
+      _selectedCategory = local.SightingCategory.ufo;
+      _locationPrivacy = local.LocationPrivacy.jittered;
     });
   }
 
@@ -708,7 +785,7 @@ class _BeepScreenState extends State<BeepScreen> {
     String? title,
     String? description,
     String? category,
-    LocationPrivacy? locationPrivacy,
+    local.LocationPrivacy? locationPrivacy,
   }) {
     if (_currentSubmission == null) return;
     
@@ -750,7 +827,7 @@ class _BeepScreenState extends State<BeepScreen> {
             dropdownColor: AppColors.darkSurface,
             style: const TextStyle(color: AppColors.textPrimary),
             icon: const Icon(Icons.arrow_drop_down, color: AppColors.textSecondary),
-            items: SightingCategory.allCategories.map((category) {
+            items: local.SightingCategory.allCategories.map((category) {
               final categoryData = AlertCategory.getByKey(category);
               return DropdownMenuItem(
                 value: category,
@@ -768,7 +845,7 @@ class _BeepScreenState extends State<BeepScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            SightingCategory.getDisplayName(category),
+                            local.SightingCategory.getDisplayName(category),
                             style: const TextStyle(
                               color: AppColors.textPrimary,
                               fontSize: 14,
@@ -776,7 +853,7 @@ class _BeepScreenState extends State<BeepScreen> {
                             ),
                           ),
                           Text(
-                            SightingCategory.getDescription(category),
+                            local.SightingCategory.getDescription(category),
                             style: const TextStyle(
                               color: AppColors.textSecondary,
                               fontSize: 12,
@@ -841,7 +918,7 @@ class _BeepScreenState extends State<BeepScreen> {
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             counterStyle: const TextStyle(color: AppColors.textSecondary),
           ),
-          maxLength: SightingValidator.maxTitleLength,
+          maxLength: local.SightingValidator.maxTitleLength,
           textInputAction: TextInputAction.next,
           onChanged: (value) => _updateSubmission(title: value),
         ),
@@ -886,7 +963,7 @@ class _BeepScreenState extends State<BeepScreen> {
             counterStyle: const TextStyle(color: AppColors.textSecondary),
           ),
           maxLines: 6,
-          maxLength: SightingValidator.maxDescriptionLength,
+          maxLength: local.SightingValidator.maxDescriptionLength,
           textInputAction: TextInputAction.newline,
           onChanged: (value) => _updateSubmission(description: value),
         ),
@@ -914,7 +991,7 @@ class _BeepScreenState extends State<BeepScreen> {
             border: Border.all(color: AppColors.darkBorder),
           ),
           child: Column(
-            children: LocationPrivacy.values.map((privacy) {
+            children: local.LocationPrivacy.values.map((privacy) {
               final isSelected = _locationPrivacy == privacy;
               return InkWell(
                 onTap: () {
