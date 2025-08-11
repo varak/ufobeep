@@ -39,7 +39,7 @@ export async function getStaticI18nProps(
 }
 
 // Generate static paths for all supported locales
-export function getI18nPaths(paths: Array<{ params: Record<string, string> }> = [{}]) {
+export function getI18nPaths(paths: Array<{ params: Record<string, string> }> = [{ params: {} }]) {
   const supportedLocales = ['en', 'es', 'de'];
   
   return {

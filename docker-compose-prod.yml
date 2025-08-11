@@ -7,32 +7,37 @@ services:
       context: ./api
       dockerfile: Dockerfile
     container_name: ufobeep-api
-    ports:
-      - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://ufobeep_user:ufopostpass@host.docker.internal:5432/ufobeep_db
-      - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL:-redis://localhost:6379/0}
       - OPENWEATHER_API_KEY=${OPENWEATHER_API_KEY}
       - HUGGINGFACE_API_TOKEN=${HUGGINGFACE_API_TOKEN}
       - OPENSKY_CLIENT_ID=${OPENSKY_CLIENT_ID}
       - OPENSKY_CLIENT_SECRET=${OPENSKY_CLIENT_SECRET}
-      - S3_ENDPOINT=${S3_ENDPOINT:-http://minio:9000}
+      - S3_ENDPOINT=${S3_ENDPOINT:-http://localhost:9000}
       - S3_ACCESS_KEY=${S3_ACCESS_KEY:-minioadmin}
       - S3_SECRET_KEY=${S3_SECRET_KEY:-minioadmin}
       - S3_BUCKET=${S3_BUCKET:-ufobeep-media}
-      - JWT_SECRET=${JWT_SECRET:-your-secret-key-here}
-      - ENCRYPTION_KEY=${ENCRYPTION_KEY:-your-encryption-key-here}
+      - JWT_SECRET=${JWT_SECRET}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - SECRET_KEY=${SECRET_KEY}
+      - MATRIX_BASE_URL=${MATRIX_BASE_URL}
+      - MATRIX_SERVER_NAME=${MATRIX_SERVER_NAME}
+      - MATRIX_ACCESS_TOKEN=${MATRIX_ACCESS_TOKEN}
+      - MATRIX_BOT_USER_ID=${MATRIX_BOT_USER_ID}
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+      - FCM_SERVER_KEY=${FCM_SERVER_KEY}
+      - APNS_KEY_ID=${APNS_KEY_ID}
+      - APNS_TEAM_ID=${APNS_TEAM_ID}
       - ENVIRONMENT=production
     depends_on:
       - redis
       - minio
     volumes:
       - ./api:/app
-    networks:
-      - ufobeep-network
+    network_mode: host
     restart: unless-stopped
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
 
   # Redis Cache
   redis:
@@ -42,8 +47,6 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
-    networks:
-      - ufobeep-network
     restart: unless-stopped
 
   # MinIO Object Storage (S3 compatible)
@@ -59,30 +62,8 @@ services:
     command: server /data --console-address ":9001"
     volumes:
       - minio_data:/data
-    networks:
-      - ufobeep-network
     restart: unless-stopped
-
-  # Matrix Synapse (optional for local testing)
-  # synapse:
-  #   image: matrixdotorg/synapse:latest
-  #   container_name: ufobeep-synapse
-  #   ports:
-  #     - "8008:8008"
-  #   volumes:
-  #     - synapse_data:/data
-  #   environment:
-  #     - SYNAPSE_SERVER_NAME=localhost
-  #     - SYNAPSE_REPORT_STATS=no
-  #   networks:
-  #     - ufobeep-network
-  #   restart: unless-stopped
-
-networks:
-  ufobeep-network:
-    driver: bridge
 
 volumes:
   redis_data:
   minio_data:
-  synapse_data:
