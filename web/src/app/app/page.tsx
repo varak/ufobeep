@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import EmailNotifySignup from '../../components/EmailNotifySignup'
 
 export default function AppPage() {
   return (
@@ -42,23 +43,7 @@ export default function AppPage() {
         </div>
 
         {/* Coming Soon Notice */}
-        <div className="bg-dark-surface border border-dark-border rounded-lg p-8 text-center mb-12">
-          <div className="text-4xl mb-4">🚧</div>
-          <h2 className="text-2xl font-semibold text-text-primary mb-4">Coming Soon</h2>
-          <p className="text-text-secondary mb-6">
-            The UFOBeep mobile app is currently in development. Sign up to be notified when it launches!
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 bg-dark-background border border-dark-border rounded-lg px-4 py-3 text-text-primary placeholder-text-tertiary focus:outline-none focus:border-brand-primary"
-            />
-            <button className="bg-brand-primary text-text-inverse px-6 py-3 rounded-lg font-semibold hover:bg-brand-primary-dark transition-colors whitespace-nowrap">
-              Notify Me
-            </button>
-          </div>
-        </div>
+        <EmailNotifySignup />
 
         {/* Features Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
