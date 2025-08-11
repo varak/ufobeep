@@ -10,7 +10,6 @@ export default function EmailNotifySignup() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Form submitted with email:', email)
     
     if (!email || !email.includes('@')) {
       setStatus('error')
@@ -22,80 +21,29 @@ export default function EmailNotifySignup() {
     setStatus('idle')
 
     try {
-      console.log('Sending request to /api/notify-signup')
-      // Try different API endpoint paths to see which one works
-      const apiPaths = ['/api/notify-signup', '/pages/api/notify-signup']
-      let response: Response | null = null
-      let successPath = ''
-      
-      for (const path of apiPaths) {
-        try {
-          console.log(`Trying API path: ${path}`)
-          response = await fetch(path, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email }),
-          })
-          
-          if (response.status !== 404) {
-            successPath = path
-            console.log(`Found working API at: ${path}`)
-            break
-          }
-        } catch (err) {
-          console.log(`Failed to reach ${path}:`, err)
-        }
-      }
+      // Simple POST to PHP endpoint
+      const response = await fetch('/collect-email.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      })
 
-      if (!response || response.status === 404) {
-        // Fallback: save to localStorage and show success
-        console.log('API not found, using localStorage fallback')
-        const signups = JSON.parse(localStorage.getItem('emailSignups') || '[]')
-        signups.push({
-          email: email.toLowerCase().trim(),
-          timestamp: new Date().toISOString(),
-          source: 'app-page'
-        })
-        localStorage.setItem('emailSignups', JSON.stringify(signups))
-        
-        setStatus('success')
-        setMessage('Thanks! We\'ll notify you when the UFOBeep app is ready for download.')
-        setEmail('')
-        
-        // Also try to send to a webhook or external service if configured
-        console.log('Saved to localStorage:', email)
-        return
-      }
-
-      console.log('Response status:', response.status)
       const data = await response.json()
-      console.log('Response data:', data)
 
       if (response.ok) {
         setStatus('success')
-        setMessage('Thanks! We\'ll notify you when the UFOBeep app is ready for download.')
+        setMessage(data.message || 'Thanks! We\'ll notify you when the UFOBeep app is ready for download.')
         setEmail('')
       } else {
         setStatus('error')
         setMessage(data.error || 'Something went wrong. Please try again.')
       }
     } catch (error) {
-      console.error('Fetch error:', error)
-      // Fallback to localStorage
-      const signups = JSON.parse(localStorage.getItem('emailSignups') || '[]')
-      signups.push({
-        email: email.toLowerCase().trim(),
-        timestamp: new Date().toISOString(),
-        source: 'app-page'
-      })
-      localStorage.setItem('emailSignups', JSON.stringify(signups))
-      
-      setStatus('success')
-      setMessage('Thanks! We\'ll notify you when the UFOBeep app is ready for download.')
-      setEmail('')
-      console.log('Saved to localStorage due to error:', email)
+      console.error('Submission error:', error)
+      setStatus('error')
+      setMessage('Unable to submit. Please try again later.')
     } finally {
       setIsSubmitting(false)
     }
