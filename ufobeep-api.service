@@ -1,0 +1,16 @@
+[Unit]
+Description=UFOBeep API Service
+After=network.target postgresql.service
+
+[Service]
+Type=exec
+User=ufobeep
+Group=ufobeep
+WorkingDirectory=/home/ufobeep/ufobeep/api
+ExecStart=/home/ufobeep/ufobeep/scripts/start-api.sh
+Restart=always
+RestartSec=10
+Environment=PYTHONPATH=/home/ufobeep/ufobeep/api
+
+[Install]
+WantedBy=multi-user.target

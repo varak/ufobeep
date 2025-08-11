@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Form
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -29,10 +30,13 @@ def get_db_connection():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database connection failed: {str(e)}")
 
-@router.post("/interest", response_model=EmailInterestResponse)
-async def submit_email_interest(request: EmailInterestRequest):
+@router.post("/interest")
+async def submit_email_interest_form(
+    email: str = Form(...),
+    source: str = Form(default="app_download_page")
+):
     """
-    Submit email for interest notifications about app launch
+    Handle form submission for email interest - returns JSON for frontend
     """
     try:
         conn = get_db_connection()
@@ -45,7 +49,7 @@ async def submit_email_interest(request: EmailInterestRequest):
             VALUES (%s, %s) 
             RETURNING id
             """,
-            (request.email, request.source)
+            (email, source)
         )
         
         result = cur.fetchone()
@@ -54,22 +58,25 @@ async def submit_email_interest(request: EmailInterestRequest):
         cur.close()
         conn.close()
         
-        return EmailInterestResponse(
-            success=True,
-            message="Thanks! We'll notify you when the app launches.",
-            id=result['id']
-        )
+        return JSONResponse(content={
+            "success": True,
+            "message": "Thanks! We'll notify you when the app launches.",
+            "id": result['id']
+        })
         
     except psycopg2.errors.UniqueViolation:
         # Email already exists
-        return EmailInterestResponse(
-            success=True,
-            message="You're already on our list! We'll notify you when the app launches."
-        )
+        return JSONResponse(content={
+            "success": True,
+            "message": "You're already on our list! We'll notify you when the app launches."
+        })
     except Exception as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=500,
-            detail=f"Failed to save email interest: {str(e)}"
+            content={
+                "success": False,
+                "error": f"Failed to save email interest: {str(e)}"
+            }
         )
 
 @router.get("/interest/count")

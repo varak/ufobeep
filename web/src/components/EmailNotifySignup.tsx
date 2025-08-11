@@ -21,24 +21,24 @@ export default function EmailNotifySignup() {
     setStatus('idle')
 
     try {
-      // Simple POST to PHP endpoint
-      const response = await fetch('/collect-email.php', {
+      // POST to FastAPI endpoint
+      const formData = new FormData()
+      formData.append('email', email)
+      formData.append('source', 'app_download_page')
+      
+      const response = await fetch('/api/v1/emails/interest', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
+        body: formData,
       })
 
-      const data = await response.json()
-
       if (response.ok) {
+        // Success - don't try to parse response, just show success
         setStatus('success')
-        setMessage(data.message || 'Thanks! We\'ll notify you when the UFOBeep app is ready for download.')
+        setMessage('Thanks! We\'ll notify you when the UFOBeep app is ready for download.')
         setEmail('')
       } else {
         setStatus('error')
-        setMessage(data.error || 'Something went wrong. Please try again.')
+        setMessage('Something went wrong. Please try again.')
       }
     } catch (error) {
       console.error('Submission error:', error)
