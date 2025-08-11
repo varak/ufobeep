@@ -6,7 +6,7 @@ from psycopg2.extras import RealDictCursor
 import os
 from typing import Optional
 
-router = APIRouter(prefix="/v1/emails", tags=["emails"])
+router = APIRouter(prefix="/emails", tags=["emails"])
 
 class EmailInterestRequest(BaseModel):
     email: EmailStr

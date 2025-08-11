@@ -169,52 +169,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ),
       child: Column(
         children: [
-          Stack(
-            children: [
-              CircleAvatar(
-                radius: 50,
-                backgroundColor: AppColors.brandPrimary.withOpacity(0.2),
-                backgroundImage: preferences.avatarUrl != null 
-                    ? NetworkImage(preferences.avatarUrl!)
-                    : null,
-                child: preferences.avatarUrl == null 
-                    ? Text(
-                        _getInitials(preferences.displayName ?? 'U'),
-                        style: const TextStyle(
-                          color: AppColors.brandPrimary,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    : null,
+          CircleAvatar(
+            radius: 50,
+            backgroundColor: AppColors.brandPrimary.withOpacity(0.2),
+            child: Text(
+              _getInitials(preferences.displayName ?? 'U'),
+              style: const TextStyle(
+                color: AppColors.brandPrimary,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
-              if (_isEditing)
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: AppColors.brandPrimary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        // TODO: Image picker
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Avatar upload coming soon!'),
-                          ),
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.camera_alt,
-                        color: AppColors.textInverse,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                ),
-            ],
+            ),
           ),
           const SizedBox(height: 16),
           Text(

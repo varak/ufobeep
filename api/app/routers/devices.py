@@ -114,7 +114,7 @@ class DeviceDetailResponse(BaseModel):
 
 # Router configuration
 router = APIRouter(
-    prefix="/v1/devices",
+    prefix="/devices",
     tags=["devices"],
     responses={
         404: {"description": "Device not found"},

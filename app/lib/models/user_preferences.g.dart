@@ -25,7 +25,6 @@ UserPreferences _$UserPreferencesFromJson(Map<String, dynamic> json) =>
       darkMode: json['darkMode'] as bool? ?? true,
       useWeatherVisibility: json['useWeatherVisibility'] as bool? ?? true,
       enableVisibilityFilters: json['enableVisibilityFilters'] as bool? ?? true,
-      avatarUrl: json['avatarUrl'] as String?,
       lastUpdated: json['lastUpdated'] == null
           ? null
           : DateTime.parse(json['lastUpdated'] as String),
@@ -46,7 +45,6 @@ Map<String, dynamic> _$UserPreferencesToJson(UserPreferences instance) =>
       'darkMode': instance.darkMode,
       'useWeatherVisibility': instance.useWeatherVisibility,
       'enableVisibilityFilters': instance.enableVisibilityFilters,
-      'avatarUrl': instance.avatarUrl,
       'lastUpdated': instance.lastUpdated?.toIso8601String(),
     };
 

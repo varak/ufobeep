@@ -36,7 +36,7 @@ class ApiClient {
 
   void _initializeDio() {
     final baseOptions = BaseOptions(
-      baseUrl: '${AppEnvironment.apiBaseUrl}/v1',
+      baseUrl: '${AppEnvironment.apiBaseUrl}',
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
       headers: {
@@ -626,7 +626,7 @@ class ApiClient {
 
   // Configuration
   void updateBaseUrl(String newBaseUrl) {
-    _dio.options.baseUrl = '$newBaseUrl/v1';
+    _dio.options.baseUrl = '$newBaseUrl';
   }
 
   void setTimeout(Duration timeout) {

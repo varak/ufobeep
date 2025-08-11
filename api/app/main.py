@@ -31,7 +31,7 @@ async def startup_event():
 def healthz():
     return {"ok": True}
 
-@app.get("/v1/ping")
+@app.get("/ping")
 def ping():
     return {"message": "pong"}
 
@@ -54,7 +54,7 @@ except ImportError as e:
 
 # Import and include media router
 try:
-    from routers import media
+    from app.routers import media
     app.include_router(media.router)
 except ImportError as e:
     print(f"Warning: Could not import media router: {e}")

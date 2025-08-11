@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 # Router configuration
 router = APIRouter(
-    prefix="/v1/media",
+    prefix="/media",
     tags=["media"],
     responses={
         404: {"description": "Media not found"},

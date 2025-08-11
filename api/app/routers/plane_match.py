@@ -7,7 +7,7 @@ from ..services.plane_match_service import get_plane_match_service, PlaneMatchSe
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/v1", tags=["plane-match"])
+router = APIRouter(prefix="", tags=["plane-match"])
 
 
 @router.post("/plane-match", response_model=PlaneMatchResponse)

@@ -48,7 +48,7 @@ except ImportError:
 
 # Router configuration
 router = APIRouter(
-    prefix="/v1/alerts",
+    prefix="/alerts",
     tags=["alerts"],
     responses={
         404: {"description": "Alert not found"},

@@ -197,9 +197,9 @@ SightingSubmission _$SightingSubmissionFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       description: json['description'] as String,
       category: $enumDecode(_$SightingCategoryEnumMap, json['category']),
-      sensorData: SensorDataApi.fromJson(
-        json['sensor_data'] as Map<String, dynamic>,
-      ),
+      sensorData: json['sensor_data'] == null
+          ? null
+          : SensorDataApi.fromJson(json['sensor_data'] as Map<String, dynamic>),
       mediaFiles:
           (json['media_files'] as List<dynamic>?)
               ?.map((e) => e as String)

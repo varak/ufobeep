@@ -183,7 +183,7 @@ except ImportError:
 
 # Router configuration
 router = APIRouter(
-    prefix="/v1/sightings",
+    prefix="/sightings",
     tags=["sightings"],
     responses={
         404: {"description": "Sighting not found"},
@@ -211,6 +211,7 @@ async def get_current_user_id(token: Optional[str] = Depends(security)) -> Optio
 def jitter_coordinates(lat: float, lng: float) -> GeoCoordinates:
     """Apply privacy jittering to coordinates"""
     import random
+    import math
     
     # Jitter by 100-300 meters as configured
     min_jitter = settings.public_coord_jitter_min  # 100m

@@ -52,7 +52,7 @@ class MatrixTranscriptResponse(BaseModel):
 
 # Router configuration
 router = APIRouter(
-    prefix="/v1/matrix",
+    prefix="/matrix",
     tags=["matrix"],
     responses={
         404: {"description": "Matrix resource not found"},

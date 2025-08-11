@@ -17,7 +17,6 @@ class UserPreferences {
   final bool darkMode;
   final bool useWeatherVisibility; // Use weather data for visibility calculations
   final bool enableVisibilityFilters; // Filter alerts based on visibility
-  final String? avatarUrl;
   final DateTime? lastUpdated;
 
   const UserPreferences({
@@ -34,7 +33,6 @@ class UserPreferences {
     this.darkMode = true,
     this.useWeatherVisibility = true,
     this.enableVisibilityFilters = true,
-    this.avatarUrl,
     this.lastUpdated,
   });
 
@@ -57,7 +55,6 @@ class UserPreferences {
     bool? darkMode,
     bool? useWeatherVisibility,
     bool? enableVisibilityFilters,
-    String? avatarUrl,
     DateTime? lastUpdated,
   }) {
     return UserPreferences(
@@ -74,7 +71,6 @@ class UserPreferences {
       darkMode: darkMode ?? this.darkMode,
       useWeatherVisibility: useWeatherVisibility ?? this.useWeatherVisibility,
       enableVisibilityFilters: enableVisibilityFilters ?? this.enableVisibilityFilters,
-      avatarUrl: avatarUrl ?? this.avatarUrl,
       lastUpdated: lastUpdated ?? this.lastUpdated,
     );
   }
