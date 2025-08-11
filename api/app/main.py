@@ -72,3 +72,10 @@ try:
     app.include_router(devices.router)
 except ImportError as e:
     print(f"Warning: Could not import devices router: {e}")
+
+# Import and include Emails router
+try:
+    from app.routers import emails
+    app.include_router(emails.router)
+except ImportError as e:
+    print(f"Warning: Could not import emails router: {e}")
