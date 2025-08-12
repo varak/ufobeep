@@ -25,6 +25,12 @@ UserPreferences _$UserPreferencesFromJson(Map<String, dynamic> json) =>
       darkMode: json['darkMode'] as bool? ?? true,
       useWeatherVisibility: json['useWeatherVisibility'] as bool? ?? true,
       enableVisibilityFilters: json['enableVisibilityFilters'] as bool? ?? true,
+      locationPrivacy:
+          $enumDecodeNullable(
+            _$LocationPrivacyEnumMap,
+            json['locationPrivacy'],
+          ) ??
+          LocationPrivacy.jittered,
       lastUpdated: json['lastUpdated'] == null
           ? null
           : DateTime.parse(json['lastUpdated'] as String),
@@ -45,8 +51,16 @@ Map<String, dynamic> _$UserPreferencesToJson(UserPreferences instance) =>
       'darkMode': instance.darkMode,
       'useWeatherVisibility': instance.useWeatherVisibility,
       'enableVisibilityFilters': instance.enableVisibilityFilters,
+      'locationPrivacy': _$LocationPrivacyEnumMap[instance.locationPrivacy]!,
       'lastUpdated': instance.lastUpdated?.toIso8601String(),
     };
+
+const _$LocationPrivacyEnumMap = {
+  LocationPrivacy.exact: 'exact',
+  LocationPrivacy.jittered: 'jittered',
+  LocationPrivacy.approximate: 'approximate',
+  LocationPrivacy.hidden: 'hidden',
+};
 
 RegistrationData _$RegistrationDataFromJson(Map<String, dynamic> json) =>
     RegistrationData(

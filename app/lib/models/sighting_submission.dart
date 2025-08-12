@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'sensor_data.dart';
 import 'alerts_filter.dart';
+import 'user_preferences.dart';
 
 part 'sighting_submission.g.dart';
 
@@ -155,53 +156,6 @@ enum SubmissionStatus {
   retry,
 }
 
-enum LocationPrivacy {
-  exact,     // Use exact coordinates
-  jittered,  // Apply 100-300m jitter (default)
-  approximate, // Round to ~1km precision
-  hidden,    // Don't include location
-}
-
-extension LocationPrivacyExtension on LocationPrivacy {
-  String get displayName {
-    switch (this) {
-      case LocationPrivacy.exact:
-        return 'Exact Location';
-      case LocationPrivacy.jittered:
-        return 'Approximate (±200m)';
-      case LocationPrivacy.approximate:
-        return 'General Area (~1km)';
-      case LocationPrivacy.hidden:
-        return 'No Location';
-    }
-  }
-
-  String get description {
-    switch (this) {
-      case LocationPrivacy.exact:
-        return 'Share your exact GPS coordinates';
-      case LocationPrivacy.jittered:
-        return 'Add small random offset for privacy (recommended)';
-      case LocationPrivacy.approximate:
-        return 'Round location to nearest kilometer';
-      case LocationPrivacy.hidden:
-        return 'Don\'t share location information';
-    }
-  }
-
-  IconData get icon {
-    switch (this) {
-      case LocationPrivacy.exact:
-        return Icons.gps_fixed;
-      case LocationPrivacy.jittered:
-        return Icons.location_on;
-      case LocationPrivacy.approximate:
-        return Icons.location_city;
-      case LocationPrivacy.hidden:
-        return Icons.location_off;
-    }
-  }
-}
 
 @JsonSerializable()
 class ImageValidationResult {

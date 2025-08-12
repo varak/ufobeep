@@ -78,3 +78,48 @@
 - don't mention yourself or add yourself in commit messages
 - scp -P322 /home/mike/D/ufobeep/add_enrichment_column.py ufobeep@ufobeep.com:/home/ufobeep/  is the correct command, please include the port when giving me examples
 - dont add yourself in git messages
+- don't add yourself or mention yourself in commit messages or commits
+- don't add yourself or mention yourself in commit messages or commits
+- production machine ssh is port 322
+- production hostname is ufobeep.com user ufobeep
+- Here are the key paths and credentials I should remember before autocompact:
+
+  Production Server Access:
+
+  - SSH: ssh -p 322 ufobeep@ufobeep.com
+  - Project path: /home/ufobeep/ufobeep
+  - API service: sudo systemctl restart ufobeep-api
+
+  Local Development:
+
+  - Project root: /home/mike/D/ufobeep
+  - Mobile app path: /home/mike/D/ufobeep/app
+  - API path: /home/mike/D/ufobeep/api
+
+  Key Configuration:
+
+  - MinIO bucket: ufobeep-media (created on production)
+  - API endpoints: Working at http://localhost:8000/media/*
+  - Database credentials:
+    - Database: ufobeep_db
+    - User: ufobeep_user
+    - Password: ufopostpass
+    - Host: localhost:5432
+
+  Git Workflow:
+
+  - Deploy pattern: git push → ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep && git pull origin main && sudo 
+  systemctl restart ufobeep-api"
+
+  Current Status:
+
+  - Phase 1 Step 3 (Task 21) COMPLETED - Presigned uploads working
+  - Next: Phase 1 Step 4 (Task 27) - Push token registration
+  - Task list: Located in /home/mike/D/ufobeep/docs/new_tasks.md
+
+  Mobile Testing:
+
+  - ADB: Currently on port 37897 (adb -s 192.168.0.49:37897)
+  - APK path: ./app/build/app/outputs/flutter-apk/app-debug.apk
+- don't mention or add yourself to commit messages
+- no this is not a test/development setup, we test in production here. DO NOT SETUP TEST/DEVELOPMENT use real shit live.!!

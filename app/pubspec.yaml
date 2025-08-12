@@ -44,6 +44,7 @@ dependencies:
   
   # Networking
   dio: ^5.7.0
+  http: ^1.2.2
   
   # Local Storage
   shared_preferences: ^2.3.3
@@ -70,6 +71,11 @@ dependencies:
   # Environment Variables
   flutter_dotenv: ^5.1.0
   json_annotation: ^4.9.0
+  
+  # Push Notifications
+  firebase_core: ^3.8.0
+  firebase_messaging: ^15.1.4
+  package_info_plus: ^8.0.3
 
 dev_dependencies:
   flutter_test:

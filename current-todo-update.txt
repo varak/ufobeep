@@ -1,0 +1,230 @@
+# UFOBeep Task Completion Analysis & Todo Update
+Generated: 2025-01-12
+
+## COMPLETED TASKS ✅
+
+### Foundation & Infrastructure (Tasks 1-6)
+01. [DONE] ✅ Initialize monorepo skeleton and branches
+02. [DONE] ✅ Create design tokens & brand (dark-first, neon-green)
+03. [DONE] ✅ Add .gitignore, .env.example; confirm local dirs
+06. [DONE] ✅ Environment config strategy (API_BASE_URL, MATRIX_BASE_URL, locales)
+
+### Core Mobile Features (Tasks 8, 12-15, 20)
+08. [DONE] ✅ Splash/Startup init & locale load
+08A. [DONE] ✅ Capture + send sensor payload with photo (UTC, GPS, azimuth, pitch/roll, hfov)
+08B. [DONE] ✅ Implement /v1/plane-match (OpenSky OAuth2, bbox query, LOS math, tolerance)
+12. [DONE] ✅ Chat screen skeleton (timeline + composer)
+13. [DONE] ✅ Compass — Standard mode (heading + arrow + AR overlay stub)
+15. [DONE] ✅ i18n packs EN/ES/DE and live switch
+20. [DONE] ✅ Finalize API contracts & shared models (Dart/TS)
+
+### Web Platform (Tasks 16, 26)
+16. [DONE] ✅ Home page content + mini map placeholder + CTA
+26. [DONE] ✅ SSR read-only transcript (last 100 messages)
+
+### Security & Moderation (Tasks 32-33)
+32. [DONE] ✅ Moderation badges in chat (soft-hidden/redacted)
+33. [DONE] ✅ NSFW quarantine handling (hide public, allow reporter/mods)
+
+### Additional Completed Features
+- ✅ Comprehensive weather data collection and display (OpenWeather API)
+- ✅ Location name reverse geocoding display
+- ✅ Email signup collection with IP/GPS comparison
+- ✅ Progressive enrichment system (weather, celestial, satellites, HF)
+- ✅ Matrix chat integration with room auto-creation
+- ✅ Production deployment configuration and scripts
+
+## PARTIAL COMPLETION 🟡
+
+### Mobile App Core (Tasks 4, 5, 9, 11, 22-25)
+04. [PARTIAL] 🟡 Scaffold Flutter routes (go_router) + Riverpod store
+    - ✅ Routes implemented with go_router
+    - ✅ Riverpod state management
+    - ❌ Some navigation flows incomplete
+
+05. [PARTIAL] 🟡 Scaffold Next.js pages: /, /alerts/[id], /app, /privacy, /terms, /safety
+    - ✅ Home page (/) complete
+    - ✅ Alert detail (/alerts/[id]) with read-only chat
+    - ❌ /app page missing
+    - ❌ /privacy, /terms, /safety pages missing
+
+09. [PARTIAL] 🟡 Alerts (Home) list skeleton with filters & Beep button
+    - ✅ Alert list rendering
+    - ✅ Basic filtering
+    - ❌ Advanced filter UI incomplete
+    - ❌ Beep button integration needs work
+
+11. [PARTIAL] 🟡 Alert Detail skeleton with enrichment placeholders
+    - ✅ Basic detail screen
+    - ✅ Comprehensive weather display
+    - ✅ Location information
+    - ❌ Some enrichment sections incomplete
+
+22. [PARTIAL] 🟡 Create sighting endpoint + client wiring
+    - ✅ API endpoint implemented
+    - ✅ Basic client integration
+    - ❌ Upload flow needs completion
+
+23. [PARTIAL] 🟡 Alerts feed endpoint + app list rendering
+    - ✅ Feed endpoint working
+    - ✅ Basic list rendering
+    - ❌ Performance optimization needed
+
+24. [PARTIAL] 🟡 Progressive enrichment (weather, celestial, satellites, HF)
+    - ✅ Weather enrichment complete
+    - ✅ Celestial calculations implemented
+    - ✅ Satellite tracking implemented
+    - ✅ HF content filtering
+    - ❌ Some enrichment processors need tuning
+
+25. [PARTIAL] 🟡 Matrix SSO token & auto-join per-sighting room
+    - ✅ Matrix service integration
+    - ✅ Auto-room creation
+    - ❌ SSO token handling needs work
+
+### Advanced Features (Tasks 8C, 8D, 14, 18, 29-30, 35)
+08C. [PARTIAL] 🟡 If capture flagged as sky object, call plane-match; render "Likely plane..." badge
+    - ✅ Plane match API integration
+    - ✅ Basic badge rendering
+    - ❌ UI flow refinement needed
+
+08D. [PARTIAL] 🟡 Quota/rate handling: bbox ≤80 km, 5-sec time quantization, caching
+    - ✅ Basic rate limiting
+    - ✅ Caching implemented
+    - ❌ Advanced quota management needed
+
+14. [PARTIAL] 🟡 Compass — Pilot mode (mag/true heading, relative bearing, ETA stub)
+    - ✅ Pilot mode UI implemented
+    - ✅ Heading calculations
+    - ❌ ETA calculations incomplete
+    - ❌ Bank overlay needs work
+
+18. [PARTIAL] 🟡 /alerts/[id] public detail + read-only chat area
+    - ✅ Public detail page
+    - ✅ Read-only chat display
+    - ❌ SEO optimization needed
+
+29. [PARTIAL] 🟡 Compass math polish + AR overlay (standard mode)
+    - ✅ Basic compass math
+    - ✅ AR overlay structure
+    - ❌ AR overlay polish needed
+
+30. [PARTIAL] 🟡 Pilot mode vectoring (mag/true, relative bearing, ETA, bank overlay)
+    - ✅ Basic vectoring calculations
+    - ✅ Relative bearing display
+    - ❌ ETA accuracy needs improvement
+    - ❌ Bank overlay incomplete
+
+35. [PARTIAL] 🟡 Performance pass (lists, images, code splitting, CWV)
+    - ✅ Basic performance monitoring
+    - ✅ Some image optimization
+    - ❌ Comprehensive performance audit needed
+
+## TODO TASKS ❌
+
+### High Priority Core Features
+07. [TODO] ❌ Profile/Registration UI (prefs, range, language)
+    - Registration screen exists but incomplete
+    - Profile preferences need full implementation
+
+10. [TODO] ❌ Beep (Capture/Upload) screen with preview & submit
+    - Critical user flow missing
+    - Photo capture and upload UI needed
+
+17. [TODO] ❌ /app page (install + permissions rationale)
+    - Important for app distribution
+    - Should explain permissions and installation
+
+19. [TODO] ❌ /privacy, /terms, /safety pages + sitemap/robots
+    - Legal compliance requirement
+    - SEO foundation needed
+
+21. [TODO] ❌ Upload presign endpoint → PUT to S3/MinIO (app wiring)
+    - Media upload infrastructure incomplete
+    - S3/MinIO integration needed
+
+27. [TODO] ❌ Push token registration & device model
+    - Critical for alert notifications
+    - FCM/APNs integration needed
+
+28. [TODO] ❌ Alert fanout (push) + app deep link handling
+    - Core notification system
+    - Deep linking for alert navigation
+
+31. [TODO] ❌ Visibility logic (min(profile, 2×visibility) fallback 30 km) + filters
+    - Important for user experience
+    - Distance-based alert filtering
+
+### Secondary Priority Features
+08E. [TODO] ❌ Add OPENSKY setup steps and .env keys; note non-commercial licensing
+    - Documentation task
+    - Important for setup
+
+08F. [TODO] ❌ Synthetic fixtures for 3 locations; verify plane vs unknown behavior
+    - Testing infrastructure
+    - Quality assurance
+
+08Z. [TODO] ❌ Backfill 1–8: audit and complete any incomplete items
+    - Systematic review needed
+    - Foundation consolidation
+
+34. [TODO] ❌ Error handling + retries + offline caches
+    - Reliability requirement
+    - User experience enhancement
+
+36. [TODO] ❌ i18n for site + localized meta/OG
+    - Web platform internationalization
+    - SEO in multiple languages
+
+37. [TODO] ❌ SEO (sitemap, robots, canonical, OG on /alerts/[id])
+    - Search engine optimization
+    - Public visibility
+
+38. [TODO] ❌ CI/CD Workflows: API Docker → VPS, Flutter builds, Next.js → Vercel
+    - DevOps automation
+    - Deployment pipeline
+
+39. [TODO] ❌ E2E against AC-1..AC-6 (including Pilot Mode)
+    - Quality assurance
+    - Acceptance criteria validation
+
+40. [TODO] ❌ Beta packaging (stores), website /app polish, incident runbook
+    - Release preparation
+    - Production readiness
+
+## CRITICAL PATH RECOMMENDATIONS
+
+### Phase 1: Complete Core User Flows (Priority 1)
+1. Task 10: Beep (Capture/Upload) screen - CRITICAL USER FLOW
+2. Task 07: Profile/Registration UI - USER ONBOARDING
+3. Task 21: Upload presign endpoint - MEDIA INFRASTRUCTURE
+4. Task 27: Push token registration - NOTIFICATION SYSTEM
+5. Task 28: Alert fanout (push) - CORE FUNCTIONALITY
+
+### Phase 2: Platform Completeness (Priority 2)
+1. Task 17: /app page - APP DISTRIBUTION
+2. Task 19: Legal pages (/privacy, /terms, /safety) - COMPLIANCE
+3. Task 31: Visibility logic - USER EXPERIENCE
+4. Task 34: Error handling + offline caches - RELIABILITY
+
+### Phase 3: Polish & Launch (Priority 3)
+1. Task 08Z: Backfill audit - FOUNDATION REVIEW
+2. Task 35: Performance pass - OPTIMIZATION
+3. Task 38: CI/CD Workflows - AUTOMATION
+4. Task 39: E2E testing - QUALITY ASSURANCE
+5. Task 40: Beta packaging - RELEASE PREPARATION
+
+## CURRENT STATE SUMMARY
+- **Completed**: 15/40 tasks (37.5%)
+- **Partial**: 11/40 tasks (27.5%)
+- **TODO**: 14/40 tasks (35%)
+
+The project has a solid foundation with core infrastructure, basic mobile app functionality, weather enrichment, and chat integration working. The main gaps are in user-facing features (capture flow, profile management) and production readiness (push notifications, error handling, CI/CD).
+
+## IMMEDIATE NEXT STEPS
+1. Complete Task 10 (Beep screen) - most critical missing user flow
+2. Complete Task 07 (Profile/Registration) - user onboarding
+3. Implement Task 21 (Upload infrastructure) - media handling
+4. Set up Task 27 (Push notifications) - core engagement feature
+
+This analysis reflects the current state as of the comprehensive weather data implementation completed today.

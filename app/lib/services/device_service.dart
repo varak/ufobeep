@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import '../config/environment.dart';
+import '../config/environment.dart' as env;
 import '../models/api_models.dart';
 
 /// Device platform enumeration
@@ -273,7 +273,7 @@ class DeviceService {
         locale: Platform.localeName,
       );
 
-      final url = Uri.parse('${Environment.apiBaseUrl}/v1/devices/register');
+      final url = Uri.parse('${env.AppEnvironment.apiBaseUrl}/devices/register');
 
       final response = await _httpClient.post(
         url,
@@ -309,7 +309,7 @@ class DeviceService {
   Future<bool> updatePushToken(String pushToken) async {
     try {
       final deviceId = await getDeviceId();
-      final url = Uri.parse('${Environment.apiBaseUrl}/v1/devices/$deviceId');
+      final url = Uri.parse('${env.AppEnvironment.apiBaseUrl}/devices/$deviceId');
 
       final response = await _httpClient.put(
         url,
@@ -348,7 +348,7 @@ class DeviceService {
   }) async {
     try {
       final deviceId = await getDeviceId();
-      final url = Uri.parse('${Environment.apiBaseUrl}/v1/devices/$deviceId');
+      final url = Uri.parse('${env.AppEnvironment.apiBaseUrl}/devices/$deviceId');
 
       final updates = <String, dynamic>{};
       if (alertNotifications != null) updates['alert_notifications'] = alertNotifications;
@@ -385,7 +385,7 @@ class DeviceService {
       if (now - lastHeartbeat < 300000) return;
 
       final deviceId = await getDeviceId();
-      final url = Uri.parse('${Environment.apiBaseUrl}/v1/devices/$deviceId/heartbeat');
+      final url = Uri.parse('${env.AppEnvironment.apiBaseUrl}/devices/$deviceId/heartbeat');
 
       final response = await _httpClient.post(
         url,
@@ -407,7 +407,7 @@ class DeviceService {
   Future<bool> unregisterDevice() async {
     try {
       final deviceId = await getDeviceId();
-      final url = Uri.parse('${Environment.apiBaseUrl}/v1/devices/$deviceId');
+      final url = Uri.parse('${env.AppEnvironment.apiBaseUrl}/devices/$deviceId');
 
       final response = await _httpClient.delete(
         url,

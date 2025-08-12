@@ -143,7 +143,7 @@ class _AlertByIdProviderElement extends AutoDisposeFutureProviderElement<Alert?>
   String get alertId => (origin as AlertByIdProvider).alertId;
 }
 
-String _$filteredAlertsHash() => r'50c6f8d611fea01fba318024e74fe9d917d7255a';
+String _$filteredAlertsHash() => r'958024ff2c22d58f5afd07a821e7ba30e736ab38';
 
 /// See also [filteredAlerts].
 @ProviderFor(filteredAlerts)

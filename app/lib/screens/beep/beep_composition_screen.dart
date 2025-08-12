@@ -32,8 +32,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   String _selectedCategory = local.SightingCategory.ufo;
-  // Use default privacy setting - will be moved to user profile
-  local.LocationPrivacy _locationPrivacy = local.LocationPrivacy.jittered;
+  // Location privacy is now handled in user profile settings
   
   // Submission state
   bool _isSubmitting = false;
@@ -118,7 +117,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
         mediaFiles: [widget.imageFile],
         witnessCount: 1,
         tags: tags,
-        isPublic: _locationPrivacy != local.LocationPrivacy.hidden,
+        isPublic: true, // TODO: Use user profile location privacy setting
         onProgress: (progress) {
           debugPrint('Upload progress: ${(progress * 100).toStringAsFixed(1)}%');
         },
@@ -145,16 +144,16 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Beep "$title" sent successfully as $classification$additionalInfo\n\nSighting ID: $sightingId'),
+            content: Text('Beep "$title" sent successfully as $classification$additionalInfo'),
             backgroundColor: classification.contains('Aircraft') 
                 ? AppColors.semanticWarning 
                 : AppColors.brandPrimary,
-            duration: const Duration(seconds: 5),
+            duration: const Duration(seconds: 3),
           ),
         );
 
-        // Navigate back to beep screen
-        context.go('/beep');
+        // Navigate to the alert detail page
+        context.go('/alert/$sightingId');
       }
 
     } catch (e) {
@@ -201,116 +200,78 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('=== BeepCompositionScreen.build() START ===');
-    debugPrint('ImageFile exists: ${widget.imageFile.existsSync()}');
-    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Compose Beep'),
-        backgroundColor: Colors.red, // Bright red for visibility test
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.darkSurface,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: _retakePhoto,
           tooltip: 'Retake Photo',
         ),
       ),
-      backgroundColor: Colors.green, // Bright green background for visibility test
-      body: Container(
-        color: Colors.yellow, // Bright yellow container
-        child: Column(
-          children: [
-            Container(
-              height: 100,
-              color: Colors.blue,
-              child: Center(
-                child: Text(
-                  'PHOTO SECTION TEST',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+      backgroundColor: AppColors.darkBackground,
+      body: Column(
+        children: [
+          // Main content
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Photo section
+                  _buildPhotoSection(),
+                  const SizedBox(height: 16),
+                  
+                  // Explanation message
+                  _buildExplanationMessage(),
+                  const SizedBox(height: 20),
+                  
+                  // Plane match section (if applicable)
+                  _buildPlaneMatchSection(),
+                  if (_planeMatch != null) const SizedBox(height: 20),
+                  
+                  // Error message
+                  if (_errorMessage != null) ...[
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      margin: const EdgeInsets.only(bottom: 16),
+                      decoration: BoxDecoration(
+                        color: AppColors.semanticError.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: AppColors.semanticError.withOpacity(0.3)),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.error, color: AppColors.semanticError, size: 20),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              _errorMessage!,
+                              style: const TextStyle(color: AppColors.semanticError, fontSize: 14),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                  
+                  // Form fields
+                  _buildTitleInput(),
+                  const SizedBox(height: 20),
+                  _buildDescriptionInput(),
+                  const SizedBox(height: 20),
+                  _buildCategorySelection(),
+                  const SizedBox(height: 100), // Space for bottom button
+                ],
               ),
             ),
-            Expanded(
-              child: Container(
-                color: Colors.orange,
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      _buildPhotoSection(),
-                      SizedBox(height: 10),
-                      
-                      // Add simple form fields with bright backgrounds
-                      Container(
-                        width: 300,
-                        padding: EdgeInsets.all(12),
-                        color: Colors.purple,
-                        child: Column(
-                          children: [
-                            Text('FORM FIELDS', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-                            SizedBox(height: 8),
-                            TextField(
-                              controller: _titleController,
-                              style: TextStyle(color: Colors.black),
-                              decoration: InputDecoration(
-                                hintText: 'Title...',
-                                filled: true,
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(),
-                                contentPadding: EdgeInsets.all(8),
-                              ),
-                            ),
-                            SizedBox(height: 8),
-                            TextField(
-                              controller: _descriptionController,
-                              style: TextStyle(color: Colors.black),
-                              decoration: InputDecoration(
-                                hintText: 'Description...',
-                                filled: true,
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(),
-                                contentPadding: EdgeInsets.all(8),
-                              ),
-                              maxLines: 2,
-                            ),
-                          ],
-                        ),
-                      ),
-                      
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: _isFormValid && !_isSubmitting ? () async {
-                          debugPrint('Submit button pressed');
-                          debugPrint('Title: ${_titleController.text}');
-                          debugPrint('Description: ${_descriptionController.text}');
-                          await _submitBeep();
-                        } : null,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: _isFormValid && !_isSubmitting ? Colors.blue : Colors.grey,
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        ),
-                        child: _isSubmitting 
-                          ? SizedBox(
-                              width: 16,
-                              height: 16,
-                              child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
-                            )
-                          : Text(
-                              _isFormValid ? 'SEND BEEP' : 'FILL FORM',
-                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+          
+          // Bottom action buttons
+          _buildBottomActions(),
+        ],
       ),
     );
   }
@@ -610,90 +571,6 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
     );
   }
 
-  Widget _buildLocationPrivacySection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Location Privacy',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          decoration: BoxDecoration(
-            color: AppColors.darkSurface,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.darkBorder),
-          ),
-          child: Column(
-            children: local.LocationPrivacy.values.map((privacy) {
-              final isSelected = _locationPrivacy == privacy;
-              return InkWell(
-                onTap: () {
-                  setState(() {
-                    _locationPrivacy = privacy;
-                  });
-                },
-                borderRadius: BorderRadius.circular(12),
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: isSelected 
-                        ? AppColors.brandPrimary.withOpacity(0.1) 
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        privacy.icon,
-                        color: isSelected ? AppColors.brandPrimary : AppColors.textSecondary,
-                        size: 24,
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              privacy.displayName,
-                              style: TextStyle(
-                                color: isSelected ? AppColors.brandPrimary : AppColors.textPrimary,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              privacy.description,
-                              style: const TextStyle(
-                                color: AppColors.textSecondary,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (isSelected)
-                        const Icon(
-                          Icons.check_circle,
-                          color: AppColors.brandPrimary,
-                          size: 24,
-                        ),
-                    ],
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _buildBottomActions() {
     return Container(

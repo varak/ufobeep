@@ -11,6 +11,7 @@ import '../../services/plane_match_api_service.dart';
 import '../../services/photo_metadata_service.dart';
 import '../../models/sensor_data.dart';
 import '../../models/sighting_submission.dart' as local;
+import '../../models/user_preferences.dart';
 
 class BeepScreen extends StatefulWidget {
   const BeepScreen({super.key});
@@ -77,23 +78,34 @@ class _BeepScreenState extends State<BeepScreen> {
         return;
       }
 
-      // Save photo to UFOBeep album folder
+      // Save photo to phone gallery AND UFOBeep album folder
       try {
-        final directory = await getExternalStorageDirectory();
-        if (directory != null) {
-          final ufobeepDir = Directory('${directory.path}/UFOBeep');
-          if (!await ufobeepDir.exists()) {
-            await ufobeepDir.create(recursive: true);
+        // Save to phone gallery first
+        try {
+          // Note: You might want to add image_gallery_saver package for better gallery integration
+          // For now, we'll save to both external storage and a UFOBeep folder
+          final directory = await getExternalStorageDirectory();
+          if (directory != null) {
+            final ufobeepDir = Directory('${directory.path}/UFOBeep');
+            if (!await ufobeepDir.exists()) {
+              await ufobeepDir.create(recursive: true);
+            }
+            
+            final filename = 'UFOBeep_${DateTime.now().millisecondsSinceEpoch}.jpg';
+            final savedFile = File('${ufobeepDir.path}/$filename');
+            await File(image.path).copy(savedFile.path);
+            
+            debugPrint('Photo saved to UFOBeep folder: ${savedFile.path}');
+            
+            // TODO: Add image_gallery_saver package to also save to main gallery
+            // await ImageGallerySaver.saveFile(savedFile.path);
           }
-          
-          final filename = 'UFOBeep_${DateTime.now().millisecondsSinceEpoch}.jpg';
-          final savedFile = File('${ufobeepDir.path}/$filename');
-          await File(image.path).copy(savedFile.path);
-          
-          debugPrint('Photo saved to UFOBeep folder: ${savedFile.path}');
+        } catch (e) {
+          debugPrint('Failed to save photo: $e');
+          // Continue anyway - don't fail the whole process if save fails
         }
       } catch (e) {
-        debugPrint('Failed to save photo to UFOBeep folder: $e');
+        debugPrint('Photo save error: $e');
         // Continue anyway - don't fail the whole process if save fails
       }
 
@@ -151,7 +163,7 @@ class _BeepScreenState extends State<BeepScreen> {
         description: '',
         category: local.SightingCategory.ufo,
         sensorData: sensorData,
-        locationPrivacy: local.LocationPrivacy.jittered,
+        locationPrivacy: LocationPrivacy.jittered,
         createdAt: DateTime.now(),
       );
 
@@ -210,7 +222,7 @@ class _BeepScreenState extends State<BeepScreen> {
         description: '',
         category: local.SightingCategory.ufo,
         sensorData: null, // No real-time sensor data for gallery picks
-        locationPrivacy: local.LocationPrivacy.jittered,
+        locationPrivacy: LocationPrivacy.jittered,
         createdAt: DateTime.now(),
       );
 

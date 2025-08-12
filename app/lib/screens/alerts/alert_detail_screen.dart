@@ -253,25 +253,47 @@ class AlertDetailScreen extends ConsumerWidget {
                 ],
 
                 // Action Buttons
-                Row(
+                Column(
                   children: [
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          context.go('/alert/$alertId/chat');
-                        },
-                        icon: const Icon(Icons.chat),
-                        label: const Text('Join Chat'),
-                      ),
+                    // First row: Chat and Navigate
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              context.go('/alert/$alertId/chat');
+                            },
+                            icon: const Icon(Icons.chat),
+                            label: const Text('Join Chat'),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: () {
+                              // TODO: Navigate to alert location
+                            },
+                            icon: const Icon(Icons.directions),
+                            label: const Text('Navigate'),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
+                    
+                    const SizedBox(height: 12),
+                    
+                    // Second row: Add Photos button (full width)
+                    SizedBox(
+                      width: double.infinity,
                       child: OutlinedButton.icon(
-                        onPressed: () {
-                          // TODO: Navigate to alert location
-                        },
-                        icon: const Icon(Icons.directions),
-                        label: const Text('Navigate'),
+                        onPressed: () => _showAddPhotosDialog(context, alertId),
+                        icon: const Icon(Icons.add_photo_alternate),
+                        label: const Text('Add More Photos'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppColors.brandPrimary,
+                          side: const BorderSide(color: AppColors.brandPrimary),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
                       ),
                     ),
                   ],
@@ -484,6 +506,81 @@ class AlertDetailScreen extends ConsumerWidget {
     } catch (e) {
       return 'N/A';
     }
+  }
+
+  void _showAddPhotosDialog(BuildContext context, String alertId) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.darkSurface,
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Add More Photos',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: AppColors.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Additional photos will be attached to this sighting',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      // Navigate to beep screen with context to attach to this alert
+                      context.go('/beep?attachTo=$alertId');
+                    },
+                    icon: const Icon(Icons.camera_alt),
+                    label: const Text('Take Photo'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.brandPrimary,
+                      foregroundColor: Colors.black,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      // Navigate to beep screen with gallery picker and context
+                      context.go('/beep?attachTo=$alertId&source=gallery');
+                    },
+                    icon: const Icon(Icons.photo_library),
+                    label: const Text('From Gallery'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppColors.brandPrimary,
+                      side: const BorderSide(color: AppColors.brandPrimary),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: AppColors.textSecondary),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
 }

@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+    id("com.google.gms.google-services")
 }
 
 import java.util.Properties
@@ -29,7 +30,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.ufobeep.app"
+        applicationId = "com.ufobeep.ufobeep"
         minSdk = 24
         targetSdk = 34
         versionCode = flutter.versionCode
@@ -51,7 +52,7 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix = ".debug"
+            // applicationIdSuffix = ".debug"  // Temporarily disabled for Firebase testing
             versionNameSuffix = "-debug"
             isDebuggable = true
         }
