@@ -453,7 +453,9 @@ Future<List<Alert>> filteredAlerts(FilteredAlertsRef ref) async {
         break;
     }
     
-    return filter.ascending ? comparison : -comparison;
+    // For newest/oldest, ascending means oldest first, descending means newest first
+    // The comparison is already set up correctly, don't negate it
+    return comparison;
   });
 
   return filteredAlerts;
