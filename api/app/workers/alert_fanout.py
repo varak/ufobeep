@@ -22,10 +22,10 @@ except ImportError:
     except ImportError:
         # Fallback for testing
         class MockSettings:
-        max_fanout_distance_km = 100.0
-        min_fanout_distance_km = 0.1
-        max_targets_per_fanout = 1000
-    settings = MockSettings()
+            max_fanout_distance_km = 100.0
+            min_fanout_distance_km = 0.1
+            max_targets_per_fanout = 1000
+        settings = MockSettings()
     
     from dataclasses import dataclass
     from enum import Enum

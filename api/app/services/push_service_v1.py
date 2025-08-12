@@ -14,6 +14,8 @@ from dataclasses import dataclass
 import os
 from pathlib import Path
 
+logger = logging.getLogger(__name__)
+
 # Google auth for FCM v1
 try:
     from google.auth.transport.requests import Request
@@ -24,8 +26,6 @@ except ImportError:
     logger.warning("google-auth not installed. Install with: pip install google-auth")
     Request = None
     service_account = None
-
-logger = logging.getLogger(__name__)
 
 
 class NotificationType(str, Enum):
