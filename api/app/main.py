@@ -96,8 +96,8 @@ def healthz():
 def ping():
     return {"message": "pong"}
 
-# Mount static files for media serving
-app.mount("/media", StaticFiles(directory="media"), name="media")
+# Mount static files for media serving (use /static to avoid conflict with /media/upload)
+app.mount("/static", StaticFiles(directory="media"), name="media")
 
 # Include routers
 app.include_router(plane_match.router)
@@ -369,8 +369,8 @@ async def upload_media(
         media_info = {
             "id": str(uuid.uuid4()),
             "type": "image",
-            "url": f"{base_url}/media/images/{unique_filename}",
-            "thumbnail_url": f"{base_url}/media/images/{unique_filename}",  # Same for now, could generate thumbnail
+            "url": f"{base_url}/static/images/{unique_filename}",
+            "thumbnail_url": f"{base_url}/static/images/{unique_filename}",  # Same for now, could generate thumbnail
             "filename": file.filename or unique_filename,
             "size": file_size,
             "content_type": file.content_type,
