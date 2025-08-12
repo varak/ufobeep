@@ -141,7 +141,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file="../.env",  # Look in parent directory for main .env file
         env_file_encoding="utf-8",
-        case_sensitive=False
+        case_sensitive=False,
+        extra="ignore"  # Ignore extra fields in .env file
     )
     
     @property
