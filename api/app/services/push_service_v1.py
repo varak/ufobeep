@@ -18,9 +18,12 @@ from pathlib import Path
 try:
     from google.auth.transport.requests import Request
     from google.oauth2 import service_account
+    GOOGLE_AUTH_AVAILABLE = True
 except ImportError:
-    # Install with: pip install google-auth
-    pass
+    GOOGLE_AUTH_AVAILABLE = False
+    logger.warning("google-auth not installed. Install with: pip install google-auth")
+    Request = None
+    service_account = None
 
 logger = logging.getLogger(__name__)
 
@@ -112,6 +115,10 @@ class PushNotificationServiceV1:
     def _initialize_credentials(self):
         """Initialize Google OAuth2 credentials from service account"""
         try:
+            if not GOOGLE_AUTH_AVAILABLE:
+                logger.error("Google auth library not available")
+                return
+                
             if not Path(self.service_account_file).exists():
                 logger.error(f"Service account file not found: {self.service_account_file}")
                 return
