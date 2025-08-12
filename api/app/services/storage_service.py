@@ -7,8 +7,8 @@ import boto3
 from botocore.exceptions import ClientError, NoCredentialsError
 from botocore.client import Config
 
-from config.environment import settings
-from schemas.media import (
+from ..config.environment import settings
+from ..schemas.media import (
     PresignedUploadRequest,
     PresignedUploadResponse,
     MediaFile,
