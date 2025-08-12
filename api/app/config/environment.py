@@ -3,10 +3,10 @@ from enum import Enum
 from typing import List, Optional
 try:
     from pydantic_settings import BaseSettings
-    from pydantic import Field
+    from pydantic import Field, field_validator
 except ImportError:
     # Fallback for older pydantic versions
-    from pydantic import BaseSettings, Field
+    from pydantic import BaseSettings, Field, validator as field_validator
 
 
 class Environment(str, Enum):
@@ -143,11 +143,12 @@ class Settings(BaseSettings):
         env_file_encoding = "utf-8"
         case_sensitive = False
     
+    @field_validator('cors_origins', 'supported_locales', mode='before')
     @classmethod
-    def parse_env_var(cls, field_name: str, raw_val: str) -> any:
-        if field_name in {"cors_origins", "supported_locales"}:
-            return [x.strip() for x in raw_val.split(",")]
-        return raw_val
+    def parse_list_fields(cls, v):
+        if isinstance(v, str):
+            return [x.strip() for x in v.split(',')]
+        return v
     
     # Property methods for computed values
     @property
