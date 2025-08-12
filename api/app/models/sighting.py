@@ -16,6 +16,20 @@ class SightingCategory(str, Enum):
     UFO = "ufo"
     ANOMALY = "anomaly"
     UNKNOWN = "unknown"
+    PET = "pet"
+
+
+class SightingClassification(str, Enum):
+    UFO = "ufo"
+    PET = "pet"
+    OTHER = "other"
+
+
+class PetStatus(str, Enum):
+    MISSING = "missing"
+    FOUND = "found"
+    REUNITED = "reunited"
+    UNKNOWN = "unknown"
 
 
 class SightingStatus(str, Enum):
@@ -201,6 +215,14 @@ class Sighting(Base):
     title = Column(String(200), nullable=False)
     description = Column(Text, nullable=False)
     category = Column(SQLEnum(SightingCategory), nullable=False)
+    classification = Column(SQLEnum(SightingClassification), nullable=True)
+    
+    # Pet-specific metadata (only populated when classification = 'pet')
+    pet_type = Column(String(100), nullable=True)  # dog, cat, bird, etc.
+    color_markings = Column(Text, nullable=True)  # description of pet appearance
+    collar_tag_info = Column(Text, nullable=True)  # collar description, tag info
+    pet_status = Column(SQLEnum(PetStatus), nullable=True)  # missing, found, etc.
+    cross_streets = Column(String(500), nullable=True)  # nearest cross streets
     
     # Status and classification
     status = Column(SQLEnum(SightingStatus), default=SightingStatus.PENDING, nullable=False)

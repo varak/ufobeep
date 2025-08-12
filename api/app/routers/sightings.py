@@ -39,6 +39,18 @@ except ImportError:
         UFO = "ufo"
         ANOMALY = "anomaly"
         UNKNOWN = "unknown"
+        PET = "pet"
+    
+    class SightingClassification(str, Enum):
+        UFO = "ufo"
+        PET = "pet"
+        OTHER = "other"
+    
+    class PetStatus(str, Enum):
+        MISSING = "missing"
+        FOUND = "found"
+        REUNITED = "reunited"
+        UNKNOWN = "unknown"
     
     class SightingStatus(str, Enum):
         PENDING = "pending"
@@ -73,6 +85,7 @@ except ImportError:
         title: str = Field(..., min_length=5, max_length=200)
         description: str = Field(..., min_length=10, max_length=2000)
         category: SightingCategory
+        classification: Optional[SightingClassification] = None
         sensor_data: SensorData
         media_files: List[str] = Field(default_factory=list)
         reporter_id: Optional[str] = None
@@ -81,6 +94,13 @@ except ImportError:
         tags: List[str] = Field(default_factory=list)
         is_public: bool = Field(default=True)
         submitted_at: datetime = Field(default_factory=datetime.utcnow)
+        
+        # Pet-specific metadata (only required when classification = 'pet')
+        pet_type: Optional[str] = Field(None, max_length=100)
+        color_markings: Optional[str] = Field(None, max_length=1000)
+        collar_tag_info: Optional[str] = Field(None, max_length=1000)
+        pet_status: Optional[PetStatus] = None
+        cross_streets: Optional[str] = Field(None, max_length=500)
     
     # Enrichment data models
     class WeatherData(BaseModel):
@@ -160,6 +180,7 @@ except ImportError:
         title: str
         description: str
         category: SightingCategory
+        classification: Optional[SightingClassification] = None
         sensor_data: SensorData
         media_files: List[MediaFile] = Field(default_factory=list)
         status: SightingStatus = SightingStatus.PENDING
@@ -175,6 +196,12 @@ except ImportError:
         verified_at: Optional[datetime] = None
         created_at: datetime = Field(default_factory=datetime.utcnow)
         updated_at: datetime = Field(default_factory=datetime.utcnow)
+        # Pet-specific metadata
+        pet_type: Optional[str] = None
+        color_markings: Optional[str] = None
+        collar_tag_info: Optional[str] = None
+        pet_status: Optional[PetStatus] = None
+        cross_streets: Optional[str] = None
         # Enrichment data
         enrichment: Optional[EnrichmentData] = None
         # Matrix room data
@@ -349,17 +376,58 @@ def prepare_matrix_room_data(sighting) -> Optional[MatrixRoomData]:
         return None
 
 
+def validate_pet_classification(submission: SightingSubmission) -> None:
+    """Validate that pet metadata is provided when classification is 'pet'"""
+    if submission.classification == SightingClassification.PET:
+        if not submission.pet_type:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail={
+                    "error": "VALIDATION_ERROR",
+                    "message": "pet_type is required when classification is 'pet'"
+                }
+            )
+        if not submission.color_markings:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail={
+                    "error": "VALIDATION_ERROR", 
+                    "message": "color_markings is required when classification is 'pet'"
+                }
+            )
+        if not submission.pet_status:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail={
+                    "error": "VALIDATION_ERROR",
+                    "message": "pet_status is required when classification is 'pet'"
+                }
+            )
+
+
 def determine_alert_level(submission: SightingSubmission) -> AlertLevel:
     """Determine alert level based on sighting characteristics"""
     score = 0
     
-    # Base score by category
-    if submission.category == "ufo":
-        score += 3
-    elif submission.category == "anomaly": 
-        score += 2
+    # Base score by classification (takes precedence over category)
+    if submission.classification:
+        if submission.classification == SightingClassification.PET:
+            # Pet alerts get high priority for reunification
+            score += 4
+        elif submission.classification == SightingClassification.UFO:
+            score += 3
+        else:  # OTHER
+            score += 2
     else:
-        score += 1
+        # Fallback to category-based scoring
+        if submission.category == SightingCategory.UFO:
+            score += 3
+        elif submission.category == SightingCategory.ANOMALY: 
+            score += 2
+        elif submission.category == SightingCategory.PET:
+            score += 4  # Pet sightings get high priority
+        else:
+            score += 1
     
     # Multiple witnesses increase score
     if submission.witness_count > 5:
@@ -405,6 +473,10 @@ async def create_sighting(
         # Generate unique sighting ID
         sighting_id = f"sighting_{uuid4().hex[:12]}"
         
+        # Validate pet classification if provided
+        if submission.classification:
+            validate_pet_classification(submission)
+            
         # Validate media files if provided
         media_files = []
         if submission.media_files:
@@ -426,6 +498,7 @@ async def create_sighting(
             title=submission.title,
             description=submission.description,
             category=submission.category,
+            classification=submission.classification,
             sensor_data=submission.sensor_data,
             media_files=media_files,
             status=SightingStatus.PENDING,
@@ -437,7 +510,13 @@ async def create_sighting(
             verification_score=0.0,
             submitted_at=submission.submitted_at,
             created_at=datetime.utcnow(),
-            updated_at=datetime.utcnow()
+            updated_at=datetime.utcnow(),
+            # Pet-specific metadata
+            pet_type=submission.pet_type,
+            color_markings=submission.color_markings,
+            collar_tag_info=submission.collar_tag_info,
+            pet_status=submission.pet_status,
+            cross_streets=submission.cross_streets
         )
         
         # Store sighting (in production: save to database)
@@ -454,6 +533,7 @@ async def create_sighting(
                 "sighting_id": sighting_id,
                 "status": "created",
                 "alert_level": alert_level.value,
+                "classification": submission.classification.value if submission.classification else None,
                 "jittered_location": jittered_location.dict()
             },
             "message": "Sighting created successfully",
@@ -690,6 +770,7 @@ async def list_sightings(
     limit: int = Query(default=20, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
     category: Optional[str] = Query(default=None),
+    classification: Optional[str] = Query(default=None),
     status: Optional[str] = Query(default=None),
     min_alert_level: Optional[str] = Query(default=None),
     verified_only: bool = Query(default=False),
@@ -712,6 +793,8 @@ async def list_sightings(
             
             # Apply filters
             if category and sighting.category != category:
+                continue
+            if classification and (not sighting.classification or sighting.classification != classification):
                 continue
             if status and sighting.status != status:
                 continue
