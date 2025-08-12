@@ -28,6 +28,7 @@ class Alert {
     this.processedAt,
     this.matrixRoomId,
     this.reporterId,
+    this.enrichment,
   });
 
   final String id;
@@ -51,6 +52,7 @@ class Alert {
   final DateTime? processedAt;
   final String? matrixRoomId;
   final String? reporterId;
+  final Map<String, dynamic>? enrichment;
 
   // Computed properties
   bool get isVerified => status == 'verified';
@@ -79,6 +81,7 @@ class Alert {
     DateTime? processedAt,
     String? matrixRoomId,
     String? reporterId,
+    Map<String, dynamic>? enrichment,
   }) {
     return Alert(
       id: id ?? this.id,
@@ -102,6 +105,7 @@ class Alert {
       processedAt: processedAt ?? this.processedAt,
       matrixRoomId: matrixRoomId ?? this.matrixRoomId,
       reporterId: reporterId ?? this.reporterId,
+      enrichment: enrichment ?? this.enrichment,
     );
   }
 
@@ -131,6 +135,7 @@ class Alert {
       processedAt: json['processed_at'] != null ? DateTime.parse(json['processed_at'] as String) : null,
       matrixRoomId: json['matrix_room_id'] as String?,
       reporterId: json['reporter_id'] as String?,
+      enrichment: json['enrichment'] as Map<String, dynamic>?,
     );
   }
 
@@ -159,6 +164,7 @@ class Alert {
       if (processedAt != null) 'processed_at': processedAt!.toIso8601String(),
       if (matrixRoomId != null) 'matrix_room_id': matrixRoomId,
       if (reporterId != null) 'reporter_id': reporterId,
+      if (enrichment != null) 'enrichment': enrichment,
     };
   }
 }

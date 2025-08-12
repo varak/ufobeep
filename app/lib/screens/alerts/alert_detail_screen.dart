@@ -4,8 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../providers/alerts_provider.dart';
 import '../../theme/app_theme.dart';
-import '../../models/alert_enrichment.dart';
-import '../../widgets/enrichment/enrichment_section.dart';
 
 class AlertDetailScreen extends ConsumerWidget {
   const AlertDetailScreen({super.key, required this.alertId});
@@ -126,11 +124,65 @@ class AlertDetailScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 24),
 
-                // Enrichment Section
-                EnrichmentSection(
-                  enrichment: _getMockEnrichment(alert.id),
-                ),
-                const SizedBox(height: 24),
+                // Enrichment Data Section (if available)
+                if (alert.enrichment != null && alert.enrichment!.isNotEmpty) ...[
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Environmental Analysis',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: 12),
+                          if (alert.enrichment!['weather'] != null) ...[
+                            _DetailRow(
+                              icon: Icons.wb_sunny,
+                              label: 'Weather',
+                              value: '${alert.enrichment!['weather']['condition']} - ${alert.enrichment!['weather']['description']}',
+                            ),
+                            _DetailRow(
+                              icon: Icons.thermostat,
+                              label: 'Temperature',
+                              value: '${alert.enrichment!['weather']['temperature']}°C',
+                            ),
+                            _DetailRow(
+                              icon: Icons.visibility,
+                              label: 'Visibility',
+                              value: '${alert.enrichment!['weather']['visibility']} km',
+                            ),
+                          ],
+                          if (alert.enrichment!['plane_match'] != null) ...[
+                            _DetailRow(
+                              icon: Icons.flight,
+                              label: 'Plane Analysis',
+                              value: alert.enrichment!['plane_match']['is_plane'] == false 
+                                  ? 'No aircraft detected (${(alert.enrichment!['plane_match']['confidence'] * 100).toStringAsFixed(0)}% confidence)'
+                                  : 'Aircraft possible',
+                            ),
+                          ],
+                          if (alert.enrichment!['celestial'] != null) ...[
+                            _DetailRow(
+                              icon: Icons.nightlight,
+                              label: 'Moon Phase',
+                              value: alert.enrichment!['celestial']['moon_phase_name'] ?? 'Unknown',
+                            ),
+                            if (alert.enrichment!['celestial']['visible_planets'] != null &&
+                                (alert.enrichment!['celestial']['visible_planets'] as List).isNotEmpty)
+                              _DetailRow(
+                                icon: Icons.star,
+                                label: 'Visible Planets',
+                                value: (alert.enrichment!['celestial']['visible_planets'] as List).join(', '),
+                              ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                ],
 
                 // Action Buttons
                 Row(
@@ -316,134 +368,6 @@ class AlertDetailScreen extends ConsumerWidget {
     }
   }
 
-  AlertEnrichment? _getMockEnrichment(String alertId) {
-    // Mock enrichment data to demonstrate different states
-    // In production, this would come from the API
-    final mockIndex = alertId.hashCode % 4;
-    
-    switch (mockIndex) {
-      case 0:
-        // Pending state
-        return AlertEnrichment(
-          alertId: alertId,
-          status: EnrichmentStatus.pending,
-        );
-      
-      case 1:
-        // Processing state
-        return AlertEnrichment(
-          alertId: alertId,
-          status: EnrichmentStatus.processing,
-        );
-      
-      case 2:
-        // Error state
-        return AlertEnrichment(
-          alertId: alertId,
-          status: EnrichmentStatus.failed,
-          errorMessage: 'Unable to fetch environmental data. Please try again later.',
-        );
-      
-      case 3:
-      default:
-        // Complete state with rich data
-        return AlertEnrichment(
-          alertId: alertId,
-          status: EnrichmentStatus.completed,
-          processedAt: DateTime.now().subtract(const Duration(minutes: 5)),
-          weather: const WeatherData(
-            condition: 'Clear',
-            description: 'Clear sky with excellent visibility',
-            temperature: 22.5,
-            humidity: 65,
-            windSpeed: 12.3,
-            windDirection: 270,
-            visibility: 10.0,
-            cloudCoverage: 15,
-            iconCode: '01n',
-          ),
-          celestial: CelestialData(
-            sun: const SunData(
-              altitude: -15.2,
-              azimuth: 285.7,
-              isVisible: false,
-            ),
-            moon: const MoonData(
-              altitude: 45.3,
-              azimuth: 120.5,
-              phase: 0.65,
-              phaseName: 'Waxing Gibbous',
-              isVisible: true,
-            ),
-            visiblePlanets: const [
-              PlanetData(
-                name: 'Venus',
-                altitude: 25.4,
-                azimuth: 245.2,
-                magnitude: -4.1,
-                isVisible: true,
-              ),
-              PlanetData(
-                name: 'Jupiter',
-                altitude: 60.2,
-                azimuth: 180.5,
-                magnitude: -2.5,
-                isVisible: true,
-              ),
-              PlanetData(
-                name: 'Mars',
-                altitude: 35.7,
-                azimuth: 155.3,
-                magnitude: 0.5,
-                isVisible: true,
-              ),
-            ],
-            brightStars: const [],
-          ),
-          satellites: const [
-            SatelliteData(
-              name: 'STARLINK-1234',
-              noradId: '45678',
-              altitude: 42.5,
-              azimuth: 135.2,
-              elevation: 42.5,
-              range: 550,
-              isVisible: true,
-              category: 'starlink',
-            ),
-            SatelliteData(
-              name: 'ISS',
-              noradId: '25544',
-              altitude: -10.2,
-              azimuth: 290.5,
-              elevation: -10.2,
-              range: 420,
-              isVisible: false,
-              category: 'iss',
-            ),
-            SatelliteData(
-              name: 'COSMOS 2251 DEB',
-              noradId: '34422',
-              altitude: 15.3,
-              azimuth: 75.8,
-              elevation: 15.3,
-              range: 780,
-              isVisible: true,
-              category: 'other',
-            ),
-          ],
-          contentAnalysis: const ContentAnalysis(
-            isNsfw: false,
-            nsfwConfidence: 0.02,
-            detectedObjects: ['light', 'sky', 'cloud', 'unknown object'],
-            suggestedTags: ['night-sky', 'unidentified', 'bright-light', 'moving-object'],
-            qualityScore: 0.85,
-            isPotentiallyMisleading: false,
-            classificationNote: 'High-quality capture with clear object visibility. No known aircraft patterns detected.',
-          ),
-        );
-    }
-  }
 }
 
 class _DetailRow extends StatelessWidget {
