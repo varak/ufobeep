@@ -126,24 +126,28 @@ async def get_alerts():
                     "status": row["status"],
                     "witnessCount": row["witness_count"],
                     "createdAt": row["created_at"].isoformat(),
-                    "latitude": None,
-                    "longitude": None,
-                    "distance": None,
-                    "bearing": None,
+                    "latitude": 0.0,  # Default to 0.0 instead of null
+                    "longitude": 0.0,  # Default to 0.0 instead of null
+                    "distance": 0.0,  # Default to 0.0 instead of null
+                    "bearing": 0.0,   # Default to 0.0 instead of null
                     "viewCount": 0,
                     "verificationScore": 0.0,
                     "mediaFiles": [],
                     "tags": row["tags"] or [],
-                    "isPublic": row["is_public"]
+                    "isPublic": row["is_public"],
+                    "submittedAt": row["created_at"].isoformat(),
+                    "processedAt": row["created_at"].isoformat(),
+                    "matrixRoomId": "",  # Default empty string
+                    "reporterId": ""     # Default empty string
                 }
                 
                 # Extract coordinates from sensor data if available
                 if row["sensor_data"]:
                     sensor_data = row["sensor_data"]
-                    if "latitude" in sensor_data:
-                        alert["latitude"] = sensor_data["latitude"]
-                    if "longitude" in sensor_data:
-                        alert["longitude"] = sensor_data["longitude"]
+                    if "latitude" in sensor_data and sensor_data["latitude"] is not None:
+                        alert["latitude"] = float(sensor_data["latitude"])
+                    if "longitude" in sensor_data and sensor_data["longitude"] is not None:
+                        alert["longitude"] = float(sensor_data["longitude"])
                 
                 alerts.append(alert)
             
