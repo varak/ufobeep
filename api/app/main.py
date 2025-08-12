@@ -130,12 +130,19 @@ async def startup_event():
             """)
             
             # Create device platform and push provider enums
-            await conn.execute("""
-                CREATE TYPE IF NOT EXISTS device_platform AS ENUM ('ios', 'android', 'web')
-            """)
-            await conn.execute("""
-                CREATE TYPE IF NOT EXISTS push_provider AS ENUM ('fcm', 'apns', 'webpush')
-            """)
+            try:
+                await conn.execute("""
+                    CREATE TYPE device_platform AS ENUM ('ios', 'android', 'web')
+                """)
+            except asyncpg.DuplicateObjectError:
+                pass
+            
+            try:
+                await conn.execute("""
+                    CREATE TYPE push_provider AS ENUM ('fcm', 'apns', 'webpush')
+                """)
+            except asyncpg.DuplicateObjectError:
+                pass
             
             # Create devices table  
             await conn.execute("""
