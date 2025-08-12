@@ -50,26 +50,8 @@ class AlertDetailScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Media placeholder
-                Container(
-                  width: double.infinity,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    color: AppColors.darkSurface,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.darkBorder),
-                  ),
-                  child: const Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.image, size: 48, color: AppColors.textTertiary),
-                        SizedBox(height: 8),
-                        Text('Media preview', style: TextStyle(color: AppColors.textTertiary)),
-                      ],
-                    ),
-                  ),
-                ),
+                // Media section
+                _buildMediaSection(alert),
                 const SizedBox(height: 24),
 
                 // Category & Verification
@@ -216,6 +198,106 @@ class AlertDetailScreen extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildMediaSection(Alert alert) {
+    if (alert.mediaFiles.isEmpty) {
+      return Container(
+        width: double.infinity,
+        height: 200,
+        decoration: BoxDecoration(
+          color: AppColors.darkSurface,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.darkBorder),
+        ),
+        child: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.image_not_supported, size: 48, color: AppColors.textTertiary),
+              SizedBox(height: 8),
+              Text('No media available', style: TextStyle(color: AppColors.textTertiary)),
+            ],
+          ),
+        ),
+      );
+    }
+
+    // Show first media file (image)
+    final media = alert.mediaFiles.first;
+    final imageUrl = media['url'] as String? ?? '';
+    
+    if (imageUrl.isEmpty) {
+      return Container(
+        width: double.infinity,
+        height: 200,
+        decoration: BoxDecoration(
+          color: AppColors.darkSurface,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.darkBorder),
+        ),
+        child: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.broken_image, size: 48, color: AppColors.textTertiary),
+              SizedBox(height: 8),
+              Text('Media file unavailable', style: TextStyle(color: AppColors.textTertiary)),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: double.infinity,
+          height: 200,
+          decoration: BoxDecoration(
+            color: AppColors.darkSurface,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: AppColors.darkBorder),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.network(
+              imageUrl,
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return const Center(
+                  child: CircularProgressIndicator(color: AppColors.brandPrimary),
+                );
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.error, size: 48, color: AppColors.semanticError),
+                      SizedBox(height: 8),
+                      Text('Failed to load image', style: TextStyle(color: AppColors.textSecondary)),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+        if (alert.mediaFiles.length > 1) ...[
+          const SizedBox(height: 8),
+          Text(
+            '+${alert.mediaFiles.length - 1} more media file${alert.mediaFiles.length > 2 ? 's' : ''}',
+            style: const TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ],
     );
   }
 

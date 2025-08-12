@@ -108,7 +108,8 @@ async def get_alerts():
                     is_public,
                     tags,
                     created_at,
-                    sensor_data
+                    sensor_data,
+                    media_info
                 FROM sightings 
                 WHERE is_public = true 
                 ORDER BY created_at DESC 
@@ -127,6 +128,24 @@ async def get_alerts():
                     if "longitude" in sensor_data and sensor_data["longitude"] is not None:
                         longitude = float(sensor_data["longitude"])
                 
+                # Process media info
+                media_files = []
+                if row["media_info"]:
+                    media_info = row["media_info"]
+                    if "files" in media_info:
+                        for media_file in media_info["files"]:
+                            media_files.append({
+                                "id": media_file.get("id", ""),
+                                "type": media_file.get("type", "image"),
+                                "url": media_file.get("url", ""),
+                                "thumbnail_url": media_file.get("thumbnail_url", ""),
+                                "filename": media_file.get("filename", ""),
+                                "size": media_file.get("size", 0),
+                                "width": media_file.get("width", 0),
+                                "height": media_file.get("height", 0),
+                                "uploaded_at": media_file.get("uploaded_at", row["created_at"].isoformat())
+                            })
+                
                 alert = {
                     "id": row["id"],
                     "title": row["title"],
@@ -144,7 +163,7 @@ async def get_alerts():
                     "bearing_deg": 0.0,  # Mobile app expects this field name
                     "view_count": 0,
                     "verification_score": 0.0,
-                    "media_files": [],  # Use snake_case
+                    "media_files": media_files,  # Include actual media files
                     "tags": row["tags"] or [],
                     "is_public": row["is_public"],  # Use snake_case
                     "submitted_at": row["created_at"].isoformat(),

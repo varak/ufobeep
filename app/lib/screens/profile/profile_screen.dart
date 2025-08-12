@@ -201,23 +201,33 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
           ],
           const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          Column(
             children: [
-              _buildStatItem(
-                icon: Icons.notifications,
-                label: 'Range',
-                value: preferences.alertRangeDisplay,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildStatItem(
+                    icon: Icons.notifications,
+                    label: 'Range',
+                    value: preferences.alertRangeDisplay,
+                  ),
+                  _buildStatItem(
+                    icon: Icons.language,
+                    label: 'Language',
+                    value: preferences.language.toUpperCase(),
+                  ),
+                  _buildStatItem(
+                    icon: Icons.straighten,
+                    label: 'Units',
+                    value: preferences.units == 'metric' ? 'Metric' : 'Imperial',
+                  ),
+                ],
               ),
+              const SizedBox(height: 12),
               _buildStatItem(
-                icon: Icons.language,
-                label: 'Language',
-                value: preferences.language.toUpperCase(),
-              ),
-              _buildStatItem(
-                icon: Icons.straighten,
-                label: 'Units',
-                value: preferences.units == 'metric' ? 'Metric' : 'Imperial',
+                icon: Icons.info_outline,
+                label: 'App Version',
+                value: 'v${AppEnvironment.appVersion}',
               ),
             ],
           ),

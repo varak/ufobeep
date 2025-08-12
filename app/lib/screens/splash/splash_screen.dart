@@ -248,32 +248,29 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
               ),
               
               // Footer
-              Expanded(
-                flex: 1,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      if (AppEnvironment.debugMode) ...[
-                        Text(
-                          'Environment: ${AppEnvironment.current.name}',
-                          style: const TextStyle(
-                            color: AppColors.textTertiary,
-                            fontSize: 12,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                      ],
-                      const Text(
-                        'Initializing...',
-                        style: TextStyle(
+              Container(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (AppEnvironment.debugMode) ...[
+                      Text(
+                        'Environment: ${AppEnvironment.current.name}',
+                        style: const TextStyle(
                           color: AppColors.textTertiary,
-                          fontSize: 12,
+                          fontSize: 11,
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 4),
                     ],
-                  ),
+                    const Text(
+                      'Initializing...',
+                      style: TextStyle(
+                        color: AppColors.textTertiary,
+                        fontSize: 11,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

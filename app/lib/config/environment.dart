@@ -23,14 +23,14 @@ class AppEnvironment {
   }
   
   static Environment _getEnvironmentFromPlatform() {
-    const environment = String.fromEnvironment('ENVIRONMENT', defaultValue: 'development');
+    const environment = String.fromEnvironment('ENVIRONMENT', defaultValue: 'production');
     switch (environment.toLowerCase()) {
       case 'staging':
         return Environment.staging;
-      case 'production':
-        return Environment.production;
-      default:
+      case 'development':
         return Environment.development;
+      default:
+        return Environment.production;
     }
   }
   

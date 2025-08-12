@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../theme/app_theme.dart';
+
 import '../screens/home/home_screen.dart';
 import '../screens/alerts/alerts_screen.dart';
 import '../screens/alerts/alert_detail_screen.dart';
@@ -79,8 +81,23 @@ GoRouter appRouter(AppRouterRef ref) {
                 name: 'beep-compose',
                 builder: (context, state) {
                   final extra = state.extra as Map<String, dynamic>?;
+                  final imageFile = extra?['imageFile'];
+                  
+                  // If no image file provided, redirect back to beep screen
+                  if (imageFile == null) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      context.go('/beep');
+                    });
+                    return const Scaffold(
+                      backgroundColor: AppColors.darkBackground,
+                      body: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+                  
                   return BeepCompositionScreen(
-                    imageFile: extra?['imageFile'],
+                    imageFile: imageFile,
                     sensorData: extra?['sensorData'],
                     planeMatch: extra?['planeMatch'],
                   );

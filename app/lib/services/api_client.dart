@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 
@@ -656,80 +657,68 @@ extension ApiClientExtension on ApiClient {
     bool isPublic = true,
     Function(double)? onProgress,
   }) async {
-    List<String> mediaFileIds = [];
-    
-    // Upload media files first if any
-    if (mediaFiles.isNotEmpty) {
-      double totalProgress = 0.0;
-      int completedUploads = 0;
+    try {
+      // Simplified sighting data - no media upload for now
+      final sightingData = {
+        'title': title,
+        'description': description,
+        'category': category.toString().split('.').last,
+        'witness_count': witnessCount,
+        'is_public': isPublic,
+        'tags': tags,
+      };
       
-      for (final file in mediaFiles) {
-        try {
-          // Get presigned upload URL
-          final presignRequest = api.PresignedUploadRequest(
-            filename: file.path.split('/').last,
-            contentType: _getContentTypeFromFile(file),
-            sizeBytes: await file.length(),
-          );
-          
-          final presignResponse = await getPresignedUpload(presignRequest);
-          final uploadData = presignResponse.data;
-          
-          // Upload file to storage
-          final uploadSuccess = await uploadFileToStorage(
-            uploadData.uploadUrl,
-            uploadData.fields,
-            file,
-            presignRequest.contentType,
-            onProgress: (sent, total) {
-              if (onProgress != null) {
-                final fileProgress = sent / total;
-                final overallProgress = (completedUploads + fileProgress) / mediaFiles.length;
-                onProgress(overallProgress);
-              }
-            },
-          );
-          
-          if (!uploadSuccess) {
-            throw ApiClientException('Failed to upload file: ${file.path}');
-          }
-          
-          // Complete the upload
-          final completeRequest = api.MediaUploadCompleteRequest(
-            uploadId: uploadData.uploadId,
-            mediaType: _getMediaTypeFromFile(file),
-          );
-          
-          final completeResponse = await completeMediaUpload(completeRequest);
-          mediaFileIds.add(completeResponse.data.id);
-          
-          completedUploads++;
-          if (onProgress != null) {
-            onProgress(completedUploads / mediaFiles.length);
-          }
-        } catch (e) {
-          print('Failed to upload media file ${file.path}: $e');
-          // Continue with other files, don't fail the entire submission
+      // Add sensor data if available
+      if (sensorData != null) {
+        sightingData['sensor_data'] = {
+          'utc': sensorData.utc.toIso8601String(),
+          'latitude': sensorData.latitude,
+          'longitude': sensorData.longitude,
+          'azimuth_deg': sensorData.azimuthDeg,
+          'pitch_deg': sensorData.pitchDeg,
+          'roll_deg': sensorData.rollDeg,
+          'hfov_deg': sensorData.hfovDeg,
+          'accuracy': sensorData.accuracy,
+          'altitude': sensorData.altitude,
+        };
+      }
+      
+      // Add media info (file count only to avoid blocking file I/O)
+      if (mediaFiles.isNotEmpty) {
+        sightingData['media_info'] = {
+          'file_count': mediaFiles.length,
+          'note': 'Media files captured but not uploaded yet',
+        };
+      }
+      
+      if (onProgress != null) onProgress(0.5);
+      
+      debugPrint('Submitting sighting data: ${sightingData.toString()}');
+      
+      final response = await _dio.post('/sightings', data: sightingData);
+      
+      debugPrint('Sighting response: ${response.data}');
+      
+      if (onProgress != null) onProgress(1.0);
+      
+      // Parse response
+      if (response.data is Map<String, dynamic>) {
+        final data = response.data as Map<String, dynamic>;
+        if (data['success'] == true && data['data'] != null) {
+          final sightingData = data['data'] as Map<String, dynamic>;
+          return sightingData['sighting_id'] ?? 'unknown_id';
         }
       }
+      
+      throw ApiClientException('Invalid sighting response format');
+      
+    } catch (e) {
+      if (e is DioException) {
+        throw _handleError(e);
+      }
+      debugPrint('Sighting submission error: $e');
+      rethrow;
     }
-    
-    // Submit sighting
-    final submission = api.SightingSubmission(
-      title: title,
-      description: description,
-      category: category,
-      sensorData: _mapSensorDataToApi(sensorData),
-      mediaFiles: mediaFileIds,
-      durationSeconds: durationSeconds,
-      witnessCount: witnessCount,
-      tags: tags,
-      isPublic: isPublic,
-      submittedAt: DateTime.now(),
-    );
-    
-    final response = await submitSighting(submission);
-    return response.data['sighting_id'] as String;
   }
 
   String _getContentTypeFromFile(File file) {

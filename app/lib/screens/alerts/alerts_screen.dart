@@ -17,7 +17,7 @@ class AlertsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final alertsAsync = ref.watch(alertsListProvider);
+    final alertsAsync = ref.watch(filteredAlertsProvider);
     final filter = ref.watch(alertsFilterStateProvider);
     final preferencesAsync = ref.watch(userPreferencesProvider);
     final preferences = preferencesAsync;

@@ -73,3 +73,5 @@
 - Email form working and collecting addresses
 - Mobile app has basic structure but needs core features
 - Focus on user registration and sighting capture next
+- don't add yourself as an author or mention yourself in commit messages
+- dont include yourself in commits message or as an author

@@ -287,7 +287,7 @@ class HomeScreen extends ConsumerWidget {
         elevation: 4,
         icon: const Icon(Icons.camera_alt, size: 24),
         label: const Text(
-          'Report Sighting',
+          'Report Sighting - Send a Beep!',
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 16,
@@ -363,7 +363,7 @@ class _EmptyAlertsView extends StatelessWidget {
               OutlinedButton.icon(
                 onPressed: () => context.go('/beep'),
                 icon: const Icon(Icons.camera_alt),
-                label: const Text('Report Sighting'),
+                label: const Text('Report Sighting - Send a Beep!'),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.brandPrimary,
                   side: const BorderSide(color: AppColors.brandPrimary),

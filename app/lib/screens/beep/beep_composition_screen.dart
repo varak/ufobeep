@@ -32,6 +32,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   String _selectedCategory = local.SightingCategory.ufo;
+  // Use default privacy setting - will be moved to user profile
   local.LocationPrivacy _locationPrivacy = local.LocationPrivacy.jittered;
   
   // Submission state
@@ -59,6 +60,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
 
   void _onFormFieldChanged() {
     setState(() {});
+    debugPrint('Form validation: title=${_titleController.text.length} chars, desc=${_descriptionController.text.length} chars, valid=$_isFormValid');
   }
 
   Future<void> _submitBeep() async {
@@ -199,89 +201,114 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('=== BeepCompositionScreen.build() START ===');
+    debugPrint('ImageFile exists: ${widget.imageFile.existsSync()}');
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Compose Beep'),
-        backgroundColor: AppColors.darkSurface,
+        backgroundColor: Colors.red, // Bright red for visibility test
+        foregroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: _retakePhoto,
           tooltip: 'Retake Photo',
         ),
       ),
-      backgroundColor: AppColors.darkBackground,
-      body: SafeArea(
+      backgroundColor: Colors.green, // Bright green background for visibility test
+      body: Container(
+        color: Colors.yellow, // Bright yellow container
         child: Column(
           children: [
+            Container(
+              height: 100,
+              color: Colors.blue,
+              child: Center(
+                child: Text(
+                  'PHOTO SECTION TEST',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Photo display
-                    _buildPhotoSection(),
-                    const SizedBox(height: 24),
-
-                    // "This photo will be sent with your beep" message
-                    _buildExplanationMessage(),
-                    const SizedBox(height: 24),
-
-                    // Plane matching results if available
-                    if (widget.sensorData != null) ...[
-                      _buildPlaneMatchSection(),
-                      const SizedBox(height: 24),
-                    ],
-
-                    // Form fields
-                    _buildTitleInput(),
-                    const SizedBox(height: 20),
-                    _buildDescriptionInput(),
-                    const SizedBox(height: 24),
-
-                    // Category selection
-                    _buildCategorySelection(),
-                    const SizedBox(height: 24),
-
-                    // Location privacy
-                    _buildLocationPrivacySection(),
-                    
-                    // Error message if any
-                    if (_errorMessage != null) ...[
-                      const SizedBox(height: 20),
+              child: Container(
+                color: Colors.orange,
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      _buildPhotoSection(),
+                      SizedBox(height: 10),
+                      
+                      // Add simple form fields with bright backgrounds
                       Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: AppColors.semanticError.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: AppColors.semanticError.withOpacity(0.3)),
-                        ),
-                        child: Row(
+                        width: 300,
+                        padding: EdgeInsets.all(12),
+                        color: Colors.purple,
+                        child: Column(
                           children: [
-                            const Icon(Icons.error, color: AppColors.semanticError, size: 20),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                _errorMessage!,
-                                style: const TextStyle(
-                                  color: AppColors.semanticError,
-                                  fontSize: 14,
-                                ),
+                            Text('FORM FIELDS', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                            SizedBox(height: 8),
+                            TextField(
+                              controller: _titleController,
+                              style: TextStyle(color: Colors.black),
+                              decoration: InputDecoration(
+                                hintText: 'Title...',
+                                filled: true,
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(),
+                                contentPadding: EdgeInsets.all(8),
                               ),
+                            ),
+                            SizedBox(height: 8),
+                            TextField(
+                              controller: _descriptionController,
+                              style: TextStyle(color: Colors.black),
+                              decoration: InputDecoration(
+                                hintText: 'Description...',
+                                filled: true,
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(),
+                                contentPadding: EdgeInsets.all(8),
+                              ),
+                              maxLines: 2,
                             ),
                           ],
                         ),
                       ),
+                      
+                      SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: _isFormValid && !_isSubmitting ? () async {
+                          debugPrint('Submit button pressed');
+                          debugPrint('Title: ${_titleController.text}');
+                          debugPrint('Description: ${_descriptionController.text}');
+                          await _submitBeep();
+                        } : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _isFormValid && !_isSubmitting ? Colors.blue : Colors.grey,
+                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        ),
+                        child: _isSubmitting 
+                          ? SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                            )
+                          : Text(
+                              _isFormValid ? 'SEND BEEP' : 'FILL FORM',
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                            ),
+                      ),
                     ],
-
-                    const SizedBox(height: 100), // Space for bottom buttons
-                  ],
+                  ),
                 ),
               ),
             ),
-            
-            // Bottom action area
-            _buildBottomActions(),
           ],
         ),
       ),
@@ -289,9 +316,15 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
   }
 
   Widget _buildPhotoSection() {
+    debugPrint('=== PHOTO SECTION DEBUG ===');
+    debugPrint('Image file exists: ${widget.imageFile.existsSync()}');
+    debugPrint('Image file path: ${widget.imageFile.path}');
+    debugPrint('Image file size: ${widget.imageFile.lengthSync()} bytes');
+    debugPrint('===========================');
+    
     return SimplePhotoDisplay(
       imageFile: widget.imageFile,
-      height: 300,
+      height: 200,
       width: double.infinity,
     );
   }
@@ -404,7 +437,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
                 : AppColors.textSecondary,
             ),
             filled: true,
-            fillColor: AppColors.darkSurface,
+            fillColor: Colors.grey[700], // Visible grey input background
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(color: AppColors.darkBorder),
@@ -457,7 +490,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
                 : AppColors.textSecondary,
             ),
             filled: true,
-            fillColor: AppColors.darkSurface,
+            fillColor: Colors.grey[700], // Visible grey input background
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(color: AppColors.darkBorder),
