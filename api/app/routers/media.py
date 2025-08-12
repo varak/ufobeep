@@ -6,8 +6,8 @@ from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from fastapi.security import HTTPBearer
 from sqlalchemy.orm import Session
 
-from config.environment import settings
-from schemas.media import (
+from ..config.environment import settings
+from ..schemas.media import (
     PresignedUploadRequest,
     PresignedUploadResponse,
     MediaUploadCompleteRequest,
@@ -16,7 +16,7 @@ from schemas.media import (
     BulkUploadResponse,
     UploadError
 )
-from services.storage_service import storage_service, StorageError
+from ..services.storage_service import storage_service, StorageError
 
 
 logger = logging.getLogger(__name__)
