@@ -5,7 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 enum Environment { development, staging, production }
 
 class AppEnvironment {
-  static Environment _current = Environment.development;
+  static Environment _current = Environment.production;
   
   static Environment get current => _current;
   
