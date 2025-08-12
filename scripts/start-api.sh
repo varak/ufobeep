@@ -10,6 +10,6 @@ pkill -f "simple_email_api" 2>/dev/null
 # Wait for processes to die
 sleep 2
 
-# Activate virtual environment and start simple email API (which works)
-source venv/bin/activate
-exec python simple_email_api.py
+# Activate virtual environment and start the main FastAPI application
+source ../venv/bin/activate
+exec uvicorn app.main:app --host 0.0.0.0 --port 8000

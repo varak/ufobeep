@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
+from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.config.environment import settings
@@ -564,9 +565,192 @@ async def upload_media(
             os.remove(file_path)
         raise HTTPException(status_code=500, detail=f"Error uploading media: {str(e)}")
 
-# Import and include Emails router (keep this one - it's simple)
-try:
-    from app.routers import emails
-    app.include_router(emails.router)
-except ImportError as e:
-    print(f"Warning: Could not import emails router: {e}")
+# Email Interest Signup Endpoints
+@app.post("/api/v1/emails/interest", response_class=HTMLResponse)
+async def submit_email_interest_form(
+    email: str = Form(...),
+    source: str = Form(default="app_download_page")
+):
+    """Handle form submission for email interest - adds email to database and returns thank you page"""
+    conn = None
+    try:
+        conn = await get_db_connection()
+        
+        # Try to insert the email
+        await conn.execute(
+            """
+            INSERT INTO email_interests (email, source, created_at) 
+            VALUES ($1, $2, NOW()) 
+            """,
+            email, source
+        )
+        
+        # Return success HTML page
+        return HTMLResponse(content=f"""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Thanks for Your Interest!</title>
+            <style>
+                body {{
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    background: #0a0a0a;
+                    color: #e5e5e5;
+                    margin: 0;
+                    padding: 0;
+                    min-height: 100vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }}
+                .container {{
+                    text-align: center;
+                    max-width: 500px;
+                    padding: 40px 20px;
+                }}
+                .icon {{
+                    font-size: 64px;
+                    margin-bottom: 20px;
+                }}
+                h1 {{
+                    color: #3b82f6;
+                    margin-bottom: 16px;
+                    font-size: 2rem;
+                }}
+                p {{
+                    color: #9ca3af;
+                    margin-bottom: 20px;
+                    line-height: 1.6;
+                }}
+                .email {{
+                    color: #3b82f6;
+                    font-weight: 600;
+                }}
+                .back-link {{
+                    display: inline-block;
+                    margin-top: 20px;
+                    color: #3b82f6;
+                    text-decoration: none;
+                    padding: 10px 20px;
+                    border: 1px solid #3b82f6;
+                    border-radius: 8px;
+                    transition: all 0.3s ease;
+                }}
+                .back-link:hover {{
+                    background: #3b82f6;
+                    color: white;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="icon">🎉</div>
+                <h1>Thanks for Your Interest!</h1>
+                <p>We've successfully added <span class="email">{email}</span> to our notification list.</p>
+                <p>You'll be among the first to know when the UFOBeep mobile app launches!</p>
+                <a href="/app" class="back-link">← Back to App Page</a>
+            </div>
+        </body>
+        </html>
+        """, status_code=200)
+        
+    except Exception as e:
+        # Check if it's a unique violation (email already exists)
+        if "duplicate key value" in str(e) or "unique" in str(e).lower():
+            return HTMLResponse(content=f"""
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Already Registered!</title>
+                <style>
+                    body {{
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                        background: #0a0a0a;
+                        color: #e5e5e5;
+                        margin: 0;
+                        padding: 0;
+                        min-height: 100vh;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }}
+                    .container {{
+                        text-align: center;
+                        max-width: 500px;
+                        padding: 40px 20px;
+                    }}
+                    .icon {{
+                        font-size: 64px;
+                        margin-bottom: 20px;
+                    }}
+                    h1 {{
+                        color: #f59e0b;
+                        margin-bottom: 16px;
+                        font-size: 2rem;
+                    }}
+                    p {{
+                        color: #9ca3af;
+                        margin-bottom: 20px;
+                        line-height: 1.6;
+                    }}
+                    .email {{
+                        color: #f59e0b;
+                        font-weight: 600;
+                    }}
+                    .back-link {{
+                        display: inline-block;
+                        margin-top: 20px;
+                        color: #3b82f6;
+                        text-decoration: none;
+                        padding: 10px 20px;
+                        border: 1px solid #3b82f6;
+                        border-radius: 8px;
+                        transition: all 0.3s ease;
+                    }}
+                    .back-link:hover {{
+                        background: #3b82f6;
+                        color: white;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="icon">✅</div>
+                    <h1>You're Already on the List!</h1>
+                    <p>The email <span class="email">{email}</span> is already registered for notifications.</p>
+                    <p>We'll make sure to notify you when the UFOBeep app launches!</p>
+                    <a href="/app" class="back-link">← Back to App Page</a>
+                </div>
+            </body>
+            </html>
+            """, status_code=200)
+        else:
+            # Generic error
+            print(f"Error saving email: {e}")
+            raise HTTPException(status_code=500, detail=f"Failed to save email: {str(e)}")
+    finally:
+        if conn:
+            await conn.close()
+
+@app.get("/api/v1/emails/count")
+async def get_interest_count():
+    """Get count of interested users"""
+    conn = None
+    try:
+        conn = await get_db_connection()
+        
+        result = await conn.fetchrow("SELECT COUNT(*) as count FROM email_interests")
+        count = result['count'] if result else 0
+        
+        return {"count": count}
+        
+    except Exception as e:
+        print(f"Error getting email count: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to get count: {str(e)}")
+    finally:
+        if conn:
+            await conn.close()
