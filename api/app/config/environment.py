@@ -139,7 +139,7 @@ class Settings(BaseSettings):
     supported_locales: List[str] = Field(default=["en", "es", "de"], env="SUPPORTED_LOCALES")
     
     class Config:
-        env_file = ".env"
+        env_file = "../.env"  # Look in parent directory for main .env file
         env_file_encoding = "utf-8"
         case_sensitive = False
     
