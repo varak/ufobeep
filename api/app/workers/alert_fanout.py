@@ -11,11 +11,17 @@ from datetime import datetime, timedelta
 from dataclasses import dataclass
 
 try:
-    from app.services.push_service import push_service, PushTarget, PushProvider, NotificationType
+    # Try to import the new FCM v1 service first
+    from app.services.push_service_v1 import push_service, PushTarget, PushProvider, NotificationType
     from app.config.environment import settings
 except ImportError:
-    # Fallback for testing
-    class MockSettings:
+    try:
+        # Fallback to legacy push service
+        from app.services.push_service import push_service, PushTarget, PushProvider, NotificationType
+        from app.config.environment import settings
+    except ImportError:
+        # Fallback for testing
+        class MockSettings:
         max_fanout_distance_km = 100.0
         min_fanout_distance_km = 0.1
         max_targets_per_fanout = 1000

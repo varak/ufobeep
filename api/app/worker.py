@@ -135,6 +135,10 @@ async def enrich_sighting(sighting_id: str) -> bool:
             logger.info(f"Enrichment completed for sighting {sighting_id}: "
                        f"{success_count}/{total_count} processors succeeded")
             
+            # Trigger alert fanout for nearby users
+            if success_count > 0:
+                await trigger_alert_fanout(sighting_id, sighting)
+            
             return success_count > 0
             
     except Exception as e:
@@ -143,44 +147,117 @@ async def enrich_sighting(sighting_id: str) -> bool:
 
 
 async def get_db_session():
-    """Get database session - placeholder for actual DB session"""
-    # This is a simplified version - in practice you'd use your actual DB session
-    class MockDB:
-        async def get(self, model, id):
-            # Mock sighting for demonstration
-            from app.models.sighting import Sighting, SightingCategory
-            from datetime import datetime, timezone
-            
-            mock_sighting = Sighting()
-            mock_sighting.id = id
-            mock_sighting.title = "Strange lights in the sky"
-            mock_sighting.description = "Saw multiple bright lights moving in formation"
-            mock_sighting.category = SightingCategory.UFO
-            mock_sighting.exact_latitude = 40.7128
-            mock_sighting.exact_longitude = -74.0060
-            mock_sighting.exact_altitude = 100.0
-            mock_sighting.sensor_timestamp = datetime.now(timezone.utc)
-            mock_sighting.azimuth_deg = 45.0
-            mock_sighting.pitch_deg = 30.0
-            mock_sighting.roll_deg = 0.0
-            mock_sighting.weather_data = None
-            mock_sighting.celestial_data = None
-            mock_sighting.satellite_data = None
-            mock_sighting.enrichment_metadata = {}
-            mock_sighting.processed_at = None
-            
-            return mock_sighting
-            
-        async def commit(self):
-            pass
+    """Get real database session using the same pool as main.py"""
+    try:
+        from app.main import db_pool
         
-        async def __aenter__(self):
-            return self
+        class DatabaseSession:
+            def __init__(self, pool):
+                self.pool = pool
+                self.conn = None
+                
+            async def get(self, model, id):
+                """Get a record from database by ID"""
+                try:
+                    from app.models.sighting import Sighting
+                    from datetime import datetime
+                    
+                    if not self.conn:
+                        raise Exception("Database connection not established")
+                    
+                    # Query sighting from database
+                    row = await self.conn.fetchrow(
+                        """
+                        SELECT id, title, description, category, exact_latitude, exact_longitude, 
+                               exact_altitude, sensor_timestamp, azimuth_deg, pitch_deg, roll_deg,
+                               weather_data, celestial_data, satellite_data, enrichment_metadata, 
+                               processed_at, created_at, updated_at, alert_level
+                        FROM sightings WHERE id = $1
+                        """,
+                        str(id)
+                    )
+                    
+                    if not row:
+                        return None
+                    
+                    # Convert row to sighting object
+                    sighting = Sighting()
+                    sighting.id = row['id']
+                    sighting.title = row['title']
+                    sighting.description = row['description']
+                    sighting.exact_latitude = row['exact_latitude']
+                    sighting.exact_longitude = row['exact_longitude']
+                    sighting.exact_altitude = row['exact_altitude']
+                    sighting.sensor_timestamp = row['sensor_timestamp']
+                    sighting.azimuth_deg = row['azimuth_deg']
+                    sighting.pitch_deg = row['pitch_deg']
+                    sighting.roll_deg = row['roll_deg']
+                    sighting.weather_data = row['weather_data']
+                    sighting.celestial_data = row['celestial_data']
+                    sighting.satellite_data = row['satellite_data']
+                    sighting.enrichment_metadata = row['enrichment_metadata'] or {}
+                    sighting.processed_at = row['processed_at']
+                    sighting.created_at = row['created_at']
+                    sighting.updated_at = row['updated_at']
+                    
+                    return sighting
+                    
+                except Exception as e:
+                    logger.error(f"Error getting sighting {id}: {e}")
+                    return None
+            
+            async def commit(self):
+                """Commit changes - handled automatically with asyncpg"""
+                pass
+            
+            async def execute(self, query, *args):
+                """Execute a query"""
+                if self.conn:
+                    return await self.conn.execute(query, *args)
+                return None
+                
+            async def fetch(self, query, *args):
+                """Fetch multiple rows"""
+                if self.conn:
+                    return await self.conn.fetch(query, *args)
+                return []
+                
+            async def fetchrow(self, query, *args):
+                """Fetch single row"""
+                if self.conn:
+                    return await self.conn.fetchrow(query, *args)
+                return None
+            
+            async def __aenter__(self):
+                if db_pool:
+                    self.conn = await db_pool.acquire()
+                return self
+            
+            async def __aexit__(self, exc_type, exc_val, exc_tb):
+                if self.conn and db_pool:
+                    await db_pool.release(self.conn)
         
-        async def __aexit__(self, exc_type, exc_val, exc_tb):
-            pass
-    
-    return MockDB()
+        return DatabaseSession(db_pool)
+        
+    except Exception as e:
+        logger.error(f"Error creating database session: {e}")
+        # Fallback to mock for testing
+        class MockDB:
+            async def get(self, model, id):
+                return None
+            async def commit(self):
+                pass
+            async def execute(self, query, *args):
+                return None
+            async def fetch(self, query, *args):
+                return []
+            async def fetchrow(self, query, *args):
+                return None
+            async def __aenter__(self):
+                return self
+            async def __aexit__(self, exc_type, exc_val, exc_tb):
+                pass
+        return MockDB()
 
 
 async def run_enrichment_worker():
@@ -235,6 +312,182 @@ async def run_enrichment_worker():
 async def trigger_enrichment(sighting_id: str):
     """Trigger enrichment for a sighting (called from API endpoints)"""
     await enrichment_queue.enqueue_sighting(sighting_id)
+
+
+async def trigger_alert_fanout(sighting_id: str, sighting):
+    """Trigger alert fanout for newly enriched sightings"""
+    try:
+        from app.workers.alert_fanout import alert_fanout_worker, SightingEvent
+        
+        logger.info(f"Triggering alert fanout for sighting {sighting_id}")
+        
+        # Create sighting event from database sighting
+        sighting_event = SightingEvent(
+            sighting_id=sighting_id,
+            latitude=sighting.exact_latitude,
+            longitude=sighting.exact_longitude,
+            title=sighting.title,
+            description=sighting.description,
+            shape=None,  # TODO: extract from enrichment data if available
+            confidence_score=None,  # TODO: extract from enrichment data if available
+            created_at=sighting.created_at
+        )
+        
+        # Get nearby users from database
+        user_locations = await get_nearby_user_locations(
+            sighting.exact_latitude, 
+            sighting.exact_longitude
+        )
+        
+        # Get device registry from database
+        device_registry = await get_device_registry([ul.user_id for ul in user_locations])
+        
+        # Process the fanout
+        results = await alert_fanout_worker.process_new_sighting(
+            sighting=sighting_event,
+            user_locations=user_locations,
+            device_registry=device_registry
+        )
+        
+        logger.info(f"Alert fanout completed for {sighting_id}: {results['notifications_sent']} sent")
+        return results
+        
+    except Exception as e:
+        logger.error(f"Error triggering alert fanout for sighting {sighting_id}: {e}")
+        return None
+
+
+async def get_nearby_user_locations(latitude: float, longitude: float):
+    """Get users within alert range of a location using Haversine distance"""
+    try:
+        from app.workers.alert_fanout import UserLocation
+        
+        async with get_db_session() as db:
+            logger.info(f"Querying nearby users for lat={latitude}, lon={longitude}")
+            
+            # Query users with location and alert preferences
+            # Uses Haversine formula for distance calculation in SQL
+            users = await db.fetch("""
+                SELECT 
+                    u.id as user_id,
+                    u.location,
+                    u.alert_range_km,
+                    u.push_notifications,
+                    -- Calculate distance using Haversine formula
+                    6371 * 2 * ASIN(SQRT(
+                        POWER(SIN(RADIANS(CAST(SPLIT_PART(u.location, ',', 1) AS FLOAT) - $1) / 2), 2) +
+                        COS(RADIANS($1)) * 
+                        COS(RADIANS(CAST(SPLIT_PART(u.location, ',', 1) AS FLOAT))) *
+                        POWER(SIN(RADIANS(CAST(SPLIT_PART(u.location, ',', 2) AS FLOAT) - $2) / 2), 2)
+                    )) as distance_km
+                FROM users u 
+                WHERE u.is_active = true 
+                  AND u.push_notifications = true
+                  AND u.location IS NOT NULL
+                  AND u.location != ''
+                HAVING distance_km <= u.alert_range_km 
+                  AND distance_km <= 100  -- Max system limit
+                ORDER BY distance_km ASC
+                LIMIT 1000
+            """, latitude, longitude)
+            
+            user_locations = []
+            for user in users:
+                try:
+                    # Parse location string "lat,lon" 
+                    if user['location'] and ',' in user['location']:
+                        lat_str, lon_str = user['location'].split(',', 1)
+                        user_lat = float(lat_str.strip())
+                        user_lon = float(lon_str.strip())
+                        
+                        user_location = UserLocation(
+                            user_id=str(user['user_id']),
+                            latitude=user_lat,
+                            longitude=user_lon,
+                            alert_range_km=user['alert_range_km'] or 50.0,
+                            max_alerts_per_hour=10,  # Default limit
+                            alert_notifications_enabled=user['push_notifications'] or False
+                        )
+                        user_locations.append(user_location)
+                        
+                except (ValueError, IndexError) as e:
+                    logger.warning(f"Invalid location format for user {user['user_id']}: {user['location']}")
+                    continue
+            
+            logger.info(f"Found {len(user_locations)} users within alert range")
+            return user_locations
+            
+    except Exception as e:
+        logger.error(f"Error getting nearby user locations: {e}")
+        return []
+
+
+async def get_device_registry(user_ids: list):
+    """Get device registry for a list of user IDs"""
+    try:
+        device_registry = {}
+        
+        if not user_ids:
+            return device_registry
+            
+        async with get_db_session() as db:
+            logger.info(f"Querying device registry for {len(user_ids)} users")
+            
+            # Query active devices for the users
+            placeholders = ','.join([f'${i+1}' for i in range(len(user_ids))])
+            devices = await db.fetch(f"""
+                SELECT 
+                    user_id,
+                    id,
+                    device_id,
+                    device_name,
+                    platform,
+                    push_token,
+                    push_provider,
+                    push_enabled,
+                    alert_notifications,
+                    chat_notifications,
+                    system_notifications,
+                    is_active
+                FROM devices
+                WHERE user_id = ANY(ARRAY[{placeholders}]::UUID[])
+                  AND is_active = true
+                  AND push_enabled = true
+                  AND push_token IS NOT NULL
+                  AND push_token != ''
+            """, *user_ids)
+            
+            # Group devices by user_id
+            for device in devices:
+                user_id = str(device['user_id'])
+                
+                if user_id not in device_registry:
+                    device_registry[user_id] = []
+                
+                device_data = {
+                    "id": str(device['id']),
+                    "device_id": device['device_id'],
+                    "device_name": device['device_name'],
+                    "platform": device['platform'],
+                    "push_token": device['push_token'],
+                    "push_provider": device['push_provider'],
+                    "push_enabled": device['push_enabled'],
+                    "alert_notifications": device['alert_notifications'],
+                    "chat_notifications": device['chat_notifications'],
+                    "system_notifications": device['system_notifications'],
+                    "is_active": device['is_active']
+                }
+                
+                device_registry[user_id].append(device_data)
+            
+            total_devices = sum(len(devices) for devices in device_registry.values())
+            logger.info(f"Found {total_devices} active devices for {len(device_registry)} users")
+            
+            return device_registry
+            
+    except Exception as e:
+        logger.error(f"Error getting device registry: {e}")
+        return {}
 
 
 async def run_alerts_worker():

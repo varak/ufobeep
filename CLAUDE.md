@@ -123,3 +123,5 @@
   - APK path: ./app/build/app/outputs/flutter-apk/app-debug.apk
 - don't mention or add yourself to commit messages
 - no this is not a test/development setup, we test in production here. DO NOT SETUP TEST/DEVELOPMENT use real shit live.!!
+- make sure what you think is already in place isn't just a stub that doesnt work
+- make sure what you think is already in place isn't just a stub that doesnt work
