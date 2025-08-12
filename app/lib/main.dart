@@ -31,6 +31,9 @@ void main() async {
   // Initialize push notifications
   await pushNotificationService.initialize();
   
+  // Check if app was opened from a terminated state by a notification
+  final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+  
   // Log configuration in debug mode
   AppEnvironment.logConfig();
   
@@ -39,16 +42,58 @@ void main() async {
       overrides: [
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ],
-      child: const UFOBeepApp(),
+      child: UFOBeepApp(initialMessage: initialMessage),
     ),
   );
 }
 
-class UFOBeepApp extends ConsumerWidget {
-  const UFOBeepApp({super.key});
+class UFOBeepApp extends ConsumerStatefulWidget {
+  const UFOBeepApp({super.key, this.initialMessage});
+  
+  final RemoteMessage? initialMessage;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<UFOBeepApp> createState() => _UFOBeepAppState();
+}
+
+class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
+  @override
+  void initState() {
+    super.initState();
+    
+    // Handle initial message after the widget tree is built
+    if (widget.initialMessage != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _handleInitialMessage(widget.initialMessage!);
+      });
+    }
+  }
+  
+  void _handleInitialMessage(RemoteMessage message) {
+    print('Processing initial message: ${message.messageId}');
+    
+    final notificationType = message.data['type'] ?? 'general';
+    
+    switch (notificationType) {
+      case 'sighting_alert':
+        final sightingId = message.data['sighting_id'];
+        if (sightingId != null) {
+          print('Navigating to sighting alert: $sightingId');
+          pushNotificationService.navigateToAlert(sightingId);
+        }
+        break;
+      case 'chat_message':
+        final chatId = message.data['chat_id'];
+        if (chatId != null) {
+          print('Navigating to chat: $chatId');
+          pushNotificationService.navigateToChat(chatId);
+        }
+        break;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final router = ref.watch(appRouterProvider);
     final currentLocale = ref.watch(currentLocaleProvider);
 

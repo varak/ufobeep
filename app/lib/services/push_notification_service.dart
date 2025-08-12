@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:go_router/go_router.dart';
 import 'device_service.dart';
+import '../routing/app_router.dart';
 
 class PushNotificationService {
   static const String _permissionKey = 'push_permission_granted';
@@ -146,21 +148,19 @@ class PushNotificationService {
 
   void _handleSightingAlert(RemoteMessage message) {
     print('Handling sighting alert notification');
-    // TODO: Navigate to sighting detail or alerts screen
     final sightingId = message.data['sighting_id'];
     if (sightingId != null) {
       print('Sighting ID: $sightingId');
-      // Navigate to sighting detail screen
+      navigateToAlert(sightingId);
     }
   }
 
   void _handleChatMessage(RemoteMessage message) {
     print('Handling chat message notification');
-    // TODO: Navigate to chat screen
     final chatId = message.data['chat_id'];
     if (chatId != null) {
       print('Chat ID: $chatId');
-      // Navigate to chat screen
+      navigateToChat(chatId);
     }
   }
 
@@ -227,6 +227,50 @@ class PushNotificationService {
       }
     } catch (e) {
       print('Error refreshing token: $e');
+    }
+  }
+
+  void navigateToAlert(String alertId) {
+    try {
+      final context = rootNavigatorKey.currentContext;
+      if (context != null && context.mounted) {
+        context.go('/alert/$alertId');
+        print('Navigated to alert detail: $alertId');
+      } else {
+        print('Cannot navigate: no valid context available');
+        // Store for later navigation when app becomes active
+        _pendingNavigation = '/alert/$alertId';
+      }
+    } catch (e) {
+      print('Error navigating to alert $alertId: $e');
+    }
+  }
+
+  String? _pendingNavigation;
+
+  void navigateToChat(String chatId) {
+    try {
+      final context = rootNavigatorKey.currentContext;
+      if (context != null && context.mounted) {
+        context.go('/alert/$chatId/chat');
+        print('Navigated to chat: $chatId');
+      } else {
+        print('Cannot navigate: no valid context available');
+        _pendingNavigation = '/alert/$chatId/chat';
+      }
+    } catch (e) {
+      print('Error navigating to chat $chatId: $e');
+    }
+  }
+
+  void processPendingNavigation() {
+    if (_pendingNavigation != null) {
+      final context = rootNavigatorKey.currentContext;
+      if (context != null && context.mounted) {
+        context.go(_pendingNavigation!);
+        print('Processed pending navigation: $_pendingNavigation');
+        _pendingNavigation = null;
+      }
     }
   }
 
