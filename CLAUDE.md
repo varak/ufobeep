@@ -76,3 +76,4 @@
 - don't add yourself as an author or mention yourself in commit messages
 - dont include yourself in commits message or as an author
 - don't mention yourself or add yourself in commit messages
+- scp -P322 /home/mike/D/ufobeep/add_enrichment_column.py ufobeep@ufobeep.com:/home/ufobeep/  is the correct command, please include the port when giving me examples

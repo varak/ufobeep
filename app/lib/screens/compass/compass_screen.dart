@@ -43,19 +43,32 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
 
   @override
   void dispose() {
-    final service = ref.read(compassServiceProvider);
-    service.stopListening();
+    // Only try to stop the service if we're still mounted and the provider is still available
+    try {
+      if (mounted) {
+        final service = ref.read(compassServiceProvider);
+        service.stopListening();
+      }
+    } catch (e) {
+      // Ignore errors during disposal - provider may already be disposed
+      debugPrint('Error stopping compass service during disposal: $e');
+    }
     super.dispose();
   }
 
   Future<void> _initializeCompass() async {
     try {
+      if (!mounted) return; // Early exit if widget is disposed
+      
       final service = ref.read(compassServiceProvider);
       await service.startListening();
-      setState(() {
-        _isServiceStarted = true;
-        _currentTarget = service.getMockTarget(); // Demo target
-      });
+      
+      if (mounted) { // Check mount status before setState
+        setState(() {
+          _isServiceStarted = true;
+          _currentTarget = service.getMockTarget(); // Demo target
+        });
+      }
     } catch (e) {
       debugPrint('Failed to start compass service: $e');
       // Show error to user

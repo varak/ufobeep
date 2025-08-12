@@ -8,6 +8,7 @@ import '../../theme/app_theme.dart';
 import '../../config/environment.dart';
 import '../../services/sensor_service.dart';
 import '../../services/plane_match_api_service.dart';
+import '../../services/photo_metadata_service.dart';
 import '../../models/sensor_data.dart';
 import '../../models/sighting_submission.dart' as local;
 
@@ -105,6 +106,42 @@ class _BeepScreenState extends State<BeepScreen> {
           // Continue without sensor data if capture fails
           debugPrint('Failed to capture sensor data: $e');
         }
+      }
+
+      // Try to extract GPS coordinates from photo EXIF data
+      try {
+        final gpsData = await PhotoMetadataService.extractGpsCoordinates(File(image.path));
+        if (gpsData != null && sensorData != null) {
+          // Update sensor data with GPS coordinates from photo
+          sensorData = SensorData(
+            utc: sensorData.utc,
+            latitude: gpsData['latitude']!,
+            longitude: gpsData['longitude']!,
+            accuracy: 5.0, // GPS from photo is usually accurate
+            altitude: gpsData['altitude'] ?? sensorData.altitude,
+            azimuthDeg: sensorData.azimuthDeg,
+            pitchDeg: sensorData.pitchDeg,
+            rollDeg: sensorData.rollDeg,
+            hfovDeg: sensorData.hfovDeg,
+          );
+          debugPrint('Using GPS coordinates from photo: ${gpsData['latitude']}, ${gpsData['longitude']}');
+        } else if (gpsData != null && sensorData == null) {
+          // Create sensor data with just GPS coordinates from photo
+          sensorData = SensorData(
+            utc: DateTime.now().toUtc(),
+            latitude: gpsData['latitude']!,
+            longitude: gpsData['longitude']!,
+            accuracy: 5.0,
+            altitude: gpsData['altitude'] ?? 0.0,
+            azimuthDeg: 0.0, // No orientation data
+            pitchDeg: 0.0,
+            rollDeg: 0.0,
+            hfovDeg: 66.0, // Default camera HFOV
+          );
+          debugPrint('Created sensor data from photo GPS: ${gpsData['latitude']}, ${gpsData['longitude']}');
+        }
+      } catch (e) {
+        debugPrint('Failed to extract GPS from photo: $e');
       }
 
       // Create initial submission

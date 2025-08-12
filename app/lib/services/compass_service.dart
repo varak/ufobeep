@@ -331,5 +331,9 @@ final compassServiceProvider = Provider<CompassService>((ref) {
 
 final compassDataProvider = StreamProvider<CompassData>((ref) {
   final service = ref.watch(compassServiceProvider);
+  ref.onDispose(() {
+    // Ensure service stops listening when provider is disposed
+    service.stopListening();
+  });
   return service.compassStream;
 });

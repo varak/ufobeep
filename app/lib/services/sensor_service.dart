@@ -15,23 +15,23 @@ class SensorService {
 
   Future<SensorData> captureSensorData() async {
     try {
-      // Capture all sensor readings in parallel
+      // Capture all sensor readings in parallel (location can fail)
       final results = await Future.wait([
         _captureLocation(),
         _captureDeviceOrientation(),
         _estimateCameraHFOV(),
-      ], eagerError: true);
+      ], eagerError: false); // Don't fail if location fails
 
-      final position = results[0] as Position;
+      final position = results[0] as Position?;
       final orientation = results[1] as DeviceOrientation;
       final hfov = results[2] as double?;
 
       return SensorData(
         utc: DateTime.now().toUtc(),
-        latitude: position.latitude,
-        longitude: position.longitude,
-        accuracy: position.accuracy,
-        altitude: position.altitude,
+        latitude: position?.latitude ?? 0.0, // Default to 0.0 if no location
+        longitude: position?.longitude ?? 0.0, // Default to 0.0 if no location
+        accuracy: position?.accuracy ?? 0.0,
+        altitude: position?.altitude ?? 0.0,
         azimuthDeg: orientation.azimuth,
         pitchDeg: orientation.pitch,
         rollDeg: orientation.roll,
@@ -43,31 +43,30 @@ class SensorService {
     }
   }
 
-  Future<Position> _captureLocation() async {
+  Future<Position?> _captureLocation() async {
     try {
       // Check if location services are enabled
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        throw Exception('Location services are disabled. Please enable location services in device settings.');
+        debugPrint('Location services are disabled');
+        return null;
       }
 
       // Check permissions (should be granted during app initialization)
       LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        throw Exception('Location permission was denied. Please restart the app to grant permissions.');
+      if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
+        debugPrint('Location permission denied: $permission');
+        return null;
       }
 
-      if (permission == LocationPermission.deniedForever) {
-        throw Exception('Location permissions are permanently denied. Please enable location access in device settings.');
-      }
-
-      // Get current position with high accuracy
+      // Get current position with high accuracy and shorter timeout
       return await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
-        timeLimit: _sensorTimeout,
+        timeLimit: const Duration(seconds: 3), // Reduced timeout
       );
     } catch (e) {
-      throw Exception('Failed to get location: $e');
+      debugPrint('Failed to get location: $e');
+      return null; // Return null instead of throwing
     }
   }
 
