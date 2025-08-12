@@ -117,37 +117,41 @@ async def get_alerts():
             
             alerts = []
             for row in rows:
+                # Extract coordinates from sensor data
+                latitude = 0.0
+                longitude = 0.0
+                if row["sensor_data"]:
+                    sensor_data = row["sensor_data"]
+                    if "latitude" in sensor_data and sensor_data["latitude"] is not None:
+                        latitude = float(sensor_data["latitude"])
+                    if "longitude" in sensor_data and sensor_data["longitude"] is not None:
+                        longitude = float(sensor_data["longitude"])
+                
                 alert = {
                     "id": row["id"],
                     "title": row["title"],
                     "description": row["description"],
                     "category": row["category"],
-                    "alertLevel": row["alert_level"],
+                    "alert_level": row["alert_level"],  # Use snake_case as expected by mobile app
                     "status": row["status"],
-                    "witnessCount": row["witness_count"],
-                    "createdAt": row["created_at"].isoformat(),
-                    "latitude": 0.0,  # Default to 0.0 instead of null
-                    "longitude": 0.0,  # Default to 0.0 instead of null
-                    "distance": 0.0,  # Default to 0.0 instead of null
-                    "bearing": 0.0,   # Default to 0.0 instead of null
-                    "viewCount": 0,
-                    "verificationScore": 0.0,
-                    "mediaFiles": [],
+                    "witness_count": row["witness_count"],  # Use snake_case
+                    "created_at": row["created_at"].isoformat(),  # Use snake_case as expected
+                    "location": {  # Mobile app expects nested location object
+                        "latitude": latitude,
+                        "longitude": longitude
+                    },
+                    "distance_km": 0.0,  # Mobile app expects this field name
+                    "bearing_deg": 0.0,  # Mobile app expects this field name
+                    "view_count": 0,
+                    "verification_score": 0.0,
+                    "media_files": [],  # Use snake_case
                     "tags": row["tags"] or [],
-                    "isPublic": row["is_public"],
-                    "submittedAt": row["created_at"].isoformat(),
-                    "processedAt": row["created_at"].isoformat(),
-                    "matrixRoomId": "",  # Default empty string
-                    "reporterId": ""     # Default empty string
+                    "is_public": row["is_public"],  # Use snake_case
+                    "submitted_at": row["created_at"].isoformat(),
+                    "processed_at": row["created_at"].isoformat(),
+                    "matrix_room_id": "",
+                    "reporter_id": ""
                 }
-                
-                # Extract coordinates from sensor data if available
-                if row["sensor_data"]:
-                    sensor_data = row["sensor_data"]
-                    if "latitude" in sensor_data and sensor_data["latitude"] is not None:
-                        alert["latitude"] = float(sensor_data["latitude"])
-                    if "longitude" in sensor_data and sensor_data["longitude"] is not None:
-                        alert["longitude"] = float(sensor_data["longitude"])
                 
                 alerts.append(alert)
             
