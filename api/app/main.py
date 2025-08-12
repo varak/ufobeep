@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, UploadFile, File, Form
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form, Request
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -83,7 +83,23 @@ async def startup_event():
                     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
                 )
             """)
-        print("Sightings table initialized")
+            
+            # Create email interests table
+            await conn.execute("""
+                CREATE TABLE IF NOT EXISTS email_interests (
+                    id SERIAL PRIMARY KEY,
+                    email TEXT NOT NULL UNIQUE,
+                    source TEXT DEFAULT 'app_download_page',
+                    ip_address INET,
+                    ip_location_data JSONB,
+                    gps_latitude DECIMAL(10,8),
+                    gps_longitude DECIMAL(11,8),
+                    gps_accuracy DECIMAL(10,2),
+                    location_comparison JSONB,
+                    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+                )
+            """)
+        print("Database tables initialized")
     except Exception as e:
         print(f"Database initialization failed: {e}")
 
@@ -568,22 +584,93 @@ async def upload_media(
 # Email Interest Signup Endpoints
 @app.post("/api/v1/emails/interest", response_class=HTMLResponse)
 async def submit_email_interest_form(
+    request: Request,
     email: str = Form(...),
-    source: str = Form(default="app_download_page")
+    source: str = Form(default="app_download_page"),
+    latitude: float = Form(None),
+    longitude: float = Form(None),
+    accuracy: float = Form(None)
 ):
     """Handle form submission for email interest - adds email to database and returns thank you page"""
-    conn = None
     try:
-        conn = await get_db_connection()
+        # Get client IP address
+        client_ip = request.client.host
+        if "x-forwarded-for" in request.headers:
+            # Handle proxy/load balancer forwarded IPs
+            client_ip = request.headers["x-forwarded-for"].split(",")[0].strip()
+        elif "x-real-ip" in request.headers:
+            client_ip = request.headers["x-real-ip"]
         
-        # Try to insert the email
-        await conn.execute(
-            """
-            INSERT INTO email_interests (email, source, created_at) 
-            VALUES ($1, $2, NOW()) 
-            """,
-            email, source
-        )
+        # Get location data from IP using a free IP geolocation service
+        location_data = None
+        try:
+            import aiohttp
+            async with aiohttp.ClientSession() as session:
+                # Using ipapi.co for free IP geolocation (1000 requests/month)
+                async with session.get(f"http://ipapi.co/{client_ip}/json/", timeout=5) as response:
+                    if response.status == 200:
+                        location_data = await response.json()
+                        # Only keep relevant fields
+                        if location_data and not location_data.get('error'):
+                            location_data = {
+                                'city': location_data.get('city'),
+                                'region': location_data.get('region'),
+                                'country': location_data.get('country_name'),
+                                'country_code': location_data.get('country_code'),
+                                'latitude': location_data.get('latitude'),
+                                'longitude': location_data.get('longitude'),
+                                'timezone': location_data.get('timezone'),
+                                'org': location_data.get('org')  # ISP info
+                            }
+        except Exception as e:
+            print(f"Failed to get location for IP {client_ip}: {e}")
+            location_data = None
+
+        # Calculate location comparison if both IP and GPS data are available
+        location_comparison = None
+        if location_data and latitude is not None and longitude is not None:
+            try:
+                ip_lat = location_data.get('latitude')
+                ip_lng = location_data.get('longitude')
+                if ip_lat and ip_lng:
+                    # Calculate distance between IP location and GPS location using Haversine formula
+                    import math
+                    def haversine_distance(lat1, lon1, lat2, lon2):
+                        R = 6371  # Earth's radius in kilometers
+                        dlat = math.radians(lat2 - lat1)
+                        dlon = math.radians(lon2 - lon1)
+                        a = (math.sin(dlat/2)**2 + 
+                             math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * 
+                             math.sin(dlon/2)**2)
+                        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+                        return R * c
+                    
+                    distance_km = haversine_distance(ip_lat, ip_lng, latitude, longitude)
+                    location_comparison = {
+                        'ip_coordinates': [ip_lat, ip_lng],
+                        'gps_coordinates': [latitude, longitude],
+                        'distance_km': round(distance_km, 2),
+                        'ip_city': location_data.get('city'),
+                        'ip_region': location_data.get('region'),
+                        'ip_country': location_data.get('country'),
+                        'accuracy_meters': accuracy
+                    }
+            except Exception as e:
+                print(f"Failed to calculate location comparison: {e}")
+
+        async with db_pool.acquire() as conn:
+            # Try to insert the email with IP and GPS location data
+            await conn.execute(
+                """
+                INSERT INTO email_interests (email, source, ip_address, ip_location_data, 
+                                           gps_latitude, gps_longitude, gps_accuracy, location_comparison) 
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+                """,
+                email, source, client_ip, 
+                json.dumps(location_data) if location_data else None,
+                latitude, longitude, accuracy,
+                json.dumps(location_comparison) if location_comparison else None
+            )
         
         # Return success HTML page
         return HTMLResponse(content=f"""
@@ -739,18 +826,69 @@ async def submit_email_interest_form(
 @app.get("/api/v1/emails/count")
 async def get_interest_count():
     """Get count of interested users"""
-    conn = None
     try:
-        conn = await get_db_connection()
-        
-        result = await conn.fetchrow("SELECT COUNT(*) as count FROM email_interests")
-        count = result['count'] if result else 0
-        
-        return {"count": count}
+        async with db_pool.acquire() as conn:
+            result = await conn.fetchrow("SELECT COUNT(*) as count FROM email_interests")
+            count = result['count'] if result else 0
+            
+            return {"count": count}
         
     except Exception as e:
         print(f"Error getting email count: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to get count: {str(e)}")
-    finally:
-        if conn:
-            await conn.close()
+
+@app.get("/test/openweather/{lat}/{lng}")
+async def test_openweather_api(lat: float, lng: float):
+    """Test OpenWeather API calls with real coordinates"""
+    try:
+        # Test weather API
+        import aiohttp
+        api_key = settings.openweather_api_key
+        
+        if not api_key or api_key == "dummy":
+            return {"error": "OpenWeather API key not configured"}
+        
+        weather_data = {}
+        geocoding_data = {}
+        
+        async with aiohttp.ClientSession() as session:
+            # Test current weather API
+            weather_url = f"https://api.openweathermap.org/data/2.5/weather"
+            weather_params = {
+                'lat': lat,
+                'lon': lng,
+                'appid': api_key,
+                'units': 'metric'
+            }
+            
+            async with session.get(weather_url, params=weather_params) as response:
+                if response.status == 200:
+                    weather_data = await response.json()
+                else:
+                    weather_data = {"error": f"HTTP {response.status}: {await response.text()}"}
+            
+            # Test reverse geocoding API  
+            geocode_url = f"http://api.openweathermap.org/geo/1.0/reverse"
+            geocode_params = {
+                'lat': lat,
+                'lon': lng,
+                'limit': 1,
+                'appid': api_key
+            }
+            
+            async with session.get(geocode_url, params=geocode_params) as response:
+                if response.status == 200:
+                    geocoding_data = await response.json()
+                else:
+                    geocoding_data = {"error": f"HTTP {response.status}: {await response.text()}"}
+        
+        return {
+            "coordinates": {"lat": lat, "lng": lng},
+            "weather": weather_data,
+            "geocoding": geocoding_data,
+            "api_key_configured": bool(api_key and api_key != "dummy")
+        }
+        
+    except Exception as e:
+        print(f"Error testing OpenWeather API: {e}")
+        return {"error": str(e)}
