@@ -13,6 +13,7 @@ class Alert {
     required this.latitude,
     required this.longitude,
     required this.createdAt,
+    this.locationName,
     this.distance,
     this.bearing,
     this.category = 'unknown',
@@ -37,6 +38,7 @@ class Alert {
   final double latitude;
   final double longitude;
   final DateTime createdAt;
+  final String? locationName;
   final double? distance;
   final double? bearing;
   final String category;
@@ -66,6 +68,7 @@ class Alert {
     double? latitude,
     double? longitude,
     DateTime? createdAt,
+    String? locationName,
     double? distance,
     double? bearing,
     String? category,
@@ -90,6 +93,7 @@ class Alert {
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
       createdAt: createdAt ?? this.createdAt,
+      locationName: locationName ?? this.locationName,
       distance: distance ?? this.distance,
       bearing: bearing ?? this.bearing,
       category: category ?? this.category,
@@ -120,6 +124,7 @@ class Alert {
       latitude: location?['latitude']?.toDouble() ?? 0.0,
       longitude: location?['longitude']?.toDouble() ?? 0.0,
       createdAt: DateTime.parse(json['created_at'] as String),
+      locationName: location?['name'] as String?,
       distance: json['distance_km']?.toDouble(),
       bearing: json['bearing_deg']?.toDouble(),
       category: json['category'] as String? ?? 'unknown',

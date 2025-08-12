@@ -158,8 +158,36 @@ class AlertCard extends StatelessWidget {
               // Footer with location info and bearing
               Row(
                 children: [
-                  // Location and distance info
-                  if (alert.distance != null && showDistance) ...[
+                  // Location name and distance info
+                  if (alert.locationName != null) ...[
+                    Icon(
+                      Icons.location_on,
+                      size: 16,
+                      color: AppColors.textTertiary,
+                    ),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        alert.locationName!,
+                        style: const TextStyle(
+                          color: AppColors.textTertiary,
+                          fontSize: 12,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    if (alert.distance != null && showDistance) ...[
+                      const SizedBox(width: 8),
+                      Text(
+                        '• ${_getDistanceText()}',
+                        style: const TextStyle(
+                          color: AppColors.textTertiary,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ] else if (alert.distance != null && showDistance) ...[
                     Icon(
                       Icons.location_on,
                       size: 16,

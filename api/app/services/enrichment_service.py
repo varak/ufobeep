@@ -237,28 +237,48 @@ class WeatherEnrichmentProcessor(EnrichmentProcessor):
                     break
             
             return {
+                # Temperature data
                 "temperature_c": main.get('temp', 0),
                 "feels_like_c": main.get('feels_like', 0),
-                "humidity_percent": main.get('humidity', 0),
+                "dew_point_c": main.get('dew_point', main.get('temp', 0) - 10),  # Approximate if not available
+                
+                # Atmospheric conditions
                 "pressure_hpa": main.get('pressure', 1013.25),
+                "humidity_percent": main.get('humidity', 0),
+                "visibility_km": visibility_km,
+                "cloud_cover_percent": clouds.get('all', 0),
+                "uvi": uv_index if uv_index is not None else 0,
+                
+                # Wind data
                 "wind_speed_ms": wind.get('speed', 0),
                 "wind_direction_deg": wind.get('deg', 0),
                 "wind_gust_ms": wind.get('gust', 0),
-                "visibility_km": visibility_km,
-                "cloud_cover_percent": clouds.get('all', 0),
-                "weather_condition": weather_condition,
+                
+                # Weather conditions
                 "weather_main": weather.get('main', 'Clear'),
                 "weather_description": weather.get('description', 'Clear sky'),
                 "weather_icon": weather.get('icon', '01d'),
+                "weather_condition": weather_condition,
+                
+                # Precipitation data
                 "precipitation_mm": current_data.get('rain', {}).get('1h', 0) + current_data.get('snow', {}).get('1h', 0),
-                "uv_index": uv_index,
-                "sunrise": sunrise_utc,
-                "sunset": sunset_utc,
+                "rain_1h": current_data.get('rain', {}).get('1h', 0),
+                "snow_1h": current_data.get('snow', {}).get('1h', 0),
+                
+                # Sun times (Unix timestamps)
+                "sunrise": sys.get('sunrise', 0),
+                "sunset": sys.get('sunset', 0),
+                "sunrise_utc": sunrise_utc,
+                "sunset_utc": sunset_utc,
+                
+                # Additional metadata
                 "timezone_offset": current_data.get('timezone', 0),
                 "country": sys.get('country'),
                 "city": current_data.get('name'),
                 "openweather_id": weather_id,
                 "data_timestamp": datetime.fromtimestamp(current_data.get('dt', 0), tz=timezone.utc).isoformat(),
+                "coord_lat": current_data.get('coord', {}).get('lat', context.latitude),
+                "coord_lon": current_data.get('coord', {}).get('lon', context.longitude),
             }
 
 

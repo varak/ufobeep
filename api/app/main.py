@@ -338,28 +338,82 @@ async def generate_enrichment_data(sensor_data):
         if "weather" in enrichment_results and enrichment_results["weather"].success:
             weather_data = enrichment_results["weather"].data
             enrichment["weather"] = {
+                # Basic weather conditions
                 "condition": weather_data.get("weather_main", "Clear"),
                 "description": weather_data.get("weather_description", "Clear sky"),
+                "icon_code": weather_data.get("weather_icon", "01d"),
+                
+                # Temperature data
                 "temperature": weather_data.get("temperature_c", 0),
+                "feels_like": weather_data.get("feels_like_c", 0),
+                "dew_point": weather_data.get("dew_point_c", 0),
+                
+                # Atmospheric conditions
+                "pressure": weather_data.get("pressure_hpa", 1013),
                 "humidity": weather_data.get("humidity_percent", 0),
-                "wind_speed": weather_data.get("wind_speed_ms", 0),
-                "wind_direction": weather_data.get("wind_direction_deg", 0),
                 "visibility": weather_data.get("visibility_km", 10.0),
                 "cloud_coverage": weather_data.get("cloud_cover_percent", 0),
-                "icon_code": weather_data.get("weather_icon", "01d")
+                "uv_index": weather_data.get("uvi", 0),
+                
+                # Wind data
+                "wind_speed": weather_data.get("wind_speed_ms", 0),
+                "wind_direction": weather_data.get("wind_direction_deg", 0),
+                "wind_gust": weather_data.get("wind_gust_ms", 0),
+                
+                # Sun times (Unix timestamps)
+                "sunrise": weather_data.get("sunrise", 0),
+                "sunset": weather_data.get("sunset", 0),
+                
+                # Precipitation (if available)
+                "rain_1h": weather_data.get("rain_1h_mm", 0),
+                "snow_1h": weather_data.get("snow_1h_mm", 0),
+                
+                # Timing
+                "timestamp": weather_data.get("dt", 0),
+                "timezone_offset": weather_data.get("timezone_offset", 0),
+                
+                # Computed observation quality
+                "observation_quality": _calculate_observation_quality(weather_data)
             }
         else:
             # Fallback weather data
             enrichment["weather"] = {
+                # Basic weather conditions
                 "condition": "Clear",
                 "description": "Weather data unavailable",
+                "icon_code": "01d",
+                
+                # Temperature data
                 "temperature": 0,
+                "feels_like": 0,
+                "dew_point": 0,
+                
+                # Atmospheric conditions
+                "pressure": 1013,
                 "humidity": 0,
-                "wind_speed": 0,
-                "wind_direction": 0,
                 "visibility": 10.0,
                 "cloud_coverage": 0,
-                "icon_code": "01d"
+                "uv_index": 0,
+                
+                # Wind data
+                "wind_speed": 0,
+                "wind_direction": 0,
+                "wind_gust": 0,
+                
+                # Sun times
+                "sunrise": 0,
+                "sunset": 0,
+                
+                # Precipitation
+                "rain_1h": 0,
+                "snow_1h": 0,
+                
+                # Timing
+                "timestamp": 0,
+                "timezone_offset": 0,
+                
+                # Observation quality
+                "observation_quality": "unknown"
             }
         
         # Extract celestial data if available
@@ -892,3 +946,70 @@ async def test_openweather_api(lat: float, lng: float):
     except Exception as e:
         print(f"Error testing OpenWeather API: {e}")
         return {"error": str(e)}
+
+def _calculate_observation_quality(weather_data):
+    """Calculate observation quality for UFO sightings based on weather conditions"""
+    try:
+        # Get key weather parameters
+        visibility = weather_data.get("visibility_km", 10.0)
+        cloud_cover = weather_data.get("cloud_cover_percent", 0)
+        humidity = weather_data.get("humidity_percent", 50)
+        wind_speed = weather_data.get("wind_speed_ms", 0)
+        precipitation = weather_data.get("rain_1h_mm", 0) + weather_data.get("snow_1h_mm", 0)
+        
+        # Calculate quality score (0-100)
+        score = 100
+        
+        # Visibility impact (most important)
+        if visibility < 1.0:
+            score -= 60  # Very poor visibility
+        elif visibility < 5.0:
+            score -= 30  # Poor visibility
+        elif visibility < 8.0:
+            score -= 15  # Moderate visibility
+        # visibility >= 8km is excellent (no penalty)
+        
+        # Cloud cover impact
+        if cloud_cover > 80:
+            score -= 25  # Mostly cloudy
+        elif cloud_cover > 50:
+            score -= 15  # Partly cloudy
+        elif cloud_cover > 25:
+            score -= 5   # Few clouds
+        # < 25% cloud cover is good (no penalty)
+        
+        # Precipitation impact
+        if precipitation > 0:
+            score -= 20  # Any precipitation reduces visibility
+        
+        # High humidity can cause haze
+        if humidity > 85:
+            score -= 10  # Very humid
+        elif humidity > 70:
+            score -= 5   # Humid
+        
+        # Wind can affect stability for observation
+        if wind_speed > 10:
+            score -= 10  # Very windy
+        elif wind_speed > 5:
+            score -= 5   # Windy
+        
+        # Ensure score stays within bounds
+        score = max(0, min(100, score))
+        
+        # Convert to qualitative rating
+        if score >= 90:
+            return "excellent"
+        elif score >= 75:
+            return "very_good" 
+        elif score >= 60:
+            return "good"
+        elif score >= 40:
+            return "fair"
+        elif score >= 25:
+            return "poor"
+        else:
+            return "very_poor"
+            
+    except Exception:
+        return "unknown"

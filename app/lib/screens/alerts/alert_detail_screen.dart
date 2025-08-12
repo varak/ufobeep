@@ -101,9 +101,15 @@ class AlertDetailScreen extends ConsumerWidget {
                           label: 'Time',
                           value: _formatDateTime(alert.createdAt),
                         ),
-                        if (alert.distance != null)
+                        if (alert.locationName != null)
                           _DetailRow(
                             icon: Icons.location_on,
+                            label: 'Location',
+                            value: alert.locationName!,
+                          ),
+                        if (alert.distance != null)
+                          _DetailRow(
+                            icon: Icons.straighten,
                             label: 'Distance',
                             value: '${alert.distance!.toStringAsFixed(1)} km',
                           ),
@@ -138,21 +144,83 @@ class AlertDetailScreen extends ConsumerWidget {
                           ),
                           const SizedBox(height: 12),
                           if (alert.enrichment!['weather'] != null) ...[
+                            // Basic weather condition
                             _DetailRow(
                               icon: Icons.wb_sunny,
                               label: 'Weather',
                               value: '${alert.enrichment!['weather']['condition']} - ${alert.enrichment!['weather']['description']}',
                             ),
+                            
+                            // Temperature information
                             _DetailRow(
                               icon: Icons.thermostat,
                               label: 'Temperature',
-                              value: '${alert.enrichment!['weather']['temperature']}°C',
+                              value: '${alert.enrichment!['weather']['temperature']}°C (feels like ${alert.enrichment!['weather']['feels_like']}°C)',
                             ),
+                            if (alert.enrichment!['weather']['dew_point'] != null)
+                              _DetailRow(
+                                icon: Icons.water_drop,
+                                label: 'Dew Point',
+                                value: '${alert.enrichment!['weather']['dew_point']}°C',
+                              ),
+                            
+                            // Atmospheric conditions
                             _DetailRow(
                               icon: Icons.visibility,
                               label: 'Visibility',
                               value: '${alert.enrichment!['weather']['visibility']} km',
                             ),
+                            _DetailRow(
+                              icon: Icons.water,
+                              label: 'Humidity',
+                              value: '${alert.enrichment!['weather']['humidity']}%',
+                            ),
+                            _DetailRow(
+                              icon: Icons.speed,
+                              label: 'Pressure',
+                              value: '${alert.enrichment!['weather']['pressure']} hPa',
+                            ),
+                            if (alert.enrichment!['weather']['cloud_coverage'] != null)
+                              _DetailRow(
+                                icon: Icons.cloud,
+                                label: 'Cloud Cover',
+                                value: '${alert.enrichment!['weather']['cloud_coverage']}%',
+                              ),
+                            if (alert.enrichment!['weather']['uv_index'] != null && alert.enrichment!['weather']['uv_index'] > 0)
+                              _DetailRow(
+                                icon: Icons.wb_sunny_outlined,
+                                label: 'UV Index',
+                                value: '${alert.enrichment!['weather']['uv_index']}',
+                              ),
+                            
+                            // Wind information
+                            if (alert.enrichment!['weather']['wind_speed'] != null && alert.enrichment!['weather']['wind_speed'] > 0) ...[
+                              _DetailRow(
+                                icon: Icons.air,
+                                label: 'Wind',
+                                value: '${(alert.enrichment!['weather']['wind_speed'] * 3.6).toStringAsFixed(1)} km/h ${_getWindDirection(alert.enrichment!['weather']['wind_direction'])}',
+                              ),
+                              if (alert.enrichment!['weather']['wind_gust'] != null && alert.enrichment!['weather']['wind_gust'] > 0)
+                                _DetailRow(
+                                  icon: Icons.tornado,
+                                  label: 'Wind Gusts',
+                                  value: '${(alert.enrichment!['weather']['wind_gust'] * 3.6).toStringAsFixed(1)} km/h',
+                                ),
+                            ],
+                            
+                            // Sun times (if available)
+                            if (alert.enrichment!['weather']['sunrise'] != null && alert.enrichment!['weather']['sunset'] != null) ...[
+                              _DetailRow(
+                                icon: Icons.wb_twilight,
+                                label: 'Sunrise',
+                                value: _formatTimestamp(alert.enrichment!['weather']['sunrise']),
+                              ),
+                              _DetailRow(
+                                icon: Icons.nights_stay,
+                                label: 'Sunset',
+                                value: _formatTimestamp(alert.enrichment!['weather']['sunset']),
+                              ),
+                            ],
                           ],
                           if (alert.enrichment!['plane_match'] != null) ...[
                             _DetailRow(
@@ -365,6 +433,56 @@ class AlertDetailScreen extends ConsumerWidget {
       return '${difference.inMinutes} minute${difference.inMinutes == 1 ? '' : 's'} ago';
     } else {
       return 'Just now';
+    }
+  }
+
+  String _getWindDirection(dynamic windDirection) {
+    if (windDirection == null) return '';
+    
+    final degrees = windDirection is num ? windDirection.toDouble() : double.tryParse(windDirection.toString()) ?? 0.0;
+    
+    if (degrees >= 348.75 || degrees < 11.25) return 'N';
+    if (degrees >= 11.25 && degrees < 33.75) return 'NNE';
+    if (degrees >= 33.75 && degrees < 56.25) return 'NE';
+    if (degrees >= 56.25 && degrees < 78.75) return 'ENE';
+    if (degrees >= 78.75 && degrees < 101.25) return 'E';
+    if (degrees >= 101.25 && degrees < 123.75) return 'ESE';
+    if (degrees >= 123.75 && degrees < 146.25) return 'SE';
+    if (degrees >= 146.25 && degrees < 168.75) return 'SSE';
+    if (degrees >= 168.75 && degrees < 191.25) return 'S';
+    if (degrees >= 191.25 && degrees < 213.75) return 'SSW';
+    if (degrees >= 213.75 && degrees < 236.25) return 'SW';
+    if (degrees >= 236.25 && degrees < 258.75) return 'WSW';
+    if (degrees >= 258.75 && degrees < 281.25) return 'W';
+    if (degrees >= 281.25 && degrees < 303.75) return 'WNW';
+    if (degrees >= 303.75 && degrees < 326.25) return 'NW';
+    if (degrees >= 326.25 && degrees < 348.75) return 'NNW';
+    
+    return '';
+  }
+
+  String _formatTimestamp(dynamic timestamp) {
+    if (timestamp == null) return 'N/A';
+    
+    try {
+      DateTime dateTime;
+      
+      if (timestamp is int) {
+        // Unix timestamp
+        dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+      } else if (timestamp is String) {
+        // ISO string
+        dateTime = DateTime.parse(timestamp);
+      } else {
+        return 'N/A';
+      }
+      
+      // Format as time only (HH:MM)
+      final hours = dateTime.hour.toString().padLeft(2, '0');
+      final minutes = dateTime.minute.toString().padLeft(2, '0');
+      return '$hours:$minutes';
+    } catch (e) {
+      return 'N/A';
     }
   }
 
