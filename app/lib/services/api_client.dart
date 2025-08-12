@@ -778,27 +778,208 @@ extension ApiClientExtension on ApiClient {
 
   Future<void> uploadMediaFile(String sightingId, File file) async {
     try {
-      debugPrint('Uploading media file: ${file.path}');
+      debugPrint('Uploading media file using presigned upload: ${file.path}');
       
-      final fileName = file.path.split('/').last;
-      final formData = FormData.fromMap({
-        'file': await MultipartFile.fromFile(file.path, filename: fileName),
-        'sighting_id': sightingId,
-      });
+      // Step 1: Get presigned upload URL
+      final presignResponse = await createPresignedUpload(file);
+      final uploadId = presignResponse['upload_id'] as String;
+      final uploadUrl = presignResponse['upload_url'] as String;
+      final fields = presignResponse['fields'] as Map<String, dynamic>;
       
-      final response = await _dio.post('/media/upload', data: formData);
+      debugPrint('Got presigned upload URL: $uploadUrl');
       
-      debugPrint('Media upload response: ${response.data}');
+      // Step 2: Upload file directly to S3/MinIO
+      final success = await uploadFileToStorage(uploadUrl, fields, file);
       
-      if (response.data is Map<String, dynamic>) {
-        final data = response.data as Map<String, dynamic>;
-        if (data['success'] != true) {
-          throw Exception(data['message'] ?? 'Upload failed');
-        }
+      if (!success) {
+        throw Exception('Failed to upload file to storage');
       }
+      
+      debugPrint('File uploaded to storage successfully');
+      
+      // Step 3: Mark upload as complete
+      await completeMediaUpload(uploadId, file);
+      
+      debugPrint('Media upload completed successfully');
+      
     } catch (e) {
       debugPrint('Error uploading media file: $e');
       rethrow;
+    }
+  }
+
+  // Media upload endpoints
+  Future<Map<String, dynamic>> createPresignedUpload(File file) async {
+    try {
+      final fileName = file.path.split('/').last;
+      final contentType = _getContentTypeFromFile(file);
+      final fileSize = await file.length();
+      
+      final requestData = {
+        'filename': fileName,
+        'content_type': contentType,
+        'size_bytes': fileSize,
+        // Optional: Add checksum if needed
+        // 'checksum': await _calculateFileChecksum(file),
+      };
+      
+      debugPrint('Creating presigned upload for: $fileName ($fileSize bytes)');
+      
+      final response = await _dio.post('/media/presign', data: requestData);
+      
+      if (response.data is Map<String, dynamic>) {
+        final data = response.data as Map<String, dynamic>;
+        if (data.containsKey('upload_id') && data.containsKey('upload_url')) {
+          return data;
+        }
+      }
+      
+      throw ApiClientException(
+        response.data is Map<String, dynamic> 
+            ? (response.data as Map<String, dynamic>)['message'] ?? 'Failed to create upload URL'
+            : 'Failed to create upload URL',
+      );
+      
+    } catch (e) {
+      if (e is DioException) {
+        throw _handleError(e);
+      }
+      rethrow;
+    }
+  }
+
+  Future<void> completeMediaUpload(String uploadId, File file) async {
+    try {
+      final contentType = _getContentTypeFromFile(file);
+      final mediaType = contentType.startsWith('image/') ? 'photo' : 
+                       contentType.startsWith('video/') ? 'video' : 'photo';
+      
+      final requestData = {
+        'upload_id': uploadId,
+        'media_type': mediaType,
+        'metadata': {
+          'original_path': file.path,
+          'upload_timestamp': DateTime.now().toIso8601String(),
+        },
+      };
+      
+      debugPrint('Completing upload for: $uploadId');
+      
+      final response = await _dio.post('/media/complete', data: requestData);
+      
+      if (response.data is Map<String, dynamic>) {
+        final data = response.data as Map<String, dynamic>;
+        if (data['id'] == null) {
+          throw ApiClientException('Invalid completion response');
+        }
+        debugPrint('Upload completed: ${data['id']}');
+        return;
+      }
+      
+      throw ApiClientException(
+        response.data is Map<String, dynamic> 
+            ? (response.data as Map<String, dynamic>)['message'] ?? 'Failed to complete upload'
+            : 'Failed to complete upload',
+      );
+      
+    } catch (e) {
+      if (e is DioException) {
+        throw _handleError(e);
+      }
+      rethrow;
+    }
+  }
+
+  // Simplified bulk upload - returning raw JSON for now
+  Future<Map<String, dynamic>> createBulkPresignedUploads(List<File> files, String? sightingId) async {
+    try {
+      final fileRequests = <Map<String, dynamic>>[];
+      
+      for (final file in files) {
+        final fileName = file.path.split('/').last;
+        final contentType = _getContentTypeFromFile(file);
+        final fileSize = await file.length();
+        
+        fileRequests.add({
+          'filename': fileName,
+          'content_type': contentType,
+          'size_bytes': fileSize,
+        });
+      }
+      
+      final requestData = {
+        'files': fileRequests,
+        if (sightingId != null) 'sighting_id': sightingId,
+      };
+      
+      debugPrint('Creating bulk presigned uploads for ${files.length} files');
+      
+      final response = await _dio.post('/media/bulk-presign', data: requestData);
+      
+      if (response.data is Map<String, dynamic>) {
+        return response.data as Map<String, dynamic>;
+      }
+      
+      throw ApiClientException('Invalid bulk upload response');
+      
+    } catch (e) {
+      if (e is DioException) {
+        throw _handleError(e);
+      }
+      rethrow;
+    }
+  }
+
+  // File upload to S3/MinIO
+  Future<bool> uploadFileToStorage(
+    String uploadUrl,
+    Map<String, dynamic> fields,
+    File file,
+  ) async {
+    try {
+      debugPrint('Uploading file to storage: $uploadUrl');
+      
+      // Create form data with all required fields
+      final formData = FormData();
+      
+      // Add all the presigned form fields first
+      fields.forEach((key, value) {
+        formData.fields.add(MapEntry(key, value.toString()));
+      });
+      
+      // Add the file last (S3 requirement)
+      formData.files.add(MapEntry(
+        'file',
+        await MultipartFile.fromFile(
+          file.path,
+          filename: file.path.split('/').last,
+        ),
+      ));
+      
+      final uploadResponse = await _dio.post(
+        uploadUrl,
+        data: formData,
+        options: Options(
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          // Don't follow redirects for S3 uploads
+          followRedirects: false,
+          validateStatus: (status) => status != null && status < 400,
+        ),
+      );
+      
+      debugPrint('Storage upload response status: ${uploadResponse.statusCode}');
+      
+      // S3 returns 204 on successful upload
+      return uploadResponse.statusCode == 204 || uploadResponse.statusCode == 200;
+      
+    } catch (e) {
+      if (e is DioException) {
+        debugPrint('File upload failed: ${e.message}');
+        debugPrint('Response: ${e.response?.data}');
+      }
+      return false;
     }
   }
 }

@@ -89,6 +89,20 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
     return false;
   }
 
+  Future<bool> updateUnits(String units) async {
+    if (state != null) {
+      return updatePreferences(state!.copyWith(units: units));
+    }
+    return false;
+  }
+
+  Future<bool> updateLocationPrivacy(LocationPrivacy privacy) async {
+    if (state != null) {
+      return updatePreferences(state!.copyWith(locationPrivacy: privacy));
+    }
+    return false;
+  }
+
   Future<bool> togglePushNotifications() async {
     if (state != null) {
       return updatePreferences(state!.copyWith(
@@ -128,13 +142,6 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
   Future<bool> updateAlertCategories(List<String> categories) async {
     if (state != null) {
       return updatePreferences(state!.copyWith(alertCategories: categories));
-    }
-    return false;
-  }
-
-  Future<bool> updateUnits(String units) async {
-    if (state != null) {
-      return updatePreferences(state!.copyWith(units: units));
     }
     return false;
   }

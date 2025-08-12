@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.config.environment import settings
-from app.routers import plane_match
+from app.routers import plane_match, media
 import asyncpg
 import json
 from datetime import datetime
@@ -122,6 +122,7 @@ app.mount("/static", StaticFiles(directory="media"), name="media")
 
 # Include routers
 app.include_router(plane_match.router)
+app.include_router(media.router)
 
 # Disable complex routers for now - just get basic endpoints working
 

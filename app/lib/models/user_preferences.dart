@@ -1,6 +1,55 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:flutter/material.dart';
 
 part 'user_preferences.g.dart';
+
+enum LocationPrivacy {
+  exact,     // Use exact coordinates
+  jittered,  // Apply 100-300m jitter (default)
+  approximate, // Round to ~1km precision
+  hidden,    // Don't include location
+}
+
+extension LocationPrivacyExtension on LocationPrivacy {
+  String get displayName {
+    switch (this) {
+      case LocationPrivacy.exact:
+        return 'Exact Location';
+      case LocationPrivacy.jittered:
+        return 'Approximate (±200m)';
+      case LocationPrivacy.approximate:
+        return 'General Area (~1km)';
+      case LocationPrivacy.hidden:
+        return 'No Location';
+    }
+  }
+
+  String get description {
+    switch (this) {
+      case LocationPrivacy.exact:
+        return 'Share your exact GPS coordinates';
+      case LocationPrivacy.jittered:
+        return 'Add small random offset for privacy (recommended)';
+      case LocationPrivacy.approximate:
+        return 'Round location to nearest kilometer';
+      case LocationPrivacy.hidden:
+        return 'Don\'t share location information';
+    }
+  }
+
+  IconData get icon {
+    switch (this) {
+      case LocationPrivacy.exact:
+        return Icons.gps_fixed;
+      case LocationPrivacy.jittered:
+        return Icons.location_on;
+      case LocationPrivacy.approximate:
+        return Icons.location_city;
+      case LocationPrivacy.hidden:
+        return Icons.location_off;
+    }
+  }
+}
 
 @JsonSerializable()
 class UserPreferences {
@@ -17,6 +66,7 @@ class UserPreferences {
   final bool darkMode;
   final bool useWeatherVisibility; // Use weather data for visibility calculations
   final bool enableVisibilityFilters; // Filter alerts based on visibility
+  final LocationPrivacy locationPrivacy; // Default location sharing privacy
   final DateTime? lastUpdated;
 
   const UserPreferences({
@@ -33,6 +83,7 @@ class UserPreferences {
     this.darkMode = true,
     this.useWeatherVisibility = true,
     this.enableVisibilityFilters = true,
+    this.locationPrivacy = LocationPrivacy.jittered,
     this.lastUpdated,
   });
 
@@ -55,6 +106,7 @@ class UserPreferences {
     bool? darkMode,
     bool? useWeatherVisibility,
     bool? enableVisibilityFilters,
+    LocationPrivacy? locationPrivacy,
     DateTime? lastUpdated,
   }) {
     return UserPreferences(
@@ -71,6 +123,7 @@ class UserPreferences {
       darkMode: darkMode ?? this.darkMode,
       useWeatherVisibility: useWeatherVisibility ?? this.useWeatherVisibility,
       enableVisibilityFilters: enableVisibilityFilters ?? this.enableVisibilityFilters,
+      locationPrivacy: locationPrivacy ?? this.locationPrivacy,
       lastUpdated: lastUpdated ?? this.lastUpdated,
     );
   }

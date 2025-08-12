@@ -7,6 +7,7 @@ import '../../providers/user_preferences_provider.dart';
 import '../../widgets/profile/language_selector.dart';
 import '../../widgets/profile/range_selector.dart';
 import '../../widgets/profile/visibility_settings.dart';
+import '../../widgets/profile/location_privacy_selector.dart';
 import '../../theme/app_theme.dart';
 import '../../config/environment.dart';
 
@@ -321,6 +322,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           
           const SizedBox(height: 24),
           
+          // Location Privacy Settings
+          LocationPrivacySelector(
+            selectedPrivacy: preferences.locationPrivacy,
+            onPrivacyChanged: _isEditing
+                ? (privacy) => _updateLocationPrivacy(privacy)
+                : (_) {},
+            enabled: _isEditing,
+          ),
+          
+          const SizedBox(height: 24),
+          
           // Visibility Settings
           VisibilitySettings(
             preferences: preferences,
@@ -522,6 +534,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   void _updateUnits(String units) async {
     final notifier = ref.read(userPreferencesProvider.notifier);
     await notifier.updateUnits(units);
+  }
+
+  void _updateLocationPrivacy(LocationPrivacy privacy) async {
+    final notifier = ref.read(userPreferencesProvider.notifier);
+    await notifier.updateLocationPrivacy(privacy);
   }
 
   void _updateVisibilitySettings(UserPreferences updatedPrefs) async {
