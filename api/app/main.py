@@ -144,20 +144,29 @@ async def get_alerts():
                 # Process media info
                 media_files = []
                 if row["media_info"]:
-                    media_info = row["media_info"]
-                    if "files" in media_info:
-                        for media_file in media_info["files"]:
-                            media_files.append({
-                                "id": media_file.get("id", ""),
-                                "type": media_file.get("type", "image"),
-                                "url": media_file.get("url", ""),
-                                "thumbnail_url": media_file.get("thumbnail_url", ""),
-                                "filename": media_file.get("filename", ""),
-                                "size": media_file.get("size", 0),
-                                "width": media_file.get("width", 0),
-                                "height": media_file.get("height", 0),
-                                "uploaded_at": media_file.get("uploaded_at", row["created_at"].isoformat())
-                            })
+                    try:
+                        # media_info might be a string or dict depending on how it's stored
+                        if isinstance(row["media_info"], str):
+                            media_info = json.loads(row["media_info"])
+                        else:
+                            media_info = row["media_info"]
+                        
+                        if isinstance(media_info, dict) and "files" in media_info:
+                            for media_file in media_info["files"]:
+                                media_files.append({
+                                    "id": media_file.get("id", ""),
+                                    "type": media_file.get("type", "image"),
+                                    "url": media_file.get("url", ""),
+                                    "thumbnail_url": media_file.get("thumbnail_url", ""),
+                                    "filename": media_file.get("filename", ""),
+                                    "size": media_file.get("size", 0),
+                                    "width": media_file.get("width", 0),
+                                    "height": media_file.get("height", 0),
+                                    "uploaded_at": media_file.get("uploaded_at", row["created_at"].isoformat())
+                                })
+                    except (json.JSONDecodeError, TypeError) as e:
+                        print(f"Error processing media_info: {e}")
+                        # Continue without media files if parsing fails
                 
                 alert = {
                     "id": row["id"],
