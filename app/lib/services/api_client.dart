@@ -699,14 +699,36 @@ extension ApiClientExtension on ApiClient {
       
       debugPrint('Sighting response: ${response.data}');
       
-      if (onProgress != null) onProgress(1.0);
-      
       // Parse response
       if (response.data is Map<String, dynamic>) {
         final data = response.data as Map<String, dynamic>;
         if (data['success'] == true && data['data'] != null) {
           final sightingData = data['data'] as Map<String, dynamic>;
-          return sightingData['sighting_id'] ?? 'unknown_id';
+          final sightingId = sightingData['sighting_id'] ?? 'unknown_id';
+          
+          // Upload media files if any
+          if (mediaFiles.isNotEmpty) {
+            debugPrint('Uploading ${mediaFiles.length} media files for sighting $sightingId');
+            if (onProgress != null) onProgress(0.7);
+            
+            for (int i = 0; i < mediaFiles.length; i++) {
+              final file = mediaFiles[i];
+              try {
+                await uploadMediaFile(sightingId, file);
+                debugPrint('Uploaded media file ${i + 1}/${mediaFiles.length}');
+                if (onProgress != null) {
+                  final progress = 0.7 + (0.3 * (i + 1) / mediaFiles.length);
+                  onProgress(progress);
+                }
+              } catch (e) {
+                debugPrint('Failed to upload media file ${i + 1}: $e');
+                // Continue with other files even if one fails
+              }
+            }
+          }
+          
+          if (onProgress != null) onProgress(1.0);
+          return sightingId;
         }
       }
       
@@ -752,5 +774,31 @@ extension ApiClientExtension on ApiClient {
       return api.MediaType.audio;
     }
     return api.MediaType.photo; // Default fallback
+  }
+
+  Future<void> uploadMediaFile(String sightingId, File file) async {
+    try {
+      debugPrint('Uploading media file: ${file.path}');
+      
+      final fileName = file.path.split('/').last;
+      final formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(file.path, filename: fileName),
+        'sighting_id': sightingId,
+      });
+      
+      final response = await _dio.post('/media/upload', data: formData);
+      
+      debugPrint('Media upload response: ${response.data}');
+      
+      if (response.data is Map<String, dynamic>) {
+        final data = response.data as Map<String, dynamic>;
+        if (data['success'] != true) {
+          throw Exception(data['message'] ?? 'Upload failed');
+        }
+      }
+    } catch (e) {
+      debugPrint('Error uploading media file: $e');
+      rethrow;
+    }
   }
 }

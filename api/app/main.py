@@ -1,11 +1,15 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from app.config.environment import settings
 from app.routers import plane_match
 import asyncpg
 import json
 from datetime import datetime
 import uuid
+import os
+import shutil
+from pathlib import Path
 
 # Initialize FastAPI app with environment configuration
 app = FastAPI(
@@ -28,6 +32,12 @@ app.add_middleware(
 
 # Database connection
 db_pool = None
+
+# Media storage configuration
+MEDIA_DIR = Path("media")
+MEDIA_DIR.mkdir(exist_ok=True)
+(MEDIA_DIR / "images").mkdir(exist_ok=True)
+(MEDIA_DIR / "thumbnails").mkdir(exist_ok=True)
 
 # Log configuration on startup
 @app.on_event("startup")
@@ -84,6 +94,9 @@ def healthz():
 @app.get("/ping")
 def ping():
     return {"message": "pong"}
+
+# Mount static files for media serving
+app.mount("/media", StaticFiles(directory="media"), name="media")
 
 # Include routers
 app.include_router(plane_match.router)
@@ -243,6 +256,90 @@ async def create_sighting(request: dict = None):
     except Exception as e:
         print(f"Error creating sighting: {e}")
         raise HTTPException(status_code=500, detail=f"Error creating sighting: {str(e)}")
+
+@app.post("/media/upload")
+async def upload_media(
+    file: UploadFile = File(...),
+    sighting_id: str = Form(...)
+):
+    try:
+        # Validate file type
+        if not file.content_type or not file.content_type.startswith('image/'):
+            raise HTTPException(status_code=400, detail="Only image files are allowed")
+        
+        # Generate unique filename
+        file_extension = os.path.splitext(file.filename)[1] if file.filename else '.jpg'
+        unique_filename = f"{uuid.uuid4()}{file_extension}"
+        
+        # Save file
+        file_path = MEDIA_DIR / "images" / unique_filename
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        
+        # Get file info
+        file_size = os.path.getsize(file_path)
+        
+        # Create media record with full URLs
+        base_url = "https://api.ufobeep.com"  # Use environment config in production
+        media_info = {
+            "id": str(uuid.uuid4()),
+            "type": "image",
+            "url": f"{base_url}/media/images/{unique_filename}",
+            "thumbnail_url": f"{base_url}/media/images/{unique_filename}",  # Same for now, could generate thumbnail
+            "filename": file.filename or unique_filename,
+            "size": file_size,
+            "content_type": file.content_type,
+            "uploaded_at": datetime.now().isoformat()
+        }
+        
+        # Update sighting with media info
+        async with db_pool.acquire() as conn:
+            # Get existing media_info
+            existing_media = await conn.fetchval(
+                "SELECT media_info FROM sightings WHERE id = $1", 
+                uuid.UUID(sighting_id)
+            )
+            
+            if existing_media:
+                # Add to existing files
+                media_data = existing_media
+                if "files" not in media_data:
+                    media_data["files"] = []
+                media_data["files"].append(media_info)
+            else:
+                # Create new media data
+                media_data = {
+                    "files": [media_info],
+                    "file_count": 1
+                }
+            
+            # Update database
+            await conn.execute(
+                "UPDATE sightings SET media_info = $1 WHERE id = $2",
+                json.dumps(media_data),
+                uuid.UUID(sighting_id)
+            )
+        
+        return {
+            "success": True,
+            "data": {
+                "media_id": media_info["id"],
+                "url": media_info["url"],
+                "filename": media_info["filename"],
+                "size": file_size
+            },
+            "message": "Media uploaded successfully",
+            "timestamp": datetime.now().isoformat()
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error uploading media: {e}")
+        # Clean up file if it exists
+        if 'file_path' in locals() and os.path.exists(file_path):
+            os.remove(file_path)
+        raise HTTPException(status_code=500, detail=f"Error uploading media: {str(e)}")
 
 # Import and include Emails router (keep this one - it's simple)
 try:

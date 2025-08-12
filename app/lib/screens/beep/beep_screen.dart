@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../theme/app_theme.dart';
@@ -73,6 +74,26 @@ class _BeepScreenState extends State<BeepScreen> {
           _isCapturing = false;
         });
         return;
+      }
+
+      // Save photo to UFOBeep album folder
+      try {
+        final directory = await getExternalStorageDirectory();
+        if (directory != null) {
+          final ufobeepDir = Directory('${directory.path}/UFOBeep');
+          if (!await ufobeepDir.exists()) {
+            await ufobeepDir.create(recursive: true);
+          }
+          
+          final filename = 'UFOBeep_${DateTime.now().millisecondsSinceEpoch}.jpg';
+          final savedFile = File('${ufobeepDir.path}/$filename');
+          await File(image.path).copy(savedFile.path);
+          
+          debugPrint('Photo saved to UFOBeep folder: ${savedFile.path}');
+        }
+      } catch (e) {
+        debugPrint('Failed to save photo to UFOBeep folder: $e');
+        // Continue anyway - don't fail the whole process if save fails
       }
 
       // Capture sensor data simultaneously

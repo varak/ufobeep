@@ -75,3 +75,4 @@
 - Focus on user registration and sighting capture next
 - don't add yourself as an author or mention yourself in commit messages
 - dont include yourself in commits message or as an author
+- don't mention yourself or add yourself in commit messages
