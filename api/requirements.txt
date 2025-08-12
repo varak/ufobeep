@@ -9,6 +9,7 @@ psycopg2-binary==2.9.9
 sqlalchemy==2.0.36
 alembic==1.14.0
 httpx==0.28.1
+aiohttp==3.10.11
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
 boto3==1.36.14

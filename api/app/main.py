@@ -10,6 +10,10 @@ import uuid
 import os
 import shutil
 from pathlib import Path
+import logging
+
+# Set up logging
+logger = logging.getLogger(__name__)
 
 # Initialize FastAPI app with environment configuration
 app = FastAPI(
@@ -24,7 +28,7 @@ app = FastAPI(
 # CORS middleware with environment-based origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins,
+    allow_origins=settings.cors_origins_list,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allow_headers=["*"],
@@ -133,9 +137,10 @@ async def get_alerts():
             
             alerts = []
             for row in rows:
-                # Extract coordinates from enrichment or sensor data
+                # Extract coordinates and location name from enrichment or sensor data
                 latitude = 0.0
                 longitude = 0.0
+                location_name = "Unknown Location"
                 
                 # Try enrichment data first (it has processed location)
                 if row["enrichment_data"]:
@@ -145,6 +150,7 @@ async def get_alerts():
                     if "location" in enrichment:
                         latitude = float(enrichment["location"].get("latitude", 0))
                         longitude = float(enrichment["location"].get("longitude", 0))
+                        location_name = enrichment["location"].get("name", "Unknown Location")
                 
                 # Fall back to sensor data if no enrichment location
                 if latitude == 0.0 and longitude == 0.0 and row["sensor_data"]:
@@ -205,7 +211,8 @@ async def get_alerts():
                     "created_at": row["created_at"].isoformat(),  # Use snake_case as expected
                     "location": {  # Mobile app expects nested location object
                         "latitude": latitude,
-                        "longitude": longitude
+                        "longitude": longitude,
+                        "name": location_name  # Add location name from reverse geocoding
                     },
                     "distance_km": 0.0,  # Mobile app expects this field name
                     "bearing_deg": 0.0,  # Mobile app expects this field name
@@ -244,51 +251,179 @@ async def get_alerts():
             "timestamp": datetime.now().isoformat()
         }
 
-def generate_enrichment_data(sensor_data):
-    """Generate enrichment data for a sighting. In production this would call real APIs."""
-    enrichment = {
-        "status": "completed",
-        "processed_at": datetime.now().isoformat(),
-        "weather": {
-            "condition": "Clear",
-            "description": "Clear sky with excellent visibility",
-            "temperature": 22.5,
-            "humidity": 65,
-            "wind_speed": 12.3,
-            "wind_direction": 270,
-            "visibility": 10.0,
-            "cloud_coverage": 15,
-            "icon_code": "01n"
-        },
-        "celestial": {
-            "moon_phase": 0.65,
-            "moon_phase_name": "Waxing Gibbous",
-            "visible_planets": ["Venus", "Jupiter", "Mars"],
-            "bright_stars": ["Sirius", "Canopus", "Arcturus"]
-        },
-        "plane_match": {
-            "is_plane": False,
-            "confidence": 0.92,
-            "nearby_flights": []
-        },
-        "satellite_check": {
-            "visible_satellites": 3,
-            "starlink_present": True,
-            "iss_visible": False
+async def generate_enrichment_data(sensor_data):
+    """Generate enrichment data for a sighting using the enrichment service."""
+    # Import here to avoid circular imports
+    from app.services.enrichment_service import (
+        enrichment_orchestrator, 
+        EnrichmentContext, 
+        initialize_enrichment_processors
+    )
+    
+    # Initialize processors if not already done
+    if not enrichment_orchestrator.processors:
+        initialize_enrichment_processors()
+    
+    # Check if we have location data
+    if not sensor_data or "latitude" not in sensor_data or "longitude" not in sensor_data:
+        # Return basic enrichment without location-based data
+        return {
+            "status": "completed",
+            "processed_at": datetime.now().isoformat(),
+            "error": "No location data available for enrichment",
         }
-    }
     
-    # Add location info if available
-    if sensor_data:
-        if "latitude" in sensor_data and "longitude" in sensor_data:
-            enrichment["location"] = {
-                "latitude": sensor_data["latitude"],
-                "longitude": sensor_data["longitude"],
-                "altitude": sensor_data.get("altitude", 0),
-                "accuracy": sensor_data.get("accuracy", 0)
+    try:
+        # Create enrichment context
+        context = EnrichmentContext(
+            sighting_id=str(uuid.uuid4()),  # Temporary ID for processing
+            latitude=float(sensor_data["latitude"]),
+            longitude=float(sensor_data["longitude"]),
+            altitude=sensor_data.get("altitude"),
+            timestamp=datetime.now(),
+            azimuth_deg=sensor_data.get("azimuth_deg", 0),
+            pitch_deg=sensor_data.get("pitch_deg", 0),
+            roll_deg=sensor_data.get("roll_deg"),
+            category="ufo",  # Default category
+            title="",  # Will be filled by actual sighting data
+            description=""  # Will be filled by actual sighting data
+        )
+        
+        # Run enrichment processors
+        enrichment_results = await enrichment_orchestrator.enrich_sighting(context)
+        
+        # Process results into the expected format
+        enrichment = {
+            "status": "completed",
+            "processed_at": datetime.now().isoformat(),
+        }
+        
+        # Add location info with location name if available
+        enrichment["location"] = {
+            "latitude": context.latitude,
+            "longitude": context.longitude,
+            "altitude": context.altitude or 0,
+            "accuracy": sensor_data.get("accuracy", 0)
+        }
+        
+        # Extract geocoding data if available
+        if "geocoding" in enrichment_results and enrichment_results["geocoding"].success:
+            geocoding_data = enrichment_results["geocoding"].data
+            enrichment["location"]["name"] = geocoding_data.get("location_name", "Unknown Location")
+            enrichment["location"]["city"] = geocoding_data.get("city", "")
+            enrichment["location"]["state"] = geocoding_data.get("state", "")
+            enrichment["location"]["country"] = geocoding_data.get("country", "")
+            enrichment["location"]["formatted_address"] = geocoding_data.get("formatted_address", "")
+        else:
+            enrichment["location"]["name"] = "Unknown Location"
+        
+        # Extract weather data if available
+        if "weather" in enrichment_results and enrichment_results["weather"].success:
+            weather_data = enrichment_results["weather"].data
+            enrichment["weather"] = {
+                "condition": weather_data.get("weather_main", "Clear"),
+                "description": weather_data.get("weather_description", "Clear sky"),
+                "temperature": weather_data.get("temperature_c", 0),
+                "humidity": weather_data.get("humidity_percent", 0),
+                "wind_speed": weather_data.get("wind_speed_ms", 0),
+                "wind_direction": weather_data.get("wind_direction_deg", 0),
+                "visibility": weather_data.get("visibility_km", 10.0),
+                "cloud_coverage": weather_data.get("cloud_cover_percent", 0),
+                "icon_code": weather_data.get("weather_icon", "01d")
             }
-    
-    return enrichment
+        else:
+            # Fallback weather data
+            enrichment["weather"] = {
+                "condition": "Clear",
+                "description": "Weather data unavailable",
+                "temperature": 0,
+                "humidity": 0,
+                "wind_speed": 0,
+                "wind_direction": 0,
+                "visibility": 10.0,
+                "cloud_coverage": 0,
+                "icon_code": "01d"
+            }
+        
+        # Extract celestial data if available
+        if "celestial" in enrichment_results and enrichment_results["celestial"].success:
+            celestial_data = enrichment_results["celestial"].data
+            summary = celestial_data.get("summary", {})
+            enrichment["celestial"] = {
+                "moon_phase": celestial_data.get("moon", {}).get("phase", 0.5),
+                "moon_phase_name": summary.get("moon_phase_name", "Unknown"),
+                "visible_planets": summary.get("visible_planets", []),
+                "bright_stars": summary.get("visible_bright_stars", 0),
+                "observation_quality": summary.get("observation_quality", "unknown")
+            }
+        else:
+            # Fallback celestial data
+            enrichment["celestial"] = {
+                "moon_phase": 0.5,
+                "moon_phase_name": "Unknown",
+                "visible_planets": [],
+                "bright_stars": 0,
+                "observation_quality": "unknown"
+            }
+        
+        # Extract satellite data if available
+        if "satellites" in enrichment_results and enrichment_results["satellites"].success:
+            satellite_data = enrichment_results["satellites"].data
+            summary = satellite_data.get("summary", {})
+            enrichment["satellite_check"] = {
+                "visible_satellites": summary.get("total_visible_passes", 0),
+                "starlink_present": len(satellite_data.get("starlink_passes", [])) > 0,
+                "iss_visible": len(satellite_data.get("iss_passes", [])) > 0,
+                "brightest_magnitude": summary.get("brightest_magnitude"),
+                "next_pass": summary.get("next_bright_pass")
+            }
+        else:
+            # Fallback satellite data
+            enrichment["satellite_check"] = {
+                "visible_satellites": 0,
+                "starlink_present": False,
+                "iss_visible": False,
+                "brightest_magnitude": None,
+                "next_pass": None
+            }
+        
+        # Add plane match placeholder (this would integrate with existing plane_match service)
+        enrichment["plane_match"] = {
+            "is_plane": False,
+            "confidence": 0.0,
+            "nearby_flights": []
+        }
+        
+        # Add processing summary
+        successful_processors = sum(1 for result in enrichment_results.values() if result.success)
+        total_processors = len(enrichment_results)
+        enrichment["processing_summary"] = {
+            "total_processors": total_processors,
+            "successful_processors": successful_processors,
+            "failed_processors": total_processors - successful_processors,
+            "processor_results": {
+                name: {"success": result.success, "error": result.error}
+                for name, result in enrichment_results.items()
+            }
+        }
+        
+        return enrichment
+        
+    except Exception as e:
+        logger.error(f"Error in enrichment processing: {e}")
+        # Return fallback enrichment data
+        return {
+            "status": "failed",
+            "processed_at": datetime.now().isoformat(),
+            "error": str(e),
+            "location": {
+                "latitude": sensor_data.get("latitude", 0),
+                "longitude": sensor_data.get("longitude", 0),
+                "altitude": sensor_data.get("altitude", 0),
+                "accuracy": sensor_data.get("accuracy", 0),
+                "name": "Unknown Location"
+            }
+        }
 
 @app.post("/sightings")
 async def create_sighting(request: dict = None):
@@ -313,7 +448,7 @@ async def create_sighting(request: dict = None):
             raise HTTPException(status_code=400, detail="Description must be at least 10 characters")
         
         # Generate enrichment data
-        enrichment_data = generate_enrichment_data(sensor_data)
+        enrichment_data = await generate_enrichment_data(sensor_data)
         
         # Insert into database with enrichment
         async with db_pool.acquire() as conn:

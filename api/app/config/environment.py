@@ -103,8 +103,8 @@ class Settings(BaseSettings):
     jwt_algorithm: str = Field(default="HS256", env="JWT_ALGORITHM")
     jwt_expiration_hours: int = Field(default=24, env="JWT_EXPIRATION_HOURS")
     encryption_key: str = Field(env="ENCRYPTION_KEY")
-    cors_origins: List[str] = Field(
-        default=["http://localhost:3000", "http://localhost:3001"],
+    cors_origins: str = Field(
+        default="http://localhost:3000,http://localhost:3001",
         env="CORS_ORIGINS"
     )
     
@@ -136,27 +136,23 @@ class Settings(BaseSettings):
     
     # === Locale Configuration ===
     default_locale: str = Field(default="en", env="DEFAULT_LOCALE")
-    supported_locales: List[str] = Field(default=["en", "es", "de"], env="SUPPORTED_LOCALES")
+    supported_locales: str = Field(default="en,es,de", env="SUPPORTED_LOCALES")
     
     model_config = SettingsConfigDict(
         env_file="../.env",  # Look in parent directory for main .env file
         env_file_encoding="utf-8",
-        case_sensitive=False,
-        # Parse comma-separated strings into lists
-        json_schema_extra={
-            "env_parse": {
-                "cors_origins": lambda v: [x.strip() for x in v.split(',') if x.strip()] if isinstance(v, str) else v,
-                "supported_locales": lambda v: [x.strip() for x in v.split(',') if x.strip()] if isinstance(v, str) else v,
-            }
-        }
+        case_sensitive=False
     )
     
-    @field_validator('cors_origins', 'supported_locales', mode='before')
-    @classmethod
-    def parse_list_fields(cls, v: Any) -> List[str]:
-        if isinstance(v, str):
-            return [x.strip() for x in v.split(',') if x.strip()]
-        return v
+    @property
+    def cors_origins_list(self) -> List[str]:
+        """Get CORS origins as a list"""
+        return [x.strip() for x in self.cors_origins.split(',') if x.strip()]
+    
+    @property
+    def supported_locales_list(self) -> List[str]:
+        """Get supported locales as a list"""
+        return [x.strip() for x in self.supported_locales.split(',') if x.strip()]
     
     # Property methods for computed values
     @property

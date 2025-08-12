@@ -980,6 +980,154 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
         }
 
 
+class GeocodeEnrichmentProcessor(EnrichmentProcessor):
+    """Reverse geocoding enrichment using OpenWeatherMap Geocoding API"""
+    
+    def __init__(self, api_key: Optional[str] = None):
+        self.api_key = api_key
+        self._cache = {}  # Simple in-memory cache
+        self._cache_ttl_seconds = 3600  # 1 hour cache for location names
+    
+    @property
+    def name(self) -> str:
+        return "geocoding"
+    
+    @property
+    def priority(self) -> int:
+        return 1  # High priority - location names are important
+    
+    @property
+    def timeout_seconds(self) -> int:
+        return 8
+    
+    async def is_available(self) -> bool:
+        return self.api_key is not None
+    
+    async def process(self, context: EnrichmentContext) -> EnrichmentResult:
+        """Fetch location name for the sighting coordinates"""
+        if not await self.is_available():
+            return EnrichmentResult(
+                processor_name=self.name,
+                success=False,
+                error="OpenWeather API key not configured"
+            )
+        
+        try:
+            start_time = datetime.utcnow()
+            
+            # Check cache first (rounded to 3 decimal places for reasonable cache hits)
+            cache_key = f"{context.latitude:.3f},{context.longitude:.3f}"
+            if cache_key in self._cache:
+                cache_entry = self._cache[cache_key]
+                if datetime.utcnow() - cache_entry['timestamp'] < timedelta(seconds=self._cache_ttl_seconds):
+                    logger.debug(f"Geocoding cache hit for {cache_key}")
+                    return cache_entry['result']
+            
+            # Fetch location name from OpenWeather Geocoding API
+            location_data = await self._fetch_location_name(context.latitude, context.longitude)
+            
+            processing_time = int((datetime.utcnow() - start_time).total_seconds() * 1000)
+            
+            result = EnrichmentResult(
+                processor_name=self.name,
+                success=True,
+                data=location_data,
+                processing_time_ms=processing_time,
+                confidence_score=0.95,  # Geocoding is quite reliable
+                metadata={
+                    "source": "openweather_geocoding",
+                    "api_version": "1.0",
+                    "cache_key": cache_key,
+                }
+            )
+            
+            # Cache the result
+            self._cache[cache_key] = {
+                'result': result,
+                'timestamp': datetime.utcnow()
+            }
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Geocoding enrichment failed: {e}")
+            return EnrichmentResult(
+                processor_name=self.name,
+                success=False,
+                error=str(e)
+            )
+    
+    async def _fetch_location_name(self, latitude: float, longitude: float) -> Dict[str, Any]:
+        """Fetch location name using OpenWeather Geocoding API reverse geocoding"""
+        import aiohttp
+        
+        # OpenWeather reverse geocoding endpoint
+        base_url = "http://api.openweathermap.org/geo/1.0/reverse"
+        
+        async with aiohttp.ClientSession() as session:
+            params = {
+                'lat': latitude,
+                'lon': longitude,
+                'limit': 1,  # We only need one result
+                'appid': self.api_key
+            }
+            
+            async with session.get(base_url, params=params) as response:
+                if response.status != 200:
+                    raise Exception(f"OpenWeather Geocoding API error: {response.status} - {await response.text()}")
+                
+                data = await response.json()
+                
+                if not data or len(data) == 0:
+                    raise Exception("No location data found for coordinates")
+                
+                location_info = data[0]  # Take the first (most relevant) result
+                
+                # Format location name based on country
+                city = location_info.get('name', '')
+                state = location_info.get('state', '')
+                country = location_info.get('country', '')
+                
+                # Create formatted location name
+                if country == 'US' and state:
+                    # For US locations, use "City, State" format
+                    location_name = f"{city}, {state}" if city else state
+                elif city and country:
+                    # For international locations, use "City, Country" format
+                    location_name = f"{city}, {country}"
+                elif country:
+                    # Fallback to just country
+                    location_name = country
+                else:
+                    # Ultimate fallback
+                    location_name = "Unknown Location"
+                
+                return {
+                    "location_name": location_name,
+                    "city": city,
+                    "state": state,
+                    "country": country,
+                    "country_code": location_info.get('country', ''),
+                    "latitude": location_info.get('lat', latitude),
+                    "longitude": location_info.get('lon', longitude),
+                    "raw_data": location_info,
+                    "formatted_address": self._format_full_address(location_info),
+                }
+    
+    def _format_full_address(self, location_info: Dict[str, Any]) -> str:
+        """Format a full address from location components"""
+        components = []
+        
+        if location_info.get('name'):
+            components.append(location_info['name'])
+        if location_info.get('state'):
+            components.append(location_info['state'])
+        if location_info.get('country'):
+            components.append(location_info['country'])
+        
+        return ', '.join(components) if components else "Unknown Location"
+
+
 class ContentFilterProcessor(EnrichmentProcessor):
     """Content filtering and classification using HuggingFace models"""
     
@@ -1481,8 +1629,14 @@ def initialize_enrichment_processors():
     """Initialize and register all enrichment processors"""
     from app.config.environment import settings
     
-    # Weather processor - needs API key
+    # Get the OpenWeather API key (used by both weather and geocoding processors)
     weather_api_key = getattr(settings, 'openweather_api_key', None)
+    
+    # Geocoding processor - high priority for location names
+    geocoding_processor = GeocodeEnrichmentProcessor(api_key=weather_api_key)
+    enrichment_orchestrator.register_processor(geocoding_processor)
+    
+    # Weather processor - needs API key
     weather_processor = WeatherEnrichmentProcessor(api_key=weather_api_key)
     enrichment_orchestrator.register_processor(weather_processor)
     
@@ -1502,4 +1656,5 @@ def initialize_enrichment_processors():
     
     logger.info(f"Initialized {len(enrichment_orchestrator.processors)} enrichment processors")
     logger.info(f"Weather API available: {weather_api_key is not None}")
+    logger.info(f"Geocoding API available: {weather_api_key is not None}")
     logger.info(f"HuggingFace API available: {hf_api_token is not None}")
