@@ -126,10 +126,16 @@ router = APIRouter(
 
 security = HTTPBearer(auto_error=False)
 
-# In-memory device storage (replace with database in production)
-devices_db = {}
-device_by_user = {}  # user_id -> list of device_ids
+# Database imports
+import asyncpg
 
+# Database connection (using global db_pool from main.py)
+db_pool = None
+
+def get_db_pool():
+    """Get database pool from main.py"""
+    from app.main import db_pool as main_db_pool
+    return main_db_pool
 
 # Dependencies
 async def get_current_user_id(token: Optional[str] = Depends(security)) -> Optional[str]:
@@ -188,81 +194,124 @@ async def register_device(
                 }
             )
         
-        # Generate device record ID
-        device_record_id = f"device_{uuid4().hex[:12]}"
-        
-        # Check if device already exists for this user
-        user_devices = device_by_user.get(user_id, [])
-        existing_device_id = None
-        
-        for device_id in user_devices:
-            if devices_db[device_id]["device_id"] == request.device_id:
-                existing_device_id = device_id
-                break
+        db_pool = get_db_pool()
+        if not db_pool:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail={"error": "DATABASE_UNAVAILABLE", "message": "Database connection unavailable"}
+            )
         
         current_time = datetime.utcnow()
         
-        if existing_device_id:
-            # Update existing device
-            device_data = devices_db[existing_device_id]
-            device_data.update({
-                "device_name": request.device_name or device_data.get("device_name"),
-                "app_version": request.app_version,
-                "os_version": request.os_version,
-                "push_token": request.push_token,
-                "push_provider": request.push_provider.value if request.push_provider else None,
-                "alert_notifications": request.alert_notifications,
-                "chat_notifications": request.chat_notifications,
-                "system_notifications": request.system_notifications,
-                "timezone": request.timezone,
-                "locale": request.locale,
-                "last_seen": current_time,
-                "updated_at": current_time,
-                "token_updated_at": current_time if request.push_token else device_data.get("token_updated_at"),
-                "is_active": True,
-            })
+        async with db_pool.acquire() as conn:
+            # Check if device already exists for this user
+            existing_device = await conn.fetchrow(
+                """
+                SELECT id, device_name, token_updated_at, created_at
+                FROM devices 
+                WHERE user_id = $1 AND device_id = $2 AND is_active = true
+                """,
+                user_id, request.device_id
+            )
             
-            logger.info(f"Updated device {request.device_id} for user {user_id}")
-            device_response = create_device_response(device_data)
+            if existing_device:
+                # Update existing device
+                device_record_id = existing_device['id']
+                await conn.execute(
+                    """
+                    UPDATE devices SET
+                        device_name = COALESCE($1, device_name),
+                        app_version = $2,
+                        os_version = $3,
+                        push_token = $4,
+                        push_provider = $5,
+                        alert_notifications = $6,
+                        chat_notifications = $7,
+                        system_notifications = $8,
+                        timezone = $9,
+                        locale = $10,
+                        last_seen = $11,
+                        updated_at = $11,
+                        token_updated_at = CASE WHEN $4 IS NOT NULL THEN $11 ELSE token_updated_at END,
+                        is_active = true
+                    WHERE id = $12
+                    """,
+                    request.device_name,
+                    request.app_version,
+                    request.os_version,
+                    request.push_token,
+                    request.push_provider.value if request.push_provider else None,
+                    request.alert_notifications,
+                    request.chat_notifications,
+                    request.system_notifications,
+                    request.timezone,
+                    request.locale,
+                    current_time,
+                    device_record_id
+                )
+                
+                logger.info(f"Updated device {request.device_id} for user {user_id}")
+                
+            else:
+                # Create new device
+                device_record_id = await conn.fetchval(
+                    """
+                    INSERT INTO devices (
+                        user_id, device_id, device_name, platform,
+                        app_version, os_version, device_model, manufacturer,
+                        push_token, push_provider, push_enabled,
+                        alert_notifications, chat_notifications, system_notifications,
+                        is_active, last_seen, timezone, locale,
+                        notifications_sent, notifications_opened,
+                        registered_at, token_updated_at, created_at, updated_at
+                    ) VALUES (
+                        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11,
+                        $12, $13, $14, $15, $16, $17, $18, $19, $20,
+                        $21, $22, $21, $21
+                    ) RETURNING id
+                    """,
+                    user_id,
+                    request.device_id,
+                    request.device_name,
+                    request.platform.value,
+                    request.app_version,
+                    request.os_version,
+                    request.device_model,
+                    request.manufacturer,
+                    request.push_token,
+                    request.push_provider.value if request.push_provider else None,
+                    True,  # push_enabled
+                    request.alert_notifications,
+                    request.chat_notifications,
+                    request.system_notifications,
+                    True,  # is_active
+                    current_time,  # last_seen
+                    request.timezone,
+                    request.locale,
+                    0,  # notifications_sent
+                    0,  # notifications_opened
+                    current_time  # registered_at, token_updated_at, created_at, updated_at
+                )
+                
+                logger.info(f"Registered new device {request.device_id} for user {user_id}")
             
-        else:
-            # Create new device
-            device_data = {
-                "id": device_record_id,
-                "user_id": user_id,
-                "device_id": request.device_id,
-                "device_name": request.device_name,
-                "platform": request.platform.value,
-                "app_version": request.app_version,
-                "os_version": request.os_version,
-                "device_model": request.device_model,
-                "manufacturer": request.manufacturer,
-                "push_token": request.push_token,
-                "push_provider": request.push_provider.value if request.push_provider else None,
-                "push_enabled": True,
-                "alert_notifications": request.alert_notifications,
-                "chat_notifications": request.chat_notifications,
-                "system_notifications": request.system_notifications,
-                "is_active": True,
-                "last_seen": current_time,
-                "timezone": request.timezone,
-                "locale": request.locale,
-                "notifications_sent": 0,
-                "notifications_opened": 0,
-                "registered_at": current_time,
-                "token_updated_at": current_time if request.push_token else None,
-                "created_at": current_time,
-                "updated_at": current_time,
-            }
+            # Fetch the complete device record for response
+            device_record = await conn.fetchrow(
+                """
+                SELECT id, user_id, device_id, device_name, platform,
+                       app_version, os_version, device_model, manufacturer,
+                       push_token, push_provider, push_enabled,
+                       alert_notifications, chat_notifications, system_notifications,
+                       is_active, last_seen, timezone, locale,
+                       notifications_sent, notifications_opened,
+                       registered_at, token_updated_at, created_at, updated_at
+                FROM devices WHERE id = $1
+                """,
+                device_record_id
+            )
             
-            devices_db[device_record_id] = device_data
-            
-            # Update user device mapping
-            if user_id not in device_by_user:
-                device_by_user[user_id] = []
-            device_by_user[user_id].append(device_record_id)
-            
-            logger.info(f"Registered new device {request.device_id} for user {user_id}")
+            # Convert database record to response format
+            device_data = dict(device_record)
             device_response = create_device_response(device_data)
         
         return DeviceDetailResponse(
@@ -299,16 +348,34 @@ async def list_user_devices(user_id: Optional[str] = Depends(get_current_user_id
                 }
             )
         
-        user_devices = device_by_user.get(user_id, [])
-        devices = []
+        db_pool = get_db_pool()
+        if not db_pool:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail={"error": "DATABASE_UNAVAILABLE", "message": "Database connection unavailable"}
+            )
         
-        for device_id in user_devices:
-            device_data = devices_db.get(device_id)
-            if device_data and device_data["is_active"]:
+        async with db_pool.acquire() as conn:
+            device_records = await conn.fetch(
+                """
+                SELECT id, user_id, device_id, device_name, platform,
+                       app_version, os_version, device_model, manufacturer,
+                       push_token, push_provider, push_enabled,
+                       alert_notifications, chat_notifications, system_notifications,
+                       is_active, last_seen, timezone, locale,
+                       notifications_sent, notifications_opened,
+                       registered_at, token_updated_at, created_at, updated_at
+                FROM devices 
+                WHERE user_id = $1 AND is_active = true
+                ORDER BY registered_at DESC
+                """,
+                user_id
+            )
+            
+            devices = []
+            for record in device_records:
+                device_data = dict(record)
                 devices.append(create_device_response(device_data))
-        
-        # Sort by registration date (newest first)
-        devices.sort(key=lambda x: x.registered_at, reverse=True)
         
         logger.info(f"Retrieved {len(devices)} devices for user {user_id}")
         
@@ -351,45 +418,96 @@ async def update_device(
                 }
             )
         
-        # Find device by device_id and verify ownership
-        user_devices = device_by_user.get(user_id, [])
-        target_device_id = None
-        
-        for db_device_id in user_devices:
-            device = devices_db.get(db_device_id)
-            if device and device["device_id"] == device_id:
-                target_device_id = db_device_id
-                break
-        
-        if not target_device_id:
+        db_pool = get_db_pool()
+        if not db_pool:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail={
-                    "error": "DEVICE_NOT_FOUND",
-                    "message": f"Device {device_id} not found for user"
-                }
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail={"error": "DATABASE_UNAVAILABLE", "message": "Database connection unavailable"}
             )
         
-        device_data = devices_db[target_device_id]
         current_time = datetime.utcnow()
         
-        # Update provided fields
-        update_fields = request.dict(exclude_unset=True)
-        for field, value in update_fields.items():
-            if field == "push_provider" and value:
-                device_data[field] = value.value
-            else:
-                device_data[field] = value
-        
-        device_data["updated_at"] = current_time
-        device_data["last_seen"] = current_time
-        
-        if "push_token" in update_fields:
-            device_data["token_updated_at"] = current_time
+        async with db_pool.acquire() as conn:
+            # Find device by device_id and verify ownership
+            target_device = await conn.fetchrow(
+                """
+                SELECT id FROM devices 
+                WHERE user_id = $1 AND device_id = $2 AND is_active = true
+                """,
+                user_id, device_id
+            )
+            
+            if not target_device:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail={
+                        "error": "DEVICE_NOT_FOUND",
+                        "message": f"Device {device_id} not found for user"
+                    }
+                )
+            
+            target_device_id = target_device['id']
+            
+            # Build update query dynamically based on provided fields
+            update_fields = request.dict(exclude_unset=True)
+            if update_fields:
+                set_clauses = []
+                params = []
+                param_idx = 1
+                
+                for field, value in update_fields.items():
+                    if field == "push_provider" and value:
+                        set_clauses.append(f"push_provider = ${param_idx}")
+                        params.append(value.value)
+                    else:
+                        set_clauses.append(f"{field} = ${param_idx}")
+                        params.append(value)
+                    param_idx += 1
+                
+                # Always update timestamps
+                set_clauses.append(f"updated_at = ${param_idx}")
+                params.append(current_time)
+                param_idx += 1
+                
+                set_clauses.append(f"last_seen = ${param_idx}")
+                params.append(current_time)
+                param_idx += 1
+                
+                # Update token timestamp if push_token was provided
+                if "push_token" in update_fields:
+                    set_clauses.append(f"token_updated_at = ${param_idx}")
+                    params.append(current_time)
+                    param_idx += 1
+                
+                # Add device ID as final parameter
+                params.append(target_device_id)
+                
+                query = f"""
+                UPDATE devices SET {', '.join(set_clauses)}
+                WHERE id = ${param_idx}
+                """
+                
+                await conn.execute(query, *params)
+            
+            # Fetch updated device record
+            device_record = await conn.fetchrow(
+                """
+                SELECT id, user_id, device_id, device_name, platform,
+                       app_version, os_version, device_model, manufacturer,
+                       push_token, push_provider, push_enabled,
+                       alert_notifications, chat_notifications, system_notifications,
+                       is_active, last_seen, timezone, locale,
+                       notifications_sent, notifications_opened,
+                       registered_at, token_updated_at, created_at, updated_at
+                FROM devices WHERE id = $1
+                """,
+                target_device_id
+            )
+            
+            device_data = dict(device_record)
+            device_response = create_device_response(device_data)
         
         logger.info(f"Updated device {device_id} for user {user_id}")
-        
-        device_response = create_device_response(device_data)
         
         return DeviceDetailResponse(
             success=True,
@@ -428,34 +546,43 @@ async def unregister_device(
                 }
             )
         
-        # Find and deactivate device
-        user_devices = device_by_user.get(user_id, [])
-        target_device_id = None
-        
-        for db_device_id in user_devices:
-            device = devices_db.get(db_device_id)
-            if device and device["device_id"] == device_id:
-                target_device_id = db_device_id
-                break
-        
-        if not target_device_id:
+        db_pool = get_db_pool()
+        if not db_pool:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail={
-                    "error": "DEVICE_NOT_FOUND",
-                    "message": f"Device {device_id} not found"
-                }
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail={"error": "DATABASE_UNAVAILABLE", "message": "Database connection unavailable"}
             )
         
-        devices_db[target_device_id]["is_active"] = False
-        devices_db[target_device_id]["updated_at"] = datetime.utcnow()
+        current_time = datetime.utcnow()
+        
+        async with db_pool.acquire() as conn:
+            # Find and deactivate device
+            result = await conn.execute(
+                """
+                UPDATE devices SET 
+                    is_active = false, 
+                    updated_at = $1
+                WHERE user_id = $2 AND device_id = $3 AND is_active = true
+                """,
+                current_time, user_id, device_id
+            )
+            
+            # Check if any rows were affected
+            if result == "UPDATE 0":
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail={
+                        "error": "DEVICE_NOT_FOUND",
+                        "message": f"Device {device_id} not found"
+                    }
+                )
         
         logger.info(f"Unregistered device {device_id} for user {user_id}")
         
         return {
             "success": True,
             "message": "Device unregistered successfully",
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": current_time.isoformat()
         }
         
     except HTTPException:
@@ -489,22 +616,22 @@ async def device_heartbeat(
                 }
             )
         
-        # Find and update device last_seen
-        user_devices = device_by_user.get(user_id, [])
-        target_device_id = None
+        db_pool = get_db_pool()
+        current_time = datetime.utcnow()
         
-        for db_device_id in user_devices:
-            device = devices_db.get(db_device_id)
-            if device and device["device_id"] == device_id:
-                target_device_id = db_device_id
-                break
-        
-        if target_device_id:
-            devices_db[target_device_id]["last_seen"] = datetime.utcnow()
+        if db_pool:
+            async with db_pool.acquire() as conn:
+                await conn.execute(
+                    """
+                    UPDATE devices SET last_seen = $1 
+                    WHERE user_id = $2 AND device_id = $3 AND is_active = true
+                    """,
+                    current_time, user_id, device_id
+                )
         
         return {
             "success": True,
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": current_time.isoformat()
         }
         
     except Exception as e:
@@ -519,9 +646,34 @@ async def device_heartbeat(
 @router.get("/health")
 async def devices_health_check():
     """Check devices service health"""
-    return {
-        "status": "healthy",
-        "total_devices": len(devices_db),
-        "active_devices": len([d for d in devices_db.values() if d["is_active"]]),
-        "timestamp": datetime.utcnow().isoformat()
-    }
+    try:
+        db_pool = get_db_pool()
+        if not db_pool:
+            return {
+                "status": "unhealthy",
+                "error": "Database unavailable",
+                "timestamp": datetime.utcnow().isoformat()
+            }
+        
+        async with db_pool.acquire() as conn:
+            # Get device counts
+            total_devices = await conn.fetchval(
+                "SELECT COUNT(*) FROM devices"
+            )
+            active_devices = await conn.fetchval(
+                "SELECT COUNT(*) FROM devices WHERE is_active = true"
+            )
+        
+        return {
+            "status": "healthy",
+            "total_devices": total_devices,
+            "active_devices": active_devices,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+    except Exception as e:
+        logger.error(f"Health check failed: {e}")
+        return {
+            "status": "unhealthy",
+            "error": str(e),
+            "timestamp": datetime.utcnow().isoformat()
+        }

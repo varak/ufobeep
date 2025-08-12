@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.config.environment import settings
-from app.routers import plane_match, media
+from app.routers import plane_match, media, devices
 import asyncpg
 import json
 from datetime import datetime
@@ -99,6 +99,87 @@ async def startup_event():
                     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
                 )
             """)
+            
+            # Create users table
+            await conn.execute("""
+                CREATE TABLE IF NOT EXISTS users (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    username VARCHAR(50) UNIQUE NOT NULL,
+                    email VARCHAR(255) UNIQUE,
+                    password_hash VARCHAR(255),
+                    display_name VARCHAR(100),
+                    bio TEXT,
+                    location VARCHAR(255),
+                    alert_range_km FLOAT DEFAULT 50.0 NOT NULL,
+                    min_alert_level TEXT DEFAULT 'low' NOT NULL,
+                    push_notifications BOOLEAN DEFAULT true NOT NULL,
+                    email_notifications BOOLEAN DEFAULT false NOT NULL,
+                    share_location BOOLEAN DEFAULT true NOT NULL,
+                    public_profile BOOLEAN DEFAULT false NOT NULL,
+                    preferred_language VARCHAR(5) DEFAULT 'en' NOT NULL,
+                    units_metric BOOLEAN DEFAULT true NOT NULL,
+                    matrix_user_id VARCHAR(255),
+                    matrix_device_id VARCHAR(255),
+                    matrix_access_token TEXT,
+                    is_active BOOLEAN DEFAULT true NOT NULL,
+                    is_verified BOOLEAN DEFAULT false NOT NULL,
+                    last_login TIMESTAMP WITH TIME ZONE,
+                    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+                    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
+                )
+            """)
+            
+            # Create device platform and push provider enums
+            await conn.execute("""
+                CREATE TYPE IF NOT EXISTS device_platform AS ENUM ('ios', 'android', 'web')
+            """)
+            await conn.execute("""
+                CREATE TYPE IF NOT EXISTS push_provider AS ENUM ('fcm', 'apns', 'webpush')
+            """)
+            
+            # Create devices table  
+            await conn.execute("""
+                CREATE TABLE IF NOT EXISTS devices (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                    device_id VARCHAR(255) NOT NULL,
+                    device_name VARCHAR(255),
+                    platform device_platform NOT NULL,
+                    app_version VARCHAR(50),
+                    os_version VARCHAR(50),
+                    device_model VARCHAR(100),
+                    manufacturer VARCHAR(100),
+                    push_token TEXT,
+                    push_provider push_provider,
+                    push_enabled BOOLEAN DEFAULT true NOT NULL,
+                    alert_notifications BOOLEAN DEFAULT true NOT NULL,
+                    chat_notifications BOOLEAN DEFAULT true NOT NULL,
+                    system_notifications BOOLEAN DEFAULT true NOT NULL,
+                    is_active BOOLEAN DEFAULT true NOT NULL,
+                    last_seen TIMESTAMP WITH TIME ZONE,
+                    timezone VARCHAR(50),
+                    locale VARCHAR(10),
+                    notifications_sent INTEGER DEFAULT 0 NOT NULL,
+                    notifications_opened INTEGER DEFAULT 0 NOT NULL,
+                    last_notification_at TIMESTAMP WITH TIME ZONE,
+                    registered_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+                    token_updated_at TIMESTAMP WITH TIME ZONE,
+                    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+                    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
+                )
+            """)
+            
+            # Create indexes for devices table
+            await conn.execute("""
+                CREATE INDEX IF NOT EXISTS idx_devices_user_id ON devices(user_id)
+            """)
+            await conn.execute("""
+                CREATE INDEX IF NOT EXISTS idx_devices_device_id ON devices(device_id)
+            """)
+            await conn.execute("""
+                CREATE INDEX IF NOT EXISTS idx_devices_active_push ON devices(is_active, push_enabled) 
+                WHERE push_token IS NOT NULL
+            """)
         print("Database tables initialized")
     except Exception as e:
         print(f"Database initialization failed: {e}")
@@ -123,6 +204,7 @@ app.mount("/static", StaticFiles(directory="media"), name="media")
 # Include routers
 app.include_router(plane_match.router)
 app.include_router(media.router)
+app.include_router(devices.router)
 
 # Disable complex routers for now - just get basic endpoints working
 
