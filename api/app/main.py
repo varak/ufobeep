@@ -386,8 +386,11 @@ async def upload_media(
             )
             
             if existing_media:
-                # Add to existing files
-                media_data = existing_media
+                # Add to existing files - parse JSON if it's a string
+                if isinstance(existing_media, str):
+                    media_data = json.loads(existing_media)
+                else:
+                    media_data = existing_media
                 if "files" not in media_data:
                     media_data["files"] = []
                 media_data["files"].append(media_info)
