@@ -1,8 +1,8 @@
 import os
 from enum import Enum
-from typing import List, Optional
+from typing import List, Optional, Any
 try:
-    from pydantic_settings import BaseSettings
+    from pydantic_settings import BaseSettings, SettingsConfigDict
     from pydantic import Field, field_validator
 except ImportError:
     # Fallback for older pydantic versions
@@ -138,16 +138,24 @@ class Settings(BaseSettings):
     default_locale: str = Field(default="en", env="DEFAULT_LOCALE")
     supported_locales: List[str] = Field(default=["en", "es", "de"], env="SUPPORTED_LOCALES")
     
-    class Config:
-        env_file = "../.env"  # Look in parent directory for main .env file
-        env_file_encoding = "utf-8"
-        case_sensitive = False
+    model_config = SettingsConfigDict(
+        env_file="../.env",  # Look in parent directory for main .env file
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        # Parse comma-separated strings into lists
+        json_schema_extra={
+            "env_parse": {
+                "cors_origins": lambda v: [x.strip() for x in v.split(',') if x.strip()] if isinstance(v, str) else v,
+                "supported_locales": lambda v: [x.strip() for x in v.split(',') if x.strip()] if isinstance(v, str) else v,
+            }
+        }
+    )
     
     @field_validator('cors_origins', 'supported_locales', mode='before')
     @classmethod
-    def parse_list_fields(cls, v):
+    def parse_list_fields(cls, v: Any) -> List[str]:
         if isinstance(v, str):
-            return [x.strip() for x in v.split(',')]
+            return [x.strip() for x in v.split(',') if x.strip()]
         return v
     
     # Property methods for computed values
