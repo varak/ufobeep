@@ -92,10 +92,7 @@ GoRouter appRouter(AppRouterRef ref) {
                 builder: (context, state) {
                   final extra = state.extra as Map<String, dynamic>?;
                   
-                  debugPrint('=== ROUTER DEBUG ===');
-                  debugPrint('Extra data: $extra');
-                  debugPrint('Extra data keys: ${extra?.keys}');
-                  debugPrint('==================');
+                  debugPrint('Router: Extra data keys: ${extra?.keys}');
                   
                   final imageFile = extra?['imageFile'];
                   

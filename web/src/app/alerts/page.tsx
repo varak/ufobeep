@@ -35,7 +35,7 @@ export default function AlertsPage() {
 
   const fetchAlerts = async () => {
     try {
-      const response = await fetch('https://api.ufobeep.com/alerts?limit=50&offset=0&verified_only=false')
+      const response = await fetch('https://api.ufobeep.com/alerts?limit=24&offset=0&verified_only=false')
       const data = await response.json()
       
       if (data.success && data.data?.alerts) {
@@ -130,22 +130,16 @@ export default function AlertsPage() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           <div className="bg-dark-surface border border-dark-border rounded-lg p-6 text-center">
             <div className="text-3xl text-brand-primary mb-2">{alerts.length}</div>
-            <div className="text-text-secondary">Total Alerts</div>
+            <div className="text-text-secondary">Recent Reports</div>
           </div>
           <div className="bg-dark-surface border border-dark-border rounded-lg p-6 text-center">
             <div className="text-3xl text-green-400 mb-2">
-              {alerts.filter(a => a.verification_score > 0.5).length}
+              {alerts.filter(a => a.media_files && a.media_files.length > 0).length}
             </div>
-            <div className="text-text-secondary">Verified</div>
-          </div>
-          <div className="bg-dark-surface border border-dark-border rounded-lg p-6 text-center">
-            <div className="text-3xl text-orange-400 mb-2">
-              {alerts.filter(a => a.alert_level === 'high' || a.alert_level === 'critical').length}
-            </div>
-            <div className="text-text-secondary">High Priority</div>
+            <div className="text-text-secondary">With Photos</div>
           </div>
         </div>
 
@@ -164,55 +158,64 @@ export default function AlertsPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {alerts.map((alert) => (
-              <Link key={alert.id} href={`/alerts/${alert.id}`}>
-                <div className="bg-dark-surface border border-dark-border rounded-lg p-6 hover:border-brand-primary transition-all duration-300 hover:shadow-lg cursor-pointer group">
-                  {/* Alert Level Badge */}
-                  <div className="flex justify-between items-start mb-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold uppercase ${getAlertLevelColor(alert.alert_level)} bg-opacity-20`}>
-                      {alert.alert_level}
-                    </span>
-                    {alert.media_files && alert.media_files.length > 0 && (
-                      <div className="text-brand-primary">
+              <Link key={alert.id} href={`/alert/${alert.id}`}>
+                <div className="bg-dark-surface border border-dark-border rounded-lg overflow-hidden hover:border-brand-primary transition-all duration-300 hover:shadow-lg cursor-pointer group">
+                  {/* Thumbnail Image */}
+                  {alert.media_files && alert.media_files.length > 0 ? (
+                    <div className="h-48 bg-gray-800 relative overflow-hidden">
+                      <img 
+                        src={alert.media_files[0].thumbnail_url || alert.media_files[0].url} 
+                        alt={alert.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23374151"/><text x="50" y="50" text-anchor="middle" dy="0.3em" fill="%239CA3AF" font-family="Arial" font-size="12">📸</text></svg>`;
+                        }}
+                      />
+                      <div className="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
                         📸 {alert.media_files.length}
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  ) : (
+                    <div className="h-48 bg-gray-800 flex items-center justify-center">
+                      <div className="text-4xl text-gray-500">👁️</div>
+                    </div>
+                  )}
 
-                  {/* Title & Description */}
-                  <h3 className="text-lg font-semibold text-text-primary mb-2 group-hover:text-brand-primary transition-colors">
-                    {alert.title}
-                  </h3>
-                  <p className="text-text-secondary text-sm mb-4 line-clamp-3">
-                    {alert.description}
-                  </p>
+                  <div className="p-4">
+                    {/* Alert Level Badge */}
+                    <div className="flex justify-between items-start mb-3">
+                      <span className={`px-2 py-1 rounded text-xs font-semibold uppercase ${getAlertLevelColor(alert.alert_level)}`}>
+                        {alert.alert_level}
+                      </span>
+                    </div>
 
-                  {/* Metadata */}
-                  <div className="space-y-2 text-xs text-text-tertiary">
-                    <div className="flex items-center gap-2">
-                      <span>📅</span>
-                      <span>{formatDate(alert.created_at)}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span>📍</span>
-                      <span>{formatLocation(alert.location)}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span>🏷️</span>
-                      <span className="capitalize">{alert.category}</span>
-                    </div>
-                    {alert.verification_score > 0 && (
+                    {/* Title & Description */}
+                    <h3 className="text-lg font-semibold text-text-primary mb-2 group-hover:text-brand-primary transition-colors line-clamp-1">
+                      {alert.title}
+                    </h3>
+                    <p className="text-text-secondary text-sm mb-4 line-clamp-2">
+                      {alert.description}
+                    </p>
+
+                    {/* Metadata */}
+                    <div className="space-y-2 text-xs text-text-tertiary">
                       <div className="flex items-center gap-2">
-                        <span>✅</span>
-                        <span>Score: {(alert.verification_score * 100).toFixed(0)}%</span>
+                        <span>📅</span>
+                        <span>{formatDate(alert.created_at)}</span>
                       </div>
-                    )}
-                  </div>
+                      <div className="flex items-center gap-2">
+                        <span>📍</span>
+                        <span>{formatLocation(alert.location)}</span>
+                      </div>
+                    </div>
 
-                  {/* Click indicator */}
-                  <div className="mt-4 pt-4 border-t border-dark-border text-center">
-                    <span className="text-brand-primary text-sm group-hover:underline">
-                      View Details →
-                    </span>
+                    {/* Click indicator */}
+                    <div className="mt-4 pt-3 border-t border-dark-border text-center">
+                      <span className="text-brand-primary text-sm group-hover:underline">
+                        View Details →
+                      </span>
+                    </div>
                   </div>
                 </div>
               </Link>

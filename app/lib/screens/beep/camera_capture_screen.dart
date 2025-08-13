@@ -91,7 +91,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       try {
         sensorData = await _sensorService.captureSensorData();
       } catch (e) {
-        debugPrint('Failed to capture sensor data: $e');
+        print('❌ CAMERA: Failed to capture sensor data: $e');
       }
 
       // Save to UFOBeep folder

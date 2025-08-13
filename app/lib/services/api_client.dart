@@ -644,16 +644,14 @@ extension ApiClientExtension on ApiClient {
         'tags': tags,
       };
       
-      // Add sensor data if available (using shared API contract format)
+      // Add sensor data if available (flattened format for enrichment)
       if (sensorData != null) {
         sightingData['sensor_data'] = {
           'timestamp': sensorData.utc.toIso8601String(),
-          'location': {
-            'latitude': sensorData.latitude,
-            'longitude': sensorData.longitude,
-            'accuracy': sensorData.accuracy,
-            'altitude': sensorData.altitude,
-          },
+          'latitude': sensorData.latitude,
+          'longitude': sensorData.longitude,
+          'accuracy': sensorData.accuracy,
+          'altitude': sensorData.altitude,
           'azimuth_deg': sensorData.azimuthDeg,
           'pitch_deg': sensorData.pitchDeg,
           'roll_deg': sensorData.rollDeg,

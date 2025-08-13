@@ -45,11 +45,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
   void initState() {
     super.initState();
     
-    debugPrint('=== BEEP COMPOSITION SCREEN - NO CLASSIFICATION ===');
-    debugPrint('Image file: ${widget.imageFile.path}');
-    debugPrint('Image file exists: ${widget.imageFile.existsSync()}');
-    debugPrint('Sensor data available: ${widget.sensorData != null}');
-    debugPrint('========================================');
+    debugPrint('BeepComposition: Image=${widget.imageFile.existsSync()}, Sensor=${widget.sensorData != null}');
     
     // Add listener for real-time validation
     _descriptionController.addListener(_onFormFieldChanged);
@@ -81,6 +77,8 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
       const category = api.SightingCategory.ufo;
       final List<String> tags = [];
 
+      debugPrint('Submitting sighting with sensor data: ${widget.sensorData != null}');
+      
       // Submit sighting with media using API client
       final sightingId = await ApiClient.instance.submitSightingWithMedia(
         title: finalTitle,
