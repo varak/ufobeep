@@ -80,11 +80,11 @@ export default function AppPage() {
                   </li>
                   <li className="flex gap-2">
                     <span className="text-brand-primary font-bold">2.</span>
-                    <span>Enable "Unknown Sources" in Android Settings → Security</span>
+                    <span>Enable &quot;Unknown Sources&quot; in Android Settings → Security</span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-brand-primary font-bold">3.</span>
-                    <span>Open the downloaded APK file and tap "Install"</span>
+                    <span>Open the downloaded APK file and tap &quot;Install&quot;</span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-brand-primary font-bold">4.</span>
