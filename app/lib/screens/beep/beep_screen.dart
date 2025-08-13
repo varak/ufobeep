@@ -5,9 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../theme/app_theme.dart';
-import '../../config/environment.dart';
 import '../../services/sensor_service.dart';
-import '../../services/plane_match_api_service.dart';
 import '../../services/photo_metadata_service.dart';
 import '../../models/sensor_data.dart';
 import '../../models/sighting_submission.dart' as local;
@@ -23,9 +21,6 @@ class BeepScreen extends StatefulWidget {
 class _BeepScreenState extends State<BeepScreen> {
   final ImagePicker _picker = ImagePicker();
   final SensorService _sensorService = SensorService();
-  final PlaneMatchApiService _planeMatchService = AppEnvironment.debugMode 
-      ? MockPlaneMatchApiService() 
-      : PlaneMatchApiService();
   
   local.SightingSubmission? _currentSubmission;
   bool _isCapturing = false;
@@ -176,13 +171,7 @@ class _BeepScreenState extends State<BeepScreen> {
       context.go('/beep/compose', extra: {
         'imageFile': submission.imageFile,
         'sensorData': sensorData,
-        'planeMatch': null, // Will be set later if analysis completes
       });
-
-      // If we have sensor data, start plane matching analysis in background
-      if (sensorData != null) {
-        _performPlaneMatchAnalysis(sensorData);
-      }
 
     } catch (e) {
       setState(() {
@@ -235,7 +224,6 @@ class _BeepScreenState extends State<BeepScreen> {
       context.go('/beep/compose', extra: {
         'imageFile': submission.imageFile,
         'sensorData': null, // No real-time sensor data for gallery picks
-        'planeMatch': null,
       });
 
     } catch (e) {
@@ -246,23 +234,6 @@ class _BeepScreenState extends State<BeepScreen> {
     }
   }
 
-  Future<void> _performPlaneMatchAnalysis(SensorData sensorData) async {
-    try {
-      final result = await _planeMatchService.matchPlane(sensorData);
-      if (_currentSubmission != null) {
-        setState(() {
-          _currentSubmission = _currentSubmission!.copyWith(
-            planeMatch: result,
-          );
-        });
-      }
-
-      debugPrint('Plane match result: ${result.isPlane ? "Plane found" : "No plane"} (confidence: ${result.confidence})');
-
-    } catch (e) {
-      debugPrint('Plane match error: $e');
-    }
-  }
 
 
 

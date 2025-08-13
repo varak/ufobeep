@@ -84,26 +84,96 @@ GoRouter appRouter(AppRouterRef ref) {
                 name: 'beep-compose',
                 builder: (context, state) {
                   final extra = state.extra as Map<String, dynamic>?;
+                  
+                  debugPrint('=== ROUTER DEBUG ===');
+                  debugPrint('Extra data: $extra');
+                  debugPrint('Extra data keys: ${extra?.keys}');
+                  debugPrint('==================');
+                  
                   final imageFile = extra?['imageFile'];
                   
                   // If no image file provided, redirect back to beep screen
                   if (imageFile == null) {
+                    debugPrint('ERROR: No image file in extra data, redirecting to /beep');
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       context.go('/beep');
                     });
-                    return const Scaffold(
+                    return Scaffold(
                       backgroundColor: AppColors.darkBackground,
-                      body: Center(
-                        child: CircularProgressIndicator(),
+                      appBar: AppBar(
+                        title: const Text('Loading...'),
+                        backgroundColor: AppColors.darkSurface,
+                      ),
+                      body: const Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircularProgressIndicator(),
+                            SizedBox(height: 16),
+                            Text(
+                              'Redirecting back to beep screen...',
+                              style: TextStyle(color: AppColors.textSecondary),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   }
                   
-                  return BeepCompositionScreen(
-                    imageFile: imageFile,
-                    sensorData: extra?['sensorData'],
-                    planeMatch: extra?['planeMatch'],
-                  );
+                  debugPrint('Found image file: $imageFile');
+                  
+                  try {
+                    return BeepCompositionScreen(
+                      imageFile: imageFile,
+                      sensorData: extra?['sensorData'],
+                    );
+                  } catch (e, stackTrace) {
+                    debugPrint('ERROR creating BeepCompositionScreen: $e');
+                    debugPrint('Stack trace: $stackTrace');
+                    
+                    // Return error screen instead of crashing
+                    return Scaffold(
+                      backgroundColor: AppColors.darkBackground,
+                      appBar: AppBar(
+                        title: const Text('Error'),
+                        backgroundColor: AppColors.darkSurface,
+                      ),
+                      body: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.error,
+                              color: AppColors.semanticError,
+                              size: 64,
+                            ),
+                            const SizedBox(height: 16),
+                            const Text(
+                              'Failed to load compose screen',
+                              style: TextStyle(
+                                color: AppColors.textPrimary,
+                                fontSize: 18,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              e.toString(),
+                              style: const TextStyle(
+                                color: AppColors.textSecondary,
+                                fontSize: 14,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 24),
+                            ElevatedButton(
+                              onPressed: () => context.go('/beep'),
+                              child: const Text('Try Again'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
                 },
               ),
             ],

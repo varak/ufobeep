@@ -4,23 +4,18 @@ import 'package:go_router/go_router.dart';
 
 import '../../theme/app_theme.dart';
 import '../../models/sensor_data.dart';
-import '../../models/sighting_submission.dart' as local;
-import '../../models/alerts_filter.dart';
 import '../../models/api_models.dart' as api;
 import '../../services/api_client.dart';
-import '../../widgets/plane_badge.dart';
 import '../../widgets/simple_photo_display.dart';
 
 class BeepCompositionScreen extends StatefulWidget {
   final File imageFile;
   final SensorData? sensorData;
-  final PlaneMatchResponse? planeMatch;
 
   const BeepCompositionScreen({
     super.key,
     required this.imageFile,
     this.sensorData,
-    this.planeMatch,
   });
 
   @override
@@ -31,13 +26,10 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
   // Form controllers and state
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  String _selectedCategory = local.SightingCategory.ufo;
   // Location privacy is now handled in user profile settings
   
   // Submission state
   bool _isSubmitting = false;
-  PlaneMatchResponse? _planeMatch;
-  bool _userReclassifiedAsUFO = false;
   String? _errorMessage;
 
   // Form validation
@@ -50,7 +42,12 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
   @override
   void initState() {
     super.initState();
-    _planeMatch = widget.planeMatch;
+    
+    debugPrint('=== BEEP COMPOSITION SCREEN - NO CLASSIFICATION ===');
+    debugPrint('Image file: ${widget.imageFile.path}');
+    debugPrint('Image file exists: ${widget.imageFile.existsSync()}');
+    debugPrint('Sensor data available: ${widget.sensorData != null}');
+    debugPrint('========================================');
     
     // Add listeners for real-time validation
     _titleController.addListener(_onFormFieldChanged);
@@ -63,7 +60,31 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
   }
 
   Future<void> _submitBeep() async {
-    if (!_isFormValid || _isSubmitting) return;
+    // Check if form is valid and show helpful message if not
+    if (!_isFormValid) {
+      String message = '';
+      final titleLength = _titleController.text.trim().length;
+      final descLength = _descriptionController.text.trim().length;
+      
+      if (titleLength < 5) {
+        message = 'Title needs at least 5 characters (currently $titleLength)';
+      } else if (descLength < 10) {
+        message = 'Description needs at least 10 characters (currently $descLength)';
+      }
+      
+      if (message.isNotEmpty && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            backgroundColor: AppColors.semanticWarning,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+      return;
+    }
+    
+    if (_isSubmitting) return;
 
     setState(() {
       _isSubmitting = true;
@@ -83,30 +104,9 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
         throw Exception('Description must be at least 10 characters long');
       }
 
-      // Determine category based on plane match results
-      api.SightingCategory category = api.SightingCategory.ufo;
-      List<String> tags = [];
-      
-      if (_userReclassifiedAsUFO) {
-        category = api.SightingCategory.ufo;
-        tags.add('user-reclassified');
-      } else if (_planeMatch?.isPlane == true && _planeMatch!.confidence > 0.7) {
-        category = api.SightingCategory.anomaly; // Classify likely planes as anomalies for review
-        tags.add('likely-aircraft');
-        final flight = _planeMatch!.matchedFlight;
-        if (flight != null) {
-          tags.add('flight-${flight.callsign}');
-        }
-      } else if (_planeMatch?.isPlane == true) {
-        category = api.SightingCategory.ufo; // Low confidence planes still get UFO category
-        tags.add('possible-aircraft');
-      }
-
-      // Add plane match confidence as tag
-      if (_planeMatch != null) {
-        final confidence = (_planeMatch!.confidence * 100).round();
-        tags.add('confidence-$confidence');
-      }
+      // All beeps are UFO sightings - no classification
+      const category = api.SightingCategory.ufo;
+      final List<String> tags = [];
 
       // Submit sighting with media using API client
       final sightingId = await ApiClient.instance.submitSightingWithMedia(
@@ -123,37 +123,23 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
         },
       );
 
-      // Determine classification for user feedback
-      String classification = 'UFO';
-      String additionalInfo = '';
-
-      if (_userReclassifiedAsUFO) {
-        additionalInfo = ' (plane match overridden by user)';
-      } else if (_planeMatch?.isPlane == true && _planeMatch!.confidence > 0.7) {
-        classification = 'Likely Aircraft';
-        final flight = _planeMatch!.matchedFlight;
-        if (flight != null) {
-          additionalInfo = ' (${flight.displayName})';
-        }
-      } else if (_planeMatch?.isPlane == true) {
-        classification = 'Possible Aircraft';
-        additionalInfo = ' (low confidence: ${(_planeMatch!.confidence * 100).toInt()}%)';
-      }
-
       // Show success message
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Beep "$title" sent successfully as $classification$additionalInfo'),
-            backgroundColor: classification.contains('Aircraft') 
-                ? AppColors.semanticWarning 
-                : AppColors.brandPrimary,
+            content: Text('Beep "$title" sent successfully!'),
+            backgroundColor: AppColors.brandPrimary,
             duration: const Duration(seconds: 3),
           ),
         );
 
         // Navigate to the alert detail page
-        context.go('/alert/$sightingId');
+        // Add a small delay to allow backend to process the sighting
+        Future.delayed(const Duration(milliseconds: 500), () {
+          if (context.mounted) {
+            context.go('/alert/$sightingId');
+          }
+        });
       }
 
     } catch (e) {
@@ -181,18 +167,6 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
     }
   }
 
-  void _reclassifyAsUFO() {
-    setState(() {
-      _userReclassifiedAsUFO = true;
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Marked as UFO - plane classification overridden'),
-        backgroundColor: AppColors.semanticWarning,
-      ),
-    );
-  }
 
   void _retakePhoto() {
     context.go('/beep');
@@ -211,78 +185,69 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
         ),
       ),
       backgroundColor: AppColors.darkBackground,
-      body: Column(
-        children: [
-          // Main content
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Photo section
-                  _buildPhotoSection(),
-                  const SizedBox(height: 16),
-                  
-                  // Explanation message
-                  _buildExplanationMessage(),
-                  const SizedBox(height: 20),
-                  
-                  // Plane match section (if applicable)
-                  _buildPlaneMatchSection(),
-                  if (_planeMatch != null) const SizedBox(height: 20),
-                  
-                  // Error message
-                  if (_errorMessage != null) ...[
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      margin: const EdgeInsets.only(bottom: 16),
-                      decoration: BoxDecoration(
-                        color: AppColors.semanticError.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: AppColors.semanticError.withOpacity(0.3)),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.error, color: AppColors.semanticError, size: 20),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              _errorMessage!,
-                              style: const TextStyle(color: AppColors.semanticError, fontSize: 14),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Main scrollable content
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Photo section
+                    _buildPhotoSection(),
+                    const SizedBox(height: 16),
+                    
+                    // Explanation message
+                    _buildExplanationMessage(),
+                    const SizedBox(height: 20),
+                    
+                    
+                    // Error message
+                    if (_errorMessage != null) ...[
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        margin: const EdgeInsets.only(bottom: 16),
+                        decoration: BoxDecoration(
+                          color: AppColors.semanticError.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: AppColors.semanticError.withOpacity(0.3)),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.error, color: AppColors.semanticError, size: 20),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                _errorMessage!,
+                                style: const TextStyle(color: AppColors.semanticError, fontSize: 14),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
+                    ],
+                    
+                    // Form fields
+                    _buildTitleInput(),
+                    const SizedBox(height: 20),
+                    _buildDescriptionInput(),
+                    const SizedBox(height: 100), // Space for bottom button
                   ],
-                  
-                  // Form fields
-                  _buildTitleInput(),
-                  const SizedBox(height: 20),
-                  _buildDescriptionInput(),
-                  const SizedBox(height: 20),
-                  _buildCategorySelection(),
-                  const SizedBox(height: 100), // Space for bottom button
-                ],
+                ),
               ),
             ),
-          ),
-          
-          // Bottom action buttons
-          _buildBottomActions(),
-        ],
+            
+            // Bottom action buttons
+            _buildBottomActions(),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildPhotoSection() {
-    debugPrint('=== PHOTO SECTION DEBUG ===');
-    debugPrint('Image file exists: ${widget.imageFile.existsSync()}');
-    debugPrint('Image file path: ${widget.imageFile.path}');
-    debugPrint('Image file size: ${widget.imageFile.lengthSync()} bytes');
-    debugPrint('===========================');
-    
     return SimplePhotoDisplay(
       imageFile: widget.imageFile,
       height: 200,
@@ -337,40 +302,6 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
     );
   }
 
-  Widget _buildPlaneMatchSection() {
-    if (_planeMatch == null) return const SizedBox();
-
-    if (_userReclassifiedAsUFO) {
-      return Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColors.semanticWarning.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.semanticWarning, width: 1.5),
-        ),
-        child: const Row(
-          children: [
-            Icon(Icons.flag, color: AppColors.semanticWarning),
-            SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                'Classified as UFO (plane match overridden)',
-                style: TextStyle(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return PlaneBadge(
-      planeMatch: _planeMatch!,
-      onReclassify: _reclassifyAsUFO,
-    );
-  }
 
   Widget _buildTitleInput() {
     return Column(
@@ -418,7 +349,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             counterStyle: const TextStyle(color: AppColors.textSecondary),
           ),
-          maxLength: local.SightingValidator.maxTitleLength,
+          maxLength: 100,
           textInputAction: TextInputAction.next,
         ),
       ],
@@ -472,104 +403,13 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
             counterStyle: const TextStyle(color: AppColors.textSecondary),
           ),
           maxLines: 6,
-          maxLength: local.SightingValidator.maxDescriptionLength,
+          maxLength: 1000,
           textInputAction: TextInputAction.newline,
         ),
       ],
     );
   }
 
-  Widget _buildCategorySelection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Category',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          decoration: BoxDecoration(
-            color: AppColors.darkSurface,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.darkBorder),
-          ),
-          child: DropdownButtonFormField<String>(
-            value: _selectedCategory,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              border: InputBorder.none,
-            ),
-            dropdownColor: AppColors.darkSurface,
-            style: const TextStyle(color: AppColors.textPrimary, fontSize: 16),
-            icon: const Icon(Icons.arrow_drop_down, color: AppColors.textSecondary),
-            items: local.SightingCategory.allCategories.map((category) {
-              final categoryData = AlertCategory.getByKey(category);
-              return DropdownMenuItem(
-                value: category,
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: categoryData?.icon != null
-                          ? Text(
-                              categoryData!.icon,
-                              style: const TextStyle(fontSize: 18),
-                              textAlign: TextAlign.center,
-                            )
-                          : const Icon(
-                              Icons.help,
-                              color: AppColors.brandPrimary,
-                              size: 20,
-                            ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            local.SightingCategory.getDisplayName(category),
-                            style: const TextStyle(
-                              color: AppColors.textPrimary,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            local.SightingCategory.getDescription(category),
-                            style: const TextStyle(
-                              color: AppColors.textSecondary,
-                              fontSize: 12,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }).toList(),
-            onChanged: (value) {
-              if (value != null) {
-                setState(() {
-                  _selectedCategory = value;
-                });
-              }
-            },
-          ),
-        ),
-      ],
-    );
-  }
 
 
   Widget _buildBottomActions() {
@@ -609,7 +449,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
             Expanded(
               flex: 2,
               child: ElevatedButton.icon(
-                onPressed: (!_isSubmitting && _isFormValid) ? _submitBeep : null,
+                onPressed: !_isSubmitting ? _submitBeep : null,
                 icon: _isSubmitting
                     ? const SizedBox(
                         width: 20,

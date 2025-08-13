@@ -114,20 +114,43 @@ class Alert {
   }
 
   factory Alert.fromApiJson(Map<String, dynamic> json) {
-    final location = json['location'] as Map<String, dynamic>?;
+    // Handle both old format (with 'location' object) and new format (with 'jittered_location' or 'sensor_data')
+    Map<String, dynamic>? location = json['location'] as Map<String, dynamic>?;
+    Map<String, dynamic>? jitteredLocation = json['jittered_location'] as Map<String, dynamic>?;
+    Map<String, dynamic>? sensorData = json['sensor_data'] as Map<String, dynamic>?;
+    
+    // Try to get coordinates from various possible locations in the response
+    double lat = 0.0;
+    double lng = 0.0;
+    
+    if (jitteredLocation != null) {
+      lat = (jitteredLocation['latitude']?.toDouble() ?? jitteredLocation['lat']?.toDouble()) ?? 0.0;
+      lng = (jitteredLocation['longitude']?.toDouble() ?? jitteredLocation['lng']?.toDouble()) ?? 0.0;
+    } else if (location != null) {
+      lat = (location['latitude']?.toDouble() ?? location['lat']?.toDouble()) ?? 0.0;
+      lng = (location['longitude']?.toDouble() ?? location['lng']?.toDouble()) ?? 0.0;
+    } else if (sensorData != null && sensorData['location'] != null) {
+      final sensorLoc = sensorData['location'] as Map<String, dynamic>;
+      lat = (sensorLoc['latitude']?.toDouble() ?? sensorLoc['lat']?.toDouble()) ?? 0.0;
+      lng = (sensorLoc['longitude']?.toDouble() ?? sensorLoc['lng']?.toDouble()) ?? 0.0;
+    } else if (sensorData != null) {
+      lat = (sensorData['latitude']?.toDouble() ?? sensorData['lat']?.toDouble()) ?? 0.0;
+      lng = (sensorData['longitude']?.toDouble() ?? sensorData['lng']?.toDouble()) ?? 0.0;
+    }
+    
     final mediaFiles = json['media_files'] as List<dynamic>?;
     
     return Alert(
       id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
-      latitude: location?['latitude']?.toDouble() ?? 0.0,
-      longitude: location?['longitude']?.toDouble() ?? 0.0,
-      createdAt: DateTime.parse(json['created_at'] as String),
+      latitude: lat,
+      longitude: lng,
+      createdAt: DateTime.parse(json['created_at'] as String? ?? json['submitted_at'] as String? ?? DateTime.now().toIso8601String()),
       locationName: location?['name'] as String?,
       distance: json['distance_km']?.toDouble(),
       bearing: json['bearing_deg']?.toDouble(),
-      category: json['category'] as String? ?? 'unknown',
+      category: json['category'] as String? ?? 'ufo',
       alertLevel: json['alert_level'] as String? ?? 'low',
       status: json['status'] as String? ?? 'pending',
       witnessCount: json['witness_count'] as int? ?? 1,
