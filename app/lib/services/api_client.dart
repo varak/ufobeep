@@ -610,7 +610,7 @@ extension ApiClientExtension on ApiClient {
   }) async {
     try {
       // Step 1: Upload media files first if any
-      List<Map<String, dynamic>> mediaFileData = [];
+      List<String> mediaFileUrls = [];
       if (mediaFiles.isNotEmpty) {
         debugPrint('Uploading ${mediaFiles.length} media files...');
         if (onProgress != null) onProgress(0.1);
@@ -622,13 +622,8 @@ extension ApiClientExtension on ApiClient {
           // Upload file and get URL
           final mediaUrl = await uploadMediaFile('temp_sighting', file);
           
-          mediaFileData.add({
-            'type': _getContentTypeFromFile(file).startsWith('image/') ? 'photo' : 'video',
-            'filename': file.path.split('/').last,
-            'url': mediaUrl,
-            'size_bytes': await file.length(),
-            'content_type': _getContentTypeFromFile(file),
-          });
+          // Just store the URL - API expects List<str> not complex objects
+          mediaFileUrls.add(mediaUrl);
           
           // Update progress
           if (onProgress != null) {
@@ -667,13 +662,13 @@ extension ApiClientExtension on ApiClient {
       }
       
       // Add actual media files with URLs
-      if (mediaFileData.isNotEmpty) {
-        sightingData['media_files'] = mediaFileData;
+      if (mediaFileUrls.isNotEmpty) {
+        sightingData['media_files'] = mediaFileUrls;
       }
       
       if (onProgress != null) onProgress(0.6);
       
-      debugPrint('Submitting sighting data with ${mediaFileData.length} media files...');
+      debugPrint('Submitting sighting data with ${mediaFileUrls.length} media files...');
       
       final response = await _dio.post('/sightings', data: sightingData);
       
