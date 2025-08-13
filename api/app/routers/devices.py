@@ -26,14 +26,14 @@ except ImportError:
     from enum import Enum
     
     class DevicePlatform(str, Enum):
-        IOS = "ios"
-        ANDROID = "android"
-        WEB = "web"
+        ios = "ios"
+        android = "android"
+        web = "web"
     
     class PushProvider(str, Enum):
-        FCM = "fcm"
-        APNS = "apns"
-        WEBPUSH = "webpush"
+        fcm = "fcm"
+        apns = "apns"
+        webpush = "webpush"
 
 
 # Request/Response models
