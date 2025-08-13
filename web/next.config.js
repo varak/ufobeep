@@ -13,7 +13,7 @@ const nextConfig = {
   
   // Image optimization
   images: {
-    domains: ['localhost', 'api.ufobeep.com', 'api-staging.ufobeep.com'],
+    domains: ['localhost', 'ufobeep.com', 'api.ufobeep.com', 'api-staging.ufobeep.com'],
     formats: ['image/webp', 'image/avif'],
   },
   
