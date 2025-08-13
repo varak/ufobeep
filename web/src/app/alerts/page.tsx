@@ -143,6 +143,10 @@ export default function AlertsPage() {
                   <span className="text-brand-primary">•</span>
                   <span>Try refreshing the page or using a different browser</span>
                 </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-brand-primary">•</span>
+                  <span>Try viewing the website on your phone instead</span>
+                </li>
               </ul>
             </div>
             
