@@ -306,7 +306,7 @@ async def register_device(
                         notifications_sent, notifications_opened,
                         registered_at, token_updated_at, created_at, updated_at
                     ) VALUES (
-                        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11,
+                        $1, $2, $3, $4::device_platform, $5, $6, $7, $8, $9, $10, $11,
                         $12, $13, $14, $15, $16, $17, $18, $19, $20,
                         $21, $22, $21, $21
                     ) RETURNING id
@@ -314,7 +314,7 @@ async def register_device(
                     user_id,
                     request.device_id,
                     request.device_name,
-                    request.platform.value,
+                    request.platform.value if request.platform else None,
                     request.app_version,
                     request.os_version,
                     request.device_model,
