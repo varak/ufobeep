@@ -1,6 +1,8 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import type { Metadata } from 'next'
 
 interface Alert {
   id: string
@@ -41,79 +43,77 @@ interface AlertPageProps {
   params: { id: string }
 }
 
+export default function AlertPage({ params }: AlertPageProps) {
+  const [alert, setAlert] = useState<Alert | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-async function fetchAlertById(id: string): Promise<Alert | null> {
-  try {
-    // Fetch all recent alerts and find one matching the ID
-    const response = await fetch('https://api.ufobeep.com/alerts?limit=100&offset=0&verified_only=false', {
-      cache: 'no-store' // Always get fresh data
-    })
-    
-    if (!response.ok) {
-      console.error('Failed to fetch alerts:', response.status)
-      return null
+  useEffect(() => {
+    const fetchAlert = async () => {
+      try {
+        // Fetch all recent alerts and find one matching the ID
+        const response = await fetch('https://api.ufobeep.com/alerts?limit=100&offset=0&verified_only=false')
+        
+        if (!response.ok) {
+          throw new Error(`Failed to fetch alerts: ${response.status}`)
+        }
+        
+        const data = await response.json()
+        
+        if (!data.success || !data.data?.alerts) {
+          throw new Error('Invalid API response structure')
+        }
+        
+        // Find alert by matching ID
+        const foundAlert = data.data.alerts.find((alert: Alert) => alert.id === params.id)
+        
+        if (!foundAlert) {
+          setError('Alert not found')
+        } else {
+          setAlert(foundAlert)
+        }
+        
+      } catch (err) {
+        console.error('Error fetching alert:', err)
+        setError('Failed to load alert')
+      } finally {
+        setLoading(false)
+      }
     }
-    
-    const data = await response.json()
-    
-    if (!data.success || !data.data?.alerts) {
-      console.error('Invalid API response structure')
-      return null
-    }
-    
-    // Find alert by matching ID
-    const alert = data.data.alerts.find((alert: Alert) => alert.id === id)
-    return alert || null
-    
-  } catch (error) {
-    console.error('Error fetching alert:', error)
-    return null
-  }
-}
 
-export async function generateMetadata({ params }: AlertPageProps): Promise<Metadata> {
-  const alert = await fetchAlertById(params.id)
-  
-  if (!alert) {
-    return {
-      title: 'Alert Not Found',
-      description: 'The requested UFO sighting alert could not be found.',
-    }
-  }
-  
-  const description = alert.description.length > 160 
-    ? alert.description.substring(0, 157) + '...'
-    : alert.description
-  
-  return {
-    title: `${alert.title} - UFO Sighting in ${alert.location.name}`,
-    description,
-    openGraph: {
-      title: `${alert.title} | UFOBeep`,
-      description: alert.description,
-      type: 'article',
-      publishedTime: alert.created_at,
-      images: alert.media_files && alert.media_files.length > 0 ? [{
-        url: alert.media_files[0].url,
-        width: 800,
-        height: 600,
-        alt: alert.title,
-      }] : undefined,
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: alert.title,
-      description: description,
-      images: alert.media_files && alert.media_files.length > 0 ? [alert.media_files[0].url] : undefined,
-    },
-  }
-}
+    fetchAlert()
+  }, [params.id])
 
-export default async function AlertPage({ params }: AlertPageProps) {
-  const alert = await fetchAlertById(params.id)
+  if (loading) {
+    return (
+      <main className="min-h-screen py-8 px-4 md:px-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center">
+            <div className="text-6xl mb-6">🛸</div>
+            <p className="text-text-secondary">Loading alert details...</p>
+          </div>
+        </div>
+      </main>
+    )
+  }
 
-  if (!alert) {
-    notFound()
+  if (error || !alert) {
+    return (
+      <main className="min-h-screen py-8 px-4 md:px-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center">
+            <div className="text-6xl mb-6">⚠️</div>
+            <h1 className="text-2xl font-bold text-text-primary mb-4">Alert Not Found</h1>
+            <p className="text-text-secondary mb-8">{error || 'The requested UFO sighting alert could not be found.'}</p>
+            <Link href="/alerts">
+              <button className="bg-brand-primary text-text-inverse px-6 py-3 rounded-lg hover:bg-brand-primary-dark transition-colors">
+                ← Back to All Alerts
+              </button>
+            </Link>
+          </div>
+        </div>
+      </main>
+    )
   }
 
   const formatDate = (dateString: string) => {
