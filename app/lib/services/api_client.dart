@@ -610,32 +610,9 @@ extension ApiClientExtension on ApiClient {
     Function(double)? onProgress,
   }) async {
     try {
-      // Step 1: Upload media files first if any
-      List<String> mediaFileUrls = [];
-      if (mediaFiles.isNotEmpty) {
-        debugPrint('Uploading ${mediaFiles.length} media files...');
-        if (onProgress != null) onProgress(0.1);
-        
-        for (int i = 0; i < mediaFiles.length; i++) {
-          final file = mediaFiles[i];
-          debugPrint('Uploading file ${i + 1}/${mediaFiles.length}: ${file.path}');
-          
-          // Upload file and get URL
-          final mediaUrl = await uploadMediaFile('temp_sighting', file);
-          
-          // Just store the URL - API expects List<str> not complex objects
-          mediaFileUrls.add(mediaUrl);
-          
-          // Update progress
-          if (onProgress != null) {
-            onProgress(0.1 + (0.4 * (i + 1) / mediaFiles.length));
-          }
-        }
-        
-        debugPrint('All media files uploaded successfully');
-      }
-      
-      // Step 2: Prepare sighting data with actual media URLs
+      // Step 1: Create sighting first to get sighting ID
+      if (onProgress != null) onProgress(0.1);
+      // Prepare sighting data without media initially
       final sightingData = {
         'title': title,
         'description': description,
@@ -660,46 +637,52 @@ extension ApiClientExtension on ApiClient {
         };
       }
       
-      // Add actual media files in the format the old endpoint expects
-      if (mediaFileUrls.isNotEmpty) {
-        final uuid = Uuid();
-        sightingData['media_info'] = {
-          'files': mediaFileUrls.map((url) => {
-            'id': uuid.v4(),
-            'type': 'image',
-            'url': url,
-            'thumbnail_url': url,  // Same as main URL for now
-            'filename': url.split('/').last,
-            'uploaded_at': DateTime.now().toIso8601String(),
-          }).toList(),
-          'file_count': mediaFileUrls.length,
-        };
-      }
+      debugPrint('Creating sighting first to get ID...');
+      final sightingResponse = await _dio.post('/sightings', data: sightingData);
       
-      if (onProgress != null) onProgress(0.6);
-      
-      debugPrint('Submitting sighting data with ${mediaFileUrls.length} media files...');
-      debugPrint('Full sighting data: ${json.encode(sightingData)}');
-      
-      final response = await _dio.post('/sightings', data: sightingData);
-      
-      debugPrint('Sighting response: ${response.data}');
-      
-      // Parse response
-      if (response.data is Map<String, dynamic>) {
-        final data = response.data as Map<String, dynamic>;
+      // Extract sighting ID from response
+      String sightingId;
+      if (sightingResponse.data is Map<String, dynamic>) {
+        final data = sightingResponse.data as Map<String, dynamic>;
         if (data['success'] == true && data['data'] != null) {
-          final sightingData = data['data'] as Map<String, dynamic>;
-          final sightingId = sightingData['sighting_id'] ?? 'unknown_id';
-          
-          // Media files already uploaded above and URLs included in sighting data
-          
-          if (onProgress != null) onProgress(1.0);
-          return sightingId;
+          sightingId = data['data']['sighting_id'] as String;
+          debugPrint('Sighting created with ID: $sightingId');
+        } else {
+          throw Exception('Failed to create sighting: ${data['message']}');
         }
+      } else {
+        throw Exception('Invalid sighting creation response format');
       }
       
-      throw ApiClientException('Invalid sighting response format');
+      // Step 2: Upload media files using the sighting ID
+      List<String> mediaFileNames = [];
+      if (mediaFiles.isNotEmpty) {
+        debugPrint('Uploading ${mediaFiles.length} media files for sighting $sightingId...');
+        if (onProgress != null) onProgress(0.3);
+        
+        for (int i = 0; i < mediaFiles.length; i++) {
+          final file = mediaFiles[i];
+          debugPrint('Uploading file ${i + 1}/${mediaFiles.length}: ${file.path}');
+          
+          // Upload file using sighting ID
+          final fileName = await uploadMediaFileForSighting(sightingId, file);
+          mediaFileNames.add(fileName);
+          
+          // Update progress
+          if (onProgress != null) {
+            onProgress(0.3 + (0.5 * (i + 1) / mediaFiles.length));
+          }
+        }
+        
+        debugPrint('All media files uploaded successfully');
+        
+        // Step 3: Update sighting with media file names
+        if (onProgress != null) onProgress(0.9);
+        await updateSightingMedia(sightingId, mediaFileNames);
+      }
+      
+      if (onProgress != null) onProgress(1.0);
+      return sightingId;
       
     } catch (e) {
       if (e is DioException) {
@@ -773,6 +756,107 @@ extension ApiClientExtension on ApiClient {
     } catch (e) {
       debugPrint('Error uploading media file: $e');
       rethrow;
+    }
+  }
+
+  // New sighting-based media upload method
+  Future<String> uploadMediaFileForSighting(String sightingId, File file) async {
+    try {
+      debugPrint('Uploading media file for sighting: $sightingId');
+      
+      // Step 1: Get presigned upload URL with sighting ID
+      final presignResponse = await createPresignedUploadForSighting(sightingId, file);
+      final uploadId = presignResponse['upload_id'] as String;
+      final uploadUrl = presignResponse['upload_url'] as String;
+      final fields = presignResponse['fields'] as Map<String, dynamic>;
+      
+      debugPrint('Got presigned upload URL: $uploadUrl');
+      
+      // Step 2: Upload file directly to S3/MinIO
+      final success = await uploadFileToStorage(uploadUrl, fields, file);
+      
+      if (!success) {
+        throw Exception('Failed to upload file to storage');
+      }
+      
+      debugPrint('File uploaded to storage successfully');
+      
+      // Step 3: Mark upload as complete and get filename
+      final fileName = await completeMediaUploadForSighting(uploadId, file);
+      
+      debugPrint('Media upload completed successfully with filename: $fileName');
+      return fileName;
+      
+    } catch (e) {
+      debugPrint('Error uploading media file: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> updateSightingMedia(String sightingId, List<String> fileNames) async {
+    try {
+      debugPrint('Updating sighting $sightingId with media files: $fileNames');
+      
+      final response = await _dio.patch('/sightings/$sightingId/media', data: {
+        'media_files': fileNames,
+      });
+      
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        debugPrint('Sighting media updated successfully');
+      } else {
+        throw Exception('Failed to update sighting media: ${response.statusMessage}');
+      }
+    } catch (e) {
+      debugPrint('Error updating sighting media: $e');
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> createPresignedUploadForSighting(String sightingId, File file) async {
+    try {
+      final fileName = file.path.split('/').last;
+      final contentType = _getContentTypeFromFile(file);
+      final fileSize = await file.length();
+      
+      final requestData = {
+        'filename': fileName,
+        'content_type': contentType,
+        'size_bytes': fileSize,
+        'sighting_id': sightingId, // NEW: Include sighting ID
+      };
+      
+      debugPrint('Creating presigned upload for sighting $sightingId: $fileName ($fileSize bytes)');
+      
+      final response = await _dio.post('/media/presign', data: requestData);
+      
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw Exception('Failed to create presigned upload: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  Future<String> completeMediaUploadForSighting(String uploadId, File file) async {
+    try {
+      final fileName = file.path.split('/').last;
+      
+      debugPrint('Completing upload for: $uploadId');
+      
+      final response = await _dio.post('/media/complete', data: {
+        'upload_id': uploadId,
+      });
+      
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        // Return just the filename, not a full URL
+        return fileName;
+      } else {
+        throw Exception('Failed to complete upload: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
     }
   }
 

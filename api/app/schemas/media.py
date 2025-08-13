@@ -25,6 +25,7 @@ class PresignedUploadRequest(BaseModel):
     content_type: str = Field(..., max_length=100)
     size_bytes: int = Field(..., gt=0, le=52428800)  # Max 50MB
     checksum: Optional[str] = Field(None, description="MD5 or SHA256 checksum")
+    sighting_id: str = Field(..., description="Sighting ID to organize media under")
     
     @validator('filename')
     def validate_filename(cls, v):

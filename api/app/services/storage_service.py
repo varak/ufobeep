@@ -82,10 +82,9 @@ class StorageService:
             upload_id = generate_upload_id()
             sanitized_filename = sanitize_filename(request.filename)
             
-            # Create object key with organized structure
-            # Structure: uploads/{year}/{month}/{upload_id}/{filename}
-            now = datetime.utcnow()
-            object_key = f"uploads/{now.year:04d}/{now.month:02d}/{upload_id}/{sanitized_filename}"
+            # Create object key with sighting-based structure
+            # Structure: sightings/{sighting_id}/{filename}
+            object_key = f"sightings/{request.sighting_id}/{sanitized_filename}"
             
             # Prepare conditions for the presigned POST
             conditions = [

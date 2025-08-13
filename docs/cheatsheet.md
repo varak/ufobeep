@@ -29,7 +29,13 @@ Single FastAPI app with routers:
 - **MinIO console**: http://localhost:9001 (on production server)  
 - **Bucket name**: `ufobeep-media` 
 - **Credentials**: minioadmin/minioadmin
-- **Status**: Bucket exists and working
+- **Status**: Bucket exists but URLs have signature issues
+
+## Media Storage Issues (NEEDS REDESIGN)
+- **Current problem**: Random upload IDs, complex signed URLs failing with 403 errors
+- **Proposed solution**: Organize by sighting ID - `/sightings/{sighting_id}/filename.jpg`
+- **See**: `/home/mike/D/ufobeep/mediastoragetodo.md` for redesign plan
+- **Goal**: Simple permanent URLs like `https://ufobeep.com/media/{sighting_id}/photo1.jpg`
 
 ## Presigned Upload Endpoint
 - **Endpoint**: `POST https://api.ufobeep.com/media/presign`

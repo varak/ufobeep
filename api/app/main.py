@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.config.environment import settings
-from app.routers import plane_match, media, devices
+from app.routers import plane_match, media, media_serve, devices
 import asyncpg
 import json
 from datetime import datetime
@@ -211,6 +211,7 @@ app.mount("/static", StaticFiles(directory="media"), name="media")
 # Include routers
 app.include_router(plane_match.router)
 app.include_router(media.router)
+app.include_router(media_serve.router)
 app.include_router(devices.router)
 
 # Disable complex routers for now - just get basic endpoints working
@@ -637,6 +638,53 @@ async def create_sighting(request: dict = None):
     except Exception as e:
         print(f"Error creating sighting: {e}")
         raise HTTPException(status_code=500, detail=f"Error creating sighting: {str(e)}")
+
+@app.patch("/sightings/{sighting_id}/media")
+async def update_sighting_media(sighting_id: str, request: dict = None):
+    try:
+        if not request or 'media_files' not in request:
+            raise HTTPException(status_code=400, detail="media_files is required")
+        
+        media_files = request['media_files']
+        if not isinstance(media_files, list):
+            raise HTTPException(status_code=400, detail="media_files must be a list")
+        
+        # Update sighting with media file names
+        async with db_pool.acquire() as conn:
+            # Build media_info structure with simple filenames
+            media_info = {
+                'files': [
+                    {
+                        'id': str(uuid.uuid4()),
+                        'type': 'image',  # TODO: detect type from filename
+                        'filename': filename,
+                        'url': f'https://ufobeep.com/media/{sighting_id}/{filename}',  # Simple permanent URL
+                        'thumbnail_url': f'https://ufobeep.com/media/{sighting_id}/{filename}',  # Same for now
+                        'uploaded_at': datetime.now().isoformat()
+                    }
+                    for filename in media_files
+                ],
+                'file_count': len(media_files)
+            }
+            
+            # Update the sighting with media info
+            await conn.execute("""
+                UPDATE sightings 
+                SET media_info = $1, updated_at = NOW()
+                WHERE id = $2
+            """, json.dumps(media_info), uuid.UUID(sighting_id))
+        
+        return {
+            "success": True,
+            "message": f"Updated sighting {sighting_id} with {len(media_files)} media files",
+            "timestamp": datetime.now().isoformat()
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error updating sighting media: {e}")
+        raise HTTPException(status_code=500, detail=f"Error updating sighting media: {str(e)}")
 
 @app.post("/media/upload")
 async def upload_media(
