@@ -609,7 +609,37 @@ extension ApiClientExtension on ApiClient {
     Function(double)? onProgress,
   }) async {
     try {
-      // Simplified sighting data - no media upload for now
+      // Step 1: Upload media files first if any
+      List<Map<String, dynamic>> mediaFileData = [];
+      if (mediaFiles.isNotEmpty) {
+        debugPrint('Uploading ${mediaFiles.length} media files...');
+        if (onProgress != null) onProgress(0.1);
+        
+        for (int i = 0; i < mediaFiles.length; i++) {
+          final file = mediaFiles[i];
+          debugPrint('Uploading file ${i + 1}/${mediaFiles.length}: ${file.path}');
+          
+          // Upload file and get URL
+          final mediaUrl = await uploadMediaFile('temp_sighting', file);
+          
+          mediaFileData.add({
+            'type': _getContentTypeFromFile(file).startsWith('image/') ? 'photo' : 'video',
+            'filename': file.path.split('/').last,
+            'url': mediaUrl,
+            'size_bytes': await file.length(),
+            'content_type': _getContentTypeFromFile(file),
+          });
+          
+          // Update progress
+          if (onProgress != null) {
+            onProgress(0.1 + (0.4 * (i + 1) / mediaFiles.length));
+          }
+        }
+        
+        debugPrint('All media files uploaded successfully');
+      }
+      
+      // Step 2: Prepare sighting data with actual media URLs
       final sightingData = {
         'title': title,
         'description': description,
@@ -636,17 +666,14 @@ extension ApiClientExtension on ApiClient {
         };
       }
       
-      // Add media info (file count only to avoid blocking file I/O)
-      if (mediaFiles.isNotEmpty) {
-        sightingData['media_info'] = {
-          'file_count': mediaFiles.length,
-          'note': 'Media files captured but not uploaded yet',
-        };
+      // Add actual media files with URLs
+      if (mediaFileData.isNotEmpty) {
+        sightingData['media_files'] = mediaFileData;
       }
       
-      if (onProgress != null) onProgress(0.5);
+      if (onProgress != null) onProgress(0.6);
       
-      debugPrint('Submitting sighting data: ${sightingData.toString()}');
+      debugPrint('Submitting sighting data with ${mediaFileData.length} media files...');
       
       final response = await _dio.post('/sightings', data: sightingData);
       
@@ -729,7 +756,7 @@ extension ApiClientExtension on ApiClient {
     return api.MediaType.photo; // Default fallback
   }
 
-  Future<void> uploadMediaFile(String sightingId, File file) async {
+  Future<String> uploadMediaFile(String sightingId, File file) async {
     try {
       debugPrint('Uploading media file using presigned upload: ${file.path}');
       
@@ -750,10 +777,11 @@ extension ApiClientExtension on ApiClient {
       
       debugPrint('File uploaded to storage successfully');
       
-      // Step 3: Mark upload as complete
-      await completeMediaUpload(uploadId, file);
+      // Step 3: Mark upload as complete and get media URL
+      final mediaUrl = await completeMediaUpload(uploadId, file);
       
-      debugPrint('Media upload completed successfully');
+      debugPrint('Media upload completed successfully with URL: $mediaUrl');
+      return mediaUrl;
       
     } catch (e) {
       debugPrint('Error uploading media file: $e');
@@ -801,7 +829,7 @@ extension ApiClientExtension on ApiClient {
     }
   }
 
-  Future<void> completeMediaUpload(String uploadId, File file) async {
+  Future<String> completeMediaUpload(String uploadId, File file) async {
     try {
       final contentType = _getContentTypeFromFile(file);
       final mediaType = contentType.startsWith('image/') ? 'photo' : 
@@ -822,11 +850,12 @@ extension ApiClientExtension on ApiClient {
       
       if (response.data is Map<String, dynamic>) {
         final data = response.data as Map<String, dynamic>;
-        if (data['id'] == null) {
-          throw ApiClientException('Invalid completion response');
+        if (data['url'] == null) {
+          throw ApiClientException('Invalid completion response - no URL returned');
         }
-        debugPrint('Upload completed: ${data['id']}');
-        return;
+        final mediaUrl = data['url'] as String;
+        debugPrint('Upload completed with URL: $mediaUrl');
+        return mediaUrl;
       }
       
       throw ApiClientException(
