@@ -28,18 +28,25 @@ export default function AlertsPage() {
   const [alerts, setAlerts] = useState<Alert[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+  const alertsPerPage = 9
 
   useEffect(() => {
-    fetchAlerts()
-  }, [])
+    fetchAlerts(currentPage)
+  }, [currentPage])
 
-  const fetchAlerts = async () => {
+  const fetchAlerts = async (page: number) => {
+    setLoading(true)
     try {
-      const response = await fetch('https://api.ufobeep.com/alerts?limit=24&offset=0&verified_only=false')
+      const offset = (page - 1) * alertsPerPage
+      const response = await fetch(`https://api.ufobeep.com/alerts?limit=${alertsPerPage + 1}&offset=${offset}&verified_only=false`)
       const data = await response.json()
       
       if (data.success && data.data?.alerts) {
-        setAlerts(data.data.alerts)
+        const fetchedAlerts = data.data.alerts
+        setHasMore(fetchedAlerts.length > alertsPerPage)
+        setAlerts(fetchedAlerts.slice(0, alertsPerPage))
       } else {
         setError('Failed to load alerts')
       }
@@ -240,7 +247,94 @@ export default function AlertsPage() {
             })}
           </div>
         )}
+        
+        {/* Pagination */}
+        {!loading && !error && alerts.length > 0 && (
+          <div className="flex justify-center items-center space-x-4 mt-12">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="flex items-center space-x-2 px-6 py-3 bg-dark-surface border border-dark-border rounded-lg hover:bg-dark-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span>←</span>
+              <span>Previous</span>
+            </button>
+            
+            <div className="flex items-center space-x-2">
+              <span className="text-text-secondary">Page</span>
+              <span className="bg-brand-primary text-text-inverse px-3 py-1 rounded font-semibold">{currentPage}</span>
+            </div>
+            
+            <button
+              onClick={() => setCurrentPage(prev => prev + 1)}
+              disabled={!hasMore}
+              className="flex items-center space-x-2 px-6 py-3 bg-dark-surface border border-dark-border rounded-lg hover:bg-dark-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span>Next</span>
+              <span>→</span>
+            </button>
+          </div>
+        )}
       </div>
+      
+      {/* Footer */}
+      <footer className="bg-dark-background border-t border-dark-border mt-16">
+        <div className="max-w-6xl mx-auto px-4 md:px-8 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {/* Brand */}
+            <div className="md:col-span-1">
+              <div className="flex items-center space-x-2 mb-4">
+                <span className="text-2xl">🛸</span>
+                <span className="text-xl font-bold text-text-primary">UFOBeep</span>
+              </div>
+              <p className="text-text-secondary text-sm">
+                A community platform for reporting and tracking UFO sightings and anomalous phenomena worldwide.
+              </p>
+            </div>
+            
+            {/* Navigation */}
+            <div>
+              <h3 className="font-semibold text-text-primary mb-4">Navigate</h3>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/" className="text-text-secondary hover:text-brand-primary transition-colors">Home</Link></li>
+                <li><Link href="/alerts" className="text-text-secondary hover:text-brand-primary transition-colors">Recent Alerts</Link></li>
+                <li><Link href="/app" className="text-text-secondary hover:text-brand-primary transition-colors">Download App</Link></li>
+              </ul>
+            </div>
+            
+            {/* Legal */}
+            <div>
+              <h3 className="font-semibold text-text-primary mb-4">Legal</h3>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/privacy" className="text-text-secondary hover:text-brand-primary transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="text-text-secondary hover:text-brand-primary transition-colors">Terms of Service</Link></li>
+                <li><Link href="/safety" className="text-text-secondary hover:text-brand-primary transition-colors">Safety Guidelines</Link></li>
+              </ul>
+            </div>
+            
+            {/* Community */}
+            <div>
+              <h3 className="font-semibold text-text-primary mb-4">Community</h3>
+              <ul className="space-y-2 text-sm">
+                <li><span className="text-text-secondary">Matrix Chat (Coming Soon)</span></li>
+                <li><span className="text-text-secondary">API Access (Coming Soon)</span></li>
+                <li><span className="text-text-secondary">Researcher Portal (Coming Soon)</span></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-dark-border mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p className="text-text-tertiary text-sm">
+              © 2025 UFOBeep. Made with 🛸 for the truth seekers.
+            </p>
+            <div className="flex items-center space-x-6 mt-4 md:mt-0">
+              <span className="text-text-tertiary text-sm">
+                {alerts.length} sightings on this page
+              </span>
+            </div>
+          </div>
+        </div>
+      </footer>
     </main>
   )
 }
