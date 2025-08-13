@@ -200,30 +200,7 @@ async def complete_media_upload(
             updated_at=datetime.utcnow()
         )
         
-        # Save media file to database
-        from ..models.sighting import MediaFile as MediaFileModel
-        from ..models.sighting import MediaType
-        
-        db_media_file = MediaFileModel(
-            id=uuid.uuid4(),
-            upload_id=request.upload_id,
-            type=MediaType.PHOTO if request.media_type == "photo" else MediaType.VIDEO,
-            filename=object_info["key"].split("/")[-1],
-            original_filename=upload_info["filename"],
-            url=public_url,
-            size_bytes=object_info["size"],
-            content_type=object_info.get("content_type", upload_info["content_type"]),
-            checksum=object_info.get("metadata", {}).get("checksum"),
-            file_metadata=request.metadata or {},
-            uploaded_by=uuid.UUID(user_id) if user_id else None,
-            uploaded_at=object_info["last_modified"],
-            created_at=datetime.utcnow(),
-            updated_at=datetime.utcnow()
-        )
-        
-        db.add(db_media_file)
-        db.commit()
-        db.refresh(db_media_file)
+        # Media file record will be saved when used in sighting creation
         
         # Update registry
         upload_info.update({
