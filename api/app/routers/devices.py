@@ -314,7 +314,7 @@ async def register_device(
                     user_id,
                     request.device_id,
                     request.device_name,
-                    request.platform.value if request.platform else None,
+                    request.platform.value,
                     request.app_version,
                     request.os_version,
                     request.device_model,
