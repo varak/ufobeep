@@ -102,7 +102,7 @@ export default function EmailNotifySignup() {
 
       <div className="text-center mt-6">
         <p className="text-sm text-text-tertiary">
-          We'll only email you about the app launch. No spam, ever.
+          We&apos;ll only email you about the app launch. No spam, ever.
         </p>
       </div>
     </section>
