@@ -1,13 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { Pool } from 'pg'
-
-const pool = new Pool({
-  host: 'localhost',
-  database: 'ufobeep_db',
-  user: 'ufobeep_user',
-  password: 'ufopostpass',
-  port: 5432,
-})
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,7 +10,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 })
     }
 
-    const client = await pool.connect()
+    // Dynamic import to avoid build-time issues
+    const { Client } = await import('pg')
+    
+    const client = new Client({
+      host: 'localhost',
+      database: 'ufobeep_db',
+      user: 'ufobeep_user',
+      password: 'ufopostpass',
+      port: 5432,
+    })
+    
+    await client.connect()
     
     try {
       await client.query(
@@ -40,7 +42,7 @@ export async function POST(request: NextRequest) {
       }
       throw error
     } finally {
-      client.release()
+      await client.end()
     }
   } catch (error) {
     console.error('Email signup error:', error)
