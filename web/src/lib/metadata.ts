@@ -90,22 +90,22 @@ export function generateLocalizedMetadata({
     });
   } else {
     // Use default page-specific or fallback image
-    const defaultImage = t(`meta:openGraph.images.${page}`, { returnObjects: true, defaultValue: null });
+    const defaultImage = t(`meta:openGraph.images.${page}`, { returnObjects: true, defaultValue: null }) as any;
     if (defaultImage && typeof defaultImage === 'object' && 'url' in defaultImage) {
       ogImages.push({
         url: `${baseUrl}${defaultImage.url}`,
-        width: defaultImage.width,
-        height: defaultImage.height,
-        alt: defaultImage.alt,
+        width: defaultImage.width || 1200,
+        height: defaultImage.height || 630,
+        alt: defaultImage.alt || title,
       });
     } else {
-      const fallbackImage = t('meta:openGraph.images.default', { returnObjects: true });
+      const fallbackImage = t('meta:openGraph.images.default', { returnObjects: true }) as any;
       if (fallbackImage && typeof fallbackImage === 'object' && 'url' in fallbackImage) {
         ogImages.push({
           url: `${baseUrl}${fallbackImage.url}`,
-          width: fallbackImage.width,
-          height: fallbackImage.height,
-          alt: fallbackImage.alt,
+          width: fallbackImage.width || 1200,
+          height: fallbackImage.height || 630,
+          alt: fallbackImage.alt || title,
         });
       }
     }
