@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import List, Optional
 import logging
+import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from fastapi.security import HTTPBearer
@@ -199,8 +200,30 @@ async def complete_media_upload(
             updated_at=datetime.utcnow()
         )
         
-        # TODO: Save media file to database
-        # For now, just update registry
+        # Save media file to database
+        from ..models.sighting import MediaFile as MediaFileModel
+        
+        db_media_file = MediaFileModel(
+            id=uuid.UUID(media_file.id.replace("media_", "")),
+            upload_id=media_file.upload_id,
+            type=media_file.type,
+            filename=media_file.filename,
+            original_filename=media_file.original_filename,
+            url=media_file.url,
+            size_bytes=media_file.size_bytes,
+            content_type=media_file.content_type,
+            checksum=media_file.checksum,
+            uploaded_by=media_file.uploaded_by,
+            uploaded_at=media_file.uploaded_at,
+            created_at=media_file.created_at,
+            updated_at=media_file.updated_at
+        )
+        
+        db.add(db_media_file)
+        db.commit()
+        db.refresh(db_media_file)
+        
+        # Update registry
         upload_info.update({
             "status": "completed",
             "completed_at": datetime.utcnow(),

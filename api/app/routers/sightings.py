@@ -266,29 +266,38 @@ def jitter_coordinates(lat: float, lng: float) -> GeoCoordinates:
     )
 
 
-async def validate_media_files(media_file_ids: List[str]) -> List[MediaFile]:
-    """Validate that media files exist and are accessible"""
-    # TODO: Query actual media database
-    # For now, return mock media files
+async def validate_media_files(media_file_urls: List[str], db: Session = Depends(get_db)) -> List[MediaFile]:
+    """Validate that media files exist by looking up their URLs in the database"""
+    from ..models.sighting import MediaFile as MediaFileModel
+    
     media_files = []
     
-    for media_id in media_file_ids:
-        # Mock media file - in production, query from database
-        mock_media = MediaFile(
-            id=media_id,
-            upload_id=f"upload_{media_id}",
-            type="photo",
-            filename=f"media_{media_id}.jpg",
-            original_filename=f"photo_{media_id}.jpg", 
-            url=f"https://cdn.ufobeep.com/media/{media_id}.jpg",
-            size_bytes=1024000,
-            content_type="image/jpeg",
-            uploaded_at=datetime.utcnow(),
-            created_at=datetime.utcnow(),
-            updated_at=datetime.utcnow()
-        )
-        media_files.append(mock_media)
-    
+    for url in media_file_urls:
+        # Query database for MediaFile record by URL
+        db_media_file = db.query(MediaFileModel).filter(MediaFileModel.url == url).first()
+        
+        if db_media_file:
+            # Convert database model to Pydantic model
+            media_file = MediaFile(
+                id=str(db_media_file.id),
+                upload_id=db_media_file.upload_id,
+                type=db_media_file.type,
+                filename=db_media_file.filename,
+                original_filename=db_media_file.original_filename,
+                url=db_media_file.url,
+                size_bytes=db_media_file.size_bytes,
+                content_type=db_media_file.content_type,
+                checksum=db_media_file.checksum,
+                uploaded_at=db_media_file.uploaded_at,
+                created_at=db_media_file.created_at,
+                updated_at=db_media_file.updated_at
+            )
+            media_files.append(media_file)
+        else:
+            logger.warning(f"Media file not found in database: {url}")
+            # Skip missing files rather than failing the entire submission
+            continue
+        
     return media_files
 
 
@@ -480,7 +489,7 @@ async def create_sighting(
         # Validate media files if provided
         media_files = []
         if submission.media_files:
-            media_files = await validate_media_files(submission.media_files)
+            media_files = await validate_media_files(submission.media_files, db)
             logger.info(f"Validated {len(media_files)} media files for sighting {sighting_id}")
         
         # Apply coordinate jittering for privacy

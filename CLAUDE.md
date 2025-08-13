@@ -127,3 +127,4 @@
 - make sure what you think is already in place isn't just a stub that doesnt work
 - don't refrence or add yourself to commits
 - production is on ssh port 322
+- do not attempt any quick fix this will just create more problems in the future
