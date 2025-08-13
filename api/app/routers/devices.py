@@ -194,7 +194,7 @@ async def get_or_create_anonymous_user(device_id: str) -> str:
 def create_device_response(device_data: dict) -> DeviceResponse:
     """Convert device data to API response format"""
     return DeviceResponse(
-        id=device_data["id"],
+        id=str(device_data["id"]),
         device_id=device_data["device_id"],
         device_name=device_data.get("device_name"),
         platform=DevicePlatform(device_data["platform"]),
