@@ -36,7 +36,7 @@ export default function MiniMap({ className = '' }: MiniMapProps) {
 
   const fetchAlerts = async () => {
     try {
-      const response = await fetch('/api/alerts?limit=20')
+      const response = await fetch('https://api.ufobeep.com/alerts?limit=20')
       const data = await response.json()
       
       if (data.success && data.data?.alerts) {

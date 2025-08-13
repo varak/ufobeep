@@ -35,7 +35,7 @@ export default function RecentAlertsSidebar() {
 
   const fetchRecentAlerts = async () => {
     try {
-      const response = await fetch('/api/alerts?limit=3')
+      const response = await fetch('https://api.ufobeep.com/alerts?limit=3')
       const data = await response.json()
       
       if (data.success && data.data?.alerts) {

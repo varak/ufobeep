@@ -50,8 +50,9 @@ Single FastAPI app with routers:
 - **API path**: `/home/mike/D/ufobeep/api` (FastAPI backend)
 - **Web path**: `/home/mike/D/ufobeep/web` (Next.js website)
 - **Mobile path**: `/home/mike/D/ufobeep/app` (Flutter mobile app)
-- **Virtual env**: `/home/mike/D/ufobeep/api/venv`
+- **Virtual env**: `/home/mike/D/ufobeep/api/venv` (in API directory, not project root)
 - **Dependencies**: Installed via `venv/bin/pip install -r requirements.txt`
+- **IMPORTANT**: Startup script must use `venv/bin/activate` not `../venv/bin/activate`
 
 ## Current Web Routes
 - `/` - Homepage with email signup

@@ -41,7 +41,7 @@ export default function AlertsPage() {
     setLoading(true)
     try {
       const offset = (page - 1) * alertsPerPage
-      const response = await fetch(`/api/alerts?limit=${alertsPerPage + 1}&offset=${offset}`)
+      const response = await fetch(`https://api.ufobeep.com/alerts?limit=${alertsPerPage + 1}&offset=${offset}`)
       const data = await response.json()
       
       if (data.success && data.data?.alerts) {
