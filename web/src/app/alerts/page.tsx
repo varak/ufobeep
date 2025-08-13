@@ -181,7 +181,7 @@ export default function AlertsPage() {
                   {alert.media_files && alert.media_files.length > 0 ? (
                     <div className="h-48 bg-gray-800 relative overflow-hidden">
                       <img 
-                        src={alert.media_files[0].thumbnail_url || alert.media_files[0].url} 
+                        src={`${alert.media_files[0].url}?thumbnail=true&width=400&height=300`}
                         alt={alert.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         onError={(e) => {

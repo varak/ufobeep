@@ -192,18 +192,31 @@ export default function AlertPage({ params }: AlertPageProps) {
         <div className="mb-8">
           {alert.media_files && alert.media_files.length > 0 ? (
             <div className="bg-dark-surface border border-dark-border rounded-lg overflow-hidden">
-              <div className="aspect-video bg-dark-background relative">
-                <img 
-                  src={alert.media_files[0].url} 
-                  alt={alert.title}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                    const fallback = target.parentElement?.querySelector('.fallback-placeholder');
-                    if (fallback) (fallback as HTMLElement).style.display = 'flex';
-                  }}
-                />
+              <div className="aspect-video bg-dark-background relative cursor-pointer group">
+                <a 
+                  href={alert.media_files[0].url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full h-full"
+                >
+                  <img 
+                    src={`${alert.media_files[0].url}?thumbnail=true&width=800&height=600`}
+                    alt={alert.title}
+                    className="w-full h-full object-cover group-hover:opacity-90 transition-opacity"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const fallback = target.parentElement?.parentElement?.querySelector('.fallback-placeholder');
+                      if (fallback) (fallback as HTMLElement).style.display = 'flex';
+                    }}
+                  />
+                  {/* Click to view full size overlay */}
+                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-black bg-opacity-70 text-white px-4 py-2 rounded-lg">
+                      <span className="text-sm font-medium">🔍 Click to view full size</span>
+                    </div>
+                  </div>
+                </a>
                 <div className="fallback-placeholder absolute inset-0 bg-dark-background flex items-center justify-center" style={{display: 'none'}}>
                   <div className="text-center">
                     <div className="text-4xl mb-4">📸</div>
@@ -213,7 +226,7 @@ export default function AlertPage({ params }: AlertPageProps) {
               </div>
               <div className="p-4 bg-dark-surface">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-text-tertiary">Media attached</span>
+                  <span className="text-text-tertiary">Media attached • Click image to view full size</span>
                   <span className="text-brand-primary">{alert.media_files.length} file{alert.media_files.length > 1 ? 's' : ''}</span>
                 </div>
               </div>
