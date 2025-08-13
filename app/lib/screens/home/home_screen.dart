@@ -280,7 +280,7 @@ class HomeScreen extends ConsumerWidget {
 
   Widget _buildFAB(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 46),
+      margin: const EdgeInsets.only(bottom: 32),
       child: FloatingActionButton.extended(
         onPressed: () => context.go('/beep'),
         backgroundColor: AppColors.brandPrimary,

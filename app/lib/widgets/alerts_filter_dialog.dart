@@ -109,13 +109,6 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
                     _buildSectionTitle('Alert Distance Range'),
                     const SizedBox(height: 12),
                     _buildDistanceSlider(),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Sorting Section
-                    _buildSectionTitle('Sort By'),
-                    const SizedBox(height: 12),
-                    _buildSortingFilter(),
                   ],
                 ),
               ),
@@ -264,64 +257,5 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
     );
   }
 
-  Widget _buildSortingFilter() {
-    return Column(
-      children: [
-        DropdownButtonFormField<AlertSortBy>(
-          value: _workingFilter.sortBy,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: AppColors.darkBorder),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: AppColors.darkBorder),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: AppColors.brandPrimary),
-            ),
-            filled: true,
-            fillColor: AppColors.darkBackground,
-          ),
-          dropdownColor: AppColors.darkSurface,
-          style: const TextStyle(color: AppColors.textPrimary),
-          items: AlertSortBy.values.map((sortBy) {
-            return DropdownMenuItem(
-              value: sortBy,
-              child: Text(sortBy.displayName),
-            );
-          }).toList(),
-          onChanged: (sortBy) {
-            if (sortBy != null) {
-              _updateWorkingFilter(_workingFilter.copyWith(sortBy: sortBy));
-            }
-          },
-        ),
-        
-        const SizedBox(height: 12),
-        
-        Row(
-          children: [
-            Expanded(
-              child: CheckboxListTile(
-                title: const Text(
-                  'Ascending order',
-                  style: TextStyle(color: AppColors.textPrimary),
-                ),
-                value: _workingFilter.ascending,
-                onChanged: (value) {
-                  _updateWorkingFilter(_workingFilter.copyWith(ascending: value ?? false));
-                },
-                activeColor: AppColors.brandPrimary,
-                contentPadding: EdgeInsets.zero,
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
 
 }
