@@ -32,8 +32,8 @@ export default function IOSTestPage() {
               Easier Testing on the Way!
             </h2>
             <p className="text-text-secondary max-w-2xl mx-auto mb-6">
-              We're working on getting UFOBeep on TestFlight for easy installation. 
-              Sign up below to get notified when it's available!
+              We&apos;re working on getting UFOBeep on TestFlight for easy installation. 
+              Sign up below to get notified when it&apos;s available!
             </p>
             <a 
               href="/app"
@@ -121,7 +121,7 @@ export default function IOSTestPage() {
                   <div>
                     <p className="text-text-primary font-medium">Wait for TestFlight</p>
                     <p className="text-text-tertiary text-sm">
-                      Easiest option - we're working on it! Sign up at the download page to get notified.
+                      Easiest option - we&apos;re working on it! Sign up at the download page to get notified.
                     </p>
                   </div>
                 </div>
@@ -139,7 +139,7 @@ export default function IOSTestPage() {
                 <div className="flex items-start gap-3">
                   <div className="text-yellow-400 mt-1">○</div>
                   <div>
-                    <p className="text-text-primary font-medium">Borrow a Friend's Mac</p>
+                    <p className="text-text-primary font-medium">Borrow a Friend&apos;s Mac</p>
                     <p className="text-text-tertiary text-sm">
                       If you can access a Mac temporarily, follow the Mac instructions above
                     </p>
@@ -150,7 +150,7 @@ export default function IOSTestPage() {
 
             <div className="bg-brand-primary/10 border border-brand-primary/20 rounded-lg p-6">
               <p className="text-text-primary text-center">
-                <strong>🎯 Best Option:</strong> Sign up for notifications and we'll let you know 
+                <strong>🎯 Best Option:</strong> Sign up for notifications and we&apos;ll let you know 
                 as soon as TestFlight is available!
               </p>
             </div>
