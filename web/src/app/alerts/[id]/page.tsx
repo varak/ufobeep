@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
+import ImageWithLoading from '../../../components/ImageWithLoading'
 
 interface Alert {
   id: string
@@ -200,17 +200,11 @@ export default function AlertPage({ params }: AlertPageProps) {
                   rel="noopener noreferrer"
                   className="block w-full h-full"
                 >
-                  <Image 
-                    src={`${alert.media_files[0].url}?thumbnail=true&width=800&height=600`}
+                  <ImageWithLoading 
+                    src={alert.media_files[0].thumbnail_url || `${alert.media_files[0].url}?thumbnail=true`}
                     alt={alert.title}
                     fill
-                    className="object-cover group-hover:opacity-90 transition-opacity"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                      const fallback = target.parentElement?.parentElement?.querySelector('.fallback-placeholder');
-                      if (fallback) (fallback as HTMLElement).style.display = 'flex';
-                    }}
+                    className="object-contain group-hover:opacity-90 transition-opacity"
                   />
                   {/* Click to view full size overlay */}
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
@@ -219,12 +213,6 @@ export default function AlertPage({ params }: AlertPageProps) {
                     </div>
                   </div>
                 </a>
-                <div className="fallback-placeholder absolute inset-0 bg-dark-background flex items-center justify-center" style={{display: 'none'}}>
-                  <div className="text-center">
-                    <div className="text-4xl mb-4">📸</div>
-                    <p className="text-text-secondary">Image unavailable</p>
-                  </div>
-                </div>
               </div>
               <div className="p-4 bg-dark-surface">
                 <div className="flex items-center justify-between text-sm">

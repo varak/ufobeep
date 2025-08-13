@@ -40,89 +40,104 @@ export default function AlertsMap({
     // Simple map implementation using canvas
     if (!mapRef.current) return
 
-    const canvas = document.createElement('canvas')
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+    const renderMap = () => {
+      if (!mapRef.current) return
 
-    // Set canvas size
-    canvas.width = mapRef.current.clientWidth
-    canvas.height = mapRef.current.clientHeight
-    canvas.style.width = '100%'
-    canvas.style.height = '100%'
-    
-    // Clear existing content
-    mapRef.current.innerHTML = ''
-    mapRef.current.appendChild(canvas)
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+      if (!ctx) {
+        setMapError(true)
+        return
+      }
 
-    // Draw map background (dark theme)
-    ctx.fillStyle = '#0a0a0a'
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
+      // Ensure parent has dimensions
+      const containerWidth = mapRef.current.clientWidth || 800
+      const containerHeight = mapRef.current.clientHeight || 320
 
-    // Draw grid
-    ctx.strokeStyle = '#1a1a1a'
-    ctx.lineWidth = 1
-    for (let x = 0; x < canvas.width; x += 50) {
-      ctx.beginPath()
-      ctx.moveTo(x, 0)
-      ctx.lineTo(x, canvas.height)
-      ctx.stroke()
-    }
-    for (let y = 0; y < canvas.height; y += 50) {
-      ctx.beginPath()
-      ctx.moveTo(0, y)
-      ctx.lineTo(canvas.width, y)
-      ctx.stroke()
-    }
-
-    // Convert lat/lng to canvas coordinates
-    const latLngToCanvas = (lat: number, lng: number) => {
-      const x = ((lng + 180) / 360) * canvas.width
-      const y = ((90 - lat) / 180) * canvas.height
-      return { x, y }
-    }
-
-    // Draw alerts
-    alerts.forEach((alert) => {
-      const pos = latLngToCanvas(alert.location.latitude, alert.location.longitude)
+      // Set canvas size
+      canvas.width = containerWidth
+      canvas.height = containerHeight
+      canvas.style.width = '100%'
+      canvas.style.height = '100%'
+      canvas.style.display = 'block'
       
-      // Draw glow effect
-      const gradient = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, 20)
-      gradient.addColorStop(0, getAlertColor(alert.alert_level))
-      gradient.addColorStop(1, 'transparent')
-      ctx.fillStyle = gradient
-      ctx.fillRect(pos.x - 20, pos.y - 20, 40, 40)
-      
-      // Draw pin
-      ctx.fillStyle = getAlertColor(alert.alert_level)
-      ctx.beginPath()
-      ctx.arc(pos.x, pos.y, 4, 0, Math.PI * 2)
-      ctx.fill()
-      
-      // Draw pulsing ring
-      ctx.strokeStyle = getAlertColor(alert.alert_level)
-      ctx.lineWidth = 2
-      ctx.beginPath()
-      ctx.arc(pos.x, pos.y, 8, 0, Math.PI * 2)
-      ctx.stroke()
-    })
+      // Clear existing content
+      mapRef.current.innerHTML = ''
+      mapRef.current.appendChild(canvas)
 
-    // Add click handler
-    canvas.onclick = (e) => {
-      const rect = canvas.getBoundingClientRect()
-      const x = e.clientX - rect.left
-      const y = e.clientY - rect.top
-      
-      // Check if click is near any alert
+      // Draw map background (dark theme)
+      ctx.fillStyle = '#0a0a0a'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+      // Draw grid
+      ctx.strokeStyle = '#1a1a1a'
+      ctx.lineWidth = 1
+      for (let x = 0; x < canvas.width; x += 50) {
+        ctx.beginPath()
+        ctx.moveTo(x, 0)
+        ctx.lineTo(x, canvas.height)
+        ctx.stroke()
+      }
+      for (let y = 0; y < canvas.height; y += 50) {
+        ctx.beginPath()
+        ctx.moveTo(0, y)
+        ctx.lineTo(canvas.width, y)
+        ctx.stroke()
+      }
+
+      // Convert lat/lng to canvas coordinates
+      const latLngToCanvas = (lat: number, lng: number) => {
+        const x = ((lng + 180) / 360) * canvas.width
+        const y = ((90 - lat) / 180) * canvas.height
+        return { x, y }
+      }
+
+      // Draw alerts
       alerts.forEach((alert) => {
         const pos = latLngToCanvas(alert.location.latitude, alert.location.longitude)
-        const distance = Math.sqrt((x - pos.x) ** 2 + (y - pos.y) ** 2)
         
-        if (distance < 10) {
-          setSelectedAlert(alert)
-          if (onAlertClick) onAlertClick(alert)
-        }
+        // Draw glow effect
+        const gradient = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, 20)
+        gradient.addColorStop(0, getAlertColor(alert.alert_level))
+        gradient.addColorStop(1, 'transparent')
+        ctx.fillStyle = gradient
+        ctx.fillRect(pos.x - 20, pos.y - 20, 40, 40)
+        
+        // Draw pin
+        ctx.fillStyle = getAlertColor(alert.alert_level)
+        ctx.beginPath()
+        ctx.arc(pos.x, pos.y, 4, 0, Math.PI * 2)
+        ctx.fill()
+        
+        // Draw pulsing ring
+        ctx.strokeStyle = getAlertColor(alert.alert_level)
+        ctx.lineWidth = 2
+        ctx.beginPath()
+        ctx.arc(pos.x, pos.y, 8, 0, Math.PI * 2)
+        ctx.stroke()
       })
+
+      // Add click handler
+      canvas.onclick = (e) => {
+        const rect = canvas.getBoundingClientRect()
+        const x = e.clientX - rect.left
+        const y = e.clientY - rect.top
+        
+        // Check if click is near any alert
+        alerts.forEach((alert) => {
+          const pos = latLngToCanvas(alert.location.latitude, alert.location.longitude)
+          const distance = Math.sqrt((x - pos.x) ** 2 + (y - pos.y) ** 2)
+          
+          if (distance < 10) {
+            setSelectedAlert(alert)
+            if (onAlertClick) onAlertClick(alert)
+          }
+        })
+      }
     }
+
+    // Add slight delay to ensure container is rendered
+    setTimeout(renderMap, 100)
 
   }, [alerts, center, zoom])
 
@@ -143,6 +158,17 @@ export default function AlertsMap({
         style={{ height }}
         className="relative cursor-pointer"
       />
+      
+      {/* Fallback when map fails to render */}
+      {mapError && (
+        <div className="absolute inset-0 flex items-center justify-center bg-dark-background">
+          <div className="text-center">
+            <div className="text-4xl mb-4">🗺️</div>
+            <p className="text-text-secondary mb-2">Map unavailable</p>
+            <p className="text-text-tertiary text-sm">{alerts.length} sightings available</p>
+          </div>
+        </div>
+      )}
       
       {/* Map overlay with real data */}
       <div className="absolute top-4 left-4 bg-dark-surface/90 backdrop-blur-sm p-3 rounded-lg border border-dark-border">

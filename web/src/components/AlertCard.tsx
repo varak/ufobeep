@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
+import ImageWithLoading from './ImageWithLoading'
 
 interface Alert {
   id: string
@@ -104,15 +104,11 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
         {/* Thumbnail Image */}
         {alert.media_files && alert.media_files.length > 0 ? (
           <div className="h-48 bg-gray-800 relative overflow-hidden">
-            <Image 
-              src={alert.media_files[0].thumbnail_url || alert.media_files[0].url}
+            <ImageWithLoading 
+              src={alert.media_files[0].thumbnail_url || `${alert.media_files[0].url}?thumbnail=true`}
               alt={alert.title}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-300"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23374151"/><text x="50" y="50" text-anchor="middle" dy="0.3em" fill="%239CA3AF" font-family="Arial" font-size="12">📸</text></svg>`;
-              }}
             />
             <div className="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
               📸 {alert.media_files.length}

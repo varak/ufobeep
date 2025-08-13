@@ -137,3 +137,4 @@
 - do not attempt any quick fix this will just create more problems in the future
 - do not start dev servers
 - NEVER put dev servers and put stuff in dev server mode, it just causes problems on production
+- dont mention yourself in commits, proceed.

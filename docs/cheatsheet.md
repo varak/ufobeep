@@ -77,10 +77,22 @@ curl -s -X POST https://api.ufobeep.com/media/presign \
   -d '{"filename": "test.jpg", "content_type": "image/jpeg", "size_bytes": 1024}'
 ```
 
-## Current Issues
-- **Mobile app error**: `String is not a subtype of type 'int' of 'index'` on media upload
-- **Root cause**: Likely type casting issue in API response parsing
-- **Status**: Debugging with added logging, testing in progress
+## Common Issues & Solutions
+
+### Next.js Webpack Chunk Corruption
+**Problem**: Website shows white page with "Cannot find module './948.js'" error
+**Root cause**: Webpack build artifacts get corrupted during deployment or interrupted builds
+**Solution**: Clean rebuild with cache clearing
+```bash
+ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep/web && rm -rf .next node_modules/.cache && npm run build && pm2 restart all"
+```
+**Prevention**: Always do full clean rebuilds after major changes
+
+### API Service Virtual Environment Issues  
+**Problem**: ufobeep-api.service fails with pydantic_settings import errors
+**Root cause**: Startup script using wrong virtual environment path
+**Solution**: Fix startup script to use `venv/bin/activate` not `../venv/bin/activate`
+**Prevention**: Virtual environment is in `/home/ufobeep/ufobeep/api/venv/`, not project root
 
 ## Key Learnings
 - **Never test localhost** - production is on different machine (ufobeep.com)
@@ -89,4 +101,13 @@ curl -s -X POST https://api.ufobeep.com/media/presign \
 - **MinIO bucket was missing** - had to recreate it
 - **Media storage redesign complete** - using sighting IDs for permanent URLs
 - **SSH production**: `ssh -p 322 ufobeep@ufobeep.com`
-- **Deploy command**: `git push && ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep && git pull && sudo systemctl restart ufobeep-api"`
+- **Standard deploy**: `git push && ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep && git pull origin main && cd web && npm run build && pm2 restart all"`
+- **Clean deploy** (when webpack breaks): Add `rm -rf .next node_modules/.cache &&` before `npm run build`
+- **API restart**: `ssh -p 322 ufobeep@ufobeep.com "sudo systemctl restart ufobeep-api"`
+
+## Deployment Architecture Notes
+- **Production server**: ufobeep.com (SSH port 322) - ALL TESTING HAPPENS HERE
+- **Development machine**: /home/mike/D/ufobeep (code development only)
+- **PM2 processes**: Run on production server, managed via SSH commands
+- **Testing**: ALWAYS test on production server, never locally
+- **Production builds**: Always built and deployed on production server via SSH
