@@ -32,25 +32,14 @@ export default function GlobalSightingNetwork() {
   const sectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // Set up intersection observer to load data when section becomes visible
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasLoaded) {
-            fetchAlerts()
-          }
-        })
-      },
-      {
-        rootMargin: '100px' // Start loading 100px before the section is visible
+    // Delay data loading to improve initial page load
+    const timer = setTimeout(() => {
+      if (!hasLoaded) {
+        fetchAlerts()
       }
-    )
+    }, 2000) // Wait 2 seconds before loading data
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
+    return () => clearTimeout(timer)
   }, [hasLoaded])
 
   const fetchAlerts = async () => {

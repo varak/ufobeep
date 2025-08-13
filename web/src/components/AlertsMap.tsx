@@ -40,17 +40,14 @@ export default function AlertsMap({
 
   useEffect(() => {
     // Simple map implementation using canvas
-    if (!mapRef.current) return
+    if (!mapRef.current || alerts.length === 0) return
 
     const renderMap = () => {
       if (!mapRef.current) return
 
-      console.log('Rendering map with', alerts.length, 'alerts')
-      
       const canvas = document.createElement('canvas')
       const ctx = canvas.getContext('2d')
       if (!ctx) {
-        console.error('Failed to get canvas context')
         setMapError(true)
         return
       }
@@ -58,8 +55,6 @@ export default function AlertsMap({
       // Ensure parent has dimensions
       const containerWidth = mapRef.current.clientWidth || 800
       const containerHeight = parseInt(height) || 320
-      
-      console.log('Canvas dimensions:', containerWidth, 'x', containerHeight)
 
       // Set canvas size
       canvas.width = containerWidth
@@ -172,9 +167,11 @@ export default function AlertsMap({
     }
 
     // Add slight delay to ensure container is rendered
-    setTimeout(renderMap, 100)
+    const timeoutId = setTimeout(renderMap, 100)
+    
+    return () => clearTimeout(timeoutId)
 
-  }, [alerts, center, zoom])
+  }, [alerts])
 
   const getAlertColor = (level: string) => {
     switch (level?.toLowerCase()) {

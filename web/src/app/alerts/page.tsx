@@ -224,7 +224,7 @@ export default function AlertsPage() {
             <button
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className="flex items-center space-x-2 px-6 py-3 bg-dark-surface border border-dark-border rounded-lg hover:bg-dark-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center space-x-2 px-6 py-3 bg-dark-surface border border-dark-border rounded-lg hover:bg-dark-surface-elevated transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span>←</span>
               <span>Previous</span>
@@ -238,7 +238,7 @@ export default function AlertsPage() {
             <button
               onClick={() => setCurrentPage(prev => prev + 1)}
               disabled={!hasMore}
-              className="flex items-center space-x-2 px-6 py-3 bg-dark-surface border border-dark-border rounded-lg hover:bg-dark-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center space-x-2 px-6 py-3 bg-dark-surface border border-dark-border rounded-lg hover:bg-dark-surface-elevated transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span>Next</span>
               <span>→</span>
