@@ -118,7 +118,34 @@ export default function AlertsPage() {
           <div className="text-center">
             <div className="text-6xl mb-6">⚠️</div>
             <h1 className="text-2xl font-bold text-text-primary mb-4">Unable to Load Alerts</h1>
-            <p className="text-text-secondary mb-8">{error}</p>
+            <p className="text-text-secondary mb-6">{error}</p>
+            
+            <div className="bg-dark-surface border border-dark-border rounded-lg p-6 mb-8 max-w-2xl mx-auto text-left">
+              <h3 className="text-lg font-semibold text-brand-primary mb-4">Troubleshooting Tips:</h3>
+              <ul className="space-y-2 text-sm text-text-secondary">
+                <li className="flex items-start gap-2">
+                  <span className="text-brand-primary">•</span>
+                  <span>Check your internet connection</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-brand-primary">•</span>
+                  <span>Try switching from WiFi to mobile data (or vice versa)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-brand-primary">•</span>
+                  <span>Corporate/school networks may block API requests</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-brand-primary">•</span>
+                  <span>Disable ad blockers or security extensions temporarily</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-brand-primary">•</span>
+                  <span>Try refreshing the page or using a different browser</span>
+                </li>
+              </ul>
+            </div>
+            
             <button 
               onClick={() => fetchAlerts(1)}
               className="bg-brand-primary text-text-inverse px-6 py-3 rounded-lg hover:bg-brand-primary-dark transition-colors"
