@@ -130,8 +130,7 @@ async def create_presigned_upload(
 async def complete_media_upload(
     request: MediaUploadCompleteRequest,
     background_tasks: BackgroundTasks,
-    user_id: Optional[str] = Depends(get_current_user_id),
-    db: Session = Depends(get_db)
+    user_id: Optional[str] = Depends(get_current_user_id)
 ):
     """
     Mark upload as complete and create media file record
