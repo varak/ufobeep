@@ -1,12 +1,9 @@
 import os
 from enum import Enum
 from typing import List, Optional, Any
-try:
-    from pydantic_settings import BaseSettings, SettingsConfigDict
-    from pydantic import Field, field_validator
-except ImportError:
-    # Fallback for older pydantic versions
-    from pydantic import BaseSettings, Field, validator as field_validator
+
+from pydantic import Field
+from pydantic_settings import BaseSettings
 
 
 class Environment(str, Enum):
