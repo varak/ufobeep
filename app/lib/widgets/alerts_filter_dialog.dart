@@ -14,11 +14,16 @@ class AlertsFilterDialog extends ConsumerStatefulWidget {
 
 class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
   late AlertsFilter _workingFilter;
+  late double _distanceSliderValue;
   
   @override
   void initState() {
     super.initState();
     _workingFilter = ref.read(alertsFilterStateProvider);
+    // Initialize slider value: 0 = visibility (~5km), 100 = show all
+    _distanceSliderValue = _workingFilter.maxDistanceKm == null 
+        ? 100.0 
+        : ((_workingFilter.maxDistanceKm! - 5.0) / 195.0) * 100.0;
   }
 
   void _updateWorkingFilter(AlertsFilter filter) {
@@ -35,6 +40,21 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
   void _resetFilter() {
     setState(() {
       _workingFilter = const AlertsFilter();
+      _distanceSliderValue = 100.0; // Reset to show all
+    });
+  }
+
+  void _updateDistanceFromSlider(double value) {
+    setState(() {
+      _distanceSliderValue = value;
+      if (value >= 100.0) {
+        // Show all alerts
+        _workingFilter = _workingFilter.copyWith(maxDistanceKm: null);
+      } else {
+        // Map 0-100 to 5km-200km (weather visibility to very far)
+        final distance = 5.0 + (value / 100.0) * 195.0;
+        _workingFilter = _workingFilter.copyWith(maxDistanceKm: distance);
+      }
     });
   }
 
@@ -85,31 +105,10 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Categories Section
-                    _buildSectionTitle('Categories'),
+                    // Distance Slider Section
+                    _buildSectionTitle('Alert Distance Range'),
                     const SizedBox(height: 12),
-                    _buildCategoryFilters(),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Distance Section
-                    _buildSectionTitle('Max Distance'),
-                    const SizedBox(height: 12),
-                    _buildDistanceFilter(),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Time Section
-                    _buildSectionTitle('Max Age'),
-                    const SizedBox(height: 12),
-                    _buildTimeFilter(),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Verification Section
-                    _buildSectionTitle('Verification'),
-                    const SizedBox(height: 12),
-                    _buildVerificationFilter(),
+                    _buildDistanceSlider(),
                     
                     const SizedBox(height: 24),
                     
@@ -177,184 +176,88 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
     );
   }
 
-  Widget _buildCategoryFilters() {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: AlertCategory.all.map((category) {
-        final isSelected = _workingFilter.categories.contains(category.key);
-        
-        return FilterChip(
-          label: Row(
-            mainAxisSize: MainAxisSize.min,
+  Widget _buildDistanceSlider() {
+    String getDistanceLabel() {
+      if (_distanceSliderValue >= 100.0) {
+        return 'Show All Alerts';
+      } else if (_distanceSliderValue <= 0.0) {
+        return 'Weather Visibility (~5km)';
+      } else {
+        final distance = 5.0 + (_distanceSliderValue / 100.0) * 195.0;
+        return '${distance.toInt()}km radius';
+      }
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Current value display
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: AppColors.darkBackground,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: AppColors.darkBorder),
+          ),
+          child: Row(
             children: [
-              Text(category.icon),
-              const SizedBox(width: 6),
-              Text(category.displayName),
+              const Icon(
+                Icons.location_on,
+                color: AppColors.brandPrimary,
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                getDistanceLabel(),
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ],
           ),
-          selected: isSelected,
-          onSelected: (selected) {
-            final categories = Set<String>.from(_workingFilter.categories);
-            if (selected) {
-              categories.add(category.key);
-            } else {
-              categories.remove(category.key);
-            }
-            _updateWorkingFilter(_workingFilter.copyWith(categories: categories));
-          },
-          backgroundColor: AppColors.darkBackground,
-          selectedColor: AppColors.brandPrimary.withOpacity(0.2),
-          checkmarkColor: AppColors.brandPrimary,
-          labelStyle: TextStyle(
-            color: isSelected ? AppColors.brandPrimary : AppColors.textSecondary,
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildDistanceFilter() {
-    final distances = [1.0, 5.0, 10.0, 25.0, 50.0];
-    
-    return Column(
-      children: [
-        if (_workingFilter.maxDistanceKm != null)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: Row(
-              children: [
-                const Text(
-                  'Within ',
-                  style: TextStyle(color: AppColors.textSecondary),
-                ),
-                Text(
-                  '${_workingFilter.maxDistanceKm!.toInt()} km',
-                  style: const TextStyle(
-                    color: AppColors.brandPrimary,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const Spacer(),
-                TextButton(
-                  onPressed: () => _updateWorkingFilter(_workingFilter.clearDistance()),
-                  child: const Text('Clear'),
-                ),
-              ],
-            ),
-          ),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: distances.map((distance) {
-            final isSelected = _workingFilter.maxDistanceKm == distance;
-            
-            return FilterChip(
-              label: Text('${distance.toInt()}km'),
-              selected: isSelected,
-              onSelected: (selected) {
-                _updateWorkingFilter(_workingFilter.copyWith(
-                  maxDistanceKm: selected ? distance : null,
-                ));
-              },
-              backgroundColor: AppColors.darkBackground,
-              selectedColor: AppColors.brandPrimary.withOpacity(0.2),
-              checkmarkColor: AppColors.brandPrimary,
-              labelStyle: TextStyle(
-                color: isSelected ? AppColors.brandPrimary : AppColors.textSecondary,
-              ),
-            );
-          }).toList(),
         ),
-      ],
-    );
-  }
-
-  Widget _buildTimeFilter() {
-    final timeOptions = [
-      (1, '1 hour'),
-      (6, '6 hours'),
-      (24, '24 hours'),
-      (72, '3 days'),
-      (168, '1 week'),
-    ];
-    
-    return Column(
-      children: [
-        if (_workingFilter.maxAgeHours != null)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: Row(
-              children: [
-                const Text(
-                  'Within ',
-                  style: TextStyle(color: AppColors.textSecondary),
-                ),
-                Text(
-                  _getTimeLabel(_workingFilter.maxAgeHours!),
-                  style: const TextStyle(
-                    color: AppColors.brandPrimary,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const Spacer(),
-                TextButton(
-                  onPressed: () => _updateWorkingFilter(_workingFilter.clearAge()),
-                  child: const Text('Clear'),
-                ),
-              ],
-            ),
-          ),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: timeOptions.map((option) {
-            final hours = option.$1;
-            final label = option.$2;
-            final isSelected = _workingFilter.maxAgeHours == hours;
-            
-            return FilterChip(
-              label: Text(label),
-              selected: isSelected,
-              onSelected: (selected) {
-                _updateWorkingFilter(_workingFilter.copyWith(
-                  maxAgeHours: selected ? hours : null,
-                ));
-              },
-              backgroundColor: AppColors.darkBackground,
-              selectedColor: AppColors.brandPrimary.withOpacity(0.2),
-              checkmarkColor: AppColors.brandPrimary,
-              labelStyle: TextStyle(
-                color: isSelected ? AppColors.brandPrimary : AppColors.textSecondary,
+        
+        const SizedBox(height: 16),
+        
+        // Slider
+        Row(
+          children: [
+            const Text(
+              'Visibility',
+              style: TextStyle(
+                color: AppColors.textTertiary,
+                fontSize: 12,
               ),
-            );
-          }).toList(),
+            ),
+            Expanded(
+              child: Slider(
+                value: _distanceSliderValue,
+                min: 0.0,
+                max: 100.0,
+                divisions: 20,
+                activeColor: AppColors.brandPrimary,
+                inactiveColor: AppColors.darkBorder,
+                onChanged: _updateDistanceFromSlider,
+              ),
+            ),
+            const Text(
+              'Show All',
+              style: TextStyle(
+                color: AppColors.textTertiary,
+                fontSize: 12,
+              ),
+            ),
+          ],
         ),
-      ],
-    );
-  }
-
-  Widget _buildVerificationFilter() {
-    return Row(
-      children: [
-        Expanded(
-          child: CheckboxListTile(
-            title: const Text(
-              'Verified only',
-              style: TextStyle(color: AppColors.textPrimary),
-            ),
-            subtitle: const Text(
-              'Show only verified alerts',
-              style: TextStyle(color: AppColors.textTertiary, fontSize: 12),
-            ),
-            value: _workingFilter.verifiedOnly ?? false,
-            onChanged: (value) {
-              _updateWorkingFilter(_workingFilter.copyWith(
-                verifiedOnly: value == true ? true : null,
-              ));
-            },
-            activeColor: AppColors.brandPrimary,
-            contentPadding: EdgeInsets.zero,
+        
+        // Helper text
+        const SizedBox(height: 8),
+        Text(
+          'Drag to adjust how far you want to see alerts. Start from weather visibility distance up to showing all alerts regardless of distance.',
+          style: const TextStyle(
+            color: AppColors.textTertiary,
+            fontSize: 12,
           ),
         ),
       ],
@@ -421,12 +324,4 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
     );
   }
 
-  String _getTimeLabel(int hours) {
-    if (hours < 24) {
-      return '$hours hour${hours > 1 ? 's' : ''}';
-    } else {
-      final days = hours ~/ 24;
-      return '$days day${days > 1 ? 's' : ''}';
-    }
-  }
 }
