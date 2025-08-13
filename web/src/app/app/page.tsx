@@ -16,34 +16,137 @@ export default function AppPage() {
           
           <div className="text-6xl mb-6">📱</div>
           <h1 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">
-            Download UFOBeep
+            Download UFOBeep <span className="text-2xl text-brand-primary">Alpha</span>
           </h1>
           <p className="text-xl text-text-secondary max-w-2xl mx-auto">
-            Get the mobile app to report sightings, receive alerts, and navigate to incidents with AR compass technology.
+            Try the alpha version of our mobile app! Report sightings, receive alerts, and test the latest features.
+            <span className="block text-base text-brand-primary mt-2 font-medium">🧪 Alpha testers wanted - help shape the future!</span>
           </p>
         </div>
 
-        {/* App Store Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-          <button className="bg-dark-surface border border-dark-border hover:border-brand-primary transition-colors rounded-lg p-6 flex items-center gap-4 min-w-[200px]">
-            <div className="text-3xl">🍎</div>
-            <div className="text-left">
-              <p className="text-text-tertiary text-sm">Download on the</p>
-              <p className="text-text-primary font-semibold">App Store</p>
+        {/* Alpha/Beta Download Section */}
+        <div className="bg-gradient-to-r from-brand-primary/20 to-purple-600/20 border border-brand-primary/30 rounded-xl p-8 mb-16">
+          <div className="text-center mb-6">
+            <div className="inline-block bg-brand-primary text-text-inverse px-4 py-2 rounded-full text-sm font-semibold mb-4">
+              🚀 ALPHA VERSION AVAILABLE
             </div>
-          </button>
-          
-          <button className="bg-dark-surface border border-dark-border hover:border-brand-primary transition-colors rounded-lg p-6 flex items-center gap-4 min-w-[200px]">
-            <div className="text-3xl">🤖</div>
-            <div className="text-left">
-              <p className="text-text-tertiary text-sm">Get it on</p>
-              <p className="text-text-primary font-semibold">Google Play</p>
+            <h2 className="text-2xl font-bold text-text-primary mb-2">
+              Test the UFOBeep Alpha
+            </h2>
+            <p className="text-text-secondary max-w-2xl mx-auto">
+              Help us test the latest features! This alpha version includes photo upload, 
+              location tracking, and the new media storage system. Your feedback is invaluable.
+            </p>
+          </div>
+
+          {/* Download Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            <a 
+              href="/downloads/ufobeep-alpha.apk"
+              className="bg-brand-primary hover:bg-brand-primary-dark text-text-inverse rounded-lg p-6 flex items-center gap-4 min-w-[250px] transition-colors group"
+              download="ufobeep-alpha.apk"
+            >
+              <div className="text-3xl">🤖</div>
+              <div className="text-left flex-1">
+                <p className="text-text-inverse/80 text-sm">Download Alpha for</p>
+                <p className="font-semibold">Android APK</p>
+                <p className="text-xs text-text-inverse/60 mt-1">Version 1.0.0-alpha • ~219MB</p>
+              </div>
+              <div className="text-xl group-hover:translate-x-1 transition-transform">→</div>
+            </a>
+            
+            <div className="bg-dark-surface border-2 border-dashed border-dark-border rounded-lg p-6 flex items-center gap-4 min-w-[250px] opacity-60">
+              <div className="text-3xl">🍎</div>
+              <div className="text-left">
+                <p className="text-text-tertiary text-sm">iOS Alpha</p>
+                <p className="text-text-primary font-semibold">Coming Soon</p>
+                <p className="text-xs text-text-tertiary mt-1">TestFlight in development</p>
+              </div>
             </div>
-          </button>
+          </div>
+
+          {/* Alpha Installation Instructions */}
+          <div className="bg-dark-surface/50 border border-dark-border rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
+              📱 Android Alpha Installation
+            </h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-semibold text-brand-primary mb-3">📥 Installation Steps:</h4>
+                <ol className="space-y-2 text-sm text-text-secondary">
+                  <li className="flex gap-2">
+                    <span className="text-brand-primary font-bold">1.</span>
+                    <span>Download the APK file using the button above</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-brand-primary font-bold">2.</span>
+                    <span>Enable "Unknown Sources" in Android Settings → Security</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-brand-primary font-bold">3.</span>
+                    <span>Open the downloaded APK file and tap "Install"</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-brand-primary font-bold">4.</span>
+                    <span>Allow permissions: Camera, Location, Notifications</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-brand-primary font-bold">5.</span>
+                    <span>Open UFOBeep and start testing!</span>
+                  </li>
+                </ol>
+              </div>
+              <div>
+                <h4 className="font-semibold text-brand-primary mb-3">⚠️ Alpha Testing Notes:</h4>
+                <ul className="space-y-2 text-sm text-text-secondary">
+                  <li className="flex gap-2">
+                    <span className="text-yellow-400">•</span>
+                    <span>Large file size (~219MB) - debug build with extra tools</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-yellow-400">•</span>
+                    <span>This is pre-release software with potential bugs</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-yellow-400">•</span>
+                    <span>Data may be reset between alpha versions</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-yellow-400">•</span>
+                    <span>Some features are still in development</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-yellow-400">•</span>
+                    <span>Please report any issues or feedback to us</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-green-400">•</span>
+                    <span>Help us improve the final release!</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="mt-6 p-4 bg-semantic-warning/10 border border-semantic-warning/20 rounded-lg">
+              <div className="flex items-start gap-3">
+                <div className="text-xl">⚠️</div>
+                <div>
+                  <p className="text-semantic-warning font-semibold mb-1">Security Notice</p>
+                  <p className="text-text-secondary text-sm">
+                    Only install APK files from trusted sources. This file is signed and safe, 
+                    but always verify the download URL is from ufobeep.com before installing.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Coming Soon Notice */}
-        <EmailNotifySignup />
+        {/* Future Release Notice */}
+        <div className="text-center mb-16">
+          <h3 className="text-xl font-semibold text-text-primary mb-4">📬 Get Notified for Official Release</h3>
+          <EmailNotifySignup />
+        </div>
 
         {/* Features Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
