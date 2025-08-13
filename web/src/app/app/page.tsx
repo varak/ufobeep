@@ -55,14 +55,18 @@ export default function AppPage() {
               <div className="text-xl group-hover:translate-x-1 transition-transform">→</div>
             </a>
             
-            <div className="bg-dark-surface border-2 border-dashed border-dark-border rounded-lg p-6 flex items-center gap-4 min-w-[250px] opacity-60">
+            <Link 
+              href="/ios-test"
+              className="bg-dark-surface border-2 border-dashed border-dark-border rounded-lg p-6 flex items-center gap-4 min-w-[250px] hover:border-brand-primary/50 transition-colors group"
+            >
               <div className="text-3xl">🍎</div>
-              <div className="text-left">
-                <p className="text-text-tertiary text-sm">iOS Alpha</p>
-                <p className="text-text-primary font-semibold">Coming Soon</p>
-                <p className="text-xs text-text-tertiary mt-1">TestFlight in development</p>
+              <div className="text-left flex-1">
+                <p className="text-text-secondary text-sm">iOS Alpha Testing</p>
+                <p className="text-text-primary font-semibold">Instructions for Friends</p>
+                <p className="text-xs text-brand-primary mt-1">Build from source • Mac required</p>
               </div>
-            </div>
+              <div className="text-xl text-text-tertiary group-hover:text-brand-primary transition-colors">→</div>
+            </Link>
           </div>
 
           {/* Alpha Installation Instructions */}
