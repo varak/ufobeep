@@ -6,7 +6,7 @@ from datetime import datetime
 from enum import Enum
 import uuid
 
-from config.environment import settings
+from app.config.environment import settings
 
 Base = declarative_base()
 
