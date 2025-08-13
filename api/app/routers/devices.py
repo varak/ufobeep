@@ -331,7 +331,8 @@ async def register_device(
                     request.locale,
                     0,  # notifications_sent
                     0,  # notifications_opened
-                    current_time  # registered_at, token_updated_at, created_at, updated_at
+                    current_time,  # registered_at (parameter 21)
+                    current_time   # token_updated_at (parameter 22)
                 )
                 
                 logger.info(f"Registered new device {request.device_id} for user {user_id}")
