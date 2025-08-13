@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
@@ -19,6 +20,10 @@ class SimplePhotoDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Debug file existence
+    final fileExists = imageFile.existsSync();
+    debugPrint('SimplePhotoDisplay: File exists: $fileExists, Path: ${imageFile.path}');
+    
     return Container(
       height: height,
       width: width,

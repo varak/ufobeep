@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
+import 'package:uuid/uuid.dart';
 
 import '../config/environment.dart';
 import '../models/api_models.dart' as api;
@@ -659,14 +660,26 @@ extension ApiClientExtension on ApiClient {
         };
       }
       
-      // Add actual media files with URLs
+      // Add actual media files in the format the old endpoint expects
       if (mediaFileUrls.isNotEmpty) {
-        sightingData['media_files'] = mediaFileUrls;
+        final uuid = Uuid();
+        sightingData['media_info'] = {
+          'files': mediaFileUrls.map((url) => {
+            'id': uuid.v4(),
+            'type': 'image',
+            'url': url,
+            'thumbnail_url': url,  // Same as main URL for now
+            'filename': url.split('/').last,
+            'uploaded_at': DateTime.now().toIso8601String(),
+          }).toList(),
+          'file_count': mediaFileUrls.length,
+        };
       }
       
       if (onProgress != null) onProgress(0.6);
       
       debugPrint('Submitting sighting data with ${mediaFileUrls.length} media files...');
+      debugPrint('Full sighting data: ${json.encode(sightingData)}');
       
       final response = await _dio.post('/sightings', data: sightingData);
       

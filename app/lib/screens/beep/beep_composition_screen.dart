@@ -104,11 +104,10 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
           ),
         );
 
-        // Navigate to the alert detail page
-        // Add a small delay to allow backend to process the sighting
-        Future.delayed(const Duration(milliseconds: 500), () {
+        // Navigate back to home - the beep was sent successfully
+        Future.delayed(const Duration(milliseconds: 1000), () {
           if (context.mounted) {
-            context.go('/alert/$sightingId');
+            context.go('/');
           }
         });
       }

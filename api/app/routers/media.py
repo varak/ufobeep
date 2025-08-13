@@ -180,7 +180,7 @@ async def complete_media_upload(
         # Generate public URL for the uploaded file
         public_url = await storage_service.generate_public_url(
             object_key=object_info["key"],
-            expires_in=86400 * 365  # 1 year
+            expires_in=604800  # 1 week (MaxIO maximum)
         )
         
         # Create media file record

@@ -12,6 +12,11 @@ Single FastAPI app with routers:
 - devices.router   → /devices/* endpoints
 - plane_match.router → no prefix (root level)
 - Direct endpoints: /alerts, /sightings, /healthz, /ping
+
+⚠️  CRITICAL: sightings.router is NOT included in main.py
+- Only the old /sightings endpoint in main.py is active
+- The proper sightings router exists but isn't registered
+- All mobile submissions go to the old endpoint
 ```
 
 ## Environment Configuration
@@ -34,9 +39,23 @@ Single FastAPI app with routers:
 
 ## Development Environment
 - **Project root**: `/home/mike/D/ufobeep`
-- **API path**: `/home/mike/D/ufobeep/api`
+- **API path**: `/home/mike/D/ufobeep/api` (FastAPI backend)
+- **Web path**: `/home/mike/D/ufobeep/web` (Next.js website)
+- **Mobile path**: `/home/mike/D/ufobeep/app` (Flutter mobile app)
 - **Virtual env**: `/home/mike/D/ufobeep/api/venv`
 - **Dependencies**: Installed via `venv/bin/pip install -r requirements.txt`
+
+## Current Web Routes
+- `/` - Homepage with email signup
+- `/alerts` - List of all recent sightings (24 items max)
+- `/alert/[slug]` - SEO-friendly individual alert detail pages
+- `/alerts/[id]` - Old alert route (uses mock data, to be deprecated)
+- `/app` - App download page
+
+## Mobile App Flow
+- Camera capture → Beep composition → Send beep → Alert detail page
+- Photos saved to both app storage and user's gallery
+- GPS data collected and sent with sighting submissions
 
 ## Testing Commands
 ```bash
