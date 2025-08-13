@@ -3,7 +3,7 @@ from enum import Enum
 from typing import List, Optional, Any
 
 from pydantic import Field
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Environment(str, Enum):
