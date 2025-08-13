@@ -65,6 +65,22 @@ export default function AlertsPage() {
     return location.name || `${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}`
   }
 
+  const generateSlug = (title: string, location: string, date: string) => {
+    const titlePart = title.toLowerCase()
+      .replace(/[^a-z0-9\s]/g, '')
+      .replace(/\s+/g, '-')
+      .substring(0, 30)
+    
+    const locationPart = location.split(',')[0].toLowerCase()
+      .replace(/[^a-z0-9\s]/g, '')
+      .replace(/\s+/g, '-')
+      .substring(0, 20)
+    
+    const datePart = new Date(date).toISOString().split('T')[0]
+    
+    return `${titlePart}-${locationPart}-${datePart}`.replace(/--+/g, '-').replace(/^-|-$/g, '')
+  }
+
   const getAlertLevelColor = (level: string) => {
     switch (level.toLowerCase()) {
       case 'critical': return 'text-red-400'
@@ -157,8 +173,10 @@ export default function AlertsPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {alerts.map((alert) => (
-              <Link key={alert.id} href={`/alert/${alert.id}`}>
+            {alerts.map((alert) => {
+              const slug = generateSlug(alert.title, alert.location?.name || 'unknown', alert.created_at)
+              return (
+              <Link key={alert.id} href={`/alert/${slug}`}>
                 <div className="bg-dark-surface border border-dark-border rounded-lg overflow-hidden hover:border-brand-primary transition-all duration-300 hover:shadow-lg cursor-pointer group">
                   {/* Thumbnail Image */}
                   {alert.media_files && alert.media_files.length > 0 ? (
@@ -219,7 +237,8 @@ export default function AlertsPage() {
                   </div>
                 </div>
               </Link>
-            ))}
+              )
+            })}
           </div>
         )}
       </div>
