@@ -9,10 +9,18 @@ interface Alert {
   description: string
   category: string
   created_at: string
-  public_latitude: number
-  public_longitude: number
+  location: {
+    latitude: number
+    longitude: number
+    name: string
+  }
   alert_level: string
-  media_files: string[]
+  media_files: Array<{
+    id: string
+    type: string
+    url: string
+    thumbnail_url: string
+  }>
   verification_score: number
 }
 
@@ -30,8 +38,8 @@ export default function AlertsPage() {
       const response = await fetch('https://api.ufobeep.com/alerts?limit=50&offset=0&verified_only=false')
       const data = await response.json()
       
-      if (data.success && data.data) {
-        setAlerts(data.data)
+      if (data.success && data.data?.alerts) {
+        setAlerts(data.data.alerts)
       } else {
         setError('Failed to load alerts')
       }
@@ -53,9 +61,8 @@ export default function AlertsPage() {
     })
   }
 
-  const formatDistance = (lat: number, lon: number) => {
-    // Simple distance calculation (you could enhance this)
-    return `${lat.toFixed(4)}, ${lon.toFixed(4)}`
+  const formatLocation = (location: Alert['location']) => {
+    return location.name || `${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}`
   }
 
   const getAlertLevelColor = (level: string) => {
@@ -187,7 +194,7 @@ export default function AlertsPage() {
                     </div>
                     <div className="flex items-center gap-2">
                       <span>📍</span>
-                      <span>{formatDistance(alert.public_latitude, alert.public_longitude)}</span>
+                      <span>{formatLocation(alert.location)}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <span>🏷️</span>
