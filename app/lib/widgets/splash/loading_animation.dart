@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 import '../../services/initialization_service.dart';
+import '../common/ufo_logo.dart';
 
 class LoadingAnimation extends StatefulWidget {
   final double progress;
@@ -102,10 +103,13 @@ class _LoadingAnimationState extends State<LoadingAnimation>
                         ),
                       ),
                       child: Center(
-                        child: Text(
-                          widget.isError ? '⚠️' : '👽',
-                          style: const TextStyle(fontSize: 60),
-                        ),
+                        child: widget.isError 
+                          ? const Text('⚠️', style: TextStyle(fontSize: 60))
+                          : UFOLogo(
+                              size: 80,
+                              animate: true,
+                              primaryColor: AppColors.brandPrimary,
+                            ),
                       ),
                     ),
                   );

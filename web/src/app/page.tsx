@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import MiniMap from '@/components/MiniMap'
 import AppDownloadCTA from '@/components/AppDownloadCTA'
+import UFOLogo from '@/components/UFOLogo'
 
 export default function Home() {
   return (
@@ -8,7 +9,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
         <div className="text-center max-w-4xl mx-auto">
-          <div className="text-6xl md:text-8xl mb-8 animate-pulse">👽</div>
+          <UFOLogo size={120} className="mx-auto mb-8" animate={true} />
           <h1 className="text-4xl md:text-6xl font-bold mb-6 text-text-primary">
             UFOBeep
           </h1>

@@ -82,7 +82,10 @@
 - don't add yourself or mention yourself in commit messages or commits
 - production machine ssh is port 322
 - production hostname is ufobeep.com user ufobeep
-- Here are the key paths and credentials I should remember before autocompact:
+- CRITICAL: NEVER start development servers on production! Only use production mode
+- NEVER use `next dev` or development mode on production server
+- Always use `NODE_ENV=production npm start` for Next.js production
+- Development servers cause white pages, 404s, and stability issues
 
   Production Server Access:
 
@@ -108,18 +111,22 @@
 
   Git Workflow:
 
-  - Deploy pattern: git push → ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep && git pull origin main && sudo 
-  systemctl restart ufobeep-api"
+  - Deploy pattern: git push → ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep && git pull origin main && cd web && npm run build"
+  - Website deployment: After git pull, rebuild with `npm run build`
+  - Kill any dev servers: `sudo pkill -f 'next dev'`
+  - Start production: `NODE_ENV=production npm start`
 
   Current Status:
 
-  - Phase 1 Step 3 (Task 21) COMPLETED - Presigned uploads working
-  - Next: Phase 1 Step 4 (Task 27) - Push token registration
-  - Task list: Located in /home/mike/D/ufobeep/docs/new_tasks.md
+  - Alpha download section live at /app page
+  - APK uploaded to /web/public/downloads/ufobeep-alpha.apk (219MB)
+  - Website serving properly in production mode
+  - All media serving working with HTTPS proxy and thumbnails
+  - API error messages now include helpful troubleshooting tips
 
   Mobile Testing:
 
-  - ADB: Currently on port 37897 (adb -s 192.168.0.49:37897)
+  - ADB: Check current port with `adb devices`
   - APK path: ./app/build/app/outputs/flutter-apk/app-debug.apk
 - don't mention or add yourself to commit messages
 - no this is not a test/development setup, we test in production here. DO NOT SETUP TEST/DEVELOPMENT use real shit live.!!
