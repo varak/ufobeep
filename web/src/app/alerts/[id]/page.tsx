@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface Alert {
   id: string
@@ -199,10 +200,11 @@ export default function AlertPage({ params }: AlertPageProps) {
                   rel="noopener noreferrer"
                   className="block w-full h-full"
                 >
-                  <img 
+                  <Image 
                     src={`${alert.media_files[0].url}?thumbnail=true&width=800&height=600`}
                     alt={alert.title}
-                    className="w-full h-full object-cover group-hover:opacity-90 transition-opacity"
+                    fill
+                    className="object-cover group-hover:opacity-90 transition-opacity"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.style.display = 'none';

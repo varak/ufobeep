@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface Alert {
   id: string
@@ -218,10 +219,11 @@ export default function AlertsPage() {
                   {/* Thumbnail Image */}
                   {alert.media_files && alert.media_files.length > 0 ? (
                     <div className="h-48 bg-gray-800 relative overflow-hidden">
-                      <img 
+                      <Image 
                         src={`${alert.media_files[0].url}?thumbnail=true&width=400&height=300`}
                         alt={alert.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.src = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23374151"/><text x="50" y="50" text-anchor="middle" dy="0.3em" fill="%239CA3AF" font-family="Arial" font-size="12">📸</text></svg>`;
