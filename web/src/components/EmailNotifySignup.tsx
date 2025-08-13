@@ -26,7 +26,7 @@ export default function EmailNotifySignup() {
       formData.append('email', email)
       formData.append('source', 'app_download_page')
       
-      const response = await fetch('/api/v1/emails/interest', {
+      const response = await fetch('/api/emails/interest', {
         method: 'POST',
         body: formData,
       })
