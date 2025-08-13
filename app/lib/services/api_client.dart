@@ -344,55 +344,6 @@ class ApiClient {
     }
   }
 
-  // File upload to S3/MinIO
-  Future<bool> uploadFileToStorage(
-    String presignedUrl,
-    Map<String, String> fields,
-    File file,
-    String contentType, {
-    Function(int, int)? onProgress,
-  }) async {
-    try {
-      final formData = FormData();
-      
-      // Add all the form fields first
-      fields.forEach((key, value) {
-        formData.fields.add(MapEntry(key, value));
-      });
-      
-      // Add the file last (some S3 implementations require this)
-      formData.files.add(
-        MapEntry(
-          'file',
-          await MultipartFile.fromFile(
-            file.path,
-            filename: fields['x-amz-meta-original-filename'] ?? file.path.split('/').last,
-          ),
-        ),
-      );
-
-      final uploadResponse = await _dio.post(
-        presignedUrl,
-        data: formData,
-        options: Options(
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          followRedirects: true,
-        ),
-        onSendProgress: onProgress,
-      );
-
-      // S3 returns 204 on successful upload
-      return uploadResponse.statusCode == 204 || uploadResponse.statusCode == 200;
-    } on DioException catch (e) {
-      print('File upload failed: ${e.message}');
-      if (e.response != null) {
-        print('Upload error response: ${e.response!.data}');
-      }
-      return false;
-    }
-  }
 
   // Plane matching endpoint - simplified for now
   Future<Map<String, dynamic>> checkPlaneMatch({

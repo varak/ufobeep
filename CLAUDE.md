@@ -126,3 +126,4 @@
 - make sure what you think is already in place isn't just a stub that doesnt work
 - make sure what you think is already in place isn't just a stub that doesnt work
 - don't refrence or add yourself to commits
+- production is on ssh port 322

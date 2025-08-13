@@ -484,10 +484,23 @@ async def create_sighting(
             logger.info(f"Validated {len(media_files)} media files for sighting {sighting_id}")
         
         # Apply coordinate jittering for privacy
-        jittered_location = jitter_coordinates(
-            submission.sensor_data.location.latitude,
-            submission.sensor_data.location.longitude
-        )
+        # Handle different sensor data structures from mobile app
+        if hasattr(submission.sensor_data, 'location') and submission.sensor_data.location:
+            # Nested location structure
+            jittered_location = jitter_coordinates(
+                submission.sensor_data.location.latitude,
+                submission.sensor_data.location.longitude
+            )
+        elif hasattr(submission.sensor_data, 'latitude') and submission.sensor_data.latitude is not None:
+            # Direct latitude/longitude in sensor_data
+            jittered_location = jitter_coordinates(
+                submission.sensor_data.latitude,
+                submission.sensor_data.longitude
+            )
+        else:
+            # No location data available, use default
+            logger.warning(f"No location data available for sighting {sighting_id}")
+            jittered_location = GeoCoordinates(latitude=0.0, longitude=0.0)
         
         # Determine alert level
         alert_level = determine_alert_level(submission)
@@ -598,13 +611,39 @@ async def get_sighting(
         # Hide private details for non-owners
         if not is_owner:
             # Remove exact sensor data, keep only jittered location
-            response_data["sensor_data"] = {
-                "timestamp": sighting.sensor_data.timestamp.isoformat(),
+            # Handle sensor data safely for different structures
+            sensor_response = {
                 "location": sighting.jittered_location.dict(),
-                # Keep non-sensitive orientation data
-                "azimuth_deg": sighting.sensor_data.azimuth_deg,
-                "pitch_deg": sighting.sensor_data.pitch_deg
             }
+            
+            # Try different timestamp field names
+            try:
+                if hasattr(sighting.sensor_data, 'timestamp'):
+                    sensor_response["timestamp"] = sighting.sensor_data.timestamp.isoformat()
+                elif hasattr(sighting.sensor_data, 'utc'):
+                    sensor_response["timestamp"] = sighting.sensor_data.utc.isoformat()
+            except:
+                sensor_response["timestamp"] = None
+            
+            # Try different azimuth field names  
+            try:
+                if hasattr(sighting.sensor_data, 'azimuth_deg'):
+                    sensor_response["azimuth_deg"] = sighting.sensor_data.azimuth_deg
+                elif hasattr(sighting.sensor_data, 'azimuthDeg'):
+                    sensor_response["azimuth_deg"] = sighting.sensor_data.azimuthDeg
+            except:
+                sensor_response["azimuth_deg"] = None
+                
+            # Try different pitch field names
+            try:
+                if hasattr(sighting.sensor_data, 'pitch_deg'):
+                    sensor_response["pitch_deg"] = sighting.sensor_data.pitch_deg
+                elif hasattr(sighting.sensor_data, 'pitchDeg'):
+                    sensor_response["pitch_deg"] = sighting.sensor_data.pitchDeg
+            except:
+                sensor_response["pitch_deg"] = None
+                
+            response_data["sensor_data"] = sensor_response
             # Remove reporter ID
             response_data["reporter_id"] = None
         
@@ -831,13 +870,40 @@ async def list_sightings(
             if matrix_room_data:
                 data["matrix_room"] = matrix_room_data.dict()
             
-            # Always use jittered location for public listings
-            data["sensor_data"] = {
-                "timestamp": sighting.sensor_data.timestamp.isoformat(),
+            # Always use jittered location for public listings  
+            # Handle sensor data safely for different structures
+            listing_sensor_data = {
                 "location": sighting.jittered_location.dict(),
-                "azimuth_deg": sighting.sensor_data.azimuth_deg,
-                "pitch_deg": sighting.sensor_data.pitch_deg
             }
+            
+            # Try different timestamp field names
+            try:
+                if hasattr(sighting.sensor_data, 'timestamp'):
+                    listing_sensor_data["timestamp"] = sighting.sensor_data.timestamp.isoformat()
+                elif hasattr(sighting.sensor_data, 'utc'):
+                    listing_sensor_data["timestamp"] = sighting.sensor_data.utc.isoformat()
+            except:
+                listing_sensor_data["timestamp"] = None
+            
+            # Try different azimuth field names  
+            try:
+                if hasattr(sighting.sensor_data, 'azimuth_deg'):
+                    listing_sensor_data["azimuth_deg"] = sighting.sensor_data.azimuth_deg
+                elif hasattr(sighting.sensor_data, 'azimuthDeg'):
+                    listing_sensor_data["azimuth_deg"] = sighting.sensor_data.azimuthDeg
+            except:
+                listing_sensor_data["azimuth_deg"] = None
+                
+            # Try different pitch field names
+            try:
+                if hasattr(sighting.sensor_data, 'pitch_deg'):
+                    listing_sensor_data["pitch_deg"] = sighting.sensor_data.pitch_deg
+                elif hasattr(sighting.sensor_data, 'pitchDeg'):
+                    listing_sensor_data["pitch_deg"] = sighting.sensor_data.pitchDeg
+            except:
+                listing_sensor_data["pitch_deg"] = None
+                
+            data["sensor_data"] = listing_sensor_data
             # Hide reporter ID in listings
             data["reporter_id"] = None
             sighting_data.append(data)
