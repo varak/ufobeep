@@ -19,11 +19,11 @@ interface Alert {
 
 interface MiniMapProps {
   className?: string
+  alerts?: Alert[]
+  loading?: boolean
 }
 
-export default function MiniMap({ className = '' }: MiniMapProps) {
-  const [alerts, setAlerts] = useState<Alert[]>([])
-  const [loading, setLoading] = useState(true)
+export default function MiniMap({ className = '', alerts = [], loading = false }: MiniMapProps) {
   const [stats, setStats] = useState({
     today: 0,
     thisWeek: 0,
@@ -31,26 +31,10 @@ export default function MiniMap({ className = '' }: MiniMapProps) {
   })
 
   useEffect(() => {
-    fetchAlerts()
-  }, [])
-
-  const fetchAlerts = async () => {
-    try {
-      const response = await fetch('https://api.ufobeep.com/alerts?limit=3')
-      const data = await response.json()
-      
-      if (data.success && data.data?.alerts) {
-        setAlerts(data.data.alerts)
-        calculateStats(data.data.alerts)
-      }
-    } catch (error) {
-      console.error('Failed to fetch alerts:', error)
-      // Use fallback data if API fails
-      setAlerts([])
-    } finally {
-      setLoading(false)
+    if (alerts.length > 0) {
+      calculateStats(alerts)
     }
-  }
+  }, [alerts])
 
   const calculateStats = (alertsList: Alert[]) => {
     const now = new Date()

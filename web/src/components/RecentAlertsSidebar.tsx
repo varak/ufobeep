@@ -25,28 +25,12 @@ interface Alert {
   verification_score: number
 }
 
-export default function RecentAlertsSidebar() {
-  const [alerts, setAlerts] = useState<Alert[]>([])
-  const [loading, setLoading] = useState(true)
+interface RecentAlertsSidebarProps {
+  alerts?: Alert[]
+  loading?: boolean
+}
 
-  useEffect(() => {
-    fetchRecentAlerts()
-  }, [])
-
-  const fetchRecentAlerts = async () => {
-    try {
-      const response = await fetch('https://api.ufobeep.com/alerts?limit=3')
-      const data = await response.json()
-      
-      if (data.success && data.data?.alerts) {
-        setAlerts(data.data.alerts)
-      }
-    } catch (error) {
-      console.error('Failed to fetch recent alerts:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+export default function RecentAlertsSidebar({ alerts = [], loading = false }: RecentAlertsSidebarProps) {
 
   if (loading) {
     return (

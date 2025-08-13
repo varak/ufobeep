@@ -1,7 +1,6 @@
 import Link from 'next/link'
-import MiniMap from '@/components/MiniMap'
 import AppDownloadCTA from '@/components/AppDownloadCTA'
-import RecentAlertsSidebar from '@/components/RecentAlertsSidebar'
+import GlobalSightingNetwork from '@/components/GlobalSightingNetwork'
 
 export default function Home() {
   return (
@@ -52,29 +51,7 @@ export default function Home() {
       </section>
 
       {/* Live Map Section */}
-      <section className="py-20 px-6 md:px-24 bg-dark-background">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-text-primary">
-              Global Sighting Network
-            </h2>
-            <p className="text-lg text-text-secondary max-w-3xl mx-auto">
-              Explore real-time reports from observers around the world. Each pin represents a verified 
-              sighting with community discussion, enrichment data, and navigation assistance.
-            </p>
-          </div>
-          
-          <div className="grid lg:grid-cols-3 gap-8 items-start">
-            {/* Mini Map - takes up 2/3 on desktop */}
-            <div className="lg:col-span-2">
-              <MiniMap className="w-full" />
-            </div>
-            
-            {/* Recent Activity Sidebar */}
-            <RecentAlertsSidebar />
-          </div>
-        </div>
-      </section>
+      <GlobalSightingNetwork />
 
       {/* Features Section */}
       <section className="py-20 px-6 md:px-24 bg-dark-surface">

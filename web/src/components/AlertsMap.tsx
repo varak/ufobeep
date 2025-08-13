@@ -35,6 +35,8 @@ export default function AlertsMap({
   const mapRef = useRef<HTMLDivElement>(null)
   const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null)
   const [mapError, setMapError] = useState(false)
+  const [hoveredAlert, setHoveredAlert] = useState<Alert | null>(null)
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
     // Simple map implementation using canvas
@@ -43,16 +45,21 @@ export default function AlertsMap({
     const renderMap = () => {
       if (!mapRef.current) return
 
+      console.log('Rendering map with', alerts.length, 'alerts')
+      
       const canvas = document.createElement('canvas')
       const ctx = canvas.getContext('2d')
       if (!ctx) {
+        console.error('Failed to get canvas context')
         setMapError(true)
         return
       }
 
       // Ensure parent has dimensions
       const containerWidth = mapRef.current.clientWidth || 800
-      const containerHeight = mapRef.current.clientHeight || 320
+      const containerHeight = parseInt(height) || 320
+      
+      console.log('Canvas dimensions:', containerWidth, 'x', containerHeight)
 
       // Set canvas size
       canvas.width = containerWidth
@@ -134,6 +141,34 @@ export default function AlertsMap({
           }
         })
       }
+
+      // Add mousemove handler for tooltips
+      canvas.onmousemove = (e) => {
+        const rect = canvas.getBoundingClientRect()
+        const x = e.clientX - rect.left
+        const y = e.clientY - rect.top
+        
+        setMousePos({ x: e.clientX, y: e.clientY })
+        
+        let foundAlert = null
+        alerts.forEach((alert) => {
+          const pos = latLngToCanvas(alert.location.latitude, alert.location.longitude)
+          const distance = Math.sqrt((x - pos.x) ** 2 + (y - pos.y) ** 2)
+          
+          if (distance < 10) {
+            foundAlert = alert
+          }
+        })
+        
+        setHoveredAlert(foundAlert)
+        canvas.style.cursor = foundAlert ? 'pointer' : 'default'
+      }
+
+      // Add mouseleave handler
+      canvas.onmouseleave = () => {
+        setHoveredAlert(null)
+        canvas.style.cursor = 'default'
+      }
     }
 
     // Add slight delay to ensure container is rendered
@@ -155,8 +190,8 @@ export default function AlertsMap({
     <div className="relative rounded-lg overflow-hidden border border-dark-border bg-dark-surface">
       <div 
         ref={mapRef}
-        style={{ height }}
-        className="relative cursor-pointer"
+        style={{ height, minHeight: '320px' }}
+        className="relative cursor-pointer bg-dark-background"
       />
       
       {/* Fallback when map fails to render */}
@@ -220,24 +255,60 @@ export default function AlertsMap({
       {/* Legend */}
       <div className="absolute bottom-4 right-4 bg-dark-surface/90 backdrop-blur-sm p-2 rounded-lg border border-dark-border text-xs">
         <div className="space-y-1">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 group relative">
             <div className="w-2 h-2 rounded-full bg-red-500"></div>
             <span className="text-text-tertiary">Critical</span>
+            <div className="absolute left-0 bottom-full mb-2 bg-dark-surface-elevated border border-dark-border p-2 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+              Immediate threat or extraordinary phenomenon
+            </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 group relative">
             <div className="w-2 h-2 rounded-full bg-orange-500"></div>
             <span className="text-text-tertiary">High</span>
+            <div className="absolute left-0 bottom-full mb-2 bg-dark-surface-elevated border border-dark-border p-2 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+              Significant sighting with clear evidence
+            </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 group relative">
             <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
             <span className="text-text-tertiary">Medium</span>
+            <div className="absolute left-0 bottom-full mb-2 bg-dark-surface-elevated border border-dark-border p-2 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+              Notable anomaly requiring investigation
+            </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 group relative">
             <div className="w-2 h-2 rounded-full bg-green-500"></div>
             <span className="text-text-tertiary">Low</span>
+            <div className="absolute left-0 bottom-full mb-2 bg-dark-surface-elevated border border-dark-border p-2 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+              Minor observation or distant object
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Hover tooltip */}
+      {hoveredAlert && (
+        <div 
+          className="fixed bg-dark-surface-elevated border border-dark-border p-3 rounded-lg shadow-xl text-sm z-50 pointer-events-none"
+          style={{
+            left: mousePos.x + 10,
+            top: mousePos.y - 10,
+            transform: 'translate(0, -100%)'
+          }}
+        >
+          <h4 className="font-semibold text-text-primary mb-1">{hoveredAlert.title}</h4>
+          <p className="text-text-secondary text-xs mb-2">{hoveredAlert.location.name}</p>
+          <div className="flex items-center gap-2">
+            <span className={`text-xs font-medium ${hoveredAlert.alert_level === 'critical' ? 'text-red-400' : hoveredAlert.alert_level === 'high' ? 'text-orange-400' : hoveredAlert.alert_level === 'medium' ? 'text-yellow-400' : 'text-green-400'}`}>
+              {hoveredAlert.alert_level?.toUpperCase()}
+            </span>
+            <span className="text-text-tertiary text-xs">•</span>
+            <span className="text-text-tertiary text-xs">
+              {new Date(hoveredAlert.created_at).toLocaleDateString()}
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
