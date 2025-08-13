@@ -201,7 +201,7 @@ export default function AlertPage({ params }: AlertPageProps) {
                   className="block w-full h-full"
                 >
                   <ImageWithLoading 
-                    src={alert.media_files[0].thumbnail_url || `${alert.media_files[0].url}?thumbnail=true`}
+                    src={`${alert.media_files[0].url}?thumbnail=true`}
                     alt={alert.title}
                     fill
                     className="object-contain group-hover:opacity-90 transition-opacity"
