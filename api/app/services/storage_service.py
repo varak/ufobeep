@@ -94,6 +94,8 @@ class StorageService:
                 {"Content-Type": request.content_type},
                 ["content-length-range", 1, request.size_bytes],
                 ["starts-with", "$x-amz-meta-upload-id", upload_id],
+                ["starts-with", "$x-amz-meta-original-filename", request.filename],
+                ["starts-with", "$x-amz-meta-media-type", request.get_media_type().value],
             ]
             
             # Add user ID if provided
