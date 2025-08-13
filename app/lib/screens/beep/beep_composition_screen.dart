@@ -24,7 +24,6 @@ class BeepCompositionScreen extends StatefulWidget {
 
 class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
   // Form controllers and state
-  final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   // Location privacy is now handled in user profile settings
   
@@ -32,11 +31,14 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
   bool _isSubmitting = false;
   String? _errorMessage;
 
-  // Form validation
+  // Form validation - description is optional
   bool get _isFormValid {
-    final title = _titleController.text.trim();
+    return true; // Always valid since description is optional
+  }
+  
+  bool get _hasContent {
     final description = _descriptionController.text.trim();
-    return title.length >= 5 && description.length >= 10;
+    return description.isNotEmpty;
   }
 
   @override
@@ -49,40 +51,16 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
     debugPrint('Sensor data available: ${widget.sensorData != null}');
     debugPrint('========================================');
     
-    // Add listeners for real-time validation
-    _titleController.addListener(_onFormFieldChanged);
+    // Add listener for real-time validation
     _descriptionController.addListener(_onFormFieldChanged);
   }
 
   void _onFormFieldChanged() {
     setState(() {});
-    debugPrint('Form validation: title=${_titleController.text.length} chars, desc=${_descriptionController.text.length} chars, valid=$_isFormValid');
+    debugPrint('Form validation: desc=${_descriptionController.text.length} chars, valid=$_isFormValid');
   }
 
   Future<void> _submitBeep() async {
-    // Check if form is valid and show helpful message if not
-    if (!_isFormValid) {
-      String message = '';
-      final titleLength = _titleController.text.trim().length;
-      final descLength = _descriptionController.text.trim().length;
-      
-      if (titleLength < 5) {
-        message = 'Title needs at least 5 characters (currently $titleLength)';
-      } else if (descLength < 10) {
-        message = 'Description needs at least 10 characters (currently $descLength)';
-      }
-      
-      if (message.isNotEmpty && context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(message),
-            backgroundColor: AppColors.semanticWarning,
-            duration: const Duration(seconds: 2),
-          ),
-        );
-      }
-      return;
-    }
     
     if (_isSubmitting) return;
 
@@ -92,17 +70,12 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
     });
 
     try {
-      // Validate required fields
-      final title = _titleController.text.trim();
+      // Get description - optional
       final description = _descriptionController.text.trim();
       
-      if (title.isEmpty || title.length < 5) {
-        throw Exception('Title must be at least 5 characters long');
-      }
-      
-      if (description.isEmpty || description.length < 10) {
-        throw Exception('Description must be at least 10 characters long');
-      }
+      // Use default values if empty
+      final finalTitle = 'UFO Sighting';
+      final finalDescription = description.isEmpty ? 'UFO sighting captured with UFOBeep app' : description;
 
       // All beeps are UFO sightings - no classification
       const category = api.SightingCategory.ufo;
@@ -110,8 +83,8 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
 
       // Submit sighting with media using API client
       final sightingId = await ApiClient.instance.submitSightingWithMedia(
-        title: title,
-        description: description,
+        title: finalTitle,
+        description: finalDescription,
         category: category,
         sensorData: widget.sensorData,
         mediaFiles: [widget.imageFile],
@@ -127,7 +100,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Beep "$title" sent successfully!'),
+            content: Text('Beep sent successfully!'),
             backgroundColor: AppColors.brandPrimary,
             duration: const Duration(seconds: 3),
           ),
@@ -229,9 +202,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
                       ),
                     ],
                     
-                    // Form fields
-                    _buildTitleInput(),
-                    const SizedBox(height: 20),
+                    // Form field
                     _buildDescriptionInput(),
                     const SizedBox(height: 100), // Space for bottom button
                   ],
@@ -279,7 +250,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'This photo will be sent with your beep',
+                  'Ready to send!',
                   style: TextStyle(
                     color: AppColors.brandPrimary,
                     fontSize: 16,
@@ -288,7 +259,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Add details below to complete your submission',
+                  'Add a brief description of what you\'re seeing if you\'d like',
                   style: TextStyle(
                     color: AppColors.brandPrimary.withOpacity(0.8),
                     fontSize: 14,
@@ -303,65 +274,13 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
   }
 
 
-  Widget _buildTitleInput() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Title',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: _titleController,
-          style: const TextStyle(color: AppColors.textPrimary, fontSize: 16),
-          decoration: InputDecoration(
-            hintText: 'Brief description of what you saw...',
-            hintStyle: const TextStyle(color: AppColors.textSecondary),
-            helperText: 'Minimum 5 characters',
-            helperStyle: TextStyle(
-              color: _titleController.text.trim().length >= 5 
-                ? AppColors.brandPrimary 
-                : AppColors.textSecondary,
-            ),
-            filled: true,
-            fillColor: Colors.grey[700], // Visible grey input background
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.darkBorder),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: _titleController.text.trim().length >= 5 
-                  ? AppColors.brandPrimary.withOpacity(0.5) 
-                  : AppColors.darkBorder,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.brandPrimary),
-            ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            counterStyle: const TextStyle(color: AppColors.textSecondary),
-          ),
-          maxLength: 100,
-          textInputAction: TextInputAction.next,
-        ),
-      ],
-    );
-  }
 
   Widget _buildDescriptionInput() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Description',
+          'Description (optional)',
           style: TextStyle(
             color: AppColors.textPrimary,
             fontSize: 18,
@@ -373,27 +292,21 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
           controller: _descriptionController,
           style: const TextStyle(color: AppColors.textPrimary, fontSize: 16),
           decoration: InputDecoration(
-            hintText: 'Describe what you observed in detail...\n\nInclude details like:\n• Time of observation\n• Weather conditions\n• Object behavior\n• Duration of sighting',
+            hintText: 'Brief description of what you are seeing...\n\nFor example:\n• Bright light moving across sky\n• Object hovering above trees\n• Strange shape in clouds',
             hintStyle: const TextStyle(color: AppColors.textSecondary),
-            helperText: 'Minimum 10 characters',
-            helperStyle: TextStyle(
-              color: _descriptionController.text.trim().length >= 10 
-                ? AppColors.brandPrimary 
-                : AppColors.textSecondary,
+            helperText: 'Optional - leave blank if you prefer',
+            helperStyle: const TextStyle(
+              color: AppColors.textSecondary,
             ),
             filled: true,
-            fillColor: Colors.grey[700], // Visible grey input background
+            fillColor: Colors.grey[700],
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(color: AppColors.darkBorder),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: _descriptionController.text.trim().length >= 10 
-                  ? AppColors.brandPrimary.withOpacity(0.5) 
-                  : AppColors.darkBorder,
-              ),
+              borderSide: const BorderSide(color: AppColors.darkBorder),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -402,8 +315,8 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             counterStyle: const TextStyle(color: AppColors.textSecondary),
           ),
-          maxLines: 6,
-          maxLength: 1000,
+          maxLines: 4,
+          maxLength: 500,
           textInputAction: TextInputAction.newline,
         ),
       ],
@@ -461,17 +374,13 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
                       )
                     : const Icon(Icons.send, size: 20),
                 label: Text(
-                  _isSubmitting 
-                      ? 'Sending...' 
-                      : _isFormValid 
-                        ? 'Send Beep!' 
-                        : 'Complete Form',
+                  _isSubmitting ? 'Sending...' : 'Send Beep!',
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: (!_isSubmitting && _isFormValid) 
+                  backgroundColor: !_isSubmitting 
                       ? AppColors.brandPrimary 
                       : AppColors.darkBorder,
-                  foregroundColor: (!_isSubmitting && _isFormValid) 
+                  foregroundColor: !_isSubmitting 
                       ? Colors.black 
                       : AppColors.textSecondary,
                   padding: const EdgeInsets.symmetric(vertical: 14),
@@ -493,9 +402,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
 
   @override
   void dispose() {
-    _titleController.removeListener(_onFormFieldChanged);
     _descriptionController.removeListener(_onFormFieldChanged);
-    _titleController.dispose();
     _descriptionController.dispose();
     super.dispose();
   }

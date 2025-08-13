@@ -190,8 +190,8 @@ class MediaFile(Base):
     processing_status = Column(String(50), default="completed", nullable=False)
     processing_error = Column(Text, nullable=True)
     
-    # Metadata and relationships
-    metadata = Column(JSON, default=dict, nullable=False)
+    # Metadata and relationships  
+    file_metadata = Column(JSON, default=dict, nullable=False)
     uploaded_by = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
     sighting_id = Column(UUID(as_uuid=True), ForeignKey("sightings.id"), nullable=True)
     

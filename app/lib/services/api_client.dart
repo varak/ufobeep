@@ -681,26 +681,7 @@ extension ApiClientExtension on ApiClient {
           final sightingData = data['data'] as Map<String, dynamic>;
           final sightingId = sightingData['sighting_id'] ?? 'unknown_id';
           
-          // Upload media files if any
-          if (mediaFiles.isNotEmpty) {
-            debugPrint('Uploading ${mediaFiles.length} media files for sighting $sightingId');
-            if (onProgress != null) onProgress(0.7);
-            
-            for (int i = 0; i < mediaFiles.length; i++) {
-              final file = mediaFiles[i];
-              try {
-                await uploadMediaFile(sightingId, file);
-                debugPrint('Uploaded media file ${i + 1}/${mediaFiles.length}');
-                if (onProgress != null) {
-                  final progress = 0.7 + (0.3 * (i + 1) / mediaFiles.length);
-                  onProgress(progress);
-                }
-              } catch (e) {
-                debugPrint('Failed to upload media file ${i + 1}: $e');
-                // Continue with other files even if one fails
-              }
-            }
-          }
+          // Media files already uploaded above and URLs included in sighting data
           
           if (onProgress != null) onProgress(1.0);
           return sightingId;

@@ -193,7 +193,7 @@ async def complete_media_upload(
             size_bytes=object_info["size"],
             content_type=object_info.get("content_type", upload_info["content_type"]),
             checksum=object_info.get("metadata", {}).get("checksum"),
-            metadata=request.metadata or {},
+            file_metadata=request.metadata or {},
             uploaded_by=user_id,
             uploaded_at=object_info["last_modified"],
             created_at=datetime.utcnow(),
