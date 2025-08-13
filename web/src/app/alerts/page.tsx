@@ -174,9 +174,8 @@ export default function AlertsPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {alerts.map((alert) => {
-              const slug = generateSlug(alert.title, alert.location?.name || 'unknown', alert.created_at)
               return (
-              <Link key={alert.id} href={`/alert/${slug}`}>
+              <Link key={alert.id} href={`/alerts/${alert.id}`}>
                 <div className="bg-dark-surface border border-dark-border rounded-lg overflow-hidden hover:border-brand-primary transition-all duration-300 hover:shadow-lg cursor-pointer group">
                   {/* Thumbnail Image */}
                   {alert.media_files && alert.media_files.length > 0 ? (
