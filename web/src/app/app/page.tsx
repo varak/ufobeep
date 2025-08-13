@@ -203,7 +203,7 @@ export default function AppPage() {
         <div className="bg-dark-surface border border-dark-border rounded-lg p-8">
           <h2 className="text-2xl font-semibold text-text-primary mb-6 text-center">System Requirements</h2>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             <div>
               <h3 className="text-lg font-semibold text-brand-primary mb-4 flex items-center gap-2">
                 🍎 iOS Requirements
@@ -242,24 +242,6 @@ export default function AppPage() {
               </div>
             </div>
             
-            <div>
-              <h3 className="text-lg font-semibold text-brand-primary mb-4 flex items-center gap-2">
-                🌐 Progressive Web App
-              </h3>
-              <ul className="space-y-2 text-text-secondary">
-                <li>• Modern browser (Chrome, Firefox, Safari)</li>
-                <li>• JavaScript enabled</li>
-                <li>• Camera API support</li>
-                <li>• Geolocation API support</li>
-                <li>• Service Worker support</li>
-                <li>• 10MB browser storage</li>
-              </ul>
-              <div className="mt-4 p-3 bg-dark-background rounded border border-dark-border">
-                <p className="text-xs text-text-tertiary">
-                  <strong>Install as app:</strong> Use &quot;Add to Home Screen&quot; option in browser
-                </p>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -393,7 +375,7 @@ export default function AppPage() {
             Step-by-Step Installation Guide
           </h2>
           
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-2 gap-8">
             {/* iOS Installation */}
             <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
               <div className="flex items-center gap-3 mb-4">
@@ -490,53 +472,6 @@ export default function AppPage() {
               </div>
             </div>
 
-            {/* PWA Installation */}
-            <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="text-3xl">🌐</div>
-                <h3 className="text-xl font-semibold text-text-primary">Web App (PWA)</h3>
-              </div>
-              
-              <div className="space-y-4">
-                <div className="flex gap-3">
-                  <div className="bg-brand-primary text-text-inverse rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">1</div>
-                  <div>
-                    <p className="text-text-primary font-medium">Visit ufobeep.com</p>
-                    <p className="text-text-tertiary text-sm">Open in Chrome, Firefox, Safari, or Edge</p>
-                  </div>
-                </div>
-                
-                <div className="flex gap-3">
-                  <div className="bg-brand-primary text-text-inverse rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">2</div>
-                  <div>
-                    <p className="text-text-primary font-medium">Look for Install Prompt</p>
-                    <p className="text-text-tertiary text-sm">Browser will show &quot;Add to Home Screen&quot; or install banner</p>
-                  </div>
-                </div>
-                
-                <div className="flex gap-3">
-                  <div className="bg-brand-primary text-text-inverse rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">3</div>
-                  <div>
-                    <p className="text-text-primary font-medium">Install as App</p>
-                    <p className="text-text-tertiary text-sm">Tap &quot;Install&quot; or &quot;Add to Home Screen&quot;</p>
-                  </div>
-                </div>
-                
-                <div className="flex gap-3">
-                  <div className="bg-brand-primary text-text-inverse rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">4</div>
-                  <div>
-                    <p className="text-text-primary font-medium">Allow Permissions</p>
-                    <p className="text-text-tertiary text-sm">Grant camera and location access when requested</p>
-                  </div>
-                </div>
-                
-                <div className="bg-brand-primary bg-opacity-10 border border-brand-primary border-opacity-20 rounded p-3 mt-4">
-                  <p className="text-xs text-brand-primary">
-                    ✨ <strong>Full App Experience:</strong> PWA works offline and feels like a native app once installed.
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -560,10 +495,6 @@ export default function AppPage() {
                   <p className="text-text-tertiary text-sm">Go to device Settings &gt; Apps &gt; UFOBeep &gt; Permissions and enable required permissions manually.</p>
                 </div>
                 
-                <div>
-                  <p className="text-text-primary font-medium mb-1">🌍 PWA install button missing</p>
-                  <p className="text-text-tertiary text-sm">Try visiting the site in Chrome/Edge. Look for the install icon in the address bar.</p>
-                </div>
               </div>
             </div>
             
