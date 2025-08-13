@@ -766,6 +766,8 @@ extension ApiClientExtension on ApiClient {
       
       // Step 1: Get presigned upload URL with sighting ID
       final presignResponse = await createPresignedUploadForSighting(sightingId, file);
+      debugPrint('Presign response: $presignResponse');
+      
       final uploadId = presignResponse['upload_id'] as String;
       final uploadUrl = presignResponse['upload_url'] as String;
       final fields = presignResponse['fields'] as Map<String, dynamic>;
@@ -847,6 +849,7 @@ extension ApiClientExtension on ApiClient {
       
       final response = await _dio.post('/media/complete', data: {
         'upload_id': uploadId,
+        'media_type': _getMediaTypeFromFile(file).toString().split('.').last,
       });
       
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {

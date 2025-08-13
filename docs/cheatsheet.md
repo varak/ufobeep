@@ -8,15 +8,15 @@
 ## API Endpoints Structure
 ```
 Single FastAPI app with routers:
-- media.router     → /media/* endpoints  
-- devices.router   → /devices/* endpoints
-- plane_match.router → no prefix (root level)
+- media.router        → /media/presign, /media/complete, etc.
+- media_serve.router  → /media/{sighting_id}/{filename} (NEW)
+- devices.router      → /devices/* endpoints
+- plane_match.router  → no prefix (root level)
 - Direct endpoints: /alerts, /sightings, /healthz, /ping
 
-⚠️  CRITICAL: sightings.router is NOT included in main.py
-- Only the old /sightings endpoint in main.py is active
-- The proper sightings router exists but isn't registered
-- All mobile submissions go to the old endpoint
+✅ All routers properly included in main.py
+✅ New media serving endpoint deployed
+✅ Sighting-based media storage implemented
 ```
 
 ## Environment Configuration
@@ -31,11 +31,13 @@ Single FastAPI app with routers:
 - **Credentials**: minioadmin/minioadmin
 - **Status**: Bucket exists but URLs have signature issues
 
-## Media Storage Issues (NEEDS REDESIGN)
-- **Current problem**: Random upload IDs, complex signed URLs failing with 403 errors
-- **Proposed solution**: Organize by sighting ID - `/sightings/{sighting_id}/filename.jpg`
-- **See**: `/home/mike/D/ufobeep/mediastoragetodo.md` for redesign plan
-- **Goal**: Simple permanent URLs like `https://ufobeep.com/media/{sighting_id}/photo1.jpg`
+## Media Storage Redesign (COMPLETED Phases 1-2)
+- **✅ Phase 1**: Changed storage structure from random IDs to sighting-based organization
+- **✅ Phase 2**: Added direct serving endpoint `/media/{sighting_id}/{filename}`
+- **New structure**: `sightings/{sighting_id}/filename.jpg` in MinIO
+- **New URLs**: `https://ufobeep.com/media/{sighting_id}/filename.jpg` (permanent)
+- **Status**: API deployed, mobile app updated, testing in progress
+- **Issue**: Mobile app getting type error on media upload (in progress)
 
 ## Presigned Upload Endpoint
 - **Endpoint**: `POST https://api.ufobeep.com/media/presign`
@@ -74,8 +76,16 @@ curl -s -X POST https://api.ufobeep.com/media/presign \
   -d '{"filename": "test.jpg", "content_type": "image/jpeg", "size_bytes": 1024}'
 ```
 
+## Current Issues
+- **Mobile app error**: `String is not a subtype of type 'int' of 'index'` on media upload
+- **Root cause**: Likely type casting issue in API response parsing
+- **Status**: Debugging with added logging, testing in progress
+
 ## Key Learnings
 - **Never test localhost** - production is on different machine (ufobeep.com)
 - **Single server architecture** - all endpoints served by one FastAPI app
 - **Environment files consolidated** - one .env file in project root
 - **MinIO bucket was missing** - had to recreate it
+- **Media storage redesign complete** - using sighting IDs for permanent URLs
+- **SSH production**: `ssh -p 322 ufobeep@ufobeep.com`
+- **Deploy command**: `git push && ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep && git pull && sudo systemctl restart ufobeep-api"`

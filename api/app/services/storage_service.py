@@ -154,13 +154,23 @@ class StorageService:
         
         try:
             # Find the uploaded object by searching with upload_id metadata
-            objects = self.client.list_objects_v2(
-                Bucket=settings.s3_bucket,
-                Prefix="uploads/"
-            )
+            # Search in both old uploads/ and new sightings/ prefixes for compatibility
+            prefixes_to_search = ["uploads/", "sightings/"]
+            all_objects = []
+            
+            for prefix in prefixes_to_search:
+                try:
+                    objects = self.client.list_objects_v2(
+                        Bucket=settings.s3_bucket,
+                        Prefix=prefix
+                    )
+                    all_objects.extend(objects.get('Contents', []))
+                except Exception as e:
+                    logger.warning(f"Could not search prefix {prefix}: {e}")
+                    continue
             
             uploaded_object = None
-            for obj in objects.get('Contents', []):
+            for obj in all_objects:
                 try:
                     # Get object metadata
                     response = self.client.head_object(
