@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import MiniMap from '@/components/MiniMap'
 import AppDownloadCTA from '@/components/AppDownloadCTA'
+import RecentAlertsSidebar from '@/components/RecentAlertsSidebar'
 
 export default function Home() {
   return (
@@ -70,60 +71,7 @@ export default function Home() {
             </div>
             
             {/* Recent Activity Sidebar */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-text-primary mb-4">Latest Activity</h3>
-              
-              <div className="space-y-3">
-                <div className="p-4 bg-dark-surface rounded-lg border border-dark-border hover:border-brand-primary transition-colors">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h4 className="font-medium text-text-primary text-sm">Triangle Formation</h4>
-                      <p className="text-text-secondary text-xs mt-1">Phoenix, AZ</p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <span className="text-brand-primary text-xs">⚡ Live Chat Active</span>
-                        <span className="text-text-tertiary text-xs">•</span>
-                        <span className="text-text-tertiary text-xs">12 min ago</span>
-                      </div>
-                    </div>
-                    <div className="w-2 h-2 bg-brand-primary rounded-full animate-pulse"></div>
-                  </div>
-                </div>
-                
-                <div className="p-4 bg-dark-surface rounded-lg border border-dark-border hover:border-brand-primary transition-colors">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h4 className="font-medium text-text-primary text-sm">Bright Flash</h4>
-                      <p className="text-text-secondary text-xs mt-1">London, UK</p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <span className="text-semantic-warning text-xs">📊 Analyzing</span>
-                        <span className="text-text-tertiary text-xs">•</span>
-                        <span className="text-text-tertiary text-xs">1h ago</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="p-4 bg-dark-surface rounded-lg border border-dark-border hover:border-brand-primary transition-colors">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h4 className="font-medium text-text-primary text-sm">Silent Object</h4>
-                      <p className="text-text-secondary text-xs mt-1">Tokyo, Japan</p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <span className="text-semantic-info text-xs">✓ Verified</span>
-                        <span className="text-text-tertiary text-xs">•</span>
-                        <span className="text-text-tertiary text-xs">3h ago</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <Link href="/alerts">
-                <button className="w-full mt-4 p-3 border border-brand-primary text-brand-primary rounded-lg hover:bg-brand-primary hover:text-text-inverse transition-colors font-medium">
-                  View All Reports →
-                </button>
-              </Link>
-            </div>
+            <RecentAlertsSidebar />
           </div>
         </div>
       </section>
