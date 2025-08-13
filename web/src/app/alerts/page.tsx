@@ -120,7 +120,7 @@ export default function AlertsPage() {
             <h1 className="text-2xl font-bold text-text-primary mb-4">Unable to Load Alerts</h1>
             <p className="text-text-secondary mb-8">{error}</p>
             <button 
-              onClick={fetchAlerts}
+              onClick={() => fetchAlerts(1)}
               className="bg-brand-primary text-text-inverse px-6 py-3 rounded-lg hover:bg-brand-primary-dark transition-colors"
             >
               Try Again
