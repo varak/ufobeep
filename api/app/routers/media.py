@@ -202,21 +202,23 @@ async def complete_media_upload(
         
         # Save media file to database
         from ..models.sighting import MediaFile as MediaFileModel
+        from ..models.sighting import MediaType
         
         db_media_file = MediaFileModel(
-            id=uuid.UUID(media_file.id.replace("media_", "")),
-            upload_id=media_file.upload_id,
-            type=media_file.type,
-            filename=media_file.filename,
-            original_filename=media_file.original_filename,
-            url=media_file.url,
-            size_bytes=media_file.size_bytes,
-            content_type=media_file.content_type,
-            checksum=media_file.checksum,
-            uploaded_by=media_file.uploaded_by,
-            uploaded_at=media_file.uploaded_at,
-            created_at=media_file.created_at,
-            updated_at=media_file.updated_at
+            id=uuid.uuid4(),
+            upload_id=request.upload_id,
+            type=MediaType.PHOTO if request.media_type == "photo" else MediaType.VIDEO,
+            filename=object_info["key"].split("/")[-1],
+            original_filename=upload_info["filename"],
+            url=public_url,
+            size_bytes=object_info["size"],
+            content_type=object_info.get("content_type", upload_info["content_type"]),
+            checksum=object_info.get("metadata", {}).get("checksum"),
+            file_metadata=request.metadata or {},
+            uploaded_by=uuid.UUID(user_id) if user_id else None,
+            uploaded_at=object_info["last_modified"],
+            created_at=datetime.utcnow(),
+            updated_at=datetime.utcnow()
         )
         
         db.add(db_media_file)

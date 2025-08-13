@@ -9,6 +9,7 @@ import '../screens/alerts/alerts_screen.dart';
 import '../screens/alerts/alert_detail_screen.dart';
 import '../screens/beep/beep_screen.dart';
 import '../screens/beep/beep_composition_screen.dart';
+import '../screens/beep/camera_capture_screen.dart';
 import '../screens/chat/chat_screen.dart';
 import '../screens/compass/compass_screen.dart';
 import '../screens/profile/profile_screen.dart';
@@ -78,6 +79,12 @@ GoRouter appRouter(AppRouterRef ref) {
             name: 'beep',
             builder: (context, state) => const BeepScreen(),
             routes: [
+              // Custom Camera (no approval modal)
+              GoRoute(
+                path: 'camera',
+                name: 'beep-camera',
+                builder: (context, state) => const CameraCaptureScreen(),
+              ),
               // Beep Composition
               GoRoute(
                 path: 'compose',
