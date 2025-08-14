@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.config.environment import settings
-from app.routers import plane_match, media, media_serve, devices, emails
+from app.routers import plane_match, media, media_serve, devices, emails, photo_analysis
 import asyncpg
 import json
 from datetime import datetime
@@ -214,6 +214,7 @@ app.include_router(media.router)
 app.include_router(media_serve.router)
 app.include_router(devices.router)
 app.include_router(emails.router)
+app.include_router(photo_analysis.router)
 
 # Disable complex routers for now - just get basic endpoints working
 

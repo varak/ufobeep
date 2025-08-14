@@ -132,6 +132,14 @@ class Settings(BaseSettings):
     public_coord_jitter_min: int = Field(default=100, env="PUBLIC_COORD_JITTER_MIN")  # meters
     public_coord_jitter_max: int = Field(default=300, env="PUBLIC_COORD_JITTER_MAX")  # meters
     
+    # === External Astronomical/Aircraft APIs ===
+    astrometry_api_key: str = Field(default="your_astrometry_key", env="ASTROMETRY_API_KEY")
+    n2yo_api_key: str = Field(default="your_n2yo_key", env="N2YO_API_KEY")
+    adsbx_api_key: str = Field(default="your_adsbx_key", env="ADSBX_API_KEY")
+    google_vision_api_key: str = Field(default="your_google_key", env="GOOGLE_VISION_API_KEY")
+    roboflow_api_key: str = Field(default="your_roboflow_key", env="ROBOFLOW_API_KEY")
+    roboflow_model_id: str = Field(default="your_workspace/your_model", env="ROBOFLOW_MODEL_ID")
+    
     # === Locale Configuration ===
     default_locale: str = Field(default="en", env="DEFAULT_LOCALE")
     supported_locales: str = Field(default="en,es,de", env="SUPPORTED_LOCALES")
