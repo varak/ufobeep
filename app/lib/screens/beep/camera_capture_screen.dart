@@ -96,18 +96,21 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       // Take the picture at maximum quality
       final XFile image = await _controller!.takePicture();
       
-      // Get sensor data
+      // Get sensor data with retry for GPS
       SensorData? sensorData;
       try {
         debugPrint('🌍 CAMERA: Attempting to capture GPS and sensor data...');
         sensorData = await _sensorService.captureSensorData();
-        if (sensorData != null) {
-          debugPrint('✅ CAMERA: Got sensor data - lat: ${sensorData.latitude}, lng: ${sensorData.longitude}, accuracy: ${sensorData.accuracy}m');
+        if (sensorData != null && sensorData.latitude != 0.0 && sensorData.longitude != 0.0) {
+          debugPrint('✅ CAMERA: Got valid sensor data - lat: ${sensorData.latitude}, lng: ${sensorData.longitude}, accuracy: ${sensorData.accuracy}m');
         } else {
-          debugPrint('⚠️ CAMERA: Sensor service returned null data');
+          debugPrint('⚠️ CAMERA: Got invalid GPS coordinates (0,0) - GPS may have timed out');
+          // Don't use 0,0 coordinates - better to have no location than wrong location
+          sensorData = null;
         }
       } catch (e) {
         debugPrint('❌ CAMERA: Failed to capture sensor data: $e');
+        sensorData = null;
         // Show user-friendly message about location
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
