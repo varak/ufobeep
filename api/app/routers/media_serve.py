@@ -82,6 +82,7 @@ async def serve_media_file(
                     image = Image.open(BytesIO(original_content))
                     
                     # Fix image orientation based on EXIF data
+                    # PIL rotate() uses counter-clockwise rotation, so we need to negate angles
                     try:
                         from PIL import ExifTags
                         from PIL.ExifTags import ORIENTATION
@@ -90,10 +91,14 @@ async def serve_media_file(
                             if exif is not None:
                                 orientation = exif.get(ORIENTATION)
                                 if orientation == 3:
+                                    # 180 degrees
                                     image = image.rotate(180, expand=True)
                                 elif orientation == 6:
-                                    image = image.rotate(270, expand=True)
+                                    # RightTop - rotate 90 degrees clockwise (270 CCW)
+                                    # But since phone took it in portrait, we actually need -90 (or 270)
+                                    image = image.rotate(-90, expand=True)
                                 elif orientation == 8:
+                                    # LeftBottom - rotate 90 degrees counter-clockwise
                                     image = image.rotate(90, expand=True)
                         elif hasattr(image, '_getexif'):
                             # Fallback for older PIL versions
@@ -103,7 +108,7 @@ async def serve_media_file(
                                 if orientation == 3:
                                     image = image.rotate(180, expand=True)
                                 elif orientation == 6:
-                                    image = image.rotate(270, expand=True)
+                                    image = image.rotate(-90, expand=True)
                                 elif orientation == 8:
                                     image = image.rotate(90, expand=True)
                     except Exception as e:

@@ -102,7 +102,7 @@ ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep/web && rm -rf .next nod
 - **Media storage redesign complete** - using sighting IDs for permanent URLs
 - **SSH production**: `ssh -p 322 ufobeep@ufobeep.com`
 - **Standard deploy**: `git push && ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep && git pull origin main && cd web && npm run build && pm2 restart all"`
-- **Clean deploy** (when webpack breaks): Add `rm -rf .next node_modules/.cache &&` before `npm run build`
+- **Clean deploy** (when webpack breaks): `ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep/web && rm -rf .next node_modules/.cache && npm run build && pm2 restart all"`
 - **API restart**: `ssh -p 322 ufobeep@ufobeep.com "sudo systemctl restart ufobeep-api"`
 
 ## Deployment Architecture Notes
