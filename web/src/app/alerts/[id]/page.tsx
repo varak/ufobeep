@@ -38,6 +38,15 @@ interface Alert {
     celestial?: any
     aircraft?: any
   }
+  photo_analysis?: Array<{
+    filename: string
+    classification?: string
+    matched_object?: string
+    confidence?: number
+    analysis_status: string
+    analysis_error?: string
+    processing_duration_ms?: number
+  }>
 }
 
 interface AlertPageProps {
@@ -303,6 +312,112 @@ export default function AlertPage({ params }: AlertPageProps) {
                       </p>
                     </div>
                   )}
+                </div>
+              </section>
+            )}
+
+            {/* Photo Analysis */}
+            {alert.photo_analysis && alert.photo_analysis.length > 0 && (
+              <section className="bg-dark-surface border border-dark-border rounded-lg p-6">
+                <h2 className="text-xl font-semibold text-text-primary mb-4">Photo Analysis</h2>
+                <div className="space-y-4">
+                  {alert.photo_analysis.map((analysis, index) => (
+                    <div key={index} className="border border-dark-border rounded-lg p-4 bg-dark-background">
+                      {/* Header with filename and status */}
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg">📸</span>
+                          <span className="text-text-primary font-medium text-sm">{analysis.filename}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className={`w-2 h-2 rounded-full ${
+                            analysis.analysis_status === 'completed' ? 'bg-green-400' :
+                            analysis.analysis_status === 'pending' ? 'bg-yellow-400' :
+                            'bg-red-400'
+                          }`}></div>
+                          <span className={`text-sm font-medium ${
+                            analysis.analysis_status === 'completed' ? 'text-green-400' :
+                            analysis.analysis_status === 'pending' ? 'text-yellow-400' :
+                            'text-red-400'
+                          }`}>
+                            {analysis.analysis_status === 'completed' ? 'Analysis Complete' :
+                             analysis.analysis_status === 'pending' ? 'Analysis Pending...' :
+                             'Analysis Failed'}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Analysis Results */}
+                      {analysis.analysis_status === 'completed' && analysis.classification && (
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-3">
+                            <div className="text-2xl">
+                              {analysis.classification === 'planet' ? '🪐' :
+                               analysis.classification === 'satellite' ? '🛰️' : 
+                               '❓'}
+                            </div>
+                            <div>
+                              {analysis.matched_object ? (
+                                <>
+                                  <div className="text-text-primary font-semibold text-lg">
+                                    {analysis.matched_object}
+                                  </div>
+                                  <div className="text-text-secondary text-sm capitalize">
+                                    {analysis.classification} detected
+                                  </div>
+                                </>
+                              ) : (
+                                <div className="text-text-secondary">
+                                  {analysis.classification === 'unknown' 
+                                    ? 'No celestial objects detected' 
+                                    : `Unidentified ${analysis.classification}`}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          
+                          {analysis.confidence && (
+                            <div className="flex items-center gap-2 text-sm">
+                              <span className="text-text-tertiary">Confidence:</span>
+                              <span className={`font-semibold ${
+                                analysis.confidence > 0.8 ? 'text-green-400' :
+                                analysis.confidence > 0.5 ? 'text-yellow-400' :
+                                'text-red-400'
+                              }`}>
+                                {Math.round(analysis.confidence * 100)}%
+                              </span>
+                            </div>
+                          )}
+                          
+                          {analysis.processing_duration_ms && (
+                            <div className="text-text-tertiary text-xs">
+                              Analysis completed in {(analysis.processing_duration_ms / 1000).toFixed(1)}s
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Error Message */}
+                      {analysis.analysis_status === 'failed' && analysis.analysis_error && (
+                        <div className="text-red-400 text-sm">
+                          {analysis.analysis_error}
+                        </div>
+                      )}
+
+                      {/* Pending State */}
+                      {analysis.analysis_status === 'pending' && (
+                        <div className="text-text-secondary text-sm">
+                          Analyzing photo for planets and satellites...
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-4 p-3 bg-dark-background rounded border border-dark-border">
+                  <p className="text-text-tertiary text-xs">
+                    <strong>Photo Analysis:</strong> Automated identification of planets, moons, and satellites using plate-solving technology and astronomical databases.
+                  </p>
                 </div>
               </section>
             )}
