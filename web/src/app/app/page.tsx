@@ -16,11 +16,11 @@ export default function AppPage() {
           
           <div className="text-6xl mb-6">📱</div>
           <h1 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">
-            Download UFOBeep <span className="text-2xl text-brand-primary">Alpha</span>
+            Download UFOBeep <span className="text-2xl text-brand-primary">Beta</span>
           </h1>
           <p className="text-xl text-text-secondary max-w-2xl mx-auto">
-            Try the alpha version of our mobile app! Report sightings, receive alerts, and test the latest features.
-            <span className="block text-base text-brand-primary mt-2 font-medium">🧪 Alpha testers wanted - help shape the future!</span>
+            Try the beta version of our mobile app! Report sightings, receive alerts, and test the latest features.
+            <span className="block text-base text-brand-primary mt-2 font-medium">🧪 Beta testers wanted - help shape the future!</span>
           </p>
         </div>
 
@@ -28,13 +28,13 @@ export default function AppPage() {
         <div className="bg-gradient-to-r from-brand-primary/20 to-purple-600/20 border border-brand-primary/30 rounded-xl p-8 mb-16">
           <div className="text-center mb-6">
             <div className="inline-block bg-brand-primary text-text-inverse px-4 py-2 rounded-full text-sm font-semibold mb-4">
-              🚀 ALPHA VERSION AVAILABLE
+              🚀 BETA VERSION AVAILABLE
             </div>
             <h2 className="text-2xl font-bold text-text-primary mb-2">
-              Test the UFOBeep Alpha
+              Test the UFOBeep Beta
             </h2>
             <p className="text-text-secondary max-w-2xl mx-auto">
-              Help us test the latest features! This alpha version includes photo upload, 
+              Help us test the latest features! This beta version includes photo upload, 
               location tracking, and the new media storage system. Your feedback is invaluable.
             </p>
           </div>
@@ -42,15 +42,15 @@ export default function AppPage() {
           {/* Download Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <a 
-              href="/downloads/ufobeep-alpha.apk"
+              href="/downloads/ufobeep-beta.apk"
               className="bg-brand-primary hover:bg-brand-primary-dark text-text-inverse rounded-lg p-6 flex items-center gap-4 min-w-[250px] transition-colors group"
-              download="ufobeep-alpha.apk"
+              download="ufobeep-beta.apk"
             >
               <div className="text-3xl">🤖</div>
               <div className="text-left flex-1">
-                <p className="text-text-inverse/80 text-sm">Download Alpha for</p>
+                <p className="text-text-inverse/80 text-sm">Download Beta for</p>
                 <p className="font-semibold">Android APK</p>
-                <p className="text-xs text-text-inverse/60 mt-1">Version 1.0.0-alpha • ~219MB</p>
+                <p className="text-xs text-text-inverse/60 mt-1">Version 1.0.0-beta.4 • ~220MB</p>
               </div>
               <div className="text-xl group-hover:translate-x-1 transition-transform">→</div>
             </a>
@@ -61,7 +61,7 @@ export default function AppPage() {
             >
               <div className="text-3xl">🍎</div>
               <div className="text-left flex-1">
-                <p className="text-text-secondary text-sm">iOS Alpha Testing</p>
+                <p className="text-text-secondary text-sm">iOS Beta Testing</p>
                 <p className="text-text-primary font-semibold">Instructions for Friends</p>
                 <p className="text-xs text-brand-primary mt-1">Build from source • Mac required</p>
               </div>
@@ -72,7 +72,7 @@ export default function AppPage() {
           {/* Alpha Installation Instructions */}
           <div className="bg-dark-surface/50 border border-dark-border rounded-lg p-6">
             <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
-              📱 Android Alpha Installation
+              📱 Android Beta Installation
             </h3>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
@@ -101,11 +101,11 @@ export default function AppPage() {
                 </ol>
               </div>
               <div>
-                <h4 className="font-semibold text-brand-primary mb-3">⚠️ Alpha Testing Notes:</h4>
+                <h4 className="font-semibold text-brand-primary mb-3">⚠️ Beta Testing Notes:</h4>
                 <ul className="space-y-2 text-sm text-text-secondary">
                   <li className="flex gap-2">
                     <span className="text-yellow-400">•</span>
-                    <span>Large file size (~219MB) - debug build with extra tools</span>
+                    <span>Large file size (~220MB) - debug build with extra tools</span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-yellow-400">•</span>
@@ -113,7 +113,7 @@ export default function AppPage() {
                   </li>
                   <li className="flex gap-2">
                     <span className="text-yellow-400">•</span>
-                    <span>Data may be reset between alpha versions</span>
+                    <span>Data may be reset between beta versions</span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-yellow-400">•</span>

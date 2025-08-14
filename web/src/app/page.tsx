@@ -152,7 +152,7 @@ export default function Home() {
               <h5 className="font-semibold mb-4 text-text-primary">Community</h5>
               <ul className="space-y-2 text-sm text-text-secondary">
                 <li><a href="#" className="hover:text-brand-primary transition-colors">Discord</a></li>
-                <li><a href="https://github.com/ufobeep/ufobeep" className="hover:text-brand-primary transition-colors">GitHub</a></li>
+                <li><a href="https://github.com/varak/ufobeep" className="hover:text-brand-primary transition-colors">GitHub</a></li>
                 <li><a href="#" className="hover:text-brand-primary transition-colors">Support</a></li>
               </ul>
             </div>

@@ -15,10 +15,10 @@ export default function IOSTestPage() {
           
           <div className="text-6xl mb-6">🍎</div>
           <h1 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">
-            iOS Testing Instructions
+            iOS Beta Testing Instructions
           </h1>
           <p className="text-xl text-text-secondary max-w-2xl mx-auto">
-            How to test UFOBeep on iPhone - for friends and beta testers
+            How to test UFOBeep Beta on iPhone - for friends and beta testers
           </p>
         </div>
 
