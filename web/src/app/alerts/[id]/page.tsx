@@ -203,9 +203,9 @@ export default function AlertPage({ params }: AlertPageProps) {
                   <ImageWithLoading 
                     src={`${alert.media_files[0].thumbnail_url}?thumbnail=true`}
                     alt={alert.title}
-                    fill
-                    className="object-cover group-hover:opacity-90 transition-opacity border-4 border-blue-500"
-                    sizes="(max-width: 768px) 95vw, (max-width: 1200px) 75vw, 60vw"
+                    width={800}
+                    height={600}
+                    className="w-full h-full object-cover group-hover:opacity-90 transition-opacity border-4 border-blue-500"
                   />
                   {/* Click to view full size overlay */}
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
