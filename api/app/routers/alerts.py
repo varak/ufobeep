@@ -127,11 +127,18 @@ def sighting_to_alert(sighting, is_owner: bool = False):
     if hasattr(sighting, 'media_files') and sighting.media_files:
         alert_data["media_files"] = []
         for media in sighting.media_files:
+            # Construct proper API endpoint URL instead of direct storage URL
+            # Extract sighting ID and filename from the storage URL if needed
+            api_base_url = settings.API_BASE_URL if hasattr(settings, 'API_BASE_URL') else "https://api.ufobeep.com"
+            
+            # Construct the proper media API endpoint URL
+            media_url = f"{api_base_url}/media/{sighting.id}/{media.filename}"
+            
             media_data = {
                 "id": media.id,
                 "type": media.type,
                 "filename": media.filename,
-                "url": media.url,
+                "url": media_url,  # Use the API endpoint URL
                 "content_type": media.content_type,
                 "size_bytes": media.size_bytes,
             }
