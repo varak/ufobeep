@@ -23,6 +23,7 @@ router = APIRouter(
 
 
 @router.get("/{sighting_id}/{filename}")
+@router.head("/{sighting_id}/{filename}")
 async def serve_media_file(
     sighting_id: str,
     filename: str,
