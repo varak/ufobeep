@@ -193,19 +193,19 @@ export default function AlertPage({ params }: AlertPageProps) {
         <div className="mb-8">
           {alert.media_files && alert.media_files.length > 0 ? (
             <div className="bg-dark-surface border border-dark-border rounded-lg overflow-hidden">
-              <div className="bg-dark-background relative cursor-pointer group min-h-[400px] max-h-[600px] border-2 border-red-500">
+              <div className="bg-dark-background relative cursor-pointer group">
                 <a 
                   href={alert.media_files[0].url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block w-full h-full"
+                  className="block"
                 >
                   <ImageWithLoading 
                     src={`${alert.media_files[0].thumbnail_url}?thumbnail=true`}
                     alt={alert.title}
                     width={800}
                     height={600}
-                    className="w-full h-full object-cover group-hover:opacity-90 transition-opacity border-4 border-blue-500"
+                    className="w-full h-auto object-contain group-hover:opacity-90 transition-opacity"
                   />
                   {/* Click to view full size overlay */}
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">

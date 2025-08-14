@@ -107,9 +107,9 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
             <ImageWithLoading 
               src={`${alert.media_files[0].thumbnail_url}?thumbnail=true`}
               alt={alert.title}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
-              sizes="(max-width: 768px) 90vw, (max-width: 1200px) 45vw, 30vw"
+              width={400}
+              height={192}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
             <div className="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
               📸 {alert.media_files.length}
