@@ -59,13 +59,14 @@ async def serve_media_file(
                     image = Image.open(f)
                     image.load()  # Ensure image is fully loaded
                 
-                # Fix image orientation based on EXIF data using transpose
+                # Fix image orientation based on EXIF data only
                 try:
                     if hasattr(image, 'getexif'):
                         exif = image.getexif()
                         if exif:
                             orientation = exif.get(274)  # 274 is ORIENTATION tag
                             if orientation:
+                                logger.info(f"EXIF orientation found: {orientation}")
                                 # Use transpose methods for correct EXIF rotation
                                 if orientation == 2:
                                     image = image.transpose(Image.FLIP_LEFT_RIGHT)
