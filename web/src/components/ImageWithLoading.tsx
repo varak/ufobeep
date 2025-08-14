@@ -72,7 +72,7 @@ export default function ImageWithLoading({
         onLoad={handleLoad}
         onError={handleError}
         priority={priority}
-        sizes={fill ? "100vw" : sizes}
+        sizes={sizes || (fill ? "100vw" : undefined)}
       />
     </div>
   )

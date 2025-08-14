@@ -193,7 +193,7 @@ export default function AlertPage({ params }: AlertPageProps) {
         <div className="mb-8">
           {alert.media_files && alert.media_files.length > 0 ? (
             <div className="bg-dark-surface border border-dark-border rounded-lg overflow-hidden">
-              <div className="aspect-video bg-dark-background relative cursor-pointer group">
+              <div className="aspect-video bg-dark-background relative cursor-pointer group min-h-[400px]">
                 <a 
                   href={alert.media_files[0].url}
                   target="_blank"
@@ -205,7 +205,7 @@ export default function AlertPage({ params }: AlertPageProps) {
                     alt={alert.title}
                     fill
                     className="object-contain group-hover:opacity-90 transition-opacity"
-                    sizes="(max-width: 768px) 100vw, 75vw"
+                    sizes="(max-width: 768px) 95vw, (max-width: 1200px) 75vw, 60vw"
                   />
                   {/* Click to view full size overlay */}
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
@@ -250,7 +250,7 @@ export default function AlertPage({ params }: AlertPageProps) {
               </p>
               <button
                 onClick={() => {
-                  alert('Coming soon! Media upload for web users will be available in a future update. For now, use the mobile app to submit additional media.')
+                  window.alert('Coming soon! Media upload for web users will be available in a future update. For now, use the mobile app to submit additional media.')
                 }}
                 className="bg-brand-primary text-text-inverse px-6 py-3 rounded-lg hover:bg-brand-primary-dark transition-colors font-medium"
               >

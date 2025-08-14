@@ -13,8 +13,22 @@ const nextConfig = {
   
   // Image optimization
   images: {
-    domains: ['localhost', 'ufobeep.com', 'api.ufobeep.com', 'api-staging.ufobeep.com'],
+    domains: ['localhost', 'ufobeep.com', 'api.ufobeep.com'],
     formats: ['image/webp', 'image/avif'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ufobeep.com',
+        port: '',
+        pathname: '/media/**',
+      },
+      {
+        protocol: 'https', 
+        hostname: 'api.ufobeep.com',
+        port: '',
+        pathname: '/media/**',
+      }
+    ],
   },
   
   // Internationalization
