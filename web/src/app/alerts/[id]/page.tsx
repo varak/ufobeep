@@ -61,26 +61,47 @@ export default function AlertPage({ params }: AlertPageProps) {
   useEffect(() => {
     const fetchAlert = async () => {
       try {
-        // Fetch all recent alerts and find one matching the ID
-        const response = await fetch('https://api.ufobeep.com/alerts?limit=100&offset=0&verified_only=false')
+        // Search through multiple pages to find the alert
+        let foundAlert = null
+        let currentOffset = 0
+        const limit = 100
+        const maxSearchPages = 10 // Search up to 1000 alerts
         
-        if (!response.ok) {
-          throw new Error(`Failed to fetch alerts: ${response.status}`)
+        for (let page = 0; page < maxSearchPages; page++) {
+          console.log(`Searching for alert ${params.id} - page ${page + 1}`)
+          
+          const response = await fetch(`https://api.ufobeep.com/alerts?limit=${limit}&offset=${currentOffset}&verified_only=false`)
+          
+          if (!response.ok) {
+            throw new Error(`Failed to fetch alerts: ${response.status}`)
+          }
+          
+          const data = await response.json()
+          
+          if (!data.success || !data.data?.alerts) {
+            throw new Error('Invalid API response structure')
+          }
+          
+          // Find alert by matching ID in this batch
+          foundAlert = data.data.alerts.find((alert: Alert) => alert.id === params.id)
+          
+          if (foundAlert) {
+            console.log(`Found alert ${params.id} on page ${page + 1}`)
+            setAlert(foundAlert)
+            break
+          }
+          
+          // If we got fewer alerts than the limit, we've reached the end
+          if (data.data.alerts.length < limit) {
+            console.log(`Reached end of alerts at page ${page + 1}, alert ${params.id} not found`)
+            break
+          }
+          
+          currentOffset += limit
         }
-        
-        const data = await response.json()
-        
-        if (!data.success || !data.data?.alerts) {
-          throw new Error('Invalid API response structure')
-        }
-        
-        // Find alert by matching ID
-        const foundAlert = data.data.alerts.find((alert: Alert) => alert.id === params.id)
         
         if (!foundAlert) {
-          setError('Alert not found')
-        } else {
-          setAlert(foundAlert)
+          setError(`Alert not found. Searched through ${maxSearchPages * limit} recent alerts.`)
         }
         
       } catch (err) {
@@ -100,7 +121,8 @@ export default function AlertPage({ params }: AlertPageProps) {
         <div className="max-w-4xl mx-auto">
           <div className="text-center">
             <div className="text-6xl mb-6">🛸</div>
-            <p className="text-text-secondary">Loading alert details...</p>
+            <p className="text-text-secondary mb-4">Loading alert details...</p>
+            <p className="text-text-tertiary text-sm">Searching through recent UFO sightings for alert {params.id}</p>
           </div>
         </div>
       </main>
