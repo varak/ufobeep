@@ -30,6 +30,7 @@ class Alert {
     this.matrixRoomId,
     this.reporterId,
     this.enrichment,
+    this.photoAnalysis,
   });
 
   final String id;
@@ -55,6 +56,7 @@ class Alert {
   final String? matrixRoomId;
   final String? reporterId;
   final Map<String, dynamic>? enrichment;
+  final List<Map<String, dynamic>>? photoAnalysis;
 
   // Computed properties
   bool get isVerified => status == 'verified';
@@ -85,6 +87,7 @@ class Alert {
     String? matrixRoomId,
     String? reporterId,
     Map<String, dynamic>? enrichment,
+    List<Map<String, dynamic>>? photoAnalysis,
   }) {
     return Alert(
       id: id ?? this.id,
@@ -110,6 +113,7 @@ class Alert {
       matrixRoomId: matrixRoomId ?? this.matrixRoomId,
       reporterId: reporterId ?? this.reporterId,
       enrichment: enrichment ?? this.enrichment,
+      photoAnalysis: photoAnalysis ?? this.photoAnalysis,
     );
   }
 
@@ -164,6 +168,7 @@ class Alert {
       matrixRoomId: json['matrix_room_id'] as String?,
       reporterId: json['reporter_id'] as String?,
       enrichment: json['enrichment'] as Map<String, dynamic>?,
+      photoAnalysis: (json['photo_analysis'] as List<dynamic>?)?.cast<Map<String, dynamic>>(),
     );
   }
 
@@ -193,6 +198,7 @@ class Alert {
       if (matrixRoomId != null) 'matrix_room_id': matrixRoomId,
       if (reporterId != null) 'reporter_id': reporterId,
       if (enrichment != null) 'enrichment': enrichment,
+      if (photoAnalysis != null) 'photo_analysis': photoAnalysis,
     };
   }
 }
@@ -322,7 +328,17 @@ class AlertsList extends _$AlertsList {
 @riverpod
 Future<Alert?> alertById(AlertByIdRef ref, String alertId) async {
   try {
-    // First try to get from cached alerts
+    // Always fetch fresh data from API to get latest analysis status
+    // This ensures photo analysis status updates are reflected immediately
+    final apiClient = ApiClient.instance;
+    final response = await apiClient.getAlertDetails(alertId);
+    
+    if (response['success'] == true) {
+      final alertData = response['data'] as Map<String, dynamic>;
+      return Alert.fromApiJson(alertData);
+    }
+    
+    // Fallback to cached data if API call fails
     final alertsAsync = ref.watch(alertsListProvider);
     if (alertsAsync.hasValue) {
       final alerts = alertsAsync.value!;
@@ -333,18 +349,21 @@ Future<Alert?> alertById(AlertByIdRef ref, String alertId) async {
       }
     }
     
-    // If not found in cache, fetch from API
-    final apiClient = ApiClient.instance;
-    final response = await apiClient.getAlertDetails(alertId);
-    
-    if (response['success'] == true) {
-      final alertData = response['data'] as Map<String, dynamic>;
-      return Alert.fromApiJson(alertData);
-    }
-    
     return null;
   } catch (e) {
     print('Error fetching alert $alertId: $e');
+    
+    // Fallback to cached data on error
+    final alertsAsync = ref.watch(alertsListProvider);
+    if (alertsAsync.hasValue) {
+      final alerts = alertsAsync.value!;
+      for (final alert in alerts) {
+        if (alert.id == alertId) {
+          return alert;
+        }
+      }
+    }
+    
     return null;
   }
 }

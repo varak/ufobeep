@@ -340,9 +340,9 @@ export default function AlertPage({ params }: AlertPageProps) {
                             analysis.analysis_status === 'pending' ? 'text-yellow-400' :
                             'text-red-400'
                           }`}>
-                            {analysis.analysis_status === 'completed' ? 'Analysis Complete' :
-                             analysis.analysis_status === 'pending' ? 'Analysis Pending...' :
-                             'Analysis Failed'}
+                            {analysis.analysis_status === 'completed' ? 'Star/Planet Detection Complete' :
+                             analysis.analysis_status === 'pending' ? 'Star/Planet Detection Pending...' :
+                             'Star/Planet Detection Failed'}
                           </span>
                         </div>
                       </div>
@@ -409,7 +409,7 @@ export default function AlertPage({ params }: AlertPageProps) {
                       {/* Pending State */}
                       {analysis.analysis_status === 'pending' && (
                         <div className="text-text-secondary text-sm">
-                          Analyzing photo for planets and satellites...
+                          Analyzing photo for planets, stars, and satellites...
                         </div>
                       )}
                     </div>

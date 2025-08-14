@@ -279,6 +279,27 @@ class AlertDetailScreen extends ConsumerWidget {
                   const SizedBox(height: 24),
                 ],
 
+                // Photo Analysis Section (if available)
+                if (alert.photoAnalysis != null && alert.photoAnalysis!.isNotEmpty) ...[
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Photo Analysis',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: 12),
+                          ...alert.photoAnalysis!.map((analysis) => _buildPhotoAnalysisItem(analysis)),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                ],
+
                 // Action Buttons
                 Column(
                   children: [
@@ -467,6 +488,190 @@ class AlertDetailScreen extends ConsumerWidget {
           ),
         ],
       ],
+    );
+  }
+
+  Widget _buildPhotoAnalysisItem(Map<String, dynamic> analysis) {
+    final String status = analysis['analysis_status'] ?? 'pending';
+    final String? classification = analysis['classification'];
+    final String? matchedObject = analysis['matched_object'];
+    final double? confidence = analysis['confidence']?.toDouble();
+    final String filename = analysis['filename'] ?? 'Unknown file';
+    final int? processingTime = analysis['processing_duration_ms'];
+    
+    // Status color and icon
+    Color statusColor;
+    IconData statusIcon;
+    String statusText;
+    
+    switch (status) {
+      case 'completed':
+        statusColor = AppColors.brandPrimary;
+        statusIcon = Icons.check_circle;
+        statusText = 'Star/Planet Detection Complete';
+        break;
+      case 'pending':
+        statusColor = AppColors.semanticWarning;
+        statusIcon = Icons.pending;
+        statusText = 'Star/Planet Detection Pending...';
+        break;
+      case 'failed':
+        statusColor = AppColors.semanticError;
+        statusIcon = Icons.error;
+        statusText = 'Star/Planet Detection Failed';
+        break;
+      default:
+        statusColor = AppColors.textSecondary;
+        statusIcon = Icons.help;
+        statusText = 'Unknown Status';
+    }
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.darkSurface.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: statusColor.withOpacity(0.3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header with filename and status
+          Row(
+            children: [
+              Icon(Icons.photo, color: AppColors.textSecondary, size: 16),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  filename,
+                  style: const TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Row(
+                children: [
+                  Icon(statusIcon, color: statusColor, size: 16),
+                  const SizedBox(width: 4),
+                  Text(
+                    statusText,
+                    style: TextStyle(
+                      color: statusColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          
+          if (status == 'completed' && classification != null) ...[
+            const SizedBox(height: 12),
+            // Analysis results
+            Row(
+              children: [
+                // Classification icon
+                Icon(
+                  classification == 'planet' ? Icons.brightness_2 :
+                  classification == 'satellite' ? Icons.satellite_alt :
+                  Icons.help_outline,
+                  color: classification == 'planet' ? AppColors.brandPrimary :
+                         classification == 'satellite' ? Colors.cyan :
+                         AppColors.textSecondary,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (matchedObject != null) ...[
+                        Text(
+                          matchedObject,
+                          style: const TextStyle(
+                            color: AppColors.textPrimary,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          '${classification![0].toUpperCase()}${classification.substring(1)} detected',
+                          style: const TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ] else ...[
+                        Text(
+                          classification == 'inconclusive' ? 'No celestial objects detected' : 
+                          classification == 'unknown' ? 'Analysis inconclusive' :
+                          'Unidentified ${classification}',
+                          style: const TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                      if (confidence != null) ...[
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            Text(
+                              'Confidence: ',
+                              style: const TextStyle(
+                                color: AppColors.textSecondary,
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              '${(confidence * 100).toInt()}%',
+                              style: TextStyle(
+                                color: confidence > 0.8 ? AppColors.brandPrimary :
+                                       confidence > 0.5 ? AppColors.semanticWarning :
+                                       AppColors.semanticError,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+          
+          if (status == 'failed') ...[
+            const SizedBox(height: 8),
+            Text(
+              analysis['analysis_error'] ?? 'Analysis failed for unknown reason',
+              style: const TextStyle(
+                color: AppColors.semanticError,
+                fontSize: 12,
+              ),
+            ),
+          ],
+          
+          if (processingTime != null && status == 'completed') ...[
+            const SizedBox(height: 8),
+            Text(
+              'Analysis completed in ${(processingTime / 1000).toStringAsFixed(1)}s',
+              style: const TextStyle(
+                color: AppColors.textTertiary,
+                fontSize: 11,
+              ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 
