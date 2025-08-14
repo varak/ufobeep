@@ -82,8 +82,20 @@ async def serve_media_file(
                     
                     # Fix image orientation based on EXIF data
                     try:
+                        from PIL import ExifTags
                         from PIL.ExifTags import ORIENTATION
-                        if hasattr(image, '_getexif'):
+                        if hasattr(image, 'getexif'):
+                            exif = image.getexif()
+                            if exif is not None:
+                                orientation = exif.get(ORIENTATION)
+                                if orientation == 3:
+                                    image = image.rotate(180, expand=True)
+                                elif orientation == 6:
+                                    image = image.rotate(270, expand=True)
+                                elif orientation == 8:
+                                    image = image.rotate(90, expand=True)
+                        elif hasattr(image, '_getexif'):
+                            # Fallback for older PIL versions
                             exif = image._getexif()
                             if exif is not None:
                                 orientation = exif.get(ORIENTATION)
@@ -93,8 +105,9 @@ async def serve_media_file(
                                     image = image.rotate(270, expand=True)
                                 elif orientation == 8:
                                     image = image.rotate(90, expand=True)
-                    except Exception:
+                    except Exception as e:
                         # If EXIF processing fails, continue without rotation
+                        logger.debug(f"EXIF processing failed for {filename}: {e}")
                         pass
                     
                     # Convert RGBA to RGB for JPEG compatibility
