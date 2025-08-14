@@ -205,6 +205,7 @@ export default function AlertPage({ params }: AlertPageProps) {
                     alt={alert.title}
                     fill
                     className="object-contain group-hover:opacity-90 transition-opacity"
+                    sizes="(max-width: 768px) 100vw, 75vw"
                   />
                   {/* Click to view full size overlay */}
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
@@ -238,6 +239,25 @@ export default function AlertPage({ params }: AlertPageProps) {
               <h2 className="text-xl font-semibold text-text-primary mb-4">Description</h2>
               <p className="text-text-secondary leading-relaxed">
                 {alert.description}
+              </p>
+            </section>
+
+            {/* Add Media Section */}
+            <section className="bg-dark-surface border border-dark-border rounded-lg p-6">
+              <h2 className="text-xl font-semibold text-text-primary mb-4">Additional Media</h2>
+              <p className="text-text-secondary mb-4">
+                Have additional photos or videos of this sighting? Help the community by adding more evidence.
+              </p>
+              <button
+                onClick={() => {
+                  alert('Coming soon! Media upload for web users will be available in a future update. For now, use the mobile app to submit additional media.')
+                }}
+                className="bg-brand-primary text-text-inverse px-6 py-3 rounded-lg hover:bg-brand-primary-dark transition-colors font-medium"
+              >
+                📷 Add Media
+              </button>
+              <p className="text-text-tertiary text-sm mt-2">
+                Currently available for: Original submitter, administrators, and users within weather visibility range
               </p>
             </section>
 
