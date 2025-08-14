@@ -23,6 +23,7 @@ Single FastAPI app with routers:
 - **Single .env file location**: `/home/mike/D/ufobeep/.env` (project root)
 - **FastAPI settings**: Configured to read `../.env` (parent directory from api folder)
 - **No duplicate .env files** - consolidated into single project root file
+- **External API keys added**: Astrometry, N2YO satellites, ADS-B Exchange, Google Vision, Roboflow
 
 ## Storage (Filesystem)
 - **Storage type**: Local filesystem storage (no longer MinIO)
@@ -63,8 +64,10 @@ Single FastAPI app with routers:
 
 ## Mobile App Flow
 - Camera capture → Beep composition → Send beep → Alert detail page
+- Gallery photo selection → EXIF GPS extraction → Send beep → Alert detail page
 - Photos saved to both app storage and user's gallery
-- GPS data collected and sent with sighting submissions
+- GPS data collected from device sensors (camera captures) or EXIF data (gallery photos)
+- **Location data workflow**: ✅ FIXED - Both app captures and gallery photos preserve GPS coordinates
 
 ## Testing Commands
 ```bash
@@ -100,6 +103,9 @@ ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep/web && rm -rf .next nod
 - **Environment files consolidated** - one .env file in project root
 - **Storage migrated to filesystem** - no longer using MinIO, direct filesystem storage
 - **Media storage complete** - using sighting IDs for permanent URLs with thumbnail support
+- **Location data fixed** - Gallery photos now preserve GPS EXIF data using photo_manager library
+- **Mobile permissions** - Added Android 13+ photo permissions and media location access
+- **Photo metadata working** - Both camera captures and gallery selections extract GPS coordinates
 - **SSH production**: `ssh -p 322 ufobeep@ufobeep.com`
 - **Standard deploy**: `git push && ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep && git pull origin main && cd web && npm run build && pm2 restart all"`
 - **Clean deploy** (when webpack breaks): `ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep/web && rm -rf .next node_modules/.cache && npm run build && pm2 restart all"`
