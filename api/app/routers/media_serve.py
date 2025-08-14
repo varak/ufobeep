@@ -1,13 +1,11 @@
-from datetime import datetime
+import os
 import logging
-import httpx
+from pathlib import Path
 from io import BytesIO
 
 from fastapi import APIRouter, HTTPException, status, Query
-from fastapi.responses import RedirectResponse, StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from PIL import Image
-
-from ..services.storage_service import storage_service
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +19,8 @@ router = APIRouter(
     }
 )
 
+# Media storage directory
+MEDIA_ROOT = Path("/home/ufobeep/ufobeep/media")
 
 @router.get("/{sighting_id}/{filename}")
 @router.head("/{sighting_id}/{filename}")
@@ -32,18 +32,17 @@ async def serve_media_file(
     height: int = Query(600, description="Thumbnail height")
 ):
     """
-    Serve media files directly using permanent URLs with optional thumbnail generation
+    Serve media files directly from local filesystem with optional thumbnail generation
     
     This endpoint provides direct access to media files organized by sighting ID.
-    Proxies content through HTTPS to avoid mixed content issues.
+    Files are stored at: /home/ufobeep/ufobeep/media/{sighting_id}/{filename}
     """
     try:
-        # Construct the object key using our sighting-based structure
-        object_key = f"sightings/{sighting_id}/{filename}"
+        # Construct the file path
+        file_path = MEDIA_ROOT / sighting_id / filename
         
         # Check if the file exists
-        metadata = await storage_service.get_object_metadata(object_key)
-        if not metadata:
+        if not file_path.exists() or not file_path.is_file():
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={
@@ -52,125 +51,78 @@ async def serve_media_file(
                 }
             )
         
-        # Generate a presigned URL for direct access
-        public_url = await storage_service.generate_public_url(
-            object_key=object_key,
-            expires_in=3600  # 1 hour
-        )
-        
-        # For web browsers, proxy the content to avoid mixed content issues
-        # This ensures HTTPS delivery and enables thumbnail generation
-        async with httpx.AsyncClient() as client:
-            response = await client.get(public_url)
-            
-            if response.status_code != 200:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail={
-                        "error": "FILE_ACCESS_ERROR",
-                        "message": "Failed to access media file from storage"
-                    }
-                )
-            
-            content_type = metadata.get('content_type', 'application/octet-stream')
-            original_content = response.content
-            
-            # If thumbnail is requested and it's an image, generate thumbnail
-            if thumbnail and content_type.startswith('image/'):
+        # If thumbnail is requested and it's an image, generate thumbnail
+        if thumbnail and filename.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.bmp')):
+            try:
+                # Open image with PIL
+                with open(file_path, 'rb') as f:
+                    image = Image.open(f)
+                    image.load()  # Ensure image is fully loaded
+                
+                # Fix image orientation based on EXIF data using transpose
                 try:
-                    # Open image with PIL
-                    image = Image.open(BytesIO(original_content))
-                    
-                    # Fix image orientation based on EXIF data
-                    # Use transpose for proper EXIF orientation correction
-                    try:
-                        from PIL import ExifTags
-                        from PIL.ExifTags import ORIENTATION
-                        if hasattr(image, 'getexif'):
-                            exif = image.getexif()
-                            if exif is not None:
-                                orientation = exif.get(ORIENTATION)
-                                logger.info(f"EXIF orientation for {filename}: {orientation}")
-                                if orientation:
-                                    # Use transpose methods for correct EXIF rotation
-                                    if orientation == 2:
-                                        # Mirrored horizontally
-                                        image = image.transpose(Image.FLIP_LEFT_RIGHT)
-                                    elif orientation == 3:
-                                        # Rotated 180 degrees
-                                        image = image.transpose(Image.ROTATE_180)
-                                    elif orientation == 4:
-                                        # Mirrored vertically
-                                        image = image.transpose(Image.FLIP_TOP_BOTTOM)
-                                    elif orientation == 5:
-                                        # Mirrored horizontally then rotated 90 CCW
-                                        image = image.transpose(Image.FLIP_LEFT_RIGHT)
-                                        image = image.transpose(Image.ROTATE_90)
-                                    elif orientation == 6:
-                                        # Rotated 90 CW (RightTop)
-                                        logger.info(f"Before transpose: {image.size}")
-                                        image = image.transpose(Image.ROTATE_270)
-                                        logger.info(f"After transpose: {image.size}")
-                                    elif orientation == 7:
-                                        # Mirrored horizontally then rotated 90 CW
-                                        image = image.transpose(Image.FLIP_LEFT_RIGHT)
-                                        image = image.transpose(Image.ROTATE_270)
-                                    elif orientation == 8:
-                                        # Rotated 90 CCW (LeftBottom)
-                                        image = image.transpose(Image.ROTATE_90)
-                        elif hasattr(image, '_getexif'):
-                            # Fallback for older PIL versions
-                            exif = image._getexif()
-                            if exif is not None:
-                                orientation = exif.get(ORIENTATION)
-                                if orientation == 3:
+                    if hasattr(image, 'getexif'):
+                        exif = image.getexif()
+                        if exif:
+                            orientation = exif.get(274)  # 274 is ORIENTATION tag
+                            if orientation:
+                                # Use transpose methods for correct EXIF rotation
+                                if orientation == 2:
+                                    image = image.transpose(Image.FLIP_LEFT_RIGHT)
+                                elif orientation == 3:
                                     image = image.transpose(Image.ROTATE_180)
+                                elif orientation == 4:
+                                    image = image.transpose(Image.FLIP_TOP_BOTTOM)
+                                elif orientation == 5:
+                                    image = image.transpose(Image.FLIP_LEFT_RIGHT)
+                                    image = image.transpose(Image.ROTATE_90)
                                 elif orientation == 6:
+                                    # RightTop - rotate 90 CW
+                                    image = image.transpose(Image.ROTATE_270)
+                                elif orientation == 7:
+                                    image = image.transpose(Image.FLIP_LEFT_RIGHT)
                                     image = image.transpose(Image.ROTATE_270)
                                 elif orientation == 8:
+                                    # LeftBottom - rotate 90 CCW
                                     image = image.transpose(Image.ROTATE_90)
-                    except Exception as e:
-                        # If EXIF processing fails, continue without rotation
-                        logger.debug(f"EXIF processing failed for {filename}: {e}")
-                        pass
-                    
-                    # Convert RGBA to RGB for JPEG compatibility
-                    if image.mode == 'RGBA':
-                        background = Image.new('RGB', image.size, (255, 255, 255))
-                        background.paste(image, mask=image.split()[-1])
-                        image = background
-                    
-                    # Calculate aspect ratio preserving thumbnail size
-                    image.thumbnail((width, height), Image.Resampling.LANCZOS)
-                    
-                    # Save as JPEG for web optimization
-                    thumbnail_io = BytesIO()
-                    image.save(thumbnail_io, format='JPEG', quality=85, optimize=True)
-                    thumbnail_content = thumbnail_io.getvalue()
-                    
-                    return StreamingResponse(
-                        BytesIO(thumbnail_content),
-                        media_type="image/jpeg",
-                        headers={
-                            "Cache-Control": "public, max-age=3600",
-                            "Content-Length": str(len(thumbnail_content))
-                        }
-                    )
-                    
                 except Exception as e:
-                    logger.warning(f"Failed to generate thumbnail for {filename}: {e}")
-                    # Fall back to original image
-                    pass
-            
-            # Return original content proxied through HTTPS
-            return StreamingResponse(
-                BytesIO(original_content),
-                media_type=content_type,
-                headers={
-                    "Cache-Control": "public, max-age=3600",
-                    "Content-Length": str(len(original_content))
-                }
-            )
+                    logger.debug(f"EXIF processing failed for {filename}: {e}")
+                
+                # Convert RGBA to RGB for JPEG compatibility
+                if image.mode == 'RGBA':
+                    background = Image.new('RGB', image.size, (255, 255, 255))
+                    background.paste(image, mask=image.split()[-1])
+                    image = background
+                
+                # Calculate aspect ratio preserving thumbnail size
+                image.thumbnail((width, height), Image.Resampling.LANCZOS)
+                
+                # Save as JPEG for web optimization
+                thumbnail_io = BytesIO()
+                image.save(thumbnail_io, format='JPEG', quality=85, optimize=True)
+                thumbnail_content = thumbnail_io.getvalue()
+                
+                return StreamingResponse(
+                    BytesIO(thumbnail_content),
+                    media_type="image/jpeg",
+                    headers={
+                        "Cache-Control": "public, max-age=3600",
+                        "Content-Length": str(len(thumbnail_content))
+                    }
+                )
+                
+            except Exception as e:
+                logger.warning(f"Failed to generate thumbnail for {filename}: {e}")
+                # Fall back to original image
+                pass
+        
+        # Return original file directly
+        return FileResponse(
+            file_path,
+            headers={
+                "Cache-Control": "public, max-age=3600"
+            }
+        )
         
     except HTTPException:
         # Re-raise HTTP exceptions
