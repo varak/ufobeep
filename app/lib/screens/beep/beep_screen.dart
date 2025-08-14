@@ -281,33 +281,6 @@ class _BeepScreenState extends State<BeepScreen> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              // Status indicator
-              if (!_sensorsAvailable) ...[
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  margin: const EdgeInsets.only(bottom: 16),
-                  decoration: BoxDecoration(
-                    color: AppColors.semanticWarning.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: AppColors.semanticWarning.withOpacity(0.3)),
-                  ),
-                  child: const Row(
-                    children: [
-                      Icon(Icons.warning, color: AppColors.semanticWarning, size: 20),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          'Device sensors not available. Plane matching will be limited.',
-                          style: TextStyle(
-                            color: AppColors.semanticWarning,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
 
               // Error message
               if (_errorMessage != null) ...[
@@ -366,7 +339,7 @@ class _BeepScreenState extends State<BeepScreen> {
 
                     // Instructions
                     const Text(
-                      'Capture or Select Sighting',
+                      'Report a Sighting',
                       style: TextStyle(
                         color: AppColors.textPrimary,
                         fontSize: 24,
@@ -375,7 +348,7 @@ class _BeepScreenState extends State<BeepScreen> {
                     ),
                     const SizedBox(height: 12),
                     const Text(
-                      'Point your camera at the sky object and tap capture.\nSensor data will be collected for plane matching.',
+                      'Take a photo or select from your gallery',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: AppColors.textSecondary,
@@ -436,25 +409,6 @@ class _BeepScreenState extends State<BeepScreen> {
                 ),
               ),
 
-              // Footer info
-              if (_sensorsAvailable)
-                const Padding(
-                  padding: EdgeInsets.only(top: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.sensors, color: AppColors.brandPrimary, size: 16),
-                      SizedBox(width: 8),
-                      Text(
-                        'Sensors ready for plane matching',
-                        style: TextStyle(
-                          color: AppColors.textTertiary,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
             ],
           ),
         ),

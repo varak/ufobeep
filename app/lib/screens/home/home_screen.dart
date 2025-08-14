@@ -28,8 +28,6 @@ class HomeScreen extends ConsumerWidget {
         color: AppColors.brandPrimary,
         child: _buildAsyncBody(context, ref, filteredAlertsAsync, isLoading, filter),
       ),
-      floatingActionButton: _buildFAB(context),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -268,7 +266,7 @@ class HomeScreen extends ConsumerWidget {
         // Map view
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 100), // Bottom padding for FAB
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             child: Column(
               children: [
                 // Map widget
@@ -277,7 +275,7 @@ class HomeScreen extends ConsumerWidget {
                   child: MapWidget(
                     alerts: alerts,
                     showControls: true,
-                    zoom: 4.0, // Show wider view of US to see more sightings
+                    zoom: 3.0, // Zoomed out more to show entire US clearly
                     onAlertTap: (alert) {
                       context.go('/alert/${alert.id}');
                     },
@@ -320,25 +318,6 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildFAB(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 32),
-      child: FloatingActionButton.extended(
-        onPressed: () => context.go('/beep'),
-        backgroundColor: AppColors.brandPrimary,
-        foregroundColor: Colors.black,
-        elevation: 4,
-        icon: const Icon(Icons.camera_alt, size: 24),
-        label: const Text(
-          'Report Sighting - Send a Beep!',
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 16,
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 class _EmptyAlertsView extends StatelessWidget {
