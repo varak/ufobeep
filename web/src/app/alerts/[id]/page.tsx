@@ -368,8 +368,10 @@ export default function AlertPage({ params }: AlertPageProps) {
                                 </>
                               ) : (
                                 <div className="text-text-secondary">
-                                  {analysis.classification === 'unknown' 
+                                  {analysis.classification === 'inconclusive' 
                                     ? 'No celestial objects detected' 
+                                    : analysis.classification === 'unknown'
+                                    ? 'Analysis inconclusive'
                                     : `Unidentified ${analysis.classification}`}
                                 </div>
                               )}
