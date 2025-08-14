@@ -90,6 +90,7 @@ async def serve_media_file(
                             exif = image.getexif()
                             if exif is not None:
                                 orientation = exif.get(ORIENTATION)
+                                logger.info(f"EXIF orientation for {filename}: {orientation}")
                                 if orientation:
                                     # Use transpose methods for correct EXIF rotation
                                     if orientation == 2:
@@ -107,7 +108,9 @@ async def serve_media_file(
                                         image = image.transpose(Image.ROTATE_90)
                                     elif orientation == 6:
                                         # Rotated 90 CW (RightTop)
+                                        logger.info(f"Before transpose: {image.size}")
                                         image = image.transpose(Image.ROTATE_270)
+                                        logger.info(f"After transpose: {image.size}")
                                     elif orientation == 7:
                                         # Mirrored horizontally then rotated 90 CW
                                         image = image.transpose(Image.FLIP_LEFT_RIGHT)
