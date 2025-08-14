@@ -747,8 +747,9 @@ extension ApiClientExtension on ApiClient {
       
       debugPrint('File uploaded to storage successfully');
       
-      // Step 3: Mark upload as complete and get media URL
-      final mediaUrl = await completeMediaUpload(uploadId, file);
+      // Step 3: File is already saved, return the API URL
+      final fileName = file.path.split('/').last;
+      final mediaUrl = '${AppEnvironment.apiBaseUrl}/media/default/${fileName}';
       
       debugPrint('Media upload completed successfully with URL: $mediaUrl');
       return mediaUrl;
@@ -783,8 +784,8 @@ extension ApiClientExtension on ApiClient {
       
       debugPrint('File uploaded to storage successfully');
       
-      // Step 3: Mark upload as complete and get filename
-      final fileName = await completeMediaUploadForSighting(uploadId, file);
+      // Step 3: File is already saved, just return filename
+      final fileName = file.path.split('/').last;
       
       debugPrint('Media upload completed successfully with filename: $fileName');
       return fileName;
