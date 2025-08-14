@@ -105,7 +105,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
         {alert.media_files && alert.media_files.length > 0 ? (
           <div className="h-48 bg-gray-800 relative overflow-hidden">
             <ImageWithLoading 
-              src={`${alert.media_files[0].url}?thumbnail=true`}
+              src={`${alert.media_files[0].thumbnail_url}?thumbnail=true`}
               alt={alert.title}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-300"
