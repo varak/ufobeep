@@ -82,6 +82,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
       debugPrint('Submitting sighting with sensor data: ${widget.sensorData != null}');
       
       // Submit sighting with media using API client
+      debugPrint('Submitting with sensorData: ${widget.sensorData?.latitude}, ${widget.sensorData?.longitude}');
       final sightingId = await ApiClient.instance.submitSightingWithMedia(
         title: finalTitle,
         description: finalDescription,

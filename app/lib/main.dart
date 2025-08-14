@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'config/environment.dart';
 import 'config/locale_config.dart';
@@ -21,6 +22,9 @@ void main() async {
   
   // Initialize environment configuration
   await AppEnvironment.initialize();
+  
+  // Request critical permissions early
+  await _requestCriticalPermissions();
   
   // Initialize SharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();
@@ -116,6 +120,29 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
       localeResolutionCallback: (locales, supportedLocales) =>
           LocaleConfig.localeResolutionCallback(locales != null ? [locales] : null, supportedLocales),
     );
+  }
+}
+
+Future<void> _requestCriticalPermissions() async {
+  // Request multiple permissions at once for better UX
+  Map<Permission, PermissionStatus> statuses = await [
+    Permission.location,
+    Permission.locationAlways,  // For background location
+    Permission.camera,
+    Permission.sensors,  // For compass/orientation sensors
+    Permission.photos,   // For photo library access
+    Permission.notification,  // For push notifications
+  ].request();
+  
+  // Log permission results for debugging
+  statuses.forEach((permission, status) {
+    debugPrint('Permission $permission: $status');
+  });
+  
+  // Check if critical permissions are granted
+  if (statuses[Permission.location] == PermissionStatus.permanentlyDenied ||
+      statuses[Permission.camera] == PermissionStatus.permanentlyDenied) {
+    debugPrint('Critical permissions permanently denied - user may need to enable in settings');
   }
 }
 

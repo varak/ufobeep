@@ -715,10 +715,20 @@ async def store_photo_metadata(sighting_id: str, metadata: dict = None):
             'sighting_id': uuid.UUID(sighting_id),
             'filename': metadata.get('filename', ''),
             'exif_available': metadata.get('exif_available', False),
-            'extraction_timestamp': metadata.get('extraction_timestamp'),
             'extraction_error': metadata.get('extraction_error'),
             'raw_exif_data': json.dumps(metadata)
         }
+        
+        # Handle extraction_timestamp properly
+        extraction_timestamp = metadata.get('extraction_timestamp')
+        if extraction_timestamp:
+            if isinstance(extraction_timestamp, str):
+                # Parse ISO format timestamp string to datetime
+                data['extraction_timestamp'] = datetime.fromisoformat(extraction_timestamp.replace('Z', '+00:00'))
+            else:
+                data['extraction_timestamp'] = extraction_timestamp
+        else:
+            data['extraction_timestamp'] = datetime.utcnow()
         
         # Add location data if available
         if location:

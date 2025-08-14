@@ -52,6 +52,8 @@ dependencies:
   # Camera & Media
   camera: ^0.11.0+2
   image_picker: ^1.1.2
+  file_picker: ^8.0.0
+  photo_manager: ^3.0.0
   path_provider: ^2.1.4
   exif: ^3.3.0
   gal: ^2.3.0
