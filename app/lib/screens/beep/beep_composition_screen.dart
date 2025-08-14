@@ -125,10 +125,10 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
           ),
         );
 
-        // Navigate back to home - the beep was sent successfully
+        // Navigate to the specific alert that was just created
         Future.delayed(const Duration(milliseconds: 1000), () {
           if (context.mounted) {
-            context.go('/');
+            context.go('/alert/$sightingId');
           }
         });
       }

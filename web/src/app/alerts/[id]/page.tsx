@@ -210,11 +210,11 @@ export default function AlertPage({ params }: AlertPageProps) {
                   className="block"
                 >
                   <ImageWithLoading 
-                    src={`${alert.media_files[0].thumbnail_url}?thumbnail=true`}
+                    src={alert.media_files[0].url}
                     alt={alert.title}
-                    width={800}
-                    height={600}
-                    className="w-full h-auto object-contain group-hover:opacity-90 transition-opacity"
+                    width={1200}
+                    height={900}
+                    className="w-full h-auto object-contain group-hover:opacity-90 transition-opacity max-h-[600px]"
                   />
                   {/* Click to view full size overlay */}
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
@@ -418,7 +418,7 @@ export default function AlertPage({ params }: AlertPageProps) {
                 
                 <div className="mt-4 p-3 bg-dark-background rounded border border-dark-border">
                   <p className="text-text-tertiary text-xs">
-                    <strong>Photo Analysis:</strong> Automated identification of planets, moons, and satellites using plate-solving technology and astronomical databases.
+                    Automated identification of planets, moons, and satellites using plate-solving technology and astronomical databases.
                   </p>
                 </div>
               </section>

@@ -52,17 +52,23 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
         orElse: () => _cameras!.first,
       );
 
-      // Create controller
+      // Create controller with maximum resolution
       _controller = CameraController(
         camera,
-        ResolutionPreset.high,
+        ResolutionPreset.max,  // Use maximum resolution available
         enableAudio: false,
+        imageFormatGroup: ImageFormatGroup.jpeg,  // Ensure JPEG format for quality
       );
 
       // Initialize controller
       await _controller!.initialize();
 
       if (!mounted) return;
+
+      // Log the actual resolution we're using
+      final size = _controller!.value.previewSize;
+      debugPrint('📸 CAMERA: Initialized with resolution: ${size?.width}x${size?.height}');
+      debugPrint('📸 CAMERA: Using camera: ${camera.name} (${camera.lensDirection})');
 
       setState(() {
         _isInitialized = true;
@@ -87,7 +93,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       // Play camera shutter sound
       SystemSound.play(SystemSoundType.click);
       
-      // Take the picture
+      // Take the picture at maximum quality
       final XFile image = await _controller!.takePicture();
       
       // Get sensor data
@@ -110,6 +116,12 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       final String fileName = 'UFOBeep_${DateTime.now().millisecondsSinceEpoch}.jpg';
       final String savedPath = path.join(ufobeepPath, fileName);
       final File savedFile = await File(image.path).copy(savedPath);
+      
+      // Log file size and info
+      final fileSize = await savedFile.length();
+      debugPrint('📸 CAMERA: Captured photo saved as: $fileName');
+      debugPrint('📸 CAMERA: File size: ${(fileSize / 1024 / 1024).toStringAsFixed(2)} MB');
+      debugPrint('📸 CAMERA: Original path: ${image.path}');
       
       // Also save to phone's main gallery
       try {
