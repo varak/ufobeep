@@ -43,7 +43,8 @@ class AstrometryClient:
         async with httpx.AsyncClient(timeout=30) as client:
             response = await client.post(
                 f"{self.base_url}/login",
-                json={"apikey": self.api_key}
+                data={"request-json": json.dumps({"apikey": self.api_key})},
+                headers={"Content-Type": "application/x-www-form-urlencoded"}
             )
             if response.status_code != 200:
                 raise HTTPException(status_code=500, detail="Astrometry login failed")
@@ -63,13 +64,15 @@ class AstrometryClient:
         async with httpx.AsyncClient(timeout=120) as client:
             with open(image_path, 'rb') as f:
                 files = {
-                    'file': f,
-                    'request-json': (None, json.dumps({
+                    'file': ('image.jpg', f, 'image/jpeg')
+                }
+                data = {
+                    'request-json': json.dumps({
                         "publicly_visible": "n",
                         "session": self.session_key
-                    }))
+                    })
                 }
-                response = await client.post(f"{self.base_url}/upload", files=files)
+                response = await client.post(f"{self.base_url}/upload", files=files, data=data)
             
             if response.status_code != 200:
                 raise HTTPException(status_code=500, detail="Image upload failed")

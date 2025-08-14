@@ -170,7 +170,7 @@ class PhotoAnalysisService:
             
             if not jobid:
                 return {
-                    "classification": "unknown",
+                    "classification": "inconclusive", 
                     "matched_object": None,
                     "confidence": 0.0,
                     "error": "Plate solving timeout - image may not contain enough stars"
@@ -181,8 +181,8 @@ class PhotoAnalysisService:
             
             if not job_results or "calibration" not in job_results:
                 return {
-                    "classification": "unknown",
-                    "matched_object": None,
+                    "classification": "inconclusive",
+                    "matched_object": None, 
                     "confidence": 0.0,
                     "error": "Plate solving failed - no star calibration found"
                 }
@@ -286,7 +286,7 @@ class PhotoAnalysisService:
             
             if not all_matches:
                 return {
-                    "classification": "unknown",
+                    "classification": "inconclusive",
                     "matched_object": None,
                     "confidence": 0.0,
                     "plate_solve_data": {
