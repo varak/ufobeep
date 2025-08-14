@@ -116,18 +116,23 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
         // Continue even if gallery save fails
       }
 
-      // Try to extract GPS from photo
+      // Extract comprehensive photo metadata for astronomical identification services
+      Map<String, dynamic> photoMetadata = {};
       try {
-        final gpsData = await PhotoMetadataService.extractGpsCoordinates(savedFile);
-        if (gpsData != null) {
+        photoMetadata = await PhotoMetadataService.extractComprehensiveMetadata(savedFile);
+        debugPrint('Extracted comprehensive photo metadata: ${photoMetadata.keys.length} categories');
+        
+        // Update sensor data with GPS from photo if available
+        final locationData = photoMetadata['location'];
+        if (locationData != null && locationData['latitude'] != null && locationData['longitude'] != null) {
           if (sensorData != null) {
             // Update existing sensor data with GPS from photo
             sensorData = SensorData(
               utc: sensorData.utc,
-              latitude: gpsData['latitude']!,
-              longitude: gpsData['longitude']!,
+              latitude: locationData['latitude'],
+              longitude: locationData['longitude'],
               accuracy: 5.0,
-              altitude: gpsData['altitude'] ?? sensorData.altitude,
+              altitude: locationData['altitude'] ?? sensorData.altitude,
               azimuthDeg: sensorData.azimuthDeg,
               pitchDeg: sensorData.pitchDeg,
               rollDeg: sensorData.rollDeg,
@@ -137,20 +142,25 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
             // Create sensor data from photo EXIF if no sensor data exists
             sensorData = SensorData(
               utc: DateTime.now(),
-              latitude: gpsData['latitude']!,
-              longitude: gpsData['longitude']!,
+              latitude: locationData['latitude'],
+              longitude: locationData['longitude'],
               accuracy: 10.0, // Lower accuracy since it's from photo
-              altitude: gpsData['altitude'] ?? 0.0,
+              altitude: locationData['altitude'] ?? 0.0,
               azimuthDeg: 0.0, // No compass data available
               pitchDeg: 0.0,   // No compass data available
               rollDeg: 0.0,    // No compass data available
               hfovDeg: 60.0,   // Default camera FOV
             );
-            debugPrint('Created sensor data from photo EXIF: lat=${gpsData['latitude']}, lng=${gpsData['longitude']}');
+            debugPrint('Created sensor data from photo EXIF: lat=${locationData['latitude']}, lng=${locationData['longitude']}');
           }
         }
       } catch (e) {
-        debugPrint('Failed to extract GPS from photo: $e');
+        debugPrint('Failed to extract comprehensive photo metadata: $e');
+        photoMetadata = {
+          'exif_available': false,
+          'extraction_error': e.toString(),
+          'extraction_timestamp': DateTime.now().toIso8601String(),
+        };
       }
 
       // Navigate directly to compose screen - no approval!
@@ -158,6 +168,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
         context.go('/beep/compose', extra: {
           'imageFile': savedFile,
           'sensorData': sensorData,
+          'photoMetadata': photoMetadata, // Pass comprehensive metadata for storage
         });
       }
     } catch (e) {

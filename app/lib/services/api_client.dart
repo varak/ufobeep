@@ -539,6 +539,32 @@ class ApiClient {
     }
   }
 
+  // Photo metadata submission for astronomical/aircraft identification
+  Future<bool> submitPhotoMetadata(String sightingId, Map<String, dynamic> metadata) async {
+    try {
+      debugPrint('Submitting comprehensive photo metadata for sighting $sightingId');
+      
+      final response = await _dio.post(
+        '/photo-metadata/$sightingId',
+        data: metadata,
+      );
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        debugPrint('Photo metadata submitted successfully');
+        return true;
+      } else {
+        debugPrint('Failed to submit photo metadata: ${response.statusCode}');
+        return false;
+      }
+    } on DioException catch (e) {
+      debugPrint('Error submitting photo metadata: ${_handleError(e)}');
+      return false;
+    } catch (e) {
+      debugPrint('Unexpected error submitting photo metadata: $e');
+      return false;
+    }
+  }
+
   // Health check
   Future<bool> checkHealth() async {
     try {
@@ -679,6 +705,9 @@ extension ApiClientExtension on ApiClient {
         // Step 3: Update sighting with media file names
         if (onProgress != null) onProgress(0.9);
         await updateSightingMedia(sightingId, mediaFileNames);
+        
+        // Step 4: Submit comprehensive photo metadata for astronomical identification
+        // TODO: Pass metadata from photo capture through submission flow
       }
       
       if (onProgress != null) onProgress(1.0);
