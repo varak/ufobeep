@@ -43,10 +43,10 @@ class FilesystemStorageService:
         sighting_dir = STORAGE_ROOT / request.sighting_id
         sighting_dir.mkdir(parents=True, exist_ok=True)
         
-        # Return upload response (no actual presigned URL needed for filesystem)
+        # Return upload response pointing to our direct upload endpoint
         return PresignedUploadResponse(
             upload_id=upload_id,
-            upload_url=f"filesystem://upload/{upload_id}",  # Placeholder URL
+            upload_url="https://api.ufobeep.com/media/upload",  # Direct upload endpoint
             expires_at=datetime.utcnow(),  # Not used for filesystem
             max_file_size=50 * 1024 * 1024,  # 50MB
             fields={
