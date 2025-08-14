@@ -22,6 +22,64 @@ router = APIRouter(
 # Media storage directory
 MEDIA_ROOT = Path("/home/ufobeep/ufobeep/media")
 
+@router.get("/{sighting_id}/")
+async def list_sighting_media(sighting_id: str):
+    """
+    List all media files for a specific sighting
+    
+    Returns JSON list of all media files available for the sighting ID.
+    """
+    try:
+        # Construct the sighting directory path
+        sighting_dir = MEDIA_ROOT / sighting_id
+        
+        # Check if the directory exists
+        if not sighting_dir.exists() or not sighting_dir.is_dir():
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail={
+                    "error": "SIGHTING_NOT_FOUND",
+                    "message": f"No media found for sighting: {sighting_id}"
+                }
+            )
+        
+        # List all files in the directory
+        media_files = []
+        for file_path in sighting_dir.iterdir():
+            if file_path.is_file():
+                # Get file stats
+                stat = file_path.stat()
+                
+                media_files.append({
+                    "filename": file_path.name,
+                    "url": f"https://api.ufobeep.com/media/{sighting_id}/{file_path.name}",
+                    "thumbnail_url": f"https://api.ufobeep.com/media/{sighting_id}/{file_path.name}?thumbnail=true",
+                    "size_bytes": stat.st_size,
+                    "modified_at": stat.st_mtime,
+                    "is_image": file_path.suffix.lower() in ('.jpg', '.jpeg', '.png', '.gif', '.bmp'),
+                    "is_video": file_path.suffix.lower() in ('.mp4', '.mov', '.avi', '.mkv')
+                })
+        
+        return {
+            "success": True,
+            "sighting_id": sighting_id,
+            "media_count": len(media_files),
+            "media_files": sorted(media_files, key=lambda x: x["filename"])
+        }
+        
+    except HTTPException:
+        # Re-raise HTTP exceptions
+        raise
+    except Exception as e:
+        logger.error(f"Error listing media for sighting {sighting_id}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "error": "MEDIA_LIST_ERROR",
+                "message": "Failed to list media files"
+            }
+        )
+
 @router.get("/{sighting_id}/{filename}")
 @router.head("/{sighting_id}/{filename}")
 async def serve_media_file(
