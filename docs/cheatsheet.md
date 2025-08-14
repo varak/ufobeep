@@ -24,26 +24,26 @@ Single FastAPI app with routers:
 - **FastAPI settings**: Configured to read `../.env` (parent directory from api folder)
 - **No duplicate .env files** - consolidated into single project root file
 
-## Storage (MinIO)
-- **MinIO endpoint**: http://localhost:9000 (on production server)
-- **MinIO console**: http://localhost:9001 (on production server)  
-- **Bucket name**: `ufobeep-media` 
-- **Credentials**: minioadmin/minioadmin
-- **Status**: Bucket exists but URLs have signature issues
+## Storage (Filesystem)
+- **Storage type**: Local filesystem storage (no longer MinIO)
+- **Storage root**: `/home/ufobeep/ufobeep/media` (on production server)
+- **Structure**: `{sighting_id}/filename.jpg` (organized by sighting ID)
+- **Service**: FilesystemStorageService handles all file operations
+- **URLs**: Direct serving via `/media/{sighting_id}/{filename}` endpoint
 
-## Media Storage Redesign (COMPLETED Phases 1-2)
-- **✅ Phase 1**: Changed storage structure from random IDs to sighting-based organization
-- **✅ Phase 2**: Added direct serving endpoint `/media/{sighting_id}/{filename}`
-- **New structure**: `sightings/{sighting_id}/filename.jpg` in MinIO
-- **New URLs**: `https://ufobeep.com/media/{sighting_id}/filename.jpg` (permanent)
-- **Status**: API deployed, mobile app updated, testing in progress
-- **Issue**: Mobile app getting type error on media upload (in progress)
+## Media Storage Implementation (COMPLETED)
+- **✅ Storage**: Migrated from MinIO to filesystem storage at `/home/ufobeep/ufobeep/media`
+- **✅ Structure**: `{sighting_id}/filename.jpg` organization implemented
+- **✅ Serving**: Direct endpoint `/media/{sighting_id}/{filename}` with thumbnail support
+- **✅ URLs**: `https://api.ufobeep.com/media/{sighting_id}/filename.jpg` (permanent)
+- **✅ Features**: EXIF orientation correction, web-optimized thumbnails, caching headers
+- **✅ Upload Flow**: Images stored when user clicks "send beep" in mobile app
 
-## Presigned Upload Endpoint
+## File Upload Endpoint
 - **Endpoint**: `POST https://api.ufobeep.com/media/presign`
-- **Status**: ✅ Working and tested
-- **Response includes**: upload_id, upload_url, S3 fields, policy, signature
-- **Key structure**: `uploads/YYYY/MM/{upload_id}/{filename}`
+- **Status**: ✅ Working with filesystem storage
+- **Process**: Generates upload metadata, files saved directly to filesystem
+- **Storage path**: `/home/ufobeep/ufobeep/media/{sighting_id}/{filename}`
 
 ## Development Environment
 - **Project root**: `/home/mike/D/ufobeep`
@@ -98,8 +98,8 @@ ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep/web && rm -rf .next nod
 - **Never test localhost** - production is on different machine (ufobeep.com)
 - **Single server architecture** - all endpoints served by one FastAPI app
 - **Environment files consolidated** - one .env file in project root
-- **MinIO bucket was missing** - had to recreate it
-- **Media storage redesign complete** - using sighting IDs for permanent URLs
+- **Storage migrated to filesystem** - no longer using MinIO, direct filesystem storage
+- **Media storage complete** - using sighting IDs for permanent URLs with thumbnail support
 - **SSH production**: `ssh -p 322 ufobeep@ufobeep.com`
 - **Standard deploy**: `git push && ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep && git pull origin main && cd web && npm run build && pm2 restart all"`
 - **Clean deploy** (when webpack breaks): `ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep/web && rm -rf .next node_modules/.cache && npm run build && pm2 restart all"`

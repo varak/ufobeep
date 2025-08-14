@@ -62,11 +62,11 @@ class _BeepScreenState extends State<BeepScreen> {
     });
 
     try {
+      // Pick image without processing to preserve EXIF GPS data
       final XFile? image = await _picker.pickImage(
         source: ImageSource.gallery,
-        imageQuality: 85,
-        maxWidth: 1920,
-        maxHeight: 1440,
+        // Remove resizing and compression to preserve EXIF GPS data
+        // GPS coordinates are extracted before any processing
       );
 
       if (image == null) {
