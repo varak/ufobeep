@@ -323,11 +323,11 @@ export default function AlertPage({ params }: AlertPageProps) {
                 <div className="space-y-4">
                   {alert.photo_analysis.map((analysis, index) => (
                     <div key={index} className="border border-dark-border rounded-lg p-4 bg-dark-background">
-                      {/* Header with filename and status */}
+                      {/* Header with status */}
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-2">
                           <span className="text-lg">📸</span>
-                          <span className="text-text-primary font-medium text-sm">{analysis.filename}</span>
+                          <span className="text-text-primary font-medium text-sm">Photo Analysis</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <div className={`w-2 h-2 rounded-full ${

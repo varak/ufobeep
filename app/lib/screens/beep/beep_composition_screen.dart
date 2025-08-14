@@ -188,11 +188,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
                   children: [
                     // Photo section
                     _buildPhotoSection(),
-                    const SizedBox(height: 16),
-                    
-                    // Explanation message
-                    _buildExplanationMessage(),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 24),
                     
                     
                     // Error message
@@ -222,7 +218,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
                     
                     // Form field
                     _buildDescriptionInput(),
-                    const SizedBox(height: 100), // Space for bottom button
+                    const SizedBox(height: 32), // Space for bottom button
                   ],
                 ),
               ),
@@ -237,107 +233,54 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
   }
 
   Widget _buildPhotoSection() {
-    return SimplePhotoDisplay(
-      imageFile: widget.imageFile,
-      height: 200,
+    return Container(
       width: double.infinity,
+      constraints: const BoxConstraints(
+        maxHeight: 400,
+        minHeight: 300,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Image.file(
+          widget.imageFile,
+          fit: BoxFit.cover,
+          width: double.infinity,
+        ),
+      ),
     );
   }
 
-  Widget _buildExplanationMessage() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-      decoration: BoxDecoration(
-        color: AppColors.brandPrimary.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.brandPrimary.withOpacity(0.3),
-          width: 1.5,
-        ),
-      ),
-      child: Row(
-        children: [
-          const Icon(
-            Icons.send,
-            color: AppColors.brandPrimary,
-            size: 24,
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Ready to send!',
-                  style: TextStyle(
-                    color: AppColors.brandPrimary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Add a brief description of what you\'re seeing if you\'d like',
-                  style: TextStyle(
-                    color: AppColors.brandPrimary.withOpacity(0.8),
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
 
 
   Widget _buildDescriptionInput() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Description (optional)',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
+    return TextFormField(
+      controller: _descriptionController,
+      style: const TextStyle(color: AppColors.textPrimary, fontSize: 16),
+      decoration: InputDecoration(
+        labelText: 'What did you see? (optional)',
+        labelStyle: const TextStyle(color: AppColors.textSecondary),
+        hintText: 'Bright light moving across sky, object hovering, strange shape...',
+        hintStyle: const TextStyle(color: AppColors.textTertiary),
+        filled: true,
+        fillColor: AppColors.darkSurface,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: AppColors.darkBorder),
         ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: _descriptionController,
-          style: const TextStyle(color: AppColors.textPrimary, fontSize: 16),
-          decoration: InputDecoration(
-            hintText: 'Brief description of what you are seeing...\n\nFor example:\n• Bright light moving across sky\n• Object hovering above trees\n• Strange shape in clouds',
-            hintStyle: const TextStyle(color: AppColors.textSecondary),
-            helperText: 'Optional - leave blank if you prefer',
-            helperStyle: const TextStyle(
-              color: AppColors.textSecondary,
-            ),
-            filled: true,
-            fillColor: Colors.grey[700],
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.darkBorder),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.darkBorder),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.brandPrimary),
-            ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            counterStyle: const TextStyle(color: AppColors.textSecondary),
-          ),
-          maxLines: 4,
-          maxLength: 500,
-          textInputAction: TextInputAction.newline,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: AppColors.darkBorder),
         ),
-      ],
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: AppColors.brandPrimary, width: 2),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      ),
+      maxLines: 3,
+      maxLength: 300,
+      textInputAction: TextInputAction.done,
     );
   }
 
@@ -345,55 +288,24 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
 
   Widget _buildBottomActions() {
     return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
-        color: AppColors.darkSurface,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppColors.darkBackground,
         border: Border(
-          top: BorderSide(color: AppColors.darkBorder),
+          top: BorderSide(color: AppColors.darkBorder.withOpacity(0.3)),
         ),
       ),
       child: SafeArea(
         top: false,
-        child: Row(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            // Retake Photo button
-            Expanded(
-              flex: 1,
-              child: OutlinedButton.icon(
-                onPressed: _isSubmitting ? null : _retakePhoto,
-                icon: const Icon(Icons.camera_alt, size: 20),
-                label: const Text('Retake'),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.textSecondary,
-                  side: const BorderSide(color: AppColors.darkBorder),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-            ),
-            
-            const SizedBox(width: 16),
-            
-            // Send Beep! button
-            Expanded(
-              flex: 2,
-              child: ElevatedButton.icon(
+            // Main Send button (full width)
+            SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: ElevatedButton(
                 onPressed: !_isSubmitting ? _submitBeep : null,
-                icon: _isSubmitting
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.black,
-                        ),
-                      )
-                    : const Icon(Icons.send, size: 20),
-                label: Text(
-                  _isSubmitting ? 'Sending...' : 'Send Beep!',
-                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: !_isSubmitting 
                       ? AppColors.brandPrimary 
@@ -401,15 +313,53 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
                   foregroundColor: !_isSubmitting 
                       ? Colors.black 
                       : AppColors.textSecondary,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                   textStyle: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: FontWeight.w600,
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
                 ),
+                child: _isSubmitting
+                    ? Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.black.withOpacity(0.7),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          const Text('Sending...'),
+                        ],
+                      )
+                    : const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.send_rounded, size: 20),
+                          SizedBox(width: 8),
+                          Text('Send Beep!'),
+                        ],
+                      ),
+              ),
+            ),
+            
+            const SizedBox(height: 12),
+            
+            // Retake Photo button (smaller, secondary)
+            TextButton.icon(
+              onPressed: _isSubmitting ? null : _retakePhoto,
+              icon: const Icon(Icons.camera_alt, size: 18),
+              label: const Text('Retake Photo'),
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.textSecondary,
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                textStyle: const TextStyle(fontSize: 16),
               ),
             ),
           ],

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:latlong2/latlong.dart';
 
 import '../../providers/alerts_provider.dart';
 import '../../theme/app_theme.dart';
-import '../../widgets/map_widget.dart';
 
 class AlertDetailScreen extends ConsumerWidget {
   const AlertDetailScreen({super.key, required this.alertId});
@@ -86,30 +84,6 @@ class AlertDetailScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 24),
 
-                // Map Section
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Location',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        const SizedBox(height: 12),
-                        MapWidget(
-                          alerts: [alert],
-                          height: 200,
-                          center: LatLng(alert.latitude, alert.longitude),
-                          zoom: 13.0,
-                          showControls: true,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 24),
 
                 // Location & Time Info
                 Card(
@@ -537,20 +511,19 @@ class AlertDetailScreen extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header with filename and status
+          // Header with status
           Row(
             children: [
               Icon(Icons.photo, color: AppColors.textSecondary, size: 16),
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
-                  filename,
+                  'Photo Analysis',
                   style: const TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
-                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               const SizedBox(width: 8),

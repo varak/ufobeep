@@ -57,6 +57,7 @@ dependencies:
   path_provider: ^2.1.4
   exif: ^3.3.0
   gal: ^2.3.0
+  audioplayers: ^6.0.0
   
   # Permissions
   permission_handler: ^11.3.1

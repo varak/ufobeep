@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:camera/camera.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
@@ -83,6 +84,9 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
     });
 
     try {
+      // Play camera shutter sound
+      SystemSound.play(SystemSoundType.click);
+      
       // Take the picture
       final XFile image = await _controller!.takePicture();
       
