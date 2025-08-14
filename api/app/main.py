@@ -710,134 +710,59 @@ async def store_photo_metadata(sighting_id: str, metadata: dict = None):
         image_props = metadata.get('image_properties', {})
         device_info = metadata.get('device_info', {})
         
+        # Build column mappings dynamically
+        data = {
+            'sighting_id': uuid.UUID(sighting_id),
+            'filename': metadata.get('filename', ''),
+            'exif_available': metadata.get('exif_available', False),
+            'extraction_timestamp': metadata.get('extraction_timestamp'),
+            'extraction_error': metadata.get('extraction_error'),
+            'raw_exif_data': json.dumps(metadata)
+        }
+        
+        # Add location data if available
+        if location:
+            if location.get('latitude') is not None:
+                data['exif_latitude'] = float(location.get('latitude'))
+            if location.get('longitude') is not None:
+                data['exif_longitude'] = float(location.get('longitude'))
+            if location.get('altitude') is not None:
+                data['exif_altitude'] = float(location.get('altitude'))
+            
+            # Add other GPS fields
+            for field in ['gps_speed', 'gps_speed_ref', 'gps_track', 'gps_track_ref',
+                         'gps_img_direction', 'gps_img_direction_ref', 'gps_dest_bearing', 'gps_dest_bearing_ref',
+                         'gps_date_stamp', 'gps_time_stamp', 'gps_map_datum', 'gps_processing_method', 'gps_area_info']:
+                if field in location:
+                    data[field] = location[field]
+        
+        # Add camera data if available
+        if camera:
+            for field in ['exposure_time', 'f_number', 'iso_speed', 'focal_length', 'focal_length_35mm',
+                         'max_aperture', 'subject_distance', 'flash', 'white_balance', 'exposure_mode',
+                         'exposure_program', 'metering_mode', 'light_source', 'scene_capture_type',
+                         'gain_control', 'contrast', 'saturation', 'sharpness', 'digital_zoom_ratio',
+                         'lens_specification', 'lens_make', 'lens_model']:
+                if field in camera:
+                    data[field] = camera[field]
+        
+        # Add device info if available
+        if device_info:
+            for field in ['device_make', 'device_model', 'software', 'exif_version', 'flashpix_version',
+                         'artist', 'copyright', 'image_description', 'user_comment', 'maker_note']:
+                if field in device_info:
+                    data[field] = device_info[field]
+        
+        # Build dynamic INSERT query
+        columns = list(data.keys())
+        placeholders = ', '.join(f'${i+1}' for i in range(len(columns)))
+        column_names = ', '.join(columns)
+        values = list(data.values())
+        
+        query = f"INSERT INTO photo_metadata ({column_names}) VALUES ({placeholders})"
+        
         async with db_pool.acquire() as conn:
-            await conn.execute("""
-                INSERT INTO photo_metadata (
-                    sighting_id, filename, exif_available, extraction_timestamp, extraction_error,
-                    exif_latitude, exif_longitude, exif_altitude,
-                    gps_speed, gps_speed_ref, gps_track, gps_track_ref,
-                    gps_img_direction, gps_img_direction_ref, gps_dest_bearing, gps_dest_bearing_ref,
-                    gps_date_stamp, gps_time_stamp, gps_map_datum, gps_processing_method,
-                    gps_area_info, gps_differential, gps_h_positioning_error,
-                    exposure_time, f_number, iso_speed, focal_length, focal_length_35mm,
-                    max_aperture, subject_distance, flash, white_balance, exposure_mode,
-                    exposure_program, metering_mode, light_source, scene_capture_type,
-                    gain_control, contrast, saturation, sharpness, digital_zoom_ratio,
-                    lens_specification, lens_make, lens_model,
-                    image_orientation, camera_direction, camera_direction_ref,
-                    movement_direction, movement_direction_ref,
-                    datetime_original, datetime_taken, datetime_digitized, image_datetime,
-                    subsec_time, subsec_time_original, subsec_time_digitized, timezone_offset,
-                    pixel_x_dimension, pixel_y_dimension, image_width, image_length,
-                    bits_per_sample, photometric_interpretation, samples_per_pixel,
-                    x_resolution, y_resolution, resolution_unit, color_space,
-                    components_configuration, compressed_bits_per_pixel,
-                    device_make, device_model, software, exif_version, flashpix_version,
-                    artist, copyright, image_description, user_comment, maker_note,
-                    raw_exif_keys, raw_exif_data
-                ) VALUES (
-                    $1, $2, $3, $4, $5,
-                    $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16,
-                    $17, $18, $19, $20, $21, $22, $23,
-                    $24, $25, $26, $27, $28, $29, $30, $31, $32, $33,
-                    $34, $35, $36, $37, $38, $39, $40, $41, $42,
-                    $43, $44, $45, $46, $47, $48, $49,
-                    $50, $51, $52, $53, $54, $55, $56, $57,
-                    $58, $59, $60, $61, $62, $63, $64, $65,
-                    $66, $67, $68, $69, $70, $71, $72, $73, $74, $75, $76
-                )
-            """, 
-            uuid.UUID(sighting_id),
-            metadata.get('filename', ''),
-            metadata.get('exif_available', False),
-            metadata.get('extraction_timestamp'),
-            metadata.get('extraction_error'),
-            # Location data
-            float(location.get('latitude')) if location.get('latitude') is not None else None,
-            float(location.get('longitude')) if location.get('longitude') is not None else None,
-            float(location.get('altitude')) if location.get('altitude') is not None else None,
-            location.get('gps_speed'),
-            location.get('gps_speed_ref'),
-            location.get('gps_track'), 
-            location.get('gps_track_ref'),
-            location.get('gps_img_direction'),
-            location.get('gps_img_direction_ref'),
-            location.get('gps_dest_bearing'),
-            location.get('gps_dest_bearing_ref'),
-            location.get('gps_date_stamp'),
-            location.get('gps_time_stamp'),
-            location.get('gps_map_datum'),
-            location.get('gps_processing_method'),
-            location.get('gps_area_info'),
-            int(location.get('gps_differential')) if location.get('gps_differential') else None,
-            float(location.get('gps_h_positioning_error')) if location.get('gps_h_positioning_error') else None,
-            # Camera data
-            camera.get('exposure_time'),
-            camera.get('f_number'),
-            camera.get('iso_speed'),
-            camera.get('focal_length'),
-            camera.get('focal_length_35mm'),
-            camera.get('max_aperture'),
-            camera.get('subject_distance'),
-            camera.get('flash'),
-            camera.get('white_balance'),
-            camera.get('exposure_mode'),
-            camera.get('exposure_program'),
-            camera.get('metering_mode'),
-            camera.get('light_source'),
-            camera.get('scene_capture_type'),
-            camera.get('gain_control'),
-            camera.get('contrast'),
-            camera.get('saturation'),
-            camera.get('sharpness'),
-            camera.get('digital_zoom_ratio'),
-            camera.get('lens_specification'),
-            camera.get('lens_make'),
-            camera.get('lens_model'),
-            # Orientation data
-            orientation.get('image_orientation'),
-            float(orientation.get('camera_direction')) if orientation.get('camera_direction') else None,
-            orientation.get('camera_direction_ref'),
-            float(orientation.get('movement_direction')) if orientation.get('movement_direction') else None,
-            orientation.get('movement_direction_ref'),
-            # Timestamp data
-            timestamps.get('datetime_original'),
-            timestamps.get('datetime'),
-            timestamps.get('datetime_digitized'),
-            timestamps.get('image_datetime'),
-            timestamps.get('subsec_time'),
-            timestamps.get('subsec_time_original'),
-            timestamps.get('subsec_time_digitized'),
-            timestamps.get('timezone_offset'),
-            # Image properties
-            int(image_props.get('pixel_x_dimension')) if image_props.get('pixel_x_dimension') else None,
-            int(image_props.get('pixel_y_dimension')) if image_props.get('pixel_y_dimension') else None,
-            int(image_props.get('image_width')) if image_props.get('image_width') else None,
-            int(image_props.get('image_length')) if image_props.get('image_length') else None,
-            image_props.get('bits_per_sample'),
-            image_props.get('photometric_interpretation'),
-            int(image_props.get('samples_per_pixel')) if image_props.get('samples_per_pixel') else None,
-            image_props.get('x_resolution'),
-            image_props.get('y_resolution'),
-            image_props.get('resolution_unit'),
-            image_props.get('color_space'),
-            image_props.get('components_configuration'),
-            image_props.get('compressed_bits_per_pixel'),
-            # Device info
-            device_info.get('device_make'),
-            device_info.get('device_model'),
-            device_info.get('software'),
-            device_info.get('exif_version'),
-            device_info.get('flashpix_version'),
-            device_info.get('artist'),
-            device_info.get('copyright'),
-            device_info.get('image_description'),
-            device_info.get('user_comment'),
-            device_info.get('maker_note'),
-            # Raw EXIF data
-            metadata.get('raw_exif_keys', []),
-            json.dumps(metadata)  # Store complete metadata as JSONB
-            )
+            await conn.execute(query, *values)
         
         return {
             "success": True,

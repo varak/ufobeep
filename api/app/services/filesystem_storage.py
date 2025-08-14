@@ -3,7 +3,7 @@ import shutil
 import logging
 from pathlib import Path
 from typing import Dict, Optional, Tuple, Any
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from ..schemas.media import (
     PresignedUploadRequest,
@@ -126,6 +126,34 @@ class FilesystemStorageService:
         
         logger.info(f"Saved file: {file_path} ({len(file_content)} bytes)")
         return str(file_path)
+    
+    async def cleanup_expired_uploads(self, older_than_hours: int = 24) -> int:
+        """Clean up expired uploads from filesystem"""
+        try:
+            cutoff_time = datetime.utcnow() - timedelta(hours=older_than_hours)
+            deleted_count = 0
+            
+            # Look for empty sighting directories older than cutoff
+            for sighting_dir in STORAGE_ROOT.iterdir():
+                if sighting_dir.is_dir():
+                    try:
+                        # Check if directory is empty and old
+                        if not any(sighting_dir.iterdir()):
+                            stat = sighting_dir.stat()
+                            if datetime.fromtimestamp(stat.st_mtime) < cutoff_time:
+                                sighting_dir.rmdir()
+                                deleted_count += 1
+                    except (OSError, StopIteration):
+                        continue
+            
+            if deleted_count > 0:
+                logger.info(f"Cleaned up {deleted_count} empty directories")
+            
+            return deleted_count
+            
+        except Exception as e:
+            logger.error(f"Failed to cleanup expired uploads: {e}")
+            return 0
 
 # Create singleton instance
 filesystem_storage = FilesystemStorageService()
