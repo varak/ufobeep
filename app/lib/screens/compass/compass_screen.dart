@@ -81,7 +81,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
       if (mounted) { // Check mount status before setState
         setState(() {
           _isServiceStarted = true;
-          // Use provided target if available, otherwise use mock target
+          // Only use target if provided - no mock data
           if (widget.targetLat != null && widget.targetLon != null) {
             _currentTarget = CompassTarget(
               id: widget.alertId ?? 'sighting_target',
@@ -95,7 +95,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
               distance: widget.targetDistance != null ? widget.targetDistance! * 1000 : null, // Convert km to meters
             );
           } else {
-            _currentTarget = service.getMockTarget(); // Demo target
+            _currentTarget = null; // No fake data
           }
         });
       }
@@ -264,31 +264,36 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            // Main Compass Display
-            CompassDisplay(
-              compassData: compassData,
-              target: _currentTarget,
-            ),
-            
-            const SizedBox(height: 16),
-            
-            // Real-time navigation instructions (if target is provided)
-            if (_currentTarget != null && (widget.targetLat != null && widget.targetLon != null))
-              _buildRealTimeNavigation(compassData),
-            
-            const SizedBox(height: 16),
-            
-            // Detailed navigation instructions
-            if (_currentTarget != null && (widget.targetLat != null && widget.targetLon != null))
-              _buildDetailedNavigationInstructions(),
-            
-            const SizedBox(height: 16),
-            
-            // Compass Information
-            CompassInfo(
-              compassData: compassData,
-              target: _currentTarget,
-            ),
+            // Show explanation if no target, otherwise show compass
+            if (_currentTarget == null)
+              _buildCompassExplanation()
+            else ...[
+              // Main Compass Display
+              CompassDisplay(
+                compassData: compassData,
+                target: _currentTarget,
+              ),
+              
+              const SizedBox(height: 16),
+              
+              // Real-time navigation instructions (if target is provided)
+              if (_currentTarget != null && (widget.targetLat != null && widget.targetLon != null))
+                _buildRealTimeNavigation(compassData),
+              
+              const SizedBox(height: 16),
+              
+              // Detailed navigation instructions
+              if (_currentTarget != null && (widget.targetLat != null && widget.targetLon != null))
+                _buildDetailedNavigationInstructions(),
+              
+              const SizedBox(height: 16),
+              
+              // Compass Information
+              CompassInfo(
+                compassData: compassData,
+                target: _currentTarget,
+              ),
+            ],
           ],
         ),
       ),
@@ -335,6 +340,108 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
     );
   }
 
+
+  Widget _buildCompassExplanation() {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Compass icon
+          Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: RadialGradient(
+                colors: [
+                  AppColors.brandPrimary.withOpacity(0.2),
+                  AppColors.brandPrimary.withOpacity(0.05),
+                  Colors.transparent,
+                ],
+              ),
+            ),
+            child: const Icon(
+              Icons.explore,
+              size: 60,
+              color: AppColors.brandPrimary,
+            ),
+          ),
+          
+          const SizedBox(height: 32),
+          
+          const Text(
+            'UFO Sighting Compass',
+            style: TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          
+          const SizedBox(height: 16),
+          
+          const Text(
+            'When you receive a UFO alert, this compass helps you look in the exact direction where the sighting was reported.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 16,
+              height: 1.5,
+            ),
+          ),
+          
+          const SizedBox(height: 24),
+          
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.brandPrimary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
+            ),
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'How it works:',
+                  style: TextStyle(
+                    color: AppColors.brandPrimary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(height: 12),
+                Text(
+                  '1. Go outside when you get an alert\n'
+                  '2. Use this compass to face the sighting direction\n'
+                  '3. Look up at the sky in that direction\n'
+                  '4. You\'ll be looking where others saw something!',
+                  style: TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 14,
+                    height: 1.4,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          const SizedBox(height: 24),
+          
+          const Text(
+            'Tap "Navigate" on any alert to use the compass',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: AppColors.textTertiary,
+              fontSize: 14,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildLoadingState() {
     final service = ref.read(compassServiceProvider);

@@ -468,9 +468,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ),
       ),
       trailing: isSelected ? const Icon(Icons.check, color: AppColors.brandPrimary) : null,
-      onTap: () {
-        _updateAlertRange(value);
+      onTap: () async {
         Navigator.pop(context);
+        // Do the update after dialog closes to avoid rebuild issues
+        await Future.delayed(const Duration(milliseconds: 100));
+        if (mounted) {
+          _updateAlertRange(value);
+        }
       },
     );
   }
@@ -512,9 +516,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ),
       ),
       trailing: isSelected ? const Icon(Icons.check, color: AppColors.brandPrimary) : null,
-      onTap: () {
-        _updateLanguage(code);
+      onTap: () async {
         Navigator.pop(context);
+        // Do the update after dialog closes to avoid rebuild issues
+        await Future.delayed(const Duration(milliseconds: 100));
+        if (mounted) {
+          _updateLanguage(code);
+        }
       },
     );
   }
