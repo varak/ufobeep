@@ -130,6 +130,7 @@ GoRouter appRouter(AppRouterRef ref) {
                     return BeepCompositionScreen(
                       imageFile: imageFile,
                       sensorData: extra?['sensorData'],
+                      photoMetadata: extra?['photoMetadata'],
                     );
                   } catch (e, stackTrace) {
                     debugPrint('ERROR creating BeepCompositionScreen: $e');

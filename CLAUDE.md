@@ -138,3 +138,4 @@
 - do not start dev servers
 - NEVER put dev servers and put stuff in dev server mode, it just causes problems on production
 - dont mention yourself in commits, proceed.
+- dont mention/add yourself in commits

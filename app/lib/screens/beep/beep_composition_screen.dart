@@ -11,11 +11,13 @@ import '../../widgets/simple_photo_display.dart';
 class BeepCompositionScreen extends StatefulWidget {
   final File imageFile;
   final SensorData? sensorData;
+  final Map<String, dynamic>? photoMetadata;
 
   const BeepCompositionScreen({
     super.key,
     required this.imageFile,
     this.sensorData,
+    this.photoMetadata,
   });
 
   @override
@@ -93,6 +95,20 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
           debugPrint('Upload progress: ${(progress * 100).toStringAsFixed(1)}%');
         },
       );
+
+      // Submit photo metadata if available (for astronomical identification)
+      if (widget.photoMetadata != null) {
+        debugPrint('Submitting comprehensive photo metadata for astronomical identification...');
+        final metadataSubmitted = await ApiClient.instance.submitPhotoMetadata(
+          sightingId, 
+          widget.photoMetadata!
+        );
+        if (metadataSubmitted) {
+          debugPrint('Photo metadata submitted successfully for external service analysis');
+        } else {
+          debugPrint('Warning: Photo metadata submission failed');
+        }
+      }
 
       // Show success message
       if (context.mounted) {
