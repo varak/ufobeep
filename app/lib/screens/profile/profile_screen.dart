@@ -16,7 +16,6 @@ class ProfileScreen extends ConsumerStatefulWidget {
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final _scrollController = ScrollController();
-  bool _isEditing = false;
 
   @override
   void dispose() {
@@ -38,15 +37,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       appBar: AppBar(
         title: const Text('Profile'),
         centerTitle: true,
-        actions: [
-          TextButton(
-            onPressed: () => setState(() => _isEditing = !_isEditing),
-            child: Text(
-              _isEditing ? 'Done' : 'Edit',
-              style: const TextStyle(color: AppColors.brandPrimary),
-            ),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         controller: _scrollController,
@@ -158,111 +148,52 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   Widget _buildProfileHeader(UserPreferences preferences) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppColors.darkSurface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.darkBorder),
       ),
-      child: Column(
+      child: Row(
         children: [
           CircleAvatar(
-            radius: 50,
+            radius: 40,
             backgroundColor: AppColors.brandPrimary.withOpacity(0.2),
-            child: Text(
-              _getInitials(preferences.displayName ?? 'U'),
-              style: const TextStyle(
-                color: AppColors.brandPrimary,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+            child: const Icon(
+              Icons.person,
+              color: AppColors.brandPrimary,
+              size: 40,
             ),
           ),
-          const SizedBox(height: 16),
-          Text(
-            preferences.displayName ?? 'Anonymous User',
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'UFOBeep User',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'v${AppEnvironment.appVersion}',
+                  style: const TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
             ),
-          ),
-          if (preferences.email?.isNotEmpty == true) ...[
-            const SizedBox(height: 4),
-            Text(
-              preferences.email!,
-              style: const TextStyle(
-                color: AppColors.textSecondary,
-                fontSize: 16,
-              ),
-            ),
-          ],
-          const SizedBox(height: 16),
-          Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildStatItem(
-                    icon: Icons.notifications,
-                    label: 'Range',
-                    value: preferences.alertRangeDisplay,
-                  ),
-                  _buildStatItem(
-                    icon: Icons.language,
-                    label: 'Language',
-                    value: preferences.language.toUpperCase(),
-                  ),
-                  _buildStatItem(
-                    icon: Icons.straighten,
-                    label: 'Units',
-                    value: preferences.units == 'metric' ? 'Metric' : 'Imperial',
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              _buildStatItem(
-                icon: Icons.info_outline,
-                label: 'App Version',
-                value: 'v${AppEnvironment.appVersion}',
-              ),
-            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildStatItem({
-    required IconData icon,
-    required String label,
-    required String value,
-  }) {
-    return Column(
-      children: [
-        Icon(
-          icon,
-          color: AppColors.brandPrimary,
-          size: 24,
-        ),
-        const SizedBox(height: 4),
-        Text(
-          value,
-          style: const TextStyle(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        Text(
-          label,
-          style: const TextStyle(
-            color: AppColors.textSecondary,
-            fontSize: 12,
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _buildProfileSettings(UserPreferences preferences) {
     return Container(
@@ -285,32 +216,32 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ),
           const SizedBox(height: 20),
           
-          // Alert Range - Simple display
+          // Alert Range - Always editable
           _buildSimpleSettingItem(
             icon: Icons.notifications,
             title: 'Alert Range',
             value: preferences.alertRangeDisplay,
-            onTap: _isEditing ? () => _showRangeSelector(preferences) : null,
+            onTap: () => _showRangeSelector(preferences),
           ),
           
           const SizedBox(height: 16),
           
-          // Language - Simple display
+          // Language - Always editable (but fix crash first)
           _buildSimpleSettingItem(
             icon: Icons.language,
             title: 'Language',
             value: preferences.language.toUpperCase(),
-            onTap: _isEditing ? () => _showLanguageSelector(preferences) : null,
+            onTap: () => _showLanguageSelector(preferences),
           ),
           
           const SizedBox(height: 16),
           
-          // Units - Simple display
+          // Units - Always editable
           _buildSimpleSettingItem(
             icon: Icons.straighten,
             title: 'Units',
             value: preferences.units == 'metric' ? 'Metric' : 'Imperial',
-            onTap: _isEditing ? () => _toggleUnits(preferences) : null,
+            onTap: () => _toggleUnits(preferences),
           ),
         ],
       ),
@@ -343,7 +274,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             title: 'Push Notifications',
             subtitle: 'Receive alerts for nearby sightings',
             value: preferences.enablePushNotifications,
-            onChanged: _isEditing ? _togglePushNotifications : null,
+            onChanged: _togglePushNotifications,
           ),
           
           _buildSettingsTile(
@@ -351,26 +282,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             title: 'Location Alerts',
             subtitle: 'Get notified based on your location',
             value: preferences.enableLocationAlerts,
-            onChanged: _isEditing ? _toggleLocationAlerts : null,
+            onChanged: _toggleLocationAlerts,
           ),
-          
-          if (AppEnvironment.enableArCompass)
-            _buildSettingsTile(
-              icon: Icons.explore,
-              title: 'AR Compass',
-              subtitle: 'Augmented reality navigation',
-              value: preferences.enableArCompass,
-              onChanged: _isEditing ? _toggleArCompass : null,
-            ),
-          
-          if (AppEnvironment.enablePilotMode)
-            _buildSettingsTile(
-              icon: Icons.flight,
-              title: 'Pilot Mode',
-              subtitle: 'Advanced aviation features',
-              value: preferences.enablePilotMode,
-              onChanged: _isEditing ? _togglePilotMode : null,
-            ),
         ],
       ),
     );
@@ -532,6 +445,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             _buildRangeOption('25 km', 25.0, preferences.alertRangeKm),
             _buildRangeOption('50 km', 50.0, preferences.alertRangeKm),
             _buildRangeOption('100 km', 100.0, preferences.alertRangeKm),
+            _buildRangeOption('Show all alerts', 999999.0, preferences.alertRangeKm),
           ],
         ),
         actions: [
@@ -636,15 +550,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     await notifier.toggleLocationAlerts();
   }
 
-  void _toggleArCompass(bool value) async {
-    final notifier = ref.read(userPreferencesProvider.notifier);
-    await notifier.toggleArCompass();
-  }
-
-  void _togglePilotMode(bool value) async {
-    final notifier = ref.read(userPreferencesProvider.notifier);
-    await notifier.togglePilotMode();
-  }
 
   void _showLogoutDialog() {
     showDialog(

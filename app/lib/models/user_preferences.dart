@@ -137,6 +137,9 @@ class UserPreferences {
 
   // Helper methods
   String get alertRangeDisplay {
+    if (alertRangeKm >= 999999.0) {
+      return 'Show all';
+    }
     if (units == 'imperial') {
       final miles = alertRangeKm * 0.621371;
       return '${miles.toStringAsFixed(1)} mi';

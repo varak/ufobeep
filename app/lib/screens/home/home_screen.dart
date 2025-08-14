@@ -266,16 +266,16 @@ class HomeScreen extends ConsumerWidget {
         // Map view
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                // Map widget
-                Expanded(
-                  flex: 2,
+                // Map widget - smaller
+                SizedBox(
+                  height: 250, // Fixed height instead of flex
                   child: MapWidget(
                     alerts: alerts,
                     showControls: true,
-                    zoom: 3.0, // Zoomed out more to show entire US clearly
+                    zoom: 2.5, // Zoom out even more to show entire US including California
                     onAlertTap: (alert) {
                       context.go('/alert/${alert.id}');
                     },
@@ -284,7 +284,7 @@ class HomeScreen extends ConsumerWidget {
                 
                 const SizedBox(height: 16),
                 
-                // Recent alerts list (compact)
+                // Recent alerts list - gets more space
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
