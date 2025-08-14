@@ -218,6 +218,10 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
                     
                     // Form field
                     _buildDescriptionInput(),
+                    const SizedBox(height: 16),
+                    
+                    // Photo quality info (after description)
+                    _buildPhotoQualityInfo(),
                     const SizedBox(height: 32), // Space for bottom button
                   ],
                 ),
@@ -246,6 +250,76 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
           fit: BoxFit.cover,
           width: double.infinity,
         ),
+      ),
+    );
+  }
+
+  Widget _buildPhotoQualityInfo() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.darkSurface.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.darkBorder.withOpacity(0.3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.info_outline, color: AppColors.brandPrimary, size: 20),
+              const SizedBox(width: 8),
+              const Text(
+                'Photo Quality',
+                style: TextStyle(
+                  color: AppColors.brandPrimary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            'UFOBeep captures photos at maximum device resolution for detailed analysis. For even higher quality images, you can also upload photos from your camera gallery.',
+            style: TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 14,
+              height: 1.4,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppColors.brandPrimary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
+                ),
+                child: const Text(
+                  '💡 Tip',
+                  style: TextStyle(
+                    color: AppColors.brandPrimary,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              const Expanded(
+                child: Text(
+                  'Native camera photos often have higher megapixel counts',
+                  style: TextStyle(
+                    color: AppColors.textTertiary,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

@@ -23,7 +23,22 @@ enum CompassView {
 }
 
 class CompassScreen extends ConsumerStatefulWidget {
-  const CompassScreen({super.key});
+  const CompassScreen({
+    super.key,
+    this.targetLat,
+    this.targetLon,
+    this.targetName,
+    this.targetBearing,
+    this.targetDistance,
+    this.alertId,
+  });
+
+  final double? targetLat;
+  final double? targetLon;
+  final String? targetName;
+  final double? targetBearing;
+  final double? targetDistance;
+  final String? alertId;
 
   @override
   ConsumerState<CompassScreen> createState() => _CompassScreenState();
@@ -66,7 +81,22 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
       if (mounted) { // Check mount status before setState
         setState(() {
           _isServiceStarted = true;
-          _currentTarget = service.getMockTarget(); // Demo target
+          // Use provided target if available, otherwise use mock target
+          if (widget.targetLat != null && widget.targetLon != null) {
+            _currentTarget = CompassTarget(
+              id: widget.alertId ?? 'sighting_target',
+              name: widget.targetName ?? 'UFO Sighting',
+              location: LocationData(
+                latitude: widget.targetLat!,
+                longitude: widget.targetLon!,
+                accuracy: 10.0, // Default accuracy for sighting location
+                timestamp: DateTime.now(),
+              ),
+              distance: widget.targetDistance != null ? widget.targetDistance! * 1000 : null, // Convert km to meters
+            );
+          } else {
+            _currentTarget = service.getMockTarget(); // Demo target
+          }
         });
       }
     } catch (e) {
@@ -240,37 +270,19 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
               target: _currentTarget,
             ),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
             
-            // Quick Actions
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildQuickAction(
-                  icon: Icons.my_location,
-                  label: 'Center',
-                  onTap: () {
-                    // TODO: Center on current location
-                  },
-                ),
-                _buildQuickAction(
-                  icon: Icons.navigation,
-                  label: 'Navigate',
-                  onTap: _currentTarget != null ? () {
-                    // TODO: Start navigation to target
-                  } : null,
-                ),
-                _buildQuickAction(
-                  icon: Icons.refresh,
-                  label: 'Calibrate',
-                  onTap: () {
-                    _showCalibrationDialog();
-                  },
-                ),
-              ],
-            ),
+            // Real-time navigation instructions (if target is provided)
+            if (_currentTarget != null && (widget.targetLat != null && widget.targetLon != null))
+              _buildRealTimeNavigation(compassData),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
+            
+            // Detailed navigation instructions
+            if (_currentTarget != null && (widget.targetLat != null && widget.targetLon != null))
+              _buildDetailedNavigationInstructions(),
+            
+            const SizedBox(height: 16),
             
             // Compass Information
             CompassInfo(
@@ -298,37 +310,19 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
               target: _currentTarget,
             ),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
             
-            // Quick Actions (pilot specific)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildQuickAction(
-                  icon: Icons.gps_fixed,
-                  label: 'Direct',
-                  onTap: _currentTarget != null ? () {
-                    // TODO: Set direct course to target
-                  } : null,
-                ),
-                _buildQuickAction(
-                  icon: Icons.trending_up,
-                  label: 'Vector',
-                  onTap: _currentTarget != null ? () {
-                    // TODO: Calculate intercept vector
-                  } : null,
-                ),
-                _buildQuickAction(
-                  icon: Icons.air,
-                  label: 'Wind',
-                  onTap: () {
-                    _showWindDialog();
-                  },
-                ),
-              ],
-            ),
+            // Real-time pilot navigation instructions (if target is provided)
+            if (_currentTarget != null && (widget.targetLat != null && widget.targetLon != null))
+              _buildRealTimePilotNavigation(pilotData),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
+            
+            // Detailed pilot navigation instructions
+            if (_currentTarget != null && (widget.targetLat != null && widget.targetLon != null))
+              _buildDetailedPilotNavigationInstructions(),
+            
+            const SizedBox(height: 16),
             
             // Pilot Information
             PilotInfo(
@@ -341,41 +335,6 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
     );
   }
 
-  Widget _buildQuickAction({
-    required IconData icon,
-    required String label,
-    VoidCallback? onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColors.darkSurface,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.darkBorder),
-        ),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              color: onTap != null ? AppColors.brandPrimary : AppColors.textTertiary,
-              size: 24,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: TextStyle(
-                color: onTap != null ? AppColors.textPrimary : AppColors.textTertiary,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildLoadingState() {
     final service = ref.read(compassServiceProvider);
@@ -482,118 +441,333 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
     );
   }
 
-  void _showCalibrationDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.darkSurface,
-        title: const Text(
-          'Calibrate Compass',
-          style: TextStyle(color: AppColors.textPrimary),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.rotate_right,
-              size: 48,
-              color: AppColors.brandPrimary,
+
+
+  Widget _buildDetailedNavigationInstructions() {
+    final target = _currentTarget;
+    if (target == null) return const SizedBox();
+
+    final service = ref.read(compassServiceProvider);
+    final compassData = service.getMockCompassData();
+    
+    // Use provided bearing or calculate from current location
+    final bearingToTarget = widget.targetBearing ?? 0.0;
+    final currentHeading = compassData.magneticHeading;
+    final bearingDiff = ((bearingToTarget - currentHeading + 360) % 360);
+    
+    String direction = 'North';
+    if (bearingToTarget >= 337.5 || bearingToTarget < 22.5) direction = 'N';
+    else if (bearingToTarget < 67.5) direction = 'NE';
+    else if (bearingToTarget < 112.5) direction = 'E';
+    else if (bearingToTarget < 157.5) direction = 'SE';
+    else if (bearingToTarget < 202.5) direction = 'S';
+    else if (bearingToTarget < 247.5) direction = 'SW';
+    else if (bearingToTarget < 292.5) direction = 'W';
+    else direction = 'NW';
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.brandPrimary.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.navigation, color: AppColors.brandPrimary, size: 20),
+              const SizedBox(width: 8),
+              Text(
+                'Navigate to ${target.name}',
+                style: const TextStyle(
+                  color: AppColors.brandPrimary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          // Distance information if available
+          if (target.distance != null) ...[
+            Text(
+              '📏 Distance: ${target.formattedDistance}',
+              style: const TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-            const SizedBox(height: 16),
-            const Text(
-              'To improve compass accuracy:\n\n'
-              '1. Hold device away from metal objects\n'
-              '2. Move device in figure-8 pattern\n'
-              '3. Rotate in all directions\n'
-              '4. Complete 3-4 full rotations',
-              style: TextStyle(color: AppColors.textSecondary),
-            ),
+            const SizedBox(height: 8),
           ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Got it'),
+          Text(
+            '🧭 Get a clear view of the sky and look ${bearingToTarget.toStringAsFixed(0)}° $direction',
+            style: const TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '🧭 Line up the RED COMPASS NEEDLE with the blue target arrow',
+            style: const TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              height: 1.3,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '📍 When aligned, you\'ll be looking toward the sighting location',
+            style: const TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 13,
+              height: 1.3,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '💡 Turn slowly until the RED NEEDLE points to ${bearingToTarget.toStringAsFixed(0)}°',
+            style: const TextStyle(
+              color: AppColors.textTertiary,
+              fontSize: 12,
+              fontStyle: FontStyle.italic,
+            ),
           ),
         ],
       ),
     );
   }
 
-  void _showWindDialog() {
+  Widget _buildDetailedPilotNavigationInstructions() {
+    final target = _currentTarget;
+    if (target == null) return const SizedBox();
+
     final service = ref.read(compassServiceProvider);
     final pilotData = service.getMockPilotData();
-    final wind = pilotData.wind;
     
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.darkSurface,
-        title: const Text(
-          'Wind Information',
-          style: TextStyle(color: AppColors.textPrimary),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(
-              Icons.air,
-              size: 48,
-              color: AppColors.semanticInfo,
-            ),
-            const SizedBox(height: 16),
-            
-            if (wind != null) ...[
+    final bearingToTarget = widget.targetBearing ?? 0.0;
+    final currentHeading = pilotData.compass.trueHeading;
+    final headingChange = ((bearingToTarget - currentHeading + 360) % 360);
+    
+    String turnDirection = headingChange <= 180 ? 'right' : 'left';
+    double turnDegrees = headingChange <= 180 ? headingChange : 360 - headingChange;
+    
+    String direction = 'North';
+    if (bearingToTarget >= 337.5 || bearingToTarget < 22.5) direction = 'N';
+    else if (bearingToTarget < 67.5) direction = 'NE';
+    else if (bearingToTarget < 112.5) direction = 'E';
+    else if (bearingToTarget < 157.5) direction = 'SE';
+    else if (bearingToTarget < 202.5) direction = 'S';
+    else if (bearingToTarget < 247.5) direction = 'SW';
+    else if (bearingToTarget < 292.5) direction = 'W';
+    else direction = 'NW';
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.semanticInfo.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.semanticInfo.withOpacity(0.3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.flight, color: AppColors.semanticInfo, size: 20),
+              const SizedBox(width: 8),
               Text(
-                'Current Wind:',
-                style: TextStyle(
-                  color: AppColors.textPrimary,
+                'Pilot Navigation to ${target.name}',
+                style: const TextStyle(
+                  color: AppColors.semanticInfo,
+                  fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(height: 8),
-              Text(
-                wind.formattedWind,
-                style: TextStyle(
-                  color: AppColors.brandPrimary,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                'Component for current heading:',
-                style: TextStyle(color: AppColors.textSecondary),
-              ),
-              Text(
-                wind.getWindComponent(pilotData.compass.trueHeading),
-                style: TextStyle(
-                  color: AppColors.semanticInfo,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                'Source: ${wind.accuracy.displayName}',
-                style: TextStyle(
-                  color: AppColors.textTertiary,
-                  fontSize: 12,
-                ),
-              ),
-            ] else ...[
-              const Text(
-                'No wind data available',
-                style: TextStyle(color: AppColors.textSecondary),
-              ),
             ],
+          ),
+          const SizedBox(height: 12),
+          // Distance information if available  
+          if (target.distance != null) ...[
+            Text(
+              '📏 Distance: ${target.formattedDistance}',
+              style: const TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 8),
           ],
+          Text(
+            '✈️ Target heading: ${bearingToTarget.toStringAsFixed(0)}° $direction',
+            style: const TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '🔄 Turn ${turnDirection} ${turnDegrees.toStringAsFixed(0)}° to intercept',
+            style: const TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 13,
+            ),
+          ),
+          const SizedBox(height: 8),
+          if (pilotData.wind != null) ...[
+            Text(
+              '💨 Wind: ${pilotData.wind!.formattedWind}',
+              style: const TextStyle(
+                color: AppColors.textTertiary,
+                fontSize: 12,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              '📐 Apply wind correction for accurate course',
+              style: const TextStyle(
+                color: AppColors.textTertiary,
+                fontSize: 12,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRealTimeNavigation(CompassData compassData) {
+    final target = _currentTarget;
+    if (target == null) return const SizedBox();
+
+    final bearingToTarget = widget.targetBearing ?? 0.0;
+    final currentHeading = compassData.magneticHeading;
+    final bearingDiff = ((bearingToTarget - currentHeading + 360) % 360);
+    
+    String turnInstruction;
+    String direction;
+    
+    if (bearingDiff < 5 || bearingDiff > 355) {
+      turnInstruction = 'On Target!';
+      direction = '🎯';
+    } else if (bearingDiff <= 180) {
+      direction = bearingDiff > 90 ? 'Turn Right' : 'Turn Slightly Right';
+      turnInstruction = '$direction ${bearingDiff.toStringAsFixed(0)}°';
+    } else {
+      final leftTurn = 360 - bearingDiff;
+      direction = leftTurn > 90 ? 'Turn Left' : 'Turn Slightly Left';
+      turnInstruction = '$direction ${leftTurn.toStringAsFixed(0)}°';
+    }
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: bearingDiff < 10 || bearingDiff > 350 
+            ? AppColors.brandPrimary.withOpacity(0.15)
+            : AppColors.darkSurface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: bearingDiff < 10 || bearingDiff > 350
+              ? AppColors.brandPrimary
+              : AppColors.darkBorder,
+          width: bearingDiff < 10 || bearingDiff > 350 ? 2 : 1,
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+      ),
+      child: Column(
+        children: [
+          Text(
+            bearingDiff < 5 || bearingDiff > 355 ? '🎯 On Target!' : '🧭 $turnInstruction',
+            style: TextStyle(
+              color: bearingDiff < 10 || bearingDiff > 350 
+                  ? AppColors.brandPrimary 
+                  : AppColors.textPrimary,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Target: ${bearingToTarget.toStringAsFixed(0)}° • Current: ${currentHeading.toStringAsFixed(0)}°',
+            style: const TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRealTimePilotNavigation(PilotNavigationData pilotData) {
+    final target = _currentTarget;
+    if (target == null) return const SizedBox();
+
+    final bearingToTarget = widget.targetBearing ?? 0.0;
+    final currentHeading = pilotData.compass.trueHeading;
+    final headingChange = ((bearingToTarget - currentHeading + 360) % 360);
+    
+    String turnInstruction;
+    String direction;
+    
+    if (headingChange < 5 || headingChange > 355) {
+      turnInstruction = 'On Course!';
+      direction = '🎯';
+    } else if (headingChange <= 180) {
+      direction = headingChange > 30 ? 'Turn Right' : 'Right';
+      turnInstruction = '$direction ${headingChange.toStringAsFixed(0)}°';
+    } else {
+      final leftTurn = 360 - headingChange;
+      direction = leftTurn > 30 ? 'Turn Left' : 'Left';
+      turnInstruction = '$direction ${leftTurn.toStringAsFixed(0)}°';
+    }
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: headingChange < 10 || headingChange > 350 
+            ? AppColors.semanticInfo.withOpacity(0.15)
+            : AppColors.darkSurface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: headingChange < 10 || headingChange > 350
+              ? AppColors.semanticInfo
+              : AppColors.darkBorder,
+          width: headingChange < 10 || headingChange > 350 ? 2 : 1,
+        ),
+      ),
+      child: Column(
+        children: [
+          Text(
+            headingChange < 5 || headingChange > 355 ? '🎯 On Course!' : '✈️ $turnInstruction',
+            style: TextStyle(
+              color: headingChange < 10 || headingChange > 350 
+                  ? AppColors.semanticInfo 
+                  : AppColors.textPrimary,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Target: ${bearingToTarget.toStringAsFixed(0)}° • Heading: ${currentHeading.toStringAsFixed(0)}°',
+            style: const TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),

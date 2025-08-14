@@ -277,6 +277,7 @@ class HomeScreen extends ConsumerWidget {
                   child: MapWidget(
                     alerts: alerts,
                     showControls: true,
+                    zoom: 4.0, // Show wider view of US to see more sightings
                     onAlertTap: (alert) {
                       context.go('/alert/${alert.id}');
                     },

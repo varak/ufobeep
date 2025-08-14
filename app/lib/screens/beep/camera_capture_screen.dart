@@ -99,9 +99,25 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       // Get sensor data
       SensorData? sensorData;
       try {
+        debugPrint('🌍 CAMERA: Attempting to capture GPS and sensor data...');
         sensorData = await _sensorService.captureSensorData();
+        if (sensorData != null) {
+          debugPrint('✅ CAMERA: Got sensor data - lat: ${sensorData.latitude}, lng: ${sensorData.longitude}, accuracy: ${sensorData.accuracy}m');
+        } else {
+          debugPrint('⚠️ CAMERA: Sensor service returned null data');
+        }
       } catch (e) {
-        print('❌ CAMERA: Failed to capture sensor data: $e');
+        debugPrint('❌ CAMERA: Failed to capture sensor data: $e');
+        // Show user-friendly message about location
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Location not available: $e'),
+              backgroundColor: AppColors.semanticError,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        }
       }
 
       // Save to UFOBeep folder

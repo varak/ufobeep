@@ -188,7 +188,24 @@ GoRouter appRouter(AppRouterRef ref) {
           GoRoute(
             path: '/compass',
             name: 'compass',
-            builder: (context, state) => const CompassScreen(),
+            builder: (context, state) {
+              // Extract target coordinates from query parameters
+              final targetLat = state.uri.queryParameters['targetLat'];
+              final targetLon = state.uri.queryParameters['targetLon'];
+              final targetName = state.uri.queryParameters['targetName'];
+              final bearing = state.uri.queryParameters['bearing'];
+              final distance = state.uri.queryParameters['distance'];
+              final alertId = state.uri.queryParameters['alertId'];
+              
+              return CompassScreen(
+                targetLat: targetLat != null ? double.tryParse(targetLat) : null,
+                targetLon: targetLon != null ? double.tryParse(targetLon) : null,
+                targetName: targetName,
+                targetBearing: bearing != null ? double.tryParse(bearing) : null,
+                targetDistance: distance != null ? double.tryParse(distance) : null,
+                alertId: alertId,
+              );
+            },
           ),
 
           // Profile

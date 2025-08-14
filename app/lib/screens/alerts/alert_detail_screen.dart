@@ -52,36 +52,43 @@ class AlertDetailScreen extends ConsumerWidget {
                 _buildMediaSection(alert),
                 const SizedBox(height: 24),
 
-                // Category & Verification
-                Row(
-                  children: [
-                    Chip(
-                      label: Text(alert.category.replaceAll('_', ' ').toUpperCase()),
-                    ),
-                    const SizedBox(width: 8),
-                    if (alert.isVerified)
+                // Verification status only (remove redundant category)
+                if (alert.isVerified)
+                  Row(
+                    children: [
                       Chip(
                         label: const Text('VERIFIED'),
                         backgroundColor: AppColors.brandPrimary.withOpacity(0.2),
                       ),
-                  ],
-                ),
+                    ],
+                  ),
                 const SizedBox(height: 16),
 
-                // Title
+                // Title - show date/time instead of repetitive "UFO Sighting"
                 Text(
-                  alert.title,
+                  _formatDateTime(alert.createdAt),
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 const SizedBox(height: 12),
 
-                // Description
-                Text(
-                  alert.description,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppColors.textSecondary,
+                // Description - only show if it's not the default message
+                if (alert.description != 'UFO sighting captured with UFOBeep app' && 
+                    alert.description.isNotEmpty)
+                  Text(
+                    alert.description,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
                   ),
-                ),
+                if (alert.description == 'UFO sighting captured with UFOBeep app' || 
+                    alert.description.isEmpty)
+                  Text(
+                    'Visual sighting captured with UFOBeep',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: AppColors.textTertiary,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
                 const SizedBox(height: 24),
 
 
@@ -124,6 +131,30 @@ class AlertDetailScreen extends ConsumerWidget {
                           icon: Icons.place,
                           label: 'Coordinates',
                           value: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
+                        ),
+                        const SizedBox(height: 16),
+                        // Navigation button
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              // Navigate to compass with target location
+                              final targetName = alert.title;
+                              final bearing = alert.bearing?.toString() ?? '';
+                              final distance = alert.distance?.toString() ?? '';
+                              context.go('/compass?targetLat=${alert.latitude}&targetLon=${alert.longitude}&targetName=${Uri.encodeComponent(targetName)}&bearing=$bearing&distance=$distance&alertId=${alert.id}');
+                            },
+                            icon: const Icon(Icons.navigation, size: 18),
+                            label: const Text('Navigate to Sighting'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.brandPrimary,
+                              foregroundColor: Colors.black,
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -293,9 +324,13 @@ class AlertDetailScreen extends ConsumerWidget {
                         Expanded(
                           child: OutlinedButton.icon(
                             onPressed: () {
-                              // TODO: Navigate to alert location
+                              // Navigate to compass with target location
+                              final targetName = alert.title;
+                              final bearing = alert.bearing?.toString() ?? '';
+                              final distance = alert.distance?.toString() ?? '';
+                              context.go('/compass?targetLat=${alert.latitude}&targetLon=${alert.longitude}&targetName=${Uri.encodeComponent(targetName)}&bearing=$bearing&distance=$distance&alertId=${alert.id}');
                             },
-                            icon: const Icon(Icons.directions),
+                            icon: const Icon(Icons.navigation),
                             label: const Text('Navigate'),
                           ),
                         ),

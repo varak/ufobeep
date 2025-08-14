@@ -4,10 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../models/user_preferences.dart';
 import '../../providers/user_preferences_provider.dart';
-import '../../widgets/profile/language_selector.dart';
-import '../../widgets/profile/range_selector.dart';
-import '../../widgets/profile/visibility_settings.dart';
-import '../../widgets/profile/location_privacy_selector.dart';
 import '../../theme/app_theme.dart';
 import '../../config/environment.dart';
 
@@ -280,7 +276,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Preferences',
+            'Basic Settings',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -289,57 +285,32 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ),
           const SizedBox(height: 20),
           
-          // Language
-          LanguageSelector(
-            selectedLanguage: preferences.language,
-            onLanguageChanged: _isEditing
-                ? (language) => _updateLanguage(language)
-                : (_) {},
-            enabled: _isEditing,
+          // Alert Range - Simple display
+          _buildSimpleSettingItem(
+            icon: Icons.notifications,
+            title: 'Alert Range',
+            value: preferences.alertRangeDisplay,
+            onTap: _isEditing ? () => _showRangeSelector(preferences) : null,
           ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
           
-          // Alert Range
-          RangeSelector(
-            selectedRange: preferences.alertRangeKm,
-            onRangeChanged: _isEditing
-                ? (range) => _updateAlertRange(range)
-                : (_) {},
-            enabled: _isEditing,
+          // Language - Simple display
+          _buildSimpleSettingItem(
+            icon: Icons.language,
+            title: 'Language',
+            value: preferences.language.toUpperCase(),
+            onTap: _isEditing ? () => _showLanguageSelector(preferences) : null,
           ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
           
-          // Units
-          UnitsSelector(
-            selectedUnits: preferences.units,
-            onUnitsChanged: _isEditing
-                ? (units) => _updateUnits(units)
-                : (_) {},
-            enabled: _isEditing,
-          ),
-          
-          const SizedBox(height: 24),
-          
-          // Location Privacy Settings
-          LocationPrivacySelector(
-            selectedPrivacy: preferences.locationPrivacy,
-            onPrivacyChanged: _isEditing
-                ? (privacy) => _updateLocationPrivacy(privacy)
-                : (_) {},
-            enabled: _isEditing,
-          ),
-          
-          const SizedBox(height: 24),
-          
-          // Visibility Settings
-          VisibilitySettings(
-            preferences: preferences,
-            onPreferencesChanged: _isEditing
-                ? (updatedPrefs) => _updateVisibilitySettings(updatedPrefs)
-                : (_) {},
-            enabled: _isEditing,
+          // Units - Simple display
+          _buildSimpleSettingItem(
+            icon: Icons.straighten,
+            title: 'Units',
+            value: preferences.units == 'metric' ? 'Metric' : 'Imperial',
+            onTap: _isEditing ? () => _toggleUnits(preferences) : null,
           ),
         ],
       ),
@@ -464,50 +435,73 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Widget _buildActionButtons() {
-    return Column(
-      children: [
-        SizedBox(
-          width: double.infinity,
-          height: 48,
-          child: OutlinedButton(
-            onPressed: () {
-              // TODO: Navigate to settings
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Settings coming soon!')),
-              );
-            },
-            style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: AppColors.darkBorder),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+    return SizedBox(
+      width: double.infinity,
+      height: 48,
+      child: TextButton(
+        onPressed: () => _showLogoutDialog(),
+        child: const Text(
+          'Clear Profile Data',
+          style: TextStyle(color: AppColors.semanticError),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSimpleSettingItem({
+    required IconData icon,
+    required String title,
+    required String value,
+    VoidCallback? onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+        child: Row(
+          children: [
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: AppColors.brandPrimary.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(
+                icon,
+                color: AppColors.brandPrimary,
+                size: 18,
               ),
             ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.settings, color: AppColors.textPrimary),
-                SizedBox(width: 8),
-                Text(
-                  'App Settings',
-                  style: TextStyle(color: AppColors.textPrimary),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w500,
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-        const SizedBox(height: 12),
-        SizedBox(
-          width: double.infinity,
-          height: 48,
-          child: TextButton(
-            onPressed: () => _showLogoutDialog(),
-            child: const Text(
-              'Clear Profile Data',
-              style: TextStyle(color: AppColors.semanticError),
+            Text(
+              value,
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 14,
+              ),
             ),
-          ),
+            if (onTap != null) ...[
+              const SizedBox(width: 8),
+              const Icon(
+                Icons.chevron_right,
+                color: AppColors.textTertiary,
+                size: 20,
+              ),
+            ],
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -519,6 +513,101 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       return words[0][0].toUpperCase();
     }
     return 'U';
+  }
+
+  void _showRangeSelector(UserPreferences preferences) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        title: const Text(
+          'Alert Range',
+          style: TextStyle(color: AppColors.textPrimary),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildRangeOption('5 km', 5.0, preferences.alertRangeKm),
+            _buildRangeOption('10 km', 10.0, preferences.alertRangeKm),
+            _buildRangeOption('25 km', 25.0, preferences.alertRangeKm),
+            _buildRangeOption('50 km', 50.0, preferences.alertRangeKm),
+            _buildRangeOption('100 km', 100.0, preferences.alertRangeKm),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRangeOption(String label, double value, double currentValue) {
+    final isSelected = value == currentValue;
+    return ListTile(
+      title: Text(
+        label,
+        style: TextStyle(
+          color: isSelected ? AppColors.brandPrimary : AppColors.textPrimary,
+        ),
+      ),
+      trailing: isSelected ? const Icon(Icons.check, color: AppColors.brandPrimary) : null,
+      onTap: () {
+        _updateAlertRange(value);
+        Navigator.pop(context);
+      },
+    );
+  }
+
+  void _showLanguageSelector(UserPreferences preferences) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        title: const Text(
+          'Language',
+          style: TextStyle(color: AppColors.textPrimary),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildLanguageOption('English', 'en', preferences.language),
+            _buildLanguageOption('Español', 'es', preferences.language),
+            _buildLanguageOption('Français', 'fr', preferences.language),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLanguageOption(String label, String code, String currentCode) {
+    final isSelected = code == currentCode;
+    return ListTile(
+      title: Text(
+        label,
+        style: TextStyle(
+          color: isSelected ? AppColors.brandPrimary : AppColors.textPrimary,
+        ),
+      ),
+      trailing: isSelected ? const Icon(Icons.check, color: AppColors.brandPrimary) : null,
+      onTap: () {
+        _updateLanguage(code);
+        Navigator.pop(context);
+      },
+    );
+  }
+
+  void _toggleUnits(UserPreferences preferences) {
+    final newUnits = preferences.units == 'metric' ? 'imperial' : 'metric';
+    _updateUnits(newUnits);
   }
 
   void _updateLanguage(String language) async {
@@ -536,15 +625,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     await notifier.updateUnits(units);
   }
 
-  void _updateLocationPrivacy(LocationPrivacy privacy) async {
-    final notifier = ref.read(userPreferencesProvider.notifier);
-    await notifier.updateLocationPrivacy(privacy);
-  }
-
-  void _updateVisibilitySettings(UserPreferences updatedPrefs) async {
-    final notifier = ref.read(userPreferencesProvider.notifier);
-    await notifier.updatePreferences(updatedPrefs);
-  }
 
   void _togglePushNotifications(bool value) async {
     final notifier = ref.read(userPreferencesProvider.notifier);
