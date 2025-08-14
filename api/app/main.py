@@ -283,12 +283,17 @@ async def get_alerts():
                         
                         if isinstance(media_info, dict) and "files" in media_info:
                             for media_file in media_info["files"]:
+                                # Construct proper API endpoint URL instead of direct storage URL
+                                api_base_url = "https://api.ufobeep.com"
+                                filename = media_file.get("filename", "")
+                                media_url = f"{api_base_url}/media/{row['id']}/{filename}"
+                                
                                 media_files.append({
                                     "id": media_file.get("id", ""),
                                     "type": media_file.get("type", "image"),
-                                    "url": media_file.get("url", ""),
-                                    "thumbnail_url": media_file.get("thumbnail_url", ""),
-                                    "filename": media_file.get("filename", ""),
+                                    "url": media_url,  # Use API endpoint URL
+                                    "thumbnail_url": media_url,  # Same for thumbnail
+                                    "filename": filename,
                                     "size": media_file.get("size", 0),
                                     "width": media_file.get("width", 0),
                                     "height": media_file.get("height", 0),
