@@ -83,7 +83,7 @@ async def create_presigned_upload(
             )
         
         # Generate presigned upload
-        response = await filesystem_storage.generate_presigned_upload(
+        response = await filesystem_storage.create_presigned_upload(
             request=request,
             user_id=user_id,
             expires_in=3600  # 1 hour
@@ -252,7 +252,7 @@ async def create_bulk_presigned_uploads(
         batch_id = f"batch_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}_{len(request.files)}"
         
         for file_request in request.files:
-            response = await filesystem_storage.generate_presigned_upload(
+            response = await filesystem_storage.create_presigned_upload(
                 request=file_request,
                 user_id=user_id,
                 expires_in=3600
