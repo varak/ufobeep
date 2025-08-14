@@ -29,6 +29,9 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   // Location privacy is now handled in user profile settings
   
+  // Store sensor data in state to preserve it during rebuilds
+  SensorData? _sensorData;
+  
   // Submission state
   bool _isSubmitting = false;
   String? _errorMessage;
@@ -47,7 +50,13 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
   void initState() {
     super.initState();
     
-    debugPrint('BeepComposition: Image=${widget.imageFile.existsSync()}, Sensor=${widget.sensorData != null}');
+    // Store sensor data in state immediately to preserve it during rebuilds
+    _sensorData = widget.sensorData;
+    
+    debugPrint('BeepComposition: Image=${widget.imageFile.existsSync()}, Sensor=${_sensorData != null}');
+    if (_sensorData != null) {
+      debugPrint('BeepComposition: GPS coordinates: lat=${_sensorData!.latitude}, lng=${_sensorData!.longitude}');
+    }
     
     // Add listener for real-time validation
     _descriptionController.addListener(_onFormFieldChanged);
@@ -56,6 +65,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
   void _onFormFieldChanged() {
     setState(() {});
     debugPrint('Form validation: desc=${_descriptionController.text.length} chars, valid=$_isFormValid');
+    debugPrint('Form change - sensor data still present: ${_sensorData != null}, GPS: ${_sensorData?.latitude}, ${_sensorData?.longitude}');
   }
 
   Future<void> _submitBeep() async {
@@ -79,15 +89,15 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
       const category = api.SightingCategory.ufo;
       final List<String> tags = [];
 
-      debugPrint('Submitting sighting with sensor data: ${widget.sensorData != null}');
+      debugPrint('Submitting sighting with sensor data: ${_sensorData != null}');
       
       // Submit sighting with media using API client
-      debugPrint('Submitting with sensorData: ${widget.sensorData?.latitude}, ${widget.sensorData?.longitude}');
+      debugPrint('Submitting with sensorData: ${_sensorData?.latitude}, ${_sensorData?.longitude}');
       final sightingId = await ApiClient.instance.submitSightingWithMedia(
         title: finalTitle,
         description: finalDescription,
         category: category,
-        sensorData: widget.sensorData,
+        sensorData: _sensorData,
         mediaFiles: [widget.imageFile],
         witnessCount: 1,
         tags: tags,

@@ -22,14 +22,6 @@ export default function AppDownloadCTA() {
       subtitle: 'Get it on Android',
       color: 'bg-gradient-to-r from-green-600 to-green-700',
       hoverColor: 'hover:from-green-500 hover:to-green-600'
-    },
-    {
-      id: 'pwa',
-      name: 'Web App',
-      icon: '🌐',
-      subtitle: 'Install PWA',
-      color: 'bg-gradient-to-r from-brand-primary to-brand-primary-dark',
-      hoverColor: 'hover:from-brand-primary-light hover:to-brand-primary'
     }
   ]
 
@@ -49,7 +41,7 @@ export default function AppDownloadCTA() {
         </div>
 
         {/* Download Options */}
-        <div className="grid sm:grid-cols-3 gap-4 mb-12">
+        <div className="grid sm:grid-cols-2 gap-6 mb-12 max-w-xl mx-auto">
           {stores.map((store) => (
             <Link 
               key={store.id}
@@ -88,7 +80,7 @@ export default function AppDownloadCTA() {
           </div>
           <div className="p-4 bg-dark-surface rounded-lg border border-dark-border">
             <div className="text-2xl mb-2">🧭</div>
-            <div className="text-sm text-text-primary font-medium">AR Navigation</div>
+            <div className="text-sm text-text-primary font-medium">Assisted Navigation</div>
           </div>
           <div className="p-4 bg-dark-surface rounded-lg border border-dark-border">
             <div className="text-2xl mb-2">💬</div>
@@ -103,13 +95,13 @@ export default function AppDownloadCTA() {
         {/* Version & Compatibility Info */}
         <div className="text-center">
           <p className="text-sm text-text-tertiary mb-4">
-            Version 1.0.0 • Compatible with iOS 14+, Android 8+ • Free to download
+            Alpha v0.1.0 • Compatible with iOS 13+, Android 7+ • Free to download
           </p>
           <div className="flex justify-center gap-6 text-xs text-text-tertiary">
             <span>🔒 Privacy-focused</span>
-            <span>📱 Offline capable</span>
-            <span>🌍 Multilingual</span>
-            <span>♿ Accessible</span>
+            <span>📱 Real-time alerts</span>
+            <span>🌍 Global network</span>
+            <span>📸 Photo capture</span>
           </div>
         </div>
       </div>

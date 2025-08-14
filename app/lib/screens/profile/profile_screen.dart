@@ -469,7 +469,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ),
       trailing: isSelected ? const Icon(Icons.check, color: AppColors.brandPrimary) : null,
       onTap: () async {
-        Navigator.pop(context);
+        // Only pop if we can safely navigate back
+        if (Navigator.canPop(context)) {
+          Navigator.pop(context);
+        }
         // Do the update after dialog closes to avoid rebuild issues
         await Future.delayed(const Duration(milliseconds: 100));
         if (mounted) {
@@ -517,7 +520,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ),
       trailing: isSelected ? const Icon(Icons.check, color: AppColors.brandPrimary) : null,
       onTap: () async {
-        Navigator.pop(context);
+        // Only pop if we can safely navigate back
+        if (Navigator.canPop(context)) {
+          Navigator.pop(context);
+        }
         // Do the update after dialog closes to avoid rebuild issues
         await Future.delayed(const Duration(milliseconds: 100));
         if (mounted) {

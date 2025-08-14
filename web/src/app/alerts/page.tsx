@@ -26,28 +26,35 @@ interface Alert {
 }
 
 export default function AlertsPage() {
+  const [allAlerts, setAllAlerts] = useState<Alert[]>([])
   const [alerts, setAlerts] = useState<Alert[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const [hasMore, setHasMore] = useState(true)
   const alertsPerPage = 9
 
   useEffect(() => {
-    fetchAlerts(currentPage)
-  }, [currentPage])
+    // Fetch all alerts once on component mount
+    fetchAllAlerts()
+  }, [])
 
-  const fetchAlerts = async (page: number) => {
+  useEffect(() => {
+    // Update displayed alerts when page changes
+    if (allAlerts.length > 0) {
+      updateDisplayedAlerts(currentPage)
+    }
+  }, [currentPage, allAlerts])
+
+  const fetchAllAlerts = async () => {
     setLoading(true)
     try {
-      const offset = (page - 1) * alertsPerPage
-      const response = await fetch(`https://api.ufobeep.com/alerts?limit=${alertsPerPage + 1}&offset=${offset}`)
+      // Since API offset doesn't work, fetch a large batch of recent alerts
+      const response = await fetch(`https://api.ufobeep.com/alerts?limit=100&offset=0&verified_only=false`)
       const data = await response.json()
       
       if (data.success && data.data?.alerts) {
-        const fetchedAlerts = data.data.alerts
-        setHasMore(fetchedAlerts.length > alertsPerPage)
-        setAlerts(fetchedAlerts.slice(0, alertsPerPage))
+        setAllAlerts(data.data.alerts)
+        updateDisplayedAlerts(1) // Show first page
       } else {
         setError('Failed to load alerts')
       }
@@ -57,6 +64,15 @@ export default function AlertsPage() {
       setLoading(false)
     }
   }
+
+  const updateDisplayedAlerts = (page: number) => {
+    const startIndex = (page - 1) * alertsPerPage
+    const endIndex = startIndex + alertsPerPage
+    setAlerts(allAlerts.slice(startIndex, endIndex))
+  }
+
+  const getTotalPages = () => Math.ceil(allAlerts.length / alertsPerPage)
+  const hasMore = currentPage < getTotalPages()
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -152,7 +168,10 @@ export default function AlertsPage() {
             </div>
             
             <button 
-              onClick={() => fetchAlerts(1)}
+              onClick={() => {
+                setCurrentPage(1)
+                fetchAllAlerts()
+              }}
               className="bg-brand-primary text-text-inverse px-6 py-3 rounded-lg hover:bg-brand-primary-dark transition-colors"
             >
               Try Again
@@ -187,12 +206,12 @@ export default function AlertsPage() {
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           <div className="bg-dark-surface border border-dark-border rounded-lg p-6 text-center">
-            <div className="text-3xl text-brand-primary mb-2">{alerts.length}</div>
-            <div className="text-text-secondary">Recent Reports</div>
+            <div className="text-3xl text-brand-primary mb-2">{allAlerts.length}</div>
+            <div className="text-text-secondary">Total Reports</div>
           </div>
           <div className="bg-dark-surface border border-dark-border rounded-lg p-6 text-center">
             <div className="text-3xl text-green-400 mb-2">
-              {alerts.filter(a => a.media_files && a.media_files.length > 0).length}
+              {allAlerts.filter(a => a.media_files && a.media_files.length > 0).length}
             </div>
             <div className="text-text-secondary">With Photos</div>
           </div>
@@ -233,6 +252,7 @@ export default function AlertsPage() {
             <div className="flex items-center space-x-2">
               <span className="text-text-secondary">Page</span>
               <span className="bg-brand-primary text-text-inverse px-3 py-1 rounded font-semibold">{currentPage}</span>
+              <span className="text-text-secondary">of {getTotalPages()}</span>
             </div>
             
             <button
@@ -299,7 +319,7 @@ export default function AlertsPage() {
             </p>
             <div className="flex items-center space-x-6 mt-4 md:mt-0">
               <span className="text-text-tertiary text-sm">
-                {alerts.length} sightings on this page
+                Showing {alerts.length} of {allAlerts.length} sightings
               </span>
             </div>
           </div>

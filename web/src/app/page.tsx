@@ -17,7 +17,7 @@ export default function Home() {
           </p>
           <p className="text-lg text-text-tertiary mb-12 max-w-2xl mx-auto">
             Join a global network of observers. Report sightings, get instant alerts, 
-            and chat with witnesses in real-time using AR navigation.
+            and chat with witnesses in real-time using assisted navigation.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mb-16">
             <Link href="/app">
@@ -78,10 +78,10 @@ export default function Home() {
             </div>
             <div className="text-center p-6">
               <div className="text-4xl mb-4">🧭</div>
-              <h3 className="text-xl font-semibold mb-4 text-text-primary">Navigate with AR</h3>
+              <h3 className="text-xl font-semibold mb-4 text-text-primary">Assisted Navigation</h3>
               <p className="text-text-secondary">
-                Use our advanced AR compass to navigate to sighting locations with 
-                Standard and Pilot modes for precise vectoring.
+                Use our advanced compass to navigate to sighting locations with 
+                Standard and Pilot modes for precise directional guidance.
               </p>
             </div>
           </div>
@@ -152,7 +152,7 @@ export default function Home() {
               <h5 className="font-semibold mb-4 text-text-primary">Community</h5>
               <ul className="space-y-2 text-sm text-text-secondary">
                 <li><a href="#" className="hover:text-brand-primary transition-colors">Discord</a></li>
-                <li><a href="#" className="hover:text-brand-primary transition-colors">GitHub</a></li>
+                <li><a href="https://github.com/ufobeep/ufobeep" className="hover:text-brand-primary transition-colors">GitHub</a></li>
                 <li><a href="#" className="hover:text-brand-primary transition-colors">Support</a></li>
               </ul>
             </div>
