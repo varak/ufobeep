@@ -30,10 +30,12 @@ export default function ImageWithLoading({
   const [hasError, setHasError] = useState(false)
 
   const handleLoad = () => {
+    console.log('Image loaded successfully:', src)
     setIsLoading(false)
   }
 
   const handleError = (e: any) => {
+    console.error('Image failed to load:', src, e)
     setIsLoading(false)
     setHasError(true)
     if (onError) onError(e)
@@ -62,18 +64,30 @@ export default function ImageWithLoading({
       )}
 
       {/* Actual image */}
-      <Image
-        src={src}
-        alt={alt}
-        fill={fill}
-        width={!fill ? width : undefined}
-        height={!fill ? height : undefined}
-        className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
-        onLoad={handleLoad}
-        onError={handleError}
-        priority={priority}
-        sizes={sizes || (fill ? "100vw" : undefined)}
-      />
+      {src.includes('api.ufobeep.com') ? (
+        // Use regular img tag for API images to bypass Next.js optimization issues
+        <img
+          src={src}
+          alt={alt}
+          className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300 ${fill ? 'w-full h-full object-cover' : ''}`}
+          onLoad={handleLoad}
+          onError={handleError}
+          style={fill ? { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' } : { width, height }}
+        />
+      ) : (
+        <Image
+          src={src}
+          alt={alt}
+          fill={fill}
+          width={!fill ? width : undefined}
+          height={!fill ? height : undefined}
+          className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
+          onLoad={handleLoad}
+          onError={handleError}
+          priority={priority}
+          sizes={sizes || (fill ? "100vw" : undefined)}
+        />
+      )}
     </div>
   )
 }
