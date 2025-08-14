@@ -702,26 +702,29 @@ async def upload_media(
         if not file.content_type or not file.content_type.startswith('image/'):
             raise HTTPException(status_code=400, detail="Only image files are allowed")
         
-        # Generate unique filename
-        file_extension = os.path.splitext(file.filename)[1] if file.filename else '.jpg'
-        unique_filename = f"{uuid.uuid4()}{file_extension}"
+        # Use original filename from mobile app (UFOBeep_timestamp.jpg)
+        original_filename = file.filename or f"UFOBeep_{int(datetime.now().timestamp() * 1000)}.jpg"
         
-        # Save file
-        file_path = MEDIA_DIR / "images" / unique_filename
+        # Create sighting directory
+        sighting_dir = Path("/home/ufobeep/ufobeep/media") / sighting_id
+        sighting_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Save file with original filename in sighting directory
+        file_path = sighting_dir / original_filename
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         
         # Get file info
         file_size = os.path.getsize(file_path)
         
-        # Create media record with full URLs
-        base_url = "https://api.ufobeep.com"  # Use environment config in production
+        # Create media record with correct API URLs
+        base_url = "https://api.ufobeep.com"
         media_info = {
             "id": str(uuid.uuid4()),
             "type": "image",
-            "url": f"{base_url}/static/images/{unique_filename}",
-            "thumbnail_url": f"{base_url}/static/images/{unique_filename}",  # Same for now, could generate thumbnail
-            "filename": file.filename or unique_filename,
+            "url": f"{base_url}/media/{sighting_id}/{original_filename}",
+            "thumbnail_url": f"{base_url}/media/{sighting_id}/{original_filename}",
+            "filename": original_filename,
             "size": file_size,
             "content_type": file.content_type,
             "uploaded_at": datetime.now().isoformat()

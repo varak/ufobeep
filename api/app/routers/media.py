@@ -17,7 +17,7 @@ from ..schemas.media import (
     BulkUploadResponse,
     UploadError
 )
-from ..services.storage_service import storage_service, StorageError
+from ..services.filesystem_storage import filesystem_storage
 
 
 logger = logging.getLogger(__name__)
@@ -83,7 +83,7 @@ async def create_presigned_upload(
             )
         
         # Generate presigned upload
-        response = await storage_service.generate_presigned_upload(
+        response = await filesystem_storage.generate_presigned_upload(
             request=request,
             user_id=user_id,
             expires_in=3600  # 1 hour
@@ -162,7 +162,7 @@ async def complete_media_upload(
                 )
         
         # Verify upload completion in storage
-        is_complete, object_info = await storage_service.verify_upload_completion(
+        is_complete, object_info = await filesystem_storage.verify_upload_completion(
             upload_id=request.upload_id,
             expected_size=upload_info.get("size_bytes")
         )
@@ -177,7 +177,7 @@ async def complete_media_upload(
             )
         
         # Generate public URL for the uploaded file
-        public_url = await storage_service.generate_public_url(
+        public_url = await filesystem_storage.generate_public_url(
             object_key=object_info["key"],
             expires_in=604800  # 1 week (MaxIO maximum)
         )
@@ -261,7 +261,7 @@ async def create_bulk_presigned_uploads(
         batch_id = f"batch_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}_{len(request.files)}"
         
         for file_request in request.files:
-            response = await storage_service.generate_presigned_upload(
+            response = await filesystem_storage.generate_presigned_upload(
                 request=file_request,
                 user_id=user_id,
                 expires_in=3600
@@ -341,7 +341,7 @@ async def get_upload_status(
     
     # Check if upload exists in storage
     if upload_info["status"] == "pending":
-        is_complete, object_info = await storage_service.verify_upload_completion(upload_id)
+        is_complete, object_info = await filesystem_storage.verify_upload_completion(upload_id)
         if is_complete:
             upload_info["status"] = "completed"
             upload_info["completed_at"] = datetime.utcnow()
@@ -418,7 +418,7 @@ async def cleanup_expired_uploads():
         
         # Clean up storage
         if expired_uploads:
-            deleted_count = await storage_service.cleanup_expired_uploads(
+            deleted_count = await filesystem_storage.cleanup_expired_uploads(
                 older_than_hours=1
             )
             logger.info(f"Cleaned up {deleted_count} expired uploads from storage")
@@ -434,7 +434,7 @@ async def media_health_check():
     try:
         # Test storage connection
         # This is a simple test - in production you might want more comprehensive checks
-        await storage_service.get_object_metadata("nonexistent-test-key")
+        await filesystem_storage.get_object_metadata("nonexistent-test-key")
         
         return {
             "status": "healthy",
