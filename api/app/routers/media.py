@@ -106,15 +106,6 @@ async def create_presigned_upload(
         
         return response
         
-    except StorageError as e:
-        logger.error(f"Storage error during presign: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={
-                "error": "STORAGE_ERROR",
-                "message": str(e)
-            }
-        )
     except Exception as e:
         logger.error(f"Unexpected error during presign: {e}")
         raise HTTPException(
