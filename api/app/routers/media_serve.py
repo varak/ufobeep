@@ -82,7 +82,7 @@ async def serve_media_file(
                     image = Image.open(BytesIO(original_content))
                     
                     # Fix image orientation based on EXIF data
-                    # PIL rotate() uses counter-clockwise rotation, so we need to negate angles
+                    # Use transpose for proper EXIF orientation correction
                     try:
                         from PIL import ExifTags
                         from PIL.ExifTags import ORIENTATION
@@ -90,27 +90,42 @@ async def serve_media_file(
                             exif = image.getexif()
                             if exif is not None:
                                 orientation = exif.get(ORIENTATION)
-                                if orientation == 3:
-                                    # 180 degrees
-                                    image = image.rotate(180, expand=True)
-                                elif orientation == 6:
-                                    # RightTop - rotate 90 degrees clockwise (270 CCW)
-                                    # But since phone took it in portrait, we actually need -90 (or 270)
-                                    image = image.rotate(-90, expand=True)
-                                elif orientation == 8:
-                                    # LeftBottom - rotate 90 degrees counter-clockwise
-                                    image = image.rotate(90, expand=True)
+                                if orientation:
+                                    # Use transpose methods for correct EXIF rotation
+                                    if orientation == 2:
+                                        # Mirrored horizontally
+                                        image = image.transpose(Image.FLIP_LEFT_RIGHT)
+                                    elif orientation == 3:
+                                        # Rotated 180 degrees
+                                        image = image.transpose(Image.ROTATE_180)
+                                    elif orientation == 4:
+                                        # Mirrored vertically
+                                        image = image.transpose(Image.FLIP_TOP_BOTTOM)
+                                    elif orientation == 5:
+                                        # Mirrored horizontally then rotated 90 CCW
+                                        image = image.transpose(Image.FLIP_LEFT_RIGHT)
+                                        image = image.transpose(Image.ROTATE_90)
+                                    elif orientation == 6:
+                                        # Rotated 90 CW (RightTop)
+                                        image = image.transpose(Image.ROTATE_270)
+                                    elif orientation == 7:
+                                        # Mirrored horizontally then rotated 90 CW
+                                        image = image.transpose(Image.FLIP_LEFT_RIGHT)
+                                        image = image.transpose(Image.ROTATE_270)
+                                    elif orientation == 8:
+                                        # Rotated 90 CCW (LeftBottom)
+                                        image = image.transpose(Image.ROTATE_90)
                         elif hasattr(image, '_getexif'):
                             # Fallback for older PIL versions
                             exif = image._getexif()
                             if exif is not None:
                                 orientation = exif.get(ORIENTATION)
                                 if orientation == 3:
-                                    image = image.rotate(180, expand=True)
+                                    image = image.transpose(Image.ROTATE_180)
                                 elif orientation == 6:
-                                    image = image.rotate(-90, expand=True)
+                                    image = image.transpose(Image.ROTATE_270)
                                 elif orientation == 8:
-                                    image = image.rotate(90, expand=True)
+                                    image = image.transpose(Image.ROTATE_90)
                     except Exception as e:
                         # If EXIF processing fails, continue without rotation
                         logger.debug(f"EXIF processing failed for {filename}: {e}")
