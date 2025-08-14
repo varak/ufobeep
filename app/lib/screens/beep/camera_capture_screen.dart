@@ -119,18 +119,35 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       // Try to extract GPS from photo
       try {
         final gpsData = await PhotoMetadataService.extractGpsCoordinates(savedFile);
-        if (gpsData != null && sensorData != null) {
-          sensorData = SensorData(
-            utc: sensorData.utc,
-            latitude: gpsData['latitude']!,
-            longitude: gpsData['longitude']!,
-            accuracy: 5.0,
-            altitude: gpsData['altitude'] ?? sensorData.altitude,
-            azimuthDeg: sensorData.azimuthDeg,
-            pitchDeg: sensorData.pitchDeg,
-            rollDeg: sensorData.rollDeg,
-            hfovDeg: sensorData.hfovDeg,
-          );
+        if (gpsData != null) {
+          if (sensorData != null) {
+            // Update existing sensor data with GPS from photo
+            sensorData = SensorData(
+              utc: sensorData.utc,
+              latitude: gpsData['latitude']!,
+              longitude: gpsData['longitude']!,
+              accuracy: 5.0,
+              altitude: gpsData['altitude'] ?? sensorData.altitude,
+              azimuthDeg: sensorData.azimuthDeg,
+              pitchDeg: sensorData.pitchDeg,
+              rollDeg: sensorData.rollDeg,
+              hfovDeg: sensorData.hfovDeg,
+            );
+          } else {
+            // Create sensor data from photo EXIF if no sensor data exists
+            sensorData = SensorData(
+              utc: DateTime.now(),
+              latitude: gpsData['latitude']!,
+              longitude: gpsData['longitude']!,
+              accuracy: 10.0, // Lower accuracy since it's from photo
+              altitude: gpsData['altitude'] ?? 0.0,
+              azimuthDeg: 0.0, // No compass data available
+              pitchDeg: 0.0,   // No compass data available
+              rollDeg: 0.0,    // No compass data available
+              hfovDeg: 60.0,   // Default camera FOV
+            );
+            debugPrint('Created sensor data from photo EXIF: lat=${gpsData['latitude']}, lng=${gpsData['longitude']}');
+          }
         }
       } catch (e) {
         debugPrint('Failed to extract GPS from photo: $e');
