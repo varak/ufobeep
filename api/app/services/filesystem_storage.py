@@ -29,7 +29,8 @@ class FilesystemStorageService:
     async def create_presigned_upload(
         self,
         request: PresignedUploadRequest,
-        user_id: Optional[str] = None
+        user_id: Optional[str] = None,
+        expires_in: int = 3600
     ) -> PresignedUploadResponse:
         """
         Create a presigned upload - for filesystem, we just return upload info
