@@ -1135,6 +1135,51 @@ async def get_interest_count():
         print(f"Error getting email count: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to get count: {str(e)}")
 
+@app.get("/analysis/status/{sighting_id}")
+async def get_analysis_status(sighting_id: str):
+    """Get photo analysis status for a sighting"""
+    try:
+        async with db_pool.acquire() as conn:
+            results = await conn.fetch("""
+                SELECT filename, classification, matched_object, confidence, 
+                       analysis_status, analysis_error, processing_duration_ms,
+                       created_at, updated_at
+                FROM photo_analysis_results 
+                WHERE sighting_id = $1
+                ORDER BY created_at DESC
+            """, uuid.UUID(sighting_id))
+            
+            analysis_results = []
+            for row in results:
+                analysis_results.append({
+                    "filename": row["filename"],
+                    "classification": row["classification"],
+                    "matched_object": row["matched_object"], 
+                    "confidence": float(row["confidence"]) if row["confidence"] else None,
+                    "status": row["analysis_status"],
+                    "error": row["analysis_error"],
+                    "processing_duration_ms": row["processing_duration_ms"],
+                    "started_at": row["created_at"].isoformat(),
+                    "updated_at": row["updated_at"].isoformat()
+                })
+            
+            return {
+                "success": True,
+                "sighting_id": sighting_id,
+                "analysis_count": len(analysis_results),
+                "results": analysis_results
+            }
+            
+    except Exception as e:
+        print(f"Error getting analysis status: {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "sighting_id": sighting_id,
+            "analysis_count": 0,
+            "results": []
+        }
+
 @app.get("/test/openweather/{lat}/{lng}")
 async def test_openweather_api(lat: float, lng: float):
     """Test OpenWeather API calls with real coordinates"""
