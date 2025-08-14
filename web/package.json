@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/leaflet": "^1.9.20",
     "@types/pg": "^8.15.5",
+    "leaflet": "^1.9.4",
     "next": "14.2.20",
     "next-i18next": "^15.4.2",
     "pg": "^8.16.3",

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import LeafletMap from './LeafletMap'
+import AlertsMap from './AlertsMap'
 
 interface Alert {
   id: string
@@ -85,9 +85,10 @@ export default function MiniMap({ className = '', alerts = [], loading = false }
           </div>
         </div>
       ) : (
-        <LeafletMap 
+        <AlertsMap 
           alerts={alerts}
           height="320px"
+          showControls={true}
           onAlertClick={handleAlertClick}
         />
       )}

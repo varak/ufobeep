@@ -39,130 +39,97 @@ export default function AlertsMap({
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
-    // Simple map implementation using canvas
+    // Load real OpenStreetMap tiles instead of canvas
     if (!mapRef.current || alerts.length === 0) return
 
-    const renderMap = () => {
+    const renderMap = async () => {
       if (!mapRef.current) return
 
-      const canvas = document.createElement('canvas')
-      const ctx = canvas.getContext('2d')
-      if (!ctx) {
-        setMapError(true)
-        return
-      }
+      try {
+        // Clear existing content
+        mapRef.current.innerHTML = ''
 
-      // Ensure parent has dimensions
-      const containerWidth = mapRef.current.clientWidth || 800
-      const containerHeight = parseInt(height) || 320
+        // Calculate center from alerts
+        let centerLat = 39.8283
+        let centerLng = -98.5795
+        let zoom = 4
 
-      // Set canvas size
-      canvas.width = containerWidth
-      canvas.height = containerHeight
-      canvas.style.width = '100%'
-      canvas.style.height = '100%'
-      canvas.style.display = 'block'
-      
-      // Clear existing content
-      mapRef.current.innerHTML = ''
-      mapRef.current.appendChild(canvas)
+        if (alerts.length > 0) {
+          const lats = alerts.map(a => a.location.latitude)
+          const lngs = alerts.map(a => a.location.longitude)
+          centerLat = lats.reduce((a, b) => a + b, 0) / lats.length
+          centerLng = lngs.reduce((a, b) => a + b, 0) / lngs.length
+          zoom = 6
+        }
 
-      // Draw map background (dark theme)
-      ctx.fillStyle = '#0a0a0a'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-      // Draw grid
-      ctx.strokeStyle = '#1a1a1a'
-      ctx.lineWidth = 1
-      for (let x = 0; x < canvas.width; x += 50) {
-        ctx.beginPath()
-        ctx.moveTo(x, 0)
-        ctx.lineTo(x, canvas.height)
-        ctx.stroke()
-      }
-      for (let y = 0; y < canvas.height; y += 50) {
-        ctx.beginPath()
-        ctx.moveTo(0, y)
-        ctx.lineTo(canvas.width, y)
-        ctx.stroke()
-      }
-
-      // Convert lat/lng to canvas coordinates
-      const latLngToCanvas = (lat: number, lng: number) => {
-        const x = ((lng + 180) / 360) * canvas.width
-        const y = ((90 - lat) / 180) * canvas.height
-        return { x, y }
-      }
-
-      // Draw alerts
-      alerts.forEach((alert) => {
-        const pos = latLngToCanvas(alert.location.latitude, alert.location.longitude)
+        // Create map container with iframe for OpenStreetMap
+        const mapFrame = document.createElement('iframe')
+        mapFrame.style.width = '100%'
+        mapFrame.style.height = '100%'
+        mapFrame.style.border = 'none'
+        mapFrame.style.borderRadius = '8px'
         
-        // Draw glow effect
-        const gradient = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, 20)
-        gradient.addColorStop(0, getAlertColor(alert.alert_level))
-        gradient.addColorStop(1, 'transparent')
-        ctx.fillStyle = gradient
-        ctx.fillRect(pos.x - 20, pos.y - 20, 40, 40)
+        // Use OpenStreetMap embed with markers
+        const markers = alerts.map(alert => 
+          `mlat=${alert.location.latitude}&mlon=${alert.location.longitude}`
+        ).join('&')
         
-        // Draw pin
-        ctx.fillStyle = getAlertColor(alert.alert_level)
-        ctx.beginPath()
-        ctx.arc(pos.x, pos.y, 4, 0, Math.PI * 2)
-        ctx.fill()
+        mapFrame.src = `https://www.openstreetmap.org/export/embed.html?bbox=${centerLng-1},${centerLat-1},${centerLng+1},${centerLat+1}&layer=mapnik&marker=${centerLat},${centerLng}`
         
-        // Draw pulsing ring
-        ctx.strokeStyle = getAlertColor(alert.alert_level)
-        ctx.lineWidth = 2
-        ctx.beginPath()
-        ctx.arc(pos.x, pos.y, 8, 0, Math.PI * 2)
-        ctx.stroke()
-      })
+        mapRef.current.appendChild(mapFrame)
 
-      // Add click handler
-      canvas.onclick = (e) => {
-        const rect = canvas.getBoundingClientRect()
-        const x = e.clientX - rect.left
-        const y = e.clientY - rect.top
-        
-        // Check if click is near any alert
-        alerts.forEach((alert) => {
-          const pos = latLngToCanvas(alert.location.latitude, alert.location.longitude)
-          const distance = Math.sqrt((x - pos.x) ** 2 + (y - pos.y) ** 2)
+        // Create overlay for our custom markers
+        const overlay = document.createElement('div')
+        overlay.style.position = 'absolute'
+        overlay.style.top = '0'
+        overlay.style.left = '0'
+        overlay.style.width = '100%'
+        overlay.style.height = '100%'
+        overlay.style.pointerEvents = 'auto'
+        overlay.style.zIndex = '10'
+
+        // Add our custom markers to overlay
+        alerts.forEach((alert, index) => {
+          const marker = document.createElement('div')
+          marker.style.position = 'absolute'
+          marker.style.width = '16px'
+          marker.style.height = '16px'
+          marker.style.borderRadius = '50%'
+          marker.style.backgroundColor = getAlertColor(alert.alert_level)
+          marker.style.border = '2px solid white'
+          marker.style.boxShadow = '0 2px 4px rgba(0,0,0,0.3)'
+          marker.style.cursor = 'pointer'
+          marker.style.zIndex = '100'
           
-          if (distance < 10) {
+          // Simple positioning calculation (this is approximate)
+          const markerX = ((alert.location.longitude - (centerLng - 1)) / 2) * 100
+          const markerY = (((centerLat + 1) - alert.location.latitude) / 2) * 100
+          
+          marker.style.left = `${Math.max(0, Math.min(95, markerX))}%`
+          marker.style.top = `${Math.max(0, Math.min(95, markerY))}%`
+          
+          marker.addEventListener('click', () => {
             setSelectedAlert(alert)
             if (onAlertClick) onAlertClick(alert)
-          }
-        })
-      }
+          })
 
-      // Add mousemove handler for tooltips
-      canvas.onmousemove = (e) => {
-        const rect = canvas.getBoundingClientRect()
-        const x = e.clientX - rect.left
-        const y = e.clientY - rect.top
-        
-        setMousePos({ x: e.clientX, y: e.clientY })
-        
-        let foundAlert = null
-        alerts.forEach((alert) => {
-          const pos = latLngToCanvas(alert.location.latitude, alert.location.longitude)
-          const distance = Math.sqrt((x - pos.x) ** 2 + (y - pos.y) ** 2)
-          
-          if (distance < 10) {
-            foundAlert = alert
-          }
-        })
-        
-        setHoveredAlert(foundAlert)
-        canvas.style.cursor = foundAlert ? 'pointer' : 'default'
-      }
+          marker.addEventListener('mouseenter', (e) => {
+            setHoveredAlert(alert)
+            setMousePos({ x: e.clientX, y: e.clientY })
+          })
 
-      // Add mouseleave handler
-      canvas.onmouseleave = () => {
-        setHoveredAlert(null)
-        canvas.style.cursor = 'default'
+          marker.addEventListener('mouseleave', () => {
+            setHoveredAlert(null)
+          })
+
+          overlay.appendChild(marker)
+        })
+
+        mapRef.current.appendChild(overlay)
+
+      } catch (error) {
+        console.error('Error loading map:', error)
+        setMapError(true)
       }
     }
 
