@@ -4,7 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.config.environment import settings
 from app.routers import plane_match, media, media_serve, devices, emails, photo_analysis
+from app.services.media_service import get_media_service
 import asyncpg
+import asyncio
 import json
 from datetime import datetime
 import uuid
@@ -187,6 +189,9 @@ async def startup_event():
                 CREATE INDEX IF NOT EXISTS idx_devices_active_push ON devices(is_active, push_enabled) 
                 WHERE push_token IS NOT NULL
             """)
+            
+            # Run photo analysis migration
+            await run_photo_analysis_migration()
         print("Database tables initialized")
     except Exception as e:
         print(f"Database initialization failed: {e}")
@@ -223,25 +228,45 @@ app.include_router(photo_analysis.router)
 async def get_alerts():
     try:
         async with db_pool.acquire() as conn:
-            # Get recent sightings as alerts
+            # Get recent sightings as alerts with photo analysis results
             rows = await conn.fetch("""
                 SELECT 
-                    id::text as id,
-                    title,
-                    description,
-                    category,
-                    alert_level,
-                    status,
-                    witness_count,
-                    is_public,
-                    tags,
-                    created_at,
-                    sensor_data,
-                    media_info,
-                    enrichment_data
-                FROM sightings 
-                WHERE is_public = true 
-                ORDER BY created_at DESC 
+                    s.id::text as id,
+                    s.title,
+                    s.description,
+                    s.category,
+                    s.alert_level,
+                    s.status,
+                    s.witness_count,
+                    s.is_public,
+                    s.tags,
+                    s.created_at,
+                    s.sensor_data,
+                    s.media_info,
+                    s.enrichment_data,
+                    -- Aggregate photo analysis results
+                    COALESCE(
+                        json_agg(
+                            json_build_object(
+                                'filename', par.filename,
+                                'classification', par.classification,
+                                'matched_object', par.matched_object,
+                                'confidence', par.confidence,
+                                'angular_separation_deg', par.angular_separation_deg,
+                                'analysis_status', par.analysis_status,
+                                'processing_duration_ms', par.processing_duration_ms
+                            )
+                            ORDER BY par.confidence DESC NULLS LAST
+                        ) FILTER (WHERE par.id IS NOT NULL),
+                        '[]'
+                    ) as photo_analysis
+                FROM sightings s
+                LEFT JOIN photo_analysis_results par ON s.id = par.sighting_id
+                WHERE s.is_public = true 
+                GROUP BY s.id, s.title, s.description, s.category, s.alert_level, s.status,
+                         s.witness_count, s.is_public, s.tags, s.created_at, s.sensor_data,
+                         s.media_info, s.enrichment_data
+                ORDER BY s.created_at DESC 
                 LIMIT 20
             """)
             
@@ -315,6 +340,17 @@ async def get_alerts():
                     except:
                         pass
                 
+                # Extract photo analysis results
+                photo_analysis_results = []
+                if row["photo_analysis"]:
+                    try:
+                        if isinstance(row["photo_analysis"], str):
+                            photo_analysis_results = json.loads(row["photo_analysis"])
+                        else:
+                            photo_analysis_results = row["photo_analysis"]
+                    except:
+                        pass
+                
                 alert = {
                     "id": row["id"],
                     "title": row["title"],
@@ -340,7 +376,8 @@ async def get_alerts():
                     "processed_at": row["created_at"].isoformat(),
                     "matrix_room_id": "",
                     "reporter_id": "",
-                    "enrichment": enrichment_info  # Include enrichment data
+                    "enrichment": enrichment_info,  # Include enrichment data
+                    "photo_analysis": photo_analysis_results  # Include photo analysis results
                 }
                 
                 alerts.append(alert)
@@ -804,94 +841,42 @@ async def run_photo_metadata_migration():
         print(f"Error running photo metadata migration: {e}")
         # Continue anyway - table might already exist
 
+async def run_photo_analysis_migration():
+    """Run the photo analysis table migration"""
+    try:
+        async with db_pool.acquire() as conn:
+            # Read and execute the migration SQL
+            migration_path = Path(__file__).parent.parent / "migrations" / "002_add_photo_analysis_table.sql"
+            if migration_path.exists():
+                with open(migration_path, 'r') as f:
+                    migration_sql = f.read()
+                await conn.execute(migration_sql)
+                print("Photo analysis migration executed successfully")
+            else:
+                print(f"Photo analysis migration file not found: {migration_path}")
+    except Exception as e:
+        print(f"Error running photo analysis migration: {e}")
+        # Continue anyway - table might already exist
+
 @app.post("/media/upload")
 async def upload_media(
     file: UploadFile = File(...),
     sighting_id: str = Form(...)
 ):
+    """Upload media file and trigger async photo analysis"""
     try:
         # Validate file type
         if not file.content_type or not file.content_type.startswith('image/'):
             raise HTTPException(status_code=400, detail="Only image files are allowed")
         
-        # Use original filename from mobile app (UFOBeep_timestamp.jpg)
-        original_filename = file.filename or f"UFOBeep_{int(datetime.now().timestamp() * 1000)}.jpg"
-        
-        # Create sighting directory
-        sighting_dir = Path("/home/ufobeep/ufobeep/media") / sighting_id
-        sighting_dir.mkdir(parents=True, exist_ok=True)
-        
-        # Save file with original filename in sighting directory
-        file_path = sighting_dir / original_filename
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-        
-        # Get file info
-        file_size = os.path.getsize(file_path)
-        
-        # Create media record with correct API URLs
-        base_url = "https://api.ufobeep.com"
-        media_info = {
-            "id": str(uuid.uuid4()),
-            "type": "image",
-            "url": f"{base_url}/media/{sighting_id}/{original_filename}",
-            "thumbnail_url": f"{base_url}/media/{sighting_id}/{original_filename}",
-            "filename": original_filename,
-            "size": file_size,
-            "content_type": file.content_type,
-            "uploaded_at": datetime.now().isoformat()
-        }
-        
-        # Update sighting with media info
-        async with db_pool.acquire() as conn:
-            # Get existing media_info
-            existing_media = await conn.fetchval(
-                "SELECT media_info FROM sightings WHERE id = $1", 
-                uuid.UUID(sighting_id)
-            )
-            
-            if existing_media:
-                # Add to existing files - parse JSON if it's a string
-                if isinstance(existing_media, str):
-                    media_data = json.loads(existing_media)
-                else:
-                    media_data = existing_media
-                if "files" not in media_data:
-                    media_data["files"] = []
-                media_data["files"].append(media_info)
-            else:
-                # Create new media data
-                media_data = {
-                    "files": [media_info],
-                    "file_count": 1
-                }
-            
-            # Update database
-            await conn.execute(
-                "UPDATE sightings SET media_info = $1 WHERE id = $2",
-                json.dumps(media_data),
-                uuid.UUID(sighting_id)
-            )
-        
-        return {
-            "success": True,
-            "data": {
-                "media_id": media_info["id"],
-                "url": media_info["url"],
-                "filename": media_info["filename"],
-                "size": file_size
-            },
-            "message": "Media uploaded successfully",
-            "timestamp": datetime.now().isoformat()
-        }
+        # Use media service for clean upload + analysis workflow
+        media_service = get_media_service(db_pool)
+        return await media_service.upload_and_process_photo(file, sighting_id)
         
     except HTTPException:
         raise
     except Exception as e:
         print(f"Error uploading media: {e}")
-        # Clean up file if it exists
-        if 'file_path' in locals() and os.path.exists(file_path):
-            os.remove(file_path)
         raise HTTPException(status_code=500, detail=f"Error uploading media: {str(e)}")
 
 # Email Interest Signup Endpoints
