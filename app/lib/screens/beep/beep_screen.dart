@@ -76,13 +76,45 @@ class _BeepScreenState extends State<BeepScreen> {
         return;
       }
 
+      final imageFile = File(image.path);
+      
+      // Extract comprehensive photo metadata for astronomical identification services
+      Map<String, dynamic> photoMetadata = {};
+      SensorData? sensorDataFromPhoto;
+      
+      try {
+        photoMetadata = await PhotoMetadataService.extractComprehensiveMetadata(imageFile);
+        debugPrint('Extracted comprehensive photo metadata from gallery image: ${photoMetadata.keys.length} categories');
+        
+        // Create sensor data from photo EXIF if GPS is available
+        final gpsData = photoMetadata['location'] as Map<String, dynamic>?;
+        if (gpsData != null && gpsData['latitude'] != null && gpsData['longitude'] != null) {
+          debugPrint('Found GPS data in gallery image: ${gpsData['latitude']}, ${gpsData['longitude']}');
+          
+          sensorDataFromPhoto = SensorData(
+            latitude: gpsData['latitude'],
+            longitude: gpsData['longitude'],
+            altitude: gpsData['altitude'] ?? 0.0,
+            accuracy: 10.0, // Lower accuracy since it's from gallery photo
+            utc: DateTime.now(),
+            azimuthDeg: 0.0, // Default values since this is from gallery
+            pitchDeg: 0.0,
+            rollDeg: 0.0,
+            hfovDeg: 60.0,
+          );
+          debugPrint('Created sensor data from gallery image EXIF');
+        }
+      } catch (e) {
+        debugPrint('Warning: Failed to extract metadata from gallery image: $e');
+      }
+
       // Create initial submission for gallery image
       final submission = local.SightingSubmission(
-        imageFile: File(image.path),
+        imageFile: imageFile,
         title: '',
         description: '',
         category: local.SightingCategory.ufo,
-        sensorData: null, // No real-time sensor data for gallery picks
+        sensorData: sensorDataFromPhoto,
         locationPrivacy: LocationPrivacy.jittered,
         createdAt: DateTime.now(),
       );
@@ -92,10 +124,11 @@ class _BeepScreenState extends State<BeepScreen> {
         _isCapturing = false;
       });
 
-      // Navigate to composition screen
+      // Navigate to composition screen with metadata
       context.go('/beep/compose', extra: {
         'imageFile': submission.imageFile,
-        'sensorData': null, // No real-time sensor data for gallery picks
+        'sensorData': sensorDataFromPhoto,
+        'photoMetadata': photoMetadata,
       });
 
     } catch (e) {

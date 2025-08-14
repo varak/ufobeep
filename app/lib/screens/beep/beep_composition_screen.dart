@@ -98,15 +98,19 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
 
       // Submit photo metadata if available (for astronomical identification)
       if (widget.photoMetadata != null) {
-        debugPrint('Submitting comprehensive photo metadata for astronomical identification...');
-        final metadataSubmitted = await ApiClient.instance.submitPhotoMetadata(
-          sightingId, 
-          widget.photoMetadata!
-        );
-        if (metadataSubmitted) {
-          debugPrint('Photo metadata submitted successfully for external service analysis');
-        } else {
-          debugPrint('Warning: Photo metadata submission failed');
+        try {
+          debugPrint('Submitting comprehensive photo metadata for astronomical identification...');
+          final metadataSubmitted = await ApiClient.instance.submitPhotoMetadata(
+            sightingId, 
+            widget.photoMetadata!
+          );
+          if (metadataSubmitted) {
+            debugPrint('Photo metadata submitted successfully for external service analysis');
+          } else {
+            debugPrint('Warning: Photo metadata submission failed');
+          }
+        } catch (e) {
+          debugPrint('Error submitting photo metadata: $e');
         }
       }
 

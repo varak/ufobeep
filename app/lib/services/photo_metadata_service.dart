@@ -6,42 +6,72 @@ import 'package:flutter/foundation.dart';
 class PhotoMetadataService {
   /// Extract comprehensive photo metadata for astronomical/aircraft identification services
   static Future<Map<String, dynamic>> extractComprehensiveMetadata(File imageFile) async {
+    final metadata = <String, dynamic>{
+      'exif_available': false,
+      'extraction_timestamp': DateTime.now().toIso8601String(),
+    };
+    
     try {
       // Read image bytes
       final Uint8List imageBytes = await imageFile.readAsBytes();
       
-      // Extract EXIF data
+      // Extract EXIF data with comprehensive error handling
       final Map<String, IfdTag> exifData = await readExifFromBytes(imageBytes);
       
-      final metadata = <String, dynamic>{
-        'exif_available': exifData.isNotEmpty,
-        'extraction_timestamp': DateTime.now().toIso8601String(),
-      };
+      metadata['exif_available'] = exifData.isNotEmpty;
       
       if (exifData.isNotEmpty) {
-        // GPS and location data
-        final locationData = _extractLocationData(exifData);
-        if (locationData != null) {
-          metadata['location'] = locationData;
+        try {
+          // GPS and location data
+          final locationData = _extractLocationData(exifData);
+          if (locationData != null) {
+            metadata['location'] = locationData;
+          }
+        } catch (e) {
+          debugPrint('Failed to extract location data from EXIF: $e');
         }
         
-        // Camera settings and technical data
-        metadata['camera'] = _extractCameraData(exifData);
+        try {
+          // Camera settings and technical data
+          metadata['camera'] = _extractCameraData(exifData);
+        } catch (e) {
+          debugPrint('Failed to extract camera data from EXIF: $e');
+        }
         
-        // Device orientation and compass data (if available in EXIF)
-        metadata['orientation'] = _extractOrientationData(exifData);
+        try {
+          // Device orientation and compass data (if available in EXIF)
+          metadata['orientation'] = _extractOrientationData(exifData);
+        } catch (e) {
+          debugPrint('Failed to extract orientation data from EXIF: $e');
+        }
         
-        // Timestamp data
-        metadata['timestamps'] = _extractTimestampData(exifData);
+        try {
+          // Timestamp data
+          metadata['timestamps'] = _extractTimestampData(exifData);
+        } catch (e) {
+          debugPrint('Failed to extract timestamp data from EXIF: $e');
+        }
         
-        // Image properties
-        metadata['image_properties'] = _extractImageProperties(exifData);
+        try {
+          // Image properties
+          metadata['image_properties'] = _extractImageProperties(exifData);
+        } catch (e) {
+          debugPrint('Failed to extract image properties from EXIF: $e');
+        }
         
-        // Device and software info
-        metadata['device_info'] = _extractDeviceInfo(exifData);
+        try {
+          // Device and software info
+          metadata['device_info'] = _extractDeviceInfo(exifData);
+        } catch (e) {
+          debugPrint('Failed to extract device info from EXIF: $e');
+        }
         
-        // Raw EXIF for debugging/advanced processing
-        metadata['raw_exif_keys'] = exifData.keys.toList();
+        try {
+          // Raw EXIF for debugging/advanced processing
+          metadata['raw_exif_keys'] = exifData.keys.toList();
+        } catch (e) {
+          debugPrint('Failed to extract raw EXIF keys: $e');
+        }
       }
       
       return metadata;
@@ -102,17 +132,24 @@ class PhotoMetadataService {
       }
       
       // GPS coordinates are stored as [degrees, minutes, seconds] as ratios
-      final List<dynamic> coordValues = coordTag.values.toList();
+      final coordValuesList = coordTag.values.toList();
       final String ref = refTag.printable;
       
-      if (coordValues.length != 3) {
+      if (coordValuesList.length != 3) {
         return null;
       }
       
-      // Convert degrees, minutes, seconds to decimal degrees
-      final double degrees = _ratioToDouble(coordValues[0]);
-      final double minutes = _ratioToDouble(coordValues[1]);
-      final double seconds = _ratioToDouble(coordValues[2]);
+      // Convert degrees, minutes, seconds to decimal degrees with safer access
+      double degrees, minutes, seconds;
+      try {
+        degrees = _ratioToDouble(coordValuesList[0]);
+        minutes = _ratioToDouble(coordValuesList[1]);
+        seconds = _ratioToDouble(coordValuesList[2]);
+      } catch (e) {
+        // If individual access fails, return null instead of crashing
+        debugPrint('Failed to parse GPS coordinate values: $e');
+        return null;
+      }
       
       double decimalDegrees = degrees + (minutes / 60.0) + (seconds / 3600.0);
       
@@ -138,11 +175,24 @@ class PhotoMetadataService {
         return null;
       }
       
-      double altitude = _ratioToDouble(altTag.values.toList().first);
+      double altitude;
+      try {
+        altitude = _ratioToDouble(altTag.values.toList().first);
+      } catch (e) {
+        debugPrint('Error parsing altitude value: $e');
+        return null;
+      }
       
       // Apply altitude reference (0 = above sea level, 1 = below sea level)
-      if (altRefTag != null && altRefTag.values.toList().first == 1) {
-        altitude = -altitude;
+      if (altRefTag != null) {
+        try {
+          final altRef = altRefTag.values.toList().first;
+          if (altRef == 1) {
+            altitude = -altitude;
+          }
+        } catch (e) {
+          debugPrint('Error parsing altitude reference: $e');
+        }
       }
       
       return altitude;
