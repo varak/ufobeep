@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../providers/alerts_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../models/alerts_filter.dart';
 import '../../widgets/alerts_filter_dialog.dart';
 import '../../widgets/alert_card.dart';
+import '../../widgets/map_widget.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -263,15 +265,54 @@ class HomeScreen extends ConsumerWidget {
           ),
         ),
         
-        // Alerts list
+        // Map view
         Expanded(
-          child: ListView.builder(
+          child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 100), // Bottom padding for FAB
-            itemCount: alerts.length,
-            itemBuilder: (context, index) {
-              final alert = alerts[index];
-              return AlertCard(alert: alert);
-            },
+            child: Column(
+              children: [
+                // Map widget
+                Expanded(
+                  flex: 2,
+                  child: MapWidget(
+                    alerts: alerts,
+                    showControls: true,
+                    onAlertTap: (alert) {
+                      context.go('/alert/${alert.id}');
+                    },
+                  ),
+                ),
+                
+                const SizedBox(height: 16),
+                
+                // Recent alerts list (compact)
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Recent Alerts',
+                        style: TextStyle(
+                          color: AppColors.textPrimary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: alerts.length,
+                          itemBuilder: (context, index) {
+                            final alert = alerts[index];
+                            return AlertCard(alert: alert);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
