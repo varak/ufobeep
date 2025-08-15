@@ -412,6 +412,7 @@ async def get_sightings_data(
         ]
         
     except Exception as e:
+        print(f"Error in admin sightings query: {e}")
         return []
     finally:
         await conn.close()
