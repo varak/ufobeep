@@ -378,14 +378,14 @@ async def get_sightings_data(
         query = f"""
             SELECT 
                 s.id, s.title, s.description, s.category, s.status, s.alert_level,
-                s.created_at, s.location_name, s.reporter_id, s.verification_score,
+                s.created_at, s.witness_count,
                 COUNT(m.id) as media_count,
                 COUNT(CASE WHEN m.is_primary THEN 1 END) > 0 as has_primary_media
             FROM sightings s
             LEFT JOIN media_files m ON s.id = m.sighting_id
             {where_clause}
             GROUP BY s.id, s.title, s.description, s.category, s.status, s.alert_level,
-                     s.created_at, s.location_name, s.reporter_id, s.verification_score
+                     s.created_at, s.witness_count
             ORDER BY s.created_at DESC
             LIMIT $2 OFFSET $3
         """
@@ -402,11 +402,11 @@ async def get_sightings_data(
                 status=s['status'],
                 alert_level=s['alert_level'],
                 created_at=s['created_at'],
-                location_name=s['location_name'],
-                reporter_id=str(s['reporter_id']) if s['reporter_id'] else None,
+                location_name="Unknown",  # Default since column doesn't exist yet
+                reporter_id=None,  # Default since column doesn't exist yet
                 media_count=s['media_count'],
                 has_primary_media=s['has_primary_media'],
-                verification_score=s['verification_score']
+                verification_score=0.0  # Default since column doesn't exist yet
             )
             for s in sightings
         ]
