@@ -151,17 +151,33 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
         // Continue even if gallery save fails
       }
 
+      // Embed GPS data in photo EXIF if we have valid sensor data
+      if (sensorData != null && sensorData.latitude != 0.0 && sensorData.longitude != 0.0) {
+        try {
+          debugPrint('📍 CAMERA: Embedding GPS coordinates in photo EXIF...');
+          await PhotoMetadataService.embedGpsInImage(
+            savedFile, 
+            sensorData.latitude, 
+            sensorData.longitude,
+            altitude: sensorData.altitude != 0.0 ? sensorData.altitude : null,
+          );
+          debugPrint('✅ CAMERA: GPS embedded in photo EXIF successfully');
+        } catch (e) {
+          debugPrint('❌ CAMERA: Failed to embed GPS in photo EXIF: $e');
+        }
+      }
+
       // Extract comprehensive photo metadata for astronomical identification services
       Map<String, dynamic> photoMetadata = {};
       try {
         photoMetadata = await PhotoMetadataService.extractComprehensiveMetadata(savedFile);
         debugPrint('Extracted comprehensive photo metadata: ${photoMetadata.keys.length} categories');
         
-        // Update sensor data with GPS from photo if available
+        // Update sensor data with GPS from photo if available (fallback for when real-time GPS failed)
         final locationData = photoMetadata['location'];
         if (locationData != null && locationData['latitude'] != null && locationData['longitude'] != null) {
           if (sensorData != null) {
-            // Update existing sensor data with GPS from photo
+            // Update existing sensor data with GPS from photo (should match what we just embedded)
             sensorData = SensorData(
               utc: sensorData.utc,
               latitude: locationData['latitude'],
@@ -186,7 +202,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
               rollDeg: 0.0,    // No compass data available
               hfovDeg: 60.0,   // Default camera FOV
             );
-            debugPrint('Created sensor data from photo EXIF: lat=${locationData['latitude']}, lng=${locationData['longitude']}');
+            debugPrint('🔄 CAMERA: Created sensor data from photo EXIF: lat=${locationData['latitude']}, lng=${locationData['longitude']}');
           }
         }
       } catch (e) {

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:exif/exif.dart';
 import 'package:flutter/foundation.dart';
+import 'package:image/image.dart' as img;
 
 class PhotoMetadataService {
   /// Extract comprehensive photo metadata for astronomical/aircraft identification services
@@ -420,5 +421,86 @@ class PhotoMetadataService {
     } catch (e) {
       // Ignore individual field extraction errors
     }
+  }
+
+  /// Embed GPS coordinates into image EXIF data
+  static Future<File> embedGpsInImage(File imageFile, double latitude, double longitude, {double? altitude}) async {
+    try {
+      debugPrint('📍 EXIF: Embedding GPS coordinates lat=$latitude, lng=$longitude, alt=$altitude');
+      
+      // Read the image
+      final Uint8List imageBytes = await imageFile.readAsBytes();
+      img.Image? image = img.decodeImage(imageBytes);
+      
+      if (image == null) {
+        debugPrint('❌ EXIF: Failed to decode image for GPS embedding');
+        return imageFile; // Return original if decode fails
+      }
+
+      // Convert coordinates to GPS format (degrees, minutes, seconds)
+      final latDMS = _decimalToDMS(latitude.abs());
+      final lngDMS = _decimalToDMS(longitude.abs());
+      final latRef = latitude >= 0 ? 'N' : 'S';
+      final lngRef = longitude >= 0 ? 'E' : 'W';
+
+      // Create GPS EXIF data
+      final gpsExif = <String, dynamic>{
+        'GPSLatitudeRef': latRef,
+        'GPSLatitude': latDMS,
+        'GPSLongitudeRef': lngRef,
+        'GPSLongitude': lngDMS,
+        'GPSMapDatum': 'WGS-84',
+        'GPSVersionID': [2, 3, 0, 0],
+      };
+
+      // Add altitude if provided
+      if (altitude != null && altitude != 0.0) {
+        gpsExif['GPSAltitudeRef'] = altitude >= 0 ? 0 : 1; // 0 = above sea level, 1 = below
+        gpsExif['GPSAltitude'] = [altitude.abs().round(), 1]; // As rational number
+      }
+
+      // Set GPS timestamp
+      final now = DateTime.now().toUtc();
+      gpsExif['GPSDateStamp'] = '${now.year}:${now.month.toString().padLeft(2, '0')}:${now.day.toString().padLeft(2, '0')}';
+      gpsExif['GPSTimeStamp'] = [
+        [now.hour, 1],
+        [now.minute, 1], 
+        [now.second, 1]
+      ];
+
+      // Preserve existing EXIF and add GPS
+      final existingExif = image.exif;
+      for (final entry in gpsExif.entries) {
+        existingExif['GPS ${entry.key}'] = entry.value;
+      }
+
+      // Re-encode image with GPS EXIF
+      final List<int> encodedImage = img.encodeJpg(image);
+      
+      // Write back to the same file
+      await imageFile.writeAsBytes(encodedImage);
+      
+      debugPrint('✅ EXIF: Successfully embedded GPS coordinates in image');
+      return imageFile;
+      
+    } catch (e) {
+      debugPrint('❌ EXIF: Failed to embed GPS coordinates: $e');
+      return imageFile; // Return original file if embedding fails
+    }
+  }
+
+  /// Convert decimal degrees to degrees, minutes, seconds format for GPS EXIF
+  static List<List<int>> _decimalToDMS(double decimal) {
+    final degrees = decimal.floor();
+    final minutesDecimal = (decimal - degrees) * 60;
+    final minutes = minutesDecimal.floor();
+    final secondsDecimal = (minutesDecimal - minutes) * 60;
+    final seconds = (secondsDecimal * 1000).round(); // Store as milliseconds for precision
+    
+    return [
+      [degrees, 1],           // degrees as rational
+      [minutes, 1],           // minutes as rational  
+      [seconds, 1000],        // seconds as rational (with 3 decimal precision)
+    ];
   }
 }

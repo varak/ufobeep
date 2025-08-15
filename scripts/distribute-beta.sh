@@ -62,14 +62,8 @@ if ! firebase projects:list &> /dev/null; then
     firebase login
 fi
 
-# TODO: Replace with your actual Firebase App ID
-FIREBASE_APP_ID="YOUR_FIREBASE_APP_ID"
-
-if [ "$FIREBASE_APP_ID" = "YOUR_FIREBASE_APP_ID" ]; then
-    echo -e "${RED}Error: Please update FIREBASE_APP_ID in this script${NC}"
-    echo -e "${YELLOW}Find it in Firebase Console → Project Settings → Your apps${NC}"
-    exit 1
-fi
+# Your Firebase App ID from google-services.json
+FIREBASE_APP_ID="1:973986376996:android:0d843f4797938ad08c17b1"
 
 # Upload to Firebase App Distribution
 echo -e "${YELLOW}Uploading to Firebase App Distribution...${NC}"
@@ -87,7 +81,7 @@ if [ $? -eq 0 ]; then
     echo -e "${GREEN}✓ Size: ${APK_SIZE}${NC}"
     echo ""
     echo -e "${YELLOW}View distribution status:${NC}"
-    echo "https://console.firebase.google.com/project/YOUR_PROJECT_ID/appdistribution"
+    echo "https://console.firebase.google.com/project/ufobeep-d685a/appdistribution"
 else
     echo -e "${RED}Distribution failed!${NC}"
     exit 1
