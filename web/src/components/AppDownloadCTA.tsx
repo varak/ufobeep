@@ -95,7 +95,7 @@ export default function AppDownloadCTA() {
         {/* Version & Compatibility Info */}
         <div className="text-center">
           <p className="text-sm text-text-tertiary mb-4">
-            Beta v1.0.0-beta.4 • Compatible with iOS 13+, Android 7+ • Free to download
+            Beta v1.0.0-beta.5 "the Nikolai Build" • Compatible with iOS 13+, Android 7+ • Free to download
           </p>
           <div className="flex justify-center gap-6 text-xs text-text-tertiary">
             <span>🔒 Privacy-focused</span>

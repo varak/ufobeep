@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/user_preferences.dart';
 import '../../providers/user_preferences_provider.dart';
@@ -110,7 +111,41 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 fontSize: 16,
               ),
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 32),
+            // Privacy Policy and Terms Links
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: _openPrivacyPolicy,
+                  child: const Text(
+                    'Privacy Policy',
+                    style: TextStyle(
+                      color: AppColors.brandPrimary,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+                const Text(
+                  ' • ',
+                  style: TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 14,
+                  ),
+                ),
+                TextButton(
+                  onPressed: _openTermsOfService,
+                  child: const Text(
+                    'Terms of Service',
+                    style: TextStyle(
+                      color: AppColors.brandPrimary,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,
               height: 56,
@@ -605,5 +640,37 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> _openPrivacyPolicy() async {
+    final url = Uri.parse('https://ufobeep.com/privacy');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Could not open Privacy Policy'),
+            backgroundColor: AppColors.semanticError,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _openTermsOfService() async {
+    final url = Uri.parse('https://ufobeep.com/terms');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Could not open Terms of Service'),
+            backgroundColor: AppColors.semanticError,
+          ),
+        );
+      }
+    }
   }
 }

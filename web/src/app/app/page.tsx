@@ -50,7 +50,7 @@ export default function AppPage() {
               <div className="text-left flex-1">
                 <p className="text-text-inverse/80 text-sm">Download Beta for</p>
                 <p className="font-semibold">Android APK</p>
-                <p className="text-xs text-text-inverse/60 mt-1">Version 1.0.0-beta.4 • ~220MB</p>
+                <p className="text-xs text-text-inverse/60 mt-1">Version 1.0.0-beta.5 "the Nikolai Build" • ~59MB</p>
               </div>
               <div className="text-xl group-hover:translate-x-1 transition-transform">→</div>
             </a>

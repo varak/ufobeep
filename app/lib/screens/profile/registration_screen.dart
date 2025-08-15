@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/user_preferences.dart';
 import '../../providers/user_preferences_provider.dart';
@@ -416,13 +417,7 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
             child: Row(
               children: [
                 Expanded(
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      color: AppColors.textPrimary,
-                      fontSize: 14,
-                    ),
-                  ),
+                  child: _buildClickableText(title),
                 ),
                 if (required) ...[
                   const Text(
@@ -439,6 +434,68 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
         ),
       ],
     );
+  }
+
+  Widget _buildClickableText(String title) {
+    if (title.contains('Terms of Service')) {
+      return RichText(
+        text: TextSpan(
+          style: const TextStyle(
+            color: AppColors.textPrimary,
+            fontSize: 14,
+          ),
+          children: [
+            const TextSpan(text: 'I agree to the '),
+            WidgetSpan(
+              child: GestureDetector(
+                onTap: _openTermsOfService,
+                child: const Text(
+                  'Terms of Service',
+                  style: TextStyle(
+                    color: AppColors.brandPrimary,
+                    fontSize: 14,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else if (title.contains('Privacy Policy')) {
+      return RichText(
+        text: TextSpan(
+          style: const TextStyle(
+            color: AppColors.textPrimary,
+            fontSize: 14,
+          ),
+          children: [
+            const TextSpan(text: 'I agree to the '),
+            WidgetSpan(
+              child: GestureDetector(
+                onTap: _openPrivacyPolicy,
+                child: const Text(
+                  'Privacy Policy',
+                  style: TextStyle(
+                    color: AppColors.brandPrimary,
+                    fontSize: 14,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Text(
+        title,
+        style: const TextStyle(
+          color: AppColors.textPrimary,
+          fontSize: 14,
+        ),
+      );
+    }
   }
 
   Future<void> _handleRegistration() async {
@@ -493,6 +550,38 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
         setState(() {
           _isLoading = false;
         });
+      }
+    }
+  }
+
+  Future<void> _openPrivacyPolicy() async {
+    final url = Uri.parse('https://ufobeep.com/privacy');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Could not open Privacy Policy'),
+            backgroundColor: AppColors.semanticError,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _openTermsOfService() async {
+    final url = Uri.parse('https://ufobeep.com/terms');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Could not open Terms of Service'),
+            backgroundColor: AppColors.semanticError,
+          ),
+        );
       }
     }
   }
