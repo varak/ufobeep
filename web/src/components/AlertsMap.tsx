@@ -46,15 +46,24 @@ export default function AlertsMap({
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setUserLocation([position.coords.latitude, position.coords.longitude])
+          const userCoords = [position.coords.latitude, position.coords.longitude]
+          console.log('Got user location:', userCoords, 'Las Vegas is approximately [36.1699, -115.1398]')
+          setUserLocation(userCoords)
         },
         (error) => {
           console.log('Could not get user location:', error)
+          console.log('Falling back to center:', center)
           // Use provided center or US center as fallback
           setUserLocation(center)
+        },
+        {
+          timeout: 10000,
+          enableHighAccuracy: true,
+          maximumAge: 300000 // 5 minutes
         }
       )
     } else {
+      console.log('Geolocation not supported, using center:', center)
       // Use provided center or US center as fallback
       setUserLocation(center)
     }
@@ -85,15 +94,20 @@ export default function AlertsMap({
 
         // Create map - center on user location with appropriate zoom
         const mapZoom = userLocation[0] === center[0] && userLocation[1] === center[1] ? zoom : 10
+        console.log('Creating map with center:', userLocation, 'zoom:', mapZoom)
+        console.log('Is this user location different from default center?', userLocation[0] !== center[0] || userLocation[1] !== center[1])
         const map = L.map(mapRef.current).setView(userLocation, mapZoom)
         mapInstanceRef.current = map
         
         // Add user location marker if we have their actual location
         if (userLocation[0] !== center[0] || userLocation[1] !== center[1]) {
+          console.log('Adding "You are here" marker at:', userLocation)
           L.marker(userLocation, {
             title: 'Your Location',
             zIndexOffset: 1000
           }).addTo(map).bindPopup('You are here')
+        } else {
+          console.log('Using default center, no user location marker')
         }
 
         // Add OpenStreetMap tile layer
@@ -108,10 +122,10 @@ export default function AlertsMap({
         })
         markersRef.current = []
 
-        // Add markers for alerts
+        // Add markers for alerts (skip invalid coordinates)
         alerts.forEach((alert) => {
           if (alert.location.latitude === 0 && alert.location.longitude === 0) {
-            return // Skip invalid coordinates
+            return // Skip invalid coordinates (0,0 fallback)
           }
 
           const marker = L.circleMarker(
