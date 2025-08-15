@@ -368,14 +368,7 @@ async def get_sightings_data(
     
     conn = await get_db_connection()
     try:
-        where_clause = ""
-        params = []
-        
-        if status:
-            where_clause = "WHERE s.status = $1"
-            params = [status]
-            
-        query = f"""
+        query = """
             SELECT 
                 s.id, s.title, s.description, s.category, s.status, s.alert_level,
                 s.created_at, s.witness_count,
@@ -383,15 +376,12 @@ async def get_sightings_data(
                 COUNT(CASE WHEN m.is_primary THEN 1 END) > 0 as has_primary_media
             FROM sightings s
             LEFT JOIN media_files m ON s.id = m.sighting_id
-            {where_clause}
             GROUP BY s.id, s.title, s.description, s.category, s.status, s.alert_level,
                      s.created_at, s.witness_count
             ORDER BY s.created_at DESC
-            LIMIT $2 OFFSET $3
+            LIMIT $1 OFFSET $2
         """
-        
-        params.extend([limit, offset])
-        sightings = await conn.fetch(query, *params)
+        sightings = await conn.fetch(query, limit, offset)
         
         return [
             SightingAdmin(
