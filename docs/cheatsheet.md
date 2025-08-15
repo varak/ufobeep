@@ -68,6 +68,47 @@ Single FastAPI app with routers:
 - Photos saved to both app storage and user's gallery
 - GPS data collected from device sensors (camera captures) or EXIF data (gallery photos)
 - **Location data workflow**: ✅ FIXED - Both app captures and gallery photos preserve GPS coordinates
+- **GPS EXIF embedding**: ✅ IMPLEMENTED - GPS coordinates automatically embedded in photo EXIF to prevent "Unknown Location" failures
+
+## Firebase App Distribution (Beta Testing)
+- **Firebase Project**: `ufobeep`
+- **Firebase App ID**: `1:346511467728:android:02dcacf7017bae375caad5`
+- **Distribution Script**: `./scripts/distribute-beta.sh`
+- **Beta Testers Group**: "beta-testers" (configured in Firebase console)
+- **Console URL**: https://console.firebase.google.com/u/1/project/ufobeep/appdistribution
+
+### To distribute new APK:
+```bash
+cd /home/mike/D/ufobeep
+./scripts/distribute-beta.sh
+```
+
+The script will:
+1. Clean build release APK
+2. Prompt for release notes
+3. Upload to Firebase App Distribution
+4. Send email invitations to beta testers
+5. Show distribution status
+
+**Requirements**: Firebase CLI (`npm install -g firebase-tools`) and `firebase login`
+
+## iOS TestFlight Distribution (iPhone Testing)
+- **Platform**: Apple TestFlight (requires Apple Developer Account $99/year)
+- **Build Method**: GitHub Actions (macOS runners)
+- **Setup Guide**: `docs/ios-testflight-setup.md`
+- **Workflows**: 
+  - `.github/workflows/ios-build-only.yml` (unsigned build)
+  - `.github/workflows/ios-testflight.yml` (full automation)
+- **Bundle ID**: `com.ufobeep.ufobeep`
+- **TestFlight Console**: https://appstoreconnect.apple.com/apps/testflight
+
+### To build iOS version:
+1. **Get Apple Developer Account** ($99/year)
+2. **Configure GitHub secrets** (certificates, provisioning profiles, API keys)
+3. **Run GitHub Actions workflow** 
+4. **Distribute via TestFlight** to iPhone users
+
+**Note**: iOS builds require macOS, so we use GitHub Actions with macOS runners since no Mac available locally.
 
 ## Testing Commands
 ```bash
@@ -120,6 +161,8 @@ ssh -p 322 ufobeep@ufobeep.com "pm2 delete ufobeep-web && cd /home/ufobeep/ufobe
 - **Location data fixed** - Gallery photos now preserve GPS EXIF data using photo_manager library
 - **Mobile permissions** - Added Android 13+ photo permissions and media location access
 - **Photo metadata working** - Both camera captures and gallery selections extract GPS coordinates
+- **GPS EXIF embedding implemented** - Photos now have GPS coordinates embedded in EXIF when sensor data available, preventing "Unknown Location" failures
+- **Firebase App Distribution configured** - Beta testing via ./scripts/distribute-beta.sh for wireless APK distribution
 - **SSH production**: `ssh -p 322 ufobeep@ufobeep.com`
 - **Standard deploy**: `git push && ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep && git pull origin main && cd web && npm run build && pm2 restart all && pm2 list"`
 - **Clean deploy** (when webpack breaks): `ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep/web && rm -rf .next node_modules/.cache && npm run build && pm2 restart all && pm2 list"`

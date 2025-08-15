@@ -1,0 +1,75 @@
+name: Build iOS App (Manual Upload)
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build type'
+        required: true
+        default: 'release'
+        type: choice
+        options:
+        - release
+        - debug
+
+jobs:
+  build-ios:
+    runs-on: macos-14
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.0'
+        channel: 'stable'
+        cache: true
+        
+    - name: Install dependencies
+      working-directory: app
+      run: flutter pub get
+      
+    - name: Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '15.4'
+        
+    - name: Build iOS app (unsigned)
+      working-directory: app
+      run: |
+        if [ "${{ github.event.inputs.build_type }}" == "release" ]; then
+          flutter build ios --release --no-codesign
+        else
+          flutter build ios --debug --no-codesign
+        fi
+        
+    - name: Create IPA archive structure
+      working-directory: app
+      run: |
+        # Create Payload directory
+        mkdir -p Payload
+        
+        # Copy app bundle to Payload
+        cp -R build/ios/iphoneos/Runner.app Payload/
+        
+        # Create IPA
+        zip -r UFOBeep-unsigned.ipa Payload/
+        
+    - name: Upload IPA artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ufobeep-ios-unsigned
+        path: app/UFOBeep-unsigned.ipa
+        retention-days: 7
+        
+    - name: Build info
+      run: |
+        echo "📱 iOS build completed!"
+        echo "📦 Unsigned IPA available as artifact"
+        echo "📋 Next steps:"
+        echo "  1. Download the artifact"
+        echo "  2. Sign with Xcode or fastlane"
+        echo "  3. Upload to App Store Connect"
+        echo "  4. Distribute via TestFlight"

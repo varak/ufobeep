@@ -1,13 +1,32 @@
 {
   "project_info": {
-    "project_number": "973986376996",
-    "project_id": "ufobeep-d685a",
-    "storage_bucket": "ufobeep-d685a.firebasestorage.app"
+    "project_number": "346511467728",
+    "project_id": "ufobeep",
+    "storage_bucket": "ufobeep.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:973986376996:android:0d843f4797938ad08c17b1",
+        "mobilesdk_app_id": "1:346511467728:android:7291451505aee4075caad5",
+        "android_client_info": {
+          "package_name": "com.ufobeep.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWKG0fyxtU42QTsK-0_zlzMWDdk_tNnmg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346511467728:android:02dcacf7017bae375caad5",
         "android_client_info": {
           "package_name": "com.ufobeep.ufobeep"
         }
@@ -15,7 +34,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA1eW-nyQ_8wbDTKqwugv8QbQKm9zm7qgk"
+          "current_key": "AIzaSyAWKG0fyxtU42QTsK-0_zlzMWDdk_tNnmg"
         }
       ],
       "services": {

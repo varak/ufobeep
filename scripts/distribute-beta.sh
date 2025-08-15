@@ -56,22 +56,34 @@ if ! command -v firebase &> /dev/null; then
     exit 1
 fi
 
-# Check if logged in to Firebase
-if ! firebase projects:list &> /dev/null; then
+# Check if logged in to Firebase or has CI token
+if [ -n "$FIREBASE_TOKEN" ]; then
+    echo -e "${GREEN}Using Firebase CI token${NC}"
+elif ! firebase projects:list &> /dev/null; then
     echo -e "${YELLOW}Please login to Firebase first:${NC}"
     firebase login
 fi
 
-# Your Firebase App ID from google-services.json
-FIREBASE_APP_ID="1:973986376996:android:0d843f4797938ad08c17b1"
+# Firebase App ID from google-services.json (ufobeep project)
+FIREBASE_APP_ID="1:346511467728:android:02dcacf7017bae375caad5"
+echo -e "${GREEN}Using Firebase project: ufobeep${NC}"
 
 # Upload to Firebase App Distribution
 echo -e "${YELLOW}Uploading to Firebase App Distribution...${NC}"
 
-firebase appdistribution:distribute "build/app/outputs/flutter-apk/app-release.apk" \
-  --app "$FIREBASE_APP_ID" \
-  --groups "beta-testers" \
-  --release-notes "$NOTES"
+# Use token if available, otherwise use logged-in session
+if [ -n "$FIREBASE_TOKEN" ]; then
+    firebase appdistribution:distribute "build/app/outputs/flutter-apk/app-release.apk" \
+      --app "$FIREBASE_APP_ID" \
+      --groups "beta-testers" \
+      --release-notes "$NOTES" \
+      --token "$FIREBASE_TOKEN"
+else
+    firebase appdistribution:distribute "build/app/outputs/flutter-apk/app-release.apk" \
+      --app "$FIREBASE_APP_ID" \
+      --groups "beta-testers" \
+      --release-notes "$NOTES"
+fi
 
 if [ $? -eq 0 ]; then
     echo ""
@@ -81,7 +93,7 @@ if [ $? -eq 0 ]; then
     echo -e "${GREEN}✓ Size: ${APK_SIZE}${NC}"
     echo ""
     echo -e "${YELLOW}View distribution status:${NC}"
-    echo "https://console.firebase.google.com/project/ufobeep-d685a/appdistribution"
+    echo "https://console.firebase.google.com/u/1/project/ufobeep/appdistribution"
 else
     echo -e "${RED}Distribution failed!${NC}"
     exit 1

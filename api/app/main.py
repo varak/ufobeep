@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.config.environment import settings
-from app.routers import plane_match, media, media_serve, devices, emails, photo_analysis, mufon, media_management
+from app.routers import plane_match, media, media_serve, devices, emails, photo_analysis, mufon, media_management, admin
 from app.services.media_service import get_media_service
 import asyncpg
 import asyncio
@@ -218,6 +218,7 @@ app.include_router(plane_match.router)
 app.include_router(media.router)
 app.include_router(media_serve.router)
 app.include_router(media_management.router)
+app.include_router(admin.router)
 app.include_router(devices.router)
 app.include_router(emails.router)
 app.include_router(photo_analysis.router)
