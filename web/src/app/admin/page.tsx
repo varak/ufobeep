@@ -17,7 +17,7 @@ export default function AdminRedirect() {
           <div className="w-6 h-6 border-2 border-brand-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
         </div>
         <p className="text-text-tertiary text-sm mt-8">
-          If you're not redirected automatically, 
+          If you&apos;re not redirected automatically, 
           <a href="https://api.ufobeep.com/admin" className="text-brand-primary hover:underline ml-1">
             click here
           </a>
