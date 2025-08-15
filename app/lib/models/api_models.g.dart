@@ -120,6 +120,13 @@ MediaFile _$MediaFileFromJson(Map<String, dynamic> json) => MediaFile(
   height: (json['height'] as num?)?.toInt(),
   createdAt: DateTime.parse(json['created_at'] as String),
   metadata: json['metadata'] as Map<String, dynamic>? ?? const {},
+  isPrimary: json['is_primary'] as bool? ?? false,
+  uploadedByUserId: json['uploaded_by_user_id'] as String?,
+  uploadOrder: (json['upload_order'] as num?)?.toInt() ?? 0,
+  displayPriority: (json['display_priority'] as num?)?.toInt() ?? 0,
+  contributedAt: json['contributed_at'] == null
+      ? null
+      : DateTime.parse(json['contributed_at'] as String),
 );
 
 Map<String, dynamic> _$MediaFileToJson(MediaFile instance) => <String, dynamic>{
@@ -134,6 +141,11 @@ Map<String, dynamic> _$MediaFileToJson(MediaFile instance) => <String, dynamic>{
   'height': instance.height,
   'created_at': instance.createdAt.toIso8601String(),
   'metadata': instance.metadata,
+  'is_primary': instance.isPrimary,
+  'uploaded_by_user_id': instance.uploadedByUserId,
+  'upload_order': instance.uploadOrder,
+  'display_priority': instance.displayPriority,
+  'contributed_at': instance.contributedAt?.toIso8601String(),
 };
 
 const _$MediaTypeEnumMap = {

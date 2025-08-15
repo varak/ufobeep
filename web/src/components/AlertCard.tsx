@@ -20,6 +20,9 @@ interface Alert {
     type: string
     url: string
     thumbnail_url: string
+    is_primary: boolean
+    upload_order: number
+    display_priority: number
   }>
   verification_score: number
 }
@@ -30,6 +33,18 @@ interface AlertCardProps {
 }
 
 export default function AlertCard({ alert, compact = false }: AlertCardProps) {
+  // Get primary media file (or first if no primary)
+  const getPrimaryMedia = () => {
+    if (!alert.media_files || alert.media_files.length === 0) return null
+    
+    // Look for primary media
+    const primaryMedia = alert.media_files.find(media => media.is_primary)
+    if (primaryMedia) return primaryMedia
+    
+    // Fallback to first media file
+    return alert.media_files[0]
+  }
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     if (compact) {
@@ -101,25 +116,33 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
   return (
     <Link href={`/alerts/${alert.id}`}>
       <div className="bg-dark-surface border border-dark-border rounded-lg overflow-hidden hover:border-brand-primary transition-all duration-300 hover:shadow-lg cursor-pointer group">
-        {/* Thumbnail Image */}
-        {alert.media_files && alert.media_files.length > 0 ? (
-          <div className="h-48 bg-gray-800 relative overflow-hidden">
-            <ImageWithLoading 
-              src={`${alert.media_files[0].thumbnail_url}?thumbnail=true`}
-              alt={alert.title}
-              width={400}
-              height={192}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            />
-            <div className="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
-              📸 {alert.media_files.length}
+        {/* Primary Media Thumbnail */}
+        {(() => {
+          const primaryMedia = getPrimaryMedia()
+          return primaryMedia ? (
+            <div className="h-48 bg-gray-800 relative overflow-hidden">
+              <ImageWithLoading 
+                src={`${primaryMedia.thumbnail_url || primaryMedia.url}?thumbnail=true`}
+                alt={alert.title}
+                width={400}
+                height={192}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+                📸 {alert.media_files.length}
+              </div>
+              {primaryMedia.is_primary && (
+                <div className="absolute bottom-2 left-2 bg-brand-primary text-black text-xs px-2 py-1 rounded font-semibold">
+                  PRIMARY
+                </div>
+              )}
             </div>
-          </div>
-        ) : (
-          <div className="h-48 bg-gray-800 flex items-center justify-center">
-            <div className="text-4xl text-gray-500">👁️</div>
-          </div>
-        )}
+          ) : (
+            <div className="h-48 bg-gray-800 flex items-center justify-center">
+              <div className="text-4xl text-gray-500">👁️</div>
+            </div>
+          )
+        })()}
 
         <div className="p-4">
           {/* Alert Level Badge */}

@@ -85,6 +85,13 @@ export interface MediaFile {
   height?: number
   created_at: string
   metadata: Record<string, any>
+  
+  // Multi-media support fields
+  is_primary: boolean
+  uploaded_by_user_id?: string
+  upload_order: number
+  display_priority: number
+  contributed_at?: string
 }
 
 export interface PlaneMatchResult {

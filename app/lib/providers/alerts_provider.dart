@@ -61,7 +61,30 @@ class Alert {
   // Computed properties
   bool get isVerified => status == 'verified';
   bool get hasMedia => mediaFiles.isNotEmpty;
-  String get mediaUrl => hasMedia ? (mediaFiles.first['url'] ?? '') : '';
+  String get mediaUrl => hasMedia ? (primaryMediaFile?['url'] ?? mediaFiles.first['url'] ?? '') : '';
+  
+  // Get primary media file (or first if no primary)
+  Map<String, dynamic>? get primaryMediaFile {
+    if (mediaFiles.isEmpty) return null;
+    
+    // Look for primary media
+    try {
+      final primaryMedia = mediaFiles.firstWhere(
+        (media) => media['is_primary'] == true,
+      );
+      return primaryMedia;
+    } catch (e) {
+      // No primary found, return first media file
+      return mediaFiles.first;
+    }
+  }
+  
+  // Get thumbnail URL for primary media
+  String get primaryThumbnailUrl {
+    final primary = primaryMediaFile;
+    if (primary == null) return '';
+    return primary['thumbnail_url'] ?? primary['url'] ?? '';
+  }
 
   Alert copyWith({
     String? id,

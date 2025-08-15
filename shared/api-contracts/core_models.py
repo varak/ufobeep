@@ -105,6 +105,13 @@ class MediaFile(BaseModel):
     height: Optional[int] = None  # For images/video
     created_at: datetime
     metadata: Dict[str, Any] = Field(default_factory=dict)
+    
+    # Multi-media support fields
+    is_primary: bool = Field(default=False, description="Primary media for display in lists")
+    uploaded_by_user_id: Optional[str] = Field(None, description="User who uploaded this file")
+    upload_order: int = Field(default=0, description="Order uploaded (0=original, 1=first additional)")
+    display_priority: int = Field(default=0, description="Manual display priority (higher=more prominent)")
+    contributed_at: Optional[datetime] = Field(None, description="When added to sighting")
 
 
 class PlaneMatchResult(BaseModel):

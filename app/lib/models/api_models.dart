@@ -191,6 +191,18 @@ class MediaFile {
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
   final Map<String, dynamic> metadata;
+  
+  // Multi-media support fields
+  @JsonKey(name: 'is_primary')
+  final bool isPrimary;
+  @JsonKey(name: 'uploaded_by_user_id')
+  final String? uploadedByUserId;
+  @JsonKey(name: 'upload_order')
+  final int uploadOrder;
+  @JsonKey(name: 'display_priority')
+  final int displayPriority;
+  @JsonKey(name: 'contributed_at')
+  final DateTime? contributedAt;
 
   const MediaFile({
     required this.id,
@@ -204,6 +216,11 @@ class MediaFile {
     this.height,
     required this.createdAt,
     this.metadata = const {},
+    this.isPrimary = false,
+    this.uploadedByUserId,
+    this.uploadOrder = 0,
+    this.displayPriority = 0,
+    this.contributedAt,
   });
 
   factory MediaFile.fromJson(Map<String, dynamic> json) =>

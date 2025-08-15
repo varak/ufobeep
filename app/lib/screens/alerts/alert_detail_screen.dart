@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../providers/alerts_provider.dart';
+import '../../providers/app_state.dart';
 import '../../theme/app_theme.dart';
 
 class AlertDetailScreen extends ConsumerWidget {
@@ -13,6 +14,7 @@ class AlertDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final alertAsync = ref.watch(alertByIdProvider(alertId));
+    final appState = ref.watch(appStateProvider);
 
     return alertAsync.when(
       data: (alert) {
@@ -133,29 +135,30 @@ class AlertDetailScreen extends ConsumerWidget {
                           value: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
                         ),
                         const SizedBox(height: 16),
-                        // Navigation button
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              // Navigate to compass with target location
-                              final targetName = alert.title;
-                              final bearing = alert.bearing?.toString() ?? '';
-                              final distance = alert.distance?.toString() ?? '';
-                              context.go('/compass?targetLat=${alert.latitude}&targetLon=${alert.longitude}&targetName=${Uri.encodeComponent(targetName)}&bearing=$bearing&distance=$distance&alertId=${alert.id}');
-                            },
-                            icon: const Icon(Icons.navigation, size: 18),
-                            label: const Text('Navigate to Sighting'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.brandPrimary,
-                              foregroundColor: Colors.black,
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                        // Navigation button (only show if user is not the reporter)
+                        if (appState.currentUserId != alert.reporterId)
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                // Navigate to compass with target location
+                                final targetName = alert.title;
+                                final bearing = alert.bearing?.toString() ?? '';
+                                final distance = alert.distance?.toString() ?? '';
+                                context.go('/compass?targetLat=${alert.latitude}&targetLon=${alert.longitude}&targetName=${Uri.encodeComponent(targetName)}&bearing=$bearing&distance=$distance&alertId=${alert.id}');
+                              },
+                              icon: const Icon(Icons.navigation, size: 18),
+                              label: const Text('Navigate to Sighting'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.brandPrimary,
+                                foregroundColor: Colors.black,
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
                               ),
                             ),
                           ),
-                        ),
                       ],
                     ),
                   ),
@@ -345,7 +348,7 @@ class AlertDetailScreen extends ConsumerWidget {
                       child: OutlinedButton.icon(
                         onPressed: () => _showAddPhotosDialog(context, alertId),
                         icon: const Icon(Icons.add_photo_alternate),
-                        label: const Text('Add More Photos'),
+                        label: const Text('Add Photos & Videos'),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.brandPrimary,
                           side: const BorderSide(color: AppColors.brandPrimary),
@@ -758,7 +761,7 @@ class AlertDetailScreen extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Add More Photos',
+              'Add Photos & Videos',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: AppColors.textPrimary,
               ),

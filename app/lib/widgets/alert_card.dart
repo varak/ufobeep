@@ -153,6 +153,12 @@ class AlertCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               
+              // Primary media thumbnail (if available)
+              if (alert.hasMedia) ...[
+                const SizedBox(height: 12),
+                _buildMediaThumbnail(),
+              ],
+              
               const SizedBox(height: 12),
               
               // Footer with location info and bearing
@@ -417,6 +423,114 @@ class AlertCard extends StatelessWidget {
     } else {
       return 'Just now';
     }
+  }
+
+  Widget _buildMediaThumbnail() {
+    final thumbnailUrl = alert.primaryThumbnailUrl;
+    if (thumbnailUrl.isEmpty) return const SizedBox.shrink();
+
+    return Container(
+      height: 120,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: AppColors.darkSurface.withOpacity(0.5),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Stack(
+          children: [
+            // Main image
+            Image.network(
+              thumbnailUrl,
+              height: 120,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Container(
+                  height: 120,
+                  width: double.infinity,
+                  color: AppColors.darkSurface.withOpacity(0.5),
+                  child: const Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.brandPrimary),
+                      strokeWidth: 2,
+                    ),
+                  ),
+                );
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  height: 120,
+                  width: double.infinity,
+                  color: AppColors.darkSurface.withOpacity(0.5),
+                  child: const Icon(
+                    Icons.broken_image,
+                    color: AppColors.textTertiary,
+                    size: 32,
+                  ),
+                );
+              },
+            ),
+            
+            // Media count overlay (if multiple files)
+            if (alert.mediaFiles.length > 1)
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.7),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.photo_library,
+                        size: 14,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        '${alert.mediaFiles.length}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              
+            // Primary media indicator
+            Positioned(
+              bottom: 8,
+              left: 8,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                decoration: BoxDecoration(
+                  color: AppColors.brandPrimary.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Text(
+                  'PRIMARY',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
