@@ -169,9 +169,44 @@ ssh -p 322 ufobeep@ufobeep.com "pm2 delete ufobeep-web && cd /home/ufobeep/ufobe
 - **PM2 troubleshoot**: `ssh -p 322 ufobeep@ufobeep.com "pm2 list"` (check for stopped processes)
 - **API restart**: `ssh -p 322 ufobeep@ufobeep.com "sudo systemctl restart ufobeep-api"`
 
-## Deployment Architecture Notes
+## Server Architecture & Nginx Configuration
 - **Production server**: ufobeep.com (SSH port 322) - ALL TESTING HAPPENS HERE
 - **Development machine**: /home/mike/D/ufobeep (code development only)
 - **PM2 processes**: Run on production server, managed via SSH commands
 - **Testing**: ALWAYS test on production server, never locally
 - **Production builds**: Always built and deployed on production server via SSH
+
+### Nginx Reverse Proxy Setup
+- **Main domain**: ufobeep.com → Next.js app on localhost:3000
+- **API domain**: api.ufobeep.com → FastAPI on localhost:8000
+- **Media serving**: ufobeep.com/media/* → FastAPI on localhost:8000
+- **Admin redirect**: ufobeep.com/admin → api.ufobeep.com/admin (301 redirect)
+
+### Key Nginx Configuration Points
+- **Location order matters**: More specific paths (e.g., `/admin`, `/media/`) must come before general paths (e.g., `/`)
+- **Admin access**: Both https://api.ufobeep.com/admin and https://ufobeep.com/admin work
+- **Configuration file**: `/etc/nginx/sites-enabled/zzz-ufobeep.conf`
+- **Reload nginx**: `sudo nginx -s reload` after config changes
+- **Test config**: `sudo nginx -t` before reloading
+
+### Application-Level vs Server-Level Redirects
+- **Next.js redirects**: Don't work reliably for cross-domain redirects
+- **Nginx redirects**: Server-level 301 redirects are more reliable and efficient
+- **Lesson**: Use nginx for infrastructure-level routing, Next.js for application routing
+
+## Admin Interface (COMPLETED)
+- **Primary URL**: https://api.ufobeep.com/admin
+- **Redirect URL**: https://ufobeep.com/admin (nginx 301 redirect)
+- **Authentication**: HTTP Basic Auth (username: admin, password: ufopostpass)
+- **Features**: Dashboard, sightings management, media management, system status, MUFON integration, system logs
+- **Implementation**: Complete FastAPI router with HTML interfaces and real-time data
+- **Database Integration**: Direct PostgreSQL queries for admin statistics and management
+- **Security**: Password-protected endpoints with secrets.compare_digest for timing attack protection
+
+## Multi-Media System (COMPLETED)
+- **Database Schema**: Added primary media designation, upload order, display priority fields
+- **Migration**: `/api/migrations/001_add_media_primary_fields.sql` deployed to production
+- **API Models**: Updated across all platforms (Python, TypeScript, Dart) for consistency
+- **Mobile App**: Primary thumbnail display, "Add Photos & Videos" button, smart navigation
+- **Web App**: Primary media thumbnails with visual indicators
+- **Admin Management**: Set primary media, view metadata, manage media files
