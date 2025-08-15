@@ -46,7 +46,7 @@ export default function AlertsMap({
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const userCoords = [position.coords.latitude, position.coords.longitude]
+          const userCoords: [number, number] = [position.coords.latitude, position.coords.longitude]
           console.log('Got user location:', userCoords, 'Las Vegas is approximately [36.1699, -115.1398]')
           setUserLocation(userCoords)
         },
