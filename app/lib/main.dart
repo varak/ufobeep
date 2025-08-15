@@ -13,6 +13,7 @@ import 'providers/user_preferences_provider.dart';
 import 'routing/app_router.dart';
 import 'services/push_notification_service.dart';
 import 'services/alert_sound_service.dart';
+import 'services/permission_service.dart';
 import 'theme/app_theme.dart';
 
 void main() async {
@@ -24,8 +25,8 @@ void main() async {
   // Initialize environment configuration
   await AppEnvironment.initialize();
   
-  // Request critical permissions early
-  await _requestCriticalPermissions();
+  // Initialize all permissions early
+  await permissionService.initializePermissions();
   
   // Initialize SharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();
@@ -127,28 +128,7 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
   }
 }
 
-Future<void> _requestCriticalPermissions() async {
-  // Request multiple permissions at once for better UX
-  Map<Permission, PermissionStatus> statuses = await [
-    Permission.location,
-    Permission.locationAlways,  // For background location
-    Permission.camera,
-    Permission.sensors,  // For compass/orientation sensors
-    Permission.photos,   // For photo library access
-    Permission.notification,  // For push notifications
-  ].request();
-  
-  // Log permission results for debugging
-  statuses.forEach((permission, status) {
-    debugPrint('Permission $permission: $status');
-  });
-  
-  // Check if critical permissions are granted
-  if (statuses[Permission.location] == PermissionStatus.permanentlyDenied ||
-      statuses[Permission.camera] == PermissionStatus.permanentlyDenied) {
-    debugPrint('Critical permissions permanently denied - user may need to enable in settings');
-  }
-}
+// Removed - now handled by PermissionService
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

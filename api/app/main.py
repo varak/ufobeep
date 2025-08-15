@@ -738,15 +738,7 @@ async def update_sighting_media(sighting_id: str, request: dict = None):
 async def create_anonymous_beep(request: dict):
     """
     Create an anonymous UFO sighting beep without requiring authentication
-    
-    Required fields:
-    - device_id: Anonymous device identifier
-    - description: What the user is seeing
-    - location: {latitude, longitude, accuracy} - REQUIRED for alert proximity
-    
-    Optional fields:
-    - heading: Device compass heading when beep was sent
-    - device_info: Device model/platform info for debugging
+    Uses the same schema as regular sightings but for anonymous users
     """
     try:
         # Validate required fields
@@ -758,12 +750,7 @@ async def create_anonymous_beep(request: dict):
             raise HTTPException(status_code=400, detail="location with latitude and longitude is required for alert proximity")
         
         description = request.get('description', 'Anonymous UFO sighting')
-        
-        # Generate unique sighting ID
-        sighting_id = f"anon_{uuid4().hex[:12]}"
-        
-        # Get current timestamp
-        now = datetime.utcnow()
+        title = "Anonymous UFO Sighting"
         
         # Apply minimal coordinate jittering for privacy (100m radius)
         lat = float(location['latitude'])
@@ -774,68 +761,54 @@ async def create_anonymous_beep(request: dict):
         import random
         import math
         
-        # Convert 100m to degrees (approximately)
         jitter_radius = 100 / 111000  # 111km per degree latitude
-        
-        # Random jitter within circle
         angle = random.uniform(0, 2 * math.pi)
         distance = random.uniform(0, jitter_radius)
         
         jittered_lat = lat + (distance * math.cos(angle))
         jittered_lng = lng + (distance * math.sin(angle))
         
-        # Insert anonymous sighting into database
-        async with db_pool.acquire() as conn:
-            query = """
-                INSERT INTO sightings (
-                    id, title, description, category, 
-                    latitude, longitude, accuracy,
-                    original_latitude, original_longitude,
-                    altitude, heading, witness_count,
-                    reporter_id, device_info, is_public,
-                    created_at, updated_at
-                ) VALUES (
-                    $1, $2, $3, $4,
-                    $5, $6, $7,
-                    $8, $9,
-                    $10, $11, $12,
-                    $13, $14, $15,
-                    $16, $17
-                )
-            """
-            
-            await conn.execute(
-                query,
-                sighting_id,                           # id
-                "Anonymous UFO Sighting",              # title
-                description,                           # description
-                "ufo",                                # category
-                jittered_lat,                         # latitude (jittered)
-                jittered_lng,                         # longitude (jittered)
-                accuracy,                             # accuracy
-                lat,                                  # original_latitude
-                lng,                                  # original_longitude
-                request.get('altitude', 0.0),         # altitude
-                request.get('heading'),               # heading
-                1,                                    # witness_count
-                request['device_id'],                 # reporter_id (anonymous device ID)
-                json.dumps(request.get('device_info', {})),  # device_info
-                True,                                 # is_public
-                now,                                  # created_at
-                now                                   # updated_at
-            )
-            
-            print(f"Created anonymous sighting {sighting_id} at {jittered_lat}, {jittered_lng}")
+        # Build sensor_data in the same format as regular sightings
+        sensor_data = {
+            'location': {
+                'latitude': jittered_lat,
+                'longitude': jittered_lng,
+                'accuracy': accuracy,
+                'original_latitude': lat,
+                'original_longitude': lng
+            },
+            'device_id': request['device_id'],
+            'timestamp': datetime.utcnow().isoformat()
+        }
         
-        # TODO: Trigger proximity alerts for nearby users
-        # This would use geohash-based proximity system
+        if request.get('heading'):
+            sensor_data['heading'] = request['heading']
+        if request.get('altitude'):
+            sensor_data['altitude'] = request['altitude']
+        if request.get('device_info'):
+            sensor_data['device_info'] = request['device_info']
+        
+        # Generate enrichment data (same as regular sightings)
+        enrichment_data = await generate_enrichment_data(sensor_data)
+        
+        # Insert using the same schema as regular sightings
+        async with db_pool.acquire() as conn:
+            sighting_id = await conn.fetchval("""
+                INSERT INTO sightings 
+                (title, description, category, witness_count, is_public, tags, media_info, sensor_data, enrichment_data, alert_level, status)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+                RETURNING id
+            """, title, description, "ufo", 1, True, 
+                [], json.dumps({}), json.dumps(sensor_data), json.dumps(enrichment_data), "normal", "created")
+        
+        print(f"Created anonymous sighting {sighting_id} at {jittered_lat}, {jittered_lng}")
         
         return {
-            "sighting_id": sighting_id,
+            "sighting_id": str(sighting_id),
             "message": "Anonymous beep sent successfully",
             "witness_count": 1,
             "location_jittered": True,
-            "alert_radius_m": 5000  # 5km alert radius
+            "alert_radius_m": 5000
         }
         
     except HTTPException:

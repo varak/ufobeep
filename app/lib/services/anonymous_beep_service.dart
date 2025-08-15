@@ -5,6 +5,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:geolocator/geolocator.dart';
+import 'permission_service.dart';
 
 class AnonymousBeepService {
   static const String _deviceIdKey = 'anonymous_device_id';
@@ -75,22 +76,17 @@ class AnonymousBeepService {
       // Always try to get current location for anonymous beeps
       Position? currentPosition;
       if (latitude == null || longitude == null) {
-        try {
-          // Check and request location permission
-          LocationPermission permission = await Geolocator.checkPermission();
-          if (permission == LocationPermission.denied) {
-            permission = await Geolocator.requestPermission();
+        if (permissionService.locationGranted) {
+          try {
+            currentPosition = await permissionService.getCurrentLocation();
+            if (currentPosition != null) {
+              print('Got current location: ${currentPosition.latitude}, ${currentPosition.longitude}');
+            }
+          } catch (e) {
+            print('Failed to get current location: $e');
           }
-          
-          if (permission != LocationPermission.deniedForever) {
-            currentPosition = await Geolocator.getCurrentPosition(
-              desiredAccuracy: LocationAccuracy.medium,
-              timeLimit: const Duration(seconds: 10),
-            );
-            print('Got current location: ${currentPosition.latitude}, ${currentPosition.longitude}');
-          }
-        } catch (e) {
-          print('Failed to get current location: $e');
+        } else {
+          throw Exception('Location permission not granted. Please enable location services in app settings.');
         }
       }
       
