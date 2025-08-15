@@ -356,6 +356,119 @@ async def get_recent_activity(credentials: str = Depends(verify_admin_password))
         await conn.close()
 
 
+# JSON API endpoints for JavaScript data fetching
+@router.get("/data/sightings")
+async def get_sightings_data(
+    limit: int = 50,
+    offset: int = 0,
+    status: Optional[str] = None,
+    credentials: str = Depends(verify_admin_password)
+) -> List[SightingAdmin]:
+    """Get sightings data for admin management"""
+    
+    conn = await get_db_connection()
+    try:
+        where_clause = ""
+        params = []
+        
+        if status:
+            where_clause = "WHERE s.status = $1"
+            params = [status]
+            
+        query = f"""
+            SELECT 
+                s.id, s.title, s.description, s.category, s.status, s.alert_level,
+                s.created_at, s.location_name, s.reporter_id, s.verification_score,
+                COUNT(m.id) as media_count,
+                COUNT(CASE WHEN m.is_primary THEN 1 END) > 0 as has_primary_media
+            FROM sightings s
+            LEFT JOIN media_files m ON s.id = m.sighting_id
+            {where_clause}
+            GROUP BY s.id, s.title, s.description, s.category, s.status, s.alert_level,
+                     s.created_at, s.location_name, s.reporter_id, s.verification_score
+            ORDER BY s.created_at DESC
+            LIMIT $2 OFFSET $3
+        """
+        
+        params.extend([limit, offset])
+        sightings = await conn.fetch(query, *params)
+        
+        return [
+            SightingAdmin(
+                id=str(s['id']),
+                title=s['title'],
+                description=s['description'],
+                category=s['category'],
+                status=s['status'],
+                alert_level=s['alert_level'],
+                created_at=s['created_at'],
+                location_name=s['location_name'],
+                reporter_id=str(s['reporter_id']) if s['reporter_id'] else None,
+                media_count=s['media_count'],
+                has_primary_media=s['has_primary_media'],
+                verification_score=s['verification_score']
+            )
+            for s in sightings
+        ]
+        
+    except Exception as e:
+        return []
+    finally:
+        await conn.close()
+
+@router.get("/data/media")
+async def get_media_data(
+    limit: int = 50,
+    offset: int = 0,
+    sighting_id: Optional[str] = None,
+    credentials: str = Depends(verify_admin_password)
+) -> List[MediaFileAdmin]:
+    """Get media files data for admin management"""
+    
+    conn = await get_db_connection()
+    try:
+        where_clause = ""
+        params = []
+        
+        if sighting_id:
+            where_clause = "WHERE m.sighting_id = $1"
+            params = [sighting_id]
+            
+        query = f"""
+            SELECT 
+                m.id, m.sighting_id, m.filename, m.type, m.size_bytes,
+                m.is_primary, m.upload_order, m.display_priority,
+                m.uploaded_by_user_id, m.created_at
+            FROM media_files m
+            {where_clause}
+            ORDER BY m.created_at DESC
+            LIMIT $2 OFFSET $3
+        """
+        
+        params.extend([limit, offset])
+        media_files = await conn.fetch(query, *params)
+        
+        return [
+            MediaFileAdmin(
+                id=str(m['id']),
+                sighting_id=str(m['sighting_id']),
+                filename=m['filename'],
+                type=m['type'],
+                size_bytes=m['size_bytes'],
+                is_primary=m['is_primary'],
+                upload_order=m['upload_order'],
+                display_priority=m['display_priority'],
+                uploaded_by_user_id=str(m['uploaded_by_user_id']) if m['uploaded_by_user_id'] else None,
+                created_at=m['created_at']
+            )
+            for m in media_files
+        ]
+        
+    except Exception as e:
+        return []
+    finally:
+        await conn.close()
+
 @router.post("/sighting/{sighting_id}/verify")
 async def verify_sighting(
     sighting_id: str,
@@ -466,7 +579,7 @@ async def admin_sightings_page(credentials: str = Depends(verify_admin_password)
                 const params = new URLSearchParams();
                 if (statusFilter) params.append('status', statusFilter);
                 
-                const response = await fetch(`/admin/sightings?${params}`);
+                const response = await fetch(`/admin/data/sightings?${params}`);
                 const sightings = await response.json();
                 currentSightings = sightings;
                 renderSightings(sightings);
@@ -623,7 +736,7 @@ async def admin_media_page(credentials: str = Depends(verify_admin_password)):
     <script>
         async function loadMedia() {
             try {
-                const response = await fetch('/admin/media');
+                const response = await fetch('/admin/data/media');
                 const mediaFiles = await response.json();
                 renderMedia(mediaFiles);
             } catch (error) {
