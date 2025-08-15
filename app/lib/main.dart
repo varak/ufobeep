@@ -12,6 +12,7 @@ import 'l10n/generated/app_localizations.dart';
 import 'providers/user_preferences_provider.dart';
 import 'routing/app_router.dart';
 import 'services/push_notification_service.dart';
+import 'services/alert_sound_service.dart';
 import 'theme/app_theme.dart';
 
 void main() async {
@@ -34,6 +35,9 @@ void main() async {
   
   // Initialize push notifications
   await pushNotificationService.initialize();
+  
+  // Initialize alert sound system
+  await alertSoundService.initialize();
   
   // Check if app was opened from a terminated state by a notification
   final initialMessage = await FirebaseMessaging.instance.getInitialMessage();

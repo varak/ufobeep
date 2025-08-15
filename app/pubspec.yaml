@@ -89,6 +89,13 @@ dependencies:
   flutter_map: ^7.0.2
   latlong2: ^0.9.1
   flutter_launcher_icons: ^0.14.4
+  
+  # Alert & Notification System
+  flutter_local_notifications: ^17.2.4
+  vibration: ^2.0.1
+  
+  # Anonymous Beeping
+  uuid: ^4.5.1
 
 dev_dependencies:
   flutter_test:
@@ -139,6 +146,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - .env
+    - assets/sounds/
   
   # Internationalization configuration
   generate: true

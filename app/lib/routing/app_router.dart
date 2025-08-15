@@ -8,6 +8,7 @@ import '../screens/home/home_screen.dart';
 import '../screens/alerts/alerts_screen.dart';
 import '../screens/alerts/alert_detail_screen.dart';
 import '../screens/beep/beep_screen.dart';
+import '../screens/beep/quick_beep_screen.dart';
 import '../screens/beep/beep_composition_screen.dart';
 import '../screens/beep/camera_capture_screen.dart';
 import '../screens/chat/chat_screen.dart';
@@ -31,11 +32,12 @@ GoRouter appRouter(AppRouterRef ref) {
     debugLogDiagnostics: true,
     initialLocation: '/splash',
     routes: [
-      // Splash Screen
+      // Splash Screen (redirects to beep screen)
       GoRoute(
         path: '/splash',
         name: 'splash',
         builder: (context, state) => const SplashScreen(),
+        redirect: (context, state) => '/beep',
       ),
 
       // Main App Shell with Bottom Navigation
@@ -83,7 +85,11 @@ GoRouter appRouter(AppRouterRef ref) {
               GoRoute(
                 path: 'camera',
                 name: 'beep-camera',
-                builder: (context, state) => const CameraCaptureScreen(),
+                builder: (context, state) {
+                  final extra = state.extra as Map<String, dynamic>?;
+                  final description = extra?['description'] as String?;
+                  return CameraCaptureScreen(description: description);
+                },
               ),
               // Beep Composition
               GoRoute(
@@ -131,6 +137,7 @@ GoRouter appRouter(AppRouterRef ref) {
                       imageFile: imageFile,
                       sensorData: extra?['sensorData'],
                       photoMetadata: extra?['photoMetadata'],
+                      description: extra?['description'],
                     );
                   } catch (e, stackTrace) {
                     debugPrint('ERROR creating BeepCompositionScreen: $e');

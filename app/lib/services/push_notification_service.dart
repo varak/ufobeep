@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'device_service.dart';
+import 'alert_sound_service.dart';
 import '../routing/app_router.dart';
 
 class PushNotificationService {
@@ -146,11 +147,20 @@ class PushNotificationService {
     _updateNotificationStats(opened: isBackground);
   }
 
-  void _handleSightingAlert(RemoteMessage message) {
+  void _handleSightingAlert(RemoteMessage message) async {
     print('Handling sighting alert notification');
     final sightingId = message.data['sighting_id'];
+    final witnessCountStr = message.data['witness_count'] ?? '1';
+    final witnessCount = int.tryParse(witnessCountStr) ?? 1;
+    
+    // Determine alert level based on witness count
+    final alertLevel = alertSoundService.determineAlertLevel(witnessCount);
+    
+    // Play appropriate alert sound
+    await alertSoundService.playAlertSound(alertLevel, witnessCount: witnessCount);
+    
     if (sightingId != null) {
-      print('Sighting ID: $sightingId');
+      print('Sighting ID: $sightingId, Witnesses: $witnessCount, Level: $alertLevel');
       navigateToAlert(sightingId);
     }
   }

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -10,18 +11,22 @@ import 'package:go_router/go_router.dart';
 import '../../theme/app_theme.dart';
 import '../../services/sensor_service.dart';
 import '../../services/photo_metadata_service.dart';
+import '../../services/anonymous_beep_service.dart';
+import '../../services/alert_sound_service.dart';
 import '../../models/sensor_data.dart';
 import '../../models/sighting_submission.dart' as local;
 import '../../models/user_preferences.dart';
+import '../../providers/app_state.dart';
+import '../../widgets/beep_button.dart';
 
-class BeepScreen extends StatefulWidget {
+class BeepScreen extends ConsumerStatefulWidget {
   const BeepScreen({super.key});
 
   @override
-  State<BeepScreen> createState() => _BeepScreenState();
+  ConsumerState<BeepScreen> createState() => _BeepScreenState();
 }
 
-class _BeepScreenState extends State<BeepScreen> {
+class _BeepScreenState extends ConsumerState<BeepScreen> {
   final ImagePicker _picker = ImagePicker();
   final SensorService _sensorService = SensorService();
   
@@ -29,6 +34,8 @@ class _BeepScreenState extends State<BeepScreen> {
   bool _isCapturing = false;
   bool _sensorsAvailable = false;
   String? _errorMessage;
+  bool _isBeeping = false;
+  final TextEditingController _descriptionController = TextEditingController();
   
 
   @override
@@ -53,7 +60,10 @@ class _BeepScreenState extends State<BeepScreen> {
 
   Future<void> _capturePhoto() async {
     // Navigate to custom camera screen that skips approval
-    context.go('/beep/camera');
+    final description = _descriptionController.text.trim();
+    context.go('/beep/camera', extra: {
+      'description': description,
+    });
   }
 
   Future<void> _pickFromGallery() async {
@@ -247,11 +257,13 @@ class _BeepScreenState extends State<BeepScreen> {
         _isCapturing = false;
       });
 
-      // Navigate to composition screen with metadata
+      // Navigate to composition screen with metadata and description
+      final description = _descriptionController.text.trim();
       context.go('/beep/compose', extra: {
         'imageFile': submission.imageFile,
         'sensorData': sensorDataFromPhoto,
         'photoMetadata': photoMetadata,
+        'description': description,
       });
 
     } catch (e) {
@@ -264,9 +276,109 @@ class _BeepScreenState extends State<BeepScreen> {
 
 
 
-
-
-
+  Future<void> _sendQuickBeep() async {
+    if (_isBeeping) return;
+    
+    setState(() {
+      _isBeeping = true;
+      _errorMessage = null;
+    });
+    
+    // Play sound feedback
+    await alertSoundService.playAlertSound(AlertLevel.normal);
+    
+    try {
+      // Send anonymous beep
+      final beepResult = await anonymousBeepService.sendBeep(
+        description: 'Quick beep - something in the sky!',
+      );
+      
+      // Set the device ID as current user so navigation button is hidden
+      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
+      
+      // Show success
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Alert sent! Sighting ID: ${beepResult['sighting_id']}'),
+            backgroundColor: AppColors.semanticSuccess,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+      
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to send beep: $e'),
+            backgroundColor: AppColors.semanticError,
+          ),
+        );
+      }
+    } finally {
+      setState(() {
+        _isBeeping = false;
+      });
+    }
+  }
+  
+  Future<void> _sendBeepWithDescription() async {
+    if (_isBeeping) return;
+    
+    setState(() {
+      _isBeeping = true;
+      _errorMessage = null;
+    });
+    
+    // Play sound feedback
+    await alertSoundService.playAlertSound(AlertLevel.normal);
+    
+    try {
+      final description = _descriptionController.text.trim();
+      final beepDescription = description.isEmpty 
+          ? 'Something in the sky!' 
+          : description;
+      
+      // Send anonymous beep with description
+      final beepResult = await anonymousBeepService.sendBeep(
+        description: beepDescription,
+      );
+      
+      // Set the device ID as current user so navigation button is hidden
+      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
+      
+      // Clear the text field
+      _descriptionController.clear();
+      
+      // Show success
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Alert sent! Sighting ID: ${beepResult['sighting_id']}'),
+            backgroundColor: AppColors.semanticSuccess,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+      
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to send beep: $e'),
+            backgroundColor: AppColors.semanticError,
+          ),
+        );
+      }
+    } finally {
+      setState(() {
+        _isBeeping = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -281,6 +393,38 @@ class _BeepScreenState extends State<BeepScreen> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
+              // Big BEEP button
+              Center(
+                child: BeepButton(
+                  onPressed: _sendQuickBeep,
+                  isLoading: _isBeeping,
+                  size: 200,
+                  text: 'BEEP',
+                ),
+              ),
+              
+              const SizedBox(height: 24),
+              
+              // Divider with text
+              Row(
+                children: [
+                  const Expanded(child: Divider(color: AppColors.darkBorder)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      'OR ADD DETAILS',
+                      style: TextStyle(
+                        color: AppColors.textTertiary,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  const Expanded(child: Divider(color: AppColors.darkBorder)),
+                ],
+              ),
+              
+              const SizedBox(height: 16),
 
               // Error message
               if (_errorMessage != null) ...[
@@ -312,99 +456,150 @@ class _BeepScreenState extends State<BeepScreen> {
 
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Camera icon
+                    const SizedBox(height: 24),
+                    
+                    // What do you see input
                     Container(
-                      width: 120,
-                      height: 120,
+                      padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: RadialGradient(
-                          colors: [
-                            AppColors.brandPrimary.withOpacity(0.2),
-                            AppColors.brandPrimary.withOpacity(0.05),
-                            Colors.transparent,
-                          ],
-                        ),
+                        color: AppColors.darkSurface,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: AppColors.darkBorder),
                       ),
-                      child: const Icon(
-                        Icons.camera_alt,
-                        size: 60,
-                        color: AppColors.brandPrimary,
-                      ),
-                    ),
-
-                    const SizedBox(height: 32),
-
-                    // Instructions
-                    const Text(
-                      'Report a Sighting',
-                      style: TextStyle(
-                        color: AppColors.textPrimary,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    const Text(
-                      'Take a photo or select from your gallery',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 16,
-                        height: 1.4,
-                      ),
-                    ),
-
-                    const SizedBox(height: 48),
-
-                    // Action buttons
-                    Column(
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton.icon(
-                            onPressed: _isCapturing ? null : _capturePhoto,
-                            icon: _isCapturing 
-                                ? const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(strokeWidth: 2),
-                                  )
-                                : const Icon(Icons.camera_alt),
-                            label: Text(_isCapturing ? 'Capturing...' : 'Capture Photo'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.brandPrimary,
-                              foregroundColor: Colors.black,
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              textStyle: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'What do you see?',
+                            style: TextStyle(
+                              color: AppColors.textPrimary,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          TextField(
+                            controller: _descriptionController,
+                            maxLines: 4,
+                            style: const TextStyle(
+                              color: AppColors.textPrimary,
+                              fontSize: 16,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: 'Describe what you\'re seeing in the sky...',
+                              hintStyle: TextStyle(
+                                color: AppColors.textSecondary.withOpacity(0.7),
+                              ),
+                              border: InputBorder.none,
+                              filled: true,
+                              fillColor: AppColors.darkBackground.withOpacity(0.5),
+                              contentPadding: const EdgeInsets.all(16),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(color: AppColors.darkBorder.withOpacity(0.5)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: const BorderSide(color: AppColors.brandPrimary),
                               ),
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+                    
+                    const SizedBox(height: 24),
+                    
+                    // Send with description button
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _isBeeping ? null : _sendBeepWithDescription,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.brandPrimary,
+                          foregroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          textStyle: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                        const SizedBox(height: 12),
-                        SizedBox(
-                          width: double.infinity,
+                        child: _isBeeping
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  const Text('Sending Alert...'),
+                                ],
+                              )
+                            : const Text('Send Alert'),
+                      ),
+                    ),
+                    
+                    const SizedBox(height: 16),
+                    
+                    // Or continue to photo options
+                    Row(
+                      children: [
+                        const Expanded(child: Divider(color: AppColors.darkBorder)),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            'OR ADD PHOTO',
+                            style: TextStyle(
+                              color: AppColors.textTertiary,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        const Expanded(child: Divider(color: AppColors.darkBorder)),
+                      ],
+                    ),
+                    
+                    const SizedBox(height: 16),
+                    
+                    // Photo options
+                    Row(
+                      children: [
+                        Expanded(
                           child: OutlinedButton.icon(
-                            onPressed: _isCapturing ? null : _pickFromGallery,
-                            icon: const Icon(Icons.photo_library),
-                            label: const Text('Choose from Gallery'),
+                            onPressed: _isCapturing ? null : _capturePhoto,
+                            icon: const Icon(Icons.camera_alt),
+                            label: const Text('Camera'),
                             style: OutlinedButton.styleFrom(
                               foregroundColor: AppColors.brandPrimary,
                               side: const BorderSide(color: AppColors.brandPrimary),
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              textStyle: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: _isCapturing ? null : _pickFromGallery,
+                            icon: const Icon(Icons.photo_library),
+                            label: const Text('Gallery'),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: AppColors.brandPrimary,
+                              side: const BorderSide(color: AppColors.brandPrimary),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
                             ),
                           ),
                         ),
                       ],
                     ),
+                    
+                    const Spacer(),
                   ],
                 ),
               ),

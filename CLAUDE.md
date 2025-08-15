@@ -140,3 +140,5 @@
 - dont mention yourself in commits, proceed.
 - dont mention/add yourself in commits
 - dont add or mention yourself in commits
+- next time i say test it now i mean I want to make sure my phone is hooked up to wireless debug, push/pull the changes along w the restarts as outlined in the 
+  masterplan, push to my phone and test

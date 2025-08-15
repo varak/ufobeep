@@ -13,7 +13,9 @@ import '../../services/photo_metadata_service.dart';
 import '../../models/sensor_data.dart';
 
 class CameraCaptureScreen extends StatefulWidget {
-  const CameraCaptureScreen({super.key});
+  final String? description;
+  
+  const CameraCaptureScreen({super.key, this.description});
 
   @override
   State<CameraCaptureScreen> createState() => _CameraCaptureScreenState();
@@ -220,6 +222,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
           'imageFile': savedFile,
           'sensorData': sensorData,
           'photoMetadata': photoMetadata, // Pass comprehensive metadata for storage
+          'description': widget.description, // Pass description from previous screen
         });
       }
     } catch (e) {

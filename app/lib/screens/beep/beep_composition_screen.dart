@@ -6,18 +6,21 @@ import '../../theme/app_theme.dart';
 import '../../models/sensor_data.dart';
 import '../../models/api_models.dart' as api;
 import '../../services/api_client.dart';
+import '../../services/alert_sound_service.dart';
 import '../../widgets/simple_photo_display.dart';
 
 class BeepCompositionScreen extends StatefulWidget {
   final File imageFile;
   final SensorData? sensorData;
   final Map<String, dynamic>? photoMetadata;
+  final String? description;
 
   const BeepCompositionScreen({
     super.key,
     required this.imageFile,
     this.sensorData,
     this.photoMetadata,
+    this.description,
   });
 
   @override
@@ -53,6 +56,11 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
     // Store sensor data in state immediately to preserve it during rebuilds
     _sensorData = widget.sensorData;
     
+    // Prepopulate description if provided
+    if (widget.description != null && widget.description!.isNotEmpty) {
+      _descriptionController.text = widget.description!;
+    }
+    
     debugPrint('BeepComposition: Image=${widget.imageFile.existsSync()}, Sensor=${_sensorData != null}');
     if (_sensorData != null) {
       debugPrint('BeepComposition: GPS coordinates: lat=${_sensorData!.latitude}, lng=${_sensorData!.longitude}');
@@ -76,6 +84,9 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
       _isSubmitting = true;
       _errorMessage = null;
     });
+
+    // Play sound feedback when sending
+    await alertSoundService.playAlertSound(AlertLevel.normal);
 
     try {
       // Get description - optional

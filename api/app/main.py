@@ -10,6 +10,7 @@ import asyncio
 import json
 from datetime import datetime
 import uuid
+from uuid import uuid4
 import os
 import shutil
 from pathlib import Path
@@ -732,6 +733,118 @@ async def update_sighting_media(sighting_id: str, request: dict = None):
     except Exception as e:
         print(f"Error updating sighting media: {e}")
         raise HTTPException(status_code=500, detail=f"Error updating sighting media: {str(e)}")
+
+@app.post("/beep/anonymous")
+async def create_anonymous_beep(request: dict):
+    """
+    Create an anonymous UFO sighting beep without requiring authentication
+    
+    Required fields:
+    - device_id: Anonymous device identifier
+    - description: What the user is seeing
+    - location: {latitude, longitude, accuracy} - REQUIRED for alert proximity
+    
+    Optional fields:
+    - heading: Device compass heading when beep was sent
+    - device_info: Device model/platform info for debugging
+    """
+    try:
+        # Validate required fields
+        if not request.get('device_id'):
+            raise HTTPException(status_code=400, detail="device_id is required")
+        
+        location = request.get('location')
+        if not location or not location.get('latitude') or not location.get('longitude'):
+            raise HTTPException(status_code=400, detail="location with latitude and longitude is required for alert proximity")
+        
+        description = request.get('description', 'Anonymous UFO sighting')
+        
+        # Generate unique sighting ID
+        sighting_id = f"anon_{uuid4().hex[:12]}"
+        
+        # Get current timestamp
+        now = datetime.utcnow()
+        
+        # Apply minimal coordinate jittering for privacy (100m radius)
+        lat = float(location['latitude'])
+        lng = float(location['longitude'])
+        accuracy = float(location.get('accuracy', 50.0))
+        
+        # Jitter coordinates by up to 100m for privacy
+        import random
+        import math
+        
+        # Convert 100m to degrees (approximately)
+        jitter_radius = 100 / 111000  # 111km per degree latitude
+        
+        # Random jitter within circle
+        angle = random.uniform(0, 2 * math.pi)
+        distance = random.uniform(0, jitter_radius)
+        
+        jittered_lat = lat + (distance * math.cos(angle))
+        jittered_lng = lng + (distance * math.sin(angle))
+        
+        # Insert anonymous sighting into database
+        async with db_pool.acquire() as conn:
+            query = """
+                INSERT INTO sightings (
+                    id, title, description, category, 
+                    latitude, longitude, accuracy,
+                    original_latitude, original_longitude,
+                    altitude, heading, witness_count,
+                    reporter_id, device_info, is_public,
+                    created_at, updated_at
+                ) VALUES (
+                    $1, $2, $3, $4,
+                    $5, $6, $7,
+                    $8, $9,
+                    $10, $11, $12,
+                    $13, $14, $15,
+                    $16, $17
+                )
+            """
+            
+            await conn.execute(
+                query,
+                sighting_id,                           # id
+                "Anonymous UFO Sighting",              # title
+                description,                           # description
+                "ufo",                                # category
+                jittered_lat,                         # latitude (jittered)
+                jittered_lng,                         # longitude (jittered)
+                accuracy,                             # accuracy
+                lat,                                  # original_latitude
+                lng,                                  # original_longitude
+                request.get('altitude', 0.0),         # altitude
+                request.get('heading'),               # heading
+                1,                                    # witness_count
+                request['device_id'],                 # reporter_id (anonymous device ID)
+                json.dumps(request.get('device_info', {})),  # device_info
+                True,                                 # is_public
+                now,                                  # created_at
+                now                                   # updated_at
+            )
+            
+            print(f"Created anonymous sighting {sighting_id} at {jittered_lat}, {jittered_lng}")
+        
+        # TODO: Trigger proximity alerts for nearby users
+        # This would use geohash-based proximity system
+        
+        return {
+            "sighting_id": sighting_id,
+            "message": "Anonymous beep sent successfully",
+            "witness_count": 1,
+            "location_jittered": True,
+            "alert_radius_m": 5000  # 5km alert radius
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error creating anonymous beep: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Error creating anonymous beep: {str(e)}")
 
 @app.post("/photo-metadata/{sighting_id}")
 async def store_photo_metadata(sighting_id: str, metadata: dict = None):
