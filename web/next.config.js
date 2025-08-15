@@ -69,6 +69,17 @@ const nextConfig = {
     }
     return [];
   },
+
+  // Redirects for admin interface
+  async redirects() {
+    return [
+      {
+        source: '/admin/:path*',
+        destination: 'https://api.ufobeep.com/admin/:path*',
+        permanent: false,
+      },
+    ];
+  },
   
   // Webpack configuration
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
