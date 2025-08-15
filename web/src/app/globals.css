@@ -1,3 +1,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Leaflet map container styles */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+}
+
+/* Fix for Leaflet tiles not displaying */
+.leaflet-tile-pane {
+  z-index: 2 !important;
+}
+
+.leaflet-overlay-pane {
+  z-index: 4 !important;
+}
+
+.leaflet-shadow-pane {
+  z-index: 5 !important;
+}
+
+.leaflet-marker-pane {
+  z-index: 6 !important;
+}
+
+.leaflet-tooltip-pane {
+  z-index: 7 !important;
+}
+
+.leaflet-popup-pane {
+  z-index: 8 !important;
+}

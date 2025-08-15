@@ -51,7 +51,11 @@ export default function GlobalSightingNetwork() {
       const data = await response.json()
       
       if (data.success && data.data?.alerts) {
-        setAlerts(data.data.alerts)
+        // Filter out invalid coordinates (0,0 fallback)
+        const validAlerts = data.data.alerts.filter((alert: Alert) => 
+          alert.location.latitude !== 0 || alert.location.longitude !== 0
+        )
+        setAlerts(validAlerts)
         setHasLoaded(true)
       }
     } catch (error) {

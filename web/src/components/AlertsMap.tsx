@@ -38,21 +38,24 @@ export default function AlertsMap({
   const [hoveredAlert, setHoveredAlert] = useState<Alert | null>(null)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
+  const [mapInitialized, setMapInitialized] = useState(false)
   const mapInstanceRef = useRef<any>(null)
   const markersRef = useRef<any[]>([])
+  const prevAlertsRef = useRef<Alert[]>([])
+  const isGettingLocation = useRef(false)
 
-  // Get user's location on mount
+  // Get user's location on mount - only once
   useEffect(() => {
+    if (isGettingLocation.current) return
+    isGettingLocation.current = true
+    
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const userCoords: [number, number] = [position.coords.latitude, position.coords.longitude]
-          console.log('Got user location:', userCoords, 'Las Vegas is approximately [36.1699, -115.1398]')
           setUserLocation(userCoords)
         },
         (error) => {
-          console.log('Could not get user location:', error)
-          console.log('Falling back to center:', center)
           // Use provided center or US center as fallback
           setUserLocation(center)
         },
@@ -63,20 +66,85 @@ export default function AlertsMap({
         }
       )
     } else {
-      console.log('Geolocation not supported, using center:', center)
       // Use provided center or US center as fallback
       setUserLocation(center)
     }
-  }, [center])
+  }, [center]) // Include center in deps but guard with ref
 
   useEffect(() => {
     // Dynamically import Leaflet for client-side rendering
     const initMap = async () => {
       if (!mapRef.current || !userLocation) return
 
+      // If map is already initialized, only update markers if alerts changed
+      if (mapInitialized && mapInstanceRef.current) {
+        const alertsChanged = JSON.stringify(alerts) !== JSON.stringify(prevAlertsRef.current)
+        if (!alertsChanged) return
+        
+        // Just update markers without recreating the map
+        const L = (await import('leaflet')).default
+        
+        // Clear existing markers
+        markersRef.current.forEach(marker => {
+          if (marker) marker.remove()
+        })
+        markersRef.current = []
+        
+        // Add new markers
+        alerts.forEach((alert) => {
+          if (alert.location.latitude === 0 && alert.location.longitude === 0) return
+          
+          const marker = L.circleMarker(
+            [alert.location.latitude, alert.location.longitude],
+            {
+              radius: 8,
+              fillColor: getAlertColor(alert.alert_level),
+              color: '#ffffff',
+              weight: 2,
+              opacity: 1,
+              fillOpacity: 0.8
+            }
+          )
+          
+          const popupContent = `
+            <div class="text-sm">
+              <h4 class="font-semibold text-gray-900 mb-1">${alert.title}</h4>
+              <p class="text-gray-600 text-xs mb-2">${alert.description}</p>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">${alert.location.name}</span>
+                <span class="font-medium" style="color: ${getAlertColor(alert.alert_level)}">${alert.alert_level?.toUpperCase()}</span>
+              </div>
+              <div class="text-xs text-gray-400 mt-1">${new Date(alert.created_at).toLocaleDateString()}</div>
+            </div>
+          `
+          
+          marker.bindPopup(popupContent)
+          marker.on('click', () => {
+            setSelectedAlert(alert)
+            if (onAlertClick) onAlertClick(alert)
+          })
+          
+          marker.addTo(mapInstanceRef.current)
+          markersRef.current.push(marker)
+        })
+        
+        prevAlertsRef.current = alerts
+        return
+      }
+      
+      prevAlertsRef.current = alerts
+
       try {
         // Dynamically import Leaflet
         const L = (await import('leaflet')).default
+        
+        // Fix Leaflet icon paths issue
+        delete (L.Icon.Default.prototype as any)._getIconUrl
+        L.Icon.Default.mergeOptions({
+          iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+          iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+          shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+        })
         
         // Import Leaflet CSS
         if (typeof window !== 'undefined' && !document.querySelector('#leaflet-css')) {
@@ -90,31 +158,44 @@ export default function AlertsMap({
         // Clear existing map if any
         if (mapInstanceRef.current) {
           mapInstanceRef.current.remove()
+          mapInstanceRef.current = null
         }
 
         // Create map - center on user location with appropriate zoom
         const mapZoom = userLocation[0] === center[0] && userLocation[1] === center[1] ? zoom : 10
-        console.log('Creating map with center:', userLocation, 'zoom:', mapZoom)
-        console.log('Is this user location different from default center?', userLocation[0] !== center[0] || userLocation[1] !== center[1])
-        const map = L.map(mapRef.current).setView(userLocation, mapZoom)
+        const map = L.map(mapRef.current, {
+          center: userLocation,
+          zoom: mapZoom,
+          zoomControl: true,
+          attributionControl: true,
+          preferCanvas: false
+        })
         mapInstanceRef.current = map
+        setMapInitialized(true) // Mark as initialized
         
         // Add user location marker if we have their actual location
         if (userLocation[0] !== center[0] || userLocation[1] !== center[1]) {
-          console.log('Adding "You are here" marker at:', userLocation)
           L.marker(userLocation, {
             title: 'Your Location',
             zIndexOffset: 1000
           }).addTo(map).bindPopup('You are here')
-        } else {
-          console.log('Using default center, no user location marker')
         }
 
-        // Add OpenStreetMap tile layer
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 18,
-          attribution: '© OpenStreetMap contributors'
-        }).addTo(map)
+        // Add OpenStreetMap tile layer with proper settings
+        const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '© OpenStreetMap contributors',
+          crossOrigin: true,
+          tileSize: 256,
+          zoomOffset: 0
+        })
+        
+        tileLayer.addTo(map)
+        
+        // Force map to update its size
+        setTimeout(() => {
+          map.invalidateSize()
+        }, 100)
 
         // Clear existing markers
         markersRef.current.forEach(marker => {
@@ -193,7 +274,6 @@ export default function AlertsMap({
         }
 
       } catch (error) {
-        console.error('Error loading map:', error)
         setMapError(true)
       }
     }
@@ -205,10 +285,11 @@ export default function AlertsMap({
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove()
         mapInstanceRef.current = null
+        setMapInitialized(false)
       }
     }
 
-  }, [alerts, userLocation, center, zoom])
+  }, [alerts, userLocation]) // Only re-run when alerts or user location changes
 
   // Handle window resize
   useEffect(() => {

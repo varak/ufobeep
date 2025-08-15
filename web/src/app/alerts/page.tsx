@@ -53,7 +53,11 @@ export default function AlertsPage() {
       const data = await response.json()
       
       if (data.success && data.data?.alerts) {
-        setAllAlerts(data.data.alerts)
+        // Filter out invalid coordinates (0,0 or null/undefined)
+        const validAlerts = data.data.alerts.filter((alert: Alert) => 
+          alert.location.latitude !== 0 || alert.location.longitude !== 0
+        )
+        setAllAlerts(validAlerts)
         updateDisplayedAlerts(1) // Show first page
       } else {
         setError('Failed to load alerts')
