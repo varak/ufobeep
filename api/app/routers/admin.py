@@ -135,8 +135,8 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
         </div>
 
         <div class="nav-buttons">
-            <a href="/admin/sightings" class="nav-btn">📋 Manage Sightings</a>
-            <a href="/admin/media" class="nav-btn">📸 Media Management</a>
+            <a href="/admin/sightings-page" class="nav-btn">📋 Manage Sightings</a>
+            <a href="/admin/media-page" class="nav-btn">📸 Media Management</a>
             <a href="/admin/users" class="nav-btn">👥 User Management</a>
             <a href="/admin/system" class="nav-btn">⚙️ System Status</a>
             <a href="/admin/mufon" class="nav-btn">🛸 MUFON Integration</a>
@@ -508,7 +508,7 @@ async def delete_sighting(
         await conn.close()
 
 # Admin page endpoints
-@router.get("/sightings", response_class=HTMLResponse)
+@router.get("/sightings-page", response_class=HTMLResponse)
 async def admin_sightings_page(credentials: str = Depends(verify_admin_password)):
     """Admin sightings management page"""
     return """
@@ -684,7 +684,7 @@ async def admin_sightings_page(credentials: str = Depends(verify_admin_password)
 </html>
 """
 
-@router.get("/media", response_class=HTMLResponse)
+@router.get("/media-page", response_class=HTMLResponse)
 async def admin_media_page(credentials: str = Depends(verify_admin_password)):
     """Admin media management page"""
     return """
