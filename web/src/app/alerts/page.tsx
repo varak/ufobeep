@@ -21,6 +21,9 @@ interface Alert {
     type: string
     url: string
     thumbnail_url: string
+    is_primary: boolean
+    upload_order: number
+    display_priority: number
   }>
   verification_score: number
 }
