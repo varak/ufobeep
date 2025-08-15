@@ -37,13 +37,33 @@ export default function AlertsMap({
   const [mapError, setMapError] = useState(false)
   const [hoveredAlert, setHoveredAlert] = useState<Alert | null>(null)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
   const mapInstanceRef = useRef<any>(null)
   const markersRef = useRef<any[]>([])
+
+  // Get user's location on mount
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation([position.coords.latitude, position.coords.longitude])
+        },
+        (error) => {
+          console.log('Could not get user location:', error)
+          // Use provided center or US center as fallback
+          setUserLocation(center)
+        }
+      )
+    } else {
+      // Use provided center or US center as fallback
+      setUserLocation(center)
+    }
+  }, [center])
 
   useEffect(() => {
     // Dynamically import Leaflet for client-side rendering
     const initMap = async () => {
-      if (!mapRef.current) return
+      if (!mapRef.current || !userLocation) return
 
       try {
         // Dynamically import Leaflet
@@ -63,9 +83,18 @@ export default function AlertsMap({
           mapInstanceRef.current.remove()
         }
 
-        // Create map - focus on showing full United States
-        const map = L.map(mapRef.current).setView([39.8283, -98.5795], 4)
+        // Create map - center on user location with appropriate zoom
+        const mapZoom = userLocation[0] === center[0] && userLocation[1] === center[1] ? zoom : 10
+        const map = L.map(mapRef.current).setView(userLocation, mapZoom)
         mapInstanceRef.current = map
+        
+        // Add user location marker if we have their actual location
+        if (userLocation[0] !== center[0] || userLocation[1] !== center[1]) {
+          L.marker(userLocation, {
+            title: 'Your Location',
+            zIndexOffset: 1000
+          }).addTo(map).bindPopup('You are here')
+        }
 
         // Add OpenStreetMap tile layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -122,27 +151,31 @@ export default function AlertsMap({
           markersRef.current.push(marker)
         })
 
-        // Fit map to show all alerts, but ensure it shows at least the full US
+        // Fit map to show all alerts with user-centric view
         if (alerts.length > 0) {
           const validAlerts = alerts.filter(a => a.location.latitude !== 0 && a.location.longitude !== 0)
           if (validAlerts.length > 0) {
             const latlngs = validAlerts.map(a => [a.location.latitude, a.location.longitude] as [number, number])
             
-            // Create bounds that include all alerts
+            // Include user location in bounds if we have their actual location
+            if (userLocation[0] !== center[0] || userLocation[1] !== center[1]) {
+              latlngs.push(userLocation)
+            }
+            
+            // Create bounds that include all alerts and user location
             const bounds = L.latLngBounds(latlngs)
             
-            // Extend bounds to at least cover the continental US
-            bounds.extend([20.5, -130]) // Southwest corner (roughly California/Mexico)
-            bounds.extend([49.0, -60])  // Northeast corner (roughly Maine/Canada)
+            // If bounds are very small (all points close together), ensure minimum zoom
+            const boundsSizeLat = bounds.getNorth() - bounds.getSouth()
+            const boundsSizeLng = bounds.getEast() - bounds.getWest()
             
-            map.fitBounds(bounds, { padding: [20, 20] })
+            if (boundsSizeLat < 0.1 && boundsSizeLng < 0.1) {
+              // All points are very close, use moderate zoom around the area
+              map.setView(bounds.getCenter(), 12)
+            } else {
+              map.fitBounds(bounds, { padding: [20, 20] })
+            }
           }
-        } else {
-          // No alerts, show full US
-          map.fitBounds([
-            [20.5, -130], // Southwest
-            [49.0, -60]   // Northeast
-          ])
         }
 
       } catch (error) {
@@ -161,7 +194,7 @@ export default function AlertsMap({
       }
     }
 
-  }, [alerts])
+  }, [alerts, userLocation, center, zoom])
 
   // Handle window resize
   useEffect(() => {

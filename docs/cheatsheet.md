@@ -91,6 +91,20 @@ ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep/web && rm -rf .next nod
 ```
 **Prevention**: Always do full clean rebuilds after major changes
 
+### PM2 Process Stopped (Website Shows Old Content)
+**Problem**: Website serves old/cached content despite successful git pulls and builds
+**Root cause**: PM2 process was stopped during troubleshooting and `pm2 restart all` only restarts running processes
+**Diagnosis**: Check PM2 status with `ssh -p 322 ufobeep@ufobeep.com "pm2 list"` - look for "stopped" status
+**Solution**: Start the stopped process
+```bash
+ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep/web && pm2 start npm --name 'ufobeep-web' -- start"
+```
+**Alternative**: Delete stopped process and use standard restart
+```bash
+ssh -p 322 ufobeep@ufobeep.com "pm2 delete ufobeep-web && cd /home/ufobeep/ufobeep/web && pm2 start npm --name 'ufobeep-web' -- start"
+```
+**Prevention**: Use `pm2 list` to verify process status before and after deployment
+
 ### API Service Virtual Environment Issues  
 **Problem**: ufobeep-api.service fails with pydantic_settings import errors
 **Root cause**: Startup script using wrong virtual environment path
@@ -107,8 +121,9 @@ ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep/web && rm -rf .next nod
 - **Mobile permissions** - Added Android 13+ photo permissions and media location access
 - **Photo metadata working** - Both camera captures and gallery selections extract GPS coordinates
 - **SSH production**: `ssh -p 322 ufobeep@ufobeep.com`
-- **Standard deploy**: `git push && ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep && git pull origin main && cd web && npm run build && pm2 restart all"`
-- **Clean deploy** (when webpack breaks): `ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep/web && rm -rf .next node_modules/.cache && npm run build && pm2 restart all"`
+- **Standard deploy**: `git push && ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep && git pull origin main && cd web && npm run build && pm2 restart all && pm2 list"`
+- **Clean deploy** (when webpack breaks): `ssh -p 322 ufobeep@ufobeep.com "cd /home/ufobeep/ufobeep/web && rm -rf .next node_modules/.cache && npm run build && pm2 restart all && pm2 list"`
+- **PM2 troubleshoot**: `ssh -p 322 ufobeep@ufobeep.com "pm2 list"` (check for stopped processes)
 - **API restart**: `ssh -p 322 ufobeep@ufobeep.com "sudo systemctl restart ufobeep-api"`
 
 ## Deployment Architecture Notes
