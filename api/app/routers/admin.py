@@ -135,8 +135,8 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
         </div>
 
         <div class="nav-buttons">
-            <a href="/admin/sightings-page" class="nav-btn">📋 Manage Sightings</a>
-            <a href="/admin/media-page" class="nav-btn">📸 Media Management</a>
+            <a href="/admin/sightings" class="nav-btn">📋 Manage Sightings</a>
+            <a href="/admin/media" class="nav-btn">📸 Media Management</a>
             <a href="/admin/users" class="nav-btn">👥 User Management</a>
             <a href="/admin/system" class="nav-btn">⚙️ System Status</a>
             <a href="/admin/mufon" class="nav-btn">🛸 MUFON Integration</a>
@@ -355,117 +355,6 @@ async def get_recent_activity(credentials: str = Depends(verify_admin_password))
     finally:
         await conn.close()
 
-@router.get("/sightings")
-async def admin_sightings_list(
-    limit: int = 50,
-    offset: int = 0,
-    status: Optional[str] = None,
-    credentials: str = Depends(verify_admin_password)
-) -> List[SightingAdmin]:
-    """Get sightings for admin management"""
-    
-    conn = await get_db_connection()
-    try:
-        where_clause = ""
-        params = []
-        
-        if status:
-            where_clause = "WHERE s.status = $1"
-            params = [status]
-            
-        query = f"""
-            SELECT 
-                s.id, s.title, s.description, s.category, s.status, s.alert_level,
-                s.created_at, s.location_name, s.reporter_id, s.verification_score,
-                COUNT(m.id) as media_count,
-                COUNT(CASE WHEN m.is_primary THEN 1 END) > 0 as has_primary_media
-            FROM sightings s
-            LEFT JOIN media_files m ON s.id = m.sighting_id
-            {where_clause}
-            GROUP BY s.id, s.title, s.description, s.category, s.status, s.alert_level,
-                     s.created_at, s.location_name, s.reporter_id, s.verification_score
-            ORDER BY s.created_at DESC
-            LIMIT $2 OFFSET $3
-        """
-        
-        params.extend([limit, offset])
-        sightings = await conn.fetch(query, *params)
-        
-        return [
-            SightingAdmin(
-                id=str(s['id']),
-                title=s['title'],
-                description=s['description'],
-                category=s['category'],
-                status=s['status'],
-                alert_level=s['alert_level'],
-                created_at=s['created_at'],
-                location_name=s['location_name'],
-                reporter_id=str(s['reporter_id']) if s['reporter_id'] else None,
-                media_count=s['media_count'],
-                has_primary_media=s['has_primary_media'],
-                verification_score=s['verification_score']
-            )
-            for s in sightings
-        ]
-        
-    except Exception as e:
-        return []
-    finally:
-        await conn.close()
-
-@router.get("/media")
-async def admin_media_list(
-    limit: int = 50,
-    offset: int = 0,
-    sighting_id: Optional[str] = None,
-    credentials: str = Depends(verify_admin_password)
-) -> List[MediaFileAdmin]:
-    """Get media files for admin management"""
-    
-    conn = await get_db_connection()
-    try:
-        where_clause = ""
-        params = []
-        
-        if sighting_id:
-            where_clause = "WHERE m.sighting_id = $1"
-            params = [sighting_id]
-            
-        query = f"""
-            SELECT 
-                m.id, m.sighting_id, m.filename, m.type, m.size_bytes,
-                m.is_primary, m.upload_order, m.display_priority,
-                m.uploaded_by_user_id, m.created_at
-            FROM media_files m
-            {where_clause}
-            ORDER BY m.created_at DESC
-            LIMIT $2 OFFSET $3
-        """
-        
-        params.extend([limit, offset])
-        media_files = await conn.fetch(query, *params)
-        
-        return [
-            MediaFileAdmin(
-                id=str(m['id']),
-                sighting_id=str(m['sighting_id']),
-                filename=m['filename'],
-                type=m['type'],
-                size_bytes=m['size_bytes'],
-                is_primary=m['is_primary'],
-                upload_order=m['upload_order'],
-                display_priority=m['display_priority'],
-                uploaded_by_user_id=str(m['uploaded_by_user_id']) if m['uploaded_by_user_id'] else None,
-                created_at=m['created_at']
-            )
-            for m in media_files
-        ]
-        
-    except Exception as e:
-        return []
-    finally:
-        await conn.close()
 
 @router.post("/sighting/{sighting_id}/verify")
 async def verify_sighting(
@@ -508,7 +397,7 @@ async def delete_sighting(
         await conn.close()
 
 # Admin page endpoints
-@router.get("/sightings-page", response_class=HTMLResponse)
+@router.get("/sightings", response_class=HTMLResponse)
 async def admin_sightings_page(credentials: str = Depends(verify_admin_password)):
     """Admin sightings management page"""
     return """
@@ -684,7 +573,7 @@ async def admin_sightings_page(credentials: str = Depends(verify_admin_password)
 </html>
 """
 
-@router.get("/media-page", response_class=HTMLResponse)
+@router.get("/media", response_class=HTMLResponse)
 async def admin_media_page(credentials: str = Depends(verify_admin_password)):
     """Admin media management page"""
     return """
