@@ -450,7 +450,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       ),
       backgroundColor: AppColors.darkBackground,
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
@@ -656,7 +656,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Text(
-                            'OR ADD PHOTO',
+                            'ACCESS CAMERA OR ATTACH MEDIA',
                             style: TextStyle(
                               color: AppColors.textTertiary,
                               fontSize: 12,
@@ -670,38 +670,70 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                     
                     const SizedBox(height: 16),
                     
-                    // Photo options
+                    // Photo options with glow effects
                     Row(
                       children: [
                         Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: _isCapturing ? null : _capturePhoto,
-                            icon: const Icon(Icons.camera_alt),
-                            label: const Text('Camera'),
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: AppColors.brandPrimary,
-                              side: const BorderSide(color: AppColors.brandPrimary),
-                              padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.brandPrimary.withOpacity(0.3),
+                                  blurRadius: 15,
+                                  spreadRadius: 2,
+                                ),
+                              ],
+                            ),
+                            child: OutlinedButton.icon(
+                              onPressed: _isCapturing ? null : _capturePhoto,
+                              icon: const Icon(Icons.camera_alt),
+                              label: const Text('Camera'),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: AppColors.brandPrimary,
+                                backgroundColor: AppColors.brandPrimary.withOpacity(0.1),
+                                side: const BorderSide(color: AppColors.brandPrimary, width: 2),
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
                             ),
                           ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: _isCapturing ? null : _pickFromGallery,
-                            icon: const Icon(Icons.photo_library),
-                            label: const Text('Gallery'),
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: AppColors.brandPrimary,
-                              side: const BorderSide(color: AppColors.brandPrimary),
-                              padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.brandPrimary.withOpacity(0.3),
+                                  blurRadius: 15,
+                                  spreadRadius: 2,
+                                ),
+                              ],
+                            ),
+                            child: OutlinedButton.icon(
+                              onPressed: _isCapturing ? null : _pickFromGallery,
+                              icon: const Icon(Icons.photo_library),
+                              label: const Text('Attach'),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: AppColors.brandPrimary,
+                                backgroundColor: AppColors.brandPrimary.withOpacity(0.1),
+                                side: const BorderSide(color: AppColors.brandPrimary, width: 2),
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
                     
-                    const Spacer(),
+                    const SizedBox(height: 32),
                   ],
                 ),
               ),

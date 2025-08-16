@@ -84,8 +84,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             
             const SizedBox(height: 24),
             
-            // Hidden Admin Access (debug builds only)
-            if (kDebugMode) _buildAdminAccess(),
+            // Hidden Admin Access (debug builds and beta versions)
+            if (kDebugMode || _appVersion.contains('beta')) _buildAdminAccess(),
           ],
         ),
       ),
@@ -239,11 +239,19 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 const SizedBox(height: 4),
                 GestureDetector(
                   onTap: _handleAdminTap,
-                  child: Text(
-                    'v$_appVersion',
-                    style: const TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 14,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppColors.darkBorder.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      'v$_appVersion',
+                      style: const TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
@@ -701,7 +709,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   void _handleAdminTap() {
-    if (!kDebugMode) return;
+    // Allow admin access in debug mode or for beta builds  
+    if (!kDebugMode && !_appVersion.contains('beta')) return;
     
     setState(() {
       _adminTapCount++;
