@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.config.environment import settings
-from app.routers import plane_match, media, media_serve, devices, emails, photo_analysis, mufon, media_management, admin, fcm_devices
+from app.routers import plane_match, media, media_serve, devices, emails, photo_analysis, mufon, media_management, admin
 from app.services.media_service import get_media_service
 import asyncpg
 import asyncio
@@ -88,8 +88,6 @@ async def startup_event():
         )
         print("Database connection pool created successfully")
         
-        # Set database pool for FCM devices router
-        fcm_devices.set_db_pool(db_pool)
         
         # Create sightings table if it doesn't exist
         async with db_pool.acquire() as conn:
@@ -246,7 +244,6 @@ app.include_router(media_serve.router)
 app.include_router(media_management.router)
 app.include_router(admin.router)
 app.include_router(devices.router)
-app.include_router(fcm_devices.router, prefix="/api")
 app.include_router(emails.router)
 app.include_router(photo_analysis.router)
 app.include_router(mufon.router)
@@ -830,12 +827,22 @@ async def create_anonymous_beep(request: dict):
         
         print(f"Created anonymous sighting {sighting_id} at {jittered_lat}, {jittered_lng}")
         
+        # PHASE 0 STEP 3: Send proximity alerts to nearby devices
+        from services.proximity_alert_service import get_proximity_alert_service
+        proximity_service = get_proximity_alert_service(db_pool)
+        
+        # Use original coordinates for proximity (not jittered) for accurate alerts
+        alert_result = await proximity_service.send_proximity_alerts(
+            lat, lng, str(sighting_id), request['device_id']
+        )
+        
         return {
             "sighting_id": str(sighting_id),
             "message": "Anonymous beep sent successfully",
             "witness_count": 1,
             "location_jittered": True,
-            "alert_radius_m": 5000
+            "alert_radius_m": 25000,
+            "proximity_alerts": alert_result
         }
         
     except HTTPException:
@@ -845,6 +852,29 @@ async def create_anonymous_beep(request: dict):
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Error creating anonymous beep: {str(e)}")
+
+@app.post("/test/proximity")
+async def test_proximity_alerts(request: dict):
+    """Test proximity alert system"""
+    try:
+        lat = request.get('lat', 47.61)
+        lon = request.get('lon', -122.33)
+        
+        from services.proximity_alert_service import get_proximity_alert_service
+        proximity_service = get_proximity_alert_service(db_pool)
+        
+        # Test proximity lookup without sending alerts
+        devices_25km = await proximity_service._get_devices_within_radius(lat, lon, 25.0, 'test_device')
+        
+        return {
+            "test_location": {"lat": lat, "lon": lon},
+            "total_devices_25km": len(devices_25km),
+            "sample_devices": devices_25km[:5] if devices_25km else []
+        }
+        
+    except Exception as e:
+        print(f"Error testing proximity: {e}")
+        raise HTTPException(status_code=500, detail=f"Proximity test failed: {str(e)}")
 
 @app.post("/photo-metadata/{sighting_id}")
 async def store_photo_metadata(sighting_id: str, metadata: dict = None):

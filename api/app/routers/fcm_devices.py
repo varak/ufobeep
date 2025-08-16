@@ -47,10 +47,13 @@ async def register_device(request: RegisterDeviceRequest):
                     UPDATE devices SET
                       push_token = $1,
                       platform = $2::text::device_platform,
-                      last_seen = $3,
-                      updated_at = $3
-                    WHERE device_id = $4
-                """, request.fcm_token, request.platform, datetime.utcnow(), request.device_id)
+                      lat = $3,
+                      lon = $4,
+                      geohash = $5,
+                      last_seen = $6,
+                      updated_at = $6
+                    WHERE device_id = $7
+                """, request.fcm_token, request.platform, request.lat, request.lon, geohash_val, datetime.utcnow(), request.device_id)
             else:
                 # Create anonymous user first for new device
                 anon_user_id = await conn.fetchval("""
@@ -160,6 +163,36 @@ async def device_stats():
     except Exception as e:
         logger.error(f"Error getting device stats: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to get device stats: {str(e)}")
+
+@router.post("/proximity/test")
+async def test_proximity_alerts(request: dict):
+    """Test proximity alert system for a specific location"""
+    try:
+        lat = request.get('lat', 47.61)
+        lon = request.get('lon', -122.33)
+        exclude_device_id = request.get('exclude_device_id', 'test_exclude')
+        
+        from services.proximity_alert_service import get_proximity_alert_service
+        proximity_service = get_proximity_alert_service(db_pool)
+        
+        # Test getting devices without sending alerts
+        devices_1km = await proximity_service._get_devices_within_radius(lat, lon, 1.0, exclude_device_id)
+        devices_5km = await proximity_service._get_devices_within_radius(lat, lon, 5.0, exclude_device_id)
+        devices_10km = await proximity_service._get_devices_within_radius(lat, lon, 10.0, exclude_device_id)
+        devices_25km = await proximity_service._get_devices_within_radius(lat, lon, 25.0, exclude_device_id)
+        
+        return {
+            "test_location": {"lat": lat, "lon": lon},
+            "devices_1km": len(devices_1km),
+            "devices_5km": len(devices_5km),
+            "devices_10km": len(devices_10km), 
+            "devices_25km": len(devices_25km),
+            "sample_devices_25km": devices_25km[:3] if devices_25km else []
+        }
+        
+    except Exception as e:
+        logger.error(f"Error testing proximity alerts: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to test proximity alerts: {str(e)}")
 
 def set_db_pool(pool):
     """Set the database connection pool (called from main.py)"""

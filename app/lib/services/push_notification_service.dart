@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,10 +18,18 @@ class PushNotificationService {
   
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
   final DeviceService _deviceService = deviceService;
+  late final Dio _dio;
 
   static final PushNotificationService _instance = PushNotificationService._internal();
   factory PushNotificationService() => _instance;
-  PushNotificationService._internal();
+  PushNotificationService._internal() {
+    _dio = Dio(BaseOptions(
+      baseUrl: 'https://api.ufobeep.com',
+      connectTimeout: const Duration(seconds: 5),
+      receiveTimeout: const Duration(seconds: 10),
+      headers: {'Content-Type': 'application/json'},
+    ));
+  }
 
   Future<void> initialize() async {
     // Request permission for push notifications
@@ -316,16 +325,18 @@ class PushNotificationService {
         }
       }
 
-      // Register with FCM API
-      final response = await ApiClient.post('/api/register/device', {
+      // Register with existing devices API (cleaner)
+      final response = await _dio.post('/devices/register', data: {
         'device_id': deviceId,
-        'fcm_token': fcmToken,
+        'push_token': fcmToken,
+        'push_provider': 'fcm',
         'platform': Platform.isIOS ? 'ios' : 'android',
-        'lat': lat,
-        'lon': lon,
+        'alert_notifications': true,
+        'chat_notifications': true,
+        'system_notifications': true,
       });
 
-      print('FCM device registration successful: ${response['ok']}');
+      print('FCM device registration successful: ${response.data['success']}');
     } catch (e) {
       print('Failed to register with FCM API: $e');
     }
@@ -336,12 +347,12 @@ class PushNotificationService {
     try {
       final deviceId = await anonymousBeepService.getOrCreateDeviceId();
       
-      final response = await ApiClient.post('/api/push/test', {
+      final response = await _dio.post('/api/push/test', data: {
         'device_id': deviceId,
       });
 
-      print('Test push response: $response');
-      return response['ok'] == true;
+      print('Test push response: ${response.data}');
+      return response.data['ok'] == true;
     } catch (e) {
       print('Failed to send test push: $e');
       return false;
