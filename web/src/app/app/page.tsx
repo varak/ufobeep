@@ -50,7 +50,7 @@ export default function AppPage() {
               <div className="text-left flex-1">
                 <p className="text-text-inverse/80 text-sm">Download Beta for</p>
                 <p className="font-semibold">Android APK</p>
-                <p className="text-xs text-text-inverse/60 mt-1">Version 1.0.0-beta.5+5 &quot;Phase 0 Complete&quot; • ~61MB</p>
+                <p className="text-xs text-text-inverse/60 mt-1">Version 1.0.0-beta.6+6 &quot;Emergency Alerts Live&quot; • ~63MB</p>
               </div>
               <div className="text-xl group-hover:translate-x-1 transition-transform">→</div>
             </a>
@@ -105,7 +105,7 @@ export default function AppPage() {
                 <ul className="space-y-2 text-sm text-text-secondary">
                   <li className="flex gap-2">
                     <span className="text-yellow-400">•</span>
-                    <span>Large file size (~220MB) - debug build with extra tools</span>
+                    <span>File size (~63MB) - optimized release build</span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-yellow-400">•</span>
@@ -122,6 +122,10 @@ export default function AppPage() {
                   <li className="flex gap-2">
                     <span className="text-yellow-400">•</span>
                     <span>Please report any issues or feedback to us</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-green-400">•</span>
+                    <span>✅ Phase 0 Emergency Alert Foundation complete!</span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-green-400">•</span>
