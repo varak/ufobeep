@@ -114,6 +114,17 @@ class ProximityAlertService:
         try:
             
             async with self.db_pool.acquire() as conn:
+                # Check recent sighting count for rate limiting
+                recent_sightings = await conn.fetchval("""
+                    SELECT COUNT(*) FROM sightings 
+                    WHERE created_at > NOW() - INTERVAL '15 minutes'
+                """)
+                
+                # If too many recent sightings, reduce alert frequency
+                if recent_sightings >= 3:
+                    logger.warning(f"Rate limiting: {recent_sightings} sightings in last 15 minutes, skipping proximity alerts")
+                    return []
+                
                 # Simple approach: get all active devices with push tokens
                 query = """
                     SELECT device_id, push_token, platform, lat, lon

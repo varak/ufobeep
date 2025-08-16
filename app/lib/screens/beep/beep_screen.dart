@@ -288,14 +288,25 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     await SoundService.I.play(AlertSound.tap, haptic: true);
     
     try {
-      // Send anonymous beep
+      // Get description from text field if provided, otherwise use default
+      final description = _descriptionController.text.trim();
+      final beepDescription = description.isEmpty 
+          ? 'Quick beep - something in the sky!' 
+          : description;
+          
+      // Send anonymous beep with description
       final beepResult = await anonymousBeepService.sendBeep(
-        description: 'Quick beep - something in the sky!',
+        description: beepDescription,
       );
       
       // Set the device ID as current user so navigation button is hidden
       final deviceId = await anonymousBeepService.getOrCreateDeviceId();
       ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
+      
+      // Clear the text field if description was used
+      if (description.isNotEmpty) {
+        _descriptionController.clear();
+      }
       
       // Show success and navigate to sighting detail
       if (mounted) {
@@ -409,11 +420,24 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
             children: [
               // Big BEEP button
               Center(
-                child: BeepButton(
-                  onPressed: _sendQuickBeep,
-                  isLoading: _isBeeping,
-                  size: 200,
-                  text: 'BEEP',
+                child: Column(
+                  children: [
+                    BeepButton(
+                      onPressed: _sendQuickBeep,
+                      isLoading: _isBeeping,
+                      size: 200,
+                      text: 'QUICK BEEP',
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Instant alert • Uses description below if provided',
+                      style: TextStyle(
+                        color: AppColors.textTertiary,
+                        fontSize: 12,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
               
@@ -426,7 +450,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'OR ADD DETAILS',
+                      'ADD DESCRIPTION (OPTIONAL)',
                       style: TextStyle(
                         color: AppColors.textTertiary,
                         fontSize: 12,
