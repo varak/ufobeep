@@ -116,7 +116,7 @@ export default function WitnessAggregation({ sightingId }: WitnessAggregationPro
       <div className="p-6 bg-gray-900 rounded-lg border border-gray-700">
         <div className="text-center text-gray-400">
           <h3 className="font-semibold mb-2">👁️ No Witness Confirmations Yet</h3>
-          <p className="text-sm">Once people confirm "I SEE IT TOO", witness analysis will appear here.</p>
+          <p className="text-sm">Once people confirm &quot;I SEE IT TOO&quot;, witness analysis will appear here.</p>
         </div>
       </div>
     )
