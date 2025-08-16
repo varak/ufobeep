@@ -283,15 +283,7 @@ async def get_alerts():
                                 'analysis_status', par.analysis_status,
                                 'processing_duration_ms', par.processing_duration_ms
                             )
-                            ORDER BY json_build_object(
-                                'filename', par.filename,
-                                'classification', par.classification,
-                                'matched_object', par.matched_object,
-                                'confidence', par.confidence,
-                                'angular_separation_deg', par.angular_separation_deg,
-                                'analysis_status', par.analysis_status,
-                                'processing_duration_ms', par.processing_duration_ms
-                            )
+                            ORDER BY par.filename
                         ) FILTER (WHERE par.id IS NOT NULL),
                         '[]'
                     ) as photo_analysis,
