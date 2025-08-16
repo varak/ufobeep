@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'device_service.dart';
-import 'alert_sound_service.dart';
+import 'sound_service.dart';
 import '../routing/app_router.dart';
 
 class PushNotificationService {
@@ -153,14 +153,20 @@ class PushNotificationService {
     final witnessCountStr = message.data['witness_count'] ?? '1';
     final witnessCount = int.tryParse(witnessCountStr) ?? 1;
     
-    // Determine alert level based on witness count
-    final alertLevel = alertSoundService.determineAlertLevel(witnessCount);
+    // Play appropriate escalated alert sound based on witness count
+    if (witnessCount >= 10) {
+      await SoundService.I.play(AlertSound.emergency, haptic: true);
+    } else if (witnessCount >= 3) {
+      await SoundService.I.play(AlertSound.urgent);
+    } else {
+      await SoundService.I.play(AlertSound.normal);
+    }
     
-    // Play appropriate alert sound
-    await alertSoundService.playAlertSound(alertLevel, witnessCount: witnessCount);
+    // Also play push notification sound
+    await SoundService.I.play(AlertSound.pushPing);
     
     if (sightingId != null) {
-      print('Sighting ID: $sightingId, Witnesses: $witnessCount, Level: $alertLevel');
+      print('Sighting ID: $sightingId, Witnesses: $witnessCount');
       navigateToAlert(sightingId);
     }
   }

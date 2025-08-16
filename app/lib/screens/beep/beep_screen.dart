@@ -12,7 +12,7 @@ import '../../theme/app_theme.dart';
 import '../../services/sensor_service.dart';
 import '../../services/photo_metadata_service.dart';
 import '../../services/anonymous_beep_service.dart';
-import '../../services/alert_sound_service.dart';
+import '../../services/sound_service.dart';
 import '../../models/sensor_data.dart';
 import '../../models/sighting_submission.dart' as local;
 import '../../models/user_preferences.dart';
@@ -285,7 +285,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     });
     
     // Play sound feedback
-    await alertSoundService.playAlertSound(AlertLevel.normal);
+    await SoundService.I.play(AlertSound.tap, haptic: true);
     
     try {
       // Send anonymous beep
@@ -297,15 +297,22 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       final deviceId = await anonymousBeepService.getOrCreateDeviceId();
       ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
       
-      // Show success
+      // Show success and navigate to sighting detail
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Alert sent! Sighting ID: ${beepResult['sighting_id']}'),
             backgroundColor: AppColors.semanticSuccess,
-            duration: const Duration(seconds: 3),
+            duration: const Duration(seconds: 2),
           ),
         );
+        
+        // Navigate to the sighting detail screen
+        Future.delayed(const Duration(milliseconds: 500), () {
+          if (mounted) {
+            context.go('/alert/${beepResult['sighting_id']}');
+          }
+        });
       }
       
     } catch (e) {
@@ -333,7 +340,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     });
     
     // Play sound feedback
-    await alertSoundService.playAlertSound(AlertLevel.normal);
+    await SoundService.I.play(AlertSound.tap, haptic: true);
     
     try {
       final description = _descriptionController.text.trim();
@@ -353,15 +360,22 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       // Clear the text field
       _descriptionController.clear();
       
-      // Show success
+      // Show success and navigate to sighting detail
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Alert sent! Sighting ID: ${beepResult['sighting_id']}'),
             backgroundColor: AppColors.semanticSuccess,
-            duration: const Duration(seconds: 3),
+            duration: const Duration(seconds: 2),
           ),
         );
+        
+        // Navigate to the sighting detail screen
+        Future.delayed(const Duration(milliseconds: 500), () {
+          if (mounted) {
+            context.go('/alert/${beepResult['sighting_id']}');
+          }
+        });
       }
       
     } catch (e) {

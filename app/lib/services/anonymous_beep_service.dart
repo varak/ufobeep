@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:geolocator/geolocator.dart';
 import 'permission_service.dart';
+import 'sound_service.dart';
 
 class AnonymousBeepService {
   static const String _deviceIdKey = 'anonymous_device_id';
@@ -73,7 +74,7 @@ class AnonymousBeepService {
     try {
       final deviceId = await getOrCreateDeviceId();
       
-      // Always try to get current location for anonymous beeps
+      // Try to get current location for anonymous beeps
       Position? currentPosition;
       if (latitude == null || longitude == null) {
         if (permissionService.locationGranted) {
@@ -81,12 +82,27 @@ class AnonymousBeepService {
             currentPosition = await permissionService.getCurrentLocation();
             if (currentPosition != null) {
               print('Got current location: ${currentPosition.latitude}, ${currentPosition.longitude}');
+              // Play GPS success sound
+              await SoundService.I.play(AlertSound.gpsOk);
+            } else {
+              // Play GPS fail sound
+              await SoundService.I.play(AlertSound.gpsFail);
             }
           } catch (e) {
             print('Failed to get current location: $e');
           }
         } else {
-          throw Exception('Location permission not granted. Please enable location services in app settings.');
+          print('Location permission not granted, trying to request it now...');
+          // Try to refresh permissions in case they changed
+          await permissionService.refreshPermissions();
+          if (permissionService.locationGranted) {
+            currentPosition = await permissionService.getCurrentLocation();
+            if (currentPosition != null) {
+              await SoundService.I.play(AlertSound.gpsOk);
+            } else {
+              await SoundService.I.play(AlertSound.gpsFail);
+            }
+          }
         }
       }
       
@@ -98,7 +114,11 @@ class AnonymousBeepService {
       
       // Location is required for anonymous beeps
       if (finalLat == null || finalLng == null) {
-        throw Exception('Location is required for anonymous beeps. Please enable location services.');
+        if (!permissionService.locationGranted) {
+          throw Exception('Location permission required for beeping. Please enable location services in Settings → Permissions.');
+        } else {
+          throw Exception('Unable to get current location. Please try again or ensure GPS is enabled.');
+        }
       }
       
       // Build request payload

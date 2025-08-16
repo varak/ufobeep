@@ -1,10 +1,14 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../providers/alerts_provider.dart';
 import '../../providers/app_state.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/map_widget.dart';
+import '../../services/permission_service.dart';
 
 class AlertDetailScreen extends ConsumerWidget {
   const AlertDetailScreen({super.key, required this.alertId});
@@ -15,6 +19,7 @@ class AlertDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final alertAsync = ref.watch(alertByIdProvider(alertId));
     final appState = ref.watch(appStateProvider);
+    final alertsAsync = ref.watch(alertsListProvider);
 
     return alertAsync.when(
       data: (alert) {
@@ -52,6 +57,10 @@ class AlertDetailScreen extends ConsumerWidget {
               children: [
                 // Media section
                 _buildMediaSection(alert),
+                const SizedBox(height: 24),
+
+                // Live Sightings Map section
+                _buildLiveSightingsMap(alert, alertsAsync),
                 const SizedBox(height: 24),
 
                 // Verification status only (remove redundant category)
@@ -136,7 +145,8 @@ class AlertDetailScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 16),
                         // Navigation button (only show if user is not the reporter)
-                        if (appState.currentUserId != alert.reporterId)
+                        // Debug: Current user: ${appState.currentUserId}, Reporter: ${alert.reporterId}
+                        if (appState.currentUserId != alert.reporterId && appState.currentUserId != null)
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton.icon(
@@ -510,6 +520,194 @@ class AlertDetailScreen extends ConsumerWidget {
         ],
       ],
     );
+  }
+
+  Widget _buildLiveSightingsMap(Alert alert, AsyncValue<List<Alert>> alertsAsync) {
+    return alertsAsync.when(
+      data: (allAlerts) {
+        // Get current user location to center the map
+        return FutureBuilder<LatLng?>(
+          future: _getUserLocation(),
+          builder: (context, locationSnapshot) {
+            // Use user's current location as center, fallback to alert location
+            final center = locationSnapshot.data ?? LatLng(alert.latitude, alert.longitude);
+            
+            // Filter alerts to show nearby ones (within ~10km radius for better map context)
+            final nearbyAlerts = _getNearbyAlerts(allAlerts, alert, 10.0);
+            
+            return Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.map, color: AppColors.brandPrimary, size: 20),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Live Sightings Map',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        const Spacer(),
+                        Text(
+                          '${nearbyAlerts.length} nearby',
+                          style: const TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Container(
+                      height: 250,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: AppColors.darkBorder),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: MapWidget(
+                          alerts: nearbyAlerts,
+                          center: center, // Center on user's location
+                          zoom: 12.0, // Closer zoom for detail view
+                          height: 250,
+                          showControls: true,
+                          onAlertTap: (tappedAlert) {
+                            if (tappedAlert.id != alert.id) {
+                              // Navigate to tapped alert if it's different
+                              context.go('/alert/${tappedAlert.id}');
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      locationSnapshot.hasData 
+                          ? 'Map centered on your current location'
+                          : 'Map centered on sighting location',
+                      style: const TextStyle(
+                        color: AppColors.textTertiary,
+                        fontSize: 11,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+      loading: () => Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              const Text('Loading live sightings map...'),
+              const SizedBox(height: 12),
+              Container(
+                height: 250,
+                decoration: BoxDecoration(
+                  color: AppColors.darkSurface,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.darkBorder),
+                ),
+                child: const Center(
+                  child: CircularProgressIndicator(color: AppColors.brandPrimary),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      error: (error, stack) => Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              const Text('Failed to load sightings map'),
+              const SizedBox(height: 12),
+              Container(
+                height: 250,
+                decoration: BoxDecoration(
+                  color: AppColors.darkSurface,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.darkBorder),
+                ),
+                child: const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.map_outlined, size: 48, color: AppColors.textTertiary),
+                      SizedBox(height: 8),
+                      Text('Map unavailable', style: TextStyle(color: AppColors.textTertiary)),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<LatLng?> _getUserLocation() async {
+    try {
+      final permissionService = PermissionService();
+      if (permissionService.locationGranted) {
+        final position = await permissionService.getCurrentLocation();
+        if (position != null) {
+          return LatLng(position.latitude, position.longitude);
+        }
+      }
+      return null;
+    } catch (e) {
+      print('Failed to get user location for map: $e');
+      return null;
+    }
+  }
+
+  List<Alert> _getNearbyAlerts(List<Alert> allAlerts, Alert currentAlert, double radiusKm) {
+    // Always include the current alert
+    final nearbyAlerts = <Alert>[currentAlert];
+    
+    // Add other alerts within the radius
+    for (final alert in allAlerts) {
+      if (alert.id == currentAlert.id) continue; // Skip current alert
+      
+      final distance = _calculateDistance(
+        currentAlert.latitude, 
+        currentAlert.longitude,
+        alert.latitude, 
+        alert.longitude,
+      );
+      
+      if (distance <= radiusKm) {
+        nearbyAlerts.add(alert);
+      }
+    }
+    
+    return nearbyAlerts;
+  }
+
+  double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    const double earthRadiusKm = 6371.0;
+    final double dLat = _degreesToRadians(lat2 - lat1);
+    final double dLon = _degreesToRadians(lon2 - lon1);
+    
+    final double a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+        math.cos(_degreesToRadians(lat1)) * math.cos(_degreesToRadians(lat2)) *
+        math.sin(dLon / 2) * math.sin(dLon / 2);
+    
+    final double c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
+    return earthRadiusKm * c;
+  }
+
+  double _degreesToRadians(double degrees) {
+    return degrees * (math.pi / 180);
   }
 
   Widget _buildPhotoAnalysisItem(Map<String, dynamic> analysis) {

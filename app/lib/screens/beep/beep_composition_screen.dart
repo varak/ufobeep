@@ -1,15 +1,18 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../theme/app_theme.dart';
 import '../../models/sensor_data.dart';
 import '../../models/api_models.dart' as api;
 import '../../services/api_client.dart';
-import '../../services/alert_sound_service.dart';
+import '../../services/sound_service.dart';
+import '../../services/anonymous_beep_service.dart';
+import '../../providers/app_state.dart';
 import '../../widgets/simple_photo_display.dart';
 
-class BeepCompositionScreen extends StatefulWidget {
+class BeepCompositionScreen extends ConsumerStatefulWidget {
   final File imageFile;
   final SensorData? sensorData;
   final Map<String, dynamic>? photoMetadata;
@@ -24,10 +27,10 @@ class BeepCompositionScreen extends StatefulWidget {
   });
 
   @override
-  State<BeepCompositionScreen> createState() => _BeepCompositionScreenState();
+  ConsumerState<BeepCompositionScreen> createState() => _BeepCompositionScreenState();
 }
 
-class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
+class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   // Form controllers and state
   final TextEditingController _descriptionController = TextEditingController();
   // Location privacy is now handled in user profile settings
@@ -86,7 +89,7 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
     });
 
     // Play sound feedback when sending
-    await alertSoundService.playAlertSound(AlertLevel.normal);
+    await SoundService.I.play(AlertSound.tap, haptic: true);
 
     try {
       // Get description - optional
@@ -136,6 +139,10 @@ class _BeepCompositionScreenState extends State<BeepCompositionScreen> {
         }
       }
 
+      // Set device ID as current user so navigation button is hidden
+      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
+      
       // Show success message
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

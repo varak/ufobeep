@@ -6,7 +6,7 @@ import 'dart:math' as math;
 
 import '../../theme/app_theme.dart';
 import '../../services/anonymous_beep_service.dart';
-import '../../services/alert_sound_service.dart';
+import '../../services/sound_service.dart';
 import '../../providers/app_state.dart';
 import '../../widgets/beep_button.dart';
 
@@ -117,7 +117,7 @@ class _QuickBeepScreenState extends ConsumerState<QuickBeepScreen>
     _rippleController.forward();
     
     // Play immediate feedback sound
-    await alertSoundService.playAlertSound(AlertLevel.normal);
+    await SoundService.I.play(AlertSound.tap, haptic: true);
     
     try {
       // Try to get location if we don't have it
@@ -328,7 +328,7 @@ class _QuickBeepScreenState extends ConsumerState<QuickBeepScreen>
                             icon: const Icon(Icons.volume_up, color: AppColors.textSecondary),
                             onPressed: () async {
                               // Test sound
-                              await alertSoundService.playAlertSound(AlertLevel.normal);
+                              await SoundService.I.play(AlertSound.test);
                             },
                           ),
                           IconButton(

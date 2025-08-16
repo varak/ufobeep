@@ -32,19 +32,15 @@ class PermissionService {
   Future<void> initializePermissions() async {
     if (_permissionsInitialized) return;
 
+    print('Initializing permissions...');
+    
+    // Always request permissions fresh (don't rely on cache for critical permissions)
+    await _requestAllPermissions();
+    
+    // Cache the results
     final prefs = await SharedPreferences.getInstance();
-    
-    // Check if we've already done initial permission setup
-    final alreadyChecked = prefs.getBool(_permissionsCheckedKey) ?? false;
-    
-    if (alreadyChecked) {
-      // Load cached permission status
-      await _loadCachedPermissions();
-    } else {
-      // First time - request all needed permissions
-      await _requestAllPermissions();
-      await prefs.setBool(_permissionsCheckedKey, true);
-    }
+    await prefs.setBool(_permissionsCheckedKey, true);
+    await _cachePermissions();
     
     _permissionsInitialized = true;
     print('Permissions initialized: Location=$_locationGranted, Camera=$_cameraGranted, Photos=$_photosGranted, Notifications=$_notificationGranted');
