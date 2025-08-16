@@ -127,10 +127,27 @@ class ProximityAlertService:
                     WHERE created_at > NOW() - INTERVAL '15 minutes'
                 """)
                 
-                # If too many recent sightings, reduce alert frequency
+                # If too many recent sightings, reduce alert frequency (unless emergency override)
                 if recent_sightings >= 3:
-                    logger.warning(f"Rate limiting: {recent_sightings} sightings in last 15 minutes, skipping proximity alerts")
-                    return []
+                    # Check if this is an emergency override scenario (high witness count)
+                    emergency_witnesses = await conn.fetchval("""
+                        SELECT COUNT(*) FROM sightings 
+                        WHERE created_at > NOW() - INTERVAL '5 minutes'
+                        AND ST_DWithin(
+                            ST_SetSRID(ST_MakePoint(
+                                CAST(sensor_data->>'longitude' AS FLOAT), 
+                                CAST(sensor_data->>'latitude' AS FLOAT)
+                            ), 4326),
+                            ST_SetSRID(ST_MakePoint($1, $2), 4326),
+                            1000  -- 1km radius
+                        )
+                    """, lon, lat)
+                    
+                    if emergency_witnesses >= 10:
+                        logger.warning(f"EMERGENCY OVERRIDE: {emergency_witnesses} witnesses in 5min, bypassing rate limit")
+                    else:
+                        logger.warning(f"Rate limiting: {recent_sightings} sightings in last 15 minutes, skipping proximity alerts")
+                        return []
                 
                 # Simple approach: get all active devices with push tokens
                 query = """

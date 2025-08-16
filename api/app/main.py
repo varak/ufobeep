@@ -922,6 +922,34 @@ async def test_proximity_alerts(request: dict):
         print(f"Error testing proximity: {e}")
         raise HTTPException(status_code=500, detail=f"Proximity test failed: {str(e)}")
 
+@app.post("/admin/reset-rate-limit")
+async def reset_rate_limit():
+    """Admin endpoint to reset rate limiting by clearing recent test sightings"""
+    try:
+        async with db_pool.acquire() as conn:
+            # Delete test sightings from the last 20 minutes to reset rate limiting
+            deleted_count = await conn.fetchval("""
+                SELECT COUNT(*) FROM sightings 
+                WHERE created_at > NOW() - INTERVAL '20 minutes'
+                AND (title ILIKE '%test%' OR description ILIKE '%test%' OR description ILIKE '%emergency%')
+            """)
+            
+            await conn.execute("""
+                DELETE FROM sightings 
+                WHERE created_at > NOW() - INTERVAL '20 minutes'
+                AND (title ILIKE '%test%' OR description ILIKE '%test%' OR description ILIKE '%emergency%')
+            """)
+            
+        return {
+            "success": True,
+            "message": f"Rate limit reset - removed {deleted_count} test sightings from last 20 minutes",
+            "rate_limit_cleared": True,
+            "ready_for_alerts": True
+        }
+    except Exception as e:
+        print(f"Error resetting rate limit: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to reset rate limit: {str(e)}")
+
 @app.post("/admin/test/alert")
 async def admin_test_alert(request: dict):
     """Admin endpoint to trigger test proximity alerts"""
