@@ -34,8 +34,8 @@ export default function AppPage() {
               Test the UFOBeep Beta
             </h2>
             <p className="text-text-secondary max-w-2xl mx-auto">
-              Help us test the latest features! This beta version includes photo upload, 
-              location tracking, and the new media storage system. Your feedback is invaluable.
+              Help us test the latest features! This beta version includes Phase 0 foundation: 
+              anonymous beeping, escalating alert sounds, proximity alerts, and quiet hours. Your feedback is invaluable.
             </p>
           </div>
 
@@ -50,7 +50,7 @@ export default function AppPage() {
               <div className="text-left flex-1">
                 <p className="text-text-inverse/80 text-sm">Download Beta for</p>
                 <p className="font-semibold">Android APK</p>
-                <p className="text-xs text-text-inverse/60 mt-1">Version 1.0.0-beta.5+6 &quot;Admin Panel Build&quot; • ~63MB</p>
+                <p className="text-xs text-text-inverse/60 mt-1">Version 1.0.0-beta.5+5 &quot;Phase 0 Complete&quot; • ~61MB</p>
               </div>
               <div className="text-xl group-hover:translate-x-1 transition-transform">→</div>
             </a>
@@ -236,8 +236,8 @@ export default function AppPage() {
               </p>
               <div className="bg-dark-surface border border-dark-border rounded p-3">
                 <p className="text-xs text-text-tertiary font-mono">
-                  Latest: <span className="text-brand-primary">v1.0.0-beta.5+6</span> - 
-                  <span className="text-green-400"> Fixed location display & admin panel access</span>
+                  Latest: <span className="text-brand-primary">v1.0.0-beta.5+5</span> - 
+                  <span className="text-green-400"> Phase 0 Emergency Alert Foundation Complete</span>
                 </p>
               </div>
             </div>
@@ -269,9 +269,9 @@ export default function AppPage() {
                     <span className="text-green-400 text-sm">✅ Live</span>
                   </div>
                   <div className="text-xs text-text-tertiary mb-3">
-                    Version: <span className="text-purple-400 font-mono">v1.0.0-beta.5+6</span><br/>
-                    Size: <span className="text-text-secondary">~63MB</span><br/>
-                    Updated: <span className="text-text-secondary">Latest build with admin panel & location fixes</span>
+                    Version: <span className="text-purple-400 font-mono">v1.0.0-beta.5+5</span><br/>
+                    Size: <span className="text-text-secondary">~61MB</span><br/>
+                    Updated: <span className="text-text-secondary">Phase 0 Complete - Anonymous beeping with proximity alerts</span>
                   </div>
                   <a 
                     href="/downloads/ufobeep-beta.apk"
@@ -342,24 +342,25 @@ export default function AppPage() {
             <div className="bg-dark-background border border-dark-border rounded-lg p-4 max-w-3xl mx-auto">
               <h4 className="text-text-primary font-semibold mb-3 flex items-center justify-center gap-2">
                 <span className="text-xl">🆕</span>
-                What&apos;s New in v1.0.0-beta.5+6
+                What&apos;s New in v1.0.0-beta.5+5
               </h4>
               <div className="grid md:grid-cols-2 gap-4 text-xs text-text-secondary">
                 <div>
-                  <p className="text-green-400 font-medium mb-1">🔧 Fixes:</p>
+                  <p className="text-green-400 font-medium mb-1">🎯 Phase 0 Complete:</p>
                   <ul className="space-y-1 text-left">
-                    <li>• Anonymous beep locations now display on website</li>
-                    <li>• App version displays correctly (v1.0.0-beta.5+6)</li>
-                    <li>• Enrichment data properly processes coordinates</li>
+                    <li>• Anonymous beeping with device ID tracking</li>
+                    <li>• Escalating alert sounds (normal → urgent → emergency)</li>
+                    <li>• Proximity alerts with distance rings (1km, 5km, 10km, 25km)</li>
+                    <li>• Rate limiting protection (max 3 alerts per 15 min)</li>
                   </ul>
                 </div>
                 <div>
-                  <p className="text-purple-400 font-medium mb-1">🛡️ New Features:</p>
+                  <p className="text-purple-400 font-medium mb-1">🔧 New Features:</p>
                   <ul className="space-y-1 text-left">
-                    <li>• Hidden admin panel (5-tap gesture on version)</li>
-                    <li>• Proximity alert testing tools</li>
-                    <li>• Push notification diagnostics</li>
-                    <li>• Real-time system monitoring</li>
+                    <li>• Quiet hours with emergency override</li>
+                    <li>• One-tap beep button (huge, accessible)</li>
+                    <li>• GPS permission inline with manual fallback</li>
+                    <li>• Instant fanout: beeps alert nearby devices in ≤2s</li>
                   </ul>
                 </div>
               </div>

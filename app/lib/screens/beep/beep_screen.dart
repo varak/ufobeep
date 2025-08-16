@@ -464,16 +464,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                       size: 200,
                       text: 'QUICK BEEP',
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Instant alert • Add description below (optional)',
-                      style: TextStyle(
-                        color: AppColors.textTertiary,
-                        fontSize: 11,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

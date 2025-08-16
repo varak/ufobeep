@@ -8,6 +8,7 @@ import '../../models/user_preferences.dart';
 import '../../providers/user_preferences_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../config/environment.dart';
+import '../../services/sound_service.dart';
 import '../admin/admin_screen.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -22,11 +23,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   bool _showAdminAccess = false;
   int _adminTapCount = 0;
   String _appVersion = '0.1.0';
+  
+  // Quiet hours state
+  bool _quietHoursEnabled = false;
+  int _quietHoursStart = 22; // 10 PM
+  int _quietHoursEnd = 7;    // 7 AM
 
   @override
   void initState() {
     super.initState();
     _loadAppVersion();
+    _loadQuietHoursSettings();
   }
   
   Future<void> _loadAppVersion() async {
@@ -34,6 +41,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     if (mounted) {
       setState(() {
         _appVersion = version;
+      });
+    }
+  }
+  
+  Future<void> _loadQuietHoursSettings() async {
+    final settings = await SoundService.I.getQuietHoursSettings();
+    if (mounted) {
+      setState(() {
+        _quietHoursEnabled = settings['enabled'] ?? false;
+        _quietHoursStart = settings['startHour'] ?? 22;
+        _quietHoursEnd = settings['endHour'] ?? 7;
       });
     }
   }
@@ -353,6 +371,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             value: preferences.enableLocationAlerts,
             onChanged: _toggleLocationAlerts,
           ),
+          
+          _buildSettingsTile(
+            icon: Icons.bedtime,
+            title: 'Quiet Hours',
+            subtitle: _getQuietHoursSubtitle(),
+            value: _quietHoursEnabled,
+            onChanged: _toggleQuietHours,
+          ),
         ],
       ),
     );
@@ -633,6 +659,147 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     await notifier.toggleLocationAlerts();
   }
 
+  String _getQuietHoursSubtitle() {
+    if (!_quietHoursEnabled) {
+      return 'Disabled - all alerts will sound';
+    }
+    final startTime = _formatHour(_quietHoursStart);
+    final endTime = _formatHour(_quietHoursEnd);
+    return '$startTime - $endTime (emergency alerts override)';
+  }
+
+  String _formatHour(int hour) {
+    if (hour == 0) return '12:00 AM';
+    if (hour < 12) return '$hour:00 AM';
+    if (hour == 12) return '12:00 PM';
+    return '${hour - 12}:00 PM';
+  }
+
+  void _toggleQuietHours(bool value) async {
+    if (value) {
+      // Show time picker dialog when enabling
+      _showQuietHoursDialog();
+    } else {
+      // Just disable
+      await SoundService.I.setQuietHours(enabled: false);
+      setState(() {
+        _quietHoursEnabled = false;
+      });
+    }
+  }
+
+  void _showQuietHoursDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        title: const Text(
+          'Quiet Hours',
+          style: TextStyle(color: AppColors.textPrimary),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Set when to silence normal and urgent alerts. Emergency alerts (10+ witnesses) will always sound.',
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 20),
+            
+            // Start time
+            _buildTimePickerRow(
+              'Start time:', 
+              _quietHoursStart, 
+              (hour) {
+                setState(() {
+                  _quietHoursStart = hour;
+                });
+              },
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // End time
+            _buildTimePickerRow(
+              'End time:', 
+              _quietHoursEnd, 
+              (hour) {
+                setState(() {
+                  _quietHoursEnd = hour;
+                });
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              await SoundService.I.setQuietHours(
+                enabled: true,
+                startHour: _quietHoursStart,
+                endHour: _quietHoursEnd,
+              );
+              setState(() {
+                _quietHoursEnabled = true;
+              });
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.brandPrimary,
+            ),
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTimePickerRow(String label, int currentHour, Function(int) onChanged) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 80,
+          child: Text(
+            label,
+            style: const TextStyle(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        Expanded(
+          child: DropdownButton<int>(
+            value: currentHour,
+            isExpanded: true,
+            dropdownColor: AppColors.darkSurface,
+            style: const TextStyle(color: AppColors.textPrimary),
+            items: List.generate(24, (index) {
+              return DropdownMenuItem<int>(
+                value: index,
+                child: Text(
+                  _formatHour(index),
+                  style: const TextStyle(color: AppColors.textPrimary),
+                ),
+              );
+            }),
+            onChanged: (value) {
+              if (value != null) {
+                onChanged(value);
+              }
+            },
+          ),
+        ),
+      ],
+    );
+  }
 
   void _showLogoutDialog() {
     showDialog(

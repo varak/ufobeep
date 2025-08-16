@@ -37,6 +37,7 @@
 
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // Optional vibration. If you don't want it, remove and ignore the parameter.
 // import 'package:vibration/vibration.dart';
 
@@ -88,6 +89,16 @@ class SoundService {
 
   /// Whether we allow emergency/adminOverride to play when muted.
   bool bypassMuteForCritical = true;
+
+  /// Quiet hours override settings
+  static const String _quietHoursEnabledKey = 'quiet_hours_enabled';
+  static const String _quietHoursStartKey = 'quiet_hours_start';
+  static const String _quietHoursEndKey = 'quiet_hours_end';
+  
+  /// Rate limiting for alerts (max 3 per 15 minutes)
+  static const String _alertTimestampsKey = 'recent_alert_timestamps';
+  static const int _maxAlertsPerPeriod = 3;
+  static const int _rateLimitMinutes = 15;
 
   bool _initialized = false;
 
@@ -141,6 +152,26 @@ class SoundService {
     }
 
     final isCritical = (sound == AlertSound.emergency || sound == AlertSound.adminOverride);
+    final isAlert = (sound == AlertSound.normal || sound == AlertSound.urgent || sound == AlertSound.emergency);
+    
+    // Rate limiting for alert sounds (non-critical only)
+    if (isAlert && !isCritical) {
+      final canPlay = await _checkRateLimit();
+      if (!canPlay) {
+        print('Rate limited: Skipping alert sound (max 3 per 15 minutes)');
+        return;
+      }
+    }
+    
+    // Quiet hours check (emergency can override)
+    if (isAlert && !isCritical) {
+      final inQuietHours = await _isInQuietHours();
+      if (inQuietHours) {
+        print('In quiet hours: Skipping non-emergency alert sound');
+        return;
+      }
+    }
+
     if (_muted && !(isCritical && bypassMuteForCritical)) {
       return;
     }
@@ -196,6 +227,69 @@ class SoundService {
       }
       sub.cancel();
     });
+  }
+
+  /// Check if we're in quiet hours (emergency sounds can override)
+  Future<bool> _isInQuietHours() async {
+    final prefs = await SharedPreferences.getInstance();
+    final enabled = prefs.getBool(_quietHoursEnabledKey) ?? false;
+    
+    if (!enabled) return false;
+    
+    final startHour = prefs.getInt(_quietHoursStartKey) ?? 22; // 10 PM default
+    final endHour = prefs.getInt(_quietHoursEndKey) ?? 7; // 7 AM default
+    
+    final now = DateTime.now();
+    final currentHour = now.hour;
+    
+    if (startHour <= endHour) {
+      return currentHour >= startHour && currentHour < endHour;
+    } else {
+      // Overnight period (e.g., 22:00 to 07:00)
+      return currentHour >= startHour || currentHour < endHour;
+    }
+  }
+
+  /// Check rate limiting (max 3 alerts per 15 minutes)
+  Future<bool> _checkRateLimit() async {
+    final prefs = await SharedPreferences.getInstance();
+    final now = DateTime.now().millisecondsSinceEpoch;
+    final cutoff = now - (_rateLimitMinutes * 60 * 1000); // 15 minutes ago
+    
+    // Get recent alert timestamps
+    final timestamps = prefs.getStringList(_alertTimestampsKey) ?? [];
+    final recentTimestamps = timestamps
+        .map((t) => int.tryParse(t) ?? 0)
+        .where((t) => t > cutoff)
+        .toList();
+    
+    if (recentTimestamps.length >= _maxAlertsPerPeriod) {
+      return false; // Rate limited
+    }
+    
+    // Add current timestamp and clean old ones
+    recentTimestamps.add(now);
+    await prefs.setStringList(_alertTimestampsKey, 
+        recentTimestamps.map((t) => t.toString()).toList());
+    
+    return true; // Can play
+  }
+
+  /// Settings methods for quiet hours configuration
+  Future<void> setQuietHours({required bool enabled, int startHour = 22, int endHour = 7}) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_quietHoursEnabledKey, enabled);
+    await prefs.setInt(_quietHoursStartKey, startHour);
+    await prefs.setInt(_quietHoursEndKey, endHour);
+  }
+
+  Future<Map<String, dynamic>> getQuietHoursSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    return {
+      'enabled': prefs.getBool(_quietHoursEnabledKey) ?? false,
+      'startHour': prefs.getInt(_quietHoursStartKey) ?? 22,
+      'endHour': prefs.getInt(_quietHoursEndKey) ?? 7,
+    };
   }
 
   /// Dispose all players (e.g., on app shutdown or hot-restart if needed).
