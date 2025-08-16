@@ -986,7 +986,7 @@ async def check_device_registration():
                 LIMIT 5
             """)
             
-            # Get devices near Las Vegas for testing
+            # Get devices near Las Vegas for testing (simple distance calculation)
             vegas_devices = await conn.fetch("""
                 SELECT 
                     device_id,
@@ -995,17 +995,13 @@ async def check_device_registration():
                     push_enabled,
                     lat,
                     lon,
-                    ST_Distance(
-                        ST_SetSRID(ST_MakePoint(lon, lat), 4326),
-                        ST_SetSRID(ST_MakePoint(-115.2410, 36.2451), 4326)
-                    ) * 111000 as distance_meters
+                    SQRT(
+                        POW((lat - 36.2451) * 111000, 2) + 
+                        POW((lon - (-115.2410)) * 111000 * COS(RADIANS(36.2451)), 2)
+                    ) as distance_meters
                 FROM devices 
                 WHERE lat IS NOT NULL AND lon IS NOT NULL
-                AND ST_DWithin(
-                    ST_SetSRID(ST_MakePoint(lon, lat), 4326),
-                    ST_SetSRID(ST_MakePoint(-115.2410, 36.2451), 4326),
-                    0.25  -- 25km in degrees (rough)
-                )
+                AND ABS(lat - 36.2451) < 0.25 AND ABS(lon - (-115.2410)) < 0.25
                 ORDER BY distance_meters
                 LIMIT 10
             """)
