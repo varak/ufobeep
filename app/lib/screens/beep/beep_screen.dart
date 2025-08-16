@@ -13,6 +13,7 @@ import '../../services/sensor_service.dart';
 import '../../services/photo_metadata_service.dart';
 import '../../services/anonymous_beep_service.dart';
 import '../../services/sound_service.dart';
+import '../../services/permission_service.dart';
 import '../../models/sensor_data.dart';
 import '../../models/sighting_submission.dart' as local;
 import '../../models/user_preferences.dart';
@@ -287,6 +288,41 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     // Play sound feedback
     await SoundService.I.play(AlertSound.tap, haptic: true);
     
+    // Proactive GPS permission check with inline request
+    if (!permissionService.locationGranted) {
+      setState(() {
+        _errorMessage = 'Getting location permission...';
+      });
+      
+      await permissionService.refreshPermissions();
+      
+      if (!permissionService.locationGranted) {
+        // Show inline permission request
+        final shouldRequest = await _showLocationPermissionDialog();
+        if (!shouldRequest) {
+          setState(() {
+            _isBeeping = false;
+            _errorMessage = 'Location permission is required to send beeps';
+          });
+          return;
+        }
+        
+        // Open system settings for user to grant permission
+        await permissionService.openPermissionSettings();
+        
+        // After user returns from settings, refresh permissions
+        await permissionService.refreshPermissions();
+        
+        if (!permissionService.locationGranted) {
+          setState(() {
+            _isBeeping = false;
+            _errorMessage = 'Location permission is still denied. UFOBeep needs location access to work.';
+          });
+          return;
+        }
+      }
+    }
+    
     try {
       // Get description from text field if provided, otherwise use default
       final description = _descriptionController.text.trim();
@@ -436,6 +472,34 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                         fontSize: 12,
                       ),
                       textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          permissionService.locationGranted 
+                              ? Icons.location_on 
+                              : Icons.location_off,
+                          size: 12,
+                          color: permissionService.locationGranted 
+                              ? AppColors.semanticSuccess 
+                              : AppColors.semanticWarning,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          permissionService.locationGranted 
+                              ? 'Location ready' 
+                              : 'Location needed',
+                          style: TextStyle(
+                            color: permissionService.locationGranted 
+                                ? AppColors.semanticSuccess 
+                                : AppColors.semanticWarning,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -650,8 +714,54 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   }
 
 
+  Future<bool> _showLocationPermissionDialog() async {
+    return await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        title: Row(
+          children: [
+            const Icon(Icons.location_on, color: AppColors.brandPrimary),
+            const SizedBox(width: 8),
+            const Text(
+              'Location Required',
+              style: TextStyle(color: AppColors.textPrimary),
+            ),
+          ],
+        ),
+        content: const Text(
+          'UFOBeep needs your location to:\n\n'
+          '• Send alerts to nearby people\n'
+          '• Help others navigate to the sighting\n'
+          '• Provide accurate distance information\n\n'
+          'Your exact location is never shared publicly.',
+          style: TextStyle(color: AppColors.textSecondary),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: AppColors.textTertiary),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.brandPrimary,
+              foregroundColor: Colors.black,
+            ),
+            child: const Text('Allow Location'),
+          ),
+        ],
+      ),
+    ) ?? false;
+  }
+
   @override
   void dispose() {
+    _descriptionController.dispose();
     super.dispose();
   }
 }
