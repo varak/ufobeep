@@ -100,54 +100,49 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
 
   return (
     <Link href={`/alerts/${alert.id}`}>
-      <div className="bg-dark-surface border border-dark-border rounded-lg overflow-hidden hover:border-brand-primary transition-all duration-300 hover:shadow-lg cursor-pointer group">
-        {/* Primary Media Thumbnail - Only show if media exists */}
-        {(() => {
-          const primaryMedia = getPrimaryMedia()
-          return primaryMedia ? (
-            <div className="h-48 bg-gray-800 relative overflow-hidden">
-              <ImageWithLoading 
-                src={`${primaryMedia.thumbnail_url || primaryMedia.url}?thumbnail=true`}
-                alt={alert.title}
-                width={400}
-                height={192}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              <div className="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
-                📸 {alert.media_files.length}
+      <div className="bg-dark-surface border border-dark-border rounded-lg hover:border-brand-primary transition-all duration-300 hover:shadow-lg cursor-pointer group">
+        <div className="flex items-center gap-4 p-4">
+          {/* Thumbnail or icon */}
+          {(() => {
+            const primaryMedia = getPrimaryMedia()
+            return primaryMedia ? (
+              <div className="w-16 h-16 bg-gray-800 rounded-lg overflow-hidden flex-shrink-0">
+                <ImageWithLoading 
+                  src={`${primaryMedia.thumbnail_url || primaryMedia.url}?thumbnail=true`}
+                  alt={alert.title}
+                  width={64}
+                  height={64}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
-              {primaryMedia.is_primary && (
-                <div className="absolute bottom-2 left-2 bg-brand-primary text-black text-xs px-2 py-1 rounded font-semibold">
-                  PRIMARY
-                </div>
-              )}
-            </div>
-          ) : null
-        })()}
+            ) : (
+              <div className="w-16 h-16 bg-dark-background rounded-lg flex items-center justify-center flex-shrink-0">
+                <span className="text-text-tertiary text-xl">👁️</span>
+              </div>
+            )
+          })()}
 
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-2">
-            <div className="text-xs text-text-tertiary">
-              {formatDate(alert.created_at)}
+          {/* Content */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between mb-1">
+              <div className="text-xs text-text-tertiary">
+                {formatDate(alert.created_at)}
+              </div>
+              <div className="text-xs text-text-tertiary">
+                {getPrimaryMedia() ? '📸 Photo' : 'Witness beeped only'}
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-xs text-text-tertiary">
-              {getPrimaryMedia() ? (
-                <span>📸 Photo</span>
-              ) : (
-                <span>👁️ Witness beeped only</span>
-              )}
+            
+            <div className="text-xs text-text-tertiary mb-2">
+              📍 {formatLocation(alert.location)}
             </div>
-          </div>
-          
-          <div className="text-xs text-text-tertiary mb-3">
-            📍 {formatLocation(alert.location)}
-          </div>
 
-          {alert.description && (
-            <p className="text-text-secondary text-sm line-clamp-2">
-              {alert.description}
-            </p>
-          )}
+            {alert.description && (
+              <p className="text-text-secondary text-sm line-clamp-1">
+                {alert.description}
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </Link>
