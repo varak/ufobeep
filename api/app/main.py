@@ -969,26 +969,16 @@ async def check_device_registration():
                 LIMIT 5
             """)
             
-            # Any devices in Nevada area (simple lat/lon check)
-            nevada_devices = await conn.fetch("""
-                SELECT device_id, platform, is_active, lat, lon
-                FROM devices 
-                WHERE lat BETWEEN 35.0 AND 37.0 AND lon BETWEEN -116.0 AND -114.0
-                LIMIT 10
-            """)
-            
             return {
                 "success": True,
                 "summary": {
                     "total_devices": total_devices,
                     "active_devices": active_devices,
                     "devices_with_push_tokens": devices_with_push,
-                    "devices_with_location": devices_with_location,
-                    "nevada_area_devices": len(nevada_devices)
+                    "devices_with_location": devices_with_location
                 },
                 "recent_devices": [dict(row) for row in recent_devices],
-                "nevada_devices": [dict(row) for row in nevada_devices],
-                "status": "ready_for_testing" if active_devices > 0 and devices_with_push > 0 else "needs_device_registration"
+                "status": "ready_for_testing" if devices_with_location > 0 else "needs_location_permission"
             }
             
     except Exception as e:
