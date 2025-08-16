@@ -100,25 +100,21 @@ curl -X POST https://api.ufobeep.com/beep/anonymous \
    - ✅ Cross-platform witness count display (mobile action, website display)
    - ✅ Admin dashboard monitoring and management
 
-6. 🔴 **[mobile] Compass Arrow Overlay** - Points to sighting
-   - Opens immediately on notification tap
-   - Shows distance and direction
-   - Updates in real-time as you move
+6. 🟢 **[mobile] Compass Arrow Overlay** - Points to sighting ✅
+   - ✅ Opens immediately on notification tap
+   - ✅ Shows distance and direction to sighting
+   - ✅ Updates in real-time as you move
+   - ✅ Bearing calculation from device to sighting location
+   - ✅ Direct navigation from push notifications
 
 7. 🔴 **[api] Witness Aggregation** - Build consensus
    - Triangulation from multiple bearings
    - Heat map of witness locations
    - Auto-escalate when witnesses exceed threshold
 
-### Viral Mechanics
-8. 🔴 **[mobile] Quick Share After Beep** - Viral mechanics
-   - "Share to Twitter/Facebook/WhatsApp" modal
-   - Pre-filled: "UFO sighting near [location]! Download UFOBeep to see where"
-   - Short link: ufobeep.com/s/[ID]
-
 **→ Breakpoint B1: WITNESS NETWORK ACTIVE**
 - 3+ witnesses within 60 seconds escalates to emergency
-- Share modal gets 30%+ engagement rate
+- Compass navigation guides witnesses to look in right direction
 
 ---
 
@@ -200,14 +196,22 @@ curl -X POST https://api.ufobeep.com/beep/anonymous \
     - Username reservation system
     - Import alert preferences from device settings
 
+### Viral Mechanics (moved from Phase 1)
+18. 🔴 **[mobile] Quick Share After Beep** - Viral mechanics
+    - "Share to Twitter/Facebook/WhatsApp" modal
+    - Pre-filled: "UFO sighting UFO-2025-001234 near [location]! Download UFOBeep to see where"
+    - Clean shareable link: ufobeep.com/UFO-2025-001234
+    - Track who recruited witnesses
+    - Gamification: "You recruited 5 witnesses!"
+
 ### Personal History & Advanced Preferences
-18. 🔴 **[mobile][web] Sighting History** - Track what you've seen
+19. 🔴 **[mobile][web] Sighting History** - Track what you've seen
     - Personal sighting log
     - Favorite/follow sightings
     - Export to MUFON format
     - Alert history and statistics
 
-19. 🔴 **[mobile] Advanced Alert Preferences** - Power user controls
+20. 🔴 **[mobile] Advanced Alert Preferences** - Power user controls
     - Custom notification sounds per alert type
     - Time-based preferences (work hours vs evenings)
     - Location-based rules (home, work, travel zones)
@@ -215,8 +219,9 @@ curl -X POST https://api.ufobeep.com/beep/anonymous \
     - Friend/follower alerts (higher priority for trusted users)
 
 **→ Breakpoint B3: PERSONALIZED EXPERIENCE**
-- Users can fine-tune preferences for optimal experience
-- Registered users have better alert targeting
+- Clean, memorable IDs enable viral sharing
+- Share modal gets 30%+ engagement rate
+- Users can track their recruiting success
 - History tracking improves future recommendations
 
 ---
@@ -225,24 +230,24 @@ curl -X POST https://api.ufobeep.com/beep/anonymous \
 **Goal:** Let witnesses discuss without central control
 
 ### Chat Infrastructure
-20. 🔴 **[api] Matrix Homeserver Setup** - chat.ufobeep.com
+21. 🔴 **[api] Matrix Homeserver Setup** - chat.ufobeep.com
     - Auto-create room per sighting: #UFO-2025-001234:ufobeep.com
     - Bridge UFOBeep users to Matrix accounts
     - Federation enabled for cross-server participation
 
-21. 🔴 **[mobile][web] "Join Discussion" Button** - On every sighting
+22. 🔴 **[mobile][web] "Join Discussion" Button** - On every sighting
     - One-tap to join Matrix room
     - No separate chat app needed
     - Embedded chat widget
 
 ### Chat Features
-22. 🔴 **[api] Chat Notifications** - Configurable alerts
+23. 🔴 **[api] Chat Notifications** - Configurable alerts
     - "Notify me about comments on my sighting" toggle
     - Follow/unfollow discussions
     - @mentions and replies
     - Integration with main alert preferences
 
-23. 🔴 **[mobile] Chat Quick Actions** - Speed matters
+24. 🔴 **[mobile] Chat Quick Actions** - Speed matters
     - "Still visible" / "It's gone" quick buttons
     - Location sharing for triangulation
     - Voice messages for hands-free updates
@@ -258,23 +263,23 @@ curl -X POST https://api.ufobeep.com/beep/anonymous \
 **Goal:** Add context without blocking urgent alerts
 
 ### Analysis Pipeline
-24. 🔴 **[api] Aircraft Checker** - ADS-B integration
+25. 🔴 **[api] Aircraft Checker** - ADS-B integration
     - Runs 30s AFTER alert sent
     - Shows possible aircraft matches
     - Never blocks or delays alert
 
-25. 🔴 **[api] Satellite Tracker** - TLE matching
+26. 🔴 **[api] Satellite Tracker** - TLE matching
     - Identifies possible satellites
     - ISS pass notifications
     - Starlink train detection
 
-26. 🔴 **[api] Weather/Astronomy** - Natural phenomena
+27. 🔴 **[api] Weather/Astronomy** - Natural phenomena
     - Moon phase and position
     - Planet visibility
     - Weather balloon tracker
 
 ### Enrichment Display
-27. 🔴 **[web] Enrichment Dashboard** - See all analyses
+28. 🔴 **[web] Enrichment Dashboard** - See all analyses
     - Timeline of analyses
     - Confidence scores
     - Community voting on explanations
@@ -289,23 +294,23 @@ curl -X POST https://api.ufobeep.com/beep/anonymous \
 **Goal:** Make UFOBeep spread like wildfire
 
 ### Gamification
-28. 🔴 **[mobile] Invite Rewards** - Gamification
+29. 🔴 **[mobile] Invite Rewards** - Gamification
     - "Invite 3 friends, unlock AR mode"
     - Leaderboard for most witnesses recruited
     - Badges for first responders
 
-29. 🔴 **[mobile] Quick Tile / Widget** - One-tap from home screen
+30. 🔴 **[mobile] Quick Tile / Widget** - One-tap from home screen
     - Android Quick Settings tile
     - iOS widget with big BEEP button
     - Apple Watch / Wear OS apps
 
 ### Public Engagement
-30. 🔴 **[web] Public Alert Pages** - SEO optimized
+31. 🔴 **[web] Public Alert Pages** - SEO optimized
     - Rich previews for social sharing
     - Live witness count
     - "Download app to join" CTA
 
-31. 🔴 **[api] MUFON Integration** - Credibility bridge
+32. 🔴 **[api] MUFON Integration** - Credibility bridge
     - Export to MUFON format
     - Import MUFON reports
     - Cross-reference sightings
@@ -319,23 +324,23 @@ curl -X POST https://api.ufobeep.com/beep/anonymous \
 ## PHASE 7 — Advanced Features (Don't Build Until Phase 6 Ships)
 
 ### Advanced Visualization
-32. 🔴 **[mobile] AR Visualization** - For capable devices
+33. 🔴 **[mobile] AR Visualization** - For capable devices
     - Optional AR overlay
     - Bearings in 3D space
     - Witness positions on map
 
-33. 🔴 **[api] Machine Learning** - Pattern detection
+34. 🔴 **[api] Machine Learning** - Pattern detection
     - Cluster similar sightings
     - Predict hotspots
     - Classify objects
 
 ### Professional Features
-34. 🔴 **[mobile] Pilot Mode** - Advanced navigation
+35. 🔴 **[mobile] Pilot Mode** - Advanced navigation
     - Professional compass
     - Aviation charts overlay
     - ADSB integration
 
-35. 🔴 **[ops] Moderation System** - Community safety
+36. 🔴 **[ops] Moderation System** - Community safety
     - Report inappropriate content
     - Temporary mutes for spam
     - Admin tools for emergency response
@@ -473,16 +478,15 @@ This plan maintains the core philosophy: **Getting people to look at something w
 - ✅ **PHASE 0 COMPLETE** - Breakpoint B0 achieved
 
 ### Next Phase Priority (🔴)  
-- **PHASE 1** - Instant Witness Network (1/4 complete)
+- **PHASE 1** - Instant Witness Network (2/3 complete) ⚠️ Updated: Viral sharing moved to Phase 3
   1. ✅ "I SEE IT TOO" button for witness confirmation
-  2. 🔴 Compass arrow overlay pointing to sighting
-  3. 🔴 Witness aggregation and consensus building  
-  4. 🔴 Viral sharing mechanics
+  2. ✅ Compass arrow overlay pointing to sighting
+  3. 🔴 Witness aggregation and consensus building
 
 ### Critical Next Steps
 1. ✅ **Phase 0 foundation complete** - Emergency alert system working
-2. 🟡 **Phase 1 in progress** - Witness network (Task 5 ✅ complete)
-3. **Next: Task 6** - Compass arrow overlay pointing to sighting
+2. 🟡 **Phase 1 in progress** - Witness network (Tasks 5 & 6 ✅ complete)
+3. **Next: Task 7** - Witness aggregation (triangulation/heat maps)
 4. Consider Phase 1.5 alert preferences if user fatigue becomes issue
 5. Phase 2 media capture (after witness network proven)
 
