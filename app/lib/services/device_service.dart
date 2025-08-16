@@ -268,14 +268,21 @@ class DeviceService {
       double? lat, lon;
       if (includeLocation) {
         try {
+          // First check/request location permission
           final sensorService = SensorService();
-          final sensorData = await sensorService.captureSensorData();
-          if (sensorData != null && sensorData.latitude != 0.0 && sensorData.longitude != 0.0) {
-            lat = sensorData.latitude;
-            lon = sensorData.longitude;
-            print('Device registration: Including location lat=$lat, lon=$lon');
+          final hasPermission = await sensorService.requestLocationPermission();
+          
+          if (hasPermission) {
+            final sensorData = await sensorService.captureSensorData();
+            if (sensorData != null && sensorData.latitude != 0.0 && sensorData.longitude != 0.0) {
+              lat = sensorData.latitude;
+              lon = sensorData.longitude;
+              print('Device registration: Including location lat=$lat, lon=$lon');
+            } else {
+              print('Device registration: Location permission granted but no valid GPS data');
+            }
           } else {
-            print('Device registration: No valid location data available');
+            print('Device registration: Location permission denied - registering without location');
           }
         } catch (e) {
           print('Device registration: Failed to get location: $e');

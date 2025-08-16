@@ -13,6 +13,41 @@ class SensorService {
   
   final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
 
+  /// Request location permission for proximity alerts
+  Future<bool> requestLocationPermission() async {
+    try {
+      // Check if location services are enabled
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        debugPrint('Location services are disabled');
+        return false;
+      }
+
+      // Check permission status
+      LocationPermission permission = await Geolocator.checkPermission();
+      
+      if (permission == LocationPermission.denied) {
+        // Request permission
+        permission = await Geolocator.requestPermission();
+        debugPrint('Location permission requested: $permission');
+      }
+
+      final granted = permission == LocationPermission.whileInUse || 
+                     permission == LocationPermission.always;
+      
+      if (granted) {
+        debugPrint('Location permission granted for proximity alerts');
+      } else {
+        debugPrint('Location permission denied: $permission');
+      }
+      
+      return granted;
+    } catch (e) {
+      debugPrint('Error requesting location permission: $e');
+      return false;
+    }
+  }
+
   Future<SensorData> captureSensorData() async {
     try {
       // Capture all sensor readings in parallel (location can fail)
