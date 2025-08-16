@@ -1626,6 +1626,66 @@ async def admin_logs_page(credentials: str = Depends(verify_admin_password)):
 </html>
 """
 
+@router.get("/location-search")
+async def search_location(query: str, credentials: str = Depends(verify_admin_password)):
+    """Search for location coordinates by city name using Nominatim (OpenStreetMap)"""
+    
+    if not query or len(query.strip()) < 2:
+        raise HTTPException(status_code=400, detail="Query must be at least 2 characters")
+    
+    try:
+        import httpx
+        
+        # Use Nominatim (OpenStreetMap) for geocoding - free and no API key required
+        url = "https://nominatim.openstreetmap.org/search"
+        params = {
+            "q": query.strip(),
+            "format": "jsonv2",
+            "limit": 1,
+            "addressdetails": 1,
+            "extratags": 1,
+        }
+        
+        headers = {
+            "User-Agent": "UFOBeep-Admin/1.0 (https://ufobeep.com; admin@ufobeep.com)"
+        }
+        
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url, params=params, headers=headers, timeout=10.0)
+            
+        if response.status_code != 200:
+            raise HTTPException(status_code=500, detail="Geocoding service unavailable")
+            
+        results = response.json()
+        
+        if not results or len(results) == 0:
+            return {
+                "success": False,
+                "message": f"No location found for '{query}'. Try a more specific search like 'Los Angeles, CA' or 'Las Vegas, Nevada'"
+            }
+        
+        result = results[0]
+        
+        return {
+            "success": True,
+            "latitude": float(result["lat"]),
+            "longitude": float(result["lon"]),
+            "display_name": result["display_name"],
+            "city": result.get("address", {}).get("city") or result.get("address", {}).get("town") or result.get("address", {}).get("village"),
+            "state": result.get("address", {}).get("state"),
+            "country": result.get("address", {}).get("country"),
+            "place_id": result.get("place_id"),
+            "importance": result.get("importance", 0)
+        }
+    
+    except httpx.TimeoutException:
+        raise HTTPException(status_code=408, detail="Location search timed out. Please try again.")
+    except httpx.RequestError:
+        raise HTTPException(status_code=503, detail="Unable to connect to location service. Please try again later.")
+    except Exception as e:
+        print(f"Error in location search: {e}")
+        raise HTTPException(status_code=500, detail="Location search failed. Please try manual coordinates.")
+
 @router.get("/alerts", response_class=HTMLResponse)
 async def admin_alerts_page(credentials: str = Depends(verify_admin_password)):
     """Admin proximity alerts testing and management page"""
@@ -1702,6 +1762,15 @@ async def admin_alerts_page(credentials: str = Depends(verify_admin_password)):
                 <p style="color: #bbb; font-size: 0.9em;">Send real proximity alerts to nearby devices for testing.</p>
                 
                 <div class="form-group">
+                    <label>Location Search:</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="locationSearch" class="form-control" placeholder="Enter city name (e.g., Los Angeles, Las Vegas)" style="flex: 1;">
+                        <button onclick="searchLocation()" class="btn secondary" style="white-space: nowrap;">🔍 Find</button>
+                    </div>
+                    <small style="color: #888; font-size: 0.8em;">Or enter coordinates manually below</small>
+                </div>
+                
+                <div class="form-group">
                     <label>Latitude:</label>
                     <input type="number" id="alertLat" class="form-control" value="47.61" step="0.001">
                 </div>
@@ -1722,6 +1791,15 @@ async def admin_alerts_page(credentials: str = Depends(verify_admin_password)):
             <div class="test-card">
                 <h4>🛸 Anonymous Beep Test</h4>
                 <p style="color: #bbb; font-size: 0.9em;">Test the complete anonymous beep flow with proximity alerts.</p>
+                
+                <div class="form-group">
+                    <label>Location Search:</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="beepLocationSearch" class="form-control" placeholder="Enter city name (e.g., Los Angeles, Las Vegas)" style="flex: 1;">
+                        <button onclick="searchBeepLocation()" class="btn secondary" style="white-space: nowrap;">🔍 Find</button>
+                    </div>
+                    <small style="color: #888; font-size: 0.8em;">Or enter coordinates manually below</small>
+                </div>
                 
                 <div class="form-group">
                     <label>Latitude:</label>
@@ -1774,6 +1852,53 @@ async def admin_alerts_page(credentials: str = Depends(verify_admin_password)):
     </div>
 
     <script>
+        // Location search functionality
+        async function searchLocation() {
+            const query = document.getElementById('locationSearch').value.trim();
+            if (!query) {
+                alert('Please enter a city name to search');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/admin/location-search?query=${encodeURIComponent(query)}`);
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    document.getElementById('alertLat').value = result.latitude.toFixed(6);
+                    document.getElementById('alertLon').value = result.longitude.toFixed(6);
+                    alert(`Found: ${result.display_name}\nCoordinates: ${result.latitude.toFixed(6)}, ${result.longitude.toFixed(6)}`);
+                } else {
+                    alert(`Location not found: ${result.message || 'Unknown error'}`);
+                }
+            } catch (error) {
+                alert(`Error searching location: ${error.message}`);
+            }
+        }
+        
+        async function searchBeepLocation() {
+            const query = document.getElementById('beepLocationSearch').value.trim();
+            if (!query) {
+                alert('Please enter a city name to search');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/admin/location-search?query=${encodeURIComponent(query)}`);
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    document.getElementById('beepLat').value = result.latitude.toFixed(6);
+                    document.getElementById('beepLon').value = result.longitude.toFixed(6);
+                    alert(`Found: ${result.display_name}\nCoordinates: ${result.latitude.toFixed(6)}, ${result.longitude.toFixed(6)}`);
+                } else {
+                    alert(`Location not found: ${result.message || 'Unknown error'}`);
+                }
+            } catch (error) {
+                alert(`Error searching location: ${error.message}`);
+            }
+        }
+
         // Check system status on load
         async function checkSystemStatus() {
             // Check FCM status without sending test alerts

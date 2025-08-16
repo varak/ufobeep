@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../services/anonymous_beep_service.dart';
@@ -157,22 +156,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Only show admin screen in debug mode
-    if (kReleaseMode) {
-      return Scaffold(
-        backgroundColor: AppColors.darkBackground,
-        appBar: AppBar(
-          title: const Text('Access Denied'),
-          backgroundColor: AppColors.darkSurface,
-        ),
-        body: const Center(
-          child: Text(
-            'Admin features only available in debug builds',
-            style: TextStyle(color: AppColors.textSecondary),
-          ),
-        ),
-      );
-    }
+    // Admin screen is now available in all builds - access controlled by 5-tap activation
 
     return Scaffold(
       backgroundColor: AppColors.darkBackground,
