@@ -18,6 +18,8 @@ flower==2.0.1
 python-dotenv==1.0.1
 numpy==1.26.4
 geopy==2.4.1
+firebase-admin==6.6.0
+pygeohash==1.2.0
 
 # Media processing
 Pillow==10.4.0

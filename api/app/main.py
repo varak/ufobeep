@@ -3,12 +3,13 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.config.environment import settings
-from app.routers import plane_match, media, media_serve, devices, emails, photo_analysis, mufon, media_management, admin
+from app.routers import plane_match, media, media_serve, devices, emails, photo_analysis, mufon, media_management, admin, fcm_devices
 from app.services.media_service import get_media_service
 import asyncpg
 import asyncio
 import json
 from datetime import datetime
+from typing import Tuple, Optional
 import uuid
 from uuid import uuid4
 import os
@@ -18,6 +19,27 @@ import logging
 
 # Set up logging
 logger = logging.getLogger(__name__)
+
+def extract_coordinates_from_sensor_data(sensor_data: dict) -> Tuple[Optional[float], Optional[float]]:
+    """Extract latitude and longitude from sensor data, handling both formats"""
+    if not sensor_data:
+        return None, None
+    
+    # Try nested location format first (anonymous beeps)
+    if "location" in sensor_data and isinstance(sensor_data["location"], dict):
+        location = sensor_data["location"]
+        lat = location.get("latitude")
+        lng = location.get("longitude")
+        if lat is not None and lng is not None:
+            return float(lat), float(lng)
+    
+    # Try direct format (legacy sightings)
+    lat = sensor_data.get("latitude")
+    lng = sensor_data.get("longitude")
+    if lat is not None and lng is not None:
+        return float(lat), float(lng)
+    
+    return None, None
 
 # Initialize FastAPI app with environment configuration
 app = FastAPI(
@@ -65,6 +87,9 @@ async def startup_event():
             max_size=10
         )
         print("Database connection pool created successfully")
+        
+        # Set database pool for FCM devices router
+        fcm_devices.set_db_pool(db_pool)
         
         # Create sightings table if it doesn't exist
         async with db_pool.acquire() as conn:
@@ -221,6 +246,7 @@ app.include_router(media_serve.router)
 app.include_router(media_management.router)
 app.include_router(admin.router)
 app.include_router(devices.router)
+app.include_router(fcm_devices.router, prefix="/api")
 app.include_router(emails.router)
 app.include_router(photo_analysis.router)
 app.include_router(mufon.router)
@@ -295,11 +321,12 @@ async def get_alerts():
                 if latitude == 0.0 and longitude == 0.0 and row["sensor_data"]:
                     sensor_data = row["sensor_data"]
                     if isinstance(sensor_data, str):
-                        sensor_data = json.loads(sensor_data) 
-                    if "latitude" in sensor_data and sensor_data["latitude"] is not None:
-                        latitude = float(sensor_data["latitude"])
-                    if "longitude" in sensor_data and sensor_data["longitude"] is not None:
-                        longitude = float(sensor_data["longitude"])
+                        sensor_data = json.loads(sensor_data)
+                    
+                    lat_val, lng_val = extract_coordinates_from_sensor_data(sensor_data)
+                    if lat_val is not None and lng_val is not None:
+                        latitude = lat_val
+                        longitude = lng_val
                 
                 # Process media info
                 media_files = []
