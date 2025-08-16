@@ -90,11 +90,6 @@ class SoundService {
   /// Whether we allow emergency/adminOverride to play when muted.
   bool bypassMuteForCritical = true;
 
-  /// Quiet hours override settings
-  static const String _quietHoursEnabledKey = 'quiet_hours_enabled';
-  static const String _quietHoursStartKey = 'quiet_hours_start';
-  static const String _quietHoursEndKey = 'quiet_hours_end';
-  
   /// Rate limiting for alerts (max 3 per 15 minutes)
   static const String _alertTimestampsKey = 'recent_alert_timestamps';
   static const int _maxAlertsPerPeriod = 3;
@@ -162,8 +157,10 @@ class SoundService {
 
   double get volume => _volume;
 
-  /// Play a sound. Optionally add a light haptic.
-  Future<void> play(AlertSound sound, {bool haptic = false}) async {
+  /// Play a sound. Optionally add a light haptic. 
+  /// witnessCount: Number of witnesses for emergency override logic
+  /// userPrefs: User preferences for quiet hours settings (optional)
+  Future<void> play(AlertSound sound, {bool haptic = false, int witnessCount = 1, dynamic userPrefs}) async {
     if (!_initialized) {
       // Fail-safe: init on first use if caller forgot.
       await init();
@@ -181,11 +178,11 @@ class SoundService {
       }
     }
     
-    // Quiet hours check (emergency can override)
-    if (isAlert && !isCritical) {
-      final inQuietHours = await _isInQuietHours();
-      if (inQuietHours) {
-        print('In quiet hours: Skipping non-emergency alert sound');
+    // Quiet hours check with emergency override
+    if (isAlert && userPrefs != null) {
+      final shouldMute = _shouldMuteForQuietHours(userPrefs, witnessCount);
+      if (shouldMute) {
+        print('Quiet hours: Muting alert (witnesses: $witnessCount)');
         return;
       }
     }
@@ -248,24 +245,37 @@ class SoundService {
   }
 
   /// Check if we're in quiet hours (emergency sounds can override)
-  Future<bool> _isInQuietHours() async {
-    final prefs = await SharedPreferences.getInstance();
-    final enabled = prefs.getBool(_quietHoursEnabledKey) ?? false;
+  /// Clean quiet hours logic using UserPreferences
+  bool _shouldMuteForQuietHours(dynamic userPrefs, int witnessCount) {
+    // If quiet hours disabled, never mute
+    if (userPrefs?.quietHoursEnabled != true) return false;
     
-    if (!enabled) return false;
-    
-    final startHour = prefs.getInt(_quietHoursStartKey) ?? 22; // 10 PM default
-    final endHour = prefs.getInt(_quietHoursEndKey) ?? 7; // 7 AM default
-    
+    // Check if currently in quiet hours
     final now = DateTime.now();
     final currentHour = now.hour;
+    final startHour = userPrefs?.quietHoursStart ?? 22;
+    final endHour = userPrefs?.quietHoursEnd ?? 7;
     
+    bool inQuietHours;
     if (startHour <= endHour) {
-      return currentHour >= startHour && currentHour < endHour;
+      inQuietHours = currentHour >= startHour && currentHour < endHour;
     } else {
       // Overnight period (e.g., 22:00 to 07:00)
-      return currentHour >= startHour || currentHour < endHour;
+      inQuietHours = currentHour >= startHour || currentHour < endHour;
     }
+    
+    if (!inQuietHours) return false; // Not in quiet hours
+    
+    // In quiet hours - check emergency override
+    final isEmergency = witnessCount >= 10;
+    final allowOverride = userPrefs?.allowEmergencyOverride ?? true;
+    
+    if (isEmergency && allowOverride) {
+      print('Emergency override: Playing alert despite quiet hours (witnesses: $witnessCount)');
+      return false; // Don't mute - emergency override
+    }
+    
+    return true; // Mute for quiet hours
   }
 
   /// Check rate limiting (max 3 alerts per 15 minutes)
@@ -293,22 +303,6 @@ class SoundService {
     return true; // Can play
   }
 
-  /// Settings methods for quiet hours configuration
-  Future<void> setQuietHours({required bool enabled, int startHour = 22, int endHour = 7}) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_quietHoursEnabledKey, enabled);
-    await prefs.setInt(_quietHoursStartKey, startHour);
-    await prefs.setInt(_quietHoursEndKey, endHour);
-  }
-
-  Future<Map<String, dynamic>> getQuietHoursSettings() async {
-    final prefs = await SharedPreferences.getInstance();
-    return {
-      'enabled': prefs.getBool(_quietHoursEnabledKey) ?? false,
-      'startHour': prefs.getInt(_quietHoursStartKey) ?? 22,
-      'endHour': prefs.getInt(_quietHoursEndKey) ?? 7,
-    };
-  }
 
   /// Dispose all players (e.g., on app shutdown or hot-restart if needed).
   Future<void> dispose() async {

@@ -19,32 +19,30 @@ import 'theme/app_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Initialize Firebase
-  await Firebase.initializeApp();
+  // Critical startup operations in parallel
+  final stopwatch = Stopwatch()..start();
+  print('🚀 UFOBeep starting...');
   
-  // Initialize environment configuration
-  await AppEnvironment.initialize();
+  // Run critical initialization in parallel
+  final results = await Future.wait([
+    Firebase.initializeApp(),
+    AppEnvironment.initialize(),
+    SharedPreferences.getInstance(),
+  ]);
   
-  // Initialize sound service early
-  await SoundService.I.init();
+  final sharedPreferences = results[2] as SharedPreferences;
+  print('✅ Core initialization: ${stopwatch.elapsedMilliseconds}ms');
   
-  // Initialize all permissions early
-  await permissionService.initializePermissions();
-  
-  // Initialize SharedPreferences
-  final sharedPreferences = await SharedPreferences.getInstance();
-  
-  // Set up Firebase messaging background handler
+  // Set up Firebase messaging background handler early
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   
-  // Initialize push notifications
-  await pushNotificationService.initialize();
-  
-  // Check if app was opened from a terminated state by a notification
+  // Get initial message quickly
   final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
   
-  // Log configuration in debug mode
+  // Log configuration
   AppEnvironment.logConfig();
+  
+  print('✅ App ready: ${stopwatch.elapsedMilliseconds}ms');
   
   runApp(
     ProviderScope(
@@ -54,6 +52,23 @@ void main() async {
       child: UFOBeepApp(initialMessage: initialMessage),
     ),
   );
+  
+  // Defer non-critical initialization to after app starts
+  _initializeNonCriticalServices();
+}
+
+Future<void> _initializeNonCriticalServices() async {
+  print('🔧 Initializing background services...');
+  final stopwatch = Stopwatch()..start();
+  
+  // Initialize services that don't block app startup
+  await Future.wait([
+    SoundService.I.init(),
+    permissionService.initializePermissions(),
+    pushNotificationService.initialize(),
+  ]);
+  
+  print('✅ Background services ready: ${stopwatch.elapsedMilliseconds}ms');
 }
 
 class UFOBeepApp extends ConsumerStatefulWidget {

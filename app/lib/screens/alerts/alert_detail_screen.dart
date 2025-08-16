@@ -284,8 +284,6 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                   ),
                 const SizedBox(height: 24),
 
-                // Phase 1: "I SEE IT TOO" witness confirmation button
-                _buildWitnessConfirmationButton(alert),
 
                 const SizedBox(height: 24),
 
@@ -318,43 +316,12 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                             label: 'Distance',
                             value: '${alert.distance!.toStringAsFixed(1)} km',
                           ),
-                        if (alert.bearing != null)
-                          _DetailRow(
-                            icon: Icons.explore,
-                            label: 'Direction',
-                            value: '${alert.bearing!.toStringAsFixed(0)}°',
-                          ),
                         _DetailRow(
                           icon: Icons.place,
                           label: 'Coordinates',
                           value: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
                         ),
                         const SizedBox(height: 16),
-                        // Navigation button (only show if user is not the reporter)
-                        // Debug: Current user: ${appState.currentUserId}, Reporter: ${alert.reporterId}
-                        if (appState.currentUserId != alert.reporterId && appState.currentUserId != null)
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton.icon(
-                              onPressed: () {
-                                // Navigate to compass with target location
-                                final targetName = alert.title;
-                                final bearing = alert.bearing?.toString() ?? '';
-                                final distance = alert.distance?.toString() ?? '';
-                                context.go('/compass?targetLat=${alert.latitude}&targetLon=${alert.longitude}&targetName=${Uri.encodeComponent(targetName)}&bearing=$bearing&distance=$distance&alertId=${alert.id}');
-                              },
-                              icon: const Icon(Icons.navigation, size: 18),
-                              label: const Text('Navigate to Sighting'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.brandPrimary,
-                                foregroundColor: Colors.black,
-                                padding: const EdgeInsets.symmetric(vertical: 12),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
-                          ),
                       ],
                     ),
                   ),
@@ -504,41 +471,36 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                   const SizedBox(height: 24),
                 ],
 
+                // Witness Confirmation - moved to bottom for prominence
+                _buildWitnessConfirmationButton(alert),
+                const SizedBox(height: 24),
+                
                 // Action Buttons
                 Column(
                   children: [
-                    // First row: Chat and Navigate
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              context.go('/alert/${widget.alertId}/chat');
-                            },
-                            icon: const Icon(Icons.chat),
-                            label: const Text('Join Chat'),
+                    // Chat button (full width)
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          context.go('/alert/${widget.alertId}/chat');
+                        },
+                        icon: const Icon(Icons.chat),
+                        label: const Text('Join Chat'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.brandPrimary,
+                          foregroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: () {
-                              // Navigate to compass with target location
-                              final targetName = alert.title;
-                              final bearing = alert.bearing?.toString() ?? '';
-                              final distance = alert.distance?.toString() ?? '';
-                              context.go('/compass?targetLat=${alert.latitude}&targetLon=${alert.longitude}&targetName=${Uri.encodeComponent(targetName)}&bearing=$bearing&distance=$distance&alertId=${alert.id}');
-                            },
-                            icon: const Icon(Icons.navigation),
-                            label: const Text('Navigate'),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                     
                     const SizedBox(height: 12),
                     
-                    // Second row: Add Photos button (full width)
+                    // Add Photos button (full width)
                     SizedBox(
                       width: double.infinity,
                       child: OutlinedButton.icon(
@@ -548,7 +510,10 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.brandPrimary,
                           side: const BorderSide(color: AppColors.brandPrimary),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
                       ),
                     ),
@@ -601,25 +566,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
   Widget _buildMediaSection(Alert alert) {
     if (alert.mediaFiles.isEmpty) {
-      return Container(
-        width: double.infinity,
-        height: 200,
-        decoration: BoxDecoration(
-          color: AppColors.darkSurface,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.darkBorder),
-        ),
-        child: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.image_not_supported, size: 48, color: AppColors.textTertiary),
-              SizedBox(height: 8),
-              Text('No media available', style: TextStyle(color: AppColors.textTertiary)),
-            ],
-          ),
-        ),
-      );
+      return const SizedBox.shrink(); // Don't show anything if no media
     }
 
     // Show first media file (image)

@@ -84,15 +84,21 @@ class _CompassDisplayPolishedState extends State<CompassDisplayPolished>
         _targetHeading += 360;
       }
       
-      _rotationAnimation = Tween<double>(
-        begin: _previousHeading,
-        end: _targetHeading,
-      ).animate(CurvedAnimation(
-        parent: _rotationController,
-        curve: Curves.easeInOutCubic,
-      ));
-      
-      _rotationController.forward(from: 0);
+      // Only animate if the change is significant enough (reduces micro-jitter)
+      if (diff.abs() > 0.5) {
+        _rotationAnimation = Tween<double>(
+          begin: _previousHeading,
+          end: _targetHeading,
+        ).animate(CurvedAnimation(
+          parent: _rotationController,
+          curve: Curves.easeInOutCubic,
+        ));
+        
+        _rotationController.forward(from: 0);
+      } else {
+        // For very small changes, just update immediately without animation
+        _targetHeading = _previousHeading;
+      }
     }
   }
 

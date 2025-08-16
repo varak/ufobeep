@@ -31,6 +31,12 @@ UserPreferences _$UserPreferencesFromJson(Map<String, dynamic> json) =>
             json['locationPrivacy'],
           ) ??
           LocationPrivacy.jittered,
+      mediaOnlyAlerts: json['mediaOnlyAlerts'] as bool?,
+      ignoreAnonymousBeeps: json['ignoreAnonymousBeeps'] as bool?,
+      quietHoursEnabled: json['quietHoursEnabled'] as bool? ?? false,
+      quietHoursStart: (json['quietHoursStart'] as num?)?.toInt() ?? 22,
+      quietHoursEnd: (json['quietHoursEnd'] as num?)?.toInt() ?? 7,
+      allowEmergencyOverride: json['allowEmergencyOverride'] as bool? ?? true,
       lastUpdated: json['lastUpdated'] == null
           ? null
           : DateTime.parse(json['lastUpdated'] as String),
@@ -52,6 +58,12 @@ Map<String, dynamic> _$UserPreferencesToJson(UserPreferences instance) =>
       'useWeatherVisibility': instance.useWeatherVisibility,
       'enableVisibilityFilters': instance.enableVisibilityFilters,
       'locationPrivacy': _$LocationPrivacyEnumMap[instance.locationPrivacy]!,
+      'mediaOnlyAlerts': instance.mediaOnlyAlerts,
+      'ignoreAnonymousBeeps': instance.ignoreAnonymousBeeps,
+      'quietHoursEnabled': instance.quietHoursEnabled,
+      'quietHoursStart': instance.quietHoursStart,
+      'quietHoursEnd': instance.quietHoursEnd,
+      'allowEmergencyOverride': instance.allowEmergencyOverride,
       'lastUpdated': instance.lastUpdated?.toIso8601String(),
     };
 

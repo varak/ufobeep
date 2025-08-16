@@ -67,6 +67,12 @@ class UserPreferences {
   final bool useWeatherVisibility; // Use weather data for visibility calculations
   final bool enableVisibilityFilters; // Filter alerts based on visibility
   final LocationPrivacy locationPrivacy; // Default location sharing privacy
+  final bool? mediaOnlyAlerts; // Only receive alerts with photos/videos
+  final bool? ignoreAnonymousBeeps; // Only receive alerts from registered users
+  final bool quietHoursEnabled; // Enable quiet hours mode
+  final int quietHoursStart; // Start hour (24-hour format)
+  final int quietHoursEnd; // End hour (24-hour format)
+  final bool allowEmergencyOverride; // Allow emergency alerts during quiet hours
   final DateTime? lastUpdated;
 
   const UserPreferences({
@@ -84,6 +90,12 @@ class UserPreferences {
     this.useWeatherVisibility = true,
     this.enableVisibilityFilters = true,
     this.locationPrivacy = LocationPrivacy.jittered,
+    this.mediaOnlyAlerts,
+    this.ignoreAnonymousBeeps,
+    this.quietHoursEnabled = false,
+    this.quietHoursStart = 22,
+    this.quietHoursEnd = 7,
+    this.allowEmergencyOverride = true,
     this.lastUpdated,
   });
 
@@ -107,6 +119,12 @@ class UserPreferences {
     bool? useWeatherVisibility,
     bool? enableVisibilityFilters,
     LocationPrivacy? locationPrivacy,
+    bool? mediaOnlyAlerts,
+    bool? ignoreAnonymousBeeps,
+    bool? quietHoursEnabled,
+    int? quietHoursStart,
+    int? quietHoursEnd,
+    bool? allowEmergencyOverride,
     DateTime? lastUpdated,
   }) {
     return UserPreferences(
@@ -124,6 +142,12 @@ class UserPreferences {
       useWeatherVisibility: useWeatherVisibility ?? this.useWeatherVisibility,
       enableVisibilityFilters: enableVisibilityFilters ?? this.enableVisibilityFilters,
       locationPrivacy: locationPrivacy ?? this.locationPrivacy,
+      mediaOnlyAlerts: mediaOnlyAlerts ?? this.mediaOnlyAlerts,
+      ignoreAnonymousBeeps: ignoreAnonymousBeeps ?? this.ignoreAnonymousBeeps,
+      quietHoursEnabled: quietHoursEnabled ?? this.quietHoursEnabled,
+      quietHoursStart: quietHoursStart ?? this.quietHoursStart,
+      quietHoursEnd: quietHoursEnd ?? this.quietHoursEnd,
+      allowEmergencyOverride: allowEmergencyOverride ?? this.allowEmergencyOverride,
       lastUpdated: lastUpdated ?? this.lastUpdated,
     );
   }

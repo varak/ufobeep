@@ -24,16 +24,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   int _adminTapCount = 0;
   String _appVersion = '0.1.0';
   
-  // Quiet hours state
-  bool _quietHoursEnabled = false;
-  int _quietHoursStart = 22; // 10 PM
-  int _quietHoursEnd = 7;    // 7 AM
 
   @override
   void initState() {
     super.initState();
     _loadAppVersion();
-    _loadQuietHoursSettings();
   }
   
   Future<void> _loadAppVersion() async {
@@ -45,16 +40,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     }
   }
   
-  Future<void> _loadQuietHoursSettings() async {
-    final settings = await SoundService.I.getQuietHoursSettings();
-    if (mounted) {
-      setState(() {
-        _quietHoursEnabled = settings['enabled'] ?? false;
-        _quietHoursStart = settings['startHour'] ?? 22;
-        _quietHoursEnd = settings['endHour'] ?? 7;
-      });
-    }
-  }
 
   @override
   void dispose() {
@@ -65,10 +50,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final userPreferences = ref.watch(userPreferencesProvider);
-    final isRegistered = ref.watch(isRegisteredProvider);
-
-    // If user is not registered, show registration prompt
-    if (!isRegistered || userPreferences == null) {
+    
+    // If user is not registered (no preferences or no display name), show registration prompt
+    final isRegistered = userPreferences?.isComplete == true;
+    if (!isRegistered) {
       return _buildRegistrationPrompt();
     }
 
@@ -83,17 +68,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         child: Column(
           children: [
             // Profile Header
-            _buildProfileHeader(userPreferences),
+            _buildProfileHeader(userPreferences!),
             
             const SizedBox(height: 32),
             
             // Profile Settings
-            _buildProfileSettings(userPreferences),
+            _buildProfileSettings(userPreferences!),
             
             const SizedBox(height: 24),
             
             // App Settings
-            _buildAppSettings(userPreferences),
+            _buildAppSettings(userPreferences!),
             
             const SizedBox(height: 32),
             
@@ -357,28 +342,43 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           const SizedBox(height: 20),
           
           _buildSettingsTile(
-            icon: Icons.notifications,
-            title: 'Push Notifications',
-            subtitle: 'Receive alerts for nearby sightings',
-            value: preferences.enablePushNotifications,
-            onChanged: _togglePushNotifications,
-          ),
-          
-          _buildSettingsTile(
-            icon: Icons.location_on,
-            title: 'Location Alerts',
-            subtitle: 'Get notified based on your location',
-            value: preferences.enableLocationAlerts,
-            onChanged: _toggleLocationAlerts,
-          ),
-          
-          _buildSettingsTile(
             icon: Icons.bedtime,
             title: 'Quiet Hours',
-            subtitle: _getQuietHoursSubtitle(),
-            value: _quietHoursEnabled,
+            subtitle: 'Silence alerts during sleep hours',
+            value: preferences.quietHoursEnabled,
             onChanged: _toggleQuietHours,
           ),
+          
+          const SizedBox(height: 16),
+          const Divider(color: AppColors.darkBorder),
+          const SizedBox(height: 16),
+          
+          const Text(
+            'Alert Filters',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 12),
+          
+          _buildSettingsTile(
+            icon: Icons.photo_camera,
+            title: 'Media-Only Alerts',
+            subtitle: 'Only receive alerts with photos/videos',
+            value: preferences.mediaOnlyAlerts ?? false,
+            onChanged: _toggleMediaOnlyAlerts,
+          ),
+          
+          _buildSettingsTile(
+            icon: Icons.verified_user,
+            title: 'Ignore Anonymous Beeps',
+            subtitle: 'Only alerts from registered users',
+            value: preferences.ignoreAnonymousBeeps ?? false,
+            onChanged: _toggleIgnoreAnonymousBeeps,
+          ),
+          
         ],
       ),
     );
@@ -649,115 +649,120 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
 
-  void _togglePushNotifications(bool value) async {
-    final notifier = ref.read(userPreferencesProvider.notifier);
-    await notifier.togglePushNotifications();
-  }
-
-  void _toggleLocationAlerts(bool value) async {
-    final notifier = ref.read(userPreferencesProvider.notifier);
-    await notifier.toggleLocationAlerts();
-  }
-
-  String _getQuietHoursSubtitle() {
-    if (!_quietHoursEnabled) {
-      return 'Disabled - all alerts will sound';
-    }
-    final startTime = _formatHour(_quietHoursStart);
-    final endTime = _formatHour(_quietHoursEnd);
-    return '$startTime - $endTime (emergency alerts override)';
-  }
-
-  String _formatHour(int hour) {
-    if (hour == 0) return '12:00 AM';
-    if (hour < 12) return '$hour:00 AM';
-    if (hour == 12) return '12:00 PM';
-    return '${hour - 12}:00 PM';
-  }
 
   void _toggleQuietHours(bool value) async {
     if (value) {
-      // Show time picker dialog when enabling
+      // Show configuration dialog when enabling
       _showQuietHoursDialog();
     } else {
-      // Just disable
-      await SoundService.I.setQuietHours(enabled: false);
-      setState(() {
-        _quietHoursEnabled = false;
-      });
+      // Just disable when turning off
+      final currentPrefs = ref.read(userPreferencesProvider);
+      if (currentPrefs != null) {
+        final updatedPrefs = currentPrefs.copyWith(quietHoursEnabled: false);
+        await ref.read(userPreferencesProvider.notifier).updatePreferences(updatedPrefs);
+      }
     }
   }
 
   void _showQuietHoursDialog() {
+    final currentPrefs = ref.read(userPreferencesProvider);
+    if (currentPrefs == null) return;
+    
+    // Local state for dialog
+    int startHour = currentPrefs.quietHoursStart;
+    int endHour = currentPrefs.quietHoursEnd;
+    bool allowOverride = currentPrefs.allowEmergencyOverride;
+    
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.darkSurface,
-        title: const Text(
-          'Quiet Hours',
-          style: TextStyle(color: AppColors.textPrimary),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Set when to silence normal and urgent alerts. Emergency alerts (10+ witnesses) will always sound.',
-              style: TextStyle(
-                color: AppColors.textSecondary,
-                fontSize: 14,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          backgroundColor: AppColors.darkSurface,
+          title: const Text(
+            'Quiet Hours',
+            style: TextStyle(color: AppColors.textPrimary),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Set when to silence alerts during sleep hours.',
+                style: TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 14,
+                ),
               ),
+              const SizedBox(height: 20),
+              
+              // Start time
+              _buildTimePickerRow(
+                'Start time:', 
+                startHour, 
+                (hour) => setDialogState(() => startHour = hour),
+              ),
+              
+              const SizedBox(height: 16),
+              
+              // End time  
+              _buildTimePickerRow(
+                'End time:', 
+                endHour, 
+                (hour) => setDialogState(() => endHour = hour),
+              ),
+              
+              const SizedBox(height: 20),
+              
+              // Emergency override checkbox
+              Row(
+                children: [
+                  Checkbox(
+                    value: allowOverride,
+                    onChanged: (value) => setDialogState(() => allowOverride = value ?? true),
+                    activeColor: AppColors.brandPrimary,
+                    checkColor: AppColors.textInverse,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => setDialogState(() => allowOverride = !allowOverride),
+                      child: const Text(
+                        'Allow emergency alerts to override (10+ witnesses)',
+                        style: TextStyle(
+                          color: AppColors.textPrimary,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
             ),
-            const SizedBox(height: 20),
-            
-            // Start time
-            _buildTimePickerRow(
-              'Start time:', 
-              _quietHoursStart, 
-              (hour) {
-                setState(() {
-                  _quietHoursStart = hour;
-                });
+            ElevatedButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                // Save all settings to UserPreferences
+                final updatedPrefs = currentPrefs.copyWith(
+                  quietHoursEnabled: true,
+                  quietHoursStart: startHour,
+                  quietHoursEnd: endHour,
+                  allowEmergencyOverride: allowOverride,
+                );
+                await ref.read(userPreferencesProvider.notifier).updatePreferences(updatedPrefs);
               },
-            ),
-            
-            const SizedBox(height: 16),
-            
-            // End time
-            _buildTimePickerRow(
-              'End time:', 
-              _quietHoursEnd, 
-              (hour) {
-                setState(() {
-                  _quietHoursEnd = hour;
-                });
-              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.brandPrimary,
+              ),
+              child: const Text('Save'),
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              await SoundService.I.setQuietHours(
-                enabled: true,
-                startHour: _quietHoursStart,
-                endHour: _quietHoursEnd,
-              );
-              setState(() {
-                _quietHoursEnabled = true;
-              });
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.brandPrimary,
-            ),
-            child: const Text('Save'),
-          ),
-        ],
       ),
     );
   }
@@ -800,6 +805,30 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ],
     );
   }
+
+  String _formatHour(int hour) {
+    if (hour == 0) return '12:00 AM';
+    if (hour < 12) return '$hour:00 AM';
+    if (hour == 12) return '12:00 PM';
+    return '${hour - 12}:00 PM';
+  }
+
+  void _toggleMediaOnlyAlerts(bool value) async {
+    final currentPrefs = ref.read(userPreferencesProvider);
+    if (currentPrefs != null) {
+      final updatedPrefs = currentPrefs.copyWith(mediaOnlyAlerts: value);
+      await ref.read(userPreferencesProvider.notifier).updatePreferences(updatedPrefs);
+    }
+  }
+
+  void _toggleIgnoreAnonymousBeeps(bool value) async {
+    final currentPrefs = ref.read(userPreferencesProvider);
+    if (currentPrefs != null) {
+      final updatedPrefs = currentPrefs.copyWith(ignoreAnonymousBeeps: value);
+      await ref.read(userPreferencesProvider.notifier).updatePreferences(updatedPrefs);
+    }
+  }
+
 
   void _showLogoutDialog() {
     showDialog(

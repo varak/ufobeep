@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -465,11 +464,6 @@ class _AlertCardState extends ConsumerState<AlertCard> {
                       ),
                     ),
                     
-                    // Bearing indicator
-                    if (widget.alert.bearing != null) ...[
-                      const SizedBox(width: 12),
-                      _buildBearingIndicator(),
-                    ],
                     
                     const Spacer(),
                   ] else
@@ -537,29 +531,6 @@ class _AlertCardState extends ConsumerState<AlertCard> {
     );
   }
 
-  Widget _buildBearingIndicator() {
-    if (widget.alert.bearing == null) return const SizedBox.shrink();
-    
-    final bearing = widget.alert.bearing!;
-    
-    return Container(
-      width: 24,
-      height: 24,
-      decoration: BoxDecoration(
-        color: AppColors.darkBackground,
-        shape: BoxShape.circle,
-        border: Border.all(color: AppColors.darkBorder),
-      ),
-      child: Transform.rotate(
-        angle: (bearing - 90) * (math.pi / 180), // Adjust so 0° points up
-        child: const Icon(
-          Icons.navigation,
-          size: 14,
-          color: AppColors.brandPrimary,
-        ),
-      ),
-    );
-  }
 
   Widget _getCategoryIcon(String category) {
     final categoryData = AlertCategory.getByKey(category);

@@ -378,68 +378,6 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     }
   }
   
-  Future<void> _sendBeepWithDescription() async {
-    if (_isBeeping) return;
-    
-    setState(() {
-      _isBeeping = true;
-      _errorMessage = null;
-    });
-    
-    // Play sound feedback
-    await SoundService.I.play(AlertSound.tap, haptic: true);
-    
-    try {
-      final description = _descriptionController.text.trim();
-      final beepDescription = description.isEmpty 
-          ? 'Something in the sky!' 
-          : description;
-      
-      // Send anonymous beep with description
-      final beepResult = await anonymousBeepService.sendBeep(
-        description: beepDescription,
-      );
-      
-      // Set the device ID as current user so navigation button is hidden
-      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
-      ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
-      
-      // Clear the text field
-      _descriptionController.clear();
-      
-      // Show success and navigate to sighting detail
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Alert sent! Sighting ID: ${beepResult['sighting_id']}'),
-            backgroundColor: AppColors.semanticSuccess,
-            duration: const Duration(seconds: 2),
-          ),
-        );
-        
-        // Navigate to the sighting detail screen
-        Future.delayed(const Duration(milliseconds: 500), () {
-          if (mounted) {
-            context.go('/alert/${beepResult['sighting_id']}');
-          }
-        });
-      }
-      
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to send beep: $e'),
-            backgroundColor: AppColors.semanticError,
-          ),
-        );
-      }
-    } finally {
-      setState(() {
-        _isBeeping = false;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -505,7 +443,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'ADD DESCRIPTION (OPTIONAL)',
+                      'BEEP BUTTON WILL INCLUDE YOUR DESCRIPTION',
                       style: TextStyle(
                         color: AppColors.textTertiary,
                         fontSize: 12,
@@ -547,9 +485,8 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                 ),
               ],
 
-              Expanded(
-                child: Column(
-                  children: [
+              Column(
+                children: [
                     const SizedBox(height: 24),
                     
                     // What do you see input
@@ -604,41 +541,6 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                     
                     const SizedBox(height: 24),
                     
-                    // Send with description button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: _isBeeping ? null : _sendBeepWithDescription,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.brandPrimary,
-                          foregroundColor: Colors.black,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          textStyle: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        child: _isBeeping
-                            ? Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  const Text('Sending Alert...'),
-                                ],
-                              )
-                            : const Text('Send Alert'),
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 16),
                     
                     // Or continue to photo options
                     Row(
@@ -727,7 +629,6 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                     const SizedBox(height: 32),
                   ],
                 ),
-              ),
 
             ],
           ),

@@ -19,6 +19,10 @@ class CompassService {
   StreamSubscription<AccelerometerEvent>? _accelerometerSubscription;
   StreamSubscription<Position>? _locationSubscription;
   
+  // Rate limiting for sensor updates
+  DateTime? _lastMagnetometerUpdate;
+  final Duration _minUpdateInterval = const Duration(milliseconds: 50); // 20 Hz max
+  
   CompassData? _lastCompassData;
   LocationData? _currentLocation;
   double _declination = 0.0; // Magnetic declination for true north calculation
@@ -28,9 +32,15 @@ class CompassService {
   double _accelerometerY = 0.0;
   double _accelerometerZ = 0.0;
   
-  // Heading stability tracking
+  // Heading stability tracking and smoothing
   final List<double> _recentHeadings = [];
-  final int _maxHeadingHistory = 10;
+  final int _maxHeadingHistory = 20;
+  double _smoothedHeading = 0.0;
+  bool _hasInitialHeading = false;
+  
+  // Smoothing parameters
+  final double _smoothingFactor = 0.15; // Lower = more smoothing
+  final double _stabilityThreshold = 5.0; // Degrees of variation for stability
   
   Stream<CompassData> get compassStream {
     _compassController ??= StreamController<CompassData>.broadcast();
@@ -156,6 +166,14 @@ class CompassService {
   Future<void> _startMagnetometerUpdates() async {
     _magnetometerSubscription = magnetometerEvents.listen(
       (MagnetometerEvent event) {
+        // Rate limiting to prevent excessive updates
+        final now = DateTime.now();
+        if (_lastMagnetometerUpdate != null && 
+            now.difference(_lastMagnetometerUpdate!) < _minUpdateInterval) {
+          return;
+        }
+        _lastMagnetometerUpdate = now;
+        
         _processMagnetometerData(event.x, event.y, event.z);
       },
       onError: (error) {
@@ -190,10 +208,13 @@ class CompassService {
     magneticHeading = CompassMath.normalizeHeading(magneticHeading);
     
     // Calculate true heading using magnetic declination
-    double trueHeading = CompassMath.normalizeHeading(magneticHeading + _declination);
+    double rawTrueHeading = CompassMath.normalizeHeading(magneticHeading + _declination);
+    
+    // Apply smoothing to reduce jitter
+    double smoothedTrueHeading = _applyHeadingSmoothing(rawTrueHeading);
     
     // Track heading history for stability analysis
-    _recentHeadings.add(trueHeading);
+    _recentHeadings.add(smoothedTrueHeading);
     if (_recentHeadings.length > _maxHeadingHistory) {
       _recentHeadings.removeAt(0);
     }
@@ -208,7 +229,7 @@ class CompassService {
     
     _lastCompassData = CompassData(
       magneticHeading: magneticHeading,
-      trueHeading: trueHeading,
+      trueHeading: smoothedTrueHeading,
       accuracy: accuracy,
       timestamp: DateTime.now(),
       calibration: calibration,
@@ -225,6 +246,31 @@ class CompassService {
       );
       _compassController?.add(updatedData);
     }
+  }
+
+  /// Apply exponential moving average smoothing to reduce compass jitter
+  double _applyHeadingSmoothing(double newHeading) {
+    if (!_hasInitialHeading) {
+      _smoothedHeading = newHeading;
+      _hasInitialHeading = true;
+      return _smoothedHeading;
+    }
+    
+    // Handle the 0/360 degree wrapping for smoother transitions
+    double diff = newHeading - _smoothedHeading;
+    if (diff > 180) {
+      diff -= 360;
+    } else if (diff < -180) {
+      diff += 360;
+    }
+    
+    // Apply exponential moving average
+    _smoothedHeading += _smoothingFactor * diff;
+    
+    // Normalize back to 0-360 range
+    _smoothedHeading = CompassMath.normalizeHeading(_smoothedHeading);
+    
+    return _smoothedHeading;
   }
 
   CompassCalibrationLevel _assessCalibrationLevel(double magneticStrength, double accuracy) {

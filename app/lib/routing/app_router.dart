@@ -309,7 +309,7 @@ class MainBottomNavBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.explore),
-          label: 'Compass',
+          label: 'Orient',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
