@@ -197,6 +197,16 @@ class PushNotificationService {
     final sightingId = message.data['sighting_id'];
     final witnessCountStr = message.data['witness_count'] ?? '1';
     final witnessCount = int.tryParse(witnessCountStr) ?? 1;
+    final submitterDeviceId = message.data['submitter_device_id'];
+    
+    // Check if this device submitted the beep - if so, don't auto-navigate
+    final currentDeviceId = await _deviceService.getDeviceId();
+    final isOwnBeep = submitterDeviceId != null && submitterDeviceId == currentDeviceId;
+    
+    if (isOwnBeep) {
+      print('Skipping navigation for own beep submission (device: $currentDeviceId)');
+      return; // Don't process self-notifications
+    }
     
     // Play appropriate escalated alert sound based on witness count
     if (witnessCount >= 10) {

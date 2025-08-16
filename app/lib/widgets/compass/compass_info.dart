@@ -112,7 +112,7 @@ class CompassInfo extends StatelessWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    target!.name,
+                    'Sighting',
                     style: TextStyle(
                       color: AppColors.textPrimary,
                       fontSize: 16,
@@ -199,6 +199,26 @@ class CompassInfo extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+            ),
+            
+            // Simple Details button
+            const SizedBox(height: 12),
+            ElevatedButton.icon(
+              onPressed: () {
+                // TODO: Navigate to alert details
+                print('Navigate to alert details');
+              },
+              icon: const Icon(Icons.info_outline, size: 18),
+              label: const Text('Details'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.brandPrimary.withOpacity(0.1),
+                foregroundColor: AppColors.brandPrimary,
+                side: BorderSide(color: AppColors.brandPrimary.withOpacity(0.3)),
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
             ),
           ],
