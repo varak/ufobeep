@@ -179,7 +179,7 @@ export default function AppPage() {
                 </li>
                 <li className="flex gap-3">
                   <span className="text-brand-primary font-bold">4.</span>
-                  <span>Enable "Unknown Sources" in Android Settings → Security</span>
+                  <span>Enable &quot;Unknown Sources&quot; in Android Settings → Security</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-brand-primary font-bold">5.</span>
@@ -204,7 +204,7 @@ export default function AppPage() {
                   <ol className="space-y-2 pl-4">
                     <li>• Go to Firebase Console → App Distribution</li>
                     <li>• Select your app and the latest release</li>
-                    <li>• Click "Add testers" and enter email addresses</li>
+                    <li>• Click &quot;Add testers&quot; and enter email addresses</li>
                     <li>• Testers receive automatic email invitations</li>
                   </ol>
                 </div>
