@@ -21,6 +21,22 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final _scrollController = ScrollController();
   bool _showAdminAccess = false;
   int _adminTapCount = 0;
+  String _appVersion = '0.1.0';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAppVersion();
+  }
+  
+  Future<void> _loadAppVersion() async {
+    final version = await AppEnvironment.getAppVersion();
+    if (mounted) {
+      setState(() {
+        _appVersion = version;
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -224,7 +240,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 GestureDetector(
                   onTap: _handleAdminTap,
                   child: Text(
-                    'v${AppEnvironment.appVersion}',
+                    'v$_appVersion',
                     style: const TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 14,

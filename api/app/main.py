@@ -444,8 +444,9 @@ async def generate_enrichment_data(sensor_data):
     if not enrichment_orchestrator.processors:
         initialize_enrichment_processors()
     
-    # Check if we have location data
-    if not sensor_data or "latitude" not in sensor_data or "longitude" not in sensor_data:
+    # Check if we have location data - handle both formats
+    lat, lng = extract_coordinates_from_sensor_data(sensor_data)
+    if lat is None or lng is None:
         # Return basic enrichment without location-based data
         return {
             "status": "completed",
@@ -457,8 +458,8 @@ async def generate_enrichment_data(sensor_data):
         # Create enrichment context
         context = EnrichmentContext(
             sighting_id=str(uuid.uuid4()),  # Temporary ID for processing
-            latitude=float(sensor_data["latitude"]),
-            longitude=float(sensor_data["longitude"]),
+            latitude=lat,
+            longitude=lng,
             altitude=sensor_data.get("altitude"),
             timestamp=datetime.now(),
             azimuth_deg=sensor_data.get("azimuth_deg", 0),
