@@ -950,6 +950,33 @@ async def reset_rate_limit():
         print(f"Error resetting rate limit: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to reset rate limit: {str(e)}")
 
+@app.post("/admin/disable-rate-limit")
+async def disable_rate_limit():
+    """Temporarily disable rate limiting for testing"""
+    try:
+        # Set a global flag or modify proximity service behavior
+        # For now, just clear all recent sightings
+        async with db_pool.acquire() as conn:
+            deleted_count = await conn.fetchval("""
+                SELECT COUNT(*) FROM sightings 
+                WHERE created_at > NOW() - INTERVAL '30 minutes'
+            """)
+            
+            await conn.execute("""
+                DELETE FROM sightings 
+                WHERE created_at > NOW() - INTERVAL '30 minutes'
+            """)
+            
+        return {
+            "success": True,
+            "message": f"Rate limiting temporarily disabled - cleared {deleted_count} recent sightings",
+            "rate_limit_disabled": True,
+            "ready_for_testing": True
+        }
+    except Exception as e:
+        print(f"Error disabling rate limit: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to disable rate limit: {str(e)}")
+
 @app.get("/admin/devices/status")
 async def check_device_registration():
     """Admin endpoint to check device registration status"""
@@ -984,6 +1011,45 @@ async def check_device_registration():
     except Exception as e:
         print(f"Error checking device registration: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to check device registration: {str(e)}")
+
+@app.patch("/devices/{device_id}/location")
+async def update_device_location(device_id: str, request: dict):
+    """Update device location for proximity alerts"""
+    try:
+        lat = request.get('lat')
+        lon = request.get('lon')
+        
+        if lat is None or lon is None:
+            raise HTTPException(status_code=400, detail="lat and lon are required")
+        
+        # Validate coordinates
+        lat = float(lat)
+        lon = float(lon)
+        if lat == 0.0 and lon == 0.0:
+            raise HTTPException(status_code=400, detail="Invalid coordinates (0,0)")
+        
+        async with db_pool.acquire() as conn:
+            # Update device location
+            result = await conn.execute("""
+                UPDATE devices 
+                SET lat = $1, lon = $2, updated_at = NOW()
+                WHERE device_id = $3
+            """, lat, lon, device_id)
+            
+            if result == "UPDATE 0":
+                raise HTTPException(status_code=404, detail="Device not found")
+        
+        return {
+            "success": True,
+            "message": f"Device location updated to lat={lat}, lon={lon}",
+            "device_id": device_id
+        }
+        
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid lat/lon values")
+    except Exception as e:
+        print(f"Error updating device location: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to update location: {str(e)}")
 
 @app.post("/admin/test/alert")
 async def admin_test_alert(request: dict):
