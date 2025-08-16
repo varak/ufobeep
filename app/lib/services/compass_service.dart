@@ -46,15 +46,58 @@ class CompassService {
       // Start location updates
       await _startLocationUpdates();
       
-      // Start sensor updates
-      await _startMagnetometerUpdates();
-      await _startAccelerometerUpdates();
+      // Try to start sensor updates with timeout fallback
+      await _startSensorsWithFallback();
       
       debugPrint('Compass service started');
     } catch (e) {
       debugPrint('Error starting compass service: $e');
-      rethrow;
+      // Don't rethrow - fallback to location-only mode
+      _startLocationOnlyMode();
     }
+  }
+
+  Future<void> _startSensorsWithFallback() async {
+    try {
+      // Try to start sensors with a 3-second timeout
+      await Future.wait([
+        _startMagnetometerUpdates(),
+        _startAccelerometerUpdates(),
+      ]).timeout(const Duration(seconds: 3));
+      
+      // Wait for at least one sensor reading to confirm sensors work
+      await Future.any([
+        magnetometerEvents.first.timeout(const Duration(seconds: 2)),
+        accelerometerEvents.first.timeout(const Duration(seconds: 2)),
+      ]);
+      
+      debugPrint('Sensors initialized successfully');
+    } catch (e) {
+      debugPrint('Sensor initialization failed or timed out: $e');
+      debugPrint('Falling back to location-only compass mode');
+      await stopListening();
+      _startLocationOnlyMode();
+    }
+  }
+
+  void _startLocationOnlyMode() {
+    // Provide basic compass functionality using location only
+    // This works on tablets without magnetometer
+    Timer.periodic(const Duration(milliseconds: 500), (timer) {
+      if (_currentLocation != null) {
+        final fallbackCompass = CompassData(
+          heading: 0.0, // No magnetic heading available
+          magneticHeading: 0.0,
+          declination: 0.0,
+          accuracy: CompassAccuracy.unavailable,
+          calibration: CompassCalibration.unavailable,
+          location: _currentLocation,
+        );
+        
+        _lastCompassData = fallbackCompass;
+        _compassController?.add(fallbackCompass);
+      }
+    });
   }
 
   Future<void> stopListening() async {

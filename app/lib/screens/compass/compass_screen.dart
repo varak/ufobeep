@@ -484,7 +484,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
                                 ),
                                 SizedBox(height: 4),
                                 Text(
-                                  'Accessing magnetometer and GPS sensors',
+                                  'Accessing sensors (some tablets may not support compass)',
                                   style: TextStyle(
                                     color: AppColors.textSecondary,
                                     fontSize: 12,
