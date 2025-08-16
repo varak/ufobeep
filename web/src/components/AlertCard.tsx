@@ -72,26 +72,6 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
     return location.name || `${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}`
   }
 
-  const getAlertLevelColor = (level: string) => {
-    switch (level?.toLowerCase()) {
-      case 'critical': return 'text-red-400'
-      case 'high': return 'text-orange-400'
-      case 'medium': return 'text-yellow-400'
-      case 'low': return 'text-green-400'
-      default: return 'text-gray-400'
-    }
-  }
-
-  const getWitnessCount = () => {
-    // Use total_confirmations if available, otherwise fall back to witness_count
-    return alert.total_confirmations || alert.witness_count || 1
-  }
-
-  const getWitnessEscalationLevel = (count: number) => {
-    if (count >= 10) return { level: 'emergency', color: 'text-red-400 bg-red-900/20 border-red-400/30', icon: '🚨' }
-    if (count >= 3) return { level: 'urgent', color: 'text-orange-400 bg-orange-900/20 border-orange-400/30', icon: '⚠️' }
-    return { level: 'normal', color: 'text-brand-primary bg-brand-primary/10 border-brand-primary/30', icon: '👁️' }
-  }
 
   if (compact) {
     return (
@@ -99,36 +79,17 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
         <div className="p-4 bg-dark-surface rounded-lg border border-dark-border hover:border-brand-primary transition-colors cursor-pointer group">
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <span className={`px-2 py-1 rounded text-xs font-semibold uppercase ${getAlertLevelColor(alert.alert_level)}`}>
-                  {alert.alert_level}
-                </span>
-                {(() => {
-                  const witnessCount = getWitnessCount()
-                  const escalation = getWitnessEscalationLevel(witnessCount)
-                  return (
-                    <span className={`px-2 py-1 rounded text-xs font-semibold border ${escalation.color}`}>
-                      {escalation.icon} {witnessCount}
-                    </span>
-                  )
-                })()}
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-text-tertiary text-xs">{formatDate(alert.created_at)}</span>
                 {alert.media_files && alert.media_files.length > 0 ? (
                   <span className="text-xs text-text-tertiary">📸</span>
                 ) : (
-                  <span className="text-xs text-brand-primary/70">👁️ Report</span>
+                  <span className="text-xs text-text-tertiary">👁️</span>
                 )}
               </div>
-              <h4 className="font-medium text-text-primary text-sm group-hover:text-brand-primary transition-colors line-clamp-1">
-                {alert.title}
-              </h4>
-              <p className="text-text-secondary text-xs mt-1 line-clamp-1">
-                {formatLocation(alert.location)}
+              <p className="text-text-secondary text-xs line-clamp-1">
+                📍 {formatLocation(alert.location)}
               </p>
-              <div className="flex items-center gap-2 mt-2">
-                <span className="text-brand-primary text-xs">⚡ Live Chat Active</span>
-                <span className="text-text-tertiary text-xs">•</span>
-                <span className="text-text-tertiary text-xs">{formatDate(alert.created_at)}</span>
-              </div>
             </div>
             <div className="w-2 h-2 bg-brand-primary rounded-full animate-pulse"></div>
           </div>
@@ -165,62 +126,28 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
         })()}
 
         <div className="p-4">
-          {/* Alert Level Badge and Witness Count */}
-          <div className="flex justify-between items-start mb-3">
-            <div className="flex items-center gap-2">
-              <span className={`px-2 py-1 rounded text-xs font-semibold uppercase ${getAlertLevelColor(alert.alert_level)}`}>
-                {alert.alert_level}
-              </span>
-              {(() => {
-                const witnessCount = getWitnessCount()
-                const escalation = getWitnessEscalationLevel(witnessCount)
-                return (
-                  <span className={`px-3 py-1 rounded-full text-sm font-semibold border ${escalation.color}`}>
-                    {escalation.icon} {witnessCount} witness{witnessCount !== 1 ? 'es' : ''}
-                  </span>
-                )
-              })()}
+          <div className="flex items-center justify-between mb-2">
+            <div className="text-xs text-text-tertiary">
+              {formatDate(alert.created_at)}
             </div>
-          </div>
-
-          {/* Title & Description */}
-          <div className="flex items-start gap-3 mb-2">
-            {!getPrimaryMedia() && (
-              <div className="flex-shrink-0 w-10 h-10 bg-brand-primary/10 border border-brand-primary/30 rounded-lg flex items-center justify-center mt-1">
-                <span className="text-brand-primary text-lg">👁️</span>
-              </div>
-            )}
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-text-primary group-hover:text-brand-primary transition-colors line-clamp-1">
-                {alert.title}
-              </h3>
-              {!getPrimaryMedia() && (
-                <p className="text-brand-primary/70 text-xs font-medium mb-1">Witness Report Only</p>
+            <div className="flex items-center gap-2 text-xs text-text-tertiary">
+              {getPrimaryMedia() ? (
+                <span>📸 Photo</span>
+              ) : (
+                <span>👁️ Witness beeped only</span>
               )}
             </div>
           </div>
-          <p className="text-text-secondary text-sm mb-4 line-clamp-2">
-            {alert.description}
-          </p>
-
-          {/* Metadata */}
-          <div className="space-y-2 text-xs text-text-tertiary">
-            <div className="flex items-center gap-2">
-              <span>📅</span>
-              <span>{formatDate(alert.created_at)}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span>📍</span>
-              <span>{formatLocation(alert.location)}</span>
-            </div>
+          
+          <div className="text-xs text-text-tertiary mb-3">
+            📍 {formatLocation(alert.location)}
           </div>
 
-          {/* Click indicator */}
-          <div className="mt-4 pt-3 border-t border-dark-border text-center">
-            <span className="text-brand-primary text-sm group-hover:underline">
-              View Details →
-            </span>
-          </div>
+          {alert.description && (
+            <p className="text-text-secondary text-sm line-clamp-2">
+              {alert.description}
+            </p>
+          )}
         </div>
       </div>
     </Link>
