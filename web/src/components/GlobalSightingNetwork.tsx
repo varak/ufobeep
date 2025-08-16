@@ -16,6 +16,8 @@ interface Alert {
     name: string
   }
   alert_level: string
+  witness_count: number
+  total_confirmations: number
   media_files: Array<{
     id: string
     type: string
