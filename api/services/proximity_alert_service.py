@@ -190,12 +190,15 @@ class ProximityAlertService:
                 
         except Exception as e:
             logger.error(f"Error getting devices within {radius_km}km: {e}")
+            logger.warning(f"PostGIS not available, falling back to haversine calculation for {radius_km}km radius")
             # Fallback to basic distance calculation if PostGIS not available
             return await self._get_devices_within_radius_fallback(lat, lon, radius_km, exclude_device_id)
     
     async def _get_devices_within_radius_fallback(self, lat: float, lon: float, radius_km: float, exclude_device_id: str) -> List[dict]:
         """Fallback method using haversine distance calculation"""
         try:
+            logger.info(f"FALLBACK: Searching for devices within {radius_km}km of ({lat}, {lon}), excluding {exclude_device_id}")
+            
             async with self.db_pool.acquire() as conn:
                 # Get all devices with location data
                 query = """
@@ -209,6 +212,7 @@ class ProximityAlertService:
                 """
                 
                 rows = await conn.fetch(query, exclude_device_id)
+                logger.info(f"FALLBACK: Found {len(rows)} total active devices with location data")
                 
                 # Filter by distance using haversine formula
                 nearby_devices = []
@@ -218,6 +222,7 @@ class ProximityAlertService:
                     
                     # Calculate distance using haversine formula
                     distance_km = self._haversine_distance(lat, lon, device_lat, device_lon)
+                    logger.debug(f"FALLBACK: Device {row['device_id']} at ({device_lat}, {device_lon}) is {distance_km:.2f}km away")
                     
                     if distance_km <= radius_km:
                         nearby_devices.append({
@@ -226,8 +231,9 @@ class ProximityAlertService:
                             'platform': row['platform'],
                             'distance_km': round(distance_km, 2)
                         })
+                        logger.info(f"FALLBACK: Device {row['device_id']} INCLUDED (distance: {distance_km:.2f}km)")
                 
-                logger.info(f"Found {len(nearby_devices)} devices within {radius_km}km using fallback method")
+                logger.warning(f"FALLBACK RESULT: Found {len(nearby_devices)} devices within {radius_km}km")
                 return nearby_devices
                 
         except Exception as e:
