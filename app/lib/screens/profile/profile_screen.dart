@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +8,7 @@ import '../../models/user_preferences.dart';
 import '../../providers/user_preferences_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../config/environment.dart';
+import '../admin/admin_screen.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -17,6 +19,8 @@ class ProfileScreen extends ConsumerStatefulWidget {
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final _scrollController = ScrollController();
+  bool _showAdminAccess = false;
+  int _adminTapCount = 0;
 
   @override
   void dispose() {
@@ -63,6 +67,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             _buildActionButtons(),
             
             const SizedBox(height: 24),
+            
+            // Hidden Admin Access (debug builds only)
+            if (kDebugMode) _buildAdminAccess(),
           ],
         ),
       ),
@@ -214,11 +221,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  'v${AppEnvironment.appVersion}',
-                  style: const TextStyle(
-                    color: AppColors.textSecondary,
-                    fontSize: 14,
+                GestureDetector(
+                  onTap: _handleAdminTap,
+                  child: Text(
+                    'v${AppEnvironment.appVersion}',
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
               ],
@@ -672,5 +682,157 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         );
       }
     }
+  }
+
+  void _handleAdminTap() {
+    if (!kDebugMode) return;
+    
+    setState(() {
+      _adminTapCount++;
+    });
+    
+    // Reset count after 3 seconds
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        setState(() {
+          _adminTapCount = 0;
+        });
+      }
+    });
+    
+    // Show admin access after 5 taps
+    if (_adminTapCount >= 5) {
+      setState(() {
+        _showAdminAccess = true;
+        _adminTapCount = 0;
+      });
+      
+      // Show feedback
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('🛡️ Admin mode activated'),
+          backgroundColor: AppColors.brandPrimary,
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } else if (_adminTapCount >= 3) {
+      // Give hint after 3 taps
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${5 - _adminTapCount} more taps...'),
+          backgroundColor: AppColors.textSecondary,
+          duration: const Duration(seconds: 1),
+        ),
+      );
+    }
+  }
+
+  Widget _buildAdminAccess() {
+    if (!_showAdminAccess) return const SizedBox.shrink();
+    
+    return Column(
+      children: [
+        const SizedBox(height: 16),
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: AppColors.darkSurface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(
+                    Icons.admin_panel_settings,
+                    color: AppColors.brandPrimary,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
+                    'Admin Tools',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.brandPrimary,
+                    ),
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _showAdminAccess = false;
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.close,
+                      color: AppColors.textSecondary,
+                      size: 18,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              
+              // Admin Panel Button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const AdminScreen(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.dashboard),
+                  label: const Text('Open Admin Panel'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.brandPrimary,
+                    foregroundColor: AppColors.darkBackground,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                ),
+              ),
+              
+              const SizedBox(height: 12),
+              
+              // Web Admin Button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    final url = Uri.parse('https://api.ufobeep.com/admin');
+                    if (await canLaunchUrl(url)) {
+                      await launchUrl(url, mode: LaunchMode.externalApplication);
+                    }
+                  },
+                  icon: const Icon(Icons.web),
+                  label: const Text('Web Admin Interface'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.brandSecondary,
+                    foregroundColor: AppColors.darkBackground,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                ),
+              ),
+              
+              const SizedBox(height: 12),
+              
+              const Text(
+                '⚠️ Debug mode only. Admin tools for testing proximity alerts, push notifications, and system diagnostics.',
+                style: TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 24),
+      ],
+    );
   }
 }
