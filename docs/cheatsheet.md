@@ -70,12 +70,21 @@ Single FastAPI app with routers:
 - **Location data workflow**: ✅ FIXED - Both app captures and gallery photos preserve GPS coordinates
 - **GPS EXIF embedding**: ✅ IMPLEMENTED - GPS coordinates automatically embedded in photo EXIF to prevent "Unknown Location" failures
 
-## Firebase App Distribution (Beta Testing)
-- **Firebase Project**: `ufobeep`
+## Firebase Configuration (Push Notifications & Beta Testing)
+
+### Firebase Projects
+- **Main Project**: `ufobeep` (Project Number: 346511467728) - Used by mobile app and beta testing
+- **Service Account**: `firebase-adminsdk-fbsvc@ufobeep.iam.gserviceaccount.com`
 - **Firebase App ID**: `1:346511467728:android:02dcacf7017bae375caad5`
 - **Distribution Script**: `./scripts/distribute-beta.sh`
 - **Beta Testers Group**: "beta-testers" (configured in Firebase console)
 - **Console URL**: https://console.firebase.google.com/u/1/project/ufobeep/appdistribution
+
+### Push Notification Setup (COMPLETED)
+- **Service Account File**: `/home/ufobeep/ufobeep/firebase-service-account.json`
+- **Environment Variable**: `GOOGLE_APPLICATION_CREDENTIALS` set in systemd service
+- **Status**: ✅ WORKING - SenderId mismatch fixed on 2025-08-16
+- **Test Command**: `curl -X POST https://api.ufobeep.com/beep/anonymous -d '{"device_id":"test","location":{"latitude":36.24,"longitude":-115.24}}'`
 
 ### To distribute new APK:
 ```bash
@@ -202,6 +211,37 @@ ssh -p 322 ufobeep@ufobeep.com "pm2 delete ufobeep-web && cd /home/ufobeep/ufobe
 - **Implementation**: Complete FastAPI router with HTML interfaces and real-time data
 - **Database Integration**: Direct PostgreSQL queries for admin statistics and management
 - **Security**: Password-protected endpoints with secrets.compare_digest for timing attack protection
+
+## Proximity Alert System (COMPLETED)
+
+### Phase 0 Emergency Alert Foundation
+- **Status**: ✅ WORKING - All Phase 0 tasks complete as of 2025-08-16
+- **Proximity Detection**: Haversine distance calculation (PostGIS not required)
+- **Distance Rings**: 1km (emergency), 5km (urgent), 10km (normal), 25km (normal)
+- **Rate Limiting**: Max 3 alerts per 15 minutes (emergency override at 10+ witnesses)
+- **Quiet Hours**: User-configurable with emergency override
+- **Device Registration**: Devices must have location data to receive alerts
+- **Push Delivery**: Firebase Cloud Messaging (FCM) with correct project configuration
+
+### Testing Proximity Alerts
+```bash
+# Send test alert from dev machine
+curl -X POST https://api.ufobeep.com/beep/anonymous \
+  -H "Content-Type: application/json" \
+  -d '{
+    "device_id": "test_device",
+    "location": {"latitude": 36.24, "longitude": -115.24},
+    "description": "Test proximity alert"
+  }'
+
+# Check registered devices with location
+ssh -p 322 ufobeep@ufobeep.com "PGPASSWORD=ufopostpass psql -h localhost -U ufobeep_user -d ufobeep_db -c 'SELECT device_id, lat, lon FROM devices WHERE lat IS NOT NULL;'"
+```
+
+### Known Working Device
+- **Device ID**: `android_V1UFN35H.193-20_1755327935654` (Las Vegas test device)
+- **Location**: 36.2457131, -115.2411522
+- **Status**: Successfully receiving proximity alerts
 
 ## Multi-Media System (COMPLETED)
 - **Database Schema**: Added primary media designation, upload order, display priority fields
