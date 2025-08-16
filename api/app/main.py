@@ -274,7 +274,7 @@ async def get_alerts():
                     -- Aggregate photo analysis results
                     COALESCE(
                         json_agg(
-                            DISTINCT json_build_object(
+                            json_build_object(
                                 'filename', par.filename,
                                 'classification', par.classification,
                                 'matched_object', par.matched_object,
