@@ -779,7 +779,7 @@ async def create_anonymous_beep(request: dict):
             raise HTTPException(status_code=400, detail="device_id is required")
         
         location = request.get('location')
-        if not location or not location.get('latitude') or not location.get('longitude'):
+        if not location or location.get('latitude') is None or location.get('longitude') is None:
             raise HTTPException(status_code=400, detail="location with latitude and longitude is required for alert proximity")
         
         # Block alerts for invalid 0,0 coordinates (GPS errors)
