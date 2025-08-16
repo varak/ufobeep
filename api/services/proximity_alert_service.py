@@ -194,7 +194,7 @@ class ProximityAlertService:
             return await self._get_devices_within_radius_fallback(lat, lon, radius_km, exclude_device_id)
     
     async def _get_devices_within_radius_fallback(self, lat: float, lon: float, radius_km: float, exclude_device_id: str) -> List[dict]:
-        """Fallback method using basic distance calculation"""
+        """Fallback method using haversine distance calculation"""
         try:
             async with self.db_pool.acquire() as conn:
                 # Get all devices with location data
@@ -205,34 +205,40 @@ class ProximityAlertService:
                       AND push_token IS NOT NULL
                       AND device_id != $1
                       AND (lat IS NOT NULL AND lon IS NOT NULL)
+                      AND lat != 0.0 AND lon != 0.0
                 """
                 
                 rows = await conn.fetch(query, exclude_device_id)
                 
-                devices = []
+                # Filter by distance using haversine formula
+                nearby_devices = []
                 for row in rows:
-                    distance = self._calculate_distance(lat, lon, row['lat'], row['lon'])
-                    if distance <= radius_km:
-                        devices.append({
+                    device_lat = float(row['lat'])
+                    device_lon = float(row['lon'])
+                    
+                    # Calculate distance using haversine formula
+                    distance_km = self._haversine_distance(lat, lon, device_lat, device_lon)
+                    
+                    if distance_km <= radius_km:
+                        nearby_devices.append({
                             'device_id': row['device_id'],
-                            'push_token': row['push_token'], 
+                            'push_token': row['push_token'],
                             'platform': row['platform'],
-                            'distance_km': round(distance, 2)
+                            'distance_km': round(distance_km, 2)
                         })
                 
-                # Sort by distance (closest first)
-                devices.sort(key=lambda d: d['distance_km'])
-                return devices
+                logger.info(f"Found {len(nearby_devices)} devices within {radius_km}km using fallback method")
+                return nearby_devices
                 
         except Exception as e:
-            logger.error(f"Error in fallback device lookup: {e}")
+            logger.error(f"Error in fallback device radius query: {e}")
             return []
     
-    def _calculate_distance(self, lat1: float, lon1: float, lat2: float, lon2: float) -> float:
-        """Calculate distance between two points using Haversine formula"""
+    def _haversine_distance(self, lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+        """Calculate the great circle distance between two points on earth in kilometers"""
         import math
         
-        # Convert to radians
+        # Convert latitude and longitude from degrees to radians
         lat1, lon1, lat2, lon2 = map(math.radians, [lat1, lon1, lat2, lon2])
         
         # Haversine formula
@@ -241,9 +247,10 @@ class ProximityAlertService:
         a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2
         c = 2 * math.asin(math.sqrt(a))
         
-        # Earth radius in kilometers
-        earth_radius_km = 6371.0
-        return earth_radius_km * c
+        # Radius of earth in kilometers
+        r = 6371.0
+        
+        return c * r
     
     async def _send_alert_batch(self, devices: List[dict], sighting_id: str, alert_level: str, title: str, body: str, witness_count: int = 1) -> int:
         """Send alerts to a batch of devices"""
