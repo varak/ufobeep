@@ -6,6 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'device_service.dart';
 import 'sound_service.dart';
+import 'anonymous_beep_service.dart';
+import 'permission_service.dart';
+import 'api_client.dart';
 import '../routing/app_router.dart';
 
 class PushNotificationService {
@@ -29,6 +32,9 @@ class PushNotificationService {
       if (token != null) {
         // Register device with token
         await _deviceService.registerDevice(pushToken: token);
+        
+        // Also register with FCM device API for Phase 0
+        await _registerWithFCMAPI(token);
         
         // Listen for token refresh
         _messaging.onTokenRefresh.listen((newToken) async {
@@ -287,6 +293,58 @@ class PushNotificationService {
         print('Processed pending navigation: $_pendingNavigation');
         _pendingNavigation = null;
       }
+    }
+  }
+
+  /// Register device with FCM API for Phase 0 proximity alerts
+  Future<void> _registerWithFCMAPI(String fcmToken) async {
+    try {
+      // Get device ID from anonymous beep service
+      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      
+      // Get current location if available
+      double? lat, lon;
+      if (permissionService.locationGranted) {
+        try {
+          final position = await permissionService.getCurrentLocation();
+          if (position != null) {
+            lat = position.latitude;
+            lon = position.longitude;
+          }
+        } catch (e) {
+          print('Failed to get location for FCM registration: $e');
+        }
+      }
+
+      // Register with FCM API
+      final response = await ApiClient.post('/api/register/device', {
+        'device_id': deviceId,
+        'fcm_token': fcmToken,
+        'platform': Platform.isIOS ? 'ios' : 'android',
+        'lat': lat,
+        'lon': lon,
+      });
+
+      print('FCM device registration successful: ${response['ok']}');
+    } catch (e) {
+      print('Failed to register with FCM API: $e');
+    }
+  }
+
+  /// Test push notification via FCM API
+  Future<bool> testPushNotification() async {
+    try {
+      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      
+      final response = await ApiClient.post('/api/push/test', {
+        'device_id': deviceId,
+      });
+
+      print('Test push response: $response');
+      return response['ok'] == true;
+    } catch (e) {
+      print('Failed to send test push: $e');
+      return false;
     }
   }
 
