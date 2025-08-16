@@ -27,15 +27,15 @@ export default function AppPage() {
         {/* Alpha/Beta Download Section */}
         <div className="bg-gradient-to-r from-brand-primary/20 to-purple-600/20 border border-brand-primary/30 rounded-xl p-8 mb-16">
           <div className="text-center mb-6">
-            <div className="inline-block bg-brand-primary text-text-inverse px-4 py-2 rounded-full text-sm font-semibold mb-4">
-              🚀 BETA VERSION AVAILABLE
+            <div className="inline-block bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4">
+              ✅ PHASE 1 COMPLETE
             </div>
             <h2 className="text-2xl font-bold text-text-primary mb-2">
-              Test the UFOBeep Beta
+              UFOBeep Beta - Instant Witness Network
             </h2>
             <p className="text-text-secondary max-w-2xl mx-auto">
-              Help us test the latest features! This beta version includes Phase 0 foundation: 
-              anonymous beeping, escalating alert sounds, proximity alerts, and quiet hours. Your feedback is invaluable.
+              The complete Phase 1 witness network is live! Features instant witness confirmation, compass navigation to sightings, 
+              and witness aggregation with triangulation. Help us test the witness network that gets multiple people looking at the same thing.
             </p>
           </div>
 
@@ -50,7 +50,7 @@ export default function AppPage() {
               <div className="text-left flex-1">
                 <p className="text-text-inverse/80 text-sm">Download Beta for</p>
                 <p className="font-semibold">Android APK</p>
-                <p className="text-xs text-text-inverse/60 mt-1">Version 1.0.0-beta.6+6 &quot;Emergency Alerts Live&quot; • ~63MB</p>
+                <p className="text-xs text-text-inverse/60 mt-1">Version 1.0.0-beta.7+7 &quot;Phase 1 Complete - Witness Network&quot; • ~63MB</p>
               </div>
               <div className="text-xl group-hover:translate-x-1 transition-transform">→</div>
             </a>
@@ -125,7 +125,7 @@ export default function AppPage() {
                   </li>
                   <li className="flex gap-2">
                     <span className="text-green-400">•</span>
-                    <span>✅ Phase 0 Emergency Alert Foundation complete!</span>
+                    <span>✅ Phase 1 Witness Network complete!</span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-green-400">•</span>
@@ -240,8 +240,8 @@ export default function AppPage() {
               </p>
               <div className="bg-dark-surface border border-dark-border rounded p-3">
                 <p className="text-xs text-text-tertiary font-mono">
-                  Latest: <span className="text-brand-primary">v1.0.0-beta.5+5</span> - 
-                  <span className="text-green-400"> Phase 0 Emergency Alert Foundation Complete</span>
+                  Latest: <span className="text-brand-primary">v1.0.0-beta.7+7</span> - 
+                  <span className="text-green-400"> Phase 1 Witness Network Complete</span>
                 </p>
               </div>
             </div>
@@ -273,9 +273,9 @@ export default function AppPage() {
                     <span className="text-green-400 text-sm">✅ Live</span>
                   </div>
                   <div className="text-xs text-text-tertiary mb-3">
-                    Version: <span className="text-purple-400 font-mono">v1.0.0-beta.5+5</span><br/>
-                    Size: <span className="text-text-secondary">~61MB</span><br/>
-                    Updated: <span className="text-text-secondary">Phase 0 Complete - Anonymous beeping with proximity alerts</span>
+                    Version: <span className="text-purple-400 font-mono">v1.0.0-beta.7+7</span><br/>
+                    Size: <span className="text-text-secondary">~63MB</span><br/>
+                    Updated: <span className="text-text-secondary">Phase 1 Complete - Witness Network with triangulation</span>
                   </div>
                   <a 
                     href="/downloads/ufobeep-beta.apk"
@@ -346,25 +346,25 @@ export default function AppPage() {
             <div className="bg-dark-background border border-dark-border rounded-lg p-4 max-w-3xl mx-auto">
               <h4 className="text-text-primary font-semibold mb-3 flex items-center justify-center gap-2">
                 <span className="text-xl">🆕</span>
-                What&apos;s New in v1.0.0-beta.5+5
+                What&apos;s New in v1.0.0-beta.7+7
               </h4>
               <div className="grid md:grid-cols-2 gap-4 text-xs text-text-secondary">
                 <div>
-                  <p className="text-green-400 font-medium mb-1">🎯 Phase 0 Complete:</p>
+                  <p className="text-green-400 font-medium mb-1">🎯 Phase 1 Complete:</p>
                   <ul className="space-y-1 text-left">
-                    <li>• Anonymous beeping with device ID tracking</li>
-                    <li>• Escalating alert sounds (normal → urgent → emergency)</li>
-                    <li>• Proximity alerts with distance rings (1km, 5km, 10km, 25km)</li>
-                    <li>• Rate limiting protection (max 3 alerts per 15 min)</li>
+                    <li>• "I SEE IT TOO" witness confirmation button</li>
+                    <li>• Compass arrow pointing to sightings</li>
+                    <li>• Witness aggregation with triangulation</li>
+                    <li>• Heat map generation from witness locations</li>
                   </ul>
                 </div>
                 <div>
-                  <p className="text-purple-400 font-medium mb-1">🔧 New Features:</p>
+                  <p className="text-purple-400 font-medium mb-1">🔧 Enhanced Features:</p>
                   <ul className="space-y-1 text-left">
-                    <li>• Quiet hours with emergency override</li>
-                    <li>• One-tap beep button (huge, accessible)</li>
-                    <li>• GPS permission inline with manual fallback</li>
-                    <li>• Instant fanout: beeps alert nearby devices in ≤2s</li>
+                    <li>• Real-time bearing calculations</li>
+                    <li>• Direct navigation from push notifications</li>
+                    <li>• Cross-platform witness count display</li>
+                    <li>• Instant witness network activation</li>
                   </ul>
                 </div>
               </div>
