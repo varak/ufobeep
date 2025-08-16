@@ -352,7 +352,7 @@ export default function AppPage() {
                 <div>
                   <p className="text-green-400 font-medium mb-1">🎯 Phase 1 Complete:</p>
                   <ul className="space-y-1 text-left">
-                    <li>• "I SEE IT TOO" witness confirmation button</li>
+                    <li>• &quot;I SEE IT TOO&quot; witness confirmation button</li>
                     <li>• Compass arrow pointing to sightings</li>
                     <li>• Witness aggregation with triangulation</li>
                     <li>• Heat map generation from witness locations</li>
