@@ -50,7 +50,7 @@ export default function AppPage() {
               <div className="text-left flex-1">
                 <p className="text-text-inverse/80 text-sm">Download Beta for</p>
                 <p className="font-semibold">Android APK</p>
-                <p className="text-xs text-text-inverse/60 mt-1">Version 1.0.0-beta.5 &quot;the Nikolai Build&quot; • ~59MB</p>
+                <p className="text-xs text-text-inverse/60 mt-1">Version 1.0.0-beta.5+6 &quot;Admin Panel Build&quot; • ~63MB</p>
               </div>
               <div className="text-xl group-hover:translate-x-1 transition-transform">→</div>
             </a>
@@ -239,6 +239,129 @@ export default function AppPage() {
                   Latest: <span className="text-brand-primary">v1.0.0-beta.5+6</span> - 
                   <span className="text-green-400"> Fixed location display & admin panel access</span>
                 </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Direct APK Download Section */}
+        <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30 rounded-xl p-8 mb-16">
+          <div className="text-center mb-6">
+            <div className="text-4xl mb-4">📥</div>
+            <h2 className="text-2xl font-bold text-text-primary mb-2">
+              Direct APK Download
+            </h2>
+            <p className="text-text-secondary max-w-2xl mx-auto">
+              Download the APK directly without Firebase App Distribution. 
+              Perfect for friends who want to try UFOBeep immediately.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-dark-background/50 border border-dark-border rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-purple-400 mb-4 flex items-center gap-2">
+                🔗 Direct Download Link
+              </h3>
+              <div className="space-y-4">
+                <div className="bg-dark-surface border border-dark-border rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-text-primary font-medium">Latest Beta APK</span>
+                    <span className="text-green-400 text-sm">✅ Live</span>
+                  </div>
+                  <div className="text-xs text-text-tertiary mb-3">
+                    Version: <span className="text-purple-400 font-mono">v1.0.0-beta.5+6</span><br/>
+                    Size: <span className="text-text-secondary">~63MB</span><br/>
+                    Updated: <span className="text-text-secondary">Latest build with admin panel & location fixes</span>
+                  </div>
+                  <a 
+                    href="/downloads/ufobeep-beta.apk"
+                    className="bg-purple-600 hover:bg-purple-700 text-text-inverse rounded-lg px-4 py-2 text-sm font-medium transition-colors inline-flex items-center gap-2"
+                    download="ufobeep-beta.apk"
+                  >
+                    <span>📱</span>
+                    Download APK
+                  </a>
+                </div>
+                
+                <div className="bg-blue-600/10 border border-blue-500/20 rounded p-3">
+                  <p className="text-xs text-blue-400">
+                    💡 <strong>Direct Link:</strong> Right-click and &quot;Save As&quot; to download, or open on Android device to install directly.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-dark-background/50 border border-dark-border rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-purple-400 mb-4 flex items-center gap-2">
+                📋 Installation Instructions
+              </h3>
+              <ol className="space-y-3 text-sm text-text-secondary">
+                <li className="flex gap-3">
+                  <span className="text-purple-400 font-bold">1.</span>
+                  <span>Download the APK file using the link above</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-purple-400 font-bold">2.</span>
+                  <span>On Android: Settings → Security → Enable &quot;Install unknown apps&quot;</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-purple-400 font-bold">3.</span>
+                  <span>Open the downloaded APK file (usually in Downloads folder)</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-purple-400 font-bold">4.</span>
+                  <span>Tap &quot;Install&quot; and wait for installation to complete</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-purple-400 font-bold">5.</span>
+                  <span>Grant permissions: Camera, Location, Notifications</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-purple-400 font-bold">6.</span>
+                  <span>Start UFOBeep and explore!</span>
+                </li>
+              </ol>
+              
+              <div className="mt-4 space-y-3">
+                <div className="bg-green-600/10 border border-green-500/20 rounded p-3">
+                  <p className="text-xs text-green-400">
+                    ✅ <strong>No Firebase Account Needed:</strong> This direct download works without any Google account or Firebase setup.
+                  </p>
+                </div>
+                
+                <div className="bg-amber-600/10 border border-amber-500/20 rounded p-3">
+                  <p className="text-xs text-amber-400">
+                    ⚠️ <strong>Security:</strong> Only install APKs from trusted sources. This file is served directly from ufobeep.com.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 text-center">
+            <div className="bg-dark-background border border-dark-border rounded-lg p-4 max-w-3xl mx-auto">
+              <h4 className="text-text-primary font-semibold mb-3 flex items-center justify-center gap-2">
+                <span className="text-xl">🆕</span>
+                What&apos;s New in v1.0.0-beta.5+6
+              </h4>
+              <div className="grid md:grid-cols-2 gap-4 text-xs text-text-secondary">
+                <div>
+                  <p className="text-green-400 font-medium mb-1">🔧 Fixes:</p>
+                  <ul className="space-y-1 text-left">
+                    <li>• Anonymous beep locations now display on website</li>
+                    <li>• App version displays correctly (v1.0.0-beta.5+6)</li>
+                    <li>• Enrichment data properly processes coordinates</li>
+                  </ul>
+                </div>
+                <div>
+                  <p className="text-purple-400 font-medium mb-1">🛡️ New Features:</p>
+                  <ul className="space-y-1 text-left">
+                    <li>• Hidden admin panel (5-tap gesture on version)</li>
+                    <li>• Proximity alert testing tools</li>
+                    <li>• Push notification diagnostics</li>
+                    <li>• Real-time system monitoring</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
