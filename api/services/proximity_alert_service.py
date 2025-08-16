@@ -61,25 +61,25 @@ class ProximityAlertService:
                 # 1km always gets highest priority, escalated by witness count
                 level = alert_escalation if alert_escalation == "emergency" else "emergency"
                 title, body = self._get_alert_message(1.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_1km, sighting_id, level, title, body, witness_count, lat, lon, f"Sighting {sighting_id}"))
+                tasks.append(self._send_alert_batch(devices_1km, sighting_id, level, title, body, witness_count, lat, lon, f"Sighting {sighting_id}", beep_device_id))
                 
             if devices_5km_only:
                 # 5km gets urgent unless escalated
                 level = "emergency" if alert_escalation == "emergency" else "urgent"
                 title, body = self._get_alert_message(5.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_5km_only, sighting_id, level, title, body, witness_count, lat, lon, f"Sighting {sighting_id}"))
+                tasks.append(self._send_alert_batch(devices_5km_only, sighting_id, level, title, body, witness_count, lat, lon, f"Sighting {sighting_id}", beep_device_id))
                 
             if devices_10km_only:
                 # 10km gets normal unless escalated
                 level = alert_escalation if alert_escalation in ["urgent", "emergency"] else "normal"
                 title, body = self._get_alert_message(10.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_10km_only, sighting_id, level, title, body, witness_count, lat, lon, f"Sighting {sighting_id}"))
+                tasks.append(self._send_alert_batch(devices_10km_only, sighting_id, level, title, body, witness_count, lat, lon, f"Sighting {sighting_id}", beep_device_id))
                 
             if devices_25km_only:
                 # 25km gets normal unless emergency escalation
                 level = "emergency" if alert_escalation == "emergency" else "normal"
                 title, body = self._get_alert_message(25.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_25km_only, sighting_id, level, title, body, witness_count, lat, lon, f"Sighting {sighting_id}"))
+                tasks.append(self._send_alert_batch(devices_25km_only, sighting_id, level, title, body, witness_count, lat, lon, f"Sighting {sighting_id}", beep_device_id))
             
             # Execute all alert batches concurrently
             if tasks:
@@ -285,7 +285,7 @@ class ProximityAlertService:
         """Calculate distance between two points using haversine formula (alias for consistency)"""
         return self._haversine_distance(lat1, lon1, lat2, lon2)
     
-    async def _send_alert_batch(self, devices: List[dict], sighting_id: str, alert_level: str, title: str, body: str, witness_count: int = 1, sighting_lat: float = None, sighting_lon: float = None, location_name: str = None) -> int:
+    async def _send_alert_batch(self, devices: List[dict], sighting_id: str, alert_level: str, title: str, body: str, witness_count: int = 1, sighting_lat: float = None, sighting_lon: float = None, location_name: str = None, submitter_device_id: str = None) -> int:
         """Send alerts to a batch of devices with individualized bearing calculations"""
         if not devices:
             return 0
@@ -303,7 +303,8 @@ class ProximityAlertService:
                         "alert_level": alert_level,
                         "witness_count": str(witness_count),
                         "timestamp": datetime.utcnow().isoformat(),
-                        "action": "open_compass"  # Phase 1 Task 6: Open compass directly
+                        "action": "open_compass",  # Phase 1 Task 6: Open compass directly
+                        "submitter_device_id": submitter_device_id  # For self-notification filtering
                     }
                     
                     # Add location data for compass navigation if available
