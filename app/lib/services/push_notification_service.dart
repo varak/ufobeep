@@ -42,6 +42,18 @@ class PushNotificationService {
         // Register device with token
         await _deviceService.registerDevice(pushToken: token);
         
+        // Update device location for proximity alerts
+        try {
+          final locationUpdated = await _deviceService.updateDeviceLocation();
+          if (locationUpdated) {
+            print('Device location registered for proximity alerts');
+          } else {
+            print('Device location update failed - proximity alerts may not work');
+          }
+        } catch (e) {
+          print('Error updating device location: $e');
+        }
+        
         // Also register with FCM device API for Phase 0
         await _registerWithFCMAPI(token);
         
