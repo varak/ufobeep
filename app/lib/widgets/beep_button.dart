@@ -119,18 +119,19 @@ class _BeepButtonState extends State<BeepButton>
                             children: [
                               const Icon(
                                 Icons.touch_app,
-                                size: 60,
+                                size: 48,
                                 color: Colors.white,
                               ),
-                              const SizedBox(height: 12),
+                              const SizedBox(height: 8),
                               Text(
                                 widget.text,
                                 style: const TextStyle(
-                                  fontSize: 32,
+                                  fontSize: 26,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
-                                  letterSpacing: 3,
+                                  letterSpacing: 2,
                                 ),
+                                textAlign: TextAlign.center,
                               ),
                             ],
                           ),

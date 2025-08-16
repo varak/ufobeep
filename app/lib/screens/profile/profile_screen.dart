@@ -829,7 +829,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () async {
-                    final url = Uri.parse('https://api.ufobeep.com/admin');
+                    final url = Uri.parse('https://api.ufobeep.com/admin/');
                     if (await canLaunchUrl(url)) {
                       await launchUrl(url, mode: LaunchMode.externalApplication);
                     }
@@ -847,7 +847,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               const SizedBox(height: 12),
               
               const Text(
-                '⚠️ Debug mode only. Admin tools for testing proximity alerts, push notifications, and system diagnostics.',
+                '⚠️ Beta builds only. Admin tools for testing proximity alerts, push notifications, and system diagnostics.',
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 12,

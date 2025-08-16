@@ -466,10 +466,10 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Instant alert • Uses description below if provided',
+                      'Instant alert • Add description below (optional)',
                       style: TextStyle(
                         color: AppColors.textTertiary,
-                        fontSize: 12,
+                        fontSize: 11,
                       ),
                       textAlign: TextAlign.center,
                     ),
