@@ -812,7 +812,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   icon: const Icon(Icons.web),
                   label: const Text('Web Admin Interface'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.brandSecondary,
+                    backgroundColor: AppColors.brandPrimaryLight,
                     foregroundColor: AppColors.darkBackground,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                   ),

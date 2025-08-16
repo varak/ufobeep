@@ -6,7 +6,8 @@ import '../../services/anonymous_beep_service.dart';
 import '../../services/push_notification_service.dart';
 import '../../services/permission_service.dart';
 import '../../services/sound_service.dart';
-import '../../theme/app_colors.dart';
+import '../../theme/app_theme.dart';
+import 'dart:convert';
 
 class AdminScreen extends ConsumerStatefulWidget {
   const AdminScreen({Key? key}) : super(key: key);
@@ -74,7 +75,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
       });
       
       // Play success sound
-      await SoundService.I.play(AlertSound.success);
+      await SoundService.I.play(AlertSound.test);
       
     } catch (e) {
       setState(() {
@@ -83,7 +84,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
       });
       
       // Play error sound
-      await SoundService.I.play(AlertSound.error);
+      await SoundService.I.play(AlertSound.gpsFail);
     } finally {
       setState(() => _isLoading = false);
     }
@@ -102,11 +103,11 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
         _statusMessage = success ? 'Push test sent successfully' : 'Push test failed';
       });
       
-      await SoundService.I.play(success ? AlertSound.success : AlertSound.error);
+      await SoundService.I.play(success ? AlertSound.test : AlertSound.gpsFail);
       
     } catch (e) {
       setState(() => _statusMessage = 'Push test error: $e');
-      await SoundService.I.play(AlertSound.error);
+      await SoundService.I.play(AlertSound.gpsFail);
     } finally {
       setState(() => _isLoading = false);
     }
@@ -309,7 +310,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
                 ElevatedButton(
                   onPressed: _isLoading ? null : _refreshLocation,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.brandSecondary,
+                    backgroundColor: AppColors.brandPrimaryLight,
                     foregroundColor: AppColors.darkBackground,
                   ),
                   child: const Text('Refresh'),
@@ -376,7 +377,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
                 icon: const Icon(Icons.notifications),
                 label: const Text('Test Push Notification'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.brandSecondary,
+                  backgroundColor: AppColors.brandPrimaryLight,
                   foregroundColor: AppColors.darkBackground,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
