@@ -249,6 +249,51 @@ class DeviceService {
     return {};
   }
 
+  /// Update device location for proximity alerts
+  Future<bool> updateDeviceLocation() async {
+    try {
+      final deviceId = await getDeviceId();
+      
+      // Get current location
+      final sensorService = SensorService();
+      final hasPermission = await sensorService.requestLocationPermission();
+      
+      if (!hasPermission) {
+        print('Device location update: Permission denied');
+        return false;
+      }
+      
+      final sensorData = await sensorService.captureSensorData();
+      if (sensorData == null || sensorData.latitude == 0.0 || sensorData.longitude == 0.0) {
+        print('Device location update: No valid GPS data');
+        return false;
+      }
+      
+      // Update device location via API
+      final url = Uri.parse('${env.AppEnvironment.apiBaseUrl}/devices/$deviceId/location');
+      final response = await _httpClient.patch(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'lat': sensorData.latitude,
+          'lon': sensorData.longitude,
+          'updated_at': DateTime.now().toIso8601String(),
+        }),
+      );
+      
+      if (response.statusCode == 200) {
+        print('Device location updated: lat=${sensorData.latitude}, lon=${sensorData.longitude}');
+        return true;
+      } else {
+        print('Device location update failed: ${response.statusCode} ${response.body}');
+        return false;
+      }
+    } catch (e) {
+      print('Error updating device location: $e');
+      return false;
+    }
+  }
+
   /// Register device with push token
   Future<DeviceResponse?> registerDevice({
     required String pushToken,
