@@ -25,7 +25,7 @@ class ProximityAlertService:
         
     async def send_proximity_alerts(self, lat: float, lon: float, sighting_id: str, beep_device_id: str):
         """
-        Send proximity alerts to nearby devices based on distance rings
+        Send proximity alerts to nearby devices based on distance rings and witness escalation
         
         Args:
             lat: Latitude of the sighting
@@ -35,6 +35,13 @@ class ProximityAlertService:
         """
         try:
             start_time = datetime.utcnow()
+            
+            # Check for recent witnesses in the same area for escalation
+            witness_count = await self._count_recent_witnesses_nearby(lat, lon)
+            logger.info(f"Found {witness_count} recent witnesses in area for sighting {sighting_id}")
+            
+            # Determine alert escalation level based on witness count
+            alert_escalation = self._determine_alert_escalation(witness_count)
             
             # Get devices within each distance ring
             devices_1km = await self._get_devices_within_radius(lat, lon, 1.0, beep_device_id)
@@ -47,32 +54,32 @@ class ProximityAlertService:
             devices_10km_only = [d for d in devices_10km if d not in devices_5km and d not in devices_1km]
             devices_25km_only = [d for d in devices_25km if d not in devices_10km and d not in devices_5km and d not in devices_1km]
             
-            # Send alerts with priority levels
+            # Send alerts with priority levels (distance + witness escalation)
             tasks = []
             
             if devices_1km:
-                tasks.append(self._send_alert_batch(
-                    devices_1km, sighting_id, "emergency", 
-                    "🚨 UFO SIGHTING VERY CLOSE", "Emergency: Something is happening right near you!"
-                ))
+                # 1km always gets highest priority, escalated by witness count
+                level = alert_escalation if alert_escalation == "emergency" else "emergency"
+                title, body = self._get_alert_message(1.0, witness_count, level)
+                tasks.append(self._send_alert_batch(devices_1km, sighting_id, level, title, body, witness_count))
                 
             if devices_5km_only:
-                tasks.append(self._send_alert_batch(
-                    devices_5km_only, sighting_id, "urgent",
-                    "⚡ UFO Sighting Nearby", "Urgent: UFO sighting reported nearby!"
-                ))
+                # 5km gets urgent unless escalated
+                level = "emergency" if alert_escalation == "emergency" else "urgent"
+                title, body = self._get_alert_message(5.0, witness_count, level)
+                tasks.append(self._send_alert_batch(devices_5km_only, sighting_id, level, title, body, witness_count))
                 
             if devices_10km_only:
-                tasks.append(self._send_alert_batch(
-                    devices_10km_only, sighting_id, "normal",
-                    "👁 UFO Sighting in Area", "UFO sighting reported in your area"
-                ))
+                # 10km gets normal unless escalated
+                level = alert_escalation if alert_escalation in ["urgent", "emergency"] else "normal"
+                title, body = self._get_alert_message(10.0, witness_count, level)
+                tasks.append(self._send_alert_batch(devices_10km_only, sighting_id, level, title, body, witness_count))
                 
             if devices_25km_only:
-                tasks.append(self._send_alert_batch(
-                    devices_25km_only, sighting_id, "normal", 
-                    "🛸 UFO Alert", "UFO sighting reported within 25km"
-                ))
+                # 25km gets normal unless emergency escalation
+                level = "emergency" if alert_escalation == "emergency" else "normal"
+                title, body = self._get_alert_message(25.0, witness_count, level)
+                tasks.append(self._send_alert_batch(devices_25km_only, sighting_id, level, title, body, witness_count))
             
             # Execute all alert batches concurrently
             if tasks:
@@ -221,7 +228,7 @@ class ProximityAlertService:
         earth_radius_km = 6371.0
         return earth_radius_km * c
     
-    async def _send_alert_batch(self, devices: List[dict], sighting_id: str, alert_level: str, title: str, body: str) -> int:
+    async def _send_alert_batch(self, devices: List[dict], sighting_id: str, alert_level: str, title: str, body: str, witness_count: int = 1) -> int:
         """Send alerts to a batch of devices"""
         if not devices:
             return 0
@@ -230,11 +237,12 @@ class ProximityAlertService:
             # Extract tokens for batch sending
             tokens = [device['push_token'] for device in devices]
             
-            # Prepare alert data
+            # Prepare alert data with witness escalation info
             alert_data = {
-                "type": "alert",
+                "type": "sighting_alert",  # Changed to match mobile handler
                 "sighting_id": sighting_id,
                 "alert_level": alert_level,
+                "witness_count": str(witness_count),  # Mobile expects string
                 "timestamp": datetime.utcnow().isoformat(),
                 "action": "open_alert"
             }
@@ -251,6 +259,71 @@ class ProximityAlertService:
         except Exception as e:
             logger.error(f"Error sending alert batch: {e}")
             return 0
+    
+    async def _count_recent_witnesses_nearby(self, lat: float, lon: float, radius_km: float = 10.0) -> int:
+        """Count recent sightings (last 30 minutes) within radius for escalation"""
+        try:
+            async with self.db_pool.acquire() as conn:
+                # Count sightings in the last 30 minutes within 10km
+                query = """
+                    SELECT COUNT(*) FROM sightings 
+                    WHERE created_at > NOW() - INTERVAL '30 minutes'
+                    AND status = 'created'
+                """
+                count = await conn.fetchval(query)
+                return count or 0
+        except Exception as e:
+            logger.error(f"Error counting recent witnesses: {e}")
+            return 0
+    
+    def _determine_alert_escalation(self, witness_count: int) -> str:
+        """Determine alert escalation level based on witness count"""
+        if witness_count >= 10:
+            return "emergency"  # Mass sighting - emergency siren
+        elif witness_count >= 3:
+            return "urgent"     # Multiple witnesses - urgent warble
+        else:
+            return "normal"     # Single witness - normal beep
+    
+    def _get_alert_message(self, distance_km: float, witness_count: int, level: str) -> tuple[str, str]:
+        """Generate appropriate alert title and body based on distance, witnesses, and level"""
+        
+        # Witness description
+        if witness_count >= 10:
+            witness_desc = f"MASS SIGHTING - {witness_count} witnesses"
+        elif witness_count >= 3:
+            witness_desc = f"Multiple witnesses ({witness_count})"
+        elif witness_count == 2:
+            witness_desc = "2nd witness"
+        else:
+            witness_desc = "New sighting"
+        
+        # Distance description
+        if distance_km <= 1.0:
+            location_desc = "VERY CLOSE"
+        elif distance_km <= 5.0:
+            location_desc = "nearby"
+        elif distance_km <= 10.0:
+            location_desc = "in your area"
+        else:
+            location_desc = f"within {int(distance_km)}km"
+        
+        # Generate title and body based on level
+        if level == "emergency":
+            if witness_count >= 10:
+                title = f"🚨 MASS UFO SIGHTING {location_desc.upper()}"
+                body = f"EMERGENCY: {witness_count} witnesses reporting something in the sky {location_desc}!"
+            else:
+                title = f"🚨 UFO EMERGENCY {location_desc.upper()}"
+                body = f"Emergency: Something is happening {location_desc} - {witness_desc.lower()}"
+        elif level == "urgent":
+            title = f"⚡ UFO Sighting {location_desc.title()}"
+            body = f"Urgent: {witness_desc} - Look up now!"
+        else:
+            title = f"👁 UFO Alert {location_desc.title()}"
+            body = f"{witness_desc} - Something reported {location_desc}"
+        
+        return title, body
 
 # Global instance
 proximity_alert_service = None
