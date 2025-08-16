@@ -112,8 +112,10 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                     </span>
                   )
                 })()}
-                {alert.media_files && alert.media_files.length > 0 && (
+                {alert.media_files && alert.media_files.length > 0 ? (
                   <span className="text-xs text-text-tertiary">📸</span>
+                ) : (
+                  <span className="text-xs text-brand-primary/70">👁️ Report</span>
                 )}
               </div>
               <h4 className="font-medium text-text-primary text-sm group-hover:text-brand-primary transition-colors line-clamp-1">
@@ -138,7 +140,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
   return (
     <Link href={`/alerts/${alert.id}`}>
       <div className="bg-dark-surface border border-dark-border rounded-lg overflow-hidden hover:border-brand-primary transition-all duration-300 hover:shadow-lg cursor-pointer group">
-        {/* Primary Media Thumbnail */}
+        {/* Primary Media Thumbnail - Only show if media exists */}
         {(() => {
           const primaryMedia = getPrimaryMedia()
           return primaryMedia ? (
@@ -159,11 +161,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                 </div>
               )}
             </div>
-          ) : (
-            <div className="h-48 bg-gray-800 flex items-center justify-center">
-              <div className="text-4xl text-gray-500">👁️</div>
-            </div>
-          )
+          ) : null
         })()}
 
         <div className="p-4">
@@ -186,9 +184,21 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
           </div>
 
           {/* Title & Description */}
-          <h3 className="text-lg font-semibold text-text-primary mb-2 group-hover:text-brand-primary transition-colors line-clamp-1">
-            {alert.title}
-          </h3>
+          <div className="flex items-start gap-3 mb-2">
+            {!getPrimaryMedia() && (
+              <div className="flex-shrink-0 w-10 h-10 bg-brand-primary/10 border border-brand-primary/30 rounded-lg flex items-center justify-center mt-1">
+                <span className="text-brand-primary text-lg">👁️</span>
+              </div>
+            )}
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-text-primary group-hover:text-brand-primary transition-colors line-clamp-1">
+                {alert.title}
+              </h3>
+              {!getPrimaryMedia() && (
+                <p className="text-brand-primary/70 text-xs font-medium mb-1">Witness Report Only</p>
+              )}
+            </div>
+          </div>
           <p className="text-text-secondary text-sm mb-4 line-clamp-2">
             {alert.description}
           </p>
