@@ -39,7 +39,7 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // Optional vibration. If you don't want it, remove and ignore the parameter.
-// import 'package:vibration/vibration.dart';
+import 'package:vibration/vibration.dart';
 
 enum AlertSound {
   normal,         // single-witness alert tone
@@ -106,12 +106,30 @@ class SoundService {
   Future<void> init() async {
     if (_initialized) return;
 
-    // Configure global audio context for mobile OS behavior:
-    // - category: ambient/solo based on your UX
-    // - respectSilence: if true, device "silent" mutes normal sounds
-    // - contentType: sonification lowers latency and hint OS it's UI SFX
-    // Note: Audio context setup skipped for compatibility
-    // Basic playback will work with default settings
+    // Configure audio mode for alerts - simple approach
+    try {
+      // Set global audio context for proper alert playback
+      await AudioPlayer.global.setAudioContext(
+        AudioContext(
+          iOS: AudioContextIOS(
+            category: AVAudioSessionCategory.playback,
+            options: {
+              AVAudioSessionOptions.mixWithOthers,
+            },
+          ),
+          android: AudioContextAndroid(
+            isSpeakerphoneOn: false,
+            stayAwake: false,
+            contentType: AndroidContentType.sonification,
+            usageType: AndroidUsageType.notificationEvent,
+            audioFocus: AndroidAudioFocus.gainTransientMayDuck,
+          ),
+        ),
+      );
+    } catch (e) {
+      print('Failed to configure audio context: $e');
+      // Continue anyway - basic playback will still work
+    }
 
     // Create players and pre-assign sources so first playback has minimal lag.
     for (final entry in _fileMap.entries) {
@@ -192,13 +210,13 @@ class SoundService {
 
     _current = sound;
 
-    // Optional haptics (uncomment package import/use if you want this).
-    // if (haptic) {
-    //   final canVibrate = await Vibration.hasVibrator() ?? false;
-    //   if (canVibrate) {
-    //     Vibration.vibrate(duration: isCritical ? 120 : 40);
-    //   }
-    // }
+    // Optional haptics
+    if (haptic) {
+      final canVibrate = await Vibration.hasVibrator() ?? false;
+      if (canVibrate) {
+        Vibration.vibrate(duration: isCritical ? 120 : 40);
+      }
+    }
 
     // If this is critical, give it a tiny head start by ensuring source is set fresh.
     // (This can help on some devices where the decoder got evicted.)
