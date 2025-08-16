@@ -1534,10 +1534,20 @@ async def admin_test_alert(request: dict):
         # Create mock sighting for test
         mock_sighting_id = f"TEST-{datetime.utcnow().strftime('%Y%m%d-%H%M%S')}"
         
-        # Send real proximity alerts
-        alert_result = await proximity_service.send_proximity_alerts(
-            lat, lon, mock_sighting_id, 'admin_test'
-        )
+        # Send proximity alerts only if requested (default: don't send)
+        send_alerts = request.get('send_alerts', False)
+        
+        if send_alerts:
+            alert_result = await proximity_service.send_proximity_alerts(
+                lat, lon, mock_sighting_id, 'admin_test'
+            )
+        else:
+            # Just simulate without sending alerts
+            alert_result = {
+                "test_mode": True,
+                "total_alerts_sent": 0,
+                "message": "Test mode - no alerts sent (add 'send_alerts': true to actually send)"
+            }
         
         return {
             "test_alert_sent": True,
