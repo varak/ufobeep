@@ -1134,6 +1134,246 @@ async def get_witness_status(sighting_id: str, device_id: str):
         print(f"Error checking witness status: {e}")
         raise HTTPException(status_code=500, detail=f"Error checking witness status: {str(e)}")
 
+@app.get("/sightings/{sighting_id}/witness-aggregation")
+async def get_witness_aggregation(sighting_id: str):
+    """
+    Get aggregated witness data for triangulation and heat map visualization.
+    Returns witness locations, bearings, and calculated triangulation points.
+    """
+    try:
+        async with db_pool.acquire() as conn:
+            # Get all witness confirmations for this sighting
+            witnesses = await conn.fetch("""
+                SELECT 
+                    device_id,
+                    witness_latitude,
+                    witness_longitude,
+                    witness_altitude,
+                    bearing_deg,
+                    distance_km,
+                    location_accuracy,
+                    still_visible,
+                    confirmed_at,
+                    confirmation_type
+                FROM witness_confirmations
+                WHERE sighting_id = $1
+                ORDER BY confirmed_at ASC
+            """, uuid.UUID(sighting_id))
+            
+            if not witnesses:
+                return {
+                    "sighting_id": sighting_id,
+                    "witness_count": 0,
+                    "witnesses": [],
+                    "triangulation": None,
+                    "heat_map_data": [],
+                    "consensus": None
+                }
+            
+            # Convert witnesses to list of dicts
+            witness_list = []
+            bearings_for_triangulation = []
+            
+            for w in witnesses:
+                witness_data = {
+                    "device_id": w["device_id"],
+                    "location": {
+                        "lat": w["witness_latitude"],
+                        "lon": w["witness_longitude"],
+                        "alt": w["witness_altitude"]
+                    },
+                    "bearing_deg": w["bearing_deg"],
+                    "distance_km": w["distance_km"],
+                    "accuracy_m": w["location_accuracy"],
+                    "still_visible": w["still_visible"],
+                    "confirmed_at": w["confirmed_at"].isoformat() if w["confirmed_at"] else None,
+                    "type": w["confirmation_type"]
+                }
+                witness_list.append(witness_data)
+                
+                # Collect bearings for triangulation (only from accurate witnesses)
+                if w["bearing_deg"] is not None and w["location_accuracy"] and w["location_accuracy"] < 50:
+                    bearings_for_triangulation.append({
+                        "lat": w["witness_latitude"],
+                        "lon": w["witness_longitude"],
+                        "bearing": w["bearing_deg"]
+                    })
+            
+            # Calculate triangulation if we have at least 2 witnesses with bearings
+            triangulation = None
+            if len(bearings_for_triangulation) >= 2:
+                triangulation = calculate_triangulation(bearings_for_triangulation)
+            
+            # Generate heat map data (grid cells with witness density)
+            heat_map_data = generate_heat_map_data(witness_list)
+            
+            # Calculate consensus (agreement on visibility, location, etc.)
+            consensus = calculate_witness_consensus(witness_list)
+            
+            # Check if we should auto-escalate based on witness count
+            escalation_level = "normal"
+            if len(witnesses) >= 10:
+                escalation_level = "emergency"
+            elif len(witnesses) >= 3:
+                escalation_level = "urgent"
+            
+            return {
+                "sighting_id": sighting_id,
+                "witness_count": len(witnesses),
+                "witnesses": witness_list,
+                "triangulation": triangulation,
+                "heat_map_data": heat_map_data,
+                "consensus": consensus,
+                "escalation_level": escalation_level,
+                "timestamp": datetime.utcnow().isoformat()
+            }
+    
+    except Exception as e:
+        print(f"Error getting witness aggregation: {e}")
+        raise HTTPException(status_code=500, detail=f"Error getting witness aggregation: {str(e)}")
+
+def calculate_triangulation(bearings):
+    """
+    Calculate the most likely object position from multiple bearing observations.
+    Uses least squares method to find the point that minimizes distance to all bearing lines.
+    """
+    import numpy as np
+    from math import radians, cos, sin, sqrt, atan2, degrees
+    
+    if len(bearings) < 2:
+        return None
+    
+    # Convert bearings to lines in 2D space (simplified for local area)
+    # This is a simplified triangulation - production would use more sophisticated methods
+    
+    # Use the average of witness locations as initial guess
+    avg_lat = sum(b["lat"] for b in bearings) / len(bearings)
+    avg_lon = sum(b["lon"] for b in bearings) / len(bearings)
+    
+    # For simplicity, project a point 5km along each bearing and average
+    # This is a basic approximation - real triangulation would use line intersection
+    estimated_points = []
+    for b in bearings:
+        # Project 5km along the bearing
+        bearing_rad = radians(b["bearing"])
+        lat_rad = radians(b["lat"])
+        lon_rad = radians(b["lon"])
+        
+        # Approximate distance on Earth's surface
+        distance_km = 5.0
+        R = 6371  # Earth's radius in km
+        
+        # Calculate new point
+        lat2 = lat_rad + (distance_km / R) * cos(bearing_rad)
+        lon2 = lon_rad + (distance_km / R) * sin(bearing_rad) / cos(lat_rad)
+        
+        estimated_points.append({
+            "lat": degrees(lat2),
+            "lon": degrees(lon2)
+        })
+    
+    # Average the estimated points
+    if estimated_points:
+        tri_lat = sum(p["lat"] for p in estimated_points) / len(estimated_points)
+        tri_lon = sum(p["lon"] for p in estimated_points) / len(estimated_points)
+        
+        # Calculate confidence based on bearing agreement
+        bearing_std = np.std([b["bearing"] for b in bearings])
+        confidence = max(0, min(100, 100 - bearing_std * 2))  # Lower std = higher confidence
+        
+        return {
+            "estimated_location": {
+                "lat": tri_lat,
+                "lon": tri_lon
+            },
+            "confidence_percent": confidence,
+            "witness_bearings_used": len(bearings),
+            "method": "simplified_average"
+        }
+    
+    return None
+
+def generate_heat_map_data(witnesses):
+    """
+    Generate heat map data showing witness density in geographic grid cells.
+    """
+    if not witnesses:
+        return []
+    
+    # Create grid cells (0.01 degree cells = ~1km at mid-latitudes)
+    grid_size = 0.01
+    
+    # Find bounds
+    lats = [w["location"]["lat"] for w in witnesses]
+    lons = [w["location"]["lon"] for w in witnesses]
+    
+    min_lat, max_lat = min(lats), max(lats)
+    min_lon, max_lon = min(lons), max(lons)
+    
+    # Add padding
+    min_lat -= grid_size * 2
+    max_lat += grid_size * 2
+    min_lon -= grid_size * 2
+    max_lon += grid_size * 2
+    
+    # Create grid and count witnesses in each cell
+    heat_map = []
+    lat = min_lat
+    while lat <= max_lat:
+        lon = min_lon
+        while lon <= max_lon:
+            # Count witnesses in this cell
+            count = sum(1 for w in witnesses 
+                       if lat <= w["location"]["lat"] < lat + grid_size 
+                       and lon <= w["location"]["lon"] < lon + grid_size)
+            
+            if count > 0:
+                heat_map.append({
+                    "cell_center": {
+                        "lat": lat + grid_size / 2,
+                        "lon": lon + grid_size / 2
+                    },
+                    "witness_count": count,
+                    "intensity": min(1.0, count / 5.0)  # Normalize to 0-1
+                })
+            
+            lon += grid_size
+        lat += grid_size
+    
+    return heat_map
+
+def calculate_witness_consensus(witnesses):
+    """
+    Calculate consensus metrics from witness reports.
+    """
+    if not witnesses:
+        return None
+    
+    # Calculate various consensus metrics
+    still_visible_count = sum(1 for w in witnesses if w.get("still_visible"))
+    visibility_consensus = still_visible_count / len(witnesses) * 100
+    
+    # Average distance (if witnesses estimated distance)
+    distances = [w["distance_km"] for w in witnesses if w.get("distance_km")]
+    avg_distance = sum(distances) / len(distances) if distances else None
+    
+    # Time span of confirmations
+    times = [w["confirmed_at"] for w in witnesses if w.get("confirmed_at")]
+    if times:
+        from datetime import datetime
+        time_objs = [datetime.fromisoformat(t.replace('Z', '+00:00')) for t in times]
+        time_span_minutes = (max(time_objs) - min(time_objs)).total_seconds() / 60
+    else:
+        time_span_minutes = 0
+    
+    return {
+        "visibility_consensus_percent": visibility_consensus,
+        "average_distance_km": avg_distance,
+        "confirmation_time_span_minutes": time_span_minutes,
+        "total_witnesses": len(witnesses),
+        "still_visible_count": still_visible_count
+    }
+
 @app.post("/test/proximity")
 async def test_proximity_alerts(request: dict):
     """Test proximity alert system without sending alerts"""

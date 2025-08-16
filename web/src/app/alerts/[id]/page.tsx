@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import ImageWithLoading from '../../../components/ImageWithLoading'
+import WitnessAggregation from '../../../components/WitnessAggregation'
 
 interface Alert {
   id: string
@@ -340,6 +341,11 @@ export default function AlertPage({ params }: AlertPageProps) {
               <p className="text-text-tertiary text-sm mt-2">
                 Currently available for: Original submitter, administrators, and users within weather visibility range
               </p>
+            </section>
+
+            {/* Witness Aggregation - Phase 1 Task 7 */}
+            <section className="bg-dark-surface border border-dark-border rounded-lg p-6">
+              <WitnessAggregation sightingId={alert.id} />
             </section>
 
             {/* Environmental Data */}
