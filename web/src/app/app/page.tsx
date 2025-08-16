@@ -146,6 +146,104 @@ export default function AppPage() {
           </div>
         </div>
 
+        {/* Friend Beta Invitation Section */}
+        <div className="bg-dark-surface border border-brand-primary/30 rounded-xl p-8 mb-16">
+          <div className="text-center mb-6">
+            <div className="text-4xl mb-4">👥</div>
+            <h2 className="text-2xl font-bold text-text-primary mb-2">
+              Invite Friends to Beta Test
+            </h2>
+            <p className="text-text-secondary max-w-2xl mx-auto">
+              Want your friends to try UFOBeep? We use Firebase App Distribution for beta testing, 
+              which sends automatic email invites with download links.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-dark-background/50 border border-dark-border rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-brand-primary mb-4 flex items-center gap-2">
+                📧 For Friends: How to Get Beta Access
+              </h3>
+              <ol className="space-y-3 text-sm text-text-secondary">
+                <li className="flex gap-3">
+                  <span className="text-brand-primary font-bold">1.</span>
+                  <span>Ask the app owner to add your email to the beta testers list</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-brand-primary font-bold">2.</span>
+                  <span>Check your email for a Firebase App Distribution invitation</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-brand-primary font-bold">3.</span>
+                  <span>Click the download link in the email (works on Android phones)</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-brand-primary font-bold">4.</span>
+                  <span>Enable "Unknown Sources" in Android Settings → Security</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-brand-primary font-bold">5.</span>
+                  <span>Install the APK and grant permissions (Camera, Location, Notifications)</span>
+                </li>
+              </ol>
+              
+              <div className="mt-4 p-3 bg-brand-primary/10 border border-brand-primary/20 rounded">
+                <p className="text-xs text-brand-primary">
+                  💡 <strong>Note:</strong> Beta invites work best on Android devices. iPhone users need iOS TestFlight setup (more complex).
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-dark-background/50 border border-dark-border rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-brand-primary mb-4 flex items-center gap-2">
+                👨‍💻 For App Owners: Adding Beta Testers
+              </h3>
+              <div className="space-y-4 text-sm text-text-secondary">
+                <div>
+                  <p className="text-text-primary font-medium mb-2">Firebase Console Method:</p>
+                  <ol className="space-y-2 pl-4">
+                    <li>• Go to Firebase Console → App Distribution</li>
+                    <li>• Select your app and the latest release</li>
+                    <li>• Click "Add testers" and enter email addresses</li>
+                    <li>• Testers receive automatic email invitations</li>
+                  </ol>
+                </div>
+                
+                <div>
+                  <p className="text-text-primary font-medium mb-2">Firebase CLI Method:</p>
+                  <code className="bg-dark-surface border border-dark-border rounded p-2 block text-xs text-brand-primary">
+                    firebase appdistribution:testers:add --file emails.txt --project ufobeep
+                  </code>
+                </div>
+                
+                <div className="mt-4 p-3 bg-semantic-warning/10 border border-semantic-warning/20 rounded">
+                  <p className="text-xs text-semantic-warning">
+                    ⚠️ <strong>Admin Only:</strong> Only the Firebase project owner can add beta testers.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 text-center">
+            <div className="bg-dark-background border border-dark-border rounded-lg p-4 max-w-2xl mx-auto">
+              <div className="flex items-center justify-center gap-3 mb-2">
+                <div className="text-xl">🔗</div>
+                <h4 className="text-text-primary font-semibold">Direct Download Links</h4>
+              </div>
+              <p className="text-text-secondary text-sm mb-3">
+                Firebase App Distribution provides temporary download links that expire in 1 hour:
+              </p>
+              <div className="bg-dark-surface border border-dark-border rounded p-3">
+                <p className="text-xs text-text-tertiary font-mono">
+                  Latest: <span className="text-brand-primary">v1.0.0-beta.5+6</span> - 
+                  <span className="text-green-400"> Fixed location display & admin panel access</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Future Release Notice */}
         <div className="text-center mb-16">
           <h3 className="text-xl font-semibold text-text-primary mb-4">📬 Get Notified for Official Release</h3>
