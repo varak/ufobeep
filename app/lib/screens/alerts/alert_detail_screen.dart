@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../../providers/alerts_provider.dart';
 import '../../providers/app_state.dart';
@@ -241,9 +242,6 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 _buildMediaSection(alert),
                 const SizedBox(height: 24),
 
-                // Live Sightings Map section
-                _buildLiveSightingsMap(alert, alertsAsync),
-                const SizedBox(height: 24),
 
                 // Verification status only (remove redundant category)
                 if (alert.isVerified)
@@ -322,6 +320,25 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                           value: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
                         ),
                         const SizedBox(height: 16),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // Mini compass section
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Direction',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        const SizedBox(height: 12),
+                        _buildMiniCompass(alert),
                       ],
                     ),
                   ),
@@ -655,193 +672,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     );
   }
 
-  Widget _buildLiveSightingsMap(Alert alert, AsyncValue<List<Alert>> alertsAsync) {
-    return alertsAsync.when(
-      data: (allAlerts) {
-        // Get current user location to center the map
-        return FutureBuilder<LatLng?>(
-          future: _getUserLocation(),
-          builder: (context, locationSnapshot) {
-            // Use user's current location as center, fallback to alert location
-            final center = locationSnapshot.data ?? LatLng(alert.latitude, alert.longitude);
-            
-            // Filter alerts to show nearby ones (within ~10km radius for better map context)
-            final nearbyAlerts = _getNearbyAlerts(allAlerts, alert, 10.0);
-            
-            return Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.map, color: AppColors.brandPrimary, size: 20),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Live Sightings Map',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        const Spacer(),
-                        Text(
-                          '${nearbyAlerts.length} nearby',
-                          style: const TextStyle(
-                            color: AppColors.textSecondary,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Container(
-                      height: 250,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: AppColors.darkBorder),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: MapWidget(
-                          alerts: nearbyAlerts,
-                          center: center, // Center on user's location
-                          zoom: 12.0, // Closer zoom for detail view
-                          height: 250,
-                          showControls: true,
-                          onAlertTap: (tappedAlert) {
-                            if (tappedAlert.id != alert.id) {
-                              // Navigate to tapped alert if it's different
-                              context.go('/alert/${tappedAlert.id}');
-                            }
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      locationSnapshot.hasData 
-                          ? 'Map centered on your current location'
-                          : 'Map centered on sighting location',
-                      style: const TextStyle(
-                        color: AppColors.textTertiary,
-                        fontSize: 11,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
-      loading: () => Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              const Text('Loading live sightings map...'),
-              const SizedBox(height: 12),
-              Container(
-                height: 250,
-                decoration: BoxDecoration(
-                  color: AppColors.darkSurface,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.darkBorder),
-                ),
-                child: const Center(
-                  child: CircularProgressIndicator(color: AppColors.brandPrimary),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      error: (error, stack) => Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              const Text('Failed to load sightings map'),
-              const SizedBox(height: 12),
-              Container(
-                height: 250,
-                decoration: BoxDecoration(
-                  color: AppColors.darkSurface,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.darkBorder),
-                ),
-                child: const Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.map_outlined, size: 48, color: AppColors.textTertiary),
-                      SizedBox(height: 8),
-                      Text('Map unavailable', style: TextStyle(color: AppColors.textTertiary)),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 
-  Future<LatLng?> _getUserLocation() async {
-    try {
-      final permissionService = PermissionService();
-      if (permissionService.locationGranted) {
-        final position = await permissionService.getCurrentLocation();
-        if (position != null) {
-          return LatLng(position.latitude, position.longitude);
-        }
-      }
-      return null;
-    } catch (e) {
-      print('Failed to get user location for map: $e');
-      return null;
-    }
-  }
-
-  List<Alert> _getNearbyAlerts(List<Alert> allAlerts, Alert currentAlert, double radiusKm) {
-    // Always include the current alert
-    final nearbyAlerts = <Alert>[currentAlert];
-    
-    // Add other alerts within the radius
-    for (final alert in allAlerts) {
-      if (alert.id == currentAlert.id) continue; // Skip current alert
-      
-      final distance = _calculateDistance(
-        currentAlert.latitude, 
-        currentAlert.longitude,
-        alert.latitude, 
-        alert.longitude,
-      );
-      
-      if (distance <= radiusKm) {
-        nearbyAlerts.add(alert);
-      }
-    }
-    
-    return nearbyAlerts;
-  }
-
-  double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-    const double earthRadiusKm = 6371.0;
-    final double dLat = _degreesToRadians(lat2 - lat1);
-    final double dLon = _degreesToRadians(lon2 - lon1);
-    
-    final double a = math.sin(dLat / 2) * math.sin(dLat / 2) +
-        math.cos(_degreesToRadians(lat1)) * math.cos(_degreesToRadians(lat2)) *
-        math.sin(dLon / 2) * math.sin(dLon / 2);
-    
-    final double c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
-    return earthRadiusKm * c;
-  }
-
-  double _degreesToRadians(double degrees) {
-    return degrees * (math.pi / 180);
-  }
 
   Widget _buildPhotoAnalysisItem(Map<String, dynamic> analysis) {
     final String status = analysis['analysis_status'] ?? 'pending';
@@ -1345,6 +1176,151 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       ),
     );
   }
+
+  Widget _buildMiniCompass(Alert alert) {
+    return FutureBuilder<Position?>(
+      future: permissionService.getCurrentLocation(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Row(
+            children: [
+              const Icon(Icons.explore, color: AppColors.textTertiary, size: 20),
+              const SizedBox(width: 12),
+              Text(
+                'Getting your location...',
+                style: TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          );
+        }
+
+        final userLocation = snapshot.data!;
+        final bearing = _calculateBearing(
+          userLocation.latitude,
+          userLocation.longitude,
+          alert.latitude,
+          alert.longitude,
+        );
+        final distance = alert.distance ?? _calculateDistance(
+          userLocation.latitude,
+          userLocation.longitude,
+          alert.latitude,
+          alert.longitude,
+        );
+
+        return Row(
+          children: [
+            // Mini compass indicator
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: AppColors.darkBorder, width: 2),
+                color: AppColors.darkBackground,
+              ),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  // Compass face with N/S/E/W markers
+                  CustomPaint(
+                    size: const Size(60, 60),
+                    painter: _CompassFacePainter(),
+                  ),
+                  // Direction arrow pointing to sighting
+                  Transform.rotate(
+                    angle: bearing * math.pi / 180,
+                    child: const Icon(
+                      Icons.navigation,
+                      color: AppColors.brandPrimary,
+                      size: 24,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 16),
+            // Direction info
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${_getCardinalDirection(bearing)} (${bearing.toStringAsFixed(0)}°)',
+                    style: const TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${distance.toStringAsFixed(1)} km away',
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Navigate button
+            OutlinedButton.icon(
+              onPressed: () {
+                _navigateToSighting(alert, bearing, distance);
+              },
+              icon: const Icon(Icons.explore, size: 16),
+              label: const Text('Orient'),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.brandPrimary,
+                side: const BorderSide(color: AppColors.brandPrimary),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  double _calculateBearing(double lat1, double lon1, double lat2, double lon2) {
+    final dLon = (lon2 - lon1) * math.pi / 180;
+    final lat1Rad = lat1 * math.pi / 180;
+    final lat2Rad = lat2 * math.pi / 180;
+
+    final y = math.sin(dLon) * math.cos(lat2Rad);
+    final x = math.cos(lat1Rad) * math.sin(lat2Rad) - 
+              math.sin(lat1Rad) * math.cos(lat2Rad) * math.cos(dLon);
+
+    final bearing = math.atan2(y, x) * 180 / math.pi;
+    return (bearing + 360) % 360;
+  }
+
+  double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    const double earthRadius = 6371; // Earth's radius in kilometers
+    final dLat = (lat2 - lat1) * math.pi / 180;
+    final dLon = (lon2 - lon1) * math.pi / 180;
+
+    final a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+              math.cos(lat1 * math.pi / 180) * math.cos(lat2 * math.pi / 180) *
+              math.sin(dLon / 2) * math.sin(dLon / 2);
+    final c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
+
+    return earthRadius * c;
+  }
+
+  String _getCardinalDirection(double bearing) {
+    const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+    final index = ((bearing + 22.5) / 45).floor() % 8;
+    return directions[index];
+  }
+
+  void _navigateToSighting(Alert alert, double bearing, double distance) {
+    context.go('/compass?targetLat=${alert.latitude}&targetLon=${alert.longitude}&targetName=${Uri.encodeComponent(alert.title)}&targetBearing=${bearing.toStringAsFixed(1)}&distance=${distance.toStringAsFixed(1)}&alertId=${alert.id}');
+  }
 }
 
 class _DetailRow extends StatelessWidget {
@@ -1382,4 +1358,77 @@ class _DetailRow extends StatelessWidget {
       ),
     );
   }
+}
+
+class _CompassFacePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = size.width / 2 - 2;
+    
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1
+      ..color = AppColors.textTertiary;
+
+    // Draw compass face circle
+    canvas.drawCircle(center, radius, paint);
+
+    // Draw cardinal direction markers
+    final textPainter = TextPainter(
+      textAlign: TextAlign.center,
+      textDirection: TextDirection.ltr,
+    );
+
+    // North
+    textPainter.text = const TextSpan(
+      text: 'N',
+      style: TextStyle(
+        color: AppColors.textPrimary,
+        fontSize: 10,
+        fontWeight: FontWeight.w600,
+      ),
+    );
+    textPainter.layout();
+    textPainter.paint(canvas, Offset(center.dx - textPainter.width / 2, center.dy - radius + 2));
+
+    // South
+    textPainter.text = const TextSpan(
+      text: 'S',
+      style: TextStyle(
+        color: AppColors.textSecondary,
+        fontSize: 8,
+        fontWeight: FontWeight.w400,
+      ),
+    );
+    textPainter.layout();
+    textPainter.paint(canvas, Offset(center.dx - textPainter.width / 2, center.dy + radius - textPainter.height - 2));
+
+    // East
+    textPainter.text = const TextSpan(
+      text: 'E',
+      style: TextStyle(
+        color: AppColors.textSecondary,
+        fontSize: 8,
+        fontWeight: FontWeight.w400,
+      ),
+    );
+    textPainter.layout();
+    textPainter.paint(canvas, Offset(center.dx + radius - textPainter.width - 2, center.dy - textPainter.height / 2));
+
+    // West
+    textPainter.text = const TextSpan(
+      text: 'W',
+      style: TextStyle(
+        color: AppColors.textSecondary,
+        fontSize: 8,
+        fontWeight: FontWeight.w400,
+      ),
+    );
+    textPainter.layout();
+    textPainter.paint(canvas, Offset(center.dx - radius + 2, center.dy - textPainter.height / 2));
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

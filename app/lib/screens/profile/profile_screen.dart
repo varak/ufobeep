@@ -51,9 +51,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget build(BuildContext context) {
     final userPreferences = ref.watch(userPreferencesProvider);
     
-    // If user is not registered (no preferences or no display name), show registration prompt
-    final isRegistered = userPreferences?.isComplete == true;
-    if (!isRegistered) {
+    // If user has no preferences at all, show registration prompt
+    // But if they have preferences (even without display name), show the full profile
+    if (userPreferences == null) {
       return _buildRegistrationPrompt();
     }
 

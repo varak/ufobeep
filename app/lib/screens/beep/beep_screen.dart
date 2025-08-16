@@ -392,7 +392,87 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              // Big BEEP button
+              // What do you see input - moved to top
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.darkSurface,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.darkBorder),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'What do you see?',
+                      style: TextStyle(
+                        color: AppColors.textPrimary,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    TextField(
+                      controller: _descriptionController,
+                      maxLines: 4,
+                      style: const TextStyle(
+                        color: AppColors.textPrimary,
+                        fontSize: 16,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Describe what you\'re seeing in the sky...',
+                        hintStyle: TextStyle(
+                          color: AppColors.textSecondary.withOpacity(0.7),
+                        ),
+                        border: InputBorder.none,
+                        filled: true,
+                        fillColor: AppColors.darkBackground.withOpacity(0.5),
+                        contentPadding: const EdgeInsets.all(16),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(color: AppColors.darkBorder.withOpacity(0.5)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(color: AppColors.brandPrimary),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              const SizedBox(height: 24),
+
+              // Error message
+              if (_errorMessage != null) ...[
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    color: AppColors.semanticError.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: AppColors.semanticError.withOpacity(0.3)),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.error, color: AppColors.semanticError, size: 20),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          _errorMessage!,
+                          style: const TextStyle(
+                            color: AppColors.semanticError,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+
+              // Big BEEP button - moved lower on page
               Center(
                 child: Column(
                   children: [
@@ -435,15 +515,15 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
               ),
               
               const SizedBox(height: 24),
-              
-              // Divider with text
+
+              // Or continue to photo options
               Row(
                 children: [
                   const Expanded(child: Divider(color: AppColors.darkBorder)),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'BEEP BUTTON WILL INCLUDE YOUR DESCRIPTION',
+                      'ACCESS CAMERA OR ATTACH MEDIA',
                       style: TextStyle(
                         color: AppColors.textTertiary,
                         fontSize: 12,
@@ -456,179 +536,71 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
               ),
               
               const SizedBox(height: 16),
-
-              // Error message
-              if (_errorMessage != null) ...[
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  margin: const EdgeInsets.only(bottom: 16),
-                  decoration: BoxDecoration(
-                    color: AppColors.semanticError.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: AppColors.semanticError.withOpacity(0.3)),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.error, color: AppColors.semanticError, size: 20),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          _errorMessage!,
-                          style: const TextStyle(
-                            color: AppColors.semanticError,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-
-              Column(
+              
+              // Photo options with glow effects
+              Row(
                 children: [
-                    const SizedBox(height: 24),
-                    
-                    // What do you see input
-                    Container(
-                      padding: const EdgeInsets.all(16),
+                  Expanded(
+                    child: Container(
                       decoration: BoxDecoration(
-                        color: AppColors.darkSurface,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppColors.darkBorder),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'What do you see?',
-                            style: TextStyle(
-                              color: AppColors.textPrimary,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          TextField(
-                            controller: _descriptionController,
-                            maxLines: 4,
-                            style: const TextStyle(
-                              color: AppColors.textPrimary,
-                              fontSize: 16,
-                            ),
-                            decoration: InputDecoration(
-                              hintText: 'Describe what you\'re seeing in the sky...',
-                              hintStyle: TextStyle(
-                                color: AppColors.textSecondary.withOpacity(0.7),
-                              ),
-                              border: InputBorder.none,
-                              filled: true,
-                              fillColor: AppColors.darkBackground.withOpacity(0.5),
-                              contentPadding: const EdgeInsets.all(16),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(color: AppColors.darkBorder.withOpacity(0.5)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: const BorderSide(color: AppColors.brandPrimary),
-                              ),
-                            ),
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.brandPrimary.withOpacity(0.3),
+                            blurRadius: 15,
+                            spreadRadius: 2,
                           ),
                         ],
                       ),
-                    ),
-                    
-                    const SizedBox(height: 24),
-                    
-                    
-                    // Or continue to photo options
-                    Row(
-                      children: [
-                        const Expanded(child: Divider(color: AppColors.darkBorder)),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Text(
-                            'ACCESS CAMERA OR ATTACH MEDIA',
-                            style: TextStyle(
-                              color: AppColors.textTertiary,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
+                      child: OutlinedButton.icon(
+                        onPressed: _isCapturing ? null : _capturePhoto,
+                        icon: const Icon(Icons.camera_alt),
+                        label: const Text('Camera'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppColors.brandPrimary,
+                          backgroundColor: AppColors.brandPrimary.withOpacity(0.1),
+                          side: const BorderSide(color: AppColors.brandPrimary, width: 2),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        const Expanded(child: Divider(color: AppColors.darkBorder)),
-                      ],
+                      ),
                     ),
-                    
-                    const SizedBox(height: 16),
-                    
-                    // Photo options with glow effects
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.brandPrimary.withOpacity(0.3),
-                                  blurRadius: 15,
-                                  spreadRadius: 2,
-                                ),
-                              ],
-                            ),
-                            child: OutlinedButton.icon(
-                              onPressed: _isCapturing ? null : _capturePhoto,
-                              icon: const Icon(Icons.camera_alt),
-                              label: const Text('Camera'),
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: AppColors.brandPrimary,
-                                backgroundColor: AppColors.brandPrimary.withOpacity(0.1),
-                                side: const BorderSide(color: AppColors.brandPrimary, width: 2),
-                                padding: const EdgeInsets.symmetric(vertical: 12),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.brandPrimary.withOpacity(0.3),
+                            blurRadius: 15,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: OutlinedButton.icon(
+                        onPressed: _isCapturing ? null : _pickFromGallery,
+                        icon: const Icon(Icons.photo_library),
+                        label: const Text('Attach'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppColors.brandPrimary,
+                          backgroundColor: AppColors.brandPrimary.withOpacity(0.1),
+                          side: const BorderSide(color: AppColors.brandPrimary, width: 2),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.brandPrimary.withOpacity(0.3),
-                                  blurRadius: 15,
-                                  spreadRadius: 2,
-                                ),
-                              ],
-                            ),
-                            child: OutlinedButton.icon(
-                              onPressed: _isCapturing ? null : _pickFromGallery,
-                              icon: const Icon(Icons.photo_library),
-                              label: const Text('Attach'),
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: AppColors.brandPrimary,
-                                backgroundColor: AppColors.brandPrimary.withOpacity(0.1),
-                                side: const BorderSide(color: AppColors.brandPrimary, width: 2),
-                                padding: const EdgeInsets.symmetric(vertical: 12),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                    
-                    const SizedBox(height: 32),
-                  ],
-                ),
+                  ),
+                ],
+              ),
+              
+              const SizedBox(height: 32),
 
             ],
           ),

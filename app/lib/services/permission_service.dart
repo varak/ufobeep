@@ -20,6 +20,8 @@ class PermissionService {
   bool _photosGranted = false;
   bool _notificationGranted = false;
   bool _permissionsInitialized = false;
+  Position? _cachedLocation;
+  DateTime? _locationCacheTime;
 
   // Getters for current permission status
   bool get locationGranted => _locationGranted;
@@ -27,6 +29,7 @@ class PermissionService {
   bool get photosGranted => _photosGranted;
   bool get notificationGranted => _notificationGranted;
   bool get permissionsInitialized => _permissionsInitialized;
+  Position? get cachedLocation => _cachedLocation;
 
   /// Initialize all permissions at app startup
   Future<void> initializePermissions() async {
@@ -36,6 +39,12 @@ class PermissionService {
     
     // Always request permissions fresh (don't rely on cache for critical permissions)
     await _requestAllPermissions();
+    
+    // Get initial location if permission was granted (for instant beeps)
+    if (_locationGranted) {
+      print('Getting initial location for instant beep readiness...');
+      await getCurrentLocation(); // This caches location for immediate use
+    }
     
     // Cache the results
     final prefs = await SharedPreferences.getInstance();
@@ -163,14 +172,32 @@ class PermissionService {
       return null;
     }
 
+    // Return cached location if it's fresh (less than 5 minutes old)
+    if (_cachedLocation != null && _locationCacheTime != null) {
+      final age = DateTime.now().difference(_locationCacheTime!);
+      if (age.inMinutes < 5) {
+        print('Using cached location (${age.inSeconds}s old)');
+        return _cachedLocation;
+      }
+    }
+
     try {
-      return await Geolocator.getCurrentPosition(
+      print('Getting fresh location...');
+      final position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.medium,
         timeLimit: const Duration(seconds: 10),
       );
+      
+      // Cache the fresh location
+      _cachedLocation = position;
+      _locationCacheTime = DateTime.now();
+      print('Location cached: ${position.latitude}, ${position.longitude}');
+      
+      return position;
     } catch (e) {
       print('Error getting current location: $e');
-      return null;
+      // Return cached location as fallback if available
+      return _cachedLocation;
     }
   }
 

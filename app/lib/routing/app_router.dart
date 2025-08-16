@@ -13,6 +13,7 @@ import '../screens/beep/beep_composition_screen.dart';
 import '../screens/beep/camera_capture_screen.dart';
 import '../screens/chat/chat_screen.dart';
 import '../screens/compass/compass_screen.dart';
+import '../screens/map/map_screen.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/profile/registration_screen.dart';
 import '../screens/profile/language_settings_screen.dart';
@@ -191,28 +192,11 @@ GoRouter appRouter(AppRouterRef ref) {
             ],
           ),
 
-          // Compass
+          // Map (main tab)
           GoRoute(
-            path: '/compass',
-            name: 'compass',
-            builder: (context, state) {
-              // Extract target coordinates from query parameters
-              final targetLat = state.uri.queryParameters['targetLat'];
-              final targetLon = state.uri.queryParameters['targetLon'];
-              final targetName = state.uri.queryParameters['targetName'];
-              final bearing = state.uri.queryParameters['bearing'];
-              final distance = state.uri.queryParameters['distance'];
-              final alertId = state.uri.queryParameters['alertId'];
-              
-              return CompassScreen(
-                targetLat: targetLat != null ? double.tryParse(targetLat) : null,
-                targetLon: targetLon != null ? double.tryParse(targetLon) : null,
-                targetName: targetName,
-                targetBearing: bearing != null ? double.tryParse(bearing) : null,
-                targetDistance: distance != null ? double.tryParse(distance) : null,
-                alertId: alertId,
-              );
-            },
+            path: '/map',
+            name: 'map',
+            builder: (context, state) => const MapScreen(),
           ),
 
           // Profile
@@ -230,6 +214,30 @@ GoRouter appRouter(AppRouterRef ref) {
             ],
           ),
         ],
+      ),
+
+      // Compass (accessible from alert details, not in bottom nav)
+      GoRoute(
+        path: '/compass',
+        name: 'compass',
+        builder: (context, state) {
+          // Extract target coordinates from query parameters
+          final targetLat = state.uri.queryParameters['targetLat'];
+          final targetLon = state.uri.queryParameters['targetLon'];
+          final targetName = state.uri.queryParameters['targetName'];
+          final bearing = state.uri.queryParameters['bearing'];
+          final distance = state.uri.queryParameters['distance'];
+          final alertId = state.uri.queryParameters['alertId'];
+          
+          return CompassScreen(
+            targetLat: targetLat != null ? double.tryParse(targetLat) : null,
+            targetLon: targetLon != null ? double.tryParse(targetLon) : null,
+            targetName: targetName,
+            targetBearing: bearing != null ? double.tryParse(bearing) : null,
+            targetDistance: distance != null ? double.tryParse(distance) : null,
+            alertId: alertId,
+          );
+        },
       ),
 
       // Registration Screen
@@ -273,7 +281,7 @@ class MainBottomNavBar extends StatelessWidget {
     int currentIndex = 0;
     if (currentLocation.startsWith('/beep')) {
       currentIndex = 1;
-    } else if (currentLocation.startsWith('/compass')) {
+    } else if (currentLocation.startsWith('/map')) {
       currentIndex = 2;
     } else if (currentLocation.startsWith('/profile')) {
       currentIndex = 3;
@@ -291,7 +299,7 @@ class MainBottomNavBar extends StatelessWidget {
             context.go('/beep');
             break;
           case 2:
-            context.go('/compass');
+            context.go('/map');
             break;
           case 3:
             context.go('/profile');
@@ -308,8 +316,8 @@ class MainBottomNavBar extends StatelessWidget {
           label: 'Beep',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.explore),
-          label: 'Orient',
+          icon: Icon(Icons.map),
+          label: 'Map',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
