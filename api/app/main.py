@@ -255,7 +255,7 @@ app.include_router(mufon.router)
 async def get_alerts():
     try:
         async with db_pool.acquire() as conn:
-            # Get recent sightings as alerts with photo analysis results
+            # Get recent sightings as alerts with photo analysis and witness confirmation results
             rows = await conn.fetch("""
                 SELECT 
                     s.id::text as id,
@@ -274,7 +274,7 @@ async def get_alerts():
                     -- Aggregate photo analysis results
                     COALESCE(
                         json_agg(
-                            json_build_object(
+                            DISTINCT json_build_object(
                                 'filename', par.filename,
                                 'classification', par.classification,
                                 'matched_object', par.matched_object,
@@ -283,10 +283,23 @@ async def get_alerts():
                                 'analysis_status', par.analysis_status,
                                 'processing_duration_ms', par.processing_duration_ms
                             )
-                            ORDER BY par.confidence DESC NULLS LAST
+                            ORDER BY json_build_object(
+                                'filename', par.filename,
+                                'classification', par.classification,
+                                'matched_object', par.matched_object,
+                                'confidence', par.confidence,
+                                'angular_separation_deg', par.angular_separation_deg,
+                                'analysis_status', par.analysis_status,
+                                'processing_duration_ms', par.processing_duration_ms
+                            )
                         ) FILTER (WHERE par.id IS NOT NULL),
                         '[]'
-                    ) as photo_analysis
+                    ) as photo_analysis,
+                    -- Count witness confirmations
+                    COALESCE(
+                        (SELECT COUNT(*) FROM witness_confirmations wc WHERE wc.sighting_id = s.id),
+                        0
+                    ) as total_confirmations
                 FROM sightings s
                 LEFT JOIN photo_analysis_results par ON s.id = par.sighting_id
                 WHERE s.is_public = true 
@@ -413,7 +426,9 @@ async def get_alerts():
                     "matrix_room_id": "",
                     "reporter_id": "",
                     "enrichment": enrichment_info,  # Include enrichment data
-                    "photo_analysis": photo_analysis_results  # Include photo analysis results
+                    "photo_analysis": photo_analysis_results,  # Include photo analysis results
+                    "total_confirmations": row["total_confirmations"],  # Phase 1: witness confirmation count
+                    "can_confirm_witness": True  # Phase 1: always allow witness confirmation
                 }
                 
                 alerts.append(alert)
@@ -898,6 +913,226 @@ async def create_anonymous_beep(request: dict):
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Error creating anonymous beep: {str(e)}")
+
+@app.post("/sightings/{sighting_id}/witness-confirm")
+async def confirm_witness(sighting_id: str, request: dict):
+    """
+    Confirm that a user witnesses a sighting - Phase 1 'I SEE IT TOO' button
+    Records witness location for triangulation and updates witness count
+    """
+    try:
+        # Validate required fields
+        if not request.get('device_id'):
+            raise HTTPException(status_code=400, detail="device_id is required")
+        
+        location = request.get('location')
+        if not location or location.get('latitude') is None or location.get('longitude') is None:
+            raise HTTPException(status_code=400, detail="location with latitude and longitude is required")
+        
+        device_id = request['device_id']
+        lat = float(location['latitude'])
+        lng = float(location['longitude'])
+        
+        # Block invalid coordinates
+        if lat == 0.0 and lng == 0.0:
+            raise HTTPException(status_code=400, detail="Invalid GPS coordinates (0,0)")
+        
+        # Get optional fields
+        accuracy = location.get('accuracy', 50.0)
+        altitude = location.get('altitude')
+        bearing_deg = request.get('bearing_deg')
+        description = request.get('description', '')
+        still_visible = request.get('still_visible', True)
+        
+        # Create witness confirmation table if it doesn't exist
+        async with db_pool.acquire() as conn:
+            await conn.execute("""
+                CREATE TABLE IF NOT EXISTS witness_confirmations (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    sighting_id UUID NOT NULL,
+                    device_id VARCHAR(255) NOT NULL,
+                    user_id UUID,
+                    witness_latitude DOUBLE PRECISION NOT NULL,
+                    witness_longitude DOUBLE PRECISION NOT NULL,
+                    witness_altitude DOUBLE PRECISION,
+                    location_accuracy DOUBLE PRECISION,
+                    bearing_deg DOUBLE PRECISION,
+                    distance_km DOUBLE PRECISION,
+                    confirmation_type VARCHAR(20) DEFAULT 'visual',
+                    still_visible BOOLEAN DEFAULT true,
+                    description TEXT,
+                    device_platform VARCHAR(20),
+                    app_version VARCHAR(50),
+                    confirmed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+                    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+                    UNIQUE(device_id, sighting_id)
+                )
+            """)
+            
+            # Check if sighting exists
+            sighting = await conn.fetchrow(
+                "SELECT id, witness_count FROM sightings WHERE id = $1",
+                uuid.UUID(sighting_id)
+            )
+            
+            if not sighting:
+                raise HTTPException(status_code=404, detail="Sighting not found")
+            
+            # Check if device already confirmed this sighting
+            existing = await conn.fetchrow(
+                "SELECT id FROM witness_confirmations WHERE device_id = $1 AND sighting_id = $2",
+                device_id, uuid.UUID(sighting_id)
+            )
+            
+            if existing:
+                raise HTTPException(status_code=409, detail="Device already confirmed this sighting")
+            
+            # Calculate distance from original sighting
+            original_location = await conn.fetchrow("""
+                SELECT 
+                    (sensor_data->>'location')::jsonb->>'latitude' as orig_lat,
+                    (sensor_data->>'location')::jsonb->>'longitude' as orig_lng
+                FROM sightings WHERE id = $1
+            """, uuid.UUID(sighting_id))
+            
+            distance_km = None
+            if original_location and original_location['orig_lat'] and original_location['orig_lng']:
+                try:
+                    orig_lat = float(original_location['orig_lat'])
+                    orig_lng = float(original_location['orig_lng'])
+                    
+                    # Haversine distance calculation
+                    import math
+                    R = 6371  # Earth's radius in kilometers
+                    dlat = math.radians(lat - orig_lat)
+                    dlon = math.radians(lng - orig_lng)
+                    a = (math.sin(dlat/2)**2 + 
+                         math.cos(math.radians(orig_lat)) * math.cos(math.radians(lat)) * 
+                         math.sin(dlon/2)**2)
+                    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+                    distance_km = R * c
+                except:
+                    pass
+            
+            # Insert witness confirmation
+            await conn.execute("""
+                INSERT INTO witness_confirmations 
+                (sighting_id, device_id, witness_latitude, witness_longitude, witness_altitude,
+                 location_accuracy, bearing_deg, distance_km, confirmation_type, still_visible, 
+                 description, device_platform, app_version)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+            """, uuid.UUID(sighting_id), device_id, lat, lng, altitude, accuracy, bearing_deg,
+                distance_km, 'visual', still_visible, description, 
+                request.get('device_platform'), request.get('app_version'))
+            
+            # Update witness count on the sighting
+            new_witness_count = await conn.fetchval("""
+                UPDATE sightings 
+                SET witness_count = witness_count + 1, updated_at = NOW()
+                WHERE id = $1
+                RETURNING witness_count
+            """, uuid.UUID(sighting_id))
+            
+            # Get total confirmations for this sighting
+            total_confirmations = await conn.fetchval(
+                "SELECT COUNT(*) FROM witness_confirmations WHERE sighting_id = $1",
+                uuid.UUID(sighting_id)
+            )
+            
+            # PHASE 1 FEATURE: Re-send escalated alerts if witness count crosses thresholds
+            from services.proximity_alert_service import get_proximity_alert_service
+            proximity_service = get_proximity_alert_service(db_pool)
+            
+            escalation_triggered = False
+            if new_witness_count in [3, 5, 10]:  # Escalation thresholds
+                try:
+                    # Re-send alerts with higher priority
+                    escalation_result = await proximity_service.send_proximity_alerts(
+                        orig_lat if distance_km else lat, 
+                        orig_lng if distance_km else lng, 
+                        sighting_id, 
+                        device_id,
+                        escalation=True,
+                        witness_count=new_witness_count
+                    )
+                    escalation_triggered = True
+                    print(f"Escalated alert sent for sighting {sighting_id} with {new_witness_count} witnesses")
+                except Exception as e:
+                    print(f"Failed to send escalation alert: {e}")
+            
+            return {
+                "success": True,
+                "message": "Witness confirmation recorded successfully",
+                "data": {
+                    "sighting_id": sighting_id,
+                    "device_id": device_id,
+                    "witness_count": new_witness_count,
+                    "total_confirmations": total_confirmations,
+                    "distance_km": round(distance_km, 2) if distance_km else None,
+                    "still_visible": still_visible,
+                    "escalation_triggered": escalation_triggered,
+                    "witness_location": {
+                        "latitude": lat,
+                        "longitude": lng,
+                        "accuracy": accuracy
+                    }
+                },
+                "timestamp": datetime.now().isoformat()
+            }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error confirming witness: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Error confirming witness: {str(e)}")
+
+@app.get("/sightings/{sighting_id}/witness-status/{device_id}")
+async def get_witness_status(sighting_id: str, device_id: str):
+    """
+    Check if a device has already confirmed a sighting - for UI state management
+    """
+    try:
+        async with db_pool.acquire() as conn:
+            # Check if device already confirmed this sighting
+            confirmation = await conn.fetchrow("""
+                SELECT id, confirmed_at, still_visible, distance_km
+                FROM witness_confirmations 
+                WHERE device_id = $1 AND sighting_id = $2
+            """, device_id, uuid.UUID(sighting_id))
+            
+            # Get total confirmations for this sighting
+            total_confirmations = await conn.fetchval(
+                "SELECT COUNT(*) FROM witness_confirmations WHERE sighting_id = $1",
+                uuid.UUID(sighting_id)
+            )
+            
+            # Get current witness count from sighting
+            witness_count = await conn.fetchval(
+                "SELECT witness_count FROM sightings WHERE id = $1",
+                uuid.UUID(sighting_id)
+            )
+            
+            if confirmation:
+                return {
+                    "has_confirmed": True,
+                    "confirmed_at": confirmation["confirmed_at"].isoformat(),
+                    "still_visible": confirmation["still_visible"],
+                    "distance_km": confirmation["distance_km"],
+                    "total_confirmations": total_confirmations,
+                    "witness_count": witness_count
+                }
+            else:
+                return {
+                    "has_confirmed": False,
+                    "total_confirmations": total_confirmations,
+                    "witness_count": witness_count
+                }
+    
+    except Exception as e:
+        print(f"Error checking witness status: {e}")
+        raise HTTPException(status_code=500, detail=f"Error checking witness status: {str(e)}")
 
 @app.post("/test/proximity")
 async def test_proximity_alerts(request: dict):

@@ -1,12 +1,17 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../theme/app_theme.dart';
 import '../providers/alerts_provider.dart';
 import '../models/alerts_filter.dart';
+import '../services/api_client.dart';
+import '../services/anonymous_beep_service.dart';
+import '../services/permission_service.dart';
+import '../services/sound_service.dart';
 
-class AlertCard extends StatelessWidget {
+class AlertCard extends ConsumerStatefulWidget {
   const AlertCard({
     super.key,
     required this.alert,
@@ -19,6 +24,253 @@ class AlertCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   @override
+  ConsumerState<AlertCard> createState() => _AlertCardState();
+}
+
+class _AlertCardState extends ConsumerState<AlertCard> {
+  bool _isConfirming = false;
+  bool? _hasConfirmed;
+  int _witnessCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _witnessCount = widget.alert.witnessCount;
+    _checkWitnessStatus();
+  }
+
+  Future<void> _checkWitnessStatus() async {
+    try {
+      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      final status = await ApiClient.instance.getWitnessStatus(
+        sightingId: widget.alert.id,
+        deviceId: deviceId,
+      );
+      
+      if (mounted) {
+        setState(() {
+          _hasConfirmed = status['has_confirmed'] ?? false;
+          _witnessCount = status['witness_count'] ?? widget.alert.witnessCount;
+        });
+      }
+    } catch (e) {
+      // Silently fail - will show confirmation button by default
+      print('Failed to check witness status: $e');
+    }
+  }
+
+  Future<void> _confirmWitness() async {
+    if (_isConfirming || _hasConfirmed == true) return;
+
+    setState(() {
+      _isConfirming = true;
+    });
+
+    try {
+      // Check location permission
+      if (!permissionService.locationGranted) {
+        await permissionService.refreshPermissions();
+        if (!permissionService.locationGranted) {
+          _showPermissionDialog();
+          return;
+        }
+      }
+
+      // Get current location
+      final position = await permissionService.getCurrentLocation();
+      if (position == null) {
+        _showLocationError();
+        return;
+      }
+
+      // Play confirmation sound
+      await SoundService.I.play(AlertSound.tap, haptic: true);
+
+      // Get device ID
+      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+
+      // Confirm witness
+      final result = await ApiClient.instance.confirmWitness(
+        sightingId: widget.alert.id,
+        deviceId: deviceId,
+        latitude: position.latitude,
+        longitude: position.longitude,
+        accuracy: position.accuracy,
+        altitude: position.altitude,
+        stillVisible: true,
+      );
+
+      if (mounted) {
+        setState(() {
+          _hasConfirmed = true;
+          _witnessCount = result['data']['witness_count'] ?? _witnessCount + 1;
+        });
+
+        // Show success feedback
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('✅ Witness confirmation recorded! (${ _witnessCount} total witnesses)'),
+            backgroundColor: AppColors.semanticSuccess,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+
+        // Play success sound
+        await SoundService.I.play(AlertSound.success);
+
+        // If escalation was triggered, play appropriate sound
+        if (result['data']['escalation_triggered'] == true) {
+          final witnessCount = result['data']['witness_count'] ?? 0;
+          if (witnessCount >= 10) {
+            await SoundService.I.play(AlertSound.emergency, haptic: true);
+          } else if (witnessCount >= 3) {
+            await SoundService.I.play(AlertSound.urgent);
+          }
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to confirm witness: ${e.toString()}'),
+            backgroundColor: AppColors.semanticError,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isConfirming = false;
+        });
+      }
+    }
+  }
+
+  void _showPermissionDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Location Required'),
+        content: const Text('UFOBeep needs your location to confirm you as a witness. Please grant location permission in Settings.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              permissionService.openPermissionSettings();
+            },
+            child: const Text('Open Settings'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showLocationError() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Unable to get your location. Please ensure GPS is enabled.'),
+        backgroundColor: AppColors.semanticWarning,
+      ),
+    );
+  }
+
+  Widget _buildWitnessConfirmationButton() {
+    if (_hasConfirmed == true) {
+      // Already confirmed - show status
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: AppColors.semanticSuccess.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppColors.semanticSuccess.withOpacity(0.3)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.check_circle,
+              size: 16,
+              color: AppColors.semanticSuccess,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              'You confirmed this (${ _witnessCount} total)',
+              style: const TextStyle(
+                color: AppColors.semanticSuccess,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Show confirmation button
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: _isConfirming ? null : _confirmWitness,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.brandPrimary,
+          foregroundColor: Colors.black,
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+        child: _isConfirming
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
+                    'Confirming...',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.visibility,
+                    size: 16,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'I SEE IT TOO! ($_witnessCount witnesses)',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -27,12 +279,12 @@ class AlertCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
-          color: _getCategoryColor(alert.category).withOpacity(0.2),
+          color: _getCategoryColor(widget.alert.category).withOpacity(0.2),
           width: 1,
         ),
       ),
       child: InkWell(
-        onTap: onTap ?? () => context.go('/alert/${alert.id}'),
+        onTap: widget.onTap ?? () => context.go('/alert/${widget.alert.id}'),
         borderRadius: BorderRadius.circular(12),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -47,10 +299,10 @@ class AlertCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: _getCategoryColor(alert.category).withOpacity(0.1),
+                      color: _getCategoryColor(widget.alert.category).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: _getCategoryIcon(alert.category),
+                    child: _getCategoryIcon(widget.alert.category),
                   ),
                   
                   const SizedBox(width: 12),
@@ -61,7 +313,7 @@ class AlertCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          alert.title,
+                          widget.alert.title,
                           style: const TextStyle(
                             color: AppColors.textPrimary,
                             fontSize: 16,
@@ -74,14 +326,14 @@ class AlertCard extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              _getCategoryDisplayName(alert.category),
+                              _getCategoryDisplayName(widget.alert.category),
                               style: TextStyle(
-                                color: _getCategoryColor(alert.category),
+                                color: _getCategoryColor(widget.alert.category),
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            if (alert.isVerified) ...[
+                            if (widget.alert.isVerified) ...[
                               const SizedBox(width: 8),
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -124,13 +376,13 @@ class AlertCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        _getTimeAgo(alert.createdAt),
+                        _getTimeAgo(widget.alert.createdAt),
                         style: const TextStyle(
                           color: AppColors.textTertiary,
                           fontSize: 12,
                         ),
                       ),
-                      if (alert.distance != null && showDistance) ...[
+                      if (widget.alert.distance != null && widget.showDistance) ...[
                         const SizedBox(height: 4),
                         _buildDistanceBadge(),
                       ],
@@ -143,7 +395,7 @@ class AlertCard extends StatelessWidget {
               
               // Description
               Text(
-                alert.description,
+                widget.alert.description,
                 style: const TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
@@ -153,8 +405,13 @@ class AlertCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               
+              const SizedBox(height: 12),
+              
+              // Phase 1: "I SEE IT TOO" witness confirmation button
+              _buildWitnessConfirmationButton(),
+              
               // Primary media thumbnail (if available)
-              if (alert.hasMedia) ...[
+              if (widget.alert.hasMedia) ...[
                 const SizedBox(height: 12),
                 _buildMediaThumbnail(),
               ],
@@ -165,7 +422,7 @@ class AlertCard extends StatelessWidget {
               Row(
                 children: [
                   // Location name and distance info
-                  if (alert.locationName != null) ...[
+                  if (widget.alert.locationName != null) ...[
                     Icon(
                       Icons.location_on,
                       size: 16,
@@ -174,7 +431,7 @@ class AlertCard extends StatelessWidget {
                     const SizedBox(width: 4),
                     Expanded(
                       child: Text(
-                        alert.locationName!,
+                        widget.alert.locationName!,
                         style: const TextStyle(
                           color: AppColors.textTertiary,
                           fontSize: 12,
@@ -183,7 +440,7 @@ class AlertCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    if (alert.distance != null && showDistance) ...[
+                    if (widget.alert.distance != null && widget.showDistance) ...[
                       const SizedBox(width: 8),
                       Text(
                         '• ${_getDistanceText()}',
@@ -193,7 +450,7 @@ class AlertCard extends StatelessWidget {
                         ),
                       ),
                     ],
-                  ] else if (alert.distance != null && showDistance) ...[
+                  ] else if (widget.alert.distance != null && widget.showDistance) ...[
                     Icon(
                       Icons.location_on,
                       size: 16,
@@ -209,7 +466,7 @@ class AlertCard extends StatelessWidget {
                     ),
                     
                     // Bearing indicator
-                    if (alert.bearing != null) ...[
+                    if (widget.alert.bearing != null) ...[
                       const SizedBox(width: 12),
                       _buildBearingIndicator(),
                     ],
@@ -247,9 +504,9 @@ class AlertCard extends StatelessWidget {
   }
 
   Widget _buildDistanceBadge() {
-    if (alert.distance == null) return const SizedBox.shrink();
+    if (widget.alert.distance == null) return const SizedBox.shrink();
     
-    final distance = alert.distance!;
+    final distance = widget.alert.distance!;
     Color badgeColor;
     
     if (distance < 1.0) {
@@ -281,9 +538,9 @@ class AlertCard extends StatelessWidget {
   }
 
   Widget _buildBearingIndicator() {
-    if (alert.bearing == null) return const SizedBox.shrink();
+    if (widget.alert.bearing == null) return const SizedBox.shrink();
     
-    final bearing = alert.bearing!;
+    final bearing = widget.alert.bearing!;
     
     return Container(
       width: 24,
@@ -395,9 +652,9 @@ class AlertCard extends StatelessWidget {
   }
 
   String _getDistanceText() {
-    if (alert.distance == null) return '';
+    if (widget.alert.distance == null) return '';
     
-    final distance = alert.distance!;
+    final distance = widget.alert.distance!;
     
     if (distance < 0.1) {
       return '${(distance * 1000).toInt()}m away';
@@ -426,7 +683,7 @@ class AlertCard extends StatelessWidget {
   }
 
   Widget _buildMediaThumbnail() {
-    final thumbnailUrl = alert.primaryThumbnailUrl;
+    final thumbnailUrl = widget.alert.primaryThumbnailUrl;
     if (thumbnailUrl.isEmpty) return const SizedBox.shrink();
 
     return Container(
@@ -475,7 +732,7 @@ class AlertCard extends StatelessWidget {
             ),
             
             // Media count overlay (if multiple files)
-            if (alert.mediaFiles.length > 1)
+            if (widget.alert.mediaFiles.length > 1)
               Positioned(
                 top: 8,
                 right: 8,
@@ -495,7 +752,7 @@ class AlertCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        '${alert.mediaFiles.length}',
+                        '${widget.alert.mediaFiles.length}',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,
