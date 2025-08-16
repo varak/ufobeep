@@ -31,6 +31,8 @@ class Alert {
     this.reporterId,
     this.enrichment,
     this.photoAnalysis,
+    this.totalConfirmations = 0,
+    this.canConfirmWitness = true,
   });
 
   final String id;
@@ -57,6 +59,8 @@ class Alert {
   final String? reporterId;
   final Map<String, dynamic>? enrichment;
   final List<Map<String, dynamic>>? photoAnalysis;
+  final int totalConfirmations;
+  final bool canConfirmWitness;
 
   // Computed properties
   bool get isVerified => status == 'verified';
@@ -111,6 +115,8 @@ class Alert {
     String? reporterId,
     Map<String, dynamic>? enrichment,
     List<Map<String, dynamic>>? photoAnalysis,
+    int? totalConfirmations,
+    bool? canConfirmWitness,
   }) {
     return Alert(
       id: id ?? this.id,
@@ -137,6 +143,8 @@ class Alert {
       reporterId: reporterId ?? this.reporterId,
       enrichment: enrichment ?? this.enrichment,
       photoAnalysis: photoAnalysis ?? this.photoAnalysis,
+      totalConfirmations: totalConfirmations ?? this.totalConfirmations,
+      canConfirmWitness: canConfirmWitness ?? this.canConfirmWitness,
     );
   }
 
@@ -192,6 +200,8 @@ class Alert {
       reporterId: json['reporter_id'] as String?,
       enrichment: json['enrichment'] as Map<String, dynamic>?,
       photoAnalysis: (json['photo_analysis'] as List<dynamic>?)?.cast<Map<String, dynamic>>(),
+      totalConfirmations: json['total_confirmations'] as int? ?? 0,
+      canConfirmWitness: json['can_confirm_witness'] as bool? ?? true,
     );
   }
 
@@ -222,6 +232,8 @@ class Alert {
       if (reporterId != null) 'reporter_id': reporterId,
       if (enrichment != null) 'enrichment': enrichment,
       if (photoAnalysis != null) 'photo_analysis': photoAnalysis,
+      'total_confirmations': totalConfirmations,
+      'can_confirm_witness': canConfirmWitness,
     };
   }
 }

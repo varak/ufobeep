@@ -565,6 +565,74 @@ class ApiClient {
     }
   }
 
+  // Witness confirmation endpoints - Phase 1 "I SEE IT TOO" feature
+  Future<Map<String, dynamic>> confirmWitness({
+    required String sightingId,
+    required String deviceId,
+    required double latitude,
+    required double longitude,
+    double? accuracy,
+    double? altitude,
+    double? bearingDeg,
+    String? description,
+    bool stillVisible = true,
+    String? devicePlatform,
+    String? appVersion,
+  }) async {
+    try {
+      final request = {
+        'device_id': deviceId,
+        'location': {
+          'latitude': latitude,
+          'longitude': longitude,
+          if (accuracy != null) 'accuracy': accuracy,
+          if (altitude != null) 'altitude': altitude,
+        },
+        if (bearingDeg != null) 'bearing_deg': bearingDeg,
+        if (description != null && description.isNotEmpty) 'description': description,
+        'still_visible': stillVisible,
+        if (devicePlatform != null) 'device_platform': devicePlatform,
+        if (appVersion != null) 'app_version': appVersion,
+      };
+
+      final response = await _dio.post(
+        '/sightings/$sightingId/witness-confirm',
+        data: request,
+      );
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw ApiClientException(
+          'HTTP ${response.statusCode}: ${response.statusMessage}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> getWitnessStatus({
+    required String sightingId,
+    required String deviceId,
+  }) async {
+    try {
+      final response = await _dio.get('/sightings/$sightingId/witness-status/$deviceId');
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw ApiClientException(
+          'HTTP ${response.statusCode}: ${response.statusMessage}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
   // Health check
   Future<bool> checkHealth() async {
     try {

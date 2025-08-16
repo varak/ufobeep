@@ -9,26 +9,208 @@ import '../../providers/app_state.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/map_widget.dart';
 import '../../services/permission_service.dart';
+import '../../services/api_client.dart';
+import '../../services/anonymous_beep_service.dart';
+import '../../services/sound_service.dart';
 
-class AlertDetailScreen extends ConsumerWidget {
+class AlertDetailScreen extends ConsumerStatefulWidget {
   const AlertDetailScreen({super.key, required this.alertId});
 
   final String alertId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final alertAsync = ref.watch(alertByIdProvider(alertId));
+  ConsumerState<AlertDetailScreen> createState() => _AlertDetailScreenState();
+}
+
+class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
+  bool _isConfirming = false;
+  bool? _hasConfirmed;
+  int _witnessCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkWitnessStatus();
+  }
+
+  Future<void> _checkWitnessStatus() async {
+    try {
+      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      final status = await ApiClient.instance.getWitnessStatus(
+        sightingId: widget.alertId,
+        deviceId: deviceId,
+      );
+      
+      if (mounted) {
+        setState(() {
+          _hasConfirmed = status['has_confirmed'] ?? false;
+          _witnessCount = status['witness_count'] ?? 0;
+        });
+      }
+    } catch (e) {
+      // Silently fail - will show confirmation button by default
+      print('Failed to check witness status: $e');
+    }
+  }
+
+  Future<void> _confirmWitness() async {
+    if (_isConfirming || _hasConfirmed == true) return;
+
+    setState(() {
+      _isConfirming = true;
+    });
+
+    try {
+      // Check location permission
+      if (!permissionService.locationGranted) {
+        await permissionService.refreshPermissions();
+        if (!permissionService.locationGranted) {
+          _showPermissionDialog();
+          return;
+        }
+      }
+
+      // Get current location
+      final position = await permissionService.getCurrentLocation();
+      if (position == null) {
+        _showLocationError();
+        return;
+      }
+
+      // Play confirmation sound
+      await SoundService.I.play(AlertSound.tap, haptic: true);
+
+      // Get device ID
+      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+
+      // Confirm witness
+      final result = await ApiClient.instance.confirmWitness(
+        sightingId: widget.alertId,
+        deviceId: deviceId,
+        latitude: position.latitude,
+        longitude: position.longitude,
+        accuracy: position.accuracy,
+        altitude: position.altitude,
+        stillVisible: true,
+      );
+
+      if (mounted) {
+        setState(() {
+          _hasConfirmed = true;
+          _witnessCount = result['data']['witness_count'] ?? _witnessCount + 1;
+        });
+
+        // Show success feedback
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('✅ Witness confirmation recorded! ($_witnessCount total witnesses)'),
+            backgroundColor: AppColors.semanticSuccess,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+
+        // Play success sound
+        await SoundService.I.play(AlertSound.success);
+
+        // If escalation was triggered, play appropriate sound
+        if (result['data']['escalation_triggered'] == true) {
+          final witnessCount = result['data']['witness_count'] ?? 0;
+          if (witnessCount >= 10) {
+            await SoundService.I.play(AlertSound.emergency, haptic: true);
+          } else if (witnessCount >= 3) {
+            await SoundService.I.play(AlertSound.urgent);
+          }
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to confirm witness: ${e.toString()}'),
+            backgroundColor: AppColors.semanticError,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isConfirming = false;
+        });
+      }
+    }
+  }
+
+  void _showPermissionDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Location Required'),
+        content: const Text('UFOBeep needs your location to confirm you as a witness. Please grant location permission in Settings.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              permissionService.openPermissionSettings();
+            },
+            child: const Text('Open Settings'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showLocationError() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Unable to get your location. Please ensure GPS is enabled.'),
+        backgroundColor: AppColors.semanticWarning,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final alertAsync = ref.watch(alertByIdProvider(widget.alertId));
     final appState = ref.watch(appStateProvider);
     final alertsAsync = ref.watch(alertsListProvider);
 
     return alertAsync.when(
       data: (alert) {
         if (alert == null) {
-          return Scaffold(
-            appBar: AppBar(title: const Text('Alert')),
-            body: const Center(
-              child: Text('Alert not found'),
-            ),
+          // Simple 1-second delay before showing "not found" message
+          return FutureBuilder(
+            future: Future.delayed(const Duration(seconds: 1)),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Scaffold(
+                  appBar: AppBar(title: const Text('Alert')),
+                  body: const Center(
+                    child: CircularProgressIndicator(color: AppColors.brandPrimary),
+                  ),
+                );
+              }
+              return Scaffold(
+                appBar: AppBar(title: const Text('Alert')),
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Alert not found'),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () => ref.invalidate(alertByIdProvider(widget.alertId)),
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
           );
         }
 
@@ -102,6 +284,10 @@ class AlertDetailScreen extends ConsumerWidget {
                   ),
                 const SizedBox(height: 24),
 
+                // Phase 1: "I SEE IT TOO" witness confirmation button
+                _buildWitnessConfirmationButton(alert),
+
+                const SizedBox(height: 24),
 
                 // Location & Time Info
                 Card(
@@ -1130,6 +1316,123 @@ class _DetailRow extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildWitnessConfirmationButton(Alert alert) {
+    final witnessCount = _witnessCount > 0 ? _witnessCount : alert.witnessCount;
+    
+    if (_hasConfirmed == true) {
+      // Already confirmed - show status
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppColors.semanticSuccess.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.semanticSuccess.withOpacity(0.3)),
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.check_circle,
+              size: 24,
+              color: AppColors.semanticSuccess,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    '✅ You confirmed this sighting',
+                    style: TextStyle(
+                      color: AppColors.semanticSuccess,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    '$witnessCount total witnesses',
+                    style: const TextStyle(
+                      color: AppColors.semanticSuccess,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Show confirmation button
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.brandPrimary.withOpacity(0.3),
+            blurRadius: 15,
+            spreadRadius: 2,
+          ),
+        ],
+      ),
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: _isConfirming ? null : _confirmWitness,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.brandPrimary,
+            foregroundColor: Colors.black,
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          child: _isConfirming
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    const Text(
+                      'Confirming witness...',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.visibility,
+                      size: 20,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'I SEE IT TOO! ($witnessCount witnesses)',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+        ),
       ),
     );
   }

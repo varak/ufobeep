@@ -27,6 +27,10 @@ class AdminStats(BaseModel):
     verified_sightings: int
     media_without_primary: int
     recent_uploads: int
+    total_witness_confirmations: int
+    confirmations_today: int
+    high_witness_sightings: int
+    escalated_alerts: int
     database_size_mb: Optional[float]
 
 class SightingAdmin(BaseModel):
@@ -43,6 +47,9 @@ class SightingAdmin(BaseModel):
     media_count: int
     has_primary_media: bool
     verification_score: float
+    witness_count: int
+    total_confirmations: int
+    escalation_level: str
 
 class MediaFileAdmin(BaseModel):
     """Media file for admin management"""
@@ -136,6 +143,7 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
 
         <div class="nav-buttons">
             <a href="/admin/sightings" class="nav-btn">📋 Manage Sightings</a>
+            <a href="/admin/witnesses" class="nav-btn">👁️ Witness Confirmations</a>
             <a href="/admin/media" class="nav-btn">📸 Media Management</a>
             <a href="/admin/users" class="nav-btn">👥 User Management</a>
             <a href="/admin/system" class="nav-btn">⚙️ System Status</a>
@@ -189,6 +197,22 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
                     <div class="stat-card">
                         <div class="stat-number">${stats.verified_sightings}</div>
                         <div class="stat-label">Verified</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${stats.total_witness_confirmations}</div>
+                        <div class="stat-label">Total Witnesses</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${stats.confirmations_today}</div>
+                        <div class="stat-label">Witnesses Today</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${stats.high_witness_sightings}</div>
+                        <div class="stat-label">Multi-Witness (3+)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${stats.escalated_alerts}</div>
+                        <div class="stat-label">Emergency (10+)</div>
                     </div>
                 `;
             } catch (error) {
@@ -280,6 +304,23 @@ async def get_admin_stats(credentials: str = Depends(verify_admin_password)) -> 
             datetime.now() - timedelta(hours=24)
         ) or 0
         
+        # Witness confirmation stats
+        total_witness_confirmations = await conn.fetchval(
+            "SELECT COUNT(*) FROM witness_confirmations"
+        ) or 0
+        
+        confirmations_today = await conn.fetchval(
+            "SELECT COUNT(*) FROM witness_confirmations WHERE created_at >= $1", today
+        ) or 0
+        
+        high_witness_sightings = await conn.fetchval(
+            "SELECT COUNT(*) FROM sightings WHERE witness_count >= 3"
+        ) or 0
+        
+        escalated_alerts = await conn.fetchval(
+            "SELECT COUNT(*) FROM sightings WHERE witness_count >= 10"
+        ) or 0
+        
         return AdminStats(
             total_sightings=total_sightings,
             total_media_files=total_media,
@@ -289,6 +330,10 @@ async def get_admin_stats(credentials: str = Depends(verify_admin_password)) -> 
             verified_sightings=verified_sightings,
             media_without_primary=media_without_primary,
             recent_uploads=recent_uploads,
+            total_witness_confirmations=total_witness_confirmations,
+            confirmations_today=confirmations_today,
+            high_witness_sightings=high_witness_sightings,
+            escalated_alerts=escalated_alerts,
             database_size_mb=None  # TODO: Calculate if needed
         )
         
@@ -303,6 +348,10 @@ async def get_admin_stats(credentials: str = Depends(verify_admin_password)) -> 
             verified_sightings=0,
             media_without_primary=0,
             recent_uploads=0,
+            total_witness_confirmations=0,
+            confirmations_today=0,
+            high_witness_sightings=0,
+            escalated_alerts=0,
             database_size_mb=None
         )
     finally:
@@ -331,6 +380,16 @@ async def get_recent_activity(credentials: str = Depends(verify_admin_password))
             LIMIT 10
         """)
         
+        # Get recent witness confirmations
+        recent_confirmations = await conn.fetch("""
+            SELECT w.id, w.created_at, s.title as sighting_title, 
+                   s.witness_count, w.distance_km
+            FROM witness_confirmations w
+            JOIN sightings s ON w.sighting_id = s.id
+            ORDER BY w.created_at DESC 
+            LIMIT 10
+        """)
+        
         activity = []
         
         for sighting in recent_sightings:
@@ -345,6 +404,19 @@ async def get_recent_activity(credentials: str = Depends(verify_admin_password))
                 "type": "Media Upload",
                 "description": f"File '{media['filename']}' uploaded for '{media['sighting_title'][:30]}...'",
                 "timestamp": media['created_at'].isoformat()
+            })
+            
+        for confirmation in recent_confirmations:
+            escalation = ""
+            if confirmation['witness_count'] >= 10:
+                escalation = " 🚨 EMERGENCY"
+            elif confirmation['witness_count'] >= 3:
+                escalation = " ⚠️ URGENT"
+            
+            activity.append({
+                "type": "Witness Confirmation",
+                "description": f"'{confirmation['sighting_title'][:30]}...' - {confirmation['witness_count']} witnesses ({confirmation['distance_km']:.1f}km away){escalation}",
+                "timestamp": confirmation['created_at'].isoformat()
             })
         
         # Sort by timestamp and return recent 15
@@ -374,7 +446,8 @@ async def get_sightings_data(
                 s.id, s.title, s.description, s.category, s.status, s.alert_level,
                 s.created_at, s.witness_count,
                 COUNT(m.id) as media_count,
-                COUNT(CASE WHEN m.is_primary THEN 1 END) > 0 as has_primary_media
+                COUNT(CASE WHEN m.is_primary THEN 1 END) > 0 as has_primary_media,
+                COALESCE((SELECT COUNT(*) FROM witness_confirmations w WHERE w.sighting_id = s.id), 0) as total_confirmations
             FROM sightings s
             LEFT JOIN media_files m ON s.id = m.sighting_id
             GROUP BY s.id, s.title, s.description, s.category, s.status, s.alert_level,
@@ -383,6 +456,14 @@ async def get_sightings_data(
             LIMIT $1 OFFSET $2
         """
         sightings = await conn.fetch(query, limit, offset)
+        
+        def get_escalation_level(witness_count):
+            if witness_count >= 10:
+                return "emergency"
+            elif witness_count >= 3:
+                return "urgent"
+            else:
+                return "normal"
         
         return [
             SightingAdmin(
@@ -397,7 +478,10 @@ async def get_sightings_data(
                 reporter_id=None,  # Default since column doesn't exist yet
                 media_count=s['media_count'],
                 has_primary_media=s['has_primary_media'],
-                verification_score=0.0  # Default since column doesn't exist yet
+                verification_score=0.0,  # Default since column doesn't exist yet
+                witness_count=s['witness_count'],
+                total_confirmations=s['total_confirmations'],
+                escalation_level=get_escalation_level(s['witness_count'])
             )
             for s in sightings
         ]
@@ -457,6 +541,87 @@ async def get_media_data(
         ]
         
     except Exception as e:
+        return []
+    finally:
+        await conn.close()
+
+@router.get("/data/witnesses")
+async def get_witnesses_data(
+    limit: int = 50,
+    offset: int = 0,
+    sighting_id: Optional[str] = None,
+    escalation_level: Optional[str] = None,
+    credentials: str = Depends(verify_admin_password)
+):
+    """Get witness confirmations data for admin management"""
+    
+    conn = await get_db_connection()
+    try:
+        where_clauses = []
+        params = []
+        param_count = 1
+        
+        if sighting_id:
+            where_clauses.append(f"w.sighting_id = ${param_count}")
+            params.append(sighting_id)
+            param_count += 1
+            
+        if escalation_level:
+            if escalation_level == "emergency":
+                where_clauses.append(f"s.witness_count >= ${param_count}")
+                params.append(10)
+            elif escalation_level == "urgent":
+                where_clauses.append(f"s.witness_count >= ${param_count} AND s.witness_count < ${param_count + 1}")
+                params.extend([3, 10])
+                param_count += 1
+            elif escalation_level == "normal":
+                where_clauses.append(f"s.witness_count < ${param_count}")
+                params.append(3)
+            param_count += 1
+            
+        where_sql = " AND ".join(where_clauses) if where_clauses else "1=1"
+        
+        query = f"""
+            SELECT 
+                w.id, w.sighting_id, w.device_id, w.latitude, w.longitude,
+                w.accuracy, w.altitude, w.still_visible, w.distance_km, w.created_at,
+                s.title as sighting_title, s.witness_count,
+                CASE 
+                    WHEN s.witness_count >= 10 THEN 'emergency'
+                    WHEN s.witness_count >= 3 THEN 'urgent'
+                    ELSE 'normal'
+                END as escalation_level
+            FROM witness_confirmations w
+            JOIN sightings s ON w.sighting_id = s.id
+            WHERE {where_sql}
+            ORDER BY w.created_at DESC
+            LIMIT ${param_count} OFFSET ${param_count + 1}
+        """
+        
+        params.extend([limit, offset])
+        confirmations = await conn.fetch(query, *params)
+        
+        return [
+            {
+                "id": str(c['id']),
+                "sighting_id": str(c['sighting_id']),
+                "sighting_title": c['sighting_title'],
+                "device_id": c['device_id'],
+                "latitude": c['latitude'],
+                "longitude": c['longitude'],
+                "accuracy": c['accuracy'],
+                "altitude": c['altitude'],
+                "still_visible": c['still_visible'],
+                "distance_km": c['distance_km'],
+                "witness_count": c['witness_count'],
+                "escalation_level": c['escalation_level'],
+                "created_at": c['created_at'].isoformat()
+            }
+            for c in confirmations
+        ]
+        
+    except Exception as e:
+        print(f"Error in admin witnesses query: {e}")
         return []
     finally:
         await conn.close()
@@ -534,6 +699,9 @@ async def admin_sightings_page(credentials: str = Depends(verify_admin_password)
         .badge.verified { background: #00ff88; color: black; }
         .badge.pending { background: #ffaa44; color: black; }
         .badge.created { background: #666; color: white; }
+        .badge.emergency { background: #ff4444; color: white; }
+        .badge.urgent { background: #ffaa44; color: white; }
+        .badge.normal { background: #00ff88; color: black; }
         .btn { background: #00ff88; color: #000; padding: 4px 8px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.8em; margin-right: 5px; }
         .btn:hover { background: #00cc70; }
         .btn.danger { background: #ff4444; color: white; }
@@ -596,6 +764,7 @@ async def admin_sightings_page(credentials: str = Depends(verify_admin_password)
                             <th>Category</th>
                             <th>Status</th>
                             <th>Alert Level</th>
+                            <th>Witnesses</th>
                             <th>Media</th>
                             <th>Location</th>
                             <th>Created</th>
@@ -612,6 +781,16 @@ async def admin_sightings_page(credentials: str = Depends(verify_admin_password)
                                 <td>${sighting.category}</td>
                                 <td><span class="badge ${sighting.status}">${sighting.status}</span></td>
                                 <td><span class="badge ${sighting.alert_level}">${sighting.alert_level}</span></td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span class="badge ${sighting.escalation_level}">
+                                            ${sighting.escalation_level === 'emergency' ? '🚨' : 
+                                              sighting.escalation_level === 'urgent' ? '⚠️' : '👁️'} 
+                                            ${sighting.witness_count}
+                                        </span>
+                                        <small style="color: #888;">(${sighting.total_confirmations} confirmed)</small>
+                                    </div>
+                                </td>
                                 <td>
                                     <span class="media-count">${sighting.media_count} files</span>
                                     ${sighting.has_primary_media ? '<br><small style="color: #00ff88;">✓ Has Primary</small>' : '<br><small style="color: #ff4444;">⚠ No Primary</small>'}
@@ -1133,6 +1312,195 @@ async def admin_mufon_page(credentials: str = Depends(verify_admin_password)):
             
             alert('Manual import would be triggered here.\n\nThis will:\n• Fetch recent MUFON reports\n• Download associated media\n• Process and store in database\n• Update statistics');
         }
+    </script>
+</body>
+</html>
+"""
+
+@router.get("/witnesses", response_class=HTMLResponse)
+async def admin_witnesses_page(credentials: str = Depends(verify_admin_password)):
+    """Admin witness confirmations management page"""
+    return """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UFOBeep Admin - Witness Confirmations</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #1a1a1a; color: #e0e0e0; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .header h1 { color: #00ff88; margin: 0; }
+        .back-link { color: #00ff88; text-decoration: none; padding: 8px 16px; border: 1px solid #00ff88; border-radius: 4px; }
+        .back-link:hover { background: #00ff88; color: #000; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: #2d2d2d; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #444; }
+        .stat-number { font-size: 2em; font-weight: bold; color: #00ff88; margin: 0; }
+        .stat-label { color: #bbb; margin: 10px 0 0 0; }
+        .controls { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; }
+        .filter-select { background: #333; border: 1px solid #555; color: #e0e0e0; padding: 8px 12px; border-radius: 4px; }
+        .refresh-btn { background: #00ff88; color: #000; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
+        .refresh-btn:hover { background: #00cc70; }
+        .table { width: 100%; border-collapse: collapse; background: #2d2d2d; border-radius: 8px; overflow: hidden; }
+        .table th, .table td { text-align: left; padding: 12px; border-bottom: 1px solid #444; }
+        .table th { background: #333; color: #00ff88; font-weight: bold; }
+        .table tr:hover { background: #333; }
+        .badge { padding: 3px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold; }
+        .badge.emergency { background: #ff4444; color: white; }
+        .badge.urgent { background: #ffaa44; color: white; }
+        .badge.normal { background: #00ff88; color: black; }
+        .loading { text-align: center; padding: 40px; color: #888; }
+        .escalation-icon { font-size: 1.2em; margin-right: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👁️ Witness Confirmations</h1>
+            <a href="/admin" class="back-link">← Back to Dashboard</a>
+        </div>
+
+        <div class="stats-grid" id="witness-stats">
+            <div class="stat-card">
+                <div class="stat-number" id="total-confirmations">-</div>
+                <div class="stat-label">Total Confirmations</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="confirmations-today">-</div>
+                <div class="stat-label">Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="high-witness">-</div>
+                <div class="stat-label">Multi-Witness (3+)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="emergency-alerts">-</div>
+                <div class="stat-label">Emergency (10+)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="avg-distance">-</div>
+                <div class="stat-label">Avg Distance (km)</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <select id="escalationFilter" class="filter-select">
+                <option value="">All Escalation Levels</option>
+                <option value="emergency">Emergency (10+ witnesses)</option>
+                <option value="urgent">Urgent (3+ witnesses)</option>
+                <option value="normal">Normal (1-2 witnesses)</option>
+            </select>
+            <button onclick="loadWitnessData()" class="refresh-btn">Refresh</button>
+        </div>
+
+        <div id="witnessTable" class="loading">Loading witness confirmations...</div>
+    </div>
+
+    <script>
+        async function loadWitnessData() {
+            try {
+                // Load stats
+                const statsResponse = await fetch('/admin/stats');
+                const stats = await statsResponse.json();
+                
+                document.getElementById('total-confirmations').textContent = stats.total_witness_confirmations;
+                document.getElementById('confirmations-today').textContent = stats.confirmations_today;
+                document.getElementById('high-witness').textContent = stats.high_witness_sightings;
+                document.getElementById('emergency-alerts').textContent = stats.escalated_alerts;
+                
+                // Load witness confirmation data
+                const dataResponse = await fetch('/admin/data/witnesses');
+                const witnesses = await dataResponse.json();
+                renderWitnessTable(witnesses);
+                
+                // Calculate average distance
+                if (witnesses.length > 0) {
+                    const avgDistance = witnesses.reduce((sum, w) => sum + (w.distance_km || 0), 0) / witnesses.length;
+                    document.getElementById('avg-distance').textContent = avgDistance.toFixed(1);
+                } else {
+                    document.getElementById('avg-distance').textContent = '0.0';
+                }
+                
+            } catch (error) {
+                document.getElementById('witnessTable').innerHTML = 
+                    `<div class="loading">Error loading witness data: ${error.message}</div>`;
+            }
+        }
+
+        function renderWitnessTable(witnesses) {
+            const escalationFilter = document.getElementById('escalationFilter').value;
+            
+            let filteredWitnesses = witnesses;
+            if (escalationFilter) {
+                filteredWitnesses = witnesses.filter(w => w.escalation_level === escalationFilter);
+            }
+
+            if (filteredWitnesses.length === 0) {
+                document.getElementById('witnessTable').innerHTML = 
+                    '<div class="loading">No witness confirmations found.</div>';
+                return;
+            }
+
+            const table = `
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Sighting</th>
+                            <th>Witness Count</th>
+                            <th>Escalation</th>
+                            <th>Distance</th>
+                            <th>Accuracy</th>
+                            <th>Still Visible</th>
+                            <th>Confirmed At</th>
+                            <th>Device ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${filteredWitnesses.map(witness => `
+                            <tr>
+                                <td>
+                                    <strong>${witness.sighting_title}</strong><br>
+                                    <small style="color: #888;">${witness.sighting_id.substring(0, 8)}...</small>
+                                </td>
+                                <td>
+                                    <span class="escalation-icon">
+                                        ${witness.escalation_level === 'emergency' ? '🚨' : 
+                                          witness.escalation_level === 'urgent' ? '⚠️' : '👁️'}
+                                    </span>
+                                    ${witness.witness_count} witnesses
+                                </td>
+                                <td>
+                                    <span class="badge ${witness.escalation_level}">
+                                        ${witness.escalation_level.toUpperCase()}
+                                    </span>
+                                </td>
+                                <td>${witness.distance_km.toFixed(1)} km</td>
+                                <td>±${witness.accuracy.toFixed(0)}m</td>
+                                <td>${witness.still_visible ? '✅ Yes' : '❌ No'}</td>
+                                <td>${new Date(witness.created_at).toLocaleString()}</td>
+                                <td>
+                                    <small style="color: #888; font-family: monospace;">
+                                        ${witness.device_id.substring(0, 12)}...
+                                    </small>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            document.getElementById('witnessTable').innerHTML = table;
+        }
+
+        // Initialize
+        loadWitnessData();
+        document.getElementById('escalationFilter').addEventListener('change', () => {
+            // Re-render with current data
+            loadWitnessData();
+        });
+        
+        // Auto-refresh every 30 seconds
+        setInterval(loadWitnessData, 30000);
     </script>
 </body>
 </html>

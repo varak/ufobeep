@@ -17,6 +17,8 @@ interface Alert {
     name: string
   }
   alert_level: string
+  witness_count: number
+  total_confirmations: number
   media_files: Array<{
     id: string
     type: string
@@ -185,6 +187,32 @@ export default function AlertPage({ params }: AlertPageProps) {
     }
   }
 
+  const getWitnessCount = () => {
+    // Use total_confirmations if available, otherwise fall back to witness_count
+    return alert.total_confirmations || alert.witness_count || 1
+  }
+
+  const getWitnessEscalationLevel = (count: number) => {
+    if (count >= 10) return { 
+      level: 'emergency', 
+      color: 'bg-red-500/20 text-red-300 border-red-500/30', 
+      icon: '🚨',
+      description: 'MASS SIGHTING - Multiple witnesses confirmed'
+    }
+    if (count >= 3) return { 
+      level: 'urgent', 
+      color: 'bg-orange-500/20 text-orange-300 border-orange-500/30', 
+      icon: '⚠️',
+      description: 'MULTIPLE WITNESSES - Escalated alert'
+    }
+    return { 
+      level: 'normal', 
+      color: 'bg-brand-primary/20 text-brand-primary border-brand-primary/30', 
+      icon: '👁️',
+      description: 'Witnessed sighting'
+    }
+  }
+
   return (
     <main className="min-h-screen py-8 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
@@ -219,6 +247,28 @@ export default function AlertPage({ params }: AlertPageProps) {
             </div>
           </div>
         </div>
+
+        {/* Witness Confirmation Status */}
+        {(() => {
+          const witnessCount = getWitnessCount()
+          const escalation = getWitnessEscalationLevel(witnessCount)
+          return (
+            <div className={`mb-8 p-6 rounded-lg border ${escalation.color}`}>
+              <div className="flex items-center gap-4">
+                <div className="text-4xl">{escalation.icon}</div>
+                <div className="flex-1">
+                  <h2 className="text-2xl font-bold mb-1">
+                    {witnessCount} Witness{witnessCount !== 1 ? 'es' : ''} Confirmed
+                  </h2>
+                  <p className="text-lg opacity-90">{escalation.description}</p>
+                  <p className="text-sm opacity-70 mt-2">
+                    Real-time confirmations from mobile app users who report seeing the same phenomenon
+                  </p>
+                </div>
+              </div>
+            </div>
+          )
+        })()}
 
         {/* Media Section */}
         <div className="mb-8">
@@ -467,6 +517,12 @@ export default function AlertPage({ params }: AlertPageProps) {
             <section className="bg-dark-surface border border-dark-border rounded-lg p-6">
               <h3 className="text-lg font-semibold text-text-primary mb-4">Sighting Details</h3>
               <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-text-tertiary flex items-center gap-2">
+                    <span>👥</span> Witnesses
+                  </span>
+                  <span className="text-text-primary font-medium">{getWitnessCount()}</span>
+                </div>
                 <div className="flex justify-between items-center">
                   <span className="text-text-tertiary flex items-center gap-2">
                     <span>📸</span> Media Files

@@ -286,6 +286,7 @@ class Sighting(Base):
     media_files = relationship("MediaFile", back_populates="sighting", cascade="all, delete-orphan")
     comments = relationship("SightingComment", back_populates="sighting", cascade="all, delete-orphan")
     reactions = relationship("SightingReaction", back_populates="sighting", cascade="all, delete-orphan")
+    witness_confirmations = relationship("WitnessConfirmation", back_populates="sighting", cascade="all, delete-orphan")
 
 
 class SightingComment(Base):
@@ -333,6 +334,50 @@ class SightingReaction(Base):
     user = relationship("User")
     
     # Unique constraint to prevent duplicate reactions
+    __table_args__ = (
+        {"extend_existing": True},
+    )
+
+
+class WitnessConfirmation(Base):
+    """Witness confirmations for sightings - 'I SEE IT TOO' feature"""
+    __tablename__ = "witness_confirmations"
+    
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    sighting_id = Column(UUID(as_uuid=True), ForeignKey("sightings.id"), nullable=False)
+    
+    # Device/user information
+    device_id = Column(String(255), nullable=False)  # Anonymous device ID
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)  # If registered
+    
+    # Witness location data for triangulation
+    witness_latitude = Column(Float, nullable=False)
+    witness_longitude = Column(Float, nullable=False)
+    witness_altitude = Column(Float, nullable=True)
+    location_accuracy = Column(Float, nullable=True)
+    
+    # Bearing from witness to sighting (for triangulation)
+    bearing_deg = Column(Float, nullable=True)  # Direction witness is looking
+    distance_km = Column(Float, nullable=True)  # Distance from original sighting
+    
+    # Confirmation details
+    confirmation_type = Column(String(20), default="visual", nullable=False)  # visual, audio, other
+    still_visible = Column(Boolean, default=True, nullable=False)  # Is it still visible when confirmed
+    description = Column(Text, nullable=True)  # Optional witness description
+    
+    # Device info for context
+    device_platform = Column(String(20), nullable=True)  # ios, android
+    app_version = Column(String(50), nullable=True)
+    
+    # Timestamps
+    confirmed_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    
+    # Relationships  
+    sighting = relationship("Sighting", back_populates="witness_confirmations")
+    user = relationship("User")
+    
+    # Unique constraint to prevent duplicate confirmations per device/sighting
     __table_args__ = (
         {"extend_existing": True},
     )
@@ -415,3 +460,5 @@ Index('idx_comments_sighting_created', SightingComment.sighting_id, SightingComm
 Index('idx_devices_user_platform', Device.user_id, Device.platform)
 Index('idx_devices_active_push', Device.is_active, Device.push_enabled)
 Index('idx_devices_last_seen', Device.last_seen)
+Index('idx_witness_confirmations_sighting', WitnessConfirmation.sighting_id, WitnessConfirmation.confirmed_at)
+Index('idx_witness_confirmations_device', WitnessConfirmation.device_id, WitnessConfirmation.sighting_id)

@@ -25,6 +25,8 @@ interface Alert {
     display_priority: number
   }>
   verification_score: number
+  witness_count: number
+  total_confirmations: number
 }
 
 interface AlertCardProps {
@@ -80,6 +82,17 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
     }
   }
 
+  const getWitnessCount = () => {
+    // Use total_confirmations if available, otherwise fall back to witness_count
+    return alert.total_confirmations || alert.witness_count || 1
+  }
+
+  const getWitnessEscalationLevel = (count: number) => {
+    if (count >= 10) return { level: 'emergency', color: 'text-red-400 bg-red-900/20 border-red-400/30', icon: '🚨' }
+    if (count >= 3) return { level: 'urgent', color: 'text-orange-400 bg-orange-900/20 border-orange-400/30', icon: '⚠️' }
+    return { level: 'normal', color: 'text-brand-primary bg-brand-primary/10 border-brand-primary/30', icon: '👁️' }
+  }
+
   if (compact) {
     return (
       <Link href={`/alerts/${alert.id}`}>
@@ -90,6 +103,15 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                 <span className={`px-2 py-1 rounded text-xs font-semibold uppercase ${getAlertLevelColor(alert.alert_level)}`}>
                   {alert.alert_level}
                 </span>
+                {(() => {
+                  const witnessCount = getWitnessCount()
+                  const escalation = getWitnessEscalationLevel(witnessCount)
+                  return (
+                    <span className={`px-2 py-1 rounded text-xs font-semibold border ${escalation.color}`}>
+                      {escalation.icon} {witnessCount}
+                    </span>
+                  )
+                })()}
                 {alert.media_files && alert.media_files.length > 0 && (
                   <span className="text-xs text-text-tertiary">📸</span>
                 )}
@@ -145,11 +167,22 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
         })()}
 
         <div className="p-4">
-          {/* Alert Level Badge */}
+          {/* Alert Level Badge and Witness Count */}
           <div className="flex justify-between items-start mb-3">
-            <span className={`px-2 py-1 rounded text-xs font-semibold uppercase ${getAlertLevelColor(alert.alert_level)}`}>
-              {alert.alert_level}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className={`px-2 py-1 rounded text-xs font-semibold uppercase ${getAlertLevelColor(alert.alert_level)}`}>
+                {alert.alert_level}
+              </span>
+              {(() => {
+                const witnessCount = getWitnessCount()
+                const escalation = getWitnessEscalationLevel(witnessCount)
+                return (
+                  <span className={`px-3 py-1 rounded-full text-sm font-semibold border ${escalation.color}`}>
+                    {escalation.icon} {witnessCount} witness{witnessCount !== 1 ? 'es' : ''}
+                  </span>
+                )
+              })()}
+            </div>
           </div>
 
           {/* Title & Description */}
