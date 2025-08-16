@@ -6,6 +6,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../config/environment.dart' as env;
 import '../models/api_models.dart';
+import 'sensor_service.dart';
 
 /// Device platform enumeration
 enum DevicePlatform {
@@ -43,6 +44,8 @@ class DeviceRegistrationRequest {
   final bool systemNotifications;
   final String? timezone;
   final String? locale;
+  final double? lat;
+  final double? lon;
 
   DeviceRegistrationRequest({
     required this.deviceId,
@@ -59,6 +62,8 @@ class DeviceRegistrationRequest {
     this.systemNotifications = true,
     this.timezone,
     this.locale,
+    this.lat,
+    this.lon,
   });
 
   Map<String, dynamic> toJson() {
@@ -77,6 +82,8 @@ class DeviceRegistrationRequest {
       'system_notifications': systemNotifications,
       'timezone': timezone,
       'locale': locale,
+      'lat': lat,
+      'lon': lon,
     };
   }
 }
@@ -249,12 +256,31 @@ class DeviceService {
     bool alertNotifications = true,
     bool chatNotifications = true,
     bool systemNotifications = true,
+    bool includeLocation = true,
   }) async {
     try {
       final deviceId = await getDeviceId();
       final deviceInfo = await collectDeviceInfo();
       final platform = getDevicePlatform();
       final pushProvider = getPushProvider();
+
+      // Try to get current location for proximity alerts
+      double? lat, lon;
+      if (includeLocation) {
+        try {
+          final sensorService = SensorService();
+          final sensorData = await sensorService.captureSensorData();
+          if (sensorData != null && sensorData.latitude != 0.0 && sensorData.longitude != 0.0) {
+            lat = sensorData.latitude;
+            lon = sensorData.longitude;
+            print('Device registration: Including location lat=$lat, lon=$lon');
+          } else {
+            print('Device registration: No valid location data available');
+          }
+        } catch (e) {
+          print('Device registration: Failed to get location: $e');
+        }
+      }
 
       final request = DeviceRegistrationRequest(
         deviceId: deviceId,
@@ -271,6 +297,8 @@ class DeviceService {
         systemNotifications: systemNotifications,
         timezone: DateTime.now().timeZoneName,
         locale: Platform.localeName,
+        lat: lat,
+        lon: lon,
       );
 
       final url = Uri.parse('${env.AppEnvironment.apiBaseUrl}/devices/register');

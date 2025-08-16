@@ -61,9 +61,27 @@ class PushNotificationService {
   Future<bool> requestPermission() async {
     final prefs = await SharedPreferences.getInstance();
     
-    // Check if we already have permission
-    final cachedPermission = prefs.getBool(_permissionKey);
-    if (cachedPermission == true) return true;
+    // Always check actual system permission status, don't rely only on cache
+    try {
+      final currentSettings = await _messaging.getNotificationSettings();
+      final hasSystemPermission = currentSettings.authorizationStatus == AuthorizationStatus.authorized ||
+                                 currentSettings.authorizationStatus == AuthorizationStatus.provisional;
+      
+      // If system says we don't have permission, clear cache and re-request
+      if (!hasSystemPermission) {
+        await prefs.remove(_permissionKey);
+        print('System permission denied, cleared cache and will re-request');
+      } else {
+        // Update cache to match system state
+        await prefs.setBool(_permissionKey, true);
+        print('System permission confirmed, updated cache');
+        return true;
+      }
+    } catch (e) {
+      print('Error checking system permission status: $e');
+      // Fall back to re-requesting if we can't check
+      await prefs.remove(_permissionKey);
+    }
 
     try {
       final settings = await _messaging.requestPermission(

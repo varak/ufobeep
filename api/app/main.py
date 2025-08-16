@@ -950,6 +950,83 @@ async def reset_rate_limit():
         print(f"Error resetting rate limit: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to reset rate limit: {str(e)}")
 
+@app.get("/admin/devices/status")
+async def check_device_registration():
+    """Admin endpoint to check device registration status"""
+    try:
+        async with db_pool.acquire() as conn:
+            # Get device registration summary
+            device_stats = await conn.fetch("""
+                SELECT 
+                    COUNT(*) as total_devices,
+                    COUNT(CASE WHEN is_active = true THEN 1 END) as active_devices,
+                    COUNT(CASE WHEN push_token IS NOT NULL THEN 1 END) as devices_with_push,
+                    COUNT(CASE WHEN lat IS NOT NULL AND lon IS NOT NULL THEN 1 END) as devices_with_location,
+                    platform,
+                    created_at::date as registration_date
+                FROM devices 
+                GROUP BY platform, created_at::date
+                ORDER BY registration_date DESC, platform
+                LIMIT 10
+            """)
+            
+            # Get recent device registrations
+            recent_devices = await conn.fetch("""
+                SELECT 
+                    device_id,
+                    platform,
+                    is_active,
+                    push_enabled,
+                    lat,
+                    lon,
+                    created_at,
+                    updated_at
+                FROM devices 
+                ORDER BY updated_at DESC 
+                LIMIT 5
+            """)
+            
+            # Get devices near Las Vegas for testing
+            vegas_devices = await conn.fetch("""
+                SELECT 
+                    device_id,
+                    platform,
+                    is_active,
+                    push_enabled,
+                    lat,
+                    lon,
+                    ST_Distance(
+                        ST_SetSRID(ST_MakePoint(lon, lat), 4326),
+                        ST_SetSRID(ST_MakePoint(-115.2410, 36.2451), 4326)
+                    ) * 111000 as distance_meters
+                FROM devices 
+                WHERE lat IS NOT NULL AND lon IS NOT NULL
+                AND ST_DWithin(
+                    ST_SetSRID(ST_MakePoint(lon, lat), 4326),
+                    ST_SetSRID(ST_MakePoint(-115.2410, 36.2451), 4326),
+                    0.25  -- 25km in degrees (rough)
+                )
+                ORDER BY distance_meters
+                LIMIT 10
+            """)
+            
+            return {
+                "success": True,
+                "device_stats": [dict(row) for row in device_stats],
+                "recent_devices": [dict(row) for row in recent_devices],
+                "vegas_area_devices": [dict(row) for row in vegas_devices],
+                "total_vegas_devices": len(vegas_devices),
+                "registration_tips": {
+                    "missing_push_tokens": "Devices need to register for FCM push notifications",
+                    "missing_location": "Devices need to enable location services and send location",
+                    "inactive_devices": "Devices need to be marked as active for alerts"
+                }
+            }
+            
+    except Exception as e:
+        print(f"Error checking device registration: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to check device registration: {str(e)}")
+
 @app.post("/admin/test/alert")
 async def admin_test_alert(request: dict):
     """Admin endpoint to trigger test proximity alerts"""
