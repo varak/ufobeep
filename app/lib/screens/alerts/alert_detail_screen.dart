@@ -110,7 +110,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         );
 
         // Play success sound
-        await SoundService.I.play(AlertSound.success);
+        await SoundService.I.play(AlertSound.tap);
 
         // If escalation was triggered, play appropriate sound
         if (result['data']['escalation_triggered'] == true) {
@@ -221,7 +221,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               IconButton(
                 icon: const Icon(Icons.chat),
                 onPressed: () {
-                  context.go('/alert/$alertId/chat');
+                  context.go('/alert/${widget.alertId}/chat');
                 },
               ),
               IconButton(
@@ -513,7 +513,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                         Expanded(
                           child: ElevatedButton.icon(
                             onPressed: () {
-                              context.go('/alert/$alertId/chat');
+                              context.go('/alert/${widget.alertId}/chat');
                             },
                             icon: const Icon(Icons.chat),
                             label: const Text('Join Chat'),
@@ -542,7 +542,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: OutlinedButton.icon(
-                        onPressed: () => _showAddPhotosDialog(context, alertId),
+                        onPressed: () => _showAddPhotosDialog(context, widget.alertId),
                         icon: const Icon(Icons.add_photo_alternate),
                         label: const Text('Add Photos & Videos'),
                         style: OutlinedButton.styleFrom(
@@ -589,7 +589,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               ),
               const SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () => ref.invalidate(alertByIdProvider(alertId)),
+                onPressed: () => ref.invalidate(alertByIdProvider(widget.alertId)),
                 child: const Text('Try Again'),
               ),
             ],
@@ -1282,44 +1282,6 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     );
   }
 
-}
-
-class _DetailRow extends StatelessWidget {
-  const _DetailRow({
-    required this.icon,
-    required this.label,
-    required this.value,
-  });
-
-  final IconData icon;
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        children: [
-          Icon(icon, size: 20, color: AppColors.textTertiary),
-          const SizedBox(width: 12),
-          Text(
-            '$label: ',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.textTertiary,
-            ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildWitnessConfirmationButton(Alert alert) {
     final witnessCount = _witnessCount > 0 ? _witnessCount : alert.witnessCount;
     
@@ -1433,6 +1395,43 @@ class _DetailRow extends StatelessWidget {
                   ],
                 ),
         ),
+      ),
+    );
+  }
+}
+
+class _DetailRow extends StatelessWidget {
+  const _DetailRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: AppColors.textTertiary),
+          const SizedBox(width: 12),
+          Text(
+            '$label: ',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: AppColors.textTertiary,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ),
+        ],
       ),
     );
   }

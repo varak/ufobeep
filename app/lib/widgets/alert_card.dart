@@ -116,7 +116,7 @@ class _AlertCardState extends ConsumerState<AlertCard> {
         );
 
         // Play success sound
-        await SoundService.I.play(AlertSound.success);
+        await SoundService.I.play(AlertSound.tap);
 
         // If escalation was triggered, play appropriate sound
         if (result['data']['escalation_triggered'] == true) {
@@ -828,7 +828,7 @@ class CompactAlertCard extends StatelessWidget {
                   color: _getCategoryColor(alert.category).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(6),
                 ),
-                child: AlertCard(alert: alert, showDistance: false)._getCategoryIcon(alert.category),
+                child: _getCategoryIcon(alert.category),
               ),
               
               const SizedBox(width: 12),
@@ -874,7 +874,7 @@ class CompactAlertCard extends StatelessWidget {
                           ),
                         ],
                         Text(
-                          AlertCard(alert: alert, showDistance: false)._getTimeAgo(alert.createdAt),
+                          _getTimeAgo(alert.createdAt),
                           style: const TextStyle(
                             color: AppColors.textTertiary,
                             fontSize: 12,
@@ -907,7 +907,89 @@ class CompactAlertCard extends StatelessWidget {
     );
   }
 
+  Widget _getCategoryIcon(String category) {
+    final categoryData = AlertCategory.getByKey(category);
+    
+    if (categoryData != null) {
+      return Text(
+        categoryData.icon,
+        style: const TextStyle(fontSize: 16),
+      );
+    }
+    
+    // Fallback icons
+    IconData icon;
+    Color color = AppColors.textSecondary;
+
+    switch (category) {
+      case 'ufo':
+        icon = Icons.blur_circular;
+        color = AppColors.brandPrimary;
+        break;
+      case 'missing_pet':
+        icon = Icons.pets;
+        color = AppColors.semanticWarning;
+        break;
+      case 'missing_person':
+        icon = Icons.person;
+        color = AppColors.semanticError;
+        break;
+      case 'suspicious':
+        icon = Icons.warning;
+        color = AppColors.semanticWarning;
+        break;
+      default:
+        icon = Icons.help_outline;
+    }
+
+    return Icon(icon, color: color, size: 16);
+  }
+
+  String _getTimeAgo(DateTime dateTime) {
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+
+    if (difference.inDays > 0) {
+      return '${difference.inDays}d ago';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours}h ago';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes}m ago';
+    } else {
+      return 'Just now';
+    }
+  }
+
   Color _getCategoryColor(String category) {
-    return AlertCard(alert: alert, showDistance: false)._getCategoryColor(category);
+    final categoryData = AlertCategory.getByKey(category);
+    if (categoryData != null) {
+      switch (categoryData.color) {
+        case 'primary':
+          return AppColors.brandPrimary;
+        case 'warning':
+          return AppColors.semanticWarning;
+        case 'error':
+          return AppColors.semanticError;
+        case 'success':
+          return AppColors.semanticSuccess;
+        case 'info':
+          return AppColors.semanticInfo;
+        default:
+          return AppColors.brandPrimary;
+      }
+    }
+
+    switch (category.toLowerCase()) {
+      case 'ufo':
+        return AppColors.brandPrimary;
+      case 'aircraft':
+        return Colors.blue;
+      case 'atmospheric':
+        return Colors.orange;
+      case 'astronomical':
+        return Colors.purple;
+      default:
+        return AppColors.brandPrimary;
+    }
   }
 }
