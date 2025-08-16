@@ -1408,28 +1408,13 @@ async def admin_alerts_page(credentials: str = Depends(verify_admin_password)):
     <script>
         // Check system status on load
         async function checkSystemStatus() {
-            // Update FCM status by testing alert endpoint
+            // Check FCM status without sending test alerts
             try {
-                const response = await fetch('/admin/test/alert', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        admin_key: 'ufobeep_test_key_2025',
-                        lat: 47.61, lon: -122.33, message: 'Status check'
-                    })
-                });
-                
-                if (response.ok) {
-                    const result = await response.json();
-                    const delivered = result.proximity_results?.total_alerts_sent || 0;
-                    document.getElementById('fcmStatus').textContent = `✓ Active (${delivered} devices)`;
-                    document.getElementById('fcmStatus').className = 'status-good';
-                    document.getElementById('deviceCount').textContent = `${result.proximity_results?.devices_25km || 0} devices within 25km`;
-                    document.getElementById('lastAlert').textContent = 'Just now (status check)';
-                } else {
-                    document.getElementById('fcmStatus').textContent = '✗ Error';
-                    document.getElementById('fcmStatus').className = 'status-error';
-                }
+                // Just show ready status without auto-testing
+                document.getElementById('fcmStatus').textContent = '✓ Ready (test manually)';
+                document.getElementById('fcmStatus').className = 'status-good';
+                document.getElementById('deviceCount').textContent = 'Click "Send Test Alert" to check';
+                document.getElementById('lastAlert').textContent = 'No automatic tests on page load';
             } catch (error) {
                 document.getElementById('fcmStatus').textContent = '⚠ Unknown';
                 document.getElementById('fcmStatus').className = 'status-warning';
