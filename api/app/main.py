@@ -955,68 +955,40 @@ async def check_device_registration():
     """Admin endpoint to check device registration status"""
     try:
         async with db_pool.acquire() as conn:
-            # Get device registration summary
-            device_stats = await conn.fetch("""
-                SELECT 
-                    COUNT(*) as total_devices,
-                    COUNT(CASE WHEN is_active = true THEN 1 END) as active_devices,
-                    COUNT(CASE WHEN push_token IS NOT NULL THEN 1 END) as devices_with_push,
-                    COUNT(CASE WHEN lat IS NOT NULL AND lon IS NOT NULL THEN 1 END) as devices_with_location,
-                    platform,
-                    created_at::date as registration_date
-                FROM devices 
-                GROUP BY platform, created_at::date
-                ORDER BY registration_date DESC, platform
-                LIMIT 10
-            """)
+            # Simple device counts
+            total_devices = await conn.fetchval("SELECT COUNT(*) FROM devices")
+            active_devices = await conn.fetchval("SELECT COUNT(*) FROM devices WHERE is_active = true")
+            devices_with_push = await conn.fetchval("SELECT COUNT(*) FROM devices WHERE push_token IS NOT NULL")
+            devices_with_location = await conn.fetchval("SELECT COUNT(*) FROM devices WHERE lat IS NOT NULL AND lon IS NOT NULL")
             
-            # Get recent device registrations
+            # Recent devices (last 5)
             recent_devices = await conn.fetch("""
-                SELECT 
-                    device_id,
-                    platform,
-                    is_active,
-                    push_enabled,
-                    lat,
-                    lon,
-                    created_at,
-                    updated_at
+                SELECT device_id, platform, is_active, lat, lon, created_at
                 FROM devices 
-                ORDER BY updated_at DESC 
+                ORDER BY created_at DESC 
                 LIMIT 5
             """)
             
-            # Get devices near Las Vegas for testing (simple distance calculation)
-            vegas_devices = await conn.fetch("""
-                SELECT 
-                    device_id,
-                    platform,
-                    is_active,
-                    push_enabled,
-                    lat,
-                    lon,
-                    SQRT(
-                        POW((lat - 36.2451) * 111000, 2) + 
-                        POW((lon - (-115.2410)) * 111000 * COS(RADIANS(36.2451)), 2)
-                    ) as distance_meters
+            # Any devices in Nevada area (simple lat/lon check)
+            nevada_devices = await conn.fetch("""
+                SELECT device_id, platform, is_active, lat, lon
                 FROM devices 
-                WHERE lat IS NOT NULL AND lon IS NOT NULL
-                AND ABS(lat - 36.2451) < 0.25 AND ABS(lon - (-115.2410)) < 0.25
-                ORDER BY distance_meters
+                WHERE lat BETWEEN 35.0 AND 37.0 AND lon BETWEEN -116.0 AND -114.0
                 LIMIT 10
             """)
             
             return {
                 "success": True,
-                "device_stats": [dict(row) for row in device_stats],
+                "summary": {
+                    "total_devices": total_devices,
+                    "active_devices": active_devices,
+                    "devices_with_push_tokens": devices_with_push,
+                    "devices_with_location": devices_with_location,
+                    "nevada_area_devices": len(nevada_devices)
+                },
                 "recent_devices": [dict(row) for row in recent_devices],
-                "vegas_area_devices": [dict(row) for row in vegas_devices],
-                "total_vegas_devices": len(vegas_devices),
-                "registration_tips": {
-                    "missing_push_tokens": "Devices need to register for FCM push notifications",
-                    "missing_location": "Devices need to enable location services and send location",
-                    "inactive_devices": "Devices need to be marked as active for alerts"
-                }
+                "nevada_devices": [dict(row) for row in nevada_devices],
+                "status": "ready_for_testing" if active_devices > 0 and devices_with_push > 0 else "needs_device_registration"
             }
             
     except Exception as e:
