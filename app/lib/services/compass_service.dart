@@ -86,11 +86,11 @@ class CompassService {
     Timer.periodic(const Duration(milliseconds: 500), (timer) {
       if (_currentLocation != null) {
         final fallbackCompass = CompassData(
-          heading: 0.0, // No magnetic heading available
-          magneticHeading: 0.0,
-          declination: 0.0,
-          accuracy: CompassAccuracy.unavailable,
-          calibration: CompassCalibration.unavailable,
+          magneticHeading: 0.0, // No magnetic heading available
+          trueHeading: 0.0,
+          accuracy: 999.0, // High value indicates low accuracy
+          timestamp: DateTime.now(),
+          calibration: CompassCalibrationLevel.unknown,
           location: _currentLocation,
         );
         

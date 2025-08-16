@@ -204,9 +204,11 @@ class PushNotificationService {
     final isOwnBeep = submitterDeviceId != null && submitterDeviceId == currentDeviceId;
     
     if (isOwnBeep) {
-      print('Skipping navigation for own beep submission (device: $currentDeviceId)');
+      print('🚫 SKIPPING OWN BEEP: device $currentDeviceId submitted sighting $sightingId');
       return; // Don't process self-notifications
     }
+    
+    print('📱 PROCESSING ALERT: sighting $sightingId from device $submitterDeviceId (current: $currentDeviceId)');
     
     // Play appropriate escalated alert sound based on witness count
     if (witnessCount >= 10) {
@@ -230,20 +232,9 @@ class PushNotificationService {
       final distance = message.data['distance'];
       final bearing = message.data['bearing'];
       
-      // If we have coordinates, navigate directly to compass
-      if (sightingLat != null && sightingLon != null) {
-        navigateToCompass(
-          sightingId: sightingId,
-          targetLat: double.tryParse(sightingLat),
-          targetLon: double.tryParse(sightingLon),
-          targetName: sightingName,
-          distance: distance != null ? double.tryParse(distance) : null,
-          bearing: bearing != null ? double.tryParse(bearing) : null,
-        );
-      } else {
-        // Fallback to alert detail if no coordinates
-        navigateToAlert(sightingId);
-      }
+      // Navigate to alert details instead of compass
+      // The alert detail screen will have a "Navigate to Sighting" button with compass
+      navigateToAlert(sightingId);
     }
   }
 
