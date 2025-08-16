@@ -28,6 +28,7 @@ class _QuickBeepScreenState extends ConsumerState<QuickBeepScreen>
   String? _lastBeepId;
   Position? _currentPosition;
   String _statusMessage = 'TAP TO BEEP';
+  Map<String, dynamic>? _lastBeepResult;
   
   @override
   void initState() {
@@ -152,7 +153,26 @@ class _QuickBeepScreenState extends ConsumerState<QuickBeepScreen>
       
       setState(() {
         _lastBeepId = beepResult['sighting_id'];
-        _statusMessage = 'ALERT SENT!';
+        // Use the alert feedback message from the server
+        final alertMessage = beepResult['alert_message'] as String?;
+        final alertStats = beepResult['alert_stats'] as Map<String, dynamic>?;
+        
+        if (alertMessage != null) {
+          _statusMessage = alertMessage.toUpperCase();
+        } else {
+          _statusMessage = 'ALERT SENT!';
+        }
+        
+        // Store alert stats for display
+        if (alertStats != null) {
+          final totalAlerted = alertStats['total_alerted'] ?? 0;
+          final deliveryTime = alertStats['delivery_time_ms'] ?? 0;
+          if (totalAlerted > 0) {
+            _statusMessage = 'ALERTED $totalAlerted PEOPLE IN ${deliveryTime.round()}MS!';
+          } else {
+            _statusMessage = 'ALERT SENT!';  // Keep it positive when no nearby devices
+          }
+        }
       });
       
       // Set the device ID as current user so navigation button is hidden

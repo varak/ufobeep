@@ -836,13 +836,46 @@ async def create_anonymous_beep(request: dict):
             lat, lng, str(sighting_id), request['device_id']
         )
         
+        # Create user-friendly alert feedback
+        total_alerted = alert_result.get("total_alerts_sent", 0)
+        devices_1km = alert_result.get("devices_1km", 0)
+        devices_5km = alert_result.get("devices_5km", 0)
+        devices_10km = alert_result.get("devices_10km", 0)
+        devices_25km = alert_result.get("devices_25km", 0)
+        delivery_time = alert_result.get("delivery_time_ms", 0)
+        
+        # Generate user feedback message
+        if total_alerted == 0:
+            alert_message = "Your beep was recorded but no nearby devices were found to alert."
+        elif total_alerted == 1:
+            alert_message = f"Your beep alerted 1 person nearby in {delivery_time:.0f}ms!"
+        else:
+            alert_message = f"Your beep alerted {total_alerted} people nearby in {delivery_time:.0f}ms!"
+        
+        # Add proximity breakdown for debugging/transparency
+        proximity_breakdown = []
+        if devices_1km > 0:
+            proximity_breakdown.append(f"{devices_1km} within 1km (emergency)")
+        if devices_5km > 0:
+            proximity_breakdown.append(f"{devices_5km} within 5km (urgent)")
+        if devices_10km > 0:
+            proximity_breakdown.append(f"{devices_10km} within 10km (normal)")
+        if devices_25km > 0:
+            proximity_breakdown.append(f"{devices_25km} within 25km (normal)")
+        
         return {
             "sighting_id": str(sighting_id),
             "message": "Anonymous beep sent successfully",
+            "alert_message": alert_message,
+            "alert_stats": {
+                "total_alerted": total_alerted,
+                "delivery_time_ms": delivery_time,
+                "breakdown": proximity_breakdown,
+                "radius_km": 25
+            },
             "witness_count": 1,
             "location_jittered": True,
-            "alert_radius_m": 25000,
-            "proximity_alerts": alert_result
+            "proximity_alerts": alert_result  # Keep full details for debugging
         }
         
     except HTTPException:
@@ -855,7 +888,7 @@ async def create_anonymous_beep(request: dict):
 
 @app.post("/test/proximity")
 async def test_proximity_alerts(request: dict):
-    """Test proximity alert system"""
+    """Test proximity alert system without sending alerts"""
     try:
         lat = request.get('lat', 47.61)
         lon = request.get('lon', -122.33)
@@ -875,6 +908,96 @@ async def test_proximity_alerts(request: dict):
     except Exception as e:
         print(f"Error testing proximity: {e}")
         raise HTTPException(status_code=500, detail=f"Proximity test failed: {str(e)}")
+
+@app.post("/admin/test/alert")
+async def admin_test_alert(request: dict):
+    """Admin endpoint to trigger test proximity alerts"""
+    try:
+        # Basic auth check (Phase 0 - simple)
+        if request.get('admin_key') != 'ufobeep_test_key_2025':
+            raise HTTPException(status_code=403, detail="Admin access required")
+        
+        lat = request.get('lat', 47.61)
+        lon = request.get('lon', -122.33)
+        alert_level = request.get('alert_level', 'test')
+        message = request.get('message', 'Test alert from admin')
+        
+        from services.proximity_alert_service import get_proximity_alert_service
+        proximity_service = get_proximity_alert_service(db_pool)
+        
+        # Create mock sighting for test
+        mock_sighting_id = f"TEST-{datetime.utcnow().strftime('%Y%m%d-%H%M%S')}"
+        
+        # Send real proximity alerts
+        alert_result = await proximity_service.send_proximity_alerts(
+            lat, lon, mock_sighting_id, 'admin_test'
+        )
+        
+        return {
+            "test_alert_sent": True,
+            "mock_sighting_id": mock_sighting_id,
+            "test_location": {"lat": lat, "lon": lon},
+            "alert_level": alert_level,
+            "message": message,
+            "proximity_results": alert_result
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error sending admin test alert: {e}")
+        raise HTTPException(status_code=500, detail=f"Admin test alert failed: {str(e)}")
+
+@app.post("/admin/test/single")
+async def admin_test_single_device(request: dict):
+    """Admin endpoint to test push to a specific device"""
+    try:
+        # Basic auth check
+        if request.get('admin_key') != 'ufobeep_test_key_2025':
+            raise HTTPException(status_code=403, detail="Admin access required")
+        
+        device_id = request.get('device_id')
+        if not device_id:
+            raise HTTPException(status_code=400, detail="device_id required")
+        
+        message = request.get('message', 'Admin test notification')
+        
+        # Get device token
+        async with db_pool.acquire() as conn:
+            device = await conn.fetchrow(
+                "SELECT push_token, platform FROM devices WHERE device_id = $1 AND is_active = true",
+                device_id
+            )
+        
+        if not device:
+            raise HTTPException(status_code=404, detail="Device not found")
+        
+        # Send test push
+        from services.push_service import send_to_token
+        response = send_to_token(
+            device['push_token'],
+            {
+                "type": "admin_test",
+                "device_id": device_id,
+                "timestamp": datetime.utcnow().isoformat()
+            },
+            title="🛸 Admin Test Alert",
+            body=message
+        )
+        
+        return {
+            "test_sent": True,
+            "device_id": device_id,
+            "platform": device['platform'],
+            "message": message,
+            "fcm_response": response is not None
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error sending single device test: {e}")
+        raise HTTPException(status_code=500, detail=f"Single device test failed: {str(e)}")
 
 @app.post("/photo-metadata/{sighting_id}")
 async def store_photo_metadata(sighting_id: str, metadata: dict = None):
