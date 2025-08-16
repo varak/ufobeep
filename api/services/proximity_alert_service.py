@@ -61,25 +61,25 @@ class ProximityAlertService:
                 # 1km always gets highest priority, escalated by witness count
                 level = alert_escalation if alert_escalation == "emergency" else "emergency"
                 title, body = self._get_alert_message(1.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_1km, sighting_id, level, title, body, witness_count))
+                tasks.append(self._send_alert_batch(devices_1km, sighting_id, level, title, body, witness_count, lat, lon, f"Sighting {sighting_id}"))
                 
             if devices_5km_only:
                 # 5km gets urgent unless escalated
                 level = "emergency" if alert_escalation == "emergency" else "urgent"
                 title, body = self._get_alert_message(5.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_5km_only, sighting_id, level, title, body, witness_count))
+                tasks.append(self._send_alert_batch(devices_5km_only, sighting_id, level, title, body, witness_count, lat, lon, f"Sighting {sighting_id}"))
                 
             if devices_10km_only:
                 # 10km gets normal unless escalated
                 level = alert_escalation if alert_escalation in ["urgent", "emergency"] else "normal"
                 title, body = self._get_alert_message(10.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_10km_only, sighting_id, level, title, body, witness_count))
+                tasks.append(self._send_alert_batch(devices_10km_only, sighting_id, level, title, body, witness_count, lat, lon, f"Sighting {sighting_id}"))
                 
             if devices_25km_only:
                 # 25km gets normal unless emergency escalation
                 level = "emergency" if alert_escalation == "emergency" else "normal"
                 title, body = self._get_alert_message(25.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_25km_only, sighting_id, level, title, body, witness_count))
+                tasks.append(self._send_alert_batch(devices_25km_only, sighting_id, level, title, body, witness_count, lat, lon, f"Sighting {sighting_id}"))
             
             # Execute all alert batches concurrently
             if tasks:
@@ -173,7 +173,9 @@ class ProximityAlertService:
                                 'device_id': row['device_id'],
                                 'push_token': row['push_token'],
                                 'platform': row['platform'],
-                                'distance_km': round(distance, 2)
+                                'distance_km': round(distance, 2),
+                                'device_lat': row['lat'],
+                                'device_lon': row['lon']
                             })
                     else:
                         # No location data - include in 25km ring for Phase 0
@@ -229,7 +231,9 @@ class ProximityAlertService:
                             'device_id': row['device_id'],
                             'push_token': row['push_token'],
                             'platform': row['platform'],
-                            'distance_km': round(distance_km, 2)
+                            'distance_km': round(distance_km, 2),
+                            'device_lat': device_lat,
+                            'device_lon': device_lon
                         })
                         logger.info(f"FALLBACK: Device {row['device_id']} INCLUDED (distance: {distance_km:.2f}km)")
                 
@@ -258,32 +262,81 @@ class ProximityAlertService:
         
         return c * r
     
-    async def _send_alert_batch(self, devices: List[dict], sighting_id: str, alert_level: str, title: str, body: str, witness_count: int = 1) -> int:
-        """Send alerts to a batch of devices"""
+    def _calculate_bearing(self, lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+        """Calculate the bearing from point 1 to point 2 in degrees (0-360)"""
+        import math
+        
+        # Convert latitude and longitude from degrees to radians
+        lat1, lon1, lat2, lon2 = map(math.radians, [lat1, lon1, lat2, lon2])
+        
+        # Calculate bearing
+        dlon = lon2 - lon1
+        y = math.sin(dlon) * math.cos(lat2)
+        x = math.cos(lat1) * math.sin(lat2) - math.sin(lat1) * math.cos(lat2) * math.cos(dlon)
+        
+        # Convert to degrees and normalize to 0-360
+        bearing = math.atan2(y, x)
+        bearing = math.degrees(bearing)
+        bearing = (bearing + 360) % 360
+        
+        return bearing
+    
+    def _calculate_distance(self, lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+        """Calculate distance between two points using haversine formula (alias for consistency)"""
+        return self._haversine_distance(lat1, lon1, lat2, lon2)
+    
+    async def _send_alert_batch(self, devices: List[dict], sighting_id: str, alert_level: str, title: str, body: str, witness_count: int = 1, sighting_lat: float = None, sighting_lon: float = None, location_name: str = None) -> int:
+        """Send alerts to a batch of devices with individualized bearing calculations"""
         if not devices:
             return 0
             
         try:
-            # Extract tokens for batch sending
-            tokens = [device['push_token'] for device in devices]
+            # Send individualized alerts with device-specific bearing and distance
+            success_count = 0
             
-            # Prepare alert data with witness escalation info
-            alert_data = {
-                "type": "sighting_alert",  # Changed to match mobile handler
-                "sighting_id": sighting_id,
-                "alert_level": alert_level,
-                "witness_count": str(witness_count),  # Mobile expects string
-                "timestamp": datetime.utcnow().isoformat(),
-                "action": "open_alert"
-            }
+            for device in devices:
+                try:
+                    # Prepare alert data with sighting location for compass navigation
+                    alert_data = {
+                        "type": "sighting_alert",
+                        "sighting_id": sighting_id,
+                        "alert_level": alert_level,
+                        "witness_count": str(witness_count),
+                        "timestamp": datetime.utcnow().isoformat(),
+                        "action": "open_compass"  # Phase 1 Task 6: Open compass directly
+                    }
+                    
+                    # Add location data for compass navigation if available
+                    if sighting_lat is not None and sighting_lon is not None:
+                        alert_data.update({
+                            "latitude": str(sighting_lat),
+                            "longitude": str(sighting_lon),
+                            "location_name": location_name or "UFO Sighting"
+                        })
+                        
+                        # Add device-specific distance
+                        if 'distance_km' in device:
+                            alert_data["distance"] = str(device['distance_km'])
+                        
+                        # Calculate bearing from device to sighting if we have device location
+                        if 'device_lat' in device and 'device_lon' in device and device['device_lat'] is not None and device['device_lon'] is not None:
+                            bearing = self._calculate_bearing(
+                                device['device_lat'], device['device_lon'],
+                                sighting_lat, sighting_lon
+                            )
+                            alert_data["bearing"] = str(round(bearing, 1))
+                    
+                    # Send to individual device
+                    response = send_to_tokens([device['push_token']], alert_data, title=title, body=body)
+                    
+                    if response and len(response) > 0 and response[0].success:
+                        success_count += 1
+                        
+                except Exception as e:
+                    logger.error(f"Error sending alert to device {device.get('device_id', 'unknown')}: {e}")
+                    continue
             
-            # Send to all devices in batch
-            responses = send_to_tokens(tokens, alert_data, title=title, body=body)
-            
-            # Count successful sends
-            success_count = sum(1 for response in responses if response and response.success)
-            
-            logger.info(f"Alert batch {alert_level}: {success_count}/{len(tokens)} sent successfully")
+            logger.info(f"Alert batch {alert_level}: {success_count}/{len(devices)} sent successfully")
             return success_count
             
         except Exception as e:

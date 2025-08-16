@@ -212,7 +212,28 @@ class PushNotificationService {
     
     if (sightingId != null) {
       print('Sighting ID: $sightingId, Witnesses: $witnessCount');
-      navigateToAlert(sightingId);
+      
+      // Extract sighting location data for compass navigation
+      final sightingLat = message.data['latitude'];
+      final sightingLon = message.data['longitude'];
+      final sightingName = message.data['location_name'] ?? 'UFO Sighting';
+      final distance = message.data['distance'];
+      final bearing = message.data['bearing'];
+      
+      // If we have coordinates, navigate directly to compass
+      if (sightingLat != null && sightingLon != null) {
+        navigateToCompass(
+          sightingId: sightingId,
+          targetLat: double.tryParse(sightingLat),
+          targetLon: double.tryParse(sightingLon),
+          targetName: sightingName,
+          distance: distance != null ? double.tryParse(distance) : null,
+          bearing: bearing != null ? double.tryParse(bearing) : null,
+        );
+      } else {
+        // Fallback to alert detail if no coordinates
+        navigateToAlert(sightingId);
+      }
     }
   }
 
@@ -321,6 +342,43 @@ class PushNotificationService {
       }
     } catch (e) {
       print('Error navigating to chat $chatId: $e');
+    }
+  }
+
+  void navigateToCompass({
+    required String sightingId,
+    required double? targetLat,
+    required double? targetLon,
+    String? targetName,
+    double? distance,
+    double? bearing,
+  }) {
+    try {
+      final context = rootNavigatorKey.currentContext;
+      if (context != null && context.mounted && targetLat != null && targetLon != null) {
+        // Build compass URL with parameters
+        final params = <String, String>{
+          'alertId': sightingId,
+          'targetLat': targetLat.toString(),
+          'targetLon': targetLon.toString(),
+        };
+        
+        if (targetName != null) params['targetName'] = targetName;
+        if (distance != null) params['distance'] = distance.toString();
+        if (bearing != null) params['bearing'] = bearing.toString();
+        
+        final uri = Uri(path: '/compass', queryParameters: params);
+        context.go(uri.toString());
+        print('Navigated to compass for sighting: $sightingId at ($targetLat, $targetLon)');
+      } else {
+        print('Cannot navigate to compass: no valid context or coordinates');
+        // Fallback to alert detail
+        navigateToAlert(sightingId);
+      }
+    } catch (e) {
+      print('Error navigating to compass for sighting $sightingId: $e');
+      // Fallback to alert detail
+      navigateToAlert(sightingId);
     }
   }
 
