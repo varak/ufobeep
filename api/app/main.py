@@ -287,11 +287,8 @@ async def get_alerts():
                         ) FILTER (WHERE par.id IS NOT NULL),
                         '[]'
                     ) as photo_analysis,
-                    -- Count witness confirmations
-                    COALESCE(
-                        (SELECT COUNT(*) FROM witness_confirmations wc WHERE wc.sighting_id = s.id),
-                        0
-                    ) as total_confirmations
+                    -- Use witness count from sightings table
+                    COALESCE(s.witness_count, 0) as total_confirmations
                 FROM sightings s
                 LEFT JOIN photo_analysis_results par ON s.id = par.sighting_id
                 WHERE s.is_public = true 
