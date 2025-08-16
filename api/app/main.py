@@ -300,8 +300,8 @@ async def get_alerts():
             alerts = []
             for row in rows:
                 # Extract coordinates and location name from enrichment or sensor data
-                latitude = 0.0
-                longitude = 0.0
+                latitude = None
+                longitude = None
                 location_name = "Unknown Location"
                 
                 # Try enrichment data first (it has processed location)
@@ -310,20 +310,28 @@ async def get_alerts():
                     if isinstance(enrichment, str):
                         enrichment = json.loads(enrichment)
                     if "location" in enrichment:
-                        latitude = float(enrichment["location"].get("latitude", 0))
-                        longitude = float(enrichment["location"].get("longitude", 0))
-                        location_name = enrichment["location"].get("name", "Unknown Location")
+                        lat = enrichment["location"].get("latitude")
+                        lng = enrichment["location"].get("longitude")
+                        if lat is not None and lng is not None and lat != 0.0 and lng != 0.0:
+                            latitude = float(lat)
+                            longitude = float(lng)
+                            location_name = enrichment["location"].get("name", "Unknown Location")
                 
                 # Fall back to sensor data if no enrichment location
-                if latitude == 0.0 and longitude == 0.0 and row["sensor_data"]:
+                if latitude is None and longitude is None and row["sensor_data"]:
                     sensor_data = row["sensor_data"]
                     if isinstance(sensor_data, str):
                         sensor_data = json.loads(sensor_data)
                     
                     lat_val, lng_val = extract_coordinates_from_sensor_data(sensor_data)
-                    if lat_val is not None and lng_val is not None:
+                    if lat_val is not None and lng_val is not None and lat_val != 0.0 and lng_val != 0.0:
                         latitude = lat_val
                         longitude = lng_val
+                
+                # Skip this alert if no valid location data is available
+                if latitude is None or longitude is None or (latitude == 0.0 and longitude == 0.0):
+                    print(f"Skipping alert {row['id']} - no valid location data (lat={latitude}, lng={longitude})")
+                    continue
                 
                 # Process media info
                 media_files = []
@@ -774,12 +782,16 @@ async def create_anonymous_beep(request: dict):
         if not location or not location.get('latitude') or not location.get('longitude'):
             raise HTTPException(status_code=400, detail="location with latitude and longitude is required for alert proximity")
         
+        # Block alerts for invalid 0,0 coordinates (GPS errors)
+        lat = float(location['latitude'])
+        lng = float(location['longitude'])
+        if lat == 0.0 and lng == 0.0:
+            raise HTTPException(status_code=400, detail="Invalid GPS coordinates (0,0). Please ensure location services are enabled and try again.")
+        
         description = request.get('description', 'Anonymous UFO sighting')
         title = "Anonymous UFO Sighting"
         
         # Apply minimal coordinate jittering for privacy (100m radius)
-        lat = float(location['latitude'])
-        lng = float(location['longitude'])
         accuracy = float(location.get('accuracy', 50.0))
         
         # Jitter coordinates by up to 100m for privacy
