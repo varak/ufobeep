@@ -46,7 +46,7 @@ async def register_device(request: RegisterDeviceRequest):
                 await conn.execute("""
                     UPDATE devices SET
                       push_token = $1,
-                      platform = $2::text::device_platform,
+                      platform = $2,
                       lat = $3,
                       lon = $4,
                       geohash = $5,
@@ -69,7 +69,7 @@ async def register_device(request: RegisterDeviceRequest):
                         push_enabled, alert_notifications, chat_notifications, system_notifications,
                         is_active, last_seen, registered_at, updated_at
                     ) VALUES (
-                        $1, $2, $3::text::device_platform, $4, 'fcm',
+                        $1, $2, $3, $4, 'fcm',
                         true, true, true, true,
                         true, $5, $5, $5
                     )
