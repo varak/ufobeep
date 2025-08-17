@@ -2776,30 +2776,17 @@ async def set_rate_limit_threshold(
 @router.get("/engagement/metrics")
 async def get_engagement_metrics(
     hours: int = 24,
-    sighting_id: Optional[str] = None,
     credentials: str = Depends(verify_admin_password)
 ):
-    """Get comprehensive engagement metrics for admin analysis"""
+    """Get simple engagement metrics for admin analysis"""
     try:
         from app.services.metrics_service import get_metrics_service
         from app.main import db_pool
         
         metrics_service = get_metrics_service(db_pool)
         
-        # Convert sighting_id to UUID if provided
-        sighting_uuid = None
-        if sighting_id:
-            import uuid
-            try:
-                sighting_uuid = uuid.UUID(sighting_id)
-            except ValueError:
-                raise HTTPException(status_code=400, detail="Invalid sighting ID format")
-        
-        # Get engagement metrics
-        metrics = await metrics_service.get_engagement_metrics(
-            time_range_hours=hours,
-            sighting_id=sighting_uuid
-        )
+        # Get basic engagement metrics
+        metrics = await metrics_service.get_basic_stats(hours=hours)
         
         return {
             "success": True,
@@ -2815,12 +2802,12 @@ async def get_engagement_metrics(
 async def get_engagement_summary(
     credentials: str = Depends(verify_admin_password)
 ):
-    """Get engagement summary for dashboard"""
+    """Get simple engagement summary for dashboard"""
     try:
         from app.main import db_pool
         
         async with db_pool.acquire() as conn:
-            # Get recent engagement stats
+            # Get recent engagement stats from simplified table
             summary = await conn.fetchrow("""
                 SELECT 
                     COUNT(*) FILTER (WHERE timestamp >= NOW() - INTERVAL '24 hours') as events_24h,
@@ -2830,36 +2817,18 @@ async def get_engagement_summary(
                     COUNT(*) FILTER (WHERE event_type = 'quick_action_dont_see' AND timestamp >= NOW() - INTERVAL '24 hours') as checked_no_see_24h,
                     COUNT(*) FILTER (WHERE event_type = 'quick_action_missed' AND timestamp >= NOW() - INTERVAL '24 hours') as missed_24h,
                     COUNT(*) FILTER (WHERE event_type = 'alert_sent' AND timestamp >= NOW() - INTERVAL '24 hours') as alerts_sent_24h
-                FROM metrics_events 
-                WHERE metric_type = 'user_engagement'
+                FROM user_engagement
             """)
             
-            # Get alert delivery stats
-            delivery_summary = await conn.fetchrow("""
-                SELECT 
-                    COUNT(*) FILTER (WHERE delivery_attempt_time >= NOW() - INTERVAL '24 hours') as deliveries_attempted_24h,
-                    COUNT(*) FILTER (WHERE delivery_status = 'delivered' AND delivery_attempt_time >= NOW() - INTERVAL '24 hours') as deliveries_successful_24h,
-                    COUNT(*) FILTER (WHERE delivery_status = 'failed' AND delivery_attempt_time >= NOW() - INTERVAL '24 hours') as deliveries_failed_24h,
-                    AVG(delivery_time_ms) FILTER (WHERE delivery_attempt_time >= NOW() - INTERVAL '24 hours') as avg_delivery_time_24h
-                FROM alert_deliveries
-            """)
-            
-            # Calculate engagement rates
+            # Calculate basic engagement rate
             engagement_rate = 0
-            open_rate = 0
-            delivery_success_rate = 0
             
-            if summary and delivery_summary:
+            if summary:
                 total_engagements = (summary['confirmations_24h'] or 0) + (summary['checked_no_see_24h'] or 0) + (summary['missed_24h'] or 0)
                 alerts_sent = summary['alerts_sent_24h'] or 0
-                deliveries_attempted = delivery_summary['deliveries_attempted_24h'] or 0
-                deliveries_successful = delivery_summary['deliveries_successful_24h'] or 0
                 
                 if alerts_sent > 0:
                     engagement_rate = (total_engagements / alerts_sent) * 100
-                
-                if deliveries_attempted > 0:
-                    delivery_success_rate = (deliveries_successful / deliveries_attempted) * 100
             
             return {
                 "success": True,
@@ -2871,12 +2840,7 @@ async def get_engagement_summary(
                     "checked_no_see_24h": summary['checked_no_see_24h'] if summary else 0,
                     "missed_24h": summary['missed_24h'] if summary else 0,
                     "alerts_sent_24h": summary['alerts_sent_24h'] if summary else 0,
-                    "deliveries_attempted_24h": delivery_summary['deliveries_attempted_24h'] if delivery_summary else 0,
-                    "deliveries_successful_24h": delivery_summary['deliveries_successful_24h'] if delivery_summary else 0,
-                    "deliveries_failed_24h": delivery_summary['deliveries_failed_24h'] if delivery_summary else 0,
-                    "avg_delivery_time_24h": float(delivery_summary['avg_delivery_time_24h']) if delivery_summary and delivery_summary['avg_delivery_time_24h'] else 0,
-                    "engagement_rate": round(engagement_rate, 2),
-                    "delivery_success_rate": round(delivery_success_rate, 2)
+                    "engagement_rate": round(engagement_rate, 2)
                 },
                 "timestamp": datetime.utcnow().isoformat()
             }
@@ -2894,12 +2858,7 @@ async def get_engagement_summary(
                 "checked_no_see_24h": 0,
                 "missed_24h": 0,
                 "alerts_sent_24h": 0,
-                "deliveries_attempted_24h": 0,
-                "deliveries_successful_24h": 0,
-                "deliveries_failed_24h": 0,
-                "avg_delivery_time_24h": 0,
-                "engagement_rate": 0,
-                "delivery_success_rate": 0
+                "engagement_rate": 0
             }
         }
 

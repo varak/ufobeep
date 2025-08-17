@@ -32,6 +32,9 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
   int _rateLimitThreshold = 3;
   String _rateLimitMessage = '';
   
+  // Engagement metrics state
+  Map<String, dynamic>? _engagementMetrics;
+  
   @override
   void initState() {
     super.initState();
@@ -45,6 +48,9 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
       // Get device info
       _deviceId = await anonymousBeepService.getOrCreateDeviceId();
       _fcmToken = await pushNotificationService.getCachedToken();
+      
+      // Get engagement metrics
+      await _loadEngagementMetrics();
       
       // Get current location
       if (permissionService.locationGranted) {
@@ -62,6 +68,27 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
       setState(() => _statusMessage = 'Error: $e');
     } finally {
       setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _loadEngagementMetrics() async {
+    try {
+      final apiClient = ApiClient.instance;
+      final response = await apiClient.getJson(
+        '/admin/engagement/summary',
+        requiresAuth: true,
+        username: 'admin',
+        password: 'ufopostpass',
+      );
+      
+      if (response['success'] == true) {
+        setState(() {
+          _engagementMetrics = response['data'];
+        });
+      }
+    } catch (e) {
+      print('Failed to load engagement metrics: $e');
+      // Don't show error to user - engagement metrics are optional
     }
   }
 
@@ -1208,7 +1235,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
             ),
             const SizedBox(height: 16),
             
-            // Metrics Summary (placeholder - could be real-time data)
+            // Metrics Summary - real data from API
             Row(
               children: [
                 Expanded(
@@ -1219,19 +1246,19 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
                     ),
-                    child: const Column(
+                    child: Column(
                       children: [
-                        Text(
-                          'Quick Actions',
+                        const Text(
+                          'Events (24h)',
                           style: TextStyle(
                             color: AppColors.textSecondary,
                             fontSize: 12,
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
-                          'See metrics online',
-                          style: TextStyle(
+                          _engagementMetrics != null ? '${_engagementMetrics!['events_24h'] ?? 0}' : '---',
+                          style: const TextStyle(
                             color: AppColors.brandPrimary,
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -1250,19 +1277,50 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
                     ),
-                    child: const Column(
+                    child: Column(
                       children: [
-                        Text(
-                          'Delivery Rate',
+                        const Text(
+                          'Confirmations',
                           style: TextStyle(
                             color: AppColors.textSecondary,
                             fontSize: 12,
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
-                          'Live tracking',
+                          _engagementMetrics != null ? '${_engagementMetrics!['confirmations_24h'] ?? 0}' : '---',
+                          style: const TextStyle(
+                            color: AppColors.brandPrimary,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppColors.darkBackground.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
+                    ),
+                    child: Column(
+                      children: [
+                        const Text(
+                          'Engagement',
                           style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 12,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          _engagementMetrics != null ? '${(_engagementMetrics!['engagement_rate'] ?? 0).toStringAsFixed(1)}%' : '---',
+                          style: const TextStyle(
                             color: AppColors.brandPrimary,
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -1345,7 +1403,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
               style: TextStyle(color: AppColors.brandPrimary),
             ),
             content: const Text(
-              'Open your browser and go to:\n\nhttps://api.ufobeep.com/admin/engagement/metrics\n\nUse admin credentials to view detailed engagement analytics, delivery metrics, and user funnel analysis.',
+              'Open your browser and go to:\n\nhttps://api.ufobeep.com/admin/engagement/metrics\n\nUse admin credentials to view engagement analytics, including user interactions with alerts and basic usage statistics.',
               style: TextStyle(color: AppColors.textPrimary),
             ),
             actions: [
