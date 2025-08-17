@@ -802,7 +802,7 @@ async def create_anonymous_beep(request: dict):
             raise HTTPException(status_code=400, detail="Invalid GPS coordinates (0,0). Please ensure location services are enabled and try again.")
         
         description = request.get('description', 'Anonymous UFO sighting')
-        title = "Anonymous UFO Sighting"
+        title = "UFO Sighting"
         
         # Apply minimal coordinate jittering for privacy (100m radius)
         accuracy = float(location.get('accuracy', 50.0))

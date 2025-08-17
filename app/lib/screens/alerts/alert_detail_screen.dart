@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../providers/alerts_provider.dart';
 import '../../providers/app_state.dart';
@@ -586,11 +587,12 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       return const SizedBox.shrink(); // Don't show anything if no media
     }
 
-    // Show first media file (image)
+    // Show first media file (image or video)
     final media = alert.mediaFiles.first;
-    final imageUrl = media['url'] as String? ?? '';
+    final mediaUrl = media['url'] as String? ?? '';
+    final mediaType = media['type'] as String? ?? 'image';
     
-    if (imageUrl.isEmpty) {
+    if (mediaUrl.isEmpty) {
       return Container(
         width: double.infinity,
         height: 200,
@@ -617,7 +619,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       children: [
         Builder(
           builder: (context) => GestureDetector(
-            onTap: () => _showFullscreenImage(context, imageUrl),
+            onTap: () => mediaType == 'video' ? null : _showFullscreenImage(context, mediaUrl),
           child: Container(
             width: double.infinity,
             constraints: const BoxConstraints(
@@ -631,29 +633,31 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                imageUrl,
-                fit: BoxFit.contain, // Changed from cover to contain to prevent distortion
-                width: double.infinity,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return const Center(
-                    child: CircularProgressIndicator(color: AppColors.brandPrimary),
-                  );
-                },
-                errorBuilder: (context, error, stackTrace) {
-                  return const Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.error, size: 48, color: AppColors.semanticError),
-                        SizedBox(height: 8),
-                        Text('Failed to load image', style: TextStyle(color: AppColors.textSecondary)),
-                      ],
+              child: mediaType == 'video' 
+                  ? _buildVideoPlayer(mediaUrl)
+                  : Image.network(
+                      mediaUrl,
+                      fit: BoxFit.contain,
+                      width: double.infinity,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return const Center(
+                          child: CircularProgressIndicator(color: AppColors.brandPrimary),
+                        );
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.error, size: 48, color: AppColors.semanticError),
+                              SizedBox(height: 8),
+                              Text('Failed to load image', style: TextStyle(color: AppColors.textSecondary)),
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ),
           ),
           ),
@@ -672,7 +676,66 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     );
   }
 
+  Widget _buildVideoPlayer(String videoUrl) {
+    return Container(
+      width: double.infinity,
+      height: 300,
+      color: Colors.black,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // Video thumbnail/placeholder
+          Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.play_circle_filled,
+                  color: AppColors.brandPrimary,
+                  size: 80,
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Tap to play video',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+          // Tap to play overlay
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: () {
+                // TODO: Implement video player or open in external app
+                _showVideoDialog(videoUrl);
+              },
+              child: Container(
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
+  void _showVideoDialog(String videoUrl) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Video Player'),
+          content: Text('Video URL: $videoUrl\n\nVideo player implementation coming soon!'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Widget _buildPhotoAnalysisItem(Map<String, dynamic> analysis) {
     final String status = analysis['analysis_status'] ?? 'pending';
