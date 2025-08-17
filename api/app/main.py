@@ -453,43 +453,156 @@ async def get_alerts():
 
 @app.get("/alerts/{alert_id}")
 async def get_alert_details(alert_id: str):
-    """Super simple alert lookup - just the basics"""
+    """Get single alert with same data structure as alerts list endpoint"""
     try:
         async with db_pool.acquire() as conn:
+            # Use exact same query as /alerts but for single ID
             row = await conn.fetchrow("""
-                SELECT title, description, created_at, media_info
-                FROM sightings 
-                WHERE id = $1 AND is_public = true
+                SELECT 
+                    s.id::text as id,
+                    s.title,
+                    s.description,
+                    s.category,
+                    s.alert_level,
+                    s.status,
+                    s.witness_count,
+                    s.is_public,
+                    s.tags,
+                    s.created_at,
+                    s.sensor_data,
+                    s.media_info,
+                    s.enrichment_data,
+                    -- Aggregate photo analysis results
+                    COALESCE(
+                        json_agg(
+                            json_build_object(
+                                'filename', par.filename,
+                                'classification', par.classification,
+                                'matched_object', par.matched_object,
+                                'confidence', par.confidence,
+                                'angular_separation_deg', par.angular_separation_deg,
+                                'analysis_status', par.analysis_status,
+                                'processing_duration_ms', par.processing_duration_ms
+                            )
+                            ORDER BY par.filename
+                        ) FILTER (WHERE par.id IS NOT NULL),
+                        '[]'
+                    ) as photo_analysis,
+                    -- Use witness count from sightings table
+                    COALESCE(s.witness_count, 0) as total_confirmations
+                FROM sightings s
+                LEFT JOIN photo_analysis_results par ON s.id = par.sighting_id
+                WHERE s.id = $1 AND s.is_public = true 
+                GROUP BY s.id, s.title, s.description, s.category, s.alert_level, s.status,
+                         s.witness_count, s.is_public, s.tags, s.created_at, s.sensor_data,
+                         s.media_info, s.enrichment_data
             """, uuid.UUID(alert_id))
             
             if not row:
-                return {"error": "Alert not found"}
+                return {"error": "Alert not found", "success": False}
+            
+            # Extract coordinates and location name (same logic as /alerts)
+            latitude = None
+            longitude = None
+            location_name = "Unknown Location"
+            
+            # Try enrichment data first
+            if row["enrichment_data"]:
+                enrichment = row["enrichment_data"]
+                if isinstance(enrichment, str):
+                    enrichment = json.loads(enrichment)
+                if "location" in enrichment:
+                    lat = enrichment["location"].get("latitude")
+                    lng = enrichment["location"].get("longitude")
+                    if lat is not None and lng is not None and lat != 0.0 and lng != 0.0:
+                        latitude = float(lat)
+                        longitude = float(lng)
+                        location_name = enrichment["location"].get("name", "Unknown Location")
+            
+            # Fall back to sensor data
+            if latitude is None and longitude is None and row["sensor_data"]:
+                sensor_data = row["sensor_data"]
+                if isinstance(sensor_data, str):
+                    sensor_data = json.loads(sensor_data)
+                
+                lat_val, lng_val = extract_coordinates_from_sensor_data(sensor_data)
+                if lat_val is not None and lng_val is not None and lat_val != 0.0 and lng_val != 0.0:
+                    latitude = lat_val
+                    longitude = lng_val
             
             # Use shared media processing function
-            media_files = process_media_files(row["media_info"], alert_id)
+            media_files = process_media_files(row["media_info"], row["id"])
+            
+            # Extract enrichment data
+            enrichment_info = {}
+            if row["enrichment_data"]:
+                try:
+                    if isinstance(row["enrichment_data"], str):
+                        enrichment_info = json.loads(row["enrichment_data"])
+                    else:
+                        enrichment_info = row["enrichment_data"]
+                except:
+                    pass
+            
+            # Extract photo analysis results
+            photo_analysis_results = []
+            if row["photo_analysis"]:
+                try:
+                    if isinstance(row["photo_analysis"], str):
+                        photo_analysis_results = json.loads(row["photo_analysis"])
+                    else:
+                        photo_analysis_results = row["photo_analysis"]
+                except:
+                    pass
+            
+            # Build exact same structure as /alerts endpoint
+            alert = {
+                "id": row["id"],
+                "title": row["title"],
+                "description": row["description"],
+                "category": row["category"],
+                "alert_level": row["alert_level"],
+                "status": row["status"],
+                "witness_count": row["witness_count"],
+                "created_at": row["created_at"].isoformat(),
+                "location": {
+                    "latitude": latitude,
+                    "longitude": longitude,
+                    "name": location_name
+                },
+                "distance_km": 0.0,
+                "bearing_deg": 0.0,
+                "view_count": 0,
+                "verification_score": 0.0,
+                "media_files": media_files,
+                "tags": row["tags"] or [],
+                "is_public": row["is_public"],
+                "submitted_at": row["created_at"].isoformat(),
+                "processed_at": row["created_at"].isoformat(),
+                "matrix_room_id": "",
+                "reporter_id": "",
+                "enrichment": enrichment_info,
+                "photo_analysis": photo_analysis_results,
+                "total_confirmations": row["total_confirmations"],
+                "can_confirm_witness": True
+            }
             
             return {
                 "success": True,
-                "data": {
-                    "id": alert_id,
-                    "title": row["title"],
-                    "description": row["description"],
-                    "created_at": row["created_at"].isoformat(),
-                    "latitude": 0.0,
-                    "longitude": 0.0,
-                    "location_name": "Unknown Location",
-                    "media_files": media_files,
-                    "witness_count": 1,
-                    "alert_level": "low",
-                    "category": "ufo"
-                }
+                "data": alert,
+                "message": "Alert found",
+                "timestamp": datetime.now().isoformat()
             }
             
     except HTTPException:
         raise
     except Exception as e:
         print(f"Error fetching alert {alert_id}: {e}")
-        raise HTTPException(status_code=500, detail=f"Error fetching alert details: {str(e)}")
+        return {
+            "success": False,
+            "error": f"Error fetching alert: {str(e)}",
+            "timestamp": datetime.now().isoformat()
+        }
 
 async def generate_enrichment_data(sensor_data):
     """Generate enrichment data for a sighting using the enrichment service."""

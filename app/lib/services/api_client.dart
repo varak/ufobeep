@@ -447,28 +447,8 @@ class ApiClient {
     }
   }
 
-  Future<Map<String, dynamic>> sendAlertForSighting(String sightingId, String deviceId) async {
-    try {
-      final response = await _dio.post('/alerts/send/$sightingId', data: {
-        'device_id': deviceId,
-      });
-
-      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
-        return response.data as Map<String, dynamic>;
-      } else {
-        throw ApiClientException(
-          'HTTP ${response.statusCode}: ${response.statusMessage}',
-          statusCode: response.statusCode,
-        );
-      }
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
-  }
-
   Future<Map<String, dynamic>> getAlertDetails(String alertId) async {
     try {
-      // Use alerts endpoint to get alert/sighting details
       final response = await _dio.get('/alerts/$alertId');
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {

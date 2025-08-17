@@ -112,12 +112,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
 
       debugPrint('Submitting sighting with sensor data: ${_sensorData != null}');
       
-      // Clean sequence: 1. Create sighting, 2. Upload media, 3. Send alerts
-      debugPrint('Step 1: Creating sighting...');
-      
-      // Get device ID early for later use
-      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
-      
+      // First, send the beep to create sighting and trigger alerts
+      debugPrint('Creating sighting via sendBeep...');
       // Check for valid GPS coordinates (not 0,0 which is invalid)
       double? validLat = _sensorData?.latitude;
       double? validLon = _sensorData?.longitude;
@@ -127,7 +123,6 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         debugPrint('Invalid GPS coordinates (0,0) detected, will use current location');
       }
       
-      // Step 1: Create sighting (no alerts sent yet)
       final beepResult = await anonymousBeepService.sendBeep(
         description: finalDescription,
         latitude: validLat,
@@ -136,29 +131,19 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       );
       
       final sightingId = beepResult['sighting_id'];
-      debugPrint('Step 1 complete: Sighting created with ID: $sightingId');
+      debugPrint('Sighting created with ID: $sightingId');
       
-      // Step 2: Upload media if present
+      // Now upload the media file to the sighting
       try {
-        debugPrint('Step 2: Uploading ${widget.isVideo ? 'video' : 'photo'} to sighting...');
+        debugPrint('Uploading ${widget.isVideo ? 'video' : 'photo'} to sighting...');
         await ApiClient.instance.uploadMediaFileForSighting(
           sightingId,
           widget.mediaFile,
         );
-        debugPrint('Step 2 complete: ${widget.isVideo ? 'Video' : 'Photo'} uploaded successfully');
+        debugPrint('${widget.isVideo ? 'Video' : 'Photo'} uploaded successfully');
       } catch (e) {
         debugPrint('Warning: Failed to upload ${widget.isVideo ? 'video' : 'photo'}: $e');
-        // Continue anyway - alerts can still be sent
-      }
-      
-      // Step 3: Send alerts now that everything is ready
-      try {
-        debugPrint('Step 3: Sending proximity alerts...');
-        await ApiClient.instance.sendAlertForSighting(sightingId, deviceId);
-        debugPrint('Step 3 complete: Alerts sent successfully');
-      } catch (e) {
-        debugPrint('Warning: Failed to send alerts: $e');
-        // Don't fail completely if alerts fail
+        // Don't fail completely if media upload fails
       }
 
       // Submit photo metadata if available (for astronomical identification)
@@ -181,6 +166,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       }
 
       // Set device ID as current user so navigation button is hidden
+      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
       ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
       
       // Show success message
