@@ -63,25 +63,25 @@ class ProximityAlertService:
                 # 1km always gets highest priority, escalated by witness count
                 level = alert_escalation if alert_escalation == "emergency" else "emergency"
                 title, body = self._get_alert_message(1.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_1km, sighting_id, level, title, body, witness_count, lat, lon, f"Sighting {sighting_id}", beep_device_id))
+                tasks.append(self._send_alert_batch(devices_1km, sighting_id, level, title, body, witness_count, lat, lon, "UFO Sighting", beep_device_id))
                 
             if devices_5km_only:
                 # 5km gets urgent unless escalated
                 level = "emergency" if alert_escalation == "emergency" else "urgent"
                 title, body = self._get_alert_message(5.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_5km_only, sighting_id, level, title, body, witness_count, lat, lon, f"Sighting {sighting_id}", beep_device_id))
+                tasks.append(self._send_alert_batch(devices_5km_only, sighting_id, level, title, body, witness_count, lat, lon, "UFO Sighting", beep_device_id))
                 
             if devices_10km_only:
                 # 10km gets normal unless escalated
                 level = alert_escalation if alert_escalation in ["urgent", "emergency"] else "normal"
                 title, body = self._get_alert_message(10.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_10km_only, sighting_id, level, title, body, witness_count, lat, lon, f"Sighting {sighting_id}", beep_device_id))
+                tasks.append(self._send_alert_batch(devices_10km_only, sighting_id, level, title, body, witness_count, lat, lon, "UFO Sighting", beep_device_id))
                 
             if devices_25km_only:
                 # 25km gets normal unless emergency escalation
                 level = "emergency" if alert_escalation == "emergency" else "normal"
                 title, body = self._get_alert_message(25.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_25km_only, sighting_id, level, title, body, witness_count, lat, lon, f"Sighting {sighting_id}", beep_device_id))
+                tasks.append(self._send_alert_batch(devices_25km_only, sighting_id, level, title, body, witness_count, lat, lon, "UFO Sighting", beep_device_id))
             
             # Execute all alert batches concurrently
             if tasks:
