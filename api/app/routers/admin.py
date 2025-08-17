@@ -145,12 +145,56 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
             <a href="/admin/sightings" class="nav-btn">📋 Manage Sightings</a>
             <a href="/admin/witnesses" class="nav-btn">👁️ Witness Confirmations</a>
             <a href="/admin/aggregation" class="nav-btn">🔬 Witness Aggregation</a>
+            <a href="/admin/engagement/metrics" class="nav-btn">📊 Engagement Analytics</a>
             <a href="/admin/media" class="nav-btn">📸 Media Management</a>
             <a href="/admin/users" class="nav-btn">👥 User Management</a>
             <a href="/admin/system" class="nav-btn">⚙️ System Status</a>
             <a href="/admin/mufon" class="nav-btn">🛸 MUFON Integration</a>
             <a href="/admin/alerts" class="nav-btn">🚨 Proximity Alerts</a>
             <a href="/admin/logs" class="nav-btn">📜 System Logs</a>
+        </div>
+
+        <!-- User Engagement & Metrics Section -->
+        <div class="section">
+            <h3>📊 User Engagement & Quick Actions (24h)</h3>
+            <div class="stats-grid" id="engagement-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="engagement-rate">-</div>
+                    <div class="stat-label">Engagement Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="confirmations-24h">-</div>
+                    <div class="stat-label">"I see it too" Actions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="checked-no-see-24h">-</div>
+                    <div class="stat-label">"I checked but don't see it"</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="missed-24h">-</div>
+                    <div class="stat-label">"I missed this one"</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="unique-devices-24h">-</div>
+                    <div class="stat-label">Active Devices</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="delivery-success-rate">-</div>
+                    <div class="stat-label">Delivery Success Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="avg-delivery-time">-</div>
+                    <div class="stat-label">Avg Delivery Time</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="events-1h">-</div>
+                    <div class="stat-label">Events (1h)</div>
+                </div>
+            </div>
+            <div style="margin-top: 15px; text-align: center;">
+                <button class="nav-btn" onclick="refreshEngagementMetrics()" style="width: auto; padding: 10px 20px;">🔄 Refresh Metrics</button>
+                <button class="nav-btn" onclick="viewDetailedMetrics()" style="width: auto; padding: 10px 20px; margin-left: 10px;">📈 Detailed View</button>
+            </div>
         </div>
 
         <!-- Rate Limiting Controls Section -->
@@ -194,6 +238,9 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
             try {
                 const response = await fetch('/admin/stats');
                 const stats = await response.json();
+                
+                // Also load engagement metrics
+                await loadEngagementMetrics();
                 
                 const statsGrid = document.getElementById('stats-grid');
                 statsGrid.innerHTML = `
@@ -335,6 +382,57 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
             }, 5000);
         }
 
+        // Engagement metrics functions
+        async function loadEngagementMetrics() {
+            try {
+                const response = await fetch('/admin/engagement/summary');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const data = result.data;
+                    
+                    // Update engagement metrics display
+                    document.getElementById('engagement-rate').textContent = data.engagement_rate + '%';
+                    document.getElementById('confirmations-24h').textContent = data.confirmations_24h;
+                    document.getElementById('checked-no-see-24h').textContent = data.checked_no_see_24h;
+                    document.getElementById('missed-24h').textContent = data.missed_24h;
+                    document.getElementById('unique-devices-24h').textContent = data.unique_devices_24h;
+                    document.getElementById('delivery-success-rate').textContent = data.delivery_success_rate + '%';
+                    document.getElementById('avg-delivery-time').textContent = Math.round(data.avg_delivery_time_24h) + 'ms';
+                    document.getElementById('events-1h').textContent = data.events_1h;
+                } else {
+                    console.error('Failed to load engagement metrics:', result.error);
+                    // Set all to error state
+                    ['engagement-rate', 'confirmations-24h', 'checked-no-see-24h', 'missed-24h', 
+                     'unique-devices-24h', 'delivery-success-rate', 'avg-delivery-time', 'events-1h'].forEach(id => {
+                        document.getElementById(id).textContent = 'Error';
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading engagement metrics:', error);
+                // Set all to error state
+                ['engagement-rate', 'confirmations-24h', 'checked-no-see-24h', 'missed-24h', 
+                 'unique-devices-24h', 'delivery-success-rate', 'avg-delivery-time', 'events-1h'].forEach(id => {
+                    document.getElementById(id).textContent = 'Error';
+                });
+            }
+        }
+        
+        async function refreshEngagementMetrics() {
+            // Show loading state
+            ['engagement-rate', 'confirmations-24h', 'checked-no-see-24h', 'missed-24h', 
+             'unique-devices-24h', 'delivery-success-rate', 'avg-delivery-time', 'events-1h'].forEach(id => {
+                document.getElementById(id).textContent = '...';
+            });
+            
+            await loadEngagementMetrics();
+        }
+        
+        function viewDetailedMetrics() {
+            // Open detailed metrics in new window/tab
+            window.open('/admin/engagement/metrics', '_blank');
+        }
+
         // Initialize dashboard
         loadStats();
         loadActivity();
@@ -343,6 +441,7 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
         // Refresh every 30 seconds
         setInterval(() => {
             loadStats();
+            loadEngagementMetrics();
             loadActivity();
             loadRateLimitStatus();
         }, 30000);
@@ -2673,3 +2772,396 @@ async def set_rate_limit_threshold(
         "enabled": rate_limit_enabled,
         "threshold": rate_limit_threshold
     }
+
+@router.get("/engagement/metrics")
+async def get_engagement_metrics(
+    hours: int = 24,
+    sighting_id: Optional[str] = None,
+    credentials: str = Depends(verify_admin_password)
+):
+    """Get comprehensive engagement metrics for admin analysis"""
+    try:
+        from app.services.metrics_service import get_metrics_service
+        from app.main import db_pool
+        
+        metrics_service = get_metrics_service(db_pool)
+        
+        # Convert sighting_id to UUID if provided
+        sighting_uuid = None
+        if sighting_id:
+            import uuid
+            try:
+                sighting_uuid = uuid.UUID(sighting_id)
+            except ValueError:
+                raise HTTPException(status_code=400, detail="Invalid sighting ID format")
+        
+        # Get engagement metrics
+        metrics = await metrics_service.get_engagement_metrics(
+            time_range_hours=hours,
+            sighting_id=sighting_uuid
+        )
+        
+        return {
+            "success": True,
+            "data": metrics,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+    except Exception as e:
+        print(f"Error getting engagement metrics: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to get metrics: {str(e)}")
+
+@router.get("/engagement/summary")
+async def get_engagement_summary(
+    credentials: str = Depends(verify_admin_password)
+):
+    """Get engagement summary for dashboard"""
+    try:
+        from app.main import db_pool
+        
+        async with db_pool.acquire() as conn:
+            # Get recent engagement stats
+            summary = await conn.fetchrow("""
+                SELECT 
+                    COUNT(*) FILTER (WHERE timestamp >= NOW() - INTERVAL '24 hours') as events_24h,
+                    COUNT(*) FILTER (WHERE timestamp >= NOW() - INTERVAL '1 hour') as events_1h,
+                    COUNT(DISTINCT device_id) FILTER (WHERE timestamp >= NOW() - INTERVAL '24 hours') as unique_devices_24h,
+                    COUNT(*) FILTER (WHERE event_type = 'quick_action_see_it_too' AND timestamp >= NOW() - INTERVAL '24 hours') as confirmations_24h,
+                    COUNT(*) FILTER (WHERE event_type = 'quick_action_dont_see' AND timestamp >= NOW() - INTERVAL '24 hours') as checked_no_see_24h,
+                    COUNT(*) FILTER (WHERE event_type = 'quick_action_missed' AND timestamp >= NOW() - INTERVAL '24 hours') as missed_24h,
+                    COUNT(*) FILTER (WHERE event_type = 'alert_sent' AND timestamp >= NOW() - INTERVAL '24 hours') as alerts_sent_24h
+                FROM metrics_events 
+                WHERE metric_type = 'user_engagement'
+            """)
+            
+            # Get alert delivery stats
+            delivery_summary = await conn.fetchrow("""
+                SELECT 
+                    COUNT(*) FILTER (WHERE delivery_attempt_time >= NOW() - INTERVAL '24 hours') as deliveries_attempted_24h,
+                    COUNT(*) FILTER (WHERE delivery_status = 'delivered' AND delivery_attempt_time >= NOW() - INTERVAL '24 hours') as deliveries_successful_24h,
+                    COUNT(*) FILTER (WHERE delivery_status = 'failed' AND delivery_attempt_time >= NOW() - INTERVAL '24 hours') as deliveries_failed_24h,
+                    AVG(delivery_time_ms) FILTER (WHERE delivery_attempt_time >= NOW() - INTERVAL '24 hours') as avg_delivery_time_24h
+                FROM alert_deliveries
+            """)
+            
+            # Calculate engagement rates
+            engagement_rate = 0
+            open_rate = 0
+            delivery_success_rate = 0
+            
+            if summary and delivery_summary:
+                total_engagements = (summary['confirmations_24h'] or 0) + (summary['checked_no_see_24h'] or 0) + (summary['missed_24h'] or 0)
+                alerts_sent = summary['alerts_sent_24h'] or 0
+                deliveries_attempted = delivery_summary['deliveries_attempted_24h'] or 0
+                deliveries_successful = delivery_summary['deliveries_successful_24h'] or 0
+                
+                if alerts_sent > 0:
+                    engagement_rate = (total_engagements / alerts_sent) * 100
+                
+                if deliveries_attempted > 0:
+                    delivery_success_rate = (deliveries_successful / deliveries_attempted) * 100
+            
+            return {
+                "success": True,
+                "data": {
+                    "events_24h": summary['events_24h'] if summary else 0,
+                    "events_1h": summary['events_1h'] if summary else 0,
+                    "unique_devices_24h": summary['unique_devices_24h'] if summary else 0,
+                    "confirmations_24h": summary['confirmations_24h'] if summary else 0,
+                    "checked_no_see_24h": summary['checked_no_see_24h'] if summary else 0,
+                    "missed_24h": summary['missed_24h'] if summary else 0,
+                    "alerts_sent_24h": summary['alerts_sent_24h'] if summary else 0,
+                    "deliveries_attempted_24h": delivery_summary['deliveries_attempted_24h'] if delivery_summary else 0,
+                    "deliveries_successful_24h": delivery_summary['deliveries_successful_24h'] if delivery_summary else 0,
+                    "deliveries_failed_24h": delivery_summary['deliveries_failed_24h'] if delivery_summary else 0,
+                    "avg_delivery_time_24h": float(delivery_summary['avg_delivery_time_24h']) if delivery_summary and delivery_summary['avg_delivery_time_24h'] else 0,
+                    "engagement_rate": round(engagement_rate, 2),
+                    "delivery_success_rate": round(delivery_success_rate, 2)
+                },
+                "timestamp": datetime.utcnow().isoformat()
+            }
+            
+    except Exception as e:
+        print(f"Error getting engagement summary: {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "data": {
+                "events_24h": 0,
+                "events_1h": 0,
+                "unique_devices_24h": 0,
+                "confirmations_24h": 0,
+                "checked_no_see_24h": 0,
+                "missed_24h": 0,
+                "alerts_sent_24h": 0,
+                "deliveries_attempted_24h": 0,
+                "deliveries_successful_24h": 0,
+                "deliveries_failed_24h": 0,
+                "avg_delivery_time_24h": 0,
+                "engagement_rate": 0,
+                "delivery_success_rate": 0
+            }
+        }
+
+@router.get("/engagement/metrics", response_class=HTMLResponse)
+async def admin_engagement_metrics_page(credentials: str = Depends(verify_admin_password)):
+    """Admin engagement metrics and analytics page"""
+    return """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UFOBeep Engagement Analytics</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #1a1a1a; color: #e0e0e0; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { color: #00ff88; margin: 0; }
+        .header p { color: #888; margin: 5px 0; }
+        .back-link { color: #00ff88; text-decoration: none; margin-bottom: 20px; display: inline-block; }
+        .back-link:hover { text-decoration: underline; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .stat-card { background: #2d2d2d; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #444; }
+        .stat-number { font-size: 2em; font-weight: bold; color: #00ff88; margin: 0; }
+        .stat-label { color: #bbb; margin: 10px 0 0 0; }
+        .section { background: #2d2d2d; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #444; }
+        .section h3 { color: #00ff88; margin-top: 0; }
+        .controls { margin-bottom: 20px; }
+        .controls select, .controls input { background: #333; color: #e0e0e0; border: 1px solid #555; padding: 8px; border-radius: 4px; margin-right: 10px; }
+        .refresh-btn { background: #00ff88; color: #000; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
+        .refresh-btn:hover { background: #00cc70; }
+        .chart-container { background: #333; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .table th, .table td { text-align: left; padding: 12px; border-bottom: 1px solid #444; }
+        .table th { background: #333; color: #00ff88; }
+        .table tr:hover { background: #333; }
+        .badge { padding: 3px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold; }
+        .badge.high { background: #ff4444; color: white; }
+        .badge.medium { background: #ffaa44; color: white; }
+        .badge.low { background: #44ff44; color: black; }
+        .loading { text-align: center; padding: 40px; color: #888; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/admin" class="back-link">← Back to Admin Dashboard</a>
+            <h1>📊 UFOBeep Engagement Analytics</h1>
+            <p>Real-time user engagement and alert delivery metrics</p>
+        </div>
+
+        <!-- Summary Stats -->
+        <div class="stats-grid" id="summary-stats">
+            <!-- Loaded via JavaScript -->
+        </div>
+
+        <!-- Time Range Controls -->
+        <div class="controls">
+            <select id="timeRange">
+                <option value="1">Last 1 Hour</option>
+                <option value="24" selected>Last 24 Hours</option>
+                <option value="168">Last Week</option>
+                <option value="720">Last Month</option>
+            </select>
+            <input type="text" id="sightingFilter" placeholder="Filter by Sighting ID (optional)">
+            <button class="refresh-btn" onclick="loadDetailedMetrics()">🔄 Refresh Data</button>
+        </div>
+
+        <!-- Engagement Breakdown -->
+        <div class="section">
+            <h3>📈 Engagement Breakdown</h3>
+            <div id="engagement-breakdown" class="loading">Loading engagement data...</div>
+        </div>
+
+        <!-- Alert Delivery Performance -->
+        <div class="section">
+            <h3>🚀 Alert Delivery Performance</h3>
+            <div id="delivery-performance" class="loading">Loading delivery data...</div>
+        </div>
+
+        <!-- User Funnel Analysis -->
+        <div class="section">
+            <h3>🎯 User Engagement Funnel</h3>
+            <div id="engagement-funnel" class="loading">Loading funnel data...</div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="section">
+            <h3>🕐 Recent Activity</h3>
+            <div id="recent-activity" class="loading">Loading recent activity...</div>
+        </div>
+    </div>
+
+    <script>
+        let currentMetrics = null;
+
+        async function loadDetailedMetrics() {
+            const timeRange = document.getElementById('timeRange').value;
+            const sightingFilter = document.getElementById('sightingFilter').value.trim();
+            
+            try {
+                // Show loading states
+                ['summary-stats', 'engagement-breakdown', 'delivery-performance', 'engagement-funnel', 'recent-activity'].forEach(id => {
+                    document.getElementById(id).innerHTML = '<div class="loading">Loading...</div>';
+                });
+
+                // Build query parameters
+                const params = new URLSearchParams({ hours: timeRange });
+                if (sightingFilter) params.append('sighting_id', sightingFilter);
+
+                // Fetch detailed metrics
+                const response = await fetch(`/admin/engagement/metrics?${params}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentMetrics = result.data;
+                    renderMetrics(currentMetrics);
+                } else {
+                    throw new Error(result.error || 'Failed to load metrics');
+                }
+            } catch (error) {
+                console.error('Error loading metrics:', error);
+                ['summary-stats', 'engagement-breakdown', 'delivery-performance', 'engagement-funnel', 'recent-activity'].forEach(id => {
+                    document.getElementById(id).innerHTML = `<div class="loading">Error: ${error.message}</div>`;
+                });
+            }
+        }
+
+        function renderMetrics(metrics) {
+            // Render summary stats
+            const summaryStats = document.getElementById('summary-stats');
+            summaryStats.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${metrics.overall.total_events || 0}</div>
+                    <div class="stat-label">Total Events</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${metrics.overall.unique_devices || 0}</div>
+                    <div class="stat-label">Unique Devices</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${metrics.calculated_metrics.engagement_rate.toFixed(1)}%</div>
+                    <div class="stat-label">Engagement Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${metrics.calculated_metrics.delivery_success_rate.toFixed(1)}%</div>
+                    <div class="stat-label">Delivery Success</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${Math.round(metrics.delivery.avg_delivery_time_ms || 0)}ms</div>
+                    <div class="stat-label">Avg Delivery Time</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${metrics.delivery.total_deliveries || 0}</div>
+                    <div class="stat-label">Total Deliveries</div>
+                </div>
+            `;
+
+            // Render engagement breakdown
+            const engagementBreakdown = document.getElementById('engagement-breakdown');
+            if (metrics.by_type && metrics.by_type.length > 0) {
+                const table = `
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Engagement Type</th>
+                                <th>Count</th>
+                                <th>Unique Devices</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${metrics.by_type.map(type => {
+                                const percentage = metrics.overall.total_events > 0 ? 
+                                    ((type.count / metrics.overall.total_events) * 100).toFixed(1) : 0;
+                                return `
+                                    <tr>
+                                        <td><strong>${type.event_type.replace('_', ' ')}</strong></td>
+                                        <td>${type.count}</td>
+                                        <td>${type.unique_devices}</td>
+                                        <td>${percentage}%</td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                `;
+                engagementBreakdown.innerHTML = table;
+            } else {
+                engagementBreakdown.innerHTML = '<p style="color: #888; text-align: center;">No engagement data found for the selected time period.</p>';
+            }
+
+            // Render delivery performance
+            const deliveryPerformance = document.getElementById('delivery-performance');
+            const delivery = metrics.delivery;
+            deliveryPerformance.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">${delivery.successful_deliveries || 0}</div>
+                        <div class="stat-label">Successful</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${delivery.failed_deliveries || 0}</div>
+                        <div class="stat-label">Failed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${delivery.rate_limited || 0}</div>
+                        <div class="stat-label">Rate Limited</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${Math.round(delivery.max_delivery_time_ms || 0)}ms</div>
+                        <div class="stat-label">Max Delivery Time</div>
+                    </div>
+                </div>
+            `;
+
+            // Render engagement funnel
+            const engagementFunnel = document.getElementById('engagement-funnel');
+            const funnel = metrics.funnel;
+            engagementFunnel.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">${funnel.alerts_sent || 0}</div>
+                        <div class="stat-label">Alerts Sent</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${funnel.alerts_opened || 0}</div>
+                        <div class="stat-label">Alerts Opened</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${funnel.quick_actions || 0}</div>
+                        <div class="stat-label">Quick Actions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${funnel.beeps_submitted || 0}</div>
+                        <div class="stat-label">Beeps Submitted</div>
+                    </div>
+                </div>
+                <p style="color: #888; margin-top: 15px; text-align: center;">
+                    Funnel Conversion: ${funnel.alerts_sent > 0 ? ((funnel.quick_actions / funnel.alerts_sent) * 100).toFixed(1) : 0}% 
+                    (${funnel.quick_actions} actions / ${funnel.alerts_sent} alerts)
+                </p>
+            `;
+
+            // Show time range info
+            document.getElementById('recent-activity').innerHTML = `
+                <p><strong>Time Range:</strong> ${metrics.time_range_hours} hours</p>
+                <p><strong>Data Updated:</strong> ${new Date().toLocaleString()}</p>
+                ${metrics.sighting_id ? `<p><strong>Filtered by Sighting:</strong> ${metrics.sighting_id}</p>` : ''}
+                <p style="color: #888; margin-top: 20px;">
+                    This data includes all user engagement events, alert deliveries, and system interactions within the specified time range.
+                    Engagement rate is calculated as (quick actions / alerts sent) × 100%.
+                </p>
+            `;
+        }
+
+        // Initialize page
+        loadDetailedMetrics();
+
+        // Auto-refresh every 60 seconds
+        setInterval(loadDetailedMetrics, 60000);
+    </script>
+</body>
+</html>
+    """

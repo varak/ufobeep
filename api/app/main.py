@@ -216,6 +216,11 @@ async def startup_event():
             
             # Run photo analysis migration
             await run_photo_analysis_migration()
+            
+            # Initialize metrics service
+            from app.services.metrics_service import initialize_metrics_service
+            await initialize_metrics_service(db_pool)
+            
         print("Database tables initialized")
     except Exception as e:
         print(f"Database initialization failed: {e}")
@@ -247,6 +252,10 @@ app.include_router(devices.router)
 app.include_router(emails.router)
 app.include_router(photo_analysis.router)
 app.include_router(mufon.router)
+
+# Include engagement tracking router
+from app.routers import beep_engagement
+app.include_router(beep_engagement.router)
 
 # Disable complex routers for now - just get basic endpoints working
 

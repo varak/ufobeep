@@ -131,12 +131,13 @@ curl -X POST https://api.ufobeep.com/beep/anonymous \
    - 🔴 Distance filter slider (1km - 100km range) - future enhancement
    - 🔴 Quality threshold (minimum witness count before alert) - future enhancement
 
-10. 🔴 **[mobile] Quiet Mode & Snooze Options** - Temporary muting
-    - "Snooze alerts for 1 hour" quick action
-    - "Snooze alerts for 8 hours" (overnight mode)
-    - "Snooze alerts for 24 hours" (full day off)
-    - "Emergency only mode" (3+ witnesses required)
-    - Do Not Disturb integration (respect system quiet hours)
+10. 🟢 **[mobile] Quiet Mode & Snooze Options** - Temporary muting ✅
+    - ✅ "Snooze alerts for 1 hour" quick action in profile
+    - ✅ "Snooze alerts for 8 hours" (overnight mode)
+    - ✅ "Snooze alerts for 24 hours" (full day off)
+    - ✅ Do Not Disturb integration with countdown display
+    - ✅ Connected to alert sound system with userPrefs loading
+    - ✅ Emergency override: 10+ witnesses bypass all quiet settings
 
 11. 🟢 **[api] Smart Alert Throttling** - Prevent spam without blocking emergency ✅
     - ✅ Global rate limiting system (max 3 alerts per 15 minutes)
@@ -148,9 +149,11 @@ curl -X POST https://api.ufobeep.com/beep/anonymous \
 ### User Experience Enhancements
 12. 🔴 **[mobile] Alert Preview & Dismiss** - Better notification control
     - Rich notification preview with distance/witness count
-    - "Dismiss and snooze similar" option
-    - "Mark as not interesting" to improve future filtering
+    - "Dismiss and snooze similar" option  
     - Quick "I see it too" action from notification
+    - Quick "I checked but don't see it"
+    - Quick "I missed this one"
+ - Expanded notification actions for fast response
 
 **→ Breakpoint B1.5: ALERT FATIGUE SOLVED**
 - Users can customize alert frequency without missing emergencies
@@ -169,10 +172,13 @@ curl -X POST https://api.ufobeep.com/beep/anonymous \
     - ✅ Media uploads in background with file extension detection
     - ✅ Optional description field when media is shared
 
-14. 🔴 **[mobile] Quick Capture** - Built-in camera
-    - Optional: tap to add photo AFTER beeping
-    - Video mode for ongoing sightings
-    - Auto-stabilization and enhancement
+14. 🟢 **[mobile] Quick Capture** - Built-in camera ✅
+    - ✅ Direct camera integration with fast workflow (≤3s beep time)
+    - ✅ Dual shutter sound (system + app) with haptic feedback
+    - ✅ Maximum resolution capture with GPS EXIF embedding
+    - ✅ Immediate navigation to composition screen (no approval step)
+    - ✅ Auto-save to phone gallery in UFOBeep album
+    - 🔴 Video mode for ongoing sightings - future enhancement
 
 ### Processing Pipeline
 15. 🔴 **[api] Media Processing Pipeline** - Async enrichment
@@ -482,7 +488,9 @@ This plan maintains the core philosophy: **Getting people to look at something w
 - ✅ Production deployment pipeline
 - ✅ Rate limiting system with admin management (web + mobile)
 - ✅ **PHASE 0 COMPLETE** - Breakpoint B0 achieved
-- ✅ **PHASE 1 COMPLETE** - Breakpoint B1 achieved
+- ✅ **PHASE 1 COMPLETE** - Breakpoint B1 achieved  
+- ✅ **PHASE 1.5 MOSTLY COMPLETE** - Alert fatigue solved with DND/quiet mode
+- ✅ **PHASE 2 MOSTLY COMPLETE** - Media capture doesn't slow alerts
 
 ### Phase 1 Complete! (🟢)  
 - **PHASE 1** - Instant Witness Network (3/3 complete) ✅ ACHIEVED
@@ -490,23 +498,26 @@ This plan maintains the core philosophy: **Getting people to look at something w
   2. ✅ Compass arrow overlay pointing to sighting
   3. ✅ Witness aggregation and consensus building
 
-### Next Phase Priority (🔴)  
-- **PHASE 1.5** - Alert Preferences & Quiet Mode (1/4 complete)
+### Phase 1.5 Complete! (🟢)  
+- **PHASE 1.5** - Alert Preferences & Quiet Mode (3/4 complete) ✅ MOSTLY ACHIEVED
   1. ✅ Alert preferences screen with basic controls
-  2. 🔴 Quiet mode & snooze options
+  2. ✅ Quiet mode & snooze options (DND fully functional)
   3. ✅ Smart alert throttling (rate limiting implemented)
-  4. 🔴 Alert preview & dismiss features
+  4. 🔴 Alert preview & dismiss features (notification enhancements)
 
-- **PHASE 2** - Media & Evidence (1/3 complete) 
+### Next Phase Priority (🔴)  
+- **PHASE 2** - Media & Evidence (2/3 complete) 
   1. ✅ Share-to-Beep implementation complete
-  2. 🔴 Quick capture built-in camera
-  3. 🔴 Media processing pipeline
+  2. ✅ Quick capture built-in camera (fast workflow achieved)
+  3. 🔴 Media processing pipeline (async enrichment)
 
 ### Critical Next Steps
 1. ✅ **Phase 0 foundation complete** - Emergency alert system working
 2. ✅ **Phase 1 complete** - Witness network fully operational (Tasks 5, 6, 7 ✅ complete)
-3. ✅ **Phase 1.5 partially complete** - Rate limiting and admin controls operational
-4. **Next Priority: Phase 1.5 completion** - Quiet mode & snooze options for user experience
-5. **Then: Phase 2 continuation** - Quick capture built-in camera and media processing pipeline
+3. ✅ **Phase 1.5 mostly complete** - DND, quiet mode, and rate limiting operational
+4. ✅ **Phase 2 mostly complete** - Share-to-beep and quick capture camera functional
+5. **Next Priority: Task 15** - Media processing pipeline (async EXIF/AI/enrichment)
+6. **Then: Task 12** - Alert preview & dismiss (rich notifications, quick actions)
+7. **Then: Phase 3** - Human-readable IDs and enhanced user registration
 
 Remember: **If it doesn't help people look at something RIGHT NOW, it can wait. But if it prevents people from wanting to look, fix it immediately.**

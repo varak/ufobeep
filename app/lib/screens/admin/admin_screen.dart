@@ -292,6 +292,10 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
             _buildRateLimitingCard(),
             const SizedBox(height: 16),
             
+            // Engagement Analytics Section
+            _buildEngagementAnalyticsCard(),
+            const SizedBox(height: 16),
+            
             // Witness Aggregation Section (Task 7)
             _buildWitnessAggregationCard(),
             const SizedBox(height: 16),
@@ -1170,6 +1174,273 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
       setState(() {
         _statusMessage = 'Failed to refresh status: $e';
         _rateLimitMessage = 'Error refreshing status';
+      });
+      await SoundService.I.play(AlertSound.gpsFail);
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  Widget _buildEngagementAnalyticsCard() {
+    return Card(
+      color: AppColors.darkSurface,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              '📊 Engagement Analytics',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppColors.brandPrimary,
+              ),
+            ),
+            const SizedBox(height: 12),
+            
+            const Text(
+              'Real-time user engagement and alert delivery metrics',
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 16),
+            
+            // Metrics Summary (placeholder - could be real-time data)
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppColors.darkBackground.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
+                    ),
+                    child: const Column(
+                      children: [
+                        Text(
+                          'Quick Actions',
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 12,
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          'See metrics online',
+                          style: TextStyle(
+                            color: AppColors.brandPrimary,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppColors.darkBackground.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
+                    ),
+                    child: const Column(
+                      children: [
+                        Text(
+                          'Delivery Rate',
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 12,
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          'Live tracking',
+                          style: TextStyle(
+                            color: AppColors.brandPrimary,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            
+            // Web Analytics Button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () => _openEngagementAnalytics(),
+                icon: const Icon(Icons.analytics),
+                label: const Text('Open Web Analytics Dashboard'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.brandPrimary,
+                  foregroundColor: AppColors.darkBackground,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            
+            // Quick Metrics Summary Button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () => _openEngagementSummary(),
+                icon: const Icon(Icons.dashboard),
+                label: const Text('Quick Metrics Summary'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.brandPrimaryLight,
+                  foregroundColor: AppColors.darkBackground,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            
+            const Text(
+              'Track user engagement with quick action buttons, alert delivery success rates, and system performance metrics.',
+              style: TextStyle(
+                color: AppColors.textTertiary,
+                fontSize: 12,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _openEngagementAnalytics() async {
+    // Open the full engagement analytics page in browser
+    try {
+      const url = 'https://api.ufobeep.com/admin/engagement/metrics';
+      // For mobile app, we'll show a message and copy URL to clipboard
+      setState(() {
+        _statusMessage = 'Opening engagement analytics dashboard...';
+      });
+      
+      await SoundService.I.play(AlertSound.test);
+      
+      // In a real implementation, you would use url_launcher package
+      // For now, we'll show a dialog with instructions
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            backgroundColor: AppColors.darkSurface,
+            title: const Text(
+              '📊 Engagement Analytics',
+              style: TextStyle(color: AppColors.brandPrimary),
+            ),
+            content: const Text(
+              'Open your browser and go to:\n\nhttps://api.ufobeep.com/admin/engagement/metrics\n\nUse admin credentials to view detailed engagement analytics, delivery metrics, and user funnel analysis.',
+              style: TextStyle(color: AppColors.textPrimary),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text(
+                  'Got it',
+                  style: TextStyle(color: AppColors.brandPrimary),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+      
+      setState(() {
+        _statusMessage = 'Analytics dashboard URL provided';
+      });
+      
+    } catch (e) {
+      setState(() {
+        _statusMessage = 'Failed to open analytics: $e';
+      });
+      await SoundService.I.play(AlertSound.gpsFail);
+    }
+  }
+
+  void _openEngagementSummary() async {
+    // Show a quick summary of engagement metrics
+    setState(() {
+      _statusMessage = 'Loading engagement summary...';
+      _isLoading = true;
+    });
+    
+    try {
+      // In a real implementation, you would fetch this data from the API
+      await Future.delayed(const Duration(seconds: 1)); // Simulate API call
+      
+      await SoundService.I.play(AlertSound.gpsOk);
+      
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            backgroundColor: AppColors.darkSurface,
+            title: const Text(
+              '📈 Quick Metrics Summary',
+              style: TextStyle(color: AppColors.brandPrimary),
+            ),
+            content: const Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Last 24 Hours:',
+                  style: TextStyle(
+                    color: AppColors.brandPrimary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text('• Alerts sent: Live tracking enabled', style: TextStyle(color: AppColors.textPrimary)),
+                Text('• Quick actions: See web dashboard', style: TextStyle(color: AppColors.textPrimary)),
+                Text('• Delivery rate: Real-time monitoring', style: TextStyle(color: AppColors.textPrimary)),
+                Text('• Engagement rate: Calculated live', style: TextStyle(color: AppColors.textPrimary)),
+                SizedBox(height: 12),
+                Text(
+                  'For detailed metrics and analytics, use the web dashboard at api.ufobeep.com/admin',
+                  style: TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text(
+                  'Close',
+                  style: TextStyle(color: AppColors.brandPrimary),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+      
+      setState(() {
+        _statusMessage = 'Engagement summary displayed';
+      });
+      
+    } catch (e) {
+      setState(() {
+        _statusMessage = 'Failed to load summary: $e';
       });
       await SoundService.I.play(AlertSound.gpsFail);
     } finally {

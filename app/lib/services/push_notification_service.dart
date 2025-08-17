@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'device_service.dart';
@@ -19,6 +20,7 @@ class PushNotificationService {
   
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
   final DeviceService _deviceService = deviceService;
+  final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
   late final Dio _dio;
 
   static final PushNotificationService _instance = PushNotificationService._internal();
@@ -33,6 +35,9 @@ class PushNotificationService {
   }
 
   Future<void> initialize() async {
+    // Initialize local notifications for rich notifications
+    await _initializeLocalNotifications();
+    
     // Request permission for push notifications
     final permission = await requestPermission();
     
@@ -199,6 +204,8 @@ class PushNotificationService {
     final witnessCountStr = message.data['witness_count'] ?? '1';
     final witnessCount = int.tryParse(witnessCountStr) ?? 1;
     final submitterDeviceId = message.data['submitter_device_id'];
+    final distance = message.data['distance'];
+    final locationName = message.data['location_name'] ?? 'Unknown Location';
     
     // Check if this device submitted the beep - if so, don't auto-navigate
     final currentDeviceId = await _deviceService.getDeviceId();
@@ -225,6 +232,9 @@ class PushNotificationService {
       print('⚠️ Foreground: Could not load user preferences: $e');
     }
     
+    // Show rich notification with action buttons
+    await _showRichNotification(sightingId, witnessCount, distance, locationName);
+    
     // Play appropriate escalated alert sound based on witness count
     if (witnessCount >= 10) {
       await SoundService.I.play(AlertSound.emergency, haptic: true, witnessCount: witnessCount, userPrefs: userPrefs);
@@ -244,7 +254,6 @@ class PushNotificationService {
       final sightingLat = message.data['latitude'];
       final sightingLon = message.data['longitude'];
       final sightingName = message.data['location_name'] ?? 'UFO Sighting';
-      final distance = message.data['distance'];
       final bearing = message.data['bearing'];
       
       // Navigate to alert details instead of compass
@@ -461,6 +470,216 @@ class PushNotificationService {
       print('Failed to send test push: $e');
       return false;
     }
+  }
+
+  Future<void> _initializeLocalNotifications() async {
+    // Android initialization settings
+    const AndroidInitializationSettings initializationSettingsAndroid = 
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    
+    // iOS initialization settings
+    const DarwinInitializationSettings initializationSettingsIOS = 
+        DarwinInitializationSettings(
+      requestSoundPermission: true,
+      requestBadgePermission: true,
+      requestAlertPermission: true,
+    );
+    
+    // Combined initialization settings
+    const InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
+    
+    // Initialize the plugin with a callback for when notification is tapped
+    await _localNotifications.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: _onNotificationTapped,
+    );
+    
+    print('✅ Local notifications initialized for rich notification support');
+  }
+  
+  void _onNotificationTapped(NotificationResponse response) {
+    print('📱 Notification tapped: ${response.actionId} for payload: ${response.payload}');
+    
+    final payload = response.payload;
+    if (payload == null) return;
+    
+    // Parse the payload to get sighting ID
+    final parts = payload.split('|');
+    if (parts.isEmpty) return;
+    
+    final sightingId = parts[0];
+    final action = response.actionId;
+    
+    print('Processing notification action: $action for sighting: $sightingId');
+    
+    // Handle different action buttons
+    switch (action) {
+      case 'see_it_too':
+        _handleSeeItTooAction(sightingId);
+        break;
+      case 'dont_see_it':
+        _handleDontSeeItAction(sightingId);
+        break;
+      case 'missed_it':
+        _handleMissedItAction(sightingId);
+        break;
+      case 'dismiss':
+        _handleDismissAction(sightingId);
+        break;
+      default:
+        // Default tap action - navigate to alert
+        navigateToAlert(sightingId);
+        break;
+    }
+  }
+  
+  Future<void> _showRichNotification(String sightingId, int witnessCount, String? distance, String locationName) async {
+    // Format distance for display
+    String distanceText = '';
+    if (distance != null) {
+      final distanceNum = double.tryParse(distance);
+      if (distanceNum != null) {
+        if (distanceNum < 1.0) {
+          distanceText = ' • ${(distanceNum * 1000).round()}m away';
+        } else {
+          distanceText = ' • ${distanceNum.toStringAsFixed(1)}km away';
+        }
+      }
+    }
+    
+    // Create witness count text with escalation indicators
+    String witnessText = '';
+    String urgencyIndicator = '';
+    if (witnessCount >= 10) {
+      witnessText = '$witnessCount witnesses';
+      urgencyIndicator = '🚨 EMERGENCY';
+    } else if (witnessCount >= 3) {
+      witnessText = '$witnessCount witnesses';
+      urgencyIndicator = '⚠️ URGENT';
+    } else if (witnessCount > 1) {
+      witnessText = '$witnessCount witnesses';
+      urgencyIndicator = '📢';
+    } else {
+      witnessText = 'New sighting';
+      urgencyIndicator = '📢';
+    }
+    
+    // Create the notification
+    final androidDetails = AndroidNotificationDetails(
+      'ufobeep_rich_alerts',
+      'UFO Alert Actions',
+      channelDescription: 'Rich UFO sighting notifications with quick actions',
+      importance: witnessCount >= 10 ? Importance.max : Importance.high,
+      priority: witnessCount >= 10 ? Priority.max : Priority.high,
+      showWhen: true,
+      category: AndroidNotificationCategory.alert,
+      enableVibration: true,
+      playSound: false, // We handle sounds separately
+      actions: [
+        const AndroidNotificationAction(
+          'see_it_too',
+          'I see it too! 👁️',
+          showsUserInterface: false,
+        ),
+        const AndroidNotificationAction(
+          'dont_see_it',
+          'I checked but don\'t see it 🔍',
+          showsUserInterface: false,
+        ),
+        const AndroidNotificationAction(
+          'missed_it',
+          'I missed this one 😔',
+          showsUserInterface: false,
+        ),
+      ],
+    );
+    
+    final iosDetails = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: false, // We handle sounds separately
+      interruptionLevel: witnessCount >= 10 
+          ? InterruptionLevel.critical 
+          : InterruptionLevel.timeSensitive,
+    );
+    
+    final notificationDetails = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
+    
+    // Show the rich notification
+    await _localNotifications.show(
+      sightingId.hashCode, // Use sighting ID hash as notification ID
+      '$urgencyIndicator UFO Sighting',
+      '$witnessText near $locationName$distanceText',
+      notificationDetails,
+      payload: '$sightingId|$witnessCount|$distance|$locationName',
+    );
+    
+    print('📱 Rich notification shown for sighting $sightingId with ${witnessCount} witnesses');
+  }
+  
+  void _handleSeeItTooAction(String sightingId) async {
+    print('📱 User confirmed sighting: $sightingId');
+    try {
+      // Send witness confirmation to API
+      final deviceId = await _deviceService.getDeviceId();
+      await _dio.post('/beep/$sightingId/witness', data: {
+        'device_id': deviceId,
+        'witness_type': 'confirmed',
+        'quick_action': true,
+      });
+      
+      // Navigate to alert details
+      navigateToAlert(sightingId);
+      
+      print('✅ Witness confirmation sent for sighting $sightingId');
+    } catch (e) {
+      print('❌ Failed to send witness confirmation: $e');
+    }
+  }
+  
+  void _handleDontSeeItAction(String sightingId) async {
+    print('📱 User checked but didn\'t see: $sightingId');
+    try {
+      // Send engagement but no confirmation to API
+      final deviceId = await _deviceService.getDeviceId();
+      await _dio.post('/beep/$sightingId/witness', data: {
+        'device_id': deviceId,
+        'witness_type': 'checked_no_sighting',
+        'quick_action': true,
+      });
+      
+      print('✅ Engagement recorded for sighting $sightingId (checked but no sighting)');
+    } catch (e) {
+      print('❌ Failed to record engagement: $e');
+    }
+  }
+  
+  void _handleMissedItAction(String sightingId) async {
+    print('📱 User missed sighting: $sightingId');
+    try {
+      // Send engagement but missed to API
+      final deviceId = await _deviceService.getDeviceId();
+      await _dio.post('/beep/$sightingId/witness', data: {
+        'device_id': deviceId,
+        'witness_type': 'missed',
+        'quick_action': true,
+      });
+      
+      print('✅ Missed engagement recorded for sighting $sightingId');
+    } catch (e) {
+      print('❌ Failed to record missed engagement: $e');
+    }
+  }
+  
+  void _handleDismissAction(String sightingId) {
+    print('📱 User dismissed notification for sighting: $sightingId');
+    // Just dismiss - no API call needed
   }
 
   void dispose() {
