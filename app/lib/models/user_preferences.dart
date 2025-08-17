@@ -73,6 +73,7 @@ class UserPreferences {
   final int quietHoursStart; // Start hour (24-hour format)
   final int quietHoursEnd; // End hour (24-hour format)
   final bool allowEmergencyOverride; // Allow emergency alerts during quiet hours
+  final DateTime? dndUntil; // Do Not Disturb until this time (null = DND off)
   final DateTime? lastUpdated;
 
   const UserPreferences({
@@ -96,6 +97,7 @@ class UserPreferences {
     this.quietHoursStart = 22,
     this.quietHoursEnd = 7,
     this.allowEmergencyOverride = true,
+    this.dndUntil,
     this.lastUpdated,
   });
 
@@ -125,6 +127,7 @@ class UserPreferences {
     int? quietHoursStart,
     int? quietHoursEnd,
     bool? allowEmergencyOverride,
+    DateTime? dndUntil,
     DateTime? lastUpdated,
   }) {
     return UserPreferences(
@@ -148,6 +151,7 @@ class UserPreferences {
       quietHoursStart: quietHoursStart ?? this.quietHoursStart,
       quietHoursEnd: quietHoursEnd ?? this.quietHoursEnd,
       allowEmergencyOverride: allowEmergencyOverride ?? this.allowEmergencyOverride,
+      dndUntil: dndUntil ?? this.dndUntil,
       lastUpdated: lastUpdated ?? this.lastUpdated,
     );
   }

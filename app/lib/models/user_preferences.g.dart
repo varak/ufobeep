@@ -12,31 +12,33 @@ UserPreferences _$UserPreferencesFromJson(Map<String, dynamic> json) =>
       email: json['email'] as String?,
       language: json['language'] as String? ?? 'en',
       alertRangeKm: (json['alertRangeKm'] as num?)?.toDouble() ?? 10.0,
-      enablePushNotifications: json['enablePushNotifications'] as bool? ?? true,
+      enablePushNotifications:
+          json['enablePushNotifications'] as bool? ?? true,
       enableLocationAlerts: json['enableLocationAlerts'] as bool? ?? true,
       enableArCompass: json['enableArCompass'] as bool? ?? true,
       enablePilotMode: json['enablePilotMode'] as bool? ?? false,
-      alertCategories:
-          (json['alertCategories'] as List<dynamic>?)
+      alertCategories: (json['alertCategories'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const ['ufo', 'anomaly', 'aircraft'],
       units: json['units'] as String? ?? 'metric',
       darkMode: json['darkMode'] as bool? ?? true,
       useWeatherVisibility: json['useWeatherVisibility'] as bool? ?? true,
-      enableVisibilityFilters: json['enableVisibilityFilters'] as bool? ?? true,
-      locationPrivacy:
-          $enumDecodeNullable(
-            _$LocationPrivacyEnumMap,
-            json['locationPrivacy'],
-          ) ??
+      enableVisibilityFilters:
+          json['enableVisibilityFilters'] as bool? ?? true,
+      locationPrivacy: $enumDecodeNullable(
+              _$LocationPrivacyEnumMap, json['locationPrivacy']) ??
           LocationPrivacy.jittered,
       mediaOnlyAlerts: json['mediaOnlyAlerts'] as bool?,
       ignoreAnonymousBeeps: json['ignoreAnonymousBeeps'] as bool?,
       quietHoursEnabled: json['quietHoursEnabled'] as bool? ?? false,
-      quietHoursStart: (json['quietHoursStart'] as num?)?.toInt() ?? 22,
-      quietHoursEnd: (json['quietHoursEnd'] as num?)?.toInt() ?? 7,
-      allowEmergencyOverride: json['allowEmergencyOverride'] as bool? ?? true,
+      quietHoursStart: json['quietHoursStart'] as int? ?? 22,
+      quietHoursEnd: json['quietHoursEnd'] as int? ?? 7,
+      allowEmergencyOverride:
+          json['allowEmergencyOverride'] as bool? ?? true,
+      dndUntil: json['dndUntil'] == null
+          ? null
+          : DateTime.parse(json['dndUntil'] as String),
       lastUpdated: json['lastUpdated'] == null
           ? null
           : DateTime.parse(json['lastUpdated'] as String),
@@ -64,6 +66,7 @@ Map<String, dynamic> _$UserPreferencesToJson(UserPreferences instance) =>
       'quietHoursStart': instance.quietHoursStart,
       'quietHoursEnd': instance.quietHoursEnd,
       'allowEmergencyOverride': instance.allowEmergencyOverride,
+      'dndUntil': instance.dndUntil?.toIso8601String(),
       'lastUpdated': instance.lastUpdated?.toIso8601String(),
     };
 

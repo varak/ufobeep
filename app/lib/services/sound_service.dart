@@ -247,6 +247,15 @@ class SoundService {
   /// Check if we're in quiet hours (emergency sounds can override)
   /// Clean quiet hours logic using UserPreferences
   bool _shouldMuteForQuietHours(dynamic userPrefs, int witnessCount) {
+    // Check if DND (Do Not Disturb) is active
+    if (userPrefs?.dndUntil != null) {
+      final now = DateTime.now();
+      if (now.isBefore(userPrefs.dndUntil)) {
+        print('DND active until ${userPrefs.dndUntil} - muting all alerts');
+        return true; // Mute everything during DND
+      }
+    }
+    
     // If quiet hours disabled, never mute
     if (userPrefs?.quietHoursEnabled != true) return false;
     

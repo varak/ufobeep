@@ -354,6 +354,22 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           const SizedBox(height: 16),
           
           const Text(
+            'Do Not Disturb',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 12),
+          
+          _buildDndSection(preferences),
+          
+          const SizedBox(height: 16),
+          const Divider(color: AppColors.darkBorder),
+          const SizedBox(height: 16),
+          
+          const Text(
             'Alert Filters',
             style: TextStyle(
               fontSize: 16,
@@ -826,6 +842,174 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     if (currentPrefs != null) {
       final updatedPrefs = currentPrefs.copyWith(ignoreAnonymousBeeps: value);
       await ref.read(userPreferencesProvider.notifier).updatePreferences(updatedPrefs);
+    }
+  }
+
+  Widget _buildDndSection(UserPreferences preferences) {
+    final isDndActive = preferences.dndUntil != null && 
+                        preferences.dndUntil!.isAfter(DateTime.now());
+    
+    if (isDndActive) {
+      final remainingTime = preferences.dndUntil!.difference(DateTime.now());
+      final hours = remainingTime.inHours;
+      final minutes = remainingTime.inMinutes % 60;
+      
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppColors.darkBackground,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              Icons.do_not_disturb_on,
+              color: AppColors.brandPrimary,
+              size: 24,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Do Not Disturb Active',
+                    style: TextStyle(
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    hours > 0 
+                      ? 'Ends in $hours hour${hours > 1 ? "s" : ""} $minutes min'
+                      : 'Ends in $minutes minute${minutes != 1 ? "s" : ""}',
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            TextButton(
+              onPressed: () => _disableDnd(),
+              child: const Text(
+                'Turn Off',
+                style: TextStyle(color: AppColors.semanticError),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    
+    return Column(
+      children: [
+        const Text(
+          'Silence all alerts temporarily',
+          style: TextStyle(
+            color: AppColors.textSecondary,
+            fontSize: 14,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: _buildDndButton('1 hour', 1),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: _buildDndButton('8 hours', 8),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: _buildDndButton('24 hours', 24),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDndButton(String label, int hours) {
+    return ElevatedButton(
+      onPressed: () => _enableDnd(hours),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.darkBackground,
+        foregroundColor: AppColors.textPrimary,
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side: BorderSide(color: AppColors.darkBorder),
+        ),
+      ),
+      child: Text(
+        label,
+        style: const TextStyle(fontSize: 14),
+      ),
+    );
+  }
+
+  void _enableDnd(int hours) async {
+    final currentPrefs = ref.read(userPreferencesProvider);
+    if (currentPrefs != null) {
+      final dndUntil = DateTime.now().add(Duration(hours: hours));
+      final updatedPrefs = currentPrefs.copyWith(dndUntil: dndUntil);
+      await ref.read(userPreferencesProvider.notifier).updatePreferences(updatedPrefs);
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Do Not Disturb enabled for $hours hour${hours > 1 ? "s" : ""}'),
+            backgroundColor: AppColors.brandPrimary,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+  }
+
+  void _disableDnd() async {
+    final currentPrefs = ref.read(userPreferencesProvider);
+    if (currentPrefs != null) {
+      // Pass a special marker value that will be interpreted as null in copyWith
+      final updatedPrefs = UserPreferences(
+        displayName: currentPrefs.displayName,
+        email: currentPrefs.email,
+        language: currentPrefs.language,
+        alertRangeKm: currentPrefs.alertRangeKm,
+        enablePushNotifications: currentPrefs.enablePushNotifications,
+        enableLocationAlerts: currentPrefs.enableLocationAlerts,
+        enableArCompass: currentPrefs.enableArCompass,
+        enablePilotMode: currentPrefs.enablePilotMode,
+        alertCategories: currentPrefs.alertCategories,
+        units: currentPrefs.units,
+        darkMode: currentPrefs.darkMode,
+        useWeatherVisibility: currentPrefs.useWeatherVisibility,
+        enableVisibilityFilters: currentPrefs.enableVisibilityFilters,
+        locationPrivacy: currentPrefs.locationPrivacy,
+        mediaOnlyAlerts: currentPrefs.mediaOnlyAlerts,
+        ignoreAnonymousBeeps: currentPrefs.ignoreAnonymousBeeps,
+        quietHoursEnabled: currentPrefs.quietHoursEnabled,
+        quietHoursStart: currentPrefs.quietHoursStart,
+        quietHoursEnd: currentPrefs.quietHoursEnd,
+        allowEmergencyOverride: currentPrefs.allowEmergencyOverride,
+        dndUntil: null, // Clear DND
+        lastUpdated: DateTime.now(),
+      );
+      await ref.read(userPreferencesProvider.notifier).updatePreferences(updatedPrefs);
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Do Not Disturb disabled'),
+            backgroundColor: AppColors.textSecondary,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
     }
   }
 

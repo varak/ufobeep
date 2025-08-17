@@ -539,6 +539,58 @@ class ApiClient {
     }
   }
 
+  // Witness aggregation endpoints for Task 7
+  Future<Map<String, dynamic>> getWitnessAggregation(String alertId) async {
+    try {
+      final response = await _dio.get('/alerts/$alertId/aggregation');
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw ApiClientException(
+          'HTTP ${response.statusCode}: ${response.statusMessage}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> getAlertWitnesses(String alertId) async {
+    try {
+      final response = await _dio.get('/alerts/$alertId/witnesses');
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw ApiClientException(
+          'HTTP ${response.statusCode}: ${response.statusMessage}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> escalateAlert(String alertId) async {
+    try {
+      final response = await _dio.post('/alerts/$alertId/escalate');
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw ApiClientException(
+          'HTTP ${response.statusCode}: ${response.statusMessage}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
   // Photo metadata submission for astronomical/aircraft identification
   Future<bool> submitPhotoMetadata(String sightingId, Map<String, dynamic> metadata) async {
     try {

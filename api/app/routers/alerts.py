@@ -618,6 +618,279 @@ async def get_alerts_stats():
         )
 
 
+@router.get("/{alert_id}/aggregation", response_model=dict)
+async def get_witness_aggregation(
+    alert_id: str,
+    user_id: Optional[str] = Depends(get_current_user_id)
+):
+    """
+    Get witness aggregation analysis for an alert
+    
+    Returns triangulation results, consensus metrics, and heat map data
+    for admin dashboard and detailed analysis.
+    """
+    try:
+        # Check if sighting/alert exists
+        sighting = sightings_db.get(alert_id)
+        if not sighting:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail={
+                    "error": "ALERT_NOT_FOUND",
+                    "message": f"Alert {alert_id} not found"
+                }
+            )
+        
+        # Import witness aggregation service
+        from app.services.witness_aggregation_service import get_witness_aggregation_service
+        from app.database import get_db_pool
+        
+        # Get database pool (placeholder - replace with actual db pool)
+        db_pool = None  # TODO: Get actual database pool
+        if not db_pool:
+            # Return mock data for now since we don't have postgres connection yet
+            return {
+                "success": True,
+                "data": {
+                    "sighting_id": alert_id,
+                    "triangulation": {
+                        "object_latitude": None,
+                        "object_longitude": None,
+                        "confidence_score": 0.0,
+                        "consensus_quality": "insufficient",
+                        "estimated_radius_meters": None
+                    },
+                    "summary": {
+                        "total_witnesses": 0,
+                        "agreement_percentage": 0.0,
+                        "should_escalate": False
+                    },
+                    "witness_points": []
+                },
+                "message": "No witness data available yet (mock response)",
+                "timestamp": datetime.utcnow().isoformat()
+            }
+        
+        # Get witness aggregation service
+        aggregation_service = get_witness_aggregation_service(db_pool)
+        
+        # Analyze consensus
+        analysis_result = await aggregation_service.analyze_sighting_consensus(alert_id)
+        
+        # Get heat map data for admin dashboard
+        heat_map_data = await aggregation_service.get_witness_heat_map_data(alert_id)
+        
+        logger.info(f"Retrieved witness aggregation for {alert_id}: {analysis_result.witness_count} witnesses, confidence {analysis_result.confidence_score:.2f}")
+        
+        return {
+            "success": True,
+            "data": heat_map_data,
+            "message": f"Witness aggregation analysis complete",
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to get witness aggregation for {alert_id}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "error": "AGGREGATION_FAILED",
+                "message": "Failed to retrieve witness aggregation data"
+            }
+        )
+
+
+@router.get("/{alert_id}/witnesses", response_model=dict)
+async def get_alert_witnesses(
+    alert_id: str,
+    user_id: Optional[str] = Depends(get_current_user_id)
+):
+    """
+    Get all witness confirmations for an alert
+    
+    Returns list of witnesses with their locations, bearings, and timestamps
+    for analysis and admin dashboard visualization.
+    """
+    try:
+        # Check if sighting/alert exists
+        sighting = sightings_db.get(alert_id)
+        if not sighting:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail={
+                    "error": "ALERT_NOT_FOUND",
+                    "message": f"Alert {alert_id} not found"
+                }
+            )
+        
+        # Import witness aggregation service
+        from app.services.witness_aggregation_service import get_witness_aggregation_service
+        from app.database import get_db_pool
+        
+        # Get database pool (placeholder - replace with actual db pool)
+        db_pool = None  # TODO: Get actual database pool
+        if not db_pool:
+            # Return mock data for now
+            return {
+                "success": True,
+                "data": {
+                    "sighting_id": alert_id,
+                    "witnesses": [],
+                    "total_count": 0
+                },
+                "message": "No witness data available yet (mock response)",
+                "timestamp": datetime.utcnow().isoformat()
+            }
+        
+        # Get witness aggregation service
+        aggregation_service = get_witness_aggregation_service(db_pool)
+        
+        # Get witnesses from database
+        async with db_pool.acquire() as conn:
+            witnesses = await aggregation_service._get_witnesses(conn, alert_id)
+        
+        # Format witness data for API response
+        witness_data = []
+        for witness in witnesses:
+            witness_data.append({
+                "device_id": witness.device_id,
+                "latitude": witness.latitude,
+                "longitude": witness.longitude,
+                "bearing_deg": witness.bearing_deg,
+                "timestamp": witness.timestamp.isoformat(),
+                "accuracy": witness.accuracy,
+                "altitude": witness.altitude,
+                "still_visible": witness.still_visible
+            })
+        
+        logger.info(f"Retrieved {len(witnesses)} witnesses for alert {alert_id}")
+        
+        return {
+            "success": True,
+            "data": {
+                "sighting_id": alert_id,
+                "witnesses": witness_data,
+                "total_count": len(witnesses)
+            },
+            "message": f"Retrieved {len(witnesses)} witnesses",
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to get witnesses for {alert_id}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "error": "WITNESSES_FAILED",
+                "message": "Failed to retrieve witness data"
+            }
+        )
+
+
+@router.post("/{alert_id}/escalate", response_model=dict)
+async def manual_escalate_alert(
+    alert_id: str,
+    user_id: Optional[str] = Depends(get_current_user_id)
+):
+    """
+    Manually escalate an alert based on witness consensus
+    
+    Triggers the escalation process for alerts that meet witness
+    aggregation criteria or require manual admin intervention.
+    """
+    try:
+        # Check if sighting/alert exists
+        sighting = sightings_db.get(alert_id)
+        if not sighting:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail={
+                    "error": "ALERT_NOT_FOUND",
+                    "message": f"Alert {alert_id} not found"
+                }
+            )
+        
+        # Import witness aggregation service
+        from app.services.witness_aggregation_service import get_witness_aggregation_service
+        from app.database import get_db_pool
+        
+        # Get database pool (placeholder - replace with actual db pool)
+        db_pool = None  # TODO: Get actual database pool
+        if not db_pool:
+            # Mock escalation for now
+            logger.info(f"Mock escalation triggered for alert {alert_id} by user {user_id}")
+            return {
+                "success": True,
+                "data": {
+                    "alert_id": alert_id,
+                    "escalated": True,
+                    "escalation_reason": "Manual admin escalation (mock)",
+                    "new_alert_level": "high"
+                },
+                "message": "Alert escalated successfully (mock response)",
+                "timestamp": datetime.utcnow().isoformat()
+            }
+        
+        # Get witness aggregation service
+        aggregation_service = get_witness_aggregation_service(db_pool)
+        
+        # Analyze consensus to determine if escalation is justified
+        analysis_result = await aggregation_service.analyze_sighting_consensus(alert_id)
+        
+        # Determine escalation reason
+        if analysis_result.should_escalate:
+            escalation_reason = f"Automatic: {analysis_result.witness_count} witnesses, {analysis_result.confidence_score:.2f} confidence"
+        else:
+            escalation_reason = f"Manual admin override: {analysis_result.witness_count} witnesses"
+        
+        # Update alert level in sighting
+        current_level = sighting.alert_level
+        if current_level == AlertLevel.LOW:
+            new_level = AlertLevel.MEDIUM
+        elif current_level == AlertLevel.MEDIUM:
+            new_level = AlertLevel.HIGH
+        elif current_level == AlertLevel.HIGH:
+            new_level = AlertLevel.CRITICAL
+        else:
+            new_level = current_level  # Already at critical
+        
+        sighting.alert_level = new_level
+        sighting.updated_at = datetime.utcnow()
+        
+        logger.info(f"Escalated alert {alert_id} from {current_level.value} to {new_level.value}: {escalation_reason}")
+        
+        return {
+            "success": True,
+            "data": {
+                "alert_id": alert_id,
+                "escalated": True,
+                "escalation_reason": escalation_reason,
+                "previous_alert_level": current_level.value,
+                "new_alert_level": new_level.value,
+                "witness_count": analysis_result.witness_count,
+                "confidence_score": analysis_result.confidence_score
+            },
+            "message": f"Alert escalated from {current_level.value} to {new_level.value}",
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to escalate alert {alert_id}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "error": "ESCALATION_FAILED",
+                "message": "Failed to escalate alert"
+            }
+        )
+
+
 # Health check
 @router.get("/health")
 async def alerts_health_check():

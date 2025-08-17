@@ -144,6 +144,7 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
         <div class="nav-buttons">
             <a href="/admin/sightings" class="nav-btn">📋 Manage Sightings</a>
             <a href="/admin/witnesses" class="nav-btn">👁️ Witness Confirmations</a>
+            <a href="/admin/aggregation" class="nav-btn">🔬 Witness Aggregation</a>
             <a href="/admin/media" class="nav-btn">📸 Media Management</a>
             <a href="/admin/users" class="nav-btn">👥 User Management</a>
             <a href="/admin/system" class="nav-btn">⚙️ System Status</a>
@@ -2012,6 +2013,516 @@ async def admin_alerts_page(credentials: str = Depends(verify_admin_password)):
         
         // Auto-refresh system status every 30 seconds
         setInterval(checkSystemStatus, 30000);
+    </script>
+</body>
+</html>
+"""
+
+@router.get("/aggregation", response_class=HTMLResponse)
+async def admin_aggregation_page(credentials: str = Depends(verify_admin_password)):
+    """Admin witness aggregation dashboard - Task 7 implementation"""
+    return """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔬 Witness Aggregation - UFOBeep Admin</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: #0a0a0a; 
+            color: #e0e0e0; 
+            min-height: 100vh; 
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { 
+            background: linear-gradient(135deg, #1a1a2e, #16213e); 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin-bottom: 20px; 
+            border: 1px solid #333;
+        }
+        .header h1 { margin: 0; color: #00ff88; font-size: 28px; }
+        .back-link { 
+            color: #00ccff; 
+            text-decoration: none; 
+            font-size: 14px; 
+            display: inline-block; 
+            margin-top: 10px; 
+        }
+        .back-link:hover { text-decoration: underline; }
+        
+        .controls { 
+            background: #1a1a1a; 
+            padding: 20px; 
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+            border: 1px solid #333;
+        }
+        .controls h3 { margin-top: 0; color: #00ff88; }
+        
+        .section { 
+            background: #1a1a1a; 
+            padding: 20px; 
+            margin: 20px 0; 
+            border-radius: 8px; 
+            border: 1px solid #333;
+        }
+        .section h3 { margin-top: 0; color: #00ff88; }
+        
+        .btn { 
+            background: #00ff88; 
+            color: #000; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            margin: 5px;
+        }
+        .btn:hover { background: #00cc66; }
+        .btn-danger { background: #ff4444; color: #fff; }
+        .btn-danger:hover { background: #cc3333; }
+        .btn-warning { background: #ffaa00; color: #000; }
+        .btn-warning:hover { background: #cc8800; }
+        
+        .alert-list { display: grid; gap: 15px; }
+        .alert-item { 
+            background: #2a2a2a; 
+            padding: 15px; 
+            border-radius: 8px; 
+            border: 1px solid #444;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .alert-item:hover { border-color: #00ff88; }
+        .alert-item.selected { border-color: #00ff88; background: #1a2a1a; }
+        
+        .alert-meta { 
+            font-size: 12px; 
+            color: #888; 
+            margin: 5px 0; 
+        }
+        .witness-count { 
+            display: inline-block; 
+            background: #00ff88; 
+            color: #000; 
+            padding: 2px 8px; 
+            border-radius: 12px; 
+            font-size: 11px; 
+            font-weight: bold; 
+        }
+        .distance { color: #00ccff; }
+        
+        .analysis-panel { 
+            background: #1a1a2e; 
+            border: 1px solid #333; 
+            border-radius: 8px; 
+            padding: 20px; 
+            margin-top: 20px;
+        }
+        .analysis-panel h4 { color: #00ff88; margin-top: 0; }
+        
+        .metric-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 15px; 
+            margin: 15px 0; 
+        }
+        .metric-card { 
+            background: #2a2a2a; 
+            padding: 15px; 
+            border-radius: 8px; 
+            border: 1px solid #444;
+        }
+        .metric-label { color: #888; font-size: 12px; }
+        .metric-value { color: #00ff88; font-size: 18px; font-weight: bold; }
+        
+        .heat-map { 
+            background: #0a0a0a; 
+            border: 1px solid #333; 
+            border-radius: 8px; 
+            height: 300px; 
+            position: relative; 
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        .witness-point { 
+            position: absolute; 
+            width: 12px; 
+            height: 12px; 
+            background: #00ff88; 
+            border-radius: 50%; 
+            border: 2px solid #fff;
+            cursor: pointer;
+        }
+        .object-location { 
+            position: absolute; 
+            width: 20px; 
+            height: 20px; 
+            background: #ff4444; 
+            border-radius: 50%; 
+            border: 3px solid #fff;
+        }
+        
+        .loading { text-align: center; color: #888; padding: 40px; }
+        .error { color: #ff4444; background: #2a1a1a; padding: 10px; border-radius: 6px; }
+        .success { color: #00ff88; background: #1a2a1a; padding: 10px; border-radius: 6px; }
+        
+        .escalation-badge { 
+            display: inline-block; 
+            padding: 4px 8px; 
+            border-radius: 4px; 
+            font-size: 11px; 
+            font-weight: bold; 
+        }
+        .escalation-recommended { background: #ff4444; color: #fff; }
+        .escalation-normal { background: #666; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔬 Witness Aggregation Dashboard</h1>
+            <p>Triangulation analysis, heat maps, and auto-escalation controls (Task 7)</p>
+            <a href="/admin" class="back-link">← Back to Dashboard</a>
+        </div>
+
+        <div class="controls">
+            <h3>📍 Load Sightings for Analysis</h3>
+            <button onclick="loadRecentAlerts()" class="btn">🔄 Load Recent Multi-Witness Alerts</button>
+            <button onclick="loadAllAlerts()" class="btn">📋 Load All Recent Alerts</button>
+            <span id="alert-count" style="margin-left: 15px; color: #888;"></span>
+        </div>
+
+        <div class="section">
+            <h3>🎯 Recent Alerts with Multiple Witnesses</h3>
+            <div id="alerts-list" class="alert-list">
+                <div class="loading">Click "Load Recent Multi-Witness Alerts" to begin</div>
+            </div>
+        </div>
+
+        <div id="analysis-section" class="analysis-panel" style="display: none;">
+            <h4>🔬 Triangulation Analysis</h4>
+            <div id="analysis-content"></div>
+            
+            <h4>📊 Witness Heat Map</h4>
+            <div id="heat-map" class="heat-map">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #888; text-align: center;">
+                    Heat Map Visualization<br>
+                    <small>(Select an alert to view)</small>
+                </div>
+            </div>
+            
+            <div id="escalation-controls" style="margin-top: 20px;">
+                <button id="escalate-btn" onclick="escalateAlert()" class="btn btn-danger" style="display: none;">
+                    ⚠️ Escalate Alert
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedAlertId = null;
+        let selectedAggregationData = null;
+
+        async function loadRecentAlerts() {
+            const alertsList = document.getElementById('alerts-list');
+            const alertCount = document.getElementById('alert-count');
+            
+            alertsList.innerHTML = '<div class="loading">Loading multi-witness alerts...</div>';
+            
+            try {
+                // Get alerts with 2+ witnesses from the alerts API
+                const response = await fetch('/alerts?limit=20');
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.message || 'Failed to load alerts');
+                }
+                
+                // Filter for alerts with multiple witnesses
+                const multiWitnessAlerts = data.data.alerts.filter(alert => 
+                    (alert.witness_count || 0) >= 2
+                );
+                
+                alertCount.textContent = `Found ${multiWitnessAlerts.length} multi-witness alerts`;
+                
+                if (multiWitnessAlerts.length === 0) {
+                    alertsList.innerHTML = '<div style="color: #888; text-align: center; padding: 20px;">No multi-witness alerts found. Try "Load All Recent Alerts" to see single-witness alerts.</div>';
+                    return;
+                }
+                
+                alertsList.innerHTML = multiWitnessAlerts.map(alert => `
+                    <div class="alert-item" onclick="selectAlert('${alert.id}', this)">
+                        <div style="font-weight: bold; color: #00ff88;">${alert.title || 'Untitled Sighting'}</div>
+                        <div class="alert-meta">
+                            <span class="witness-count">${alert.witness_count || 1} witnesses</span>
+                            <span class="distance">${alert.distance_km ? alert.distance_km.toFixed(1) + 'km away' : 'Distance unknown'}</span>
+                            • ${alert.category || 'unknown'} • ${alert.alert_level || 'low'} priority
+                        </div>
+                        <div style="font-size: 12px; color: #aaa; margin-top: 5px;">
+                            ${alert.description ? alert.description.substring(0, 100) + '...' : 'No description'}
+                        </div>
+                        <div style="font-size: 11px; color: #666; margin-top: 5px;">
+                            ${alert.created_at ? new Date(alert.created_at).toLocaleString() : 'Time unknown'}
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Failed to load alerts:', error);
+                alertsList.innerHTML = `<div class="error">Failed to load alerts: ${error.message}</div>`;
+            }
+        }
+
+        async function loadAllAlerts() {
+            const alertsList = document.getElementById('alerts-list');
+            const alertCount = document.getElementById('alert-count');
+            
+            alertsList.innerHTML = '<div class="loading">Loading all recent alerts...</div>';
+            
+            try {
+                const response = await fetch('/alerts?limit=50');
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.message || 'Failed to load alerts');
+                }
+                
+                const alerts = data.data.alerts;
+                alertCount.textContent = `Found ${alerts.length} recent alerts`;
+                
+                if (alerts.length === 0) {
+                    alertsList.innerHTML = '<div style="color: #888; text-align: center; padding: 20px;">No recent alerts found.</div>';
+                    return;
+                }
+                
+                alertsList.innerHTML = alerts.map(alert => `
+                    <div class="alert-item" onclick="selectAlert('${alert.id}', this)">
+                        <div style="font-weight: bold; color: #00ff88;">${alert.title || 'Untitled Sighting'}</div>
+                        <div class="alert-meta">
+                            <span class="witness-count">${alert.witness_count || 1} witnesses</span>
+                            <span class="distance">${alert.distance_km ? alert.distance_km.toFixed(1) + 'km away' : 'Distance unknown'}</span>
+                            • ${alert.category || 'unknown'} • ${alert.alert_level || 'low'} priority
+                        </div>
+                        <div style="font-size: 12px; color: #aaa; margin-top: 5px;">
+                            ${alert.description ? alert.description.substring(0, 100) + '...' : 'No description'}
+                        </div>
+                        <div style="font-size: 11px; color: #666; margin-top: 5px;">
+                            ${alert.created_at ? new Date(alert.created_at).toLocaleString() : 'Time unknown'}
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Failed to load alerts:', error);
+                alertsList.innerHTML = `<div class="error">Failed to load alerts: ${error.message}</div>`;
+            }
+        }
+
+        async function selectAlert(alertId, element) {
+            // Update UI selection
+            document.querySelectorAll('.alert-item').forEach(item => item.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            selectedAlertId = alertId;
+            
+            // Show analysis section
+            const analysisSection = document.getElementById('analysis-section');
+            analysisSection.style.display = 'block';
+            
+            // Load aggregation data
+            await loadAggregationData(alertId);
+        }
+
+        async function loadAggregationData(alertId) {
+            const analysisContent = document.getElementById('analysis-content');
+            const heatMap = document.getElementById('heat-map');
+            const escalateBtn = document.getElementById('escalate-btn');
+            
+            analysisContent.innerHTML = '<div class="loading">Loading triangulation analysis...</div>';
+            
+            try {
+                const response = await fetch(`/alerts/${alertId}/aggregation`);
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.message || 'Failed to load aggregation data');
+                }
+                
+                selectedAggregationData = data.data;
+                const triangulation = data.data.triangulation || {};
+                const summary = data.data.summary || {};
+                const witnessPoints = data.data.witness_points || [];
+                
+                // Display analysis metrics
+                analysisContent.innerHTML = `
+                    <div class="metric-grid">
+                        <div class="metric-card">
+                            <div class="metric-label">Object Location</div>
+                            <div class="metric-value">
+                                ${triangulation.object_latitude ? 
+                                    `${triangulation.object_latitude.toFixed(6)}, ${triangulation.object_longitude.toFixed(6)}` : 
+                                    'Unable to triangulate'}
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Confidence Score</div>
+                            <div class="metric-value">${(triangulation.confidence_score * 100).toFixed(1)}%</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Consensus Quality</div>
+                            <div class="metric-value">${triangulation.consensus_quality || 'unknown'}</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Total Witnesses</div>
+                            <div class="metric-value">${summary.total_witnesses || 0}</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Agreement</div>
+                            <div class="metric-value">${(summary.agreement_percentage || 0).toFixed(1)}%</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Auto-Escalation</div>
+                            <div class="metric-value">
+                                <span class="escalation-badge ${summary.should_escalate ? 'escalation-recommended' : 'escalation-normal'}">
+                                    ${summary.should_escalate ? 'Recommended' : 'Not recommended'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Show escalation button if recommended
+                if (summary.should_escalate) {
+                    escalateBtn.style.display = 'inline-block';
+                } else {
+                    escalateBtn.style.display = 'none';
+                }
+                
+                // Update heat map
+                updateHeatMap(witnessPoints, triangulation);
+                
+            } catch (error) {
+                console.error('Failed to load aggregation data:', error);
+                analysisContent.innerHTML = `<div class="error">Failed to load aggregation data: ${error.message}</div>`;
+            }
+        }
+
+        function updateHeatMap(witnessPoints, triangulation) {
+            const heatMap = document.getElementById('heat-map');
+            
+            // Clear existing points
+            heatMap.innerHTML = '';
+            
+            if (witnessPoints.length === 0) {
+                heatMap.innerHTML = `
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #888; text-align: center;">
+                        No witness data available<br>
+                        <small>Witnesses need bearing information for heat map</small>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Add witness points (simplified visualization)
+            witnessPoints.forEach((point, index) => {
+                const witnessEl = document.createElement('div');
+                witnessEl.className = 'witness-point';
+                witnessEl.style.left = `${20 + (index * 40) % 260}px`;
+                witnessEl.style.top = `${30 + (index * 35) % 200}px`;
+                witnessEl.title = `Witness ${index + 1}: ${point.latitude?.toFixed(4)}, ${point.longitude?.toFixed(4)}`;
+                
+                const label = document.createElement('div');
+                label.textContent = index + 1;
+                label.style.cssText = 'position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #fff; background: #000; padding: 2px 4px; border-radius: 3px;';
+                witnessEl.appendChild(label);
+                
+                heatMap.appendChild(witnessEl);
+            });
+            
+            // Add triangulated object location if available
+            if (triangulation.object_latitude && triangulation.object_longitude) {
+                const objectEl = document.createElement('div');
+                objectEl.className = 'object-location';
+                objectEl.style.left = '140px'; // Center-ish
+                objectEl.style.top = '120px';
+                objectEl.title = `Triangulated object: ${triangulation.object_latitude.toFixed(4)}, ${triangulation.object_longitude.toFixed(4)}`;
+                
+                const label = document.createElement('div');
+                label.textContent = 'UFO';
+                label.style.cssText = 'position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #fff; background: #ff4444; padding: 2px 4px; border-radius: 3px; font-weight: bold;';
+                objectEl.appendChild(label);
+                
+                heatMap.appendChild(objectEl);
+            }
+            
+            // Add legend
+            const legend = document.createElement('div');
+            legend.style.cssText = 'position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 6px; font-size: 11px;';
+            legend.innerHTML = `
+                <div style="color: #00ff88;">🟢 Witness Locations</div>
+                <div style="color: #ff4444;">🔴 Triangulated Object</div>
+                <div style="color: #888;">Simplified visualization</div>
+            `;
+            heatMap.appendChild(legend);
+        }
+
+        async function escalateAlert() {
+            if (!selectedAlertId) return;
+            
+            const escalateBtn = document.getElementById('escalate-btn');
+            const originalText = escalateBtn.textContent;
+            
+            escalateBtn.textContent = 'Escalating...';
+            escalateBtn.disabled = true;
+            
+            try {
+                const response = await fetch(`/alerts/${selectedAlertId}/escalate`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    escalateBtn.textContent = '✓ Escalated';
+                    escalateBtn.className = 'btn success';
+                    
+                    // Show success message
+                    const analysisContent = document.getElementById('analysis-content');
+                    const successMsg = document.createElement('div');
+                    successMsg.className = 'success';
+                    successMsg.textContent = `Alert escalated: ${data.message}`;
+                    analysisContent.insertBefore(successMsg, analysisContent.firstChild);
+                    
+                    setTimeout(() => {
+                        successMsg.remove();
+                        escalateBtn.style.display = 'none';
+                    }, 3000);
+                } else {
+                    throw new Error(data.message || 'Failed to escalate alert');
+                }
+                
+            } catch (error) {
+                console.error('Failed to escalate alert:', error);
+                escalateBtn.textContent = originalText;
+                escalateBtn.disabled = false;
+                
+                const analysisContent = document.getElementById('analysis-content');
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'error';
+                errorMsg.textContent = `Escalation failed: ${error.message}`;
+                analysisContent.insertBefore(errorMsg, analysisContent.firstChild);
+                
+                setTimeout(() => errorMsg.remove(), 5000);
+            }
+        }
+
+        // Initialize with recent multi-witness alerts
+        loadRecentAlerts();
     </script>
 </body>
 </html>

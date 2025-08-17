@@ -122,11 +122,12 @@ curl -X POST https://api.ufobeep.com/beep/anonymous \
 **Goal:** Give users control over alert frequency without breaking emergency response
 
 ### Alert Filtering & Controls
-9. 🔴 **[mobile] Alert Preferences Screen** - Fine-grained control
-   - "Ignore anonymous beeps" toggle (only get alerts with photos/detailed reports)
-   - "Media-only alerts" toggle (only alerts with attached photos/videos)
-   - Distance filter slider (1km - 100km range)
-   - Quality threshold (minimum witness count before alert)
+9. 🟢 **[mobile] Alert Preferences Screen** - Fine-grained control ✅
+   - ✅ "Ignore anonymous beeps" toggle (only get alerts from registered users)
+   - ✅ "Media-only alerts" toggle (only alerts with attached photos/videos)
+   - ✅ Quiet hours with emergency override (10+ witnesses bypass)
+   - 🔴 Distance filter slider (1km - 100km range) - future enhancement
+   - 🔴 Quality threshold (minimum witness count before alert) - future enhancement
 
 10. 🔴 **[mobile] Quiet Mode & Snooze Options** - Temporary muting
     - "Snooze alerts for 1 hour" quick action

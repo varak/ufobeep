@@ -5,8 +5,10 @@ import '../../services/anonymous_beep_service.dart';
 import '../../services/push_notification_service.dart';
 import '../../services/permission_service.dart';
 import '../../services/sound_service.dart';
+import '../../services/api_client.dart';
 import '../../theme/app_theme.dart';
 import 'dart:convert';
+import 'dart:math' as math;
 
 class AdminScreen extends ConsumerStatefulWidget {
   const AdminScreen({Key? key}) : super(key: key);
@@ -22,6 +24,8 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
   String? _deviceId;
   String? _fcmToken;
   Position? _currentPosition;
+  List<Map<String, dynamic>> _recentAlerts = [];
+  Map<String, dynamic>? _selectedAlertAggregation;
   
   @override
   void initState() {
@@ -42,9 +46,76 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
         _currentPosition = await permissionService.getCurrentLocation();
       }
       
+      // Load recent alerts for witness aggregation analysis
+      await _loadRecentAlerts();
+      
       setState(() => _statusMessage = 'Admin mode ready');
     } catch (e) {
       setState(() => _statusMessage = 'Error: $e');
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _loadRecentAlerts() async {
+    try {
+      final apiClient = ApiClient.instance;
+      
+      // Get recent alerts within 50km if location available
+      if (_currentPosition != null) {
+        final response = await apiClient.getNearbyAlerts(
+          latitude: _currentPosition!.latitude,
+          longitude: _currentPosition!.longitude,
+          radiusKm: 50.0,
+          limit: 10,
+        );
+        
+        setState(() {
+          _recentAlerts = response['data']['alerts'] ?? [];
+        });
+      }
+    } catch (e) {
+      print('Failed to load recent alerts: $e');
+    }
+  }
+
+  Future<void> _loadAlertAggregation(String alertId) async {
+    setState(() => _isLoading = true);
+    
+    try {
+      final apiClient = ApiClient.instance;
+      
+      // Get witness aggregation data for the selected alert
+      final response = await apiClient.getWitnessAggregation(alertId);
+      
+      setState(() {
+        _selectedAlertAggregation = response['data'];
+        _statusMessage = 'Loaded aggregation data for alert $alertId';
+      });
+      
+    } catch (e) {
+      setState(() => _statusMessage = 'Failed to load aggregation: $e');
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _escalateAlert(String alertId) async {
+    setState(() => _isLoading = true);
+    
+    try {
+      final apiClient = ApiClient.instance;
+      
+      // Escalate the alert
+      final response = await apiClient.escalateAlert(alertId);
+      
+      setState(() => _statusMessage = 'Alert $alertId escalated: ${response['message']}');
+      
+      // Reload alerts to show updated data
+      await _loadRecentAlerts();
+      
+    } catch (e) {
+      setState(() => _statusMessage = 'Failed to escalate alert: $e');
     } finally {
       setState(() => _isLoading = false);
     }
@@ -189,6 +260,18 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
             
             // Test Controls Section
             _buildTestControlsCard(),
+            const SizedBox(height: 16),
+            
+            // Witness Aggregation Section (Task 7)
+            _buildWitnessAggregationCard(),
+            const SizedBox(height: 16),
+            
+            // Recent Alerts for Analysis
+            if (_recentAlerts.isNotEmpty) _buildRecentAlertsCard(),
+            const SizedBox(height: 16),
+            
+            // Aggregation Analysis Result
+            if (_selectedAlertAggregation != null) _buildAggregationResultCard(),
             const SizedBox(height: 16),
             
             // Last Test Result
@@ -459,5 +542,314 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
   String _formatTestResult(Map<String, dynamic> result) {
     const encoder = JsonEncoder.withIndent('  ');
     return encoder.convert(result);
+  }
+
+  Widget _buildWitnessAggregationCard() {
+    return Card(
+      color: AppColors.darkSurface,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              '📊 Witness Aggregation (Task 7)',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppColors.brandPrimary,
+              ),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'Triangulation, heat maps, and auto-escalation for multiple witness reports',
+              style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
+            ),
+            const SizedBox(height: 16),
+            
+            // Refresh Alerts Button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: _isLoading ? null : _loadRecentAlerts,
+                icon: const Icon(Icons.refresh),
+                label: Text('Load Recent Alerts (${_recentAlerts.length})'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.brandPrimaryLight,
+                  foregroundColor: AppColors.darkBackground,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRecentAlertsCard() {
+    return Card(
+      color: AppColors.darkSurface,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  '🎯 Recent Alerts for Analysis',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.brandPrimary,
+                  ),
+                ),
+                Text(
+                  '${_recentAlerts.length} alerts',
+                  style: const TextStyle(color: AppColors.textSecondary),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            
+            // Alert list
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: math.min(_recentAlerts.length, 5), // Show max 5
+              separatorBuilder: (context, index) => const Divider(color: AppColors.darkBorder),
+              itemBuilder: (context, index) {
+                final alert = _recentAlerts[index];
+                return ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(
+                    _getAlertIcon(alert['category'] ?? 'unknown'),
+                    color: _getAlertLevelColor(alert['alert_level'] ?? 'low'),
+                    size: 20,
+                  ),
+                  title: Text(
+                    alert['title'] ?? 'Unknown Alert',
+                    style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  subtitle: Text(
+                    '${alert['witness_count'] ?? 1} witnesses • ${alert['distance_km']?.toStringAsFixed(1) ?? '?'}km',
+                    style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                  ),
+                  trailing: ElevatedButton(
+                    onPressed: _isLoading ? null : () => _loadAlertAggregation(alert['id']),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.warning,
+                      foregroundColor: AppColors.darkBackground,
+                      minimumSize: const Size(60, 32),
+                    ),
+                    child: const Text('Analyze', style: TextStyle(fontSize: 11)),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAggregationResultCard() {
+    final aggregation = _selectedAlertAggregation!;
+    final triangulation = aggregation['triangulation'] ?? {};
+    final summary = aggregation['summary'] ?? {};
+    final witnessPoints = aggregation['witness_points'] ?? [];
+    
+    return Card(
+      color: AppColors.darkSurface,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  '🔬 Triangulation Analysis',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.brandPrimary,
+                  ),
+                ),
+                if (summary['should_escalate'] == true)
+                  ElevatedButton.icon(
+                    onPressed: _isLoading ? null : () => _escalateAlert(aggregation['sighting_id']),
+                    icon: const Icon(Icons.warning, size: 16),
+                    label: const Text('Escalate'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.error,
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size(80, 32),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            
+            // Triangulation Results
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.darkBackground,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.darkBorder),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildAnalysisRow('Object Location:', 
+                    triangulation['object_latitude'] != null
+                        ? '${triangulation['object_latitude'].toStringAsFixed(6)}, ${triangulation['object_longitude'].toStringAsFixed(6)}'
+                        : 'Unable to triangulate'),
+                  _buildAnalysisRow('Confidence Score:', 
+                    '${(triangulation['confidence_score'] * 100).toStringAsFixed(1)}%'),
+                  _buildAnalysisRow('Consensus Quality:', triangulation['consensus_quality'] ?? 'unknown'),
+                  _buildAnalysisRow('Total Witnesses:', '${summary['total_witnesses'] ?? 0}'),
+                  _buildAnalysisRow('Agreement:', '${summary['agreement_percentage']?.toStringAsFixed(1) ?? 0}%'),
+                  if (triangulation['estimated_radius_meters'] != null)
+                    _buildAnalysisRow('Uncertainty Radius:', 
+                      '${(triangulation['estimated_radius_meters'] / 1000).toStringAsFixed(2)}km'),
+                ],
+              ),
+            ),
+            
+            const SizedBox(height: 12),
+            
+            // Auto-escalation status
+            Row(
+              children: [
+                Icon(
+                  summary['should_escalate'] == true ? Icons.trending_up : Icons.trending_flat,
+                  color: summary['should_escalate'] == true ? AppColors.error : AppColors.success,
+                  size: 16,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  summary['should_escalate'] == true 
+                      ? 'Recommended for auto-escalation'
+                      : 'Does not meet escalation criteria',
+                  style: TextStyle(
+                    color: summary['should_escalate'] == true ? AppColors.error : AppColors.textSecondary,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+            
+            // Heat map placeholder (simplified visualization)
+            if (witnessPoints.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              const Text(
+                'Witness Heat Map:',
+                style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                height: 120,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColors.darkBackground,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.darkBorder),
+                ),
+                child: Stack(
+                  children: [
+                    const Center(
+                      child: Text(
+                        'Heat Map Visualization\n(Simplified for Admin)',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                      ),
+                    ),
+                    // Simple witness point visualization
+                    ...witnessPoints.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final point = entry.value;
+                      return Positioned(
+                        left: 20.0 + (index * 30.0) % 200,
+                        top: 20.0 + (index * 20.0) % 80,
+                        child: Container(
+                          width: 12,
+                          height: 12,
+                          decoration: BoxDecoration(
+                            color: AppColors.brandPrimary.withOpacity(0.8),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Text(
+                              '${index + 1}',
+                              style: const TextStyle(color: Colors.white, fontSize: 8),
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAnalysisRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 120,
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(color: AppColors.textPrimary, fontSize: 12),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  IconData _getAlertIcon(String category) {
+    switch (category.toLowerCase()) {
+      case 'ufo': return Icons.circle;
+      case 'aircraft': return Icons.airplanemode_active;
+      case 'satellite': return Icons.satellite;
+      case 'weather': return Icons.cloud;
+      default: return Icons.help_outline;
+    }
+  }
+
+  Color _getAlertLevelColor(String level) {
+    switch (level.toLowerCase()) {
+      case 'critical': return AppColors.error;
+      case 'high': return AppColors.warning;
+      case 'medium': return AppColors.brandPrimary;
+      case 'low': return AppColors.success;
+      default: return AppColors.textSecondary;
+    }
   }
 }

@@ -105,21 +105,30 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
 
       debugPrint('Submitting sighting with sensor data: ${_sensorData != null}');
       
-      // Submit sighting with media using API client
-      debugPrint('Submitting with sensorData: ${_sensorData?.latitude}, ${_sensorData?.longitude}');
-      final sightingId = await ApiClient.instance.submitSightingWithMedia(
-        title: finalTitle,
+      // First, send the beep to create sighting and trigger alerts
+      debugPrint('Creating sighting via sendBeep...');
+      final beepResult = await anonymousBeepService.sendBeep(
         description: finalDescription,
-        category: category,
-        sensorData: _sensorData,
-        mediaFiles: [widget.imageFile],
-        witnessCount: 1,
-        tags: tags,
-        isPublic: true, // TODO: Use user profile location privacy setting
-        onProgress: (progress) {
-          debugPrint('Upload progress: ${(progress * 100).toStringAsFixed(1)}%');
-        },
+        latitude: _sensorData?.latitude,
+        longitude: _sensorData?.longitude,
+        heading: _sensorData?.azimuthDeg,
       );
+      
+      final sightingId = beepResult['sighting_id'];
+      debugPrint('Sighting created with ID: $sightingId');
+      
+      // Now upload the media file to the sighting
+      try {
+        debugPrint('Uploading photo to sighting...');
+        await ApiClient.instance.uploadMediaFileForSighting(
+          sightingId,
+          widget.imageFile,
+        );
+        debugPrint('Photo uploaded successfully');
+      } catch (e) {
+        debugPrint('Warning: Failed to upload photo: $e');
+        // Don't fail completely if media upload fails
+      }
 
       // Submit photo metadata if available (for astronomical identification)
       if (widget.photoMetadata != null) {

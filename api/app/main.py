@@ -1028,11 +1028,17 @@ async def confirm_witness(sighting_id: str, request: dict):
                 uuid.UUID(sighting_id)
             )
             
-            # PHASE 1 FEATURE: Re-send escalated alerts if witness count crosses thresholds
+            # TASK 7: Enhanced auto-escalation using witness aggregation service
             from services.proximity_alert_service import get_proximity_alert_service
+            from services.witness_aggregation_service import get_witness_aggregation_service
+            
             proximity_service = get_proximity_alert_service(db_pool)
+            aggregation_service = get_witness_aggregation_service(db_pool)
             
             escalation_triggered = False
+            escalation_reason = None
+            
+            # Basic escalation for immediate high witness counts
             if new_witness_count in [3, 5, 10]:  # Escalation thresholds
                 try:
                     # Re-send alerts with higher priority
@@ -1045,9 +1051,58 @@ async def confirm_witness(sighting_id: str, request: dict):
                         witness_count=new_witness_count
                     )
                     escalation_triggered = True
-                    print(f"Escalated alert sent for sighting {sighting_id} with {new_witness_count} witnesses")
+                    escalation_reason = f"Basic threshold: {new_witness_count} witnesses"
+                    print(f"Basic escalation triggered for sighting {sighting_id} with {new_witness_count} witnesses")
                 except Exception as e:
-                    print(f"Failed to send escalation alert: {e}")
+                    print(f"Failed to send basic escalation alert: {e}")
+            
+            # TASK 7: Advanced triangulation-based auto-escalation
+            if new_witness_count >= 2:  # Need at least 2 witnesses for triangulation
+                try:
+                    # Analyze witness consensus using triangulation
+                    analysis_result = await aggregation_service.analyze_sighting_consensus(sighting_id)
+                    
+                    # Check if triangulation-based escalation should trigger
+                    if analysis_result.should_escalate and not escalation_triggered:
+                        # Update alert level in database based on confidence
+                        new_alert_level = "medium"
+                        if analysis_result.confidence_score >= 0.8:
+                            new_alert_level = "high"
+                        elif analysis_result.witness_count >= 5:
+                            new_alert_level = "critical"
+                        
+                        # Update sighting alert level
+                        await conn.execute("""
+                            UPDATE sightings 
+                            SET alert_level = $1, updated_at = NOW()
+                            WHERE id = $2
+                        """, new_alert_level, uuid.UUID(sighting_id))
+                        
+                        # Send escalated alert with triangulation data
+                        escalation_result = await proximity_service.send_proximity_alerts(
+                            analysis_result.object_latitude or (orig_lat if distance_km else lat),
+                            analysis_result.object_longitude or (orig_lng if distance_km else lng), 
+                            sighting_id, 
+                            device_id,
+                            escalation=True,
+                            witness_count=new_witness_count,
+                            triangulation_data={
+                                'confidence_score': analysis_result.confidence_score,
+                                'consensus_quality': analysis_result.consensus_quality,
+                                'object_location': {
+                                    'latitude': analysis_result.object_latitude,
+                                    'longitude': analysis_result.object_longitude,
+                                },
+                                'estimated_radius_meters': analysis_result.estimated_radius_meters
+                            }
+                        )
+                        escalation_triggered = True
+                        escalation_reason = f"Triangulation: {analysis_result.witness_count} witnesses, {analysis_result.confidence_score:.2f} confidence, {analysis_result.consensus_quality} quality"
+                        print(f"Triangulation-based escalation triggered for sighting {sighting_id}: {escalation_reason}")
+                        
+                except Exception as e:
+                    print(f"Failed to perform triangulation-based escalation: {e}")
+                    # Continue with basic escalation if triangulation fails
             
             return {
                 "success": True,
@@ -1060,6 +1115,7 @@ async def confirm_witness(sighting_id: str, request: dict):
                     "distance_km": round(distance_km, 2) if distance_km else None,
                     "still_visible": still_visible,
                     "escalation_triggered": escalation_triggered,
+                    "escalation_reason": escalation_reason,
                     "witness_location": {
                         "latitude": lat,
                         "longitude": lng,
