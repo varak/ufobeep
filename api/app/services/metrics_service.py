@@ -22,6 +22,7 @@ class EngagementType(str, Enum):
     QUICK_ACTION_SEE_IT_TOO = "quick_action_see_it_too"
     QUICK_ACTION_DONT_SEE = "quick_action_dont_see"
     QUICK_ACTION_MISSED = "quick_action_missed"
+    QUICK_ACTION_DISMISS_SNOOZE = "quick_action_dismiss_snooze"
     BEEP_SUBMITTED = "beep_submitted"
 
 @dataclass

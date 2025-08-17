@@ -23,7 +23,7 @@ router = APIRouter(prefix="/beep", tags=["beep", "engagement"])
 class WitnessEngagementRequest(BaseModel):
     """Request model for witness engagement tracking"""
     device_id: str = Field(..., min_length=1, max_length=255)
-    witness_type: str = Field(..., description="Type of witness engagement: confirmed, checked_no_sighting, missed")
+    witness_type: str = Field(..., description="Type of witness engagement: confirmed, checked_no_sighting, missed, dismissed_snooze")
     quick_action: bool = Field(default=True, description="Whether this came from a quick action button")
     latitude: Optional[float] = Field(None, ge=-90.0, le=90.0)
     longitude: Optional[float] = Field(None, ge=-180.0, le=180.0)
@@ -139,10 +139,24 @@ async def record_witness_engagement(
                 
                 message = "Thanks for the feedback - we'll note you missed this one"
                 
+            elif engagement.witness_type == "dismissed_snooze":
+                # User dismissed and snoozed similar alerts - record engagement
+                await _record_engagement_only(
+                    conn, sighting_uuid, engagement, "dismissed_snooze", metrics_service
+                )
+                
+                await metrics_service.log_engagement(
+                    engagement.device_id,
+                    EngagementType.QUICK_ACTION_DISMISS_SNOOZE,
+                    sighting_uuid
+                )
+                
+                message = "Alert dismissed and similar alerts snoozed for 30 minutes"
+                
             else:
                 raise HTTPException(
                     status_code=400, 
-                    detail=f"Invalid witness_type: {engagement.witness_type}. Must be: confirmed, checked_no_sighting, or missed"
+                    detail=f"Invalid witness_type: {engagement.witness_type}. Must be: confirmed, checked_no_sighting, missed, or dismissed_snooze"
                 )
             
             return WitnessEngagementResponse(

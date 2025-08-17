@@ -218,6 +218,16 @@ class PushNotificationService {
     
     print('📱 PROCESSING ALERT: sighting $sightingId from device $submitterDeviceId (current: $currentDeviceId)');
     
+    // Extract sighting location for snooze check
+    final sightingLat = double.tryParse(message.data['latitude'] ?? '');
+    final sightingLon = double.tryParse(message.data['longitude'] ?? '');
+    
+    // Check if this alert should be snoozed
+    if (await _shouldSnoozeAlert(sightingLat, sightingLon)) {
+      print('🔕 SNOOZING ALERT: Similar alerts are temporarily muted');
+      return; // Don't process this alert
+    }
+    
     // Load user preferences for DND/quiet hours checking
     dynamic userPrefs;
     try {
@@ -526,6 +536,9 @@ class PushNotificationService {
       case 'missed_it':
         _handleMissedItAction(sightingId);
         break;
+      case 'dismiss_snooze':
+        _handleDismissAndSnoozeAction(sightingId);
+        break;
       case 'dismiss':
         _handleDismissAction(sightingId);
         break;
@@ -590,8 +603,8 @@ class PushNotificationService {
           showsUserInterface: false,
         ),
         const AndroidNotificationAction(
-          'missed_it',
-          'I missed this one 😔',
+          'dismiss_snooze',
+          'Dismiss & snooze similar 🔕',
           showsUserInterface: false,
         ),
       ],
@@ -677,9 +690,95 @@ class PushNotificationService {
     }
   }
   
+  void _handleDismissAndSnoozeAction(String sightingId) async {
+    print('📱 User dismissed and snoozed similar alerts for sighting: $sightingId');
+    
+    try {
+      // Get the sighting details to determine what constitutes "similar"
+      final deviceId = await _deviceService.getDeviceId();
+      
+      // Call API to record the dismissal
+      await _dio.post('/beep/$sightingId/witness', data: {
+        'device_id': deviceId,
+        'witness_type': 'dismissed_snooze',
+        'quick_action': true,
+      });
+      
+      // Set temporary snooze for similar alerts (30 minutes)
+      await _setSimilarAlertSnooze(sightingId, duration: const Duration(minutes: 30));
+      
+      print('✅ Dismissed and snoozed similar alerts for 30 minutes');
+    } catch (e) {
+      print('❌ Failed to dismiss and snooze: $e');
+    }
+  }
+  
   void _handleDismissAction(String sightingId) {
     print('📱 User dismissed notification for sighting: $sightingId');
     // Just dismiss - no API call needed
+  }
+
+  /// Set temporary snooze for similar alerts based on location proximity
+  Future<void> _setSimilarAlertSnooze(String sightingId, {required Duration duration}) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final now = DateTime.now();
+      final snoozeUntil = now.add(duration);
+      
+      // Get sighting location from API to define "similar" area
+      final response = await _dio.get('/sightings/$sightingId');
+      final sightingData = response.data;
+      
+      if (sightingData != null && sightingData['sensor_data'] != null) {
+        final location = sightingData['sensor_data']['location'];
+        if (location != null) {
+          final lat = location['latitude'];
+          final lng = location['longitude'];
+          
+          // Store snooze info: location + radius + expiry time
+          final snoozeKey = 'alert_snooze_${lat.toStringAsFixed(2)}_${lng.toStringAsFixed(2)}';
+          await prefs.setString(snoozeKey, snoozeUntil.toIso8601String());
+          
+          print('🔕 Snoozed alerts within 5km of ($lat, $lng) until ${snoozeUntil.toString().substring(11, 16)}');
+        }
+      }
+    } catch (e) {
+      print('❌ Failed to set similar alert snooze: $e');
+    }
+  }
+  
+  /// Check if alerts should be snoozed for this location
+  Future<bool> _shouldSnoozeAlert(double? lat, double? lng) async {
+    if (lat == null || lng == null) return false;
+    
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final now = DateTime.now();
+      
+      // Check for any snooze zones within ~5km (rough grid check)
+      for (double latCheck = lat - 0.05; latCheck <= lat + 0.05; latCheck += 0.01) {
+        for (double lngCheck = lng - 0.05; lngCheck <= lng + 0.05; lngCheck += 0.01) {
+          final snoozeKey = 'alert_snooze_${latCheck.toStringAsFixed(2)}_${lngCheck.toStringAsFixed(2)}';
+          final snoozeUntilStr = prefs.getString(snoozeKey);
+          
+          if (snoozeUntilStr != null) {
+            final snoozeUntil = DateTime.parse(snoozeUntilStr);
+            if (now.isBefore(snoozeUntil)) {
+              print('🔕 Alert snoozed until ${snoozeUntil.toString().substring(11, 16)}');
+              return true;
+            } else {
+              // Cleanup expired snooze
+              await prefs.remove(snoozeKey);
+            }
+          }
+        }
+      }
+      
+      return false;
+    } catch (e) {
+      print('❌ Error checking alert snooze: $e');
+      return false;
+    }
   }
 
   void dispose() {
