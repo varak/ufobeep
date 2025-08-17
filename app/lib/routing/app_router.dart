@@ -18,6 +18,7 @@ import '../screens/profile/profile_screen.dart';
 import '../screens/profile/registration_screen.dart';
 import '../screens/profile/language_settings_screen.dart';
 import '../screens/splash/splash_screen.dart';
+import '../models/shared_media_data.dart';
 
 part 'app_router.g.dart';
 

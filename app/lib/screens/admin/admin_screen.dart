@@ -27,6 +27,11 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
   List<Map<String, dynamic>> _recentAlerts = [];
   Map<String, dynamic>? _selectedAlertAggregation;
   
+  // Rate limiting state
+  bool _rateLimitEnabled = true;
+  int _rateLimitThreshold = 3;
+  String _rateLimitMessage = '';
+  
   @override
   void initState() {
     super.initState();
@@ -48,6 +53,9 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
       
       // Load recent alerts for witness aggregation analysis
       await _loadRecentAlerts();
+      
+      // Load rate limiting status
+      await _loadRateLimitStatus();
       
       setState(() => _statusMessage = 'Admin mode ready');
     } catch (e) {
@@ -76,6 +84,24 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
       }
     } catch (e) {
       print('Failed to load recent alerts: $e');
+    }
+  }
+
+  Future<void> _loadRateLimitStatus() async {
+    try {
+      final apiClient = ApiClient.instance;
+      final response = await apiClient.get('/admin/ratelimit/status');
+      
+      setState(() {
+        _rateLimitEnabled = response['enabled'] ?? true;
+        _rateLimitThreshold = response['threshold'] ?? 3;
+        _rateLimitMessage = 'Loaded current status';
+      });
+    } catch (e) {
+      print('Failed to load rate limit status: $e');
+      setState(() {
+        _rateLimitMessage = 'Error loading status';
+      });
     }
   }
 
@@ -260,6 +286,10 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
             
             // Test Controls Section
             _buildTestControlsCard(),
+            const SizedBox(height: 16),
+            
+            // Rate Limiting Controls Section
+            _buildRateLimitingCard(),
             const SizedBox(height: 16),
             
             // Witness Aggregation Section (Task 7)
@@ -850,6 +880,300 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
       case 'medium': return AppColors.brandPrimary;
       case 'low': return AppColors.success;
       default: return AppColors.textSecondary;
+    }
+  }
+
+  Widget _buildRateLimitingCard() {
+    return Card(
+      color: AppColors.darkSurface,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              '⚡ Rate Limiting Controls',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppColors.brandPrimary,
+              ),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'Manage rate limiting for alert notifications to prevent spam',
+              style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
+            ),
+            const SizedBox(height: 16),
+            
+            // Current status
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.darkBackground.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        _rateLimitEnabled ? Icons.shield : Icons.shield_outlined,
+                        size: 16,
+                        color: _rateLimitEnabled ? AppColors.success : AppColors.warning,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        'Status: ${_rateLimitEnabled ? "Enabled" : "Disabled"}',
+                        style: const TextStyle(
+                          color: AppColors.textPrimary,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Threshold: $_rateLimitThreshold alerts per 15 minutes',
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 11,
+                    ),
+                  ),
+                  if (_rateLimitMessage.isNotEmpty) ...[ 
+                    const SizedBox(height: 4),
+                    Text(
+                      _rateLimitMessage,
+                      style: const TextStyle(
+                        color: AppColors.textTertiary,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Control buttons
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                // Enable/Disable toggle
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: _isLoading ? null : _toggleRateLimit,
+                    icon: Icon(_rateLimitEnabled ? Icons.toggle_on : Icons.toggle_off),
+                    label: Text(_rateLimitEnabled ? 'Disable Rate Limiting' : 'Enable Rate Limiting'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _rateLimitEnabled ? AppColors.warning : AppColors.success,
+                      foregroundColor: AppColors.darkBackground,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                  ),
+                ),
+                
+                // Threshold controls
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: _isLoading ? null : () => _setRateThreshold(1),
+                        icon: const Icon(Icons.looks_one),
+                        label: const Text('Set: 1'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.brandPrimaryLight,
+                          foregroundColor: AppColors.darkBackground,
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: _isLoading ? null : () => _setRateThreshold(3),
+                        icon: const Icon(Icons.looks_3),
+                        label: const Text('Set: 3'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.brandPrimary,
+                          foregroundColor: AppColors.darkBackground,
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: _isLoading ? null : () => _setRateThreshold(10),
+                        icon: const Icon(Icons.filter_9_plus),
+                        label: const Text('Set: 10'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.brandPrimaryLight,
+                          foregroundColor: AppColors.darkBackground,
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                
+                // Clear history
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: _isLoading ? null : _clearRateHistory,
+                    icon: const Icon(Icons.clear_all),
+                    label: const Text('Clear Rate Limit History'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.error,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                    ),
+                  ),
+                ),
+                
+                // Refresh status
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: _isLoading ? null : _refreshRateStatus,
+                    icon: const Icon(Icons.refresh),
+                    label: const Text('Refresh Status'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.brandPrimary.withOpacity(0.7),
+                      foregroundColor: AppColors.darkBackground,
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _toggleRateLimit() async {
+    setState(() {
+      _isLoading = true;
+      _statusMessage = _rateLimitEnabled ? 'Disabling rate limiting...' : 'Enabling rate limiting...';
+    });
+    
+    try {
+      final apiClient = ApiClient.instance;
+      final endpoint = _rateLimitEnabled ? '/admin/ratelimit/off' : '/admin/ratelimit/on';
+      
+      final response = await apiClient.get(endpoint);
+      
+      setState(() {
+        _rateLimitEnabled = !_rateLimitEnabled;
+        _rateLimitMessage = response['message'] ?? 'Rate limiting ${_rateLimitEnabled ? "enabled" : "disabled"}';
+        _statusMessage = 'Rate limiting ${_rateLimitEnabled ? "enabled" : "disabled"} successfully';
+      });
+      
+      await SoundService.I.play(AlertSound.test);
+      
+    } catch (e) {
+      setState(() {
+        _statusMessage = 'Failed to toggle rate limiting: $e';
+        _rateLimitMessage = 'Error occurred';
+      });
+      await SoundService.I.play(AlertSound.gpsFail);
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _setRateThreshold(int threshold) async {
+    setState(() {
+      _isLoading = true;
+      _statusMessage = 'Setting rate threshold to $threshold...';
+    });
+    
+    try {
+      final apiClient = ApiClient.instance;
+      final response = await apiClient.get('/admin/ratelimit/set?$threshold');
+      
+      setState(() {
+        _rateLimitThreshold = threshold;
+        _rateLimitMessage = response['message'] ?? 'Threshold set to $threshold';
+        _statusMessage = 'Rate threshold set to $threshold successfully';
+      });
+      
+      await SoundService.I.play(AlertSound.test);
+      
+    } catch (e) {
+      setState(() {
+        _statusMessage = 'Failed to set threshold: $e';
+        _rateLimitMessage = 'Error setting threshold';
+      });
+      await SoundService.I.play(AlertSound.gpsFail);
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _clearRateHistory() async {
+    setState(() {
+      _isLoading = true;
+      _statusMessage = 'Clearing rate limit history...';
+    });
+    
+    try {
+      final apiClient = ApiClient.instance;
+      final response = await apiClient.get('/admin/ratelimit/clear');
+      
+      setState(() {
+        _rateLimitMessage = response['message'] ?? 'Rate limit history cleared';
+        _statusMessage = 'Rate limit history cleared successfully';
+      });
+      
+      await SoundService.I.play(AlertSound.test);
+      
+    } catch (e) {
+      setState(() {
+        _statusMessage = 'Failed to clear history: $e';
+        _rateLimitMessage = 'Error clearing history';
+      });
+      await SoundService.I.play(AlertSound.gpsFail);
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _refreshRateStatus() async {
+    setState(() {
+      _isLoading = true;
+      _statusMessage = 'Refreshing rate limit status...';
+    });
+    
+    try {
+      final apiClient = ApiClient.instance;
+      final response = await apiClient.get('/admin/ratelimit/status');
+      
+      setState(() {
+        _rateLimitEnabled = response['enabled'] ?? true;
+        _rateLimitThreshold = response['threshold'] ?? 3;
+        _rateLimitMessage = 'Status refreshed at ${DateTime.now().toString().substring(11, 19)}';
+        _statusMessage = 'Rate limit status refreshed';
+      });
+      
+      await SoundService.I.play(AlertSound.gpsOk);
+      
+    } catch (e) {
+      setState(() {
+        _statusMessage = 'Failed to refresh status: $e';
+        _rateLimitMessage = 'Error refreshing status';
+      });
+      await SoundService.I.play(AlertSound.gpsFail);
+    } finally {
+      setState(() => _isLoading = false);
     }
   }
 }

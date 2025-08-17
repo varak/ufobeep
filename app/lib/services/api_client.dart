@@ -685,6 +685,24 @@ class ApiClient {
     }
   }
 
+  // Anonymous beep endpoints for Phase 0/1 - Quick alerts
+  Future<Map<String, dynamic>> sendAnonymousBeep(Map<String, dynamic> alertData) async {
+    try {
+      final response = await _dio.post('/beep/anonymous', data: alertData);
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw ApiClientException(
+          'HTTP ${response.statusCode}: ${response.statusMessage}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
   // Health check
   Future<bool> checkHealth() async {
     try {

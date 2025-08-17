@@ -6,14 +6,19 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'dart:io';
+
 import 'config/environment.dart';
 import 'config/locale_config.dart';
 import 'l10n/generated/app_localizations.dart';
 import 'providers/user_preferences_provider.dart';
+import 'providers/shared_media_provider.dart';
+import 'models/shared_media_data.dart';
 import 'routing/app_router.dart';
 import 'services/push_notification_service.dart';
 import 'services/sound_service.dart';
 import 'services/permission_service.dart';
+import 'services/share_intent_service.dart';
 import 'theme/app_theme.dart';
 
 void main() async {
@@ -68,6 +73,9 @@ Future<void> _initializeNonCriticalServices() async {
     pushNotificationService.initialize(),
   ]);
   
+  // Initialize share intent service
+  await ShareIntentService().initialize();
+  
   print('✅ Background services ready: ${stopwatch.elapsedMilliseconds}ms');
 }
 
@@ -90,6 +98,87 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _handleInitialMessage(widget.initialMessage!);
       });
+    }
+    
+    // Set up share intent callback once in initState
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _setupShareIntentCallback();
+    });
+  }
+  
+  void _setupShareIntentCallback() {
+    final router = ref.read(appRouterProvider);
+    
+    ShareIntentService.setOnSharedMediaCallback((sharedMedia) async {
+      print('Main: Share intent callback triggered with ${sharedMedia.mediaType}: ${sharedMedia.filePath}');
+      
+      // Create properly named file with correct extension
+      final originalFile = sharedMedia.file;
+      final bytes = await originalFile.readAsBytes();
+      final extension = _detectFileExtension(bytes, sharedMedia.isVideo);
+      final properFileName = 'shared_media_${DateTime.now().millisecondsSinceEpoch}$extension';
+      final tempDir = originalFile.parent;
+      final properFile = File('${tempDir.path}/$properFileName');
+      await originalFile.copy(properFile.path);
+      
+      print('Main: Created proper file: ${properFile.path}');
+      
+      // Navigate directly to beep composition screen with shared media
+      router.go('/beep/compose', extra: {
+        'imageFile': properFile,
+        'sensorData': null,
+        'photoMetadata': <String, dynamic>{},
+        'description': '', // Empty description so placeholder shows
+      });
+      print('Main: Navigated to composition screen with shared media');
+    });
+    
+    // Check for shared files now that callback is set
+    ShareIntentService.checkForSharedFiles();
+  }
+  
+  /// Detects file extension from file content using magic bytes
+  String _detectFileExtension(List<int> bytes, bool isVideo) {
+    if (isVideo) {
+      // Basic video detection - could be expanded
+      if (bytes.length >= 12) {
+        // MP4: starts with specific bytes
+        if (bytes[4] == 0x66 && bytes[5] == 0x74 && bytes[6] == 0x79 && bytes[7] == 0x70) {
+          return '.mp4';
+        }
+        // MOV: QuickTime signature
+        if (bytes[4] == 0x6D && bytes[5] == 0x6F && bytes[6] == 0x6F && bytes[7] == 0x76) {
+          return '.mov';
+        }
+      }
+      return '.mp4'; // Default for video
+    } else {
+      // Image detection using magic bytes
+      if (bytes.length >= 4) {
+        // JPEG: FF D8 FF
+        if (bytes[0] == 0xFF && bytes[1] == 0xD8 && bytes[2] == 0xFF) {
+          return '.jpg';
+        }
+        // PNG: 89 50 4E 47
+        if (bytes[0] == 0x89 && bytes[1] == 0x50 && bytes[2] == 0x4E && bytes[3] == 0x47) {
+          return '.png';
+        }
+        // GIF: 47 49 46 38
+        if (bytes[0] == 0x47 && bytes[1] == 0x49 && bytes[2] == 0x46 && bytes[3] == 0x38) {
+          return '.gif';
+        }
+        // WebP: RIFF...WEBP
+        if (bytes.length >= 12 && 
+            bytes[0] == 0x52 && bytes[1] == 0x49 && bytes[2] == 0x46 && bytes[3] == 0x46 &&
+            bytes[8] == 0x57 && bytes[9] == 0x45 && bytes[10] == 0x42 && bytes[11] == 0x50) {
+          return '.webp';
+        }
+        // BMP: 42 4D
+        if (bytes[0] == 0x42 && bytes[1] == 0x4D) {
+          return '.bmp';
+        }
+      }
+      return '.jpg'; // Default for images
     }
   }
   
@@ -149,4 +238,39 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print('Handling background message: ${message.messageId}');
+  
+  // Process the notification type and play appropriate sounds
+  final notificationType = message.data['type'] ?? 'general';
+  final witnessCountStr = message.data['witness_count'] ?? '1';
+  final witnessCount = int.tryParse(witnessCountStr) ?? 1;
+  
+  print('Background notification type: $notificationType, witnesses: $witnessCount');
+  
+  // Initialize sound service for background processing
+  try {
+    await SoundService.I.init();
+    
+    // Handle sighting alerts with escalated sounds
+    if (notificationType == 'sighting_alert') {
+      // Play appropriate escalated alert sound based on witness count
+      if (witnessCount >= 10) {
+        await SoundService.I.play(AlertSound.emergency, haptic: true);
+        print('🚨 BACKGROUND: Playing EMERGENCY alert (${witnessCount} witnesses)');
+      } else if (witnessCount >= 3) {
+        await SoundService.I.play(AlertSound.urgent);
+        print('⚠️ BACKGROUND: Playing URGENT alert (${witnessCount} witnesses)');
+      } else {
+        await SoundService.I.play(AlertSound.normal);
+        print('📢 BACKGROUND: Playing NORMAL alert (${witnessCount} witnesses)');
+      }
+      
+      // Also play push notification sound
+      await SoundService.I.play(AlertSound.pushPing);
+    } else {
+      // For other notification types, play a simple ping
+      await SoundService.I.play(AlertSound.pushPing);
+    }
+  } catch (e) {
+    print('Error playing background notification sound: $e');
+  }
 }

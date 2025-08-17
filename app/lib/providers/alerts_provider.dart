@@ -149,60 +149,110 @@ class Alert {
   }
 
   factory Alert.fromApiJson(Map<String, dynamic> json) {
-    // Handle both old format (with 'location' object) and new format (with 'jittered_location' or 'sensor_data')
-    Map<String, dynamic>? location = json['location'] as Map<String, dynamic>?;
-    Map<String, dynamic>? jitteredLocation = json['jittered_location'] as Map<String, dynamic>?;
-    Map<String, dynamic>? sensorData = json['sensor_data'] as Map<String, dynamic>?;
-    
-    // Try to get coordinates from various possible locations in the response
-    double lat = 0.0;
-    double lng = 0.0;
-    
-    if (jitteredLocation != null) {
-      lat = (jitteredLocation['latitude']?.toDouble() ?? jitteredLocation['lat']?.toDouble()) ?? 0.0;
-      lng = (jitteredLocation['longitude']?.toDouble() ?? jitteredLocation['lng']?.toDouble()) ?? 0.0;
-    } else if (location != null) {
-      lat = (location['latitude']?.toDouble() ?? location['lat']?.toDouble()) ?? 0.0;
-      lng = (location['longitude']?.toDouble() ?? location['lng']?.toDouble()) ?? 0.0;
-    } else if (sensorData != null && sensorData['location'] != null) {
-      final sensorLoc = sensorData['location'] as Map<String, dynamic>;
-      lat = (sensorLoc['latitude']?.toDouble() ?? sensorLoc['lat']?.toDouble()) ?? 0.0;
-      lng = (sensorLoc['longitude']?.toDouble() ?? sensorLoc['lng']?.toDouble()) ?? 0.0;
-    } else if (sensorData != null) {
-      lat = (sensorData['latitude']?.toDouble() ?? sensorData['lat']?.toDouble()) ?? 0.0;
-      lng = (sensorData['longitude']?.toDouble() ?? sensorData['lng']?.toDouble()) ?? 0.0;
+    try {
+      // Handle both old format (with 'location' object) and new format (with 'jittered_location' or 'sensor_data')
+      Map<String, dynamic>? location = json['location'] as Map<String, dynamic>?;
+      Map<String, dynamic>? jitteredLocation = json['jittered_location'] as Map<String, dynamic>?;
+      Map<String, dynamic>? sensorData = json['sensor_data'] as Map<String, dynamic>?;
+      
+      // Try to get coordinates from various possible locations in the response
+      double lat = 0.0;
+      double lng = 0.0;
+      
+      if (jitteredLocation != null) {
+        lat = (jitteredLocation['latitude']?.toDouble() ?? jitteredLocation['lat']?.toDouble()) ?? 0.0;
+        lng = (jitteredLocation['longitude']?.toDouble() ?? jitteredLocation['lng']?.toDouble()) ?? 0.0;
+      } else if (location != null) {
+        lat = (location['latitude']?.toDouble() ?? location['lat']?.toDouble()) ?? 0.0;
+        lng = (location['longitude']?.toDouble() ?? location['lng']?.toDouble()) ?? 0.0;
+      } else if (sensorData != null && sensorData['location'] != null) {
+        final sensorLoc = sensorData['location'] as Map<String, dynamic>;
+        lat = (sensorLoc['latitude']?.toDouble() ?? sensorLoc['lat']?.toDouble()) ?? 0.0;
+        lng = (sensorLoc['longitude']?.toDouble() ?? sensorLoc['lng']?.toDouble()) ?? 0.0;
+      } else if (sensorData != null) {
+        lat = (sensorData['latitude']?.toDouble() ?? sensorData['lat']?.toDouble()) ?? 0.0;
+        lng = (sensorData['longitude']?.toDouble() ?? sensorData['lng']?.toDouble()) ?? 0.0;
+      }
+      
+      // Safely parse media files
+      List<Map<String, dynamic>> parsedMediaFiles = [];
+      try {
+        final mediaFiles = json['media_files'] as List<dynamic>?;
+        if (mediaFiles != null) {
+          for (final media in mediaFiles) {
+            if (media is Map<String, dynamic>) {
+              parsedMediaFiles.add(media);
+            }
+          }
+        }
+      } catch (e) {
+        print('Error parsing media_files for alert ${json['id']}: $e');
+      }
+      
+      // Safely parse photo analysis
+      List<Map<String, dynamic>>? parsedPhotoAnalysis;
+      try {
+        final photoAnalysis = json['photo_analysis'];
+        if (photoAnalysis is List) {
+          parsedPhotoAnalysis = [];
+          for (final analysis in photoAnalysis) {
+            if (analysis is Map<String, dynamic>) {
+              parsedPhotoAnalysis.add(analysis);
+            }
+          }
+        }
+      } catch (e) {
+        print('Error parsing photo_analysis for alert ${json['id']}: $e');
+      }
+      
+      // Safely parse tags
+      List<String> parsedTags = [];
+      try {
+        final tags = json['tags'];
+        if (tags is List) {
+          for (final tag in tags) {
+            if (tag is String) {
+              parsedTags.add(tag);
+            }
+          }
+        }
+      } catch (e) {
+        print('Error parsing tags for alert ${json['id']}: $e');
+      }
+      
+      return Alert(
+        id: json['id'] as String,
+        title: json['title'] as String,
+        description: json['description'] as String,
+        latitude: lat,
+        longitude: lng,
+        createdAt: DateTime.parse(json['created_at'] as String? ?? json['submitted_at'] as String? ?? DateTime.now().toIso8601String()),
+        locationName: location?['name'] as String?,
+        distance: json['distance_km']?.toDouble(),
+        bearing: json['bearing_deg']?.toDouble(),
+        category: json['category'] as String? ?? 'ufo',
+        alertLevel: json['alert_level'] as String? ?? 'low',
+        status: json['status'] as String? ?? 'pending',
+        witnessCount: json['witness_count'] as int? ?? 1,
+        viewCount: json['view_count'] as int? ?? 0,
+        verificationScore: json['verification_score']?.toDouble() ?? 0.0,
+        mediaFiles: parsedMediaFiles,
+        tags: parsedTags,
+        isPublic: json['is_public'] as bool? ?? true,
+        submittedAt: json['submitted_at'] != null ? DateTime.parse(json['submitted_at'] as String) : null,
+        processedAt: json['processed_at'] != null ? DateTime.parse(json['processed_at'] as String) : null,
+        matrixRoomId: json['matrix_room_id'] as String?,
+        reporterId: json['reporter_id'] as String?,
+        enrichment: json['enrichment'] as Map<String, dynamic>?,
+        photoAnalysis: parsedPhotoAnalysis,
+        totalConfirmations: json['total_confirmations'] as int? ?? 0,
+        canConfirmWitness: json['can_confirm_witness'] as bool? ?? true,
+      );
+    } catch (e) {
+      print('Error parsing alert JSON for ${json['id']}: $e');
+      print('Raw JSON: $json');
+      rethrow;
     }
-    
-    final mediaFiles = json['media_files'] as List<dynamic>?;
-    
-    return Alert(
-      id: json['id'] as String,
-      title: json['title'] as String,
-      description: json['description'] as String,
-      latitude: lat,
-      longitude: lng,
-      createdAt: DateTime.parse(json['created_at'] as String? ?? json['submitted_at'] as String? ?? DateTime.now().toIso8601String()),
-      locationName: location?['name'] as String?,
-      distance: json['distance_km']?.toDouble(),
-      bearing: json['bearing_deg']?.toDouble(),
-      category: json['category'] as String? ?? 'ufo',
-      alertLevel: json['alert_level'] as String? ?? 'low',
-      status: json['status'] as String? ?? 'pending',
-      witnessCount: json['witness_count'] as int? ?? 1,
-      viewCount: json['view_count'] as int? ?? 0,
-      verificationScore: json['verification_score']?.toDouble() ?? 0.0,
-      mediaFiles: mediaFiles?.cast<Map<String, dynamic>>() ?? [],
-      tags: (json['tags'] as List<dynamic>?)?.cast<String>() ?? [],
-      isPublic: json['is_public'] as bool? ?? true,
-      submittedAt: json['submitted_at'] != null ? DateTime.parse(json['submitted_at'] as String) : null,
-      processedAt: json['processed_at'] != null ? DateTime.parse(json['processed_at'] as String) : null,
-      matrixRoomId: json['matrix_room_id'] as String?,
-      reporterId: json['reporter_id'] as String?,
-      enrichment: json['enrichment'] as Map<String, dynamic>?,
-      photoAnalysis: (json['photo_analysis'] as List<dynamic>?)?.cast<Map<String, dynamic>>(),
-      totalConfirmations: json['total_confirmations'] as int? ?? 0,
-      canConfirmWitness: json['can_confirm_witness'] as bool? ?? true,
-    );
   }
 
   Map<String, dynamic> toJson() {
@@ -366,7 +416,15 @@ Future<Alert?> alertById(AlertByIdRef ref, String alertId) async {
     // Always fetch fresh data from API to get latest analysis status
     // This ensures photo analysis status updates are reflected immediately
     final apiClient = ApiClient.instance;
-    final response = await apiClient.getAlertDetails(alertId);
+    
+    // Add timeout to prevent hanging
+    final response = await apiClient.getAlertDetails(alertId).timeout(
+      const Duration(seconds: 10),
+      onTimeout: () {
+        print('Timeout fetching alert $alertId');
+        throw Exception('Request timeout');
+      },
+    );
     
     if (response['success'] == true) {
       final alertData = response['data'] as Map<String, dynamic>;
@@ -388,7 +446,26 @@ Future<Alert?> alertById(AlertByIdRef ref, String alertId) async {
   } catch (e) {
     print('Error fetching alert $alertId: $e');
     
-    // Fallback to cached data on error
+    // If it's a 404 error or timeout, don't retry endlessly
+    if (e.toString().contains('404') || e.toString().contains('timeout')) {
+      print('Alert $alertId not found or timed out, checking cache only');
+      
+      // Check cache one time for 404/timeout cases
+      final alertsAsync = ref.watch(alertsListProvider);
+      if (alertsAsync.hasValue) {
+        final alerts = alertsAsync.value!;
+        for (final alert in alerts) {
+          if (alert.id == alertId) {
+            return alert;
+          }
+        }
+      }
+      
+      // Return null immediately for 404 - don't keep retrying
+      return null;
+    }
+    
+    // For other errors, fallback to cached data
     final alertsAsync = ref.watch(alertsListProvider);
     if (alertsAsync.hasValue) {
       final alerts = alertsAsync.value!;

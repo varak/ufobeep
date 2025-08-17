@@ -107,10 +107,19 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       
       // First, send the beep to create sighting and trigger alerts
       debugPrint('Creating sighting via sendBeep...');
+      // Check for valid GPS coordinates (not 0,0 which is invalid)
+      double? validLat = _sensorData?.latitude;
+      double? validLon = _sensorData?.longitude;
+      if (validLat == 0.0 && validLon == 0.0) {
+        validLat = null;
+        validLon = null;
+        debugPrint('Invalid GPS coordinates (0,0) detected, will use current location');
+      }
+      
       final beepResult = await anonymousBeepService.sendBeep(
         description: finalDescription,
-        latitude: _sensorData?.latitude,
-        longitude: _sensorData?.longitude,
+        latitude: validLat,
+        longitude: validLon,
         heading: _sensorData?.azimuthDeg,
       );
       

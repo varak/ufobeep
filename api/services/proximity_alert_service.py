@@ -5,6 +5,8 @@ from typing import List, Tuple
 import logging
 from .push_service import send_to_tokens
 
+from app.routers.admin import rate_limit_enabled, rate_limit_threshold
+
 logger = logging.getLogger(__name__)
 
 class ProximityAlertService:

@@ -7,6 +7,7 @@ import 'package:uuid/uuid.dart';
 import 'package:geolocator/geolocator.dart';
 import 'permission_service.dart';
 import 'sound_service.dart';
+import 'device_service.dart';
 
 class AnonymousBeepService {
   static const String _deviceIdKey = 'anonymous_device_id';
@@ -31,37 +32,45 @@ class AnonymousBeepService {
   );
   
   Future<String> getOrCreateDeviceId() async {
-    final prefs = await SharedPreferences.getInstance();
-    
-    // Check if we already have a device ID
-    String? deviceId = prefs.getString(_deviceIdKey);
-    
-    if (deviceId == null) {
-      // Generate a new device ID based on device info
-      String deviceIdentifier = '';
+    // Use the same device ID as DeviceService to ensure consistency
+    // Import and use DeviceService instead of generating our own
+    try {
+      // Import DeviceService if not already available
+      final deviceService = DeviceService();
+      final standardDeviceId = await deviceService.getDeviceId();
+      print('Using standard device ID: $standardDeviceId');
+      return standardDeviceId;
+    } catch (e) {
+      print('Fallback to local device ID generation: $e');
       
-      try {
-        if (Platform.isAndroid) {
-          final androidInfo = await _deviceInfo.androidInfo;
-          // Use Android ID if available, otherwise generate UUID
-          deviceIdentifier = androidInfo.id ?? _uuid.v4();
-        } else if (Platform.isIOS) {
-          final iosInfo = await _deviceInfo.iosInfo;
-          // iOS doesn't provide device ID, use UUID
-          deviceIdentifier = _uuid.v4();
-        } else {
+      // Fallback to local generation if DeviceService fails
+      final prefs = await SharedPreferences.getInstance();
+      String? deviceId = prefs.getString(_deviceIdKey);
+      
+      if (deviceId == null) {
+        String deviceIdentifier = '';
+        
+        try {
+          if (Platform.isAndroid) {
+            final androidInfo = await _deviceInfo.androidInfo;
+            deviceIdentifier = androidInfo.id ?? _uuid.v4();
+          } else if (Platform.isIOS) {
+            final iosInfo = await _deviceInfo.iosInfo;
+            deviceIdentifier = _uuid.v4();
+          } else {
+            deviceIdentifier = _uuid.v4();
+          }
+        } catch (e) {
+          print('Error getting device info: $e');
           deviceIdentifier = _uuid.v4();
         }
-      } catch (e) {
-        print('Error getting device info: $e');
-        deviceIdentifier = _uuid.v4();
+        
+        deviceId = 'anon_${deviceIdentifier}';
+        await prefs.setString(_deviceIdKey, deviceId);
       }
       
-      deviceId = 'anon_${deviceIdentifier}';
-      await prefs.setString(_deviceIdKey, deviceId);
+      return deviceId;
     }
-    
-    return deviceId;
   }
   
   Future<Map<String, dynamic>> sendBeep({

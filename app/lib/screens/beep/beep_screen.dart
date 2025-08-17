@@ -14,6 +14,7 @@ import '../../services/photo_metadata_service.dart';
 import '../../services/anonymous_beep_service.dart';
 import '../../services/sound_service.dart';
 import '../../services/permission_service.dart';
+import '../../services/api_client.dart';
 import '../../models/sensor_data.dart';
 import '../../models/sighting_submission.dart' as local;
 import '../../models/user_preferences.dart';
@@ -44,6 +45,9 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     super.initState();
     _checkSensorAvailability();
   }
+
+
+
 
   Future<void> _checkSensorAvailability() async {
     try {
@@ -372,9 +376,11 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
         );
       }
     } finally {
-      setState(() {
-        _isBeeping = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isBeeping = false;
+        });
+      }
     }
   }
   

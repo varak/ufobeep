@@ -153,6 +153,28 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
             <a href="/admin/logs" class="nav-btn">📜 System Logs</a>
         </div>
 
+        <!-- Rate Limiting Controls Section -->
+        <div class="section">
+            <h3>⏱️ Rate Limiting Controls</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="rate-limit-status">Loading...</div>
+                    <div class="stat-label">Status</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="rate-limit-threshold">-</div>
+                    <div class="stat-label">Threshold (per 15min)</div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="toggleRateLimit(false)" style="background: #dc3545;">🔴 Disable</button>
+                <button class="nav-btn" onclick="toggleRateLimit(true)" style="background: #28a745;">🟢 Enable</button>
+                <button class="nav-btn" onclick="setRateLimit()" style="background: #17a2b8;">📝 Set Threshold</button>
+                <button class="nav-btn" onclick="clearRateLimit()" style="background: #fd7e14;">🧹 Clear History</button>
+            </div>
+            <div id="rate-limit-result" style="margin-top: 15px; display: none; padding: 10px; border-radius: 5px;"></div>
+        </div>
+
         <div class="section">
             <h3>📊 Recent Activity</h3>
             <div id="recent-activity">Loading...</div>
@@ -244,14 +266,85 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
             }
         }
 
+        // Rate Limiting Control Functions
+        async function loadRateLimitStatus() {
+            try {
+                const response = await fetch("/admin/ratelimit/status");
+                const data = await response.json();
+                
+                document.getElementById("rate-limit-status").textContent = data.enabled ? "ENABLED" : "DISABLED";
+                document.getElementById("rate-limit-threshold").textContent = data.threshold;
+            } catch (error) {
+                console.error("Failed to load rate limit status:", error);
+                document.getElementById("rate-limit-status").textContent = "ERROR";
+                document.getElementById("rate-limit-threshold").textContent = "?";
+            }
+        }
+
+        async function toggleRateLimit(enable) {
+            try {
+                const endpoint = enable ? "/admin/ratelimit/on" : "/admin/ratelimit/off";
+                const response = await fetch(endpoint);
+                const data = await response.json();
+                
+                showRateLimitResult(data.message, data.success);
+                await loadRateLimitStatus();
+            } catch (error) {
+                showRateLimitResult("Failed to toggle rate limiting", false);
+            }
+        }
+
+        async function setRateLimit() {
+            const threshold = prompt("Enter new rate limit threshold (minimum 1):", "3");
+            if (threshold && !isNaN(threshold) && parseInt(threshold) > 0) {
+                try {
+                    const response = await fetch(`/admin/ratelimit/set?threshold=${threshold}`);
+                    const data = await response.json();
+                    
+                    showRateLimitResult(data.message, data.success);
+                    await loadRateLimitStatus();
+                } catch (error) {
+                    showRateLimitResult("Failed to set rate limit threshold", false);
+                }
+            }
+        }
+
+        async function clearRateLimit() {
+            if (confirm("Clear old sightings to reset rate limiting? This will delete sightings older than 5 minutes.")) {
+                try {
+                    const response = await fetch("/admin/ratelimit/clear", { method: "POST" });
+                    const data = await response.json();
+                    
+                    showRateLimitResult(data.message, data.success);
+                } catch (error) {
+                    showRateLimitResult("Failed to clear rate limit history", false);
+                }
+            }
+        }
+
+        function showRateLimitResult(message, success) {
+            const resultDiv = document.getElementById("rate-limit-result");
+            resultDiv.style.display = "block";
+            resultDiv.style.backgroundColor = success ? "#d4edda" : "#f8d7da";
+            resultDiv.style.color = success ? "#155724" : "#721c24";
+            resultDiv.style.border = success ? "1px solid #c3e6cb" : "1px solid #f5c6cb";
+            resultDiv.textContent = message;
+            
+            setTimeout(() => {
+                resultDiv.style.display = "none";
+            }, 5000);
+        }
+
         // Initialize dashboard
         loadStats();
         loadActivity();
+        loadRateLimitStatus();
         
         // Refresh every 30 seconds
         setInterval(() => {
             loadStats();
             loadActivity();
+            loadRateLimitStatus();
         }, 30000);
     </script>
 </body>
@@ -2527,3 +2620,56 @@ async def admin_aggregation_page(credentials: str = Depends(verify_admin_passwor
 </body>
 </html>
 """
+
+
+# Rate Limiting Control Endpoints
+rate_limit_threshold = 3  # Global variable for rate limiting
+rate_limit_enabled = True  # Global variable to enable/disable rate limiting
+
+@router.get("/ratelimit/status")
+async def get_rate_limit_status(credentials: str = Depends(verify_admin_password)):
+    """Get current rate limiting status"""
+    return {
+        "enabled": rate_limit_enabled,
+        "threshold": rate_limit_threshold,
+        "timestamp": datetime.utcnow().isoformat()
+    }
+
+@router.get("/ratelimit/on")
+async def enable_rate_limiting(credentials: str = Depends(verify_admin_password)):
+    """Enable rate limiting"""
+    global rate_limit_enabled
+    rate_limit_enabled = True
+    return {
+        "success": True,
+        "message": "Rate limiting enabled",
+        "enabled": rate_limit_enabled,
+        "threshold": rate_limit_threshold
+    }
+
+@router.get("/ratelimit/off")
+async def disable_rate_limiting(credentials: str = Depends(verify_admin_password)):
+    """Disable rate limiting"""
+    global rate_limit_enabled
+    rate_limit_enabled = False
+    return {
+        "success": True,
+        "message": "Rate limiting disabled", 
+        "enabled": rate_limit_enabled,
+        "threshold": rate_limit_threshold
+    }
+
+@router.get("/ratelimit/set")
+async def set_rate_limit_threshold(
+    threshold: int = 3,
+    credentials: str = Depends(verify_admin_password)
+):
+    """Set rate limiting threshold"""
+    global rate_limit_threshold
+    rate_limit_threshold = max(1, threshold)  # Minimum threshold of 1
+    return {
+        "success": True,
+        "message": f"Rate limiting threshold set to {rate_limit_threshold}",
+        "enabled": rate_limit_enabled,
+        "threshold": rate_limit_threshold
+    }
