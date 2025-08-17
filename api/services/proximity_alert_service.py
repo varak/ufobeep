@@ -310,7 +310,8 @@ class ProximityAlertService:
                         "witness_count": str(witness_count),
                         "timestamp": datetime.utcnow().isoformat(),
                         "action": "open_compass",  # Phase 1 Task 6: Open compass directly
-                        "submitter_device_id": submitter_device_id  # For self-notification filtering
+                        "submitter_device_id": submitter_device_id,  # For self-notification filtering
+                        "refresh_alerts": "true"  # Trigger alerts tab refresh in receiving apps
                     }
                     
                     # Add location data for compass navigation if available

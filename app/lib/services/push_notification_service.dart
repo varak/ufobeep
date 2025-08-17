@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'device_service.dart';
+import '../providers/alerts_provider.dart';
 import 'sound_service.dart';
 import 'anonymous_beep_service.dart';
 import 'permission_service.dart';
@@ -257,6 +259,18 @@ class PushNotificationService {
     // Also play push notification sound
     await SoundService.I.play(AlertSound.pushPing, userPrefs: userPrefs);
     
+    // Check if we should refresh alerts tab
+    final shouldRefreshAlerts = message.data['refresh_alerts'] == 'true';
+    if (shouldRefreshAlerts) {
+      try {
+        final container = ProviderScope.containerOf(rootNavigatorKey.currentContext!);
+        container.refresh(alertsListProvider);
+        print('🔄 Refreshed alerts tab due to new proximity alert');
+      } catch (e) {
+        print('Could not refresh alerts tab: $e');
+      }
+    }
+    
     if (sightingId != null) {
       print('Sighting ID: $sightingId, Witnesses: $witnessCount');
       
@@ -265,6 +279,15 @@ class PushNotificationService {
       final sightingLon = message.data['longitude'];
       final sightingName = message.data['location_name'] ?? 'UFO Sighting';
       final bearing = message.data['bearing'];
+      
+      // Refresh alerts cache to ensure fresh data for notification clicks
+      try {
+        final container = ProviderScope.containerOf(rootNavigatorKey.currentContext!);
+        container.refresh(alertsListProvider);
+        print('Refreshed alerts cache for fresh notification data');
+      } catch (e) {
+        print('Could not refresh alerts cache: $e');
+      }
       
       // Navigate to alert details instead of compass
       // The alert detail screen will have a "Navigate to Sighting" button with compass

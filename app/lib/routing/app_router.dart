@@ -282,7 +282,9 @@ class MainBottomNavBar extends StatelessWidget {
     final currentLocation = GoRouterState.of(context).uri.toString();
     
     int currentIndex = 0;
-    if (currentLocation.startsWith('/beep')) {
+    if (currentLocation.startsWith('/alerts')) {
+      currentIndex = 0;
+    } else if (currentLocation.startsWith('/beep')) {
       currentIndex = 1;
     } else if (currentLocation.startsWith('/map')) {
       currentIndex = 2;
@@ -296,7 +298,7 @@ class MainBottomNavBar extends StatelessWidget {
       onTap: (index) {
         switch (index) {
           case 0:
-            context.go('/');
+            context.go('/alerts');
             break;
           case 1:
             context.go('/beep');
