@@ -226,41 +226,134 @@ async def register_device(
     """
     Register or update a device for push notifications
     
-    TEMPORARY: Disabled due to SQL parameter issues - just return success
+    Fixed version with proper SQL parameters
     """
-    logger.info(f"Device registration request for {request.device_id} - returning mock success")
-    
-    current_time = datetime.utcnow()
-    
-    # Return a mock success response
-    mock_device = DeviceResponse(
-        id="mock-id",
-        device_id=request.device_id,
-        device_name=request.device_name,
-        platform=request.platform,
-        app_version=request.app_version,
-        os_version=request.os_version,
-        device_model=request.device_model,
-        manufacturer=request.manufacturer,
-        push_enabled=True,
-        alert_notifications=request.alert_notifications,
-        chat_notifications=request.chat_notifications,
-        system_notifications=request.system_notifications,
-        is_active=True,
-        last_seen=current_time.isoformat(),
-        timezone=request.timezone,
-        locale=request.locale,
-        notifications_sent=0,
-        notifications_opened=0,
-        registered_at=current_time.isoformat(),
-        updated_at=current_time.isoformat()
-    )
-    
-    return DeviceDetailResponse(
-        success=True,
-        data=mock_device,
-        timestamp=current_time.isoformat()
-    )
+    try:
+        # If no user_id, create or find anonymous user for this device
+        if not user_id:
+            user_id = await get_or_create_anonymous_user(request.device_id)
+        
+        db_pool = get_db_pool()
+        if not db_pool:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail={"error": "DATABASE_UNAVAILABLE", "message": "Database connection unavailable"}
+            )
+        
+        current_time = datetime.utcnow()
+        
+        async with db_pool.acquire() as conn:
+            # Try to update existing device first
+            result = await conn.execute(
+                """
+                UPDATE devices SET
+                    push_token = $1,
+                    push_provider = $2,
+                    app_version = $3,
+                    os_version = $4,
+                    device_name = $5,
+                    alert_notifications = $6,
+                    chat_notifications = $7,
+                    system_notifications = $8,
+                    timezone = $9,
+                    locale = $10,
+                    last_seen = $11,
+                    updated_at = $11,
+                    token_updated_at = $11,
+                    is_active = true
+                WHERE device_id = $12
+                """,
+                request.push_token,
+                request.push_provider.value if request.push_provider else 'fcm',
+                request.app_version,
+                request.os_version,
+                request.device_name,
+                request.alert_notifications,
+                request.chat_notifications,
+                request.system_notifications,
+                request.timezone,
+                request.locale,
+                current_time,
+                request.device_id
+            )
+            
+            if result == "UPDATE 0":
+                # Device doesn't exist, create new one with minimal required fields
+                device_record_id = await conn.fetchval(
+                    """
+                    INSERT INTO devices (
+                        user_id, device_id, device_name, platform,
+                        app_version, os_version, push_token, push_provider, 
+                        push_enabled, alert_notifications, chat_notifications, system_notifications,
+                        is_active, last_seen, registered_at, token_updated_at, created_at, updated_at
+                    ) VALUES (
+                        $1, $2, $3, $4, $5, $6, $7, $8, 
+                        true, $9, $10, $11, true, $12, $12, $12, $12, $12
+                    ) RETURNING id
+                    """,
+                    user_id,
+                    request.device_id,
+                    request.device_name,
+                    request.platform.value,
+                    request.app_version,
+                    request.os_version,
+                    request.push_token,
+                    request.push_provider.value if request.push_provider else 'fcm',
+                    request.alert_notifications,
+                    request.chat_notifications,
+                    request.system_notifications,
+                    current_time
+                )
+                logger.info(f"Created new device {request.device_id} for user {user_id}")
+            else:
+                # Get existing device ID for response
+                device_record_id = await conn.fetchval(
+                    "SELECT id FROM devices WHERE device_id = $1",
+                    request.device_id
+                )
+                logger.info(f"Updated existing device {request.device_id}")
+            
+            # Create response
+            mock_device = DeviceResponse(
+                id=str(device_record_id),
+                device_id=request.device_id,
+                device_name=request.device_name,
+                platform=request.platform,
+                app_version=request.app_version,
+                os_version=request.os_version,
+                device_model=request.device_model,
+                manufacturer=request.manufacturer,
+                push_enabled=True,
+                alert_notifications=request.alert_notifications,
+                chat_notifications=request.chat_notifications,
+                system_notifications=request.system_notifications,
+                is_active=True,
+                last_seen=current_time.isoformat(),
+                timezone=request.timezone,
+                locale=request.locale,
+                notifications_sent=0,
+                notifications_opened=0,
+                registered_at=current_time.isoformat(),
+                updated_at=current_time.isoformat()
+            )
+            
+            return DeviceDetailResponse(
+                success=True,
+                data=mock_device,
+                timestamp=current_time.isoformat()
+            )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to register device: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "error": "DEVICE_REGISTRATION_FAILED",
+                "message": "Failed to register device"
+            }
+        )
 
 
 @router.get("", response_model=DeviceListResponse)
