@@ -353,7 +353,7 @@ class _QuickBeepScreenState extends ConsumerState<QuickBeepScreen>
                           ),
                           IconButton(
                             icon: const Icon(Icons.history, color: AppColors.textSecondary),
-                            onPressed: () => context.go('/'),
+                            onPressed: () => context.go('/alerts'),
                           ),
                         ],
                       ),

@@ -83,7 +83,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     
     if (isRegistered) {
       // Navigate to main app
-      context.go('/');
+      context.go('/alerts');
     } else {
       // Navigate to registration/onboarding
       context.go('/register');
@@ -142,7 +142,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
-              context.go('/');
+              context.go('/alerts');
             },
             child: const Text('Continue Anyway'),
           ),

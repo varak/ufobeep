@@ -302,7 +302,7 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
               // Skip Button
               Center(
                 child: TextButton(
-                  onPressed: _isLoading ? null : () => context.go('/'),
+                  onPressed: _isLoading ? null : () => context.go('/alerts'),
                   child: const Text(
                     'Skip for now',
                     style: TextStyle(
@@ -518,8 +518,8 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
         // Reset registration state
         ref.read(registrationProvider.notifier).reset();
         
-        // Navigate to home
-        context.go('/');
+        // Navigate to alerts
+        context.go('/alerts');
         
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(

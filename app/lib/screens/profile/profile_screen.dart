@@ -195,7 +195,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
             const SizedBox(height: 16),
             TextButton(
-              onPressed: () => context.go('/'),
+              onPressed: () => context.go('/alerts'),
               child: const Text(
                 'Continue without profile',
                 style: TextStyle(color: AppColors.textSecondary),
