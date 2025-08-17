@@ -312,58 +312,108 @@ class MetricsService:
         
         async with self.db_pool.acquire() as conn:
             # Overall engagement stats
-            engagement_stats = await conn.fetchrow("""
-                SELECT 
-                    COUNT(*) as total_events,
-                    COUNT(DISTINCT device_id) as unique_devices,
-                    COUNT(DISTINCT sighting_id) as unique_sightings,
-                    AVG(CASE WHEN data->>'delivery_time_ms' IS NOT NULL 
-                        THEN (data->>'delivery_time_ms')::float END) as avg_delivery_time_ms
-                FROM metrics_events 
-                WHERE timestamp >= $1
-                AND ($2 IS NULL OR sighting_id = $2)
-            """, since, sighting_id)
+            if sighting_id:
+                engagement_stats = await conn.fetchrow("""
+                    SELECT 
+                        COUNT(*) as total_events,
+                        COUNT(DISTINCT device_id) as unique_devices,
+                        COUNT(DISTINCT sighting_id) as unique_sightings,
+                        AVG(CASE WHEN data->>'delivery_time_ms' IS NOT NULL 
+                            THEN (data->>'delivery_time_ms')::float END) as avg_delivery_time_ms
+                    FROM metrics_events 
+                    WHERE timestamp >= $1
+                    AND sighting_id = $2
+                """, since, sighting_id)
+            else:
+                engagement_stats = await conn.fetchrow("""
+                    SELECT 
+                        COUNT(*) as total_events,
+                        COUNT(DISTINCT device_id) as unique_devices,
+                        COUNT(DISTINCT sighting_id) as unique_sightings,
+                        AVG(CASE WHEN data->>'delivery_time_ms' IS NOT NULL 
+                            THEN (data->>'delivery_time_ms')::float END) as avg_delivery_time_ms
+                    FROM metrics_events 
+                    WHERE timestamp >= $1
+                """, since)
             
             # Engagement by type
-            engagement_by_type = await conn.fetch("""
-                SELECT 
-                    event_type,
-                    COUNT(*) as count,
-                    COUNT(DISTINCT device_id) as unique_devices
-                FROM metrics_events 
-                WHERE timestamp >= $1 
-                AND metric_type = $2
-                AND ($3 IS NULL OR sighting_id = $3)
-                GROUP BY event_type
-                ORDER BY count DESC
-            """, since, MetricType.USER_ENGAGEMENT.value, sighting_id)
+            if sighting_id:
+                engagement_by_type = await conn.fetch("""
+                    SELECT 
+                        event_type,
+                        COUNT(*) as count,
+                        COUNT(DISTINCT device_id) as unique_devices
+                    FROM metrics_events 
+                    WHERE timestamp >= $1 
+                    AND metric_type = $2
+                    AND sighting_id = $3
+                    GROUP BY event_type
+                    ORDER BY count DESC
+                """, since, MetricType.USER_ENGAGEMENT.value, sighting_id)
+            else:
+                engagement_by_type = await conn.fetch("""
+                    SELECT 
+                        event_type,
+                        COUNT(*) as count,
+                        COUNT(DISTINCT device_id) as unique_devices
+                    FROM metrics_events 
+                    WHERE timestamp >= $1 
+                    AND metric_type = $2
+                    GROUP BY event_type
+                    ORDER BY count DESC
+                """, since, MetricType.USER_ENGAGEMENT.value)
             
             # Alert delivery success rates
-            delivery_stats = await conn.fetchrow("""
-                SELECT 
-                    COUNT(*) as total_deliveries,
-                    COUNT(CASE WHEN delivery_status = 'delivered' THEN 1 END) as successful_deliveries,
-                    COUNT(CASE WHEN delivery_status = 'failed' THEN 1 END) as failed_deliveries,
-                    COUNT(CASE WHEN delivery_status = 'rate_limited' THEN 1 END) as rate_limited,
-                    AVG(delivery_time_ms) as avg_delivery_time_ms,
-                    MAX(delivery_time_ms) as max_delivery_time_ms
-                FROM alert_deliveries 
-                WHERE delivery_attempt_time >= $1
-                AND ($2 IS NULL OR sighting_id = $2)
-            """, since, sighting_id)
+            if sighting_id:
+                delivery_stats = await conn.fetchrow("""
+                    SELECT 
+                        COUNT(*) as total_deliveries,
+                        COUNT(CASE WHEN delivery_status = 'delivered' THEN 1 END) as successful_deliveries,
+                        COUNT(CASE WHEN delivery_status = 'failed' THEN 1 END) as failed_deliveries,
+                        COUNT(CASE WHEN delivery_status = 'rate_limited' THEN 1 END) as rate_limited,
+                        AVG(delivery_time_ms) as avg_delivery_time_ms,
+                        MAX(delivery_time_ms) as max_delivery_time_ms
+                    FROM alert_deliveries 
+                    WHERE delivery_attempt_time >= $1
+                    AND sighting_id = $2
+                """, since, sighting_id)
+            else:
+                delivery_stats = await conn.fetchrow("""
+                    SELECT 
+                        COUNT(*) as total_deliveries,
+                        COUNT(CASE WHEN delivery_status = 'delivered' THEN 1 END) as successful_deliveries,
+                        COUNT(CASE WHEN delivery_status = 'failed' THEN 1 END) as failed_deliveries,
+                        COUNT(CASE WHEN delivery_status = 'rate_limited' THEN 1 END) as rate_limited,
+                        AVG(delivery_time_ms) as avg_delivery_time_ms,
+                        MAX(delivery_time_ms) as max_delivery_time_ms
+                    FROM alert_deliveries 
+                    WHERE delivery_attempt_time >= $1
+                """, since)
             
             # Engagement funnel (how many people go from alert → action)
-            funnel_stats = await conn.fetchrow("""
-                SELECT 
-                    COUNT(DISTINCT CASE WHEN event_type = 'alert_sent' THEN device_id END) as alerts_sent,
-                    COUNT(DISTINCT CASE WHEN event_type = 'alert_opened' THEN device_id END) as alerts_opened,
-                    COUNT(DISTINCT CASE WHEN event_type LIKE 'quick_action_%' THEN device_id END) as quick_actions,
-                    COUNT(DISTINCT CASE WHEN event_type = 'beep_submitted' THEN device_id END) as beeps_submitted
-                FROM metrics_events 
-                WHERE timestamp >= $1
-                AND metric_type = $2
-                AND ($3 IS NULL OR sighting_id = $3)
-            """, since, MetricType.USER_ENGAGEMENT.value, sighting_id)
+            if sighting_id:
+                funnel_stats = await conn.fetchrow("""
+                    SELECT 
+                        COUNT(DISTINCT CASE WHEN event_type = 'alert_sent' THEN device_id END) as alerts_sent,
+                        COUNT(DISTINCT CASE WHEN event_type = 'alert_opened' THEN device_id END) as alerts_opened,
+                        COUNT(DISTINCT CASE WHEN event_type LIKE 'quick_action_%' THEN device_id END) as quick_actions,
+                        COUNT(DISTINCT CASE WHEN event_type = 'beep_submitted' THEN device_id END) as beeps_submitted
+                    FROM metrics_events 
+                    WHERE timestamp >= $1
+                    AND metric_type = $2
+                    AND sighting_id = $3
+                """, since, MetricType.USER_ENGAGEMENT.value, sighting_id)
+            else:
+                funnel_stats = await conn.fetchrow("""
+                    SELECT 
+                        COUNT(DISTINCT CASE WHEN event_type = 'alert_sent' THEN device_id END) as alerts_sent,
+                        COUNT(DISTINCT CASE WHEN event_type = 'alert_opened' THEN device_id END) as alerts_opened,
+                        COUNT(DISTINCT CASE WHEN event_type LIKE 'quick_action_%' THEN device_id END) as quick_actions,
+                        COUNT(DISTINCT CASE WHEN event_type = 'beep_submitted' THEN device_id END) as beeps_submitted
+                    FROM metrics_events 
+                    WHERE timestamp >= $1
+                    AND metric_type = $2
+                """, since, MetricType.USER_ENGAGEMENT.value)
         
         return {
             "time_range_hours": time_range_hours,
