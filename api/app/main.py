@@ -1007,6 +1007,9 @@ async def create_anonymous_beep(request: dict):
         
         # Send proximity alerts automatically
         try:
+            from services.proximity_alert_service import get_proximity_alert_service
+            proximity_service = get_proximity_alert_service(db_pool)
+            
             alert_result = await proximity_service.send_proximity_alerts(
                 jittered_lat, jittered_lng, str(sighting_id), request['device_id']
             )
