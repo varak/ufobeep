@@ -1005,12 +1005,18 @@ async def create_anonymous_beep(request: dict):
         
         print(f"Created anonymous sighting {sighting_id} at {jittered_lat}, {jittered_lng}")
         
-        # Don't send alerts here anymore - let the client decide when to send them
-        alert_result = {
-            "total_alerted": 0,
-            "message": "Sighting created. Use /alerts/send/{sighting_id} to send alerts.",
-            "devices_alerted": []
-        }
+        # Send proximity alerts automatically
+        try:
+            alert_result = await proximity_service.send_proximity_alerts(
+                jittered_lat, jittered_lng, str(sighting_id), request['device_id']
+            )
+        except Exception as e:
+            print(f"Warning: Failed to send proximity alerts: {e}")
+            alert_result = {
+                "total_alerts_sent": 0,
+                "message": f"Sighting created but alerts failed: {str(e)}",
+                "devices_alerted": []
+            }
         
         # Create user-friendly alert feedback
         total_alerted = alert_result.get("total_alerts_sent", 0)
