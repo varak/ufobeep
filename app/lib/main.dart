@@ -4,16 +4,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:permission_handler/permission_handler.dart';
-
 import 'dart:io';
+import 'dart:convert';
 
 import 'config/environment.dart';
 import 'config/locale_config.dart';
 import 'l10n/generated/app_localizations.dart';
+import 'models/user_preferences.dart';
 import 'providers/user_preferences_provider.dart';
-import 'providers/shared_media_provider.dart';
-import 'models/shared_media_data.dart';
 import 'routing/app_router.dart';
 import 'services/push_notification_service.dart';
 import 'services/sound_service.dart';
@@ -250,25 +248,39 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   try {
     await SoundService.I.init();
     
+    // Load user preferences for DND/quiet hours checking
+    dynamic userPrefs;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final prefsJson = prefs.getString('user_preferences');
+      if (prefsJson != null) {
+        final prefsMap = jsonDecode(prefsJson) as Map<String, dynamic>;
+        userPrefs = UserPreferences.fromJson(prefsMap);
+        print('🔇 Background: Loaded user preferences for DND checking');
+      }
+    } catch (e) {
+      print('⚠️ Background: Could not load user preferences: $e');
+    }
+    
     // Handle sighting alerts with escalated sounds
     if (notificationType == 'sighting_alert') {
       // Play appropriate escalated alert sound based on witness count
       if (witnessCount >= 10) {
-        await SoundService.I.play(AlertSound.emergency, haptic: true);
+        await SoundService.I.play(AlertSound.emergency, haptic: true, witnessCount: witnessCount, userPrefs: userPrefs);
         print('🚨 BACKGROUND: Playing EMERGENCY alert (${witnessCount} witnesses)');
       } else if (witnessCount >= 3) {
-        await SoundService.I.play(AlertSound.urgent);
+        await SoundService.I.play(AlertSound.urgent, witnessCount: witnessCount, userPrefs: userPrefs);
         print('⚠️ BACKGROUND: Playing URGENT alert (${witnessCount} witnesses)');
       } else {
-        await SoundService.I.play(AlertSound.normal);
+        await SoundService.I.play(AlertSound.normal, witnessCount: witnessCount, userPrefs: userPrefs);
         print('📢 BACKGROUND: Playing NORMAL alert (${witnessCount} witnesses)');
       }
       
       // Also play push notification sound
-      await SoundService.I.play(AlertSound.pushPing);
+      await SoundService.I.play(AlertSound.pushPing, userPrefs: userPrefs);
     } else {
       // For other notification types, play a simple ping
-      await SoundService.I.play(AlertSound.pushPing);
+      await SoundService.I.play(AlertSound.pushPing, userPrefs: userPrefs);
     }
   } catch (e) {
     print('Error playing background notification sound: $e');

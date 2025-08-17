@@ -212,6 +212,14 @@ ssh -p 322 ufobeep@ufobeep.com "pm2 delete ufobeep-web && cd /home/ufobeep/ufobe
 - **Database Integration**: Direct PostgreSQL queries for admin statistics and management
 - **Security**: Password-protected endpoints with secrets.compare_digest for timing attack protection
 
+### Rate Limiting Controls
+- **Disable Rate Limiting**: `https://admin:ufopostpass@api.ufobeep.com/admin/ratelimit/off`
+- **Enable Rate Limiting**: `https://admin:ufopostpass@api.ufobeep.com/admin/ratelimit/on`
+- **Set Threshold**: `https://admin:ufopostpass@api.ufobeep.com/admin/ratelimit/set?N` (where N = number)
+- **Clear History**: `https://admin:ufopostpass@api.ufobeep.com/admin/ratelimit/clear`
+- **Check Status**: `https://admin:ufopostpass@api.ufobeep.com/admin/ratelimit/status`
+- **Access**: Available in both web admin dashboard and mobile app admin section
+
 ## Proximity Alert System (COMPLETED)
 
 ### Phase 0 Emergency Alert Foundation ✅ COMPLETE

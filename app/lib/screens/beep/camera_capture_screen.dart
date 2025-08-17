@@ -10,6 +10,7 @@ import 'package:gal/gal.dart';
 import '../../theme/app_theme.dart';
 import '../../services/sensor_service.dart';
 import '../../services/photo_metadata_service.dart';
+import '../../services/sound_service.dart';
 import '../../models/sensor_data.dart';
 
 class CameraCaptureScreen extends StatefulWidget {
@@ -92,8 +93,9 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
     });
 
     try {
-      // Play camera shutter sound
+      // Play camera shutter sound (both system and app sound)
       SystemSound.play(SystemSoundType.click);
+      await SoundService.I.play(AlertSound.tap, haptic: true);
       
       // Take the picture at maximum quality
       final XFile image = await _controller!.takePicture();

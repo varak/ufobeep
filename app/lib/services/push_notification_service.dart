@@ -10,6 +10,7 @@ import 'sound_service.dart';
 import 'anonymous_beep_service.dart';
 import 'permission_service.dart';
 import 'api_client.dart';
+import '../models/user_preferences.dart';
 import '../routing/app_router.dart';
 
 class PushNotificationService {
@@ -210,17 +211,31 @@ class PushNotificationService {
     
     print('📱 PROCESSING ALERT: sighting $sightingId from device $submitterDeviceId (current: $currentDeviceId)');
     
+    // Load user preferences for DND/quiet hours checking
+    dynamic userPrefs;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final prefsJson = prefs.getString('user_preferences');
+      if (prefsJson != null) {
+        final prefsMap = jsonDecode(prefsJson) as Map<String, dynamic>;
+        userPrefs = UserPreferences.fromJson(prefsMap);
+        print('🔇 Foreground: Loaded user preferences for DND checking');
+      }
+    } catch (e) {
+      print('⚠️ Foreground: Could not load user preferences: $e');
+    }
+    
     // Play appropriate escalated alert sound based on witness count
     if (witnessCount >= 10) {
-      await SoundService.I.play(AlertSound.emergency, haptic: true);
+      await SoundService.I.play(AlertSound.emergency, haptic: true, witnessCount: witnessCount, userPrefs: userPrefs);
     } else if (witnessCount >= 3) {
-      await SoundService.I.play(AlertSound.urgent);
+      await SoundService.I.play(AlertSound.urgent, witnessCount: witnessCount, userPrefs: userPrefs);
     } else {
-      await SoundService.I.play(AlertSound.normal);
+      await SoundService.I.play(AlertSound.normal, witnessCount: witnessCount, userPrefs: userPrefs);
     }
     
     // Also play push notification sound
-    await SoundService.I.play(AlertSound.pushPing);
+    await SoundService.I.play(AlertSound.pushPing, userPrefs: userPrefs);
     
     if (sightingId != null) {
       print('Sighting ID: $sightingId, Witnesses: $witnessCount');
