@@ -16,7 +16,7 @@ from typing import Optional, Dict, Any
 from fastapi import APIRouter, HTTPException, Depends, Request
 from pydantic import BaseModel, Field
 
-from app.services.metrics_service import get_metrics_service, EngagementType, MetricType
+from app.services.metrics_service import get_metrics_service, EngagementType
 
 router = APIRouter(prefix="/beep", tags=["beep", "engagement"])
 
@@ -100,19 +100,11 @@ async def record_witness_engagement(
                     conn, sighting_uuid, engagement, metrics_service
                 )
                 
-                # Log engagement
-                await metrics_service.log_user_engagement(
-                    EngagementType.QUICK_ACTION_SEE_IT_TOO,
+                # Log simple engagement
+                await metrics_service.log_engagement(
                     engagement.device_id,
-                    sighting_uuid,
-                    additional_data={
-                        "quick_action": engagement.quick_action,
-                        "witness_id": witness_id,
-                        "new_witness_count": witness_count_updated,
-                        "escalation_triggered": escalation_triggered,
-                        "app_version": engagement.app_version,
-                        "platform": engagement.platform
-                    }
+                    EngagementType.QUICK_ACTION_SEE_IT_TOO,
+                    sighting_uuid
                 )
                 
                 message = f"Witness confirmation recorded. Total witnesses: {witness_count_updated}"
@@ -125,15 +117,10 @@ async def record_witness_engagement(
                     conn, sighting_uuid, engagement, "checked_no_sighting", metrics_service
                 )
                 
-                await metrics_service.log_user_engagement(
-                    EngagementType.QUICK_ACTION_DONT_SEE,
+                await metrics_service.log_engagement(
                     engagement.device_id,
-                    sighting_uuid,
-                    additional_data={
-                        "quick_action": engagement.quick_action,
-                        "app_version": engagement.app_version,
-                        "platform": engagement.platform
-                    }
+                    EngagementType.QUICK_ACTION_DONT_SEE,
+                    sighting_uuid
                 )
                 
                 message = "Engagement recorded - thank you for checking!"
@@ -144,15 +131,10 @@ async def record_witness_engagement(
                     conn, sighting_uuid, engagement, "missed", metrics_service
                 )
                 
-                await metrics_service.log_user_engagement(
-                    EngagementType.QUICK_ACTION_MISSED,
+                await metrics_service.log_engagement(
                     engagement.device_id,
-                    sighting_uuid,
-                    additional_data={
-                        "quick_action": engagement.quick_action,
-                        "app_version": engagement.app_version,
-                        "platform": engagement.platform
-                    }
+                    EngagementType.QUICK_ACTION_MISSED,
+                    sighting_uuid
                 )
                 
                 message = "Thanks for the feedback - we'll note you missed this one"
@@ -258,15 +240,10 @@ async def _record_witness_confirmation(
         print(f"🚨 ESCALATION: Sighting {sighting_id} reached {new_witness_count} witnesses!")
         
         # Log escalation event
-        await metrics_service.log_user_engagement(
-            EngagementType.ALERT_SENT,  # This will trigger new escalated alerts
+        await metrics_service.log_engagement(
             "system",
-            sighting_id,
-            additional_data={
-                "escalation_trigger": True,
-                "new_witness_count": new_witness_count,
-                "trigger_device": engagement.device_id
-            }
+            EngagementType.ALERT_SENT,
+            sighting_id
         )
     
     return str(witness_id), new_witness_count, escalation_triggered
@@ -279,30 +256,9 @@ async def _record_engagement_only(
     metrics_service
 ):
     """Record engagement without adding to witness count"""
-    
-    # Create or update a generic engagement record
-    await conn.execute("""
-        INSERT INTO metrics_events 
-        (event_id, metric_type, event_type, timestamp, device_id, sighting_id, data)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
-        ON CONFLICT (event_id) DO NOTHING
-    """, 
-        f"engagement_{engagement_type}_{engagement.device_id}_{sighting_id}_{int(datetime.utcnow().timestamp())}",
-        MetricType.USER_ENGAGEMENT.value,
-        f"quick_action_{engagement_type}",
-        datetime.utcnow(),
-        engagement.device_id,
-        sighting_id,
-        {
-            "engagement_type": engagement_type,
-            "quick_action": engagement.quick_action,
-            "latitude": engagement.latitude,
-            "longitude": engagement.longitude,
-            "description": engagement.description,
-            "app_version": engagement.app_version,
-            "platform": engagement.platform
-        }
-    )
+    # Simple engagement is already logged in the calling function via metrics_service.log_engagement()
+    # Just log that we processed this engagement
+    print(f"📊 Engagement recorded: {engagement_type} from {engagement.device_id} for {sighting_id}")
 
 @router.get("/{sighting_id}/engagement-stats")
 async def get_engagement_stats(sighting_id: str):
@@ -316,30 +272,31 @@ async def get_engagement_stats(sighting_id: str):
     from app.main import db_pool
     metrics_service = get_metrics_service(db_pool)
     
-    # Get engagement metrics for this specific sighting
-    metrics = await metrics_service.get_engagement_metrics(
-        time_range_hours=24*7,  # Last week
-        sighting_id=sighting_uuid
-    )
+    # Get basic engagement metrics
+    metrics = await metrics_service.get_basic_stats(hours=24*7)
     
     async with db_pool.acquire() as conn:
-        # Get additional sighting-specific stats
+        # Get sighting stats
         sighting_stats = await conn.fetchrow("""
             SELECT 
                 s.witness_count,
                 s.title,
                 s.created_at,
-                COUNT(wc.id) as confirmed_witnesses,
-                COUNT(DISTINCT me.device_id) FILTER (WHERE me.event_type LIKE 'quick_action_%') as total_engagements
+                COUNT(wc.id) as confirmed_witnesses
             FROM sightings s
             LEFT JOIN witness_confirmations wc ON s.id = wc.sighting_id
-            LEFT JOIN metrics_events me ON s.id = me.sighting_id AND me.metric_type = 'user_engagement'
             WHERE s.id = $1
             GROUP BY s.id, s.witness_count, s.title, s.created_at
         """, sighting_uuid)
         
         if not sighting_stats:
             raise HTTPException(status_code=404, detail="Sighting not found")
+            
+        # Get engagement count for this sighting
+        engagement_count = await conn.fetchval("""
+            SELECT COUNT(*) FROM user_engagement 
+            WHERE sighting_id = $1 AND event_type LIKE 'quick_action_%'
+        """, sighting_uuid)
     
     return {
         "sighting_id": sighting_id,
@@ -347,7 +304,6 @@ async def get_engagement_stats(sighting_id: str):
         "created_at": sighting_stats['created_at'].isoformat(),
         "witness_count": sighting_stats['witness_count'],
         "confirmed_witnesses": sighting_stats['confirmed_witnesses'],
-        "total_engagements": sighting_stats['total_engagements'],
-        "engagement_metrics": metrics,
-        "engagement_rate": (sighting_stats['total_engagements'] / max(sighting_stats['witness_count'], 1)) * 100
+        "total_engagements": engagement_count,
+        "engagement_rate": (engagement_count / max(sighting_stats['witness_count'], 1)) * 100
     }
