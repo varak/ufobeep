@@ -20,6 +20,34 @@ import logging
 # Set up logging
 logger = logging.getLogger(__name__)
 
+def process_media_files(media_info, sighting_id: str) -> list:
+    """Shared function to process media files for both list and detail endpoints"""
+    media_files = []
+    if media_info:
+        try:
+            if isinstance(media_info, str):
+                media_info = json.loads(media_info)
+            
+            if isinstance(media_info, dict) and "files" in media_info:
+                for media_file in media_info["files"]:
+                    filename = media_file.get("filename", "")
+                    media_url = f"https://api.ufobeep.com/media/{sighting_id}/{filename}"
+                    
+                    media_files.append({
+                        "id": media_file.get("id", ""),
+                        "type": media_file.get("type", "image"),
+                        "url": media_url,
+                        "thumbnail_url": media_url,
+                        "filename": filename,
+                        "size": media_file.get("size", 0),
+                        "width": media_file.get("width", 0),
+                        "height": media_file.get("height", 0),
+                        "uploaded_at": media_file.get("uploaded_at", "")
+                    })
+        except:
+            pass
+    return media_files
+
 def extract_coordinates_from_sensor_data(sensor_data: dict) -> Tuple[Optional[float], Optional[float]]:
     """Extract latitude and longitude from sensor data, handling both formats"""
     if not sensor_data:
@@ -344,37 +372,8 @@ async def get_alerts():
                     print(f"Skipping alert {row['id']} - no valid location data (lat={latitude}, lng={longitude})")
                     continue
                 
-                # Process media info
-                media_files = []
-                if row["media_info"]:
-                    try:
-                        # media_info might be a string or dict depending on how it's stored
-                        if isinstance(row["media_info"], str):
-                            media_info = json.loads(row["media_info"])
-                        else:
-                            media_info = row["media_info"]
-                        
-                        if isinstance(media_info, dict) and "files" in media_info:
-                            for media_file in media_info["files"]:
-                                # Construct proper API endpoint URL instead of direct storage URL
-                                api_base_url = "https://api.ufobeep.com"
-                                filename = media_file.get("filename", "")
-                                media_url = f"{api_base_url}/media/{row['id']}/{filename}"
-                                
-                                media_files.append({
-                                    "id": media_file.get("id", ""),
-                                    "type": media_file.get("type", "image"),
-                                    "url": media_url,  # Use API endpoint URL
-                                    "thumbnail_url": media_url,  # Same for thumbnail
-                                    "filename": filename,
-                                    "size": media_file.get("size", 0),
-                                    "width": media_file.get("width", 0),
-                                    "height": media_file.get("height", 0),
-                                    "uploaded_at": media_file.get("uploaded_at", row["created_at"].isoformat())
-                                })
-                    except (json.JSONDecodeError, TypeError) as e:
-                        print(f"Error processing media_info: {e}")
-                        # Continue without media files if parsing fails
+                # Use shared media processing function
+                media_files = process_media_files(row["media_info"], row["id"])
                 
                 # Extract enrichment data for the response
                 enrichment_info = {}
@@ -451,6 +450,46 @@ async def get_alerts():
             "message": f"Error fetching alerts: {str(e)}",
             "timestamp": datetime.now().isoformat()
         }
+
+@app.get("/alerts/{alert_id}")
+async def get_alert_details(alert_id: str):
+    """Super simple alert lookup - just the basics"""
+    try:
+        async with db_pool.acquire() as conn:
+            row = await conn.fetchrow("""
+                SELECT title, description, created_at, media_info
+                FROM sightings 
+                WHERE id = $1 AND is_public = true
+            """, uuid.UUID(alert_id))
+            
+            if not row:
+                return {"error": "Alert not found"}
+            
+            # Use shared media processing function
+            media_files = process_media_files(row["media_info"], alert_id)
+            
+            return {
+                "success": True,
+                "data": {
+                    "id": alert_id,
+                    "title": row["title"],
+                    "description": row["description"],
+                    "created_at": row["created_at"].isoformat(),
+                    "latitude": 0.0,
+                    "longitude": 0.0,
+                    "location_name": "Unknown Location",
+                    "media_files": media_files,
+                    "witness_count": 1,
+                    "alert_level": "low",
+                    "category": "ufo"
+                }
+            }
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error fetching alert {alert_id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Error fetching alert details: {str(e)}")
 
 async def generate_enrichment_data(sensor_data):
     """Generate enrichment data for a sighting using the enrichment service."""
@@ -853,14 +892,12 @@ async def create_anonymous_beep(request: dict):
         
         print(f"Created anonymous sighting {sighting_id} at {jittered_lat}, {jittered_lng}")
         
-        # PHASE 0 STEP 3: Send proximity alerts to nearby devices
-        from services.proximity_alert_service import get_proximity_alert_service
-        proximity_service = get_proximity_alert_service(db_pool)
-        
-        # Use original coordinates for proximity (not jittered) for accurate alerts
-        alert_result = await proximity_service.send_proximity_alerts(
-            lat, lng, str(sighting_id), request['device_id']
-        )
+        # Don't send alerts here anymore - let the client decide when to send them
+        alert_result = {
+            "total_alerted": 0,
+            "message": "Sighting created. Use /alerts/send/{sighting_id} to send alerts.",
+            "devices_alerted": []
+        }
         
         # Create user-friendly alert feedback
         total_alerted = alert_result.get("total_alerts_sent", 0)
@@ -911,6 +948,55 @@ async def create_anonymous_beep(request: dict):
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Error creating anonymous beep: {str(e)}")
+
+@app.post("/alerts/send/{sighting_id}")
+async def send_alert_for_sighting(sighting_id: str, request: dict):
+    """Send proximity alerts for an existing sighting"""
+    try:
+        # Get sighting details from database
+        async with db_pool.acquire() as conn:
+            row = await conn.fetchrow("""
+                SELECT sensor_data FROM sightings 
+                WHERE id = $1
+            """, uuid.UUID(sighting_id))
+            
+            if not row:
+                raise HTTPException(status_code=404, detail="Sighting not found")
+            
+            # Extract coordinates from sensor data
+            sensor_data = row["sensor_data"]
+            if isinstance(sensor_data, str):
+                sensor_data = json.loads(sensor_data)
+            
+            lat, lng = extract_coordinates_from_sensor_data(sensor_data)
+            if not lat or not lng:
+                raise HTTPException(status_code=400, detail="No valid coordinates found for sighting")
+            
+            # Get device_id from request
+            device_id = request.get('device_id')
+            if not device_id:
+                raise HTTPException(status_code=400, detail="device_id is required")
+            
+            # Send proximity alerts
+            from services.proximity_alert_service import get_proximity_alert_service
+            proximity_service = get_proximity_alert_service(db_pool)
+            
+            alert_result = await proximity_service.send_proximity_alerts(
+                lat, lng, sighting_id, device_id
+            )
+            
+            return {
+                "success": True,
+                "sighting_id": sighting_id,
+                "alert_result": alert_result,
+                "message": f"Alerts sent for sighting {sighting_id}"
+            }
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error sending alerts for sighting {sighting_id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Error sending alerts: {str(e)}")
 
 @app.post("/sightings/{sighting_id}/witness-confirm")
 async def confirm_witness(sighting_id: str, request: dict):
@@ -1038,8 +1124,8 @@ async def confirm_witness(sighting_id: str, request: dict):
             )
             
             # TASK 7: Enhanced auto-escalation using witness aggregation service
-            from services.proximity_alert_service import get_proximity_alert_service
-            from services.witness_aggregation_service import get_witness_aggregation_service
+            from app.services.proximity_alert_service import get_proximity_alert_service
+            from app.services.witness_aggregation_service import get_witness_aggregation_service
             
             proximity_service = get_proximity_alert_service(db_pool)
             aggregation_service = get_witness_aggregation_service(db_pool)

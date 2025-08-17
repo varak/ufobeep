@@ -413,30 +413,35 @@ class AlertsList extends _$AlertsList {
 @riverpod
 Future<Alert?> alertById(AlertByIdRef ref, String alertId) async {
   try {
-    // Always fetch fresh data from API to get latest analysis status
-    // This ensures photo analysis status updates are reflected immediately
+    // Fetch from API first for latest data
     final apiClient = ApiClient.instance;
     
-    // Add timeout to prevent hanging
+    print('Fetching alert $alertId from API...');
     final response = await apiClient.getAlertDetails(alertId).timeout(
-      const Duration(seconds: 10),
+      const Duration(seconds: 5),
       onTimeout: () {
         print('Timeout fetching alert $alertId');
         throw Exception('Request timeout');
       },
     );
     
+    print('API response for $alertId: ${response.toString().substring(0, 200)}...');
+    
     if (response['success'] == true) {
       final alertData = response['data'] as Map<String, dynamic>;
-      return Alert.fromApiJson(alertData);
+      print('Creating Alert from API data, media_files count: ${alertData['media_files']?.length ?? 0}');
+      final alert = Alert.fromApiJson(alertData);
+      print('Created Alert object, mediaFiles count: ${alert.mediaFiles.length}');
+      return alert;
     }
     
-    // Fallback to cached data if API call fails
+    // Fallback to cache if API fails
     final alertsAsync = ref.watch(alertsListProvider);
     if (alertsAsync.hasValue) {
       final alerts = alertsAsync.value!;
       for (final alert in alerts) {
         if (alert.id == alertId) {
+          print('Using cached alert $alertId');
           return alert;
         }
       }

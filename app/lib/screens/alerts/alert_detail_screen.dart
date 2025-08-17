@@ -35,7 +35,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   @override
   void initState() {
     super.initState();
-    _checkWitnessStatus();
+    // Skip witness status check for now - it's causing hangs
+    // _checkWitnessStatus();
   }
 
   Future<void> _checkWitnessStatus() async {

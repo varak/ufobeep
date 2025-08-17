@@ -594,17 +594,17 @@ class PushNotificationService {
       actions: [
         const AndroidNotificationAction(
           'see_it_too',
-          'I see it too! 👁️',
+          'I see it too',
           showsUserInterface: false,
         ),
         const AndroidNotificationAction(
           'dont_see_it',
-          'I checked but don\'t see it 🔍',
+          'Don\'t see it',
           showsUserInterface: false,
         ),
         const AndroidNotificationAction(
           'dismiss_snooze',
-          'Dismiss & snooze similar 🔕',
+          'Snooze',
           showsUserInterface: false,
         ),
       ],
