@@ -977,9 +977,11 @@ extension ApiClientExtension on ApiClient {
       
       debugPrint('File uploaded to storage successfully');
       
-      // Step 3: File is already saved, just return filename
-      final fileName = file.path.split('/').last;
+      // Step 3: Complete the upload to create database record
+      debugPrint('Completing media upload...');
+      await completeMediaUploadForSighting(uploadId, file);
       
+      final fileName = file.path.split('/').last;
       debugPrint('Media upload completed successfully with filename: $fileName');
       return fileName;
       

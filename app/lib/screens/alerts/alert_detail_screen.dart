@@ -5,11 +5,13 @@ import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:video_player/video_player.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../providers/alerts_provider.dart';
 import '../../providers/app_state.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/map_widget.dart';
+import '../../widgets/video_player_widget.dart';
 import '../../services/permission_service.dart';
 import '../../services/api_client.dart';
 import '../../services/anonymous_beep_service.dart';
@@ -28,6 +30,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   bool _isConfirming = false;
   bool? _hasConfirmed;
   int _witnessCount = 0;
+  
 
   @override
   void initState() {
@@ -535,6 +538,26 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                         ),
                       ),
                     ),
+                    
+                    const SizedBox(height: 12),
+                    
+                    // Report to MUFON button (full width)
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: () => _showMufonReportDialog(context),
+                        icon: const Icon(Icons.report_outlined),
+                        label: const Text('Report to MUFON'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppColors.textSecondary,
+                          side: const BorderSide(color: AppColors.textSecondary),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -634,7 +657,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: mediaType == 'video' 
-                  ? _buildVideoPlayer(mediaUrl)
+                  ? VideoPlayerWidget(videoUrl: mediaUrl)
                   : Image.network(
                       mediaUrl,
                       fit: BoxFit.contain,
@@ -676,66 +699,6 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     );
   }
 
-  Widget _buildVideoPlayer(String videoUrl) {
-    return Container(
-      width: double.infinity,
-      height: 300,
-      color: Colors.black,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          // Video thumbnail/placeholder
-          Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.play_circle_filled,
-                  color: AppColors.brandPrimary,
-                  size: 80,
-                ),
-                SizedBox(height: 16),
-                Text(
-                  'Tap to play video',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ],
-            ),
-          ),
-          // Tap to play overlay
-          Positioned.fill(
-            child: GestureDetector(
-              onTap: () {
-                // TODO: Implement video player or open in external app
-                _showVideoDialog(videoUrl);
-              },
-              child: Container(
-                color: Colors.transparent,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showVideoDialog(String videoUrl) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Video Player'),
-          content: Text('Video URL: $videoUrl\n\nVideo player implementation coming soon!'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('Close'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   Widget _buildPhotoAnalysisItem(Map<String, dynamic> analysis) {
     final String status = analysis['analysis_status'] ?? 'pending';
@@ -1057,6 +1020,108 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showMufonReportDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColors.darkSurface,
+          title: Row(
+            children: [
+              const Icon(Icons.report_outlined, color: AppColors.brandPrimary),
+              const SizedBox(width: 8),
+              const Text('Report to MUFON'),
+            ],
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  'About UFOBeep & MUFON',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                SizedBox(height: 12),
+                Text(
+                  'UFOBeep is designed for quick, real-time alerts to help witnesses connect and verify sightings instantly.',
+                  style: TextStyle(color: AppColors.textSecondary),
+                ),
+                SizedBox(height: 12),
+                Text(
+                  'MUFON (Mutual UFO Network) is the world\'s oldest and largest UFO investigation organization. They collect detailed scientific reports and conduct thorough investigations.',
+                  style: TextStyle(color: AppColors.textSecondary),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Why Report to MUFON?',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  '• Permanent scientific record\n'
+                  '• Professional investigation\n'
+                  '• Detailed witness testimony\n'
+                  '• Contributing to UFO research\n'
+                  '• Access to MUFON\'s global database',
+                  style: TextStyle(color: AppColors.textSecondary),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'The MUFON report form will ask for detailed information about your sighting including time, duration, weather conditions, and a full description.',
+                  style: TextStyle(
+                    color: AppColors.textTertiary,
+                    fontSize: 12,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: AppColors.textSecondary),
+              ),
+            ),
+            ElevatedButton.icon(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                final Uri mufonUrl = Uri.parse('https://mufon.com/cms-ifo-info/');
+                if (await canLaunchUrl(mufonUrl)) {
+                  await launchUrl(mufonUrl, mode: LaunchMode.externalApplication);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Could not open MUFON website'),
+                      backgroundColor: AppColors.semanticError,
+                    ),
+                  );
+                }
+              },
+              icon: const Icon(Icons.open_in_browser),
+              label: const Text('Open MUFON Report'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.brandPrimary,
+                foregroundColor: Colors.black,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 

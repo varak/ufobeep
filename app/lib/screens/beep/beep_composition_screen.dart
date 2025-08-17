@@ -12,6 +12,7 @@ import '../../services/sound_service.dart';
 import '../../services/anonymous_beep_service.dart';
 import '../../providers/app_state.dart';
 import '../../widgets/simple_photo_display.dart';
+import '../../widgets/video_player_widget.dart';
 
 class BeepCompositionScreen extends ConsumerStatefulWidget {
   final File mediaFile;
@@ -41,9 +42,6 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   // Store sensor data in state to preserve it during rebuilds
   SensorData? _sensorData;
   
-  // Video player controller
-  VideoPlayerController? _videoController;
-  bool _isVideoInitialized = false;
   
   // Submission state
   bool _isSubmitting = false;
@@ -76,34 +74,11 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       debugPrint('BeepComposition: GPS coordinates: lat=${_sensorData!.latitude}, lng=${_sensorData!.longitude}');
     }
     
-    // Initialize video player if it's a video
-    if (widget.isVideo) {
-      _initializeVideoPlayer();
-    }
     
     // Add listener for real-time validation
     _descriptionController.addListener(_onFormFieldChanged);
   }
   
-  Future<void> _initializeVideoPlayer() async {
-    try {
-      _videoController = VideoPlayerController.file(widget.mediaFile);
-      await _videoController!.initialize();
-      
-      if (mounted) {
-        setState(() {
-          _isVideoInitialized = true;
-        });
-      }
-      
-      debugPrint('🎥 VIDEO: Player initialized for composition screen');
-    } catch (e) {
-      debugPrint('❌ VIDEO: Failed to initialize player: $e');
-      setState(() {
-        _errorMessage = 'Failed to load video: $e';
-      });
-    }
-  }
 
   void _onFormFieldChanged() {
     setState(() {});
@@ -327,7 +302,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
         child: widget.isVideo
-            ? _buildVideoPlayer()
+            ? VideoPlayerWidget(videoFile: widget.mediaFile)
             : Image.file(
                 widget.mediaFile,
                 fit: BoxFit.cover,
@@ -335,97 +310,6 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
               ),
       ),
     );
-  }
-  
-  Widget _buildVideoPlayer() {
-    if (!_isVideoInitialized || _videoController == null) {
-      return Container(
-        width: double.infinity,
-        height: 300,
-        color: AppColors.darkSurface,
-        child: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(
-                color: AppColors.brandPrimary,
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Loading video...',
-                style: TextStyle(
-                  color: AppColors.textSecondary,
-                  fontSize: 16,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-    
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        AspectRatio(
-          aspectRatio: _videoController!.value.aspectRatio,
-          child: VideoPlayer(_videoController!),
-        ),
-        // Play/pause button overlay
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.3),
-            shape: BoxShape.circle,
-          ),
-          child: IconButton(
-            onPressed: () async {
-              await SoundService.I.play(AlertSound.tap, haptic: true);
-              setState(() {
-                if (_videoController!.value.isPlaying) {
-                  _videoController!.pause();
-                } else {
-                  _videoController!.play();
-                }
-              });
-            },
-            icon: Icon(
-              _videoController!.value.isPlaying
-                  ? Icons.pause
-                  : Icons.play_arrow,
-              color: Colors.white,
-              size: 48,
-            ),
-          ),
-        ),
-        // Video duration/position indicator
-        Positioned(
-          bottom: 8,
-          right: 8,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.7),
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: Text(
-              _formatDuration(_videoController!.value.duration),
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-  
-  String _formatDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-    return '$twoDigitMinutes:$twoDigitSeconds';
   }
 
   Widget _buildMediaQualityInfo() {
@@ -627,7 +511,6 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   void dispose() {
     _descriptionController.removeListener(_onFormFieldChanged);
     _descriptionController.dispose();
-    _videoController?.dispose();
     super.dispose();
   }
 }

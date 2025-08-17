@@ -2723,7 +2723,7 @@ async def admin_aggregation_page(credentials: str = Depends(verify_admin_passwor
 
 # Rate Limiting Control Endpoints
 rate_limit_threshold = 3  # Global variable for rate limiting
-rate_limit_enabled = True  # Global variable to enable/disable rate limiting
+rate_limit_enabled = False  # Global variable to enable/disable rate limiting
 
 @router.get("/ratelimit/status")
 async def get_rate_limit_status(credentials: str = Depends(verify_admin_password)):
