@@ -123,33 +123,37 @@ class ProximityAlertService:
         try:
             
             async with self.db_pool.acquire() as conn:
-                # Check recent sighting count for rate limiting
-                recent_sightings = await conn.fetchval("""
-                    SELECT COUNT(*) FROM sightings 
-                    WHERE created_at > NOW() - INTERVAL '15 minutes'
-                """)
-                
-                # If too many recent sightings, reduce alert frequency (unless emergency override)
-                if recent_sightings >= 3:
-                    # Check if this is an emergency override scenario (high witness count)
-                    emergency_witnesses = await conn.fetchval("""
+                # Check if rate limiting is enabled via admin panel
+                if rate_limit_enabled:
+                    # Check recent sighting count for rate limiting
+                    recent_sightings = await conn.fetchval("""
                         SELECT COUNT(*) FROM sightings 
-                        WHERE created_at > NOW() - INTERVAL '5 minutes'
-                        AND ST_DWithin(
-                            ST_SetSRID(ST_MakePoint(
-                                CAST(sensor_data->>'longitude' AS FLOAT), 
-                                CAST(sensor_data->>'latitude' AS FLOAT)
-                            ), 4326),
-                            ST_SetSRID(ST_MakePoint($1, $2), 4326),
-                            1000  -- 1km radius
-                        )
-                    """, lon, lat)
+                        WHERE created_at > NOW() - INTERVAL '15 minutes'
+                    """)
                     
-                    if emergency_witnesses >= 10:
-                        logger.warning(f"EMERGENCY OVERRIDE: {emergency_witnesses} witnesses in 5min, bypassing rate limit")
-                    else:
-                        logger.warning(f"Rate limiting: {recent_sightings} sightings in last 15 minutes, skipping proximity alerts")
-                        return []
+                    # If too many recent sightings, reduce alert frequency (unless emergency override)
+                    if recent_sightings >= rate_limit_threshold:
+                        # Check if this is an emergency override scenario (high witness count)
+                        emergency_witnesses = await conn.fetchval("""
+                            SELECT COUNT(*) FROM sightings 
+                            WHERE created_at > NOW() - INTERVAL '5 minutes'
+                            AND ST_DWithin(
+                                ST_SetSRID(ST_MakePoint(
+                                    CAST(sensor_data->>'longitude' AS FLOAT), 
+                                    CAST(sensor_data->>'latitude' AS FLOAT)
+                                ), 4326),
+                                ST_SetSRID(ST_MakePoint($1, $2), 4326),
+                                1000  -- 1km radius
+                            )
+                        """, lon, lat)
+                        
+                        if emergency_witnesses >= 10:
+                            logger.warning(f"EMERGENCY OVERRIDE: {emergency_witnesses} witnesses in 5min, bypassing rate limit")
+                        else:
+                            logger.warning(f"Rate limiting: {recent_sightings} sightings in last 15 minutes, skipping proximity alerts")
+                            return []
+                else:
+                    logger.info("Rate limiting disabled - sending proximity alerts regardless of frequency")
                 
                 # Simple approach: get all active devices with push tokens
                 query = """
