@@ -15,6 +15,7 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any
 from enum import Enum
 from uuid import UUID, uuid4
+from dataclasses import dataclass
 
 class EngagementType(str, Enum):
     ALERT_SENT = "alert_sent"
