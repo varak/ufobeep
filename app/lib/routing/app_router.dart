@@ -102,11 +102,12 @@ GoRouter appRouter(AppRouterRef ref) {
                   
                   debugPrint('Router: Extra data keys: ${extra?.keys}');
                   
-                  final imageFile = extra?['imageFile'];
+                  final mediaFile = extra?['mediaFile'] ?? extra?['imageFile']; // Support both old and new parameter names
+                  final isVideo = extra?['isVideo'] ?? false;
                   
-                  // If no image file provided, redirect back to beep screen
-                  if (imageFile == null) {
-                    debugPrint('ERROR: No image file in extra data, redirecting to /beep');
+                  // If no media file provided, redirect back to beep screen
+                  if (mediaFile == null) {
+                    debugPrint('ERROR: No media file in extra data, redirecting to /beep');
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       context.go('/beep');
                     });
@@ -132,11 +133,12 @@ GoRouter appRouter(AppRouterRef ref) {
                     );
                   }
                   
-                  debugPrint('Found image file: $imageFile');
+                  debugPrint('Found ${isVideo ? 'video' : 'image'} file: $mediaFile');
                   
                   try {
                     return BeepCompositionScreen(
-                      imageFile: imageFile,
+                      mediaFile: mediaFile,
+                      isVideo: isVideo,
                       sensorData: extra?['sensorData'],
                       photoMetadata: extra?['photoMetadata'],
                       description: extra?['description'],

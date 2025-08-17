@@ -751,6 +751,32 @@ class ApiClient {
     _dio.options.receiveTimeout = timeout;
   }
 
+  // Generic HTTP methods for admin functionality
+  Future<Map<String, dynamic>> getJson(String endpoint) async {
+    try {
+      final response = await _dio.get(endpoint);
+      
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw ApiClientException(
+          'HTTP ${response.statusCode}: ${response.statusMessage}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  Future<Response> get(String endpoint) async {
+    try {
+      return await _dio.get(endpoint);
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
   // Cleanup
   void dispose() {
     _dio.close();

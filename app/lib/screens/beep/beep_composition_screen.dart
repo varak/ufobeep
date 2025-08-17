@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../theme/app_theme.dart';
 import '../../models/sensor_data.dart';
@@ -13,14 +14,16 @@ import '../../providers/app_state.dart';
 import '../../widgets/simple_photo_display.dart';
 
 class BeepCompositionScreen extends ConsumerStatefulWidget {
-  final File imageFile;
+  final File mediaFile;
+  final bool isVideo;
   final SensorData? sensorData;
   final Map<String, dynamic>? photoMetadata;
   final String? description;
 
   const BeepCompositionScreen({
     super.key,
-    required this.imageFile,
+    required this.mediaFile,
+    required this.isVideo,
     this.sensorData,
     this.photoMetadata,
     this.description,
@@ -37,6 +40,10 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   
   // Store sensor data in state to preserve it during rebuilds
   SensorData? _sensorData;
+  
+  // Video player controller
+  VideoPlayerController? _videoController;
+  bool _isVideoInitialized = false;
   
   // Submission state
   bool _isSubmitting = false;
@@ -64,13 +71,38 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       _descriptionController.text = widget.description!;
     }
     
-    debugPrint('BeepComposition: Image=${widget.imageFile.existsSync()}, Sensor=${_sensorData != null}');
+    debugPrint('BeepComposition: ${widget.isVideo ? 'Video' : 'Image'}=${widget.mediaFile.existsSync()}, Sensor=${_sensorData != null}');
     if (_sensorData != null) {
       debugPrint('BeepComposition: GPS coordinates: lat=${_sensorData!.latitude}, lng=${_sensorData!.longitude}');
     }
     
+    // Initialize video player if it's a video
+    if (widget.isVideo) {
+      _initializeVideoPlayer();
+    }
+    
     // Add listener for real-time validation
     _descriptionController.addListener(_onFormFieldChanged);
+  }
+  
+  Future<void> _initializeVideoPlayer() async {
+    try {
+      _videoController = VideoPlayerController.file(widget.mediaFile);
+      await _videoController!.initialize();
+      
+      if (mounted) {
+        setState(() {
+          _isVideoInitialized = true;
+        });
+      }
+      
+      debugPrint('🎥 VIDEO: Player initialized for composition screen');
+    } catch (e) {
+      debugPrint('❌ VIDEO: Failed to initialize player: $e');
+      setState(() {
+        _errorMessage = 'Failed to load video: $e';
+      });
+    }
   }
 
   void _onFormFieldChanged() {
@@ -128,32 +160,33 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       
       // Now upload the media file to the sighting
       try {
-        debugPrint('Uploading photo to sighting...');
+        debugPrint('Uploading ${widget.isVideo ? 'video' : 'photo'} to sighting...');
         await ApiClient.instance.uploadMediaFileForSighting(
           sightingId,
-          widget.imageFile,
+          widget.mediaFile,
         );
-        debugPrint('Photo uploaded successfully');
+        debugPrint('${widget.isVideo ? 'Video' : 'Photo'} uploaded successfully');
       } catch (e) {
-        debugPrint('Warning: Failed to upload photo: $e');
+        debugPrint('Warning: Failed to upload ${widget.isVideo ? 'video' : 'photo'}: $e');
         // Don't fail completely if media upload fails
       }
 
       // Submit photo metadata if available (for astronomical identification)
+      // Note: Video files may not have EXIF data, but we'll try if metadata is present
       if (widget.photoMetadata != null) {
         try {
-          debugPrint('Submitting comprehensive photo metadata for astronomical identification...');
+          debugPrint('Submitting comprehensive ${widget.isVideo ? 'video' : 'photo'} metadata for analysis...');
           final metadataSubmitted = await ApiClient.instance.submitPhotoMetadata(
             sightingId, 
             widget.photoMetadata!
           );
           if (metadataSubmitted) {
-            debugPrint('Photo metadata submitted successfully for external service analysis');
+            debugPrint('${widget.isVideo ? 'Video' : 'Photo'} metadata submitted successfully for external service analysis');
           } else {
-            debugPrint('Warning: Photo metadata submission failed');
+            debugPrint('Warning: ${widget.isVideo ? 'Video' : 'Photo'} metadata submission failed');
           }
         } catch (e) {
-          debugPrint('Error submitting photo metadata: $e');
+          debugPrint('Error submitting ${widget.isVideo ? 'video' : 'photo'} metadata: $e');
         }
       }
 
@@ -205,7 +238,9 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   }
 
 
-  void _retakePhoto() {
+  void _retakeMedia() async {
+    // Add haptic feedback
+    await SoundService.I.play(AlertSound.tap, haptic: true);
     context.go('/beep');
   }
 
@@ -217,8 +252,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         backgroundColor: AppColors.darkSurface,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: _retakePhoto,
-          tooltip: 'Retake Photo',
+          onPressed: _retakeMedia,
+          tooltip: 'Retake ${widget.isVideo ? 'Video' : 'Photo'}',
         ),
       ),
       backgroundColor: AppColors.darkBackground,
@@ -232,8 +267,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Photo section
-                    _buildPhotoSection(),
+                    // Media section (photo or video)
+                    _buildMediaSection(),
                     const SizedBox(height: 24),
                     
                     
@@ -266,8 +301,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                     _buildDescriptionInput(),
                     const SizedBox(height: 16),
                     
-                    // Photo quality info (after description)
-                    _buildPhotoQualityInfo(),
+                    // Media quality info (after description)
+                    _buildMediaQualityInfo(),
                     const SizedBox(height: 32), // Space for bottom button
                   ],
                 ),
@@ -282,7 +317,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     );
   }
 
-  Widget _buildPhotoSection() {
+  Widget _buildMediaSection() {
     return Container(
       width: double.infinity,
       constraints: const BoxConstraints(
@@ -291,16 +326,109 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: Image.file(
-          widget.imageFile,
-          fit: BoxFit.cover,
-          width: double.infinity,
-        ),
+        child: widget.isVideo
+            ? _buildVideoPlayer()
+            : Image.file(
+                widget.mediaFile,
+                fit: BoxFit.cover,
+                width: double.infinity,
+              ),
       ),
     );
   }
+  
+  Widget _buildVideoPlayer() {
+    if (!_isVideoInitialized || _videoController == null) {
+      return Container(
+        width: double.infinity,
+        height: 300,
+        color: AppColors.darkSurface,
+        child: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: AppColors.brandPrimary,
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Loading video...',
+                style: TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        AspectRatio(
+          aspectRatio: _videoController!.value.aspectRatio,
+          child: VideoPlayer(_videoController!),
+        ),
+        // Play/pause button overlay
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.3),
+            shape: BoxShape.circle,
+          ),
+          child: IconButton(
+            onPressed: () async {
+              await SoundService.I.play(AlertSound.tap, haptic: true);
+              setState(() {
+                if (_videoController!.value.isPlaying) {
+                  _videoController!.pause();
+                } else {
+                  _videoController!.play();
+                }
+              });
+            },
+            icon: Icon(
+              _videoController!.value.isPlaying
+                  ? Icons.pause
+                  : Icons.play_arrow,
+              color: Colors.white,
+              size: 48,
+            ),
+          ),
+        ),
+        // Video duration/position indicator
+        Positioned(
+          bottom: 8,
+          right: 8,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.7),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(
+              _formatDuration(_videoController!.value.duration),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+  
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return '$twoDigitMinutes:$twoDigitSeconds';
+  }
 
-  Widget _buildPhotoQualityInfo() {
+  Widget _buildMediaQualityInfo() {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -315,9 +443,9 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
             children: [
               const Icon(Icons.info_outline, color: AppColors.brandPrimary, size: 20),
               const SizedBox(width: 8),
-              const Text(
-                'Photo Quality',
-                style: TextStyle(
+              Text(
+                '${widget.isVideo ? 'Video' : 'Photo'} Quality',
+                style: const TextStyle(
                   color: AppColors.brandPrimary,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -326,9 +454,11 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
             ],
           ),
           const SizedBox(height: 12),
-          const Text(
-            'UFOBeep captures photos at maximum device resolution for detailed analysis. For even higher quality images, you can also upload photos from your camera gallery.',
-            style: TextStyle(
+          Text(
+            widget.isVideo
+                ? 'UFOBeep records videos with audio at maximum device resolution. Videos are automatically saved to your gallery in the UFOBeep album for easy sharing.'
+                : 'UFOBeep captures photos at maximum device resolution for detailed analysis. For even higher quality images, you can also upload photos from your camera gallery.',
+            style: const TextStyle(
               color: AppColors.textSecondary,
               fontSize: 14,
               height: 1.4,
@@ -354,10 +484,12 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                 ),
               ),
               const SizedBox(width: 8),
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'Native camera photos often have higher megapixel counts',
-                  style: TextStyle(
+                  widget.isVideo
+                      ? 'For longer or higher quality videos, use share-to-beep from your native camera app'
+                      : 'Native camera photos often have higher megapixel counts',
+                  style: const TextStyle(
                     color: AppColors.textTertiary,
                     fontSize: 12,
                   ),
@@ -471,11 +603,14 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
             
             const SizedBox(height: 12),
             
-            // Retake Photo button (smaller, secondary)
+            // Retake Media button (smaller, secondary)
             TextButton.icon(
-              onPressed: _isSubmitting ? null : _retakePhoto,
-              icon: const Icon(Icons.camera_alt, size: 18),
-              label: const Text('Retake Photo'),
+              onPressed: _isSubmitting ? null : () async {
+                await SoundService.I.play(AlertSound.tap, haptic: true);
+                _retakeMedia();
+              },
+              icon: Icon(widget.isVideo ? Icons.videocam : Icons.camera_alt, size: 18),
+              label: Text('Retake ${widget.isVideo ? 'Video' : 'Photo'}'),
               style: TextButton.styleFrom(
                 foregroundColor: AppColors.textSecondary,
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -492,6 +627,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   void dispose() {
     _descriptionController.removeListener(_onFormFieldChanged);
     _descriptionController.dispose();
+    _videoController?.dispose();
     super.dispose();
   }
 }

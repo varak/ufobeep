@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import AppDownloadCTA from '@/components/AppDownloadCTA'
 import GlobalSightingNetwork from '@/components/GlobalSightingNetwork'
+import ShareToBeepPromo from '@/components/ShareToBeepPromo'
 
 export default function Home() {
   return (
@@ -65,7 +66,7 @@ export default function Home() {
               <h3 className="text-xl font-semibold mb-4 text-text-primary">Beep & Report</h3>
               <p className="text-text-secondary">
                 Capture photos or videos of unusual sightings and instantly share them 
-                with the community for verification and discussion.
+                with the community. Use our premium Share-to-Beep feature from any app!
               </p>
             </div>
             <div className="text-center p-6">
@@ -87,6 +88,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Share-to-Beep Promotion */}
+      <ShareToBeepPromo />
 
       {/* Community Section */}
       <section className="py-20 px-6 md:px-24">

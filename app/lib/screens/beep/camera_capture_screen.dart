@@ -29,6 +29,8 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
   
   bool _isInitialized = false;
   bool _isCapturing = false;
+  bool _isRecording = false;
+  bool _isVideoMode = false; // Toggle between photo and video mode
   String? _errorMessage;
 
   @override
@@ -59,8 +61,8 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       _controller = CameraController(
         camera,
         ResolutionPreset.max,  // Use maximum resolution available
-        enableAudio: false,
-        imageFormatGroup: ImageFormatGroup.jpeg,  // Ensure JPEG format for quality
+        enableAudio: _isVideoMode, // Enable audio for video mode
+        imageFormatGroup: _isVideoMode ? null : ImageFormatGroup.jpeg,
       );
 
       // Initialize controller
@@ -81,6 +83,17 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
         _errorMessage = 'Failed to initialize camera: $e';
       });
     }
+  }
+
+  Future<void> _toggleMode() async {
+    setState(() {
+      _isVideoMode = !_isVideoMode;
+      _isInitialized = false;
+    });
+    
+    // Reinitialize camera with new settings
+    await _controller?.dispose();
+    await _initializeCamera();
   }
 
   Future<void> _capturePhoto() async {
@@ -221,7 +234,8 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       // Navigate directly to compose screen - no approval!
       if (mounted) {
         context.go('/beep/compose', extra: {
-          'imageFile': savedFile,
+          'mediaFile': savedFile,
+          'isVideo': false,
           'sensorData': sensorData,
           'photoMetadata': photoMetadata, // Pass comprehensive metadata for storage
           'description': widget.description, // Pass description from previous screen
@@ -231,6 +245,112 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       setState(() {
         _isCapturing = false;
         _errorMessage = 'Failed to capture photo: $e';
+      });
+    }
+  }
+
+  Future<void> _startVideoRecording() async {
+    if (_controller == null || !_controller!.value.isInitialized || _isRecording) {
+      return;
+    }
+
+    setState(() {
+      _isRecording = true;
+    });
+
+    try {
+      // Play start recording sound
+      await SoundService.I.play(AlertSound.tap, haptic: true);
+      
+      // Start recording
+      await _controller!.startVideoRecording();
+      debugPrint('🎥 VIDEO: Started recording');
+      
+      // Auto-stop after 30 seconds to keep videos short
+      Future.delayed(const Duration(seconds: 30), () {
+        if (_isRecording) {
+          _stopVideoRecording();
+        }
+      });
+      
+    } catch (e) {
+      setState(() {
+        _isRecording = false;
+        _errorMessage = 'Failed to start recording: $e';
+      });
+    }
+  }
+
+  Future<void> _stopVideoRecording() async {
+    if (_controller == null || !_isRecording) {
+      return;
+    }
+
+    setState(() {
+      _isRecording = false;
+      _isCapturing = true; // Show processing state
+    });
+
+    try {
+      // Stop recording and get the file
+      final XFile videoFile = await _controller!.stopVideoRecording();
+      debugPrint('🎥 VIDEO: Stopped recording');
+      
+      // Play stop sound
+      await SoundService.I.play(AlertSound.gpsOk, haptic: true);
+
+      // Get sensor data
+      SensorData? sensorData;
+      try {
+        debugPrint('🌍 VIDEO: Capturing GPS and sensor data...');
+        sensorData = await _sensorService.captureSensorData();
+        if (sensorData != null && sensorData.latitude != 0.0 && sensorData.longitude != 0.0) {
+          debugPrint('✅ VIDEO: Got valid sensor data - lat: ${sensorData.latitude}, lng: ${sensorData.longitude}');
+        }
+      } catch (e) {
+        debugPrint('❌ VIDEO: Failed to capture sensor data: $e');
+        sensorData = null;
+      }
+
+      // Save to UFOBeep folder
+      final Directory appDocDir = await getApplicationDocumentsDirectory();
+      final String ufobeepPath = path.join(appDocDir.path, 'UFOBeep');
+      final Directory ufobeepDir = Directory(ufobeepPath);
+      
+      if (!await ufobeepDir.exists()) {
+        await ufobeepDir.create(recursive: true);
+      }
+
+      final String fileName = 'UFOBeep_${DateTime.now().millisecondsSinceEpoch}.mp4';
+      final String savedPath = path.join(ufobeepPath, fileName);
+      final File savedFile = await File(videoFile.path).copy(savedPath);
+      
+      // Log file info
+      final fileSize = await savedFile.length();
+      debugPrint('🎥 VIDEO: Saved as: $fileName');
+      debugPrint('🎥 VIDEO: File size: ${(fileSize / 1024 / 1024).toStringAsFixed(2)} MB');
+
+      // Save to phone's gallery
+      try {
+        await Gal.putVideo(savedFile.path, album: 'UFOBeep');
+        debugPrint('Video saved to gallery in UFOBeep album');
+      } catch (e) {
+        debugPrint('Failed to save video to gallery: $e');
+      }
+
+      // Navigate to composition screen with video
+      if (mounted) {
+        context.go('/beep/compose', extra: {
+          'mediaFile': savedFile,
+          'isVideo': true,
+          'sensorData': sensorData,
+          'description': widget.description,
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _isCapturing = false;
+        _errorMessage = 'Failed to save video: $e';
       });
     }
   }
@@ -320,16 +440,38 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
                         ),
                       ),
                       const Spacer(),
-                      const Text(
-                        'Point at the sky object',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
+                      Column(
+                        children: [
+                          Text(
+                            _isVideoMode ? 'Point and record (30s max)' : 'Point at the sky object',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          if (_isRecording) ...[
+                            const SizedBox(height: 4),
+                            Text(
+                              '🔴 RECORDING',
+                              style: TextStyle(
+                                color: Colors.red.shade400,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
                       const Spacer(),
-                      const SizedBox(width: 44), // Balance the back button
+                      IconButton(
+                        onPressed: _isInitialized && !_isCapturing && !_isRecording ? _toggleMode : null,
+                        icon: Icon(
+                          _isVideoMode ? Icons.photo_camera : Icons.videocam,
+                          color: _isInitialized && !_isCapturing && !_isRecording ? Colors.white : Colors.grey,
+                          size: 28,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -360,9 +502,11 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // Instructions
-                      const Text(
-                        'Tap to capture',
-                        style: TextStyle(
+                      Text(
+                        _isVideoMode 
+                          ? (_isRecording ? 'Tap to stop recording' : 'Tap to start recording')
+                          : 'Tap to capture',
+                        style: const TextStyle(
                           color: Colors.white70,
                           fontSize: 14,
                         ),
@@ -372,19 +516,21 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
                       // Capture button
                       Center(
                         child: GestureDetector(
-                          onTap: _isCapturing ? null : _capturePhoto,
+                          onTap: _isCapturing ? null : (_isVideoMode 
+                            ? (_isRecording ? _stopVideoRecording : _startVideoRecording)
+                            : _capturePhoto),
                           child: Container(
                             width: 72,
                             height: 72,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
-                                color: Colors.white,
+                                color: _isRecording ? Colors.red : Colors.white,
                                 width: 4,
                               ),
                               color: _isCapturing 
                                   ? Colors.grey.withOpacity(0.3)
-                                  : Colors.white.withOpacity(0.2),
+                                  : (_isRecording ? Colors.red.withOpacity(0.3) : Colors.white.withOpacity(0.2)),
                             ),
                             child: _isCapturing
                                 ? const Center(
@@ -393,9 +539,11 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
                                       strokeWidth: 2,
                                     ),
                                   )
-                                : const Icon(
-                                    Icons.camera_alt,
-                                    color: Colors.white,
+                                : Icon(
+                                    _isVideoMode 
+                                      ? (_isRecording ? Icons.stop : Icons.videocam)
+                                      : Icons.camera_alt,
+                                    color: _isRecording ? Colors.red : Colors.white,
                                     size: 32,
                                   ),
                           ),

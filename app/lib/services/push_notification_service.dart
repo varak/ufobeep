@@ -588,7 +588,7 @@ class PushNotificationService {
       importance: witnessCount >= 10 ? Importance.max : Importance.high,
       priority: witnessCount >= 10 ? Priority.max : Priority.high,
       showWhen: true,
-      category: AndroidNotificationCategory.alert,
+      category: AndroidNotificationCategory.recommendation,
       enableVibration: true,
       playSound: false, // We handle sounds separately
       actions: [

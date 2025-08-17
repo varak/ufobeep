@@ -74,12 +74,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
   Future<void> _loadEngagementMetrics() async {
     try {
       final apiClient = ApiClient.instance;
-      final response = await apiClient.getJson(
-        '/admin/engagement/summary',
-        requiresAuth: true,
-        username: 'admin',
-        password: 'ufopostpass',
-      );
+      final response = await apiClient.getJson('/admin/engagement/summary');
       
       if (response['success'] == true) {
         setState(() {
@@ -120,8 +115,9 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
       final response = await apiClient.get('/admin/ratelimit/status');
       
       setState(() {
-        _rateLimitEnabled = response['enabled'] ?? true;
-        _rateLimitThreshold = response['threshold'] ?? 3;
+        final data = response.data as Map<String, dynamic>;
+        _rateLimitEnabled = data['enabled'] ?? true;
+        _rateLimitThreshold = data['threshold'] ?? 3;
         _rateLimitMessage = 'Loaded current status';
       });
     } catch (e) {
@@ -1104,7 +1100,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
       
       setState(() {
         _rateLimitEnabled = !_rateLimitEnabled;
-        _rateLimitMessage = response['message'] ?? 'Rate limiting ${_rateLimitEnabled ? "enabled" : "disabled"}';
+        _rateLimitMessage = (response.data as Map<String, dynamic>)['message'] ?? 'Rate limiting ${_rateLimitEnabled ? "enabled" : "disabled"}';
         _statusMessage = 'Rate limiting ${_rateLimitEnabled ? "enabled" : "disabled"} successfully';
       });
       
@@ -1133,7 +1129,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
       
       setState(() {
         _rateLimitThreshold = threshold;
-        _rateLimitMessage = response['message'] ?? 'Threshold set to $threshold';
+        _rateLimitMessage = (response.data as Map<String, dynamic>)['message'] ?? 'Threshold set to $threshold';
         _statusMessage = 'Rate threshold set to $threshold successfully';
       });
       
@@ -1161,7 +1157,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
       final response = await apiClient.get('/admin/ratelimit/clear');
       
       setState(() {
-        _rateLimitMessage = response['message'] ?? 'Rate limit history cleared';
+        _rateLimitMessage = (response.data as Map<String, dynamic>)['message'] ?? 'Rate limit history cleared';
         _statusMessage = 'Rate limit history cleared successfully';
       });
       
@@ -1189,8 +1185,9 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
       final response = await apiClient.get('/admin/ratelimit/status');
       
       setState(() {
-        _rateLimitEnabled = response['enabled'] ?? true;
-        _rateLimitThreshold = response['threshold'] ?? 3;
+        final data = response.data as Map<String, dynamic>;
+        _rateLimitEnabled = data['enabled'] ?? true;
+        _rateLimitThreshold = data['threshold'] ?? 3;
         _rateLimitMessage = 'Status refreshed at ${DateTime.now().toString().substring(11, 19)}';
         _statusMessage = 'Rate limit status refreshed';
       });

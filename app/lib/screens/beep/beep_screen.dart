@@ -80,201 +80,107 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     });
 
     try {
-      // Request photo library permission first
-      final PermissionState ps = await PhotoManager.requestPermissionExtend(
-        requestOption: const PermissionRequestOption(
-          iosAccessLevel: IosAccessLevel.readWrite,
-          androidPermission: AndroidPermission(
-            type: RequestType.image,
-            mediaLocation: true,  // Important for EXIF GPS data
-          ),
-        ),
+      // Use the cleaner file_picker approach instead of photo_manager
+      final FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.media, // This handles both images and videos
+        allowMultiple: false,
+        withData: false, // Don't load file data into memory
+        withReadStream: false,
       );
+
+      if (result == null || result.files.isEmpty) {
+        setState(() {
+          _isCapturing = false;
+        });
+        return;
+      }
+
+      final PlatformFile platformFile = result.files.first;
+      final String? filePath = platformFile.path;
       
-      if (!ps.isAuth) {
-        debugPrint('Photo permission state: ${ps.name}');
-        // Show settings dialog if permission was previously denied
-        if (mounted) {
-          final bool? openSettings = await showDialog<bool>(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Photo Access Required'),
-              content: const Text('UFOBeep needs access to your photos to select images for sighting reports. Please grant permission in Settings.'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text('Open Settings'),
-                ),
-              ],
-            ),
-          );
+      if (filePath == null) {
+        setState(() {
+          _isCapturing = false;
+          _errorMessage = 'Could not access selected file';
+        });
+        return;
+      }
+
+      final File mediaFile = File(filePath);
+      
+      // Determine if this is a video based on file extension and mime type
+      final String fileName = platformFile.name.toLowerCase();
+      final bool isVideo = fileName.endsWith('.mp4') || 
+                          fileName.endsWith('.mov') || 
+                          fileName.endsWith('.avi') || 
+                          fileName.endsWith('.webm') ||
+                          fileName.endsWith('.3gp') ||
+                          platformFile.extension?.toLowerCase() == 'mp4' ||
+                          platformFile.extension?.toLowerCase() == 'mov' ||
+                          platformFile.extension?.toLowerCase() == 'avi' ||
+                          platformFile.extension?.toLowerCase() == 'webm' ||
+                          platformFile.extension?.toLowerCase() == '3gp';
+
+      debugPrint('Selected ${isVideo ? 'video' : 'image'} file: ${mediaFile.path}');
+      debugPrint('File size: ${platformFile.size} bytes');
+      debugPrint('File extension: ${platformFile.extension}');
+      
+      // Extract metadata only for images (videos rarely have useful EXIF)
+      Map<String, dynamic> mediaMetadata = {};
+      SensorData? sensorDataFromMedia;
+      
+      if (!isVideo) {
+        try {
+          debugPrint('Extracting metadata from image file...');
+          mediaMetadata = await PhotoMetadataService.extractComprehensiveMetadata(mediaFile);
+          debugPrint('Extracted metadata: ${mediaMetadata.keys.length} categories');
           
-          if (openSettings == true) {
-            await PhotoManager.openSetting();
+          // Create sensor data from image EXIF if GPS is available
+          final gpsData = mediaMetadata['location'] as Map<String, dynamic>?;
+          
+          if (gpsData != null && gpsData['latitude'] != null && gpsData['longitude'] != null) {
+            debugPrint('✅ Found GPS data: ${gpsData['latitude']}, ${gpsData['longitude']}');
+            
+            sensorDataFromMedia = SensorData(
+              latitude: gpsData['latitude'],
+              longitude: gpsData['longitude'],
+              altitude: gpsData['altitude'] ?? 0.0,
+              accuracy: 10.0, // Lower accuracy since it's from gallery
+              utc: DateTime.now(),
+              azimuthDeg: 0.0, // Default values since this is from gallery
+              pitchDeg: 0.0,
+              rollDeg: 0.0,
+              hfovDeg: 60.0,
+            );
+            debugPrint('Created sensor data from image EXIF');
+          } else {
+            debugPrint('No GPS coordinates found in image EXIF');
           }
+        } catch (e) {
+          debugPrint('Warning: Failed to extract metadata: $e');
         }
-        
-        setState(() {
-          _isCapturing = false;
-          _errorMessage = 'Photo library access denied. Please grant permission in Settings.';
-        });
-        return;
+      } else {
+        debugPrint('Skipping metadata extraction for video file');
       }
-
-      // Get ALL photo albums from device
-      final List<AssetPathEntity> albums = await PhotoManager.getAssetPathList(
-        type: RequestType.image,
-        hasAll: true,
-        onlyAll: false,  // Show all albums, not just "Recent"
-      );
-      
-      if (albums.isEmpty) {
-        setState(() {
-          _isCapturing = false;
-          _errorMessage = 'No photo albums found';
-        });
-        return;
-      }
-
-      // Debug: Show all available albums
-      for (var album in albums) {
-        final count = await album.assetCountAsync;
-        debugPrint('Album: ${album.name} (${album.id}) - $count photos');
-      }
-
-      // Find the Camera album or use Recent/All
-      AssetPathEntity? targetAlbum;
-      
-      // Try to find Camera album first
-      targetAlbum = albums.firstWhere(
-        (album) => album.name.toLowerCase().contains('camera') || 
-                   album.name.toLowerCase().contains('dcim'),
-        orElse: () => albums.firstWhere(
-          (album) => album.name.toLowerCase().contains('recent') || 
-                     album.name.toLowerCase().contains('all'),
-          orElse: () => albums.first,
-        ),
-      );
-
-      debugPrint('Using album: ${targetAlbum.name}');
-      
-      // Get photos from selected album
-      final List<AssetEntity> photos = await targetAlbum.getAssetListPaged(
-        page: 0,
-        size: 200,  // Get more photos
-      );
-
-      if (photos.isEmpty) {
-        setState(() {
-          _isCapturing = false;
-          _errorMessage = 'No photos found';
-        });
-        return;
-      }
-
-      // Show photo picker dialog
-      final AssetEntity? selectedAsset = await showDialog<AssetEntity>(
-        context: context,
-        builder: (context) => _PhotoPickerDialog(photos: photos),
-      );
-
-      if (selectedAsset == null) {
-        setState(() {
-          _isCapturing = false;
-        });
-        return;
-      }
-
-      // Get the ORIGINAL file with all EXIF data preserved
-      final File? originalFile = await selectedAsset.originFile;
-      
-      if (originalFile == null) {
-        setState(() {
-          _isCapturing = false;
-          _errorMessage = 'Could not access original photo file';
-        });
-        return;
-      }
-
-      final imageFile = originalFile;
-      debugPrint('Got original photo file: ${imageFile.path}');
-      debugPrint('File size: ${await imageFile.length()} bytes');
-      
-      // Double-check that we're getting the real file
-      final String? originalPath = await selectedAsset.getMediaUrl();
-      debugPrint('Asset media URL: $originalPath');
-      
-      // Extract comprehensive photo metadata for astronomical identification services
-      Map<String, dynamic> photoMetadata = {};
-      SensorData? sensorDataFromPhoto;
-      
-      try {
-        debugPrint('Extracting metadata from file: ${imageFile.path}');
-        photoMetadata = await PhotoMetadataService.extractComprehensiveMetadata(imageFile);
-        debugPrint('Extracted comprehensive photo metadata from gallery image: ${photoMetadata.keys.length} categories');
-        debugPrint('Metadata keys: ${photoMetadata.keys.toList()}');
-        
-        // Create sensor data from photo EXIF if GPS is available
-        final gpsData = photoMetadata['location'] as Map<String, dynamic>?;
-        debugPrint('Location data extracted: $gpsData');
-        
-        if (gpsData != null && gpsData['latitude'] != null && gpsData['longitude'] != null) {
-          debugPrint('✅ Found GPS data in gallery image: ${gpsData['latitude']}, ${gpsData['longitude']}');
-          
-          sensorDataFromPhoto = SensorData(
-            latitude: gpsData['latitude'],
-            longitude: gpsData['longitude'],
-            altitude: gpsData['altitude'] ?? 0.0,
-            accuracy: 10.0, // Lower accuracy since it's from gallery photo
-            utc: DateTime.now(),
-            azimuthDeg: 0.0, // Default values since this is from gallery
-            pitchDeg: 0.0,
-            rollDeg: 0.0,
-            hfovDeg: 60.0,
-          );
-          debugPrint('Created sensor data from gallery image EXIF');
-        } else {
-          debugPrint('No GPS coordinates found in gallery image EXIF data');
-        }
-      } catch (e) {
-        debugPrint('Warning: Failed to extract metadata from gallery image: $e');
-      }
-
-      // Create initial submission for gallery image
-      debugPrint('Creating submission with sensorData: ${sensorDataFromPhoto?.latitude}, ${sensorDataFromPhoto?.longitude}');
-      final submission = local.SightingSubmission(
-        imageFile: imageFile,
-        title: '',
-        description: '',
-        category: local.SightingCategory.ufo,
-        sensorData: sensorDataFromPhoto,
-        locationPrivacy: LocationPrivacy.jittered,
-        createdAt: DateTime.now(),
-      );
-      debugPrint('Submission created with sensorData: ${submission.sensorData?.latitude}, ${submission.sensorData?.longitude}');
 
       setState(() {
-        _currentSubmission = submission;
         _isCapturing = false;
       });
 
-      // Navigate to composition screen with metadata and description
+      // Navigate directly to composition screen
       final description = _descriptionController.text.trim();
       context.go('/beep/compose', extra: {
-        'imageFile': submission.imageFile,
-        'sensorData': sensorDataFromPhoto,
-        'photoMetadata': photoMetadata,
+        'mediaFile': mediaFile,
+        'isVideo': isVideo,
+        'sensorData': sensorDataFromMedia,
+        'photoMetadata': mediaMetadata,
         'description': description,
       });
 
     } catch (e) {
       setState(() {
         _isCapturing = false;
-        _errorMessage = 'Failed to pick image: $e';
+        _errorMessage = 'Failed to pick media: $e';
       });
     }
   }
@@ -668,66 +574,3 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   }
 }
 
-// Simple photo picker dialog that shows thumbnails
-class _PhotoPickerDialog extends StatelessWidget {
-  final List<AssetEntity> photos;
-
-  const _PhotoPickerDialog({required this.photos});
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.7,
-        child: Column(
-          children: [
-            AppBar(
-              title: const Text('Select Photo'),
-              automaticallyImplyLeading: false,
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ],
-            ),
-            Expanded(
-              child: GridView.builder(
-                padding: const EdgeInsets.all(4),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 4,
-                  mainAxisSpacing: 4,
-                ),
-                itemCount: photos.length,
-                itemBuilder: (context, index) {
-                  final asset = photos[index];
-                  return GestureDetector(
-                    onTap: () => Navigator.of(context).pop(asset),
-                    child: FutureBuilder<Uint8List?>(
-                      future: asset.thumbnailDataWithSize(
-                        const ThumbnailSize(200, 200),
-                      ),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData && snapshot.data != null) {
-                          return Image.memory(
-                            snapshot.data!,
-                            fit: BoxFit.cover,
-                          );
-                        }
-                        return Container(
-                          color: Colors.grey[300],
-                          child: const Icon(Icons.image),
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

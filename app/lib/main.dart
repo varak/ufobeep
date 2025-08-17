@@ -119,16 +119,17 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
       final properFile = File('${tempDir.path}/$properFileName');
       await originalFile.copy(properFile.path);
       
-      print('Main: Created proper file: ${properFile.path}');
+      print('Main: Created proper ${sharedMedia.isVideo ? 'video' : 'image'} file: ${properFile.path}');
       
       // Navigate directly to beep composition screen with shared media
       router.go('/beep/compose', extra: {
-        'imageFile': properFile,
+        'mediaFile': properFile,
+        'isVideo': sharedMedia.isVideo,
         'sensorData': null,
         'photoMetadata': <String, dynamic>{},
         'description': '', // Empty description so placeholder shows
       });
-      print('Main: Navigated to composition screen with shared media');
+      print('Main: Navigated to composition screen with shared ${sharedMedia.mediaType}');
     });
     
     // Check for shared files now that callback is set
@@ -138,17 +139,35 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
   /// Detects file extension from file content using magic bytes
   String _detectFileExtension(List<int> bytes, bool isVideo) {
     if (isVideo) {
-      // Basic video detection - could be expanded
+      // Enhanced video detection with more formats
       if (bytes.length >= 12) {
-        // MP4: starts with specific bytes
+        // MP4: ftyp header variants
         if (bytes[4] == 0x66 && bytes[5] == 0x74 && bytes[6] == 0x79 && bytes[7] == 0x70) {
           return '.mp4';
         }
-        // MOV: QuickTime signature
+        // MOV: QuickTime signature (moov)
         if (bytes[4] == 0x6D && bytes[5] == 0x6F && bytes[6] == 0x6F && bytes[7] == 0x76) {
           return '.mov';
         }
+        // 3GP: 3gp file type
+        if (bytes[4] == 0x33 && bytes[5] == 0x67 && bytes[6] == 0x70) {
+          return '.3gp';
+        }
       }
+      
+      // AVI: RIFF header with AVI signature
+      if (bytes.length >= 12 && 
+          bytes[0] == 0x52 && bytes[1] == 0x49 && bytes[2] == 0x46 && bytes[3] == 0x46 &&
+          bytes[8] == 0x41 && bytes[9] == 0x56 && bytes[10] == 0x49 && bytes[11] == 0x20) {
+        return '.avi';
+      }
+      
+      // WebM: EBML header
+      if (bytes.length >= 4 && 
+          bytes[0] == 0x1A && bytes[1] == 0x45 && bytes[2] == 0xDF && bytes[3] == 0xA3) {
+        return '.webm';
+      }
+      
       return '.mp4'; // Default for video
     } else {
       // Image detection using magic bytes
