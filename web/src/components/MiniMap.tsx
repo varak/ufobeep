@@ -6,8 +6,8 @@ import AlertsMap from './AlertsMap'
 
 interface Alert {
   id: string
-  title: string
-  description: string
+  title: string | null
+  description: string | null
   location: {
     latitude: number
     longitude: number
