@@ -50,7 +50,7 @@ export default function DownloadPage() {
         {/* What's New */}
         <div className="bg-gray-800 rounded-lg p-6 mb-8">
           <h2 className="text-2xl font-semibold mb-4 text-green-400">
-            🚀 What's New
+            🚀 What&apos;s New
           </h2>
           <ul className="space-y-2 text-gray-300">
             <li>✅ <strong>Service Layer Architecture:</strong> 3,000+ lines of code optimized for blazing performance</li>
@@ -103,7 +103,7 @@ export default function DownloadPage() {
                 <ol className="list-decimal list-inside space-y-1 text-gray-400">
                   <li>Open <strong>Settings</strong> on your Android device</li>
                   <li>Go to <strong>Security</strong> or <strong>Privacy</strong></li>
-                  <li>Find <strong>"Install unknown apps"</strong> or <strong>"Unknown sources"</strong></li>
+                  <li>Find <strong>&quot;Install unknown apps&quot;</strong> or <strong>&quot;Unknown sources&quot;</strong></li>
                   <li>Enable for your browser (Chrome, Firefox, etc.)</li>
                 </ol>
               </div>
@@ -117,7 +117,7 @@ export default function DownloadPage() {
                   Click the download button above. The APK will download to your Downloads folder.
                 </p>
                 <p className="text-yellow-400 text-sm">
-                  ⚠️ If Chrome warns about the file, tap "Download anyway"
+                  ⚠️ If Chrome warns about the file, tap &quot;Download anyway&quot;
                 </p>
               </div>
 
@@ -129,9 +129,9 @@ export default function DownloadPage() {
                 <ol className="list-decimal list-inside space-y-1 text-gray-400">
                   <li>Open your <strong>Downloads</strong> folder</li>
                   <li>Tap on <strong>ufobeep-latest.apk</strong></li>
-                  <li>Tap <strong>"Install"</strong> when prompted</li>
+                  <li>Tap <strong>&quot;Install&quot;</strong> when prompted</li>
                   <li>Wait for installation to complete</li>
-                  <li>Tap <strong>"Open"</strong> to launch UFOBeep!</li>
+                  <li>Tap <strong>&quot;Open&quot;</strong> to launch UFOBeep!</li>
                 </ol>
               </div>
 
@@ -141,10 +141,10 @@ export default function DownloadPage() {
                   🔧 Troubleshooting
                 </h3>
                 <ul className="space-y-1 text-gray-300 text-sm">
-                  <li>• <strong>"App not installed":</strong> Uninstall old version first</li>
-                  <li>• <strong>"Parse error":</strong> Your Android version might be too old (need 5.0+)</li>
-                  <li>• <strong>Can't find file:</strong> Check your Downloads folder or notification panel</li>
-                  <li>• <strong>Security warning:</strong> This is normal for APKs - we're not on Play Store yet</li>
+                  <li>• <strong>&quot;App not installed&quot;:</strong> Uninstall old version first</li>
+                  <li>• <strong>&quot;Parse error&quot;:</strong> Your Android version might be too old (need 5.0+)</li>
+                  <li>• <strong>Can&apos;t find file:</strong> Check your Downloads folder or notification panel</li>
+                  <li>• <strong>Security warning:</strong> This is normal for APKs - we&apos;re not on Play Store yet</li>
                 </ul>
               </div>
             </div>
