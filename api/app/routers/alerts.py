@@ -86,7 +86,7 @@ async def create_alert(request: dict):
         else:
             alert_result = {"total_alerts_sent": 0, "alerts_deferred": True}
         
-        await db_pool.close()
+        # Don't close the pool - it's shared across the service
         
         # Format response like original /beep/anonymous for compatibility
         total_alerted = alert_result.get("total_alerts_sent", 0)
@@ -122,7 +122,7 @@ async def get_alerts(limit: int = 20, offset: int = 0):
         
         api_alerts = [format_alert_response(alert) for alert in alerts]
         
-        await db_pool.close()
+        # Don't close the pool - it's shared across the service
         
         return {
             "success": True,
@@ -147,7 +147,7 @@ async def get_alert_details(alert_id: str):
         if not alert:
             raise HTTPException(status_code=404, detail="Alert not found")
         
-        await db_pool.close()
+        # Don't close the pool - it's shared across the service
         
         return {
             "success": True,
@@ -176,6 +176,10 @@ async def upload_alert_media(
     import shutil
     
     try:
+        print(f"Media upload request: alert_id={alert_id}, files={files}, source={source}")
+        
+        if not files:
+            raise HTTPException(status_code=400, detail="No files provided")
         db_pool = await get_db()
         
         async with db_pool.acquire() as conn:
@@ -232,7 +236,7 @@ async def upload_alert_media(
                 WHERE id = $2
             """, json.dumps(existing_media), uuid.UUID(alert_id))
             
-            await db_pool.close()
+            # Don't close the pool - it's shared across the service
             
             return {
                 "success": True,
@@ -264,7 +268,7 @@ async def add_witness(alert_id: str, request: dict):
             witness_data=request
         )
         
-        await db_pool.close()
+        # Don't close the pool - it's shared across the service
         
         return {
             "success": True,
@@ -286,7 +290,7 @@ async def get_witness(alert_id: str, device_id: str):
         alerts_service = AlertsService(db_pool)
         result = await alerts_service.get_witness_status(alert_id, device_id)
         
-        await db_pool.close()
+        # Don't close the pool - it's shared across the service
         
         return {
             "success": True,
@@ -308,7 +312,7 @@ async def get_witness_aggregation(alert_id: str):
         alerts_service = AlertsService(db_pool)
         result = await alerts_service.get_witness_aggregation(alert_id)
         
-        await db_pool.close()
+        # Don't close the pool - it's shared across the service
         
         return {
             "success": True,

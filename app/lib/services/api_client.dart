@@ -1062,13 +1062,16 @@ extension ApiClientExtension on ApiClient {
 
   Future<Map<String, dynamic>> uploadMediaToSighting(String sightingId, File file) async {
     try {
-      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      final formData = FormData();
       
-      final formData = FormData.fromMap({
-        'file': await MultipartFile.fromFile(file.path),
-        'device_id': deviceId,
-        'trigger_alerts': false, // Just upload, don't trigger alerts
-      });
+      // Add the file to the 'files' field (FastAPI expects List[UploadFile])
+      formData.files.add(MapEntry(
+        'files',
+        await MultipartFile.fromFile(file.path, filename: file.path.split('/').last),
+      ));
+      
+      // Add form fields
+      formData.fields.add(const MapEntry('source', 'mobile_app'));
 
       final response = await _dio.post(
         '/alerts/$sightingId/media',
@@ -1092,6 +1095,7 @@ extension ApiClientExtension on ApiClient {
       final response = await _dio.post(
         '/alerts/send/$sightingId',
         data: {'device_id': deviceId},
+        options: Options(headers: {'Content-Type': 'application/json'}),
       );
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
