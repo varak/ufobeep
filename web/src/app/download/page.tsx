@@ -5,7 +5,7 @@ import { useState } from 'react';
 export default function DownloadPage() {
   const [showInstructions, setShowInstructions] = useState(false);
   
-  const latestVersion = "v0.8.0 Beta";
+  const latestVersion = "v0.8.1 Beta";
   const releaseDate = new Date().toLocaleDateString('en-US', { 
     year: 'numeric', 
     month: 'long', 
@@ -53,11 +53,11 @@ export default function DownloadPage() {
             🚀 What&apos;s New
           </h2>
           <ul className="space-y-2 text-gray-300">
+            <li>✅ <strong>CRITICAL FIX:</strong> Anonymous beep with media now works correctly</li>
             <li>✅ <strong>Service Layer Architecture:</strong> 3,000+ lines of code optimized for blazing performance</li>
             <li>✅ <strong>Smart Unit Conversion:</strong> Automatic metric/imperial conversion based on your location</li>
             <li>✅ <strong>Enhanced Weather Data:</strong> Precision-controlled measurements with clean display</li>
-            <li>✅ <strong>Modular Enrichment System:</strong> Satellite tracking, celestial data, and more</li>
-            <li>✅ <strong>Performance Boost:</strong> 62% reduction in code complexity = faster app</li>
+            <li>✅ <strong>Alert Level Support:</strong> Proper alert prioritization system</li>
             <li>✅ <strong>Database Caching:</strong> Enrichment data computed once, displayed instantly</li>
           </ul>
         </div>
