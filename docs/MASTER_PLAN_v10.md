@@ -178,13 +178,17 @@ curl -X POST https://api.ufobeep.com/beep/anonymous \
     - ✅ Maximum resolution capture with GPS EXIF embedding
     - ✅ Immediate navigation to composition screen (no approval step)
     - ✅ Auto-save to phone gallery in UFOBeep album
-    - 🔴 Video mode for ongoing sightings - future enhancement
+    - ✅ Video mode for ongoing sightings (30s max, toggle in camera UI)
+    - 🔴 Video playback broken on mobile and website - needs Task 15 implementation
 
 ### Processing Pipeline
 15. 🔴 **[api] Media Processing Pipeline** - Async enrichment
-    - EXIF extraction for time/location
+    - EXIF extraction for time/location (photos working)
+    - Video thumbnail generation (CRITICAL - videos show as images) 
+    - Media type detection and proper API response formatting
     - AI object detection (runs AFTER alert)
-    - Thumbnail generation for quick preview
+    - Mobile app video player integration (VideoPlayerWidget exists but broken)
+    - Website video player implementation (currently uses ImageWithLoading for videos)
 
 **→ Breakpoint B2: MEDIA DOESN'T SLOW ALERTS**
 - Beep sends in ≤3s even with 100MB video attached

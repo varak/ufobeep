@@ -5,6 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from app.config.environment import settings
 from app.routers import plane_match, media, media_serve, devices, emails, photo_analysis, mufon, media_management, admin
 from app.services.media_service import get_media_service
+from app.schemas.media import guess_media_type_from_filename
 import asyncpg
 import asyncio
 import json
@@ -33,11 +34,14 @@ def process_media_files(media_info, sighting_id: str) -> list:
                     filename = media_file.get("filename", "")
                     media_url = f"https://api.ufobeep.com/media/{sighting_id}/{filename}"
                     
+                    media_type = media_file.get("type") or guess_media_type_from_filename(filename).value
+                    thumbnail_url = f"{media_url}?thumbnail=true" if media_type == "video" else media_url
+                    
                     media_files.append({
                         "id": media_file.get("id", ""),
-                        "type": media_file.get("type", "image"),
+                        "type": media_type,
                         "url": media_url,
-                        "thumbnail_url": media_url,
+                        "thumbnail_url": thumbnail_url,
                         "filename": filename,
                         "size": media_file.get("size", 0),
                         "width": media_file.get("width", 0),
@@ -910,10 +914,10 @@ async def update_sighting_media(sighting_id: str, request: dict = None):
                 'files': [
                     {
                         'id': str(uuid.uuid4()),
-                        'type': 'image',  # TODO: detect type from filename
+                        'type': (media_type := guess_media_type_from_filename(filename).value),
                         'filename': filename,
-                        'url': f'https://ufobeep.com/media/{sighting_id}/{filename}',  # Simple permanent URL
-                        'thumbnail_url': f'https://ufobeep.com/media/{sighting_id}/{filename}',  # Same for now
+                        'url': (base_url := f'https://ufobeep.com/media/{sighting_id}/{filename}'),
+                        'thumbnail_url': f'{base_url}?thumbnail=true' if media_type == 'video' else base_url,
                         'uploaded_at': datetime.now().isoformat()
                     }
                     for filename in media_files

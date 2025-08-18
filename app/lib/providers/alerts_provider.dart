@@ -222,8 +222,8 @@ class Alert {
       
       return Alert(
         id: json['id'] as String,
-        title: json['title'] as String,
-        description: json['description'] as String,
+        title: json['title'] as String? ?? 'UFO Sighting',
+        description: json['description'] as String? ?? 'Anomalous object observed',
         latitude: lat,
         longitude: lng,
         createdAt: DateTime.parse(json['created_at'] as String? ?? json['submitted_at'] as String? ?? DateTime.now().toIso8601String()),
@@ -323,30 +323,37 @@ class AlertsList extends _$AlertsList {
         verifiedOnly: verifiedOnly,
       );
 
-      print('📱 /alerts API response: success=${response['success']}, message=${response['message']}');
-      print('📱 Response keys: ${response.keys.toList()}');
+      print('UFOBEEP: /alerts API response: success=${response['success']}, message=${response['message']}');
+      print('UFOBEEP: Response keys: ${response.keys.toList()}');
       
-      if (response['success'] == true) {
+      if (response['success'] == true && response['data'] != null && response['data']['alerts'] != null) {
         final alertsData = response['data'] as Map<String, dynamic>;
-        print('📱 Alerts data keys: ${alertsData.keys.toList()}');
         final alertsList = alertsData['alerts'] as List<dynamic>;
-        print('📱 Raw alerts list length: ${alertsList.length}');
         
-        if (alertsList.isEmpty) {
-          print('📱 WARNING: Alerts list is empty from API');
+        // Filter out invalid coordinates like the website does
+        final validAlerts = alertsList.where((alert) {
+          final location = alert['location'] as Map<String, dynamic>?;
+          if (location == null) return false;
+          final lat = location['latitude'] as double?;
+          final lng = location['longitude'] as double?;
+          return lat != null && lng != null && (lat != 0.0 || lng != 0.0);
+        }).toList();
+        
+        if (validAlerts.isEmpty) {
+          print('UFOBEEP: No valid alerts found (filtered out invalid coordinates)');
           return [];
         }
         
         try {
-          final parsedAlerts = alertsList
+          final parsedAlerts = validAlerts
               .cast<Map<String, dynamic>>()
               .map((alertJson) => Alert.fromApiJson(alertJson))
               .toList();
-          print('📱 Successfully parsed ${parsedAlerts.length} alerts');
+          print('UFOBEEP: Successfully parsed ${parsedAlerts.length} valid alerts');
           return parsedAlerts;
         } catch (parseError) {
-          print('📱 ERROR parsing alerts: $parseError');
-          print('📱 First alert raw data: ${alertsList.isNotEmpty ? alertsList.first : 'N/A'}');
+          print('UFOBEEP: ERROR parsing alerts: $parseError');
+          print('UFOBEEP: First valid alert raw data: ${validAlerts.isNotEmpty ? validAlerts.first : 'N/A'}');
           throw Exception('Failed to parse alerts: $parseError');
         }
       } else {

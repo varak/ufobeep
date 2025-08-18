@@ -32,6 +32,15 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   bool? _hasConfirmed;
   int _witnessCount = 0;
   
+  /// Detect media type from URL if API type is missing or incorrect
+  String _detectMediaTypeFromUrl(String url) {
+    final lowerUrl = url.toLowerCase();
+    if (lowerUrl.contains('.mp4') || lowerUrl.contains('.mov') || lowerUrl.contains('.avi')) {
+      return 'video';
+    }
+    return 'image';
+  }
+  
 
   @override
   void initState() {
@@ -613,7 +622,10 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     // Show first media file (image or video)
     final media = alert.mediaFiles.first;
     final mediaUrl = media['url'] as String? ?? '';
-    final mediaType = media['type'] as String? ?? 'image';
+    final apiType = media['type'] as String? ?? 'image';
+    
+    // Use API type if available and not 'image', otherwise detect from URL
+    final mediaType = (apiType != 'image') ? apiType : _detectMediaTypeFromUrl(mediaUrl);
     
     if (mediaUrl.isEmpty) {
       return Container(
