@@ -107,7 +107,44 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
         )
         recent_activity = []
     
-    return f"""
+    stats_html = f"""
+        <div class="stats-grid" id="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{stats.total_sightings}</div>
+                <div class="stat-label">Total Sightings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{stats.total_media_files}</div>
+                <div class="stat-label">Media Files</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{stats.sightings_today}</div>
+                <div class="stat-label">Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{stats.sightings_this_week}</div>
+                <div class="stat-label">This Week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{stats.pending_sightings}</div>
+                <div class="stat-label">Pending</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{stats.verified_sightings}</div>
+                <div class="stat-label">Verified</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{getattr(stats, 'witness_count', 0)}</div>
+                <div class="stat-label">Total Witnesses</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{stats.escalated_alerts}</div>
+                <div class="stat-label">Emergency Alerts</div>
+            </div>
+        </div>
+    """
+
+    return """
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -225,8 +262,8 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
 
     <script>
         // Load admin stats
-        async function loadStats() {
-            try {
+        async function loadStats() {{
+            try {{
                 // Stats will be server-side rendered instead of AJAX
                 return;
                 
@@ -276,14 +313,14 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
                         <div class="stat-label">Emergency (10+)</div>
                     </div>
                 `;
-            } catch (error) {
+            }} catch (error) {{
                 console.error('Failed to load stats:', error);
-            }
-        }
+            }}
+        }}
 
         // Load recent activity
-        async function loadActivity() {
-            try {
+        async function loadActivity() {{
+            try {{
                 const response = await fetch('/admin/recent-activity');
                 const activity = await response.json();
                 
