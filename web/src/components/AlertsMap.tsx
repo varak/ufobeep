@@ -1,11 +1,12 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { AlertTitleUtils } from '@/utils/alert-title-utils'
 
 interface Alert {
   id: string
-  title: string
-  description: string
+  title: string | null
+  description: string | null
   location: {
     latitude: number
     longitude: number
@@ -108,7 +109,7 @@ export default function AlertsMap({
           
           const popupContent = `
             <div class="text-sm">
-              <h4 class="font-semibold text-gray-900 mb-1">${alert.title}</h4>
+              <h4 class="font-semibold text-gray-900 mb-1">${AlertTitleUtils.getShortTitle(alert)}</h4>
               <p class="text-gray-600 text-xs mb-2">${alert.description}</p>
               <div class="flex items-center justify-between text-xs">
                 <span class="text-gray-500">${alert.location.name}</span>
@@ -224,7 +225,7 @@ export default function AlertsMap({
           // Add popup
           const popupContent = `
             <div class="text-sm">
-              <h4 class="font-semibold text-gray-900 mb-1">${alert.title}</h4>
+              <h4 class="font-semibold text-gray-900 mb-1">${AlertTitleUtils.getShortTitle(alert)}</h4>
               <p class="text-gray-600 text-xs mb-2">${alert.description}</p>
               <div class="flex items-center justify-between text-xs">
                 <span class="text-gray-500">${alert.location.name}</span>

@@ -79,6 +79,7 @@ class AnonymousBeepService {
     double? heading,
     String? description,
     List<String>? mediaIds,
+    bool hasMedia = false,
   }) async {
     try {
       final deviceId = await getOrCreateDeviceId();
@@ -147,16 +148,19 @@ class AnonymousBeepService {
         payload['heading'] = finalHeading;
       }
       
-      // Add description if provided
+      // Add description only if provided
       if (description != null && description.isNotEmpty) {
         payload['description'] = description;
-      } else {
-        payload['description'] = 'UFO sighting - anonymous report';
       }
       
       // Add media IDs if provided
       if (mediaIds != null && mediaIds.isNotEmpty) {
         payload['media_ids'] = mediaIds;
+      }
+      
+      // Add has_media flag to defer alerts until media upload
+      if (hasMedia) {
+        payload['has_media'] = true;
       }
       
       // Get device info for context

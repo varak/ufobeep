@@ -102,9 +102,9 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       // Get description - optional
       final description = _descriptionController.text.trim();
       
-      // Use default values if empty
+      // Use actual description or null if empty
       final finalTitle = 'UFO Sighting';
-      final finalDescription = description.isEmpty ? 'UFO sighting captured with UFOBeep app' : description;
+      final finalDescription = description.isEmpty ? null : description;
 
       // All beeps are UFO sightings - no classification
       const category = api.SightingCategory.ufo;
@@ -112,8 +112,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
 
       debugPrint('Submitting sighting with sensor data: ${_sensorData != null}');
       
-      // First, send the beep to create sighting and trigger alerts
-      debugPrint('Creating sighting via sendBeep...');
+      // First, create sighting without triggering alerts (media pending)
+      debugPrint('Creating sighting via sendBeep with media pending...');
       // Check for valid GPS coordinates (not 0,0 which is invalid)
       double? validLat = _sensorData?.latitude;
       double? validLon = _sensorData?.longitude;
@@ -128,22 +128,28 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         latitude: validLat,
         longitude: validLon,
         heading: _sensorData?.azimuthDeg,
+        hasMedia: true, // This will defer alerts until media upload completes
       );
       
       final sightingId = beepResult['sighting_id'];
-      debugPrint('Sighting created with ID: $sightingId');
+      debugPrint('Sighting created with ID: $sightingId (alerts deferred)');
       
-      // Now upload the media file to the sighting
+      // Now upload the media file, then trigger alerts
       try {
         debugPrint('Uploading ${widget.isVideo ? 'video' : 'photo'} to sighting...');
-        await ApiClient.instance.uploadMediaFileForSighting(
+        await ApiClient.instance.uploadMediaToSighting(
           sightingId,
           widget.mediaFile,
         );
-        debugPrint('${widget.isVideo ? 'Video' : 'Photo'} uploaded successfully');
+        debugPrint('${widget.isVideo ? 'Video' : 'Photo'} uploaded successfully!');
+        
+        // Now trigger alerts
+        debugPrint('Triggering proximity alerts...');
+        await ApiClient.instance.triggerAlertsForSighting(sightingId);
+        debugPrint('Proximity alerts sent successfully!');
       } catch (e) {
-        debugPrint('Warning: Failed to upload ${widget.isVideo ? 'video' : 'photo'}: $e');
-        // Don't fail completely if media upload fails
+        debugPrint('Warning: Failed to upload media or send alerts: $e');
+        // Don't fail completely if media upload fails - sighting was still created
       }
 
       // Submit photo metadata if available (for astronomical identification)

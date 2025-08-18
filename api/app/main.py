@@ -119,11 +119,19 @@ async def startup_event():
         
         # Create sightings table if it doesn't exist
         async with db_pool.acquire() as conn:
+            # First make title and description nullable if they exist
+            try:
+                await conn.execute("ALTER TABLE sightings ALTER COLUMN title DROP NOT NULL")
+                await conn.execute("ALTER TABLE sightings ALTER COLUMN description DROP NOT NULL")
+                print("✅ Updated sightings table to allow NULL titles and descriptions")
+            except Exception as e:
+                print(f"Note: Column constraint update failed (table may not exist yet): {e}")
+            
             await conn.execute("""
                 CREATE TABLE IF NOT EXISTS sightings (
                     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-                    title TEXT NOT NULL,
-                    description TEXT NOT NULL,
+                    title TEXT,
+                    description TEXT,
                     category TEXT DEFAULT 'ufo',
                     witness_count INTEGER DEFAULT 1,
                     is_public BOOLEAN DEFAULT true,
@@ -953,8 +961,8 @@ async def create_anonymous_beep(request: dict):
         if lat == 0.0 and lng == 0.0:
             raise HTTPException(status_code=400, detail="Invalid GPS coordinates (0,0). Please ensure location services are enabled and try again.")
         
-        description = request.get('description', 'Anonymous UFO sighting')
-        title = "UFO Sighting"
+        description = request.get('description')  # Can be None/null
+        title = None  # Let UI determine contextual title
         
         # Apply minimal coordinate jittering for privacy (100m radius)
         accuracy = float(location.get('accuracy', 50.0))
@@ -1005,20 +1013,36 @@ async def create_anonymous_beep(request: dict):
         
         print(f"Created anonymous sighting {sighting_id} at {jittered_lat}, {jittered_lng}")
         
-        # Send proximity alerts automatically
-        try:
-            from services.proximity_alert_service import get_proximity_alert_service
-            proximity_service = get_proximity_alert_service(db_pool)
-            
-            alert_result = await proximity_service.send_proximity_alerts(
-                jittered_lat, jittered_lng, str(sighting_id), request['device_id']
-            )
-        except Exception as e:
-            print(f"Warning: Failed to send proximity alerts: {e}")
+        # Check if media upload is pending (has_media flag or expecting media)
+        has_pending_media = request.get('has_media', False) or request.get('pending_media', False) or request.get('media_ids')
+        
+        # Only send proximity alerts if NO media is pending
+        # If media is pending, alerts will be sent after media upload completes
+        if not has_pending_media:
+            # Send proximity alerts immediately for non-media beeps
+            try:
+                from services.proximity_alert_service import get_proximity_alert_service
+                proximity_service = get_proximity_alert_service(db_pool)
+                
+                alert_result = await proximity_service.send_proximity_alerts(
+                    jittered_lat, jittered_lng, str(sighting_id), request['device_id']
+                )
+                print(f"Sent proximity alerts for non-media sighting {sighting_id}")
+            except Exception as e:
+                print(f"Warning: Failed to send proximity alerts: {e}")
+                alert_result = {
+                    "total_alerts_sent": 0,
+                    "message": f"Sighting created but alerts failed: {str(e)}",
+                    "devices_alerted": []
+                }
+        else:
+            # Media upload pending - defer alerts
+            print(f"Deferring proximity alerts for sighting {sighting_id} until media upload completes")
             alert_result = {
                 "total_alerts_sent": 0,
-                "message": f"Sighting created but alerts failed: {str(e)}",
-                "devices_alerted": []
+                "message": "Alerts will be sent after media upload completes",
+                "devices_alerted": [],
+                "alerts_deferred": True
             }
         
         # Create user-friendly alert feedback
@@ -2035,6 +2059,80 @@ async def upload_media(
         raise
     except Exception as e:
         print(f"Error uploading media: {e}")
+        raise HTTPException(status_code=500, detail=f"Error uploading media: {str(e)}")
+
+@app.post("/sightings/{sighting_id}/media")
+async def upload_media_to_sighting(
+    sighting_id: str,
+    file: UploadFile = File(...),
+    device_id: str = Form(...),
+    trigger_alerts: bool = Form(default=True)
+):
+    """
+    Upload media to an existing sighting and optionally trigger alerts
+    This is used both for initial beep media uploads and adding media to existing sightings
+    """
+    try:
+        # Validate sighting exists
+        async with db_pool.acquire() as conn:
+            sighting_row = await conn.fetchrow("""
+                SELECT id, sensor_data FROM sightings 
+                WHERE id = $1
+            """, uuid.UUID(sighting_id))
+            
+            if not sighting_row:
+                raise HTTPException(status_code=404, detail="Sighting not found")
+        
+        # Upload media using existing media service
+        media_service = get_media_service(db_pool)
+        upload_result = await media_service.upload_and_process_photo(file, sighting_id)
+        
+        print(f"Media uploaded successfully for sighting {sighting_id}: {upload_result.get('file_id', 'unknown')}")
+        
+        # If alerts should be triggered after media upload
+        if trigger_alerts:
+            try:
+                # Extract coordinates from sensor data
+                sensor_data = sighting_row["sensor_data"]
+                if isinstance(sensor_data, str):
+                    sensor_data = json.loads(sensor_data)
+                
+                lat, lng = extract_coordinates_from_sensor_data(sensor_data)
+                if lat and lng:
+                    # Send proximity alerts
+                    from services.proximity_alert_service import get_proximity_alert_service
+                    proximity_service = get_proximity_alert_service(db_pool)
+                    
+                    alert_result = await proximity_service.send_proximity_alerts(
+                        lat, lng, sighting_id, device_id
+                    )
+                    
+                    print(f"Proximity alerts sent for sighting {sighting_id} after media upload")
+                    
+                    # Add alert info to response
+                    upload_result["alerts_sent"] = True
+                    upload_result["alert_result"] = alert_result
+                else:
+                    print(f"Warning: No valid coordinates found for sighting {sighting_id}, skipping alerts")
+                    upload_result["alerts_sent"] = False
+                    upload_result["alert_message"] = "Media uploaded but no alerts sent (invalid coordinates)"
+                    
+            except Exception as e:
+                print(f"Error sending alerts after media upload: {e}")
+                upload_result["alerts_sent"] = False
+                upload_result["alert_error"] = str(e)
+        else:
+            upload_result["alerts_sent"] = False
+            upload_result["alert_message"] = "Media uploaded, alerts not requested"
+        
+        return upload_result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error uploading media to sighting {sighting_id}: {e}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Error uploading media: {str(e)}")
 
 # Email Interest Signup Endpoints

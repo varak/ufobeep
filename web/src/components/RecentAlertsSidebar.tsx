@@ -6,8 +6,8 @@ import AlertCard from './AlertCard'
 
 interface Alert {
   id: string
-  title: string
-  description: string
+  title: string | null
+  description: string | null
   category: string
   created_at: string
   location: {
@@ -42,7 +42,7 @@ export default function RecentAlertsSidebar({ alerts = [], loading = false }: Re
       <div className="space-y-4">
         <h3 className="text-xl font-semibold text-text-primary mb-4">Latest Activity</h3>
         <div className="space-y-3">
-          {[1, 2, 3].map((i) => (
+          {[1, 2, 3, 4, 5].map((i) => (
             <div key={i} className="p-4 bg-dark-surface rounded-lg border border-dark-border animate-pulse">
               <div className="h-4 bg-dark-border rounded w-3/4 mb-2"></div>
               <div className="h-3 bg-dark-border rounded w-1/2 mb-2"></div>

@@ -1,4 +1,5 @@
 import { TFunction } from 'next-i18next';
+import { AlertTitleUtils } from '@/utils/alert-title-utils';
 
 // SEO constants
 export const SEO_CONSTANTS = {
@@ -114,8 +115,8 @@ export function generateAlertArticleStructuredData(alert: {
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: alert.title,
-    description: alert.description,
+    headline: AlertTitleUtils.getContextualTitle(alert),
+    description: alert.description || 'UFO sighting captured with UFOBeep',
     datePublished: alert.timestamp,
     dateModified: alert.timestamp,
     author: {

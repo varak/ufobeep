@@ -202,6 +202,13 @@ GoRouter appRouter(AppRouterRef ref) {
             builder: (context, state) => const MapScreen(),
           ),
 
+          // Alerts (clean list without map)
+          GoRoute(
+            path: '/alerts',
+            name: 'alerts',
+            builder: (context, state) => const AlertsScreen(),
+          ),
+
           // Profile
           GoRoute(
             path: '/profile',
@@ -250,12 +257,6 @@ GoRouter appRouter(AppRouterRef ref) {
         builder: (context, state) => const RegistrationScreen(),
       ),
 
-      // Standalone Alerts List (if needed)
-      GoRoute(
-        path: '/alerts',
-        name: 'alerts',
-        builder: (context, state) => const AlertsScreen(),
-      ),
     ],
   );
 }

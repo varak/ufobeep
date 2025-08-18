@@ -3,11 +3,12 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import ImageWithLoading from './ImageWithLoading'
+import { AlertTitleUtils } from '@/utils/alert-title-utils'
 
 interface Alert {
   id: string
-  title: string
-  description: string
+  title: string | null
+  description: string | null
   category: string
   created_at: string
   location: {
@@ -184,7 +185,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
               <div className="w-16 h-16 bg-gray-800 rounded-lg overflow-hidden flex-shrink-0 relative">
                 <ImageWithLoading 
                   src={`${primaryMedia.thumbnail_url || primaryMedia.url}?thumbnail=true`}
-                  alt={alert.title}
+                  alt={AlertTitleUtils.getShortTitle(alert)}
                   width={64}
                   height={64}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"

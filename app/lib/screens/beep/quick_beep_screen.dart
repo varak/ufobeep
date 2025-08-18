@@ -148,7 +148,7 @@ class _QuickBeepScreenState extends ConsumerState<QuickBeepScreen>
         latitude: position?.latitude,
         longitude: position?.longitude,
         heading: position?.heading,
-        description: 'Quick beep - something in the sky!',
+        description: null,
       );
       
       setState(() {

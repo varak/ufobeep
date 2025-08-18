@@ -234,11 +234,9 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     }
     
     try {
-      // Get description from text field if provided, otherwise use default
+      // Get description from text field if provided, otherwise null
       final description = _descriptionController.text.trim();
-      final beepDescription = description.isEmpty 
-          ? 'Quick beep - something in the sky!' 
-          : description;
+      final beepDescription = description.isEmpty ? null : description;
           
       // Send anonymous beep with description
       final beepResult = await anonymousBeepService.sendBeep(

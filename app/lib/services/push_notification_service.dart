@@ -265,6 +265,17 @@ class PushNotificationService {
       try {
         final container = ProviderScope.containerOf(rootNavigatorKey.currentContext!);
         container.refresh(alertsListProvider);
+        
+        // Force invalidate individual alert cache for the new sighting
+        if (sightingId != null) {
+          container.invalidate(alertByIdProvider(sightingId));
+          print('🔄 Force invalidated individual alert cache for $sightingId');
+          
+          // Pre-fetch the fresh alert data to populate cache
+          container.read(alertByIdProvider(sightingId));
+          print('📥 Pre-fetched fresh alert data for $sightingId');
+        }
+        
         print('🔄 Refreshed alerts tab due to new proximity alert');
       } catch (e) {
         print('Could not refresh alerts tab: $e');
@@ -284,7 +295,13 @@ class PushNotificationService {
       try {
         final container = ProviderScope.containerOf(rootNavigatorKey.currentContext!);
         container.refresh(alertsListProvider);
-        print('Refreshed alerts cache for fresh notification data');
+        
+        // Force invalidate the specific alert's cache for immediate media display
+        container.invalidate(alertByIdProvider(sightingId));
+        
+        // Pre-fetch fresh data to ensure media is loaded
+        container.read(alertByIdProvider(sightingId));
+        print('Force invalidated and pre-fetched alert $sightingId for fresh notification data with media');
       } catch (e) {
         print('Could not refresh alerts cache: $e');
       }

@@ -117,23 +117,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({ className = '' }) => {
                         <p className="text-sm text-white/60">Live Sighting Alerts</p>
                       </div>
 
-                      {/* Mock Alert Cards */}
+                      {/* Real alert data will be shown here when available */}
                       <div className="space-y-3">
-                        {[
-                          { title: "Disc-shaped object", distance: "2.3 km", time: "5 min ago" },
-                          { title: "Triangle formation", distance: "8.1 km", time: "12 min ago" },
-                          { title: "Bright light", distance: "15.7 km", time: "1 hour ago" }
-                        ].map((alert, index) => (
-                          <div key={index} className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                            <div className="flex items-center justify-between">
-                              <div className="flex-1">
-                                <h4 className="font-medium text-sm">{alert.title}</h4>
-                                <p className="text-xs text-white/60">{alert.distance} • {alert.time}</p>
-                              </div>
-                              <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
-                            </div>
-                          </div>
-                        ))}
+                        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 text-center">
+                          <p className="text-xs text-white/60">Live alerts appear here</p>
+                        </div>
                       </div>
                     </div>
                   </div>

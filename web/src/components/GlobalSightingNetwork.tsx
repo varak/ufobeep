@@ -90,7 +90,7 @@ export default function GlobalSightingNetwork() {
           </div>
           
           {/* Recent Activity Sidebar */}
-          <RecentAlertsSidebar alerts={alerts.slice(0, 3)} loading={loading} />
+          <RecentAlertsSidebar alerts={alerts.slice(0, 5)} loading={loading} />
         </div>
       </div>
     </section>

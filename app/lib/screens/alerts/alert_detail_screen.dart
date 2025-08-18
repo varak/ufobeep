@@ -16,6 +16,7 @@ import '../../services/permission_service.dart';
 import '../../services/api_client.dart';
 import '../../services/anonymous_beep_service.dart';
 import '../../services/sound_service.dart';
+import '../../utils/alert_title_utils.dart';
 
 class AlertDetailScreen extends ConsumerStatefulWidget {
   const AlertDetailScreen({super.key, required this.alertId});
@@ -222,7 +223,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(alert.title),
+            title: Text(AlertTitleUtils.getContextualTitle(alert)),
             actions: [
               IconButton(
                 icon: const Icon(Icons.chat),
@@ -267,17 +268,15 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 ),
                 const SizedBox(height: 12),
 
-                // Description - only show if it's not the default message
-                if (alert.description != 'UFO sighting captured with UFOBeep app' && 
-                    alert.description.isNotEmpty)
+                // Description - show actual description or contextual placeholder
+                if (alert.description != null && alert.description!.isNotEmpty)
                   Text(
-                    alert.description,
+                    alert.description!,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: AppColors.textSecondary,
                     ),
-                  ),
-                if (alert.description == 'UFO sighting captured with UFOBeep app' || 
-                    alert.description.isEmpty)
+                  )
+                else
                   Text(
                     'Visual sighting captured with UFOBeep',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -1448,7 +1447,18 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   }
 
   void _navigateToSighting(Alert alert, double bearing, double distance) {
-    context.go('/compass?targetLat=${alert.latitude}&targetLon=${alert.longitude}&targetName=${Uri.encodeComponent(alert.title)}&targetBearing=${bearing.toStringAsFixed(1)}&distance=${distance.toStringAsFixed(1)}&alertId=${alert.id}');
+    final targetName = AlertTitleUtils.getShortTitle(alert);
+    final compassParams = {
+      'targetLat': alert.latitude.toString(),
+      'targetLon': alert.longitude.toString(),
+      'targetName': Uri.encodeComponent(targetName),
+      'targetBearing': bearing.toStringAsFixed(1),
+      'distance': distance.toStringAsFixed(1),
+      'alertId': alert.id,
+    };
+    
+    final uri = Uri(path: '/compass', queryParameters: compassParams);
+    context.go(uri.toString());
   }
 }
 

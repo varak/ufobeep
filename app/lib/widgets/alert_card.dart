@@ -392,17 +392,18 @@ class _AlertCardState extends ConsumerState<AlertCard> {
               
               const SizedBox(height: 12),
               
-              // Description
-              Text(
-                widget.alert.description,
-                style: const TextStyle(
-                  color: AppColors.textSecondary,
-                  fontSize: 14,
-                  height: 1.4,
+              // Description - show only if provided
+              if (widget.alert.description != null && widget.alert.description!.isNotEmpty)
+                Text(
+                  widget.alert.description!,
+                  style: const TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 14,
+                    height: 1.4,
+                  ),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
               
               const SizedBox(height: 12),
               

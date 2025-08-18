@@ -1059,6 +1059,50 @@ extension ApiClientExtension on ApiClient {
     }
   }
 
+  Future<Map<String, dynamic>> uploadMediaToSighting(String sightingId, File file) async {
+    try {
+      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      
+      final formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(file.path),
+        'device_id': deviceId,
+        'trigger_alerts': false, // Just upload, don't trigger alerts
+      });
+
+      final response = await _dio.post(
+        '/sightings/$sightingId/media',
+        data: formData,
+      );
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw Exception('Failed to upload media: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> triggerAlertsForSighting(String sightingId) async {
+    try {
+      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      
+      final response = await _dio.post(
+        '/alerts/send/$sightingId',
+        data: {'device_id': deviceId},
+      );
+
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw Exception('Failed to trigger alerts: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
   // Media upload endpoints
   Future<Map<String, dynamic>> createPresignedUpload(File file) async {
     try {
