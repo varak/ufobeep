@@ -323,15 +323,34 @@ class AlertsList extends _$AlertsList {
         verifiedOnly: verifiedOnly,
       );
 
+      print('📱 /alerts API response: success=${response['success']}, message=${response['message']}');
+      print('📱 Response keys: ${response.keys.toList()}');
+      
       if (response['success'] == true) {
         final alertsData = response['data'] as Map<String, dynamic>;
+        print('📱 Alerts data keys: ${alertsData.keys.toList()}');
         final alertsList = alertsData['alerts'] as List<dynamic>;
+        print('📱 Raw alerts list length: ${alertsList.length}');
         
-        return alertsList
-            .cast<Map<String, dynamic>>()
-            .map((alertJson) => Alert.fromApiJson(alertJson))
-            .toList();
+        if (alertsList.isEmpty) {
+          print('📱 WARNING: Alerts list is empty from API');
+          return [];
+        }
+        
+        try {
+          final parsedAlerts = alertsList
+              .cast<Map<String, dynamic>>()
+              .map((alertJson) => Alert.fromApiJson(alertJson))
+              .toList();
+          print('📱 Successfully parsed ${parsedAlerts.length} alerts');
+          return parsedAlerts;
+        } catch (parseError) {
+          print('📱 ERROR parsing alerts: $parseError');
+          print('📱 First alert raw data: ${alertsList.isNotEmpty ? alertsList.first : 'N/A'}');
+          throw Exception('Failed to parse alerts: $parseError');
+        }
       } else {
+        print('📱 API returned failure: ${response['message']}');
         throw Exception(response['message'] ?? 'Failed to fetch alerts');
       }
     } catch (e) {
@@ -430,9 +449,19 @@ Future<Alert?> alertById(AlertByIdRef ref, String alertId) async {
     if (response['success'] == true) {
       final alertData = response['data'] as Map<String, dynamic>;
       print('Creating Alert from API data, media_files count: ${alertData['media_files']?.length ?? 0}');
-      final alert = Alert.fromApiJson(alertData);
-      print('Created Alert object, mediaFiles count: ${alert.mediaFiles.length}');
-      return alert;
+      print('Alert data keys: ${alertData.keys.toList()}');
+      print('Alert latitude/longitude: ${alertData['location']?['latitude']}, ${alertData['location']?['longitude']}');
+      
+      try {
+        final alert = Alert.fromApiJson(alertData);
+        print('Created Alert object successfully, mediaFiles count: ${alert.mediaFiles.length}');
+        return alert;
+      } catch (parseError, stackTrace) {
+        print('ERROR parsing alert data: $parseError');
+        print('Stack trace: $stackTrace');
+        print('Raw alert data: $alertData');
+        throw Exception('Failed to parse alert data: $parseError');
+      }
     }
     
     // Fallback to cache if API fails
