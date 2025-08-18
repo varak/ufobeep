@@ -105,7 +105,7 @@ export function generateAlertArticleStructuredData(alert: {
   id: string;
   title: string;
   description: string;
-  timestamp: string;
+  created_at: string;
   location?: string;
   reporterName?: string;
   coordinates?: { lat: number; lng: number };
@@ -117,8 +117,8 @@ export function generateAlertArticleStructuredData(alert: {
     '@type': 'Article',
     headline: AlertTitleUtils.getContextualTitle(alert),
     description: alert.description || 'UFO sighting captured with UFOBeep',
-    datePublished: alert.timestamp,
-    dateModified: alert.timestamp,
+    datePublished: alert.created_at,
+    dateModified: alert.created_at,
     author: {
       '@type': 'Person',
       name: alert.reporterName || 'Anonymous Observer',
@@ -136,7 +136,7 @@ export function generateAlertArticleStructuredData(alert: {
       '@type': 'Event',
       name: `UFO Sighting ${alert.id}`,
       description: alert.description,
-      startDate: alert.timestamp,
+      startDate: alert.created_at,
       location: alert.location && alert.coordinates ? {
         '@type': 'Place',
         name: alert.location,
