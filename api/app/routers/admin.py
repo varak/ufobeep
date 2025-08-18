@@ -93,9 +93,10 @@ def verify_admin_password(credentials: HTTPBasicCredentials = Depends(security))
 async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
     """Admin dashboard HTML interface"""
     
-    # Fetch stats server-side
+    # Fetch stats and recent activity server-side
     try:
         stats = await get_admin_stats(credentials)
+        recent_activity = await get_recent_activity(credentials)
     except Exception as e:
         stats = AdminStats(
             total_sightings=0, total_media_files=0, sightings_today=0,
@@ -104,6 +105,7 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
             confirmations_today=0, high_witness_sightings=0, escalated_alerts=0,
             database_size_mb=None
         )
+        recent_activity = []
     
     return f"""
 <!DOCTYPE html>
@@ -204,7 +206,12 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
         <div class="section">
             <h3>📊 Recent Activity</h3>
             <div id="recent-activity">
-                <p style="color: #888;">Recent activity available via individual admin pages.</p>
+                {"<p style='color: #888;'>No recent activity.</p>" if not recent_activity else 
+                 "".join([f"""<div style='color: #ccc; margin-bottom: 10px; padding: 8px; background: #333; border-radius: 4px;'>
+                    <div style='font-weight: bold;'>{item.get('type', 'Activity')}</div>
+                    <div style='color: #aaa; font-size: 0.9em;'>{item.get('title') or item.get('description', 'No description')}</div>
+                    <div style='color: #888; font-size: 0.8em;'>{str(item.get('created_at', ''))[:19] if item.get('created_at') else 'Unknown time'}</div>
+                </div>""" for item in recent_activity[:8]])}
             </div>
         </div>
 
