@@ -4,8 +4,13 @@ interface Alert {
   description: string | null
   created_at: string
   media_files?: Array<{
+    id: string
     type: string
-    content_type: string
+    url: string
+    thumbnail_url: string
+    is_primary: boolean
+    upload_order: number
+    display_priority: number
   }>
 }
 
