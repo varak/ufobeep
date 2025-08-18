@@ -337,11 +337,7 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
         // Load recent activity
         async function loadActivity() {
             try {
-                const response = await fetch('/admin/recent-activity', {
-                    headers: {
-                        'Authorization': 'Basic ' + btoa('admin:ufopostpass')
-                    }
-                });
+                const response = await fetch('/admin/recent-activity');
                 const activity = await response.json();
                 
                 const activityDiv = document.getElementById('recent-activity');
@@ -364,11 +360,7 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
         // Rate Limiting Control Functions
         async function loadRateLimitStatus() {
             try {
-                const response = await fetch("/admin/ratelimit/status", {
-                    headers: {
-                        'Authorization': 'Basic ' + btoa('admin:ufopostpass')
-                    }
-                });
+                const response = await fetch("/admin/ratelimit/status");
                 const data = await response.json();
                 
                 document.getElementById("rate-limit-status").textContent = data.enabled ? "ENABLED" : "DISABLED";
@@ -437,11 +429,7 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
         // Engagement metrics functions
         async function loadEngagementMetrics() {
             try {
-                const response = await fetch('/admin/engagement/summary', {
-                    headers: {
-                        'Authorization': 'Basic ' + btoa('admin:ufopostpass')
-                    }
-                });
+                const response = await fetch('/admin/engagement/summary');
                 const result = await response.json();
                 
                 if (result.success) {
@@ -490,17 +478,18 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
         }
 
         // Initialize dashboard
-        loadStats();
-        loadActivity();
-        loadRateLimitStatus();
+        // Stats are now server-side rendered
+        // loadStats(); // Disabled - stats are server-side rendered
+        // loadActivity(); // Disabled - requires auth
+        // loadRateLimitStatus(); // Disabled - requires auth
         
-        // Refresh every 30 seconds
-        setInterval(() => {
-            loadStats();
-            loadEngagementMetrics();
-            loadActivity();
-            loadRateLimitStatus();
-        }, 30000);
+        // Refresh disabled - would need session auth
+        // setInterval(() => {
+        //     loadStats();
+        //     loadEngagementMetrics();
+        //     loadActivity();
+        //     loadRateLimitStatus();
+        // }, 30000);
     </script>
 </body>
 </html>
@@ -1675,11 +1664,7 @@ async def admin_witnesses_page(credentials: str = Depends(verify_admin_password)
         async function loadWitnessData() {
             try {
                 // Load stats
-                const statsResponse = await fetch('/admin/stats', {
-                    headers: {
-                        'Authorization': 'Basic ' + btoa('admin:ufopostpass')
-                    }
-                });
+                const statsResponse = await fetch('/admin/stats');
                 const stats = await statsResponse.json();
                 
                 document.getElementById('total-confirmations').textContent = stats.total_witness_confirmations;

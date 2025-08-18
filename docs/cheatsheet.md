@@ -208,9 +208,12 @@ ssh -p 322 ufobeep@ufobeep.com "pm2 delete ufobeep-web && cd /home/ufobeep/ufobe
 - **Redirect URL**: https://ufobeep.com/admin (nginx 301 redirect)
 - **Authentication**: HTTP Basic Auth (username: admin, password: ufopostpass)
 - **Features**: Dashboard, sightings management, media management, system status, MUFON integration, system logs
-- **Implementation**: Complete FastAPI router with HTML interfaces and real-time data
+- **Implementation**: Complete FastAPI router with HTML interfaces and server-side rendered data
 - **Database Integration**: Direct PostgreSQL queries for admin statistics and management
 - **Security**: Password-protected endpoints with secrets.compare_digest for timing attack protection
+- **Dashboard**: Server-side rendered statistics (no AJAX/credentials exposure)
+- **Sightings Page**: Uses /alerts endpoint with media thumbnails (40x40px with video indicators)
+- **Media Display**: Proper video/image detection with fallback icons and primary media indicators
 
 ### Rate Limiting Controls
 - **Disable Rate Limiting**: `https://admin:ufopostpass@api.ufobeep.com/admin/ratelimit/off`
