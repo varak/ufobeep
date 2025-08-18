@@ -92,7 +92,20 @@ def verify_admin_password(credentials: HTTPBasicCredentials = Depends(security))
 @router.get("/", response_class=HTMLResponse)
 async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
     """Admin dashboard HTML interface"""
-    return """
+    
+    # Fetch stats server-side
+    try:
+        stats = await get_admin_stats(credentials)
+    except Exception as e:
+        stats = AdminStats(
+            total_sightings=0, total_media_files=0, sightings_today=0,
+            sightings_this_week=0, pending_sightings=0, verified_sightings=0,
+            media_without_primary=0, recent_uploads=0, total_witness_confirmations=0,
+            confirmations_today=0, high_witness_sightings=0, escalated_alerts=0,
+            database_size_mb=None
+        )
+    
+    return f"""
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -138,7 +151,38 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
         </div>
 
         <div class="stats-grid" id="stats-grid">
-            <!-- Stats loaded via JavaScript -->
+            <div class="stat-card">
+                <div class="stat-number">{stats.total_sightings}</div>
+                <div class="stat-label">Total Sightings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{stats.total_media_files}</div>
+                <div class="stat-label">Media Files</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{stats.sightings_today}</div>
+                <div class="stat-label">Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{stats.sightings_this_week}</div>
+                <div class="stat-label">This Week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{stats.pending_sightings}</div>
+                <div class="stat-label">Pending</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{stats.verified_sightings}</div>
+                <div class="stat-label">Verified</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{stats.witness_count if hasattr(stats, 'witness_count') else '0'}</div>
+                <div class="stat-label">Total Witnesses</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{stats.escalated_alerts}</div>
+                <div class="stat-label">Emergency Alerts</div>
+            </div>
         </div>
 
         <div class="nav-buttons">
@@ -236,8 +280,8 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
         // Load admin stats
         async function loadStats() {
             try {
-                const response = await fetch('/admin/stats');
-                const stats = await response.json();
+                // Stats will be server-side rendered instead of AJAX
+                return;
                 
                 // Also load engagement metrics
                 await loadEngagementMetrics();
@@ -293,7 +337,11 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
         // Load recent activity
         async function loadActivity() {
             try {
-                const response = await fetch('/admin/recent-activity');
+                const response = await fetch('/admin/recent-activity', {
+                    headers: {
+                        'Authorization': 'Basic ' + btoa('admin:ufopostpass')
+                    }
+                });
                 const activity = await response.json();
                 
                 const activityDiv = document.getElementById('recent-activity');
@@ -316,7 +364,11 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
         // Rate Limiting Control Functions
         async function loadRateLimitStatus() {
             try {
-                const response = await fetch("/admin/ratelimit/status");
+                const response = await fetch("/admin/ratelimit/status", {
+                    headers: {
+                        'Authorization': 'Basic ' + btoa('admin:ufopostpass')
+                    }
+                });
                 const data = await response.json();
                 
                 document.getElementById("rate-limit-status").textContent = data.enabled ? "ENABLED" : "DISABLED";
@@ -385,7 +437,11 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
         // Engagement metrics functions
         async function loadEngagementMetrics() {
             try {
-                const response = await fetch('/admin/engagement/summary');
+                const response = await fetch('/admin/engagement/summary', {
+                    headers: {
+                        'Authorization': 'Basic ' + btoa('admin:ufopostpass')
+                    }
+                });
                 const result = await response.json();
                 
                 if (result.success) {
@@ -1619,7 +1675,11 @@ async def admin_witnesses_page(credentials: str = Depends(verify_admin_password)
         async function loadWitnessData() {
             try {
                 // Load stats
-                const statsResponse = await fetch('/admin/stats');
+                const statsResponse = await fetch('/admin/stats', {
+                    headers: {
+                        'Authorization': 'Basic ' + btoa('admin:ufopostpass')
+                    }
+                });
                 const stats = await statsResponse.json();
                 
                 document.getElementById('total-confirmations').textContent = stats.total_witness_confirmations;
