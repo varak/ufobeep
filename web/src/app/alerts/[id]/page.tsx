@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import ImageWithLoading from '../../../components/ImageWithLoading'
 import WitnessAggregation from '../../../components/WitnessAggregation'
+import InteractiveMap from '../../../components/InteractiveMap'
 
 interface Alert {
   id: string
@@ -58,8 +59,54 @@ interface AlertPageProps {
 
 export default function AlertPage({ params }: AlertPageProps) {
   const [alert, setAlert] = useState<Alert | null>(null)
+  const [nearbySightings, setNearbySightings] = useState<Alert[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  // Calculate distance between two coordinates using Haversine formula
+  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+    const R = 6371 // Earth's radius in kilometers
+    const dLat = (lat2 - lat1) * Math.PI / 180
+    const dLon = (lon2 - lon1) * Math.PI / 180
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLon/2) * Math.sin(dLon/2)
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+    return R * c
+  }
+
+  const fetchNearbySightings = (mainAlert: Alert, allAlerts: Alert[]) => {
+    const nearby = allAlerts.filter(alert => {
+      if (alert.id === mainAlert.id) return false // Exclude main alert
+      
+      const distance = calculateDistance(
+        mainAlert.location.latitude,
+        mainAlert.location.longitude,
+        alert.location.latitude,
+        alert.location.longitude
+      )
+      
+      return distance <= 50 // Within 50km
+    })
+    
+    // Sort by distance and take closest 10
+    const sortedNearby = nearby
+      .map(alert => ({
+        ...alert,
+        distance: calculateDistance(
+          mainAlert.location.latitude,
+          mainAlert.location.longitude,
+          alert.location.latitude,
+          alert.location.longitude
+        )
+      }))
+      .sort((a, b) => a.distance - b.distance)
+      .slice(0, 10)
+    
+    console.log(`Found ${sortedNearby.length} nearby sightings within 50km`)
+    setNearbySightings(sortedNearby)
+  }
 
   useEffect(() => {
     const fetchAlert = async () => {
@@ -91,6 +138,9 @@ export default function AlertPage({ params }: AlertPageProps) {
           if (foundAlert) {
             console.log(`Found alert ${params.id} on page ${page + 1}`)
             setAlert(foundAlert)
+            
+            // Fetch nearby sightings within 50km
+            fetchNearbySightings(foundAlert, data.data.alerts)
             break
           }
           
@@ -533,10 +583,12 @@ export default function AlertPage({ params }: AlertPageProps) {
                 {alert.location.latitude.toFixed(6)}, {alert.location.longitude.toFixed(6)}
               </p>
               
-              <div className="bg-dark-background rounded-lg p-4 text-center">
-                <div className="text-3xl mb-2">🗺️</div>
-                <p className="text-text-tertiary text-sm">Interactive map coming soon</p>
-              </div>
+              <InteractiveMap
+                sighting={alert}
+                nearbySightings={nearbySightings}
+                height="300px"
+                showFullscreenButton={true}
+              />
             </section>
 
             {/* Stats */}
