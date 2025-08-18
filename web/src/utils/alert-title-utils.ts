@@ -1,4 +1,13 @@
-import { Alert } from '@/types/api'
+interface Alert {
+  id: string
+  title: string | null
+  description: string | null
+  timestamp: string
+  media_files?: Array<{
+    type: string
+    content_type: string
+  }>
+}
 
 export class AlertTitleUtils {
   /**
