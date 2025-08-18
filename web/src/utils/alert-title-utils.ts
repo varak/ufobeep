@@ -39,12 +39,10 @@ export class AlertTitleUtils {
     
     // Generate contextual title based on available data
     if (hasMedia) {
-      const hasPhoto = alert.media_files.some((media) => 
-        media.type.toLowerCase().includes('image') || 
-        media.content_type.toLowerCase().includes('image'));
-      const hasVideo = alert.media_files.some((media) => 
-        media.type.toLowerCase().includes('video') || 
-        media.content_type.toLowerCase().includes('video'));
+      const hasPhoto = alert.media_files?.some((media) => 
+        media.type.toLowerCase().includes('image')) || false;
+      const hasVideo = alert.media_files?.some((media) => 
+        media.type.toLowerCase().includes('video')) || false;
       
       if (hasPhoto && hasVideo) {
         return 'Visual sighting (photo & video)';
