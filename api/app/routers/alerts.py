@@ -68,9 +68,7 @@ async def create_alert(request: dict):
         alert_id, jittered_location = await alerts_service.create_anonymous_beep(
             device_id=device_id,
             location=location,
-            description=request.get('description', ''),
-            category=request.get('category', 'ufo'),
-            alert_level=request.get('alert_level', 'normal')
+            description=request.get('description', '')
         )
         
         # Send proximity alerts (critical for notifying nearby devices)
