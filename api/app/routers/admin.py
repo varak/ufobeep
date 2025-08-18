@@ -189,40 +189,7 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
             <p>System Administration & Management</p>
         </div>
 
-        <div class="stats-grid" id="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number">{stats.total_sightings}</div>
-                <div class="stat-label">Total Sightings</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{stats.total_media_files}</div>
-                <div class="stat-label">Media Files</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{stats.sightings_today}</div>
-                <div class="stat-label">Today</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{stats.sightings_this_week}</div>
-                <div class="stat-label">This Week</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{stats.pending_sightings}</div>
-                <div class="stat-label">Pending</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{stats.verified_sightings}</div>
-                <div class="stat-label">Verified</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{stats.witness_count if hasattr(stats, 'witness_count') else '0'}</div>
-                <div class="stat-label">Total Witnesses</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{stats.escalated_alerts}</div>
-                <div class="stat-label">Emergency Alerts</div>
-            </div>
-        </div>
+""" + stats_html + """
 
         <div class="nav-buttons">
             <a href="/admin/sightings" class="nav-btn">📋 Manage Sightings</a>
@@ -243,12 +210,7 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
         <div class="section">
             <h3>📊 Recent Activity</h3>
             <div id="recent-activity">
-                {"<p style='color: #888;'>No recent activity.</p>" if not recent_activity else 
-                 "".join([f"""<div style='color: #ccc; margin-bottom: 10px; padding: 8px; background: #333; border-radius: 4px;'>
-                    <div style='font-weight: bold;'>{item.get('type', 'Activity')}</div>
-                    <div style='color: #aaa; font-size: 0.9em;'>{item.get('title') or item.get('description', 'No description')}</div>
-                    <div style='color: #888; font-size: 0.8em;'>{str(item.get('created_at', ''))[:19] if item.get('created_at') else 'Unknown time'}</div>
-                </div>""" for item in recent_activity[:8]])}
+                <p style="color: #888;">Recent activity will be displayed here.</p>
             </div>
         </div>
 
