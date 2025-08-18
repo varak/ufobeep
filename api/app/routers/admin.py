@@ -623,67 +623,7 @@ async def get_recent_activity(credentials: str = Depends(verify_admin_password))
 
 
 # JSON API endpoints for JavaScript data fetching
-@router.get("/data/sightings")
-async def get_sightings_data(
-    limit: int = 50,
-    offset: int = 0,
-    status: Optional[str] = None,
-    credentials: str = Depends(verify_admin_password)
-) -> List[SightingAdmin]:
-    """Get sightings data for admin management"""
-    
-    conn = await get_db_connection()
-    try:
-        query = """
-            SELECT 
-                s.id, s.title, s.description, s.category, s.status, s.alert_level,
-                s.created_at, s.witness_count,
-                COUNT(m.id) as media_count,
-                COUNT(CASE WHEN m.is_primary THEN 1 END) > 0 as has_primary_media,
-                COALESCE((SELECT COUNT(*) FROM witness_confirmations w WHERE w.sighting_id = s.id), 0) as total_confirmations
-            FROM sightings s
-            LEFT JOIN media_files m ON s.id = m.sighting_id
-            GROUP BY s.id, s.title, s.description, s.category, s.status, s.alert_level,
-                     s.created_at, s.witness_count
-            ORDER BY s.created_at DESC
-            LIMIT $1 OFFSET $2
-        """
-        sightings = await conn.fetch(query, limit, offset)
-        
-        def get_escalation_level(witness_count):
-            if witness_count >= 10:
-                return "emergency"
-            elif witness_count >= 3:
-                return "urgent"
-            else:
-                return "normal"
-        
-        return [
-            SightingAdmin(
-                id=str(s['id']),
-                title=s['title'],
-                description=s['description'],
-                category=s['category'],
-                status=s['status'],
-                alert_level=s['alert_level'],
-                created_at=s['created_at'],
-                location_name="Unknown",  # Default since column doesn't exist yet
-                reporter_id=None,  # Default since column doesn't exist yet
-                media_count=s['media_count'],
-                has_primary_media=s['has_primary_media'],
-                verification_score=0.0,  # Default since column doesn't exist yet
-                witness_count=s['witness_count'],
-                total_confirmations=s['total_confirmations'],
-                escalation_level=get_escalation_level(s['witness_count'])
-            )
-            for s in sightings
-        ]
-        
-    except Exception as e:
-        print(f"Error in admin sightings query: {e}")
-        return []
-    finally:
-        await conn.close()
+# Removed old data/sightings endpoint - now using /alerts endpoint directly
 
 @router.get("/data/media")
 async def get_media_data(
@@ -911,12 +851,6 @@ async def admin_sightings_page(credentials: str = Depends(verify_admin_password)
         </div>
 
         <div class="controls">
-            <select id="statusFilter" class="status-filter">
-                <option value="">All Statuses</option>
-                <option value="created">Created</option>
-                <option value="pending">Pending</option>
-                <option value="verified">Verified</option>
-            </select>
             <button onclick="loadSightings()" class="refresh-btn">Refresh</button>
         </div>
 
@@ -944,7 +878,7 @@ async def admin_sightings_page(credentials: str = Depends(verify_admin_password)
             }
             
             // Generate contextual title based on available data
-            if (sighting.media_count > 0) {
+            if (sighting.media_files && sighting.media_files.length > 0) {
                 return 'Visual sighting';
             }
             
@@ -969,8 +903,9 @@ async def admin_sightings_page(credentials: str = Depends(verify_admin_password)
                 return sighting.description.substring(0, 100) + (sighting.description.length > 100 ? '...' : '');
             }
             
-            if (sighting.media_count > 0) {
-                return `${sighting.media_count} media file${sighting.media_count > 1 ? 's' : ''} captured`;
+            const mediaCount = sighting.media_files ? sighting.media_files.length : 0;
+            if (mediaCount > 0) {
+                return `${mediaCount} media file${mediaCount > 1 ? 's' : ''} captured`;
             }
             
             return 'Witness-only sighting';
@@ -978,25 +913,66 @@ async def admin_sightings_page(credentials: str = Depends(verify_admin_password)
 
         async function loadSightings() {
             try {
-                const statusFilter = document.getElementById('statusFilter').value;
-                const params = new URLSearchParams();
-                if (statusFilter) params.append('status', statusFilter);
+                const response = await fetch('/alerts');
+                const data = await response.json();
                 
-                const response = await fetch(`/admin/data/sightings?${params}`);
-                const sightings = await response.json();
-                currentSightings = sightings;
-                renderSightings(sightings);
+                if (data.success && data.data && data.data.alerts) {
+                    const alerts = data.data.alerts;
+                    currentSightings = alerts;
+                    renderSightings(alerts);
+                } else {
+                    document.getElementById('sightingsTable').innerHTML = 
+                        '<div class="loading">No sightings found.</div>';
+                }
             } catch (error) {
                 document.getElementById('sightingsTable').innerHTML = 
                     `<div class="loading">Error loading sightings: ${error.message}</div>`;
             }
         }
 
-        function renderSightings(sightings) {
-            if (sightings.length === 0) {
+        function renderSightings(alerts) {
+            if (alerts.length === 0) {
                 document.getElementById('sightingsTable').innerHTML = 
                     '<div class="loading">No sightings found.</div>';
                 return;
+            }
+
+            function getEscalationLevel(witness_count) {
+                if (witness_count >= 10) return 'emergency';
+                if (witness_count >= 3) return 'urgent'; 
+                return 'normal';
+            }
+
+            function renderMediaThumbnails(media_files) {
+                if (!media_files || media_files.length === 0) {
+                    return '<span class="media-count">No media</span>';
+                }
+
+                const primaryMedia = media_files.find(m => m.is_primary) || media_files[0];
+                const thumbnailUrl = `${primaryMedia.thumbnail_url || primaryMedia.url}?thumbnail=true`;
+                const isVideo = primaryMedia.type === 'video' || 
+                              primaryMedia.url?.toLowerCase().includes('.mp4') ||
+                              primaryMedia.url?.toLowerCase().includes('.mov');
+
+                return `
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="width: 40px; height: 40px; background: #333; border-radius: 4px; overflow: hidden; position: relative;">
+                            <img src="${thumbnailUrl}" alt="Media thumbnail" 
+                                 style="width: 100%; height: 100%; object-fit: cover;"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; color: #888; font-size: 12px;">
+                                ${isVideo ? '🎥' : '📸'}
+                            </div>
+                            ${isVideo ? '<div style="position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.7); border-radius: 2px; padding: 1px 2px; font-size: 8px;">▶</div>' : ''}
+                        </div>
+                        <div>
+                            <div class="media-count">${media_files.length} file${media_files.length > 1 ? 's' : ''}</div>
+                            <small style="color: ${primaryMedia.is_primary ? '#00ff88' : '#ff4444'};">
+                                ${primaryMedia.is_primary ? '✓ Primary' : '⚠ No Primary'}
+                            </small>
+                        </div>
+                    </div>
+                `;
             }
 
             const table = `
@@ -1015,39 +991,39 @@ async def admin_sightings_page(credentials: str = Depends(verify_admin_password)
                         </tr>
                     </thead>
                     <tbody>
-                        ${sightings.map(sighting => `
-                            <tr>
-                                <td>
-                                    <strong>${getContextualTitle(sighting)}</strong><br>
-                                    <small style="color: #888;">${getContextualDescription(sighting)}</small>
-                                </td>
-                                <td>${sighting.category}</td>
-                                <td><span class="badge ${sighting.status}">${sighting.status}</span></td>
-                                <td><span class="badge ${sighting.alert_level}">${sighting.alert_level}</span></td>
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 8px;">
-                                        <span class="badge ${sighting.escalation_level}">
-                                            ${sighting.escalation_level === 'emergency' ? '🚨' : 
-                                              sighting.escalation_level === 'urgent' ? '⚠️' : '👁️'} 
-                                            ${sighting.witness_count}
-                                        </span>
-                                        <small style="color: #888;">(${sighting.total_confirmations} confirmed)</small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="media-count">${sighting.media_count} files</span>
-                                    ${sighting.has_primary_media ? '<br><small style="color: #00ff88;">✓ Has Primary</small>' : '<br><small style="color: #ff4444;">⚠ No Primary</small>'}
-                                </td>
-                                <td>${sighting.location_name || 'Unknown'}</td>
-                                <td>${new Date(sighting.created_at).toLocaleDateString()}</td>
-                                <td>
-                                    ${sighting.status !== 'verified' ? 
-                                        `<button class="btn" onclick="verifySighting('${sighting.id}')">Verify</button>` : ''
-                                    }
-                                    <button class="btn danger" onclick="deleteSighting('${sighting.id}')">Delete</button>
-                                </td>
-                            </tr>
-                        `).join('')}
+                        ${alerts.map(alert => {
+                            const escalationLevel = getEscalationLevel(alert.witness_count || 0);
+                            return `
+                                <tr>
+                                    <td>
+                                        <strong>${getContextualTitle(alert)}</strong><br>
+                                        <small style="color: #888;">${getContextualDescription(alert)}</small>
+                                    </td>
+                                    <td>${alert.category || 'Unknown'}</td>
+                                    <td><span class="badge ${alert.status}">${alert.status}</span></td>
+                                    <td><span class="badge ${alert.alert_level}">${alert.alert_level}</span></td>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <span class="badge ${escalationLevel}">
+                                                ${escalationLevel === 'emergency' ? '🚨' : 
+                                                  escalationLevel === 'urgent' ? '⚠️' : '👁️'} 
+                                                ${alert.witness_count || 0}
+                                            </span>
+                                            <small style="color: #888;">(${alert.total_confirmations || 0} confirmed)</small>
+                                        </div>
+                                    </td>
+                                    <td>${renderMediaThumbnails(alert.media_files)}</td>
+                                    <td>${alert.location?.name || 'Unknown'}</td>
+                                    <td>${new Date(alert.created_at).toLocaleDateString()}</td>
+                                    <td>
+                                        ${alert.status !== 'verified' ? 
+                                            `<button class="btn" onclick="verifySighting('${alert.id}')">Verify</button>` : ''
+                                        }
+                                        <button class="btn danger" onclick="deleteSighting('${alert.id}')">Delete</button>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
                     </tbody>
                 </table>
             `;
@@ -1094,7 +1070,6 @@ async def admin_sightings_page(credentials: str = Depends(verify_admin_password)
 
         // Initialize
         loadSightings();
-        document.getElementById('statusFilter').addEventListener('change', loadSightings);
     </script>
 </body>
 </html>
