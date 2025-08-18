@@ -198,74 +198,14 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
             <a href="/admin/logs" class="nav-btn">📜 System Logs</a>
         </div>
 
-        <!-- User Engagement & Metrics Section -->
-        <div class="section">
-            <h3>📊 User Engagement & Quick Actions (24h)</h3>
-            <div class="stats-grid" id="engagement-stats">
-                <div class="stat-card">
-                    <div class="stat-number" id="engagement-rate">-</div>
-                    <div class="stat-label">Engagement Rate</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="confirmations-24h">-</div>
-                    <div class="stat-label">"I see it too" Actions</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="checked-no-see-24h">-</div>
-                    <div class="stat-label">"I checked but don't see it"</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="missed-24h">-</div>
-                    <div class="stat-label">"I missed this one"</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="unique-devices-24h">-</div>
-                    <div class="stat-label">Active Devices</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="delivery-success-rate">-</div>
-                    <div class="stat-label">Delivery Success Rate</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="avg-delivery-time">-</div>
-                    <div class="stat-label">Avg Delivery Time</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="events-1h">-</div>
-                    <div class="stat-label">Events (1h)</div>
-                </div>
-            </div>
-            <div style="margin-top: 15px; text-align: center;">
-                <button class="nav-btn" onclick="refreshEngagementMetrics()" style="width: auto; padding: 10px 20px;">🔄 Refresh Metrics</button>
-                <button class="nav-btn" onclick="viewDetailedMetrics()" style="width: auto; padding: 10px 20px; margin-left: 10px;">📈 Detailed View</button>
-            </div>
-        </div>
-
-        <!-- Rate Limiting Controls Section -->
-        <div class="section">
-            <h3>⏱️ Rate Limiting Controls</h3>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number" id="rate-limit-status">Loading...</div>
-                    <div class="stat-label">Status</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="rate-limit-threshold">-</div>
-                    <div class="stat-label">Threshold (per 15min)</div>
-                </div>
-            </div>
-            <div class="nav-buttons">
-                <button class="nav-btn" onclick="toggleRateLimit(false)" style="background: #dc3545;">🔴 Disable</button>
-                <button class="nav-btn" onclick="toggleRateLimit(true)" style="background: #28a745;">🟢 Enable</button>
-                <button class="nav-btn" onclick="setRateLimit()" style="background: #17a2b8;">📝 Set Threshold</button>
-                <button class="nav-btn" onclick="clearRateLimit()" style="background: #fd7e14;">🧹 Clear History</button>
-            </div>
-            <div id="rate-limit-result" style="margin-top: 15px; display: none; padding: 10px; border-radius: 5px;"></div>
-        </div>
+        <!-- Note: User Engagement & Rate Limiting sections temporarily disabled for security -->
+        <!-- Can be re-enabled with proper session authentication -->
 
         <div class="section">
             <h3>📊 Recent Activity</h3>
-            <div id="recent-activity">Loading...</div>
+            <div id="recent-activity">
+                <p style="color: #888;">Recent activity available via individual admin pages.</p>
+            </div>
         </div>
 
         <div class="section">
