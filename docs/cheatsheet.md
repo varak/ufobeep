@@ -58,9 +58,18 @@ Single FastAPI app with routers:
 ## Current Web Routes
 - `/` - Homepage with email signup
 - `/alerts` - List of all recent sightings (24 items max)
-- `/alert/[slug]` - SEO-friendly individual alert detail pages
-- `/alerts/[id]` - Old alert route (uses mock data, to be deprecated)
+- `/alert/[slug]` - SEO-friendly individual alert detail pages  
+- `/alerts/[id]` - Individual alert detail pages with interactive maps
 - `/app` - App download page
+
+## Interactive Maps (COMPLETED)
+- **Individual Alert Pages**: `/alerts/[id]` now include interactive Google Maps
+- **Main Sighting**: Prominently highlighted with green marker and detailed info window
+- **Nearby Sightings**: Orange markers for sightings within 50km radius (up to 10)
+- **Features**: Dark theme, fullscreen modal, distance calculation, clickable markers
+- **Responsive**: Works on mobile and desktop with touch/click interactions
+- **Integration**: Uses Google Maps API with fallback error handling
+- **Navigation**: Click nearby markers to jump to other sighting detail pages
 
 ## Mobile App Flow
 - Camera capture → Beep composition → Send beep → Alert detail page

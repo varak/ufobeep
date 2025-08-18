@@ -66,7 +66,7 @@ export default function InteractiveMap({
 
       // Load Google Maps script
       const script = document.createElement('script')
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || 'AIzaSyBdVl-cTICSwYKrZ95SuvNb2HQSwtm5gGs'}&libraries=geometry`
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}&libraries=geometry`
       script.async = true
       script.defer = true
       script.onload = initializeMap
