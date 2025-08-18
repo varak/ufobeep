@@ -49,7 +49,7 @@ class PlaneMatchApiService {
       );
 
       final response = await _dio.post(
-        '/v1/plane-match',
+        '/plane-match',
         data: request.toJson(),
       );
 
@@ -99,7 +99,7 @@ class PlaneMatchApiService {
 
   Future<Map<String, dynamic>> getServiceHealth() async {
     try {
-      final response = await _dio.get('/v1/plane-match/health');
+      final response = await _dio.get('/plane-match/health');
       
       if (response.statusCode == 200) {
         return response.data as Map<String, dynamic>;

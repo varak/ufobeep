@@ -52,9 +52,9 @@ class AppEnvironment {
     }
   }
   
-  static String get apiVersion => dotenv.env['API_VERSION'] ?? 'v1';
+  static String get apiVersion => dotenv.env['API_VERSION'] ?? '';
   
-  static String get apiFullUrl => '$apiBaseUrl/$apiVersion';
+  static String get apiFullUrl => apiVersion.isNotEmpty ? '$apiBaseUrl/$apiVersion' : apiBaseUrl;
   
   // Matrix Configuration
   static String get matrixBaseUrl {

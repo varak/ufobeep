@@ -109,7 +109,7 @@ class MatrixService {
     String? displayName,
   }) async {
     try {
-      final url = Uri.parse('${AppEnvironment.apiBaseUrl}/v1/matrix/sso');
+      final url = Uri.parse('${AppEnvironment.apiBaseUrl}/matrix/sso');
       
       final response = await _httpClient.post(
         url,
@@ -171,7 +171,7 @@ class MatrixService {
   /// Get Matrix room information
   Future<MatrixRoomInfo?> getRoomInfo(String roomId) async {
     try {
-      final url = Uri.parse('${AppEnvironment.apiBaseUrl}/v1/matrix/room/$roomId/info');
+      final url = Uri.parse('${AppEnvironment.apiBaseUrl}/matrix/room/$roomId/info');
       
       final response = await _httpClient.get(url);
 
@@ -191,7 +191,7 @@ class MatrixService {
   /// Get room transcript (messages)
   Future<List<MatrixMessage>> getRoomTranscript(String roomId, {int limit = 50}) async {
     try {
-      final url = Uri.parse('${AppEnvironment.apiBaseUrl}/v1/matrix/room/$roomId/messages?limit=$limit');
+      final url = Uri.parse('${AppEnvironment.apiBaseUrl}/matrix/room/$roomId/messages?limit=$limit');
       
       final response = await _httpClient.get(url);
 
@@ -214,7 +214,7 @@ class MatrixService {
   /// Join a Matrix room
   Future<bool> joinRoom(String roomId) async {
     try {
-      final url = Uri.parse('${AppEnvironment.apiBaseUrl}/v1/matrix/room/$roomId/join');
+      final url = Uri.parse('${AppEnvironment.apiBaseUrl}/matrix/room/$roomId/join');
       
       final response = await _httpClient.post(url);
 
@@ -248,7 +248,7 @@ class MatrixService {
   /// Check Matrix service health
   Future<bool> checkHealth() async {
     try {
-      final url = Uri.parse('${AppEnvironment.apiBaseUrl}/v1/matrix/health');
+      final url = Uri.parse('${AppEnvironment.apiBaseUrl}/matrix/health');
       
       final response = await _httpClient.get(url);
       
