@@ -73,7 +73,7 @@ export default function WitnessAggregation({ sightingId }: WitnessAggregationPro
   const fetchWitnessAggregation = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`https://api.ufobeep.com/sightings/${sightingId}/witness-aggregation`)
+      const response = await fetch(`https://api.ufobeep.com/alerts/${sightingId}/witness-aggregation`)
       
       if (!response.ok) {
         throw new Error(`Failed to fetch witness aggregation: ${response.statusText}`)

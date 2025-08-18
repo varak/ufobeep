@@ -173,7 +173,7 @@ class ApiClient {
   Future<api.CreateSightingResponse> submitSighting(api.SightingSubmission submission) async {
     try {
       final response = await _dio.post(
-        '/sightings',
+        '/alerts',
         data: submission.toJson(),
       );
 
@@ -231,7 +231,7 @@ class ApiClient {
       }
 
       final response = await _dio.get(
-        '/sightings',
+        '/alerts',
         queryParameters: queryParams,
       );
 
@@ -649,7 +649,7 @@ class ApiClient {
       };
 
       final response = await _dio.post(
-        '/sightings/$sightingId/witness-confirm',
+        '/alerts/$sightingId/witnesses',
         data: request,
       );
 
@@ -671,7 +671,7 @@ class ApiClient {
     required String deviceId,
   }) async {
     try {
-      final response = await _dio.get('/sightings/$sightingId/witness-status/$deviceId');
+      final response = await _dio.get('/alerts/$sightingId/witnesses/$deviceId');
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -689,7 +689,7 @@ class ApiClient {
   // Anonymous beep endpoints for Phase 0/1 - Quick alerts
   Future<Map<String, dynamic>> sendAnonymousBeep(Map<String, dynamic> alertData) async {
     try {
-      final response = await _dio.post('/beep/anonymous', data: alertData);
+      final response = await _dio.post('/alerts', data: alertData);
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -829,7 +829,7 @@ extension ApiClientExtension on ApiClient {
       }
       
       debugPrint('Creating sighting first to get ID...');
-      final sightingResponse = await _dio.post('/sightings', data: sightingData);
+      final sightingResponse = await _dio.post('/alerts', data: sightingData);
       
       // Extract sighting ID from response
       String sightingId;
@@ -996,7 +996,7 @@ extension ApiClientExtension on ApiClient {
     try {
       debugPrint('Updating sighting $sightingId with media files: $fileNames');
       
-      final response = await _dio.patch('/sightings/$sightingId/media', data: {
+      final response = await _dio.patch('/alerts/$sightingId/media', data: {
         'media_files': fileNames,
       });
       
@@ -1071,7 +1071,7 @@ extension ApiClientExtension on ApiClient {
       });
 
       final response = await _dio.post(
-        '/sightings/$sightingId/media',
+        '/alerts/$sightingId/media',
         data: formData,
       );
 

@@ -5,18 +5,27 @@
 - **Production URL**: https://api.ufobeep.com
 - **Local testing**: Production only - no localhost testing
 
-## API Endpoints Structure
+## API Endpoints Structure - UNIFIED `/alerts` ARCHITECTURE
 ```
-Single FastAPI app with routers:
-- media.router        → /media/presign, /media/complete, etc.
-- media_serve.router  → /media/{sighting_id}/{filename} (NEW)
+Single FastAPI app with unified /alerts pattern:
+- alerts.router       → /alerts/* (ALL sighting operations)
+- media_serve.router  → /media/{alert_id}/{filename} 
 - devices.router      → /devices/* endpoints
 - plane_match.router  → no prefix (root level)
-- Direct endpoints: /alerts, /sightings, /healthz, /ping
+- Direct endpoints: /healthz, /ping
 
-✅ All routers properly included in main.py
-✅ New media serving endpoint deployed
-✅ Sighting-based media storage implemented
+Core /alerts endpoints:
+POST   /alerts                         → Create new alert
+GET    /alerts                         → List all alerts  
+GET    /alerts/{id}                    → Get specific alert
+POST   /alerts/{id}/media              → Upload media to alert
+DELETE /alerts/{id}/media/{file}       → Remove media
+PATCH  /alerts/{id}                    → Update alert details
+POST   /alerts/{id}/witness            → Confirm witness
+
+✅ Unified architecture - no more /sightings confusion
+✅ Clean mobile app workflow with single endpoint pattern
+✅ Future-ready for user accounts and proximity sharing
 ```
 
 ## Environment Configuration
@@ -71,13 +80,20 @@ Single FastAPI app with routers:
 - **Integration**: Uses Google Maps API with fallback error handling
 - **Navigation**: Click nearby markers to jump to other sighting detail pages
 
-## Mobile App Flow
-- Camera capture → Beep composition → Send beep → Alert detail page
-- Gallery photo selection → EXIF GPS extraction → Send beep → Alert detail page
-- Photos saved to both app storage and user's gallery
-- GPS data collected from device sensors (camera captures) or EXIF data (gallery photos)
-- **Location data workflow**: ✅ FIXED - Both app captures and gallery photos preserve GPS coordinates
-- **GPS EXIF embedding**: ✅ IMPLEMENTED - GPS coordinates automatically embedded in photo EXIF to prevent "Unknown Location" failures
+## Mobile App Flow - UNIFIED `/alerts` ARCHITECTURE
+Clean 5-step workflow using `/alerts` endpoints only:
+```
+1. POST /devices/register               ← Register device
+2. PATCH /devices/{device_id}/location  ← Update location  
+3. POST /alerts                         ← Create alert, get ID
+4. POST /alerts/{alert_id}/media        ← Upload media
+5. GET /alerts/{alert_id}              ← Display result
+```
+- **Camera capture** → POST /alerts with media → Alert detail page
+- **Gallery selection** → POST /alerts with media → Alert detail page  
+- **EXIF GPS data**: ✅ Automatically embedded to prevent "Unknown Location"
+- **Clean URLs**: All mobile app requests use `/alerts` pattern
+- **Future ready**: User accounts, proximity sharing, cross-device sync
 
 ## Firebase Configuration (Push Notifications & Beta Testing)
 

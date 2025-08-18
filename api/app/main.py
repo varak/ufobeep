@@ -303,128 +303,9 @@ app.include_router(alerts.router)
 from app.routers import beep_engagement
 app.include_router(beep_engagement.router)
 
-# Disable complex routers for now - just get basic endpoints working
+# Clean unified alerts architecture using alerts.router
 
-# Clean, thin HTTP handlers using service layer
-@app.get("/alerts")
-async def get_alerts():
-    """Get recent alerts - clean endpoint using service layer"""
-    try:
-        alerts_service = AlertsService(db_pool)
-        alerts = await alerts_service.get_recent_alerts(limit=20)
-        
-
-        api_alerts = []
-        for alert in alerts:
-            api_alerts.append({
-                "id": alert.id,
-                "title": alert.title,
-                "description": alert.description,
-                "category": alert.category,
-                "alert_level": alert.alert_level,
-                "status": "active",
-                "witness_count": alert.witness_count,
-                "created_at": alert.created_at.isoformat(),
-                "location": {
-                    "latitude": alert.location.latitude,
-                    "longitude": alert.location.longitude,
-                    "name": alert.location.name
-                },
-                "distance_km": 0.0,
-                "bearing_deg": 0.0,
-                "view_count": 0,
-                "verification_score": 0.0,
-                "media_files": alert.media_files or [],
-                "tags": [],
-                "is_public": True,
-                "submitted_at": alert.created_at.isoformat(),
-                "processed_at": alert.created_at.isoformat(),
-                "matrix_room_id": "",
-                "reporter_id": "",
-                "enrichment": alert.enrichment or {},
-                "photo_analysis": [],
-                "total_confirmations": alert.witness_count,
-                "can_confirm_witness": True
-            })
-        
-        return {
-            "success": True,
-            "data": {
-                "alerts": api_alerts,
-                "total_count": len(api_alerts),
-                "offset": 0,
-                "limit": 20,
-                "has_more": False
-            },
-            "message": f"Found {len(api_alerts)} alerts" if api_alerts else "No alerts available",
-            "timestamp": datetime.now().isoformat()
-        }
-        
-    except Exception as e:
-        print(f"Error fetching alerts: {e}")
-        return {
-            "success": False,
-            "data": {"alerts": [], "total_count": 0, "offset": 0, "limit": 20, "has_more": False},
-            "message": f"Error fetching alerts: {str(e)}",
-            "timestamp": datetime.now().isoformat()
-        }
-
-@app.get("/alerts/{alert_id}")
-async def get_alert_details(alert_id: str):
-    """Get single alert details - clean endpoint using service layer"""
-    try:
-        alerts_service = AlertsService(db_pool)
-        alert = await alerts_service.get_alert_by_id(alert_id)
-        
-        if not alert:
-            return {"error": "Alert not found", "success": False}
-        
-
-        api_alert = {
-            "id": alert.id,
-            "title": alert.title,
-            "description": alert.description,
-            "category": alert.category,
-            "alert_level": alert.alert_level,
-            "status": "active",
-            "witness_count": alert.witness_count,
-            "created_at": alert.created_at.isoformat(),
-            "location": {
-                "latitude": alert.location.latitude,
-                "longitude": alert.location.longitude,
-                "name": alert.location.name
-            },
-            "distance_km": 0.0,
-            "bearing_deg": 0.0,
-            "view_count": 0,
-            "verification_score": 0.0,
-            "media_files": alert.media_files or [],
-            "tags": [],
-            "is_public": True,
-            "submitted_at": alert.created_at.isoformat(),
-            "processed_at": alert.created_at.isoformat(),
-            "matrix_room_id": "",
-            "reporter_id": "",
-            "enrichment": alert.enrichment or {},
-            "photo_analysis": [],
-            "total_confirmations": alert.witness_count,
-            "can_confirm_witness": True
-        }
-        
-        return {
-            "success": True,
-            "data": api_alert,
-            "message": "Alert found",
-            "timestamp": datetime.now().isoformat()
-        }
-        
-    except Exception as e:
-        print(f"Error fetching alert {alert_id}: {e}")
-        return {
-            "success": False,
-            "error": f"Error fetching alert: {str(e)}",
-            "timestamp": datetime.now().isoformat()
-        }
+# Duplicate alert endpoints removed - now handled by alerts.router
 
 async def generate_enrichment_data(sensor_data, use_metric=True):
     """Generate enrichment data for a sighting - now using clean service layer with unit conversion"""
@@ -484,64 +365,7 @@ async def create_sighting(request: dict = None):
     except Exception as e:
         print(f"Error creating sighting: {e}")
         raise HTTPException(status_code=500, detail=f"Error creating sighting: {str(e)}")
-@app.post("/beep/anonymous")
-async def create_anonymous_beep(request: dict):
-    """Create anonymous UFO beep - clean endpoint using service layer"""
-    try:
-
-        device_id = request.get('device_id')
-        if not device_id:
-            raise HTTPException(status_code=400, detail="device_id is required")
-        
-        location = request.get('location')
-        if not location or location.get('latitude') is None or location.get('longitude') is None:
-            raise HTTPException(status_code=400, detail="location with latitude and longitude required")
-        
-
-        alerts_service = AlertsService(db_pool)
-        alert_id, jittered_location = await alerts_service.create_anonymous_beep(
-            device_id=device_id,
-            location=location,
-            description=request.get('description')
-        )
-        
-
-        has_pending_media = request.get('has_media', False)
-        if not has_pending_media:
-            try:
-                from services.proximity_alert_service import get_proximity_alert_service
-                proximity_service = get_proximity_alert_service(db_pool)
-                alert_result = await proximity_service.send_proximity_alerts(
-                    jittered_location["lat"], jittered_location["lng"], alert_id, device_id
-                )
-            except Exception as e:
-                print(f"Warning: Failed to send proximity alerts: {e}")
-                alert_result = {"total_alerts_sent": 0, "message": "Alerts failed"}
-        else:
-            alert_result = {"total_alerts_sent": 0, "alerts_deferred": True}
-        
-
-        total_alerted = alert_result.get("total_alerts_sent", 0)
-        if total_alerted == 0:
-            alert_message = "Your beep was recorded but no nearby devices found."
-        else:
-            alert_message = f"Your beep alerted {total_alerted} people nearby!"
-        
-        return {
-            "sighting_id": alert_id,
-            "message": "Anonymous beep sent successfully",
-            "alert_message": alert_message,
-            "alert_stats": {"total_alerted": total_alerted, "radius_km": 25},
-            "witness_count": 1,
-            "location_jittered": True,
-            "proximity_alerts": alert_result
-        }
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        print(f"Error creating anonymous beep: {e}")
-        raise HTTPException(status_code=500, detail=f"Error creating beep: {str(e)}")
+# OLD /beep/anonymous endpoint removed - now handled by alerts.router
 
 @app.post("/alerts/send/{sighting_id}")
 async def send_alert_for_sighting(sighting_id: str, request: dict):
@@ -592,73 +416,10 @@ async def send_alert_for_sighting(sighting_id: str, request: dict):
         print(f"Error sending alerts for sighting {sighting_id}: {e}")
         raise HTTPException(status_code=500, detail=f"Error sending alerts: {str(e)}")
 
-@app.post("/sightings/{sighting_id}/witness-confirm")
-async def confirm_witness(sighting_id: str, request: dict):
-    """Confirm witness sighting - clean endpoint using service layer"""
-    try:
-        device_id = request.get("device_id")
-        if not device_id:
-            raise HTTPException(status_code=400, detail="device_id is required")
-        
-        alerts_service = AlertsService(db_pool)
-        result = await alerts_service.confirm_witness(
-            sighting_id=sighting_id,
-            device_id=device_id,
-            witness_data={
-                "device_id": device_id,
-                "location": request.get("location"),
-                "description": request.get("description"),
-                "confidence": request.get("confidence", "medium"),
-                "duration_seconds": request.get("duration_seconds"),
-                "witness_details": request.get("witness_details", {})
-            }
-        )
-        
-        return {
-            "success": True,
-            "message": f"Witness confirmation recorded! You are witness #{result["new_witness_count"]}",
-            "confirmed": True,
-            "sighting_id": sighting_id,
-            "new_witness_count": result["new_witness_count"],
-            "confirmation_timestamp": result["confirmation_time"],
-            "sighting_age_minutes": result["sighting_age_minutes"]
-        }
-        
-    except ValueError as e:
-        if "not found" in str(e):
-            raise HTTPException(status_code=404, detail=str(e))
-        elif "already confirmed" in str(e):
-            raise HTTPException(status_code=409, detail=str(e))
-        else:
-            raise HTTPException(status_code=400, detail=str(e))
-    except Exception as e:
-        print(f"Error confirming witness: {e}")
-        raise HTTPException(status_code=500, detail=f"Error confirming witness: {str(e)}")
-@app.get("/sightings/{sighting_id}/witness-status/{device_id}")
-async def get_witness_status(sighting_id: str, device_id: str):
-    """Check witness status - clean endpoint using service layer"""
-    try:
-        alerts_service = AlertsService(db_pool)
-        result = await alerts_service.get_witness_status(sighting_id, device_id)
-        return {"success": True, "data": result}
-    except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
-    except Exception as e:
-        print(f"Error getting witness status: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+# OLD witness-confirm endpoint removed - now handled by alerts.router
+# OLD witness-status endpoint removed - now handled by alerts.router
 
-@app.get("/sightings/{sighting_id}/witness-aggregation")
-async def get_witness_aggregation(sighting_id: str):
-    """Get witness aggregation - clean endpoint using service layer"""
-    try:
-        alerts_service = AlertsService(db_pool)
-        result = await alerts_service.get_witness_aggregation(sighting_id)
-        return {"success": True, "data": result}
-    except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
-    except Exception as e:
-        print(f"Error getting witness aggregation: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+# OLD witness-aggregation endpoint removed - now handled by alerts.router
 @app.post("/admin/test/alert")
 async def admin_test_alert(request: dict):
     """Admin test alert - simplified"""

@@ -17,14 +17,11 @@ export const apiConfig = {
     profile: '/users/profile',
     updateProfile: '/users/profile',
     
-    // Sighting endpoints
-    sightings: '/sightings',
-    createSighting: '/sightings',
-    uploadRequest: '/upload/request',
-    
-    // Alerts endpoints
+    // Unified alerts endpoints (replaces sightings)
     alerts: '/alerts',
+    createAlert: '/alerts',
     alertDetail: '/alerts',
+    uploadRequest: '/upload/request',
     
     // Matrix endpoints
     matrixToken: '/matrix/token',

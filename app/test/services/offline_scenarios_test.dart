@@ -110,7 +110,7 @@ void main() {
 
       test('submits directly when online', () async {
         environment.setNetworkStatus(NetworkStatus.connected);
-        environment.mockApiResponse('/sightings', {'success': true, 'id': 'submitted_123'});
+        environment.mockApiResponse('/alerts', {'success': true, 'id': 'submitted_123'});
 
         final submissionData = createMockSubmissionData();
         final submissionId = await environment.offlineApiService.submitSighting(
@@ -133,7 +133,7 @@ void main() {
 
         // Come back online and trigger sync
         environment.setNetworkStatus(NetworkStatus.connected);
-        environment.mockApiResponse('/sightings', {'success': true});
+        environment.mockApiResponse('/alerts', {'success': true});
 
         final syncResult = await environment.syncManager.syncPendingSubmissions();
 
@@ -151,7 +151,7 @@ void main() {
 
         // Come online but simulate API failures for some submissions
         environment.setNetworkStatus(NetworkStatus.connected);
-        environment.mockApiPartialFailure('/sightings', failureRate: 0.33);
+        environment.mockApiPartialFailure('/alerts', failureRate: 0.33);
 
         final syncResult = await environment.syncManager.syncPendingSubmissions();
 
@@ -291,7 +291,7 @@ void main() {
 
         // Come online and sync all at once
         environment.setNetworkStatus(NetworkStatus.connected);
-        environment.mockApiResponse('/sightings', {'success': true});
+        environment.mockApiResponse('/alerts', {'success': true});
 
         final syncResult = await environment.syncManager.syncPendingSubmissions();
 

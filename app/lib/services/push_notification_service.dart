@@ -766,7 +766,7 @@ class PushNotificationService {
       final snoozeUntil = now.add(duration);
       
       // Get sighting location from API to define "similar" area
-      final response = await _dio.get('/sightings/$sightingId');
+      final response = await _dio.get('/alerts/$sightingId');
       final sightingData = response.data;
       
       if (sightingData != null && sightingData['sensor_data'] != null) {

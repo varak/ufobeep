@@ -190,7 +190,7 @@ class AnonymousBeepService {
       
       // Send the beep
       final response = await _dio.post(
-        '/beep/anonymous',
+        '/alerts',
         data: payload,
       );
       

@@ -50,6 +50,46 @@ Legend: **[api]** FastAPI • **[mobile]** Flutter • **[web]** Site • **[inf
 
 ---
 
+## UNIFIED ALERTS ARCHITECTURE 🟢 ✅ IMPLEMENTED
+
+**Clean Break Philosophy:** No backward compatibility - unified `/alerts` endpoints only
+
+### Core API Design
+```
+POST   /alerts                         → Create new alert (replaces /beep/anonymous)
+GET    /alerts                         → List all alerts  
+GET    /alerts/{id}                    → Get specific alert
+POST   /alerts/{id}/media              → Upload media to alert
+DELETE /alerts/{id}/media/{file}       → Remove media
+PATCH  /alerts/{id}                    → Update alert details  
+POST   /alerts/{id}/witness            → Confirm witness
+GET    /alerts/{id}/witness-aggregation → Witness data
+```
+
+### Mobile App Workflow
+```
+1. POST /devices/register               ← Register device
+2. PATCH /devices/{device_id}/location  ← Update location
+3. POST /alerts                         ← Create alert, get ID  
+4. POST /alerts/{id}/media              ← Upload media
+5. GET /alerts/{id}                     ← Display result
+```
+
+### Future Features Ready
+- **User Accounts**: Clean alert ownership model (`user_id` field)
+- **2x Visibility Media**: Proximity-based sharing permissions
+- **Cross-Device Sync**: User's alerts synced across devices
+- **Alert Management**: Edit/delete own alerts
+- **Proximity Sharing**: Users within 2x visibility can add media
+
+### Implementation Status
+- 🟢 Database: `sightings` table (implementation detail)
+- 🟡 API Layer: Needs unification to `/alerts` pattern  
+- 🟡 Mobile App: Update to use `/alerts` endpoints
+- 🟡 Remove: All `/sightings` endpoint references
+
+---
+
 ## PHASE 0 — Emergency Alert Foundation (GET BEEPING NOW)
 **Goal:** Make phones beep URGENTLY when something's in the sky
 
