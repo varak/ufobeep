@@ -153,3 +153,27 @@ async def disable_ratelimit(username: str = Depends(verify_admin)):
         return {"message": "Rate limiting disabled", "enabled": False}
     except Exception as e:
         return {"error": str(e)}
+
+@router.get("/ratelimit/set")
+async def set_ratelimit_threshold(request: Request, username: str = Depends(verify_admin)):
+    """Set rate limiting threshold"""
+    try:
+        # Get threshold from query params - mobile app sends it as query string
+        threshold = int(list(request.query_params.keys())[0]) if request.query_params else 3
+        
+        import app.routers.admin as admin_module
+        admin_module.rate_limit_threshold = threshold
+        return {"message": f"Rate limit threshold set to {threshold}", "threshold": threshold}
+    except Exception as e:
+        return {"error": str(e)}
+
+@router.get("/ratelimit/clear")
+async def clear_ratelimit_history(username: str = Depends(verify_admin)):
+    """Clear rate limiting history"""
+    try:
+        import app.routers.admin as admin_module
+        if hasattr(admin_module, 'rate_limit_history'):
+            admin_module.rate_limit_history.clear()
+        return {"message": "Rate limit history cleared"}
+    except Exception as e:
+        return {"error": str(e)}
