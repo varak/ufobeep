@@ -11,7 +11,6 @@ interface Alert {
   description: string | null
   category: string
   created_at: string
-  timestamp: string
   location: {
     latitude: number
     longitude: number
