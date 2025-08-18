@@ -21,9 +21,9 @@ export default function Home() {
             and chat with witnesses in real-time using assisted navigation.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mb-16">
-            <Link href="/app">
+            <Link href="/download">
               <button className="bg-brand-primary text-text-inverse px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary-dark transition-all duration-300 shadow-glow hover:shadow-xl hover:scale-105 transform">
-                Download App
+                📱 Download App
               </button>
             </Link>
             <Link href="/alerts">
