@@ -185,6 +185,7 @@ async def upload_alert_media(
     
     try:
         print(f"Media upload request: alert_id={alert_id}, files={files}, source={source}")
+        print(f"Files type: {type(files)}, Files length: {len(files) if files else 'None'}")
         
         if not files:
             raise HTTPException(status_code=400, detail="No files provided")
@@ -257,8 +258,10 @@ async def upload_alert_media(
     except HTTPException:
         raise
     except Exception as e:
+        import traceback
         print(f"Error uploading media: {e}")
-        raise HTTPException(status_code=500, detail=f"Error uploading media: {str(e)}")
+        print(f"Full traceback: {traceback.format_exc()}")
+        raise HTTPException(status_code=500, detail=f"Media upload failed: {str(e)}")
 
 @router.post("/{alert_id}/witnesses")
 async def add_witness(alert_id: str, request: dict):
