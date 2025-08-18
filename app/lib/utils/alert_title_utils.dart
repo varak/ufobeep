@@ -1,34 +1,61 @@
 import '../models/enriched_alert.dart';
+import '../models/api_models.dart';
+import '../providers/alerts_provider.dart';
 
-class AlertTitleUtils {
-  /// Generate a contextual title for an alert based on available data
+abstract class AlertTitleUtils {
+  /// Generate a contextual title for an EnrichedAlert
   static String getContextualTitle(EnrichedAlert alert) {
+    return _generateContextualTitle(
+      title: alert.title,
+      description: alert.description,
+      hasMedia: alert.mediaFiles.isNotEmpty,
+      hasPhoto: alert.mediaFiles.any((media) => media.type == MediaType.photo),
+      hasVideo: alert.mediaFiles.any((media) => media.type == MediaType.video),
+      createdAt: alert.createdAt,
+    );
+  }
+
+  /// Generate a contextual title for an Alert from alerts_provider
+  static String getContextualTitleFromAlert(Alert alert) {
+    return _generateContextualTitle(
+      title: alert.title,
+      description: alert.description,
+      hasMedia: alert.mediaFiles.isNotEmpty,
+      hasPhoto: alert.mediaFiles.any((media) => 
+        media['type']?.toString() == 'photo' || 
+        media['type']?.toString() == 'image'),
+      hasVideo: alert.mediaFiles.any((media) => 
+        media['type']?.toString() == 'video'),
+      createdAt: alert.createdAt,
+    );
+  }
+
+  /// Internal method to generate titles
+  static String _generateContextualTitle({
+    required String? title,
+    required String? description,
+    required bool hasMedia,
+    required bool hasPhoto,
+    required bool hasVideo,
+    required DateTime createdAt,
+  }) {
     // If user provided a title, use it
-    if (alert.title != null && alert.title!.isNotEmpty) {
-      return alert.title!;
+    if (title != null && title.isNotEmpty) {
+      return title;
     }
     
     // If user provided description, use first few words as title
-    if (alert.description != null && alert.description!.isNotEmpty) {
-      final words = alert.description!.trim().split(' ');
+    if (description != null && description.isNotEmpty) {
+      final words = description.trim().split(' ');
       if (words.length <= 4) {
-        return alert.description!;
+        return description;
       } else {
         return '${words.take(4).join(' ')}...';
       }
     }
     
-    // Check if alert has media
-    final hasMedia = alert.mediaFiles.isNotEmpty;
-    
     // Generate contextual title based on available data
     if (hasMedia) {
-      final hasPhoto = alert.mediaFiles.any((media) => 
-        media.type.toLowerCase().contains('image') || 
-        media.contentType.toLowerCase().contains('image'));
-      final hasVideo = alert.mediaFiles.any((media) => 
-        media.type.toLowerCase().contains('video') || 
-        media.contentType.toLowerCase().contains('video'));
       
       if (hasPhoto && hasVideo) {
         return 'Visual sighting (photo & video)';
@@ -43,8 +70,7 @@ class AlertTitleUtils {
     
     // Check if it's recent (within last hour)
     final now = DateTime.now();
-    final alertTime = alert.timestamp;
-    final timeDiff = now.difference(alertTime);
+    final timeDiff = now.difference(createdAt);
     
     if (timeDiff.inMinutes < 60) {
       return 'Recent sighting';
@@ -56,32 +82,56 @@ class AlertTitleUtils {
     return 'UFO Sighting';
   }
   
-  /// Get a short title for lists (more concise than contextual title)
+  /// Get a short title for EnrichedAlert
   static String getShortTitle(EnrichedAlert alert) {
+    return _generateShortTitle(
+      title: alert.title,
+      description: alert.description,
+      hasMedia: alert.mediaFiles.isNotEmpty,
+      createdAt: alert.createdAt,
+    );
+  }
+
+  /// Get a short title for Alert from alerts_provider
+  static String getShortTitleFromAlert(Alert alert) {
+    return _generateShortTitle(
+      title: alert.title,
+      description: alert.description,
+      hasMedia: alert.mediaFiles.isNotEmpty,
+      createdAt: alert.createdAt,
+    );
+  }
+
+  /// Internal method to generate short titles
+  static String _generateShortTitle({
+    required String? title,
+    required String? description,
+    required bool hasMedia,
+    required DateTime createdAt,
+  }) {
     // If user provided a title, use it
-    if (alert.title != null && alert.title!.isNotEmpty) {
-      return alert.title!;
+    if (title != null && title.isNotEmpty) {
+      return title;
     }
     
     // If user provided description, use first 3 words
-    if (alert.description != null && alert.description!.isNotEmpty) {
-      final words = alert.description!.trim().split(' ');
+    if (description != null && description.isNotEmpty) {
+      final words = description.trim().split(' ');
       if (words.length <= 3) {
-        return alert.description!;
+        return description;
       } else {
         return '${words.take(3).join(' ')}...';
       }
     }
     
     // Check for media
-    if (alert.mediaFiles.isNotEmpty) {
+    if (hasMedia) {
       return 'Visual sighting';
     }
     
     // Check timing
     final now = DateTime.now();
-    final alertTime = alert.timestamp;
-    final timeDiff = now.difference(alertTime);
+    final timeDiff = now.difference(createdAt);
     
     if (timeDiff.inMinutes < 10) {
       return 'Live sighting';

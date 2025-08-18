@@ -36,8 +36,8 @@ class AdminStats(BaseModel):
 class SightingAdmin(BaseModel):
     """Sighting for admin management"""
     id: str
-    title: str
-    description: str
+    title: Optional[str]
+    description: Optional[str]
     category: str
     status: str
     alert_level: str
@@ -926,6 +926,56 @@ async def admin_sightings_page(credentials: str = Depends(verify_admin_password)
     <script>
         let currentSightings = [];
 
+        // Contextual title generation (matches mobile/web logic)
+        function getContextualTitle(sighting) {
+            // If user provided a title, use it
+            if (sighting.title && sighting.title.trim().length > 0) {
+                return sighting.title;
+            }
+            
+            // If user provided description, use first few words as title
+            if (sighting.description && sighting.description.trim().length > 0) {
+                const words = sighting.description.trim().split(' ');
+                if (words.length <= 4) {
+                    return sighting.description;
+                } else {
+                    return words.slice(0, 4).join(' ') + '...';
+                }
+            }
+            
+            // Generate contextual title based on available data
+            if (sighting.media_count > 0) {
+                return 'Visual sighting';
+            }
+            
+            // Check if it's recent (within last hour)
+            const now = new Date();
+            const sightingTime = new Date(sighting.created_at);
+            const timeDiff = now.getTime() - sightingTime.getTime();
+            const minutesDiff = timeDiff / (1000 * 60);
+            
+            if (minutesDiff < 60) {
+                return 'Recent sighting';
+            } else if (minutesDiff < 24 * 60) {
+                return 'Sighting today';
+            }
+            
+            // Final fallback
+            return 'UFO Sighting';
+        }
+
+        function getContextualDescription(sighting) {
+            if (sighting.description && sighting.description.trim().length > 0) {
+                return sighting.description.substring(0, 100) + (sighting.description.length > 100 ? '...' : '');
+            }
+            
+            if (sighting.media_count > 0) {
+                return `${sighting.media_count} media file${sighting.media_count > 1 ? 's' : ''} captured`;
+            }
+            
+            return 'Witness-only sighting';
+        }
+
         async function loadSightings() {
             try {
                 const statusFilter = document.getElementById('statusFilter').value;
@@ -968,8 +1018,8 @@ async def admin_sightings_page(credentials: str = Depends(verify_admin_password)
                         ${sightings.map(sighting => `
                             <tr>
                                 <td>
-                                    <strong>${sighting.title}</strong><br>
-                                    <small style="color: #888;">${sighting.description.substring(0, 100)}...</small>
+                                    <strong>${getContextualTitle(sighting)}</strong><br>
+                                    <small style="color: #888;">${getContextualDescription(sighting)}</small>
                                 </td>
                                 <td>${sighting.category}</td>
                                 <td><span class="badge ${sighting.status}">${sighting.status}</span></td>

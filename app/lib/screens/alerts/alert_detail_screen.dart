@@ -223,7 +223,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(AlertTitleUtils.getContextualTitle(alert)),
+            title: Text(AlertTitleUtils.getContextualTitleFromAlert(alert)),
             actions: [
               IconButton(
                 icon: const Icon(Icons.chat),
@@ -1447,7 +1447,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   }
 
   void _navigateToSighting(Alert alert, double bearing, double distance) {
-    final targetName = AlertTitleUtils.getShortTitle(alert);
+    final targetName = AlertTitleUtils.getShortTitleFromAlert(alert);
     final compassParams = {
       'targetLat': alert.latitude.toString(),
       'targetLon': alert.longitude.toString(),

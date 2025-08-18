@@ -9,6 +9,7 @@ import '../config/environment.dart';
 import '../models/api_models.dart' as api;
 import '../models/sensor_data.dart';
 import '../models/sighting_submission.dart' as local;
+import 'anonymous_beep_service.dart';
 
 class ApiClientException implements Exception {
   final String message;
