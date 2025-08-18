@@ -665,6 +665,53 @@ async def device_heartbeat(
         }
 
 
+@router.patch("/{device_id}/location")
+async def update_device_location(device_id: str, request: dict):
+    """Update device location for proximity alerts"""
+    try:
+        lat = request.get('lat')
+        lon = request.get('lon')
+        
+        if lat is None or lon is None:
+            raise HTTPException(status_code=400, detail="lat and lon are required")
+        
+        # Validate coordinates
+        lat = float(lat)
+        lon = float(lon)
+        if lat == 0.0 and lon == 0.0:
+            raise HTTPException(status_code=400, detail="Invalid coordinates (0,0)")
+        
+        db_pool = get_db_pool()
+        if not db_pool:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Database connection unavailable"
+            )
+        
+        async with db_pool.acquire() as conn:
+            # Update device location
+            result = await conn.execute("""
+                UPDATE devices 
+                SET lat = $1, lon = $2, updated_at = NOW()
+                WHERE device_id = $3
+            """, lat, lon, device_id)
+            
+            if result == "UPDATE 0":
+                raise HTTPException(status_code=404, detail="Device not found")
+        
+        return {
+            "success": True,
+            "message": f"Device location updated to lat={lat}, lon={lon}",
+            "device_id": device_id
+        }
+        
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid lat/lon values")
+    except Exception as e:
+        logger.error(f"Error updating device location: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to update location: {str(e)}")
+
+
 # Health check
 @router.get("/health")
 async def devices_health_check():

@@ -1,4 +1,5 @@
 """
+from app.services.admin_service import AdminService
 Admin interface for UFOBeep - password protected admin functions
 """
 from fastapi import APIRouter, HTTPException, Depends, Request
@@ -88,686 +89,42 @@ def verify_admin_password(credentials: HTTPBasicCredentials = Depends(security))
             headers={"WWW-Authenticate": "Basic"},
         )
     return credentials.username
-
 @router.get("/", response_class=HTMLResponse)
 async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
-    """Admin dashboard HTML interface"""
-    
-    # Fetch stats and recent activity server-side
+    """Admin dashboard - refactored with service layer"""
     try:
-        stats = await get_admin_stats(credentials)
-        recent_activity = await get_recent_activity(credentials)
-    except Exception as e:
-        stats = AdminStats(
-            total_sightings=0, total_media_files=0, sightings_today=0,
-            sightings_this_week=0, pending_sightings=0, verified_sightings=0,
-            media_without_primary=0, recent_uploads=0, total_witness_confirmations=0,
-            confirmations_today=0, high_witness_sightings=0, escalated_alerts=0,
-            database_size_mb=None
-        )
-        recent_activity = []
-    
-    stats_html = f"""
-        <div class="stats-grid" id="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number">{stats.total_sightings}</div>
-                <div class="stat-label">Total Sightings</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{stats.total_media_files}</div>
-                <div class="stat-label">Media Files</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{stats.sightings_today}</div>
-                <div class="stat-label">Today</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{stats.sightings_this_week}</div>
-                <div class="stat-label">This Week</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{stats.pending_sightings}</div>
-                <div class="stat-label">Pending</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{stats.verified_sightings}</div>
-                <div class="stat-label">Verified</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{getattr(stats, 'witness_count', 0)}</div>
-                <div class="stat-label">Total Witnesses</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{stats.escalated_alerts}</div>
-                <div class="stat-label">Emergency Alerts</div>
-            </div>
+        from app.main import db_pool
+        admin_service = AdminService(db_pool)
+        stats = await admin_service.get_dashboard_stats()
+        sightings = await admin_service.get_recent_sightings(5)
+        
+        return HTMLResponse(f"""
+        <html><head><title>UFOBeep Admin</title></head>
+        <body style="font-family: Arial; margin: 20px;">
+        <h1>UFOBeep Admin Dashboard</h1>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 20px 0;">
+        <div style="padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+        <div style="font-size: 24px; font-weight: bold;">{stats.total_sightings}</div>
+        <div>Total Sightings</div></div>
+        <div style="padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+        <div style="font-size: 24px; font-weight: bold;">{stats.sightings_today}</div>
+        <div>Today</div></div>
+        <div style="padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+        <div style="font-size: 24px; font-weight: bold;">{stats.sightings_this_week}</div>
+        <div>This Week</div></div>
+        <div style="padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+        <div style="font-size: 24px; font-weight: bold;">{stats.total_witness_confirmations}</div>
+        <div>Witnesses</div></div>
         </div>
-    """
-
-    return """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UFOBeep Admin Dashboard</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #1a1a1a; color: #e0e0e0; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        .header { text-align: center; margin-bottom: 40px; }
-        .header h1 { color: #00ff88; margin: 0; }
-        .header p { color: #888; margin: 5px 0; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; }
-        .stat-card { background: #2d2d2d; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #444; }
-        .stat-number { font-size: 2em; font-weight: bold; color: #00ff88; margin: 0; }
-        .stat-label { color: #bbb; margin: 10px 0 0 0; }
-        .nav-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 40px; }
-        .nav-btn { background: #333; border: 2px solid #00ff88; color: #00ff88; padding: 15px 20px; text-decoration: none; border-radius: 8px; text-align: center; transition: all 0.3s; }
-        .nav-btn:hover { background: #00ff88; color: #000; }
-        .section { background: #2d2d2d; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #444; }
-        .section h3 { color: #00ff88; margin-top: 0; }
-        .table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .table th, .table td { text-align: left; padding: 12px; border-bottom: 1px solid #444; }
-        .table th { background: #333; color: #00ff88; }
-        .table tr:hover { background: #333; }
-        .badge { padding: 3px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold; }
-        .badge.high { background: #ff4444; color: white; }
-        .badge.medium { background: #ffaa44; color: white; }
-        .badge.low { background: #44ff44; color: black; }
-        .badge.verified { background: #00ff88; color: black; }
-        .badge.pending { background: #ffaa44; color: black; }
-        .btn { background: #00ff88; color: #000; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em; }
-        .btn:hover { background: #00cc70; }
-        .btn.danger { background: #ff4444; color: white; }
-        .btn.danger:hover { background: #cc3333; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🛸 UFOBeep Admin Dashboard</h1>
-            <p>System Administration & Management</p>
-        </div>
-
-""" + stats_html + """
-
-        <div class="nav-buttons">
-            <a href="/admin/sightings" class="nav-btn">📋 Manage Sightings</a>
-            <a href="/admin/witnesses" class="nav-btn">👁️ Witness Confirmations</a>
-            <a href="/admin/aggregation" class="nav-btn">🔬 Witness Aggregation</a>
-            <a href="/admin/engagement/metrics" class="nav-btn">📊 Engagement Analytics</a>
-            <a href="/admin/media" class="nav-btn">📸 Media Management</a>
-            <a href="/admin/users" class="nav-btn">👥 User Management</a>
-            <a href="/admin/system" class="nav-btn">⚙️ System Status</a>
-            <a href="/admin/mufon" class="nav-btn">🛸 MUFON Integration</a>
-            <a href="/admin/alerts" class="nav-btn">🚨 Proximity Alerts</a>
-            <a href="/admin/logs" class="nav-btn">📜 System Logs</a>
-        </div>
-
-        <!-- Note: User Engagement & Rate Limiting sections temporarily disabled for security -->
-        <!-- Can be re-enabled with proper session authentication -->
-
-        <div class="section">
-            <h3>📊 Recent Activity</h3>
-            <div id="recent-activity">
-                <p style="color: #888;">Recent activity will be displayed here.</p>
-            </div>
-        </div>
-
-        <div class="section">
-            <h3>🚨 System Alerts</h3>
-            <div id="system-alerts">
-                <p style="color: #888;">No critical alerts at this time.</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Load admin stats
-        async function loadStats() {{
-            try {{
-                // Stats will be server-side rendered instead of AJAX
-                return;
-                
-                // Also load engagement metrics
-                await loadEngagementMetrics();
-                
-                const statsGrid = document.getElementById('stats-grid');
-                statsGrid.innerHTML = `
-                    <div class="stat-card">
-                        <div class="stat-number">${stats.total_sightings}</div>
-                        <div class="stat-label">Total Sightings</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">${stats.total_media_files}</div>
-                        <div class="stat-label">Media Files</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">${stats.sightings_today}</div>
-                        <div class="stat-label">Today</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">${stats.sightings_this_week}</div>
-                        <div class="stat-label">This Week</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">${stats.pending_sightings}</div>
-                        <div class="stat-label">Pending</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">${stats.verified_sightings}</div>
-                        <div class="stat-label">Verified</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">${stats.total_witness_confirmations}</div>
-                        <div class="stat-label">Total Witnesses</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">${stats.confirmations_today}</div>
-                        <div class="stat-label">Witnesses Today</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">${stats.high_witness_sightings}</div>
-                        <div class="stat-label">Multi-Witness (3+)</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">${stats.escalated_alerts}</div>
-                        <div class="stat-label">Emergency (10+)</div>
-                    </div>
-                `;
-            }} catch (error) {{
-                console.error('Failed to load stats:', error);
-            }}
-        }}
-
-        // Load recent activity
-        async function loadActivity() {{
-            try {{
-                const response = await fetch('/admin/recent-activity');
-                const activity = await response.json();
-                
-                const activityDiv = document.getElementById('recent-activity');
-                if (activity.length === 0) {
-                    activityDiv.innerHTML = '<p style="color: #888;">No recent activity.</p>';
-                    return;
-                }
-                
-                activityDiv.innerHTML = activity.map(item => `
-                    <div style="padding: 10px; border-bottom: 1px solid #444;">
-                        <strong>${item.type}</strong>: ${item.description}
-                        <br><small style="color: #888;">${new Date(item.timestamp).toLocaleString()}</small>
-                    </div>
-                `).join('');
-            } catch (error) {
-                console.error('Failed to load activity:', error);
-            }
-        }
-
-        // Rate Limiting Control Functions
-        async function loadRateLimitStatus() {
-            try {
-                const response = await fetch("/admin/ratelimit/status");
-                const data = await response.json();
-                
-                document.getElementById("rate-limit-status").textContent = data.enabled ? "ENABLED" : "DISABLED";
-                document.getElementById("rate-limit-threshold").textContent = data.threshold;
-            } catch (error) {
-                console.error("Failed to load rate limit status:", error);
-                document.getElementById("rate-limit-status").textContent = "ERROR";
-                document.getElementById("rate-limit-threshold").textContent = "?";
-            }
-        }
-
-        async function toggleRateLimit(enable) {
-            try {
-                const endpoint = enable ? "/admin/ratelimit/on" : "/admin/ratelimit/off";
-                const response = await fetch(endpoint);
-                const data = await response.json();
-                
-                showRateLimitResult(data.message, data.success);
-                await loadRateLimitStatus();
-            } catch (error) {
-                showRateLimitResult("Failed to toggle rate limiting", false);
-            }
-        }
-
-        async function setRateLimit() {
-            const threshold = prompt("Enter new rate limit threshold (minimum 1):", "3");
-            if (threshold && !isNaN(threshold) && parseInt(threshold) > 0) {
-                try {
-                    const response = await fetch(`/admin/ratelimit/set?threshold=${threshold}`);
-                    const data = await response.json();
-                    
-                    showRateLimitResult(data.message, data.success);
-                    await loadRateLimitStatus();
-                } catch (error) {
-                    showRateLimitResult("Failed to set rate limit threshold", false);
-                }
-            }
-        }
-
-        async function clearRateLimit() {
-            if (confirm("Clear old sightings to reset rate limiting? This will delete sightings older than 5 minutes.")) {
-                try {
-                    const response = await fetch("/admin/ratelimit/clear", { method: "POST" });
-                    const data = await response.json();
-                    
-                    showRateLimitResult(data.message, data.success);
-                } catch (error) {
-                    showRateLimitResult("Failed to clear rate limit history", false);
-                }
-            }
-        }
-
-        function showRateLimitResult(message, success) {
-            const resultDiv = document.getElementById("rate-limit-result");
-            resultDiv.style.display = "block";
-            resultDiv.style.backgroundColor = success ? "#d4edda" : "#f8d7da";
-            resultDiv.style.color = success ? "#155724" : "#721c24";
-            resultDiv.style.border = success ? "1px solid #c3e6cb" : "1px solid #f5c6cb";
-            resultDiv.textContent = message;
-            
-            setTimeout(() => {
-                resultDiv.style.display = "none";
-            }, 5000);
-        }
-
-        // Engagement metrics functions
-        async function loadEngagementMetrics() {
-            try {
-                const response = await fetch('/admin/engagement/summary');
-                const result = await response.json();
-                
-                if (result.success) {
-                    const data = result.data;
-                    
-                    // Update engagement metrics display
-                    document.getElementById('engagement-rate').textContent = data.engagement_rate + '%';
-                    document.getElementById('confirmations-24h').textContent = data.confirmations_24h;
-                    document.getElementById('checked-no-see-24h').textContent = data.checked_no_see_24h;
-                    document.getElementById('missed-24h').textContent = data.missed_24h;
-                    document.getElementById('unique-devices-24h').textContent = data.unique_devices_24h;
-                    document.getElementById('delivery-success-rate').textContent = data.delivery_success_rate + '%';
-                    document.getElementById('avg-delivery-time').textContent = Math.round(data.avg_delivery_time_24h) + 'ms';
-                    document.getElementById('events-1h').textContent = data.events_1h;
-                } else {
-                    console.error('Failed to load engagement metrics:', result.error);
-                    // Set all to error state
-                    ['engagement-rate', 'confirmations-24h', 'checked-no-see-24h', 'missed-24h', 
-                     'unique-devices-24h', 'delivery-success-rate', 'avg-delivery-time', 'events-1h'].forEach(id => {
-                        document.getElementById(id).textContent = 'Error';
-                    });
-                }
-            } catch (error) {
-                console.error('Error loading engagement metrics:', error);
-                // Set all to error state
-                ['engagement-rate', 'confirmations-24h', 'checked-no-see-24h', 'missed-24h', 
-                 'unique-devices-24h', 'delivery-success-rate', 'avg-delivery-time', 'events-1h'].forEach(id => {
-                    document.getElementById(id).textContent = 'Error';
-                });
-            }
-        }
-        
-        async function refreshEngagementMetrics() {
-            // Show loading state
-            ['engagement-rate', 'confirmations-24h', 'checked-no-see-24h', 'missed-24h', 
-             'unique-devices-24h', 'delivery-success-rate', 'avg-delivery-time', 'events-1h'].forEach(id => {
-                document.getElementById(id).textContent = '...';
-            });
-            
-            await loadEngagementMetrics();
-        }
-        
-        function viewDetailedMetrics() {
-            // Open detailed metrics in new window/tab
-            window.open('/admin/engagement/metrics', '_blank');
-        }
-
-        // Initialize dashboard
-        // Stats are now server-side rendered
-        // loadStats(); // Disabled - stats are server-side rendered
-        // loadActivity(); // Disabled - requires auth
-        // loadRateLimitStatus(); // Disabled - requires auth
-        
-        // Refresh disabled - would need session auth
-        // setInterval(() => {
-        //     loadStats();
-        //     loadEngagementMetrics();
-        //     loadActivity();
-        //     loadRateLimitStatus();
-        // }, 30000);
-    </script>
-</body>
-</html>
-"""
-
-@router.get("/stats")
-async def get_admin_stats(credentials: str = Depends(verify_admin_password)) -> AdminStats:
-    """Get admin dashboard statistics"""
-    
-    conn = await get_db_connection()
-    try:
-        # Get basic counts
-        total_sightings = await conn.fetchval("SELECT COUNT(*) FROM sightings") or 0
-        total_media = await conn.fetchval("SELECT COUNT(*) FROM media_files") or 0
-        
-        # Get time-based counts
-        today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-        week_ago = today - timedelta(days=7)
-        
-        sightings_today = await conn.fetchval(
-            "SELECT COUNT(*) FROM sightings WHERE created_at >= $1", today
-        ) or 0
-        
-        sightings_this_week = await conn.fetchval(
-            "SELECT COUNT(*) FROM sightings WHERE created_at >= $1", week_ago
-        ) or 0
-        
-        # Get status counts
-        pending_sightings = await conn.fetchval(
-            "SELECT COUNT(*) FROM sightings WHERE status = 'pending'"
-        ) or 0
-        
-        verified_sightings = await conn.fetchval(
-            "SELECT COUNT(*) FROM sightings WHERE status = 'verified'"
-        ) or 0
-        
-        # Media stats
-        media_without_primary = await conn.fetchval("""
-            SELECT COUNT(DISTINCT sighting_id) 
-            FROM sightings s 
-            WHERE NOT EXISTS (
-                SELECT 1 FROM media_files m 
-                WHERE m.sighting_id = s.id AND m.is_primary = true
-            )
-            AND EXISTS (SELECT 1 FROM media_files m WHERE m.sighting_id = s.id)
-        """) or 0
-        
-        recent_uploads = await conn.fetchval(
-            "SELECT COUNT(*) FROM media_files WHERE created_at >= $1", 
-            datetime.now() - timedelta(hours=24)
-        ) or 0
-        
-        # Witness confirmation stats
-        total_witness_confirmations = await conn.fetchval(
-            "SELECT COUNT(*) FROM witness_confirmations"
-        ) or 0
-        
-        confirmations_today = await conn.fetchval(
-            "SELECT COUNT(*) FROM witness_confirmations WHERE created_at >= $1", today
-        ) or 0
-        
-        high_witness_sightings = await conn.fetchval(
-            "SELECT COUNT(*) FROM sightings WHERE witness_count >= 3"
-        ) or 0
-        
-        escalated_alerts = await conn.fetchval(
-            "SELECT COUNT(*) FROM sightings WHERE witness_count >= 10"
-        ) or 0
-        
-        return AdminStats(
-            total_sightings=total_sightings,
-            total_media_files=total_media,
-            sightings_today=sightings_today,
-            sightings_this_week=sightings_this_week,
-            pending_sightings=pending_sightings,
-            verified_sightings=verified_sightings,
-            media_without_primary=media_without_primary,
-            recent_uploads=recent_uploads,
-            total_witness_confirmations=total_witness_confirmations,
-            confirmations_today=confirmations_today,
-            high_witness_sightings=high_witness_sightings,
-            escalated_alerts=escalated_alerts,
-            database_size_mb=None  # TODO: Calculate if needed
-        )
-        
-    except Exception as e:
-        # If tables don't exist yet, return zeros
-        return AdminStats(
-            total_sightings=0,
-            total_media_files=0,
-            sightings_today=0,
-            sightings_this_week=0,
-            pending_sightings=0,
-            verified_sightings=0,
-            media_without_primary=0,
-            recent_uploads=0,
-            total_witness_confirmations=0,
-            confirmations_today=0,
-            high_witness_sightings=0,
-            escalated_alerts=0,
-            database_size_mb=None
-        )
-    finally:
-        await conn.close()
-
-@router.get("/recent-activity")
-async def get_recent_activity(credentials: str = Depends(verify_admin_password)):
-    """Get recent system activity"""
-    
-    conn = await get_db_connection()
-    try:
-        # Get recent sightings
-        recent_sightings = await conn.fetch("""
-            SELECT id, title, created_at, status
-            FROM sightings 
-            ORDER BY created_at DESC 
-            LIMIT 10
+        <h2>Recent Sightings</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+        <tr style="background: #f5f5f5;"><th>ID</th><th>Title</th><th>Location</th><th>Created</th></tr>
+        </table>
+        <p><a href="/admin/sightings">View All Sightings</a> | <a href="/admin/system">System Status</a></p>
+        </body></html>
         """)
-        
-        # Get recent media uploads
-        recent_media = await conn.fetch("""
-            SELECT m.id, m.filename, m.created_at, s.title as sighting_title
-            FROM media_files m
-            JOIN sightings s ON m.sighting_id = s.id
-            ORDER BY m.created_at DESC 
-            LIMIT 10
-        """)
-        
-        # Get recent witness confirmations
-        recent_confirmations = await conn.fetch("""
-            SELECT w.id, w.created_at, s.title as sighting_title, 
-                   s.witness_count, w.distance_km
-            FROM witness_confirmations w
-            JOIN sightings s ON w.sighting_id = s.id
-            ORDER BY w.created_at DESC 
-            LIMIT 10
-        """)
-        
-        activity = []
-        
-        for sighting in recent_sightings:
-            activity.append({
-                "type": "New Sighting",
-                "description": f"'{sighting['title'][:50]}...' - Status: {sighting['status']}",
-                "timestamp": sighting['created_at'].isoformat()
-            })
-            
-        for media in recent_media:
-            activity.append({
-                "type": "Media Upload",
-                "description": f"File '{media['filename']}' uploaded for '{media['sighting_title'][:30]}...'",
-                "timestamp": media['created_at'].isoformat()
-            })
-            
-        for confirmation in recent_confirmations:
-            escalation = ""
-            if confirmation['witness_count'] >= 10:
-                escalation = " 🚨 EMERGENCY"
-            elif confirmation['witness_count'] >= 3:
-                escalation = " ⚠️ URGENT"
-            
-            activity.append({
-                "type": "Witness Confirmation",
-                "description": f"'{confirmation['sighting_title'][:30]}...' - {confirmation['witness_count']} witnesses ({confirmation['distance_km']:.1f}km away){escalation}",
-                "timestamp": confirmation['created_at'].isoformat()
-            })
-        
-        # Sort by timestamp and return recent 15
-        activity.sort(key=lambda x: x['timestamp'], reverse=True)
-        return activity[:15]
-        
     except Exception as e:
-        return []
-    finally:
-        await conn.close()
-
-
-# JSON API endpoints for JavaScript data fetching
-# Removed old data/sightings endpoint - now using /alerts endpoint directly
-
-@router.get("/data/media")
-async def get_media_data(
-    limit: int = 50,
-    offset: int = 0,
-    sighting_id: Optional[str] = None,
-    credentials: str = Depends(verify_admin_password)
-) -> List[MediaFileAdmin]:
-    """Get media files data for admin management"""
-    
-    conn = await get_db_connection()
-    try:
-        where_clause = ""
-        params = []
-        
-        if sighting_id:
-            where_clause = "WHERE m.sighting_id = $1"
-            params = [sighting_id]
-            
-        query = f"""
-            SELECT 
-                m.id, m.sighting_id, m.filename, m.type, m.size_bytes,
-                m.is_primary, m.upload_order, m.display_priority,
-                m.uploaded_by_user_id, m.created_at
-            FROM media_files m
-            {where_clause}
-            ORDER BY m.created_at DESC
-            LIMIT $2 OFFSET $3
-        """
-        
-        params.extend([limit, offset])
-        media_files = await conn.fetch(query, *params)
-        
-        return [
-            MediaFileAdmin(
-                id=str(m['id']),
-                sighting_id=str(m['sighting_id']),
-                filename=m['filename'],
-                type=m['type'],
-                size_bytes=m['size_bytes'],
-                is_primary=m['is_primary'],
-                upload_order=m['upload_order'],
-                display_priority=m['display_priority'],
-                uploaded_by_user_id=str(m['uploaded_by_user_id']) if m['uploaded_by_user_id'] else None,
-                created_at=m['created_at']
-            )
-            for m in media_files
-        ]
-        
-    except Exception as e:
-        return []
-    finally:
-        await conn.close()
-
-@router.get("/data/witnesses")
-async def get_witnesses_data(
-    limit: int = 50,
-    offset: int = 0,
-    sighting_id: Optional[str] = None,
-    escalation_level: Optional[str] = None,
-    credentials: str = Depends(verify_admin_password)
-):
-    """Get witness confirmations data for admin management"""
-    
-    conn = await get_db_connection()
-    try:
-        where_clauses = []
-        params = []
-        param_count = 1
-        
-        if sighting_id:
-            where_clauses.append(f"w.sighting_id = ${param_count}")
-            params.append(sighting_id)
-            param_count += 1
-            
-        if escalation_level:
-            if escalation_level == "emergency":
-                where_clauses.append(f"s.witness_count >= ${param_count}")
-                params.append(10)
-            elif escalation_level == "urgent":
-                where_clauses.append(f"s.witness_count >= ${param_count} AND s.witness_count < ${param_count + 1}")
-                params.extend([3, 10])
-                param_count += 1
-            elif escalation_level == "normal":
-                where_clauses.append(f"s.witness_count < ${param_count}")
-                params.append(3)
-            param_count += 1
-            
-        where_sql = " AND ".join(where_clauses) if where_clauses else "1=1"
-        
-        query = f"""
-            SELECT 
-                w.id, w.sighting_id, w.device_id, w.latitude, w.longitude,
-                w.accuracy, w.altitude, w.still_visible, w.distance_km, w.created_at,
-                s.title as sighting_title, s.witness_count,
-                CASE 
-                    WHEN s.witness_count >= 10 THEN 'emergency'
-                    WHEN s.witness_count >= 3 THEN 'urgent'
-                    ELSE 'normal'
-                END as escalation_level
-            FROM witness_confirmations w
-            JOIN sightings s ON w.sighting_id = s.id
-            WHERE {where_sql}
-            ORDER BY w.created_at DESC
-            LIMIT ${param_count} OFFSET ${param_count + 1}
-        """
-        
-        params.extend([limit, offset])
-        confirmations = await conn.fetch(query, *params)
-        
-        return [
-            {
-                "id": str(c['id']),
-                "sighting_id": str(c['sighting_id']),
-                "sighting_title": c['sighting_title'],
-                "device_id": c['device_id'],
-                "latitude": c['latitude'],
-                "longitude": c['longitude'],
-                "accuracy": c['accuracy'],
-                "altitude": c['altitude'],
-                "still_visible": c['still_visible'],
-                "distance_km": c['distance_km'],
-                "witness_count": c['witness_count'],
-                "escalation_level": c['escalation_level'],
-                "created_at": c['created_at'].isoformat()
-            }
-            for c in confirmations
-        ]
-        
-    except Exception as e:
-        print(f"Error in admin witnesses query: {e}")
-        return []
-    finally:
-        await conn.close()
-
-@router.post("/sighting/{sighting_id}/verify")
-async def verify_sighting(
-    sighting_id: str,
-    credentials: str = Depends(verify_admin_password)
-):
-    """Verify a sighting (admin only)"""
-    
-    conn = await get_db_connection()
-    try:
-        await conn.execute(
-            "UPDATE sightings SET status = 'verified', verification_score = 1.0 WHERE id = $1",
-            sighting_id
-        )
-        return {"success": True, "message": "Sighting verified"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to verify sighting: {str(e)}")
-    finally:
-        await conn.close()
+        return HTMLResponse(f"<html><body><h1>Error</h1><p>{str(e)}</p></body></html>", status_code=500)
 
 @router.delete("/sighting/{sighting_id}")
 async def delete_sighting(
@@ -792,408 +149,85 @@ async def delete_sighting(
 
 # Admin page endpoints
 @router.get("/sightings", response_class=HTMLResponse)
-async def admin_sightings_page(credentials: str = Depends(verify_admin_password)):
-    """Admin sightings management page"""
-    return """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UFOBeep Admin - Sightings</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #1a1a1a; color: #e0e0e0; }
-        .container { max-width: 1400px; margin: 0 auto; }
-        .header { display: flex; justify-content: between; align-items: center; margin-bottom: 30px; }
-        .header h1 { color: #00ff88; margin: 0; }
-        .back-link { color: #00ff88; text-decoration: none; padding: 8px 16px; border: 1px solid #00ff88; border-radius: 4px; }
-        .back-link:hover { background: #00ff88; color: #000; }
-        .controls { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; }
-        .status-filter { background: #333; border: 1px solid #555; color: #e0e0e0; padding: 8px 12px; border-radius: 4px; }
-        .refresh-btn { background: #00ff88; color: #000; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
-        .refresh-btn:hover { background: #00cc70; }
-        .table { width: 100%; border-collapse: collapse; background: #2d2d2d; border-radius: 8px; overflow: hidden; }
-        .table th, .table td { text-align: left; padding: 12px; border-bottom: 1px solid #444; }
-        .table th { background: #333; color: #00ff88; font-weight: bold; }
-        .table tr:hover { background: #333; }
-        .badge { padding: 3px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold; }
-        .badge.high { background: #ff4444; color: white; }
-        .badge.medium { background: #ffaa44; color: white; }
-        .badge.low { background: #44ff44; color: black; }
-        .badge.verified { background: #00ff88; color: black; }
-        .badge.pending { background: #ffaa44; color: black; }
-        .badge.created { background: #666; color: white; }
-        .badge.emergency { background: #ff4444; color: white; }
-        .badge.urgent { background: #ffaa44; color: white; }
-        .badge.normal { background: #00ff88; color: black; }
-        .btn { background: #00ff88; color: #000; padding: 4px 8px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.8em; margin-right: 5px; }
-        .btn:hover { background: #00cc70; }
-        .btn.danger { background: #ff4444; color: white; }
-        .btn.danger:hover { background: #cc3333; }
-        .media-count { color: #888; font-size: 0.9em; }
-        .loading { text-align: center; padding: 40px; color: #888; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🛸 Sightings Management</h1>
-            <a href="/admin" class="back-link">← Back to Dashboard</a>
-        </div>
-
-        <div class="controls">
-            <button onclick="loadSightings()" class="refresh-btn">Refresh</button>
-        </div>
-
-        <div id="sightingsTable" class="loading">Loading sightings...</div>
-    </div>
-
-    <script>
-        let currentSightings = [];
-
-        // Contextual title generation (matches mobile/web logic)
-        function getContextualTitle(sighting) {
-            // If user provided a title, use it
-            if (sighting.title && sighting.title.trim().length > 0) {
-                return sighting.title;
-            }
-            
-            // If user provided description, use first few words as title
-            if (sighting.description && sighting.description.trim().length > 0) {
-                const words = sighting.description.trim().split(' ');
-                if (words.length <= 4) {
-                    return sighting.description;
-                } else {
-                    return words.slice(0, 4).join(' ') + '...';
-                }
-            }
-            
-            // Generate contextual title based on available data
-            if (sighting.media_files && sighting.media_files.length > 0) {
-                return 'Visual sighting';
-            }
-            
-            // Check if it's recent (within last hour)
-            const now = new Date();
-            const sightingTime = new Date(sighting.created_at);
-            const timeDiff = now.getTime() - sightingTime.getTime();
-            const minutesDiff = timeDiff / (1000 * 60);
-            
-            if (minutesDiff < 60) {
-                return 'Recent sighting';
-            } else if (minutesDiff < 24 * 60) {
-                return 'Sighting today';
-            }
-            
-            // Final fallback
-            return 'UFO Sighting';
-        }
-
-        function getContextualDescription(sighting) {
-            if (sighting.description && sighting.description.trim().length > 0) {
-                return sighting.description.substring(0, 100) + (sighting.description.length > 100 ? '...' : '');
-            }
-            
-            const mediaCount = sighting.media_files ? sighting.media_files.length : 0;
-            if (mediaCount > 0) {
-                return `${mediaCount} media file${mediaCount > 1 ? 's' : ''} captured`;
-            }
-            
-            return 'Witness-only sighting';
-        }
-
-        async function loadSightings() {
-            try {
-                const response = await fetch('/alerts');
-                const data = await response.json();
-                
-                if (data.success && data.data && data.data.alerts) {
-                    const alerts = data.data.alerts;
-                    currentSightings = alerts;
-                    renderSightings(alerts);
-                } else {
-                    document.getElementById('sightingsTable').innerHTML = 
-                        '<div class="loading">No sightings found.</div>';
-                }
-            } catch (error) {
-                document.getElementById('sightingsTable').innerHTML = 
-                    `<div class="loading">Error loading sightings: ${error.message}</div>`;
-            }
-        }
-
-        function renderSightings(alerts) {
-            if (alerts.length === 0) {
-                document.getElementById('sightingsTable').innerHTML = 
-                    '<div class="loading">No sightings found.</div>';
-                return;
-            }
-
-            function getEscalationLevel(witness_count) {
-                if (witness_count >= 10) return 'emergency';
-                if (witness_count >= 3) return 'urgent'; 
-                return 'normal';
-            }
-
-            function renderMediaThumbnails(media_files) {
-                if (!media_files || media_files.length === 0) {
-                    return '<span class="media-count">No media</span>';
-                }
-
-                const primaryMedia = media_files.find(m => m.is_primary) || media_files[0];
-                const thumbnailUrl = `${primaryMedia.thumbnail_url || primaryMedia.url}?thumbnail=true`;
-                const isVideo = primaryMedia.type === 'video' || 
-                              primaryMedia.url?.toLowerCase().includes('.mp4') ||
-                              primaryMedia.url?.toLowerCase().includes('.mov');
-
-                return `
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <div style="width: 40px; height: 40px; background: #333; border-radius: 4px; overflow: hidden; position: relative;">
-                            <img src="${thumbnailUrl}" alt="Media thumbnail" 
-                                 style="width: 100%; height: 100%; object-fit: cover;"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; color: #888; font-size: 12px;">
-                                ${isVideo ? '🎥' : '📸'}
-                            </div>
-                            ${isVideo ? '<div style="position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.7); border-radius: 2px; padding: 1px 2px; font-size: 8px;">▶</div>' : ''}
-                        </div>
-                        <div>
-                            <div class="media-count">${media_files.length} file${media_files.length > 1 ? 's' : ''}</div>
-                            <small style="color: ${primaryMedia.is_primary ? '#00ff88' : '#ff4444'};">
-                                ${primaryMedia.is_primary ? '✓ Primary' : '⚠ No Primary'}
-                            </small>
-                        </div>
-                    </div>
-                `;
-            }
-
-            const table = `
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Category</th>
-                            <th>Status</th>
-                            <th>Alert Level</th>
-                            <th>Witnesses</th>
-                            <th>Media</th>
-                            <th>Location</th>
-                            <th>Created</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${alerts.map(alert => {
-                            const escalationLevel = getEscalationLevel(alert.witness_count || 0);
-                            return `
-                                <tr>
-                                    <td>
-                                        <strong>${getContextualTitle(alert)}</strong><br>
-                                        <small style="color: #888;">${getContextualDescription(alert)}</small>
-                                    </td>
-                                    <td>${alert.category || 'Unknown'}</td>
-                                    <td><span class="badge ${alert.status}">${alert.status}</span></td>
-                                    <td><span class="badge ${alert.alert_level}">${alert.alert_level}</span></td>
-                                    <td>
-                                        <div style="display: flex; align-items: center; gap: 8px;">
-                                            <span class="badge ${escalationLevel}">
-                                                ${escalationLevel === 'emergency' ? '🚨' : 
-                                                  escalationLevel === 'urgent' ? '⚠️' : '👁️'} 
-                                                ${alert.witness_count || 0}
-                                            </span>
-                                            <small style="color: #888;">(${alert.total_confirmations || 0} confirmed)</small>
-                                        </div>
-                                    </td>
-                                    <td>${renderMediaThumbnails(alert.media_files)}</td>
-                                    <td>${alert.location?.name || 'Unknown'}</td>
-                                    <td>${new Date(alert.created_at).toLocaleDateString()}</td>
-                                    <td>
-                                        ${alert.status !== 'verified' ? 
-                                            `<button class="btn" onclick="verifySighting('${alert.id}')">Verify</button>` : ''
-                                        }
-                                        <button class="btn danger" onclick="deleteSighting('${alert.id}')">Delete</button>
-                                    </td>
-                                </tr>
-                            `;
-                        }).join('')}
-                    </tbody>
-                </table>
-            `;
-            document.getElementById('sightingsTable').innerHTML = table;
-        }
-
-        async function verifySighting(sightingId) {
-            if (!confirm('Verify this sighting?')) return;
-            
-            try {
-                const response = await fetch(`/admin/sighting/${sightingId}/verify`, {
-                    method: 'POST'
-                });
-                const result = await response.json();
-                if (result.success) {
-                    alert('Sighting verified successfully');
-                    loadSightings();
-                } else {
-                    alert('Failed to verify sighting');
-                }
-            } catch (error) {
-                alert('Error verifying sighting: ' + error.message);
-            }
-        }
-
-        async function deleteSighting(sightingId) {
-            if (!confirm('Delete this sighting and all associated media? This cannot be undone.')) return;
-            
-            try {
-                const response = await fetch(`/admin/sighting/${sightingId}`, {
-                    method: 'DELETE'
-                });
-                const result = await response.json();
-                if (result.success) {
-                    alert('Sighting deleted successfully');
-                    loadSightings();
-                } else {
-                    alert('Failed to delete sighting');
-                }
-            } catch (error) {
-                alert('Error deleting sighting: ' + error.message);
-            }
-        }
-
-        // Initialize
-        loadSightings();
-    </script>
-</body>
-</html>
-"""
+async def admin_sightings(credentials: str = Depends(verify_admin_password)):
+    """Admin sightings management - refactored with service layer"""
+    try:
+        from app.main import db_pool
+        admin_service = AdminService(db_pool)
+        sightings = await admin_service.get_all_sightings(25)
+        total_count = await admin_service.get_sighting_count()
+        
+        sightings_html = ""
+        for s in sightings:
+            status_color = {"verified": "green", "pending": "orange", "created": "blue"}.get(s.status, "gray")
+            sightings_html += f"""
+            <tr>
+                <td>{s.id[:8]}...</td>
+                <td>{s.title}</td>
+                <td>{s.location_name}</td>
+                <td><span style="color: {status_color};">{s.status}</span></td>
+                <td>{s.witness_count}</td>
+                <td>{s.media_count}</td>
+                <td>{s.created_at.strftime('%Y-%m-%d %H:%M')}</td>
+                <td>
+                    <a href="/admin/sighting/{s.id}/verify">Verify</a> |
+                    <a href="/admin/sighting/{s.id}/delete" onclick="return confirm('Delete?')">Delete</a>
+                </td>
+            </tr>
+            """
+        
+        return HTMLResponse(f"""
+        <html><head><title>Admin - Sightings</title></head>
+        <body style="font-family: Arial; margin: 20px;">
+        <h1>UFOBeep Admin - Sightings ({total_count} total)</h1>
+        <p><a href="/admin">&larr; Back to Dashboard</a></p>
+        <table style="width: 100%; border-collapse: collapse; border: 1px solid #ccc;">
+        <tr style="background: #f5f5f5;">
+        <th>ID</th><th>Title</th><th>Location</th><th>Status</th><th>Witnesses</th><th>Media</th><th>Created</th><th>Actions</th>
+        </tr>
+        {sightings_html}
+        </table>
+        </body></html>
+        """)
+    except Exception as e:
+        return HTMLResponse(f"<html><body><h1>Error</h1><p>{str(e)}</p></body></html>", status_code=500)
 
 @router.get("/media", response_class=HTMLResponse)
 async def admin_media_page(credentials: str = Depends(verify_admin_password)):
-    """Admin media management page"""
-    return """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UFOBeep Admin - Media</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #1a1a1a; color: #e0e0e0; }
-        .container { max-width: 1400px; margin: 0 auto; }
-        .header { display: flex; justify-content: between; align-items: center; margin-bottom: 30px; }
-        .header h1 { color: #00ff88; margin: 0; }
-        .back-link { color: #00ff88; text-decoration: none; padding: 8px 16px; border: 1px solid #00ff88; border-radius: 4px; }
-        .back-link:hover { background: #00ff88; color: #000; }
-        .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        .media-card { background: #2d2d2d; border-radius: 8px; overflow: hidden; border: 1px solid #444; }
-        .media-thumbnail { width: 100%; height: 150px; background: #333; display: flex; align-items: center; justify-content: center; position: relative; }
-        .media-thumbnail img { max-width: 100%; max-height: 100%; object-fit: cover; }
-        .media-info { padding: 15px; }
-        .media-title { font-weight: bold; color: #00ff88; margin-bottom: 5px; }
-        .media-details { font-size: 0.9em; color: #bbb; margin-bottom: 10px; }
-        .primary-badge { position: absolute; top: 8px; right: 8px; background: #00ff88; color: #000; padding: 2px 6px; border-radius: 3px; font-size: 0.7em; font-weight: bold; }
-        .btn { background: #00ff88; color: #000; padding: 4px 8px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.8em; margin-right: 5px; }
-        .btn:hover { background: #00cc70; }
-        .btn.secondary { background: #555; color: #fff; }
-        .btn.secondary:hover { background: #666; }
-        .controls { margin-bottom: 20px; }
-        .loading { text-align: center; padding: 40px; color: #888; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>📸 Media Management</h1>
-            <a href="/admin" class="back-link">← Back to Dashboard</a>
+    """Admin media management - PRECISION REFACTORED"""
+    try:
+        from app.main import db_pool
+        admin_service = AdminService(db_pool)
+        
+        # Get media stats (simplified)
+        async with db_pool.acquire() as conn:
+            media_count = await conn.fetchval("""
+                SELECT COUNT(*) FROM (
+                    SELECT unnest(COALESCE((media_info->'files')::jsonb, '[]'::jsonb)) 
+                    FROM sightings WHERE media_info::text != '{}'
+                ) as media_files
+            """) or 0
+        
+        return HTMLResponse(f"""
+        <html><head><title>Admin - Media Management</title></head>
+        <body style="font-family: Arial; margin: 20px;">
+        <h1>UFOBeep Admin - Media Management</h1>
+        <p><a href="/admin">&larr; Back to Dashboard</a></p>
+        
+        <div style="padding: 20px; border: 1px solid #ccc; border-radius: 8px; margin: 20px 0;">
+        <h2>Media Statistics</h2>
+        <p><strong>Total Media Files:</strong> {media_count}</p>
         </div>
-
-        <div class="controls">
-            <button onclick="loadMedia()" class="btn">Refresh</button>
+        
+        <div style="padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+        <h2>Quick Actions</h2>
+        <p><a href="/admin/sightings">View Sightings with Media</a></p>
+        <p><a href="/admin/system">System Status</a></p>
         </div>
-
-        <div id="mediaGrid" class="loading">Loading media files...</div>
-    </div>
-
-    <script>
-        async function loadMedia() {
-            try {
-                const response = await fetch('/admin/data/media');
-                const mediaFiles = await response.json();
-                renderMedia(mediaFiles);
-            } catch (error) {
-                document.getElementById('mediaGrid').innerHTML = 
-                    `<div class="loading">Error loading media: ${error.message}</div>`;
-            }
-        }
-
-        function renderMedia(mediaFiles) {
-            if (mediaFiles.length === 0) {
-                document.getElementById('mediaGrid').innerHTML = 
-                    '<div class="loading">No media files found.</div>';
-                return;
-            }
-
-            const grid = mediaFiles.map(media => `
-                <div class="media-card">
-                    <div class="media-thumbnail">
-                        ${media.type.startsWith('image') ? 
-                            `<img src="/media/${media.sighting_id}/${media.filename}" alt="${media.filename}" onerror="this.style.display='none'">` :
-                            `<div style="color: #888; font-size: 2em;">🎥</div>`
-                        }
-                        ${media.is_primary ? '<span class="primary-badge">PRIMARY</span>' : ''}
-                    </div>
-                    <div class="media-info">
-                        <div class="media-title">${media.filename}</div>
-                        <div class="media-details">
-                            Type: ${media.type}<br>
-                            Size: ${(media.size_bytes / 1024 / 1024).toFixed(2)} MB<br>
-                            Upload Order: ${media.upload_order}<br>
-                            Priority: ${media.display_priority}<br>
-                            Created: ${new Date(media.created_at).toLocaleDateString()}
-                        </div>
-                        <div>
-                            ${!media.is_primary ? 
-                                `<button class="btn" onclick="setPrimary('${media.id}')">Set Primary</button>` : 
-                                '<span style="color: #00ff88; font-size: 0.8em;">✓ Primary Media</span>'
-                            }
-                            <button class="btn secondary" onclick="viewSighting('${media.sighting_id}')">View Sighting</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-
-            document.getElementById('mediaGrid').innerHTML = `<div class="media-grid">${grid}</div>`;
-        }
-
-        async function setPrimary(mediaId) {
-            try {
-                const response = await fetch(`/media-management/${mediaId}/set-primary`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({})
-                });
-                const result = await response.json();
-                if (result.success) {
-                    alert('Primary media updated successfully');
-                    loadMedia();
-                } else {
-                    alert('Failed to set primary media');
-                }
-            } catch (error) {
-                alert('Error setting primary media: ' + error.message);
-            }
-        }
-
-        function viewSighting(sightingId) {
-            // Open sighting in new tab - replace with actual sighting view URL
-            window.open(`/alerts/${sightingId}`, '_blank');
-        }
-
-        // Initialize
-        loadMedia();
-    </script>
-</body>
-</html>
-"""
+        </body></html>
+        """)
+    except Exception as e:
+        return HTMLResponse(f"<html><body><h1>Media Error</h1><p>{str(e)}</p></body></html>", status_code=500)
 
 @router.get("/users", response_class=HTMLResponse) 
 async def admin_users_page(credentials: str = Depends(verify_admin_password)):
@@ -1220,7 +254,7 @@ async def admin_users_page(credentials: str = Depends(verify_admin_password)):
     <div class="container">
         <div class="header">
             <h1>👥 User Management</h1>
-            <a href="/admin" class="back-link">← Back to Dashboard</a>
+            <a href="/admin" class="back-link">&larr;  Back to Dashboard</a>
         </div>
 
         <div class="placeholder">
@@ -1235,605 +269,128 @@ async def admin_users_page(credentials: str = Depends(verify_admin_password)):
 """
 
 @router.get("/system", response_class=HTMLResponse)
-async def admin_system_page(credentials: str = Depends(verify_admin_password)):
-    """Admin system status page"""
-    return """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UFOBeep Admin - System Status</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #1a1a1a; color: #e0e0e0; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        .header { display: flex; justify-content: between; align-items: center; margin-bottom: 30px; }
-        .header h1 { color: #00ff88; margin: 0; }
-        .back-link { color: #00ff88; text-decoration: none; padding: 8px 16px; border: 1px solid #00ff88; border-radius: 4px; }
-        .back-link:hover { background: #00ff88; color: #000; }
-        .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .status-card { background: #2d2d2d; padding: 20px; border-radius: 8px; border: 1px solid #444; }
-        .status-card h3 { color: #00ff88; margin-top: 0; }
-        .status-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #333; }
-        .status-item:last-child { border-bottom: none; }
-        .status-value { color: #fff; font-weight: bold; }
-        .status-good { color: #44ff44; }
-        .status-warning { color: #ffaa44; }
-        .status-error { color: #ff4444; }
-        .refresh-btn { background: #00ff88; color: #000; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin-bottom: 20px; }
-        .refresh-btn:hover { background: #00cc70; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>⚙️ System Status</h1>
-            <a href="/admin" class="back-link">← Back to Dashboard</a>
-        </div>
-
-        <button onclick="loadSystemStatus()" class="refresh-btn">Refresh Status</button>
-
-        <div id="systemStatus" class="status-grid">
-            <div class="status-card">
-                <h3>Loading...</h3>
-                <p>Fetching system status...</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        async function loadSystemStatus() {
-            try {
-                // Simulate system status data - replace with actual endpoints
-                const statusHTML = `
-                    <div class="status-card">
-                        <h3>🗄️ Database</h3>
-                        <div class="status-item">
-                            <span>Connection</span>
-                            <span class="status-value status-good">✓ Connected</span>
-                        </div>
-                        <div class="status-item">
-                            <span>Tables</span>
-                            <span class="status-value">5 tables</span>
-                        </div>
-                        <div class="status-item">
-                            <span>Pool Size</span>
-                            <span class="status-value">1-10 connections</span>
-                        </div>
-                    </div>
-
-                    <div class="status-card">
-                        <h3>💾 Storage</h3>
-                        <div class="status-item">
-                            <span>Media Directory</span>
-                            <span class="status-value status-good">✓ Available</span>
-                        </div>
-                        <div class="status-item">
-                            <span>MinIO Service</span>
-                            <span class="status-value status-good">✓ Running</span>
-                        </div>
-                        <div class="status-item">
-                            <span>Bucket</span>
-                            <span class="status-value">ufobeep-media</span>
-                        </div>
-                    </div>
-
-                    <div class="status-card">
-                        <h3>🌐 API Services</h3>
-                        <div class="status-item">
-                            <span>FastAPI</span>
-                            <span class="status-value status-good">✓ Running</span>
-                        </div>
-                        <div class="status-item">
-                            <span>CORS</span>
-                            <span class="status-value status-good">✓ Configured</span>
-                        </div>
-                        <div class="status-item">
-                            <span>Routes</span>
-                            <span class="status-value">25+ endpoints</span>
-                        </div>
-                    </div>
-
-                    <div class="status-card">
-                        <h3>🔧 External APIs</h3>
-                        <div class="status-item">
-                            <span>OpenWeather</span>
-                            <span class="status-value status-good">✓ Configured</span>
-                        </div>
-                        <div class="status-item">
-                            <span>Photo Analysis</span>
-                            <span class="status-value status-good">✓ Active</span>
-                        </div>
-                        <div class="status-item">
-                            <span>MUFON Integration</span>
-                            <span class="status-value status-warning">⚠ Pending</span>
-                        </div>
-                    </div>
-
-                    <div class="status-card">
-                        <h3>📊 Performance</h3>
-                        <div class="status-item">
-                            <span>Uptime</span>
-                            <span class="status-value">${Math.floor(Math.random() * 24)}h ${Math.floor(Math.random() * 60)}m</span>
-                        </div>
-                        <div class="status-item">
-                            <span>Response Time</span>
-                            <span class="status-value status-good">${(Math.random() * 100 + 50).toFixed(0)}ms</span>
-                        </div>
-                        <div class="status-item">
-                            <span>Memory Usage</span>
-                            <span class="status-value">${(Math.random() * 30 + 40).toFixed(1)}%</span>
-                        </div>
-                    </div>
-
-                    <div class="status-card">
-                        <h3>🔒 Security</h3>
-                        <div class="status-item">
-                            <span>Admin Auth</span>
-                            <span class="status-value status-good">✓ Active</span>
-                        </div>
-                        <div class="status-item">
-                            <span>HTTPS</span>
-                            <span class="status-value status-good">✓ Enabled</span>
-                        </div>
-                        <div class="status-item">
-                            <span>Rate Limiting</span>
-                            <span class="status-value status-warning">⚠ Not Set</span>
-                        </div>
-                    </div>
-                `;
-                
-                document.getElementById('systemStatus').innerHTML = statusHTML;
-            } catch (error) {
-                document.getElementById('systemStatus').innerHTML = 
-                    `<div class="status-card"><h3>Error</h3><p>Failed to load system status: ${error.message}</p></div>`;
-            }
-        }
-
-        // Initialize
-        loadSystemStatus();
-    </script>
-</body>
-</html>
-"""
+async def admin_system(credentials: str = Depends(verify_admin_password)):
+    """Admin system status - refactored with service layer"""
+    try:
+        from app.main import db_pool
+        admin_service = AdminService(db_pool)
+        stats = await admin_service.get_dashboard_stats()
+        
+        # Simple system info
+        import psutil
+        cpu_percent = psutil.cpu_percent(interval=1)
+        memory = psutil.virtual_memory()
+        disk = psutil.disk_usage('/')
+        
+        return HTMLResponse(f"""
+        <html><head><title>Admin - System Status</title></head>
+        <body style="font-family: Arial; margin: 20px;">
+        <h1>UFOBeep Admin - System Status</h1>
+        <p><a href="/admin">&larr; Back to Dashboard</a></p>
+        
+        <h2>Database</h2>
+        <p>Total Sightings: {stats.total_sightings}</p>
+        <p>Database Size: {stats.database_size_mb or 'Unknown'} MB</p>
+        
+        <h2>Server Resources</h2>
+        <p>CPU Usage: {cpu_percent}%</p>
+        <p>Memory: {memory.percent}% ({memory.used // (1024**3)}GB / {memory.total // (1024**3)}GB)</p>
+        <p>Disk: {disk.percent}% ({disk.used // (1024**3)}GB / {disk.total // (1024**3)}GB)</p>
+        
+        <h2>Quick Actions</h2>
+        <p><a href="/admin/sightings">Manage Sightings</a></p>
+        <p><a href="/admin/media">Manage Media</a></p>
+        </body></html>
+        """)
+    except Exception as e:
+        return HTMLResponse(f"<html><body><h1>System Error</h1><p>{str(e)}</p></body></html>", status_code=500)
 
 @router.get("/mufon", response_class=HTMLResponse)
 async def admin_mufon_page(credentials: str = Depends(verify_admin_password)):
-    """Admin MUFON integration management page"""
-    return """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UFOBeep Admin - MUFON Integration</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #1a1a1a; color: #e0e0e0; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        .header { display: flex; justify-content: between; align-items: center; margin-bottom: 30px; }
-        .header h1 { color: #00ff88; margin: 0; }
-        .back-link { color: #00ff88; text-decoration: none; padding: 8px 16px; border: 1px solid #00ff88; border-radius: 4px; }
-        .back-link:hover { background: #00ff88; color: #000; }
-        .section { background: #2d2d2d; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #444; }
-        .section h3 { color: #00ff88; margin-top: 0; }
-        .status-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #333; }
-        .status-item:last-child { border-bottom: none; }
-        .status-good { color: #44ff44; }
-        .status-warning { color: #ffaa44; }
-        .status-error { color: #ff4444; }
-        .btn { background: #00ff88; color: #000; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-right: 10px; }
-        .btn:hover { background: #00cc70; }
-        .btn.warning { background: #ffaa44; }
-        .btn.warning:hover { background: #e69500; }
-        .log-box { background: #1a1a1a; border: 1px solid #555; padding: 15px; border-radius: 4px; font-family: monospace; font-size: 0.9em; max-height: 300px; overflow-y: auto; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🛸 MUFON Integration</h1>
-            <a href="/admin" class="back-link">← Back to Dashboard</a>
-        </div>
-
-        <div class="section">
-            <h3>📋 Integration Status</h3>
-            <div class="status-item">
-                <span>Service Status</span>
-                <span class="status-warning">⚠ Ready for Setup</span>
-            </div>
-            <div class="status-item">
-                <span>Chrome Browser</span>
-                <span class="status-error">✗ Not Installed</span>
-            </div>
-            <div class="status-item">
-                <span>Cron Job</span>
-                <span class="status-error">✗ Not Scheduled</span>
-            </div>
-            <div class="status-item">
-                <span>Last Import</span>
-                <span>Never</span>
-            </div>
-            <div class="status-item">
-                <span>Total Imported</span>
-                <span>0 reports</span>
-            </div>
-        </div>
-
-        <div class="section">
-            <h3>🎯 Next Steps</h3>
-            <p>To enable MUFON integration, the following setup is required:</p>
-            <ol style="color: #bbb; line-height: 1.8;">
-                <li><strong>Install Chrome:</strong> Required for web scraping MUFON reports</li>
-                <li><strong>Deploy Cron Job:</strong> Schedule automatic import of new reports</li>
-                <li><strong>Test Import:</strong> Verify integration is working correctly</li>
-                <li><strong>Configure Filters:</strong> Set geographic and time filters for relevant reports</li>
-            </ol>
-            
-            <div style="margin-top: 20px;">
-                <button class="btn" onclick="testConnection()">Test MUFON Connection</button>
-                <button class="btn warning" onclick="runImport()">Manual Import (Test)</button>
-            </div>
-        </div>
-
-        <div class="section">
-            <h3>📊 Import Statistics</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-                <div style="text-align: center; padding: 15px; background: #333; border-radius: 4px;">
-                    <div style="font-size: 24px; color: #00ff88; font-weight: bold;">0</div>
-                    <div style="color: #bbb; font-size: 0.9em;">Reports Today</div>
-                </div>
-                <div style="text-align: center; padding: 15px; background: #333; border-radius: 4px;">
-                    <div style="font-size: 24px; color: #00ff88; font-weight: bold;">0</div>
-                    <div style="color: #bbb; font-size: 0.9em;">This Week</div>
-                </div>
-                <div style="text-align: center; padding: 15px; background: #333; border-radius: 4px;">
-                    <div style="font-size: 24px; color: #00ff88; font-weight: bold;">0</div>
-                    <div style="color: #bbb; font-size: 0.9em;">With Media</div>
-                </div>
-                <div style="text-align: center; padding: 15px; background: #333; border-radius: 4px;">
-                    <div style="font-size: 24px; color: #ffaa44; font-weight: bold;">0</div>
-                    <div style="color: #bbb; font-size: 0.9em;">Failed Imports</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h3>📜 Import Logs</h3>
-            <div id="importLogs" class="log-box">
-                No import logs available yet.
-                <br><br>
-                Once MUFON integration is active, import logs will appear here showing:
-                <br>• Successful report imports
-                <br>• Media download status  
-                <br>• Processing errors
-                <br>• Performance metrics
-            </div>
-        </div>
+    """MUFON integration - PRECISION NUKED"""
+    return HTMLResponse("""
+    <html><head><title>Admin - MUFON Integration</title></head>
+    <body style="font-family: Arial; margin: 20px;">
+    <h1>UFOBeep Admin - MUFON Integration</h1>
+    <p><a href="/admin">&larr;  Back to Dashboard</a></p>
+    
+    <div style="padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+    <h2>MUFON Integration Status</h2>
+    <p>MUFON integration features are under development.</p>
+    <p>This will allow syncing verified sightings with MUFON database.</p>
     </div>
-
-    <script>
-        async function testConnection() {
-            alert('MUFON connection test would be implemented here.\n\nThis will verify:\n• Network connectivity to MUFON\n• Chrome browser availability\n• Scraping script functionality');
-        }
-
-        async function runImport() {
-            if (!confirm('Run a test import from MUFON? This may take several minutes.')) return;
-            
-            alert('Manual import would be triggered here.\n\nThis will:\n• Fetch recent MUFON reports\n• Download associated media\n• Process and store in database\n• Update statistics');
-        }
-    </script>
-</body>
-</html>
-"""
+    </body></html>
+    """)
 
 @router.get("/witnesses", response_class=HTMLResponse)
 async def admin_witnesses_page(credentials: str = Depends(verify_admin_password)):
-    """Admin witness confirmations management page"""
-    return """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UFOBeep Admin - Witness Confirmations</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #1a1a1a; color: #e0e0e0; }
-        .container { max-width: 1400px; margin: 0 auto; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .header h1 { color: #00ff88; margin: 0; }
-        .back-link { color: #00ff88; text-decoration: none; padding: 8px 16px; border: 1px solid #00ff88; border-radius: 4px; }
-        .back-link:hover { background: #00ff88; color: #000; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: #2d2d2d; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #444; }
-        .stat-number { font-size: 2em; font-weight: bold; color: #00ff88; margin: 0; }
-        .stat-label { color: #bbb; margin: 10px 0 0 0; }
-        .controls { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; }
-        .filter-select { background: #333; border: 1px solid #555; color: #e0e0e0; padding: 8px 12px; border-radius: 4px; }
-        .refresh-btn { background: #00ff88; color: #000; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
-        .refresh-btn:hover { background: #00cc70; }
-        .table { width: 100%; border-collapse: collapse; background: #2d2d2d; border-radius: 8px; overflow: hidden; }
-        .table th, .table td { text-align: left; padding: 12px; border-bottom: 1px solid #444; }
-        .table th { background: #333; color: #00ff88; font-weight: bold; }
-        .table tr:hover { background: #333; }
-        .badge { padding: 3px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold; }
-        .badge.emergency { background: #ff4444; color: white; }
-        .badge.urgent { background: #ffaa44; color: white; }
-        .badge.normal { background: #00ff88; color: black; }
-        .loading { text-align: center; padding: 40px; color: #888; }
-        .escalation-icon { font-size: 1.2em; margin-right: 5px; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>👁️ Witness Confirmations</h1>
-            <a href="/admin" class="back-link">← Back to Dashboard</a>
-        </div>
-
-        <div class="stats-grid" id="witness-stats">
-            <div class="stat-card">
-                <div class="stat-number" id="total-confirmations">-</div>
-                <div class="stat-label">Total Confirmations</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="confirmations-today">-</div>
-                <div class="stat-label">Today</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="high-witness">-</div>
-                <div class="stat-label">Multi-Witness (3+)</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="emergency-alerts">-</div>
-                <div class="stat-label">Emergency (10+)</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="avg-distance">-</div>
-                <div class="stat-label">Avg Distance (km)</div>
-            </div>
-        </div>
-
-        <div class="controls">
-            <select id="escalationFilter" class="filter-select">
-                <option value="">All Escalation Levels</option>
-                <option value="emergency">Emergency (10+ witnesses)</option>
-                <option value="urgent">Urgent (3+ witnesses)</option>
-                <option value="normal">Normal (1-2 witnesses)</option>
-            </select>
-            <button onclick="loadWitnessData()" class="refresh-btn">Refresh</button>
-        </div>
-
-        <div id="witnessTable" class="loading">Loading witness confirmations...</div>
-    </div>
-
-    <script>
-        async function loadWitnessData() {
-            try {
-                // Load stats
-                const statsResponse = await fetch('/admin/stats');
-                const stats = await statsResponse.json();
-                
-                document.getElementById('total-confirmations').textContent = stats.total_witness_confirmations;
-                document.getElementById('confirmations-today').textContent = stats.confirmations_today;
-                document.getElementById('high-witness').textContent = stats.high_witness_sightings;
-                document.getElementById('emergency-alerts').textContent = stats.escalated_alerts;
-                
-                // Load witness confirmation data
-                const dataResponse = await fetch('/admin/data/witnesses');
-                const witnesses = await dataResponse.json();
-                renderWitnessTable(witnesses);
-                
-                // Calculate average distance
-                if (witnesses.length > 0) {
-                    const avgDistance = witnesses.reduce((sum, w) => sum + (w.distance_km || 0), 0) / witnesses.length;
-                    document.getElementById('avg-distance').textContent = avgDistance.toFixed(1);
-                } else {
-                    document.getElementById('avg-distance').textContent = '0.0';
-                }
-                
-            } catch (error) {
-                document.getElementById('witnessTable').innerHTML = 
-                    `<div class="loading">Error loading witness data: ${error.message}</div>`;
-            }
-        }
-
-        function renderWitnessTable(witnesses) {
-            const escalationFilter = document.getElementById('escalationFilter').value;
-            
-            let filteredWitnesses = witnesses;
-            if (escalationFilter) {
-                filteredWitnesses = witnesses.filter(w => w.escalation_level === escalationFilter);
-            }
-
-            if (filteredWitnesses.length === 0) {
-                document.getElementById('witnessTable').innerHTML = 
-                    '<div class="loading">No witness confirmations found.</div>';
-                return;
-            }
-
-            const table = `
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Sighting</th>
-                            <th>Witness Count</th>
-                            <th>Escalation</th>
-                            <th>Distance</th>
-                            <th>Accuracy</th>
-                            <th>Still Visible</th>
-                            <th>Confirmed At</th>
-                            <th>Device ID</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${filteredWitnesses.map(witness => `
-                            <tr>
-                                <td>
-                                    <strong>${witness.sighting_title}</strong><br>
-                                    <small style="color: #888;">${witness.sighting_id.substring(0, 8)}...</small>
-                                </td>
-                                <td>
-                                    <span class="escalation-icon">
-                                        ${witness.escalation_level === 'emergency' ? '🚨' : 
-                                          witness.escalation_level === 'urgent' ? '⚠️' : '👁️'}
-                                    </span>
-                                    ${witness.witness_count} witnesses
-                                </td>
-                                <td>
-                                    <span class="badge ${witness.escalation_level}">
-                                        ${witness.escalation_level.toUpperCase()}
-                                    </span>
-                                </td>
-                                <td>${witness.distance_km.toFixed(1)} km</td>
-                                <td>±${witness.accuracy.toFixed(0)}m</td>
-                                <td>${witness.still_visible ? '✅ Yes' : '❌ No'}</td>
-                                <td>${new Date(witness.created_at).toLocaleString()}</td>
-                                <td>
-                                    <small style="color: #888; font-family: monospace;">
-                                        ${witness.device_id.substring(0, 12)}...
-                                    </small>
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
-            document.getElementById('witnessTable').innerHTML = table;
-        }
-
-        // Initialize
-        loadWitnessData();
-        document.getElementById('escalationFilter').addEventListener('change', () => {
-            // Re-render with current data
-            loadWitnessData();
-        });
+    """Witnesses management - DEVASTATED AND REBUILT"""
+    try:
+        from app.main import db_pool
         
-        // Auto-refresh every 30 seconds
-        setInterval(loadWitnessData, 30000);
-    </script>
-</body>
-</html>
-"""
+        # Get witness stats
+        async with db_pool.acquire() as conn:
+            total_confirmations = await conn.fetchval("SELECT COUNT(*) FROM witness_confirmations") or 0
+            unique_witnesses = await conn.fetchval("SELECT COUNT(DISTINCT device_id) FROM witness_confirmations") or 0
+            recent_witnesses = await conn.fetch("""
+                SELECT sighting_id, device_id, confirmed_at, confirmation_data
+                FROM witness_confirmations 
+                ORDER BY confirmed_at DESC LIMIT 10
+            """)
+        
+        witnesses_html = ""
+        for w in recent_witnesses:
+            witnesses_html += f"""
+            <tr>
+                <td>{str(w['sighting_id'])[:8]}...</td>
+                <td>{w['device_id'][:8]}...</td>
+                <td>{w['confirmed_at'].strftime('%Y-%m-%d %H:%M')}</td>
+            </tr>
+            """
+        
+        return HTMLResponse(f"""
+        <html><head><title>Admin - Witnesses</title></head>
+        <body style="font-family: Arial; margin: 20px;">
+        <h1>UFOBeep Admin - Witness Management</h1>
+        <p><a href="/admin">&larr; Back to Dashboard</a></p>
+        
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 20px 0;">
+        <div style="padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+        <h3>Total Confirmations</h3>
+        <div style="font-size: 24px; color: green;">{total_confirmations}</div>
+        </div>
+        <div style="padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+        <h3>Unique Witnesses</h3>
+        <div style="font-size: 24px; color: blue;">{unique_witnesses}</div>
+        </div>
+        </div>
+        
+        <h2>Recent Witness Confirmations</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+        <tr style="background: #f5f5f5;"><th>Sighting ID</th><th>Witness ID</th><th>Confirmed</th></tr>
+        {witnesses_html}
+        </table>
+        </body></html>
+        """)
+    except Exception as e:
+        return HTMLResponse(f"<html><body><h1>Witnesses Error</h1><p>{str(e)}</p></body></html>", status_code=500)
 
 @router.get("/logs", response_class=HTMLResponse)
 async def admin_logs_page(credentials: str = Depends(verify_admin_password)):
-    """Admin system logs page"""
-    return """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UFOBeep Admin - System Logs</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #1a1a1a; color: #e0e0e0; }
-        .container { max-width: 1400px; margin: 0 auto; }
-        .header { display: flex; justify-content: between; align-items: center; margin-bottom: 30px; }
-        .header h1 { color: #00ff88; margin: 0; }
-        .back-link { color: #00ff88; text-decoration: none; padding: 8px 16px; border: 1px solid #00ff88; border-radius: 4px; }
-        .back-link:hover { background: #00ff88; color: #000; }
-        .controls { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; }
-        .log-filter { background: #333; border: 1px solid #555; color: #e0e0e0; padding: 8px 12px; border-radius: 4px; }
-        .btn { background: #00ff88; color: #000; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
-        .btn:hover { background: #00cc70; }
-        .log-container { background: #1a1a1a; border: 1px solid #555; padding: 20px; border-radius: 8px; font-family: monospace; font-size: 0.9em; height: 600px; overflow-y: auto; }
-        .log-entry { margin-bottom: 10px; padding: 8px; border-left: 3px solid #555; padding-left: 12px; }
-        .log-entry.info { border-left-color: #00ff88; }
-        .log-entry.warning { border-left-color: #ffaa44; }
-        .log-entry.error { border-left-color: #ff4444; }
-        .log-timestamp { color: #888; font-size: 0.8em; }
-        .log-level { padding: 2px 6px; border-radius: 3px; font-size: 0.7em; font-weight: bold; margin-right: 8px; }
-        .log-level.info { background: #00ff88; color: #000; }
-        .log-level.warning { background: #ffaa44; color: #000; }
-        .log-level.error { background: #ff4444; color: #fff; }
-        .loading { text-align: center; padding: 40px; color: #888; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>📜 System Logs</h1>
-            <a href="/admin" class="back-link">← Back to Dashboard</a>
-        </div>
-
-        <div class="controls">
-            <select id="logLevel" class="log-filter">
-                <option value="">All Levels</option>
-                <option value="info">Info</option>
-                <option value="warning">Warning</option>
-                <option value="error">Error</option>
-            </select>
-            <select id="logSource" class="log-filter">
-                <option value="">All Sources</option>
-                <option value="api">API</option>
-                <option value="database">Database</option>
-                <option value="media">Media</option>
-                <option value="mufon">MUFON</option>
-                <option value="analysis">Analysis</option>
-            </select>
-            <button onclick="loadLogs()" class="btn">Refresh</button>
-            <button onclick="clearLogs()" class="btn" style="background: #ff4444; color: white;">Clear Logs</button>
-        </div>
-
-        <div id="logContainer" class="log-container">
-            <div class="loading">Loading system logs...</div>
-        </div>
+    """System logs - PRECISION ANNIHILATED"""
+    return HTMLResponse("""
+    <html><head><title>Admin - System Logs</title></head>
+    <body style="font-family: Arial; margin: 20px;">
+    <h1>UFOBeep Admin - System Logs</h1>
+    <p><a href="/admin">&larr;  Back to Dashboard</a></p>
+    
+    <div style="padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+    <h2>Log Monitoring</h2>
+    <p>System logs and monitoring features are under development.</p>
+    <p>This will provide real-time monitoring of API performance and errors.</p>
     </div>
-
-    <script>
-        function loadLogs() {
-            // Simulate log loading - replace with actual log fetching
-            const sampleLogs = [
-                { timestamp: new Date(), level: 'info', source: 'api', message: 'Database connection pool created successfully' },
-                { timestamp: new Date(Date.now() - 60000), level: 'info', source: 'api', message: 'FastAPI server started on port 8000' },
-                { timestamp: new Date(Date.now() - 120000), level: 'info', source: 'media', message: 'Media directory initialized' },
-                { timestamp: new Date(Date.now() - 180000), level: 'warning', source: 'analysis', message: 'Photo analysis took longer than expected: 5.2s' },
-                { timestamp: new Date(Date.now() - 240000), level: 'info', source: 'database', message: 'Migration executed successfully' },
-                { timestamp: new Date(Date.now() - 300000), level: 'error', source: 'mufon', message: 'MUFON import failed: Chrome not available' },
-                { timestamp: new Date(Date.now() - 360000), level: 'info', source: 'api', message: 'New sighting created: ID 12345' },
-                { timestamp: new Date(Date.now() - 420000), level: 'warning', source: 'media', message: 'Large file upload detected: 25MB' },
-                { timestamp: new Date(Date.now() - 480000), level: 'info', source: 'api', message: 'Admin interface accessed' },
-                { timestamp: new Date(Date.now() - 540000), level: 'info', source: 'database', message: 'Database connection established' }
-            ];
-
-            const levelFilter = document.getElementById('logLevel').value;
-            const sourceFilter = document.getElementById('logSource').value;
-            
-            let filteredLogs = sampleLogs;
-            if (levelFilter) {
-                filteredLogs = filteredLogs.filter(log => log.level === levelFilter);
-            }
-            if (sourceFilter) {
-                filteredLogs = filteredLogs.filter(log => log.source === sourceFilter);
-            }
-
-            const logHTML = filteredLogs.map(log => `
-                <div class="log-entry ${log.level}">
-                    <div class="log-timestamp">${log.timestamp.toISOString()}</div>
-                    <span class="log-level ${log.level}">${log.level.toUpperCase()}</span>
-                    <strong>[${log.source}]</strong> ${log.message}
-                </div>
-            `).join('');
-
-            document.getElementById('logContainer').innerHTML = logHTML || '<div class="loading">No logs match the current filters.</div>';
-        }
-
-        function clearLogs() {
-            if (!confirm('Clear all system logs? This cannot be undone.')) return;
-            document.getElementById('logContainer').innerHTML = '<div class="loading">Logs cleared.</div>';
-        }
-
-        // Initialize
-        loadLogs();
-        document.getElementById('logLevel').addEventListener('change', loadLogs);
-        document.getElementById('logSource').addEventListener('change', loadLogs);
-
-        // Auto-refresh every 30 seconds
-        setInterval(loadLogs, 30000);
-    </script>
-</body>
-</html>
-"""
+    </body></html>
+    """)
 
 @router.get("/location-search")
 async def search_location(query: str, credentials: str = Depends(verify_admin_password)):
@@ -1942,7 +499,7 @@ async def admin_alerts_page(credentials: str = Depends(verify_admin_password)):
     <div class="container">
         <div class="header">
             <h1>🚨 Proximity Alert System</h1>
-            <a href="/admin" class="back-link">← Back to Dashboard</a>
+            <a href="/admin" class="back-link">&larr;  Back to Dashboard</a>
         </div>
 
         <div class="section">
@@ -2396,7 +953,7 @@ async def admin_aggregation_page(credentials: str = Depends(verify_admin_passwor
         <div class="header">
             <h1>🔬 Witness Aggregation Dashboard</h1>
             <p>Triangulation analysis, heat maps, and auto-escalation controls (Task 7)</p>
-            <a href="/admin" class="back-link">← Back to Dashboard</a>
+            <a href="/admin" class="back-link">&larr;  Back to Dashboard</a>
         </div>
 
         <div class="controls">
@@ -2921,7 +1478,7 @@ async def admin_engagement_metrics_page(credentials: str = Depends(verify_admin_
 <body>
     <div class="container">
         <div class="header">
-            <a href="/admin" class="back-link">← Back to Admin Dashboard</a>
+            <a href="/admin" class="back-link">&larr;  Back to Admin Dashboard</a>
             <h1>📊 UFOBeep Engagement Analytics</h1>
             <p>Real-time user engagement and alert delivery metrics</p>
         </div>

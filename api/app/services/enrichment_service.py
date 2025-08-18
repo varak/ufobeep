@@ -1678,3 +1678,447 @@ def initialize_enrichment_processors():
     logger.info(f"Weather API available: {weather_api_key is not None}")
     logger.info(f"Geocoding API available: {weather_api_key is not None}")
     logger.info(f"HuggingFace API available: {hf_api_token is not None}")
+
+
+class EnrichmentDataGenerator:
+    """
+    Service class for generating enrichment data from sensor inputs
+    
+    🔧 MODULAR ARCHITECTURE: Each enrichment component can be:
+    - ✅ Added independently (drop-in modules)  
+    - ✅ Disabled individually (feature flags)
+    - ✅ Configured separately (settings toggles)
+    - ✅ Tested in isolation (unit testable)
+    
+    🌡️ UNIT CONVERSION SUPPORT:
+    - ✅ Temperature: Celsius/Fahrenheit  
+    - ✅ Distance: Kilometers/Miles
+    - ✅ Speed: m/s, km/h, mph
+    - ✅ Pressure: hPa/inHg
+    
+    Future modules ready for drop-in:
+    - 🔞 NSFW Content Detector
+    - 🎯 Object Classification (AI/ML)
+    - ✈️ Enhanced Plane Matching  
+    - 🌍 Geological Context
+    - 📡 Radio Interference Detection
+    """
+    
+    def __init__(self, enable_nsfw_detection=True, enable_object_classification=True, use_metric=True):
+        """Initialize the enrichment data generator with feature flags and unit preferences"""
+        if not enrichment_orchestrator.processors:
+            initialize_enrichment_processors()
+            
+        # Feature flags for modular control
+        self.enable_nsfw_detection = enable_nsfw_detection
+        self.enable_object_classification = enable_object_classification
+        self.use_metric = use_metric  # True for metric, False for imperial
+    
+    def _extract_coordinates_from_sensor_data(self, sensor_data: dict) -> Tuple[Optional[float], Optional[float]]:
+        """Extract latitude and longitude from sensor data, handling both formats"""
+        if not sensor_data:
+            return None, None
+        
+        # Check nested location format
+        if "location" in sensor_data and isinstance(sensor_data["location"], dict):
+            location = sensor_data["location"]
+            lat = location.get("latitude")
+            lng = location.get("longitude")
+            if lat is not None and lng is not None:
+                return float(lat), float(lng)
+        
+        # Check flat format
+        lat = sensor_data.get("latitude")
+        lng = sensor_data.get("longitude")
+        if lat is not None and lng is not None:
+            return float(lat), float(lng)
+        
+        return None, None
+    
+    def _convert_temperature(self, celsius: float) -> dict:
+        """Convert temperature with unit labels and controlled precision"""
+        if celsius is None:
+            return {"value": None, "unit": "°C" if self.use_metric else "°F"}
+            
+        # Clean input - handle crazy precision from APIs
+        celsius = round(float(celsius), 2)  # Limit input precision first
+        
+        if self.use_metric:
+            return {"value": round(celsius, 1), "unit": "°C"}
+        else:
+            fahrenheit = (celsius * 9/5) + 32
+            return {"value": round(fahrenheit, 1), "unit": "°F"}
+    
+    def _convert_distance(self, kilometers: float) -> dict:
+        """Convert distance with unit labels and controlled precision"""
+        if kilometers is None:
+            return {"value": None, "unit": "km" if self.use_metric else "mi"}
+            
+        # Clean input precision
+        kilometers = round(float(kilometers), 3)
+        
+        if self.use_metric:
+            return {"value": round(kilometers, 1), "unit": "km"}
+        else:
+            miles = kilometers * 0.621371
+            return {"value": round(miles, 1), "unit": "mi"}
+    
+    def _convert_speed(self, meters_per_second: float) -> dict:
+        """Convert wind speed with unit labels and controlled precision"""
+        if meters_per_second is None:
+            return {"value": None, "unit": "km/h" if self.use_metric else "mph"}
+            
+        # Clean input precision
+        meters_per_second = round(float(meters_per_second), 2)
+        
+        if self.use_metric:
+            # Convert to km/h for metric
+            kmh = meters_per_second * 3.6
+            return {"value": round(kmh, 1), "unit": "km/h"}
+        else:
+            # Convert to mph for imperial
+            mph = meters_per_second * 2.237
+            return {"value": round(mph, 1), "unit": "mph"}
+    
+    def _convert_pressure(self, hectopascals: float) -> dict:
+        """Convert atmospheric pressure with unit labels and controlled precision"""
+        if hectopascals is None:
+            return {"value": None, "unit": "hPa" if self.use_metric else "inHg"}
+            
+        # Clean input precision
+        hectopascals = round(float(hectopascals), 2)
+        
+        if self.use_metric:
+            return {"value": round(hectopascals, 0), "unit": "hPa"}  # Whole numbers for pressure
+        else:
+            inches_hg = hectopascals * 0.02953
+            return {"value": round(inches_hg, 2), "unit": "inHg"}  # 2 decimals for inches
+    
+    def _calculate_observation_quality(self, weather_data: dict) -> str:
+        """Calculate observation quality for UFO sightings based on weather conditions"""
+        try:
+            visibility = weather_data.get("visibility_km", 10.0)
+            cloud_cover = weather_data.get("cloud_cover_percent", 0)
+            humidity = weather_data.get("humidity_percent", 50)
+            wind_speed = weather_data.get("wind_speed_ms", 0)
+            precipitation = weather_data.get("rain_1h_mm", 0) + weather_data.get("snow_1h_mm", 0)
+            
+            # Start with perfect score
+            score = 100
+            
+            # Visibility penalties
+            if visibility < 1.0:
+                score -= 60
+            elif visibility < 5.0:
+                score -= 30
+            elif visibility < 8.0:
+                score -= 15
+            
+            # Cloud cover penalties
+            if cloud_cover > 80:
+                score -= 25
+            elif cloud_cover > 50:
+                score -= 15
+            elif cloud_cover > 25:
+                score -= 5
+            
+            # Precipitation penalty
+            if precipitation > 0:
+                score -= 20
+            
+            # Humidity penalty
+            if humidity > 85:
+                score -= 10
+            elif humidity > 70:
+                score -= 5
+            
+            # Wind penalty
+            if wind_speed > 10:
+                score -= 10
+            elif wind_speed > 5:
+                score -= 5
+            
+            # Clamp score
+            score = max(0, min(100, score))
+            
+            # Convert to quality rating
+            ratings = [(90, "excellent"), (75, "very_good"), (60, "good"), 
+                      (40, "fair"), (25, "poor")]
+            for threshold, rating in ratings:
+                if score >= threshold:
+                    return rating
+            return "very_poor"
+                
+        except Exception:
+            return "unknown"
+    
+    def _build_location_data(self, context: EnrichmentContext, sensor_data: dict, enrichment_results: dict) -> dict:
+        """Build location enrichment data with intelligent unit conversion"""
+        location_data = {
+            "latitude": context.latitude,
+            "longitude": context.longitude,
+            "units": "metric" if self.use_metric else "imperial"
+        }
+        
+        # Altitude conversion - we usually get meters, user wants their preference
+        altitude_m = context.altitude or 0
+        if self.use_metric:
+            location_data["altitude"] = {"value": round(altitude_m, 1), "unit": "m"}
+        else:
+            altitude_ft = altitude_m * 3.28084  # Convert meters to feet
+            location_data["altitude"] = {"value": round(altitude_ft, 1), "unit": "ft"}
+        
+        # Accuracy conversion - GPS accuracy in meters, user wants their preference
+        accuracy_m = sensor_data.get("accuracy", 0)
+        if self.use_metric:
+            location_data["accuracy"] = {"value": round(accuracy_m, 1), "unit": "m"}
+        else:
+            accuracy_ft = accuracy_m * 3.28084  # Convert meters to feet
+            location_data["accuracy"] = {"value": round(accuracy_ft, 1), "unit": "ft"}
+        
+        # Add geocoding results if available
+        if "geocoding" in enrichment_results and enrichment_results["geocoding"].success:
+            geocoding_data = enrichment_results["geocoding"].data
+            location_data.update({
+                "name": geocoding_data.get("location_name", "Unknown Location"),
+                "city": geocoding_data.get("city", ""),
+                "state": geocoding_data.get("state", ""),
+                "country": geocoding_data.get("country", ""),
+                "formatted_address": geocoding_data.get("formatted_address", "")
+            })
+        else:
+            location_data["name"] = "Unknown Location"
+        
+        return location_data
+    
+    def _build_weather_data(self, enrichment_results: dict) -> dict:
+        """Build weather enrichment data with intelligent unit conversion"""
+        if "weather" not in enrichment_results or not enrichment_results["weather"].success:
+            return {
+                "condition": "Clear", 
+                "description": "Weather unavailable", 
+                "observation_quality": "unknown",
+                "units": "metric" if self.use_metric else "imperial"
+            }
+        
+        weather_data = enrichment_results["weather"].data
+        
+        # Smart unit conversion - detect what we have, provide what user wants
+        weather_response = {
+            "condition": weather_data.get("weather_main", "Clear"),
+            "description": weather_data.get("weather_description", "Clear sky"),
+            "icon_code": weather_data.get("weather_icon", "01d"),
+            
+            # Percentage and directional data (always the same)
+            "humidity": weather_data.get("humidity_percent", 0),
+            "cloud_coverage": weather_data.get("cloud_cover_percent", 0),
+            "uv_index": weather_data.get("uvi", 0),
+            "wind_direction": weather_data.get("wind_direction_deg", 0),
+            
+            # Time data (always the same)
+            "sunrise": weather_data.get("sunrise", 0),
+            "sunset": weather_data.get("sunset", 0),
+            "timestamp": weather_data.get("dt", 0),
+            "timezone_offset": weather_data.get("timezone_offset", 0),
+            
+            # Quality assessment
+            "observation_quality": self._calculate_observation_quality(weather_data),
+            "units": "metric" if self.use_metric else "imperial"
+        }
+        
+        # Temperature conversions - we get Celsius, user wants their preference
+        temp_c = weather_data.get("temperature_c", 0)
+        feels_c = weather_data.get("feels_like_c", 0) 
+        dew_c = weather_data.get("dew_point_c", 0)
+        
+        if temp_c is not None:
+            weather_response["temperature"] = self._convert_temperature(temp_c)
+        if feels_c is not None:
+            weather_response["feels_like"] = self._convert_temperature(feels_c)
+        if dew_c is not None:
+            weather_response["dew_point"] = self._convert_temperature(dew_c)
+        
+        # Pressure conversion - we get hPa, user wants their preference
+        pressure_hpa = weather_data.get("pressure_hpa", 1013)
+        if pressure_hpa is not None:
+            weather_response["pressure"] = self._convert_pressure(pressure_hpa)
+        
+        # Distance conversion - we get km, user wants their preference
+        visibility_km = weather_data.get("visibility_km", 10.0)
+        if visibility_km is not None:
+            weather_response["visibility"] = self._convert_distance(visibility_km)
+        
+        # Wind speed conversion - we get m/s, user wants their preference
+        wind_ms = weather_data.get("wind_speed_ms", 0)
+        wind_gust_ms = weather_data.get("wind_gust_ms", 0)
+        
+        if wind_ms is not None:
+            weather_response["wind_speed"] = self._convert_speed(wind_ms)
+        if wind_gust_ms is not None:
+            weather_response["wind_gust"] = self._convert_speed(wind_gust_ms)
+        
+        # Precipitation - convert mm to inches for imperial users
+        rain_mm = weather_data.get("rain_1h_mm", 0)
+        snow_mm = weather_data.get("snow_1h_mm", 0)
+        
+        if self.use_metric:
+            weather_response["rain_1h"] = {"value": rain_mm, "unit": "mm"}
+            weather_response["snow_1h"] = {"value": snow_mm, "unit": "mm"}
+        else:
+            # Convert mm to inches
+            rain_inches = rain_mm * 0.0393701 if rain_mm else 0
+            snow_inches = snow_mm * 0.0393701 if snow_mm else 0
+            weather_response["rain_1h"] = {"value": round(rain_inches, 2), "unit": "in"}
+            weather_response["snow_1h"] = {"value": round(snow_inches, 2), "unit": "in"}
+        
+        return weather_response
+    
+    def _build_celestial_data(self, enrichment_results: dict) -> dict:
+        """Build celestial enrichment data"""
+        if "celestial" not in enrichment_results or not enrichment_results["celestial"].success:
+            return {
+                "moon_phase": 0.5,
+                "moon_phase_name": "Unknown",
+                "visible_planets": [],
+                "bright_stars": 0,
+                "observation_quality": "unknown"
+            }
+        
+        celestial_data = enrichment_results["celestial"].data
+        summary = celestial_data.get("summary", {})
+        return {
+            "moon_phase": celestial_data.get("moon", {}).get("phase", 0.5),
+            "moon_phase_name": summary.get("moon_phase_name", "Unknown"),
+            "visible_planets": summary.get("visible_planets", []),
+            "bright_stars": summary.get("visible_bright_stars", 0),
+            "observation_quality": summary.get("observation_quality", "unknown")
+        }
+    
+    def _build_satellite_data(self, enrichment_results: dict) -> dict:
+        """Build satellite tracking data"""
+        if "satellites" not in enrichment_results or not enrichment_results["satellites"].success:
+            return {
+                "visible_satellites": 0,
+                "starlink_present": False,
+                "iss_visible": False,
+                "brightest_magnitude": None,
+                "next_pass": None
+            }
+        
+        satellite_data = enrichment_results["satellites"].data
+        summary = satellite_data.get("summary", {})
+        return {
+            "visible_satellites": summary.get("total_visible_passes", 0),
+            "starlink_present": len(satellite_data.get("starlink_passes", [])) > 0,
+            "iss_visible": len(satellite_data.get("iss_passes", [])) > 0,
+            "brightest_magnitude": summary.get("brightest_magnitude"),
+            "next_pass": summary.get("next_bright_pass")
+        }
+    
+    def _build_processing_summary(self, enrichment_results: dict) -> dict:
+        """Build processing summary data"""
+        successful_processors = sum(1 for result in enrichment_results.values() if result.success)
+        total_processors = len(enrichment_results)
+        return {
+            "total_processors": total_processors,
+            "successful_processors": successful_processors,
+            "failed_processors": total_processors - successful_processors,
+            "processor_results": {
+                name: {"success": result.success, "error": result.error}
+                for name, result in enrichment_results.items()
+            }
+        }
+    
+    def _build_nsfw_detection_data(self, enrichment_results: dict, media_files: list = None) -> dict:
+        """Build NSFW detection data - MODULAR COMPONENT"""
+        if not self.enable_nsfw_detection or not media_files:
+            return {"enabled": False, "status": "disabled"}
+        
+        # TODO: Implement NSFW detection when ready
+        return {
+            "enabled": True,
+            "status": "not_implemented",
+            "confidence": 0.0,
+            "is_safe": True,
+            "detected_categories": []
+        }
+    
+    def _build_object_classification_data(self, enrichment_results: dict, media_files: list = None) -> dict:
+        """Build object classification data - MODULAR COMPONENT"""
+        if not self.enable_object_classification or not media_files:
+            return {"enabled": False, "status": "disabled"}
+        
+        # TODO: Implement AI object classification when ready  
+        return {
+            "enabled": True,
+            "status": "not_implemented",
+            "confidence": 0.0,
+            "detected_objects": [],
+            "classification": "unknown"
+        }
+    
+    async def generate_enrichment_data(self, sensor_data: dict, media_files: list = None) -> dict:
+        """Generate enrichment data for a sighting - clean orchestrator method"""
+        import uuid
+        
+        # Extract coordinates
+        lat, lng = self._extract_coordinates_from_sensor_data(sensor_data)
+        if lat is None or lng is None:
+            return {
+                "status": "completed",
+                "processed_at": datetime.now().isoformat(),
+                "error": "No location data available for enrichment",
+            }
+        
+        try:
+            # Create enrichment context
+            context = EnrichmentContext(
+                sighting_id=str(uuid.uuid4()),
+                latitude=lat,
+                longitude=lng,
+                altitude=sensor_data.get("altitude"),
+                timestamp=datetime.now(),
+                azimuth_deg=sensor_data.get("azimuth_deg", 0),
+                pitch_deg=sensor_data.get("pitch_deg", 0),
+                roll_deg=sensor_data.get("roll_deg"),
+                category="ufo",
+                title="",
+                description=""
+            )
+            
+            # Run enrichment orchestrator
+            enrichment_results = await enrichment_orchestrator.enrich_sighting(context)
+            
+            # Build clean response using focused, modular methods
+            enrichment_data = {
+                "status": "completed",
+                "processed_at": datetime.now().isoformat(),
+                "location": self._build_location_data(context, sensor_data, enrichment_results),
+                "weather": self._build_weather_data(enrichment_results),
+                "celestial": self._build_celestial_data(enrichment_results),
+                "satellite_check": self._build_satellite_data(enrichment_results),
+                "plane_match": {"is_plane": False, "confidence": 0.0, "nearby_flights": []},
+                "processing_summary": self._build_processing_summary(enrichment_results)
+            }
+            
+            # Add modular components if enabled
+            if media_files:  # Only include these if media is present
+                enrichment_data["nsfw_detection"] = self._build_nsfw_detection_data(enrichment_results, media_files)
+                enrichment_data["object_classification"] = self._build_object_classification_data(enrichment_results, media_files)
+            
+            return enrichment_data
+            
+        except Exception as e:
+            logger.error(f"Error in enrichment processing: {e}")
+            return {
+                "status": "failed",
+                "processed_at": datetime.now().isoformat(),
+                "error": str(e),
+                "location": {
+                    "latitude": sensor_data.get("latitude", 0),
+                    "longitude": sensor_data.get("longitude", 0),
+                    "altitude": sensor_data.get("altitude", 0),
+                    "accuracy": sensor_data.get("accuracy", 0),
+                    "name": "Unknown Location"
+                }
+            }

@@ -16,8 +16,8 @@ from ..schemas.media import (
 
 logger = logging.getLogger(__name__)
 
-# Storage root directory
-STORAGE_ROOT = Path("/home/ufobeep/ufobeep/media")
+# Storage root directory - use relative path for portability
+STORAGE_ROOT = Path("media").resolve()
 
 class FilesystemStorageService:
     """Filesystem-based storage service for media uploads"""

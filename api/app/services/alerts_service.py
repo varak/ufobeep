@@ -1,325 +1,371 @@
 """
-Alerts Service
-
-Handles real-time alert generation, notification dispatching, 
-and alert-related business logic for the UFOBeep system.
+Alerts Service - Clean business logic for UFO sightings/alerts
+Extracts all the database and business logic from HTTP endpoints
 """
-
-import asyncio
-import logging
-from datetime import datetime, timedelta
-from typing import List, Optional, Dict, Any
-from dataclasses import dataclass
+import json
+import uuid
 import math
-
-logger = logging.getLogger(__name__)
-
-# Import sightings storage
-from app.routers.sightings import sightings_db
-
+from datetime import datetime
+from typing import List, Dict, Optional, Tuple
+from dataclasses import dataclass
 
 @dataclass
-class AlertTrigger:
-    """Configuration for when to trigger alerts"""
-    min_alert_level: str = "medium"
-    max_distance_km: float = 100.0
-    recent_hours: int = 24
-    witness_count_threshold: int = 2
-    verification_score_threshold: float = 0.3
+class AlertLocation:
+    latitude: float
+    longitude: float
+    name: str = "Unknown Location"
+    accuracy: float = 50.0
 
-
-@dataclass 
-class AlertNotification:
-    """Alert notification to be sent"""
-    alert_id: str
-    recipient_type: str  # "nearby_users", "subscribers", "moderators"
-    title: str
-    body: str
-    data: Dict[str, Any]
-    priority: str  # "low", "normal", "high"
+@dataclass
+class Alert:
+    id: str
+    title: Optional[str]
+    description: Optional[str]
+    category: str
+    location: AlertLocation
+    witness_count: int
+    alert_level: str
     created_at: datetime
-
+    media_files: List[Dict] = None
+    enrichment: Dict = None
 
 class AlertsService:
-    """Service for managing real-time alerts generation and notification"""
+    def __init__(self, db_pool):
+        self.db_pool = db_pool
     
-    def __init__(self):
-        self.trigger_config = AlertTrigger()
-        self.notification_queue: List[AlertNotification] = []
-        self.processed_sightings: set = set()
-        
-    def should_trigger_alert(self, sighting) -> bool:
-        """Determine if a sighting should trigger an alert"""
-        try:
-            # Check if already processed
-            if sighting.id in self.processed_sightings:
-                return False
+    async def get_recent_alerts(self, limit: int = 20) -> List[Alert]:
+        """Get recent public alerts with clean data structure"""
+        async with self.db_pool.acquire() as conn:
+            rows = await conn.fetch("""
+                SELECT id::text, title, description, category, alert_level, 
+                       witness_count, created_at, sensor_data, media_info, enrichment_data
+                FROM sightings 
+                WHERE is_public = true 
+                ORDER BY created_at DESC 
+                LIMIT $1
+            """, limit)
             
-            # Check alert level threshold
-            alert_levels = ["low", "medium", "high", "critical"]
-            min_level_idx = alert_levels.index(self.trigger_config.min_alert_level)
-            sighting_level = sighting.alert_level.value if hasattr(sighting.alert_level, 'value') else sighting.alert_level
-            current_level_idx = alert_levels.index(sighting_level)
+            alerts = []
+            for row in rows:
+                location = self._extract_location(row["sensor_data"], row["enrichment_data"])
+                if location:  # Only include alerts with valid locations
+                    alerts.append(Alert(
+                        id=row["id"],
+                        title=row["title"],
+                        description=row["description"],
+                        category=row["category"] or "ufo",
+                        location=location,
+                        witness_count=row["witness_count"] or 1,
+                        alert_level=row["alert_level"] or "low",
+                        created_at=row["created_at"],
+                        media_files=self._process_media(row["media_info"], row["id"]),
+                        enrichment=self._process_enrichment(row["enrichment_data"])
+                    ))
             
-            if current_level_idx < min_level_idx:
-                logger.debug(f"Sighting {sighting.id} alert level {sighting_level} below threshold {self.trigger_config.min_alert_level}")
-                return False
-            
-            # Check if recent enough
-            if sighting.created_at:
-                cutoff_time = datetime.utcnow() - timedelta(hours=self.trigger_config.recent_hours)
-                if sighting.created_at < cutoff_time:
-                    logger.debug(f"Sighting {sighting.id} too old for alert triggering")
-                    return False
-            
-            # Check witness count for higher credibility
-            if (sighting_level in ["high", "critical"] and 
-                sighting.witness_count < self.trigger_config.witness_count_threshold):
-                logger.debug(f"High-level sighting {sighting.id} has insufficient witnesses ({sighting.witness_count})")
-                return False
-            
-            # Check verification score if available
-            if (hasattr(sighting, 'verification_score') and 
-                sighting.verification_score > 0 and 
-                sighting.verification_score < self.trigger_config.verification_score_threshold):
-                logger.debug(f"Sighting {sighting.id} verification score {sighting.verification_score} below threshold")
-                return False
-            
-            # Check if sighting is public
-            if hasattr(sighting, 'is_public') and not sighting.is_public:
-                logger.debug(f"Sighting {sighting.id} is private, skipping alert")
-                return False
-            
-            logger.info(f"Sighting {sighting.id} meets alert criteria: level={sighting_level}, witnesses={sighting.witness_count}")
-            return True
-            
-        except Exception as e:
-            logger.error(f"Error checking alert trigger for sighting {sighting.id}: {e}")
-            return False
+            return alerts
     
-    def generate_alert_notification(self, sighting) -> AlertNotification:
-        """Generate alert notification content"""
-        try:
-            sighting_level = sighting.alert_level.value if hasattr(sighting.alert_level, 'value') else sighting.alert_level
+    async def get_alert_by_id(self, alert_id: str) -> Optional[Alert]:
+        """Get single alert by ID"""
+        async with self.db_pool.acquire() as conn:
+            row = await conn.fetchrow("""
+                SELECT id::text, title, description, category, alert_level,
+                       witness_count, created_at, sensor_data, media_info, enrichment_data
+                FROM sightings 
+                WHERE id = $1 AND is_public = true
+            """, uuid.UUID(alert_id))
             
-            # Create notification title and body based on alert level and category
-            if sighting_level == "critical":
-                title = f"🚨 CRITICAL ALERT: {sighting.category.upper()} Sighting"
-                priority = "high"
-            elif sighting_level == "high":
-                title = f"⚠️ HIGH ALERT: {sighting.category.upper()} Sighting"
-                priority = "high"
-            else:
-                title = f"📍 New {sighting.category.upper()} Sighting"
-                priority = "normal"
-            
-            # Create notification body
-            location_desc = "Unknown location"
-            if hasattr(sighting, 'jittered_location'):
-                location_desc = f"Near {sighting.jittered_location.latitude:.3f}, {sighting.jittered_location.longitude:.3f}"
-            
-            witness_desc = "1 witness"
-            if sighting.witness_count > 1:
-                witness_desc = f"{sighting.witness_count} witnesses"
-            
-            body = f"{sighting.title} - {location_desc} ({witness_desc})"
-            
-            # Create notification data payload
-            data = {
-                "alert_id": sighting.id,
-                "sighting_id": sighting.id,
-                "category": sighting.category,
-                "alert_level": sighting_level,
-                "title": sighting.title,
-                "description": sighting.description,
-                "witness_count": sighting.witness_count,
-                "created_at": sighting.created_at.isoformat() if sighting.created_at else None,
-                "deep_link": f"ufobeep://alert/{sighting.id}",
-            }
-            
-            # Add location data
-            if hasattr(sighting, 'jittered_location'):
-                data["location"] = {
-                    "latitude": sighting.jittered_location.latitude,
-                    "longitude": sighting.jittered_location.longitude,
-                }
-            
-            # Add media info if available
-            if hasattr(sighting, 'media_files') and sighting.media_files:
-                data["has_media"] = True
-                data["media_count"] = len(sighting.media_files)
-            else:
-                data["has_media"] = False
-                data["media_count"] = 0
-            
-            return AlertNotification(
-                alert_id=sighting.id,
-                recipient_type="nearby_users",
-                title=title,
-                body=body,
-                data=data,
-                priority=priority,
-                created_at=datetime.utcnow()
+            if not row:
+                return None
+                
+            location = self._extract_location(row["sensor_data"], row["enrichment_data"])
+            if not location:
+                return None
+                
+            return Alert(
+                id=row["id"],
+                title=row["title"],
+                description=row["description"],
+                category=row["category"] or "ufo",
+                location=location,
+                witness_count=row["witness_count"] or 1,
+                alert_level=row["alert_level"] or "low",
+                created_at=row["created_at"],
+                media_files=self._process_media(row["media_info"], row["id"]),
+                enrichment=self._process_enrichment(row["enrichment_data"])
             )
-            
-        except Exception as e:
-            logger.error(f"Error generating alert notification for sighting {sighting.id}: {e}")
-            raise
     
-    def find_nearby_users(self, sighting, max_distance_km: float = None) -> List[str]:
-        """Find users who should receive this alert based on location"""
-        # TODO: In production, this would query the user database for:
-        # - Users with push tokens registered
-        # - Users within the specified distance of the sighting
-        # - Users with notification preferences enabled
-        # - Users not in "do not disturb" mode
+    def _extract_location(self, sensor_data, enrichment_data) -> Optional[AlertLocation]:
+        """Extract location from sensor/enrichment data - unified logic"""
+        # Try enrichment data first (has processed location name)
+        if enrichment_data:
+            enrichment = self._parse_json(enrichment_data)
+            if enrichment and "location" in enrichment:
+                loc = enrichment["location"]
+                lat = loc.get("latitude")
+                lng = loc.get("longitude")
+                if self._valid_coords(lat, lng):
+                    return AlertLocation(
+                        latitude=float(lat),
+                        longitude=float(lng),
+                        name=loc.get("name", "Unknown Location"),
+                        accuracy=loc.get("accuracy", 50.0)
+                    )
         
-        if max_distance_km is None:
-            max_distance_km = self.trigger_config.max_distance_km
+        # Fall back to sensor data
+        if sensor_data:
+            sensor = self._parse_json(sensor_data)
+            if sensor:
+                lat, lng = self._extract_coords_from_sensor(sensor)
+                if self._valid_coords(lat, lng):
+                    return AlertLocation(
+                        latitude=lat,
+                        longitude=lng,
+                        name="Unknown Location"
+                    )
         
-        # For now, return mock user IDs
-        mock_nearby_users = [
-            "user_001", "user_002", "user_003", "user_004", "user_005"
-        ]
-        
-        logger.info(f"Found {len(mock_nearby_users)} nearby users within {max_distance_km}km of sighting {sighting.id}")
-        return mock_nearby_users
+        return None
     
-    def queue_notification(self, notification: AlertNotification, recipient_ids: List[str]):
-        """Queue notification for delivery to specific recipients"""
+    def _extract_coords_from_sensor(self, sensor_data: dict) -> Tuple[Optional[float], Optional[float]]:
+        """Extract coords from sensor data - handles both formats"""
+        if "location" in sensor_data and isinstance(sensor_data["location"], dict):
+            location = sensor_data["location"]
+            lat = location.get("latitude")
+            lng = location.get("longitude")
+            if lat is not None and lng is not None:
+                return float(lat), float(lng)
+        
+        lat = sensor_data.get("latitude")
+        lng = sensor_data.get("longitude")
+        if lat is not None and lng is not None:
+            return float(lat), float(lng)
+        
+        return None, None
+    
+    def _valid_coords(self, lat, lng) -> bool:
+        """Check if coordinates are valid"""
+        return (lat is not None and lng is not None and 
+                lat != 0.0 and lng != 0.0 and
+                -90 <= lat <= 90 and -180 <= lng <= 180)
+    
+    def _parse_json(self, data) -> Optional[dict]:
+        """Safely parse JSON data"""
+        if not data:
+            return None
         try:
-            # In production, this would:
-            # - Store in Redis queue or message broker
-            # - Send to push notification service (FCM, APNS)
-            # - Log delivery attempts and results
-            # - Handle retry logic for failed deliveries
-            
-            logger.info(f"Queuing alert notification {notification.alert_id} for {len(recipient_ids)} recipients")
-            self.notification_queue.append(notification)
-            
-            # Mock notification sending
-            for recipient_id in recipient_ids:
-                logger.info(f"📱 MOCK PUSH: {recipient_id} <- {notification.title}: {notification.body}")
-            
-        except Exception as e:
-            logger.error(f"Error queuing notification {notification.alert_id}: {e}")
+            if isinstance(data, str):
+                return json.loads(data)
+            return data
+        except:
+            return None
     
-    async def process_new_sightings(self):
-        """Process new sightings for alert generation"""
-        try:
-            new_alerts_count = 0
-            
-            # Check all sightings for new ones that should trigger alerts
-            for sighting_id, sighting in sightings_db.items():
-                if self.should_trigger_alert(sighting):
-                    # Generate alert notification
-                    notification = self.generate_alert_notification(sighting)
+    def _process_media(self, media_info, sighting_id: str) -> List[Dict]:
+        """Process media files into clean format"""
+        media_files = []
+        if media_info:
+            media = self._parse_json(media_info)
+            if media and isinstance(media, dict) and "files" in media:
+                for media_file in media["files"]:
+                    filename = media_file.get("filename", "")
+                    media_url = f"https://api.ufobeep.com/media/{sighting_id}/{filename}"
                     
-                    # Find nearby users to notify
-                    nearby_users = self.find_nearby_users(sighting)
+                    # Determine media type
+                    media_type = media_file.get("type", "image")
+                    if not media_type or media_type == "unknown":
+                        media_type = "video" if any(ext in filename.lower() for ext in ['.mp4', '.mov', '.avi']) else "image"
                     
-                    # Queue notification for delivery
-                    if nearby_users:
-                        self.queue_notification(notification, nearby_users)
-                        new_alerts_count += 1
-                    
-                    # Mark as processed
-                    self.processed_sightings.add(sighting_id)
-                    
-                    logger.info(f"Generated alert for sighting {sighting_id}")
-            
-            if new_alerts_count > 0:
-                logger.info(f"Processed {new_alerts_count} new alerts")
-            
-            return new_alerts_count
-            
-        except Exception as e:
-            logger.error(f"Error processing new sightings: {e}")
-            return 0
+                    media_files.append({
+                        "type": media_type,
+                        "url": media_url,
+                        "thumbnail_url": f"{media_url}?thumbnail=true" if media_type == "video" else media_url,
+                        "filename": filename
+                    })
+        return media_files
     
-    async def cleanup_old_notifications(self):
-        """Clean up old notifications from queue"""
-        try:
-            cutoff_time = datetime.utcnow() - timedelta(hours=24)
-            initial_count = len(self.notification_queue)
-            
-            self.notification_queue = [
-                notif for notif in self.notification_queue 
-                if notif.created_at > cutoff_time
-            ]
-            
-            cleaned_count = initial_count - len(self.notification_queue)
-            if cleaned_count > 0:
-                logger.info(f"Cleaned up {cleaned_count} old notifications")
-                
-        except Exception as e:
-            logger.error(f"Error cleaning up notifications: {e}")
+    def _process_enrichment(self, enrichment_data) -> Dict:
+        """Process enrichment data into clean format"""
+        if not enrichment_data:
+            return {}
+        
+        enrichment = self._parse_json(enrichment_data)
+        return enrichment if enrichment else {}
     
-    def get_notification_stats(self) -> Dict[str, Any]:
-        """Get current notification queue statistics"""
-        now = datetime.utcnow()
-        recent_cutoff = now - timedelta(hours=1)
+    async def create_alert(self, title: str = None, description: str = None, 
+                          category: str = "ufo", witness_count: int = 1,
+                          is_public: bool = True, tags: List[str] = None,
+                          media_info: Dict = None, sensor_data: Dict = None,
+                          enrichment_data: Dict = None) -> str:
+        """Create new alert/sighting"""
+        async with self.db_pool.acquire() as conn:
+            alert_id = await conn.fetchval("""
+                INSERT INTO sightings 
+                (title, description, category, witness_count, is_public, tags, 
+                 media_info, sensor_data, enrichment_data, alert_level, status)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+                RETURNING id
+            """, title, description, category, witness_count, is_public,
+                tags or [], json.dumps(media_info or {}), 
+                json.dumps(sensor_data or {}), json.dumps(enrichment_data or {}),
+                "low", "created")
+            
+            return str(alert_id)
+    
+    async def create_anonymous_beep(self, device_id: str, location: Dict, 
+                                   description: str = None) -> Tuple[str, Dict]:
+        """Create anonymous beep with location privacy"""
+        # Validate location
+        lat = float(location['latitude'])
+        lng = float(location['longitude'])
+        if lat == 0.0 and lng == 0.0:
+            raise ValueError("Invalid GPS coordinates (0,0)")
         
-        total_notifications = len(self.notification_queue)
-        recent_notifications = len([
-            notif for notif in self.notification_queue 
-            if notif.created_at > recent_cutoff
-        ])
+        # Apply privacy jittering (100m radius)
+        import random
+        import math
+        jitter_radius = 100 / 111000  # 111km per degree latitude
+        angle = random.uniform(0, 2 * math.pi)
+        distance = random.uniform(0, jitter_radius)
         
-        high_priority_count = len([
-            notif for notif in self.notification_queue 
-            if notif.priority == "high"
-        ])
+        jittered_lat = lat + (distance * math.cos(angle))
+        jittered_lng = lng + (distance * math.sin(angle))
         
-        return {
-            "total_notifications": total_notifications,
-            "recent_notifications_1h": recent_notifications,
-            "high_priority_notifications": high_priority_count,
-            "processed_sightings": len(self.processed_sightings),
-            "queue_size": total_notifications,
-            "last_processed": now.isoformat(),
+        # Build sensor data
+        sensor_data = {
+            'location': {
+                'latitude': jittered_lat,
+                'longitude': jittered_lng,
+                'accuracy': location.get('accuracy', 50.0),
+                'original_latitude': lat,
+                'original_longitude': lng
+            },
+            'device_id': device_id,
+            'timestamp': datetime.utcnow().isoformat()
         }
-    
-    async def run_alerts_loop(self, interval_seconds: int = 30):
-        """Main alerts processing loop"""
-        logger.info(f"Starting alerts processing loop (interval: {interval_seconds}s)")
         
-        while True:
-            try:
-                # Process new sightings
-                new_alerts = await self.process_new_sightings()
-                
-                # Clean up old notifications periodically
-                if len(self.notification_queue) > 100:
-                    await self.cleanup_old_notifications()
-                
-                # Log stats periodically
-                if len(self.processed_sightings) % 10 == 0 or new_alerts > 0:
-                    stats = self.get_notification_stats()
-                    logger.info(f"Alerts stats: {stats}")
-                
-                # Wait before next iteration
-                await asyncio.sleep(interval_seconds)
-                
-            except KeyboardInterrupt:
-                logger.info("Alerts loop interrupted by user")
-                break
-            except Exception as e:
-                logger.error(f"Error in alerts processing loop: {e}")
-                # Wait a bit longer on error to avoid tight error loops
-                await asyncio.sleep(interval_seconds * 2)
-
-
-# Global alerts service instance
-alerts_service = AlertsService()
-
-
-# Convenience functions
-async def trigger_alert_check():
-    """Trigger a single alert processing cycle"""
-    return await alerts_service.process_new_sightings()
-
-
-def get_alerts_stats():
-    """Get current alerts service statistics"""
-    return alerts_service.get_notification_stats()
+        # Create alert
+        alert_id = await self.create_alert(
+            title=None,
+            description=description,
+            category="ufo",
+            witness_count=1,
+            is_public=True,
+            sensor_data=sensor_data,
+            alert_level="normal"
+        )
+        
+        return alert_id, {"lat": jittered_lat, "lng": jittered_lng}
+    
+    async def confirm_witness(self, sighting_id: str, device_id: str, 
+                            witness_data: Dict) -> Dict:
+        """Handle witness confirmation with all the complex logic"""
+        async with self.db_pool.acquire() as conn:
+            # Check if sighting exists
+            sighting = await conn.fetchrow("""
+                SELECT id, witness_count, created_at, sensor_data, enrichment_data
+                FROM sightings WHERE id = $1
+            """, uuid.UUID(sighting_id))
+            
+            if not sighting:
+                raise ValueError("Sighting not found")
+            
+            # Check if device already confirmed
+            existing = await conn.fetchrow("""
+                SELECT device_id FROM witness_confirmations 
+                WHERE sighting_id = $1 AND device_id = $2
+            """, uuid.UUID(sighting_id), device_id)
+            
+            if existing:
+                raise ValueError("Device already confirmed as witness")
+            
+            # Insert witness confirmation
+            await conn.execute("""
+                INSERT INTO witness_confirmations 
+                (sighting_id, device_id, confirmation_data, confirmed_at)
+                VALUES ($1, $2, $3, NOW())
+            """, uuid.UUID(sighting_id), device_id, json.dumps(witness_data))
+            
+            # Update witness count
+            new_count = await conn.fetchval("""
+                UPDATE sightings 
+                SET witness_count = witness_count + 1 
+                WHERE id = $1 
+                RETURNING witness_count
+            """, uuid.UUID(sighting_id))
+            
+            # Get confirmation stats
+            confirmations = await conn.fetch("""
+                SELECT device_id, confirmed_at, confirmation_data
+                FROM witness_confirmations 
+                WHERE sighting_id = $1 
+                ORDER BY confirmed_at DESC
+            """, uuid.UUID(sighting_id))
+            
+            return {
+                "confirmed": True,
+                "new_witness_count": new_count,
+                "total_confirmations": len(confirmations),
+                "confirmation_time": datetime.utcnow().isoformat(),
+                "sighting_age_minutes": int((datetime.utcnow() - sighting['created_at']).total_seconds() / 60)
+            }
+    
+    async def get_witness_aggregation(self, sighting_id: str) -> Dict:
+        """Get witness aggregation data with clean business logic"""
+        async with self.db_pool.acquire() as conn:
+            # Get sighting details
+            sighting = await conn.fetchrow("""
+                SELECT id, title, description, witness_count, created_at, 
+                       sensor_data, enrichment_data
+                FROM sightings WHERE id = $1
+            """, uuid.UUID(sighting_id))
+            
+            if not sighting:
+                raise ValueError("Sighting not found")
+            
+            # Get all witness confirmations
+            confirmations = await conn.fetch("""
+                SELECT device_id, confirmed_at, confirmation_data
+                FROM witness_confirmations 
+                WHERE sighting_id = $1 
+                ORDER BY confirmed_at ASC
+            """, uuid.UUID(sighting_id))
+            
+            # Process confirmations data
+            processed_confirmations = []
+            for conf in confirmations:
+                conf_data = self._parse_json(conf['confirmation_data']) or {}
+                processed_confirmations.append({
+                    'device_id': conf['device_id'][:8] + '...',  # Privacy
+                    'confirmed_at': conf['confirmed_at'].isoformat(),
+                    'confidence': conf_data.get('confidence', 'medium'),
+                    'has_description': bool(conf_data.get('description')),
+                    'has_location': bool(conf_data.get('location'))
+                })
+            
+            # Calculate stats
+            time_since = datetime.utcnow() - sighting['created_at']
+            minutes_since = int(time_since.total_seconds() / 60)
+            
+            return {
+                "sighting_id": sighting_id,
+                "total_witnesses": len(confirmations),
+                "witness_count": sighting['witness_count'],
+                "confirmations": processed_confirmations,
+                "sighting_age_minutes": minutes_since,
+                "created_at": sighting['created_at'].isoformat(),
+                "credibility_score": min(100, len(confirmations) * 10)
+            }
+    
+    async def get_witness_status(self, sighting_id: str, device_id: str) -> Dict:
+        """Check if device has confirmed this sighting"""
+        async with self.db_pool.acquire() as conn:
+            confirmation = await conn.fetchrow("""
+                SELECT device_id, confirmed_at 
+                FROM witness_confirmations 
+                WHERE sighting_id = $1 AND device_id = $2
+            """, uuid.UUID(sighting_id), device_id)
+            
+            return {
+                "has_confirmed": bool(confirmation),
+                "confirmed_at": confirmation['confirmed_at'].isoformat() if confirmation else None,
+                "device_id": device_id,
+                "sighting_id": sighting_id
+            }
