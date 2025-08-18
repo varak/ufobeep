@@ -8,7 +8,6 @@ import '../screens/home/home_screen.dart';
 import '../screens/alerts/alerts_screen.dart';
 import '../screens/alerts/alert_detail_screen.dart';
 import '../screens/beep/beep_screen.dart';
-import '../screens/beep/quick_beep_screen.dart';
 import '../screens/beep/beep_composition_screen.dart';
 import '../screens/beep/camera_capture_screen.dart';
 import '../screens/chat/chat_screen.dart';
