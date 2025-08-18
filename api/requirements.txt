@@ -42,7 +42,7 @@ pygeohash==1.2.0              # Geohash encoding for location privacy
 # ============================================================================
 # 📱 PUSH NOTIFICATION SERVICES
 # ============================================================================
-firebase-admin==6.7.0         # FCM push notifications via service layer
+firebase-admin==7.1.1         # FCM push notifications via service layer
 
 # ============================================================================  
 # ☁️ CLOUD & STORAGE SERVICES
