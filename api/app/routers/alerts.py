@@ -51,6 +51,8 @@ def format_alert_response(alert):
 @router.post("")
 async def create_alert(request: dict):
     """Create new alert - unified endpoint replacing /beep/anonymous"""
+    print(f"Alert creation request: {request}")
+    
     # Validate input
     device_id = request.get('device_id')
     if not device_id:
