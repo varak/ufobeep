@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.config.environment import settings
-from app.routers import plane_match, media, media_serve, devices, emails, photo_analysis, mufon, media_management, admin, sighting_media
+from app.routers import plane_match, media_serve, devices, emails, photo_analysis, mufon, admin
 from app.services.media_service import get_media_service
 from app.services.alerts_service import AlertsService
 from app.schemas.media import guess_media_type_from_filename
@@ -285,10 +285,7 @@ app.mount("/static", StaticFiles(directory="media"), name="media")
 
 # Include routers
 app.include_router(plane_match.router)
-app.include_router(media.router)
-app.include_router(media_serve.router)
-app.include_router(media_management.router)
-app.include_router(sighting_media.router, prefix="/sightings")
+app.include_router(media_serve.router)  # Keep for serving files
 app.include_router(admin.router)
 app.include_router(devices.router)
 app.include_router(emails.router)
@@ -365,56 +362,7 @@ async def create_sighting(request: dict = None):
     except Exception as e:
         print(f"Error creating sighting: {e}")
         raise HTTPException(status_code=500, detail=f"Error creating sighting: {str(e)}")
-# OLD /beep/anonymous endpoint removed - now handled by alerts.router
-
-@app.post("/alerts/send/{sighting_id}")
-async def send_alert_for_sighting(sighting_id: str, request: dict):
-    """Send proximity alerts for an existing sighting"""
-    try:
-
-        async with db_pool.acquire() as conn:
-            row = await conn.fetchrow("""
-                SELECT sensor_data FROM sightings 
-                WHERE id = $1
-            """, uuid.UUID(sighting_id))
-            
-            if not row:
-                raise HTTPException(status_code=404, detail="Sighting not found")
-            
-
-            sensor_data = row["sensor_data"]
-            if isinstance(sensor_data, str):
-                sensor_data = json.loads(sensor_data)
-            
-            lat, lng = extract_coordinates_from_sensor_data(sensor_data)
-            if not lat or not lng:
-                raise HTTPException(status_code=400, detail="No valid coordinates found for sighting")
-            
-
-            device_id = request.get('device_id')
-            if not device_id:
-                raise HTTPException(status_code=400, detail="device_id is required")
-            
-
-            from services.proximity_alert_service import get_proximity_alert_service
-            proximity_service = get_proximity_alert_service(db_pool)
-            
-            alert_result = await proximity_service.send_proximity_alerts(
-                lat, lng, sighting_id, device_id
-            )
-            
-            return {
-                "success": True,
-                "sighting_id": sighting_id,
-                "alert_result": alert_result,
-                "message": f"Alerts sent for sighting {sighting_id}"
-            }
-            
-    except HTTPException:
-        raise
-    except Exception as e:
-        print(f"Error sending alerts for sighting {sighting_id}: {e}")
-        raise HTTPException(status_code=500, detail=f"Error sending alerts: {str(e)}")
+# OLD endpoints removed - now handled by alerts.router
 
 # OLD witness-confirm endpoint removed - now handled by alerts.router
 # OLD witness-status endpoint removed - now handled by alerts.router
