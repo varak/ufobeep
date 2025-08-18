@@ -261,3 +261,20 @@ ssh -p 322 ufobeep@ufobeep.com "PGPASSWORD=ufopostpass psql -h localhost -U ufob
 - **Mobile App**: Primary thumbnail display, "Add Photos & Videos" button, smart navigation
 - **Web App**: Primary media thumbnails with visual indicators
 - **Admin Management**: Set primary media, view metadata, manage media files
+
+## Video Playback System (COMPLETED) 
+- **API Media Type Detection**: `/api/app/main.py` - Fixed hardcoded 'image' defaults with `guess_media_type_from_filename()`
+- **Mobile Video Player**: `/app/lib/screens/alerts/alert_detail_screen.dart` - `VideoPlayerWidget` with URL-based fallback detection
+- **Website Video Player**: `/web/src/app/alerts/[id]/page.tsx` - HTML5 video with controls and poster thumbnails
+- **AlertCard Component**: `/web/src/components/AlertCard.tsx` - Unified video detection for alerts page and homepage
+- **Video Thumbnail URLs**: API generates `?thumbnail=true` URLs for video files
+- **Video Detection**: `isVideoMedia()` helper with .mp4/.mov/.avi URL detection fallback
+- **Camera Video Mode**: Mobile app camera toggle (photo/video) with 30s max recording
+- **Share-to-Beep Videos**: Both photo and video sharing from gallery working
+- **Complete Workflow**: Record video → upload → display correctly on mobile and web
+
+### Video Components Fixed:
+- **Individual Alert Pages**: `/web/src/app/alerts/[id]/page.tsx` - Conditional video/image rendering
+- **Alerts List Page**: `/web/src/app/alerts/page.tsx` - Uses improved AlertCard component
+- **Homepage Map Section**: `/web/src/components/RecentAlertsSidebar.tsx` - Uses AlertCard with video thumbnails
+- **Mobile Alert Details**: `/app/lib/screens/alerts/alert_detail_screen.dart` - VideoPlayerWidget integration
