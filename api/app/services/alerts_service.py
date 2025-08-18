@@ -193,7 +193,7 @@ class AlertsService:
                           category: str = "ufo", witness_count: int = 1,
                           is_public: bool = True, tags: List[str] = None,
                           media_info: Dict = None, sensor_data: Dict = None,
-                          enrichment_data: Dict = None) -> str:
+                          enrichment_data: Dict = None, alert_level: str = "normal") -> str:
         """Create new alert/sighting"""
         async with self.db_pool.acquire() as conn:
             alert_id = await conn.fetchval("""
@@ -205,7 +205,7 @@ class AlertsService:
             """, title, description, category, witness_count, is_public,
                 tags or [], json.dumps(media_info or {}), 
                 json.dumps(sensor_data or {}), json.dumps(enrichment_data or {}),
-                "low", "created")
+                alert_level, "created")
             
             return str(alert_id)
     
