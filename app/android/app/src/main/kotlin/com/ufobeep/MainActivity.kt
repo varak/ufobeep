@@ -1,4 +1,4 @@
-package com.ufobeep.ufobeep
+package com.ufobeep
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -11,7 +11,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
-    private val CHANNEL = "com.ufobeep.ufobeep/share_intent"
+    private val CHANNEL = "com.ufobeep/share_intent"
     private var sharedFileUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

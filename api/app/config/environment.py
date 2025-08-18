@@ -93,7 +93,11 @@ class Settings(BaseSettings):
     fcm_server_key: str = Field(env="FCM_SERVER_KEY")
     apns_key_id: str = Field(env="APNS_KEY_ID")
     apns_team_id: str = Field(env="APNS_TEAM_ID")
-    apns_bundle_id: str = Field(default="com.ufobeep.ufobeep", env="APNS_BUNDLE_ID")
+    apns_bundle_id: str = Field(default="com.ufobeep", env="APNS_BUNDLE_ID")
+    
+    # === Web Push (VAPID) Configuration ===
+    vapid_public_key: str = Field(env="VAPID_PUBLIC_KEY")
+    vapid_private_key: str = Field(env="VAPID_PRIVATE_KEY")
     
     # === Security ===
     secret_key: str = Field(env="SECRET_KEY")

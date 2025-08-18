@@ -16,7 +16,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.ufobeep.ufobeep"
+    namespace = "com.ufobeep"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
@@ -31,7 +31,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.ufobeep.ufobeep"
+        applicationId = "com.ufobeep"
         minSdk = 24
         targetSdk = 34
         versionCode = flutter.versionCode

@@ -3,7 +3,7 @@ import pygeohash
 from datetime import datetime
 from typing import List, Tuple
 import logging
-from .push_service import send_to_tokens
+from app.services.push_service import push_service
 
 from app.routers.admin import rate_limit_enabled, rate_limit_threshold
 
@@ -334,10 +334,11 @@ class ProximityAlertService:
                             )
                             alert_data["bearing"] = str(round(bearing, 1))
                     
-                    # Send to individual device
-                    response = send_to_tokens([device['push_token']], alert_data, title=title, body=body)
+                    # Send to individual device using new Firebase admin service
+                    from app.services.push_service import send_to_token
+                    response = send_to_token(device['push_token'], alert_data, title=title, body=body)
                     
-                    if response and len(response) > 0 and response[0].success:
+                    if response:
                         success_count += 1
                         
                 except Exception as e:

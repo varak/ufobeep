@@ -7,28 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:346511467728:android:7291451505aee4075caad5",
+        "mobilesdk_app_id": "1:346511467728:android:245f6baa757d073f5caad5",
         "android_client_info": {
-          "package_name": "com.ufobeep.app"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAWKG0fyxtU42QTsK-0_zlzMWDdk_tNnmg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:346511467728:android:02dcacf7017bae375caad5",
-        "android_client_info": {
-          "package_name": "com.ufobeep.ufobeep"
+          "package_name": "com.ufobeep"
         }
       },
       "oauth_client": [],
