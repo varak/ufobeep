@@ -27,13 +27,13 @@ UFOBeep API (FastAPI + Service Layer)
 ---
 
 ## 🚀 **Core Mobile App Endpoints** 
-*Powered by AlertsService - Clean & Fast*
+*CLEAN UNIFIED `/alerts` ARCHITECTURE*
 
-### **Anonymous Beeping** 
+### **Unified Alert Creation** 
 ```http
-POST /beep/anonymous
+POST /alerts
 ```
-**🆕 Refactored**: Uses `AlertsService.create_anonymous_beep()`  
+**🆕 CLEAN**: Single endpoint for all beep creation  
 **Purpose**: Submit UFO sighting with automatic proximity alerts  
 **Auth**: None required  
 **Body**: 
@@ -44,7 +44,8 @@ POST /beep/anonymous
     "latitude": 47.6062,
     "longitude": -122.3321
   },
-  "description": "Bright light moving erratically"
+  "description": "Bright light moving erratically",
+  "has_media": true
 }
 ```
 **Returns**: 
@@ -62,7 +63,7 @@ POST /beep/anonymous
 ```http
 GET  /alerts                    # List recent alerts (mobile feed)
 GET  /alerts/{alert_id}         # Single alert details
-POST /alerts/send/{sighting_id} # Manual alert sending
+POST /alerts/{alert_id}/media   # Upload media to alert
 ```
 
 **🆕 Refactored**: All endpoints use `AlertsService` with clean data models
@@ -184,9 +185,8 @@ PUT  /devices/{id}             # Update device settings
 
 ### **Media Upload**
 ```http
-POST /media/presign             # Get presigned upload URL
-POST /media/complete           # Complete upload process  
-GET  /media/{sighting_id}/{file} # Serve media files
+POST /alerts/{alert_id}/media   # Upload media files to alert
+GET  /media/{alert_id}/{file}   # Serve media files
 ```
 
 ### **Health & Monitoring**
@@ -235,12 +235,14 @@ GET /ping                      # Simple connectivity test
 - ❌ **Maintenance nightmare** - business logic scattered everywhere
 - ❌ **Testing difficulty** - HTTP concerns mixed with business rules
 
-### **After Service Layer Revolution**:
+### **After Service Layer Revolution + Spaghetti Elimination**:
 - ✅ **Clean architecture** - HTTP handlers 20-50 lines each
 - ✅ **Service separation** - Business logic in dedicated services
 - ✅ **Easy testing** - Services can be unit tested independently  
 - ✅ **Maintainable code** - Clear separation of concerns
-- ✅ **3,039 lines obliterated** while maintaining full functionality
+- ✅ **4,157 lines obliterated** (3,039 refactor + 1,118 redundant endpoints)
+- ✅ **Single media endpoint** - No more confusing duplicate upload routes
+- ✅ **Firebase FCM working** - Push notifications functional
 
 ---
 

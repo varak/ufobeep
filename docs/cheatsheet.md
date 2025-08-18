@@ -98,18 +98,17 @@ Clean 5-step workflow using `/alerts` endpoints only:
 ## Firebase Configuration (Push Notifications & Beta Testing)
 
 ### Firebase Projects
-- **Main Project**: `ufobeep` (Project Number: 346511467728) - Used by mobile app and beta testing
-- **Service Account**: `firebase-adminsdk-fbsvc@ufobeep.iam.gserviceaccount.com`
-- **Firebase App ID**: `1:346511467728:android:02dcacf7017bae375caad5`
-- **Distribution Script**: `./scripts/distribute-beta.sh`
-- **Beta Testers Group**: "beta-testers" (configured in Firebase console)
-- **Console URL**: https://console.firebase.google.com/u/1/project/ufobeep/appdistribution
+- **Main Project**: `ufobeep` (Project Number: 346511467728) 
+- **Package Name**: `com.ufobeep` (updated from com.ufobeep.ufobeep)
+- **Service Account**: `/home/ufobeep/ufobeep/firebase-service-account.json`
+- **VAPID Keys**: Deployed for web push notifications
+- **Console URL**: https://console.firebase.google.com/u/1/project/ufobeep
 
 ### Push Notification Setup (COMPLETED)
-- **Service Account File**: `/home/ufobeep/ufobeep/firebase-service-account.json`
-- **Environment Variable**: `GOOGLE_APPLICATION_CREDENTIALS` set in systemd service
-- **Status**: ✅ WORKING - SenderId mismatch fixed on 2025-08-16
-- **Test Command**: `curl -X POST https://api.ufobeep.com/beep/anonymous -d '{"device_id":"test","location":{"latitude":36.24,"longitude":-115.24}}'`
+- **Status**: ✅ WORKING - Firebase FCM notifications functional
+- **Mobile Apps**: Updated with new package name on 4 devices
+- **FCM Library**: firebase-admin v7.1.0 (latest)
+- **Test**: Media and non-media beeps both trigger FCM notifications
 
 ### To distribute new APK:
 ```bash
