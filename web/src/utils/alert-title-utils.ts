@@ -2,7 +2,7 @@ interface Alert {
   id: string
   title: string | null
   description: string | null
-  timestamp: string
+  created_at: string
   media_files?: Array<{
     type: string
     content_type: string
@@ -54,7 +54,7 @@ export class AlertTitleUtils {
     
     // Check if it's recent (within last hour)
     const now = new Date();
-    const alertTime = new Date(alert.timestamp);
+    const alertTime = new Date(alert.created_at);
     const timeDiff = now.getTime() - alertTime.getTime();
     const minutesDiff = timeDiff / (1000 * 60);
     
@@ -94,7 +94,7 @@ export class AlertTitleUtils {
     
     // Check timing
     const now = new Date();
-    const alertTime = new Date(alert.timestamp);
+    const alertTime = new Date(alert.created_at);
     const timeDiff = now.getTime() - alertTime.getTime();
     const minutesDiff = timeDiff / (1000 * 60);
     
