@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.config.environment import settings
-from app.routers import plane_match, media, media_serve, devices, emails, photo_analysis, mufon, media_management, admin
+from app.routers import plane_match, media, media_serve, devices, emails, photo_analysis, mufon, media_management, admin, sighting_media
 from app.services.media_service import get_media_service
 from app.services.alerts_service import AlertsService
 from app.schemas.media import guess_media_type_from_filename
@@ -288,6 +288,7 @@ app.include_router(plane_match.router)
 app.include_router(media.router)
 app.include_router(media_serve.router)
 app.include_router(media_management.router)
+app.include_router(sighting_media.router, prefix="/sightings")
 app.include_router(admin.router)
 app.include_router(devices.router)
 app.include_router(emails.router)
