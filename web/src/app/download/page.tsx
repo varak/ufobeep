@@ -176,36 +176,6 @@ export default function DownloadPage() {
           </div>
         </div>
 
-        {/* Alternative Downloads */}
-        <div className="bg-gray-800 rounded-lg p-6 mb-8">
-          <h2 className="text-2xl font-semibold mb-4">📦 Alternative Versions</h2>
-          <div className="space-y-3">
-            <a 
-              href="/downloads/ufobeep-release.apk" 
-              className="block p-3 bg-gray-700 rounded hover:bg-gray-600 transition"
-            >
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="font-semibold">Release Version</p>
-                  <p className="text-sm text-gray-400">Smaller size, optimized</p>
-                </div>
-                <span className="text-green-400">63 MB</span>
-              </div>
-            </a>
-            <a 
-              href="/downloads/ufobeep-debug.apk" 
-              className="block p-3 bg-gray-700 rounded hover:bg-gray-600 transition"
-            >
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="font-semibold">Debug Version</p>
-                  <p className="text-sm text-gray-400">For testing, includes debug info</p>
-                </div>
-                <span className="text-gray-400">230 MB</span>
-              </div>
-            </a>
-          </div>
-        </div>
 
         {/* Footer */}
         <div className="text-center text-gray-400 text-sm">
