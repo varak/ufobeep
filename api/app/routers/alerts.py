@@ -201,7 +201,13 @@ async def upload_alert_media(
                 raise HTTPException(status_code=404, detail="Alert not found")
             
             # Get existing media info
-            existing_media = json.loads(sighting['media_info']) if sighting['media_info'] else {'files': []}
+            if sighting['media_info']:
+                existing_media = json.loads(sighting['media_info'])
+                # Ensure files key exists
+                if 'files' not in existing_media:
+                    existing_media['files'] = []
+            else:
+                existing_media = {'files': [], 'file_count': 0}
             
             # Save uploaded files
             media_root = Path("/home/ufobeep/ufobeep/media")
