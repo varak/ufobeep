@@ -3,7 +3,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.config.environment import settings
-from app.routers import plane_match, media_serve, devices, emails, photo_analysis, mufon, admin
+from app.routers import plane_match, media_serve, devices, emails, photo_analysis, mufon
+from app.routers import admin_simple as admin
 from app.services.media_service import get_media_service
 from app.services.alerts_service import AlertsService
 from app.schemas.media import guess_media_type_from_filename
