@@ -63,27 +63,30 @@ export default function Home() {
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center p-6">
-              <div className="text-4xl mb-4">📸</div>
-              <h3 className="text-xl font-semibold mb-4 text-text-primary">Beep & Report</h3>
+              <div className="text-4xl mb-4">👀</div>
+              <h3 className="text-xl font-semibold mb-4 text-text-primary">See Something? Beep It!</h3>
               <p className="text-text-secondary">
-                Capture photos or videos of unusual sightings and instantly share them 
-                with the community. Use our premium Share-to-Beep feature from any app!
+                Spot something unusual in the sky? Instantly alert everyone nearby to 
+                look up and see it too! Share photos/videos and get others looking 
+                at the same phenomenon in real-time.
               </p>
             </div>
             <div className="text-center p-6">
-              <div className="text-4xl mb-4">🔔</div>
-              <h3 className="text-xl font-semibold mb-4 text-text-primary">Get Alerts</h3>
+              <div className="text-4xl mb-4">🚨</div>
+              <h3 className="text-xl font-semibold mb-4 text-text-primary">Drop Everything & Look Up!</h3>
               <p className="text-text-secondary">
-                Receive real-time notifications about sightings near you, including 
-                weather data, celestial information, and satellite tracking.
+                Get instant alerts when someone near you sees something weird in the sky. 
+                "LOOK UP NOW!" notifications help you catch sightings as they happen 
+                instead of hearing about them hours later.
               </p>
             </div>
             <div className="text-center p-6">
               <div className="text-4xl mb-4">🧭</div>
-              <h3 className="text-xl font-semibold mb-4 text-text-primary">Assisted Navigation</h3>
+              <h3 className="text-xl font-semibold mb-4 text-text-primary">Find It In The Sky</h3>
               <p className="text-text-secondary">
-                Use our advanced compass to navigate to sighting locations with 
-                Standard and Pilot modes for precise directional guidance.
+                Point your phone toward the sighting and our compass shows you exactly 
+                where to look. No more "it was over there somewhere" - get precise 
+                direction to spot what others are seeing.
               </p>
             </div>
           </div>
