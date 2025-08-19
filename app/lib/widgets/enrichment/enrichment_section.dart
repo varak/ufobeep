@@ -183,39 +183,7 @@ class EnrichmentSection extends StatelessWidget {
     final hasData = hasWeatherData || hasSatelliteData || hasContentData;
 
     if (!hasData) {
-      return Card(
-        color: AppColors.darkSurface,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Icon(
-                Icons.check_circle_outline,
-                size: 48,
-                color: AppColors.brandPrimary,
-              ),
-              const SizedBox(height: 12),
-              Text(
-                'Analysis Complete',
-                style: TextStyle(
-                  color: AppColors.textPrimary,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'No additional environmental data was found for this time and location.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: AppColors.textSecondary,
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      return const SizedBox.shrink();
     }
 
     return Column(
@@ -608,14 +576,8 @@ class SatelliteCardFromJson extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             
-            if (issPasses.isNotEmpty) ...[
-              _buildSatelliteSection('ISS Passes', issPasses, Icons.public),
-              const SizedBox(height: 12),
-            ],
-            
-            if (starlinkPasses.isNotEmpty) ...[
-              _buildSatelliteSection('Starlink Passes', starlinkPasses, Icons.wifi),
-            ],
+            ...issPasses.map((pass) => _buildSatellitePass(pass)),
+            ...starlinkPasses.map((pass) => _buildSatellitePass(pass)),
             
             if (allPasses.isEmpty)
               Text(
@@ -631,38 +593,6 @@ class SatelliteCardFromJson extends StatelessWidget {
     );
   }
 
-  Widget _buildSatelliteSection(String title, List<dynamic> passes, IconData icon) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Icon(icon, size: 16, color: AppColors.brandPrimary),
-            const SizedBox(width: 4),
-            Text(
-              title,
-              style: TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        ...passes.take(3).map((pass) => _buildSatellitePass(pass)),
-        if (passes.length > 3)
-          Text(
-            'and ${passes.length - 3} more...',
-            style: TextStyle(
-              color: AppColors.textTertiary,
-              fontSize: 12,
-              fontStyle: FontStyle.italic,
-            ),
-          ),
-      ],
-    );
-  }
 
   Widget _buildSatellitePass(Map<String, dynamic> pass) {
     return Padding(

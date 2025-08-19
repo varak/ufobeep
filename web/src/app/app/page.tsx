@@ -42,15 +42,15 @@ export default function AppPage() {
           {/* Download Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <a 
-              href="/downloads/ufobeep-beta.apk"
+              href="/downloads/ufobeep-alpha.apk"
               className="bg-brand-primary hover:bg-brand-primary-dark text-text-inverse rounded-lg p-6 flex items-center gap-4 min-w-[250px] transition-colors group"
-              download="ufobeep-beta.apk"
+              download="ufobeep-alpha.apk"
             >
               <div className="text-3xl">🤖</div>
               <div className="text-left flex-1">
-                <p className="text-text-inverse/80 text-sm">Download Beta for</p>
+                <p className="text-text-inverse/80 text-sm">Download Alpha for</p>
                 <p className="font-semibold">Android APK</p>
-                <p className="text-xs text-text-inverse/60 mt-1">Version 1.0.0-beta.7+7 &quot;Phase 1 Complete - Witness Network&quot; • ~63MB</p>
+                <p className="text-xs text-text-inverse/60 mt-1">Latest Build - Enhanced UI &amp; Satellite Data • ~248MB</p>
               </div>
               <div className="text-xl group-hover:translate-x-1 transition-transform">→</div>
             </a>
@@ -101,35 +101,35 @@ export default function AppPage() {
                 </ol>
               </div>
               <div>
-                <h4 className="font-semibold text-brand-primary mb-3">⚠️ Beta Testing Notes:</h4>
+                <h4 className="font-semibold text-brand-primary mb-3">⚠️ Alpha Testing Notes:</h4>
                 <ul className="space-y-2 text-sm text-text-secondary">
                   <li className="flex gap-2">
                     <span className="text-yellow-400">•</span>
-                    <span>File size (~63MB) - optimized release build</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-yellow-400">•</span>
-                    <span>This is pre-release software with potential bugs</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-yellow-400">•</span>
-                    <span>Data may be reset between beta versions</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-yellow-400">•</span>
-                    <span>Some features are still in development</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-yellow-400">•</span>
-                    <span>Please report any issues or feedback to us</span>
+                    <span>File size (~248MB) - debug build with enhanced features</span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-green-400">•</span>
-                    <span>✅ Phase 1 Witness Network complete!</span>
+                    <span>✅ Enhanced satellite data display with all JSON details</span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-green-400">•</span>
-                    <span>Help us improve the final release!</span>
+                    <span>✅ Cleaned UI - removed floating location markers</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-green-400">•</span>
+                    <span>✅ Fixed compass navigation with back button to alerts</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-green-400">•</span>
+                    <span>✅ Simplified environmental data display</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-yellow-400">•</span>
+                    <span>This is alpha software - expect some bugs</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-yellow-400">•</span>
+                    <span>Please test the new satellite data and UI improvements</span>
                   </li>
                 </ul>
               </div>
@@ -273,14 +273,14 @@ export default function AppPage() {
                     <span className="text-green-400 text-sm">✅ Live</span>
                   </div>
                   <div className="text-xs text-text-tertiary mb-3">
-                    Version: <span className="text-purple-400 font-mono">v1.0.0-beta.7+7</span><br/>
-                    Size: <span className="text-text-secondary">~63MB</span><br/>
-                    Updated: <span className="text-text-secondary">Phase 1 Complete - Witness Network with triangulation</span>
+                    Version: <span className="text-purple-400 font-mono">Latest Alpha Build</span><br/>
+                    Size: <span className="text-text-secondary">~248MB</span><br/>
+                    Updated: <span className="text-text-secondary">Enhanced UI, Satellite Data &amp; Navigation</span>
                   </div>
                   <a 
-                    href="/downloads/ufobeep-beta.apk"
+                    href="/downloads/ufobeep-alpha.apk"
                     className="bg-purple-600 hover:bg-purple-700 text-text-inverse rounded-lg px-4 py-2 text-sm font-medium transition-colors inline-flex items-center gap-2"
-                    download="ufobeep-beta.apk"
+                    download="ufobeep-alpha.apk"
                   >
                     <span>📱</span>
                     Download APK
@@ -346,25 +346,25 @@ export default function AppPage() {
             <div className="bg-dark-background border border-dark-border rounded-lg p-4 max-w-3xl mx-auto">
               <h4 className="text-text-primary font-semibold mb-3 flex items-center justify-center gap-2">
                 <span className="text-xl">🆕</span>
-                What&apos;s New in v1.0.0-beta.7+7
+                What&apos;s New in Latest Alpha Build
               </h4>
               <div className="grid md:grid-cols-2 gap-4 text-xs text-text-secondary">
                 <div>
-                  <p className="text-green-400 font-medium mb-1">🎯 Phase 1 Complete:</p>
+                  <p className="text-green-400 font-medium mb-1">🎯 UI Improvements:</p>
                   <ul className="space-y-1 text-left">
-                    <li>• &quot;I SEE IT TOO&quot; witness confirmation button</li>
-                    <li>• Compass arrow pointing to sightings</li>
-                    <li>• Witness aggregation with triangulation</li>
-                    <li>• Heat map generation from witness locations</li>
+                    <li>• Removed floating location markers from alerts</li>
+                    <li>• Cleaner satellite data display with all JSON details</li>
+                    <li>• Simplified environmental analysis section</li>
+                    <li>• Enhanced alert detail page layout</li>
                   </ul>
                 </div>
                 <div>
-                  <p className="text-purple-400 font-medium mb-1">🔧 Enhanced Features:</p>
+                  <p className="text-purple-400 font-medium mb-1">🔧 Navigation Fixes:</p>
                   <ul className="space-y-1 text-left">
-                    <li>• Real-time bearing calculations</li>
-                    <li>• Direct navigation from push notifications</li>
-                    <li>• Cross-platform witness count display</li>
-                    <li>• Instant witness network activation</li>
+                    <li>• Fixed compass back button navigation</li>
+                    <li>• Direct return to specific alerts from compass</li>
+                    <li>• Enhanced satellite pass information display</li>
+                    <li>• Magnitude, elevation, and time data shown</li>
                   </ul>
                 </div>
               </div>

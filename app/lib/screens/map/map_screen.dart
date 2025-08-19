@@ -7,7 +7,22 @@ import '../../theme/app_theme.dart';
 import '../../widgets/map_widget.dart';
 
 class MapScreen extends ConsumerWidget {
-  const MapScreen({super.key});
+  const MapScreen({
+    super.key,
+    this.userLat,
+    this.userLon,
+    this.alertLat,
+    this.alertLon,
+    this.alertId,
+    this.alertName,
+  });
+
+  final double? userLat;
+  final double? userLon;
+  final double? alertLat;
+  final double? alertLon;
+  final String? alertId;
+  final String? alertName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

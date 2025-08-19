@@ -196,7 +196,24 @@ GoRouter appRouter(AppRouterRef ref) {
           GoRoute(
             path: '/map',
             name: 'map',
-            builder: (context, state) => const MapScreen(),
+            builder: (context, state) {
+              // Extract query parameters for alert-specific map view
+              final userLat = state.uri.queryParameters['userLat'];
+              final userLon = state.uri.queryParameters['userLon'];
+              final alertLat = state.uri.queryParameters['alertLat'];
+              final alertLon = state.uri.queryParameters['alertLon'];
+              final alertId = state.uri.queryParameters['alertId'];
+              final alertName = state.uri.queryParameters['alertName'];
+              
+              return MapScreen(
+                userLat: userLat != null ? double.tryParse(userLat) : null,
+                userLon: userLon != null ? double.tryParse(userLon) : null,
+                alertLat: alertLat != null ? double.tryParse(alertLat) : null,
+                alertLon: alertLon != null ? double.tryParse(alertLon) : null,
+                alertId: alertId,
+                alertName: alertName,
+              );
+            },
           ),
 
           // Alerts (clean list without map)

@@ -74,7 +74,7 @@ class AlertDetailsSection extends StatelessWidget {
             _buildDetailRow(
               Icons.info_outline,
               'Location',
-              '📍 ${alert.locationName ?? 'Unknown Location'}',
+              '${alert.locationName ?? 'Unknown Location'}',
               subtitle: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
             ),
             if (alert.distance != null)

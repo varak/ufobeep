@@ -171,12 +171,6 @@ class AlertCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         if (alert.locationName != null) ...[ 
-                          const Icon(
-                            Icons.location_on,
-                            size: 14,
-                            color: AppColors.textTertiary,
-                          ),
-                          const SizedBox(width: 4),
                           Expanded(
                             child: Text(
                               alert.locationName!,
@@ -447,12 +441,6 @@ class CompactAlertCard extends StatelessWidget {
                     Row(
                       children: [
                         if (alert.distance != null) ...[ 
-                          const Icon(
-                            Icons.location_on,
-                            size: 12,
-                            color: AppColors.textTertiary,
-                          ),
-                          const SizedBox(width: 2),
                           Text(
                             '${alert.distance!.toStringAsFixed(1)}km',
                             style: const TextStyle(

@@ -203,10 +203,17 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
       backgroundColor: AppColors.darkBackground,
       appBar: AppBar(
         title: Text('Orient - ${_mode == CompassMode.standard ? 'Standard' : 'Pilot Mode'}'),
-        leading: widget.targetLat != null ? IconButton(
+        leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
-        ) : null,
+          onPressed: () {
+            // If we have an alertId, navigate back to that specific alert
+            if (widget.alertId != null) {
+              context.go('/alert/${widget.alertId}');
+            } else {
+              context.pop();
+            }
+          },
+        ),
         actions: [
           // Toggle between compass and AR view
           IconButton(
