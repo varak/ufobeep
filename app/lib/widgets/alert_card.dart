@@ -155,9 +155,8 @@ class AlertCard extends StatelessWidget {
               // Footer row with indicators and location
               Row(
                 children: [
-                  // Media indicator (no actual images, just icon)
-                  if (alert.hasMedia) 
-                    _buildMediaIndicator(),
+                  // Content type indicator
+                  _buildContentTypeIndicator(),
                   
                   // Witness confirmation indicator
                   if (alert.witnessCount > 1)
@@ -241,6 +240,63 @@ class AlertCard extends StatelessWidget {
           fontSize: 10,
           fontWeight: FontWeight.w600,
         ),
+      ),
+    );
+  }
+
+  Widget _buildContentTypeIndicator() {
+    // Simple JSON interpretation logic
+    final hasMedia = alert.mediaFiles.isNotEmpty;
+    final hasDescription = alert.description?.trim().isNotEmpty ?? false;
+    
+    if (!hasMedia && !hasDescription) {
+      return _buildBadge('beep only', Icons.location_on, AppColors.textTertiary);
+    }
+    
+    if (hasMedia && !hasDescription) {
+      final isVideo = alert.mediaFiles.first['type'] == 'video';
+      return _buildBadge(
+        isVideo ? 'video only' : 'image only', 
+        isVideo ? Icons.videocam : Icons.photo, 
+        AppColors.brandPrimary
+      );
+    }
+    
+    if (hasMedia) {
+      final isVideo = alert.mediaFiles.first['type'] == 'video';
+      return _buildBadge(
+        '${alert.mediaFiles.length}', 
+        isVideo ? Icons.videocam : Icons.photo, 
+        AppColors.brandPrimary
+      );
+    }
+    
+    return const SizedBox.shrink();
+  }
+  
+  Widget _buildBadge(String text, IconData icon, Color color) {
+    return Container(
+      margin: const EdgeInsets.only(right: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: color.withOpacity(0.3)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 12, color: color),
+          const SizedBox(width: 4),
+          Text(
+            text,
+            style: TextStyle(
+              color: color,
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
       ),
     );
   }

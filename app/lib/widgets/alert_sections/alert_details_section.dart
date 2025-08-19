@@ -72,9 +72,9 @@ class AlertDetailsSection extends StatelessWidget {
           // Location info (if enabled)
           if (showLocation) ...[
             _buildDetailRow(
-              Icons.location_on,
+              Icons.info_outline,
               'Location',
-              alert.locationName ?? 'Unknown Location',
+              '📍 ${alert.locationName ?? 'Unknown Location'}',
               subtitle: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
             ),
             if (alert.distance != null)
@@ -88,6 +88,7 @@ class AlertDetailsSection extends StatelessWidget {
       ),
     );
   }
+
 
   Widget _buildDetailRow(IconData icon, String label, String value, {String? subtitle}) {
     return Padding(

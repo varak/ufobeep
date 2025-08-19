@@ -171,12 +171,15 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
             <div className="flex-1">
               <div className="flex items-center justify-between mb-1">
                 <span className="text-text-tertiary text-xs">{formatDate(alert.created_at)}</span>
-                {(() => {
-                  const hasMedia = alert.media_files && alert.media_files.length > 0
-                  const hasDescription = alert.description && alert.description.trim().length > 0
+{(() => {
+                  const hasMedia = alert.media_files?.length > 0
+                  const hasDescription = alert.description?.trim()
                   
                   if (!hasMedia && !hasDescription) return <span className="text-xs text-text-tertiary">beep only</span>
-                  if (hasMedia && !hasDescription) return <span className="text-xs text-text-tertiary">image only</span>
+                  if (hasMedia && !hasDescription) {
+                    const isVideo = alert.media_files[0].type === 'video'
+                    return <span className="text-xs text-text-tertiary">{isVideo ? 'video only' : 'image only'}</span>
+                  }
                   if (hasMedia) return <span className="text-xs text-text-tertiary">📸</span>
                   return <span className="text-xs text-text-tertiary">👁️</span>
                 })()}
@@ -234,13 +237,17 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
               </div>
               <div className="text-xs text-text-tertiary">
                 {(() => {
-                  const media = getPrimaryMedia()
-                  const hasDescription = alert.description && alert.description.trim().length > 0
+                  const hasMedia = alert.media_files && alert.media_files.length > 0
+                  const hasDescription = alert.description?.trim()
                   
-                  if (!media && !hasDescription) return 'beep only'
-                  if (media && !hasDescription) return isVideoMedia(media) ? 'video only' : 'image only'
-                  if (!media) return 'Witness beeped only'
-                  return isVideoMedia(media) ? '🎥 Video' : '📸 Photo'
+                  if (!hasMedia && !hasDescription) return 'beep only'
+                  if (hasMedia && !hasDescription) {
+                    const isVideo = alert.media_files[0].type === 'video'
+                    return isVideo ? 'video only' : 'image only'
+                  }
+                  if (!hasMedia) return 'Witness beeped only'
+                  const isVideo = alert.media_files[0].type === 'video'
+                  return isVideo ? '🎥 Video' : '📸 Photo'
                 })()}
               </div>
             </div>
