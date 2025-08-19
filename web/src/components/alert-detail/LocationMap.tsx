@@ -21,10 +21,7 @@ export default function LocationMap({ location }: LocationMapProps) {
       <div className="aspect-video bg-gradient-to-br from-dark-background via-dark-surface to-dark-background flex items-center justify-center relative">
         <div className="text-center">
           <div className="text-4xl mb-2">🗺️</div>
-          <div className="text-text-primary font-medium mb-1">{name}</div>
-          <div className="text-text-tertiary text-sm mb-4">
-            {latitude.toFixed(4)}, {longitude.toFixed(4)}
-          </div>
+          <div className="text-text-primary font-medium mb-4">{name}</div>
           
           {/* Action buttons */}
           <div className="flex gap-2 justify-center">
@@ -45,11 +42,6 @@ export default function LocationMap({ location }: LocationMapProps) {
               OpenStreetMap
             </a>
           </div>
-        </div>
-        
-        {/* Coordinates overlay */}
-        <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-          📍 {latitude.toFixed(6)}, {longitude.toFixed(6)}
         </div>
       </div>
     </div>
