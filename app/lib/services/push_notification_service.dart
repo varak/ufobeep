@@ -14,6 +14,7 @@ import 'anonymous_beep_service.dart';
 import 'permission_service.dart';
 import 'api_client.dart';
 import '../models/user_preferences.dart';
+import '../providers/user_preferences_provider.dart';
 import '../routing/app_router.dart';
 
 class PushNotificationService {
@@ -220,15 +221,6 @@ class PushNotificationService {
     
     print('📱 PROCESSING ALERT: sighting $sightingId from device $submitterDeviceId (current: $currentDeviceId)');
     
-    // Extract sighting location for snooze check
-    final sightingLat = double.tryParse(message.data['latitude'] ?? '');
-    final sightingLon = double.tryParse(message.data['longitude'] ?? '');
-    
-    // Check if this alert should be snoozed
-    if (await _shouldSnoozeAlert(sightingLat, sightingLon)) {
-      print('🔕 SNOOZING ALERT: Similar alerts are temporarily muted');
-      return; // Don't process this alert
-    }
     
     // Load user preferences for DND/quiet hours checking
     dynamic userPrefs;
@@ -570,12 +562,6 @@ class PushNotificationService {
       case 'see_it_too':
         _handleSeeItTooAction(sightingId);
         break;
-      case 'dont_see_it':
-        _handleDontSeeItAction(sightingId);
-        break;
-      case 'missed_it':
-        _handleMissedItAction(sightingId);
-        break;
       case 'dismiss_snooze':
         _handleDismissAndSnoozeAction(sightingId);
         break;
@@ -638,11 +624,6 @@ class PushNotificationService {
           showsUserInterface: false,
         ),
         const AndroidNotificationAction(
-          'dont_see_it',
-          'Don\'t see it',
-          showsUserInterface: false,
-        ),
-        const AndroidNotificationAction(
           'dismiss_snooze',
           'Snooze',
           showsUserInterface: false,
@@ -696,45 +677,12 @@ class PushNotificationService {
     }
   }
   
-  void _handleDontSeeItAction(String sightingId) async {
-    print('📱 User checked but didn\'t see: $sightingId');
-    try {
-      // Send engagement but no confirmation to API
-      final deviceId = await _deviceService.getDeviceId();
-      await _dio.post('/beep/$sightingId/witness', data: {
-        'device_id': deviceId,
-        'witness_type': 'checked_no_sighting',
-        'quick_action': true,
-      });
-      
-      print('✅ Engagement recorded for sighting $sightingId (checked but no sighting)');
-    } catch (e) {
-      print('❌ Failed to record engagement: $e');
-    }
-  }
-  
-  void _handleMissedItAction(String sightingId) async {
-    print('📱 User missed sighting: $sightingId');
-    try {
-      // Send engagement but missed to API
-      final deviceId = await _deviceService.getDeviceId();
-      await _dio.post('/beep/$sightingId/witness', data: {
-        'device_id': deviceId,
-        'witness_type': 'missed',
-        'quick_action': true,
-      });
-      
-      print('✅ Missed engagement recorded for sighting $sightingId');
-    } catch (e) {
-      print('❌ Failed to record missed engagement: $e');
-    }
-  }
   
   void _handleDismissAndSnoozeAction(String sightingId) async {
-    print('📱 User dismissed and snoozed similar alerts for sighting: $sightingId');
+    print('📱 User dismissed and snoozed alerts for 1 hour: $sightingId');
     
     try {
-      // Get the sighting details to determine what constitutes "similar"
+      // Get the sighting details for API recording
       final deviceId = await _deviceService.getDeviceId();
       
       // Call API to record the dismissal
@@ -744,10 +692,10 @@ class PushNotificationService {
         'quick_action': true,
       });
       
-      // Set temporary snooze for similar alerts (30 minutes)
-      await _setSimilarAlertSnooze(sightingId, duration: const Duration(minutes: 30));
+      // Enable 1-hour DND using same pattern as profile screen
+      await _enableDndFor1Hour();
       
-      print('✅ Dismissed and snoozed similar alerts for 30 minutes');
+      print('✅ Dismissed and enabled DND for 1 hour');
     } catch (e) {
       print('❌ Failed to dismiss and snooze: $e');
     }
@@ -758,68 +706,43 @@ class PushNotificationService {
     // Just dismiss - no API call needed
   }
 
-  /// Set temporary snooze for similar alerts based on location proximity
-  Future<void> _setSimilarAlertSnooze(String sightingId, {required Duration duration}) async {
+  /// Enable DND for 1 hour using same pattern as profile screen
+  Future<void> _enableDndFor1Hour() async {
     try {
+      // Get user preferences from SharedPreferences
       final prefs = await SharedPreferences.getInstance();
-      final now = DateTime.now();
-      final snoozeUntil = now.add(duration);
+      final prefsJson = prefs.getString('user_preferences');
       
-      // Get sighting location from API to define "similar" area
-      final response = await _dio.get('/alerts/$sightingId');
-      final sightingData = response.data;
-      
-      if (sightingData != null && sightingData['sensor_data'] != null) {
-        final location = sightingData['sensor_data']['location'];
-        if (location != null) {
-          final lat = location['latitude'];
-          final lng = location['longitude'];
-          
-          // Store snooze info: location + radius + expiry time
-          final snoozeKey = 'alert_snooze_${lat.toStringAsFixed(2)}_${lng.toStringAsFixed(2)}';
-          await prefs.setString(snoozeKey, snoozeUntil.toIso8601String());
-          
-          print('🔕 Snoozed alerts within 5km of ($lat, $lng) until ${snoozeUntil.toString().substring(11, 16)}');
-        }
+      if (prefsJson != null) {
+        final prefsMap = jsonDecode(prefsJson) as Map<String, dynamic>;
+        final currentPrefs = UserPreferences.fromJson(prefsMap);
+        
+        // Set DND until 1 hour from now (exact same pattern as profile screen)
+        final dndUntil = DateTime.now().add(Duration(hours: 1));
+        final updatedPrefs = currentPrefs.copyWith(dndUntil: dndUntil);
+        
+        // Save updated preferences
+        final updatedPrefsJson = jsonEncode(updatedPrefs.toJson());
+        await prefs.setString('user_preferences', updatedPrefsJson);
+        
+        print('📱 DND enabled until ${dndUntil.toString().substring(11, 16)}');
+      } else {
+        print('⚠️ No user preferences found, creating default with DND');
+        
+        // Create default preferences with DND enabled
+        final dndUntil = DateTime.now().add(Duration(hours: 1));
+        final defaultPrefs = UserPreferences(dndUntil: dndUntil);
+        
+        final prefsJson = jsonEncode(defaultPrefs.toJson());
+        await prefs.setString('user_preferences', prefsJson);
+        
+        print('📱 Created default preferences with DND enabled until ${dndUntil.toString().substring(11, 16)}');
       }
     } catch (e) {
-      print('❌ Failed to set similar alert snooze: $e');
+      print('❌ Failed to enable DND: $e');
     }
   }
-  
-  /// Check if alerts should be snoozed for this location
-  Future<bool> _shouldSnoozeAlert(double? lat, double? lng) async {
-    if (lat == null || lng == null) return false;
-    
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final now = DateTime.now();
-      
-      // Check for any snooze zones within ~5km (rough grid check)
-      for (double latCheck = lat - 0.05; latCheck <= lat + 0.05; latCheck += 0.01) {
-        for (double lngCheck = lng - 0.05; lngCheck <= lng + 0.05; lngCheck += 0.01) {
-          final snoozeKey = 'alert_snooze_${latCheck.toStringAsFixed(2)}_${lngCheck.toStringAsFixed(2)}';
-          final snoozeUntilStr = prefs.getString(snoozeKey);
-          
-          if (snoozeUntilStr != null) {
-            final snoozeUntil = DateTime.parse(snoozeUntilStr);
-            if (now.isBefore(snoozeUntil)) {
-              print('🔕 Alert snoozed until ${snoozeUntil.toString().substring(11, 16)}');
-              return true;
-            } else {
-              // Cleanup expired snooze
-              await prefs.remove(snoozeKey);
-            }
-          }
-        }
-      }
-      
-      return false;
-    } catch (e) {
-      print('❌ Error checking alert snooze: $e');
-      return false;
-    }
-  }
+
 
   void dispose() {
     // Clean up resources if needed

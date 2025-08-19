@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, UploadFile, File, Form
 from typing import List, Optional
 from app.services.alerts_service import AlertsService
 import asyncpg
+import uuid
 
 router = APIRouter(prefix="/alerts", tags=["alerts"])
 
@@ -364,3 +365,48 @@ async def get_witness_aggregation(alert_id: str):
     except Exception as e:
         print(f"Error getting witness aggregation: {e}")
         raise HTTPException(status_code=500, detail=f"Error getting witness aggregation: {str(e)}")
+
+@router.post("/send/{alert_id}")
+async def send_alert_beep(alert_id: str, request: dict = None):
+    """Trigger proximity alerts for an alert - called by mobile app after media upload"""
+    try:
+        device_id = request.get('device_id', 'unknown') if request else 'unknown'
+        
+        db_pool = await get_db()
+        
+        # Get alert location from enrichment data
+        async with db_pool.acquire() as conn:
+            location_data = await conn.fetchrow("""
+                SELECT enrichment_data FROM sightings WHERE id = $1
+            """, uuid.UUID(alert_id))
+            
+            if not location_data:
+                raise HTTPException(status_code=404, detail="Alert not found")
+                
+            enrichment = location_data['enrichment_data'] or {}
+            location = enrichment.get('location', {})
+            
+            if not location.get('latitude') or not location.get('longitude'):
+                raise HTTPException(status_code=400, detail="Alert has no location data")
+        
+        # Trigger proximity alerts
+        print(f"Debug: Sending beep alerts for {alert_id} from device {device_id}")
+        from services.proximity_alert_service import get_proximity_alert_service
+        
+        proximity_service = get_proximity_alert_service(db_pool)
+        alert_result = await proximity_service.send_proximity_alerts(
+            location['latitude'], location['longitude'], alert_id, device_id
+        )
+        print(f"Debug: Beep proximity alerts sent: {alert_result}")
+        
+        return {
+            "success": True,
+            "data": alert_result,
+            "message": f"Beep sent to {alert_result.get('total_alerts_sent', 0)} nearby devices"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error sending alert beep: {e}")
+        raise HTTPException(status_code=500, detail=f"Error sending alert beep: {str(e)}")

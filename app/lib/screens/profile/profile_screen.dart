@@ -354,7 +354,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           const SizedBox(height: 16),
           
           const Text(
-            'Do Not Disturb',
+            'Do Not Disturb / Snooze',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -907,7 +907,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return Column(
       children: [
         const Text(
-          'Silence all alerts temporarily',
+          'Snooze & silence all alerts temporarily',
           style: TextStyle(
             color: AppColors.textSecondary,
             fontSize: 14,

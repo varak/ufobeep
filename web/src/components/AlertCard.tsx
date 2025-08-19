@@ -138,8 +138,13 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
       const now = new Date()
       const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60))
       
-      if (diffInHours < 1) return 'Just now'
-      if (diffInHours < 24) return `${diffInHours}h ago`
+      if (diffInHours < 24) return date.toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      })
       if (diffInHours < 48) return '1 day ago'
       return `${Math.floor(diffInHours / 24)} days ago`
     }
