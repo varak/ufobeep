@@ -76,7 +76,7 @@ export default function Home() {
               <h3 className="text-xl font-semibold mb-4 text-text-primary">Drop Everything & Look Up!</h3>
               <p className="text-text-secondary">
                 Get instant alerts when someone near you sees something weird in the sky. 
-                "LOOK UP NOW!" notifications help you catch sightings as they happen 
+                &quot;LOOK UP NOW!&quot; notifications help you catch sightings as they happen 
                 instead of hearing about them hours later.
               </p>
             </div>
@@ -85,7 +85,7 @@ export default function Home() {
               <h3 className="text-xl font-semibold mb-4 text-text-primary">Find It In The Sky</h3>
               <p className="text-text-secondary">
                 Point your phone toward the sighting and our compass shows you exactly 
-                where to look. No more "it was over there somewhere" - get precise 
+                where to look. No more &quot;it was over there somewhere&quot; - get precise 
                 direction to spot what others are seeing.
               </p>
             </div>
