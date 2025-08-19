@@ -33,12 +33,11 @@ GoRouter appRouter(AppRouterRef ref) {
     debugLogDiagnostics: true,
     initialLocation: '/splash',
     routes: [
-      // Splash Screen (redirects to beep screen)
+      // Splash Screen (handles its own navigation after initialization)
       GoRoute(
         path: '/splash',
         name: 'splash',
         builder: (context, state) => const SplashScreen(),
-        redirect: (context, state) => '/beep',
       ),
 
       // Main App Shell with Bottom Navigation

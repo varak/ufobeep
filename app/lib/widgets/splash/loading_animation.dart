@@ -83,8 +83,8 @@ class _LoadingAnimationState extends State<LoadingAnimation>
                   return Transform.rotate(
                     angle: _rotationAnimation.value * 0.1, // Subtle rotation
                     child: Container(
-                      width: 120,
-                      height: 120,
+                      width: 128,
+                      height: 128,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         gradient: RadialGradient(
@@ -102,10 +102,13 @@ class _LoadingAnimationState extends State<LoadingAnimation>
                         ),
                       ),
                       child: Center(
-                        child: Text(
-                          widget.isError ? '⚠️' : '🛸',
-                          style: const TextStyle(fontSize: 60),
-                        ),
+                        child: widget.isError 
+                            ? const Text('⚠️', style: TextStyle(fontSize: 128))
+                            : Image.asset(
+                                'assets/icons/ufo_icon.png',
+                                width: 128,
+                                height: 128,
+                              ),
                       ),
                     ),
                   );

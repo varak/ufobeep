@@ -95,6 +95,16 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       _errorMessage = null;
     });
 
+    // Validate location data BEFORE creating sighting
+    if (_sensorData?.latitude == null || _sensorData?.longitude == null) {
+      setState(() {
+        _isSubmitting = false;
+        _errorMessage = 'Location data required to send UFO beep alerts to nearby users';
+      });
+      await SoundService.I.play(AlertSound.gpsFail, haptic: true);
+      return; // Don't create sighting without location
+    }
+
     // Play sound feedback when sending
     await SoundService.I.play(AlertSound.tap, haptic: true);
 
@@ -143,7 +153,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         );
         debugPrint('${widget.isVideo ? 'Video' : 'Photo'} uploaded successfully!');
         
-        // Now trigger alerts
+        // Now trigger alerts (location guaranteed to be valid from validation above)
         debugPrint('Triggering proximity alerts...');
         await ApiClient.instance.triggerAlertsForSighting(
           sightingId, 
@@ -152,8 +162,13 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         );
         debugPrint('Proximity alerts sent successfully!');
       } catch (e) {
-        debugPrint('Warning: Failed to upload media or send alerts: $e');
-        // Don't fail completely if media upload fails - sighting was still created
+        debugPrint('CRITICAL: Media upload or alert trigger failed: $e');
+        setState(() {
+          _isSubmitting = false;
+          _errorMessage = 'Failed to send beep: $e';
+        });
+        await SoundService.I.play(AlertSound.gpsFail, haptic: true);
+        return; // Stop the process, show error to user
       }
 
       // Submit photo metadata if available (for astronomical identification)

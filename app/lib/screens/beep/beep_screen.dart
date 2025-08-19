@@ -15,6 +15,7 @@ import '../../services/anonymous_beep_service.dart';
 import '../../services/sound_service.dart';
 import '../../services/permission_service.dart';
 import '../../services/api_client.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../models/sensor_data.dart';
 import '../../models/sighting_submission.dart' as local;
 import '../../models/user_preferences.dart';
@@ -127,7 +128,6 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       
       // Extract metadata only for images (videos rarely have useful EXIF)
       Map<String, dynamic> mediaMetadata = {};
-      SensorData? sensorDataFromMedia;
       
       if (!isVideo) {
         try {
@@ -139,20 +139,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
           final gpsData = mediaMetadata['location'] as Map<String, dynamic>?;
           
           if (gpsData != null && gpsData['latitude'] != null && gpsData['longitude'] != null) {
-            debugPrint('✅ Found GPS data: ${gpsData['latitude']}, ${gpsData['longitude']}');
-            
-            sensorDataFromMedia = SensorData(
-              latitude: gpsData['latitude'],
-              longitude: gpsData['longitude'],
-              altitude: gpsData['altitude'] ?? 0.0,
-              accuracy: 10.0, // Lower accuracy since it's from gallery
-              utc: DateTime.now(),
-              azimuthDeg: 0.0, // Default values since this is from gallery
-              pitchDeg: 0.0,
-              rollDeg: 0.0,
-              hfovDeg: 60.0,
-            );
-            debugPrint('Created sensor data from image EXIF');
+            debugPrint('📷 Found GPS data in EXIF: ${gpsData['latitude']}, ${gpsData['longitude']} (kept for plate solving)');
           } else {
             debugPrint('No GPS coordinates found in image EXIF');
           }
@@ -161,6 +148,26 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
         }
       } else {
         debugPrint('Skipping metadata extraction for video file');
+      }
+
+      // Get current location for beep (same as non-media beeps)
+      final currentLocation = await permissionService.getCurrentLocation();
+      SensorData? currentSensorData;
+      if (currentLocation != null) {
+        currentSensorData = SensorData(
+          latitude: currentLocation.latitude,
+          longitude: currentLocation.longitude,
+          altitude: currentLocation.altitude,
+          accuracy: currentLocation.accuracy,
+          utc: DateTime.now(),
+          azimuthDeg: 0.0, // Will be filled by sensor service if needed
+          pitchDeg: 0.0,
+          rollDeg: 0.0,
+          hfovDeg: 60.0,
+        );
+        debugPrint('📍 Using current location for media beep: ${currentLocation.latitude}, ${currentLocation.longitude}');
+      } else {
+        debugPrint('❌ Failed to get current location for media beep');
       }
 
       setState(() {
@@ -172,8 +179,8 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       context.go('/beep/compose', extra: {
         'mediaFile': mediaFile,
         'isVideo': isVideo,
-        'sensorData': sensorDataFromMedia,
-        'photoMetadata': mediaMetadata,
+        'sensorData': currentSensorData, // Use current location, not EXIF location
+        'photoMetadata': mediaMetadata, // Keep EXIF data for plate solving
         'description': description,
       });
 
@@ -198,38 +205,44 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     // Play sound feedback
     await SoundService.I.play(AlertSound.tap, haptic: true);
     
-    // Proactive GPS permission check with inline request
-    if (!permissionService.locationGranted) {
-      setState(() {
-        _errorMessage = 'Getting location permission...';
-      });
-      
-      await permissionService.refreshPermissions();
-      
-      if (!permissionService.locationGranted) {
-        // Show inline permission request
-        final shouldRequest = await _showLocationPermissionDialog();
-        if (!shouldRequest) {
+    // Ensure location is ready for beep submission (insistent permission flow)
+    setState(() {
+      _errorMessage = 'Checking location permission...';
+    });
+    
+    final locationReady = await permissionService.ensureLocationReadyForBeep();
+    
+    if (!locationReady) {
+      // Check if permanently denied
+      final locationStatus = await Permission.location.status;
+      if (locationStatus.isPermanentlyDenied) {
+        // Show settings dialog
+        final shouldOpenSettings = await _showSettingsDialog();
+        if (shouldOpenSettings) {
+          await permissionService.openPermissionSettings();
+          // Try one more time after settings
+          final finalReady = await permissionService.ensureLocationReadyForBeep();
+          if (!finalReady) {
+            setState(() {
+              _isBeeping = false;
+              _errorMessage = 'Location permission required. Please enable location access in Settings.';
+            });
+            return;
+          }
+        } else {
           setState(() {
             _isBeeping = false;
-            _errorMessage = 'Location permission is required to send beeps';
+            _errorMessage = 'Location permission is required to send beeps.';
           });
           return;
         }
-        
-        // Open system settings for user to grant permission
-        await permissionService.openPermissionSettings();
-        
-        // After user returns from settings, refresh permissions
-        await permissionService.refreshPermissions();
-        
-        if (!permissionService.locationGranted) {
-          setState(() {
-            _isBeeping = false;
-            _errorMessage = 'Location permission is still denied. UFOBeep needs location access to work.';
-          });
-          return;
-        }
+      } else {
+        // User denied but not permanently
+        setState(() {
+          _isBeeping = false;
+          _errorMessage = 'Location permission denied. Location is required to send beeps.';
+        });
+        return;
       }
     }
     
@@ -397,21 +410,21 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          permissionService.locationGranted 
+                          permissionService.locationReady 
                               ? Icons.location_on 
                               : Icons.location_off,
                           size: 12,
-                          color: permissionService.locationGranted 
+                          color: permissionService.locationReady 
                               ? AppColors.semanticSuccess 
                               : AppColors.semanticWarning,
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          permissionService.locationGranted 
+                          permissionService.locationReady 
                               ? 'Location ready' 
                               : 'Location needed',
                           style: TextStyle(
-                            color: permissionService.locationGranted 
+                            color: permissionService.locationReady 
                                 ? AppColors.semanticSuccess 
                                 : AppColors.semanticWarning,
                             fontSize: 10,
@@ -559,6 +572,48 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
               foregroundColor: Colors.black,
             ),
             child: const Text('Allow Location'),
+          ),
+        ],
+      ),
+    ) ?? false;
+  }
+
+  Future<bool> _showSettingsDialog() async {
+    return await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        title: Row(
+          children: [
+            const Icon(Icons.settings, color: AppColors.semanticWarning),
+            const SizedBox(width: 8),
+            const Text(
+              'Settings Required',
+              style: TextStyle(color: AppColors.textPrimary),
+            ),
+          ],
+        ),
+        content: const Text(
+          'Location permission was permanently denied. To use UFOBeep, you must enable location access in your device Settings.\n\n'
+          'UFOBeep requires location to send and receive sighting alerts.',
+          style: TextStyle(color: AppColors.textSecondary),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: AppColors.textTertiary),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.semanticWarning,
+              foregroundColor: Colors.black,
+            ),
+            child: const Text('Open Settings'),
           ),
         ],
       ),

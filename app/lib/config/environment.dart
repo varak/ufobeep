@@ -13,6 +13,9 @@ class AppEnvironment {
   static Future<void> initialize({Environment? env}) async {
     _current = env ?? _getEnvironmentFromPlatform();
     
+    // Initialize package info for version
+    await _initializePackageInfo();
+    
     // Load environment variables from .env file
     try {
       await dotenv.load(fileName: '.env');
@@ -99,7 +102,13 @@ class AppEnvironment {
     }
   }
   
-  static String get appVersion => dotenv.env['APP_VERSION'] ?? '0.1.0';
+  static String get appVersion => _packageInfo?.version ?? '0.1.0';
+  
+  static PackageInfo? _packageInfo;
+  
+  static Future<void> _initializePackageInfo() async {
+    _packageInfo = await PackageInfo.fromPlatform();
+  }
   
   // Debug Settings
   static bool get isDebug => _current == Environment.development && kDebugMode;

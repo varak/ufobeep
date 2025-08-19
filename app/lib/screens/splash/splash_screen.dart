@@ -158,125 +158,113 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    final initStep = ref.watch(initializationStepProvider);
-    final initProgress = ref.watch(initializationProgressProvider);
-    final initMessage = ref.watch(initializationMessageProvider);
-    final hasError = ref.watch(hasInitializationErrorProvider);
-
     return Scaffold(
       backgroundColor: AppColors.darkBackground,
       body: FadeTransition(
         opacity: _fadeAnimation,
         child: SafeArea(
-          child: Column(
-            children: [
-              // Header with app branding
-              Expanded(
-                flex: 2,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // App Name
-                      Text(
-                        AppEnvironment.appName,
-                        style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                          color: AppColors.brandPrimary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      
-                      // Version
-                      Text(
-                        'v${AppEnvironment.appVersion}',
-                        style: const TextStyle(
-                          color: AppColors.textTertiary,
-                          fontSize: 14,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      
-                      // Tagline
-                      Text(
-                        'Real-time sighting alerts',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              
-              // Loading animation and progress
-              Expanded(
-                flex: 3,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      LoadingAnimation(
-                        progress: initProgress.when(
-                          data: (progress) => progress,
-                          loading: () => 0.0,
-                          error: (_, __) => 0.0,
-                        ),
-                        message: initMessage.when(
-                          data: (message) => message,
-                          loading: () => 'Starting up...',
-                          error: (_, __) => 'Initialization failed',
-                        ),
-                        isError: hasError,
-                      ),
-                      
-                      const SizedBox(height: 32),
-                      
-                      // Step indicator (only in debug mode)
-                      if (AppEnvironment.debugMode)
-                        InitializationStepIndicator(
-                          currentStep: initStep.when(
-                            data: (step) => step,
-                            loading: () => InitializationStep.environment,
-                            error: (_, __) => InitializationStep.environment,
-                          ),
-                          hasError: hasError,
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-              
-              // Footer
-              Container(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (AppEnvironment.debugMode) ...[
-                      Text(
-                        'Environment: ${AppEnvironment.current.name}',
-                        style: const TextStyle(
-                          color: AppColors.textTertiary,
-                          fontSize: 11,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                    ],
-                    const Text(
-                      'Initializing...',
-                      style: TextStyle(
-                        color: AppColors.textTertiary,
-                        fontSize: 11,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildHeader(context),
+                _buildLoadingSection(),
+                _buildFooter(),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          AppEnvironment.appName,
+          style: Theme.of(context).textTheme.displayMedium?.copyWith(
+            color: AppColors.brandPrimary,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'v${AppEnvironment.appVersion}',
+          style: const TextStyle(
+            color: AppColors.textTertiary,
+            fontSize: 14,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Real-time sighting alerts',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: AppColors.textSecondary,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLoadingSection() {
+    final initStep = ref.watch(initializationStepProvider);
+    final initProgress = ref.watch(initializationProgressProvider);
+    final initMessage = ref.watch(initializationMessageProvider);
+    final hasError = ref.watch(hasInitializationErrorProvider);
+
+    return Column(
+      children: [
+        LoadingAnimation(
+          progress: initProgress.when(
+            data: (progress) => progress,
+            loading: () => 0.0,
+            error: (_, __) => 0.0,
+          ),
+          message: initMessage.when(
+            data: (message) => message,
+            loading: () => 'Starting up...',
+            error: (_, __) => 'Initialization failed',
+          ),
+          isError: hasError,
+        ),
+        const SizedBox(height: 32),
+        if (AppEnvironment.debugMode)
+          InitializationStepIndicator(
+            currentStep: initStep.when(
+              data: (step) => step,
+              loading: () => InitializationStep.environment,
+              error: (_, __) => InitializationStep.environment,
+            ),
+            hasError: hasError,
+          ),
+      ],
+    );
+  }
+
+  Widget _buildFooter() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (AppEnvironment.debugMode) ...[
+          Text(
+            'Environment: ${AppEnvironment.current.name}',
+            style: const TextStyle(
+              color: AppColors.textTertiary,
+              fontSize: 11,
+            ),
+          ),
+          const SizedBox(height: 4),
+        ],
+        const Text(
+          'Initializing...',
+          style: TextStyle(
+            color: AppColors.textTertiary,
+            fontSize: 11,
+          ),
+        ),
+      ],
     );
   }
 }

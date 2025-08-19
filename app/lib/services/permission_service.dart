@@ -30,6 +30,9 @@ class PermissionService {
   bool get notificationGranted => _notificationGranted;
   bool get permissionsInitialized => _permissionsInitialized;
   Position? get cachedLocation => _cachedLocation;
+  
+  /// Check if location is ready for beep submission (permission + cached location)
+  bool get locationReady => _locationGranted && _cachedLocation != null;
 
   /// Initialize all permissions at app startup
   Future<void> initializePermissions() async {
@@ -225,6 +228,48 @@ class PermissionService {
   Future<void> refreshPermissions() async {
     await _requestAllPermissions();
     await _cachePermissions();
+  }
+  
+  /// Ensure location is ready for beep submission - insistent permission flow
+  /// Returns true if location is ready, false if user permanently denied
+  Future<bool> ensureLocationReadyForBeep() async {
+    // If already ready, return immediately
+    if (locationReady) {
+      return true;
+    }
+    
+    print('Location not ready for beep - checking permissions...');
+    
+    // Check current permission status
+    final currentStatus = await Permission.location.status;
+    
+    if (currentStatus.isPermanentlyDenied) {
+      // User permanently denied - can't request again
+      print('Location permanently denied - must go to Settings');
+      return false;
+    }
+    
+    if (!currentStatus.isGranted) {
+      // Request permission
+      print('Requesting location permission for beep submission...');
+      final newStatus = await Permission.location.request();
+      _locationGranted = newStatus.isGranted;
+      await _cachePermissions();
+      
+      if (!_locationGranted) {
+        print('Location permission denied for beep');
+        return false;
+      }
+    }
+    
+    // Permission granted, but might not have cached location
+    if (_cachedLocation == null) {
+      print('Getting location for beep submission...');
+      await getCurrentLocation();
+    }
+    
+    // Final check
+    return locationReady;
   }
 }
 

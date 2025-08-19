@@ -1,5 +1,16 @@
 # UFOBeep API Infrastructure Cheatsheet
 
+## CRITICAL: Icon Management Issues Fixed
+**NEVER use flutter_launcher_icons - it generates wrong icons!**
+- **Problem**: Android shows TWO launch images:
+  1. `android/app/src/main/res/drawable/launch_image.png` - Android native launch (shows FIRST)
+  2. Flutter splash screen assets - Shows after Flutter loads
+- **Solution**: Manually replace BOTH with custom icon
+- **Key files to update**:
+  - `launch_image.png` (Android native launch - THIS WAS THE CULPRIT)
+  - `assets/icons/ufo_icon.png` (Flutter assets)
+  - All launcher icons in `android/app/src/main/res/mipmap-*/` and `drawable-*/`
+
 ## Server Architecture
 - **Single FastAPI server** serving all endpoints (confirmed correct architecture)
 - **Production URL**: https://api.ufobeep.com
@@ -305,3 +316,18 @@ ssh -p 322 ufobeep@ufobeep.com "PGPASSWORD=ufopostpass psql -h localhost -U ufob
 - **Alerts List Page**: `/web/src/app/alerts/page.tsx` - Uses improved AlertCard component
 - **Homepage Map Section**: `/web/src/components/RecentAlertsSidebar.tsx` - Uses AlertCard with video thumbnails
 - **Mobile Alert Details**: `/app/lib/screens/alerts/alert_detail_screen.dart` - VideoPlayerWidget integration
+
+## Universal Widget System (COMPLETED - 2025-08-19)
+- **Architecture**: Modular, reusable widget components for cross-platform use
+- **Location**: `/app/lib/widgets/alert_sections/` directory
+- **Components**: AlertHeroSection, AlertDetailsSection, AlertDirectionSection, AlertWitnessSection, AlertActionsSection
+- **Mobile App Integration**: Clean alert_detail_screen.dart using universal sections
+- **Alert List Refactoring**: AlertCard completely rewritten with media indicators and witness counts
+- **Key Features**:
+  - Clean UFO emoji icons (no actual image loading in lists)
+  - Media indicators with photo/video icons and counts
+  - Witness confirmation counts only shown when > 1 
+  - Distance badges with color coding (red < 1km, orange < 5km, green < 15km, gray > 15km)
+  - Consistent styling (12px border radius, unified padding, proper spacing)
+  - Backward compatibility maintained (existing navigation works)
+- **Benefits**: Code reuse across mobile app, website, and different pages without duplication

@@ -64,10 +64,10 @@ Future<void> _initializeNonCriticalServices() async {
   print('🔧 Initializing background services...');
   final stopwatch = Stopwatch()..start();
   
-  // Initialize services that don't block app startup
+  // Initialize services that don't block app startup  
+  // (permissions moved to splash screen initialization)
   await Future.wait([
     SoundService.I.init(),
-    permissionService.initializePermissions(),
     pushNotificationService.initialize(),
   ]);
   

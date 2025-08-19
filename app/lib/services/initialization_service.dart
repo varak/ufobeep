@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../config/environment.dart';
 import '../config/locale_config.dart';
+import 'permission_service.dart';
 
 enum InitializationStep {
   environment,
@@ -94,9 +94,9 @@ class InitializationService {
       }
       initData.addAll(envResult.data);
 
-      // Step 2: Check and request permissions
-      await _updateProgress(InitializationStep.permissions, 0.25, 'Checking permissions...');
-      final permResult = await _checkPermissions();
+      // Step 2: Initialize all permissions at startup (app won't work without them)
+      await _updateProgress(InitializationStep.permissions, 0.25, 'Requesting permissions...');
+      final permResult = await _usePermissionService();
       if (!permResult.success) {
         return permResult;
       }
@@ -195,74 +195,40 @@ class InitializationService {
     }
   }
 
-  Future<InitializationResult> _checkPermissions() async {
+  Future<InitializationResult> _usePermissionService() async {
     try {
-      final Map<String, bool> permissions = {};
-      final List<String> requestedPermissions = [];
-
-      // Request location permission (critical for beep submission)
-      var locationStatus = await Permission.location.status;
-      if (!locationStatus.isGranted && !locationStatus.isPermanentlyDenied) {
-        _logInfo('Requesting location permission...');
-        locationStatus = await Permission.location.request();
-        requestedPermissions.add('location');
-      }
-      permissions['location'] = locationStatus.isGranted;
-
-      // Request camera permission (critical for beep submission)
-      var cameraStatus = await Permission.camera.status;
-      if (!cameraStatus.isGranted && !cameraStatus.isPermanentlyDenied) {
-        _logInfo('Requesting camera permission...');
-        cameraStatus = await Permission.camera.request();
-        requestedPermissions.add('camera');
-      }
-      permissions['camera'] = cameraStatus.isGranted;
-
-      // Check notification permission (optional)
-      final notificationStatus = await Permission.notification.status;
-      permissions['notification'] = notificationStatus.isGranted;
-
-      // Check microphone permission (for video recording, optional)
-      final microphoneStatus = await Permission.microphone.status;
-      permissions['microphone'] = microphoneStatus.isGranted;
-
-      // Request storage permission (needed for photo access)
-      Permission storagePermission;
-      if (Platform.isAndroid) {
-        storagePermission = Permission.storage;
-      } else {
-        storagePermission = Permission.photos;
-      }
-      var storageStatus = await storagePermission.status;
-      if (!storageStatus.isGranted && !storageStatus.isPermanentlyDenied) {
-        _logInfo('Requesting storage permission...');
-        storageStatus = await storagePermission.request();
-        requestedPermissions.add('storage');
-      }
-      permissions['storage'] = storageStatus.isGranted;
-
-      // Log critical permission status
-      final hasCriticalPermissions = permissions['location'] == true && permissions['camera'] == true;
+      _logInfo('Delegating permission initialization to PermissionService...');
+      
+      final permissionService = PermissionService();
+      await permissionService.initializePermissions();
+      
+      // Check if critical permissions were granted
+      final hasCriticalPermissions = permissionService.locationGranted && permissionService.cameraGranted;
+      
       if (!hasCriticalPermissions) {
-        _logWarning('Missing critical permissions - Location: ${permissions['location']}, Camera: ${permissions['camera']}');
+        _logWarning('Missing critical permissions - Location: ${permissionService.locationGranted}, Camera: ${permissionService.cameraGranted}');
       }
-
-      _logInfo('Permission check completed: $permissions');
-      _logInfo('Requested permissions during init: $requestedPermissions');
+      
+      _logInfo('PermissionService initialization completed');
+      _logInfo('Location: ${permissionService.locationGranted}, Camera: ${permissionService.cameraGranted}, Photos: ${permissionService.photosGranted}');
       
       return InitializationResult(
         success: true,
         lastStep: InitializationStep.permissions,
         data: {
-          'permissions': permissions,
+          'locationGranted': permissionService.locationGranted,
+          'cameraGranted': permissionService.cameraGranted,
+          'photosGranted': permissionService.photosGranted,
+          'notificationGranted': permissionService.notificationGranted,
           'hasCriticalPermissions': hasCriticalPermissions,
-          'requestedPermissions': requestedPermissions,
+          'permissionsInitialized': permissionService.permissionsInitialized,
         },
       );
     } catch (e) {
+      _logError('PermissionService initialization failed: $e');
       return InitializationResult(
         success: false,
-        error: 'Permission check failed: $e',
+        error: 'Permission initialization failed: $e',
         lastStep: InitializationStep.permissions,
       );
     }
