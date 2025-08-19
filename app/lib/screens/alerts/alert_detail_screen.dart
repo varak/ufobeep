@@ -621,8 +621,15 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
     // Show first media file (image or video)
     final media = alert.mediaFiles.first;
-    final mediaUrl = media['url'] as String? ?? '';
     final apiType = media['type'] as String? ?? 'image';
+    
+    // Use web-optimized URL for better loading in detail view
+    String mediaUrl = media['web_url'] as String? ?? media['url'] as String? ?? '';
+    
+    // For videos, use original URL as we may not have web-optimized video yet
+    if (apiType == 'video') {
+      mediaUrl = media['url'] as String? ?? '';
+    }
     
     // Use API type if available and not 'image', otherwise detect from URL
     final mediaType = (apiType != 'image') ? apiType : _detectMediaTypeFromUrl(mediaUrl);
@@ -654,7 +661,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       children: [
         Builder(
           builder: (context) => GestureDetector(
-            onTap: () => mediaType == 'video' ? null : _showFullscreenImage(context, mediaUrl),
+            onTap: () => mediaType == 'video' ? null : _showFullscreenImage(context, media['url'] as String? ?? mediaUrl),
           child: Container(
             width: double.infinity,
             constraints: const BoxConstraints(

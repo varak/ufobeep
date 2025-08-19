@@ -182,6 +182,10 @@ class MediaFile {
   final String url;
   @JsonKey(name: 'thumbnail_url')
   final String? thumbnailUrl;
+  @JsonKey(name: 'web_url')
+  final String? webUrl;
+  @JsonKey(name: 'preview_url')
+  final String? previewUrl;
   @JsonKey(name: 'size_bytes')
   final int sizeBytes;
   @JsonKey(name: 'duration_seconds')
@@ -210,6 +214,8 @@ class MediaFile {
     required this.filename,
     required this.url,
     this.thumbnailUrl,
+    this.webUrl,
+    this.previewUrl,
     required this.sizeBytes,
     this.durationSeconds,
     this.width,

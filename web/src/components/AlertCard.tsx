@@ -22,6 +22,8 @@ interface Alert {
     type: string
     url: string
     thumbnail_url: string
+    web_url?: string
+    preview_url?: string
     is_primary: boolean
     upload_order: number
     display_priority: number
@@ -191,7 +193,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
             return primaryMedia ? (
               <div className="w-16 h-16 bg-gray-800 rounded-lg overflow-hidden flex-shrink-0 relative">
                 <ImageWithLoading 
-                  src={`${primaryMedia.thumbnail_url || primaryMedia.url}?thumbnail=true`}
+                  src={primaryMedia.thumbnail_url || primaryMedia.url}
                   alt={AlertTitleUtils.getShortTitle(alert)}
                   width={64}
                   height={64}

@@ -34,16 +34,21 @@ def process_media_files(media_info, sighting_id: str) -> list:
             if isinstance(media_info, dict) and "files" in media_info:
                 for media_file in media_info["files"]:
                     filename = media_file.get("filename", "")
-                    media_url = f"https://api.ufobeep.com/media/{sighting_id}/{filename}"
-                    
                     media_type = media_file.get("type") or guess_media_type_from_filename(filename).value
-                    thumbnail_url = f"{media_url}?thumbnail=true" if media_type == "video" else media_url
+                    
+                    # Use new URL structure if available, fallback to old
+                    url = media_file.get("url") or f"https://api.ufobeep.com/media/{sighting_id}/{filename}"
+                    thumbnail_url = media_file.get("thumbnail_url") or (f"{url}?thumbnail=true" if media_type == "video" else url)
+                    web_url = media_file.get("web_url", url)
+                    preview_url = media_file.get("preview_url", thumbnail_url)
                     
                     media_files.append({
                         "id": media_file.get("id", ""),
                         "type": media_type,
-                        "url": media_url,
+                        "url": url,
                         "thumbnail_url": thumbnail_url,
+                        "web_url": web_url,
+                        "preview_url": preview_url,
                         "filename": filename,
                         "size": media_file.get("size", 0),
                         "width": media_file.get("width", 0),

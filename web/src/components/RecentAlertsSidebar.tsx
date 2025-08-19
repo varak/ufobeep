@@ -23,6 +23,8 @@ interface Alert {
     type: string
     url: string
     thumbnail_url: string
+    web_url?: string
+    preview_url?: string
     is_primary: boolean
     upload_order: number
     display_priority: number

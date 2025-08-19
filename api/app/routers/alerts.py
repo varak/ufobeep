@@ -176,12 +176,13 @@ async def upload_alert_media(
     source: str = Form("user_upload"),
     description: Optional[str] = Form(None)
 ):
-    """Upload media files to an alert - unified endpoint with full media support"""
+    """Upload media files to an alert with processing pipeline"""
     import json
     import uuid
     from datetime import datetime
     from pathlib import Path
     import shutil
+    from app.services.media_processing_service import MediaProcessingService
     
     try:
         print(f"Media upload request: alert_id={alert_id}, files={files}, source={source}")
@@ -209,11 +210,12 @@ async def upload_alert_media(
             else:
                 existing_media = {'files': [], 'file_count': 0}
             
-            # Save uploaded files
+            # Set up media processing
             media_root = Path("/home/ufobeep/ufobeep/media")
             sighting_media_dir = media_root / alert_id
             sighting_media_dir.mkdir(parents=True, exist_ok=True)
             
+            media_processor = MediaProcessingService(media_root)
             new_media_files = []
             
             for file in files:
@@ -222,18 +224,34 @@ async def upload_alert_media(
                 unique_filename = f"{uuid.uuid4()}{file_ext}"
                 file_path = sighting_media_dir / unique_filename
                 
-                # Save file
+                # Save original file
                 with file_path.open("wb") as buffer:
                     shutil.copyfileobj(file.file, buffer)
                 
-                # Add to media list
+                # Process media file (generate thumbnails, web versions, etc.)
+                try:
+                    processed_urls = media_processor.process_media_file(file_path, alert_id)
+                    print(f"Media processing complete for {file.filename}: {processed_urls}")
+                except Exception as e:
+                    print(f"Media processing failed for {file.filename}: {e}")
+                    # Fallback to basic URLs if processing fails
+                    processed_urls = {
+                        'original': f'https://api.ufobeep.com/media/{alert_id}/{unique_filename}',
+                        'thumbnail': f'https://api.ufobeep.com/media/{alert_id}/{unique_filename}',
+                        'web': f'https://api.ufobeep.com/media/{alert_id}/{unique_filename}',
+                        'preview': f'https://api.ufobeep.com/media/{alert_id}/{unique_filename}'
+                    }
+                
+                # Create media file entry with all variants
                 new_media_files.append({
                     'id': str(uuid.uuid4()),
                     'type': 'video' if file_ext.lower() in ['.mp4', '.mov', '.avi'] else 'image',
                     'filename': unique_filename,
                     'original_name': file.filename,
-                    'url': f'https://api.ufobeep.com/media/{alert_id}/{unique_filename}',
-                    'thumbnail_url': f'https://api.ufobeep.com/media/{alert_id}/{unique_filename}?thumb=true',
+                    'url': processed_urls['original'],
+                    'thumbnail_url': processed_urls['thumbnail'],
+                    'web_url': processed_urls['web'],
+                    'preview_url': processed_urls['preview'],
                     'uploaded_at': datetime.now().isoformat(),
                     'source': source,
                     'description': description

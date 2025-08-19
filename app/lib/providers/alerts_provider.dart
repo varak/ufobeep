@@ -89,6 +89,20 @@ class Alert {
     if (primary == null) return '';
     return primary['thumbnail_url'] ?? primary['url'] ?? '';
   }
+  
+  // Get web-optimized URL for primary media
+  String get primaryWebUrl {
+    final primary = primaryMediaFile;
+    if (primary == null) return '';
+    return primary['web_url'] ?? primary['url'] ?? '';
+  }
+  
+  // Get preview URL for primary media (small square)
+  String get primaryPreviewUrl {
+    final primary = primaryMediaFile;
+    if (primary == null) return '';
+    return primary['preview_url'] ?? primary['thumbnail_url'] ?? primary['url'] ?? '';
+  }
 
   Alert copyWith({
     String? id,

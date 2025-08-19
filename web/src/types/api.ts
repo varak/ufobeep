@@ -79,6 +79,8 @@ export interface MediaFile {
   filename: string
   url: string
   thumbnail_url?: string
+  web_url?: string
+  preview_url?: string
   size_bytes: number
   duration_seconds?: number
   width?: number

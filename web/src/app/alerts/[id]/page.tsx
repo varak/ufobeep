@@ -26,6 +26,8 @@ interface Alert {
     type: string
     url: string
     thumbnail_url: string
+    web_url?: string
+    preview_url?: string
   }>
   enrichment?: {
     status: string
@@ -350,7 +352,7 @@ export default function AlertPage({ params }: AlertPageProps) {
                     className="block"
                   >
                     <ImageWithLoading 
-                      src={alert.media_files[0].url}
+                      src={alert.media_files[0].web_url || alert.media_files[0].url}
                       alt={alert.title}
                       width={1200}
                       height={900}

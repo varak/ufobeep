@@ -669,9 +669,9 @@ class _AlertCardState extends ConsumerState<AlertCard> {
         borderRadius: BorderRadius.circular(8),
         child: Stack(
           children: [
-            // Main image
+            // Main image - use optimized thumbnail for better performance
             Image.network(
-              thumbnailUrl,
+              thumbnailUrl, // Already optimized thumbnail URL
               height: 120,
               width: double.infinity,
               fit: BoxFit.cover,
