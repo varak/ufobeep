@@ -99,16 +99,17 @@ class AlertsService:
         # Try enrichment data first (has processed location name)
         if enrichment_data:
             enrichment = self._parse_json(enrichment_data)
-            if enrichment and "location" in enrichment:
-                loc = enrichment["location"]
-                lat = loc.get("latitude")
-                lng = loc.get("longitude")
+            if enrichment and "geocoding" in enrichment:
+                geocoding = enrichment["geocoding"]
+                lat = geocoding.get("latitude")
+                lng = geocoding.get("longitude")
+                location_name = geocoding.get("location_name") or geocoding.get("formatted_address", "Unknown Location")
                 if self._valid_coords(lat, lng):
                     return AlertLocation(
                         latitude=float(lat),
                         longitude=float(lng),
-                        name=loc.get("name", "Unknown Location"),
-                        accuracy=loc.get("accuracy", 50.0)
+                        name=location_name,
+                        accuracy=50.0
                     )
         
         # Fall back to sensor data
