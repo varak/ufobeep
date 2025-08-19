@@ -178,14 +178,20 @@ class AlertsService:
                     web_url = media_file.get("web_url", media_url)
                     preview_url = media_file.get("preview_url", thumbnail_url)
                     
-                    media_files.append({
+                    media_entry = {
                         "type": media_type,
                         "url": media_url,
                         "thumbnail_url": thumbnail_url,
                         "web_url": web_url,
                         "preview_url": preview_url,
                         "filename": filename
-                    })
+                    }
+                    
+                    # Include EXIF data if available (for plate solving)
+                    if 'exif_data' in media_file:
+                        media_entry['exif_data'] = media_file['exif_data']
+                    
+                    media_files.append(media_entry)
         return media_files
     
     def _process_enrichment(self, enrichment_data) -> Dict:
