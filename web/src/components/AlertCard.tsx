@@ -177,10 +177,9 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                   <span className="text-xs text-text-tertiary">👁️</span>
                 )}
               </div>
-              <div className="flex items-center text-text-secondary text-xs line-clamp-1">
-                <span className="mr-1">📍</span>
-                <span>{formatLocation(alert.location)}</span>
-              </div>
+              <p className="text-text-secondary text-xs line-clamp-1">
+                📍 {formatLocation(alert.location)}
+              </p>
             </div>
             <div className="w-2 h-2 bg-brand-primary rounded-full animate-pulse"></div>
           </div>
@@ -238,9 +237,8 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
               </div>
             </div>
             
-            <div className="flex items-center text-xs text-text-tertiary mb-2">
-              <span className="mr-1">📍</span>
-              <span>{formatLocation(alert.location)}</span>
+            <div className="text-xs text-text-tertiary mb-2">
+              📍 {formatLocation(alert.location)}
             </div>
 
             {alert.description && (

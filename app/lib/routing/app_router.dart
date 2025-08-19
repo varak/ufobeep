@@ -4,7 +4,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../theme/app_theme.dart';
 
-import '../screens/home/home_screen.dart';
 import '../screens/alerts/alerts_screen.dart';
 import '../screens/alerts/alert_detail_screen.dart';
 import '../screens/beep/beep_screen.dart';
@@ -50,7 +49,7 @@ GoRouter appRouter(AppRouterRef ref) {
           GoRoute(
             path: '/',
             name: 'home',
-            builder: (context, state) => const HomeScreen(),
+            builder: (context, state) => const AlertsScreen(),
             routes: [
               // Alert Detail
               GoRoute(
@@ -281,7 +280,7 @@ class MainBottomNavBar extends StatelessWidget {
     final currentLocation = GoRouterState.of(context).uri.toString();
     
     int currentIndex = 0;
-    if (currentLocation.startsWith('/alerts')) {
+    if (currentLocation == '/' || currentLocation.startsWith('/alerts') || currentLocation.startsWith('/alert/')) {
       currentIndex = 0;
     } else if (currentLocation.startsWith('/beep')) {
       currentIndex = 1;
