@@ -172,7 +172,7 @@ export default function AppPage() {
                 📧 Request Beta Access
               </h3>
               <p className="text-text-secondary mb-6">
-                Send us your email to join the Firebase beta testing program. You'll receive automatic invites 
+                Send us your email to join the Firebase beta testing program. You&apos;ll receive automatic invites 
                 for new releases with enhanced features and bug fixes.
               </p>
               
@@ -199,7 +199,7 @@ export default function AppPage() {
                 </a>
                 
                 <p className="text-xs text-text-tertiary mt-3">
-                  We'll add you to Firebase App Distribution and send you an invite email
+                  We&apos;ll add you to Firebase App Distribution and send you an invite email
                 </p>
               </div>
             </div>
