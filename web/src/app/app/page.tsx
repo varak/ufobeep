@@ -150,23 +150,92 @@ export default function AppPage() {
           </div>
         </div>
 
-        {/* Friend Beta Invitation Section */}
-        <div className="bg-dark-surface border border-brand-primary/30 rounded-xl p-8 mb-16">
+        {/* Firebase Beta Testing Section */}
+        <div className="bg-gradient-to-r from-green-600/20 to-blue-600/20 border border-green-500/30 rounded-xl p-8 mb-16">
           <div className="text-center mb-6">
-            <div className="text-4xl mb-4">👥</div>
+            <div className="inline-block bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4">
+              🔥 FIREBASE BETA LIVE
+            </div>
             <h2 className="text-2xl font-bold text-text-primary mb-2">
-              Invite Friends to Beta Test
+              Join Firebase Beta Testing
             </h2>
             <p className="text-text-secondary max-w-2xl mx-auto">
-              Want your friends to try UFOBeep? We use Firebase App Distribution for beta testing, 
-              which sends automatic email invites with download links.
+              Get automatic updates through Firebase App Distribution! Beta testers receive email invites 
+              with direct download links for each new release.
             </p>
+          </div>
+
+          {/* Beta Signup */}
+          <div className="bg-dark-background/50 border border-dark-border rounded-lg p-6 mb-6">
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-green-400 mb-4 flex items-center justify-center gap-2">
+                📧 Request Beta Access
+              </h3>
+              <p className="text-text-secondary mb-6">
+                Send us your email to join the Firebase beta testing program. You'll receive automatic invites 
+                for new releases with enhanced features and bug fixes.
+              </p>
+              
+              <div className="max-w-md mx-auto">
+                <div className="bg-dark-surface border border-dark-border rounded-lg p-4 mb-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-xl">✨</span>
+                    <span className="text-text-primary font-medium">Latest Beta Features:</span>
+                  </div>
+                  <ul className="text-sm text-text-secondary text-left space-y-1">
+                    <li>• Enhanced satellite data with full JSON details</li>
+                    <li>• Cleaned UI without floating markers</li>
+                    <li>• Fixed compass navigation</li>
+                    <li>• Automatic update notifications</li>
+                  </ul>
+                </div>
+                
+                <a 
+                  href="mailto:beta@ufobeep.com?subject=Beta Testing Request&body=Hi! I'd like to join the UFOBeep Firebase beta testing program.%0A%0AEmail: [Your Email]%0ADevice: [Android/iOS]%0A%0AThanks!"
+                  className="bg-green-600 hover:bg-green-700 text-white rounded-lg px-6 py-3 font-medium transition-colors inline-flex items-center gap-2"
+                >
+                  <span>📧</span>
+                  Request Beta Access
+                </a>
+                
+                <p className="text-xs text-text-tertiary mt-3">
+                  We'll add you to Firebase App Distribution and send you an invite email
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-dark-background/50 border border-dark-border rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-brand-primary mb-4 flex items-center gap-2">
-                📧 For Friends: How to Get Beta Access
+              <h3 className="text-lg font-semibold text-green-400 mb-4 flex items-center gap-2">
+                🎯 Firebase Beta vs Direct APK
+              </h3>
+              <div className="space-y-3 text-sm text-text-secondary">
+                <div>
+                  <p className="text-green-400 font-medium mb-1">✅ Firebase Beta Benefits:</p>
+                  <ul className="space-y-1 text-left">
+                    <li>• Automatic update notifications</li>
+                    <li>• No need to manually download each version</li>
+                    <li>• Release notes with each update</li>
+                    <li>• Crash reporting and feedback</li>
+                    <li>• Smaller optimized builds</li>
+                  </ul>
+                </div>
+                <div>
+                  <p className="text-yellow-400 font-medium mb-1">📦 Direct APK:</p>
+                  <ul className="space-y-1 text-left">
+                    <li>• Immediate access without waiting</li>
+                    <li>• No email signup required</li>
+                    <li>• Latest features right away</li>
+                    <li>• Larger debug builds (~248MB)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-dark-background/50 border border-dark-border rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-green-400 mb-4 flex items-center gap-2">
+                📧 How Beta Testing Works
               </h3>
               <ol className="space-y-3 text-sm text-text-secondary">
                 <li className="flex gap-3">
