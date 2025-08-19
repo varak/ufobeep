@@ -421,15 +421,25 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               onPressed: () async {
                 Navigator.of(context).pop();
                 final Uri mufonUrl = Uri.parse('https://mufon.com/cms-ifo-info/');
-                if (await canLaunchUrl(mufonUrl)) {
-                  await launchUrl(mufonUrl, mode: LaunchMode.externalApplication);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Could not open MUFON website'),
-                      backgroundColor: AppColors.semanticError,
+                try {
+                  await launchUrl(
+                    mufonUrl, 
+                    mode: LaunchMode.externalApplication,
+                    webViewConfiguration: const WebViewConfiguration(
+                      enableJavaScript: true,
+                      enableDomStorage: true,
                     ),
                   );
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Could not open MUFON website: $e'),
+                        backgroundColor: AppColors.semanticError,
+                        duration: const Duration(seconds: 4),
+                      ),
+                    );
+                  }
                 }
               },
               icon: const Icon(Icons.open_in_browser),
