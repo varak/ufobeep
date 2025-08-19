@@ -265,7 +265,54 @@ class AlertsService:
             alert_level="normal"
         )
         
+        # Call enrichment service after alert creation
+        await self._enrich_alert(alert_id, lat, lng)
+        
         return alert_id, {"lat": jittered_lat, "lng": jittered_lng}
+    
+    async def _enrich_alert(self, alert_id: str, latitude: float, longitude: float):
+        """Call enrichment service for weather and reverse geocoding"""
+        try:
+            from app.services.enrichment_service import enrichment_orchestrator, initialize_enrichment_processors, EnrichmentContext
+            
+            # Initialize processors if not already done
+            if not enrichment_orchestrator.processors:
+                initialize_enrichment_processors()
+            
+            # Create enrichment context
+            context = EnrichmentContext(
+                sighting_id=alert_id,
+                latitude=latitude,
+                longitude=longitude,
+                altitude=None,
+                timestamp=datetime.utcnow(),
+                azimuth_deg=0.0,
+                pitch_deg=0.0,
+                category="ufo"
+            )
+            
+            # Run enrichment
+            results = await enrichment_orchestrator.enrich_sighting(context)
+            
+            # Save enrichment results to database
+            enrichment_data = {}
+            for processor_name, result in results.items():
+                if result.success and result.data:
+                    enrichment_data[processor_name] = result.data
+            
+            # Update sighting with enrichment data
+            async with self.db_pool.acquire() as conn:
+                await conn.execute("""
+                    UPDATE sightings 
+                    SET enrichment_data = $1
+                    WHERE id = $2
+                """, json.dumps(enrichment_data), uuid.UUID(alert_id))
+            
+            print(f"Enrichment completed for alert {alert_id}: {list(enrichment_data.keys())}")
+            
+        except Exception as e:
+            print(f"Enrichment failed for alert {alert_id}: {e}")
+            # Don't fail the alert creation if enrichment fails
     
     async def confirm_witness(self, sighting_id: str, device_id: str, 
                             witness_data: Dict) -> Dict:
