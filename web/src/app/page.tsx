@@ -33,29 +33,30 @@ export default function Home() {
             </Link>
           </div>
           
-          {/* Trust indicators */}
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 text-sm text-text-tertiary">
-            <div className="flex items-center gap-2">
-              <span className="text-brand-primary">✓</span>
-              <span className="whitespace-nowrap">15,000+ Active Users</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-brand-primary">✓</span>
-              <span className="whitespace-nowrap">Real-time Global Network</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-brand-primary">✓</span>
-              <span className="whitespace-nowrap">Privacy-First Design</span>
-            </div>
+          {/* Content navigation links */}
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 text-sm">
+            <a href="#global-network" className="text-brand-primary hover:text-brand-primary-light transition-colors font-medium">
+              Global Sighting Network
+            </a>
+            <span className="text-text-tertiary hidden sm:inline">|</span>
+            <a href="#how-it-works" className="text-brand-primary hover:text-brand-primary-light transition-colors font-medium">
+              How UFOBeep Works
+            </a>
+            <span className="text-text-tertiary hidden sm:inline">|</span>
+            <a href="#share-to-beep" className="text-brand-primary hover:text-brand-primary-light transition-colors font-medium">
+              Share-to-Beep
+            </a>
           </div>
         </div>
       </section>
 
       {/* Live Map Section */}
-      <GlobalSightingNetwork />
+      <div id="global-network">
+        <GlobalSightingNetwork />
+      </div>
 
       {/* Features Section */}
-      <section className="py-20 px-6 md:px-24 bg-dark-surface">
+      <section id="how-it-works" className="py-20 px-6 md:px-24 bg-dark-surface">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-text-primary">
             How UFOBeep Works
@@ -90,7 +91,9 @@ export default function Home() {
       </section>
 
       {/* Share-to-Beep Promotion */}
-      <ShareToBeepPromo />
+      <div id="share-to-beep">
+        <ShareToBeepPromo />
+      </div>
 
       {/* Community Section */}
       <section className="py-20 px-6 md:px-24">
