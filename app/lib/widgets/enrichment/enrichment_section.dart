@@ -5,10 +5,10 @@ import '../../models/alert_enrichment.dart';
 class EnrichmentSection extends StatelessWidget {
   const EnrichmentSection({
     super.key,
-    required this.enrichment,
+    required this.enrichmentData,
   });
 
-  final AlertEnrichment? enrichment;
+  final Map<String, dynamic>? enrichmentData;
 
   @override
   Widget build(BuildContext context) {
@@ -32,20 +32,16 @@ class EnrichmentSection extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            if (enrichment != null)
-              _buildStatusChip(enrichment!.status),
+            if (enrichmentData != null)
+              _buildStatusChip(EnrichmentStatus.completed),
           ],
         ),
         const SizedBox(height: 16),
 
-        if (enrichment == null || enrichment!.status == EnrichmentStatus.pending)
+        if (enrichmentData == null || enrichmentData!.isEmpty)
           _buildPendingState()
-        else if (enrichment!.isLoading)
-          _buildLoadingState()
-        else if (enrichment!.hasError)
-          _buildErrorState(enrichment!.errorMessage ?? 'Analysis failed')
         else
-          _buildEnrichmentData(enrichment!),
+          _buildEnrichmentData(enrichmentData!),
       ],
     );
   }
@@ -180,11 +176,11 @@ class EnrichmentSection extends StatelessWidget {
     );
   }
 
-  Widget _buildEnrichmentData(AlertEnrichment enrichment) {
-    final hasData = enrichment.weather != null ||
-        enrichment.celestial != null ||
-        enrichment.satellites.isNotEmpty ||
-        enrichment.contentAnalysis != null;
+  Widget _buildEnrichmentData(Map<String, dynamic> enrichmentData) {
+    final hasWeatherData = enrichmentData['weather'] != null;
+    final hasSatelliteData = enrichmentData['satellites'] != null;
+    final hasContentData = enrichmentData['content_filter'] != null;
+    final hasData = hasWeatherData || hasSatelliteData || hasContentData;
 
     if (!hasData) {
       return Card(
@@ -224,20 +220,16 @@ class EnrichmentSection extends StatelessWidget {
 
     return Column(
       children: [
-        if (enrichment.weather != null) ...[
-          WeatherCard(weather: enrichment.weather!),
+        if (hasWeatherData) ...[
+          WeatherCardFromJson(weatherData: enrichmentData['weather']),
           const SizedBox(height: 16),
         ],
-        if (enrichment.celestial != null) ...[
-          CelestialCard(celestial: enrichment.celestial!),
+        if (hasSatelliteData) ...[
+          SatelliteCardFromJson(satelliteData: enrichmentData['satellites']),
           const SizedBox(height: 16),
         ],
-        if (enrichment.satellites.isNotEmpty) ...[
-          SatelliteCard(satellites: enrichment.satellites),
-          const SizedBox(height: 16),
-        ],
-        if (enrichment.contentAnalysis != null) ...[
-          ContentAnalysisCard(analysis: enrichment.contentAnalysis!),
+        if (hasContentData) ...[
+          ContentAnalysisCardFromJson(contentData: enrichmentData['content_filter']),
           const SizedBox(height: 16),
         ],
       ],
@@ -245,10 +237,10 @@ class EnrichmentSection extends StatelessWidget {
   }
 }
 
-class WeatherCard extends StatelessWidget {
-  const WeatherCard({super.key, required this.weather});
+class WeatherCardFromJson extends StatelessWidget {
+  const WeatherCardFromJson({super.key, required this.weatherData});
 
-  final WeatherData weather;
+  final Map<String, dynamic> weatherData;
 
   @override
   Widget build(BuildContext context) {
@@ -280,7 +272,7 @@ class WeatherCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        weather.condition,
+                        weatherData['weather_main']?.toString() ?? 'Unknown',
                         style: TextStyle(
                           color: AppColors.textPrimary,
                           fontSize: 18,
@@ -288,7 +280,7 @@ class WeatherCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        weather.description,
+                        weatherData['weather_description']?.toString() ?? 'No description',
                         style: TextStyle(
                           color: AppColors.textSecondary,
                           fontSize: 14,
@@ -298,7 +290,7 @@ class WeatherCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  weather.temperatureFormatted,
+                  _formatTemperature(weatherData['temperature_c']),
                   style: TextStyle(
                     color: AppColors.brandPrimary,
                     fontSize: 24,
@@ -315,22 +307,22 @@ class WeatherCard extends StatelessWidget {
                 _WeatherDetail(
                   icon: Icons.air,
                   label: 'Wind',
-                  value: weather.windFormatted,
+                  value: _formatWindSpeed(weatherData['wind_speed_ms']),
                 ),
                 _WeatherDetail(
                   icon: Icons.visibility,
                   label: 'Visibility',
-                  value: weather.visibilityFormatted,
+                  value: _formatVisibility(weatherData['visibility_km']),
                 ),
                 _WeatherDetail(
                   icon: Icons.water_drop,
                   label: 'Humidity',
-                  value: weather.humidityFormatted,
+                  value: _formatHumidity(weatherData['humidity_percent']),
                 ),
                 _WeatherDetail(
                   icon: Icons.cloud,
                   label: 'Clouds',
-                  value: weather.cloudCoverageFormatted,
+                  value: _formatCloudCover(weatherData['cloud_cover_percent']),
                 ),
               ],
             ),
@@ -338,6 +330,31 @@ class WeatherCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _formatTemperature(dynamic temp) {
+    if (temp == null) return '--°C';
+    return '${temp.toStringAsFixed(1)}°C';
+  }
+
+  String _formatWindSpeed(dynamic speed) {
+    if (speed == null) return '--';
+    return '${speed.toStringAsFixed(1)} m/s';
+  }
+
+  String _formatVisibility(dynamic visibility) {
+    if (visibility == null) return '--';
+    return '${visibility.toStringAsFixed(1)} km';
+  }
+
+  String _formatHumidity(dynamic humidity) {
+    if (humidity == null) return '--%';
+    return '${humidity}%';
+  }
+
+  String _formatCloudCover(dynamic clouds) {
+    if (clouds == null) return '--%';
+    return '${clouds}%';
   }
 }
 
@@ -544,13 +561,17 @@ class _CelestialObject extends StatelessWidget {
   }
 }
 
-class SatelliteCard extends StatelessWidget {
-  const SatelliteCard({super.key, required this.satellites});
+class SatelliteCardFromJson extends StatelessWidget {
+  const SatelliteCardFromJson({super.key, required this.satelliteData});
 
-  final List<SatelliteData> satellites;
+  final Map<String, dynamic> satelliteData;
 
   @override
   Widget build(BuildContext context) {
+    final issPasses = satelliteData['iss_passes'] as List<dynamic>? ?? [];
+    final starlinkPasses = satelliteData['starlink_passes'] as List<dynamic>? ?? [];
+    final allPasses = [...issPasses, ...starlinkPasses];
+    
     return Card(
       color: AppColors.darkSurface,
       child: Padding(
@@ -562,66 +583,46 @@ class SatelliteCard extends StatelessWidget {
               children: [
                 Icon(Icons.satellite, color: AppColors.brandPrimary, size: 20),
                 const SizedBox(width: 8),
-                Text(
-                  'Satellites (${satellites.length})',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w600,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Satellite Passes (${allPasses.length})',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        'Satellites visible overhead at sighting time & location',
+                        style: TextStyle(
+                          color: AppColors.textTertiary,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 16),
-            ...satellites.take(5).map((satellite) =>
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Row(
-                  children: [
-                    Icon(
-                      satellite.categoryIcon,
-                      size: 16,
-                      color: satellite.categoryColor,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            satellite.name,
-                            style: TextStyle(
-                              color: AppColors.textPrimary,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            '${satellite.altitudeFormatted} alt, ${satellite.rangeFormatted} range',
-                            style: TextStyle(
-                              color: AppColors.textSecondary,
-                              fontSize: 10,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (satellite.isVisible)
-                      Icon(
-                        Icons.visibility,
-                        size: 12,
-                        color: AppColors.brandPrimary,
-                      ),
-                  ],
-                ),
-              ),
-            ),
-            if (satellites.length > 5)
+            
+            if (issPasses.isNotEmpty) ...[
+              _buildSatelliteSection('ISS Passes', issPasses, Icons.public),
+              const SizedBox(height: 12),
+            ],
+            
+            if (starlinkPasses.isNotEmpty) ...[
+              _buildSatelliteSection('Starlink Passes', starlinkPasses, Icons.wifi),
+            ],
+            
+            if (allPasses.isEmpty)
               Text(
-                'and ${satellites.length - 5} more...',
+                'No visible satellite passes found',
                 style: TextStyle(
-                  color: AppColors.textTertiary,
-                  fontSize: 12,
-                  fontStyle: FontStyle.italic,
+                  color: AppColors.textSecondary,
+                  fontSize: 14,
                 ),
               ),
           ],
@@ -629,15 +630,95 @@ class SatelliteCard extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildSatelliteSection(String title, List<dynamic> passes, IconData icon) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(icon, size: 16, color: AppColors.brandPrimary),
+            const SizedBox(width: 4),
+            Text(
+              title,
+              style: TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        ...passes.take(3).map((pass) => _buildSatellitePass(pass)),
+        if (passes.length > 3)
+          Text(
+            'and ${passes.length - 3} more...',
+            style: TextStyle(
+              color: AppColors.textTertiary,
+              fontSize: 12,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildSatellitePass(Map<String, dynamic> pass) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Row(
+        children: [
+          Icon(
+            Icons.circle,
+            size: 8,
+            color: pass['is_visible_pass'] == true ? AppColors.brandPrimary : AppColors.textTertiary,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  pass['satellite_name']?.toString() ?? 'Unknown',
+                  style: TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  '${pass['max_elevation_deg']}° elevation, ${pass['direction'] ?? 'unknown direction'}',
+                  style: TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 10,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (pass['is_visible_pass'] == true)
+            Icon(
+              Icons.visibility,
+              size: 12,
+              color: AppColors.brandPrimary,
+            ),
+        ],
+      ),
+    );
+  }
 }
 
-class ContentAnalysisCard extends StatelessWidget {
-  const ContentAnalysisCard({super.key, required this.analysis});
+class ContentAnalysisCardFromJson extends StatelessWidget {
+  const ContentAnalysisCardFromJson({super.key, required this.contentData});
 
-  final ContentAnalysis analysis;
+  final Map<String, dynamic> contentData;
 
   @override
   Widget build(BuildContext context) {
+    final isSafe = contentData['is_safe'] ?? true;
+    final confidence = contentData['confidence'] ?? 0.0;
+    
     return Card(
       color: AppColors.darkSurface,
       child: Padding(
@@ -647,10 +728,10 @@ class ContentAnalysisCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.image_search, color: AppColors.brandPrimary, size: 20),
+                Icon(Icons.security, color: AppColors.brandPrimary, size: 20),
                 const SizedBox(width: 8),
                 Text(
-                  'Image Analysis',
+                  'Content Analysis',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w600,
@@ -660,108 +741,56 @@ class ContentAnalysisCard extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Quality Score
+            // Safety Status
             Row(
               children: [
-                Text(
-                  'Quality: ',
-                  style: TextStyle(
-                    color: AppColors.textTertiary,
-                    fontSize: 14,
-                  ),
+                Icon(
+                  isSafe ? Icons.check_circle : Icons.warning,
+                  size: 16,
+                  color: isSafe ? AppColors.semanticSuccess : AppColors.semanticWarning,
                 ),
+                const SizedBox(width: 8),
                 Text(
-                  analysis.qualityScoreFormatted,
+                  isSafe ? 'Content is safe' : 'Content flagged for review',
                   style: TextStyle(
-                    color: analysis.hasHighQuality
-                        ? AppColors.semanticSuccess
-                        : AppColors.semanticWarning,
+                    color: isSafe ? AppColors.semanticSuccess : AppColors.semanticWarning,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
               ],
             ),
-
-            if (analysis.hasObjects) ...[
-              const SizedBox(height: 12),
-              Text(
-                'Detected Objects:',
-                style: TextStyle(
-                  color: AppColors.textTertiary,
-                  fontSize: 14,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Wrap(
-                spacing: 4,
-                runSpacing: 4,
-                children: analysis.detectedObjects.map((object) =>
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: AppColors.darkBackground,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      object,
-                      style: TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ).toList(),
-              ),
-            ],
-
-            if (analysis.hasTags) ...[
-              const SizedBox(height: 12),
-              Text(
-                'Suggested Tags:',
-                style: TextStyle(
-                  color: AppColors.textTertiary,
-                  fontSize: 14,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Wrap(
-                spacing: 4,
-                runSpacing: 4,
-                children: analysis.suggestedTags.map((tag) =>
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: AppColors.brandPrimary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
-                    ),
-                    child: Text(
-                      tag,
-                      style: TextStyle(
-                        color: AppColors.brandPrimary,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ).toList(),
-              ),
-            ],
-
-            if (analysis.classificationNote != null) ...[
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: AppColors.semanticInfo.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  analysis.classificationNote!,
+            
+            const SizedBox(height: 8),
+            
+            // Confidence Score
+            Row(
+              children: [
+                Text(
+                  'Confidence: ',
                   style: TextStyle(
-                    color: AppColors.textSecondary,
+                    color: AppColors.textTertiary,
                     fontSize: 12,
                   ),
+                ),
+                Text(
+                  '${(confidence * 100).toStringAsFixed(1)}%',
+                  style: TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+
+            if (contentData['analysis_method'] != null) ...[
+              const SizedBox(height: 8),
+              Text(
+                'Method: ${contentData['analysis_method']}',
+                style: TextStyle(
+                  color: AppColors.textTertiary,
+                  fontSize: 12,
                 ),
               ),
             ],

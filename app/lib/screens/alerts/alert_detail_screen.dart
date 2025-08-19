@@ -12,6 +12,7 @@ import '../../widgets/alert_sections/alert_hero_section.dart';
 import '../../widgets/alert_sections/alert_details_section.dart';
 import '../../widgets/alert_sections/alert_direction_section.dart';
 import '../../widgets/alert_sections/alert_actions_section.dart';
+import '../../widgets/enrichment/enrichment_section.dart';
 
 class AlertDetailScreen extends ConsumerStatefulWidget {
   const AlertDetailScreen({super.key, required this.alertId});
@@ -105,7 +106,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
                 // Environmental context (if available)
                 if (alert.enrichment != null && alert.enrichment!.isNotEmpty) ...[
-                  _buildEnvironmentalSection(alert),
+                  EnrichmentSection(enrichmentData: alert.enrichment),
                   const SizedBox(height: 24),
                 ],
 
@@ -457,47 +458,6 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
   // Keep only essential legacy sections for environmental and photo analysis
   // These will be modularized later if needed
-  Widget _buildEnvironmentalSection(Alert alert) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.darkSurface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.darkBorder.withOpacity(0.3)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Row(
-            children: [
-              Icon(Icons.wb_sunny, color: AppColors.brandPrimary, size: 20),
-              SizedBox(width: 8),
-              Text(
-                'Environmental Context',
-                style: TextStyle(
-                  color: AppColors.brandPrimary,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          if (alert.enrichment!['weather'] != null)
-            Text(
-              'Weather: ${alert.enrichment!['weather']['condition']} - ${alert.enrichment!['weather']['temperature']}°C',
-              style: const TextStyle(color: AppColors.textSecondary, fontSize: 14),
-            ),
-          if (alert.enrichment!['celestial'] != null)
-            Text(
-              'Moon Phase: ${alert.enrichment!['celestial']['moon_phase_name'] ?? 'Unknown'}',
-              style: const TextStyle(color: AppColors.textSecondary, fontSize: 14),
-            ),
-        ],
-      ),
-    );
-  }
 
   Widget _buildPhotoAnalysisSection(Alert alert) {
     return Container(

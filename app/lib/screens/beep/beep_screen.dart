@@ -395,51 +395,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                 ),
               ],
 
-              // Big BEEP button - moved lower on page
-              Center(
-                child: Column(
-                  children: [
-                    BeepButton(
-                      onPressed: _sendQuickBeep,
-                      isLoading: _isBeeping,
-                      size: 200,
-                      text: 'QUICK BEEP',
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          permissionService.locationReady 
-                              ? Icons.location_on 
-                              : Icons.location_off,
-                          size: 12,
-                          color: permissionService.locationReady 
-                              ? AppColors.semanticSuccess 
-                              : AppColors.semanticWarning,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          permissionService.locationReady 
-                              ? 'Location ready' 
-                              : 'Location needed',
-                          style: TextStyle(
-                            color: permissionService.locationReady 
-                                ? AppColors.semanticSuccess 
-                                : AppColors.semanticWarning,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              
-              const SizedBox(height: 24),
-
-              // Or continue to photo options
+              // Camera and media access section
               Row(
                 children: [
                   const Expanded(child: Divider(color: AppColors.darkBorder)),
@@ -518,6 +474,82 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                           ),
                         ),
                       ),
+                    ),
+                  ),
+                ],
+              ),
+              
+              const SizedBox(height: 24),
+
+              // Send Beep button - square style matching other buttons
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.brandPrimary.withOpacity(0.3),
+                      blurRadius: 15,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: ElevatedButton.icon(
+                  onPressed: _isBeeping ? null : _sendQuickBeep,
+                  icon: _isBeeping 
+                      ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.black,
+                          ),
+                        )
+                      : const Icon(Icons.send, color: Colors.black),
+                  label: Text(
+                    _isBeeping ? 'Sending...' : 'Send Beep',
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.brandPrimary,
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    elevation: 0,
+                  ),
+                ),
+              ),
+
+              // Location status indicator
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    permissionService.locationReady 
+                        ? Icons.location_on 
+                        : Icons.location_off,
+                    size: 12,
+                    color: permissionService.locationReady 
+                        ? AppColors.semanticSuccess 
+                        : AppColors.semanticWarning,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    permissionService.locationReady 
+                        ? 'Location ready' 
+                        : 'Location needed',
+                    style: TextStyle(
+                      color: permissionService.locationReady 
+                          ? AppColors.semanticSuccess 
+                          : AppColors.semanticWarning,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],

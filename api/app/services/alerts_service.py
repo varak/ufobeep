@@ -267,11 +267,11 @@ class AlertsService:
         )
         
         # Call enrichment service after alert creation
-        await self._enrich_alert(alert_id, lat, lng)
+        await self._enrich_alert(alert_id, lat, lng, description)
         
         return alert_id, {"lat": jittered_lat, "lng": jittered_lng}
     
-    async def _enrich_alert(self, alert_id: str, latitude: float, longitude: float):
+    async def _enrich_alert(self, alert_id: str, latitude: float, longitude: float, description: str = None):
         """Call enrichment service for weather and reverse geocoding"""
         try:
             from app.services.enrichment_service import enrichment_orchestrator, initialize_enrichment_processors, EnrichmentContext
@@ -289,7 +289,8 @@ class AlertsService:
                 timestamp=datetime.utcnow(),
                 azimuth_deg=0.0,
                 pitch_deg=0.0,
-                category="ufo"
+                category="ufo",
+                description=description  # Now content analysis will work
             )
             
             # Run enrichment
