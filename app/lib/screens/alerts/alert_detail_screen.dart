@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../../providers/alerts_provider.dart';
 import '../../providers/app_state.dart';
@@ -99,6 +100,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 AlertDirectionSection(
                   alert: alert,
                   onNavigate: (bearing, distance) => _navigateToSighting(alert, bearing, distance),
+                  onShowMap: (userLocation, alert) => _showMapView(userLocation, alert),
                 ),
                 const SizedBox(height: 24),
 
@@ -252,6 +254,21 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     };
     
     final uri = Uri(path: '/compass', queryParameters: compassParams);
+    context.go(uri.toString());
+  }
+
+  void _showMapView(Position userLocation, Alert alert) {
+    final targetName = AlertTitleUtils.getShortTitleFromAlert(alert);
+    final mapParams = {
+      'userLat': userLocation.latitude.toString(),
+      'userLon': userLocation.longitude.toString(),
+      'alertLat': alert.latitude.toString(),
+      'alertLon': alert.longitude.toString(),
+      'alertId': alert.id,
+      'alertName': Uri.encodeComponent(targetName),
+    };
+    
+    final uri = Uri(path: '/map', queryParameters: mapParams);
     context.go(uri.toString());
   }
 

@@ -10,10 +10,12 @@ class AlertDirectionSection extends StatelessWidget {
     super.key,
     required this.alert,
     this.onNavigate,
+    this.onShowMap,
   });
 
   final Alert alert;
   final Function(double bearing, double distance)? onNavigate;
+  final Function(Position userLocation, Alert alert)? onShowMap;
 
   @override
   Widget build(BuildContext context) {
@@ -143,18 +145,39 @@ class AlertDirectionSection extends StatelessWidget {
                 ],
               ),
             ),
-            // Navigate button (if callback provided)
-            if (onNavigate != null)
-              OutlinedButton.icon(
-                onPressed: () => onNavigate!(bearing, distance),
-                icon: const Icon(Icons.explore, size: 16),
-                label: const Text('Orient'),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.brandPrimary,
-                  side: const BorderSide(color: AppColors.brandPrimary),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                ),
-              ),
+            // Action buttons
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Orient button (if callback provided)
+                if (onNavigate != null)
+                  OutlinedButton.icon(
+                    onPressed: () => onNavigate!(bearing, distance),
+                    icon: const Icon(Icons.explore, size: 16),
+                    label: const Text('Orient'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppColors.brandPrimary,
+                      side: const BorderSide(color: AppColors.brandPrimary),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    ),
+                  ),
+                // Spacing between buttons
+                if (onNavigate != null && onShowMap != null)
+                  const SizedBox(height: 8),
+                // Map button (if callback provided)
+                if (onShowMap != null)
+                  OutlinedButton.icon(
+                    onPressed: () => onShowMap!(userLocation, alert),
+                    icon: const Icon(Icons.map, size: 16),
+                    label: const Text('Map'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppColors.brandPrimary,
+                      side: const BorderSide(color: AppColors.brandPrimary),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    ),
+                  ),
+              ],
+            ),
           ],
         );
       },

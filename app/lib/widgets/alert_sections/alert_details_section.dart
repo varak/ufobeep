@@ -61,14 +61,29 @@ class AlertDetailsSection extends StatelessWidget {
             const SizedBox(height: 16),
           ],
           
+          // Time info
+          _buildDetailRow(
+            Icons.access_time,
+            'Time',
+            _formatDateTime(alert.createdAt),
+            subtitle: _formatFullDateTime(alert.createdAt),
+          ),
+          
           // Location info (if enabled)
-          if (showLocation)
+          if (showLocation) ...[
             _buildDetailRow(
               Icons.location_on,
               'Location',
-              alert.locationName ?? 'Coordinates: ${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
-              subtitle: alert.distance != null ? '${alert.distance!.toStringAsFixed(1)}km away' : null,
+              alert.locationName ?? 'Unknown Location',
+              subtitle: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
             ),
+            if (alert.distance != null)
+              _buildDetailRow(
+                Icons.straighten,
+                'Distance',
+                '${alert.distance!.toStringAsFixed(1)} km away',
+              ),
+          ],
         ],
       ),
     );
@@ -123,5 +138,34 @@ class AlertDetailsSection extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _formatDateTime(DateTime dateTime) {
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+
+    if (difference.inDays > 0) {
+      return '${difference.inDays}d ago';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours}h ago';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes}m ago';
+    } else {
+      return 'Just now';
+    }
+  }
+
+  String _formatFullDateTime(DateTime dateTime) {
+    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    
+    final month = months[dateTime.month - 1];
+    final day = dateTime.day;
+    final year = dateTime.year;
+    final hour = dateTime.hour == 0 ? 12 : (dateTime.hour > 12 ? dateTime.hour - 12 : dateTime.hour);
+    final minute = dateTime.minute.toString().padLeft(2, '0');
+    final amPm = dateTime.hour >= 12 ? 'PM' : 'AM';
+    
+    return '$month $day, $year at $hour:$minute $amPm';
   }
 }
