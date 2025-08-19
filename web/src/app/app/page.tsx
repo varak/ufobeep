@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import EmailNotifySignup from '../../components/EmailNotifySignup'
+import { trackEvent } from '../../components/GoogleAnalytics'
 
 export default function AppPage() {
   return (
@@ -45,6 +46,7 @@ export default function AppPage() {
               href="/downloads/ufobeep-alpha.apk"
               className="bg-brand-primary hover:bg-brand-primary-dark text-text-inverse rounded-lg p-6 flex items-center gap-4 min-w-[250px] transition-colors group"
               download="ufobeep-alpha.apk"
+              onClick={() => trackEvent('download', 'app', 'alpha-apk', 248)}
             >
               <div className="text-3xl">🤖</div>
               <div className="text-left flex-1">
@@ -193,6 +195,7 @@ export default function AppPage() {
                 <a 
                   href="mailto:beta@ufobeep.com?subject=Beta Testing Request&body=Hi! I'd like to join the UFOBeep Firebase beta testing program.%0A%0AEmail: [Your Email]%0ADevice: [Android/iOS]%0A%0AThanks!"
                   className="bg-green-600 hover:bg-green-700 text-white rounded-lg px-6 py-3 font-medium transition-colors inline-flex items-center gap-2"
+                  onClick={() => trackEvent('request_beta', 'engagement', 'firebase-beta')}
                 >
                   <span>📧</span>
                   Request Beta Access
@@ -350,6 +353,7 @@ export default function AppPage() {
                     href="/downloads/ufobeep-alpha.apk"
                     className="bg-purple-600 hover:bg-purple-700 text-text-inverse rounded-lg px-4 py-2 text-sm font-medium transition-colors inline-flex items-center gap-2"
                     download="ufobeep-alpha.apk"
+                    onClick={() => trackEvent('download', 'app', 'direct-apk', 248)}
                   >
                     <span>📱</span>
                     Download APK

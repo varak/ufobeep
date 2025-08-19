@@ -17,6 +17,7 @@ import 'services/push_notification_service.dart';
 import 'services/sound_service.dart';
 import 'services/permission_service.dart';
 import 'services/share_intent_service.dart';
+import 'services/analytics_service.dart';
 import 'theme/app_theme.dart';
 
 void main() async {

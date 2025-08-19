@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { env } from '@/config/environment'
+import GoogleAnalytics from '@/components/GoogleAnalytics'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -101,6 +102,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className={`${inter.className} bg-dark-background text-text-primary min-h-screen`}>
+        <GoogleAnalytics />
         {children}
       </body>
     </html>

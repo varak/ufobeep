@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../theme/app_theme.dart';
+import '../services/analytics_service.dart';
 
 import '../screens/alerts/alerts_screen.dart';
 import '../screens/alerts/alert_detail_screen.dart';
