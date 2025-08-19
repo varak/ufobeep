@@ -14,11 +14,11 @@ export default function Home() {
             UFOBeep
           </h1>
           <p className="text-xl md:text-2xl text-text-secondary mb-4">
-            Real-time UFO and anomaly sighting alerts
+            Get alerts when to go outside and look up
           </p>
           <p className="text-lg text-text-tertiary mb-12 max-w-2xl mx-auto">
-            Join a global network of observers. Report sightings, get instant alerts, 
-            and chat with witnesses in real-time using assisted navigation.
+            Never miss another UFO sighting. Get real-time alerts when someone near you 
+            sees something weird in the sky. Point your phone and find exactly where to look.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mb-16">
             <Link href="/download">
