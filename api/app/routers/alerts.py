@@ -367,10 +367,10 @@ async def get_witness_aggregation(alert_id: str):
         raise HTTPException(status_code=500, detail=f"Error getting witness aggregation: {str(e)}")
 
 @router.post("/send/{alert_id}")
-async def send_alert_beep(alert_id: str, request: dict = None):
+async def send_alert_beep(alert_id: str, request: dict):
     """Trigger proximity alerts for an alert - called by mobile app after media upload"""
     try:
-        device_id = request.get('device_id', 'unknown') if request else 'unknown'
+        device_id = request.get('device_id', 'unknown')
         
         db_pool = await get_db()
         
