@@ -68,7 +68,7 @@ export class AlertTitleUtils {
     }
     
     // Final fallback
-    return 'UFO Sighting';
+    return 'Sighting';
   }
   
   /**
@@ -107,6 +107,6 @@ export class AlertTitleUtils {
       return 'Recent sighting';
     }
     
-    return 'UFO Sighting';
+    return 'Sighting';
   }
 }

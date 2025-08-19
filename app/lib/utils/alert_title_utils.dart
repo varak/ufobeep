@@ -79,7 +79,7 @@ abstract class AlertTitleUtils {
     }
     
     // Final fallback
-    return 'UFO Sighting';
+    return 'Sighting';
   }
   
   /// Get a short title for EnrichedAlert
@@ -139,6 +139,6 @@ abstract class AlertTitleUtils {
       return 'Recent sighting';
     }
     
-    return 'UFO Sighting';
+    return 'Sighting';
   }
 }
