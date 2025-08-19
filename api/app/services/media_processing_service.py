@@ -63,8 +63,11 @@ class MediaProcessingService:
         base_name = file_path.stem
         
         try:
-            # Open and auto-orient image
+            # Open and extract EXIF data first
             with Image.open(file_path) as img:
+                # Extract comprehensive EXIF data before any processing
+                exif_data = self._extract_exif_data(img)
+                
                 # Fix EXIF orientation
                 img = ImageOps.exif_transpose(img)
                 
@@ -119,12 +122,18 @@ class MediaProcessingService:
             # Return original URLs on error
             return self._get_original_urls(file_path, alert_id)
         
-        return {
+        result = {
             'original': f'https://api.ufobeep.com/media/{alert_id}/{file_path.name}',
             'thumbnail': f'https://api.ufobeep.com/media/{alert_id}/{base_name}.thumb.jpg',
             'web': f'https://api.ufobeep.com/media/{alert_id}/{base_name}.web.jpg',
             'preview': f'https://api.ufobeep.com/media/{alert_id}/{base_name}.preview.jpg'
         }
+        
+        # Add EXIF data if extracted successfully
+        if exif_data:
+            result['exif_data'] = exif_data
+            
+        return result
     
     def _process_video(self, file_path: Path, alert_id: str) -> Dict[str, str]:
         """Process video file - generate thumbnail from frame at 3 seconds"""
@@ -216,6 +225,144 @@ class MediaProcessingService:
         except Exception as e:
             logger.error(f"Error creating video placeholder: {e}")
     
+    def _extract_exif_data(self, img) -> Dict:
+        """Diplomatically extract all available EXIF data from image"""
+        exif_data = {}
+        
+        try:
+            # Get raw EXIF data
+            exif_dict = img._getexif() or {}
+            
+            # Camera/device info (varies wildly between phones)
+            camera_info = {}
+            camera_info['make'] = self._safe_get_exif(exif_dict, 271, 'Unknown')  # Make
+            camera_info['model'] = self._safe_get_exif(exif_dict, 272, 'Unknown')  # Model
+            camera_info['software'] = self._safe_get_exif(exif_dict, 305, 'Unknown')  # Software
+            
+            # Photo settings (critical for plate solving)
+            photo_settings = {}
+            photo_settings['datetime'] = self._safe_get_exif(exif_dict, 306, None)  # DateTime
+            photo_settings['datetime_original'] = self._safe_get_exif(exif_dict, 36867, None)  # DateTimeOriginal
+            photo_settings['datetime_digitized'] = self._safe_get_exif(exif_dict, 36868, None)  # DateTimeDigitized
+            
+            # Camera settings for astronomical analysis
+            photo_settings['focal_length'] = self._safe_get_exif_rational(exif_dict, 37386)  # FocalLength
+            photo_settings['focal_length_35mm'] = self._safe_get_exif(exif_dict, 41989, None)  # FocalLengthIn35mmFilm
+            photo_settings['iso'] = self._safe_get_exif(exif_dict, 34855, None)  # ISOSpeedRatings
+            photo_settings['exposure_time'] = self._safe_get_exif_rational(exif_dict, 33434)  # ExposureTime
+            photo_settings['f_number'] = self._safe_get_exif_rational(exif_dict, 33437)  # FNumber
+            photo_settings['exposure_program'] = self._safe_get_exif(exif_dict, 34850, None)  # ExposureProgram
+            photo_settings['metering_mode'] = self._safe_get_exif(exif_dict, 37383, None)  # MeteringMode
+            photo_settings['flash'] = self._safe_get_exif(exif_dict, 37385, None)  # Flash
+            
+            # GPS data (if available - many phones don't include this)
+            gps_info = {}
+            gps_data = exif_dict.get(34853, {})  # GPSInfo
+            if gps_data:
+                gps_info['latitude'] = self._extract_gps_coord(gps_data, 'lat')
+                gps_info['longitude'] = self._extract_gps_coord(gps_data, 'lon')
+                gps_info['altitude'] = self._safe_get_gps_rational(gps_data, 6)  # GPSAltitude
+                gps_info['timestamp'] = self._extract_gps_timestamp(gps_data)
+                gps_info['direction'] = self._safe_get_gps_rational(gps_data, 17)  # GPSImgDirection
+            
+            # Image technical details
+            technical = {}
+            technical['width'] = self._safe_get_exif(exif_dict, 256, img.width)  # ImageWidth
+            technical['height'] = self._safe_get_exif(exif_dict, 257, img.height)  # ImageLength
+            technical['orientation'] = self._safe_get_exif(exif_dict, 274, 1)  # Orientation
+            technical['resolution_x'] = self._safe_get_exif_rational(exif_dict, 282)  # XResolution
+            technical['resolution_y'] = self._safe_get_exif_rational(exif_dict, 283)  # YResolution
+            technical['color_space'] = self._safe_get_exif(exif_dict, 40961, None)  # ColorSpace
+            
+            # Compile only non-empty sections
+            if any(v for v in camera_info.values() if v != 'Unknown'):
+                exif_data['camera'] = camera_info
+            if any(v for v in photo_settings.values() if v is not None):
+                exif_data['photo'] = photo_settings
+            if any(v for v in gps_info.values() if v is not None):
+                exif_data['gps'] = gps_info
+            if any(v for v in technical.values() if v is not None):
+                exif_data['technical'] = technical
+                
+        except Exception as e:
+            logger.debug(f"EXIF extraction failed gracefully: {e}")
+            # Don't log as error - many images simply don't have EXIF
+            
+        return exif_data
+    
+    def _safe_get_exif(self, exif_dict: dict, tag: int, default=None):
+        """Safely get EXIF value with default"""
+        try:
+            value = exif_dict.get(tag)
+            return value if value is not None else default
+        except:
+            return default
+    
+    def _safe_get_exif_rational(self, exif_dict: dict, tag: int) -> float:
+        """Safely get EXIF rational value as float"""
+        try:
+            value = exif_dict.get(tag)
+            if value and hasattr(value, 'numerator') and hasattr(value, 'denominator'):
+                return float(value.numerator) / float(value.denominator) if value.denominator != 0 else None
+            return None
+        except:
+            return None
+    
+    def _safe_get_gps_rational(self, gps_dict: dict, tag: int) -> float:
+        """Safely get GPS rational value"""
+        try:
+            value = gps_dict.get(tag)
+            if value and hasattr(value, 'numerator') and hasattr(value, 'denominator'):
+                return float(value.numerator) / float(value.denominator) if value.denominator != 0 else None
+            return None
+        except:
+            return None
+    
+    def _extract_gps_coord(self, gps_data: dict, coord_type: str) -> float:
+        """Extract GPS coordinates handling different phone formats"""
+        try:
+            if coord_type == 'lat':
+                coord = gps_data.get(2)  # GPSLatitude
+                ref = gps_data.get(1, 'N')  # GPSLatitudeRef
+            else:  # longitude
+                coord = gps_data.get(4)  # GPSLongitude  
+                ref = gps_data.get(3, 'E')  # GPSLongitudeRef
+                
+            if not coord:
+                return None
+                
+            # Convert DMS to decimal degrees
+            if isinstance(coord, (list, tuple)) and len(coord) >= 3:
+                degrees = float(coord[0].numerator) / float(coord[0].denominator)
+                minutes = float(coord[1].numerator) / float(coord[1].denominator)
+                seconds = float(coord[2].numerator) / float(coord[2].denominator)
+                decimal = degrees + (minutes / 60.0) + (seconds / 3600.0)
+                
+                # Apply hemisphere
+                if ref in ['S', 'W']:
+                    decimal = -decimal
+                    
+                return decimal
+        except:
+            pass
+        return None
+    
+    def _extract_gps_timestamp(self, gps_data: dict) -> str:
+        """Extract GPS timestamp if available"""
+        try:
+            date_stamp = gps_data.get(29)  # GPSDateStamp
+            time_stamp = gps_data.get(7)   # GPSTimeStamp
+            
+            if date_stamp and time_stamp:
+                if isinstance(time_stamp, (list, tuple)) and len(time_stamp) >= 3:
+                    hours = int(float(time_stamp[0].numerator) / float(time_stamp[0].denominator))
+                    minutes = int(float(time_stamp[1].numerator) / float(time_stamp[1].denominator))
+                    seconds = int(float(time_stamp[2].numerator) / float(time_stamp[2].denominator))
+                    return f"{date_stamp} {hours:02d}:{minutes:02d}:{seconds:02d}"
+        except:
+            pass
+        return None
+
     def _get_original_urls(self, file_path: Path, alert_id: str) -> Dict[str, str]:
         """Return original URLs when processing fails"""
         original_url = f'https://api.ufobeep.com/media/{alert_id}/{file_path.name}'

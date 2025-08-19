@@ -243,7 +243,7 @@ async def upload_alert_media(
                     }
                 
                 # Create media file entry with all variants
-                new_media_files.append({
+                media_entry = {
                     'id': str(uuid.uuid4()),
                     'type': 'video' if file_ext.lower() in ['.mp4', '.mov', '.avi'] else 'image',
                     'filename': unique_filename,
@@ -255,7 +255,13 @@ async def upload_alert_media(
                     'uploaded_at': datetime.now().isoformat(),
                     'source': source,
                     'description': description
-                })
+                }
+                
+                # Add EXIF data if available (diplomatically extracted)
+                if 'exif_data' in processed_urls:
+                    media_entry['exif_data'] = processed_urls['exif_data']
+                
+                new_media_files.append(media_entry)
             
             # Merge with existing media
             existing_media['files'].extend(new_media_files)
