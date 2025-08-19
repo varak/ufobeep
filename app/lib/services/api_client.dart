@@ -1088,13 +1088,19 @@ extension ApiClientExtension on ApiClient {
     }
   }
 
-  Future<Map<String, dynamic>> triggerAlertsForSighting(String sightingId) async {
+  Future<Map<String, dynamic>> triggerAlertsForSighting(String sightingId, double latitude, double longitude) async {
     try {
       final deviceId = await anonymousBeepService.getOrCreateDeviceId();
       
       final response = await _dio.post(
         '/alerts/send/$sightingId',
-        data: {'device_id': deviceId},
+        data: {
+          'device_id': deviceId,
+          'location': {
+            'latitude': latitude,
+            'longitude': longitude,
+          }
+        },
         options: Options(headers: {'Content-Type': 'application/json'}),
       );
 

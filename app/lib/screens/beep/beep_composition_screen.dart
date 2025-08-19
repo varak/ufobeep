@@ -145,7 +145,11 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         
         // Now trigger alerts
         debugPrint('Triggering proximity alerts...');
-        await ApiClient.instance.triggerAlertsForSighting(sightingId);
+        await ApiClient.instance.triggerAlertsForSighting(
+          sightingId, 
+          _sensorData!.latitude!, 
+          _sensorData!.longitude!
+        );
         debugPrint('Proximity alerts sent successfully!');
       } catch (e) {
         debugPrint('Warning: Failed to upload media or send alerts: $e');

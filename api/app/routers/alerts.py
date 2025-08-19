@@ -374,20 +374,13 @@ async def send_alert_beep(alert_id: str, request: dict):
         
         db_pool = await get_db()
         
-        # Get alert location from enrichment data
-        async with db_pool.acquire() as conn:
-            location_data = await conn.fetchrow("""
-                SELECT enrichment_data FROM sightings WHERE id = $1
-            """, uuid.UUID(alert_id))
-            
-            if not location_data:
-                raise HTTPException(status_code=404, detail="Alert not found")
-                
-            enrichment = location_data['enrichment_data'] or {}
-            location = enrichment.get('location', {})
-            
-            if not location.get('latitude') or not location.get('longitude'):
-                raise HTTPException(status_code=400, detail="Alert has no location data")
+        # Get location from request body
+        location = request.get('location', {})
+        if not location.get('latitude') or not location.get('longitude'):
+            raise HTTPException(status_code=400, detail="Location data required in request body")
+        
+        latitude = location['latitude']
+        longitude = location['longitude']
         
         # Trigger proximity alerts
         print(f"Debug: Sending beep alerts for {alert_id} from device {device_id}")
@@ -395,7 +388,7 @@ async def send_alert_beep(alert_id: str, request: dict):
         
         proximity_service = get_proximity_alert_service(db_pool)
         alert_result = await proximity_service.send_proximity_alerts(
-            location['latitude'], location['longitude'], alert_id, device_id
+            latitude, longitude, alert_id, device_id
         )
         print(f"Debug: Beep proximity alerts sent: {alert_result}")
         
