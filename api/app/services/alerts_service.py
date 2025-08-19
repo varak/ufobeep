@@ -173,10 +173,17 @@ class AlertsService:
                     if not media_type or media_type == "unknown":
                         media_type = "video" if any(ext in filename.lower() for ext in ['.mp4', '.mov', '.avi']) else "image"
                     
+                    # Use new URL structure if available, fallback to old
+                    thumbnail_url = media_file.get("thumbnail_url") or (f"{media_url}?thumbnail=true" if media_type == "video" else media_url)
+                    web_url = media_file.get("web_url", media_url)
+                    preview_url = media_file.get("preview_url", thumbnail_url)
+                    
                     media_files.append({
                         "type": media_type,
                         "url": media_url,
-                        "thumbnail_url": f"{media_url}?thumbnail=true" if media_type == "video" else media_url,
+                        "thumbnail_url": thumbnail_url,
+                        "web_url": web_url,
+                        "preview_url": preview_url,
                         "filename": filename
                     })
         return media_files

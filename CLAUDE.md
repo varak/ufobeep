@@ -143,3 +143,4 @@
 - next time i say test it now i mean I want to make sure my phone is hooked up to wireless debug, push/pull the changes along w the restarts as outlined in the 
   masterplan, push to my phone and test
 - I need you to evaluate against docs/Master Plan 10
+- don't mention yourself in these commits
