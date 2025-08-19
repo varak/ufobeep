@@ -69,6 +69,30 @@ class AlertHeroSection extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 8),
+                      
+                      // Show "beep only" if no description and no media
+                      if (!alert.hasMedia && (alert.description?.trim().isEmpty ?? true)) ...[
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: AppColors.textTertiary.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: AppColors.textTertiary.withOpacity(0.3),
+                            ),
+                          ),
+                          child: const Text(
+                            'beep only',
+                            style: TextStyle(
+                              color: AppColors.textTertiary,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                      ],
+                      
                       // Only show verification badge if verified, no redundant "UFO Sighting" text
                       if (alert.isVerified) ...[ 
                         Row(
