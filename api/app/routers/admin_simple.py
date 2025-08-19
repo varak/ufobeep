@@ -122,14 +122,12 @@ async def admin_dashboard(username: str = Depends(verify_admin)):
 
 @router.get("/ratelimit/status")
 async def ratelimit_status(username: str = Depends(verify_admin)):
-    """Rate limiting status - simple implementation"""
-    # Import rate limiting variables from the existing admin module
+    """Rate limiting status - clean response"""
     try:
         from app.routers.admin import rate_limit_enabled, rate_limit_threshold
         return {
             "enabled": rate_limit_enabled,
-            "threshold": rate_limit_threshold,
-            "status": "active" if rate_limit_enabled else "disabled"
+            "threshold": rate_limit_threshold
         }
     except ImportError:
         return {"error": "Rate limiting not available"}
