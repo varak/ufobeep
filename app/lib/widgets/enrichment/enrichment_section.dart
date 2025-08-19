@@ -666,46 +666,87 @@ class SatelliteCardFromJson extends StatelessWidget {
 
   Widget _buildSatellitePass(Map<String, dynamic> pass) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Row(
-        children: [
-          Icon(
-            Icons.circle,
-            size: 8,
-            color: pass['is_visible_pass'] == true ? AppColors.brandPrimary : AppColors.textTertiary,
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: AppColors.darkBackground,
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(
+            color: pass['is_visible_pass'] == true ? AppColors.brandPrimary : AppColors.darkBorder,
           ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Satellite name and direction
+            Row(
               children: [
-                Text(
-                  pass['satellite_name']?.toString() ?? 'Unknown',
-                  style: TextStyle(
-                    color: AppColors.textPrimary,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
+                Icon(
+                  Icons.circle,
+                  size: 8,
+                  color: pass['is_visible_pass'] == true ? AppColors.brandPrimary : AppColors.textTertiary,
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    '${pass['satellite_name']?.toString() ?? 'Unknown'} - ${pass['direction'] ?? 'unknown direction'}',
+                    style: TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-                Text(
-                  '${pass['max_elevation_deg']}° elevation, ${pass['direction'] ?? 'unknown direction'}',
-                  style: TextStyle(
-                    color: AppColors.textSecondary,
-                    fontSize: 10,
+                if (pass['is_visible_pass'] == true)
+                  Icon(
+                    Icons.visibility,
+                    size: 12,
+                    color: AppColors.brandPrimary,
                   ),
-                ),
               ],
             ),
-          ),
-          if (pass['is_visible_pass'] == true)
-            Icon(
-              Icons.visibility,
-              size: 12,
-              color: AppColors.brandPrimary,
+            const SizedBox(height: 4),
+            // Details line with all available data
+            Text(
+              _formatSatelliteDetails(pass),
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 10,
+              ),
             ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+  
+  String _formatSatelliteDetails(Map<String, dynamic> pass) {
+    final List<String> details = [];
+    
+    // Max elevation
+    if (pass['max_elevation_deg'] != null) {
+      details.add('Max elevation: ${pass['max_elevation_deg']}°');
+    }
+    
+    // Brightness magnitude
+    if (pass['brightness_magnitude'] != null) {
+      details.add('Magnitude: ${pass['brightness_magnitude']}');
+    }
+    
+    // Max elevation time
+    if (pass['max_elevation_time_utc'] != null) {
+      try {
+        final timeUtc = DateTime.parse(pass['max_elevation_time_utc']);
+        final timeLocal = timeUtc.toLocal();
+        details.add('${timeLocal.hour.toString().padLeft(2, '0')}:${timeLocal.minute.toString().padLeft(2, '0')}:${timeLocal.second.toString().padLeft(2, '0')}');
+      } catch (e) {
+        // If time parsing fails, just show the raw string
+        details.add(pass['max_elevation_time_utc'].toString());
+      }
+    }
+    
+    return details.join(' | ');
   }
 }
 
