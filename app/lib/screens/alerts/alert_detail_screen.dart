@@ -11,7 +11,6 @@ import '../../utils/alert_title_utils.dart';
 import '../../widgets/alert_sections/alert_hero_section.dart';
 import '../../widgets/alert_sections/alert_details_section.dart';
 import '../../widgets/alert_sections/alert_direction_section.dart';
-import '../../widgets/alert_sections/alert_witness_section.dart';
 import '../../widgets/alert_sections/alert_actions_section.dart';
 
 class AlertDetailScreen extends ConsumerStatefulWidget {
@@ -116,16 +115,15 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                   const SizedBox(height: 24),
                 ],
 
-                // Witness confirmation button
-                AlertWitnessSection(alert: alert),
-                const SizedBox(height: 24),
-                
-                // Action buttons
+                // Action buttons (including witness confirmation)
                 AlertActionsSection(
                   alert: alert,
                   onJoinChat: () => context.go('/alert/${widget.alertId}/chat'),
                   onAddPhotos: () => _showAddPhotosDialog(widget.alertId),
                   onReportToMufon: () => _showMufonReportDialog(),
+                  onWitnessConfirmed: (witnessCount) {
+                    // Optionally refresh alert data or show additional feedback
+                  },
                 ),
               ],
             ),
