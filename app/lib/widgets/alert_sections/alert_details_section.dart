@@ -141,8 +141,10 @@ class AlertDetailsSection extends StatelessWidget {
   }
 
   String _formatDateTime(DateTime dateTime) {
+    // Ensure both times are in the same timezone (local)
     final now = DateTime.now();
-    final difference = now.difference(dateTime);
+    final localDateTime = dateTime.toLocal();
+    final difference = now.difference(localDateTime);
 
     if (difference.inDays > 0) {
       return '${difference.inDays}d ago';
@@ -159,12 +161,15 @@ class AlertDetailsSection extends StatelessWidget {
     final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     
-    final month = months[dateTime.month - 1];
-    final day = dateTime.day;
-    final year = dateTime.year;
-    final hour = dateTime.hour == 0 ? 12 : (dateTime.hour > 12 ? dateTime.hour - 12 : dateTime.hour);
-    final minute = dateTime.minute.toString().padLeft(2, '0');
-    final amPm = dateTime.hour >= 12 ? 'PM' : 'AM';
+    // Convert to local timezone first
+    final localDateTime = dateTime.toLocal();
+    
+    final month = months[localDateTime.month - 1];
+    final day = localDateTime.day;
+    final year = localDateTime.year;
+    final hour = localDateTime.hour == 0 ? 12 : (localDateTime.hour > 12 ? localDateTime.hour - 12 : localDateTime.hour);
+    final minute = localDateTime.minute.toString().padLeft(2, '0');
+    final amPm = localDateTime.hour >= 12 ? 'PM' : 'AM';
     
     return '$month $day, $year at $hour:$minute $amPm';
   }

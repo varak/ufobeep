@@ -69,18 +69,10 @@ class AlertHeroSection extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          const Text(
-                            'UFO Sighting',
-                            style: TextStyle(
-                              color: AppColors.brandPrimary,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          if (alert.isVerified) ...[ 
-                            const SizedBox(width: 8),
+                      // Only show verification badge if verified, no redundant "UFO Sighting" text
+                      if (alert.isVerified) ...[ 
+                        Row(
+                          children: [
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                               decoration: BoxDecoration(
@@ -111,16 +103,9 @@ class AlertHeroSection extends StatelessWidget {
                               ),
                             ),
                           ],
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        _formatDateTime(alert.createdAt),
-                        style: const TextStyle(
-                          color: AppColors.textTertiary,
-                          fontSize: 14,
                         ),
-                      ),
+                        const SizedBox(height: 8),
+                      ],
                     ],
                   ),
                 ),
@@ -336,8 +321,10 @@ class AlertHeroSection extends StatelessWidget {
   }
 
   String _formatDateTime(DateTime dateTime) {
+    // Ensure both times are in the same timezone (local)
     final now = DateTime.now();
-    final difference = now.difference(dateTime);
+    final localDateTime = dateTime.toLocal();
+    final difference = now.difference(localDateTime);
 
     if (difference.inDays > 0) {
       return '${difference.inDays} day${difference.inDays == 1 ? '' : 's'} ago';

@@ -73,16 +73,8 @@ class AlertCard extends StatelessWidget {
                         const SizedBox(height: 4),
                         Row(
                           children: [
-                            const Text(
-                              'UFO Sighting',
-                              style: TextStyle(
-                                color: AppColors.brandPrimary,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            if (alert.isVerified) ...[ 
-                              const SizedBox(width: 8),
+                            // Only show verification badge if verified
+                            if (alert.isVerified) ...[
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                 decoration: BoxDecoration(
@@ -112,6 +104,9 @@ class AlertCard extends StatelessWidget {
                                   ],
                                 ),
                               ),
+                            ] else ...[
+                              // Show empty space to maintain layout consistency
+                              const SizedBox(height: 16),
                             ],
                           ],
                         ),
@@ -315,8 +310,10 @@ class AlertCard extends StatelessWidget {
   }
 
   String _formatDateTime(DateTime dateTime) {
+    // Ensure both times are in the same timezone (local)
     final now = DateTime.now();
-    final difference = now.difference(dateTime);
+    final localDateTime = dateTime.toLocal();
+    final difference = now.difference(localDateTime);
 
     if (difference.inDays > 0) {
       return '${difference.inDays}d ago';
@@ -450,8 +447,10 @@ class CompactAlertCard extends StatelessWidget {
   }
 
   String _formatDateTime(DateTime dateTime) {
+    // Ensure both times are in the same timezone (local)
     final now = DateTime.now();
-    final difference = now.difference(dateTime);
+    final localDateTime = dateTime.toLocal();
+    final difference = now.difference(localDateTime);
 
     if (difference.inDays > 0) {
       return '${difference.inDays}d ago';
