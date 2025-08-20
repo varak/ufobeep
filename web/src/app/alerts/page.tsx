@@ -33,9 +33,11 @@ interface Alert {
 export default function AlertsPage() {
   const [allAlerts, setAllAlerts] = useState<Alert[]>([])
   const [alerts, setAlerts] = useState<Alert[]>([])
+  const [filteredAlerts, setFilteredAlerts] = useState<Alert[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [showPhotosOnly, setShowPhotosOnly] = useState(false)
   const alertsPerPage = 9
 
   useEffect(() => {
@@ -44,11 +46,22 @@ export default function AlertsPage() {
   }, [])
 
   useEffect(() => {
-    // Update displayed alerts when page changes
+    // Update filtered alerts when filter changes
     if (allAlerts.length > 0) {
+      const filtered = showPhotosOnly 
+        ? allAlerts.filter(alert => alert.media_files && alert.media_files.length > 0)
+        : allAlerts
+      setFilteredAlerts(filtered)
+      setCurrentPage(1) // Reset to first page when filter changes
+    }
+  }, [allAlerts, showPhotosOnly])
+
+  useEffect(() => {
+    // Update displayed alerts when page or filter changes
+    if (filteredAlerts.length > 0) {
       updateDisplayedAlerts(currentPage)
     }
-  }, [currentPage, allAlerts])
+  }, [currentPage, filteredAlerts])
 
   const fetchAllAlerts = async () => {
     setLoading(true)
@@ -63,7 +76,6 @@ export default function AlertsPage() {
           alert.location.latitude !== 0 || alert.location.longitude !== 0
         )
         setAllAlerts(validAlerts)
-        updateDisplayedAlerts(1) // Show first page
       } else {
         setError('Failed to load alerts')
       }
@@ -77,10 +89,10 @@ export default function AlertsPage() {
   const updateDisplayedAlerts = (page: number) => {
     const startIndex = (page - 1) * alertsPerPage
     const endIndex = startIndex + alertsPerPage
-    setAlerts(allAlerts.slice(startIndex, endIndex))
+    setAlerts(filteredAlerts.slice(startIndex, endIndex))
   }
 
-  const getTotalPages = () => Math.ceil(allAlerts.length / alertsPerPage)
+  const getTotalPages = () => Math.ceil(filteredAlerts.length / alertsPerPage)
   const hasMore = currentPage < getTotalPages()
 
   const formatDate = (dateString: string) => {
@@ -218,25 +230,48 @@ export default function AlertsPage() {
             <div className="text-3xl text-brand-primary mb-2">{allAlerts.length}</div>
             <div className="text-text-secondary">Total Reports</div>
           </div>
-          <div className="bg-dark-surface border border-dark-border rounded-lg p-6 text-center">
+          <div 
+            className={`bg-dark-surface border rounded-lg p-6 text-center cursor-pointer transition-all hover:scale-105 ${
+              showPhotosOnly ? 'border-brand-primary bg-brand-primary/10' : 'border-dark-border hover:border-brand-primary/50'
+            }`}
+            onClick={() => setShowPhotosOnly(!showPhotosOnly)}
+          >
             <div className="text-3xl text-green-400 mb-2">
               {allAlerts.filter(a => a.media_files && a.media_files.length > 0).length}
             </div>
-            <div className="text-text-secondary">With Photos</div>
+            <div className={`text-sm ${showPhotosOnly ? 'text-brand-primary font-medium' : 'text-text-secondary'}`}>
+              {showPhotosOnly ? '✓ Showing Photos Only' : 'With Photos (Click to Filter)'}
+            </div>
           </div>
         </div>
 
         {/* Alerts Grid */}
         {alerts.length === 0 ? (
           <div className="text-center py-16">
-            <div className="text-6xl mb-6">🤔</div>
-            <h2 className="text-2xl font-bold text-text-primary mb-4">No Alerts Yet</h2>
-            <p className="text-text-secondary mb-8">Be the first to report a sighting!</p>
-            <Link href="/app">
-              <button className="bg-brand-primary text-text-inverse px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary-dark transition-colors">
-                Download App
+            <div className="text-6xl mb-6">{showPhotosOnly ? '📷' : '🤔'}</div>
+            <h2 className="text-2xl font-bold text-text-primary mb-4">
+              {showPhotosOnly ? 'No Alerts with Photos' : 'No Alerts Yet'}
+            </h2>
+            <p className="text-text-secondary mb-8">
+              {showPhotosOnly 
+                ? 'Try viewing all alerts or check back later for photo reports!'
+                : 'Be the first to report a sighting!'
+              }
+            </p>
+            {showPhotosOnly ? (
+              <button 
+                onClick={() => setShowPhotosOnly(false)}
+                className="bg-brand-primary text-text-inverse px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary-dark transition-colors"
+              >
+                Show All Alerts
               </button>
-            </Link>
+            ) : (
+              <Link href="/app">
+                <button className="bg-brand-primary text-text-inverse px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary-dark transition-colors">
+                  Download App
+                </button>
+              </Link>
+            )}
           </div>
         ) : (
           <div className="max-w-2xl mx-auto space-y-3">
@@ -328,7 +363,8 @@ export default function AlertsPage() {
             </p>
             <div className="flex items-center space-x-6 mt-4 md:mt-0">
               <span className="text-text-tertiary text-sm">
-                Showing {alerts.length} of {allAlerts.length} sightings
+                Showing {alerts.length} of {filteredAlerts.length} sightings
+                {showPhotosOnly && <span className="text-brand-primary ml-1">(photos only)</span>}
               </span>
             </div>
           </div>
