@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.config.environment import settings
-from app.routers import plane_match, media_serve, devices, emails, photo_analysis, mufon
+from app.routers import plane_match, media_serve, devices, emails, photo_analysis, mufon, copescan
 from app.routers import admin_simple as admin
 from app.services.media_service import get_media_service
 from app.services.alerts_service import AlertsService
@@ -297,6 +297,7 @@ app.include_router(devices.router)
 app.include_router(emails.router)
 app.include_router(photo_analysis.router)
 app.include_router(mufon.router)
+app.include_router(copescan.router, prefix="/copescan", tags=["copescan"])
 
 # Include alerts router for unified alert/sighting endpoints
 from app.routers import alerts
