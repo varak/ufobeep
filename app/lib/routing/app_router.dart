@@ -103,27 +103,50 @@ GoRouter appRouter(AppRouterRef ref) {
                   final mediaFile = extra?['mediaFile'] ?? extra?['imageFile']; // Support both old and new parameter names
                   final isVideo = extra?['isVideo'] ?? false;
                   
-                  // If no media file provided, redirect back to beep screen
+                  // If no media file provided, show error and provide navigation options
                   if (mediaFile == null) {
-                    debugPrint('ERROR: No media file in extra data, redirecting to /beep');
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      context.go('/beep');
-                    });
+                    debugPrint('ERROR: No media file in extra data for beep composition');
                     return Scaffold(
                       backgroundColor: AppColors.darkBackground,
                       appBar: AppBar(
-                        title: const Text('Loading...'),
+                        title: const Text('Composition Error'),
                         backgroundColor: AppColors.darkSurface,
+                        leading: IconButton(
+                          icon: const Icon(Icons.arrow_back),
+                          onPressed: () => context.go('/beep'),
+                        ),
                       ),
-                      body: const Center(
+                      body: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            CircularProgressIndicator(),
-                            SizedBox(height: 16),
-                            Text(
-                              'Redirecting back to beep screen...',
-                              style: TextStyle(color: AppColors.textSecondary),
+                            const Icon(
+                              Icons.error_outline,
+                              color: AppColors.semanticError,
+                              size: 64,
+                            ),
+                            const SizedBox(height: 16),
+                            const Text(
+                              'No media file provided',
+                              style: TextStyle(
+                                color: AppColors.textPrimary,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'The shared media could not be found or processed.',
+                              style: TextStyle(
+                                color: AppColors.textSecondary,
+                                fontSize: 14,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 24),
+                            ElevatedButton(
+                              onPressed: () => context.go('/beep'),
+                              child: const Text('Back to Beep'),
                             ),
                           ],
                         ),

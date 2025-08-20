@@ -1217,10 +1217,25 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
             
             async with session.get("https://opensky-network.org/api/states/all", params=params, timeout=12) as response:
                 if response.status != 200:
-                    return {"aircraft": [], "total": 0, "summary": "API error"}
+                    # Check if it's a time-related issue (photos older than ~5 minutes)
+                    time_diff = (datetime.utcnow() - context.timestamp).total_seconds() / 60
+                    if time_diff > 5:
+                        return {
+                            "aircraft": [], 
+                            "total": 0, 
+                            "summary": f"Aircraft data unavailable (photo taken {time_diff:.0f} minutes ago)"
+                        }
+                    return {"aircraft": [], "total": 0, "summary": "Aircraft tracking service temporarily unavailable"}
                 
                 data = await response.json()
                 if not data or not data.get('states'):
+                    time_diff = (datetime.utcnow() - context.timestamp).total_seconds() / 60
+                    if time_diff > 5:
+                        return {
+                            "aircraft": [], 
+                            "total": 0, 
+                            "summary": f"No current aircraft data (live positions only, photo is {time_diff:.0f} minutes old)"
+                        }
                     return {"aircraft": [], "total": 0, "summary": "No aircraft detected"}
                 
                 aircraft = []
@@ -1252,10 +1267,17 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
                 # Sort by distance and return top 5
                 aircraft.sort(key=lambda x: x['distance_km'])
                 
+                time_diff = (datetime.utcnow() - context.timestamp).total_seconds() / 60
+                summary_note = ""
+                if time_diff > 5:
+                    summary_note = f" (current positions, photo is {time_diff:.0f} minutes old)"
+                elif aircraft:
+                    summary_note = " (current positions)"
+                
                 return {
                     "aircraft": aircraft[:5],
                     "total": len(aircraft),
-                    "summary": f"{len(aircraft)} aircraft detected within 50km" if aircraft else "No aircraft detected"
+                    "summary": f"{len(aircraft)} aircraft detected within 50km{summary_note}" if aircraft else f"No aircraft detected{summary_note}"
                 }
 
 

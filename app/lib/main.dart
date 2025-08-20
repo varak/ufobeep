@@ -111,26 +111,54 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
     ShareIntentService.setOnSharedMediaCallback((sharedMedia) async {
       print('Main: Share intent callback triggered with ${sharedMedia.mediaType}: ${sharedMedia.filePath}');
       
-      // Create properly named file with correct extension
-      final originalFile = sharedMedia.file;
-      final bytes = await originalFile.readAsBytes();
-      final extension = _detectFileExtension(bytes, sharedMedia.isVideo);
-      final properFileName = 'shared_media_${DateTime.now().millisecondsSinceEpoch}$extension';
-      final tempDir = originalFile.parent;
-      final properFile = File('${tempDir.path}/$properFileName');
-      await originalFile.copy(properFile.path);
-      
-      print('Main: Created proper ${sharedMedia.isVideo ? 'video' : 'image'} file: ${properFile.path}');
-      
-      // Navigate directly to beep composition screen with shared media
-      router.go('/beep/compose', extra: {
-        'mediaFile': properFile,
-        'isVideo': sharedMedia.isVideo,
-        'sensorData': null,
-        'photoMetadata': <String, dynamic>{},
-        'description': '', // Empty description so placeholder shows
-      });
-      print('Main: Navigated to composition screen with shared ${sharedMedia.mediaType}');
+      try {
+        // Create properly named file with correct extension
+        final originalFile = sharedMedia.file;
+        
+        // Verify file exists before proceeding
+        if (!await originalFile.exists()) {
+          print('ERROR: Shared file does not exist: ${originalFile.path}');
+          return;
+        }
+        
+        final bytes = await originalFile.readAsBytes();
+        final extension = _detectFileExtension(bytes, sharedMedia.isVideo);
+        final properFileName = 'shared_media_${DateTime.now().millisecondsSinceEpoch}$extension';
+        final tempDir = originalFile.parent;
+        final properFile = File('${tempDir.path}/$properFileName');
+        await originalFile.copy(properFile.path);
+        
+        // Verify the copy succeeded
+        if (!await properFile.exists()) {
+          print('ERROR: Failed to create proper file copy: ${properFile.path}');
+          return;
+        }
+        
+        print('Main: Created proper ${sharedMedia.isVideo ? 'video' : 'image'} file: ${properFile.path}');
+        
+        // Navigate directly to beep composition screen with shared media
+        
+        final extraData = {
+          'mediaFile': properFile,
+          'isVideo': sharedMedia.isVideo,
+          'sensorData': null,
+          'photoMetadata': <String, dynamic>{},
+          'description': '', // Empty description so placeholder shows
+        };
+        
+        print('Main: Navigating with extra data: ${extraData.keys}');
+        
+        router.go('/beep/compose', extra: extraData);
+        print('Main: Navigated to composition screen with shared ${sharedMedia.mediaType}');
+        
+      } catch (e, stackTrace) {
+        print('ERROR: Failed to handle shared media: $e');
+        print('Stack trace: $stackTrace');
+        
+        // Fallback: navigate to regular beep screen if share intent fails
+        router.go('/beep');
+        print('Main: Fell back to regular beep screen due to error');
+      }
     });
     
     // Check for shared files now that callback is set

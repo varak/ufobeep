@@ -180,10 +180,11 @@ class EnrichmentSection extends StatelessWidget {
   }
 
   Widget _buildEnrichmentData(Map<String, dynamic> enrichmentData) {
+    final hasAircraftData = enrichmentData['aircraft_tracking'] != null;
     final hasWeatherData = enrichmentData['weather'] != null;
     final hasSatelliteData = enrichmentData['satellites'] != null;
     final hasContentData = enrichmentData['content_filter'] != null;
-    final hasData = hasWeatherData || hasSatelliteData || hasContentData;
+    final hasData = hasAircraftData || hasWeatherData || hasSatelliteData || hasContentData;
 
     if (!hasData) {
       return const SizedBox.shrink();
@@ -191,6 +192,10 @@ class EnrichmentSection extends StatelessWidget {
 
     return Column(
       children: [
+        if (hasAircraftData) ...[
+          _buildAircraftTrackingCard(enrichmentData['aircraft_tracking']),
+          const SizedBox(height: 16),
+        ],
         if (hasWeatherData) ...[
           WeatherCardFromJson(weatherData: enrichmentData['weather']),
           const SizedBox(height: 16),
@@ -204,6 +209,76 @@ class EnrichmentSection extends StatelessWidget {
           const SizedBox(height: 16),
         ],
       ],
+    );
+  }
+
+  Widget _buildAircraftTrackingCard(Map<String, dynamic> data) {
+    final aircraft = data['aircraft'] as List? ?? [];
+    final total = data['total'] as int? ?? 0;
+    final summary = data['summary'] as String? ?? 'No aircraft detected';
+
+    return Card(
+      color: AppColors.darkSurface,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Text('✈️', style: TextStyle(fontSize: 20)),
+                const SizedBox(width: 8),
+                Text('Aircraft Tracking', style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.w600)),
+                const Spacer(),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColors.brandPrimary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.brandPrimary),
+                  ),
+                  child: Text('$total', style: TextStyle(color: AppColors.brandPrimary, fontSize: 12, fontWeight: FontWeight.bold)),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Text(summary, style: TextStyle(color: AppColors.textSecondary, fontSize: 14)),
+            if (aircraft.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              ...aircraft.take(3).map((a) {
+                final callsign = a['callsign'] ?? '';
+                final distance = a['distance_km']?.toDouble() ?? 0.0;
+                final altitude = a['altitude_ft'];
+                
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.darkBackground,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: AppColors.darkBorder),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        callsign.isEmpty ? 'Unknown Aircraft' : callsign,
+                        style: TextStyle(color: AppColors.textPrimary, fontSize: 14, fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        '${distance.toStringAsFixed(1)}km away${altitude != null ? ' • ${altitude}ft' : ''}',
+                        style: TextStyle(color: AppColors.textTertiary, fontSize: 12),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+              if (total > 3)
+                Text('+${total - 3} more aircraft', style: TextStyle(color: AppColors.textTertiary, fontSize: 12)),
+            ],
+          ],
+        ),
+      ),
     );
   }
 }
