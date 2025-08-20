@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 # Default fallback credentials (same as currently hardcoded in app)
-DEFAULT_DEVTAX_CREDENTIALS = {
+DEFAULT_DEVSHARE_CREDENTIALS = {
     "username": "mike@emke.com",
     "password": "cope123123A!",
     "account_name": "default",
@@ -21,24 +21,24 @@ DEFAULT_DEVTAX_CREDENTIALS = {
 # Path to config file on production server
 CONFIG_FILE_PATH = "/home/ufobeep/copescan-config.json"
 
-def load_devtax_config():
-    """Load DevTax configuration from file, with fallback to defaults"""
+def load_devshare_config():
+    """Load DevShare configuration from file, with fallback to defaults"""
     try:
         config_path = Path(CONFIG_FILE_PATH)
         if config_path.exists():
             with open(config_path, 'r') as f:
                 config = json.load(f)
-                logger.info(f"Loaded DevTax config: account={config.get('account_name', 'unknown')}")
+                logger.info(f"Loaded DevShare config: account={config.get('account_name', 'unknown')}")
                 return config
         else:
             logger.warning(f"Config file not found at {CONFIG_FILE_PATH}, using defaults")
-            return DEFAULT_DEVTAX_CREDENTIALS
+            return DEFAULT_DEVSHARE_CREDENTIALS
     except Exception as e:
-        logger.error(f"Failed to load DevTax config: {e}")
-        return DEFAULT_DEVTAX_CREDENTIALS
+        logger.error(f"Failed to load DevShare config: {e}")
+        return DEFAULT_DEVSHARE_CREDENTIALS
 
-def save_devtax_config(config):
-    """Save DevTax configuration to file"""
+def save_devshare_config(config):
+    """Save DevShare configuration to file"""
     try:
         config_path = Path(CONFIG_FILE_PATH)
         config_path.parent.mkdir(parents=True, exist_ok=True)
@@ -49,20 +49,20 @@ def save_devtax_config(config):
         with open(config_path, 'w') as f:
             json.dump(config, f, indent=2)
         
-        logger.info(f"Saved DevTax config: account={config.get('account_name', 'unknown')}")
+        logger.info(f"Saved DevShare config: account={config.get('account_name', 'unknown')}")
         return True
     except Exception as e:
-        logger.error(f"Failed to save DevTax config: {e}")
+        logger.error(f"Failed to save DevShare config: {e}")
         return False
 
-@router.get("/devtax-config")
-async def get_devtax_config():
+@router.get("/devshare-config")
+async def get_devshare_config():
     """
-    Returns current DevTax account credentials for CopeScan app.
+    Returns current DevShare account credentials for CopeScan app.
     Used by mobile app to get current account for every 10th submission.
     """
     try:
-        config = load_devtax_config()
+        config = load_devshare_config()
         
         # Return only the fields needed by the mobile app
         return {
@@ -72,19 +72,19 @@ async def get_devtax_config():
             "last_updated": config.get("last_updated", "unknown")
         }
     except Exception as e:
-        logger.error(f"Error getting DevTax config: {e}")
+        logger.error(f"Error getting DevShare config: {e}")
         # Return defaults on any error
         return {
-            "username": DEFAULT_DEVTAX_CREDENTIALS["username"],
-            "password": DEFAULT_DEVTAX_CREDENTIALS["password"],
+            "username": DEFAULT_DEVSHARE_CREDENTIALS["username"],
+            "password": DEFAULT_DEVSHARE_CREDENTIALS["password"],
             "account_name": "default",
             "last_updated": datetime.utcnow().isoformat()
         }
 
-@router.post("/devtax-config")
-async def update_devtax_config(config: dict):
+@router.post("/devshare-config")
+async def update_devshare_config(config: dict):
     """
-    Update DevTax configuration. For use by account management scripts.
+    Update DevShare configuration. For use by account management scripts.
     Expected format: {"username": "email", "password": "pass", "account_name": "name"}
     """
     try:
@@ -99,15 +99,15 @@ async def update_devtax_config(config: dict):
             config["account_name"] = f"account_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}"
         
         # Save configuration
-        success = save_devtax_config(config)
+        success = save_devshare_config(config)
         if not success:
             raise HTTPException(status_code=500, detail="Failed to save configuration")
         
-        logger.info(f"Updated DevTax config via API: account={config['account_name']}")
+        logger.info(f"Updated DevShare config via API: account={config['account_name']}")
         
         return {
             "success": True,
-            "message": f"DevTax configuration updated successfully",
+            "message": f"DevShare configuration updated successfully",
             "account_name": config["account_name"],
             "username": config["username"],
             "updated_at": datetime.utcnow().isoformat()
@@ -116,17 +116,17 @@ async def update_devtax_config(config: dict):
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error updating DevTax config: {e}")
+        logger.error(f"Error updating DevShare config: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to update configuration: {str(e)}")
 
-@router.get("/devtax-status")
-async def get_devtax_status():
+@router.get("/devshare-status")
+async def get_devshare_status():
     """
-    Get status information about current DevTax configuration.
+    Get status information about current DevShare configuration.
     Useful for monitoring and debugging.
     """
     try:
-        config = load_devtax_config()
+        config = load_devshare_config()
         config_path = Path(CONFIG_FILE_PATH)
         
         return {
@@ -139,7 +139,7 @@ async def get_devtax_status():
             "status": "active"
         }
     except Exception as e:
-        logger.error(f"Error getting DevTax status: {e}")
+        logger.error(f"Error getting DevShare status: {e}")
         return {
             "current_account": "error",
             "username": "error",

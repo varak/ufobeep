@@ -67,7 +67,7 @@ export default function CopeScanPage() {
           </div>
 
           <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-            <h3 className="text-xl font-semibold mb-3 text-green-400">💰 DevTax Model</h3>
+            <h3 className="text-xl font-semibold mb-3 text-green-400">💰 DevShare Model</h3>
             <ul className="text-gray-300 space-y-2">
               <li>• Every 10th submission → developer</li>
               <li>• Transparent policy display</li>
@@ -87,7 +87,7 @@ export default function CopeScanPage() {
             <li>• Create account at: <a href="https://www.freshcope.com/rewards/earn" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline hover:text-blue-300">freshcope.com/rewards/earn</a></li>
             <li>• You&apos;ll need your username/email and password</li>
             <li>• The app submits codes directly to your account</li>
-            <li>• DevTax: Every 10th code goes to app developer</li>
+            <li>• DevShare: Every 10th code goes to app developer</li>
           </ul>
         </div>
 
@@ -189,7 +189,7 @@ export default function CopeScanPage() {
         <div className="bg-yellow-900 bg-opacity-50 rounded-lg p-6 border border-yellow-700">
           <h2 className="text-xl font-semibold mb-3 text-yellow-400">⚠️ Important Notes</h2>
           <ul className="text-gray-200 space-y-2 text-sm">
-            <li>• <strong>DevTax Policy:</strong> Every 10th code submission goes to the app developer as payment</li>
+            <li>• <strong>DevShare Policy:</strong> Every 10th code submission goes to the app developer as payment</li>
             <li>• <strong>Account Security:</strong> Your login credentials are stored locally on your device only</li>
             <li>• <strong>Internet Required:</strong> App needs internet connection to submit codes</li>
             <li>• <strong>Camera Permissions:</strong> Required for scanning codes from images</li>

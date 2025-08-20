@@ -1,49 +1,67 @@
-# UFOBeep API Endpoints Documentation
-## 🚀 **Service Layer Architecture** - Post-Refactoring
+# UFOBeep API Endpoints Documentation (v12)
+## 🚀 **Service Layer Architecture** - Enhanced for User System & Witness Media
 
-> **⚡ ARCHITECTURE REVOLUTION COMPLETE**: 3,039 lines demolished, service layers deployed!
+> **⚡ ARCHITECTURE UPDATES (v12)**: Witness media sharing, human-readable IDs, viral social integration!
 >
-> - **main.py**: 2,564 → 974 lines (62% reduction) 
-> - **admin.py**: 3,141 → 1,692 lines (46% reduction)
-> - **Clean Architecture**: Business logic separated into service layers
-> - **Military-Grade Code**: HTTP handlers are now thin and focused
+> - **New User System**: `cosmic-whisper-7823` human-readable identifiers
+> - **Multi-User Media**: Witnesses can contribute evidence to alerts
+> - **Social Sharing**: Localized viral sharing (X, VK, WeChat)
+> - **Simple Moderation**: 3-flag auto-hide system, no complex queues
+> - **No Matrix Chat**: Replaced with evidence-only witness interaction
 
 ---
 
-## 🏗️ **New Service Layer Architecture**
+## 🏗️ **Enhanced Service Layer Architecture (v12)**
 
 ```
-UFOBeep API (FastAPI + Service Layer)
+UFOBeep API (FastAPI + Enhanced Service Layer)
 ├── 🎯 Thin HTTP Endpoints (20-50 lines each)
-├── 🧠 Service Layer (Business Logic)
-│   ├── AlertsService      → Alert creation, witness management  
-│   ├── AdminService       → Dashboard stats, sighting management
-│   ├── MediaService       → File upload, storage management
-│   ├── EnrichmentService  → Weather, celestial, satellite data
-│   └── ProximityService   → Alert fanout, device discovery
-└── 🗄️ Data Layer (Database, Storage)
+├── 🧠 Enhanced Service Layer
+│   ├── UserService          → Human ID generation, registration
+│   ├── AlertsService        → Alert creation, witness management  
+│   ├── MediaService         → Multi-user uploads, attribution
+│   ├── ModerationService    → Auto-filtering, community flagging
+│   ├── SocialService        → Viral sharing, platform configs
+│   ├── EnrichmentService    → Weather, aircraft, satellite data
+│   └── ProximityService     → Alert fanout, device discovery
+└── 🗄️ Enhanced Data Layer (Users, Multi-media, Flags)
 ```
 
 ---
 
-## 🚀 **Core Mobile App Endpoints** 
-*CLEAN UNIFIED `/alerts` ARCHITECTURE*
+## 🚀 **Core Mobile App Endpoints (v12 Enhanced)**
 
-### **Unified Alert Creation** 
+### **User Registration System (NEW)**
+```http
+POST /users/generate-id
+```
+**Purpose**: Generate human-readable username like `cosmic-whisper-7823`
+**Auth**: None required
+**Returns**: 
+```json
+{
+  "human_id": "cosmic-whisper-7823",
+  "available": true
+}
+```
+
+```http
+GET /users/check-availability/{human_id}
+POST /users/register
+GET /users/{id}/profile
+```
+
+### **Enhanced Alert Creation** 
 ```http
 POST /alerts
 ```
-**🆕 CLEAN**: Single endpoint for all beep creation  
-**Purpose**: Submit UFO sighting with automatic proximity alerts  
-**Auth**: None required  
+**🆕 v12 ENHANCED**: Now with user attribution
 **Body**: 
 ```json
 {
-  "device_id": "unique_device_identifier",
-  "location": {
-    "latitude": 47.6062,
-    "longitude": -122.3321
-  },
+  "user_id": "cosmic-whisper-7823",
+  "device_id": "unique_device_identifier", 
+  "location": {"latitude": 47.6062, "longitude": -122.3321},
   "description": "Bright light moving erratically",
   "has_media": true
 }
@@ -51,256 +69,255 @@ POST /alerts
 **Returns**: 
 ```json
 {
-  "sighting_id": "uuid",
-  "message": "Anonymous beep sent successfully", 
-  "alert_message": "Your beep alerted 3 people nearby!",
+  "alert_id": "uuid",
+  "human_readable_id": "UFO-2025-001234",
+  "message": "Beep sent successfully",
   "alert_stats": {"total_alerted": 3, "radius_km": 25},
-  "location_jittered": true
+  "share_url": "https://ufobeep.com/alerts/UFO-2025-001234"
 }
 ```
 
-### **Alert System**
+### **Multi-User Media System (v12 CORE)**
 ```http
-GET  /alerts                    # List recent alerts (mobile feed)
-GET  /alerts/{alert_id}         # Single alert details
-POST /alerts/{alert_id}/media   # Upload media to alert
+POST /alerts/{alert_id}/media
 ```
-
-**🆕 Refactored**: All endpoints use `AlertsService` with clean data models
-- **62-line handlers** (was 160+ line bloated endpoints)
-- **Proper error handling** with consistent response format
-- **Service layer separation** - HTTP concerns vs business logic
-
----
-
-## 📱 **Witness System** 
-*Military-grade witness confirmation and aggregation*
-
-### **Witness Confirmations** 
-```http
-POST /sightings/{id}/witness-confirm      # "I see it too" button
-GET  /sightings/{id}/witness-status/{device} # Check witness status  
-GET  /sightings/{id}/witness-aggregation  # Triangulation data
-```
-
-**🆕 Service Layer Methods**:
-- `AlertsService.confirm_witness()` - Records witness confirmation
-- `AlertsService.get_witness_status()` - Checks confirmation state
-- `AlertsService.get_witness_aggregation()` - Triangulation analysis
-
-**Example Witness Confirmation**:
+**🆕 v12 ENHANCED**: Multi-user uploads with attribution
+**Headers**: `X-User-ID: cosmic-whisper-7823`
+**Purpose**: Original sighter OR witnesses can upload media
+**Body**: Form data with media files
+**Returns**:
 ```json
 {
+  "media_id": "uuid",
+  "filename": "evidence_photo.jpg",
+  "uploaded_by": "stellar-phoenix-9876",
+  "is_witness_upload": true,
+  "url": "https://api.ufobeep.com/media/alert123/stellar-phoenix-9876_evidence.jpg"
+}
+```
+
+### **Witness System (v12 Enhanced)**
+```http
+POST /alerts/{alert_id}/witness
+```
+**🆕 v12 ENHANCED**: Now includes optional media upload
+**Body**:
+```json
+{
+  "user_id": "cosmic-whisper-7823",
   "device_id": "device_123",
   "location": {"latitude": 47.6062, "longitude": -122.3321},
-  "description": "Confirmed - saw bright object",
-  "confidence": "high",
-  "duration_seconds": 45
+  "has_media": true,
+  "description": "I can confirm this sighting"
 }
 ```
 
 ---
 
-## 🎛️ **Admin Dashboard** 
-*Clean Admin Service Architecture*
+## 📱 **Content Moderation System (NEW in v12)**
 
-### **Core Admin Endpoints**
+### **Auto-NSFW Detection**
 ```http
-GET /admin/                     # Dashboard with service layer stats
-GET /admin/sightings           # Sighting management (refactored)
-GET /admin/system              # System status with service metrics
-GET /admin/media               # Media management (streamlined)
+POST /alerts/{alert_id}/media (enhanced)
+```
+**🆕 Auto-filtering**: Images/videos scanned before storage
+- HuggingFace Vision API integration
+- Google Vision SafeSearch
+- Auto-rejection of flagged content
+
+### **Community Flagging**
+```http
+POST /alerts/{alert_id}/media/{media_id}/flag
+```
+**Purpose**: Community-driven content moderation
+**Body**:
+```json
+{
+  "user_id": "cosmic-whisper-7823",
+  "flag_type": "NSFW", // NSFW, Spam, Unrelated
+  "reason": "Inappropriate content"
+}
 ```
 
-**🆕 Refactored Admin Features**:
-- **AdminService integration** - All admin functions use service layer
-- **30-line handlers** (was 352-line dashboard function)
-- **Clean HTML generation** - No more embedded business logic
-- **Consistent error handling** across all admin routes
+**Auto-hide logic**: 3 flags → content hidden automatically
 
-### **Advanced Admin Tools**
 ```http
-GET /admin/witnesses           # Witness management dashboard
-GET /admin/alerts             # Proximity alert testing interface  
-GET /admin/aggregation        # Witness triangulation analysis
-GET /admin/engagement/metrics # User engagement analytics
-```
-
-### **Rate Limiting & Control**
-```http
-GET /admin/ratelimit/status    # Check rate limit status
-GET /admin/ratelimit/on        # Enable rate limiting
-GET /admin/ratelimit/off       # Disable rate limiting
-GET /admin/ratelimit/set?threshold=N # Set rate limit threshold
-```
-
-### **Testing & Diagnostics**
-```http
-POST /admin/test/alert         # Send test proximity alert
-POST /admin/test/single        # Send test push to specific device
-GET  /admin/location-search    # Geocoding helper for testing
+GET /admin/moderation/flagged
+DELETE /alerts/{alert_id}/media/{media_id}
 ```
 
 ---
 
-## 📊 **Data Management**
-*Service-Powered CRUD Operations*
+## 🌐 **Viral Social Sharing System (NEW in v12)**
 
-### **Sightings** 
+### **Social Platform Configuration**
 ```http
-POST   /sightings             # Create full sighting (with enrichment)
-GET    /alerts                # List recent sightings as alerts
-GET    /alerts/{id}           # Get single sighting/alert details
+GET /social/platforms/{locale}
+```
+**Purpose**: Get locale-specific social platforms
+**Examples**:
+- `en_US`: X, Facebook, WhatsApp
+- `ru_RU`: VKontakte, Telegram  
+- `zh_CN`: WeChat, Weibo
+**Returns**:
+```json
+{
+  "platforms": [
+    {
+      "name": "X", 
+      "url_template": "https://x.com/intent/tweet?text={message}",
+      "message_template": "UFO sighting {alert_id} near {location}! {url}"
+    }
+  ]
+}
 ```
 
-**🆕 Enhanced Features**:
-- **Automatic enrichment** - Weather, celestial data, satellite checks
-- **Location privacy** - GPS jittering for anonymous reports
-- **Media integration** - Seamless file upload workflow
-
----
-
-## 🔍 **Analysis & Enrichment Pipeline**
-
-### **Photo Analysis**
+### **Share URL Generation**
 ```http
-GET  /analysis/status/{sighting_id}  # Check analysis status
+POST /social/share/{alert_id}
 ```
-
-**🆕 Integration Points**:
-- **Automatic analysis** triggered on media upload
-- **Service layer coordination** between media and analysis services
-- **Enrichment data** integrated into sighting responses
-
----
-
-## 🌐 **Additional Services**
-
-### **Device Management** 
-```http  
-POST /devices/register          # Register device for push notifications
-GET  /devices                  # List user devices
-PUT  /devices/{id}             # Update device settings
-```
-
-### **Media Upload**
-```http
-POST /alerts/{alert_id}/media   # Upload media files to alert
-GET  /media/{alert_id}/{file}   # Serve media files
-```
-
-### **Health & Monitoring**
-```http
-GET /healthz                   # Kubernetes health check
-GET /ping                      # Simple connectivity test
+**Purpose**: Generate platform-specific share URLs
+**Body**:
+```json
+{
+  "platform": "X",
+  "locale": "en_US",
+  "user_id": "cosmic-whisper-7823"
+}
 ```
 
 ---
 
-## 🔄 **Service Layer Data Flow**
+## 🎛️ **Admin Dashboard (Enhanced for v12)**
+
+### **User Management (NEW)**
+```http
+GET /admin/users              # User statistics
+GET /admin/users/{id}         # Individual user details
+POST /admin/users/{id}/suspend # Moderation actions
+```
+
+### **Enhanced Media Management**
+```http
+GET /admin/media              # All media with attribution
+GET /admin/media/flagged      # Flagged content queue
+POST /admin/media/{id}/restore # Restore flagged content
+```
+
+### **Social Sharing Analytics (NEW)**
+```http
+GET /admin/social/stats       # Share conversion rates
+GET /admin/social/platforms   # Platform performance
+```
+
+---
+
+## 🔍 **Enhanced Enrichment Pipeline (v11 + v12)**
+
+### **Aircraft Tracking (v11)**
+```http
+GET /enrichment/aircraft/{alert_id}
+```
+**🆕 OpenSky Integration**: Real-time aircraft data
+**Purpose**: Identify possible aircraft matches
+
+### **Advanced Weather + Light Pollution (v11)**
+```http
+GET /enrichment/weather/{alert_id}
+```
+**🆕 Enhanced**: Bortle scale, sky quality data
+
+### **Precise Satellite Tracking (v11)**
+```http
+GET /enrichment/satellites/{alert_id}
+```
+**🆕 NASA TLE Data**: Exact ISS position, BlackSky integration
+
+---
+
+## 🔄 **v12 Data Flow Architecture**
 
 ```
-📱 Anonymous Beep Submission (New Architecture):
+📱 Enhanced Beep Submission (v12):
 ┌─────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   📱 App    │───→│ Thin HTTP Handler│───→│  AlertsService  │
-│ Submit Beep │    │  (30 lines)     │    │ Business Logic  │
+│   📱 App    │───→│ User Attribution │───→│  AlertsService  │
+│ User: cosmic│    │ Human ID Lookup  │    │ + MediaService  │
+│ -whisper-7823│   │                  │    │                 │
 └─────────────┘    └──────────────────┘    └─────────────────┘
                             │                        │
                             ▼                        ▼
                    ┌──────────────────┐    ┌─────────────────┐
-                   │  Error Handling  │    │ ProximityService│
-                   │  & Validation    │    │ Alert Fanout    │
+                   │ Social Share     │    │ ProximityService│
+                   │ Modal (NEW)      │    │ Alert Fanout    │
                    └──────────────────┘    └─────────────────┘
 
-🎛️ Admin Dashboard (Post-Demolition):
+🎭 Witness Media Flow (v12):
 ┌─────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│🎛️ Dashboard │───→│ Clean Handler    │───→│  AdminService   │
-│    UI       │    │  (30 lines)     │    │ Dashboard Stats │
+│ Witness App │───→│ "I SEE IT TOO"   │───→│ MediaService    │
+│ stellar-    │    │ + Media Upload   │    │ Multi-user      │
+│ phoenix-9876│    │                  │    │ Attribution     │
 └─────────────┘    └──────────────────┘    └─────────────────┘
                             │                        │
                             ▼                        ▼
                    ┌──────────────────┐    ┌─────────────────┐
-                   │  HTML Templates  │    │    Database     │
-                   │  (No Logic)      │    │   Queries       │
+                   │ Auto-NSFW Filter │    │ Community       │
+                   │ + Virus Scan     │    │ Flagging System │
                    └──────────────────┘    └─────────────────┘
 ```
 
 ---
 
-## 📈 **Performance Improvements**
+## 📈 **v12 Performance Improvements**
 
-### **Before Refactoring**:
-- 📊 main.py: 2,564 lines with bloated 200+ line endpoints
-- 📊 admin.py: 3,141 lines with mixed HTTP/business logic  
-- ❌ **Maintenance nightmare** - business logic scattered everywhere
-- ❌ **Testing difficulty** - HTTP concerns mixed with business rules
+### **Before v12**:
+- ❌ Anonymous-only system
+- ❌ Single-user media uploads  
+- ❌ No viral sharing mechanism
+- ❌ Complex Matrix chat system
 
-### **After Service Layer Revolution + Spaghetti Elimination**:
-- ✅ **Clean architecture** - HTTP handlers 20-50 lines each
-- ✅ **Service separation** - Business logic in dedicated services
-- ✅ **Easy testing** - Services can be unit tested independently  
-- ✅ **Maintainable code** - Clear separation of concerns
-- ✅ **4,157 lines obliterated** (3,039 refactor + 1,118 redundant endpoints)
-- ✅ **Single media endpoint** - No more confusing duplicate upload routes
-- ✅ **Firebase FCM working** - Push notifications functional
-
----
-
-## 🔧 **Service Architecture Benefits**
-
-1. **🎯 Thin HTTP Handlers**: Focus only on request/response concerns
-2. **🧠 Service Layer**: Contains all business logic and complex operations
-3. **🔄 Reusable Services**: Business logic can be reused across different endpoints
-4. **🧪 Testable Code**: Services can be unit tested without HTTP mocking
-5. **📈 Performance**: Cleaner code with better maintainability and performance
-6. **🔒 Error Handling**: Consistent error patterns across all endpoints
-
-**The UFOBeep API has been transformed from bloated spaghetti code into a military-grade, service-oriented architecture! 🚀**
+### **After v12 Revolution**:
+- ✅ **Human-readable attribution** - `cosmic-whisper-7823` format
+- ✅ **Multi-witness evidence** - Multiple users can contribute media
+- ✅ **Viral growth engine** - Localized social sharing
+- ✅ **Simple moderation** - 3-flag auto-hide, no admin burden
+- ✅ **Evidence-focused interaction** - No chat, just media sharing
+- ✅ **Progressive registration** - Collect data when needed
 
 ---
 
-## 📱 **Universal Widget System Architecture** 
-*Cross-Platform Component Reusability (COMPLETED - 2025-08-19)*
+## 🔧 **v12 Service Architecture Benefits**
 
-### **Mobile App Modular Widgets**
-```
-/app/lib/widgets/alert_sections/
-├── AlertHeroSection        → Media display with web-optimized images
-├── AlertDetailsSection     → Location, description, metadata
-├── AlertDirectionSection   → Compass, bearing, distance calculation  
-├── AlertWitnessSection     → "I SEE IT TOO!" with confirmation counts
-└── AlertActionsSection     → Join Chat, Add Photos, Report to MUFON
-```
+1. **👤 User Attribution**: Every action tied to human-readable ID
+2. **📸 Evidence Collection**: Multi-angle witness media
+3. **🚀 Viral Mechanics**: Share buttons drive user acquisition
+4. **🛡️ Smart Moderation**: Community self-policing with auto-restoration
+5. **🌍 Global Ready**: Localized social platforms per region
+6. **⚡ Speed Preserved**: Registration optional, beeping still ≤3 seconds
 
-**🆕 ARCHITECTURE BENEFITS**:
-- **Universal Reusability** - Same widgets work across mobile app, website, and different pages
-- **Clean Separation** - Each section handles its own logic and styling
-- **Consistent Styling** - 12px border radius, unified padding, cohesive design
-- **Performance Optimized** - No actual image loading in list views (just indicators)
+**The UFOBeep API has evolved from anonymous alerts to a full witness evidence platform with viral growth mechanics! 🛸**
 
-### **Alert List Refactoring** 
-```http
-AlertCard Component (Completely Rewritten):
-```
-**🆕 CLEAN LIST DISPLAY**:
-- **UFO Emoji Icons** - Clean visual identifier (no image loading)
-- **Media Indicators** - Photo/video icons with counts (🎥 3, 📷 5)
-- **Witness Confirmations** - Only shown when > 1 confirmations
-- **Distance Badges** - Color coded: Red < 1km, Orange < 5km, Green < 15km, Gray > 15km
-- **Location Fallback** - Shows coordinates when location name unavailable
-- **Backward Compatible** - Existing navigation continues working
+---
 
-### **Styling Consistency**
-```css
-Universal Design Tokens:
-- Border Radius: 12px (all cards and buttons)
-- Padding: 16px standard, 20px for sections
-- Colors: Unified AppColors theme
-- Typography: Consistent font weights and sizes
-```
+## 📊 **v12 Success Metrics**
 
-**🆕 CODE REUSE STRATEGY**:
-- **Mobile First** - Universal sections designed for Flutter
-- **Web Integration** - Same component patterns adaptable to Next.js
-- **Cross-Platform** - Single source of truth for UI components
-- **Maintainable** - Changes in one place update entire system
+### **User System**
+- Human ID generation rate
+- Registration completion rate
+- User retention after registration
+
+### **Evidence Collection**
+- Multi-witness upload rate
+- Media quality scores
+- Content flagging accuracy
+
+### **Viral Growth**
+- Social share button clicks
+- Share-to-install conversion rate
+- Platform performance by locale
+
+### **Content Quality** 
+- Auto-NSFW filter accuracy
+- Community flagging precision
+- False positive rates
+
+**The witness media system transforms UFOBeep from simple alerts to collaborative evidence collection with viral growth potential! 🌟**

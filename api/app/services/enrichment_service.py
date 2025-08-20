@@ -1816,6 +1816,12 @@ def initialize_enrichment_processors():
     content_processor = ContentFilterProcessor(api_token=hf_api_token, nsfw_model=hf_nsfw_model)
     enrichment_orchestrator.register_processor(content_processor)
     
+    # BlackSky processor - premium satellite imagery feature
+    from app.enrichment.blacksky_processor import BlackSkyEnrichmentProcessor
+    blacksky_api_key = getattr(settings, 'blacksky_api_key', None)
+    blacksky_processor = BlackSkyEnrichmentProcessor(api_key=blacksky_api_key)
+    enrichment_orchestrator.register_processor(blacksky_processor)
+    
     logger.info(f"Initialized {len(enrichment_orchestrator.processors)} enrichment processors")
     logger.info(f"Aircraft tracking API available: {opensky_client_id is not None}")
     logger.info(f"Weather API available: {weather_api_key is not None}")

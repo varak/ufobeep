@@ -2,7 +2,7 @@
 """
 CopeScan Account Management Script
 
-This script manages DevTax accounts for the CopeScan app.
+This script manages DevShare accounts for the CopeScan app.
 It can add accounts, rotate active accounts, and track submission counts.
 
 Usage:
@@ -89,7 +89,7 @@ def validate_credentials(username: str, password: str) -> bool:
         return False
 
 def update_active_config(username: str, password: str, account_name: str):
-    """Update the active DevTax configuration"""
+    """Update the active DevShare configuration"""
     try:
         config_data = {
             "username": username,
@@ -99,9 +99,9 @@ def update_active_config(username: str, password: str, account_name: str):
         }
         
         # Update via API
-        response = requests.post(f"{API_BASE_URL}/devtax-config", json=config_data, timeout=10)
+        response = requests.post(f"{API_BASE_URL}/devshare-config", json=config_data, timeout=10)
         if response.status_code == 200:
-            print(f"✅ Successfully updated active DevTax account to: {account_name}")
+            print(f"✅ Successfully updated active DevShare account to: {account_name}")
             return True
         else:
             print(f"❌ Failed to update via API: {response.status_code}")
@@ -172,7 +172,7 @@ def list_accounts():
         print()
 
 def set_active_account(name: str):
-    """Set an account as the active DevTax account"""
+    """Set an account as the active DevShare account"""
     accounts_data = load_accounts()
     
     # Find account
@@ -230,10 +230,10 @@ def show_status():
     """Show current system status"""
     try:
         # Get current active account
-        response = requests.get(f"{API_BASE_URL}/devtax-status", timeout=10)
+        response = requests.get(f"{API_BASE_URL}/devshare-status", timeout=10)
         if response.status_code == 200:
             status = response.json()
-            print("\n📊 CopeScan DevTax Status:")
+            print("\n📊 CopeScan DevShare Status:")
             print("-" * 40)
             print(f"Active Account: {status['current_account']}")
             print(f"Username: {status['username']}")
