@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/user_preferences.dart';
 import '../../providers/user_preferences_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../config/environment.dart';
 import '../../services/sound_service.dart';
+import '../../services/permission_service.dart';
 import '../admin/admin_screen.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -80,12 +82,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             // App Settings
             _buildAppSettings(userPreferences!),
             
-            const SizedBox(height: 32),
-            
-            // Action Buttons
-            _buildActionButtons(),
-            
             const SizedBox(height: 24),
+            
+            // Permissions Management
+            _buildPermissionsSection(),
+            
+            const SizedBox(height: 32),
             
             // Hidden Admin Access (debug builds and beta versions)
             if (kDebugMode || _appVersion.contains('beta')) _buildAdminAccess(),
@@ -209,24 +211,57 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   Widget _buildProfileHeader(UserPreferences preferences) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppColors.darkSurface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.darkBorder),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColors.brandPrimary.withOpacity(0.1),
+            AppColors.brandPrimary.withOpacity(0.05),
+            AppColors.darkSurface,
+          ],
+        ),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: AppColors.brandPrimary.withOpacity(0.2),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.brandPrimary.withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 40,
-            backgroundColor: AppColors.brandPrimary.withOpacity(0.2),
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  AppColors.brandPrimary.withOpacity(0.3),
+                  AppColors.brandPrimary.withOpacity(0.1),
+                ],
+              ),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: AppColors.brandPrimary.withOpacity(0.4),
+                width: 2,
+              ),
+            ),
             child: const Icon(
               Icons.person,
               color: AppColors.brandPrimary,
-              size: 40,
+              size: 36,
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 20),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,28 +269,47 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 const Text(
                   'UFOBeep User',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textPrimary,
+                    letterSpacing: -0.5,
                   ),
                 ),
-                const SizedBox(height: 4),
-                GestureDetector(
-                  onTap: _handleAdminTap,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppColors.darkBorder.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(4),
+                const SizedBox(height: 6),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: AppColors.darkBackground.withOpacity(0.6),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: AppColors.brandPrimary.withOpacity(0.3),
+                      width: 1,
                     ),
-                    child: Text(
-                      'v$_appVersion',
-                      style: const TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 6,
+                        height: 6,
+                        decoration: const BoxDecoration(
+                          color: AppColors.brandPrimary,
+                          shape: BoxShape.circle,
+                        ),
                       ),
-                    ),
+                      const SizedBox(width: 8),
+                      GestureDetector(
+                        onTap: _handleAdminTap,
+                        child: Text(
+                          'v$_appVersion',
+                          style: const TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -268,135 +322,166 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
 
   Widget _buildProfileSettings(UserPreferences preferences) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.darkSurface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.darkBorder),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Text(
             'Basic Settings',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
               color: AppColors.textPrimary,
+              fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 20),
-          
-          // Alert Range - Always editable
-          _buildSimpleSettingItem(
-            icon: Icons.notifications,
-            title: 'Alert Range',
-            value: preferences.alertRangeDisplay,
-            onTap: () => _showRangeSelector(preferences),
+        ),
+        const SizedBox(height: 16),
+        
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.darkSurface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.darkBorder.withOpacity(0.5)),
           ),
-          
-          const SizedBox(height: 16),
-          
-          // Language - Always editable (but fix crash first)
-          _buildSimpleSettingItem(
-            icon: Icons.language,
-            title: 'Language',
-            value: preferences.language.toUpperCase(),
-            onTap: () => _showLanguageSelector(preferences),
+          child: Column(
+            children: [
+              _buildSimpleSettingItem(
+                icon: Icons.notifications_outlined,
+                title: 'Alert Range',
+                value: preferences.alertRangeDisplay,
+                onTap: () => _showRangeSelector(preferences),
+                isFirst: true,
+              ),
+              
+              _buildDivider(),
+              
+              _buildSimpleSettingItem(
+                icon: Icons.language_outlined,
+                title: 'Language',
+                value: preferences.language.toUpperCase(),
+                onTap: () => _showLanguageSelector(preferences),
+              ),
+              
+              _buildDivider(),
+              
+              _buildSimpleSettingItem(
+                icon: Icons.straighten_outlined,
+                title: 'Units',
+                value: preferences.units == 'metric' ? 'Metric' : 'Imperial',
+                onTap: () => _toggleUnits(preferences),
+                isLast: true,
+              ),
+            ],
           ),
-          
-          const SizedBox(height: 16),
-          
-          // Units - Always editable
-          _buildSimpleSettingItem(
-            icon: Icons.straighten,
-            title: 'Units',
-            value: preferences.units == 'metric' ? 'Metric' : 'Imperial',
-            onTap: () => _toggleUnits(preferences),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget _buildAppSettings(UserPreferences preferences) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.darkSurface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.darkBorder),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Text(
             'App Settings',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
               color: AppColors.textPrimary,
+              fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 20),
-          
-          _buildSettingsTile(
-            icon: Icons.bedtime,
+        ),
+        const SizedBox(height: 16),
+        
+        // Quiet Hours Toggle
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.darkSurface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.darkBorder.withOpacity(0.5)),
+          ),
+          child: _buildSettingsTile(
+            icon: Icons.bedtime_outlined,
             title: 'Quiet Hours',
             subtitle: 'Silence alerts during sleep hours',
             value: preferences.quietHoursEnabled,
             onChanged: _toggleQuietHours,
+            standalone: true,
           ),
-          
-          const SizedBox(height: 16),
-          const Divider(color: AppColors.darkBorder),
-          const SizedBox(height: 16),
-          
-          const Text(
-            'Do Not Disturb / Snooze',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
+        ),
+        
+        const SizedBox(height: 20),
+        
+        // Do Not Disturb Section
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Text(
+            'Do Not Disturb',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: AppColors.textPrimary,
+              fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 12),
-          
-          _buildDndSection(preferences),
-          
-          const SizedBox(height: 16),
-          const Divider(color: AppColors.darkBorder),
-          const SizedBox(height: 16),
-          
-          const Text(
+        ),
+        const SizedBox(height: 12),
+        
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: AppColors.darkSurface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.darkBorder.withOpacity(0.5)),
+          ),
+          child: _buildDndSection(preferences),
+        ),
+        
+        const SizedBox(height: 20),
+        
+        // Alert Filters Section
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Text(
             'Alert Filters',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: AppColors.textPrimary,
+              fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 12),
-          
-          _buildSettingsTile(
-            icon: Icons.photo_camera,
-            title: 'Media-Only Alerts',
-            subtitle: 'Only receive alerts with photos/videos',
-            value: preferences.mediaOnlyAlerts ?? false,
-            onChanged: _toggleMediaOnlyAlerts,
+        ),
+        const SizedBox(height: 12),
+        
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.darkSurface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.darkBorder.withOpacity(0.5)),
           ),
-          
-          _buildSettingsTile(
-            icon: Icons.verified_user,
-            title: 'Ignore Anonymous Beeps',
-            subtitle: 'Only alerts from registered users',
-            value: preferences.ignoreAnonymousBeeps ?? false,
-            onChanged: _toggleIgnoreAnonymousBeeps,
+          child: Column(
+            children: [
+              _buildSettingsTile(
+                icon: Icons.photo_camera_outlined,
+                title: 'Media-Only Alerts',
+                subtitle: 'Only receive alerts with photos/videos',
+                value: preferences.mediaOnlyAlerts ?? false,
+                onChanged: _toggleMediaOnlyAlerts,
+                isFirst: true,
+              ),
+              
+              _buildDivider(),
+              
+              _buildSettingsTile(
+                icon: Icons.verified_user_outlined,
+                title: 'Verified Users Only',
+                subtitle: 'Ignore alerts from anonymous users',
+                value: preferences.ignoreAnonymousBeeps ?? false,
+                onChanged: _toggleIgnoreAnonymousBeeps,
+                isLast: true,
+              ),
+            ],
           ),
-          
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -406,9 +491,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     required String subtitle,
     required bool value,
     ValueChanged<bool>? onChanged,
+    bool isFirst = false,
+    bool isLast = false,
+    bool standalone = false,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.symmetric(
+        vertical: standalone ? 16 : 12,
+        horizontal: 20,
+      ),
       child: Row(
         children: [
           Container(
@@ -417,8 +508,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             decoration: BoxDecoration(
               color: value
                   ? AppColors.brandPrimary.withOpacity(0.2)
-                  : AppColors.darkBackground,
-              borderRadius: BorderRadius.circular(8),
+                  : AppColors.darkBackground.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: value 
+                    ? AppColors.brandPrimary.withOpacity(0.3)
+                    : AppColors.darkBorder.withOpacity(0.3),
+                width: 1,
+              ),
             ),
             child: Icon(
               icon,
@@ -433,43 +530,357 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
+                const SizedBox(height: 2),
                 Text(
                   subtitle,
-                  style: const TextStyle(
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
-                    fontSize: 12,
                   ),
                 ),
               ],
             ),
           ),
-          Switch(
+          const SizedBox(width: 12),
+          Switch.adaptive(
             value: value,
             onChanged: onChanged,
             activeColor: AppColors.brandPrimary,
+            activeTrackColor: AppColors.brandPrimary.withOpacity(0.3),
+            inactiveThumbColor: AppColors.textTertiary,
+            inactiveTrackColor: AppColors.darkBorder,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildActionButtons() {
-    return SizedBox(
-      width: double.infinity,
-      height: 48,
-      child: TextButton(
-        onPressed: () => _showLogoutDialog(),
-        child: const Text(
-          'Clear Profile Data',
-          style: TextStyle(color: AppColors.semanticError),
+  
+  Widget _buildPermissionsSection() {
+    final missingCriticalPermissions = !permissionService.locationGranted || !permissionService.notificationGranted;
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Row(
+            children: [
+              Text(
+                'Permissions',
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(width: 8),
+              if (missingCriticalPermissions)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColors.semanticError.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.warning_rounded,
+                        size: 14,
+                        color: AppColors.semanticError,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        'Action Required',
+                        style: TextStyle(
+                          color: AppColors.semanticError,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.darkSurface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.darkBorder.withOpacity(0.5)),
+          ),
+          child: Column(
+            children: [
+              // Location Permission (Critical)
+              _buildPermissionItem(
+                icon: Icons.location_on_outlined,
+                title: 'Location Access',
+                isGranted: permissionService.locationGranted,
+                isCritical: true,
+                isFirst: true,
+                onTap: () => _handlePermissionTap('location'),
+              ),
+              
+              _buildDivider(),
+              
+              // Notification Permission (Critical)
+              _buildPermissionItem(
+                icon: Icons.notifications_outlined,
+                title: 'Push Notifications',
+                isGranted: permissionService.notificationGranted,
+                isCritical: true,
+                onTap: () => _handlePermissionTap('notifications'),
+              ),
+              
+              _buildDivider(),
+              
+              // Camera Permission (Optional)
+              _buildPermissionItem(
+                icon: Icons.camera_alt_outlined,
+                title: 'Camera',
+                isGranted: permissionService.cameraGranted,
+                isCritical: false,
+                onTap: () => _handlePermissionTap('camera'),
+              ),
+              
+              _buildDivider(),
+              
+              // Photos Permission (Optional)
+              _buildPermissionItem(
+                icon: Icons.photo_library_outlined,
+                title: 'Photo Library',
+                isGranted: permissionService.photosGranted,
+                isCritical: false,
+                isLast: true,
+                onTap: () => _handlePermissionTap('photos'),
+              ),
+            ],
+          ),
+        ),
+        
+        if (missingCriticalPermissions) ...[
+          const SizedBox(height: 16),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.semanticError.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: AppColors.semanticError.withOpacity(0.3),
+                width: 1,
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.info_outline_rounded,
+                  color: AppColors.semanticError,
+                  size: 20,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Location and notifications are required for UFOBeep to work properly.',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+        
+        const SizedBox(height: 16),
+        
+        // Manage Permissions Button
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            onPressed: () async {
+              await permissionService.openPermissionSettings();
+            },
+            icon: const Icon(Icons.settings_outlined, size: 18),
+            label: const Text('Manage in Settings'),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.brandPrimary,
+              side: BorderSide(color: AppColors.brandPrimary.withOpacity(0.5)),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+  
+  Widget _buildPermissionItem({
+    required IconData icon,
+    required String title,
+    required bool isGranted,
+    required bool isCritical,
+    required VoidCallback onTap,
+    bool isFirst = false,
+    bool isLast = false,
+  }) {
+    final statusColor = isGranted
+        ? AppColors.semanticSuccess
+        : (isCritical ? AppColors.semanticError : AppColors.semanticWarning);
+    
+    return InkWell(
+      onTap: isGranted ? null : onTap,
+      borderRadius: BorderRadius.vertical(
+        top: isFirst ? const Radius.circular(16) : Radius.zero,
+        bottom: isLast ? const Radius.circular(16) : Radius.zero,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+        child: Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: statusColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: statusColor.withOpacity(0.3),
+                  width: 1,
+                ),
+              ),
+              child: Icon(
+                icon,
+                color: statusColor,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        title,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      if (isCritical)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: AppColors.semanticError.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            'REQUIRED',
+                            style: TextStyle(
+                              color: AppColors.semanticError,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    isGranted 
+                        ? 'Granted' 
+                        : (isCritical ? 'Required for app functionality' : 'Optional'),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 12),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: statusColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    isGranted ? Icons.check_rounded : Icons.close_rounded,
+                    color: statusColor,
+                    size: 16,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    isGranted ? 'Allowed' : 'Denied',
+                    style: TextStyle(
+                      color: statusColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  void _handlePermissionTap(String permissionType) async {
+    switch (permissionType) {
+      case 'location':
+        if (!permissionService.locationGranted) {
+          final granted = await permissionService.requestPermission(Permission.location);
+          if (!granted) {
+            await permissionService.openPermissionSettings();
+          }
+        }
+        break;
+      case 'notifications':
+        if (!permissionService.notificationGranted) {
+          final granted = await permissionService.requestPermission(Permission.notification);
+          if (!granted) {
+            await permissionService.openPermissionSettings();
+          }
+        }
+        break;
+      case 'camera':
+        if (!permissionService.cameraGranted) {
+          final granted = await permissionService.requestCameraForCapture();
+          if (!granted) {
+            await permissionService.openPermissionSettings();
+          }
+        }
+        break;
+      case 'photos':
+        if (!permissionService.photosGranted) {
+          final granted = await permissionService.requestPhotosForGallery();
+          if (!granted) {
+            await permissionService.openPermissionSettings();
+          }
+        }
+        break;
+    }
+    
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   Widget _buildSimpleSettingItem({
@@ -477,32 +888,41 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     required String title,
     required String value,
     VoidCallback? onTap,
+    bool isFirst = false,
+    bool isLast = false,
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.vertical(
+        top: isFirst ? const Radius.circular(16) : Radius.zero,
+        bottom: isLast ? const Radius.circular(16) : Radius.zero,
+      ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
         child: Row(
           children: [
             Container(
-              width: 32,
-              height: 32,
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
-                color: AppColors.brandPrimary.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(8),
+                color: AppColors.brandPrimary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: AppColors.brandPrimary.withOpacity(0.2),
+                  width: 1,
+                ),
               ),
               child: Icon(
                 icon,
                 color: AppColors.brandPrimary,
-                size: 18,
+                size: 20,
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
               child: Text(
                 title,
-                style: const TextStyle(
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w500,
                 ),
@@ -510,15 +930,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
             Text(
               value,
-              style: const TextStyle(
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
-                fontSize: 14,
+                fontWeight: FontWeight.w500,
               ),
             ),
             if (onTap != null) ...[
-              const SizedBox(width: 8),
-              const Icon(
-                Icons.chevron_right,
+              const SizedBox(width: 12),
+              Icon(
+                Icons.chevron_right_rounded,
                 color: AppColors.textTertiary,
                 size: 20,
               ),
@@ -526,6 +946,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildDivider() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      height: 1,
+      color: AppColors.darkBorder.withOpacity(0.3),
     );
   }
 
@@ -1014,47 +1442,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
 
-  void _showLogoutDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.darkSurface,
-        title: const Text(
-          'Clear Profile Data',
-          style: TextStyle(color: AppColors.textPrimary),
-        ),
-        content: const Text(
-          'This will remove all your profile data and preferences. This action cannot be undone.',
-          style: TextStyle(color: AppColors.textSecondary),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.of(context).pop();
-              final notifier = ref.read(userPreferencesProvider.notifier);
-              await notifier.clearPreferences();
-              if (mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Profile data cleared'),
-                    backgroundColor: AppColors.semanticWarning,
-                  ),
-                );
-              }
-            },
-            child: const Text(
-              'Clear Data',
-              style: TextStyle(color: AppColors.semanticError),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   Future<void> _openPrivacyPolicy() async {
     final url = Uri.parse('https://ufobeep.com/privacy');

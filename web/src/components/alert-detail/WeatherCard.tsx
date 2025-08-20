@@ -1,5 +1,7 @@
 'use client'
 
+import { UnitConversion } from '../../utils/unitConversion'
+
 interface WeatherData {
   temperature_c: number
   weather_description: string
@@ -14,6 +16,9 @@ interface WeatherCardProps {
 }
 
 export default function WeatherCard({ weather }: WeatherCardProps) {
+  // Website defaults to imperial units
+  const units = 'imperial';
+
   return (
     <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
       <div className="flex items-center gap-2 mb-4">
@@ -24,7 +29,7 @@ export default function WeatherCard({ weather }: WeatherCardProps) {
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         <div>
           <div className="text-text-tertiary text-xs">Temperature</div>
-          <div className="text-text-primary text-sm">{weather.temperature_c?.toFixed(1)}°C</div>
+          <div className="text-text-primary text-sm">{UnitConversion.formatTemperature(weather.temperature_c, units)}</div>
         </div>
         <div>
           <div className="text-text-tertiary text-xs">Conditions</div>
@@ -32,11 +37,11 @@ export default function WeatherCard({ weather }: WeatherCardProps) {
         </div>
         <div>
           <div className="text-text-tertiary text-xs">Visibility</div>
-          <div className="text-text-primary text-sm">{weather.visibility_km} km</div>
+          <div className="text-text-primary text-sm">{UnitConversion.formatVisibility(weather.visibility_km, units)}</div>
         </div>
         <div>
           <div className="text-text-tertiary text-xs">Wind</div>
-          <div className="text-text-primary text-sm">{weather.wind_speed_ms?.toFixed(1)} m/s</div>
+          <div className="text-text-primary text-sm">{UnitConversion.formatWindSpeed(weather.wind_speed_ms, units)}</div>
         </div>
         <div>
           <div className="text-text-tertiary text-xs">Humidity</div>

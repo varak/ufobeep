@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { UnitConversion } from '../utils/unitConversion'
 
 interface WitnessLocation {
   lat: number
@@ -65,6 +66,9 @@ export default function WitnessAggregation({ sightingId }: WitnessAggregationPro
   const [data, setData] = useState<WitnessAggregationData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  
+  // Website defaults to imperial units
+  const units = 'imperial';
 
   useEffect(() => {
     fetchWitnessAggregation()
@@ -156,7 +160,7 @@ export default function WitnessAggregation({ sightingId }: WitnessAggregationPro
           {data.consensus.average_distance_km && (
             <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
               <div className="text-2xl font-bold text-blue-400">
-                {data.consensus.average_distance_km.toFixed(1)}km
+                {UnitConversion.formatDistanceFromKm(data.consensus.average_distance_km, units)}
               </div>
               <div className="text-sm text-gray-400">Avg Distance</div>
               <div className="text-xs text-gray-500">Estimated range</div>
@@ -262,7 +266,7 @@ export default function WitnessAggregation({ sightingId }: WitnessAggregationPro
                 </div>
                 {witness.distance_km && (
                   <div className="text-xs text-gray-500">
-                    ~{witness.distance_km.toFixed(1)}km away
+                    ~{UnitConversion.formatDistanceFromKm(witness.distance_km, units)} away
                   </div>
                 )}
               </div>

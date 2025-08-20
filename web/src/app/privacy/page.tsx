@@ -69,7 +69,7 @@ export default function PrivacyPage() {
                 <li>• <strong>Precise Location:</strong> Used internally for distance calculations and alert targeting</li>
                 <li>• <strong>Jittered Location:</strong> Public coordinates are randomly offset by 100-300 meters</li>
                 <li>• <strong>No Historical Tracking:</strong> We don&apos;t store location history or track your movements</li>
-                <li>• <strong>Opt-out Available:</strong> You can disable location services and enter coordinates manually</li>
+                <li>• <strong>Location Required:</strong> Location permission is mandatory for app functionality</li>
               </ul>
             </div>
 

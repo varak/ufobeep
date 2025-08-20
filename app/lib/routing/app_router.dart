@@ -205,6 +205,7 @@ GoRouter appRouter(AppRouterRef ref) {
               final alertLon = state.uri.queryParameters['alertLon'];
               final alertId = state.uri.queryParameters['alertId'];
               final alertName = state.uri.queryParameters['alertName'];
+              final calledFromAlert = alertId != null && alertLat != null && alertLon != null;
               
               return MapScreen(
                 userLat: userLat != null ? double.tryParse(userLat) : null,
@@ -213,6 +214,7 @@ GoRouter appRouter(AppRouterRef ref) {
                 alertLon: alertLon != null ? double.tryParse(alertLon) : null,
                 alertId: alertId,
                 alertName: alertName,
+                calledFromAlert: calledFromAlert,
               );
             },
           ),

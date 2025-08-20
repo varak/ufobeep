@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../providers/alerts_provider.dart';
 import '../theme/app_theme.dart';
+import '../utils/unit_conversion.dart';
+import '../providers/user_preferences_provider.dart';
 
-class AlertCard extends StatelessWidget {
+class AlertCard extends ConsumerWidget {
   const AlertCard({
     super.key,
     required this.alert,
@@ -16,7 +19,9 @@ class AlertCard extends StatelessWidget {
   final bool showDistance;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userPrefs = ref.watch(userPreferencesProvider);
+    final units = userPrefs?.units ?? 'metric';
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       elevation: 2,
@@ -127,7 +132,7 @@ class AlertCard extends StatelessWidget {
                       ),
                       if (alert.distance != null && showDistance) ...[ 
                         const SizedBox(height: 4),
-                        _buildDistanceBadge(),
+                        _buildDistanceBadge(units),
                       ],
                     ],
                   ),
@@ -204,7 +209,7 @@ class AlertCard extends StatelessWidget {
     );
   }
 
-  Widget _buildDistanceBadge() {
+  Widget _buildDistanceBadge(String units) {
     if (alert.distance == null) return const SizedBox.shrink();
     
     final distance = alert.distance!;
@@ -228,7 +233,7 @@ class AlertCard extends StatelessWidget {
         border: Border.all(color: badgeColor.withOpacity(0.3)),
       ),
       child: Text(
-        '${distance.toStringAsFixed(1)}km',
+        UnitConversion.formatDistance(distance * 1000, units),
         style: TextStyle(
           color: badgeColor,
           fontSize: 10,
@@ -378,7 +383,7 @@ class AlertCard extends StatelessWidget {
 }
 
 // Keep CompactAlertCard for backward compatibility if needed
-class CompactAlertCard extends StatelessWidget {
+class CompactAlertCard extends ConsumerWidget {
   const CompactAlertCard({
     super.key,
     required this.alert,
@@ -389,7 +394,9 @@ class CompactAlertCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userPrefs = ref.watch(userPreferencesProvider);
+    final units = userPrefs?.units ?? 'metric';
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       elevation: 1,
@@ -442,7 +449,7 @@ class CompactAlertCard extends StatelessWidget {
                       children: [
                         if (alert.distance != null) ...[ 
                           Text(
-                            '${alert.distance!.toStringAsFixed(1)}km',
+                            UnitConversion.formatDistance(alert.distance! * 1000, units),
                             style: const TextStyle(
                               color: AppColors.textTertiary,
                               fontSize: 12,

@@ -60,19 +60,26 @@ class PermissionService {
 
   /// Request all permissions needed by the app
   Future<void> _requestAllPermissions() async {
-    print('Requesting all permissions for first time setup...');
+    print('Requesting critical permissions for first time setup...');
     
-    // Request location permission (critical for UFO beeping)
-    await _requestLocationPermission();
+    // BATCH REQUEST: Location + Notifications together (both critical for UFO alerts)
+    // This avoids Android rate limiting by requesting multiple permissions at once
+    final Map<Permission, PermissionStatus> statuses = await [
+      Permission.location,
+      Permission.notification,
+    ].request();
     
-    // Request camera permission (for photo capture)
-    await _requestCameraPermission();
+    // Process location permission result
+    _locationGranted = statuses[Permission.location] == PermissionStatus.granted ||
+                      statuses[Permission.location] == PermissionStatus.limited;
+    print('Location permission: $_locationGranted');
     
-    // Request photo library permission (for gallery selection)
-    await _requestPhotosPermission();
+    // Process notification permission result  
+    _notificationGranted = statuses[Permission.notification] == PermissionStatus.granted;
+    print('Notification permission: $_notificationGranted');
     
-    // Request notification permission (for alerts)
-    await _requestNotificationPermission();
+    // Camera and Photos are now OPTIONAL - request them on-demand when needed
+    // This prevents permission prompt fatigue and lets users start using the app immediately
     
     // Cache the results
     await _cachePermissions();
@@ -228,6 +235,77 @@ class PermissionService {
   Future<void> refreshPermissions() async {
     await _requestAllPermissions();
     await _cachePermissions();
+  }
+  
+  /// Request camera permission on-demand (when user wants to take photo)
+  Future<bool> requestCameraForCapture() async {
+    if (_cameraGranted) return true;
+    
+    print('Requesting camera permission for photo capture...');
+    final status = await Permission.camera.request();
+    _cameraGranted = status == PermissionStatus.granted;
+    
+    if (_cameraGranted) {
+      await _cachePermissions();
+      print('Camera permission granted');
+    } else {
+      print('Camera permission denied');
+    }
+    
+    return _cameraGranted;
+  }
+  
+  /// Request photo library permission on-demand (when user wants to select from gallery)
+  Future<bool> requestPhotosForGallery() async {
+    if (_photosGranted) return true;
+    
+    print('Requesting photos permission for gallery access...');
+    try {
+      final result = await PhotoManager.requestPermissionExtend(
+        requestOption: const PermissionRequestOption(
+          iosAccessLevel: IosAccessLevel.readWrite,
+          androidPermission: AndroidPermission(
+            type: RequestType.image,
+            mediaLocation: true,
+          ),
+        ),
+      );
+      _photosGranted = result.isAuth;
+      
+      if (_photosGranted) {
+        await _cachePermissions();
+        print('Photos permission granted');
+      } else {
+        print('Photos permission denied');
+      }
+    } catch (e) {
+      print('Error requesting photos permission: $e');
+      _photosGranted = false;
+    }
+    
+    return _photosGranted;
+  }
+  
+  /// Request individual permission if missing
+  Future<bool> requestPermission(Permission permission) async {
+    final status = await permission.request();
+    final granted = status == PermissionStatus.granted;
+    
+    // Update internal state based on permission type
+    switch (permission.value) {
+      case 0: // Location
+        _locationGranted = granted;
+        break;
+      case 1: // Camera  
+        _cameraGranted = granted;
+        break;
+      case 13: // Notification
+        _notificationGranted = granted;
+        break;
+    }
+    
+    await _cachePermissions();
+    return granted;
   }
   
   /// Ensure location is ready for beep submission - insistent permission flow

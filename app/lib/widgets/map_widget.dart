@@ -66,24 +66,77 @@ class _MapWidgetState extends State<MapWidget> {
     return const LatLng(39.8283, -98.5795);
   }
 
-  Color _getAlertColor(String level) {
-    switch (level.toLowerCase()) {
+  Color _getAlertColor(Alert alert) {
+    final now = DateTime.now();
+    final ageInHours = now.difference(alert.createdAt).inHours.abs();
+    
+    // Base color by alert level
+    Color baseColor;
+    switch (alert.alertLevel.toLowerCase()) {
       case 'critical':
-        return Colors.red;
+        baseColor = Colors.red;
+        break;
       case 'high':
-        return Colors.orange;
+        baseColor = Colors.orange;
+        break;
       case 'medium':
-        return Colors.yellow;
+        baseColor = Colors.yellow;
+        break;
       case 'low':
-        return Colors.green;
+        baseColor = Colors.green;
+        break;
       default:
-        return AppColors.brandPrimary;
+        baseColor = AppColors.brandPrimary;
     }
+    
+    // Apply age-based opacity degradation
+    double opacity;
+    if (ageInHours <= 1) {
+      opacity = 1.0; // Full intensity for reports under 1 hour
+    } else if (ageInHours <= 6) {
+      opacity = 0.8; // Slight fade for 1-6 hours
+    } else if (ageInHours <= 24) {
+      opacity = 0.6; // More fade for 6-24 hours  
+    } else if (ageInHours <= 72) {
+      opacity = 0.4; // Significant fade for 1-3 days
+    } else {
+      opacity = 0.2; // Very faded for 3+ days
+    }
+    
+    // Ensure opacity is within valid range
+    opacity = opacity.clamp(0.0, 1.0);
+    
+    return baseColor.withOpacity(opacity);
+  }
+  
+  List<Alert> _filterReportsByAge(List<Alert> alerts) {
+    final now = DateTime.now();
+    const maxAgeInDays = 7; // Hide reports older than 7 days
+    
+    return alerts.where((alert) {
+      final ageInDays = now.difference(alert.createdAt).inDays;
+      return ageInDays <= maxAgeInDays;
+    }).toList();
   }
 
   List<Marker> _buildMarkers() {
-    return widget.alerts.map((alert) {
-      final color = _getAlertColor(alert.alertLevel);
+    // Filter alerts by age first
+    final filteredAlerts = _filterReportsByAge(widget.alerts);
+    
+    return filteredAlerts.map((alert) {
+      final color = _getAlertColor(alert);
+      final now = DateTime.now();
+      final ageInHours = now.difference(alert.createdAt).inHours;
+      
+      // Adjust marker size based on age (newer = larger)
+      double markerSize;
+      if (ageInHours <= 1) {
+        markerSize = 28; // Large for very recent
+      } else if (ageInHours <= 6) {
+        markerSize = 24; // Medium for recent
+      } else {
+        markerSize = 20; // Small for older
+      }
       
       return Marker(
         point: LatLng(alert.latitude, alert.longitude),
@@ -100,24 +153,27 @@ class _MapWidgetState extends State<MapWidget> {
             decoration: BoxDecoration(
               color: color,
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 2),
+              border: Border.all(
+                color: Colors.white.withOpacity((color.alpha / 255.0).clamp(0.0, 1.0)), 
+                width: 2
+              ),
               boxShadow: [
                 BoxShadow(
-                  color: color.withOpacity(0.3),
-                  blurRadius: 10,
-                  spreadRadius: 2,
+                  color: color.withOpacity(0.4),
+                  blurRadius: ageInHours <= 1 ? 15 : 8,
+                  spreadRadius: ageInHours <= 1 ? 3 : 1,
                 ),
               ],
             ),
-            child: const Icon(
+            child: Icon(
               Icons.location_on,
-              color: Colors.white,
-              size: 16,
+              color: Colors.white.withOpacity(((color.alpha / 255.0) + 0.2).clamp(0.0, 1.0)),
+              size: markerSize * 0.6,
             ),
           ),
         ),
-        width: 24,
-        height: 24,
+        width: markerSize,
+        height: markerSize,
       );
     }).toList();
   }
@@ -212,10 +268,18 @@ class _MapWidgetState extends State<MapWidget> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${widget.alerts.length} active reports',
+                      '${_filterReportsByAge(widget.alerts).length} recent reports',
                       style: const TextStyle(
                         color: AppColors.textSecondary,
                         fontSize: 10,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      '(${widget.alerts.length} total)',
+                      style: const TextStyle(
+                        color: AppColors.textTertiary,
+                        fontSize: 9,
                       ),
                     ),
                   ],
@@ -340,7 +404,7 @@ class _MapWidgetState extends State<MapWidget> {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: _getAlertColor(_selectedAlert!.alertLevel),
+                              color: _getAlertColor(_selectedAlert!),
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
@@ -372,7 +436,31 @@ class _MapWidgetState extends State<MapWidget> {
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const Text(
+                      'Age',
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 9,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    _buildAgeLegendItem('< 1h', 1.0, 28),
+                    _buildAgeLegendItem('< 6h', 0.8, 24),
+                    _buildAgeLegendItem('< 24h', 0.6, 24),
+                    _buildAgeLegendItem('< 3d', 0.4, 20),
+                    const SizedBox(height: 6),
+                    const Text(
+                      'Level',
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 9,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
                     _buildLegendItem('Critical', Colors.red),
                     _buildLegendItem('High', Colors.orange),
                     _buildLegendItem('Medium', Colors.yellow),
@@ -430,6 +518,37 @@ class _MapWidgetState extends State<MapWidget> {
             style: const TextStyle(
               color: AppColors.textTertiary,
               fontSize: 10,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAgeLegendItem(String label, double opacity, double size) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 1),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: size / 3,
+            height: size / 3,
+            decoration: BoxDecoration(
+              color: AppColors.brandPrimary.withOpacity(opacity),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.white.withOpacity(opacity),
+                width: 1,
+              ),
+            ),
+          ),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: const TextStyle(
+              color: AppColors.textTertiary,
+              fontSize: 9,
             ),
           ),
         ],

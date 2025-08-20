@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../theme/app_theme.dart';
 import '../../models/alert_enrichment.dart';
+import '../../utils/unit_conversion.dart';
+import '../../providers/user_preferences_provider.dart';
 
 class EnrichmentSection extends StatelessWidget {
   const EnrichmentSection({
@@ -205,13 +208,15 @@ class EnrichmentSection extends StatelessWidget {
   }
 }
 
-class WeatherCardFromJson extends StatelessWidget {
+class WeatherCardFromJson extends ConsumerWidget {
   const WeatherCardFromJson({super.key, required this.weatherData});
 
   final Map<String, dynamic> weatherData;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userPrefs = ref.watch(userPreferencesProvider);
+    final units = userPrefs?.units ?? 'metric';
     return Card(
       color: AppColors.darkSurface,
       child: Padding(
@@ -258,7 +263,7 @@ class WeatherCardFromJson extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  _formatTemperature(weatherData['temperature_c']),
+                  UnitConversion.formatTemperature(weatherData['temperature_c'], units),
                   style: TextStyle(
                     color: AppColors.brandPrimary,
                     fontSize: 24,
@@ -275,12 +280,12 @@ class WeatherCardFromJson extends StatelessWidget {
                 _WeatherDetail(
                   icon: Icons.air,
                   label: 'Wind',
-                  value: _formatWindSpeed(weatherData['wind_speed_ms']),
+                  value: UnitConversion.formatWindSpeed(weatherData['wind_speed_ms'], units),
                 ),
                 _WeatherDetail(
                   icon: Icons.visibility,
                   label: 'Visibility',
-                  value: _formatVisibility(weatherData['visibility_km']),
+                  value: UnitConversion.formatVisibility(weatherData['visibility_km'], units),
                 ),
                 _WeatherDetail(
                   icon: Icons.water_drop,
@@ -300,20 +305,6 @@ class WeatherCardFromJson extends StatelessWidget {
     );
   }
 
-  String _formatTemperature(dynamic temp) {
-    if (temp == null) return '--°C';
-    return '${temp.toStringAsFixed(1)}°C';
-  }
-
-  String _formatWindSpeed(dynamic speed) {
-    if (speed == null) return '--';
-    return '${speed.toStringAsFixed(1)} m/s';
-  }
-
-  String _formatVisibility(dynamic visibility) {
-    if (visibility == null) return '--';
-    return '${visibility.toStringAsFixed(1)} km';
-  }
 
   String _formatHumidity(dynamic humidity) {
     if (humidity == null) return '--%';

@@ -269,7 +269,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Alert sent! Sighting ID: ${beepResult['sighting_id']}'),
+            content: Text('Alert sent successfully!'),
             backgroundColor: AppColors.semanticSuccess,
             duration: const Duration(seconds: 2),
           ),

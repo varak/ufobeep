@@ -15,6 +15,7 @@ class MapScreen extends ConsumerWidget {
     this.alertLon,
     this.alertId,
     this.alertName,
+    this.calledFromAlert = false,
   });
 
   final double? userLat;
@@ -23,6 +24,7 @@ class MapScreen extends ConsumerWidget {
   final double? alertLon;
   final String? alertId;
   final String? alertName;
+  final bool calledFromAlert;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,8 +32,22 @@ class MapScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Live Sightings Map'),
+        title: Text(calledFromAlert && alertName != null 
+            ? 'Map - ${Uri.decodeComponent(alertName!)}' 
+            : 'Live Sightings Map'),
         backgroundColor: AppColors.darkSurface,
+        leading: calledFromAlert 
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  if (alertId != null) {
+                    context.go('/alert/$alertId');
+                  } else {
+                    context.go('/alerts');
+                  }
+                },
+              )
+            : null,
       ),
       backgroundColor: AppColors.darkBackground,
       body: alertsAsync.when(
@@ -67,7 +83,7 @@ class MapScreen extends ConsumerWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      '${alerts.length} active sightings',
+                      '${alerts.where((alert) => DateTime.now().difference(alert.createdAt).inDays <= 7).length} recent sightings',
                       style: const TextStyle(
                         color: AppColors.textSecondary,
                         fontSize: 14,
