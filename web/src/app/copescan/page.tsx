@@ -10,6 +10,13 @@ export default function CopeScanPage() {
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         {/* Header */}
         <div className="text-center mb-12">
+          <div className="flex justify-center mb-6">
+            <img 
+              src="/copescan-logo.png" 
+              alt="CopeScan Logo" 
+              className="w-32 h-32 rounded-full shadow-lg"
+            />
+          </div>
           <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
             CopeScan
           </h1>
