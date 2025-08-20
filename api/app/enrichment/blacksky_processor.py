@@ -22,6 +22,14 @@ class BlackSkyEnrichmentProcessor(EnrichmentProcessor):
     def name(self) -> str:
         return "blacksky"
     
+    @property
+    def priority(self) -> int:
+        return 8  # Low priority, runs after core enrichment
+    
+    @property
+    def timeout_seconds(self) -> int:
+        return 5  # Fast local processing
+    
     async def is_available(self) -> bool:
         """Check if BlackSky processor is available"""
         return await self.blacksky_service.is_available()
