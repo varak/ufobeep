@@ -20,7 +20,7 @@ export default function CopeScanPage() {
           <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
             <h2 className="text-2xl font-semibold mb-4 text-green-400">📱 What is CopeScan?</h2>
             <p className="text-gray-300 leading-relaxed">
-              CopeScan is a mobile app that uses your phone's camera and OCR (Optical Character Recognition) 
+              CopeScan is a mobile app that uses your phone&apos;s camera and OCR (Optical Character Recognition) 
               to automatically scan Copenhagen tobacco reward codes from wrapper images, then submits them 
               directly to the Fresh Cope rewards program. No more manual typing of codes!
             </p>
@@ -78,7 +78,7 @@ export default function CopeScanPage() {
           </p>
           <ul className="text-gray-300 space-y-2">
             <li>• Create account at: <a href="https://www.freshcope.com/rewards/earn" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline hover:text-blue-300">freshcope.com/rewards/earn</a></li>
-            <li>• You'll need your username/email and password</li>
+            <li>• You&apos;ll need your username/email and password</li>
             <li>• The app submits codes directly to your account</li>
             <li>• DevTax: Every 10th code goes to app developer</li>
           </ul>
@@ -124,7 +124,7 @@ export default function CopeScanPage() {
                 <div className="border-l-4 border-yellow-500 pl-4">
                   <h3 className="font-semibold text-yellow-400 mb-2">Step 1: Enable Unknown Sources</h3>
                   <p className="text-gray-300 text-sm">
-                    Go to Settings → Security → "Install unknown apps" → Chrome (or your browser) → Enable "Allow from this source"
+                    Go to Settings → Security → &quot;Install unknown apps&quot; → Chrome (or your browser) → Enable &quot;Allow from this source&quot;
                   </p>
                 </div>
                 
@@ -160,16 +160,16 @@ export default function CopeScanPage() {
             <div>
               <h4 className="font-semibold text-blue-400 mb-2">Automatic Mode:</h4>
               <ol className="space-y-1 text-sm">
-                <li>1. Enable "Auto-Submit: ON"</li>
+                <li>1. Enable &quot;Auto-Submit: ON&quot;</li>
                 <li>2. Point camera at code</li>
-                <li>3. Tap "Capture Code"</li>
+                <li>3. Tap &quot;Capture Code&quot;</li>
                 <li>4. Code submits automatically</li>
               </ol>
             </div>
             <div>
               <h4 className="font-semibold text-green-400 mb-2">Queue Mode:</h4>
               <ol className="space-y-1 text-sm">
-                <li>1. Set "Auto-Submit: OFF"</li>
+                <li>1. Set &quot;Auto-Submit: OFF&quot;</li>
                 <li>2. Scan multiple codes</li>
                 <li>3. View queue (clipboard icon)</li>
                 <li>4. Submit all at once</li>
