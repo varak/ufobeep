@@ -1062,9 +1062,28 @@ extension ApiClientExtension on ApiClient {
 
   Future<Map<String, dynamic>> uploadMediaToSighting(String sightingId, File file) async {
     try {
+      debugPrint('=== MEDIA UPLOAD DEBUG START ===');
+      debugPrint('Sighting ID: $sightingId');
+      debugPrint('File path: ${file.path}');
+      debugPrint('File exists: ${await file.exists()}');
+      
+      if (!await file.exists()) {
+        debugPrint('ERROR: File does not exist at path: ${file.path}');
+        throw Exception('Media file not found at path: ${file.path}');
+      }
+      
+      final fileSize = await file.length();
+      debugPrint('File size: $fileSize bytes');
+      
+      if (fileSize == 0) {
+        debugPrint('ERROR: File is empty');
+        throw Exception('Media file is empty');
+      }
+      
       final formData = FormData();
       
       // Add the file to the 'files' field (FastAPI expects List[UploadFile])
+      debugPrint('Creating multipart file...');
       formData.files.add(MapEntry(
         'files',
         await MultipartFile.fromFile(file.path, filename: file.path.split('/').last),
@@ -1072,19 +1091,38 @@ extension ApiClientExtension on ApiClient {
       
       // Add form fields
       formData.fields.add(const MapEntry('source', 'mobile_app'));
+      debugPrint('Form data created successfully');
+      
+      final uploadUrl = '/alerts/$sightingId/media';
+      debugPrint('Upload URL: $uploadUrl');
+      debugPrint('Making POST request...');
 
       final response = await _dio.post(
-        '/alerts/$sightingId/media',
+        uploadUrl,
         data: formData,
       );
 
+      debugPrint('Response status: ${response.statusCode}');
+      debugPrint('Response data: ${response.data}');
+
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        debugPrint('=== MEDIA UPLOAD SUCCESS ===');
         return response.data as Map<String, dynamic>;
       } else {
+        debugPrint('ERROR: Upload failed with status ${response.statusCode}');
         throw Exception('Failed to upload media: ${response.statusMessage}');
       }
     } on DioException catch (e) {
+      debugPrint('=== MEDIA UPLOAD DIO ERROR ===');
+      debugPrint('Error type: ${e.type}');
+      debugPrint('Error message: ${e.message}');
+      debugPrint('Response: ${e.response?.data}');
+      debugPrint('Status code: ${e.response?.statusCode}');
       throw _handleError(e);
+    } catch (e) {
+      debugPrint('=== MEDIA UPLOAD GENERAL ERROR ===');
+      debugPrint('Error: $e');
+      rethrow;
     }
   }
 

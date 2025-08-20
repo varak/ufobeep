@@ -1148,6 +1148,117 @@ class GeocodeEnrichmentProcessor(EnrichmentProcessor):
         return ', '.join(components) if components else "Unknown Location"
 
 
+class AircraftTrackingProcessor(EnrichmentProcessor):
+    """Aircraft tracking enrichment using OpenSky Network API"""
+    
+    def __init__(self, client_id: Optional[str] = None, client_secret: Optional[str] = None):
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self._cache = {}
+        self._cache_ttl_seconds = 300
+    
+    @property
+    def name(self) -> str:
+        return "aircraft_tracking"
+    
+    @property
+    def priority(self) -> int:
+        return 1
+    
+    @property
+    def timeout_seconds(self) -> int:
+        return 15
+    
+    async def is_available(self) -> bool:
+        return True
+    
+    async def process(self, context: EnrichmentContext) -> EnrichmentResult:
+        """Fetch aircraft data for the sighting location and time"""
+        try:
+            start_time = datetime.utcnow()
+            aircraft_data = await self._fetch_aircraft_data(context)
+            processing_time = int((datetime.utcnow() - start_time).total_seconds() * 1000)
+            
+            return EnrichmentResult(
+                processor_name=self.name,
+                success=True,
+                data=aircraft_data,
+                processing_time_ms=processing_time,
+                confidence_score=0.9,
+                metadata={"source": "opensky_network"}
+            )
+        except Exception as e:
+            logger.error(f"Aircraft tracking failed: {e}")
+            return EnrichmentResult(
+                processor_name=self.name,
+                success=False,
+                error=str(e)
+            )
+    
+    async def _fetch_aircraft_data(self, context: EnrichmentContext) -> Dict[str, Any]:
+        """Fetch aircraft data from OpenSky API"""
+        import aiohttp
+        import math
+        
+        # 50km search radius
+        radius_deg = 0.45
+        
+        auth = None
+        if self.client_id and self.client_secret:
+            auth = aiohttp.BasicAuth(self.client_id, self.client_secret)
+        
+        async with aiohttp.ClientSession(auth=auth) as session:
+            params = {
+                'lamin': context.latitude - radius_deg,
+                'lamax': context.latitude + radius_deg,
+                'lomin': context.longitude - radius_deg,
+                'lomax': context.longitude + radius_deg
+            }
+            
+            async with session.get("https://opensky-network.org/api/states/all", params=params, timeout=12) as response:
+                if response.status != 200:
+                    return {"aircraft": [], "total": 0, "summary": "API error"}
+                
+                data = await response.json()
+                if not data or not data.get('states'):
+                    return {"aircraft": [], "total": 0, "summary": "No aircraft detected"}
+                
+                aircraft = []
+                for state in data['states']:
+                    if len(state) < 16 or state[5] is None or state[6] is None or state[8]:  # Skip if no coords or on ground
+                        continue
+                    
+                    # Calculate distance
+                    lat1, lon1 = math.radians(context.latitude), math.radians(context.longitude)
+                    lat2, lon2 = math.radians(state[6]), math.radians(state[5])
+                    dlat, dlon = lat2 - lat1, lon2 - lon1
+                    a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2
+                    distance_km = 6371 * 2 * math.asin(math.sqrt(a))
+                    
+                    if distance_km > 50:  # Skip if too far
+                        continue
+                    
+                    aircraft.append({
+                        "callsign": (state[1] or "").strip(),
+                        "distance_km": round(distance_km, 1),
+                        "altitude_ft": round(state[7] * 3.28084) if state[7] else None,
+                        "speed_knots": round(state[9] * 1.944) if state[9] else None,
+                        "heading": round(state[10]) if state[10] else None,
+                        "country": state[2],
+                        "lat": round(state[6], 4),
+                        "lon": round(state[5], 4)
+                    })
+                
+                # Sort by distance and return top 5
+                aircraft.sort(key=lambda x: x['distance_km'])
+                
+                return {
+                    "aircraft": aircraft[:5],
+                    "total": len(aircraft),
+                    "summary": f"{len(aircraft)} aircraft detected within 50km" if aircraft else "No aircraft detected"
+                }
+
+
 class ContentFilterProcessor(EnrichmentProcessor):
     """Content filtering and classification using HuggingFace models"""
     
@@ -1649,8 +1760,19 @@ def initialize_enrichment_processors():
     """Initialize and register all enrichment processors"""
     from app.config.environment import settings
     
-    # Get the OpenWeather API key (used by both weather and geocoding processors)
+    # Get API keys
     weather_api_key = getattr(settings, 'openweather_api_key', None)
+    opensky_client_id = getattr(settings, 'opensky_client_id', None)
+    opensky_client_secret = getattr(settings, 'opensky_client_secret', None)
+    hf_api_token = getattr(settings, 'huggingface_api_token', None)
+    hf_nsfw_model = getattr(settings, 'huggingface_model_nsfw', 'martin-ha/toxic-comment-model')
+    
+    # Aircraft tracking processor - highest priority for debunking
+    aircraft_processor = AircraftTrackingProcessor(
+        client_id=opensky_client_id, 
+        client_secret=opensky_client_secret
+    )
+    enrichment_orchestrator.register_processor(aircraft_processor)
     
     # Geocoding processor - high priority for location names
     geocoding_processor = GeocodeEnrichmentProcessor(api_key=weather_api_key)
@@ -1669,14 +1791,12 @@ def initialize_enrichment_processors():
     enrichment_orchestrator.register_processor(satellite_processor)
     
     # Content filter processor - HuggingFace API token optional for enhanced features
-    hf_api_token = getattr(settings, 'huggingface_api_token', None)
-    hf_nsfw_model = getattr(settings, 'huggingface_model_nsfw', 'martin-ha/toxic-comment-model')
     content_processor = ContentFilterProcessor(api_token=hf_api_token, nsfw_model=hf_nsfw_model)
     enrichment_orchestrator.register_processor(content_processor)
     
     logger.info(f"Initialized {len(enrichment_orchestrator.processors)} enrichment processors")
+    logger.info(f"Aircraft tracking API available: {opensky_client_id is not None}")
     logger.info(f"Weather API available: {weather_api_key is not None}")
-    logger.info(f"Geocoding API available: {weather_api_key is not None}")
     logger.info(f"HuggingFace API available: {hf_api_token is not None}")
 
 
@@ -2015,6 +2135,22 @@ class EnrichmentDataGenerator:
             "next_pass": summary.get("next_bright_pass")
         }
     
+    def _build_aircraft_tracking_data(self, enrichment_results: dict) -> dict:
+        """Build aircraft tracking data"""
+        if "aircraft_tracking" not in enrichment_results or not enrichment_results["aircraft_tracking"].success:
+            return {
+                "aircraft": [],
+                "total": 0,
+                "summary": "Aircraft tracking unavailable"
+            }
+        
+        aircraft_data = enrichment_results["aircraft_tracking"].data
+        return {
+            "aircraft": aircraft_data.get("aircraft", []),
+            "total": aircraft_data.get("total", 0),
+            "summary": aircraft_data.get("summary", "No aircraft detected")
+        }
+    
     def _build_processing_summary(self, enrichment_results: dict) -> dict:
         """Build processing summary data"""
         successful_processors = sum(1 for result in enrichment_results.values() if result.success)
@@ -2093,6 +2229,7 @@ class EnrichmentDataGenerator:
             enrichment_data = {
                 "status": "completed",
                 "processed_at": datetime.now().isoformat(),
+                "aircraft_tracking": self._build_aircraft_tracking_data(enrichment_results),
                 "location": self._build_location_data(context, sensor_data, enrichment_results),
                 "weather": self._build_weather_data(enrichment_results),
                 "celestial": self._build_celestial_data(enrichment_results),
