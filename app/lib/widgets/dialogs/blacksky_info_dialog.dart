@@ -8,19 +8,19 @@ class BlackSkyInfoDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: AppColors.darkSurface,
-      title: const Row(
+      title: Row(
         children: [
           Icon(Icons.satellite_alt, color: AppColors.brandPrimary),
-          SizedBox(width: 8),
-          Text('BlackSky Satellite Imagery'),
+          const SizedBox(width: 8),
+          const Text('BlackSky Satellite Imagery'),
         ],
       ),
-      content: const SingleChildScrollView(
+      content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'About BlackSky',
               style: TextStyle(
                 color: AppColors.textPrimary,
@@ -28,8 +28,8 @@ class BlackSkyInfoDialog extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: 12),
-            Text(
+            const SizedBox(height: 12),
+            const Text(
               'BlackSky operates a constellation of high-resolution imaging satellites that can capture detailed imagery of any location on Earth.',
               style: TextStyle(
                 color: AppColors.textSecondary,
@@ -37,9 +37,9 @@ class BlackSkyInfoDialog extends StatelessWidget {
                 height: 1.5,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             
-            Text(
+            const Text(
               'Technical Capabilities',
               style: TextStyle(
                 color: AppColors.textPrimary,
@@ -47,8 +47,8 @@ class BlackSkyInfoDialog extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: 8),
-            Text(
+            const SizedBox(height: 8),
+            const Text(
               '• 35cm ground resolution\n'
               '• RGB optical imaging\n'
               '• Multiple daily revisits\n'
@@ -60,9 +60,9 @@ class BlackSkyInfoDialog extends StatelessWidget {
                 height: 1.5,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             
-            Text(
+            const Text(
               'Premium Feature',
               style: TextStyle(
                 color: AppColors.textPrimary,
@@ -70,8 +70,8 @@ class BlackSkyInfoDialog extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: 8),
-            Text(
+            const SizedBox(height: 8),
+            const Text(
               'UFOBeep will offer BlackSky satellite imagery as a premium feature, allowing users to purchase high-resolution images of their sighting locations.',
               style: TextStyle(
                 color: AppColors.textSecondary,
@@ -79,8 +79,8 @@ class BlackSkyInfoDialog extends StatelessWidget {
                 height: 1.5,
               ),
             ),
-            SizedBox(height: 12),
-            Text(
+            const SizedBox(height: 12),
+            const Text(
               'Estimated cost: \$50-100 per image',
               style: TextStyle(
                 color: AppColors.brandPrimary,
@@ -88,10 +88,10 @@ class BlackSkyInfoDialog extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             
             Container(
-              padding: EdgeInsets.all(12),
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: AppColors.brandPrimary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
@@ -107,8 +107,8 @@ class BlackSkyInfoDialog extends StatelessWidget {
                     color: AppColors.brandPrimary,
                     size: 20,
                   ),
-                  SizedBox(width: 8),
-                  Expanded(
+                  const SizedBox(width: 8),
+                  const Expanded(
                     child: Text(
                       'Coming Soon! This feature is in development.',
                       style: TextStyle(

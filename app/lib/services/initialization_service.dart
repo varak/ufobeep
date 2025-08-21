@@ -202,11 +202,11 @@ class InitializationService {
       final permissionService = PermissionService();
       await permissionService.initializePermissions();
       
-      // Check if critical permissions were granted
-      final hasCriticalPermissions = permissionService.locationGranted && permissionService.cameraGranted;
+      // Check if critical permissions were granted (only location is critical now)
+      final hasCriticalPermissions = permissionService.locationGranted;
       
       if (!hasCriticalPermissions) {
-        _logWarning('Missing critical permissions - Location: ${permissionService.locationGranted}, Camera: ${permissionService.cameraGranted}');
+        _logWarning('Missing critical permissions - Location: ${permissionService.locationGranted}');
       }
       
       _logInfo('PermissionService initialization completed');

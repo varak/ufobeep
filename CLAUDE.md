@@ -144,3 +144,26 @@
   masterplan, push to my phone and test
 - I need you to evaluate against docs/Master Plan 10
 - don't mention yourself in these commits
+
+# Documentation Maintenance Instructions
+ALWAYS keep docs updated when making changes:
+
+## Doc Update Triggers
+- **New/changed API endpoint** → Update `docs/ENDPOINTS.md`
+- **Deployment process changes** → Update `docs/DEPLOYMENT.md`
+- **Major features/architecture** → Update `docs/MASTER_PLAN_v13.md`
+- **Dev setup/commands** → Update `docs/QUICKSTART.md`
+- **GitHub Actions changes** → Update `docs/CI.md`
+
+## Quick Production Reference
+- **Deploy**: `./deploy.sh [api|web|apk|all]` (requires 3+ devices for APK)
+- **API Service**: `sudo systemctl restart ufobeep-api`
+- **Web Service**: `sudo systemctl restart ufobeep-web` (NO PM2!)
+- **SSH**: `ssh -p 322 mike@ufobeep.com`
+- **Logs**: `sudo journalctl -u ufobeep-[api|web] -f`
+
+# CRITICAL RULE: NEVER SKIP DOCS UPDATES
+- ALWAYS update documentation when making changes
+- NEVER skip updating docs to "save time" or for any reason
+- Documentation is as important as the code itself
+- If file is locked/modified, wait and try again - don't skip!

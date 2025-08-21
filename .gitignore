@@ -1,152 +1,25 @@
-# === UFOBeep Monorepo .gitignore ===
-
-# Environment & Secrets
-.env
-.env.local
-.env.*.local
-.env.development
-.env.staging
-.env.production
-*.secret
-*.key
-*.pem
-secrets/
-credentials/
-
-# === Flutter (Mobile App) ===
-**/android/app/debug
-**/android/app/profile
-**/android/app/release
-**/android/.gradle/
-**/android/local.properties
-**/android/key.properties
-**/android/app/upload-keystore.jks
-**/ios/Flutter/flutter_assets/
-**/ios/Flutter/App.framework
-**/ios/Flutter/Flutter.framework
-**/ios/Flutter/Flutter.podspec
-**/ios/Pods/
-**/ios/Runner.app
-**/ios/.symlinks/
-**/ios/Flutter/app.flx
-**/ios/Flutter/app.zip
-**/ios/Flutter/flutter_assets/
-**/ios/ServiceDefinitions.json
+# Flutter / Android / iOS
 **/build/
 **/.dart_tool/
-**/.flutter-plugins
-**/.flutter-plugins-dependencies
-**/.packages
-.flutter-devtools-port
-*.iml
+.gradle/
+local.properties
 *.keystore
+*.jks
 
-# === Next.js (Web) ===
-web/node_modules/
-web/.next/
-web/.turbo/
-web/out/
-web/.nuxt/
-web/dist/
-web/.vercel/
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.env*
 
-# === Node.js ===
+# Node
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-.pnpm-debug.log*
-.npmrc
-
-# === Python (API) ===
-api/__pycache__/
-api/*.py[cod]
-api/*$py.class
-api/*.so
-api/.Python
-api/build/
-api/develop-eggs/
-api/dist/
-api/downloads/
-api/eggs/
-api/.eggs/
-api/lib/
-api/lib64/
-api/parts/
-api/sdist/
-api/var/
-api/wheels/
-api/share/python-wheels/
-api/*.egg-info/
-api/.installed.cfg
-api/*.egg
-api/MANIFEST
-api/.venv/
-api/venv/
-api/env/
-api/ENV/
-
-# === Database ===
-*.db
-*.sqlite
-*.sqlite3
-**/migrations/versions/
-
-# === IDEs & Editors ===
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-.DS_Store
-Thumbs.db
-
-# === Build artifacts ===
-build/
-dist/
+.next/
 out/
-target/
-*.deb
-*.rpm
-*.tar.gz
-*.zip
 
-# === Logs ===
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-.pnpm-debug.log*
-
-# === Testing ===
-coverage/
-.nyc_output/
-.coverage
-htmlcov/
-.pytest_cache/
-.cache
-
-# === Temporary files ===
-tmp/
-temp/
-.tmp/
-.temp/
-
-# === OS generated files ===
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# === Media uploads (examples, not actual uploads) ===
-uploads/example_*
-media/temp/
-media/cache/
-.aider*
-web/public/downloads/ufobeep-alpha.apk
+# Media/Secrets
+*.apk
+*.aab
+google-services.json
+GoogleService-Info.plist
+service-account*.json
