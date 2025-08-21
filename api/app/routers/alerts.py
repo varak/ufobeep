@@ -268,13 +268,27 @@ async def upload_alert_media(
             existing_media['files'].extend(new_media_files)
             existing_media['file_count'] = len(existing_media['files'])
             
+            # Sanitize JSON data to remove null bytes that break PostgreSQL
+            def sanitize_for_json(obj):
+                if isinstance(obj, dict):
+                    return {k: sanitize_for_json(v) for k, v in obj.items()}
+                elif isinstance(obj, list):
+                    return [sanitize_for_json(item) for item in obj]
+                elif isinstance(obj, str):
+                    # Remove null bytes and other problematic characters
+                    return obj.replace('\x00', '').replace('\u0000', '')
+                else:
+                    return obj
+            
+            sanitized_media = sanitize_for_json(existing_media)
+            
             # Update sighting
             await conn.execute("""
                 UPDATE sightings 
                 SET media_info = $1,
                     updated_at = NOW()
                 WHERE id = $2
-            """, json.dumps(existing_media), uuid.UUID(alert_id))
+            """, json.dumps(sanitized_media), uuid.UUID(alert_id))
             
             # Don't close the pool - it's shared across the service
             
