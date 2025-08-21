@@ -167,8 +167,13 @@ if [ "$DEPLOY_API" = true ]; then
         
         echo "Installing dependencies..."
         cd api
-        source venv/bin/activate
-        pip install -r requirements.txt
+        if [ -f "venv/bin/activate" ]; then
+            source venv/bin/activate
+            pip install -r requirements.txt
+        else
+            echo "Virtual environment not found, using system pip"
+            pip install -r requirements.txt --break-system-packages
+        fi
         
         echo "Running migrations..."
         alembic upgrade head || true
