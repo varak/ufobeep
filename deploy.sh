@@ -162,7 +162,7 @@ if [ "$DEPLOY_API" = true ]; then
     if ssh -p $PROD_PORT $PROD_HOST << 'ENDSSH'
         set -e
         echo "Pulling latest code..."
-        cd /var/www/ufobeep.com/html
+        cd /home/ufobeep/ufobeep
         git pull origin main
         
         echo "Installing dependencies..."
@@ -203,8 +203,9 @@ if [ "$DEPLOY_WEB" = true ]; then
     if ssh -p $PROD_PORT $PROD_HOST << 'ENDSSH'
         set -e
         echo "Pulling latest code..."
-        cd /home/ufobeep/ufobeep/web
+        cd /home/ufobeep/ufobeep
         git pull origin main
+        cd web
         
         echo "Installing dependencies..."
         npm install
