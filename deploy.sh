@@ -104,12 +104,29 @@ if [ "$DEPLOY_APK" = true ]; then
             
             # Get all device IDs
             DEVICES=$(adb devices | grep "device$" | cut -f1)
+            INSTALL_SUCCESS=0
+            INSTALL_TOTAL=0
+            
             for device in $DEVICES; do
                 echo "  Installing to $device..."
                 adb -s "$device" uninstall com.ufobeep 2>/dev/null || true
-                adb -s "$device" install "$APK_PATH"
+                
+                if adb -s "$device" install "$APK_PATH"; then
+                    echo "    ✅ Success on $device"
+                    ((INSTALL_SUCCESS++))
+                else
+                    echo -e "    ${RED}❌ FAILED on $device${NC}"
+                fi
+                ((INSTALL_TOTAL++))
             done
-            echo -e "${GREEN}✅ Installed on $DEVICE_COUNT devices${NC}"
+            
+            if [ "$INSTALL_SUCCESS" -eq "$INSTALL_TOTAL" ]; then
+                echo -e "${GREEN}✅ Installed on all $DEVICE_COUNT devices${NC}"
+            else
+                echo -e "${RED}❌ DEPLOYMENT FAILED: Only $INSTALL_SUCCESS/$INSTALL_TOTAL devices succeeded${NC}"
+                echo "Fix device issues and try again"
+                exit 1
+            fi
         else
             echo -e "${YELLOW}⚠️  Only $DEVICE_COUNT devices connected (minimum 3 required)${NC}"
             echo "Connected devices:"
@@ -142,7 +159,8 @@ if [ "$DEPLOY_API" = true ]; then
     echo "-------------------------"
     
     echo "Updating API on production..."
-    ssh -p $PROD_PORT $PROD_HOST << 'ENDSSH'
+    if ssh -p $PROD_PORT $PROD_HOST << 'ENDSSH'
+        set -e
         echo "Pulling latest code..."
         cd /var/www/ufobeep.com/html
         git pull origin main
@@ -160,10 +178,19 @@ if [ "$DEPLOY_API" = true ]; then
         
         echo "Checking API status..."
         sleep 2
-        curl -s https://api.ufobeep.com/healthz | head -1
+        if ! curl -s https://api.ufobeep.com/healthz | grep -q '"ok":true'; then
+            echo "❌ API health check failed!"
+            sudo systemctl status ufobeep-api --no-pager
+            exit 1
+        fi
+        echo "✅ API is healthy"
 ENDSSH
-    
-    echo -e "${GREEN}✅ API deployed${NC}"
+    then
+        echo -e "${GREEN}✅ API deployed${NC}"
+    else
+        echo -e "${RED}❌ API DEPLOYMENT FAILED${NC}"
+        exit 1
+    fi
     echo
 fi
 
@@ -173,7 +200,8 @@ if [ "$DEPLOY_WEB" = true ]; then
     echo "------------------------------"
     
     echo "Updating Next.js app on production..."
-    ssh -p $PROD_PORT $PROD_HOST << 'ENDSSH'
+    if ssh -p $PROD_PORT $PROD_HOST << 'ENDSSH'
+        set -e
         echo "Pulling latest code..."
         cd /home/ufobeep/ufobeep/web
         git pull origin main
@@ -188,10 +216,25 @@ if [ "$DEPLOY_WEB" = true ]; then
         sudo systemctl restart ufobeep-web
         
         echo "Checking web status..."
-        sudo systemctl status ufobeep-web --no-pager | head -5
+        sleep 2
+        if ! sudo systemctl is-active --quiet ufobeep-web; then
+            echo "❌ Web service failed to start!"
+            sudo systemctl status ufobeep-web --no-pager
+            exit 1
+        fi
+        
+        if ! curl -s -I https://ufobeep.com | grep -q "HTTP/2 200"; then
+            echo "❌ Website not responding!"
+            exit 1
+        fi
+        echo "✅ Website is healthy"
 ENDSSH
-    
-    echo -e "${GREEN}✅ Web app deployed${NC}"
+    then
+        echo -e "${GREEN}✅ Web app deployed${NC}"
+    else
+        echo -e "${RED}❌ WEB DEPLOYMENT FAILED${NC}"
+        exit 1
+    fi
     echo
 fi
 
