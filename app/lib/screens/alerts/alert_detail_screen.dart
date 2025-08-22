@@ -39,11 +39,13 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     // Get current user's device ID
     try {
       final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      print('DEBUG: Loaded device ID: "$deviceId"');
       
       if (mounted) {
         setState(() {
           _currentUserDeviceId = deviceId;
         });
+        print('DEBUG: Set _currentUserDeviceId to: "$_currentUserDeviceId"');
         
         // Check if this user is a confirmed witness
         await _checkWitnessStatus(deviceId);
@@ -111,6 +113,9 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
           );
         }
 
+        print('DEBUG: Building alert detail for alert.reporterId: "${alert.reporterId}"');
+        print('DEBUG: Current _currentUserDeviceId: "$_currentUserDeviceId"');
+        
         return Scaffold(
           appBar: AppBar(
             title: Text(AlertTitleUtils.getContextualTitleFromAlert(alert)),
