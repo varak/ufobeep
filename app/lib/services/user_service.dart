@@ -5,6 +5,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/anonymous_beep_service.dart';
 
 // User registration models
@@ -359,7 +360,95 @@ class UserService {
     // If no existing user, initiate registration flow
     throw Exception('User not registered - please complete registration');
   }
+
+  /// Send recovery code to verified email - MP14
+  Future<Map<String, dynamic>> recoverAccount(String email) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$_apiBaseUrl/users/recover-account'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email}),
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        final error = jsonDecode(response.body);
+        return {
+          'success': false,
+          'message': error['detail'] ?? 'Recovery request failed'
+        };
+      }
+    } catch (e) {
+      print('Error requesting account recovery: $e');
+      return {
+        'success': false,
+        'message': 'Network error. Please try again.'
+      };
+    }
+  }
+
+  /// Verify recovery code and restore account - MP14
+  Future<Map<String, dynamic>> verifyRecoveryCode(
+    String recoveryCode, 
+    String deviceId
+  ) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$_apiBaseUrl/users/verify-recovery'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'recovery_code': recoveryCode,
+          'device_id': deviceId,
+        }),
+      );
+
+      final data = jsonDecode(response.body);
+      
+      if (response.statusCode == 200 && data['success'] == true) {
+        // Save recovered user data locally
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('user_id', data['user_id']);
+        await prefs.setString('username', data['username']);
+        await prefs.setString('device_id', data['device_id']);
+        if (data['email'] != null) {
+          await prefs.setString('email', data['email']);
+        }
+
+        print('Account recovered successfully: ${data['username']}');
+        
+        return data;
+      } else {
+        return {
+          'success': false,
+          'error': data['detail'] ?? 'Invalid or expired recovery code'
+        };
+      }
+    } catch (e) {
+      print('Error verifying recovery code: $e');
+      return {
+        'success': false,
+        'error': 'Network error. Please try again.'
+      };
+    }
+  }
+
+  /// Send verification email for current user - MP14
+  Future<bool> sendVerificationEmail(String email) async {
+    try {
+      // This would be called after registration with email
+      // For now, this is handled in the registration flow
+      // But we can add a separate endpoint later if needed
+      return true;
+    } catch (e) {
+      print('Error sending verification email: $e');
+      return false;
+    }
+  }
 }
 
 /// Global instance for easy access
 final userService = UserService.instance;
+
+/// Riverpod provider for UserService
+final userServiceProvider = Provider<UserService>((ref) => userService);

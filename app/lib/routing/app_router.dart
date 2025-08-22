@@ -16,6 +16,7 @@ import '../screens/map/map_screen.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/profile/user_registration_screen.dart';
 import '../screens/profile/language_settings_screen.dart';
+import '../screens/auth/account_recovery_screen.dart';
 import '../screens/splash/splash_screen.dart';
 import '../models/shared_media_data.dart';
 
@@ -295,6 +296,13 @@ GoRouter appRouter(AppRouterRef ref) {
         path: '/register',
         name: 'register',
         builder: (context, state) => const UserRegistrationScreen(),
+      ),
+
+      // Account Recovery Screen - MP14
+      GoRoute(
+        path: '/recover',
+        name: 'recover',
+        builder: (context, state) => const AccountRecoveryScreen(),
       ),
 
     ],

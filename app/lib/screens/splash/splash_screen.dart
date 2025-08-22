@@ -86,8 +86,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       // User is already registered, go to main app
       context.go('/alerts');
     } else {
-      // User needs registration, go to registration flow
-      context.go('/register');
+      // User needs registration - show options dialog
+      _showRegistrationOptions();
     }
   }
 
@@ -155,6 +155,98 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   void _retryInitialization() {
     ref.read(initializationProvider.notifier).reset();
     _initializeApp();
+  }
+
+  void _showRegistrationOptions() {
+    if (!mounted) return;
+    
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Row(
+          children: [
+            Text('🛸', style: TextStyle(fontSize: 24)),
+            SizedBox(width: 12),
+            Text(
+              'Welcome to UFOBeep',
+              style: TextStyle(color: AppColors.textPrimary, fontSize: 18),
+            ),
+          ],
+        ),
+        content: const Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Choose how you\'d like to get started:',
+              style: TextStyle(color: AppColors.textSecondary, fontSize: 16),
+            ),
+            SizedBox(height: 16),
+            Text(
+              '• New User: Create a new account with a cosmic username',
+              style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
+            ),
+            SizedBox(height: 8),
+            Text(
+              '• I Have an Account: Recover your existing username with a verified email',
+              style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
+            ),
+          ],
+        ),
+        actions: [
+          // Account Recovery Button
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  context.go('/recover');
+                },
+                icon: const Icon(Icons.email_outlined, color: AppColors.brandPrimary),
+                label: const Text(
+                  'I Have an Account',
+                  style: TextStyle(color: AppColors.brandPrimary, fontWeight: FontWeight.w600),
+                ),
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: AppColors.brandPrimary),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
+            ),
+          ),
+          // New User Button
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(context).pop();
+                context.go('/register');
+              },
+              icon: const Icon(Icons.person_add, color: AppColors.textPrimary),
+              label: const Text(
+                'New User',
+                style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.brandPrimary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
