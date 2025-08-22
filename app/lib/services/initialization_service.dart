@@ -8,10 +8,12 @@ import 'package:flutter/services.dart';
 import '../config/environment.dart';
 import '../config/locale_config.dart';
 import 'permission_service.dart';
+import 'user_service.dart';
 
 enum InitializationStep {
   environment,
   permissions,
+  userSystem,
   userPreferences,
   localization,
   networkCheck,
@@ -102,23 +104,31 @@ class InitializationService {
       }
       initData.addAll(permResult.data);
 
-      // Step 3: Load user preferences
-      await _updateProgress(InitializationStep.userPreferences, 0.4, 'Loading preferences...');
+      // Step 3: Initialize user system
+      await _updateProgress(InitializationStep.userSystem, 0.35, 'Checking user registration...');
+      final userResult = await _initializeUserSystem();
+      if (!userResult.success) {
+        return userResult;
+      }
+      initData.addAll(userResult.data);
+
+      // Step 4: Load user preferences
+      await _updateProgress(InitializationStep.userPreferences, 0.5, 'Loading preferences...');
       final prefResult = await _loadUserPreferences();
       if (!prefResult.success) {
         return prefResult;
       }
       initData.addAll(prefResult.data);
 
-      // Step 4: Initialize localization
-      await _updateProgress(InitializationStep.localization, 0.6, 'Setting up localization...');
+      // Step 5: Initialize localization
+      await _updateProgress(InitializationStep.localization, 0.65, 'Setting up localization...');
       final localeResult = await _initializeLocalization(initData);
       if (!localeResult.success) {
         return localeResult;
       }
       initData.addAll(localeResult.data);
 
-      // Step 5: Network connectivity check
+      // Step 6: Network connectivity check
       await _updateProgress(InitializationStep.networkCheck, 0.8, 'Checking connectivity...');
       final networkResult = await _checkNetworkConnectivity();
       if (!networkResult.success) {
@@ -126,7 +136,7 @@ class InitializationService {
       }
       initData.addAll(networkResult.data);
 
-      // Step 6: Device information
+      // Step 7: Device information
       await _updateProgress(InitializationStep.deviceInfo, 0.9, 'Gathering device info...');
       final deviceResult = await _gatherDeviceInfo();
       if (!deviceResult.success) {
@@ -134,7 +144,7 @@ class InitializationService {
       }
       initData.addAll(deviceResult.data);
 
-      // Step 7: Complete
+      // Step 8: Complete
       await _updateProgress(InitializationStep.complete, 1.0, 'Initialization complete!');
 
       _logInfo('Initialization completed successfully');
@@ -237,6 +247,50 @@ class InitializationService {
         success: false,
         error: 'Permission initialization failed: $e',
         lastStep: InitializationStep.permissions,
+      );
+    }
+  }
+
+  Future<InitializationResult> _initializeUserSystem() async {
+    try {
+      // Initialize the user system and check registration status
+      final isRegistered = await userService.initializeUser();
+      
+      String userStatus = 'unregistered';
+      String? username;
+      String? userId;
+      
+      if (isRegistered) {
+        final currentUser = await userService.getCurrentUser();
+        username = currentUser['username'];
+        userId = currentUser['userId'];
+        userStatus = 'registered';
+      }
+
+      _logInfo('User system initialized. Status: $userStatus, Username: ${username ?? 'none'}');
+      
+      return InitializationResult(
+        success: true,
+        lastStep: InitializationStep.userSystem,
+        data: {
+          'isRegistered': isRegistered,
+          'userStatus': userStatus,
+          'username': username,
+          'userId': userId,
+        },
+      );
+    } catch (e) {
+      _logError('User system initialization failed: $e');
+      // Don't fail initialization for user system issues
+      // The splash screen will handle routing appropriately
+      return InitializationResult(
+        success: true,
+        lastStep: InitializationStep.userSystem,
+        data: {
+          'isRegistered': false,
+          'userStatus': 'error',
+          'error': e.toString(),
+        },
       );
     }
   }

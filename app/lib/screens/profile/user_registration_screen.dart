@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../services/user_service.dart';
 import '../../theme/app_theme.dart';
 
@@ -95,51 +96,22 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
       );
 
       if (mounted) {
-        // Registration successful
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) => AlertDialog(
-            backgroundColor: AppColors.darkSurface,
-            title: Row(
-              children: [
-                const Icon(Icons.check_circle, color: AppColors.semanticSuccess),
-                const SizedBox(width: 8),
-                const Text('Welcome to UFOBeep!'),
-              ],
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Registration successful!'),
-                const SizedBox(height: 8),
-                Text(
-                  'Username: ${response.username}',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.brandPrimary,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Text(response.message),
-              ],
-            ),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close dialog
-                  Navigator.of(context).pushReplacementNamed('/'); // Go to home
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.brandPrimary,
-                  foregroundColor: Colors.black,
-                ),
-                child: const Text('Continue to UFOBeep'),
-              ),
-            ],
+        // Registration successful - show quick success message and navigate
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Welcome to UFOBeep, ${response.username}!'),
+            backgroundColor: AppColors.semanticSuccess,
+            duration: const Duration(seconds: 2),
           ),
         );
+        
+        // Small delay to show the success message, then navigate
+        await Future.delayed(const Duration(milliseconds: 1500));
+        
+        if (mounted) {
+          // Navigate to main app
+          context.go('/alerts');
+        }
       }
     } catch (e) {
       setState(() => _isRegistering = false);
@@ -224,7 +196,7 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
               Center(
                 child: TextButton(
                   onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/');
+                    context.go('/alerts');
                   },
                   child: const Text(
                     'Skip for now',

@@ -14,7 +14,7 @@ import '../screens/chat/chat_screen.dart';
 import '../screens/compass/compass_screen.dart';
 import '../screens/map/map_screen.dart';
 import '../screens/profile/profile_screen.dart';
-import '../screens/profile/registration_screen.dart';
+import '../screens/profile/user_registration_screen.dart';
 import '../screens/profile/language_settings_screen.dart';
 import '../screens/splash/splash_screen.dart';
 import '../models/shared_media_data.dart';
@@ -294,7 +294,7 @@ GoRouter appRouter(AppRouterRef ref) {
       GoRoute(
         path: '/register',
         name: 'register',
-        builder: (context, state) => const RegistrationScreen(),
+        builder: (context, state) => const UserRegistrationScreen(),
       ),
 
     ],

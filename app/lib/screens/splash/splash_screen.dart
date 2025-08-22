@@ -78,14 +78,15 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   Future<void> _navigateToNextScreen() async {
     if (!mounted) return;
     
-    // Check if user is registered
-    final isRegistered = ref.read(isRegisteredProvider);
+    // Check initialization result for user registration status
+    final initResult = ref.read(initializationProvider);
+    final isRegistered = initResult?.data['isRegistered'] ?? false;
     
     if (isRegistered) {
-      // Navigate to main app
+      // User is already registered, go to main app
       context.go('/alerts');
     } else {
-      // Navigate to registration/onboarding
+      // User needs registration, go to registration flow
       context.go('/register');
     }
   }
