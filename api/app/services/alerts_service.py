@@ -324,7 +324,7 @@ class AlertsService:
             sighting = await conn.fetchrow("""
                 SELECT id, witness_count, created_at, sensor_data, enrichment_data
                 FROM sightings WHERE id = $1
-            """, uuid.UUID(sighting_id))
+            """, sighting_id)
             
             if not sighting:
                 raise ValueError("Sighting not found")
@@ -333,7 +333,7 @@ class AlertsService:
             existing = await conn.fetchrow("""
                 SELECT device_id FROM witness_confirmations 
                 WHERE sighting_id = $1 AND device_id = $2
-            """, uuid.UUID(sighting_id), device_id)
+            """, sighting_id, device_id)
             
             if existing:
                 raise ValueError("Device already confirmed as witness")
@@ -343,7 +343,7 @@ class AlertsService:
                 INSERT INTO witness_confirmations 
                 (sighting_id, device_id, confirmation_data, confirmed_at)
                 VALUES ($1, $2, $3, NOW())
-            """, uuid.UUID(sighting_id), device_id, json.dumps(witness_data))
+            """, sighting_id, device_id, json.dumps(witness_data))
             
             # Update witness count
             new_count = await conn.fetchval("""
