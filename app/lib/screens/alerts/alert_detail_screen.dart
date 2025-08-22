@@ -119,7 +119,6 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 // Action buttons (including witness confirmation)
                 AlertActionsSection(
                   alert: alert,
-                  onJoinChat: () => context.go('/alert/${widget.alertId}/chat'),
                   onAddPhotos: () => _showAddPhotosDialog(widget.alertId),
                   onReportToMufon: () => _showMufonReportDialog(),
                   onWitnessConfirmed: (witnessCount) {

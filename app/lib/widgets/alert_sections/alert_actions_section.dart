@@ -10,7 +10,6 @@ class AlertActionsSection extends StatefulWidget {
   const AlertActionsSection({
     super.key,
     required this.alert,
-    this.onJoinChat,
     this.onAddPhotos,
     this.onReportToMufon,
     this.onWitnessConfirmed,
@@ -18,7 +17,6 @@ class AlertActionsSection extends StatefulWidget {
   });
 
   final Alert alert;
-  final VoidCallback? onJoinChat;
   final VoidCallback? onAddPhotos;
   final VoidCallback? onReportToMufon;
   final Function(int witnessCount)? onWitnessConfirmed;
@@ -79,28 +77,6 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
             _buildConfirmedStatus(),
             const SizedBox(height: 12),
           ],
-          
-          // Chat button (secondary action)
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton.icon(
-              onPressed: widget.onJoinChat,
-              icon: const Icon(Icons.chat, size: 18),
-              label: const Text('Join Chat'),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: AppColors.brandPrimary,
-                side: const BorderSide(color: AppColors.brandPrimary, width: 1.5),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                textStyle: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
           
           if (widget.showAllActions) ...[
             const SizedBox(height: 12),

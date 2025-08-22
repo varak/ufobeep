@@ -28,6 +28,8 @@ DEPLOY_API=false
 DEPLOY_WEB=false
 DEPLOY_APK=false
 DEPLOY_ALL=false
+AUTO_COMMIT=false
+COMMIT_MSG=""
 
 if [ $# -eq 0 ]; then
     DEPLOY_ALL=true
@@ -38,6 +40,10 @@ else
             web) DEPLOY_WEB=true ;;
             apk|mobile) DEPLOY_APK=true ;;
             all) DEPLOY_ALL=true ;;
+            --auto-commit=*) 
+                AUTO_COMMIT=true
+                COMMIT_MSG="${arg#*=}"
+                ;;
             *) echo -e "${RED}Unknown option: $arg${NC}"; exit 1 ;;
         esac
     done
@@ -59,12 +65,20 @@ if [[ -n $(git status -s) ]]; then
     echo -e "${YELLOW}⚠️  Uncommitted changes detected:${NC}"
     git status -s
     echo
-    read -p "Commit these changes? (y/n): " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        read -p "Enter commit message: " commit_msg
+    
+    if [ "$AUTO_COMMIT" = true ] && [ -n "$COMMIT_MSG" ]; then
+        echo "Auto-committing with message: $COMMIT_MSG"
         git add .
-        git commit -m "$commit_msg"
+        git commit -m "$COMMIT_MSG"
+    else
+        read -p "Commit these changes? (y/n): " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            echo -e "${YELLOW}💡 Remember: Do not include self-attribution in commit messages${NC}"
+            read -p "Enter commit message: " commit_msg
+            git add .
+            git commit -m "$commit_msg"
+        fi
     fi
 fi
 
