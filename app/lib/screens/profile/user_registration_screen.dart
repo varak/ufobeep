@@ -192,16 +192,15 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Skip registration option
+              // Note about required registration
               Center(
-                child: TextButton(
-                  onPressed: () {
-                    context.go('/alerts');
-                  },
-                  child: const Text(
-                    'Skip for now',
-                    style: TextStyle(color: AppColors.textSecondary),
+                child: Text(
+                  'Registration helps us provide personalized alerts and better moderation',
+                  style: TextStyle(
+                    color: AppColors.textSecondary.withOpacity(0.8),
+                    fontSize: 12,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ],
