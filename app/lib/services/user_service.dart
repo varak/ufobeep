@@ -1,16 +1,99 @@
-"""
-User Service - MP13-1
-Handles user registration, username generation, and user management for UFOBeep
-Replaces device ID system with human-readable usernames like 'cosmic.whisper.7823'
-"""
+/// User Service - MP13-1
+/// Handles user registration, username generation, and user management for UFOBeep
+/// Replaces device ID system with human-readable usernames like 'cosmic.whisper.7823'
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../config/environment.dart';
 import '../services/anonymous_beep_service.dart';
 
+// User registration models
+class UsernameGenerationResponse {
+  final String username;
+  final List<String> alternatives;
+
+  UsernameGenerationResponse({
+    required this.username,
+    required this.alternatives,
+  });
+
+  factory UsernameGenerationResponse.fromJson(Map<String, dynamic> json) {
+    return UsernameGenerationResponse(
+      username: json['username'] ?? '',
+      alternatives: List<String>.from(json['alternatives'] ?? []),
+    );
+  }
+}
+
+class UserRegistrationResponse {
+  final String userId;
+  final String username;
+  final String deviceId;
+  final bool isNewUser;
+  final String message;
+
+  UserRegistrationResponse({
+    required this.userId,
+    required this.username,
+    required this.deviceId,
+    required this.isNewUser,
+    required this.message,
+  });
+
+  factory UserRegistrationResponse.fromJson(Map<String, dynamic> json) {
+    return UserRegistrationResponse(
+      userId: json['user_id'] ?? '',
+      username: json['username'] ?? '',
+      deviceId: json['device_id'] ?? '',
+      isNewUser: json['is_new_user'] ?? false,
+      message: json['message'] ?? '',
+    );
+  }
+}
+
+class UserProfile {
+  final String userId;
+  final String username;
+  final String? email;
+  final String? displayName;
+  final double alertRangeKm;
+  final bool unitsMetric;
+  final String preferredLanguage;
+  final bool isVerified;
+  final DateTime createdAt;
+  final Map<String, dynamic> stats;
+
+  UserProfile({
+    required this.userId,
+    required this.username,
+    this.email,
+    this.displayName,
+    required this.alertRangeKm,
+    required this.unitsMetric,
+    required this.preferredLanguage,
+    required this.isVerified,
+    required this.createdAt,
+    required this.stats,
+  });
+
+  factory UserProfile.fromJson(Map<String, dynamic> json) {
+    return UserProfile(
+      userId: json['user_id'] ?? '',
+      username: json['username'] ?? '',
+      email: json['email'],
+      displayName: json['display_name'],
+      alertRangeKm: (json['alert_range_km'] ?? 50.0).toDouble(),
+      unitsMetric: json['units_metric'] ?? true,
+      preferredLanguage: json['preferred_language'] ?? 'en',
+      isVerified: json['is_verified'] ?? false,
+      createdAt: DateTime.parse(json['created_at']),
+      stats: json['stats'] ?? {},
+    );
+  }
+}
+
 class UserService {
+  static const String _apiBaseUrl = 'https://api.ufobeep.com';
   static const String _userIdKey = 'user_id';
   static const String _usernameKey = 'username';
   static const String _isRegisteredKey = 'is_registered';
@@ -20,96 +103,11 @@ class UserService {
   static UserService get instance => _instance ??= UserService._internal();
   UserService._internal();
 
-  // User registration models
-  class UsernameGenerationResponse {
-    final String username;
-    final List<String> alternatives;
-
-    UsernameGenerationResponse({
-      required this.username,
-      required this.alternatives,
-    });
-
-    factory UsernameGenerationResponse.fromJson(Map<String, dynamic> json) {
-      return UsernameGenerationResponse(
-        username: json['username'] ?? '',
-        alternatives: List<String>.from(json['alternatives'] ?? []),
-      );
-    }
-  }
-
-  class UserRegistrationResponse {
-    final String userId;
-    final String username;
-    final String deviceId;
-    final bool isNewUser;
-    final String message;
-
-    UserRegistrationResponse({
-      required this.userId,
-      required this.username,
-      required this.deviceId,
-      required this.isNewUser,
-      required this.message,
-    });
-
-    factory UserRegistrationResponse.fromJson(Map<String, dynamic> json) {
-      return UserRegistrationResponse(
-        userId: json['user_id'] ?? '',
-        username: json['username'] ?? '',
-        deviceId: json['device_id'] ?? '',
-        isNewUser: json['is_new_user'] ?? false,
-        message: json['message'] ?? '',
-      );
-    }
-  }
-
-  class UserProfile {
-    final String userId;
-    final String username;
-    final String? email;
-    final String? displayName;
-    final double alertRangeKm;
-    final bool unitsMetric;
-    final String preferredLanguage;
-    final bool isVerified;
-    final DateTime createdAt;
-    final Map<String, dynamic> stats;
-
-    UserProfile({
-      required this.userId,
-      required this.username,
-      this.email,
-      this.displayName,
-      required this.alertRangeKm,
-      required this.unitsMetric,
-      required this.preferredLanguage,
-      required this.isVerified,
-      required this.createdAt,
-      required this.stats,
-    });
-
-    factory UserProfile.fromJson(Map<String, dynamic> json) {
-      return UserProfile(
-        userId: json['user_id'] ?? '',
-        username: json['username'] ?? '',
-        email: json['email'],
-        displayName: json['display_name'],
-        alertRangeKm: (json['alert_range_km'] ?? 50.0).toDouble(),
-        unitsMetric: json['units_metric'] ?? true,
-        preferredLanguage: json['preferred_language'] ?? 'en',
-        isVerified: json['is_verified'] ?? false,
-        createdAt: DateTime.parse(json['created_at']),
-        stats: json['stats'] ?? {},
-      );
-    }
-  }
-
   /// Generate new username options for user registration
   Future<UsernameGenerationResponse> generateUsername() async {
     try {
       final response = await http.post(
-        Uri.parse('${Environment.apiBaseUrl}/users/generate-username'),
+        Uri.parse('$_apiBaseUrl/users/generate-username'),
         headers: {'Content-Type': 'application/json'},
       );
 
@@ -153,7 +151,7 @@ class UserService {
       }
 
       final response = await http.post(
-        Uri.parse('${Environment.apiBaseUrl}/users/register'),
+        Uri.parse('$_apiBaseUrl/users/register'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(requestBody),
       );
@@ -185,7 +183,7 @@ class UserService {
       final deviceId = await anonymousBeepService.getOrCreateDeviceId();
       
       final response = await http.get(
-        Uri.parse('${Environment.apiBaseUrl}/users/by-device/$deviceId'),
+        Uri.parse('$_apiBaseUrl/users/by-device/$deviceId'),
         headers: {'Content-Type': 'application/json'},
       );
 
@@ -217,7 +215,7 @@ class UserService {
   Future<UserProfile?> getUserProfile(String username) async {
     try {
       final response = await http.get(
-        Uri.parse('${Environment.apiBaseUrl}/users/profile/$username'),
+        Uri.parse('$_apiBaseUrl/users/profile/$username'),
         headers: {'Content-Type': 'application/json'},
       );
 
@@ -239,7 +237,7 @@ class UserService {
   Future<Map<String, dynamic>> validateUsername(String username) async {
     try {
       final response = await http.post(
-        Uri.parse('${Environment.apiBaseUrl}/users/validate-username'),
+        Uri.parse('$_apiBaseUrl/users/validate-username'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'username': username}),
       );
