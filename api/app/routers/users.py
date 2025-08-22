@@ -541,3 +541,52 @@ async def test_email(request: dict):
             "success": False,
             "error": str(e)
         }
+
+
+@router.post("/setup-email-dkim")
+async def setup_email_dkim(request: dict):
+    """Set up DKIM for proper email delivery"""
+    password = request.get("password", "").strip()
+    
+    if password != "ufopostpass":
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        import subprocess
+        import os
+        
+        # Run the DKIM setup script
+        script_path = "/home/ufobeep/ufobeep/fix_email_deliverability.sh"
+        
+        if not os.path.exists(script_path):
+            return {
+                "success": False,
+                "error": "Setup script not found",
+                "script_path": script_path
+            }
+        
+        # Execute the setup script
+        result = subprocess.run(
+            ["bash", script_path],
+            capture_output=True,
+            text=True,
+            timeout=300  # 5 minute timeout
+        )
+        
+        return {
+            "success": result.returncode == 0,
+            "returncode": result.returncode,
+            "stdout": result.stdout,
+            "stderr": result.stderr
+        }
+        
+    except subprocess.TimeoutExpired:
+        return {
+            "success": False,
+            "error": "Setup script timed out"
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e)
+        }

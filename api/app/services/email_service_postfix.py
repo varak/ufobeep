@@ -20,8 +20,8 @@ class PostfixEmailService:
     def __init__(self, 
                  smtp_host: str = "localhost",
                  smtp_port: int = 25,
-                 from_email: str = "alerts@ufobeep.com",
-                 from_name: str = "Alert Network"):
+                 from_email: str = "admin@ufobeep.com",
+                 from_name: str = "System Admin"):
         self.smtp_host = smtp_host
         self.smtp_port = smtp_port
         self.from_email = from_email
