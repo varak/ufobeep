@@ -4,18 +4,25 @@ Handles user registration, username generation, and user profile management
 """
 
 from fastapi import APIRouter, HTTPException, Depends, status
-from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
 from pydantic import BaseModel, Field, validator
 from typing import Optional, List
 from datetime import datetime
 import uuid
+import asyncpg
 
-from app.models.sighting import User, Device, DevicePlatform
 from app.services.username_service import UsernameGenerator
-from app.config.environment import get_db
 
 router = APIRouter(prefix="/users", tags=["users"])
+
+
+# Database dependency
+async def get_db():
+    """Get database connection pool"""
+    return await asyncpg.create_pool(
+        host="localhost", port=5432, user="ufobeep_user", 
+        password="ufopostpass", database="ufobeep_db",
+        min_size=1, max_size=10
+    )
 
 
 # Pydantic Models for API
@@ -32,7 +39,7 @@ class UserRegistrationRequest(BaseModel):
     email: Optional[str] = Field(None, description="Optional email address")
     
     # Device information
-    platform: DevicePlatform
+    platform: str = Field(..., description="Device platform (ios, android, web)")
     device_name: Optional[str] = Field(None, max_length=255)
     app_version: Optional[str] = Field(None, max_length=50)
     os_version: Optional[str] = Field(None, max_length=50)
@@ -98,176 +105,141 @@ async def generate_username():
 
 
 @router.post("/register", response_model=UserRegistrationResponse)
-async def register_user(
-    request: UserRegistrationRequest,
-    db: Session = Depends(get_db)
-):
+async def register_user(request: UserRegistrationRequest):
     """
     Register a new user or get existing user by device ID
     Creates username-based identity for anonymous device users
     """
+    pool = await get_db()
     try:
-        # Check if user already exists with this device
-        existing_device = db.query(Device).filter(Device.device_id == request.device_id).first()
-        
-        if existing_device:
-            # User already exists, return existing user
-            existing_user = existing_device.user
-            return UserRegistrationResponse(
-                user_id=str(existing_user.id),
-                username=existing_user.username,
-                device_id=request.device_id,
-                is_new_user=False,
-                message="Welcome back! Using existing account."
+        async with pool.acquire() as conn:
+            # Check if device already exists
+            existing_device = await conn.fetchrow(
+                "SELECT device_id, user_id FROM devices WHERE device_id = $1",
+                request.device_id
             )
-        
-        # Generate username if not provided
-        username = request.username
-        if not username:
-            # Try multiple times to get a unique username
-            for attempt in range(10):
-                candidate = UsernameGenerator.generate()
-                existing = db.query(User).filter(User.username == candidate).first()
-                if not existing:
-                    username = candidate
-                    break
             
-            if not username:
-                raise HTTPException(
-                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                    detail="Unable to generate unique username"
+            if existing_device:
+                # Get the existing user
+                existing_user = await conn.fetchrow(
+                    "SELECT id, username FROM users WHERE id = $1",
+                    existing_device['user_id']
                 )
-        
-        # Create new user
-        new_user = User(
-            id=uuid.uuid4(),
-            username=username,
-            email=request.email,
-            password_hash=None,  # Anonymous user
-            alert_range_km=request.alert_range_km or 50.0,
-            units_metric=request.units_metric or True,
-            preferred_language=request.preferred_language or "en",
-            is_active=True,
-            is_verified=False
-        )
-        
-        db.add(new_user)
-        db.flush()  # Get the user ID
-        
-        # Create device record
-        new_device = Device(
-            id=uuid.uuid4(),
-            user_id=new_user.id,
-            device_id=request.device_id,
-            device_name=request.device_name,
-            platform=request.platform,
-            app_version=request.app_version,
-            os_version=request.os_version,
-            is_active=True,
-            last_seen=datetime.utcnow()
-        )
-        
-        db.add(new_device)
-        db.commit()
-        
-        return UserRegistrationResponse(
-            user_id=str(new_user.id),
-            username=new_user.username,
-            device_id=request.device_id,
-            is_new_user=True,
-            message=f"Welcome to UFOBeep, {username}!"
-        )
-        
-    except IntegrityError as e:
-        db.rollback()
-        if "username" in str(e):
+                return UserRegistrationResponse(
+                    user_id=str(existing_user['id']),
+                    username=existing_user['username'],
+                    device_id=request.device_id,
+                    is_new_user=False,
+                    message="Welcome back! Using existing account."
+                )
+            
+            # Generate username if not provided
+            username = request.username
+            if not username:
+                # Try multiple times to get a unique username
+                for attempt in range(10):
+                    candidate = UsernameGenerator.generate()
+                    existing = await conn.fetchrow(
+                        "SELECT username FROM users WHERE username = $1",
+                        candidate
+                    )
+                    if not existing:
+                        username = candidate
+                        break
+                
+                if not username:
+                    raise HTTPException(
+                        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                        detail="Unable to generate unique username"
+                    )
+            
+            # Create new user
+            user_id = uuid.uuid4()
+            await conn.execute("""
+                INSERT INTO users (
+                    id, username, email, alert_range_km, units_metric, 
+                    preferred_language, is_active, is_verified, created_at, updated_at
+                )
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW())
+            """, user_id, username, request.email, 
+                request.alert_range_km or 50.0,
+                request.units_metric if request.units_metric is not None else True,
+                request.preferred_language or "en", True, False)
+            
+            # Create device record
+            device_id = uuid.uuid4()
+            await conn.execute("""
+                INSERT INTO devices (
+                    id, user_id, device_id, device_name, platform, 
+                    app_version, os_version, is_active, last_seen, 
+                    created_at, updated_at, registered_at
+                )
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW(), NOW())
+            """, device_id, user_id, request.device_id, request.device_name,
+                request.platform, request.app_version, request.os_version, True)
+            
+            return UserRegistrationResponse(
+                user_id=str(user_id),
+                username=username,
+                device_id=request.device_id,
+                is_new_user=True,
+                message=f"Welcome to UFOBeep, {username}!"
+            )
+            
+    except Exception as e:
+        if "username" in str(e) and "unique" in str(e).lower():
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="Username already exists. Please choose another one."
             )
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Registration failed due to data conflict"
-        )
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Registration failed: {str(e)}"
         )
+    finally:
+        await pool.close()
 
 
 @router.get("/by-device/{device_id}", response_model=UserRegistrationResponse)
-async def get_user_by_device(device_id: str, db: Session = Depends(get_db)):
+async def get_user_by_device(device_id: str):
     """
-    Get user information by device ID
+    Get user information by device ID  
     Used for existing users to retrieve their username and user ID
     """
-    device = db.query(Device).filter(Device.device_id == device_id).first()
-    
-    if not device:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Device not found. Please register first."
-        )
-    
-    user = device.user
-    return UserRegistrationResponse(
-        user_id=str(user.id),
-        username=user.username,
-        device_id=device_id,
-        is_new_user=False,
-        message="User found"
-    )
-
-
-@router.get("/profile/{username}", response_model=UserProfileResponse)
-async def get_user_profile(username: str, db: Session = Depends(get_db)):
-    """
-    Get user profile by username
-    Returns public profile information
-    """
-    user = db.query(User).filter(User.username == username).first()
-    
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found"
-        )
-    
-    # Calculate user stats
-    from sqlalchemy import func
-    from app.models.sighting import Sighting, WitnessConfirmation
-    
-    sighting_count = db.query(func.count(Sighting.id)).filter(Sighting.reporter_id == user.id).scalar() or 0
-    witness_count = db.query(func.count(WitnessConfirmation.id)).filter(WitnessConfirmation.user_id == user.id).scalar() or 0
-    
-    stats = {
-        "sightings_reported": sighting_count,
-        "sightings_witnessed": witness_count,
-        "total_engagement": sighting_count + witness_count,
-        "member_since": user.created_at.strftime("%Y-%m")
-    }
-    
-    return UserProfileResponse(
-        user_id=str(user.id),
-        username=user.username,
-        email=user.email if user.public_profile else None,
-        display_name=user.display_name,
-        alert_range_km=user.alert_range_km,
-        units_metric=user.units_metric,
-        preferred_language=user.preferred_language,
-        is_verified=user.is_verified,
-        created_at=user.created_at,
-        stats=stats
-    )
+    pool = await get_db()
+    try:
+        async with pool.acquire() as conn:
+            device_user = await conn.fetchrow("""
+                SELECT d.device_id, u.id, u.username 
+                FROM devices d 
+                JOIN users u ON d.user_id = u.id 
+                WHERE d.device_id = $1
+            """, device_id)
+            
+            if not device_user:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="Device not found. Please register first."
+                )
+            
+            return UserRegistrationResponse(
+                user_id=str(device_user['id']),
+                username=device_user['username'],
+                device_id=device_id,
+                is_new_user=False,
+                message="User found"
+            )
+    finally:
+        await pool.close()
 
 
 @router.post("/validate-username")
-async def validate_username(username: str, db: Session = Depends(get_db)):
+async def validate_username(request: dict):
     """
     Validate if a username is available and properly formatted
     """
+    username = request.get("username", "")
+    
     # Check format
     is_valid, error_message = UsernameGenerator.is_valid_username(username)
     if not is_valid:
@@ -278,60 +250,19 @@ async def validate_username(username: str, db: Session = Depends(get_db)):
         }
     
     # Check availability
-    existing = db.query(User).filter(User.username == username).first()
-    available = existing is None
-    
-    return {
-        "valid": True,
-        "available": available,
-        "error": None if available else "Username already taken"
-    }
-
-
-@router.post("/migrate-device-to-user")
-async def migrate_device_to_user(device_id: str, db: Session = Depends(get_db)):
-    """
-    Migrate an anonymous device ID to the new user system
-    Creates a user account for existing device data
-    """
+    pool = await get_db()
     try:
-        # Check if device already has a user
-        existing_device = db.query(Device).filter(Device.device_id == device_id).first()
-        if existing_device:
-            return {
-                "success": True,
-                "message": "Device already has user account",
-                "username": existing_device.user.username,
-                "user_id": str(existing_device.user.id)
-            }
-        
-        # Use database function to create user for device
-        result = db.execute(
-            "SELECT get_or_create_user_by_device_id(:device_id)",
-            {"device_id": device_id}
-        ).scalar()
-        
-        if result:
-            db.commit()
-            
-            # Get the created user
-            user = db.query(User).filter(User.id == result).first()
-            
-            return {
-                "success": True,
-                "message": "Device migrated to user system",
-                "username": user.username,
-                "user_id": str(user.id)
-            }
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to migrate device"
+        async with pool.acquire() as conn:
+            existing = await conn.fetchrow(
+                "SELECT username FROM users WHERE username = $1",
+                username
             )
+            available = existing is None
             
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Migration failed: {str(e)}"
-        )
+            return {
+                "valid": True,
+                "available": available,
+                "error": None if available else "Username already taken"
+            }
+    finally:
+        await pool.close()
