@@ -20,8 +20,8 @@ class PostfixEmailService:
     def __init__(self, 
                  smtp_host: str = "localhost",
                  smtp_port: int = 25,
-                 from_email: str = "admin@ufobeep.com",
-                 from_name: str = "System Admin"):
+                 from_email: str = "support@ufobeep.com",
+                 from_name: str = "UFOBeep Support"):
         self.smtp_host = smtp_host
         self.smtp_port = smtp_port
         self.from_email = from_email
@@ -136,7 +136,7 @@ class PostfixEmailService:
                                  token: str) -> bool:
         """Send account recovery email"""
         try:
-            subject = "Account recovery code"
+            subject = "Your account access code"
             
             html_body = f"""
             <!DOCTYPE html>
