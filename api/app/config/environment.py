@@ -29,8 +29,8 @@ class Settings(BaseSettings):
     reload: bool = Field(default=True, env="RELOAD")
     
     # === API Configuration ===
-    api_version: str = Field(default="v1", env="API_VERSION")
-    api_prefix: str = Field(default="/v1", env="API_PREFIX")
+    api_version: str = Field(default="", env="API_VERSION")
+    api_prefix: str = Field(default="", env="API_PREFIX")
     
     # === Matrix Configuration ===
     matrix_base_url: str = Field(env="MATRIX_BASE_URL")

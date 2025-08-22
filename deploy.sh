@@ -129,9 +129,9 @@ if [ "$DEPLOY_APK" = true ]; then
                 echo "    Uninstalling existing version..."
                 adb -s "$device" uninstall com.ufobeep 2>/dev/null || echo "    No existing version found"
                 
-                # Install new version with verbose output
+                # Install new version (suppress verbose output but show result)
                 echo "    Installing new APK..."
-                if adb -s "$device" install -r "$APK_PATH" 2>&1; then
+                if adb -s "$device" install -r "$APK_PATH" >/dev/null 2>&1; then
                     echo "    ✅ Success on $device"
                     ((INSTALL_SUCCESS++))
                     
