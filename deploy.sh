@@ -154,10 +154,10 @@ if [ "$DEPLOY_APK" = true ]; then
                     
                     # Step 3: Force restart app
                     echo "  🔄 Restarting app..."
-                    timeout 10 adb -s "$device" shell am force-stop com.ufobeep >/dev/null 2>&1 || true
+                    timeout 5 adb -s "$device" shell am force-stop com.ufobeep >/dev/null 2>&1 || true
                     echo "  ✅ RESTART COMPLETE on $device"
                     
-                    ((INSTALL_SUCCESS++))
+                    INSTALL_SUCCESS=$((INSTALL_SUCCESS + 1))
                 else
                     echo -e "  ${RED}❌ INSTALL FAILED on $device${NC}"
                 fi
