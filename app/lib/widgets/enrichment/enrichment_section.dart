@@ -10,9 +10,15 @@ class EnrichmentSection extends StatelessWidget {
   const EnrichmentSection({
     super.key,
     required this.enrichmentData,
+    this.alertCreatorDeviceId,
+    this.currentUserDeviceId,
+    this.isWitnessConfirmed = false,
   });
 
   final Map<String, dynamic>? enrichmentData;
+  final String? alertCreatorDeviceId;
+  final String? currentUserDeviceId;
+  final bool isWitnessConfirmed;
 
   @override
   Widget build(BuildContext context) {
@@ -215,7 +221,7 @@ class EnrichmentSection extends StatelessWidget {
           SatelliteCardFromJson(satelliteData: enrichmentData['satellites']),
           const SizedBox(height: 16),
         ],
-        if (hasBlackSkyData || hasSkyFiData) ...[
+        if ((hasBlackSkyData || hasSkyFiData) && _canViewPremiumSatelliteImagery()) ...[
           PremiumSatelliteCard(
             blackskyData: enrichmentData['blacksky'],
             skyfiData: enrichmentData['skyfi'],
@@ -298,6 +304,28 @@ class EnrichmentSection extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  /// Check if current user can view premium satellite imagery
+  /// Only beep creator and confirmed witnesses can see BlackSky/SkyFi data
+  bool _canViewPremiumSatelliteImagery() {
+    // If no device IDs provided, allow access (fallback for compatibility)
+    if (currentUserDeviceId == null || alertCreatorDeviceId == null) {
+      return true;
+    }
+    
+    // Allow if user is the alert creator
+    if (currentUserDeviceId == alertCreatorDeviceId) {
+      return true;
+    }
+    
+    // Allow if user is a confirmed witness
+    if (isWitnessConfirmed) {
+      return true;
+    }
+    
+    // Otherwise, deny access
+    return false;
   }
 }
 

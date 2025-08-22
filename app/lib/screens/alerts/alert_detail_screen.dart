@@ -13,6 +13,8 @@ import '../../widgets/alert_sections/alert_details_section.dart';
 import '../../widgets/alert_sections/alert_direction_section.dart';
 import '../../widgets/alert_sections/alert_actions_section.dart';
 import '../../widgets/enrichment/enrichment_section.dart';
+import '../../services/anonymous_beep_service.dart';
+import '../../services/api_client.dart';
 
 class AlertDetailScreen extends ConsumerStatefulWidget {
   const AlertDetailScreen({super.key, required this.alertId});
@@ -24,6 +26,51 @@ class AlertDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
+  String? _currentUserDeviceId;
+  bool _isWitnessConfirmed = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    // Get current user's device ID
+    try {
+      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      
+      if (mounted) {
+        setState(() {
+          _currentUserDeviceId = deviceId;
+        });
+        
+        // Check if this user is a confirmed witness
+        await _checkWitnessStatus(deviceId);
+      }
+    } catch (e) {
+      print('Error loading user device ID: $e');
+    }
+  }
+
+  Future<void> _checkWitnessStatus(String deviceId) async {
+    try {
+      final result = await ApiClient.instance.getWitnessStatus(
+        sightingId: widget.alertId,
+        deviceId: deviceId,
+      );
+      
+      if (mounted) {
+        setState(() {
+          _isWitnessConfirmed = result['data']?['has_confirmed'] ?? false;
+        });
+      }
+    } catch (e) {
+      print('Error checking witness status: $e');
+      // Assume not confirmed if error
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final alertAsync = ref.watch(alertByIdProvider(widget.alertId));
@@ -106,7 +153,12 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
                 // Environmental context (if available)
                 if (alert.enrichment != null && alert.enrichment!.isNotEmpty) ...[
-                  EnrichmentSection(enrichmentData: alert.enrichment),
+                  EnrichmentSection(
+                    enrichmentData: alert.enrichment,
+                    alertCreatorDeviceId: alert.reporterId,
+                    currentUserDeviceId: _currentUserDeviceId,
+                    isWitnessConfirmed: _isWitnessConfirmed,
+                  ),
                   const SizedBox(height: 24),
                 ],
 
