@@ -318,6 +318,8 @@ class InitializationStepIndicator extends StatelessWidget {
         return 'Environment';
       case InitializationStep.permissions:
         return 'Permissions';
+      case InitializationStep.userSystem:
+        return 'User System';
       case InitializationStep.userPreferences:
         return 'Preferences';
       case InitializationStep.localization:
