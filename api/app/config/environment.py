@@ -136,6 +136,10 @@ class Settings(BaseSettings):
     public_coord_jitter_min: int = Field(default=100, env="PUBLIC_COORD_JITTER_MIN")  # meters
     public_coord_jitter_max: int = Field(default=300, env="PUBLIC_COORD_JITTER_MAX")  # meters
     
+    # === Proximity and Visibility Settings ===
+    visibility_distance_km: float = Field(default=25.0, env="VISIBILITY_DISTANCE_KM")  # Maximum visibility distance for UFO alerts
+    witness_confirmation_max_distance_multiplier: float = Field(default=2.0, env="WITNESS_CONFIRMATION_MAX_DISTANCE_MULTIPLIER")  # Multiplier for max witness confirmation distance
+    
     # === External Astronomical/Aircraft APIs ===
     astrometry_api_key: str = Field(default="your_astrometry_key", env="ASTROMETRY_API_KEY")
     n2yo_api_key: str = Field(default="your_n2yo_key", env="N2YO_API_KEY")

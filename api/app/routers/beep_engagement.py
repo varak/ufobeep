@@ -225,9 +225,30 @@ async def _record_witness_confirmation(
             c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
             distance_km = 6371 * c  # Earth radius in km
     
-    # Check if user is within 2x visibility distance (50km)
-    if distance_km is not None and distance_km > 50.0:
-        raise ValueError(f"Witness location too far from sighting ({distance_km:.1f}km). Must be within 50km to confirm.")
+    # Check if user is within 2x the actual visibility distance for this sighting
+    if distance_km is not None:
+        # Get sighting data to check enrichment for actual visibility
+        sighting_data = await conn.fetchrow("""
+            SELECT enrichment_data FROM sightings WHERE id = $1
+        """, sighting_id)
+        
+        # Default to 25km if no visibility data available
+        max_distance_km = 50.0  # 2x default 25km visibility
+        
+        if sighting_data and sighting_data['enrichment_data']:
+            import json
+            try:
+                enrichment = json.loads(sighting_data['enrichment_data'])
+                weather_data = enrichment.get('weather', {})
+                visibility_km = weather_data.get('visibility_km')
+                if visibility_km is not None:
+                    # Use 2x the actual visibility for this sighting
+                    max_distance_km = visibility_km * 2.0
+            except (json.JSONDecodeError, KeyError):
+                pass  # Use default
+        
+        if distance_km > max_distance_km:
+            raise ValueError(f"Witness location too far from sighting ({distance_km:.1f}km). Must be within {max_distance_km:.1f}km (2x visibility) to confirm.")
     
     # Insert witness confirmation
     witness_id = await conn.fetchval("""

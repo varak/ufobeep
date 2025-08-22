@@ -358,9 +358,19 @@ class AlertsService:
                         c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
                         distance_km = 6371 * c  # Earth radius in km
                         
-                        # Check if user is within 2x visibility distance (50km)
-                        if distance_km > 50.0:
-                            raise ValueError(f"Witness location too far from sighting ({distance_km:.1f}km). Must be within 50km to confirm.")
+                        # Get actual visibility for this sighting to calculate max distance
+                        max_distance_km = 50.0  # Default 2x 25km visibility
+                        enrichment = self._parse_json(sighting['enrichment_data'])
+                        if enrichment:
+                            weather_data = enrichment.get('weather', {})
+                            visibility_km = weather_data.get('visibility_km')
+                            if visibility_km is not None:
+                                # Use 2x the actual visibility for this sighting
+                                max_distance_km = visibility_km * 2.0
+                        
+                        # Check if user is within 2x the actual visibility distance
+                        if distance_km > max_distance_km:
+                            raise ValueError(f"Witness location too far from sighting ({distance_km:.1f}km). Must be within {max_distance_km:.1f}km (2x visibility) to confirm.")
             
             # Insert witness confirmation
             await conn.execute("""
