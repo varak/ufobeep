@@ -374,8 +374,10 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
     print('DEBUG: currentUserDeviceId: "${widget.currentUserDeviceId}"');
     print('DEBUG: alert.reporterId: "${widget.alert.reporterId}"');
     
-    if (widget.currentUserDeviceId == null || widget.alert.reporterId == null) {
-      print('DEBUG: One of the IDs is null, returning false');
+    if (widget.currentUserDeviceId == null || 
+        widget.alert.reporterId == null || 
+        widget.alert.reporterId!.isEmpty) {
+      print('DEBUG: One of the IDs is null/empty, returning false');
       return false;
     }
     

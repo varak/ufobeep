@@ -314,9 +314,11 @@ class EnrichmentSection extends StatelessWidget {
     print('DEBUG: alertCreatorDeviceId: "$alertCreatorDeviceId"');
     print('DEBUG: isWitnessConfirmed: $isWitnessConfirmed');
     
-    // If no device IDs provided, allow access (fallback for compatibility)
-    if (currentUserDeviceId == null || alertCreatorDeviceId == null) {
-      print('DEBUG: One of the device IDs is null, allowing access (fallback)');
+    // If no device IDs provided OR alertCreatorDeviceId is empty, allow access (fallback for compatibility)
+    if (currentUserDeviceId == null || 
+        alertCreatorDeviceId == null || 
+        alertCreatorDeviceId!.isEmpty) {
+      print('DEBUG: One of the device IDs is null/empty, allowing access (fallback)');
       return true;
     }
     
