@@ -19,6 +19,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Database migration system for transitioning device IDs to usernames
 - User profile API with statistics and engagement metrics
 
+### Added (MP13-2 - Progressive User Registration Flow) - COMPLETED
+- Progressive onboarding flow for new users with welcome screen
+- Integrated user system initialization in splash screen routing
+- Automatic username generation with alternatives selection
+- Simplified JSON-based device storage (user_devices table)
+- Complete registration flow: splash → username generation → preferences → main app
+- Skip option for anonymous usage
+- Working API endpoints: /users/generate-username, /users/register, /users/by-device/{id}
+- Seamless navigation between registration screens using GoRouter
+
 ### Fixed
 - "I saw it too" button now properly hidden for alert creators (handles empty reporterId)
 - Premium satellite imagery access control (BlackSky/SkyFi)
