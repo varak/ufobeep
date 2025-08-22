@@ -30,6 +30,7 @@ DEPLOY_APK=false
 DEPLOY_ALL=false
 AUTO_COMMIT=false
 COMMIT_MSG=""
+TARGET_DEVICES=""
 
 if [ $# -eq 0 ]; then
     DEPLOY_ALL=true
@@ -40,6 +41,10 @@ else
             web) DEPLOY_WEB=true ;;
             apk|mobile) DEPLOY_APK=true ;;
             all) DEPLOY_ALL=true ;;
+            moto) DEPLOY_APK=true; TARGET_DEVICES="192.168.0.49:42433" ;;
+            tablet) DEPLOY_APK=true; TARGET_DEVICES="356120372031894" ;;
+            pixel) DEPLOY_APK=true; TARGET_DEVICES="HT75D0202593" ;;
+            samsung) DEPLOY_APK=true; TARGET_DEVICES="Y5SSW8MZDIU45995" ;;
             --auto-commit=*) 
                 AUTO_COMMIT=true
                 COMMIT_MSG="${arg#*=}"
@@ -93,6 +98,18 @@ if [ "$DEPLOY_APK" = true ]; then
     echo -e "${BLUE}📱 Step 2: Mobile APK Deployment${NC}"
     echo "--------------------------------"
     
+    # Build fresh APK with latest changes
+    echo "Building fresh APK with latest changes..."
+    cd app
+    if flutter build apk --release; then
+        echo -e "${GREEN}✅ APK build successful${NC}"
+        cd ..
+    else
+        echo -e "${RED}❌ APK build failed!${NC}"
+        cd ..
+        exit 1
+    fi
+    
     # Find latest APK
     APK_PATH=""
     if [ -f "app/build/app/outputs/flutter-apk/app-release.apk" ]; then
@@ -119,19 +136,35 @@ if [ "$DEPLOY_APK" = true ]; then
         IP_DEVICE=$(echo "$DEVICES_RAW" | grep -E "^[0-9]+\." | head -1)
         OTHER_DEVICES=$(echo "$DEVICES_RAW" | grep -v -E "^[0-9]+\." | grep -v "^$")
         
-        # Build prioritized device array
+        # Build device array - filter by target if specified
         DEVICES_ARRAY=()
-        if [ -n "$IP_DEVICE" ]; then
-            DEVICES_ARRAY+=("$IP_DEVICE")
-            echo -e "${GREEN}Found $DEVICE_COUNT connected devices (IP device prioritized first)${NC}"
-        fi
-        while IFS= read -r device; do
-            if [ -n "$device" ]; then
-                DEVICES_ARRAY+=("$device")
+        if [ -n "$TARGET_DEVICES" ]; then
+            # Deploy to specific device(s) only
+            for target in $TARGET_DEVICES; do
+                if echo "$DEVICES_RAW" | grep -q "^$target$"; then
+                    DEVICES_ARRAY+=("$target")
+                else
+                    echo -e "${YELLOW}⚠️  Target device $target not connected${NC}"
+                fi
+            done
+            if [ ${#DEVICES_ARRAY[@]} -eq 0 ]; then
+                echo -e "${RED}❌ No target devices connected!${NC}"
+                exit 1
             fi
-        done <<< "$OTHER_DEVICES"
-        
-        echo "Device order: ${DEVICES_ARRAY[*]}"
+            echo -e "${GREEN}Targeting specific device(s): ${DEVICES_ARRAY[*]}${NC}"
+        else
+            # Deploy to all devices, prioritize IP device
+            if [ -n "$IP_DEVICE" ]; then
+                DEVICES_ARRAY+=("$IP_DEVICE")
+                echo -e "${GREEN}Found $DEVICE_COUNT connected devices (IP device prioritized first)${NC}"
+            fi
+            while IFS= read -r device; do
+                if [ -n "$device" ]; then
+                    DEVICES_ARRAY+=("$device")
+                fi
+            done <<< "$OTHER_DEVICES"
+            echo "Device order: ${DEVICES_ARRAY[*]}"
+        fi
         
         if [ "$DEVICE_COUNT" -ge 1 ]; then
             echo "Installing to all devices..."
@@ -292,5 +325,8 @@ echo "Usage examples:"
 echo "  ./deploy.sh         # Deploy everything"
 echo "  ./deploy.sh api     # Deploy only API"
 echo "  ./deploy.sh web     # Deploy only web"
-echo "  ./deploy.sh apk     # Deploy only mobile APK"
-echo "  ./deploy.sh api web # Deploy API and web"
+echo "  ./deploy.sh apk     # Deploy APK to all devices"
+echo "  ./deploy.sh moto    # Deploy APK to Moto only"
+echo "  ./deploy.sh tablet  # Deploy APK to tablet only"
+echo "  ./deploy.sh pixel   # Deploy APK to Pixel only"
+echo "  ./deploy.sh samsung # Deploy APK to Samsung only"
