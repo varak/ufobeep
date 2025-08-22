@@ -370,9 +370,17 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
 
   /// Check if current user is the original creator of this alert
   bool _isOriginalCreator() {
+    print('DEBUG: _isOriginalCreator check');
+    print('DEBUG: currentUserDeviceId: "${widget.currentUserDeviceId}"');
+    print('DEBUG: alert.reporterId: "${widget.alert.reporterId}"');
+    
     if (widget.currentUserDeviceId == null || widget.alert.reporterId == null) {
+      print('DEBUG: One of the IDs is null, returning false');
       return false;
     }
-    return widget.currentUserDeviceId == widget.alert.reporterId;
+    
+    final isCreator = widget.currentUserDeviceId == widget.alert.reporterId;
+    print('DEBUG: isCreator result: $isCreator');
+    return isCreator;
   }
 }

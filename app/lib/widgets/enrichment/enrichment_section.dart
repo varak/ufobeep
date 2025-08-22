@@ -309,22 +309,31 @@ class EnrichmentSection extends StatelessWidget {
   /// Check if current user can view premium satellite imagery
   /// Only beep creator and confirmed witnesses can see BlackSky/SkyFi data
   bool _canViewPremiumSatelliteImagery() {
+    print('DEBUG: _canViewPremiumSatelliteImagery check');
+    print('DEBUG: currentUserDeviceId: "$currentUserDeviceId"');
+    print('DEBUG: alertCreatorDeviceId: "$alertCreatorDeviceId"');
+    print('DEBUG: isWitnessConfirmed: $isWitnessConfirmed');
+    
     // If no device IDs provided, allow access (fallback for compatibility)
     if (currentUserDeviceId == null || alertCreatorDeviceId == null) {
+      print('DEBUG: One of the device IDs is null, allowing access (fallback)');
       return true;
     }
     
     // Allow if user is the alert creator
     if (currentUserDeviceId == alertCreatorDeviceId) {
+      print('DEBUG: User is alert creator, allowing access');
       return true;
     }
     
     // Allow if user is a confirmed witness
     if (isWitnessConfirmed) {
+      print('DEBUG: User is confirmed witness, allowing access');
       return true;
     }
     
     // Otherwise, deny access
+    print('DEBUG: Access denied - not creator or confirmed witness');
     return false;
   }
 }
