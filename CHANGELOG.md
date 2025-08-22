@@ -25,9 +25,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Automatic username generation with alternatives selection
 - Simplified JSON-based device storage (user_devices table)
 - Complete registration flow: splash → username generation → preferences → main app
-- Skip option for anonymous usage
 - Working API endpoints: /users/generate-username, /users/register, /users/by-device/{id}
 - Seamless navigation between registration screens using GoRouter
+
+### Added (MP13-3 - Alert Ownership Fix) - COMPLETED
+- Added reporter_id column to sightings table in database
+- Migrated 233 existing device_ids from sensor_data JSON to reporter_id
+- Fixed "I saw it too" button visibility logic using proper reporter_id
+- Automatic device_id to username migration when users register
+- Removed skip registration option to improve user adoption
+- API now returns actual reporter_id in alert responses
+- Migration status endpoint: /users/migration-status
 
 ### Fixed
 - "I saw it too" button now properly hidden for alert creators (handles empty reporterId)
