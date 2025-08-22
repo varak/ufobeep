@@ -225,6 +225,10 @@ async def _record_witness_confirmation(
             c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
             distance_km = 6371 * c  # Earth radius in km
     
+    # Check if user is within 2x visibility distance (50km)
+    if distance_km is not None and distance_km > 50.0:
+        raise ValueError(f"Witness location too far from sighting ({distance_km:.1f}km). Must be within 50km to confirm.")
+    
     # Insert witness confirmation
     witness_id = await conn.fetchval("""
         INSERT INTO witness_confirmations 

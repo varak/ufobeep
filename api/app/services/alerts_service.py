@@ -338,6 +338,30 @@ class AlertsService:
             if existing:
                 raise ValueError("Device already confirmed as witness")
             
+            # Check distance if location data is provided
+            if witness_data.get('latitude') and witness_data.get('longitude'):
+                sensor = self._parse_json(sighting['sensor_data'])
+                if sensor and 'location' in sensor:
+                    orig_lat = sensor['location'].get('latitude')
+                    orig_lng = sensor['location'].get('longitude')
+                    if orig_lat and orig_lng:
+                        # Calculate distance using Haversine formula
+                        import math
+                        lat1, lng1 = float(orig_lat), float(orig_lng)
+                        lat2, lng2 = float(witness_data['latitude']), float(witness_data['longitude'])
+                        
+                        dlat = math.radians(lat2 - lat1)
+                        dlng = math.radians(lng2 - lng1)
+                        a = (math.sin(dlat/2) * math.sin(dlat/2) + 
+                             math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * 
+                             math.sin(dlng/2) * math.sin(dlng/2))
+                        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+                        distance_km = 6371 * c  # Earth radius in km
+                        
+                        # Check if user is within 2x visibility distance (50km)
+                        if distance_km > 50.0:
+                            raise ValueError(f"Witness location too far from sighting ({distance_km:.1f}km). Must be within 50km to confirm.")
+            
             # Insert witness confirmation
             await conn.execute("""
                 INSERT INTO witness_confirmations 
