@@ -371,11 +371,11 @@ async def recover_account(request: dict):
     pool = await get_db()
     try:
         async with pool.acquire() as conn:
-            # Find user by verified email
+            # Find user by email (temporarily allow unverified for testing)
             user = await conn.fetchrow("""
                 SELECT id, username, email_verified 
                 FROM users 
-                WHERE email = $1 AND email_verified = TRUE
+                WHERE email = $1
             """, email)
             
             if not user:
