@@ -86,6 +86,96 @@ Body: {
 }
 ```
 
+## Users (MP13-1 Username System)
+
+### Generate Username
+```
+POST /users/generate-username
+Response: {
+  "username": "cosmic.whisper.7823",
+  "alternatives": ["stellar.probe.1234", "galactic.echo.5678", ...]
+}
+```
+
+### Register User
+```
+POST /users/register
+Body: {
+  "device_id": "unique-device-id",
+  "username": "cosmic.whisper.7823",  // optional, auto-generated if not provided
+  "email": "user@example.com",        // optional
+  "platform": "ios|android",
+  "device_name": "iPhone 15",         // optional
+  "app_version": "1.0.0",            // optional
+  "alert_range_km": 50.0,            // optional, default 50
+  "units_metric": true,              // optional, default true
+  "preferred_language": "en"         // optional, default "en"
+}
+
+Response: {
+  "user_id": "uuid",
+  "username": "cosmic.whisper.7823",
+  "device_id": "unique-device-id",
+  "is_new_user": true,
+  "message": "Welcome to UFOBeep, cosmic.whisper.7823!"
+}
+```
+
+### Get User by Device ID
+```
+GET /users/by-device/{device_id}
+Response: {
+  "user_id": "uuid",
+  "username": "cosmic.whisper.7823",
+  "device_id": "device-id",
+  "is_new_user": false,
+  "message": "User found"
+}
+```
+
+### Get User Profile
+```
+GET /users/profile/{username}
+Response: {
+  "user_id": "uuid",
+  "username": "cosmic.whisper.7823",
+  "email": "user@example.com",      // only if public_profile=true
+  "display_name": "Cosmic Whisper",
+  "alert_range_km": 50.0,
+  "units_metric": true,
+  "preferred_language": "en",
+  "is_verified": false,
+  "created_at": "2025-08-22T10:30:00Z",
+  "stats": {
+    "sightings_reported": 5,
+    "sightings_witnessed": 12,
+    "total_engagement": 17,
+    "member_since": "2025-08"
+  }
+}
+```
+
+### Validate Username
+```
+POST /users/validate-username?username=cosmic.whisper.7823
+Response: {
+  "valid": true,
+  "available": true,
+  "error": null
+}
+```
+
+### Migrate Device to User
+```
+POST /users/migrate-device-to-user?device_id=device-id
+Response: {
+  "success": true,
+  "message": "Device migrated to user system",
+  "username": "legacy.device.1234",
+  "user_id": "uuid"
+}
+```
+
 ## Devices
 
 ### Register Device

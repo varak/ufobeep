@@ -14,6 +14,7 @@ import '../../widgets/alert_sections/alert_direction_section.dart';
 import '../../widgets/alert_sections/alert_actions_section.dart';
 import '../../widgets/enrichment/enrichment_section.dart';
 import '../../services/anonymous_beep_service.dart';
+import '../../services/user_service.dart';
 import '../../services/api_client.dart';
 
 class AlertDetailScreen extends ConsumerStatefulWidget {
@@ -36,22 +37,31 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   }
 
   Future<void> _loadUserData() async {
-    // Get current user's device ID
+    // Get current user's ID (username-based system MP13-1)
     try {
-      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
-      print('DEBUG: Loaded device ID: "$deviceId"');
+      // Try to get user ID first, fallback to device ID for transition period
+      String? userId;
+      try {
+        userId = await userService.getCurrentUserId();
+        print('DEBUG: Loaded user ID: "$userId"');
+      } catch (e) {
+        // Fallback to device ID for users not yet migrated to username system
+        final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+        print('DEBUG: Fallback to device ID: "$deviceId"');
+        userId = deviceId;
+      }
       
-      if (mounted) {
+      if (mounted && userId != null) {
         setState(() {
-          _currentUserDeviceId = deviceId;
+          _currentUserDeviceId = userId; // Using same variable name during transition
         });
         print('DEBUG: Set _currentUserDeviceId to: "$_currentUserDeviceId"');
         
         // Check if this user is a confirmed witness
-        await _checkWitnessStatus(deviceId);
+        await _checkWitnessStatus(userId);
       }
     } catch (e) {
-      print('Error loading user device ID: $e');
+      print('Error loading user data: $e');
     }
   }
 
