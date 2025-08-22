@@ -11,7 +11,9 @@ import '../../theme/app_theme.dart';
 import '../../config/environment.dart';
 import '../../services/sound_service.dart';
 import '../../services/permission_service.dart';
+import '../../services/user_service.dart';
 import '../admin/admin_screen.dart';
+import 'user_registration_screen.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -31,6 +33,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   void initState() {
     super.initState();
     _loadAppVersion();
+    _checkUserRegistration();
   }
   
   Future<void> _loadAppVersion() async {
@@ -39,6 +42,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       setState(() {
         _appVersion = version;
       });
+    }
+  }
+  
+  Future<void> _checkUserRegistration() async {
+    try {
+      final isRegistered = await userService.initializeUser();
+      print('User registration status: $isRegistered');
+    } catch (e) {
+      print('Error checking user registration: $e');
     }
   }
   
@@ -178,7 +190,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               width: double.infinity,
               height: 56,
               child: ElevatedButton(
-                onPressed: () => context.push('/register'),
+                onPressed: () async {
+                  final result = await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const UserRegistrationScreen(),
+                    ),
+                  );
+                  
+                  if (result == true && mounted) {
+                    // Registration successful, refresh the screen
+                    setState(() {});
+                  }
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.brandPrimary,
                   foregroundColor: AppColors.textInverse,
@@ -210,113 +233,120 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Widget _buildProfileHeader(UserPreferences preferences) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.brandPrimary.withOpacity(0.1),
-            AppColors.brandPrimary.withOpacity(0.05),
-            AppColors.darkSurface,
-          ],
-        ),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: AppColors.brandPrimary.withOpacity(0.2),
-          width: 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.brandPrimary.withOpacity(0.1),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  AppColors.brandPrimary.withOpacity(0.3),
-                  AppColors.brandPrimary.withOpacity(0.1),
-                ],
-              ),
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: AppColors.brandPrimary.withOpacity(0.4),
-                width: 2,
-              ),
-            ),
-            child: const Icon(
-              Icons.person,
-              color: AppColors.brandPrimary,
-              size: 36,
-            ),
-          ),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'UFOBeep User',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                    letterSpacing: -0.5,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: AppColors.darkBackground.withOpacity(0.6),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: AppColors.brandPrimary.withOpacity(0.3),
-                      width: 1,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: 6,
-                        height: 6,
-                        decoration: const BoxDecoration(
-                          color: AppColors.brandPrimary,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      GestureDetector(
-                        onTap: _handleAdminTap,
-                        child: Text(
-                          'v$_appVersion',
-                          style: const TextStyle(
-                            color: AppColors.textSecondary,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+    return FutureBuilder<String?>(
+      future: userService.getCurrentUsername(),
+      builder: (context, snapshot) {
+        final username = snapshot.data;
+        
+        return Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppColors.brandPrimary.withOpacity(0.1),
+                AppColors.brandPrimary.withOpacity(0.05),
+                AppColors.darkSurface,
               ],
             ),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: AppColors.brandPrimary.withOpacity(0.2),
+              width: 1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.brandPrimary.withOpacity(0.1),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
+              ),
+            ],
           ),
-        ],
-      ),
+          child: Row(
+            children: [
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      AppColors.brandPrimary.withOpacity(0.3),
+                      AppColors.brandPrimary.withOpacity(0.1),
+                    ],
+                  ),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: AppColors.brandPrimary.withOpacity(0.4),
+                    width: 2,
+                  ),
+                ),
+                child: const Icon(
+                  Icons.person,
+                  color: AppColors.brandPrimary,
+                  size: 36,
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      username ?? 'UFOBeep User',
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
+                        letterSpacing: -0.5,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: AppColors.darkBackground.withOpacity(0.6),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: AppColors.brandPrimary.withOpacity(0.3),
+                          width: 1,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: 6,
+                            height: 6,
+                            decoration: const BoxDecoration(
+                              color: AppColors.brandPrimary,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          GestureDetector(
+                            onTap: _handleAdminTap,
+                            child: Text(
+                              username != null ? 'Registered • v$_appVersion' : 'v$_appVersion',
+                              style: const TextStyle(
+                                color: AppColors.textSecondary,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
