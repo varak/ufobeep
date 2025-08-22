@@ -128,8 +128,8 @@ if [ "$DEPLOY_APK" = true ]; then
                 # Uninstall existing version
                 adb -s "$device" uninstall com.ufobeep >/dev/null 2>&1 || true
                 
-                # Install new version
-                if adb -s "$device" install -r "$APK_PATH" >/dev/null 2>&1; then
+                # Install new version with timeout
+                if timeout 60 adb -s "$device" install -r "$APK_PATH" >/dev/null 2>&1; then
                     echo "  ✅ SUCCESS on $device"
                     ((INSTALL_SUCCESS++))
                     
