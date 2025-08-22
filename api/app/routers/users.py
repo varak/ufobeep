@@ -13,6 +13,7 @@ import json
 
 from app.services.username_service import UsernameGenerator
 from app.services.user_migration_service import get_migration_service
+from app.services.email_service_postfix import PostfixEmailService
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -197,6 +198,23 @@ async def register_user(request: UserRegistrationRequest):
                 request.device_id, username
             )
             
+            # Send verification email if email provided
+            if request.email and request.email.strip():
+                email_service = PostfixEmailService()
+                token = email_service.generate_verification_token()
+                
+                # Save verification token
+                await conn.execute("""
+                    UPDATE users 
+                    SET verification_token = $1, verification_sent_at = NOW() 
+                    WHERE id = $2
+                """, token, user_id)
+                
+                # Send verification email (async, don't wait)
+                await email_service.send_verification_email(
+                    request.email.strip(), username, token
+                )
+            
             return UserRegistrationResponse(
                 user_id=str(user_id),
                 username=username,
@@ -301,5 +319,160 @@ async def get_migration_status():
             "success": True,
             "migration_status": status
         }
+    finally:
+        await pool.close()
+
+
+@router.post("/verify-email")
+async def verify_email(request: dict):
+    """Verify email address with token from verification email"""
+    token = request.get("token")
+    if not token:
+        raise HTTPException(status_code=400, detail="Token required")
+    
+    pool = await get_db()
+    try:
+        async with pool.acquire() as conn:
+            # Find user by verification token
+            user = await conn.fetchrow("""
+                SELECT id, username, email, verification_sent_at
+                FROM users 
+                WHERE verification_token = $1
+            """, token)
+            
+            if not user:
+                raise HTTPException(status_code=404, detail="Invalid verification token")
+            
+            # Check if token is expired (24 hours)
+            from datetime import datetime, timedelta
+            if user['verification_sent_at'] < datetime.now() - timedelta(hours=24):
+                raise HTTPException(status_code=400, detail="Verification token expired")
+            
+            # Mark email as verified and clear token
+            await conn.execute("""
+                UPDATE users 
+                SET email_verified = TRUE, verification_token = NULL, verification_sent_at = NULL
+                WHERE id = $1
+            """, user['id'])
+            
+            return {
+                "success": True,
+                "message": f"Email verified for {user['username']}! You can now recover your account.",
+                "username": user['username']
+            }
+    finally:
+        await pool.close()
+
+
+@router.post("/recover-account")
+async def recover_account(request: dict):
+    """Send recovery code to verified email"""
+    email = request.get("email", "").strip()
+    if not email:
+        raise HTTPException(status_code=400, detail="Email required")
+    
+    pool = await get_db()
+    try:
+        async with pool.acquire() as conn:
+            # Find user by verified email
+            user = await conn.fetchrow("""
+                SELECT id, username, email_verified 
+                FROM users 
+                WHERE email = $1 AND email_verified = TRUE
+            """, email)
+            
+            if not user:
+                # Don't reveal if email exists - security best practice
+                return {
+                    "success": True,
+                    "message": "If this email is verified, a recovery code has been sent."
+                }
+            
+            # Generate 6-digit recovery code
+            import secrets
+            recovery_code = f"{secrets.randbelow(999999):06d}"
+            
+            # Save recovery code (expires in 15 minutes)
+            from datetime import datetime, timedelta
+            expires_at = datetime.now() + timedelta(minutes=15)
+            
+            await conn.execute("""
+                UPDATE users 
+                SET recovery_code = $1, recovery_expires_at = $2
+                WHERE id = $3
+            """, recovery_code, expires_at, user['id'])
+            
+            # Send recovery email
+            email_service = PostfixEmailService()
+            await email_service.send_recovery_email(email, user['username'], recovery_code)
+            
+            return {
+                "success": True,
+                "message": "If this email is verified, a recovery code has been sent.",
+                "expires_in_minutes": 15
+            }
+                
+    finally:
+        await pool.close()
+
+
+@router.post("/verify-recovery")
+async def verify_recovery_code(request: dict):
+    """Use recovery code to restore account on new device"""
+    recovery_code = request.get("recovery_code", "").strip()
+    new_device_id = request.get("device_id", "").strip()
+    
+    if not recovery_code or not new_device_id:
+        raise HTTPException(status_code=400, detail="Recovery code and device_id required")
+    
+    pool = await get_db()
+    try:
+        async with pool.acquire() as conn:
+            # Find user by recovery code
+            user = await conn.fetchrow("""
+                SELECT id, username, email, recovery_expires_at
+                FROM users 
+                WHERE recovery_code = $1
+            """, recovery_code)
+            
+            if not user:
+                raise HTTPException(status_code=404, detail="Invalid recovery code")
+            
+            # Check if code is expired
+            from datetime import datetime
+            if user['recovery_expires_at'] < datetime.now():
+                raise HTTPException(status_code=400, detail="Recovery code expired")
+            
+            # Link new device to existing user account
+            device_info = {
+                "platform": "recovered",
+                "recovery_date": datetime.now().isoformat()
+            }
+            
+            # Use INSERT ... ON CONFLICT to handle device_id already existing
+            await conn.execute("""
+                INSERT INTO user_devices (device_id, user_id, device_info)
+                VALUES ($1, $2, $3)
+                ON CONFLICT (device_id) DO UPDATE SET 
+                    user_id = EXCLUDED.user_id,
+                    device_info = EXCLUDED.device_info
+            """, new_device_id, user['id'], json.dumps(device_info))
+            
+            # Clear recovery code (single use)
+            await conn.execute("""
+                UPDATE users 
+                SET recovery_code = NULL, recovery_expires_at = NULL
+                WHERE id = $1
+            """, user['id'])
+            
+            return {
+                "success": True,
+                "message": f"Account recovered! Welcome back, {user['username']}",
+                "user_id": str(user['id']),
+                "username": user['username'],
+                "email": user['email'],
+                "device_id": new_device_id
+            }
+            
     finally:
         await pool.close()
