@@ -185,6 +185,7 @@ class EnrichmentSection extends StatelessWidget {
     // Debug logging
     print('DEBUG: Enrichment keys: ${enrichmentData.keys.toList()}');
     print('DEBUG: BlackSky data: ${enrichmentData['blacksky']}');
+    print('DEBUG: SkyFi data: ${enrichmentData['skyfi']}');
     
     final hasAircraftData = enrichmentData['aircraft_tracking'] != null;
     final hasWeatherData = enrichmentData['weather'] != null;
@@ -195,6 +196,7 @@ class EnrichmentSection extends StatelessWidget {
     final hasData = hasAircraftData || hasWeatherData || hasSatelliteData || hasContentData || hasBlackSkyData || hasSkyFiData;
     
     print('DEBUG: hasBlackSkyData = $hasBlackSkyData');
+    print('DEBUG: hasSkyFiData = $hasSkyFiData');
 
     if (!hasData) {
       return const SizedBox.shrink();
