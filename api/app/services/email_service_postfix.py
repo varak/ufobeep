@@ -20,8 +20,8 @@ class PostfixEmailService:
     def __init__(self, 
                  smtp_host: str = "localhost",
                  smtp_port: int = 25,
-                 from_email: str = "noreply@ufobeep.com",
-                 from_name: str = "UFOBeep"):
+                 from_email: str = "alerts@ufobeep.com",
+                 from_name: str = "Alert Network"):
         self.smtp_host = smtp_host
         self.smtp_port = smtp_port
         self.from_email = from_email
@@ -44,7 +44,7 @@ class PostfixEmailService:
                                      token: str) -> bool:
         """Send email verification link"""
         try:
-            subject = "Verify your UFOBeep account"
+            subject = "Account verification required"
             
             # HTML email body
             html_body = f"""
@@ -136,7 +136,7 @@ class PostfixEmailService:
                                  token: str) -> bool:
         """Send account recovery email"""
         try:
-            subject = "UFOBeep Account Recovery"
+            subject = "Account recovery code"
             
             html_body = f"""
             <!DOCTYPE html>
