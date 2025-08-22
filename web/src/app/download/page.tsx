@@ -5,13 +5,9 @@ import { useState } from 'react';
 export default function DownloadPage() {
   const [showInstructions, setShowInstructions] = useState(false);
   
-  const latestVersion = "v0.8.1 Beta";
-  const releaseDate = new Date().toLocaleDateString('en-US', { 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
-  });
-  const apkSize = "63 MB";
+  const latestVersion = "v0.9.0 Beta";
+  const releaseDate = "August 21, 2025";
+  const apkSize = "69 MB";
   
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -53,12 +49,14 @@ export default function DownloadPage() {
             🚀 What&apos;s New
           </h2>
           <ul className="space-y-2 text-gray-300">
-            <li>✅ <strong>CRITICAL FIX:</strong> Anonymous beep with media now works correctly</li>
-            <li>✅ <strong>Service Layer Architecture:</strong> 3,000+ lines of code optimized for blazing performance</li>
-            <li>✅ <strong>Smart Unit Conversion:</strong> Automatic metric/imperial conversion based on your location</li>
-            <li>✅ <strong>Enhanced Weather Data:</strong> Precision-controlled measurements with clean display</li>
-            <li>✅ <strong>Alert Level Support:</strong> Proper alert prioritization system</li>
-            <li>✅ <strong>Database Caching:</strong> Enrichment data computed once, displayed instantly</li>
+            <li>✅ <strong>MAJOR FIX:</strong> Tablet photo uploads now work flawlessly</li>
+            <li>✅ <strong>Performance Boost:</strong> App startup optimized from 23s to 3-5s</li>
+            <li>✅ <strong>BlackSky Integration:</strong> Satellite imagery enrichment with clickable info modals</li>
+            <li>✅ <strong>Proximity Alerts Fixed:</strong> Push notification delivery system restored</li>
+            <li>✅ <strong>Sensor Improvements:</strong> Smart fallbacks for tablets without magnetometer</li>
+            <li>✅ <strong>Permission Flow:</strong> Smooth permission handling without 25% hanging</li>
+            <li>✅ <strong>Future-Proof:</strong> Fixed "future not complete" sensor errors</li>
+            <li>✅ <strong>Release Build:</strong> Production-optimized build for better performance</li>
           </ul>
         </div>
 

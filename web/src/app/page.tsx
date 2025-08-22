@@ -50,6 +50,62 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Latest Updates Section */}
+      <section className="py-16 px-6 md:px-24 bg-dark-surface border-t border-dark-border">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-2xl md:text-3xl font-bold mb-8 text-text-primary">
+            🚀 Latest Updates (Aug 2025)
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
+              <div className="text-2xl mb-2">📸</div>
+              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Photo Uploads Fixed</h3>
+              <p className="text-xs text-text-secondary">
+                Resolved tablet photo upload issues and sensor errors
+              </p>
+            </div>
+            <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
+              <div className="text-2xl mb-2">🛰️</div>
+              <h3 className="text-sm font-semibold mb-2 text-brand-primary">BlackSky Integration</h3>
+              <p className="text-xs text-text-secondary">
+                Satellite imagery enrichment with clickable info modals
+              </p>
+            </div>
+            <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
+              <div className="text-2xl mb-2">⚡</div>
+              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Performance Boost</h3>
+              <p className="text-xs text-text-secondary">
+                App startup optimized from 23s to 3-5s
+              </p>
+            </div>
+            <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
+              <div className="text-2xl mb-2">🔔</div>
+              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Proximity Alerts</h3>
+              <p className="text-xs text-text-secondary">
+                Fixed notification delivery system
+              </p>
+            </div>
+            <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
+              <div className="text-2xl mb-2">📱</div>
+              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Better Permissions</h3>
+              <p className="text-xs text-text-secondary">
+                Smooth permission flow without hanging
+              </p>
+            </div>
+            <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
+              <div className="text-2xl mb-2">🧭</div>
+              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Sensor Handling</h3>
+              <p className="text-xs text-text-secondary">
+                Smart fallbacks for tablets without magnetometer
+              </p>
+            </div>
+          </div>
+          <p className="text-sm text-brand-primary font-medium">
+            All improvements are live in the latest beta release!
+          </p>
+        </div>
+      </section>
+
       {/* Live Map Section */}
       <div id="global-network">
         <GlobalSightingNetwork />
