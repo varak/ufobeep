@@ -247,6 +247,13 @@ if [ "$DEPLOY_API" = true ]; then
         echo "Running migrations..."
         alembic upgrade head || true
         
+        echo "Setting up email deliverability (DKIM)..."
+        cd /home/ufobeep/ufobeep
+        if [ -f "fix_email_deliverability.sh" ]; then
+            sudo bash fix_email_deliverability.sh || echo "⚠️ DKIM setup had issues, continuing..."
+        fi
+        cd api
+        
         echo "Restarting API service..."
         sudo systemctl restart ufobeep-api
         
