@@ -55,7 +55,7 @@ export default function DownloadPage() {
             <li>✅ <strong>Proximity Alerts Fixed:</strong> Push notification delivery system restored</li>
             <li>✅ <strong>Sensor Improvements:</strong> Smart fallbacks for tablets without magnetometer</li>
             <li>✅ <strong>Permission Flow:</strong> Smooth permission handling without 25% hanging</li>
-            <li>✅ <strong>Future-Proof:</strong> Fixed "future not complete" sensor errors</li>
+            <li>✅ <strong>Future-Proof:</strong> Fixed &ldquo;future not complete&rdquo; sensor errors</li>
             <li>✅ <strong>Release Build:</strong> Production-optimized build for better performance</li>
           </ul>
         </div>
