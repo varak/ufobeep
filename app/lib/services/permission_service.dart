@@ -62,21 +62,54 @@ class PermissionService {
   Future<void> _requestAllPermissions() async {
     print('Requesting critical permissions for first time setup...');
     
-    // BATCH REQUEST: Location + Notifications together (both critical for UFO alerts)
-    // This avoids Android rate limiting by requesting multiple permissions at once
-    final Map<Permission, PermissionStatus> statuses = await [
-      Permission.location,
-      Permission.notification,
-    ].request();
-    
-    // Process location permission result
-    _locationGranted = statuses[Permission.location] == PermissionStatus.granted ||
-                      statuses[Permission.location] == PermissionStatus.limited;
-    print('Location permission: $_locationGranted');
-    
-    // Process notification permission result  
-    _notificationGranted = statuses[Permission.notification] == PermissionStatus.granted;
-    print('Notification permission: $_notificationGranted');
+    try {
+      // BATCH REQUEST: Location + Notifications together (both critical for UFO alerts)
+      // This avoids Android rate limiting by requesting multiple permissions at once
+      final Map<Permission, PermissionStatus> statuses = await [
+        Permission.location,
+        Permission.notification,
+      ].request().timeout(
+        const Duration(seconds: 20),
+        onTimeout: () {
+          print('Permission request timed out - checking individual statuses');
+          return <Permission, PermissionStatus>{};
+        },
+      );
+      
+      // Process location permission result
+      if (statuses.containsKey(Permission.location)) {
+        _locationGranted = statuses[Permission.location] == PermissionStatus.granted ||
+                          statuses[Permission.location] == PermissionStatus.limited;
+      } else {
+        // Fallback: check current status if batch request failed
+        final currentStatus = await Permission.location.status;
+        _locationGranted = currentStatus == PermissionStatus.granted ||
+                          currentStatus == PermissionStatus.limited;
+      }
+      print('Location permission: $_locationGranted');
+      
+      // Process notification permission result  
+      if (statuses.containsKey(Permission.notification)) {
+        _notificationGranted = statuses[Permission.notification] == PermissionStatus.granted;
+      } else {
+        // Fallback: check current status if batch request failed
+        final currentStatus = await Permission.notification.status;
+        _notificationGranted = currentStatus == PermissionStatus.granted;
+      }
+      print('Notification permission: $_notificationGranted');
+    } catch (e) {
+      print('Error during permission request: $e');
+      // Fallback: check current statuses individually
+      try {
+        _locationGranted = (await Permission.location.status).isGranted;
+        _notificationGranted = (await Permission.notification.status).isGranted;
+        print('Fallback permission check - Location: $_locationGranted, Notification: $_notificationGranted');
+      } catch (fallbackError) {
+        print('Fallback permission check failed: $fallbackError');
+        _locationGranted = false;
+        _notificationGranted = false;
+      }
+    }
     
     // Camera and Photos are now OPTIONAL - request them on-demand when needed
     // This prevents permission prompt fatigue and lets users start using the app immediately

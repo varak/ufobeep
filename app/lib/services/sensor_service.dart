@@ -50,16 +50,49 @@ class SensorService {
 
   Future<SensorData> captureSensorData() async {
     try {
-      // Capture all sensor readings in parallel (location can fail)
-      final results = await Future.wait([
-        _captureLocation(),
-        _captureDeviceOrientation(),
-        _estimateCameraHFOV(),
-      ], eagerError: false); // Don't fail if location fails
+      // Capture all sensor readings with individual timeout handling
+      Position? position;
+      DeviceOrientation? orientation;
+      double? hfov;
 
-      final position = results[0] as Position?;
-      final orientation = results[1] as DeviceOrientation;
-      final hfov = results[2] as double?;
+      // Capture location with its own timeout
+      try {
+        position = await _captureLocation().timeout(
+          const Duration(seconds: 4),
+          onTimeout: () {
+            debugPrint('Location capture timed out');
+            return null;
+          },
+        );
+      } catch (e) {
+        debugPrint('Location capture failed: $e');
+        position = null;
+      }
+
+      // Capture orientation with its own timeout
+      try {
+        orientation = await _captureDeviceOrientation().timeout(
+          const Duration(seconds: 6),
+          onTimeout: () {
+            debugPrint('Orientation capture timed out');
+            return _getDefaultOrientation();
+          },
+        );
+      } catch (e) {
+        debugPrint('Orientation capture failed: $e');
+        orientation = _getDefaultOrientation();
+      }
+
+      // Capture HFOV (this should be fast)
+      try {
+        hfov = await _estimateCameraHFOV().timeout(
+          const Duration(seconds: 2),
+          onTimeout: () => 66.0,
+        );
+      } catch (e) {
+        debugPrint('HFOV capture failed: $e');
+        hfov = 66.0;
+      }
 
       return SensorData(
         utc: DateTime.now().toUtc(),
@@ -67,15 +100,34 @@ class SensorService {
         longitude: position?.longitude ?? 0.0, // Default to 0.0 if no location
         accuracy: position?.accuracy ?? 0.0,
         altitude: position?.altitude ?? 0.0,
-        azimuthDeg: orientation.azimuth,
-        pitchDeg: orientation.pitch,
-        rollDeg: orientation.roll,
-        hfovDeg: hfov,
+        azimuthDeg: orientation?.azimuth ?? 0.0,
+        pitchDeg: orientation?.pitch ?? 0.0,
+        rollDeg: orientation?.roll ?? 0.0,
+        hfovDeg: hfov ?? 66.0,
       );
     } catch (e) {
       debugPrint('SensorService: Error capturing sensor data: $e');
-      rethrow;
+      // Return default sensor data instead of throwing
+      return SensorData(
+        utc: DateTime.now().toUtc(),
+        latitude: 0.0,
+        longitude: 0.0,
+        accuracy: 0.0,
+        altitude: 0.0,
+        azimuthDeg: 0.0,
+        pitchDeg: 0.0,
+        rollDeg: 0.0,
+        hfovDeg: 66.0,
+      );
     }
+  }
+
+  DeviceOrientation _getDefaultOrientation() {
+    return const DeviceOrientation(
+      azimuth: 0.0,
+      pitch: 0.0,
+      roll: 0.0,
+    );
   }
 
   Future<Position?> _captureLocation() async {
@@ -106,6 +158,25 @@ class SensorService {
   }
 
   Future<DeviceOrientation> _captureDeviceOrientation() async {
+    // Quick sensor availability check first
+    try {
+      final sensorCheck = await checkSensorAvailability().timeout(
+        const Duration(seconds: 2),
+        onTimeout: () => false,
+      );
+      
+      if (!sensorCheck) {
+        debugPrint('Sensors not available, using default orientation');
+        return _getDefaultOrientation();
+      }
+    } catch (e) {
+      debugPrint('Sensor check failed: $e, using default orientation');
+      return _getDefaultOrientation();
+    }
+
+    StreamSubscription<AccelerometerEvent>? accelSub;
+    StreamSubscription<MagnetometerEvent>? magSub;
+    
     try {
       // Collect multiple samples for stability
       final List<AccelerometerEvent> accelSamples = [];
@@ -115,36 +186,101 @@ class SensorService {
       final magCompleter = Completer<void>();
 
       // Collect accelerometer samples
-      late StreamSubscription<AccelerometerEvent> accelSub;
-      accelSub = accelerometerEvents.listen((event) {
-        accelSamples.add(event);
-        if (accelSamples.length >= _sensorSamples) {
-          accelSub.cancel();
-          accelCompleter.complete();
-        }
-      });
+      accelSub = accelerometerEvents.listen(
+        (event) {
+          accelSamples.add(event);
+          if (accelSamples.length >= _sensorSamples && !accelCompleter.isCompleted) {
+            accelSub?.cancel();
+            accelCompleter.complete();
+          }
+        },
+        onError: (e) {
+          debugPrint('Accelerometer error: $e');
+          if (!accelCompleter.isCompleted) accelCompleter.complete();
+        },
+      );
 
       // Collect magnetometer samples
-      late StreamSubscription<MagnetometerEvent> magSub;
-      magSub = magnetometerEvents.listen((event) {
-        magSamples.add(event);
-        if (magSamples.length >= _sensorSamples) {
-          magSub.cancel();
-          magCompleter.complete();
-        }
-      });
+      magSub = magnetometerEvents.listen(
+        (event) {
+          magSamples.add(event);
+          if (magSamples.length >= _sensorSamples && !magCompleter.isCompleted) {
+            magSub?.cancel();
+            magCompleter.complete();
+          }
+        },
+        onError: (e) {
+          debugPrint('Magnetometer error (likely no sensor): $e');
+          if (!magCompleter.isCompleted) magCompleter.complete();
+        },
+      );
 
-      // Wait for both sensors with timeout
-      await Future.wait([
-        accelCompleter.future.timeout(_sensorTimeout),
-        magCompleter.future.timeout(_sensorTimeout),
-      ]);
+      // Wait for both sensors with shorter timeouts
+      try {
+        await Future.wait([
+          accelCompleter.future.timeout(
+            const Duration(seconds: 2), // Reduced timeout
+            onTimeout: () {
+              debugPrint('Accelerometer timeout - using partial samples: ${accelSamples.length}');
+              if (!accelCompleter.isCompleted) accelCompleter.complete();
+            },
+          ),
+          magCompleter.future.timeout(
+            const Duration(seconds: 2), // Reduced timeout
+            onTimeout: () {
+              debugPrint('Magnetometer timeout (no sensor) - using partial samples: ${magSamples.length}');
+              if (!magCompleter.isCompleted) magCompleter.complete();
+            },
+          ),
+        ]);
+      } catch (e) {
+        debugPrint('Sensor timeout or error: $e');
+        // Continue with whatever samples we have
+      }
 
-      // Calculate averaged readings
+      // Use accelerometer-only orientation if no magnetometer
+      if (accelSamples.isEmpty) {
+        debugPrint('No accelerometer samples, using default orientation');
+        return _getDefaultOrientation();
+      }
+      
+      if (magSamples.isEmpty) {
+        debugPrint('No magnetometer samples, using accelerometer-only orientation');
+        return _calculateOrientationAccelOnly(accelSamples);
+      }
+
+      // Calculate averaged readings with both sensors
       return _calculateOrientation(accelSamples, magSamples);
     } catch (e) {
-      throw Exception('Failed to capture device orientation: $e');
+      debugPrint('Failed to capture device orientation: $e');
+      return _getDefaultOrientation();
+    } finally {
+      // Always cleanup subscriptions
+      accelSub?.cancel();
+      magSub?.cancel();
     }
+  }
+
+  /// Calculate orientation using only accelerometer (for devices without magnetometer)
+  DeviceOrientation _calculateOrientationAccelOnly(List<AccelerometerEvent> accelSamples) {
+    // Average the accelerometer readings
+    double avgAccelX = accelSamples.map((e) => e.x).reduce((a, b) => a + b) / accelSamples.length;
+    double avgAccelY = accelSamples.map((e) => e.y).reduce((a, b) => a + b) / accelSamples.length;
+    double avgAccelZ = accelSamples.map((e) => e.z).reduce((a, b) => a + b) / accelSamples.length;
+
+    // Calculate pitch (elevation angle)
+    final pitch = atan2(-avgAccelX, sqrt(avgAccelY * avgAccelY + avgAccelZ * avgAccelZ));
+    final pitchDeg = pitch * 180 / pi;
+
+    // Calculate roll
+    final roll = atan2(avgAccelY, avgAccelZ);
+    final rollDeg = roll * 180 / pi;
+
+    return DeviceOrientation(
+      azimuth: 0.0, // No compass heading without magnetometer
+      pitch: pitchDeg,
+      roll: rollDeg,
+    );
   }
 
   DeviceOrientation _calculateOrientation(

@@ -200,7 +200,14 @@ class InitializationService {
       _logInfo('Delegating permission initialization to PermissionService...');
       
       final permissionService = PermissionService();
-      await permissionService.initializePermissions();
+      
+      // Add timeout to prevent hanging on permission requests
+      await permissionService.initializePermissions().timeout(
+        const Duration(seconds: 30),
+        onTimeout: () {
+          _logWarning('Permission initialization timed out - continuing with partial permissions');
+        },
+      );
       
       // Check if critical permissions were granted (only location is critical now)
       final hasCriticalPermissions = permissionService.locationGranted;
