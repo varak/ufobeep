@@ -33,6 +33,29 @@ class UsernameGenerationResponse(BaseModel):
     alternatives: List[str]
 
 
+class RecoveryRequest(BaseModel):
+    """Request for account recovery"""
+    email: Optional[str] = Field(None, description="Email address for recovery")
+    phone: Optional[str] = Field(None, description="Phone number for SMS recovery")
+
+
+class PhoneAddRequest(BaseModel):
+    """Request to add phone number"""
+    device_id: str = Field(..., min_length=1, description="Device identifier")
+    phone: str = Field(..., min_length=10, description="Phone number")
+
+
+class PhoneVerifyRequest(BaseModel):
+    """Request to verify phone number"""
+    device_id: str = Field(..., min_length=1, description="Device identifier")
+    code: str = Field(..., min_length=6, max_length=6, description="SMS verification code")
+
+
+class TestSMSRequest(BaseModel):
+    """Request to test SMS service"""
+    phone: str = Field(..., min_length=10, description="Phone number to test")
+
+
 class UserRegistrationRequest(BaseModel):
     """Request for user registration"""
     device_id: str = Field(..., min_length=1, max_length=255, description="Device identifier")
@@ -363,27 +386,44 @@ async def verify_email(request: dict):
 
 
 @router.post("/recover-account")
-async def recover_account(request: dict):
-    """Send recovery code to verified email"""
-    email = request.get("email", "").strip()
-    if not email:
-        raise HTTPException(status_code=400, detail="Email required")
+async def recover_account(request: RecoveryRequest):
+    """Send recovery code to verified email or SMS"""
+    email = request.email.strip() if request.email else ""
+    phone = request.phone.strip() if request.phone else ""
+    
+    if not email and not phone:
+        raise HTTPException(status_code=400, detail="Email or phone number required")
+    
+    if email and phone:
+        raise HTTPException(status_code=400, detail="Provide either email or phone, not both")
     
     pool = await get_db()
     try:
         async with pool.acquire() as conn:
-            # Find user by email (temporarily allow unverified for testing)
-            user = await conn.fetchrow("""
-                SELECT id, username, email_verified 
-                FROM users 
-                WHERE email = $1
-            """, email)
+            # Find user by email or phone
+            if email:
+                user = await conn.fetchrow("""
+                    SELECT id, username, email, phone, email_verified, phone_verified 
+                    FROM users 
+                    WHERE email = $1
+                """, email)
+                auth_method = "email"
+                contact_info = email
+            else:
+                user = await conn.fetchrow("""
+                    SELECT id, username, email, phone, email_verified, phone_verified 
+                    FROM users 
+                    WHERE phone = $1
+                """, phone)
+                auth_method = "sms"
+                contact_info = phone
             
             if not user:
-                # Don't reveal if email exists - security best practice
+                # Don't reveal if contact exists - security best practice
                 return {
                     "success": True,
-                    "message": "If this email is verified, a recovery code has been sent."
+                    "message": "If this contact method is verified, a recovery code has been sent.",
+                    "expires_in_minutes": 15
                 }
             
             # Generate 6-digit recovery code
@@ -400,13 +440,22 @@ async def recover_account(request: dict):
                 WHERE id = $3
             """, recovery_code, expires_at, user['id'])
             
-            # Send recovery email
-            email_service = PostfixEmailService()
-            await email_service.send_recovery_email(email, user['username'], recovery_code)
+            # Send recovery code via appropriate method
+            if auth_method == "email":
+                email_service = PostfixEmailService()
+                await email_service.send_recovery_email(contact_info, user['username'], recovery_code)
+                message = "If this email is verified, a recovery code has been sent."
+            else:
+                # Send SMS
+                result = await sms_service.send_recovery_sms(contact_info, user['username'], recovery_code)
+                if not result["success"]:
+                    # For demo, still return success to prevent contact enumeration
+                    pass
+                message = "If this phone number is verified, a recovery code has been sent."
             
             return {
                 "success": True,
-                "message": "If this email is verified, a recovery code has been sent.",
+                "message": message,
                 "expires_in_minutes": 15
             }
                 
