@@ -14,18 +14,15 @@ import json
 from app.services.username_service import UsernameGenerator
 from app.services.user_migration_service import get_migration_service
 from app.services.email_service_postfix import PostfixEmailService
+from app.services.database_service import get_database_pool
 
 router = APIRouter(prefix="/users", tags=["users"])
 
 
-# Database dependency
-async def get_db():
-    """Get database connection pool"""
-    return await asyncpg.create_pool(
-        host="localhost", port=5432, user="ufobeep_user", 
-        password="ufopostpass", database="ufobeep_db",
-        min_size=1, max_size=10
-    )
+# Database dependency - now uses shared pool
+async def get_db() -> asyncpg.Pool:
+    """Get database connection pool from service"""
+    return await get_database_pool()
 
 
 # Pydantic Models for API
@@ -234,7 +231,7 @@ async def register_user(request: UserRegistrationRequest):
             detail=f"Registration failed: {str(e)}"
         )
     finally:
-        await pool.close()
+        pass  # Shared pool - don't close
 
 
 @router.get("/by-device/{device_id}", response_model=UserRegistrationResponse)
@@ -267,7 +264,7 @@ async def get_user_by_device(device_id: str):
                 message="User found"
             )
     finally:
-        await pool.close()
+        pass  # Shared pool - don't close
 
 
 @router.post("/validate-username")
@@ -302,7 +299,7 @@ async def validate_username(request: dict):
                 "error": None if available else "Username already taken"
             }
     finally:
-        await pool.close()
+        pass  # Shared pool - don't close
 
 
 @router.get("/migration-status")
@@ -320,7 +317,7 @@ async def get_migration_status():
             "migration_status": status
         }
     finally:
-        await pool.close()
+        pass  # Shared pool - don't close
 
 
 @router.post("/verify-email")
@@ -361,7 +358,7 @@ async def verify_email(request: dict):
                 "username": user['username']
             }
     finally:
-        await pool.close()
+        pass  # Shared pool - don't close
 
 
 @router.post("/recover-account")
@@ -413,7 +410,7 @@ async def recover_account(request: dict):
             }
                 
     finally:
-        await pool.close()
+        pass  # Shared pool - don't close
 
 
 @router.post("/verify-recovery")
@@ -475,4 +472,4 @@ async def verify_recovery_code(request: dict):
             }
             
     finally:
-        await pool.close()
+        pass  # Shared pool - don't close

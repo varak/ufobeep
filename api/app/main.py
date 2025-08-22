@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException, UploadFile, File, Form, Request
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from app.middleware.request_middleware import RequestTimeoutMiddleware, ErrorHandlingMiddleware
 from app.config.environment import settings
 from app.routers import plane_match, media_serve, devices, emails, photo_analysis, mufon, copescan, users
 from app.routers import admin_simple as admin
@@ -90,6 +91,10 @@ app = FastAPI(
     redoc_url="/redoc" if settings.debug else None,
 )
 
+# Request handling middleware (order matters - first added, last executed)
+app.add_middleware(RequestTimeoutMiddleware, timeout_seconds=30)
+app.add_middleware(ErrorHandlingMiddleware)
+
 # CORS middleware with environment-based origins
 app.add_middleware(
     CORSMiddleware,
@@ -99,8 +104,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Database connection
-db_pool = None
+# Database connection - now using proper service
+from app.services.database_service import database_service
 
 # Media storage configuration
 MEDIA_DIR = Path("media")
@@ -111,25 +116,26 @@ MEDIA_DIR.mkdir(exist_ok=True)
 # Log configuration on startup
 @app.on_event("startup")
 async def startup_event():
-    global db_pool
     settings.log_configuration()
     
 
     try:
-        db_pool = await asyncpg.create_pool(
+        # Initialize database service with production settings
+        await database_service.initialize_pool(
             host="localhost",
             port=5432,
             user="ufobeep_user",
             password="ufopostpass",
             database="ufobeep_db",
-            min_size=1,
-            max_size=10
+            min_size=2,
+            max_size=20,
+            command_timeout=60
         )
         print("Database connection pool created successfully")
         
         
 
-        async with db_pool.acquire() as conn:
+        async with database_service.pool.acquire() as conn:
 
             try:
                 await conn.execute("ALTER TABLE sightings ALTER COLUMN title DROP NOT NULL")
@@ -266,7 +272,7 @@ async def startup_event():
             
 
             from app.services.metrics_service import initialize_metrics_service
-            await initialize_metrics_service(db_pool)
+            await initialize_metrics_service(database_service.pool)
             
         print("Database tables initialized")
     except Exception as e:
@@ -274,13 +280,24 @@ async def startup_event():
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    global db_pool
-    if db_pool:
-        await db_pool.close()
+    await database_service.close()
 
 @app.get("/healthz")
-def healthz():
-    return {"ok": True}
+async def healthz():
+    """Enhanced health check with database pool status"""
+    health_data = {"ok": True, "timestamp": datetime.now().isoformat()}
+    
+    # Add database pool health
+    try:
+        db_health = await database_service.health_check()
+        health_data["database"] = db_health
+        if not db_health.get("healthy", False):
+            health_data["ok"] = False
+    except Exception as e:
+        health_data["database"] = {"healthy": False, "error": str(e)}
+        health_data["ok"] = False
+    
+    return health_data
 
 @app.get("/ping")
 def ping():
@@ -347,7 +364,7 @@ async def create_sighting(request: dict = None):
         enrichment_data = await generate_enrichment_data(sensor_data)
         
 
-        async with db_pool.acquire() as conn:
+        async with database_service.pool.acquire() as conn:
             sighting_id = await conn.fetchval("""
                 INSERT INTO sightings 
                 (title, description, category, witness_count, is_public, tags, media_info, sensor_data, enrichment_data, alert_level, status)
@@ -385,7 +402,7 @@ async def admin_test_alert(request: dict):
         raise HTTPException(status_code=403, detail="Admin access required")
     try:
         from services.proximity_alert_service import get_proximity_alert_service
-        proximity_service = get_proximity_alert_service(db_pool)
+        proximity_service = get_proximity_alert_service(database_service.pool)
         result = await proximity_service.send_proximity_alerts(
             request.get("lat", 36.24), request.get("lng", -115.24),
             "test-alert", request.get("device_id", "admin"), emergency_mode=True
@@ -408,7 +425,7 @@ async def admin_test_single(request: dict):
 async def get_analysis_status(sighting_id: str):
     """Get photo analysis status for a sighting"""
     try:
-        async with db_pool.acquire() as conn:
+        async with database_service.pool.acquire() as conn:
             results = await conn.fetch("""
                 SELECT filename, classification, matched_object, confidence, 
                        analysis_status, analysis_error, processing_duration_ms,
