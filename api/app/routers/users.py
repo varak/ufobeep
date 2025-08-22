@@ -12,6 +12,7 @@ import asyncpg
 import json
 
 from app.services.username_service import UsernameGenerator
+from app.services.user_migration_service import get_migration_service
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -190,6 +191,12 @@ async def register_user(request: UserRegistrationRequest):
                 VALUES ($1, $2, $3)
             """, request.device_id, user_id, json.dumps(device_info))
             
+            # Migrate existing sightings from device_id to username
+            migration_service = await get_migration_service(pool)
+            migrated_count = await migration_service.migrate_device_to_username(
+                request.device_id, username
+            )
+            
             return UserRegistrationResponse(
                 user_id=str(user_id),
                 username=username,
@@ -276,5 +283,23 @@ async def validate_username(request: dict):
                 "available": available,
                 "error": None if available else "Username already taken"
             }
+    finally:
+        await pool.close()
+
+
+@router.get("/migration-status")
+async def get_migration_status():
+    """
+    Get status of device ID to username migration
+    Shows progress of transitioning from device IDs to usernames
+    """
+    pool = await get_db()
+    try:
+        migration_service = await get_migration_service(pool)
+        status = await migration_service.get_migration_status()
+        return {
+            "success": True,
+            "migration_status": status
+        }
     finally:
         await pool.close()
