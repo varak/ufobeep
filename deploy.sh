@@ -113,27 +113,32 @@ if [ "$DEPLOY_APK" = true ]; then
         
         # Get device list in a more reliable way
         DEVICES_RAW=$(adb devices | grep -E "device$" | cut -f1)
-        DEVICE_COUNT=$(echo "$DEVICES_RAW" | wc -l)
+        DEVICE_COUNT=$(echo "$DEVICES_RAW" | grep -v "^$" | wc -l)
         
         # Prioritize IP-based device (Moto) for faster testing
         IP_DEVICE=$(echo "$DEVICES_RAW" | grep -E "^[0-9]+\." | head -1)
-        OTHER_DEVICES=$(echo "$DEVICES_RAW" | grep -v -E "^[0-9]+\.")
+        OTHER_DEVICES=$(echo "$DEVICES_RAW" | grep -v -E "^[0-9]+\." | grep -v "^$")
         
-        # Build prioritized device list
+        # Build prioritized device array
+        DEVICES_ARRAY=()
         if [ -n "$IP_DEVICE" ]; then
-            DEVICES_LIST="$IP_DEVICE $OTHER_DEVICES"
-            echo -e "${GREEN}Found $DEVICE_COUNT connected devices (IP device prioritized): $DEVICES_LIST${NC}"
-        else
-            DEVICES_LIST="$OTHER_DEVICES"
-            echo -e "${GREEN}Found $DEVICE_COUNT connected devices: $DEVICES_LIST${NC}"
+            DEVICES_ARRAY+=("$IP_DEVICE")
+            echo -e "${GREEN}Found $DEVICE_COUNT connected devices (IP device prioritized first)${NC}"
         fi
+        while IFS= read -r device; do
+            if [ -n "$device" ]; then
+                DEVICES_ARRAY+=("$device")
+            fi
+        done <<< "$OTHER_DEVICES"
+        
+        echo "Device order: ${DEVICES_ARRAY[*]}"
         
         if [ "$DEVICE_COUNT" -ge 1 ]; then
             echo "Installing to all devices..."
             INSTALL_SUCCESS=0
             
             # Process each device individually with clear output
-            for device in $DEVICES_LIST; do
+            for device in "${DEVICES_ARRAY[@]}"; do
                 echo ""
                 echo "📱 Processing device: $device"
                 
