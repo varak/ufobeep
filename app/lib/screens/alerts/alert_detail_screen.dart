@@ -116,10 +116,6 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             title: Text(AlertTitleUtils.getContextualTitleFromAlert(alert)),
             actions: [
               IconButton(
-                icon: const Icon(Icons.chat),
-                onPressed: () => context.go('/alert/${widget.alertId}/chat'),
-              ),
-              IconButton(
                 icon: const Icon(Icons.share),
                 onPressed: () {
                   // TODO: Share alert
@@ -171,10 +167,14 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 // Action buttons (including witness confirmation)
                 AlertActionsSection(
                   alert: alert,
+                  currentUserDeviceId: _currentUserDeviceId,
                   onAddPhotos: () => _showAddPhotosDialog(widget.alertId),
                   onReportToMufon: () => _showMufonReportDialog(),
                   onWitnessConfirmed: (witnessCount) {
-                    // Optionally refresh alert data or show additional feedback
+                    // Refresh witness status after confirmation
+                    if (_currentUserDeviceId != null) {
+                      _checkWitnessStatus(_currentUserDeviceId!);
+                    }
                   },
                 ),
               ],

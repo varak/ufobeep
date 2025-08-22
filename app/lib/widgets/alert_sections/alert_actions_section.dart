@@ -14,6 +14,7 @@ class AlertActionsSection extends StatefulWidget {
     this.onReportToMufon,
     this.onWitnessConfirmed,
     this.showAllActions = true,
+    this.currentUserDeviceId,
   });
 
   final Alert alert;
@@ -21,6 +22,7 @@ class AlertActionsSection extends StatefulWidget {
   final VoidCallback? onReportToMufon;
   final Function(int witnessCount)? onWitnessConfirmed;
   final bool showAllActions;
+  final String? currentUserDeviceId;
 
   @override
   State<AlertActionsSection> createState() => _AlertActionsSectionState();
@@ -69,11 +71,11 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
           ),
           const SizedBox(height: 16),
           
-          // Witness confirmation button (primary action if not confirmed)
-          if (_hasConfirmed != true) ...[
+          // Witness confirmation button (primary action if not confirmed and not creator)
+          if (_hasConfirmed != true && !_isOriginalCreator()) ...[
             _buildWitnessButton(),
             const SizedBox(height: 12),
-          ] else ...[
+          ] else if (_hasConfirmed == true) ...[
             _buildConfirmedStatus(),
             const SizedBox(height: 12),
           ],
@@ -364,5 +366,13 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
         backgroundColor: AppColors.semanticWarning,
       ),
     );
+  }
+
+  /// Check if current user is the original creator of this alert
+  bool _isOriginalCreator() {
+    if (widget.currentUserDeviceId == null || widget.alert.reporterId == null) {
+      return false;
+    }
+    return widget.currentUserDeviceId == widget.alert.reporterId;
   }
 }
