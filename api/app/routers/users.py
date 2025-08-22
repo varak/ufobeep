@@ -473,3 +473,71 @@ async def verify_recovery_code(request: dict):
             
     finally:
         pass  # Shared pool - don't close
+
+
+@router.post("/debug-user")
+async def debug_user(request: dict):
+    """Debug endpoint to check user verification status"""
+    username = request.get("username", "").strip()
+    password = request.get("password", "").strip()
+    
+    if password != "ufopostpass":
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    if not username:
+        raise HTTPException(status_code=400, detail="Username required")
+    
+    pool = await get_db()
+    try:
+        async with pool.acquire() as conn:
+            user = await conn.fetchrow("""
+                SELECT id, username, email, email_verified, verification_token, 
+                       verification_sent_at, created_at
+                FROM users 
+                WHERE username = $1
+            """, username)
+            
+            if not user:
+                return {"error": "User not found"}
+            
+            return {
+                "user_id": str(user['id']),
+                "username": user['username'],
+                "email": user['email'],
+                "email_verified": user['email_verified'],
+                "has_verification_token": bool(user['verification_token']),
+                "verification_sent_at": str(user['verification_sent_at']) if user['verification_sent_at'] else None,
+                "created_at": str(user['created_at'])
+            }
+                
+    finally:
+        pass  # Shared pool - don't close
+
+
+@router.post("/test-email")
+async def test_email(request: dict):
+    """Test email sending capability"""
+    email = request.get("email", "").strip()
+    password = request.get("password", "").strip()
+    
+    if password != "ufopostpass":
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    if not email:
+        raise HTTPException(status_code=400, detail="Email required")
+    
+    try:
+        email_service = PostfixEmailService()
+        success = await email_service.send_verification_email(
+            email, "test.user.123", "test-token-12345"
+        )
+        
+        return {
+            "success": success,
+            "message": "Test email sent" if success else "Email sending failed"
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e)
+        }
