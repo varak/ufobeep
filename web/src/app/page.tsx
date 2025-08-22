@@ -66,9 +66,9 @@ export default function Home() {
             </div>
             <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
               <div className="text-2xl mb-2">🛰️</div>
-              <h3 className="text-sm font-semibold mb-2 text-brand-primary">BlackSky Integration</h3>
+              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Satellite Imagery</h3>
               <p className="text-xs text-text-secondary">
-                Satellite imagery enrichment with clickable info modals
+                BlackSky and SkyFi integration with clickable info modals
               </p>
             </div>
             <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
@@ -177,8 +177,8 @@ export default function Home() {
               <div className="text-3xl mb-4 group-hover:scale-110 transition-transform">🔬</div>
               <h3 className="text-lg font-semibold mb-2 text-brand-primary">Smart Enrichment</h3>
               <p className="text-text-secondary">
-                Automatic weather, celestial, and satellite data enrichment 
-                helps identify conventional explanations.
+                Automatic weather, celestial, aircraft, and satellite data enrichment 
+                plus premium imagery from BlackSky and SkyFi.
               </p>
             </div>
           </div>

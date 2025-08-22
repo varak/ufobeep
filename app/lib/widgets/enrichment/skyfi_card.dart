@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
-import '../dialogs/blacksky_info_dialog.dart';
+import '../dialogs/skyfi_info_dialog.dart';
 
-class BlackSkyCard extends StatelessWidget {
-  const BlackSkyCard({super.key, required this.blackskyData});
+class SkyFiCard extends StatelessWidget {
+  const SkyFiCard({super.key, required this.skyfiData});
   
-  final Map<String, dynamic> blackskyData;
+  final Map<String, dynamic> skyfiData;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class BlackSkyCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(12),
-          onTap: () => _showBlackSkyInfo(context),
+          onTap: () => _showSkyFiInfo(context),
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -57,14 +57,14 @@ class BlackSkyCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 
-                // BlackSky info box (green box)
+                // SkyFi info box (purple box)
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: AppColors.brandPrimary.withOpacity(0.1),
+                    color: const Color(0xFF6B46C1).withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
-                      color: AppColors.brandPrimary,
+                      color: const Color(0xFF6B46C1),
                       width: 1,
                     ),
                   ),
@@ -72,7 +72,7 @@ class BlackSkyCard extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.info_outline,
-                        color: AppColors.brandPrimary,
+                        color: const Color(0xFF6B46C1),
                         size: 20,
                       ),
                       const SizedBox(width: 8),
@@ -81,9 +81,9 @@ class BlackSkyCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'BlackSky 35cm Resolution',
+                              'SkyFi 10-50cm Resolution',
                               style: TextStyle(
-                                color: AppColors.brandPrimary,
+                                color: const Color(0xFF6B46C1),
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -91,7 +91,7 @@ class BlackSkyCard extends StatelessWidget {
                             Text(
                               'Coming Soon',
                               style: TextStyle(
-                                color: AppColors.brandPrimary,
+                                color: const Color(0xFF6B46C1),
                                 fontSize: 12,
                               ),
                             ),
@@ -109,10 +109,10 @@ class BlackSkyCard extends StatelessWidget {
     );
   }
 
-  void _showBlackSkyInfo(BuildContext context) {
+  void _showSkyFiInfo(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) => const BlackSkyInfoDialog(),
+      builder: (BuildContext context) => const SkyFiInfoDialog(),
     );
   }
 }

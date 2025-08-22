@@ -1822,6 +1822,12 @@ def initialize_enrichment_processors():
     blacksky_processor = BlackSkyEnrichmentProcessor(api_key=blacksky_api_key)
     enrichment_orchestrator.register_processor(blacksky_processor)
     
+    # SkyFi processor - premium satellite imagery feature
+    from app.enrichment.skyfi_processor import SkyFiEnrichmentProcessor
+    skyfi_api_key = getattr(settings, 'skyfi_api_key', None)
+    skyfi_processor = SkyFiEnrichmentProcessor(api_key=skyfi_api_key)
+    enrichment_orchestrator.register_processor(skyfi_processor)
+    
     logger.info(f"Initialized {len(enrichment_orchestrator.processors)} enrichment processors")
     logger.info(f"Aircraft tracking API available: {opensky_client_id is not None}")
     logger.info(f"Weather API available: {weather_api_key is not None}")

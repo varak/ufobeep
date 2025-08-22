@@ -5,6 +5,7 @@ import '../../models/alert_enrichment.dart';
 import '../../utils/unit_conversion.dart';
 import '../../providers/user_preferences_provider.dart';
 import 'blacksky_card.dart';
+import 'skyfi_card.dart';
 
 class EnrichmentSection extends StatelessWidget {
   const EnrichmentSection({
@@ -190,7 +191,8 @@ class EnrichmentSection extends StatelessWidget {
     final hasSatelliteData = enrichmentData['satellites'] != null;
     final hasContentData = enrichmentData['content_filter'] != null;
     final hasBlackSkyData = enrichmentData['blacksky'] != null;
-    final hasData = hasAircraftData || hasWeatherData || hasSatelliteData || hasContentData || hasBlackSkyData;
+    final hasSkyFiData = enrichmentData['skyfi'] != null;
+    final hasData = hasAircraftData || hasWeatherData || hasSatelliteData || hasContentData || hasBlackSkyData || hasSkyFiData;
     
     print('DEBUG: hasBlackSkyData = $hasBlackSkyData');
 
@@ -214,6 +216,10 @@ class EnrichmentSection extends StatelessWidget {
         ],
         if (hasBlackSkyData) ...[
           BlackSkyCard(blackskyData: enrichmentData['blacksky']),
+          const SizedBox(height: 16),
+        ],
+        if (hasSkyFiData) ...[
+          SkyFiCard(skyfiData: enrichmentData['skyfi']),
           const SizedBox(height: 16),
         ],
         if (hasContentData) ...[
