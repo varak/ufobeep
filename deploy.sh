@@ -141,7 +141,6 @@ if [ "$DEPLOY_APK" = true ]; then
             for device in "${DEVICES_ARRAY[@]}"; do
                 echo ""
                 echo "📱 Processing device: $device"
-                echo "  DEBUG: Starting device processing loop iteration"
                 
                 # Step 1: Uninstall (ignore failures)
                 echo "  🗑️  Uninstalling old version..."
@@ -161,9 +160,7 @@ if [ "$DEPLOY_APK" = true ]; then
                 else
                     echo -e "  ${RED}❌ INSTALL FAILED on $device${NC}"
                 fi
-                echo "  DEBUG: Finished device $device, moving to next"
             done
-            echo "DEBUG: Exited device loop"
             
             echo ""
             echo "=========================================="
