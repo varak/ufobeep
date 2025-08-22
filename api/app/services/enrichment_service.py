@@ -2227,6 +2227,22 @@ class EnrichmentDataGenerator:
             "classification": "unknown"
         }
     
+    def _build_blacksky_data(self, enrichment_results: dict) -> dict:
+        """Build BlackSky satellite imagery data from enrichment results"""
+        blacksky_result = enrichment_results.get("blacksky")
+        if not blacksky_result or not blacksky_result.success:
+            return None
+        
+        return blacksky_result.data
+    
+    def _build_skyfi_data(self, enrichment_results: dict) -> dict:
+        """Build SkyFi satellite imagery data from enrichment results"""
+        skyfi_result = enrichment_results.get("skyfi")
+        if not skyfi_result or not skyfi_result.success:
+            return None
+        
+        return skyfi_result.data
+    
     async def generate_enrichment_data(self, sensor_data: dict, media_files: list = None) -> dict:
         """Generate enrichment data for a sighting - clean orchestrator method"""
         import uuid
@@ -2268,6 +2284,8 @@ class EnrichmentDataGenerator:
                 "weather": self._build_weather_data(enrichment_results),
                 "celestial": self._build_celestial_data(enrichment_results),
                 "satellite_check": self._build_satellite_data(enrichment_results),
+                "blacksky": self._build_blacksky_data(enrichment_results),
+                "skyfi": self._build_skyfi_data(enrichment_results),
                 "plane_match": {"is_plane": False, "confidence": 0.0, "nearby_flights": []},
                 "processing_summary": self._build_processing_summary(enrichment_results)
             }
