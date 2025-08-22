@@ -123,15 +123,25 @@ if [ "$DEPLOY_APK" = true ]; then
             
             for device in $DEVICES; do
                 echo "  Installing to $device..."
-                adb -s "$device" uninstall com.ufobeep 2>/dev/null || true
+                ((INSTALL_TOTAL++))
                 
-                if adb -s "$device" install "$APK_PATH"; then
+                # First try to uninstall existing version
+                echo "    Uninstalling existing version..."
+                adb -s "$device" uninstall com.ufobeep 2>/dev/null || echo "    No existing version found"
+                
+                # Install new version with verbose output
+                echo "    Installing new APK..."
+                if adb -s "$device" install -r "$APK_PATH" 2>&1; then
                     echo "    ✅ Success on $device"
                     ((INSTALL_SUCCESS++))
+                    
+                    # Force stop any running instance to ensure fresh start
+                    echo "    Force stopping app..."
+                    adb -s "$device" shell am force-stop com.ufobeep 2>/dev/null || true
                 else
                     echo -e "    ${RED}❌ FAILED on $device${NC}"
                 fi
-                ((INSTALL_TOTAL++))
+                echo ""
             done
             
             if [ "$INSTALL_SUCCESS" -eq "$INSTALL_TOTAL" ]; then
