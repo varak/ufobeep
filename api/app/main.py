@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.config.environment import settings
-from app.routers import plane_match, media_serve, devices, emails, photo_analysis, mufon, copescan
+from app.routers import plane_match, media_serve, devices, emails, photo_analysis, mufon, copescan, users
 from app.routers import admin_simple as admin
 from app.services.media_service import get_media_service
 from app.services.alerts_service import AlertsService
@@ -306,6 +306,9 @@ app.include_router(alerts.router)
 # Include engagement tracking router
 from app.routers import beep_engagement
 app.include_router(beep_engagement.router)
+
+# Include user management router for MP13-1 username system
+app.include_router(users.router)
 
 # Clean unified alerts architecture using alerts.router
 
