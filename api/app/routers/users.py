@@ -14,6 +14,7 @@ import json
 from app.services.username_service import UsernameGenerator
 from app.services.user_migration_service import get_migration_service
 from app.services.email_service_postfix import PostfixEmailService
+from app.services.sms_service import sms_service
 from app.services.database_service import get_database_pool
 
 router = APIRouter(prefix="/users", tags=["users"])
