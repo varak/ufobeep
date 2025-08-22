@@ -4,8 +4,7 @@ import '../../theme/app_theme.dart';
 import '../../models/alert_enrichment.dart';
 import '../../utils/unit_conversion.dart';
 import '../../providers/user_preferences_provider.dart';
-import 'blacksky_card.dart';
-import 'skyfi_card.dart';
+import 'premium_satellite_card.dart';
 
 class EnrichmentSection extends StatelessWidget {
   const EnrichmentSection({
@@ -216,12 +215,11 @@ class EnrichmentSection extends StatelessWidget {
           SatelliteCardFromJson(satelliteData: enrichmentData['satellites']),
           const SizedBox(height: 16),
         ],
-        if (hasBlackSkyData) ...[
-          BlackSkyCard(blackskyData: enrichmentData['blacksky']),
-          const SizedBox(height: 16),
-        ],
-        if (hasSkyFiData) ...[
-          SkyFiCard(skyfiData: enrichmentData['skyfi']),
+        if (hasBlackSkyData || hasSkyFiData) ...[
+          PremiumSatelliteCard(
+            blackskyData: enrichmentData['blacksky'],
+            skyfiData: enrichmentData['skyfi'],
+          ),
           const SizedBox(height: 16),
         ],
         if (hasContentData) ...[
