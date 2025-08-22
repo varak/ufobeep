@@ -29,7 +29,11 @@ Response:
           "blacksky": {
             "available": true,
             "name": "BlackSky High-Resolution Imagery",
-            "pricing": {"estimated_cost_usd": "$50-100"},
+            "status": "coming_soon"
+          },
+          "skyfi": {
+            "available": true,
+            "name": "SkyFi High-Resolution Imagery", 
             "status": "coming_soon"
           },
           "iss": {...},
@@ -37,6 +41,10 @@ Response:
           "weather": {...},
           "aircraft": {...}
         }
+        
+Note: Premium satellite imagery (BlackSky/SkyFi) only visible to:
+- Alert creator
+- Confirmed witnesses within 2x visibility distance
       }
     ]
   },
