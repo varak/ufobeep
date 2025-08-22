@@ -9,6 +9,7 @@ from typing import Optional, List
 from datetime import datetime
 import uuid
 import asyncpg
+import json
 
 from app.services.username_service import UsernameGenerator
 
@@ -115,7 +116,7 @@ async def register_user(request: UserRegistrationRequest):
         async with pool.acquire() as conn:
             # Check if device already exists
             existing_device = await conn.fetchrow(
-                "SELECT device_id, user_id FROM devices WHERE device_id = $1",
+                "SELECT device_id, user_id FROM user_devices WHERE device_id = $1",
                 request.device_id
             )
             
@@ -166,17 +167,28 @@ async def register_user(request: UserRegistrationRequest):
                 request.units_metric if request.units_metric is not None else True,
                 request.preferred_language or "en", True, False)
             
-            # Create device record
-            device_id = uuid.uuid4()
+            # Create simple device mapping - create table if not exists
             await conn.execute("""
-                INSERT INTO devices (
-                    id, user_id, device_id, device_name, platform, 
-                    app_version, os_version, is_active, last_seen, 
-                    created_at, updated_at, registered_at
+                CREATE TABLE IF NOT EXISTS user_devices (
+                    device_id TEXT PRIMARY KEY,
+                    user_id UUID NOT NULL REFERENCES users(id),
+                    device_info JSONB,
+                    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
                 )
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW(), NOW())
-            """, device_id, user_id, request.device_id, request.device_name,
-                request.platform, request.app_version, request.os_version, True)
+            """)
+            
+            # Store device mapping with JSON info
+            device_info = {
+                "platform": request.platform,
+                "device_name": request.device_name,
+                "app_version": request.app_version,
+                "os_version": request.os_version
+            }
+            
+            await conn.execute("""
+                INSERT INTO user_devices (device_id, user_id, device_info)
+                VALUES ($1, $2, $3)
+            """, request.device_id, user_id, json.dumps(device_info))
             
             return UserRegistrationResponse(
                 user_id=str(user_id),
@@ -210,10 +222,10 @@ async def get_user_by_device(device_id: str):
     try:
         async with pool.acquire() as conn:
             device_user = await conn.fetchrow("""
-                SELECT d.device_id, u.id, u.username 
-                FROM devices d 
-                JOIN users u ON d.user_id = u.id 
-                WHERE d.device_id = $1
+                SELECT ud.device_id, u.id, u.username 
+                FROM user_devices ud 
+                JOIN users u ON ud.user_id = u.id 
+                WHERE ud.device_id = $1
             """, device_id)
             
             if not device_user:
