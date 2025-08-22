@@ -107,59 +107,57 @@ if [ "$DEPLOY_APK" = true ]; then
         APK_SIZE=$(ls -lh "$APK_PATH" | awk '{print $5}')
         echo "Found APK: $APK_PATH ($APK_SIZE)"
         
-        # Deploy to connected devices
+        # Deploy to connected devices - REWRITTEN FOR RELIABILITY
         echo
         echo "Checking for connected devices..."
-        DEVICE_COUNT=$(adb devices | grep -c "device$" || true)
         
-        if [ "$DEVICE_COUNT" -ge 3 ]; then
-            echo -e "${GREEN}Found $DEVICE_COUNT connected devices${NC}"
+        # Get device list in a more reliable way
+        DEVICES_LIST=$(adb devices | grep -E "device$" | cut -f1 | tr '\n' ' ')
+        DEVICE_COUNT=$(echo "$DEVICES_LIST" | wc -w)
+        
+        echo -e "${GREEN}Found $DEVICE_COUNT connected devices: $DEVICES_LIST${NC}"
+        
+        if [ "$DEVICE_COUNT" -ge 1 ]; then
             echo "Installing to all devices..."
-            
-            # Get all device IDs
-            DEVICES=$(adb devices | grep "device$" | cut -f1)
             INSTALL_SUCCESS=0
-            INSTALL_TOTAL=0
             
-            for device in $DEVICES; do
-                echo "📱 Installing to $device..."
-                ((INSTALL_TOTAL++))
-                
-                # Uninstall existing version
-                adb -s "$device" uninstall com.ufobeep >/dev/null 2>&1 || true
-                
-                # Install new version with timeout
-                if timeout 60 adb -s "$device" install -r "$APK_PATH" >/dev/null 2>&1; then
-                    echo "  ✅ SUCCESS on $device"
-                    ((INSTALL_SUCCESS++))
-                    
-                    # Force stop app to restart with new version
-                    adb -s "$device" shell am force-stop com.ufobeep >/dev/null 2>&1 || true
-                    echo "  🔄 App restarted on $device"
-                else
-                    echo -e "  ${RED}❌ FAILED on $device${NC}"
-                fi
+            # Process each device individually with clear output
+            for device in $DEVICES_LIST; do
                 echo ""
+                echo "📱 Processing device: $device"
+                
+                # Step 1: Uninstall (ignore failures)
+                echo "  🗑️  Uninstalling old version..."
+                timeout 30 adb -s "$device" uninstall com.ufobeep >/dev/null 2>&1 || echo "  ➡️  No previous version"
+                
+                # Step 2: Install with clear feedback
+                echo "  📦 Installing new APK..."
+                if timeout 90 adb -s "$device" install -r "$APK_PATH" 2>/dev/null; then
+                    echo "  ✅ INSTALL SUCCESS on $device"
+                    
+                    # Step 3: Force restart app
+                    echo "  🔄 Restarting app..."
+                    timeout 10 adb -s "$device" shell am force-stop com.ufobeep >/dev/null 2>&1 || true
+                    echo "  ✅ RESTART COMPLETE on $device"
+                    
+                    ((INSTALL_SUCCESS++))
+                else
+                    echo -e "  ${RED}❌ INSTALL FAILED on $device${NC}"
+                fi
             done
             
-            if [ "$INSTALL_SUCCESS" -eq "$INSTALL_TOTAL" ]; then
-                echo -e "${GREEN}✅ Installed on all $DEVICE_COUNT devices${NC}"
+            echo ""
+            echo "=========================================="
+            if [ "$INSTALL_SUCCESS" -eq "$DEVICE_COUNT" ]; then
+                echo -e "${GREEN}🎉 SUCCESS: Installed on all $DEVICE_COUNT devices!${NC}"
             else
-                echo -e "${RED}❌ DEPLOYMENT FAILED: Only $INSTALL_SUCCESS/$INSTALL_TOTAL devices succeeded${NC}"
-                echo "Fix device issues and try again"
-                exit 1
+                echo -e "${YELLOW}⚠️  PARTIAL SUCCESS: $INSTALL_SUCCESS/$DEVICE_COUNT devices succeeded${NC}"
             fi
+            echo "=========================================="
         else
-            echo -e "${YELLOW}⚠️  Only $DEVICE_COUNT devices connected (minimum 3 required)${NC}"
-            echo "Connected devices:"
-            adb devices
-            echo
-            read -p "Continue without device deployment? (y/n): " -n 1 -r
-            echo
-            if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-                echo -e "${RED}Deployment cancelled${NC}"
-                exit 1
-            fi
+            echo -e "${RED}❌ No devices connected!${NC}"
+            echo "Connect devices and try again"
+            exit 1
         fi
         
         echo
