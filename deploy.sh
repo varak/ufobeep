@@ -112,10 +112,21 @@ if [ "$DEPLOY_APK" = true ]; then
         echo "Checking for connected devices..."
         
         # Get device list in a more reliable way
-        DEVICES_LIST=$(adb devices | grep -E "device$" | cut -f1 | tr '\n' ' ')
-        DEVICE_COUNT=$(echo "$DEVICES_LIST" | wc -w)
+        DEVICES_RAW=$(adb devices | grep -E "device$" | cut -f1)
+        DEVICE_COUNT=$(echo "$DEVICES_RAW" | wc -l)
         
-        echo -e "${GREEN}Found $DEVICE_COUNT connected devices: $DEVICES_LIST${NC}"
+        # Prioritize IP-based device (Moto) for faster testing
+        IP_DEVICE=$(echo "$DEVICES_RAW" | grep -E "^[0-9]+\." | head -1)
+        OTHER_DEVICES=$(echo "$DEVICES_RAW" | grep -v -E "^[0-9]+\.")
+        
+        # Build prioritized device list
+        if [ -n "$IP_DEVICE" ]; then
+            DEVICES_LIST="$IP_DEVICE $OTHER_DEVICES"
+            echo -e "${GREEN}Found $DEVICE_COUNT connected devices (IP device prioritized): $DEVICES_LIST${NC}"
+        else
+            DEVICES_LIST="$OTHER_DEVICES"
+            echo -e "${GREEN}Found $DEVICE_COUNT connected devices: $DEVICES_LIST${NC}"
+        fi
         
         if [ "$DEVICE_COUNT" -ge 1 ]; then
             echo "Installing to all devices..."
