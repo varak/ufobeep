@@ -42,6 +42,7 @@ def format_alert_response(alert):
         "processed_at": alert.created_at.isoformat(),
         "matrix_room_id": "",
         "reporter_id": alert.reporter_id or "",
+        "reporter_username": alert.reporter_username,
         "enrichment": alert.enrichment or {},
         "photo_analysis": [],
         "total_confirmations": alert.witness_count,

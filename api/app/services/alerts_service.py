@@ -27,6 +27,7 @@ class Alert:
     alert_level: str
     created_at: datetime
     reporter_id: Optional[str] = None
+    reporter_username: Optional[str] = None
     media_files: List[Dict] = None
     enrichment: Dict = None
 
@@ -38,11 +39,13 @@ class AlertsService:
         """Get recent public alerts with clean data structure"""
         async with self.db_pool.acquire() as conn:
             rows = await conn.fetch("""
-                SELECT id::text, title, description, category, alert_level, 
-                       witness_count, created_at, reporter_id, sensor_data, media_info, enrichment_data
-                FROM sightings 
-                WHERE is_public = true 
-                ORDER BY created_at DESC 
+                SELECT s.id::text, s.title, s.description, s.category, s.alert_level, 
+                       s.witness_count, s.created_at, s.reporter_id, s.sensor_data, s.media_info, s.enrichment_data,
+                       u.username as reporter_username
+                FROM sightings s
+                LEFT JOIN users u ON s.reporter_id = u.id::text
+                WHERE s.is_public = true 
+                ORDER BY s.created_at DESC 
                 LIMIT $1
             """, limit)
             
@@ -60,6 +63,7 @@ class AlertsService:
                         alert_level=row["alert_level"] or "low",
                         created_at=row["created_at"],
                         reporter_id=row["reporter_id"],
+                        reporter_username=row["reporter_username"],
                         media_files=self._process_media(row["media_info"], row["id"]),
                         enrichment=self._process_enrichment(row["enrichment_data"])
                     ))
@@ -70,10 +74,12 @@ class AlertsService:
         """Get single alert by ID"""
         async with self.db_pool.acquire() as conn:
             row = await conn.fetchrow("""
-                SELECT id::text, title, description, category, alert_level,
-                       witness_count, created_at, reporter_id, sensor_data, media_info, enrichment_data
-                FROM sightings 
-                WHERE id = $1 AND is_public = true
+                SELECT s.id::text, s.title, s.description, s.category, s.alert_level,
+                       s.witness_count, s.created_at, s.reporter_id, s.sensor_data, s.media_info, s.enrichment_data,
+                       u.username as reporter_username
+                FROM sightings s
+                LEFT JOIN users u ON s.reporter_id = u.id::text
+                WHERE s.id = $1 AND s.is_public = true
             """, uuid.UUID(alert_id))
             
             if not row:
@@ -93,6 +99,7 @@ class AlertsService:
                 alert_level=row["alert_level"] or "low",
                 created_at=row["created_at"],
                 reporter_id=row["reporter_id"],
+                reporter_username=row["reporter_username"],
                 media_files=self._process_media(row["media_info"], row["id"]),
                 enrichment=self._process_enrichment(row["enrichment_data"])
             )
