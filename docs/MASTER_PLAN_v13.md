@@ -28,6 +28,10 @@
 
 ### Recent Fixes (Aug 23, 2025)
 - **Registration Errors**: Fixed user-friendly error messages for duplicate emails
+- **MP13 Security Configuration**: Witness confirmation settings now configurable via environment variables
+  - `WITNESS_CONFIRMATION_TIME_WINDOW_MINUTES=60` (default: 60 minutes)
+  - `WITNESS_CONFIRMATION_RATE_LIMIT_PER_HOUR=5` (default: 5 confirmations per hour)
+  - Deployed to production with `deploy.sh api` script
 - **API Service**: Fixed corrupted shebang in start-api.sh causing systemd failures
 - **Deployment**: systemctl restart now works properly after shebang fix
 
@@ -115,8 +119,40 @@ See conversation plan details here.
 
 1. ✅ **MP13-1** → Username generation system (COMPLETED)
 2. ✅ **MP13-2** → Progressive user registration flow (COMPLETED)
-3. **MP13-3** → Alert ownership fix (NEXT - populate reporterId with usernames)
-4. **MP13-4, MP13-5** → Enhances premium features reliability  
-5. **MP13-6, MP13-7** → Improves user engagement
+3. ✅ **MP13-3** → Alert ownership fix (COMPLETED - reporter_id populated with user UUIDs)
+4. ✅ **MP13-4** → Premium satellite access control (COMPLETED - BlackSky/SkyFi restricted to registered users)
+5. ✅ **MP13-5** → Witness confirmation enhancement (COMPLETED - configurable security settings)
+6. ✅ **MP13-7** → User attribution display (COMPLETED - "Reported by username" in alerts)
+7. **MP13-6** → Profile management (PENDING)
 
-This roadmap directly addresses our current device ID comparison issues while building foundation for advanced features.
+## MP13 IMPLEMENTATION STATUS - ✅ COMPLETED
+
+### ✅ MP13-3: Alert Ownership Attribution 
+- **Problem**: Alert reporter_id was NULL, breaking ownership logic
+- **Solution**: Populate reporter_id with user UUID from device_id during alert creation
+- **Impact**: "I saw it too" button now works correctly, proper user attribution
+
+### ✅ MP13-4: Premium Satellite Access Control
+- **Problem**: BlackSky/SkyFi imagery accessible to guest users  
+- **Solution**: Access restricted to registered users only, upgrade prompts for denied users
+- **Impact**: Protects premium API quotas, encourages user registration
+
+### ✅ MP13-5: Enhanced Witness Confirmation
+- **Features Implemented**:
+  - **Time window validation**: Users can only confirm recent sightings (configurable via `WITNESS_CONFIRMATION_TIME_WINDOW_MINUTES`)
+  - **Rate limiting**: Anti-spam protection limits confirmations per hour (configurable via `WITNESS_CONFIRMATION_RATE_LIMIT_PER_HOUR`) 
+  - **Distance validation**: Uses Haversine formula to validate proximity
+  - **Database-native time comparison**: Prevents timezone issues
+- **Configuration**: Both security settings now environment-configurable without code changes
+
+### ✅ MP13-7: User Attribution Display
+- **Alert cards**: Show "by [username]" for alert reporters
+- **Alert details**: Display "Reported by [username]" in info section
+- **Data flow**: Complete API → Flutter integration with reporter_username field
+
+**Security Configuration Values:**
+- Default time window: 60 minutes (adjustable via environment)
+- Default rate limit: 5 confirmations per hour (adjustable via environment)  
+- API rate limit: 100 requests per minute (protects against abuse)
+
+This roadmap successfully addressed device ID comparison issues and built foundation for advanced social features.
