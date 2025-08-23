@@ -29,6 +29,7 @@ class Alert {
     this.processedAt,
     this.matrixRoomId,
     this.reporterId,
+    this.reporterUsername,
     this.enrichment,
     this.photoAnalysis,
     this.totalConfirmations = 0,
@@ -57,6 +58,7 @@ class Alert {
   final DateTime? processedAt;
   final String? matrixRoomId;
   final String? reporterId;
+  final String? reporterUsername;
   final Map<String, dynamic>? enrichment;
   final List<Map<String, dynamic>>? photoAnalysis;
   final int totalConfirmations;
@@ -127,6 +129,7 @@ class Alert {
     DateTime? processedAt,
     String? matrixRoomId,
     String? reporterId,
+    String? reporterUsername,
     Map<String, dynamic>? enrichment,
     List<Map<String, dynamic>>? photoAnalysis,
     int? totalConfirmations,
@@ -155,6 +158,7 @@ class Alert {
       processedAt: processedAt ?? this.processedAt,
       matrixRoomId: matrixRoomId ?? this.matrixRoomId,
       reporterId: reporterId ?? this.reporterId,
+      reporterUsername: reporterUsername ?? this.reporterUsername,
       enrichment: enrichment ?? this.enrichment,
       photoAnalysis: photoAnalysis ?? this.photoAnalysis,
       totalConfirmations: totalConfirmations ?? this.totalConfirmations,
@@ -257,6 +261,7 @@ class Alert {
         processedAt: json['processed_at'] != null ? DateTime.parse(json['processed_at'] as String) : null,
         matrixRoomId: json['matrix_room_id'] as String?,
         reporterId: json['reporter_id'] as String?,
+        reporterUsername: json['reporter_username'] as String?,
         enrichment: json['enrichment'] as Map<String, dynamic>?,
         photoAnalysis: parsedPhotoAnalysis,
         totalConfirmations: json['total_confirmations'] as int? ?? 0,
@@ -294,6 +299,7 @@ class Alert {
       if (processedAt != null) 'processed_at': processedAt!.toIso8601String(),
       if (matrixRoomId != null) 'matrix_room_id': matrixRoomId,
       if (reporterId != null) 'reporter_id': reporterId,
+      if (reporterUsername != null) 'reporter_username': reporterUsername,
       if (enrichment != null) 'enrichment': enrichment,
       if (photoAnalysis != null) 'photo_analysis': photoAnalysis,
       'total_confirmations': totalConfirmations,

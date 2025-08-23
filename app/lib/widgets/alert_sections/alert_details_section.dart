@@ -69,6 +69,15 @@ class AlertDetailsSection extends StatelessWidget {
             subtitle: _formatFullDateTime(alert.createdAt),
           ),
           
+          // Reporter info (MP13-7)
+          if (alert.reporterUsername != null) 
+            _buildDetailRow(
+              Icons.person,
+              'Reported by',
+              alert.reporterUsername!,
+              subtitle: null,
+            ),
+          
           // Location info (if enabled)
           if (showLocation) ...[
             _buildDetailRow(

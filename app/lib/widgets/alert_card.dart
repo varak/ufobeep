@@ -130,6 +130,17 @@ class AlertCard extends ConsumerWidget {
                           fontSize: 12,
                         ),
                       ),
+                      if (alert.reporterUsername != null) ...[
+                        const SizedBox(height: 4),
+                        Text(
+                          'by ${alert.reporterUsername}',
+                          style: const TextStyle(
+                            color: AppColors.brandPrimary,
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                       if (alert.distance != null && showDistance) ...[ 
                         const SizedBox(height: 4),
                         _buildDistanceBadge(units),
