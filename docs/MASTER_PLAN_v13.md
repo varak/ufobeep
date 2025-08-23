@@ -20,10 +20,16 @@
 
 ### System Status - ALL WORKING ✅
 - API: ✅ Running (ufobeep-api.service active)
+- User Registration: ✅ Working (improved error handling deployed)
 - Proximity Alerts: ✅ Working (firebase_admin installed)
 - Push Notifications: ✅ Working (some old tokens failing as expected)
 - Phone Uploads: ✅ Working
 - Tablet Uploads: ✅ Working (camera permissions fixed)
+
+### Recent Fixes (Aug 23, 2025)
+- **Registration Errors**: Fixed user-friendly error messages for duplicate emails
+- **API Service**: Fixed corrupted shebang in start-api.sh causing systemd failures
+- **Deployment**: systemctl restart now works properly after shebang fix
 
 ## Deployment & Development
 

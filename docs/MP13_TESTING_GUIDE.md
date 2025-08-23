@@ -145,6 +145,12 @@ If you encounter issues, check:
 3. Check network connectivity for API calls
 4. Reporter_id comparison uses exact string match
 
+## Recent Fixes (Aug 23, 2025)
+- **Registration Error Messages**: Now shows user-friendly errors instead of technical database messages
+- **Duplicate Email Handling**: "This email is already registered. Try account recovery or use a different email."
+- **API Service Reliability**: Fixed systemd service failures caused by corrupted shebang in start script
+- **Deployment Stability**: API now restarts properly after deployments
+
 ## Success Criteria
 MP13 is complete when:
 - ✅ All new users get usernames

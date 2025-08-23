@@ -121,6 +121,11 @@ Response: {
   "message": "Welcome to UFOBeep, cosmic.whisper.7823!"
 }
 Status: ✅ WORKING - Creates new users or returns existing for device_id
+
+Error Responses:
+- 409 Conflict: "This email is already registered. Try account recovery or use a different email."
+- 422 Validation Error: "Invalid email format" or "Username contains invalid characters"
+- 503 Service Error: User-friendly database connection messages
 ```
 
 ### Get User by Device ID

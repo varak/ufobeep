@@ -210,19 +210,27 @@ class AlertsService:
                           category: str = "ufo", witness_count: int = 1,
                           is_public: bool = True, tags: List[str] = None,
                           media_info: Dict = None, sensor_data: Dict = None,
-                          enrichment_data: Dict = None, alert_level: str = "normal") -> str:
+                          enrichment_data: Dict = None, alert_level: str = "normal",
+                          device_id: str = None) -> str:
         """Create new alert/sighting"""
         async with self.db_pool.acquire() as conn:
+            # Get or create user for device_id to populate reporter_id
+            reporter_id = None
+            if device_id:
+                reporter_id = await conn.fetchval("""
+                    SELECT get_or_create_user_by_device_id($1)
+                """, device_id)
+            
             alert_id = await conn.fetchval("""
                 INSERT INTO sightings 
                 (title, description, category, witness_count, is_public, tags, 
-                 media_info, sensor_data, enrichment_data, alert_level, status)
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+                 media_info, sensor_data, enrichment_data, alert_level, status, reporter_id)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
                 RETURNING id
             """, title, description, category, witness_count, is_public,
                 tags or [], json.dumps(media_info or {}), 
                 json.dumps(sensor_data or {}), json.dumps(enrichment_data or {}),
-                alert_level, "created")
+                alert_level, "created", reporter_id)
             
             return str(alert_id)
     
@@ -266,7 +274,8 @@ class AlertsService:
             witness_count=1,
             is_public=True,
             sensor_data=sensor_data,
-            alert_level="normal"
+            alert_level="normal",
+            device_id=device_id
         )
         
         # Call enrichment service after alert creation
