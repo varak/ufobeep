@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/anonymous_beep_service.dart';
+import '../services/device_service.dart';
 
 // User registration models
 class UsernameGenerationResponse {
@@ -476,8 +477,8 @@ class UserService {
   /// Add phone number to user account
   Future<Map<String, dynamic>> addPhoneNumber(String phone) async {
     try {
-      final deviceId = await getDeviceId();
-      if (deviceId == null) return {'success': false, 'error': 'No device ID'};
+      final deviceService = DeviceService();
+      final deviceId = await deviceService.getDeviceId();
       
       final response = await http.post(
         Uri.parse('$_apiBaseUrl/sms/add-phone'),
@@ -494,8 +495,8 @@ class UserService {
   /// Verify phone number with SMS code
   Future<Map<String, dynamic>> verifyPhoneNumber(String code) async {
     try {
-      final deviceId = await getDeviceId();
-      if (deviceId == null) return {'success': false, 'error': 'No device ID'};
+      final deviceService = DeviceService();
+      final deviceId = await deviceService.getDeviceId();
       
       final response = await http.post(
         Uri.parse('$_apiBaseUrl/sms/verify-phone'),
