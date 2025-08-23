@@ -349,7 +349,21 @@ class AlertsService:
             if not sighting:
                 raise ValueError("Sighting not found")
             
-            # Check if device already confirmed
+            # Check time window restriction (MP13-5) - configurable, default 60 minutes
+            from datetime import datetime, timezone, timedelta
+            time_window_minutes = 60  # TODO: Make configurable
+            sighting_time = sighting['created_at']
+            current_time = datetime.now(timezone.utc)
+            
+            # Convert sighting time to UTC if it's timezone-naive
+            if sighting_time.tzinfo is None:
+                sighting_time = sighting_time.replace(tzinfo=timezone.utc)
+            
+            time_since_sighting = current_time - sighting_time
+            if time_since_sighting > timedelta(minutes=time_window_minutes):
+                raise ValueError(f"Witness confirmation window has closed. You can only confirm sightings within {time_window_minutes} minutes of occurrence.")
+            
+            # Check if device already confirmed this sighting
             existing = await conn.fetchrow("""
                 SELECT device_id FROM witness_confirmations 
                 WHERE sighting_id = $1 AND device_id = $2
@@ -357,6 +371,16 @@ class AlertsService:
             
             if existing:
                 raise ValueError("Device already confirmed as witness")
+            
+            # Anti-spam protection (MP13-5) - rate limiting per user
+            recent_confirmations = await conn.fetchval("""
+                SELECT COUNT(*) FROM witness_confirmations 
+                WHERE device_id = $1 AND confirmed_at > NOW() - INTERVAL '1 hour'
+            """, device_id)
+            
+            max_confirmations_per_hour = 5  # TODO: Make configurable
+            if recent_confirmations >= max_confirmations_per_hour:
+                raise ValueError(f"Rate limit exceeded. You can only confirm {max_confirmations_per_hour} sightings per hour.")
             
             # Check distance if location data is provided
             if witness_data.get('latitude') and witness_data.get('longitude'):
