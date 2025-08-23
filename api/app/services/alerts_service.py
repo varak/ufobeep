@@ -352,13 +352,10 @@ class AlertsService:
             # Check time window restriction (MP13-5) - configurable, default 60 minutes
             from datetime import datetime, timezone, timedelta
             time_window_minutes = 60  # TODO: Make configurable
+            
+            # Use database server time for consistency
+            current_time = await conn.fetchval("SELECT NOW()")
             sighting_time = sighting['created_at']
-            
-            # Ensure both times are timezone-aware UTC
-            if sighting_time.tzinfo is None:
-                sighting_time = sighting_time.replace(tzinfo=timezone.utc)
-            
-            current_time = datetime.now(timezone.utc)
             time_since_sighting = current_time - sighting_time
             if time_since_sighting > timedelta(minutes=time_window_minutes):
                 raise ValueError(f"Witness confirmation window has closed. You can only confirm sightings within {time_window_minutes} minutes of occurrence.")
