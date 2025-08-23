@@ -14,6 +14,9 @@ import '../../services/permission_service.dart';
 import '../../services/user_service.dart';
 import '../admin/admin_screen.dart';
 import 'user_registration_screen.dart';
+import '../../widgets/profile/user_stats_widget.dart';
+import '../../widgets/profile/alert_history_widget.dart';
+import '../../widgets/profile/username_regenerate_widget.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -83,6 +86,21 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           children: [
             // Profile Header
             _buildProfileHeader(userPreferences!),
+            
+            const SizedBox(height: 24),
+            
+            // MP13-6: User Statistics
+            const UserStatsWidget(),
+            
+            const SizedBox(height: 24),
+            
+            // MP13-6: Alert History
+            const AlertHistoryWidget(),
+            
+            const SizedBox(height: 24),
+            
+            // MP13-6: Username Management
+            const UsernameRegenerateWidget(),
             
             const SizedBox(height: 32),
             
