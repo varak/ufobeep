@@ -31,11 +31,11 @@ class UserStatsWidget extends ConsumerWidget {
 
   Future<Map<String, dynamic>?> _loadUserStats() async {
     try {
-      final deviceId = await DeviceService.getDeviceId();
-      if (deviceId == null) return null;
+      final deviceService = DeviceService();
+      final deviceId = await deviceService.getDeviceId();
       
       final apiClient = ApiClient.instance;
-      final response = await apiClient.get('/users/stats/$deviceId');
+      final response = await apiClient.getJson('/users/stats/$deviceId');
       
       if (response['success'] == true || response.containsKey('total_alerts_created')) {
         return response;

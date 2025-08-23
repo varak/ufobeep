@@ -38,11 +38,11 @@ class AlertHistoryWidget extends ConsumerWidget {
 
   Future<Map<String, dynamic>?> _loadAlertHistory() async {
     try {
-      final deviceId = await DeviceService.getDeviceId();
-      if (deviceId == null) return null;
+      final deviceService = DeviceService();
+      final deviceId = await deviceService.getDeviceId();
       
       final apiClient = ApiClient.instance;
-      final response = await apiClient.get('/users/alerts/$deviceId?per_page=10');
+      final response = await apiClient.getJson('/users/alerts/$deviceId?per_page=10');
       
       if (response['success'] == true || response.containsKey('alerts')) {
         return response;
@@ -172,7 +172,7 @@ class AlertHistoryWidget extends ConsumerWidget {
           
           // Alert List
           Column(
-            children: alerts.take(5).map((alert) => _buildAlertItem(alert)).toList(),
+            children: alerts.take(5).map((alert) => _buildAlertItem(context, alert)).toList(),
           ),
           
           // View All Button
@@ -185,9 +185,6 @@ class AlertHistoryWidget extends ConsumerWidget {
                   onPressed: () {
                     // Navigate to full alert history screen
                     // TODO: Implement full history screen
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Full history view coming soon')),
-                    );
                   },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.brandPrimary,
@@ -205,7 +202,7 @@ class AlertHistoryWidget extends ConsumerWidget {
     );
   }
 
-  Widget _buildAlertItem(dynamic alert) {
+  Widget _buildAlertItem(BuildContext context, dynamic alert) {
     final mediaCount = alert['media_count'] ?? 0;
     final createdAt = DateTime.tryParse(alert['created_at'] ?? '');
     final timeAgo = createdAt != null ? _formatTimeAgo(createdAt) : 'Unknown';
