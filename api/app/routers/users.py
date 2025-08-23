@@ -103,6 +103,38 @@ class UserProfileResponse(BaseModel):
     stats: dict
 
 
+class UserStatsResponse(BaseModel):
+    """User statistics for MP13-6"""
+    total_alerts_created: int
+    total_witnesses_confirmed: int
+    total_media_uploaded: int
+    account_age_days: int
+    recent_activity: dict
+    visibility_settings: dict
+
+
+class AlertHistoryResponse(BaseModel):
+    """User alert history for MP13-6"""
+    alerts: List[dict]
+    total_count: int
+    page: int
+    per_page: int
+
+
+class UsernameRegenerateRequest(BaseModel):
+    """Request to regenerate username"""
+    device_id: str
+    force_regenerate: bool = False
+
+
+class VisibilitySettingsRequest(BaseModel):
+    """Privacy settings for alert visibility - MP13-6"""
+    show_username_in_alerts: bool = True
+    allow_witness_confirmations: bool = True
+    public_profile_visible: bool = False
+    alert_history_public: bool = False
+
+
 # API Endpoints
 
 @router.post("/generate-username", response_model=UsernameGenerationResponse)
@@ -674,3 +706,339 @@ async def setup_email_dkim(request: dict):
             "success": False,
             "error": str(e)
         }
+
+
+# MP13-6 Profile Management Endpoints
+
+@router.get("/stats/{device_id}", response_model=UserStatsResponse)
+async def get_user_stats(device_id: str):
+    """
+    Get user statistics for profile display - MP13-6
+    Shows alert history, activity, and account information
+    """
+    pool = await get_db()
+    try:
+        async with pool.acquire() as conn:
+            # Get user from device ID
+            user = await conn.fetchrow("""
+                SELECT u.id, u.username, u.created_at, u.visibility_settings
+                FROM users u
+                JOIN user_devices ud ON u.id = ud.user_id
+                WHERE ud.device_id = $1
+            """, device_id)
+            
+            if not user:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="User not found"
+                )
+            
+            user_id = user['id']
+            
+            # Get alert statistics
+            alerts_stats = await conn.fetchrow("""
+                SELECT 
+                    COUNT(*) as total_alerts,
+                    COUNT(CASE WHEN media_files != '[]' THEN 1 END) as media_alerts
+                FROM sightings 
+                WHERE reporter_id = $1::text
+            """, str(user_id))
+            
+            # Get witness confirmation stats
+            witness_stats = await conn.fetchrow("""
+                SELECT COUNT(*) as confirmations
+                FROM witness_confirmations 
+                WHERE device_id = $1
+            """, device_id)
+            
+            # Calculate account age
+            from datetime import datetime
+            account_age = (datetime.now() - user['created_at']).days
+            
+            # Recent activity (last 30 days)
+            recent_activity = await conn.fetchrow("""
+                SELECT 
+                    COUNT(CASE WHEN created_at > NOW() - INTERVAL '30 days' THEN 1 END) as alerts_last_30_days,
+                    COUNT(CASE WHEN created_at > NOW() - INTERVAL '7 days' THEN 1 END) as alerts_last_7_days
+                FROM sightings 
+                WHERE reporter_id = $1::text
+            """, str(user_id))
+            
+            # Visibility settings
+            visibility_settings = user['visibility_settings'] or {}
+            if isinstance(visibility_settings, str):
+                import json
+                visibility_settings = json.loads(visibility_settings)
+            
+            return UserStatsResponse(
+                total_alerts_created=alerts_stats['total_alerts'] or 0,
+                total_witnesses_confirmed=witness_stats['confirmations'] or 0,
+                total_media_uploaded=alerts_stats['media_alerts'] or 0,
+                account_age_days=account_age,
+                recent_activity={
+                    "alerts_last_30_days": recent_activity['alerts_last_30_days'] or 0,
+                    "alerts_last_7_days": recent_activity['alerts_last_7_days'] or 0
+                },
+                visibility_settings=visibility_settings
+            )
+            
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get user stats: {str(e)}"
+        )
+    finally:
+        pass
+
+
+@router.get("/alerts/{device_id}", response_model=AlertHistoryResponse)
+async def get_user_alert_history(device_id: str, page: int = 1, per_page: int = 20):
+    """
+    Get user's alert history for profile display - MP13-6
+    Shows paginated list of user's created alerts
+    """
+    pool = await get_db()
+    try:
+        async with pool.acquire() as conn:
+            # Get user from device ID
+            user = await conn.fetchrow("""
+                SELECT u.id, u.username
+                FROM users u
+                JOIN user_devices ud ON u.id = ud.user_id
+                WHERE ud.device_id = $1
+            """, device_id)
+            
+            if not user:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="User not found"
+                )
+            
+            user_id = str(user['id'])
+            offset = (page - 1) * per_page
+            
+            # Get total count
+            total_count = await conn.fetchval("""
+                SELECT COUNT(*) FROM sightings WHERE reporter_id = $1
+            """, user_id)
+            
+            # Get paginated alerts
+            alerts = await conn.fetch("""
+                SELECT 
+                    id, title, description, latitude, longitude,
+                    location_name, media_files, created_at, alert_level,
+                    is_verified, witness_count
+                FROM sightings 
+                WHERE reporter_id = $1
+                ORDER BY created_at DESC
+                LIMIT $2 OFFSET $3
+            """, user_id, per_page, offset)
+            
+            # Format alerts for response
+            formatted_alerts = []
+            for alert in alerts:
+                alert_dict = dict(alert)
+                # Parse media_files JSON
+                media_files = alert_dict.get('media_files', [])
+                if isinstance(media_files, str):
+                    import json
+                    try:
+                        media_files = json.loads(media_files)
+                    except:
+                        media_files = []
+                
+                alert_dict['media_files'] = media_files
+                alert_dict['media_count'] = len(media_files)
+                formatted_alerts.append(alert_dict)
+            
+            return AlertHistoryResponse(
+                alerts=formatted_alerts,
+                total_count=total_count or 0,
+                page=page,
+                per_page=per_page
+            )
+            
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get alert history: {str(e)}"
+        )
+    finally:
+        pass
+
+
+@router.post("/regenerate-username", response_model=UserRegistrationResponse)
+async def regenerate_username(request: UsernameRegenerateRequest):
+    """
+    Regenerate username for existing user - MP13-6
+    Allows users to get a new cosmic-themed username
+    """
+    pool = await get_db()
+    try:
+        async with pool.acquire() as conn:
+            # Get user from device ID
+            user = await conn.fetchrow("""
+                SELECT u.id, u.username
+                FROM users u
+                JOIN user_devices ud ON u.id = ud.user_id
+                WHERE ud.device_id = $1
+            """, request.device_id)
+            
+            if not user:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="User not found"
+                )
+            
+            # Generate new unique username
+            new_username = None
+            for attempt in range(10):
+                candidate = UsernameGenerator.generate()
+                existing = await conn.fetchrow(
+                    "SELECT username FROM users WHERE username = $1",
+                    candidate
+                )
+                if not existing:
+                    new_username = candidate
+                    break
+            
+            if not new_username:
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail="Unable to generate unique username"
+                )
+            
+            # Update username
+            await conn.execute("""
+                UPDATE users 
+                SET username = $1, updated_at = NOW()
+                WHERE id = $2
+            """, new_username, user['id'])
+            
+            # Update any sightings with old username reference
+            await conn.execute("""
+                UPDATE sightings 
+                SET reporter_username = $1
+                WHERE reporter_id = $2::text
+            """, new_username, str(user['id']))
+            
+            return UserRegistrationResponse(
+                user_id=str(user['id']),
+                username=new_username,
+                device_id=request.device_id,
+                is_new_user=False,
+                message=f"Username updated! You are now {new_username}"
+            )
+            
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to regenerate username: {str(e)}"
+        )
+    finally:
+        pass
+
+
+@router.post("/visibility-settings")
+async def update_visibility_settings(device_id: str, settings: VisibilitySettingsRequest):
+    """
+    Update user privacy/visibility settings - MP13-6
+    Controls how user information appears in alerts and public profiles
+    """
+    pool = await get_db()
+    try:
+        async with pool.acquire() as conn:
+            # Get user from device ID
+            user = await conn.fetchrow("""
+                SELECT u.id
+                FROM users u
+                JOIN user_devices ud ON u.id = ud.user_id
+                WHERE ud.device_id = $1
+            """, device_id)
+            
+            if not user:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="User not found"
+                )
+            
+            # Convert settings to JSON
+            settings_dict = {
+                "show_username_in_alerts": settings.show_username_in_alerts,
+                "allow_witness_confirmations": settings.allow_witness_confirmations,
+                "public_profile_visible": settings.public_profile_visible,
+                "alert_history_public": settings.alert_history_public,
+                "updated_at": datetime.now().isoformat()
+            }
+            
+            # Update visibility settings
+            await conn.execute("""
+                UPDATE users 
+                SET visibility_settings = $1, updated_at = NOW()
+                WHERE id = $2
+            """, json.dumps(settings_dict), user['id'])
+            
+            return {
+                "success": True,
+                "message": "Privacy settings updated successfully",
+                "settings": settings_dict
+            }
+            
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to update visibility settings: {str(e)}"
+        )
+    finally:
+        pass
+
+
+@router.get("/visibility-settings/{device_id}")
+async def get_visibility_settings(device_id: str):
+    """
+    Get current user visibility settings - MP13-6
+    """
+    pool = await get_db()
+    try:
+        async with pool.acquire() as conn:
+            user = await conn.fetchrow("""
+                SELECT u.visibility_settings
+                FROM users u
+                JOIN user_devices ud ON u.id = ud.user_id
+                WHERE ud.device_id = $1
+            """, device_id)
+            
+            if not user:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="User not found"
+                )
+            
+            # Default settings if none exist
+            default_settings = {
+                "show_username_in_alerts": True,
+                "allow_witness_confirmations": True,
+                "public_profile_visible": False,
+                "alert_history_public": False
+            }
+            
+            current_settings = user['visibility_settings']
+            if isinstance(current_settings, str):
+                import json
+                current_settings = json.loads(current_settings)
+            
+            # Merge with defaults
+            settings = {**default_settings, **(current_settings or {})}
+            
+            return {
+                "success": True,
+                "settings": settings
+            }
+            
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get visibility settings: {str(e)}"
+        )
+    finally:
+        pass
