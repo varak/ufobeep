@@ -245,11 +245,28 @@ async def register_user(request: UserRegistrationRequest):
             )
             
     except Exception as e:
-        if "username" in str(e) and "unique" in str(e).lower():
+        error_str = str(e).lower()
+        if "username" in error_str and "unique" in error_str:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="Username already exists. Please choose another one."
             )
+        elif "email" in error_str and ("unique" in error_str or "duplicate" in error_str):
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="This email address is already registered. Use account recovery instead."
+            )
+        elif "duplicate key" in error_str:
+            if "email" in error_str:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="This email address is already registered. Use account recovery instead."
+                )
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="This information is already registered. Please try again."
+                )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Registration failed: {str(e)}"

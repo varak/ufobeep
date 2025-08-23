@@ -419,12 +419,19 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ),
           child: Column(
             children: [
-              _buildSimpleSettingItem(
+              _buildContactMethodItem(
+                icon: Icons.email_outlined,
+                title: 'Email Address',
+                subtitle: 'For account recovery',
+                isFirst: true,
+              ),
+              
+              _buildDivider(),
+              
+              _buildContactMethodItem(
                 icon: Icons.phone_outlined,
                 title: 'Phone Number',
-                value: 'Add for SMS recovery',
-                onTap: () => context.go('/phone-setup'),
-                isFirst: true,
+                subtitle: 'For SMS recovery',
               ),
               
               _buildDivider(),
@@ -432,7 +439,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               _buildSimpleSettingItem(
                 icon: Icons.security_outlined,
                 title: 'Account Recovery',
-                value: 'Manage recovery options',
+                value: 'Test recovery options',
                 onTap: () => context.go('/recover'),
                 isLast: true,
               ),
@@ -441,6 +448,168 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ),
       ],
     );
+  }
+
+  Widget _buildContactMethodItem({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    bool isFirst = false,
+  }) {
+    return FutureBuilder<String?>(
+      future: userService.getCurrentUsername(),
+      builder: (context, usernameSnapshot) {
+        if (!usernameSnapshot.hasData) {
+          return _buildContactMethodTile(
+            icon: icon,
+            title: title,
+            subtitle: 'Loading...',
+            status: 'loading',
+            isFirst: isFirst,
+            onTap: null,
+          );
+        }
+
+        return FutureBuilder<Map<String, dynamic>?>(
+          future: _getUserContactInfo(title),
+          builder: (context, snapshot) {
+            final contactInfo = snapshot.data;
+            String displayText = 'Not added';
+            String status = 'none';
+            Color statusColor = AppColors.textSecondary;
+            
+            if (title == 'Email Address') {
+              if (contactInfo?['email'] != null) {
+                final isVerified = contactInfo?['email_verified'] == true;
+                displayText = contactInfo!['email'];
+                status = isVerified ? 'verified' : 'unverified';
+                statusColor = isVerified ? AppColors.brandPrimary : Colors.orange;
+              }
+            } else if (title == 'Phone Number') {
+              if (contactInfo?['phone'] != null) {
+                final isVerified = contactInfo?['phone_verified'] == true;
+                displayText = _maskPhoneNumber(contactInfo!['phone']);
+                status = isVerified ? 'verified' : 'unverified';
+                statusColor = isVerified ? AppColors.brandPrimary : Colors.orange;
+              }
+            }
+            
+            return _buildContactMethodTile(
+              icon: icon,
+              title: title,
+              subtitle: displayText,
+              status: status,
+              statusColor: statusColor,
+              isFirst: isFirst,
+              onTap: () => _manageContactMethod(title),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildContactMethodTile({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required String status,
+    Color? statusColor,
+    bool isFirst = false,
+    VoidCallback? onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.vertical(
+        top: isFirst ? const Radius.circular(16) : Radius.zero,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+        child: Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: AppColors.brandPrimary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                icon,
+                color: AppColors.brandPrimary,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      color: statusColor ?? AppColors.textSecondary,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (status != 'loading') ...[
+              if (status == 'verified')
+                const Icon(Icons.verified, color: AppColors.brandPrimary, size: 16)
+              else if (status == 'unverified')
+                const Icon(Icons.pending, color: Colors.orange, size: 16)
+              else
+                const Icon(Icons.add, color: AppColors.textSecondary, size: 16),
+              const SizedBox(width: 4),
+              const Icon(
+                Icons.chevron_right,
+                color: AppColors.textSecondary,
+                size: 20,
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<Map<String, dynamic>?> _getUserContactInfo(String type) async {
+    // This would call an API to get user's email and phone info
+    // For now, return mock data - you'll need to implement the API endpoint
+    return {
+      'email': 'user@example.com',
+      'email_verified': false,
+      'phone': '+1234567890',
+      'phone_verified': false,
+    };
+  }
+
+  String _maskPhoneNumber(String phone) {
+    if (phone.length <= 4) return phone;
+    return '*' * (phone.length - 4) + phone.substring(phone.length - 4);
+  }
+
+  void _manageContactMethod(String type) {
+    if (type == 'Email Address') {
+      // Navigate to email management
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Email management coming soon')),
+      );
+    } else {
+      // Navigate to phone management
+      context.go('/phone-setup');
+    }
   }
 
 
