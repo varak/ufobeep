@@ -353,12 +353,12 @@ class AlertsService:
             from datetime import datetime, timezone, timedelta
             time_window_minutes = 60  # TODO: Make configurable
             sighting_time = sighting['created_at']
-            current_time = datetime.now(timezone.utc)
             
-            # Convert sighting time to UTC if it's timezone-naive
+            # Ensure both times are timezone-aware UTC
             if sighting_time.tzinfo is None:
                 sighting_time = sighting_time.replace(tzinfo=timezone.utc)
             
+            current_time = datetime.now(timezone.utc)
             time_since_sighting = current_time - sighting_time
             if time_since_sighting > timedelta(minutes=time_window_minutes):
                 raise ValueError(f"Witness confirmation window has closed. You can only confirm sightings within {time_window_minutes} minutes of occurrence.")
