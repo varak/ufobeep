@@ -343,6 +343,18 @@ class UserService {
     return prefs.getString(_userIdKey);
   }
 
+  /// Get saved email address from local storage
+  Future<String?> getSavedEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('email');
+  }
+
+  /// Get saved phone number from local storage  
+  Future<String?> getSavedPhone() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('phone');
+  }
+
   /// Update anonymous_beep_service to use username system
   /// This replaces device ID lookups with user ID lookups
   Future<String> getOrCreateUserId() async {

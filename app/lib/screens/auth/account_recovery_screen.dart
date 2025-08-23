@@ -23,6 +23,49 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
   bool _useEmail = true;
   String? _errorMessage;
   String? _contactSent;
+  bool _hasLoadedSavedData = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedContactInfo();
+  }
+
+  /// Load saved email and phone from user storage
+  Future<void> _loadSavedContactInfo() async {
+    try {
+      final userService = UserService.instance;
+      final savedEmail = await userService.getSavedEmail();
+      final savedPhone = await userService.getSavedPhone();
+      
+      if (mounted) {
+        setState(() {
+          if (savedEmail != null) {
+            _emailController.text = savedEmail;
+          }
+          if (savedPhone != null) {
+            _phoneController.text = savedPhone;
+          }
+          
+          // Default to email if we have it, otherwise phone
+          if (savedEmail != null) {
+            _useEmail = true;
+          } else if (savedPhone != null) {
+            _useEmail = false;
+          }
+          
+          _hasLoadedSavedData = true;
+        });
+      }
+    } catch (e) {
+      print('Failed to load saved contact info: $e');
+      if (mounted) {
+        setState(() {
+          _hasLoadedSavedData = true;
+        });
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -246,8 +289,12 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
                   
                   Text(
                     _useEmail 
-                        ? 'Enter your verified email address to receive a recovery code:'
-                        : 'Enter your verified phone number to receive a recovery code:',
+                        ? (_emailController.text.isNotEmpty 
+                            ? 'Your saved email address is ready. Tap Send Recovery Code to continue:'
+                            : 'Enter your verified email address to receive a recovery code:')
+                        : (_phoneController.text.isNotEmpty 
+                            ? 'Your saved phone number is ready. Tap Send Recovery Code to continue:'
+                            : 'Enter your verified phone number to receive a recovery code:'),
                     style: const TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 16,
@@ -263,8 +310,10 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
                       keyboardType: TextInputType.emailAddress,
                       style: const TextStyle(color: AppColors.textPrimary),
                       decoration: InputDecoration(
-                        labelText: 'Email Address',
-                        labelStyle: const TextStyle(color: AppColors.textSecondary),
+                        labelText: _emailController.text.isNotEmpty ? 'Email Address (saved)' : 'Email Address',
+                        labelStyle: TextStyle(
+                          color: _emailController.text.isNotEmpty ? AppColors.brandPrimary : AppColors.textSecondary,
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(color: AppColors.darkBorder),
@@ -277,7 +326,10 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(color: AppColors.brandPrimary),
                         ),
-                        prefixIcon: const Icon(Icons.email, color: AppColors.textSecondary),
+                        prefixIcon: Icon(
+                          _emailController.text.isNotEmpty ? Icons.check_circle_outline : Icons.email, 
+                          color: _emailController.text.isNotEmpty ? AppColors.brandPrimary : AppColors.textSecondary,
+                        ),
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -295,9 +347,11 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
                       keyboardType: TextInputType.phone,
                       style: const TextStyle(color: AppColors.textPrimary),
                       decoration: InputDecoration(
-                        labelText: 'Phone Number',
+                        labelText: _phoneController.text.isNotEmpty ? 'Phone Number (saved)' : 'Phone Number',
                         hintText: '+1234567890',
-                        labelStyle: const TextStyle(color: AppColors.textSecondary),
+                        labelStyle: TextStyle(
+                          color: _phoneController.text.isNotEmpty ? AppColors.brandPrimary : AppColors.textSecondary,
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(color: AppColors.darkBorder),
@@ -310,7 +364,10 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(color: AppColors.brandPrimary),
                         ),
-                        prefixIcon: const Icon(Icons.phone, color: AppColors.textSecondary),
+                        prefixIcon: Icon(
+                          _phoneController.text.isNotEmpty ? Icons.check_circle_outline : Icons.phone, 
+                          color: _phoneController.text.isNotEmpty ? AppColors.brandPrimary : AppColors.textSecondary,
+                        ),
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
