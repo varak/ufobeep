@@ -52,21 +52,82 @@ class PostfixEmailService:
             <html>
             <head>
                 <style>
-                    body {{ font-family: Arial, sans-serif; background: #1a1a1a; color: #ffffff; }}
-                    .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
-                    .header {{ text-align: center; padding: 20px; }}
-                    .content {{ background: #2a2a2a; padding: 30px; border-radius: 10px; }}
+                    body {{ 
+                        font-family: Arial, sans-serif; 
+                        background: #f5f5f5; 
+                        color: #333333; 
+                        margin: 0; 
+                        padding: 0;
+                    }}
+                    .container {{ 
+                        max-width: 600px; 
+                        margin: 0 auto; 
+                        padding: 20px; 
+                        background: #f5f5f5;
+                    }}
+                    .header {{ 
+                        text-align: center; 
+                        padding: 20px 0;
+                    }}
+                    .content {{ 
+                        background: #ffffff; 
+                        padding: 40px; 
+                        border-radius: 10px; 
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                        border: 1px solid #e0e0e0;
+                    }}
                     .button {{ 
                         display: inline-block; 
                         padding: 15px 30px; 
                         background: #00ff88; 
                         color: #000000; 
                         text-decoration: none; 
-                        border-radius: 5px; 
+                        border-radius: 8px; 
                         font-weight: bold;
+                        font-size: 16px;
                         margin: 20px 0;
+                        box-shadow: 0 2px 5px rgba(0,255,136,0.3);
                     }}
-                    .footer {{ text-align: center; margin-top: 30px; color: #888; font-size: 12px; }}
+                    .button:hover {{
+                        background: #00d973;
+                    }}
+                    .footer {{ 
+                        text-align: center; 
+                        margin-top: 30px; 
+                        color: #666; 
+                        font-size: 14px; 
+                    }}
+                    h1 {{ 
+                        color: #333; 
+                        margin: 0;
+                        font-size: 32px;
+                    }}
+                    h2 {{ 
+                        color: #333; 
+                        margin-bottom: 20px;
+                        font-size: 24px;
+                    }}
+                    p {{ 
+                        color: #555; 
+                        line-height: 1.6;
+                        font-size: 16px;
+                    }}
+                    ul {{
+                        color: #555;
+                        line-height: 1.8;
+                    }}
+                    li {{
+                        margin-bottom: 8px;
+                    }}
+                    .link-text {{
+                        color: #007bff;
+                        font-size: 14px;
+                        word-break: break-all;
+                        background: #f8f9fa;
+                        padding: 8px;
+                        border-radius: 4px;
+                        border: 1px solid #dee2e6;
+                    }}
                 </style>
             </head>
             <body>
@@ -85,13 +146,16 @@ class PostfixEmailService:
                         </ul>
                         <center>
                             <a href="{self.base_url}/verify?token={token}" class="button">
-                                Verify Email Address
+                                ✅ Verify Email Address
                             </a>
                         </center>
-                        <p style="color: #888; font-size: 14px;">
-                            Or copy this link: {self.base_url}/verify?token={token}
+                        <p style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                            <strong>Alternative:</strong> Copy and paste this link in your browser:
                         </p>
-                        <p style="color: #888; font-size: 12px;">
+                        <div class="link-text">
+                            {self.base_url}/verify?token={token}
+                        </div>
+                        <p style="color: #888; font-size: 14px; margin-top: 30px;">
                             This link expires in 24 hours. If you didn't create a UFOBeep account, 
                             you can safely ignore this email.
                         </p>
@@ -143,34 +207,116 @@ class PostfixEmailService:
             <html>
             <head>
                 <style>
-                    body {{ font-family: Arial, sans-serif; background: #1a1a1a; color: #ffffff; }}
-                    .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
-                    .content {{ background: #2a2a2a; padding: 30px; border-radius: 10px; }}
+                    body {{ 
+                        font-family: Arial, sans-serif; 
+                        background: #f5f5f5; 
+                        color: #333333; 
+                        margin: 0; 
+                        padding: 0;
+                    }}
+                    .container {{ 
+                        max-width: 600px; 
+                        margin: 0 auto; 
+                        padding: 20px; 
+                        background: #f5f5f5;
+                    }}
+                    .header {{ 
+                        text-align: center; 
+                        padding: 20px 0;
+                    }}
+                    .content {{ 
+                        background: #ffffff; 
+                        padding: 40px; 
+                        border-radius: 10px; 
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                        border: 1px solid #e0e0e0;
+                    }}
                     .username {{ 
                         background: #00ff88; 
                         color: #000000; 
-                        padding: 10px 20px; 
-                        border-radius: 5px; 
-                        font-size: 24px; 
+                        padding: 12px 24px; 
+                        border-radius: 8px; 
+                        font-size: 28px; 
                         font-weight: bold;
                         display: inline-block;
                         margin: 20px 0;
+                        letter-spacing: 1px;
+                        box-shadow: 0 2px 5px rgba(0,255,136,0.3);
+                    }}
+                    .recovery-button {{
+                        display: inline-block;
+                        background: #007bff;
+                        color: #ffffff;
+                        padding: 15px 30px;
+                        text-decoration: none;
+                        border-radius: 8px;
+                        font-weight: bold;
+                        font-size: 16px;
+                        margin: 20px 0;
+                        box-shadow: 0 2px 5px rgba(0,123,255,0.3);
+                    }}
+                    .recovery-button:hover {{
+                        background: #0056b3;
+                    }}
+                    .code {{
+                        background: #f8f9fa;
+                        border: 2px solid #00ff88;
+                        color: #000000;
+                        padding: 8px 12px;
+                        border-radius: 5px;
+                        font-family: 'Courier New', monospace;
+                        font-weight: bold;
+                        font-size: 18px;
+                        letter-spacing: 2px;
+                    }}
+                    .footer {{ 
+                        text-align: center; 
+                        margin-top: 30px; 
+                        color: #666; 
+                        font-size: 14px; 
+                    }}
+                    h2 {{ 
+                        color: #333; 
+                        margin-bottom: 20px;
+                        font-size: 24px;
+                    }}
+                    p {{ 
+                        color: #555; 
+                        line-height: 1.6;
+                        font-size: 16px;
                     }}
                 </style>
             </head>
             <body>
                 <div class="container">
+                    <div class="header">
+                        <h1 style="color: #333; margin: 0;">🛸 UFOBeep</h1>
+                    </div>
                     <div class="content">
-                        <h2>🛸 Account Recovery</h2>
+                        <h2>Account Recovery</h2>
                         <p>Your UFOBeep username is:</p>
                         <center>
                             <span class="username">{username}</span>
                         </center>
-                        <p>To complete recovery on your device, click this link from your phone:</p>
-                        <p><a href="ufobeep://recover?token={token}">Open UFOBeep App</a></p>
-                        <p style="color: #888; font-size: 12px;">
-                            Or use this recovery code in the app: <code>{token[:8]}</code>
+                        <p>To complete recovery on your device, tap the button below from your phone:</p>
+                        <center>
+                            <a href="ufobeep://recover?token={token}" class="recovery-button">
+                                📱 Open UFOBeep App
+                            </a>
+                        </center>
+                        <p style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                            <strong>Alternative:</strong> Open the UFOBeep app and enter this recovery code:
                         </p>
+                        <center>
+                            <span class="code">{token[:8]}</span>
+                        </center>
+                        <p style="color: #888; font-size: 14px; margin-top: 30px;">
+                            This recovery code expires in 15 minutes. If you didn't request account recovery, you can safely ignore this email.
+                        </p>
+                    </div>
+                    <div class="footer">
+                        <p>UFOBeep - Real-time UFO Alert Network</p>
+                        <p>This email was sent from {self.from_email}</p>
                     </div>
                 </div>
             </body>
