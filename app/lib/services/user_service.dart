@@ -387,6 +387,33 @@ class UserService {
       };
     }
   }
+  
+  /// Recover account using SMS verification
+  Future<Map<String, dynamic>> recoverAccountWithPhone(String phone) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$_apiBaseUrl/users/recover-account'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'phone': phone}),
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        final error = jsonDecode(response.body);
+        return {
+          'success': false,
+          'message': error['detail'] ?? 'Recovery request failed'
+        };
+      }
+    } catch (e) {
+      print('Error requesting SMS account recovery: $e');
+      return {
+        'success': false,
+        'message': 'Network error. Please try again.'
+      };
+    }
+  }
 
   /// Verify recovery code and restore account - MP14
   Future<Map<String, dynamic>> verifyRecoveryCode(
@@ -443,6 +470,42 @@ class UserService {
     } catch (e) {
       print('Error sending verification email: $e');
       return false;
+    }
+  }
+  
+  /// Add phone number to user account
+  Future<Map<String, dynamic>> addPhoneNumber(String phone) async {
+    try {
+      final deviceId = await getDeviceId();
+      if (deviceId == null) return {'success': false, 'error': 'No device ID'};
+      
+      final response = await http.post(
+        Uri.parse('$_apiBaseUrl/sms/add-phone'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'device_id': deviceId, 'phone': phone}),
+      );
+      
+      return json.decode(response.body);
+    } catch (e) {
+      return {'success': false, 'error': 'Network error'};
+    }
+  }
+  
+  /// Verify phone number with SMS code
+  Future<Map<String, dynamic>> verifyPhoneNumber(String code) async {
+    try {
+      final deviceId = await getDeviceId();
+      if (deviceId == null) return {'success': false, 'error': 'No device ID'};
+      
+      final response = await http.post(
+        Uri.parse('$_apiBaseUrl/sms/verify-phone'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'device_id': deviceId, 'code': code}),
+      );
+      
+      return json.decode(response.body);
+    } catch (e) {
+      return {'success': false, 'error': 'Network error'};
     }
   }
 }

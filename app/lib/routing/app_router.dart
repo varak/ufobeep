@@ -17,6 +17,7 @@ import '../screens/profile/profile_screen.dart';
 import '../screens/profile/user_registration_screen.dart';
 import '../screens/profile/language_settings_screen.dart';
 import '../screens/auth/account_recovery_screen.dart';
+import '../screens/auth/phone_setup_screen.dart';
 import '../screens/splash/splash_screen.dart';
 import '../models/shared_media_data.dart';
 
@@ -303,6 +304,13 @@ GoRouter appRouter(AppRouterRef ref) {
         path: '/recover',
         name: 'recover',
         builder: (context, state) => const AccountRecoveryScreen(),
+      ),
+      
+      // Phone Setup Screen
+      GoRoute(
+        path: '/phone-setup',
+        name: 'phone-setup',
+        builder: (context, state) => const PhoneSetupScreen(),
       ),
 
     ],

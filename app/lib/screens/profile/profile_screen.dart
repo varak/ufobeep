@@ -91,6 +91,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             
             const SizedBox(height: 24),
             
+            // Account Security
+            _buildAccountSecurity(),
+            
+            const SizedBox(height: 24),
+            
             // App Settings
             _buildAppSettings(userPreferences!),
             
@@ -389,6 +394,55 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ],
     );
   }
+
+  Widget _buildAccountSecurity() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Text(
+            'Account Security',
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.darkSurface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.darkBorder.withOpacity(0.5)),
+          ),
+          child: Column(
+            children: [
+              _buildSimpleSettingItem(
+                icon: Icons.phone_outlined,
+                title: 'Phone Number',
+                value: 'Add for SMS recovery',
+                onTap: () => context.go('/phone-setup'),
+                isFirst: true,
+              ),
+              
+              _buildDivider(),
+              
+              _buildSimpleSettingItem(
+                icon: Icons.security_outlined,
+                title: 'Account Recovery',
+                value: 'Manage recovery options',
+                onTap: () => context.go('/recover'),
+                isLast: true,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
 
   Widget _buildAppSettings(UserPreferences preferences) {
     return Column(

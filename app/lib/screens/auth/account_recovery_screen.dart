@@ -15,21 +15,24 @@ class AccountRecoveryScreen extends ConsumerStatefulWidget {
 class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _recoveryCodeController = TextEditingController();
   
   bool _isEmailStep = true;
   bool _isLoading = false;
+  bool _useEmail = true;
   String? _errorMessage;
-  String? _emailSent;
+  String? _contactSent;
 
   @override
   void dispose() {
     _emailController.dispose();
+    _phoneController.dispose();
     _recoveryCodeController.dispose();
     super.dispose();
   }
 
-  Future<void> _sendRecoveryEmail() async {
+  Future<void> _sendRecoveryCode() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() {
@@ -39,12 +42,19 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
 
     try {
       final userService = ref.read(userServiceProvider);
-      final result = await userService.recoverAccount(_emailController.text.trim());
+      Map<String, dynamic> result;
+      
+      if (_useEmail) {
+        result = await userService.recoverAccount(_emailController.text.trim());
+        _contactSent = _emailController.text.trim();
+      } else {
+        result = await userService.recoverAccountWithPhone(_phoneController.text.trim());
+        _contactSent = _phoneController.text.trim();
+      }
       
       if (result['success'] == true) {
         setState(() {
           _isEmailStep = false;
-          _emailSent = _emailController.text.trim();
         });
       } else {
         setState(() {
@@ -160,10 +170,85 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
                 const SizedBox(height: 32),
                 
                 if (_isEmailStep) ...[
-                  // Email Step
-                  const Text(
-                    'Enter your verified email address to receive a recovery code:',
-                    style: TextStyle(
+                  // Recovery Method Toggle
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.darkSurface,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => setState(() => _useEmail = true),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              decoration: BoxDecoration(
+                                color: _useEmail ? AppColors.brandPrimary : Colors.transparent,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.email,
+                                    color: _useEmail ? Colors.black : AppColors.textSecondary,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Email',
+                                    style: TextStyle(
+                                      color: _useEmail ? Colors.black : AppColors.textSecondary,
+                                      fontWeight: _useEmail ? FontWeight.w600 : FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => setState(() => _useEmail = false),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              decoration: BoxDecoration(
+                                color: !_useEmail ? AppColors.brandPrimary : Colors.transparent,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.sms,
+                                    color: !_useEmail ? Colors.black : AppColors.textSecondary,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'SMS',
+                                    style: TextStyle(
+                                      color: !_useEmail ? Colors.black : AppColors.textSecondary,
+                                      fontWeight: !_useEmail ? FontWeight.w600 : FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 24),
+                  
+                  Text(
+                    _useEmail 
+                        ? 'Enter your verified email address to receive a recovery code:'
+                        : 'Enter your verified phone number to receive a recovery code:',
+                    style: const TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 16,
                     ),
@@ -172,44 +257,78 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
                   
                   const SizedBox(height: 24),
                   
-                  TextFormField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    style: const TextStyle(color: AppColors.textPrimary),
-                    decoration: InputDecoration(
-                      labelText: 'Email Address',
-                      labelStyle: const TextStyle(color: AppColors.textSecondary),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColors.darkBorder),
+                  if (_useEmail)
+                    TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      style: const TextStyle(color: AppColors.textPrimary),
+                      decoration: InputDecoration(
+                        labelText: 'Email Address',
+                        labelStyle: const TextStyle(color: AppColors.textSecondary),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: AppColors.darkBorder),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: AppColors.darkBorder),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: AppColors.brandPrimary),
+                        ),
+                        prefixIcon: const Icon(Icons.email, color: AppColors.textSecondary),
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColors.darkBorder),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter your email address';
+                        }
+                        if (!value.contains('@') || !value.contains('.')) {
+                          return 'Please enter a valid email address';
+                        }
+                        return null;
+                      },
+                    )
+                  else
+                    TextFormField(
+                      controller: _phoneController,
+                      keyboardType: TextInputType.phone,
+                      style: const TextStyle(color: AppColors.textPrimary),
+                      decoration: InputDecoration(
+                        labelText: 'Phone Number',
+                        hintText: '+1234567890',
+                        labelStyle: const TextStyle(color: AppColors.textSecondary),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: AppColors.darkBorder),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: AppColors.darkBorder),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: AppColors.brandPrimary),
+                        ),
+                        prefixIcon: const Icon(Icons.phone, color: AppColors.textSecondary),
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColors.brandPrimary),
-                      ),
-                      prefixIcon: const Icon(Icons.email, color: AppColors.textSecondary),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter your phone number';
+                        }
+                        if (value.trim().length < 10) {
+                          return 'Please enter a valid phone number';
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Please enter your email address';
-                      }
-                      if (!value.contains('@') || !value.contains('.')) {
-                        return 'Please enter a valid email address';
-                      }
-                      return null;
-                    },
-                  ),
                   
                 ] else ...[
                   // Recovery Code Step
                   Column(
                     children: [
                       Icon(
-                        Icons.email_outlined,
+                        _useEmail ? Icons.email_outlined : Icons.sms_outlined,
                         size: 48,
                         color: AppColors.brandPrimary,
                       ),
@@ -224,7 +343,9 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Check your email ($_emailSent) for a 6-digit recovery code.',
+                        _useEmail 
+                            ? 'Check your email ($_contactSent) for a 6-digit recovery code.'
+                            : 'Check your phone ($_contactSent) for a 6-digit SMS recovery code.',
                         style: const TextStyle(
                           color: AppColors.textSecondary,
                           fontSize: 14,
@@ -314,7 +435,7 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
                 
                 // Action Button
                 ElevatedButton(
-                  onPressed: _isLoading ? null : (_isEmailStep ? _sendRecoveryEmail : _verifyRecoveryCode),
+                  onPressed: _isLoading ? null : (_isEmailStep ? _sendRecoveryCode : _verifyRecoveryCode),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.brandPrimary,
                     foregroundColor: AppColors.textPrimary,
