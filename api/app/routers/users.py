@@ -112,8 +112,9 @@ async def generate_username():
         )
 
 
-@router.post("/register", response_model=UserRegistrationResponse)
-async def register_user(request: UserRegistrationRequest):
+# Temporarily disabled - migrating to Firebase Auth
+# @router.post("/register", response_model=UserRegistrationResponse)  
+# async def register_user(request: UserRegistrationRequest):
     """
     Register a new user or get existing user by device ID
     Creates username-based identity for anonymous device users
