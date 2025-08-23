@@ -106,8 +106,8 @@ class _UsernameRegenerateWidgetState extends ConsumerState<UsernameRegenerateWid
         'message': 'Username regeneration feature coming soon!'
       };
       if (responseData['success'] == true || responseData['username'] != null) {
-        final newUsername = responseData['username'];
-        final message = responseData['message'] ?? 'Username updated successfully!';
+        final newUsername = responseData['username']?.toString() ?? '';
+        final message = responseData['message']?.toString() ?? 'Username updated successfully!';
 
         if (mounted) {
           // Show success message

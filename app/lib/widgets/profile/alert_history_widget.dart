@@ -172,7 +172,9 @@ class AlertHistoryWidget extends ConsumerWidget {
           
           // Alert List
           Column(
-            children: alerts.take(5).map((alert) => _buildAlertItem(context, alert)).toList(),
+            children: alerts.take(5).map((alert) => Builder(
+              builder: (context) => _buildAlertItem(context, alert)
+            )).toList(),
           ),
           
           // View All Button
