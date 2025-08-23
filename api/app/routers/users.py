@@ -64,7 +64,12 @@ class RecoveryRequest(BaseModel):
 
 class UserRegistrationRequest(BaseModel):
     device_id: str
+    platform: str
+    alert_range_km: float = 50.0
+    units_metric: bool = True
+    preferred_language: str = "en"
     username: Optional[str] = None
+    email: Optional[str] = None
 
 class UserRegistrationResponse(BaseModel):
     user_id: str
@@ -82,13 +87,6 @@ class UserRegistrationResponse(BaseModel):
         return v
 
 
-class UserRegistrationResponse(BaseModel):
-    """Response for user registration"""
-    user_id: str
-    username: str
-    device_id: str
-    is_new_user: bool
-    message: str
 
 
 class UserProfileResponse(BaseModel):
@@ -128,9 +126,8 @@ async def generate_username():
         )
 
 
-# Temporarily disabled - migrating to Firebase Auth
-# @router.post("/register", response_model=UserRegistrationResponse)  
-# async def register_user(request: UserRegistrationRequest):
+@router.post("/register", response_model=UserRegistrationResponse)  
+async def register_user(request: UserRegistrationRequest):
     """
     Register a new user or get existing user by device ID
     Creates username-based identity for anonymous device users
@@ -204,9 +201,9 @@ async def generate_username():
             # Store device mapping with JSON info
             device_info = {
                 "platform": request.platform,
-                "device_name": request.device_name,
-                "app_version": request.app_version,
-                "os_version": request.os_version
+                "device_name": None,
+                "app_version": None,
+                "os_version": None
             }
             
             await conn.execute("""
