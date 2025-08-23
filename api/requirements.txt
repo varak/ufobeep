@@ -42,8 +42,8 @@ pygeohash==1.2.0              # Geohash encoding for location privacy
 # ============================================================================
 # 📱 PUSH NOTIFICATION & SMS SERVICES
 # ============================================================================
-firebase-admin==7.1.0         # FCM push notifications via service layer
-twilio==9.3.7                 # SMS service for account recovery
+firebase-admin==7.1.0         # FCM push notifications and authentication
+google-auth==2.35.0           # Firebase ID token verification
 
 # ============================================================================  
 # ☁️ CLOUD & STORAGE SERVICES

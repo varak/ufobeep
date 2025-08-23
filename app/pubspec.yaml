@@ -65,6 +65,8 @@ dependencies:
   
   # Firebase Services
   firebase_core: ^3.8.0
+  firebase_auth: ^5.3.1
+  cloud_firestore: ^5.5.0
   firebase_messaging: ^15.1.4
   firebase_analytics: ^11.3.3
   package_info_plus: ^8.0.3

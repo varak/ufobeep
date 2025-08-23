@@ -14,8 +14,8 @@ import json
 from app.services.username_service import UsernameGenerator
 from app.services.user_migration_service import get_migration_service
 from app.services.email_service_postfix import PostfixEmailService
-from app.services.sms_service import sms_service
 from app.services.database_service import get_database_pool
+from app.middleware.firebase_auth import FirebaseUser, OptionalAuth, RequiredAuth
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -33,45 +33,29 @@ class UsernameGenerationResponse(BaseModel):
     alternatives: List[str]
 
 
-class RecoveryRequest(BaseModel):
-    """Request for account recovery"""
-    email: Optional[str] = Field(None, description="Email address for recovery")
-    phone: Optional[str] = Field(None, description="Phone number for SMS recovery")
+class FirebaseUserRegistration(BaseModel):
+    """Request for Firebase user registration with username"""
+    username: str = Field(..., min_length=3, max_length=50, description="Desired username")
+    email: Optional[str] = Field(None, description="Email address (optional)")
+    display_name: Optional[str] = Field(None, description="Display name (optional)")
+    alert_range_km: float = Field(50.0, ge=1, le=500, description="Alert range in kilometers")
+    units_metric: bool = Field(True, description="Use metric units")
+    preferred_language: str = Field("en", description="Preferred language code")
 
 
-class PhoneAddRequest(BaseModel):
-    """Request to add phone number"""
-    device_id: str = Field(..., min_length=1, description="Device identifier")
-    phone: str = Field(..., min_length=10, description="Phone number")
-
-
-class PhoneVerifyRequest(BaseModel):
-    """Request to verify phone number"""
-    device_id: str = Field(..., min_length=1, description="Device identifier")
-    code: str = Field(..., min_length=6, max_length=6, description="SMS verification code")
-
-
-class TestSMSRequest(BaseModel):
-    """Request to test SMS service"""
-    phone: str = Field(..., min_length=10, description="Phone number to test")
-
-
-class UserRegistrationRequest(BaseModel):
-    """Request for user registration"""
-    device_id: str = Field(..., min_length=1, max_length=255, description="Device identifier")
-    username: Optional[str] = Field(None, min_length=3, max_length=50, description="Custom username or None for auto-generation")
-    email: Optional[str] = Field(None, description="Optional email address")
-    
-    # Device information
-    platform: str = Field(..., description="Device platform (ios, android, web)")
-    device_name: Optional[str] = Field(None, max_length=255)
-    app_version: Optional[str] = Field(None, max_length=50)
-    os_version: Optional[str] = Field(None, max_length=50)
-    
-    # User preferences
-    alert_range_km: Optional[float] = Field(50.0, ge=1.0, le=500.0)
-    units_metric: Optional[bool] = Field(True)
-    preferred_language: Optional[str] = Field("en", max_length=5)
+class UserProfileResponse(BaseModel):
+    """Response for user profile data"""
+    uid: str
+    username: str
+    email: Optional[str] = None
+    phone_number: Optional[str] = None
+    display_name: Optional[str] = None
+    alert_range_km: float = 50.0
+    units_metric: bool = True
+    preferred_language: str = "en"
+    is_verified: bool = False
+    created_at: datetime
+    last_active: Optional[datetime] = None
     
     @validator('username')
     def validate_username(cls, v):
