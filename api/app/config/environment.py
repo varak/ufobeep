@@ -139,6 +139,8 @@ class Settings(BaseSettings):
     # === Proximity and Visibility Settings ===
     visibility_distance_km: float = Field(default=25.0, env="VISIBILITY_DISTANCE_KM")  # Maximum visibility distance for UFO alerts
     witness_confirmation_max_distance_multiplier: float = Field(default=2.0, env="WITNESS_CONFIRMATION_MAX_DISTANCE_MULTIPLIER")  # Multiplier for max witness confirmation distance
+    witness_confirmation_time_window_minutes: int = Field(default=60, env="WITNESS_CONFIRMATION_TIME_WINDOW_MINUTES")  # Time window for witness confirmations
+    witness_confirmation_rate_limit_per_hour: int = Field(default=5, env="WITNESS_CONFIRMATION_RATE_LIMIT_PER_HOUR")  # Max confirmations per hour per user
     
     # === External Astronomical/Aircraft APIs ===
     astrometry_api_key: str = Field(default="your_astrometry_key", env="ASTROMETRY_API_KEY")

@@ -349,8 +349,9 @@ class AlertsService:
             if not sighting:
                 raise ValueError("Sighting not found")
             
-            # Check time window restriction (MP13-5) - configurable, default 60 minutes
-            time_window_minutes = 60  # TODO: Make configurable
+            # Check time window restriction (MP13-5) - configurable via environment
+            from app.config.environment import settings
+            time_window_minutes = settings.witness_confirmation_time_window_minutes
             
             # Check if sighting is within time window using database comparison
             is_within_window = await conn.fetchval("""
@@ -377,7 +378,7 @@ class AlertsService:
                 WHERE device_id = $1 AND confirmed_at > NOW() - INTERVAL '1 hour'
             """, device_id)
             
-            max_confirmations_per_hour = 5  # TODO: Make configurable
+            max_confirmations_per_hour = settings.witness_confirmation_rate_limit_per_hour
             if recent_confirmations >= max_confirmations_per_hour:
                 raise ValueError(f"Rate limit exceeded. You can only confirm {max_confirmations_per_hour} sightings per hour.")
             
