@@ -5,7 +5,7 @@
 # 🌟 CORE FASTAPI FRAMEWORK
 # ============================================================================
 fastapi==0.115.6              # Modern async web framework
-uvicorn[standard]==0.34.0     # ASGI server with performance extensions
+uvicorn[standard]>=0.27.0     # ASGI server with performance extensions
 pydantic==2.10.5              # Data validation and service layer models  
 pydantic-settings==2.8.0      # Environment configuration management
 python-multipart==0.0.20      # File upload support
