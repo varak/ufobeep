@@ -69,9 +69,9 @@ class PermissionService {
         Permission.location,
         Permission.notification,
       ].request().timeout(
-        const Duration(seconds: 20),
+        const Duration(seconds: 10),
         onTimeout: () {
-          print('Permission request timed out - checking individual statuses');
+          print('Permission request timed out after 10s - checking individual statuses');
           return <Permission, PermissionStatus>{};
         },
       );

@@ -6,20 +6,38 @@ Uses Twilio API for reliable SMS delivery
 
 import secrets
 import logging
+import os
 from typing import Optional, Dict, Any
-import httpx
 from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
+
+try:
+    from twilio.rest import Client
+    TWILIO_AVAILABLE = True
+except ImportError:
+    logger.warning("Twilio not available - SMS will only log messages")
+    TWILIO_AVAILABLE = False
 
 class SMSService:
     """SMS service for account recovery codes"""
     
     def __init__(self):
-        # For now, use a simple SMS service (could be Twilio, AWS SNS, etc.)
-        # This is a placeholder implementation
-        self.api_key = "demo-key"  # TODO: Add real SMS service API key
-        self.from_number = "+1234567890"  # TODO: Configure real number
+        self.account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+        self.auth_token = os.getenv('TWILIO_AUTH_TOKEN') 
+        self.from_number = os.getenv('TWILIO_PHONE_NUMBER', '+1234567890')
+        
+        # Initialize Twilio client if credentials are available
+        self.client = None
+        if TWILIO_AVAILABLE and self.account_sid and self.auth_token:
+            try:
+                self.client = Client(self.account_sid, self.auth_token)
+                logger.info("Twilio SMS service initialized")
+            except Exception as e:
+                logger.error(f"Failed to initialize Twilio client: {e}")
+                self.client = None
+        else:
+            logger.warning("Twilio credentials not configured - SMS will only log messages")
         
     def format_phone_number(self, phone: str) -> str:
         """Format phone number to E.164 format"""
@@ -41,7 +59,7 @@ class SMSService:
         try:
             formatted_phone = self.format_phone_number(phone_number)
             
-            message = f"""UFOBeep Recovery Code: {code}
+            message_body = f"""UFOBeep Recovery Code: {code}
 
 Username: {username}
 
@@ -51,23 +69,38 @@ Reply STOP to opt out.
             
 https://ufobeep.com"""
             
-            # For demo/testing - log the SMS instead of sending
-            logger.info(f"SMS to {formatted_phone}: {message}")
-            
-            # TODO: Replace with real SMS service
-            # Example Twilio implementation:
-            # client = twilio.rest.Client(account_sid, auth_token)
-            # message = client.messages.create(
-            #     body=message,
-            #     from_=self.from_number,
-            #     to=formatted_phone
-            # )
-            
-            return {
-                "success": True,
-                "message": f"Recovery code sent to {self.mask_phone_number(formatted_phone)}",
-                "phone": formatted_phone
-            }
+            if self.client:
+                # Send via Twilio
+                try:
+                    message = self.client.messages.create(
+                        body=message_body,
+                        from_=self.from_number,
+                        to=formatted_phone
+                    )
+                    logger.info(f"SMS sent successfully to {self.mask_phone_number(formatted_phone)}, SID: {message.sid}")
+                    
+                    return {
+                        "success": True,
+                        "message": f"Recovery code sent to {self.mask_phone_number(formatted_phone)}",
+                        "phone": formatted_phone,
+                        "twilio_sid": message.sid
+                    }
+                except Exception as twilio_error:
+                    logger.error(f"Twilio SMS failed to {formatted_phone}: {twilio_error}")
+                    return {
+                        "success": False,
+                        "error": f"SMS sending failed: {str(twilio_error)}"
+                    }
+            else:
+                # Fallback: log the message (for development/testing)
+                logger.info(f"SMS to {formatted_phone}: {message_body}")
+                logger.warning("Twilio not configured - SMS logged only")
+                
+                return {
+                    "success": True,
+                    "message": f"Recovery code logged for {self.mask_phone_number(formatted_phone)} (Twilio not configured)",
+                    "phone": formatted_phone
+                }
             
         except Exception as e:
             logger.error(f"Failed to send SMS to {phone_number}: {e}")
@@ -87,18 +120,42 @@ https://ufobeep.com"""
         try:
             formatted_phone = self.format_phone_number(phone_number)
             
-            message = """Test message from UFOBeep SMS service.
+            message_body = """Test message from UFOBeep SMS service.
 
 If you received this, SMS authentication is working!
 
 https://ufobeep.com"""
             
-            logger.info(f"Test SMS to {formatted_phone}: {message}")
-            
-            return {
-                "success": True,
-                "message": f"Test SMS sent to {self.mask_phone_number(formatted_phone)}"
-            }
+            if self.client:
+                # Send via Twilio
+                try:
+                    message = self.client.messages.create(
+                        body=message_body,
+                        from_=self.from_number,
+                        to=formatted_phone
+                    )
+                    logger.info(f"Test SMS sent successfully to {self.mask_phone_number(formatted_phone)}, SID: {message.sid}")
+                    
+                    return {
+                        "success": True,
+                        "message": f"Test SMS sent to {self.mask_phone_number(formatted_phone)}",
+                        "twilio_sid": message.sid
+                    }
+                except Exception as twilio_error:
+                    logger.error(f"Twilio test SMS failed to {formatted_phone}: {twilio_error}")
+                    return {
+                        "success": False,
+                        "error": f"Test SMS failed: {str(twilio_error)}"
+                    }
+            else:
+                # Fallback: log the message
+                logger.info(f"Test SMS to {formatted_phone}: {message_body}")
+                logger.warning("Twilio not configured - test SMS logged only")
+                
+                return {
+                    "success": True,
+                    "message": f"Test SMS logged for {self.mask_phone_number(formatted_phone)} (Twilio not configured)"
+                }
             
         except Exception as e:
             logger.error(f"Failed to send test SMS: {e}")
