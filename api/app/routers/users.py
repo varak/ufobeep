@@ -244,31 +244,50 @@ async def register_user(request: UserRegistrationRequest):
             
     except Exception as e:
         error_str = str(e).lower()
-        if "username" in error_str and "unique" in error_str:
+        
+        # Handle specific database constraint violations
+        if "username" in error_str and ("unique" in error_str or "duplicate" in error_str):
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail="Username already exists. Please choose another one."
+                detail="Username already taken. Please try generating a new one."
             )
         elif "email" in error_str and ("unique" in error_str or "duplicate" in error_str):
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail="This email address is already registered. Use account recovery instead."
+                detail="This email is already registered. Try account recovery or use a different email."
             )
-        elif "duplicate key" in error_str:
+        elif "device_id" in error_str and ("unique" in error_str or "duplicate" in error_str):
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="This device is already registered. Try account recovery."
+            )
+        elif "duplicate key" in error_str or "violates unique constraint" in error_str:
             if "email" in error_str:
                 raise HTTPException(
                     status_code=status.HTTP_409_CONFLICT,
-                    detail="This email address is already registered. Use account recovery instead."
+                    detail="This email is already registered. Try account recovery or use a different email."
+                )
+            elif "username" in error_str:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="Username already taken. Please try generating a new one."
                 )
             else:
                 raise HTTPException(
                     status_code=status.HTTP_409_CONFLICT,
-                    detail="This information is already registered. Please try again."
+                    detail="Account already exists. Please try account recovery instead."
                 )
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Registration failed: {str(e)}"
-        )
+        elif "connection" in error_str or "database" in error_str:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Registration temporarily unavailable. Please try again in a moment."
+            )
+        else:
+            # Generic error - don't expose technical details to users
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Registration failed. Please try again or contact support if the problem persists."
+            )
     finally:
         pass  # Shared pool - don't close
 
