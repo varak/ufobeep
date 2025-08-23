@@ -201,9 +201,9 @@ async def register_user(request: UserRegistrationRequest):
             # Store device mapping with JSON info
             device_info = {
                 "platform": request.platform,
-                "device_name": None,
-                "app_version": None,
-                "os_version": None
+                "device_name": getattr(request, 'device_name', 'Unknown'),
+                "app_version": getattr(request, 'app_version', '1.0.0'),
+                "os_version": getattr(request, 'os_version', 'Unknown')
             }
             
             await conn.execute("""
