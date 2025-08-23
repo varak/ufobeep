@@ -56,6 +56,22 @@ class UserProfileResponse(BaseModel):
     is_verified: bool = False
     created_at: datetime
     last_active: Optional[datetime] = None
+
+# Temporary models for backwards compatibility
+class RecoveryRequest(BaseModel):
+    email: Optional[str] = None
+    phone: Optional[str] = None
+
+class UserRegistrationRequest(BaseModel):
+    device_id: str
+    username: Optional[str] = None
+
+class UserRegistrationResponse(BaseModel):
+    user_id: str
+    username: str
+    device_id: str
+    is_new_user: bool
+    message: str
     
     @validator('username')
     def validate_username(cls, v):
