@@ -225,18 +225,18 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
           // New User Button
           SizedBox(
             width: double.infinity,
-            child: ElevatedButton.icon(
+            child: OutlinedButton.icon(
               onPressed: () {
                 Navigator.of(context).pop();
                 context.go('/register');
               },
-              icon: const Icon(Icons.person_add, color: AppColors.textPrimary),
+              icon: const Icon(Icons.person_add, color: AppColors.brandPrimary),
               label: const Text(
                 'New User',
-                style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
+                style: TextStyle(color: AppColors.brandPrimary, fontWeight: FontWeight.w600),
               ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.brandPrimary,
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: AppColors.brandPrimary),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),

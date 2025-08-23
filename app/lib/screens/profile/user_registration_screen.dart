@@ -17,7 +17,6 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
   
   bool _isGeneratingUsername = false;
   bool _isRegistering = false;
-  bool _useCustomUsername = false;
   double _alertRangeKm = 50.0;
   bool _unitsMetric = true;
   String _preferredLanguage = 'en';
@@ -26,8 +25,6 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
   List<String> _usernameAlternatives = [];
   String? _selectedUsername;
   
-  Map<String, dynamic>? _usernameValidation;
-
   @override
   void initState() {
     super.initState();
@@ -65,15 +62,6 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
     }
   }
 
-  Future<void> _validateCustomUsername(String username) async {
-    if (username.isEmpty) {
-      setState(() => _usernameValidation = null);
-      return;
-    }
-
-    final validation = await userService.validateUsername(username);
-    setState(() => _usernameValidation = validation);
-  }
 
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) return;
@@ -81,10 +69,7 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
     setState(() => _isRegistering = true);
 
     try {
-      final username = _useCustomUsername 
-          ? _usernameController.text.trim()
-          : _selectedUsername;
-      
+      final username = _selectedUsername;
       final email = _emailController.text.trim();
 
       final response = await userService.registerUser(
@@ -174,19 +159,22 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
               // Register button
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
+                child: OutlinedButton(
                   onPressed: _isRegistering ? null : _register,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.brandPrimary,
-                    foregroundColor: Colors.black,
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: AppColors.brandPrimary),
+                    foregroundColor: AppColors.brandPrimary,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     textStyle: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                   child: _isRegistering
-                      ? const CircularProgressIndicator(color: Colors.black)
+                      ? const CircularProgressIndicator(color: AppColors.brandPrimary)
                       : const Text('Create UFO ID'),
                 ),
               ),
@@ -230,8 +218,7 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
         ),
         const SizedBox(height: 12),
 
-        // Generated username option (default)
-        if (!_useCustomUsername) ...[
+        // Generated username section
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -309,98 +296,20 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
                   ],
                   
                   const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      TextButton.icon(
-                        onPressed: _generateInitialUsername,
-                        icon: const Icon(Icons.refresh, size: 16),
-                        label: const Text('Generate New'),
-                        style: TextButton.styleFrom(
-                          foregroundColor: AppColors.brandPrimary,
-                        ),
+                  Center(
+                    child: TextButton.icon(
+                      onPressed: _generateInitialUsername,
+                      icon: const Icon(Icons.refresh, size: 16),
+                      label: const Text('Generate New'),
+                      style: TextButton.styleFrom(
+                        foregroundColor: AppColors.brandPrimary,
                       ),
-                      const Spacer(),
-                      TextButton(
-                        onPressed: () => setState(() => _useCustomUsername = true),
-                        child: const Text('Use Custom Username'),
-                        style: TextButton.styleFrom(
-                          foregroundColor: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ],
             ),
           ),
-        ],
-
-        // Custom username option
-        if (_useCustomUsername) ...[
-          TextFormField(
-            controller: _usernameController,
-            decoration: InputDecoration(
-              hintText: 'Enter custom username (e.g., cosmic.whisper.7823)',
-              prefixIcon: const Icon(Icons.edit, color: AppColors.brandPrimary),
-              suffixIcon: _usernameValidation != null
-                  ? Icon(
-                      _usernameValidation!['valid'] && _usernameValidation!['available']
-                          ? Icons.check_circle
-                          : Icons.error,
-                      color: _usernameValidation!['valid'] && _usernameValidation!['available']
-                          ? AppColors.semanticSuccess
-                          : AppColors.semanticError,
-                    )
-                  : null,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.darkBorder),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.brandPrimary),
-              ),
-            ),
-            onChanged: (value) {
-              _validateCustomUsername(value);
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter a username';
-              }
-              if (_usernameValidation != null) {
-                if (!_usernameValidation!['valid']) {
-                  return _usernameValidation!['error'];
-                }
-                if (!_usernameValidation!['available']) {
-                  return 'Username already taken';
-                }
-              }
-              return null;
-            },
-          ),
-          
-          if (_usernameValidation != null && _usernameValidation!['error'] != null)
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Text(
-                _usernameValidation!['error'],
-                style: const TextStyle(
-                  color: AppColors.semanticError,
-                  fontSize: 12,
-                ),
-              ),
-            ),
-          
-          const SizedBox(height: 8),
-          TextButton(
-            onPressed: () => setState(() => _useCustomUsername = false),
-            child: const Text('← Back to Generated Username'),
-            style: TextButton.styleFrom(
-              foregroundColor: AppColors.textSecondary,
-            ),
-          ),
-        ],
       ],
     );
   }
@@ -437,7 +346,6 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             hintText: 'your.email@example.com',
-            prefixIcon: const Icon(Icons.alternate_email, color: AppColors.brandPrimary),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(color: AppColors.darkBorder),
