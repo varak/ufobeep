@@ -221,11 +221,13 @@ class EnrichmentSection extends StatelessWidget {
           SatelliteCardFromJson(satelliteData: enrichmentData['satellites']),
           const SizedBox(height: 16),
         ],
-        if ((hasBlackSkyData || hasSkyFiData) && _canViewPremiumSatelliteImagery()) ...[
-          PremiumSatelliteCard(
-            blackskyData: enrichmentData['blacksky'],
-            skyfiData: enrichmentData['skyfi'],
-          ),
+        if (hasBlackSkyData || hasSkyFiData) ...[
+          _canViewPremiumSatelliteImagery() 
+            ? PremiumSatelliteCard(
+                blackskyData: enrichmentData['blacksky'],
+                skyfiData: enrichmentData['skyfi'],
+              )
+            : _buildPremiumUpgradePrompt(),
           const SizedBox(height: 16),
         ],
         if (hasContentData) ...[
@@ -307,19 +309,23 @@ class EnrichmentSection extends StatelessWidget {
   }
 
   /// Check if current user can view premium satellite imagery
-  /// Only beep creator and confirmed witnesses can see BlackSky/SkyFi data
+  /// Only beep creator and confirmed witnesses can see BlackSky/SkyFi data (MP13-4)
   bool _canViewPremiumSatelliteImagery() {
     print('DEBUG: _canViewPremiumSatelliteImagery check');
     print('DEBUG: currentUserDeviceId: "$currentUserDeviceId"');
     print('DEBUG: alertCreatorDeviceId: "$alertCreatorDeviceId"');
     print('DEBUG: isWitnessConfirmed: $isWitnessConfirmed');
     
-    // If no device IDs provided OR alertCreatorDeviceId is empty, allow access (fallback for compatibility)
-    if (currentUserDeviceId == null || 
-        alertCreatorDeviceId == null || 
-        alertCreatorDeviceId!.isEmpty) {
-      print('DEBUG: One of the device IDs is null/empty, allowing access (fallback)');
-      return true;
+    // Deny access if no current user ID (guest users)
+    if (currentUserDeviceId == null) {
+      print('DEBUG: No current user ID - guest access denied');
+      return false;
+    }
+    
+    // Deny access if no alert creator ID (can't determine creator)
+    if (alertCreatorDeviceId == null || alertCreatorDeviceId!.isEmpty) {
+      print('DEBUG: No alert creator ID - access denied');
+      return false;
     }
     
     // Allow if user is the alert creator
@@ -328,15 +334,181 @@ class EnrichmentSection extends StatelessWidget {
       return true;
     }
     
-    // Allow if user is a confirmed witness
+    // Allow if user is a confirmed witness (already validated within 2x visibility distance)
     if (isWitnessConfirmed) {
       print('DEBUG: User is confirmed witness, allowing access');
       return true;
     }
     
-    // Otherwise, deny access
+    // Otherwise, deny access (guest users)
     print('DEBUG: Access denied - not creator or confirmed witness');
     return false;
+  }
+
+  /// Build upgrade prompt for users who can't access premium satellite imagery
+  Widget _buildPremiumUpgradePrompt() {
+    return Card(
+      color: AppColors.darkSurface,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
+            Row(
+              children: [
+                Icon(Icons.satellite_alt, color: AppColors.textSecondary, size: 20),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Premium Satellite Imagery',
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        'High-resolution commercial imagery',
+                        style: TextStyle(
+                          color: AppColors.textTertiary,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(Icons.lock, color: AppColors.textSecondary, size: 18),
+              ],
+            ),
+            const SizedBox(height: 12),
+            
+            // Access requirements
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.darkBackground,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.darkBorder.withOpacity(0.3)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Premium satellite imagery is only available to:',
+                    style: TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Icon(Icons.person, color: AppColors.brandPrimary, size: 16),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Alert creators',
+                        style: TextStyle(
+                          color: AppColors.textPrimary,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(Icons.visibility, color: AppColors.brandPrimary, size: 16),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Confirmed witnesses within visibility range',
+                        style: TextStyle(
+                          color: AppColors.textPrimary,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+            
+            // Platform info (Coming Soon)
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppColors.darkBackground,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: AppColors.darkBorder.withOpacity(0.3)),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          'BlackSky',
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Coming Soon',
+                          style: TextStyle(
+                            color: AppColors.textTertiary,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppColors.darkBackground,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: AppColors.darkBorder.withOpacity(0.3)),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          'SkyFi',
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Coming Soon',
+                          style: TextStyle(
+                            color: AppColors.textTertiary,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
