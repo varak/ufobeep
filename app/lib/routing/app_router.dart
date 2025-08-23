@@ -18,6 +18,8 @@ import '../screens/profile/user_registration_screen.dart';
 import '../screens/profile/language_settings_screen.dart';
 import '../screens/auth/account_recovery_screen.dart';
 import '../screens/auth/phone_setup_screen.dart';
+import '../screens/auth/firebase_phone_auth_screen.dart';
+import '../screens/auth/firebase_email_auth_screen.dart';
 import '../screens/splash/splash_screen.dart';
 import '../models/shared_media_data.dart';
 
@@ -299,11 +301,18 @@ GoRouter appRouter(AppRouterRef ref) {
         builder: (context, state) => const UserRegistrationScreen(),
       ),
 
-      // Account Recovery Screen - MP14
+      // Firebase Phone Authentication - replaces old account recovery
       GoRoute(
         path: '/recover',
         name: 'recover',
-        builder: (context, state) => const AccountRecoveryScreen(),
+        builder: (context, state) => const FirebasePhoneAuthScreen(),
+      ),
+      
+      // Firebase Email Authentication
+      GoRoute(
+        path: '/email-auth',
+        name: 'email-auth', 
+        builder: (context, state) => const FirebaseEmailAuthScreen(),
       ),
       
       // Phone Setup Screen

@@ -9,6 +9,7 @@ import '../config/environment.dart';
 import '../config/locale_config.dart';
 import 'permission_service.dart';
 import 'user_service.dart';
+import 'firebase_auth_service.dart';
 
 enum InitializationStep {
   environment,
@@ -253,12 +254,17 @@ class InitializationService {
 
   Future<InitializationResult> _initializeUserSystem() async {
     try {
+      // Initialize Firebase Auth first (for anonymous sign-in if needed)
+      await firebaseAuthService.initializeAuth();
+      _logInfo('Firebase Auth initialized');
+      
       // Initialize the user system and check registration status
       final isRegistered = await userService.initializeUser();
       
       String userStatus = 'unregistered';
       String? username;
       String? userId;
+      String? firebaseUid;
       
       if (isRegistered) {
         final currentUser = await userService.getCurrentUser();
@@ -266,8 +272,14 @@ class InitializationService {
         userId = currentUser['userId'];
         userStatus = 'registered';
       }
+      
+      // Check Firebase user status
+      if (firebaseAuthService.isSignedIn) {
+        firebaseUid = firebaseAuthService.currentUserId;
+        _logInfo('Firebase user authenticated: $firebaseUid');
+      }
 
-      _logInfo('User system initialized. Status: $userStatus, Username: ${username ?? 'none'}');
+      _logInfo('User system initialized. Status: $userStatus, Username: ${username ?? 'none'}, Firebase UID: ${firebaseUid ?? 'none'}');
       
       return InitializationResult(
         success: true,
@@ -277,6 +289,7 @@ class InitializationService {
           'userStatus': userStatus,
           'username': username,
           'userId': userId,
+          'firebaseUid': firebaseUid,
         },
       );
     } catch (e) {
