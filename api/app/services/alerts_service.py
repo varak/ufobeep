@@ -217,9 +217,10 @@ class AlertsService:
             # Get or create user for device_id to populate reporter_id
             reporter_id = None
             if device_id:
-                reporter_id = await conn.fetchval("""
+                user_uuid = await conn.fetchval("""
                     SELECT get_or_create_user_by_device_id($1)
                 """, device_id)
+                reporter_id = str(user_uuid) if user_uuid else None
             
             alert_id = await conn.fetchval("""
                 INSERT INTO sightings 
