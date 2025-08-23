@@ -349,15 +349,18 @@ class AlertsService:
             if not sighting:
                 raise ValueError("Sighting not found")
             
-            # Check time window restriction (MP13-5) - temporarily disabled due to timezone issues
-            # TODO: Fix timezone handling between asyncpg and Python datetime
-            # from datetime import datetime, timezone, timedelta
-            # time_window_minutes = 60  # TODO: Make configurable
-            # current_time = await conn.fetchval("SELECT NOW()")
-            # sighting_time = sighting['created_at']
-            # time_since_sighting = current_time - sighting_time
-            # if time_since_sighting > timedelta(minutes=time_window_minutes):
-            #     raise ValueError(f"Witness confirmation window has closed. You can only confirm sightings within {time_window_minutes} minutes of occurrence.")
+            # Check time window restriction (MP13-5) - configurable, default 60 minutes
+            time_window_minutes = 60  # TODO: Make configurable
+            
+            # Check if sighting is within time window using database comparison
+            is_within_window = await conn.fetchval("""
+                SELECT (NOW() - created_at) < INTERVAL '%s minutes' 
+                FROM sightings 
+                WHERE id = $1
+            """ % time_window_minutes, uuid.UUID(sighting_id))
+            
+            if not is_within_window:
+                raise ValueError(f"Witness confirmation window has closed. You can only confirm sightings within {time_window_minutes} minutes of occurrence.")
             
             # Check if device already confirmed this sighting
             existing = await conn.fetchrow("""
