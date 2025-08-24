@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/user_preferences.dart';
 import '../../providers/user_preferences_provider.dart';
@@ -89,18 +90,29 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             
             const SizedBox(height: 24),
             
-            // MP13-6: User Statistics
-            const UserStatsWidget(),
+            // MP13-6: User Statistics - DISABLED (backend endpoints not implemented)
+            // const UserStatsWidget(),
+            // 
+            // const SizedBox(height: 24),
+            // 
+            // MP13-6: Alert History - DISABLED (backend endpoints not implemented)
+            // const AlertHistoryWidget(),
+            // 
+            // const SizedBox(height: 24),
             
-            const SizedBox(height: 24),
-            
-            // MP13-6: Alert History
-            const AlertHistoryWidget(),
-            
-            const SizedBox(height: 24),
-            
-            // MP13-6: Username Management
-            const UsernameRegenerateWidget(),
+            // MP13-6: Username Management - DISABLED (regeneration broken for existing users)
+            // FutureBuilder<String?>(
+            //   future: UserService().getCurrentUsername(),
+            //   builder: (context, snapshot) {
+            //     final hasUsername = snapshot.data?.isNotEmpty == true;
+            //     if (hasUsername) {
+            //       // User already has username - no need to regenerate
+            //       return const SizedBox.shrink();
+            //     }
+            //     // Only show regeneration widget for users without username
+            //     return const UsernameRegenerateWidget();
+            //   },
+            // ),
             
             const SizedBox(height: 32),
             
@@ -603,12 +615,27 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Future<Map<String, dynamic>?> _getUserContactInfo(String type) async {
-    // This would call an API to get user's email and phone info
-    // For now, return mock data - you'll need to implement the API endpoint
+    // Get real user data from SharedPreferences where we stored it
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final email = prefs.getString('user_email') ?? '';
+      final phone = prefs.getString('user_phone') ?? '';
+      
+      return {
+        'email': email,
+        'email_verified': email.isNotEmpty, // We got it from Firebase auth
+        'phone': phone,
+        'phone_verified': phone.isNotEmpty,
+      };
+    } catch (e) {
+      print('Error getting user contact info: $e');
+    }
+    
+    // Fallback - no contact info available
     return {
-      'email': 'user@example.com',
+      'email': '',
       'email_verified': false,
-      'phone': '+1234567890',
+      'phone': '',
       'phone_verified': false,
     };
   }
@@ -620,13 +647,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   void _manageContactMethod(String type) {
     if (type == 'Email Address') {
-      // Navigate to email management
+      // Email management - show message
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Email management coming soon')),
       );
     } else {
-      // Navigate to phone management
-      context.go('/phone-setup');
+      // Phone management - disabled due to SMS verification issues
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Phone verification temporarily unavailable'),
+          backgroundColor: Colors.orange,
+        ),
+      );
     }
   }
 
