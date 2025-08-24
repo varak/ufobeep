@@ -1198,6 +1198,93 @@ async def google_login(request: SocialLoginRequest):
         pass  # Shared pool - don't close
 
 
+@router.post("/auth/firebase")
+async def firebase_auth(request: SocialLoginRequest, firebase_user: FirebaseUser = RequiredAuth):
+    """
+    Authenticate with Firebase ID token - MP15
+    Creates new account or links to existing account automatically
+    """
+    try:
+        pool = await get_db()
+        async with pool.acquire() as conn:
+            # Check if user already exists by Firebase UID
+            user = await conn.fetchrow("""
+                SELECT id, username, email, firebase_uid, login_methods
+                FROM users 
+                WHERE firebase_uid = $1
+            """, firebase_user.uid)
+            
+            if user:
+                # Existing user - update last_active and device
+                await conn.execute("""
+                    UPDATE users 
+                    SET last_login_at = NOW()
+                    WHERE id = $1
+                """, user["id"])
+                
+                # Update device if provided
+                if hasattr(request, 'device_id') and request.device_id:
+                    await conn.execute("""
+                        INSERT INTO user_devices (user_id, device_id, platform, created_at)
+                        VALUES ($1, $2, $3, NOW())
+                        ON CONFLICT (device_id) DO UPDATE SET 
+                            user_id = EXCLUDED.user_id,
+                            last_seen_at = NOW()
+                    """, user["id"], request.device_id, request.platform or 'unknown')
+                
+                return {
+                    "success": True,
+                    "is_new_user": False,
+                    "user": {
+                        "user_id": str(user["id"]),
+                        "username": user["username"],
+                        "email": user["email"],
+                        "login_methods": user["login_methods"] if user["login_methods"] else ["firebase"]
+                    }
+                }
+                
+            else:
+                # New user - create account with auto-generated username
+                username_generator = UsernameGenerator()
+                username_response = await username_generator.generate_username(pool)
+                username = username_response["username"]
+                user_id = uuid.uuid4()
+                
+                # Create new user with Firebase UID
+                await conn.execute("""
+                    INSERT INTO users (
+                        id, username, email, email_verified, firebase_uid,
+                        login_methods, preferred_login_method,
+                        created_at, last_login_at
+                    ) VALUES ($1, $2, $3, TRUE, $4, $5, 'firebase', NOW(), NOW())
+                """, user_id, username, firebase_user.email or '', firebase_user.uid,
+                     json.dumps(["firebase"]))
+                
+                # Link device to new user if provided
+                if hasattr(request, 'device_id') and request.device_id:
+                    await conn.execute("""
+                        INSERT INTO user_devices (user_id, device_id, platform, created_at)
+                        VALUES ($1, $2, $3, NOW())
+                    """, user_id, request.device_id, request.platform or 'unknown')
+                
+                return {
+                    "success": True,
+                    "is_new_user": True,
+                    "user": {
+                        "user_id": str(user_id),
+                        "username": username,
+                        "email": firebase_user.email or '',
+                        "login_methods": ["firebase"]
+                    }
+                }
+                
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Firebase authentication failed: {str(e)}"
+        )
+
+
 @router.post("/request-magic-link")
 async def request_magic_link(request: MagicLinkRequest):
     """

@@ -33,6 +33,11 @@ class ProfileUpdateRequest(BaseModel):
     units_metric: Optional[bool] = None
     preferred_language: Optional[str] = Field(None, max_length=5)
 
+class AuthRequest(BaseModel):
+    """Request for Firebase authentication"""
+    device_id: Optional[str] = Field(None, description="Device identifier")
+    platform: Optional[str] = Field(None, description="Platform (android/ios)")
+
 class UserProfileResponse(BaseModel):
     """Response for user profile"""
     uid: str
@@ -47,6 +52,80 @@ class UserProfileResponse(BaseModel):
     phone_verified: bool = False
     created_at: datetime
     last_active: Optional[datetime] = None
+
+@router.post("/auth")
+async def firebase_auth(
+    request: AuthRequest,
+    firebase_user: FirebaseUser = RequiredAuth,
+    db: asyncpg.Pool = Depends(get_db)
+):
+    """Authenticate with Firebase and auto-create user if needed"""
+    try:
+        # Check if user already exists
+        existing_user = await db.fetchrow(
+            "SELECT username, created_at FROM users WHERE firebase_uid = $1",
+            firebase_user.uid
+        )
+        
+        if existing_user:
+            # User exists - update last_active
+            await db.execute(
+                "UPDATE users SET last_active = $1 WHERE firebase_uid = $2",
+                datetime.utcnow(),
+                firebase_user.uid
+            )
+            
+            return {
+                "success": True,
+                "user": {
+                    "user_id": firebase_user.uid,
+                    "username": existing_user['username'],
+                    "email": firebase_user.email,
+                    "login_methods": ["firebase"],
+                },
+                "is_new_user": False
+            }
+        else:
+            # New user - create with auto-generated username
+            username_generator = UsernameGenerator()
+            username_response = await username_generator.generate_username(db)
+            username = username_response["username"]
+            
+            # Create user record
+            await db.execute("""
+                INSERT INTO users (
+                    firebase_uid, username, email, phone_number, 
+                    created_at, last_active, alert_range_km, 
+                    units_metric, preferred_language
+                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+            """, 
+                firebase_user.uid,
+                username,
+                firebase_user.email,
+                firebase_user.phone,
+                datetime.utcnow(),
+                datetime.utcnow(),
+                50.0,  # default alert range
+                True,  # default metric units
+                "en"   # default language
+            )
+            
+            return {
+                "success": True,
+                "user": {
+                    "user_id": firebase_user.uid,
+                    "username": username,
+                    "email": firebase_user.email,
+                    "login_methods": ["firebase"],
+                },
+                "is_new_user": True
+            }
+            
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Authentication failed: {str(e)}"
+        )
 
 @router.post("/set-username")
 async def set_username(

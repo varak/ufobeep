@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/device_service.dart';
@@ -67,6 +68,8 @@ class SocialAuthService {
     serverClientId: '346511467728-gblvob9j4gvfviijtp1723pt4f2934im.apps.googleusercontent.com',
   );
 
+  // Firebase Auth instance
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final DeviceService _deviceService = DeviceService();
 
   /// Sign in with Google - MP15
@@ -74,6 +77,10 @@ class SocialAuthService {
   Future<SocialAuthResult> signInWithGoogle() async {
     try {
       print('Starting Google Sign-In...');
+      
+      // Nuke cached account to avoid stale tokens/permissions
+      await _googleSignIn.signOut();
+      await _googleSignIn.disconnect().catchError((_) {});
       
       // Trigger Google Sign-In flow
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
@@ -87,20 +94,47 @@ class SocialAuthService {
       // Get authentication details
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       
-      if (googleAuth.idToken == null) {
-        return SocialAuthResult.failure('Google idToken is null — serverClientId mismatch?');
+      final hasId = googleAuth.idToken != null && googleAuth.idToken!.isNotEmpty;
+      // TEMP diagnostic logs (remove later)
+      // ignore: avoid_print
+      print('GSIGN: idToken? ' + (hasId ? 'YES len=' + googleAuth.idToken!.length.toString() : 'NO'));
+      // ignore: avoid_print
+      print('GSIGN: accessToken? ' + ((googleAuth.accessToken?.isNotEmpty ?? false) ? 'YES' : 'NO'));
+      
+      if (!hasId) {
+        return SocialAuthResult.failure('No Google idToken (likely consent/tester/cache issue)');
       }
 
+      // Create Firebase credential from Google tokens
+      final credential = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken,
+        accessToken: googleAuth.accessToken,
+      );
+      
+      // Sign in to Firebase with Google credential
+      final UserCredential firebaseUser = await _firebaseAuth.signInWithCredential(credential);
+      
+      if (firebaseUser.user == null) {
+        return SocialAuthResult.failure('Firebase authentication failed');
+      }
+      
+      // Get Firebase ID token (this is what we send to backend)
+      final firebaseIdToken = await firebaseUser.user!.getIdToken();
+      
       // Get device info
       final deviceId = await _deviceService.getDeviceId();
       final platform = Platform.isAndroid ? 'android' : 'ios';
 
-      // Call backend Google login endpoint
+      print('FIREBASE: idToken len=' + firebaseIdToken.length.toString());
+
+      // Call backend Firebase auth endpoint
       final response = await http.post(
-        Uri.parse('$_apiBaseUrl/users/auth/google'),
-        headers: {'Content-Type': 'application/json'},
+        Uri.parse('$_apiBaseUrl/users/auth/firebase'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $firebaseIdToken',
+        },
         body: jsonEncode({
-          'token': googleAuth.idToken,
           'device_id': deviceId,
           'platform': platform,
         }),
