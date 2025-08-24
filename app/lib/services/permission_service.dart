@@ -78,13 +78,7 @@ class PermissionService {
       final Map<Permission, PermissionStatus> statuses = await [
         if (!locationStatus.isGranted) Permission.location,
         if (!notificationStatus.isGranted) Permission.notification,
-      ].request().timeout(
-        const Duration(seconds: 2), // Reduced to 2 seconds
-        onTimeout: () {
-          print('Permission request timed out after 2s - using existing status');
-          return <Permission, PermissionStatus>{};
-        },
-      );
+      ].request();
       
       // Process location permission result
       if (statuses.containsKey(Permission.location)) {
