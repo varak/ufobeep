@@ -168,112 +168,142 @@ async def register_user(request: UserRegistrationRequest):
     pool = await get_db()
     try:
         async with pool.acquire() as conn:
-            # Check if device already exists
-            existing_device = await conn.fetchrow(
-                "SELECT device_id, user_id FROM user_devices WHERE device_id = $1",
-                request.device_id
-            )
-            
-            if existing_device:
-                # Get the existing user
-                existing_user = await conn.fetchrow(
-                    "SELECT id, username FROM users WHERE id = $1",
-                    existing_device['user_id']
+            # Use atomic transaction to prevent race conditions
+            async with conn.transaction():
+                # First, try to get existing device-user mapping with row lock
+                existing_device = await conn.fetchrow(
+                    "SELECT device_id, user_id FROM user_devices WHERE device_id = $1 FOR UPDATE",
+                    request.device_id
                 )
-                return UserRegistrationResponse(
-                    user_id=str(existing_user['id']),
-                    username=existing_user['username'],
-                    device_id=request.device_id,
-                    is_new_user=False,
-                    message="Welcome back! Using existing account."
-                )
-            
-            # Generate username if not provided
-            username = request.username
-            if not username:
-                # Try multiple times to get a unique username
-                for attempt in range(10):
-                    candidate = UsernameGenerator.generate()
-                    existing = await conn.fetchrow(
-                        "SELECT username FROM users WHERE username = $1",
-                        candidate
-                    )
-                    if not existing:
-                        username = candidate
-                        break
                 
+                if existing_device:
+                    # Get the existing user
+                    existing_user = await conn.fetchrow(
+                        "SELECT id, username FROM users WHERE id = $1",
+                        existing_device['user_id']
+                    )
+                    return UserRegistrationResponse(
+                        user_id=str(existing_user['id']),
+                        username=existing_user['username'],
+                        device_id=request.device_id,
+                        is_new_user=False,
+                        message="Welcome back! Using existing account."
+                    )
+                
+                # If no existing device found, create new user atomically
+                # Generate username if not provided
+                username = request.username
                 if not username:
-                    raise HTTPException(
-                        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                        detail="Unable to generate unique username"
-                    )
-            
-            # Create new user
-            user_id = uuid.uuid4()
-            await conn.execute("""
-                INSERT INTO users (
-                    id, username, email, alert_range_km, units_metric, 
-                    preferred_language, is_active, is_verified, created_at, updated_at
-                )
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW())
-            """, user_id, username, request.email, 
-                request.alert_range_km or 50.0,
-                request.units_metric if request.units_metric is not None else True,
-                request.preferred_language or "en", True, False)
-            
-            # Create simple device mapping - create table if not exists
-            await conn.execute("""
-                CREATE TABLE IF NOT EXISTS user_devices (
-                    device_id TEXT PRIMARY KEY,
-                    user_id UUID NOT NULL REFERENCES users(id),
-                    device_info JSONB,
-                    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-                )
-            """)
-            
-            # Store device mapping with JSON info
-            device_info = {
-                "platform": request.platform,
-                "device_name": getattr(request, 'device_name', 'Unknown'),
-                "app_version": getattr(request, 'app_version', '1.0.0'),
-                "os_version": getattr(request, 'os_version', 'Unknown')
-            }
-            
-            await conn.execute("""
-                INSERT INTO user_devices (device_id, user_id, device_info)
-                VALUES ($1, $2, $3)
-            """, request.device_id, user_id, json.dumps(device_info))
-            
-            # Migrate existing sightings from device_id to username
-            migration_service = await get_migration_service(pool)
-            migrated_count = await migration_service.migrate_device_to_username(
-                request.device_id, username
-            )
-            
-            # Send verification email if email provided
-            if request.email and request.email.strip():
-                email_service = PostfixEmailService()
-                token = email_service.generate_verification_token()
+                    # Try multiple times to get a unique username
+                    for attempt in range(10):
+                        candidate = UsernameGenerator.generate()
+                        existing = await conn.fetchrow(
+                            "SELECT username FROM users WHERE username = $1",
+                            candidate
+                        )
+                        if not existing:
+                            username = candidate
+                            break
+                    
+                    if not username:
+                        raise HTTPException(
+                            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            detail="Unable to generate unique username"
+                        )
                 
-                # Save verification token
+                # Create new user
+                user_id = uuid.uuid4()
                 await conn.execute("""
-                    UPDATE users 
-                    SET verification_token = $1, verification_sent_at = NOW() 
-                    WHERE id = $2
-                """, token, user_id)
+                    INSERT INTO users (
+                        id, username, email, alert_range_km, units_metric, 
+                        preferred_language, is_active, is_verified, created_at, updated_at
+                    )
+                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW())
+                """, user_id, username, request.email, 
+                    request.alert_range_km or 50.0,
+                    request.units_metric if request.units_metric is not None else True,
+                    request.preferred_language or "en", True, False)
                 
-                # Send verification email (async, don't wait)
-                await email_service.send_verification_email(
-                    request.email.strip(), username, token
+                # Create simple device mapping - create table if not exists
+                await conn.execute("""
+                    CREATE TABLE IF NOT EXISTS user_devices (
+                        device_id TEXT PRIMARY KEY,
+                        user_id UUID NOT NULL REFERENCES users(id),
+                        device_info JSONB,
+                        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+                        last_seen_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+                    )
+                """)
+                
+                # Store device mapping with JSON info (atomic insert)
+                device_info = {
+                    "platform": request.platform,
+                    "device_name": getattr(request, 'device_name', 'Unknown'),
+                    "app_version": getattr(request, 'app_version', '1.0.0'),
+                    "os_version": getattr(request, 'os_version', 'Unknown')
+                }
+                
+                try:
+                    await conn.execute("""
+                        INSERT INTO user_devices (device_id, user_id, device_info)
+                        VALUES ($1, $2, $3)
+                    """, request.device_id, user_id, json.dumps(device_info))
+                except Exception as e:
+                    # If device was inserted by another request, return that user instead
+                    if "duplicate key" in str(e).lower():
+                        # Get the existing user for this device
+                        existing_device = await conn.fetchrow(
+                            "SELECT user_id FROM user_devices WHERE device_id = $1",
+                            request.device_id
+                        )
+                        if existing_device:
+                            existing_user = await conn.fetchrow(
+                                "SELECT id, username FROM users WHERE id = $1",
+                                existing_device['user_id']
+                            )
+                            return UserRegistrationResponse(
+                                user_id=str(existing_user['id']),
+                                username=existing_user['username'],
+                                device_id=request.device_id,
+                                is_new_user=False,
+                                message="Welcome back! Account recovered during race condition."
+                            )
+                    raise e
+                
+                # Migrate existing sightings from device_id to username (inside transaction)
+                migration_service = await get_migration_service(pool)
+                migrated_count = await migration_service.migrate_device_to_username(
+                    request.device_id, username
                 )
-            
-            return UserRegistrationResponse(
-                user_id=str(user_id),
-                username=username,
-                device_id=request.device_id,
-                is_new_user=True,
-                message=f"Welcome to UFOBeep, {username}!"
-            )
+                
+                # Send verification email if email provided
+                if request.email and request.email.strip():
+                    email_service = PostfixEmailService()
+                    token = email_service.generate_verification_token()
+                    
+                    # Save verification token
+                    await conn.execute("""
+                        UPDATE users 
+                        SET verification_token = $1, verification_sent_at = NOW() 
+                        WHERE id = $2
+                    """, token, user_id)
+                    
+                    # Send verification email (async, don't wait - outside transaction)
+                    try:
+                        await email_service.send_verification_email(
+                            request.email.strip(), username, token
+                        )
+                    except Exception as email_error:
+                        print(f"Email sending failed: {email_error}")
+                        # Don't fail registration due to email issues
+                
+                return UserRegistrationResponse(
+                    user_id=str(user_id),
+                    username=username,
+                    device_id=request.device_id,
+                    is_new_user=True,
+                    message=f"Welcome to UFOBeep, {username}! (Migrated {migrated_count} existing alerts)"
+                )
             
     except Exception as e:
         error_str = str(e).lower()
