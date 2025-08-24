@@ -112,60 +112,44 @@ class SocialAuthService {
       );
       
       // Sign in to Firebase with Google credential
-      final UserCredential firebaseUser = await _firebaseAuth.signInWithCredential(credential);
+      final UserCredential cred = await _firebaseAuth.signInWithCredential(credential);
       
-      if (firebaseUser.user == null) {
+      if (cred.user == null) {
         return SocialAuthResult.failure('Firebase authentication failed');
       }
       
-      // Get Firebase ID token (this is what we send to backend)
-      final firebaseIdToken = await firebaseUser.user!.getIdToken();
+      // IMPORTANT: send Firebase ID token to backend (NOT the Google idToken)
+      final firebaseIdToken = await cred.user!.getIdToken(true);
       
-      // Get device info
-      final deviceId = await _deviceService.getDeviceId();
-      final platform = Platform.isAndroid ? 'android' : 'ios';
-
-      print('FIREBASE: idToken len=' + (firebaseIdToken?.length.toString() ?? 'null'));
-
-      // Call backend Firebase auth endpoint
       final response = await http.post(
         Uri.parse('$_apiBaseUrl/users/auth/firebase'),
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': 'Bearer $firebaseIdToken',
         },
-        body: jsonEncode({
-          'device_id': deviceId,
-          'platform': platform,
-        }),
+        body: jsonEncode({}),
       );
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        
-        // Store user info locally
-        await _storeUserInfo(
-          userId: data['user']['user_id'],
-          username: data['user']['username'],
-          deviceId: deviceId,
-        );
-
-        print('Google login successful: ${data['user']['username']}');
-        
-        return SocialAuthResult.success(
-          userId: data['user']['user_id'],
-          username: data['user']['username'],
-          email: data['user']['email'],
-          loginMethods: List<String>.from(data['user']['login_methods'] ?? []),
-          isNewUser: data['is_new_user'] ?? false,
-        );
-      } else {
-        final errorData = jsonDecode(response.body);
-        return SocialAuthResult.failure(errorData['detail'] ?? 'Google login failed');
+      
+      // TEMP diagnostics (remove later)
+      // ignore: avoid_print
+      print('AUTH/firebase RESP: ${response.statusCode} ${response.body}');
+      
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        return SocialAuthResult.failure('Backend auth failed: ${response.statusCode}');
       }
+
+      final data = jsonDecode(response.body);
+      
+      // For now, create a simple success response - backend will return Firebase user info
+      return SocialAuthResult.success(
+        userId: data['uid'] ?? cred.user!.uid,
+        username: data['email'] ?? cred.user!.email ?? 'firebase_user',
+        email: data['email'] ?? cred.user!.email,
+        loginMethods: ['firebase'],
+        isNewUser: data['created'] ?? true,
+      );
     } catch (e) {
-      print('Google Sign-In error: $e');
-      return SocialAuthResult.failure('Google Sign-In error: $e');
+      print('Firebase Sign-In error: $e');
+      return SocialAuthResult.failure('Firebase Sign-In error: $e');
     }
   }
 
