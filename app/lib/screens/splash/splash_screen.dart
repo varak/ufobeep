@@ -184,14 +184,18 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       } else {
         final error = result.error ?? 'Unknown error';
         
-        _showErrorDialog('Google Sign-In Failed', error);
+        _showErrorDialog('Google Sign-In Failed', error, onDismiss: () {
+          _showRegistrationOptions();
+        });
       }
     } catch (e) {
       // Hide loading if still showing
       if (Navigator.of(context).canPop()) {
         Navigator.of(context).pop();
       }
-      _showErrorDialog('Google Sign-In Error', e.toString());
+      _showErrorDialog('Google Sign-In Error', e.toString(), onDismiss: () {
+        _showRegistrationOptions();
+      });
     }
   }
 
@@ -216,7 +220,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     );
   }
 
-  void _showErrorDialog(String title, String message) {
+  void _showErrorDialog(String title, String message, {VoidCallback? onDismiss}) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -231,7 +235,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              Navigator.of(context).pop();
+              onDismiss?.call();
+            },
             child: const Text('OK', style: TextStyle(color: AppColors.brandPrimary)),
           ),
         ],
