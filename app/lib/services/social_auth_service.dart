@@ -147,12 +147,15 @@ class SocialAuthService {
         final data = jsonDecode(response.body);
         print('AUTH/firebase JSON: $data');
         
+        // Extract user data from nested structure
+        final user = data['user'] ?? {};
+        
         return SocialAuthResult.success(
-          userId: data['uid'] ?? cred.user!.uid,
-          username: data['email'] ?? cred.user!.email ?? 'firebase_user', 
-          email: data['email'] ?? cred.user!.email,
-          loginMethods: ['firebase'],
-          isNewUser: data['created'] ?? true,
+          userId: user['user_id'] ?? cred.user!.uid,
+          username: user['username'] ?? user['email']?.split('@')[0] ?? 'firebase_user',
+          email: user['email'] ?? cred.user!.email,
+          loginMethods: List<String>.from(user['login_methods'] ?? ['firebase']),
+          isNewUser: data['is_new_user'] ?? data['created'] ?? false,
         );
       } on TimeoutException {
         return SocialAuthResult.failure('Backend auth timed out');
