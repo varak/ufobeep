@@ -60,18 +60,28 @@ class PermissionService {
 
   /// Request all permissions needed by the app
   Future<void> _requestAllPermissions() async {
-    print('Requesting critical permissions for first time setup...');
+    print('Checking permissions quickly...');
     
     try {
-      // BATCH REQUEST: Location + Notifications together (both critical for UFO alerts)
-      // This avoids Android rate limiting by requesting multiple permissions at once
+      // First check existing permissions - don't request if already granted
+      final locationStatus = await Permission.location.status;
+      final notificationStatus = await Permission.notification.status;
+      
+      if (locationStatus.isGranted && notificationStatus.isGranted) {
+        print('Permissions already granted - skipping request');
+        _locationGranted = true;
+        _notificationGranted = true;
+        return;
+      }
+      
+      // Only request permissions that aren't granted
       final Map<Permission, PermissionStatus> statuses = await [
-        Permission.location,
-        Permission.notification,
+        if (!locationStatus.isGranted) Permission.location,
+        if (!notificationStatus.isGranted) Permission.notification,
       ].request().timeout(
-        const Duration(seconds: 10),
+        const Duration(seconds: 2), // Reduced to 2 seconds
         onTimeout: () {
-          print('Permission request timed out after 10s - checking individual statuses');
+          print('Permission request timed out after 2s - using existing status');
           return <Permission, PermissionStatus>{};
         },
       );
