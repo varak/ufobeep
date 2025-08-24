@@ -121,7 +121,11 @@ class SocialAuthService {
       
       // IMPORTANT: send Firebase ID token to backend (NOT the Google idToken)
       final firebaseIdToken = await cred.user!.getIdToken(true);
-      print('FIREBASE_ID_TOKEN len=${firebaseIdToken.length}');
+      print('FIREBASE_ID_TOKEN len=${firebaseIdToken?.length ?? 'null'}');
+      
+      if (firebaseIdToken == null || firebaseIdToken.isEmpty) {
+        return SocialAuthResult.failure('Firebase ID token is null or empty');
+      }
       
       try {
         final response = await http.post(
