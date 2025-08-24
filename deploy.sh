@@ -41,7 +41,7 @@ else
             web) DEPLOY_WEB=true ;;
             apk|mobile) DEPLOY_APK=true ;;
             all) DEPLOY_ALL=true ;;
-            moto) DEPLOY_APK=true; TARGET_DEVICES="192.168.0.49:42433" ;;
+            moto) DEPLOY_APK=true; TARGET_DEVICES=$(adb devices | grep -E "192\.168\." | head -1 | cut -f1) ;;
             tablet) DEPLOY_APK=true; TARGET_DEVICES="356120372031894" ;;
             pixel) DEPLOY_APK=true; TARGET_DEVICES="HT75D0202593" ;;
             samsung) DEPLOY_APK=true; TARGET_DEVICES="Y5SSW8MZDIU45995" ;;
