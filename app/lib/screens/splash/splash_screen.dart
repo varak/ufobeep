@@ -8,6 +8,7 @@ import '../../providers/app_state.dart';
 import '../../providers/initialization_provider.dart';
 import '../../providers/user_preferences_provider.dart';
 import '../../services/initialization_service.dart';
+import '../../services/social_auth_service.dart';
 import '../../widgets/splash/loading_animation.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -157,6 +158,114 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     _initializeApp();
   }
 
+  Future<void> _handleGoogleSignIn() async {
+    try {
+      final socialAuthService = SocialAuthService();
+      
+      // Show loading
+      _showLoadingDialog('Signing in with Google...');
+      
+      final result = await socialAuthService.signInWithGoogle();
+      
+      // Hide loading
+      Navigator.of(context).pop();
+      
+      if (result.success) {
+        // Update app state
+        ref.read(appStateProvider.notifier).setInitialized(true);
+        
+        // Show welcome message for new users
+        if (result.isNewUser) {
+          _showWelcomeMessage(result.username!);
+        }
+        
+        // Navigate to main app
+        context.go('/alerts');
+      } else {
+        _showErrorDialog('Google Sign-In Failed', result.error ?? 'Unknown error');
+      }
+    } catch (e) {
+      // Hide loading if still showing
+      if (Navigator.of(context).canPop()) {
+        Navigator.of(context).pop();
+      }
+      _showErrorDialog('Google Sign-In Error', e.toString());
+    }
+  }
+
+  void _showLoadingDialog(String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        content: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(color: AppColors.brandPrimary),
+            const SizedBox(width: 16),
+            Text(
+              message,
+              style: const TextStyle(color: AppColors.textPrimary),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showErrorDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        title: Text(
+          title,
+          style: const TextStyle(color: AppColors.semanticError),
+        ),
+        content: Text(
+          message,
+          style: const TextStyle(color: AppColors.textSecondary),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK', style: TextStyle(color: AppColors.brandPrimary)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showWelcomeMessage(String username) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        title: const Row(
+          children: [
+            Text('🎉', style: TextStyle(fontSize: 24)),
+            SizedBox(width: 12),
+            Text(
+              'Welcome to UFOBeep!',
+              style: TextStyle(color: AppColors.brandPrimary),
+            ),
+          ],
+        ),
+        content: Text(
+          'Your cosmic username is: $username\n\nYou\'re now ready to report and witness UFO sightings!',
+          style: const TextStyle(color: AppColors.textSecondary),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Get Started', style: TextStyle(color: AppColors.brandPrimary)),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showRegistrationOptions() {
     if (!mounted) return;
     
@@ -197,6 +306,57 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
           ],
         ),
         actions: [
+          // Google Sign-In Button (Primary)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12.0),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  await _handleGoogleSignIn();
+                },
+                icon: Image.network(
+                  'https://developers.google.com/identity/images/g-logo.png',
+                  height: 18,
+                  width: 18,
+                ),
+                label: const Text(
+                  'Continue with Google',
+                  style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black87,
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: const BorderSide(color: Colors.grey, width: 0.5),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
+            ),
+          ),
+          
+          // Divider
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Row(
+              children: const [
+                Expanded(child: Divider(color: AppColors.textTertiary)),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    'or',
+                    style: TextStyle(color: AppColors.textTertiary, fontSize: 12),
+                  ),
+                ),
+                Expanded(child: Divider(color: AppColors.textTertiary)),
+              ],
+            ),
+          ),
+          
           // Account Recovery Button
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
