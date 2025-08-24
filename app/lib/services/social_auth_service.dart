@@ -121,6 +121,7 @@ class SocialAuthService {
       
       // IMPORTANT: send Firebase ID token to backend (NOT the Google idToken)
       final firebaseIdToken = await cred.user!.getIdToken(true);
+      print('FIREBASE_ID_TOKEN len=${firebaseIdToken.length}');
       
       try {
         final response = await http.post(
