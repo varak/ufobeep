@@ -223,27 +223,20 @@ class AlertsService:
         async with self.db_pool.acquire() as conn:
             # Get or create user for device_id to populate reporter_id
             reporter_id = None
-            if device_id:
-                if username:
-                    # Use real username for authenticated users
+            if device_id and username:
+                # All users have usernames now
+                user_uuid = await conn.fetchval("""
+                    SELECT id FROM users WHERE username = $1
+                """, username)
+                if not user_uuid:
+                    # Create user with real username if doesn't exist
                     user_uuid = await conn.fetchval("""
-                        SELECT id FROM users WHERE username = $1
-                    """, username)
-                    if not user_uuid:
-                        # Create user with real username if doesn't exist
-                        user_uuid = await conn.fetchval("""
-                            INSERT INTO users (id, username, created_at, updated_at)
-                            VALUES ($1, $2, NOW(), NOW())
-                            ON CONFLICT (id) DO UPDATE SET username = $2
-                            RETURNING id
-                        """, device_id, username)
-                    reporter_id = str(user_uuid) if user_uuid else device_id
-                else:
-                    # Anonymous user - use existing logic
-                    user_uuid = await conn.fetchval("""
-                        SELECT get_or_create_user_by_device_id($1)
-                    """, device_id)
-                    reporter_id = str(user_uuid) if user_uuid else None
+                        INSERT INTO users (id, username, created_at, updated_at)
+                        VALUES ($1, $2, NOW(), NOW())
+                        ON CONFLICT (id) DO UPDATE SET username = $2
+                        RETURNING id
+                    """, device_id, username)
+                reporter_id = str(user_uuid) if user_uuid else device_id
             
             alert_id = await conn.fetchval("""
                 INSERT INTO sightings 

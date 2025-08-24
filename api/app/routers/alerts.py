@@ -64,21 +64,19 @@ async def create_alert(request: dict):
     if not location or location.get('latitude') is None or location.get('longitude') is None:
         raise HTTPException(status_code=400, detail="location with latitude and longitude required")
     
-    # Check if this is an authenticated user with username
+    # All users have usernames now
     username = request.get('username')
-    is_anonymous = request.get('anonymous', True)
     
     # Create alert
     try:
         db_pool = await get_db()
         alerts_service = AlertsService(db_pool)
         
-        # Use existing method, just pass username when available
         alert_id, jittered_location = await alerts_service.create_anonymous_beep(
             device_id=device_id,
             location=location,
             description=request.get('description', ''),
-            username=username if username and not is_anonymous else None
+            username=username
         )
         
         # Send proximity alerts (critical for notifying nearby devices)
