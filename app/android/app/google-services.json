@@ -14,15 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "346511467728-ufobeep-android.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ufobeep",
-            "certificate_hash": "98DE1BADCFCBD7BD1F1E8F57E63CC1D2814EE977"
-          }
-        },
-        {
-          "client_id": "346511467728-ufobeep-web.apps.googleusercontent.com",
+          "client_id": "346511467728-cttlsm8akgnse4npqin4gqeu6j8lh896.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -35,7 +27,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "346511467728-ufobeep-web.apps.googleusercontent.com",
+              "client_id": "346511467728-cttlsm8akgnse4npqin4gqeu6j8lh896.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
