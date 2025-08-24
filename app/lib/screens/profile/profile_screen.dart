@@ -18,6 +18,7 @@ import 'user_registration_screen.dart';
 import '../../widgets/profile/user_stats_widget.dart';
 import '../../widgets/profile/alert_history_widget.dart';
 import '../../widgets/profile/username_regenerate_widget.dart';
+import '../../services/social_auth_service.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
