@@ -182,7 +182,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
         // Navigate to main app
         context.go('/alerts');
       } else {
-        _showErrorDialog('Google Sign-In Failed', result.error ?? 'Unknown error');
+        final error = result.error ?? 'Unknown error';
+        
+        _showErrorDialog('Google Sign-In Failed', error);
       }
     } catch (e) {
       // Hide loading if still showing

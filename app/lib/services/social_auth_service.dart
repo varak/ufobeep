@@ -87,7 +87,9 @@ class SocialAuthService {
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       
       if (googleAuth.idToken == null) {
-        return SocialAuthResult.failure('Failed to get Google ID token');
+        // No OAuth configured - check if email exists for fallback
+        final email = googleUser.email;
+        return SocialAuthResult.failure('Google Sign-In not configured. Email: $email. Try "I Have an Account" if you have an existing account with this email.');
       }
 
       // Get device info
