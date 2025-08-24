@@ -14,6 +14,7 @@ import json
 from app.services.username_service import UsernameGenerator
 from app.services.user_migration_service import get_migration_service
 from app.services.email_service_postfix import PostfixEmailService
+from app.services.social_auth_service import SocialAuthService
 from app.services.database_service import get_database_pool
 from app.middleware.firebase_auth import FirebaseUser, OptionalAuth, RequiredAuth
 
@@ -1042,3 +1043,231 @@ async def get_visibility_settings(device_id: str):
         )
     finally:
         pass
+
+
+# MP15: Enhanced Authentication - Social Login Endpoints
+
+class SocialLoginRequest(BaseModel):
+    """Request for social login (Google/Apple)"""
+    token: str = Field(..., description="OAuth ID token from social provider")
+    device_id: str = Field(..., description="Device identifier") 
+    platform: str = Field(..., description="Platform (android/ios)")
+    user_id: Optional[str] = Field(None, description="Apple user ID (Apple Sign-In only)")
+
+
+class MagicLinkRequest(BaseModel):
+    """Request for magic link login"""
+    email: str = Field(..., description="Email address")
+    device_id: str = Field(..., description="Device identifier")
+
+
+class SetPasswordRequest(BaseModel):
+    """Request to set password for authenticated user"""
+    password: str = Field(..., min_length=8, description="New password")
+    device_id: str = Field(..., description="Device identifier")
+
+
+@router.post("/auth/google")
+async def google_login(request: SocialLoginRequest):
+    """
+    Authenticate with Google OAuth token - MP15
+    Creates new account or links to existing account
+    """
+    social_service = SocialAuthService()
+    
+    # Verify Google token and extract profile
+    profile = await social_service.verify_google_token(request.token)
+    if not profile:
+        raise HTTPException(status_code=400, detail="Invalid Google token")
+    
+    if not profile.get("email"):
+        raise HTTPException(status_code=400, detail="Google account must have email")
+    
+    pool = await get_db()
+    try:
+        async with pool.acquire() as conn:
+            # Check if user exists by email or google_id
+            user = await conn.fetchrow("""
+                SELECT id, username, email, google_id, login_methods
+                FROM users 
+                WHERE email = $1 OR google_id = $2
+            """, profile["email"], profile["google_id"])
+            
+            if user:
+                # Existing user - link Google account if not already linked
+                if not user["google_id"]:
+                    await conn.execute("""
+                        UPDATE users 
+                        SET google_id = $1, social_profile_data = $2, last_login_at = NOW()
+                        WHERE id = $3
+                    """, profile["google_id"], json.dumps(profile), user["id"])
+                
+                # Add 'google' to login_methods if not present
+                login_methods = user["login_methods"] if user["login_methods"] else ["magic_link"]
+                if isinstance(login_methods, str):
+                    login_methods = json.loads(login_methods)
+                if "google" not in login_methods:
+                    login_methods.append("google")
+                    await conn.execute("""
+                        UPDATE users SET login_methods = $1 WHERE id = $2
+                    """, json.dumps(login_methods), user["id"])
+                
+                # Link device if not already linked
+                await conn.execute("""
+                    INSERT INTO user_devices (user_id, device_id, platform, created_at)
+                    VALUES ($1, $2, $3, NOW())
+                    ON CONFLICT (device_id) DO UPDATE SET 
+                        user_id = EXCLUDED.user_id,
+                        last_seen_at = NOW()
+                """, user["id"], request.device_id, request.platform)
+                
+                return {
+                    "success": True,
+                    "is_new_user": False,
+                    "user": {
+                        "user_id": str(user["id"]),
+                        "username": user["username"],
+                        "email": user["email"],
+                        "login_methods": login_methods
+                    }
+                }
+            
+            else:
+                # New user - create account with auto-generated username
+                username = social_service.generate_username_from_social(profile)
+                user_id = uuid.uuid4()
+                
+                # Create new user
+                await conn.execute("""
+                    INSERT INTO users (
+                        id, username, email, email_verified, google_id, 
+                        social_profile_data, login_methods, preferred_login_method,
+                        created_at, last_login_at
+                    ) VALUES ($1, $2, $3, TRUE, $4, $5, $6, 'google', NOW(), NOW())
+                """, user_id, username, profile["email"], profile["google_id"], 
+                     json.dumps(profile), json.dumps(["google", "magic_link"]))
+                
+                # Link device to new user
+                await conn.execute("""
+                    INSERT INTO user_devices (user_id, device_id, platform, created_at)
+                    VALUES ($1, $2, $3, NOW())
+                """, user_id, request.device_id, request.platform)
+                
+                return {
+                    "success": True,
+                    "is_new_user": True,
+                    "user": {
+                        "user_id": str(user_id),
+                        "username": username,
+                        "email": profile["email"],
+                        "login_methods": ["google", "magic_link"]
+                    }
+                }
+                
+    finally:
+        pass  # Shared pool - don't close
+
+
+@router.post("/request-magic-link")
+async def request_magic_link(request: MagicLinkRequest):
+    """
+    Send magic link to user's email for passwordless login - MP15
+    """
+    email = request.email.strip().lower()
+    
+    pool = await get_db()
+    try:
+        async with pool.acquire() as conn:
+            # Find user by email
+            user = await conn.fetchrow("""
+                SELECT id, username, email, email_verified
+                FROM users 
+                WHERE email = $1
+            """, email)
+            
+            if not user:
+                # Don't reveal if email exists - security best practice
+                return {
+                    "success": True,
+                    "message": "If this email is registered and verified, a magic link has been sent.",
+                    "expires_in_minutes": 15
+                }
+            
+            if not user["email_verified"]:
+                return {
+                    "success": False,
+                    "error": "Email not verified. Please verify your email first."
+                }
+            
+            # Generate magic link token
+            social_service = SocialAuthService()
+            token, expiry = social_service.generate_magic_link_token()
+            
+            # Save token to database
+            await conn.execute("""
+                UPDATE users 
+                SET magic_link_token = $1, magic_link_expires_at = $2
+                WHERE id = $3
+            """, token, expiry, user["id"])
+            
+            # Send magic link email
+            await social_service.send_magic_link_email(
+                email, user["username"], token
+            )
+            
+            return {
+                "success": True,
+                "message": "Magic link sent to your email.",
+                "expires_in_minutes": 15
+            }
+            
+    finally:
+        pass  # Shared pool - don't close
+
+
+@router.post("/set-password")
+async def set_password(request: SetPasswordRequest):
+    """
+    Set password for authenticated user - MP15
+    Requires user to be logged in via device_id
+    """
+    import bcrypt
+    
+    pool = await get_db()
+    try:
+        async with pool.acquire() as conn:
+            # Find user by device_id
+            user = await conn.fetchrow("""
+                SELECT u.id, u.username, u.login_methods
+                FROM users u
+                JOIN user_devices ud ON u.id = ud.user_id
+                WHERE ud.device_id = $1
+            """, request.device_id)
+            
+            if not user:
+                raise HTTPException(status_code=404, detail="User not found or not logged in")
+            
+            # Hash password
+            password_hash = bcrypt.hashpw(request.password.encode('utf-8'), bcrypt.gensalt())
+            
+            # Update user with password and add to login methods
+            login_methods = user["login_methods"] if user["login_methods"] else ["magic_link"]
+            if isinstance(login_methods, str):
+                login_methods = json.loads(login_methods)
+            if "password" not in login_methods:
+                login_methods.append("password")
+            
+            await conn.execute("""
+                UPDATE users 
+                SET password_hash = $1, login_methods = $2, preferred_login_method = 'password'
+                WHERE id = $3
+            """, password_hash.decode('utf-8'), json.dumps(login_methods), user["id"])
+            
+            return {
+                "success": True,
+                "message": f"Password set for {user['username']}",
+                "login_methods": login_methods
+            }
+            
+    finally:
+        pass  # Shared pool - don't close
