@@ -125,7 +125,7 @@ class SocialAuthService {
       final deviceId = await _deviceService.getDeviceId();
       final platform = Platform.isAndroid ? 'android' : 'ios';
 
-      print('FIREBASE: idToken len=' + firebaseIdToken.length.toString());
+      print('FIREBASE: idToken len=' + (firebaseIdToken?.length.toString() ?? 'null'));
 
       // Call backend Firebase auth endpoint
       final response = await http.post(
