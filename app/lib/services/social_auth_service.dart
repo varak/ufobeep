@@ -62,7 +62,7 @@ class SocialAuthService {
   static const String _isRegisteredKey = 'is_registered';
   
   // Google Sign-In configuration
-  static const GoogleSignIn _googleSignIn = GoogleSignIn(
+  static final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: ['email', 'profile'],
   );
 
