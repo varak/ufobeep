@@ -14,7 +14,23 @@
       },
       "oauth_client": [
         {
-          "client_id": "346511467728-cttlsm8akgnse4npqin4gqeu6j8lh896.apps.googleusercontent.com",
+          "client_id": "346511467728-1u555l9j5cakjjt9mvv7j0pptj6ich81.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ufobeep",
+            "certificate_hash": "98de1badcfcbd7bd1f1e8f57e63cc1d2814ee977"
+          }
+        },
+        {
+          "client_id": "346511467728-pcg2s4cqhu014ev84596slvj94h7jvgt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ufobeep",
+            "certificate_hash": "cb2b17c5235b6e68325622caf614005f40ba9de0"
+          }
+        },
+        {
+          "client_id": "346511467728-gblvob9j4gvfviijtp1723pt4f2934im.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
