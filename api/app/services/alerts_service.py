@@ -218,16 +218,32 @@ class AlertsService:
                           is_public: bool = True, tags: List[str] = None,
                           media_info: Dict = None, sensor_data: Dict = None,
                           enrichment_data: Dict = None, alert_level: str = "normal",
-                          device_id: str = None) -> str:
+                          device_id: str = None, username: str = None) -> str:
         """Create new alert/sighting"""
         async with self.db_pool.acquire() as conn:
             # Get or create user for device_id to populate reporter_id
             reporter_id = None
             if device_id:
-                user_uuid = await conn.fetchval("""
-                    SELECT get_or_create_user_by_device_id($1)
-                """, device_id)
-                reporter_id = str(user_uuid) if user_uuid else None
+                if username:
+                    # Use real username for authenticated users
+                    user_uuid = await conn.fetchval("""
+                        SELECT id FROM users WHERE username = $1
+                    """, username)
+                    if not user_uuid:
+                        # Create user with real username if doesn't exist
+                        user_uuid = await conn.fetchval("""
+                            INSERT INTO users (id, username, created_at, updated_at)
+                            VALUES ($1, $2, NOW(), NOW())
+                            ON CONFLICT (id) DO UPDATE SET username = $2
+                            RETURNING id
+                        """, device_id, username)
+                    reporter_id = str(user_uuid) if user_uuid else device_id
+                else:
+                    # Anonymous user - use existing logic
+                    user_uuid = await conn.fetchval("""
+                        SELECT get_or_create_user_by_device_id($1)
+                    """, device_id)
+                    reporter_id = str(user_uuid) if user_uuid else None
             
             alert_id = await conn.fetchval("""
                 INSERT INTO sightings 
@@ -243,7 +259,7 @@ class AlertsService:
             return str(alert_id)
     
     async def create_anonymous_beep(self, device_id: str, location: Dict, 
-                                   description: str = None) -> Tuple[str, Dict]:
+                                   description: str = None, username: str = None) -> Tuple[str, Dict]:
         """Create anonymous beep with location privacy"""
         # Validate location
         lat = float(location['latitude'])
@@ -283,7 +299,8 @@ class AlertsService:
             is_public=True,
             sensor_data=sensor_data,
             alert_level="normal",
-            device_id=device_id
+            device_id=device_id,
+            username=username  # Pass the real username
         )
         
         # Call enrichment service after alert creation

@@ -82,7 +82,31 @@ class AnonymousBeepService {
     bool hasMedia = false,
   }) async {
     try {
-      final deviceId = await getOrCreateDeviceId();
+      // Check if user is logged in with Firebase - if so, use their real user ID
+      String userId;
+      String userType;
+      
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        final storedUserId = prefs.getString('user_id');
+        final storedUsername = prefs.getString('username');
+        
+        if (storedUserId != null && storedUsername != null) {
+          // User is logged in - use their real Firebase UID
+          userId = storedUserId;
+          userType = 'authenticated';
+          print('Sending beep as authenticated user: $storedUsername ($userId)');
+        } else {
+          // Anonymous user - use device ID
+          userId = await getOrCreateDeviceId();
+          userType = 'anonymous';
+          print('Sending beep as anonymous user: $userId');
+        }
+      } catch (e) {
+        print('Error checking auth status, falling back to device ID: $e');
+        userId = await getOrCreateDeviceId();
+        userType = 'anonymous';
+      }
       
       // Try to get current location for anonymous beeps
       Position? currentPosition;
@@ -133,8 +157,8 @@ class AnonymousBeepService {
       
       // Build request payload
       final payload = {
-        'device_id': deviceId,
-        'anonymous': true,
+        'device_id': userId, // Use the actual user ID (Firebase UID for logged-in users)
+        'anonymous': userType == 'anonymous',
         'timestamp': DateTime.now().toUtc().toIso8601String(),
         'location': {
           'latitude': finalLat,
@@ -142,6 +166,15 @@ class AnonymousBeepService {
           'accuracy': finalAccuracy,
         },
       };
+      
+      // Add username for authenticated users
+      if (userType == 'authenticated') {
+        final prefs = await SharedPreferences.getInstance();
+        final username = prefs.getString('username');
+        if (username != null) {
+          payload['username'] = username;
+        }
+      }
       
       // Add heading if available
       if (finalHeading != null && !finalHeading.isNaN) {
