@@ -299,6 +299,82 @@ class SocialAuthService {
     }
   }
 
+  /// Add phone number using Firebase Phone Auth - MP15
+  Future<bool> addPhoneNumber(String phoneNumber) async {
+    try {
+      final completer = Completer<bool>();
+      
+      await _firebaseAuth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        verificationCompleted: (credential) async {
+          await _completePhoneVerification(credential);
+          completer.complete(true);
+        },
+        verificationFailed: (e) {
+          print('Phone verification failed: ${e.message}');
+          completer.complete(false);
+        },
+        codeSent: (verificationId, resendToken) {
+          _currentVerificationId = verificationId;
+          completer.complete(true);
+        },
+        codeAutoRetrievalTimeout: (verificationId) {
+          _currentVerificationId = verificationId;
+        },
+      );
+      
+      return await completer.future;
+    } catch (e) {
+      print('Add phone error: $e');
+      return false;
+    }
+  }
+
+  String? _currentVerificationId;
+
+  /// Verify SMS code from Firebase
+  Future<bool> verifyPhoneCode(String smsCode) async {
+    if (_currentVerificationId == null) return false;
+    
+    try {
+      final credential = PhoneAuthProvider.credential(
+        verificationId: _currentVerificationId!,
+        smsCode: smsCode,
+      );
+      
+      await _completePhoneVerification(credential);
+      return true;
+    } catch (e) {
+      print('Verify code error: $e');
+      return false;
+    }
+  }
+
+  Future<void> _completePhoneVerification(PhoneAuthCredential credential) async {
+    try {
+      final userCredential = await _firebaseAuth.signInWithCredential(credential);
+      if (userCredential.user?.phoneNumber != null) {
+        final token = await userCredential.user!.getIdToken();
+        
+        final response = await http.post(
+          Uri.parse('$_apiBaseUrl/users/link-phone'),
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode({'phone': userCredential.user!.phoneNumber}),
+        );
+        
+        if (response.statusCode == 200) {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('user_phone', userCredential.user!.phoneNumber!);
+        }
+      }
+    } catch (e) {
+      print('Complete verification error: $e');
+    }
+  }
+
   /// Sign out from social providers
   Future<void> signOut() async {
     try {

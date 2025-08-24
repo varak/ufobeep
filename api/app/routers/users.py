@@ -16,6 +16,7 @@ from app.services.user_migration_service import get_migration_service
 from app.services.email_service_postfix import PostfixEmailService
 from app.services.social_auth_service import SocialAuthService
 from app.services.database_service import get_database_pool
+from app.services.phone_service import phone_service
 from app.middleware.firebase_auth import FirebaseUser, OptionalAuth, RequiredAuth
 
 router = APIRouter(prefix="/users", tags=["users"])
@@ -1388,3 +1389,21 @@ async def set_password(request: SetPasswordRequest):
             
     finally:
         pass  # Shared pool - don't close
+
+
+@router.post("/link-phone")
+async def link_phone_number(
+    request: dict,
+    firebase_user: FirebaseUser = Depends(RequiredAuth),
+    db: asyncpg.Pool = Depends(get_db)
+):
+    """Link Firebase-verified phone number to user account"""
+    phone = request.get("phone")
+    if not phone:
+        raise HTTPException(status_code=400, detail="Phone number required")
+    
+    result = await phone_service.link_phone_to_user(db, firebase_user.uid, phone)
+    if not result["success"]:
+        raise HTTPException(status_code=400, detail=result["error"])
+    
+    return result

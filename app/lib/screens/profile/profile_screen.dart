@@ -645,21 +645,79 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return '*' * (phone.length - 4) + phone.substring(phone.length - 4);
   }
 
-  void _manageContactMethod(String type) {
+  void _manageContactMethod(String type) async {
     if (type == 'Email Address') {
-      // Email management - show message
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Email management coming soon')),
       );
     } else {
-      // Phone management - disabled due to SMS verification issues
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Phone verification temporarily unavailable'),
-          backgroundColor: Colors.orange,
-        ),
-      );
+      // Phone verification using Firebase
+      await _showPhoneVerificationDialog();
     }
+  }
+
+  Future<void> _showPhoneVerificationDialog() async {
+    final phoneController = TextEditingController();
+    final codeController = TextEditingController();
+    bool codeSent = false;
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          title: Text(codeSent ? 'Enter SMS Code' : 'Add Phone Number'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (!codeSent)
+                TextField(
+                  controller: phoneController,
+                  decoration: const InputDecoration(
+                    labelText: 'Phone Number',
+                    hintText: '+1234567890',
+                  ),
+                  keyboardType: TextInputType.phone,
+                )
+              else
+                TextField(
+                  controller: codeController,
+                  decoration: const InputDecoration(
+                    labelText: 'SMS Code',
+                    hintText: '123456',
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                if (!codeSent) {
+                  final success = await SocialAuthService().addPhoneNumber(phoneController.text);
+                  if (success) {
+                    setState(() => codeSent = true);
+                  }
+                } else {
+                  final success = await SocialAuthService().verifyPhoneCode(codeController.text);
+                  if (success) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Phone verified successfully!')),
+                    );
+                    this.setState(() {});
+                  }
+                }
+              },
+              child: Text(codeSent ? 'Verify' : 'Send Code'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
 
