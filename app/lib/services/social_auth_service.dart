@@ -149,11 +149,25 @@ class SocialAuthService {
         
         // Extract user data from nested structure
         final user = data['user'] ?? {};
+        final userId = user['user_id'] ?? cred.user!.uid;
+        final username = user['username'] ?? user['email']?.split('@')[0] ?? 'firebase_user';
+        final email = user['email'] ?? cred.user!.email;
+        
+        // Store user info locally for profile screen
+        final deviceId = await _deviceService.getDeviceId();
+        await _storeUserInfo(
+          userId: userId,
+          username: username,
+          deviceId: deviceId,
+          email: email,
+        );
+        
+        print('Firebase auth success: stored user $username ($userId)');
         
         return SocialAuthResult.success(
-          userId: user['user_id'] ?? cred.user!.uid,
-          username: user['username'] ?? user['email']?.split('@')[0] ?? 'firebase_user',
-          email: user['email'] ?? cred.user!.email,
+          userId: userId,
+          username: username,
+          email: email,
           loginMethods: List<String>.from(user['login_methods'] ?? ['firebase']),
           isNewUser: data['is_new_user'] ?? data['created'] ?? false,
         );
@@ -327,13 +341,18 @@ class SocialAuthService {
     required String userId,
     required String username,
     required String deviceId,
+    String? email,
   }) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_userIdKey, userId);
     await prefs.setString(_usernameKey, username);
     await prefs.setBool(_isRegisteredKey, true);
     
-    print('User info stored locally: $username ($userId)');
+    if (email != null && email.isNotEmpty) {
+      await prefs.setString('user_email', email);
+    }
+    
+    print('User info stored locally: $username ($userId) ${email ?? ""}');
   }
 
   /// Get current user info
