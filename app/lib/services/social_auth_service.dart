@@ -64,7 +64,7 @@ class SocialAuthService {
   // Google Sign-In configuration
   static final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: ['email', 'profile'],
-    serverClientId: '346511467728-cttlsm8akgnse4npqin4gqeu6j8lh896.apps.googleusercontent.com',
+    serverClientId: '346511467728-gblvob9j4gvfviijtp1723pt4f2934im.apps.googleusercontent.com',
   );
 
   final DeviceService _deviceService = DeviceService();
