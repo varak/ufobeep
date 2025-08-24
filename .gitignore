@@ -24,3 +24,16 @@ google-services.json
 GoogleService-Info.plist
 service-account*.json
 app/secrets/
+
+# ---- UFOBeep secrets (do not commit) ----
+# Firebase Admin service account
+firebase-service-account-*.json
+ufobeep-service-account.json
+*.p8
+api/secrets/
+# Android local keystores (redundant but explicit)
+*.keystore
+*.jks
+# Local env files
+.env
+.env.*
