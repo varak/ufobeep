@@ -213,6 +213,28 @@ class AlertsService:
         enrichment = self._parse_json(enrichment_data)
         return enrichment if enrichment else {}
     
+    async def upsert_user_from_device(self, conn, device_id: str, username: str) -> str:
+        """
+        Ensure a user row exists for this device_id and username.
+        Returns the user's UUID primary key (users.id) to use as reporter_id.
+        """
+        # Sanitize username
+        clean_username = username.strip()[:64] if username else None
+
+        # Create/update via Postgres upsert keyed on device_id
+        await conn.execute("""
+            INSERT INTO users (id, device_id, username, created_at, updated_at)
+            VALUES (gen_random_uuid(), $1, $2, NOW(), NOW())
+            ON CONFLICT (device_id)
+            DO UPDATE SET username = EXCLUDED.username, updated_at = NOW()
+        """, device_id, clean_username)
+
+        user_id = await conn.fetchval(
+            "SELECT id FROM users WHERE device_id = $1",
+            device_id
+        )
+        return str(user_id)
+
     async def create_alert(self, title: str = None, description: str = None, 
                           category: str = "ufo", witness_count: int = 1,
                           is_public: bool = True, tags: List[str] = None,
@@ -223,28 +245,13 @@ class AlertsService:
         async with self.db_pool.acquire() as conn:
             # Get or create user for device_id to populate reporter_id
             reporter_id = None
-            if username and device_id:
-                # Make sure the user exists with the correct username
-                user_exists = await conn.fetchval("""
-                    SELECT id FROM users WHERE id = $1
-                """, device_id)
-                
-                if not user_exists:
-                    # Create user with the correct username
-                    await conn.execute("""
-                        INSERT INTO users (id, username, created_at, updated_at)
-                        VALUES ($1, $2, NOW(), NOW())
-                        ON CONFLICT (id) DO NOTHING
-                    """, device_id, username)
-                    print(f"Created user: {username} with id: {device_id}")
-                else:
-                    # Update username if it's different
-                    await conn.execute("""
-                        UPDATE users SET username = $1 WHERE id = $2
-                    """, username, device_id)
-                    print(f"Updated user: {username} with id: {device_id}")
-                
-                reporter_id = device_id
+            if device_id and username:
+                reporter_id = await self.upsert_user_from_device(conn, device_id, username)
+                print(f"create_alert: device_id={device_id} reporter_id={reporter_id} username={username}")
+            elif device_id:
+                # No username provided, create user record but keep username nullable
+                reporter_id = await self.upsert_user_from_device(conn, device_id, None)
+                print(f"create_alert: device_id={device_id} reporter_id={reporter_id} username=None")
             
             alert_id = await conn.fetchval("""
                 INSERT INTO sightings 
