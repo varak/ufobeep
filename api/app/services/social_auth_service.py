@@ -6,19 +6,18 @@ Handles OAuth token verification and user profile extraction
 import json
 import secrets
 import httpx
+import os
 from typing import Dict, Optional, Tuple
 from datetime import datetime, timedelta
-
-from ..config.environment import Environment
 
 
 class SocialAuthService:
     """Service for handling social authentication (Google, Apple)"""
     
     def __init__(self):
-        self.google_client_id = Environment.get_env_var("GOOGLE_CLIENT_ID")
-        self.apple_team_id = Environment.get_env_var("APPLE_TEAM_ID")
-        self.apple_key_id = Environment.get_env_var("APPLE_KEY_ID")
+        self.google_client_id = os.environ.get("GOOGLE_CLIENT_ID")
+        self.apple_team_id = os.environ.get("APPLE_TEAM_ID")
+        self.apple_key_id = os.environ.get("APPLE_KEY_ID")
         
     async def verify_google_token(self, id_token: str) -> Optional[Dict]:
         """
