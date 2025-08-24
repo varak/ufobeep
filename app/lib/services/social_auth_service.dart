@@ -2,6 +2,7 @@
 /// Handles Google Sign-In and Apple Sign-In for UFOBeep
 /// Integrates with backend social login endpoints
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
@@ -121,32 +122,38 @@ class SocialAuthService {
       // IMPORTANT: send Firebase ID token to backend (NOT the Google idToken)
       final firebaseIdToken = await cred.user!.getIdToken(true);
       
-      final response = await http.post(
-        Uri.parse('$_apiBaseUrl/users/auth/firebase'),
-        headers: {
-          'Authorization': 'Bearer $firebaseIdToken',
-        },
-        body: jsonEncode({}),
-      );
-      
-      // TEMP diagnostics (remove later)
-      // ignore: avoid_print
-      print('AUTH/firebase RESP: ${response.statusCode} ${response.body}');
-      
-      if (response.statusCode < 200 || response.statusCode >= 300) {
-        return SocialAuthResult.failure('Backend auth failed: ${response.statusCode}');
+      try {
+        final response = await http.post(
+          Uri.parse('$_apiBaseUrl/users/auth/firebase'),
+          headers: {
+            'Authorization': 'Bearer $firebaseIdToken',
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode({}),
+        ).timeout(const Duration(seconds: 12));
+        
+        print('AUTH/firebase RESP: ${response.statusCode} ${response.body}');
+        
+        if (response.statusCode < 200 || response.statusCode >= 300) {
+          return SocialAuthResult.failure('Backend auth failed: ${response.statusCode} ${response.body}');
+        }
+        
+        // Parse JSON response and return success
+        final data = jsonDecode(response.body);
+        print('AUTH/firebase JSON: $data');
+        
+        return SocialAuthResult.success(
+          userId: data['uid'] ?? cred.user!.uid,
+          username: data['email'] ?? cred.user!.email ?? 'firebase_user', 
+          email: data['email'] ?? cred.user!.email,
+          loginMethods: ['firebase'],
+          isNewUser: data['created'] ?? true,
+        );
+      } on TimeoutException {
+        return SocialAuthResult.failure('Backend auth timed out');
+      } catch (e) {
+        return SocialAuthResult.failure('Network error: $e');
       }
-
-      final data = jsonDecode(response.body);
-      
-      // For now, create a simple success response - backend will return Firebase user info
-      return SocialAuthResult.success(
-        userId: data['uid'] ?? cred.user!.uid,
-        username: data['email'] ?? cred.user!.email ?? 'firebase_user',
-        email: data['email'] ?? cred.user!.email,
-        loginMethods: ['firebase'],
-        isNewUser: data['created'] ?? true,
-      );
     } catch (e) {
       print('Firebase Sign-In error: $e');
       return SocialAuthResult.failure('Firebase Sign-In error: $e');
