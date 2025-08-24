@@ -224,19 +224,19 @@ class AlertsService:
             # Get or create user for device_id to populate reporter_id
             reporter_id = None
             if device_id and username:
-                # All users have usernames now
+                # First try to find user by username
                 user_uuid = await conn.fetchval("""
                     SELECT id FROM users WHERE username = $1
                 """, username)
+                
                 if not user_uuid:
-                    # Create user with real username if doesn't exist
+                    # Try to find by Firebase UID (device_id is actually Firebase UID for logged-in users)
                     user_uuid = await conn.fetchval("""
-                        INSERT INTO users (id, username, created_at, updated_at)
-                        VALUES ($1, $2, NOW(), NOW())
-                        ON CONFLICT (id) DO UPDATE SET username = $2
-                        RETURNING id
-                    """, device_id, username)
+                        SELECT id FROM users WHERE id = $1
+                    """, device_id)
+                    
                 reporter_id = str(user_uuid) if user_uuid else device_id
+                print(f"Found user for alert: username={username}, user_id={reporter_id}")
             
             alert_id = await conn.fetchval("""
                 INSERT INTO sightings 

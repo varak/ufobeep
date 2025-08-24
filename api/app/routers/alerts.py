@@ -67,6 +67,8 @@ async def create_alert(request: dict):
     # All users have usernames now
     username = request.get('username')
     
+    print(f"Creating alert - device_id: {device_id}, username: {username}")
+    
     # Create alert
     try:
         db_pool = await get_db()

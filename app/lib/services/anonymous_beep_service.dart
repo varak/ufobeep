@@ -87,6 +87,16 @@ class AnonymousBeepService {
       final userId = prefs.getString('user_id') ?? await getOrCreateDeviceId();
       final username = prefs.getString('username');
       
+      if (username == null || username.isEmpty) {
+        print('WARNING: No username found in SharedPreferences!');
+        print('Available keys: ${prefs.getKeys()}');
+        // Try alternate keys
+        final altUsername = prefs.getString('user_username') ?? prefs.getString('displayName');
+        if (altUsername != null) {
+          print('Found username under alternate key: $altUsername');
+        }
+      }
+      
       print('Sending beep as user: $username ($userId)');
       
       // Try to get current location for anonymous beeps
