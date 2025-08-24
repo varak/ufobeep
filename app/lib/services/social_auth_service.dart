@@ -64,6 +64,7 @@ class SocialAuthService {
   // Google Sign-In configuration
   static final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: ['email', 'profile'],
+    serverClientId: '346511467728-gblvob9j4gvfviijtp1723pt4f2934im.apps.googleusercontent.com',
   );
 
   final DeviceService _deviceService = DeviceService();
@@ -87,11 +88,7 @@ class SocialAuthService {
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       
       if (googleAuth.idToken == null) {
-        // No OAuth configured - provide detailed debug info
-        final email = googleUser.email;
-        final displayName = googleUser.displayName;
-        final id = googleUser.id;
-        return SocialAuthResult.failure('Google Sign-In OAuth not configured properly.\\nEmail: $email\\nName: $displayName\\nID: $id\\nidToken: null\\nTry "I Have an Account" if you have an existing account with this email.');
+        return SocialAuthResult.failure('Google idToken is null — serverClientId mismatch?');
       }
 
       // Get device info
