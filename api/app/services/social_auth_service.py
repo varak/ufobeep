@@ -198,8 +198,24 @@ class SocialAuthService:
         </html>
         """
         
-        await email_service.send_html_email(
+        # Also send as plain text for better deliverability
+        text_content = f"""Hi {username},
+
+Click this link to securely login to your UFOBeep account:
+
+{magic_link}
+
+This link expires in 15 minutes and can only be used once.
+If you didn't request this login, you can safely ignore this email.
+
+--
+UFOBeep - Real-time sighting alerts
+https://ufobeep.com
+"""
+        
+        # Try plain text first for better deliverability
+        await email_service.send_plain_email(
             to_email=email,
             subject=subject,
-            html_content=html_content
+            text_content=text_content
         )
