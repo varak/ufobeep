@@ -619,7 +619,8 @@ async def device_heartbeat(
         
         db_pool = await get_db()
         current_time = datetime.utcnow()
-            async with db_pool.acquire() as conn:
+        
+        async with db_pool.acquire() as conn:
                 await conn.execute(
                     """
                     UPDATE devices SET last_seen = $1 
