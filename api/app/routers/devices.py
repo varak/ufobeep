@@ -129,13 +129,11 @@ security = HTTPBearer(auto_error=False)
 # Database imports
 import asyncpg
 
-# Database connection (using global db_pool from main.py)
-db_pool = None
-
-def get_db_pool():
-    """Get database pool from main.py"""
-    from app.main import db_pool as main_db_pool
-    return main_db_pool
+# Database dependency - now uses shared pool
+async def get_db():
+    """Get database connection pool from service"""
+    from app.services.database_service import get_database_pool
+    return await get_database_pool()
 
 # Dependencies
 async def get_current_user_id(token: Optional[str] = Depends(security)) -> Optional[str]:
@@ -148,7 +146,7 @@ async def get_current_user_id(token: Optional[str] = Depends(security)) -> Optio
 
 async def get_or_create_anonymous_user(device_id: str) -> str:
     """Create or find anonymous user for device registration"""
-    db_pool = get_db_pool()
+    db_pool = await get_db()
     if not db_pool:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -233,12 +231,7 @@ async def register_device(
         if not user_id:
             user_id = await get_or_create_anonymous_user(request.device_id)
         
-        db_pool = get_db_pool()
-        if not db_pool:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail={"error": "DATABASE_UNAVAILABLE", "message": "Database connection unavailable"}
-            )
+        db_pool = await get_db()
         
         current_time = datetime.utcnow()
         
@@ -371,12 +364,7 @@ async def list_user_devices(user_id: Optional[str] = Depends(get_current_user_id
                 }
             )
         
-        db_pool = get_db_pool()
-        if not db_pool:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail={"error": "DATABASE_UNAVAILABLE", "message": "Database connection unavailable"}
-            )
+        db_pool = await get_db()
         
         async with db_pool.acquire() as conn:
             device_records = await conn.fetch(
@@ -441,12 +429,7 @@ async def update_device(
                 }
             )
         
-        db_pool = get_db_pool()
-        if not db_pool:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail={"error": "DATABASE_UNAVAILABLE", "message": "Database connection unavailable"}
-            )
+        db_pool = await get_db()
         
         current_time = datetime.utcnow()
         
@@ -569,12 +552,7 @@ async def unregister_device(
                 }
             )
         
-        db_pool = get_db_pool()
-        if not db_pool:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail={"error": "DATABASE_UNAVAILABLE", "message": "Database connection unavailable"}
-            )
+        db_pool = await get_db()
         
         current_time = datetime.utcnow()
         
@@ -639,10 +617,8 @@ async def device_heartbeat(
                 }
             )
         
-        db_pool = get_db_pool()
+        db_pool = await get_db()
         current_time = datetime.utcnow()
-        
-        if db_pool:
             async with db_pool.acquire() as conn:
                 await conn.execute(
                     """
@@ -681,12 +657,7 @@ async def update_device_location(device_id: str, request: dict):
         if lat == 0.0 and lon == 0.0:
             raise HTTPException(status_code=400, detail="Invalid coordinates (0,0)")
         
-        db_pool = get_db_pool()
-        if not db_pool:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Database connection unavailable"
-            )
+        db_pool = await get_db()
         
         async with db_pool.acquire() as conn:
             # Update device location
@@ -717,13 +688,7 @@ async def update_device_location(device_id: str, request: dict):
 async def devices_health_check():
     """Check devices service health"""
     try:
-        db_pool = get_db_pool()
-        if not db_pool:
-            return {
-                "status": "unhealthy",
-                "error": "Database unavailable",
-                "timestamp": datetime.utcnow().isoformat()
-            }
+        db_pool = await get_db()
         
         async with db_pool.acquire() as conn:
             # Get device counts
