@@ -243,7 +243,7 @@ class AlertsService:
                 print(f"create_alert: username={username} reporter_id={reporter_id}")
             
             if not reporter_id:
-                print(f"Warning: No user found for username={username}, creating anonymous alert")
+                raise ValueError(f"User not found for username={username}. User must exist before creating alerts.")
             
             alert_id = await conn.fetchval("""
                 INSERT INTO sightings 
