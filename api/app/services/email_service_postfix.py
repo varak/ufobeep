@@ -9,6 +9,7 @@ import secrets
 import logging
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.utils import formatdate
 from datetime import datetime, timedelta
 from typing import Optional
 
@@ -192,6 +193,33 @@ class PostfixEmailService:
             
         except Exception as e:
             logger.error(f"Failed to send verification email to {to_email}: {e}")
+            return False
+    
+    async def send_html_email(self, 
+                            to_email: str, 
+                            subject: str, 
+                            html_content: str) -> bool:
+        """Send generic HTML email"""
+        try:
+            msg = MIMEMultipart('alternative')
+            msg['From'] = f"{self.from_name} <{self.from_email}>"
+            msg['To'] = to_email
+            msg['Subject'] = subject
+            msg['Date'] = formatdate(localtime=True)
+            
+            # Create HTML part
+            html_part = MIMEText(html_content, 'html')
+            msg.attach(html_part)
+            
+            # Send via local postfix
+            with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
+                server.send_message(msg)
+            
+            logger.info(f"Sent HTML email to {to_email}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Failed to send HTML email to {to_email}: {e}")
             return False
     
     async def send_recovery_email(self, 

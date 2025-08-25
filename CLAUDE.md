@@ -157,10 +157,18 @@ ALWAYS keep docs updated when making changes:
 
 ## Quick Production Reference
 - **Deploy**: `./deploy.sh [api|web|apk|all]` (requires 3+ devices for APK)
+- **Deploy to specific device**: `./deploy.sh moto` or `./deploy.sh tablet` or `./deploy.sh pixel`
 - **API Service**: `sudo systemctl restart ufobeep-api`
 - **Web Service**: `sudo systemctl restart ufobeep-web` (NO PM2!)
 - **SSH**: `ssh -p 322 mike@ufobeep.com`
 - **Logs**: `sudo journalctl -u ufobeep-[api|web] -f`
+
+## IMPORTANT: Mobile Deployment
+- **ALWAYS use the deploy script**: `cd /home/mike/D/ufobeep && ./deploy.sh moto` (or other device)
+- **Deploy script location**: `/home/mike/D/ufobeep/deploy.sh`
+- **What it does**: Commits changes, builds APK, installs to device, uploads to server
+- **DO NOT manually build/install APK** - use the deploy script instead
+- **Available targets**: moto, tablet, pixel, samsung, or blank for all devices
 
 # CRITICAL RULE: NEVER SKIP DOCS UPDATES
 - ALWAYS update documentation when making changes
