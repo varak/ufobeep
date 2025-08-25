@@ -213,27 +213,20 @@ class AlertsService:
         enrichment = self._parse_json(enrichment_data)
         return enrichment if enrichment else {}
     
-    async def upsert_user_from_device(self, conn, device_id: str, username: str) -> str:
+    async def get_user_id_by_username(self, conn, username: str) -> str:
         """
-        Ensure a user row exists for this device_id and username.
+        Get existing user ID by username.
         Returns the user's UUID primary key (users.id) to use as reporter_id.
         """
-        # Sanitize username
-        clean_username = username.strip()[:64] if username else None
-
-        # Create/update via Postgres upsert keyed on device_id
-        await conn.execute("""
-            INSERT INTO users (id, device_id, username, created_at, updated_at)
-            VALUES (gen_random_uuid(), $1, $2, NOW(), NOW())
-            ON CONFLICT (device_id)
-            DO UPDATE SET username = EXCLUDED.username, updated_at = NOW()
-        """, device_id, clean_username)
-
+        if not username:
+            return None
+            
+        clean_username = username.strip()[:64]
         user_id = await conn.fetchval(
-            "SELECT id FROM users WHERE device_id = $1",
-            device_id
+            "SELECT id FROM users WHERE username = $1",
+            clean_username
         )
-        return str(user_id)
+        return str(user_id) if user_id else None
 
     async def create_alert(self, title: str = None, description: str = None, 
                           category: str = "ufo", witness_count: int = 1,
@@ -243,15 +236,14 @@ class AlertsService:
                           device_id: str = None, username: str = None) -> str:
         """Create new alert/sighting"""
         async with self.db_pool.acquire() as conn:
-            # Get or create user for device_id to populate reporter_id
+            # Get existing user by username
             reporter_id = None
-            if device_id and username:
-                reporter_id = await self.upsert_user_from_device(conn, device_id, username)
-                print(f"create_alert: device_id={device_id} reporter_id={reporter_id} username={username}")
-            elif device_id:
-                # No username provided, create user record but keep username nullable
-                reporter_id = await self.upsert_user_from_device(conn, device_id, None)
-                print(f"create_alert: device_id={device_id} reporter_id={reporter_id} username=None")
+            if username:
+                reporter_id = await self.get_user_id_by_username(conn, username)
+                print(f"create_alert: username={username} reporter_id={reporter_id}")
+            
+            if not reporter_id:
+                print(f"Warning: No user found for username={username}, creating anonymous alert")
             
             alert_id = await conn.fetchval("""
                 INSERT INTO sightings 
