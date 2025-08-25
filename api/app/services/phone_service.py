@@ -11,15 +11,34 @@ from datetime import datetime
 class PhoneService:
     """Clean phone service - Firebase handles SMS, we just store verified numbers"""
     
-    async def link_phone_to_user(self, db_pool: asyncpg.Pool, user_id: str, phone: str) -> Dict[str, Any]:
+    async def link_phone_to_user(self, db_pool: asyncpg.Pool, firebase_uid: str, phone: str) -> Dict[str, Any]:
         """Link verified phone number to user account"""
         try:
             async with db_pool.acquire() as conn:
-                await conn.execute("""
+                # First check if phone is already assigned to another user
+                existing = await conn.fetchrow("""
+                    SELECT id, firebase_uid FROM users 
+                    WHERE phone = $1
+                """, phone)
+                
+                if existing and existing['firebase_uid'] != firebase_uid:
+                    return {
+                        'success': False,
+                        'error': 'Phone number already assigned to another account'
+                    }
+                
+                # Update phone number for the user (by firebase_uid, not user_id)
+                result = await conn.execute("""
                     UPDATE users 
                     SET phone = $1, phone_verified = true, updated_at = $2
-                    WHERE id = $3
-                """, phone, datetime.utcnow(), user_id)
+                    WHERE firebase_uid = $3
+                """, phone, datetime.utcnow(), firebase_uid)
+                
+                if result == "UPDATE 0":
+                    return {
+                        'success': False,
+                        'error': 'User not found'
+                    }
                 
                 return {
                     'success': True,
@@ -30,7 +49,7 @@ class PhoneService:
             print(f"Error linking phone: {e}")
             return {
                 'success': False,
-                'error': 'Failed to link phone number'
+                'error': f'Failed to link phone number: {str(e)}'
             }
 
 

@@ -128,13 +128,21 @@ class SocialAuthService {
       }
       
       try {
+        // Get device info for backend
+        final deviceId = await _deviceService.getDeviceId();
+        final platform = Platform.isAndroid ? 'android' : (Platform.isIOS ? 'ios' : 'unknown');
+        
         final response = await http.post(
           Uri.parse('$_apiBaseUrl/users/auth/firebase'),
           headers: {
             'Authorization': 'Bearer $firebaseIdToken',
             'Content-Type': 'application/json',
           },
-          body: jsonEncode({}),
+          body: jsonEncode({
+            'token': firebaseIdToken,
+            'device_id': deviceId,
+            'platform': platform,
+          }),
         ).timeout(const Duration(seconds: 12));
         
         print('AUTH/firebase RESP: ${response.statusCode} ${response.body}');
