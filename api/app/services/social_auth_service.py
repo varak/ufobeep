@@ -213,9 +213,17 @@ UFOBeep - Real-time sighting alerts
 https://ufobeep.com
 """
         
-        # Try plain text first for better deliverability
-        await email_service.send_plain_email(
+        # Use minimal HTML for better deliverability
+        simple_html = f"""<html><body>
+<p>Hi {username},</p>
+<p>Click this link to securely login to your UFOBeep account:</p>
+<p><a href="{magic_link}">{magic_link}</a></p>
+<p>This link expires in 15 minutes.</p>
+<p>UFOBeep - Real-time sighting alerts</p>
+</body></html>"""
+        
+        await email_service.send_html_email(
             to_email=email,
             subject=subject,
-            text_content=text_content
+            html_content=simple_html
         )
