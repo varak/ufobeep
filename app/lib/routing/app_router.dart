@@ -301,11 +301,11 @@ GoRouter appRouter(AppRouterRef ref) {
         builder: (context, state) => const UserRegistrationScreen(),
       ),
 
-      // Firebase Phone Authentication - replaces old account recovery
+      // Account Recovery with Email/SMS options
       GoRoute(
         path: '/recover',
         name: 'recover',
-        builder: (context, state) => const FirebasePhoneAuthScreen(),
+        builder: (context, state) => const AccountRecoveryScreen(),
       ),
       
       // Firebase Email Authentication
