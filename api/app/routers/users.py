@@ -1394,7 +1394,7 @@ async def set_password(request: SetPasswordRequest):
 @router.post("/link-phone")
 async def link_phone_number(
     request: dict,
-    firebase_user: FirebaseUser = Depends(RequiredAuth),
+    firebase_user: FirebaseUser = Depends(require_auth),
     db: asyncpg.Pool = Depends(get_db)
 ):
     """Link Firebase-verified phone number to user account"""
