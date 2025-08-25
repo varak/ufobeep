@@ -1235,7 +1235,7 @@ async def firebase_auth(
                         "user_id": str(user["id"]),
                         "username": user["username"],
                         "email": user["email"],
-                        "login_methods": user["login_methods"] if user["login_methods"] else ["firebase"]
+                        "login_methods": json.loads(user["login_methods"]) if user["login_methods"] else ["firebase"]
                     }
                 }
                 
