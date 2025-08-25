@@ -1226,15 +1226,7 @@ async def firebase_auth(
                     WHERE id = $1
                 """, user["id"])
                 
-                # Update device if provided
-                if hasattr(request, 'device_id') and request.device_id:
-                    await conn.execute("""
-                        INSERT INTO user_devices (user_id, device_id, platform, created_at)
-                        VALUES ($1, $2, $3, NOW())
-                        ON CONFLICT (device_id) DO UPDATE SET 
-                            user_id = EXCLUDED.user_id,
-                            last_seen_at = NOW()
-                    """, user["id"], request.device_id, request.platform or 'unknown')
+                # Device tracking handled by devices service
                 
                 return {
                     "success": True,
@@ -1264,12 +1256,7 @@ async def firebase_auth(
                 """, user_id, username, firebase_user.email or '', firebase_user.uid,
                      json.dumps(["firebase"]))
                 
-                # Link device to new user if provided
-                if hasattr(request, 'device_id') and request.device_id:
-                    await conn.execute("""
-                        INSERT INTO user_devices (user_id, device_id, platform, created_at)
-                        VALUES ($1, $2, $3, NOW())
-                    """, user_id, request.device_id, request.platform or 'unknown')
+                # Device tracking handled by devices service
                 
                 return {
                     "success": True,
