@@ -222,6 +222,29 @@ class PostfixEmailService:
             logger.error(f"Failed to send HTML email to {to_email}: {e}")
             return False
     
+    async def send_plain_email(self, 
+                              to_email: str, 
+                              subject: str, 
+                              text_content: str) -> bool:
+        """Send plain text email - better deliverability"""
+        try:
+            msg = MIMEText(text_content, 'plain')
+            msg['From'] = f"{self.from_name} <{self.from_email}>"
+            msg['To'] = to_email
+            msg['Subject'] = subject
+            msg['Date'] = formatdate(localtime=True)
+            
+            # Send via local postfix
+            with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
+                server.send_message(msg)
+            
+            logger.info(f"Sent plain text email to {to_email}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Failed to send plain email to {to_email}: {e}")
+            return False
+    
     async def send_recovery_email(self, 
                                  to_email: str, 
                                  username: str, 
