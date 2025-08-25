@@ -177,7 +177,7 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
           onPressed: () => context.pop(),
         ),
         title: const Text(
-          'Account Recovery',
+          'Sign In with Email/SMS',
           style: TextStyle(color: AppColors.textPrimary),
         ),
       ),
@@ -199,7 +199,7 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
                       ),
                       SizedBox(height: 16),
                       Text(
-                        'Recover Your Account',
+                        'Sign In to Your Account',
                         style: TextStyle(
                           color: AppColors.textPrimary,
                           fontSize: 24,
@@ -290,11 +290,11 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
                   Text(
                     _useEmail 
                         ? (_emailController.text.isNotEmpty 
-                            ? 'Your saved email address is ready. Tap Send Recovery Code to continue:'
-                            : 'Enter your verified email address to receive a recovery code:')
+                            ? 'Your saved email address is ready. Tap Send Sign-In Code to continue:'
+                            : 'Enter your verified email address to receive a sign-in code:')
                         : (_phoneController.text.isNotEmpty 
-                            ? 'Your saved phone number is ready. Tap Send Recovery Code to continue:'
-                            : 'Enter your verified phone number to receive a recovery code:'),
+                            ? 'Your saved phone number is ready. Tap Send Sign-In Code to continue:'
+                            : 'Enter your verified phone number to receive a sign-in code:'),
                     style: const TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 16,
@@ -381,7 +381,7 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
                     ),
                   
                 ] else ...[
-                  // Recovery Code Step
+                  // Sign-In Code Step
                   Column(
                     children: [
                       Icon(
@@ -426,7 +426,7 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
                     textAlign: TextAlign.center,
                     maxLength: 6,
                     decoration: InputDecoration(
-                      labelText: 'Recovery Code',
+                      labelText: 'Sign-In Code',
                       labelStyle: const TextStyle(color: AppColors.textSecondary),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -511,7 +511,7 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
                         ),
                       )
                     : Text(
-                        _isEmailStep ? 'Send Recovery Code' : 'Recover Account',
+                        _isEmailStep ? 'Send Sign-In Code' : 'Sign In',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
