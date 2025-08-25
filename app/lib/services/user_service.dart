@@ -485,6 +485,43 @@ class UserService {
       return false;
     }
   }
+
+  /// Send magic link for passwordless email authentication - MP15
+  Future<Map<String, dynamic>> sendMagicLink(String email) async {
+    try {
+      final deviceService = DeviceService();
+      final deviceId = await deviceService.getDeviceId();
+      
+      final response = await http.post(
+        Uri.parse('$_apiBaseUrl/users/request-magic-link'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'email': email,
+          'device_id': deviceId,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return {
+          'success': data['success'] ?? true,
+          'message': data['message'] ?? 'Magic link sent successfully!'
+        };
+      } else {
+        final error = jsonDecode(response.body);
+        return {
+          'success': false,
+          'message': error['detail'] ?? 'Failed to send magic link'
+        };
+      }
+    } catch (e) {
+      print('Error sending magic link: $e');
+      return {
+        'success': false,
+        'message': 'Network error. Please try again.'
+      };
+    }
+  }
   
   /// Add phone number to user account
   Future<Map<String, dynamic>> addPhoneNumber(String phone) async {

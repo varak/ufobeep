@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../services/user_service.dart';
 import '../../services/device_service.dart';
+import '../../services/social_auth_service.dart';
 import '../../theme/app_theme.dart';
 
 class AccountRecoveryScreen extends ConsumerStatefulWidget {
@@ -84,35 +85,144 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
     });
 
     try {
-      final userService = ref.read(userServiceProvider);
-      Map<String, dynamic> result;
-      
       if (_useEmail) {
-        result = await userService.recoverAccount(_emailController.text.trim());
-        _contactSent = _emailController.text.trim();
+        // Send magic link via email
+        await _sendMagicLink(_emailController.text.trim());
       } else {
-        result = await userService.recoverAccountWithPhone(_phoneController.text.trim());
-        _contactSent = _phoneController.text.trim();
+        // Use Firebase Phone Authentication
+        await _startPhoneAuth(_phoneController.text.trim());
       }
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Network error. Please try again.';
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _sendMagicLink(String email) async {
+    try {
+      final userService = ref.read(userServiceProvider);
+      final result = await userService.sendMagicLink(email);
       
       if (result['success'] == true) {
         setState(() {
-          _isEmailStep = false;
+          _isLoading = false;
         });
+        // Show success dialog and navigate back
+        if (mounted) {
+          _showMagicLinkSentDialog(email);
+        }
       } else {
         setState(() {
-          _errorMessage = result['message'] ?? 'Recovery request failed';
+          _errorMessage = result['message'] ?? 'Failed to send magic link';
+          _isLoading = false;
         });
       }
     } catch (e) {
       setState(() {
-        _errorMessage = 'Network error. Please check your connection and try again.';
-      });
-    } finally {
-      setState(() {
+        _errorMessage = 'Failed to send magic link. Please try again.';
         _isLoading = false;
       });
     }
+  }
+
+  Future<void> _startPhoneAuth(String phoneNumber) async {
+    setState(() {
+      _contactSent = phoneNumber;
+      _isEmailStep = false; // Move to code entry step
+    });
+    
+    try {
+      // Use Firebase Phone Auth - this will trigger SMS automatically
+      final socialAuthService = SocialAuthService();
+      final success = await socialAuthService.addPhoneNumber(phoneNumber);
+      
+      if (success) {
+        // Firebase phone auth completed successfully
+        setState(() {
+          _isLoading = false;
+        });
+        if (mounted) {
+          context.go('/alerts'); // Navigate to main app
+        }
+      } else {
+        setState(() {
+          _errorMessage = 'Phone authentication failed. Please try again.';
+          _isEmailStep = true; // Go back to input step
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Phone authentication error. Please try again.';
+        _isEmailStep = true;
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _showMagicLinkSentDialog(String email) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Row(
+          children: [
+            Icon(Icons.check_circle, color: AppColors.semanticSuccess, size: 28),
+            SizedBox(width: 12),
+            Text(
+              'Magic Link Sent!',
+              style: TextStyle(color: AppColors.textPrimary, fontSize: 18),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Check your email inbox for a sign-in link.',
+              style: TextStyle(color: AppColors.textSecondary, fontSize: 16),
+            ),
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.brandPrimary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: AppColors.brandPrimary.withOpacity(0.3),
+                ),
+              ),
+              child: Text(
+                email,
+                style: const TextStyle(
+                  color: AppColors.brandPrimary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              '✨ Tap the link in your email to sign in instantly!',
+              style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              context.go('/'); // Go back to splash/main
+            },
+            child: const Text('Done', style: TextStyle(color: AppColors.brandPrimary)),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _verifyRecoveryCode() async {
