@@ -162,7 +162,6 @@ class SocialAuthService {
         final email = user['email'] ?? cred.user!.email;
         
         // Store user info locally for profile screen
-        final deviceId = await _deviceService.getDeviceId();
         await _storeUserInfo(
           userId: userId,
           username: username,
