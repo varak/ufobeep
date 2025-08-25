@@ -1200,13 +1200,16 @@ async def google_login(request: SocialLoginRequest):
 
 
 @router.post("/auth/firebase")
-async def firebase_auth(request: SocialLoginRequest, firebase_user: FirebaseUser = RequiredAuth):
+async def firebase_auth(
+    request: SocialLoginRequest, 
+    firebase_user: FirebaseUser = RequiredAuth,
+    pool: asyncpg.Pool = Depends(get_db)
+):
     """
     Authenticate with Firebase ID token - MP15
     Creates new account or links to existing account automatically
     """
     try:
-        pool = await get_db()
         async with pool.acquire() as conn:
             # Check if user already exists by Firebase UID
             user = await conn.fetchrow("""
