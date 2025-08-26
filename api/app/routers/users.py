@@ -1282,6 +1282,7 @@ async def request_magic_link(request: MagicLinkRequest):
     Send magic link to user's email for passwordless login - MP15
     """
     email = request.email.strip().lower()
+    print(f"Magic link requested for email: {email}")
     
     pool = await get_db()
     try:
@@ -1294,12 +1295,15 @@ async def request_magic_link(request: MagicLinkRequest):
             """, email)
             
             if not user:
+                print(f"No user found for email: {email}")
                 # Don't reveal if email exists - security best practice
                 return {
                     "success": True,
                     "message": "If this email is registered, a magic link has been sent.",
                     "expires_in_minutes": 15
                 }
+            
+            print(f"User found: {user['username']} (verified: {user['email_verified']})")
             
             # Generate magic link token
             social_service = SocialAuthService()
@@ -1312,10 +1316,17 @@ async def request_magic_link(request: MagicLinkRequest):
                 WHERE id = $3
             """, token, expiry, user["id"])
             
+            print(f"Token saved, sending email to {email}")
+            
             # Send magic link email
-            await social_service.send_magic_link_email(
-                email, user["username"], token
-            )
+            try:
+                await social_service.send_magic_link_email(
+                    email, user["username"], token
+                )
+                print(f"Magic link email sent successfully to {email}")
+            except Exception as e:
+                print(f"Failed to send magic link email: {e}")
+                raise
             
             return {
                 "success": True,
