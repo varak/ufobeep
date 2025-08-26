@@ -322,6 +322,13 @@ GoRouter appRouter(AppRouterRef ref) {
         builder: (context, state) => const PhoneSetupScreen(),
       ),
 
+      // Auth Login Screen (for deep links)
+      GoRoute(
+        path: '/auth/login',
+        name: 'auth-login',
+        builder: (context, state) => const AccountRecoveryScreen(),
+      ),
+
     ],
   );
 }
