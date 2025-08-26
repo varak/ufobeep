@@ -1297,14 +1297,8 @@ async def request_magic_link(request: MagicLinkRequest):
                 # Don't reveal if email exists - security best practice
                 return {
                     "success": True,
-                    "message": "If this email is registered and verified, a magic link has been sent.",
+                    "message": "If this email is registered, a magic link has been sent.",
                     "expires_in_minutes": 15
-                }
-            
-            if not user["email_verified"]:
-                return {
-                    "success": False,
-                    "error": "Email not verified. Please verify your email first."
                 }
             
             # Generate magic link token
