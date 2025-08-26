@@ -213,75 +213,96 @@ UFOBeep - Real-time sighting alerts
 https://ufobeep.com
 """
         
-        # Professional HTML template that looks good and avoids spam triggers
+        # Professional HTML template with better button visibility and UFOBeep green branding
         simple_html = f"""<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f6f6f6;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f6f6f6; padding: 20px 0;">
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #1a1a1a;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #1a1a1a; padding: 20px 0;">
         <tr>
             <td align="center">
-                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #2d2d2d; border-radius: 12px; border: 1px solid #3a3a3a;">
                     <!-- Header -->
                     <tr>
-                        <td style="padding: 30px 40px; text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px 8px 0 0;">
-                            <h1 style="margin: 0; color: #ffffff; font-size: 32px;">🛸 UFOBeep</h1>
-                            <p style="margin: 5px 0 0; color: #ffffff; font-size: 14px; opacity: 0.95;">Real-time Sighting Alerts</p>
+                        <td style="padding: 40px 40px 30px; text-align: center; background-color: #1f1f1f; border-radius: 12px 12px 0 0; border-bottom: 2px solid #00ff88;">
+                            <h1 style="margin: 0; color: #00ff88; font-size: 36px; font-weight: 700; text-shadow: 0 0 20px rgba(0,255,136,0.5);">
+                                🛸 UFOBeep
+                            </h1>
+                            <p style="margin: 10px 0 0; color: #999999; font-size: 14px; text-transform: uppercase; letter-spacing: 2px;">
+                                Real-time Sighting Alerts
+                            </p>
                         </td>
                     </tr>
                     
                     <!-- Content -->
                     <tr>
-                        <td style="padding: 40px 40px 30px;">
-                            <h2 style="margin: 0 0 20px; color: #333333; font-size: 24px; font-weight: 600;">Welcome back, {username}!</h2>
+                        <td style="padding: 40px;">
+                            <h2 style="margin: 0 0 10px; color: #ffffff; font-size: 28px; font-weight: 600;">
+                                Welcome back!
+                            </h2>
                             
-                            <p style="margin: 0 0 25px; color: #666666; font-size: 16px; line-height: 1.5;">
-                                You requested a secure login link. Click the button below to access your UFOBeep account:
+                            <p style="margin: 0 0 10px; color: #00ff88; font-size: 18px; font-weight: 500;">
+                                {username}
                             </p>
                             
-                            <!-- CTA Button -->
+                            <p style="margin: 20px 0 30px; color: #cccccc; font-size: 16px; line-height: 1.6;">
+                                You requested a secure magic link to sign in. Click the button below to access your UFOBeep account instantly:
+                            </p>
+                            
+                            <!-- CTA Button with better visibility -->
                             <table width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
-                                    <td align="center" style="padding: 0 0 25px;">
-                                        <a href="{magic_link}" style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 50px; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);">
-                                            Sign In to UFOBeep
+                                    <td align="center" style="padding: 10px 0 30px;">
+                                        <a href="{magic_link}" style="display: inline-block; padding: 18px 50px; background-color: #00ff88; color: #000000; text-decoration: none; font-size: 18px; font-weight: 700; border-radius: 30px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 20px rgba(0,255,136,0.5), 0 0 40px rgba(0,255,136,0.3);">
+                                            ✨ Sign In Now
                                         </a>
                                     </td>
                                 </tr>
                             </table>
                             
-                            <p style="margin: 0 0 20px; color: #999999; font-size: 14px; line-height: 1.5;">
-                                Or copy and paste this link in your browser:<br>
-                                <span style="color: #667eea; word-break: break-all; font-size: 12px;">{magic_link}</span>
-                            </p>
+                            <div style="background-color: #1f1f1f; border-radius: 8px; padding: 20px; margin: 20px 0;">
+                                <p style="margin: 0 0 10px; color: #888888; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">
+                                    Manual Link (if button doesn't work):
+                                </p>
+                                <p style="margin: 0; color: #00ff88; word-break: break-all; font-size: 12px; font-family: 'Courier New', monospace;">
+                                    {magic_link}
+                                </p>
+                            </div>
                             
                             <!-- Security Notice -->
-                            <table width="100%" cellpadding="0" cellspacing="0" style="border-top: 1px solid #eeeeee; padding-top: 20px; margin-top: 25px;">
-                                <tr>
-                                    <td>
-                                        <p style="margin: 0; color: #999999; font-size: 13px; line-height: 1.5;">
-                                            <strong>🔒 Security Notice:</strong><br>
-                                            • This link expires in 15 minutes<br>
-                                            • It can only be used once<br>
-                                            • Never share this link with anyone
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
+                            <div style="border-top: 1px solid #3a3a3a; padding-top: 25px; margin-top: 25px;">
+                                <table width="100%" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td width="40" valign="top">
+                                            <span style="font-size: 24px;">🔒</span>
+                                        </td>
+                                        <td>
+                                            <p style="margin: 0 0 5px; color: #ffffff; font-size: 14px; font-weight: 600;">
+                                                Security Notice
+                                            </p>
+                                            <p style="margin: 0; color: #888888; font-size: 13px; line-height: 1.6;">
+                                                • This magic link expires in <strong style="color: #00ff88;">15 minutes</strong><br>
+                                                • It can only be used <strong style="color: #00ff88;">once</strong><br>
+                                                • Never share this link with anyone
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                         </td>
                     </tr>
                     
                     <!-- Footer -->
                     <tr>
-                        <td style="padding: 20px 40px; background-color: #f8f9fa; border-radius: 0 0 8px 8px; text-align: center; border-top: 1px solid #eeeeee;">
-                            <p style="margin: 0 0 5px; color: #999999; font-size: 12px;">
+                        <td style="padding: 25px 40px; background-color: #1f1f1f; border-radius: 0 0 12px 12px; text-align: center; border-top: 1px solid #3a3a3a;">
+                            <p style="margin: 0 0 8px; color: #666666; font-size: 12px;">
                                 Didn't request this? You can safely ignore this email.
                             </p>
-                            <p style="margin: 0; color: #999999; font-size: 12px;">
-                                © 2025 UFOBeep · <a href="https://ufobeep.com" style="color: #667eea; text-decoration: none;">ufobeep.com</a>
+                            <p style="margin: 0; color: #666666; font-size: 12px;">
+                                © 2025 UFOBeep · <a href="https://ufobeep.com" style="color: #00ff88; text-decoration: none;">ufobeep.com</a>
                             </p>
                         </td>
                     </tr>
