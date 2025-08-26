@@ -213,14 +213,84 @@ UFOBeep - Real-time sighting alerts
 https://ufobeep.com
 """
         
-        # Use minimal HTML for better deliverability
-        simple_html = f"""<html><body>
-<p>Hi {username},</p>
-<p>Click this link to securely login to your UFOBeep account:</p>
-<p><a href="{magic_link}">{magic_link}</a></p>
-<p>This link expires in 15 minutes.</p>
-<p>UFOBeep - Real-time sighting alerts</p>
-</body></html>"""
+        # Professional HTML template that looks good and avoids spam triggers
+        simple_html = f"""<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f6f6f6;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f6f6f6; padding: 20px 0;">
+        <tr>
+            <td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <!-- Header -->
+                    <tr>
+                        <td style="padding: 30px 40px; text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px 8px 0 0;">
+                            <h1 style="margin: 0; color: #ffffff; font-size: 32px;">🛸 UFOBeep</h1>
+                            <p style="margin: 5px 0 0; color: #ffffff; font-size: 14px; opacity: 0.95;">Real-time Sighting Alerts</p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 40px 40px 30px;">
+                            <h2 style="margin: 0 0 20px; color: #333333; font-size: 24px; font-weight: 600;">Welcome back, {username}!</h2>
+                            
+                            <p style="margin: 0 0 25px; color: #666666; font-size: 16px; line-height: 1.5;">
+                                You requested a secure login link. Click the button below to access your UFOBeep account:
+                            </p>
+                            
+                            <!-- CTA Button -->
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td align="center" style="padding: 0 0 25px;">
+                                        <a href="{magic_link}" style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 50px; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);">
+                                            Sign In to UFOBeep
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <p style="margin: 0 0 20px; color: #999999; font-size: 14px; line-height: 1.5;">
+                                Or copy and paste this link in your browser:<br>
+                                <span style="color: #667eea; word-break: break-all; font-size: 12px;">{magic_link}</span>
+                            </p>
+                            
+                            <!-- Security Notice -->
+                            <table width="100%" cellpadding="0" cellspacing="0" style="border-top: 1px solid #eeeeee; padding-top: 20px; margin-top: 25px;">
+                                <tr>
+                                    <td>
+                                        <p style="margin: 0; color: #999999; font-size: 13px; line-height: 1.5;">
+                                            <strong>🔒 Security Notice:</strong><br>
+                                            • This link expires in 15 minutes<br>
+                                            • It can only be used once<br>
+                                            • Never share this link with anyone
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="padding: 20px 40px; background-color: #f8f9fa; border-radius: 0 0 8px 8px; text-align: center; border-top: 1px solid #eeeeee;">
+                            <p style="margin: 0 0 5px; color: #999999; font-size: 12px;">
+                                Didn't request this? You can safely ignore this email.
+                            </p>
+                            <p style="margin: 0; color: #999999; font-size: 12px;">
+                                © 2025 UFOBeep · <a href="https://ufobeep.com" style="color: #667eea; text-decoration: none;">ufobeep.com</a>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>"""
         
         await email_service.send_html_email(
             to_email=email,
