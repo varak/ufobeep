@@ -7,6 +7,7 @@ No external dependencies or API keys required
 import smtplib
 import secrets
 import logging
+import re
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.utils import formatdate
@@ -206,6 +207,23 @@ class PostfixEmailService:
             msg['To'] = to_email
             msg['Subject'] = subject
             msg['Date'] = formatdate(localtime=True)
+            
+            # Add important headers to improve deliverability
+            msg['Message-ID'] = f"<{secrets.token_hex(16)}@ufobeep.com>"
+            msg['Reply-To'] = "support@ufobeep.com"
+            msg['List-Unsubscribe'] = "<mailto:support@ufobeep.com?subject=unsubscribe>"
+            msg['List-Unsubscribe-Post'] = "List-Unsubscribe=One-Click"
+            msg['X-Mailer'] = "UFOBeep/1.0"
+            msg['Precedence'] = "bulk"  # Helps with spam filters
+            msg['Auto-Submitted'] = "auto-generated"  # Indicates transactional email
+            
+            # Create plain text part (simple version for better deliverability)
+            text_content = html_content.replace('<br>', '\n').replace('</p>', '\n\n')
+            # Remove HTML tags with simple regex
+            import re
+            text_content = re.sub('<[^<]+?>', '', text_content)
+            text_part = MIMEText(text_content, 'plain')
+            msg.attach(text_part)
             
             # Create HTML part
             html_part = MIMEText(html_content, 'html')
