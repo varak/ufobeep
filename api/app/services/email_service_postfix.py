@@ -216,10 +216,12 @@ class PostfixEmailService:
                 server.send_message(msg)
             
             logger.info(f"Sent HTML email to {to_email}")
+            print(f"Successfully sent magic link to {to_email}")
             return True
             
         except Exception as e:
             logger.error(f"Failed to send HTML email to {to_email}: {e}")
+            print(f"Email send failed: {e}")
             return False
     
     async def send_recovery_email(self, 
