@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../theme/app_theme.dart';
 
 class SkyFiInfoDialog extends StatelessWidget {
@@ -7,212 +6,137 @@ class SkyFiInfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
+    return AlertDialog(
       backgroundColor: AppColors.darkSurface,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+      title: Row(
+        children: [
+          Icon(Icons.satellite_alt, color: const Color(0xFF6B46C1)),
+          const SizedBox(width: 8),
+          const Text('SkyFi Satellite Imagery'),
+        ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(24),
+      content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF6B46C1).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(
-                    Icons.satellite_alt,
-                    color: const Color(0xFF6B46C1),
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'SkyFi Satellite Imagery',
-                        style: TextStyle(
-                          color: AppColors.textPrimary,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        'Ultra-high resolution commercial imagery',
-                        style: TextStyle(
-                          color: AppColors.textSecondary,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                IconButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  icon: Icon(
-                    Icons.close,
-                    color: AppColors.textTertiary,
-                  ),
-                ),
-              ],
+            const Text(
+              'About SkyFi',
+              style: TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-            const SizedBox(height: 24),
-
-            // What is SkyFi
-            _buildSection(
-              '🛰️ What is SkyFi?',
-              'SkyFi provides on-demand, ultra-high resolution satellite imagery from a constellation of commercial satellites. Perfect for verifying UFO sightings with detailed aerial context.',
+            const SizedBox(height: 12),
+            const Text(
+              'SkyFi provides on-demand, ultra-high resolution satellite imagery from a constellation of commercial satellites.',
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 14,
+                height: 1.5,
+              ),
             ),
             const SizedBox(height: 16),
-
-            // Technical Specs
-            _buildSection(
-              '📊 Technical Specifications',
-              '• 10cm to 50cm resolution options\n'
+            
+            const Text(
+              'Technical Capabilities',
+              style: TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              '• 10cm to 50cm resolution\n'
               '• Optical, SAR, and multispectral sensors\n'
               '• Blue, green, red, and near-infrared bands\n'
-              '• Global coverage with daily satellite passes\n'
-              '• Starting at \$25 for commercial imagery',
+              '• Global coverage with daily passes\n'
+              '• Multiple sensor types available',
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 14,
+                height: 1.5,
+              ),
             ),
             const SizedBox(height: 16),
-
-            // For UFO Research
-            _buildSection(
-              '🔬 Perfect for UFO Research',
-              '• SAR imagery penetrates clouds and vegetation\n'
-              '• Multi-spectral analysis reveals hidden details\n'
-              '• Existing images delivered within 24 hours\n'
-              '• New tasked images available in 48 hours\n'
-              '• Multiple sensor types for comprehensive analysis\n'
-              '• Verify environmental conditions at sighting time',
+            
+            const Text(
+              'Premium Feature',
+              style: TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-            const SizedBox(height: 24),
-
-            // Coming Soon Notice
+            const SizedBox(height: 8),
+            const Text(
+              'UFOBeep will offer SkyFi satellite imagery as a premium feature, allowing users to purchase high-resolution images of their sighting locations.',
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 14,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'Pricing available upon request',
+              style: TextStyle(
+                color: Color(0xFF6B46C1),
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 16),
+            
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: const Color(0xFF6B46C1).withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: const Color(0xFF6B46C1),
+                  color: const Color(0xFF6B46C1).withOpacity(0.3),
                   width: 1,
                 ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.schedule,
-                        color: const Color(0xFF6B46C1),
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Coming Soon',
-                        style: TextStyle(
-                          color: const Color(0xFF6B46C1),
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                  Icon(
+                    Icons.info_outline,
+                    color: const Color(0xFF6B46C1),
+                    size: 20,
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'SkyFi integration is being developed. You\'ll be able to order high-resolution satellite imagery of your sighting location directly from UFOBeep.',
-                    style: TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 14,
-                      height: 1.4,
+                  const SizedBox(width: 8),
+                  const Expanded(
+                    child: Text(
+                      'Coming Soon! This feature is in development.',
+                      style: TextStyle(
+                        color: Color(0xFF6B46C1),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
-
-            // Action Buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  onPressed: () => _launchSkyFiWebsite(),
-                  child: Text(
-                    'Learn More About SkyFi',
-                    style: TextStyle(
-                      color: const Color(0xFF6B46C1),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF6B46C1),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text(
-                    'Got it',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildSection(String title, String content) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          content,
-          style: TextStyle(
-            color: AppColors.textSecondary,
-            fontSize: 14,
-            height: 1.4,
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text(
+            'Got it',
+            style: TextStyle(
+              color: Color(0xFF6B46C1),
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ],
     );
   }
 
-  Future<void> _launchSkyFiWebsite() async {
-    final Uri url = Uri.parse('https://skyfi.com');
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
-    }
-  }
 }

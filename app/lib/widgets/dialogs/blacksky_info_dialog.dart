@@ -81,7 +81,7 @@ class BlackSkyInfoDialog extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             const Text(
-              'Estimated cost: \$50-100 per image',
+              'Pricing available upon request',
               style: TextStyle(
                 color: AppColors.brandPrimary,
                 fontSize: 14,
