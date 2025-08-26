@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:geolocator/geolocator.dart';
@@ -43,10 +44,11 @@ class PermissionService {
     // Always request permissions fresh (don't rely on cache for critical permissions)
     await _requestAllPermissions();
     
-    // Get initial location if permission was granted (for instant beeps)
+    // Get initial location in background if permission was granted (for instant beeps)
     if (_locationGranted) {
-      print('Getting initial location for instant beep readiness...');
-      await getCurrentLocation(); // This caches location for immediate use
+      print('Starting background location fetch for instant beep readiness...');
+      // Don't await - run in background to avoid blocking startup
+      unawaited(_backgroundLocationFetch());
     }
     
     // Cache the results
@@ -385,6 +387,17 @@ class PermissionService {
     
     // Final check
     return locationReady;
+  }
+
+  /// Background location fetch to avoid blocking startup
+  Future<void> _backgroundLocationFetch() async {
+    try {
+      print('Background: Fetching initial location...');
+      await getCurrentLocation();
+      print('Background: Initial location cached successfully');
+    } catch (e) {
+      print('Background: Failed to get initial location - $e (will retry when needed)');
+    }
   }
 }
 
