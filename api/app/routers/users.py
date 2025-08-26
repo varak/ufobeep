@@ -1338,6 +1338,58 @@ async def request_magic_link(request: MagicLinkRequest):
         pass  # Shared pool - don't close
 
 
+@router.post("/verify-magic-link")
+async def verify_magic_link(request: dict):
+    """
+    Verify magic link token and log user in - MP15
+    """
+    token = request.get("token")
+    if not token:
+        raise HTTPException(status_code=400, detail="Token is required")
+    
+    pool = await get_db()
+    try:
+        async with pool.acquire() as conn:
+            # Find user by magic link token that hasn't expired
+            user = await conn.fetchrow("""
+                SELECT id, username, email, magic_link_token, magic_link_expires_at
+                FROM users 
+                WHERE magic_link_token = $1 AND magic_link_expires_at > NOW()
+            """, token)
+            
+            if not user:
+                return {
+                    "success": False,
+                    "message": "Invalid or expired magic link. Please request a new one."
+                }
+            
+            # Clear the magic link token (one-time use)
+            await conn.execute("""
+                UPDATE users 
+                SET magic_link_token = NULL, 
+                    magic_link_expires_at = NULL,
+                    email_verified = TRUE,
+                    last_login_at = NOW()
+                WHERE id = $1
+            """, user["id"])
+            
+            # Generate JWT or session token here if needed
+            # For now, return user info for the app to handle
+            
+            return {
+                "success": True,
+                "message": "Successfully signed in!",
+                "user": {
+                    "user_id": str(user["id"]),
+                    "username": user["username"],
+                    "email": user["email"]
+                }
+            }
+            
+    finally:
+        pass  # Shared pool - don't close
+
+
 @router.post("/set-password")
 async def set_password(request: SetPasswordRequest):
     """

@@ -155,6 +155,44 @@ Response: {
 Status: ✅ WORKING - Validates username format and availability
 ```
 
+### Request Magic Link (MP15 - Enhanced Auth)
+```
+POST /users/request-magic-link
+Body: {
+  "email": "user@example.com",
+  "device_id": "unique-device-id"
+}
+Response: {
+  "success": true,
+  "message": "Magic link sent to your email.",
+  "expires_in_minutes": 15
+}
+Status: ✅ WORKING - Sends magic link to user's email for passwordless login
+```
+
+### Verify Magic Link (MP15 - Enhanced Auth) 
+```
+POST /users/verify-magic-link
+Body: {
+  "token": "magic-link-token-from-email"
+}
+Response: {
+  "success": true,
+  "message": "Successfully signed in!",
+  "user": {
+    "user_id": "uuid",
+    "username": "cosmic.whisper.7823",
+    "email": "user@example.com"
+  }
+}
+Error Response (expired/invalid):
+{
+  "success": false,
+  "message": "Invalid or expired magic link. Please request a new one."
+}
+Status: ✅ IMPLEMENTED - Verifies magic link and logs user in
+```
+
 
 ## Devices
 
