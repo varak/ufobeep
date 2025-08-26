@@ -36,6 +36,58 @@ GoRouter appRouter(AppRouterRef ref) {
     navigatorKey: _rootNavigatorKey,
     debugLogDiagnostics: true,
     initialLocation: '/splash',
+    // Add error handling for unrecognized routes
+    errorBuilder: (context, state) {
+      print('🚫 GO ROUTER ERROR:');
+      print('   Location: ${state.location}');
+      print('   Error: ${state.error}');
+      
+      // Return a fallback screen that navigates to alerts
+      return Scaffold(
+        backgroundColor: AppColors.darkBackground,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.error_outline,
+                color: AppColors.semanticError,
+                size: 64,
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Navigation Error',
+                style: TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Could not navigate to: ${state.location}',
+                style: const TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 14,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () {
+                  // Navigate to alerts screen instead of crashing
+                  context.go('/alerts');
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.brandPrimary,
+                ),
+                child: const Text('Go to Home', style: TextStyle(color: Colors.white)),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
     routes: [
       // Splash Screen (handles its own navigation after initialization)
       GoRoute(

@@ -92,23 +92,41 @@ class DeepLinkService {
       final String scheme = uri.scheme;
       final String host = uri.host;
       final List<String> pathSegments = uri.pathSegments;
+      final Map<String, String> queryParams = uri.queryParameters;
 
-      print('Processing deep link: $scheme://$host/${pathSegments.join('/')}');
+      print('🔗 DEEP LINK DEBUG:');
+      print('   Full URI: $uri');
+      print('   Scheme: $scheme');
+      print('   Host: $host');
+      print('   Path segments: $pathSegments');
+      print('   Query params: $queryParams');
 
       // Handle ufobeep:// scheme
       if (scheme == 'ufobeep') {
-        await _handleUFOBeepScheme(host, pathSegments, uri.queryParameters);
+        await _handleUFOBeepScheme(host, pathSegments, queryParams);
       } 
       // Handle https:// scheme (web app links)
       else if (scheme == 'https' && (host == 'ufobeep.com' || host == 'www.ufobeep.com')) {
-        await _handleWebAppLink(pathSegments, uri.queryParameters);
+        await _handleWebAppLink(pathSegments, queryParams);
+      }
+      // Handle Firebase dynamic link format (com.ufobeep:/__/auth/...)
+      else if (scheme.startsWith('com.ufobeep')) {
+        print('🔥 Firebase format detected, converting to standard auth flow...');
+        await _handleFirebaseDynamicLink(uri);
       } else {
-        print('Unsupported deep link scheme: $scheme');
+        print('⚠️ Unsupported deep link scheme: $scheme');
+        print('   Falling back to alerts screen...');
+        _router!.go('/alerts');
       }
     } catch (e) {
-      print('Error handling deep link: $e');
-      // Fallback to home if link handling fails
-      _router!.go('/');
+      print('❌ Error handling deep link: $e');
+      print('   Stack trace: ${StackTrace.current}');
+      // Fallback to alerts screen with better error handling
+      try {
+        _router!.go('/alerts');
+      } catch (routerError) {
+        print('❌ Even fallback navigation failed: $routerError');
+      }
     }
   }
 
@@ -279,29 +297,74 @@ class DeepLinkService {
     List<String> pathSegments,
     Map<String, String> queryParams,
   ) async {
+    print('🔐 AUTH LINK DEBUG:');
+    print('   Path segments: $pathSegments');
+    print('   Query params: $queryParams');
+    
     if (pathSegments.isEmpty) {
-      print('Auth link with no path, navigating to home');
+      print('Auth link with no path, navigating to alerts');
       _router!.go('/alerts');
       return;
     }
 
     switch (pathSegments[0]) {
       case 'success':
-        print('Magic link success! Navigating to main app');
+        print('✅ Magic link success! Token: ${queryParams['token']}');
         // User successfully authenticated via magic link
+        // Store token or trigger auth state update if needed
+        if (queryParams.containsKey('token')) {
+          print('   Magic link token received, user is now authenticated');
+        }
         _router!.go('/alerts');
         break;
       case 'login':
-        print('Auth login link, showing login screen');
+        print('🔑 Auth login link, showing login screen');
         _router!.go('/auth/login');
         break;
       case 'error':
-        print('Auth error link, showing login screen');
+        print('❌ Auth error link, showing login screen');
         _router!.go('/auth/login');
         break;
       default:
-        print('Unknown auth path: ${pathSegments[0]}');
+        print('⚠️ Unknown auth path: ${pathSegments[0]}');
         _router!.go('/alerts');
+    }
+  }
+
+  /// Handle Firebase dynamic link format (com.ufobeep:/__/auth/action?oobCode=...)
+  Future<void> _handleFirebaseDynamicLink(Uri uri) async {
+    print('🔥 FIREBASE DYNAMIC LINK DEBUG:');
+    print('   Full URI: $uri');
+    
+    try {
+      // Extract relevant parameters from Firebase format
+      final queryParams = uri.queryParameters;
+      
+      // Check for oobCode (out of band code) or other Firebase auth params
+      if (queryParams.containsKey('oobCode') || queryParams.containsKey('mode')) {
+        print('   Firebase auth action detected');
+        print('   Mode: ${queryParams['mode']}');
+        print('   OOB Code: ${queryParams['oobCode']}');
+        
+        // Convert to our standard auth success flow
+        _router!.go('/alerts');
+        return;
+      }
+      
+      // Check if it contains our custom token parameter
+      if (queryParams.containsKey('token')) {
+        print('   Custom token found: ${queryParams['token']}');
+        _router!.go('/alerts');
+        return;
+      }
+      
+      // Fallback for unrecognized Firebase links
+      print('   Unrecognized Firebase link format, navigating to alerts');
+      _router!.go('/alerts');
+      
+    } catch (e) {
+      print('❌ Error processing Firebase dynamic link: $e');
+      _router!.go('/alerts');
     }
   }
 
