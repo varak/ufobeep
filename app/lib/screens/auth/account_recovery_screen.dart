@@ -215,8 +215,7 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
-              context.go('/'); // Go back to splash/main
+              Navigator.of(context).pop(); // Just close the dialog, stay on auth screen
             },
             child: const Text('Done', style: TextStyle(color: AppColors.brandPrimary)),
           ),
