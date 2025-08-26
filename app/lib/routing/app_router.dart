@@ -39,7 +39,7 @@ GoRouter appRouter(AppRouterRef ref) {
     // Add error handling for unrecognized routes
     errorBuilder: (context, state) {
       print('🚫 GO ROUTER ERROR:');
-      print('   Location: ${state.location}');
+      print('   Location: ${state.uri}');
       print('   Error: ${state.error}');
       
       // Return a fallback screen that navigates to alerts
@@ -65,7 +65,7 @@ GoRouter appRouter(AppRouterRef ref) {
               ),
               const SizedBox(height: 8),
               Text(
-                'Could not navigate to: ${state.location}',
+                'Could not navigate to: ${state.uri}',
                 style: const TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
