@@ -134,6 +134,9 @@ class DeepLinkService {
       case 'profile':
         await _handleProfileLink(pathSegments, queryParams);
         break;
+      case 'auth':
+        await _handleAuthLink(pathSegments, queryParams);
+        break;
       default:
         print('Unknown UFOBeep host: $host');
         _router!.go('/');
@@ -161,6 +164,15 @@ class DeepLinkService {
         break;
       case 'app':
         _router!.go('/');
+        break;
+      case 'auth':
+        // Handle web auth links (e.g., https://ufobeep.com/auth/magic?token=...)
+        if (pathSegments.length > 1 && pathSegments[1] == 'magic') {
+          print('Web magic link detected, navigating to main app');
+          _router!.go('/alerts');
+        } else {
+          _router!.go('/auth/login');
+        }
         break;
       default:
         _router!.go('/');
@@ -260,6 +272,37 @@ class DeepLinkService {
     Map<String, String> queryParams,
   ) async {
     _router!.go('/profile');
+  }
+
+  /// Handle auth deep links (magic link success, login, etc.)
+  Future<void> _handleAuthLink(
+    List<String> pathSegments,
+    Map<String, String> queryParams,
+  ) async {
+    if (pathSegments.isEmpty) {
+      print('Auth link with no path, navigating to home');
+      _router!.go('/alerts');
+      return;
+    }
+
+    switch (pathSegments[0]) {
+      case 'success':
+        print('Magic link success! Navigating to main app');
+        // User successfully authenticated via magic link
+        _router!.go('/alerts');
+        break;
+      case 'login':
+        print('Auth login link, showing login screen');
+        _router!.go('/auth/login');
+        break;
+      case 'error':
+        print('Auth error link, showing login screen');
+        _router!.go('/auth/login');
+        break;
+      default:
+        print('Unknown auth path: ${pathSegments[0]}');
+        _router!.go('/alerts');
+    }
   }
 
   /// Handle push notification data

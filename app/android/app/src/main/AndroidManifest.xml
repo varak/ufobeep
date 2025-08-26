@@ -103,6 +103,24 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="video/*" />
             </intent-filter>
+            
+            <!-- Deep linking for magic links and auth -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="ufobeep" />
+            </intent-filter>
+            
+            <!-- Web links for ufobeep.com -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" 
+                      android:host="ufobeep.com" 
+                      android:pathPrefix="/auth" />
+            </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
