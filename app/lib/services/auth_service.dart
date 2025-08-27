@@ -344,16 +344,21 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       debugPrint('[Auth] Backend response keys: ${respJson.keys}');
       debugPrint('[Auth] Backend response: $respJson');
 
-      // Expected JSON:
-      // { access_token, user_id, username, email, is_new_user, firebase_custom_token? }
+      // NEW: Handle the correct response format from /auth/magic/exchange
+      // { access_token, refresh_token, user: { id, username, email } }
       final access = respJson['access_token'] as String?;
-      final backendUserId = (respJson['user_id'] ?? userId)?.toString();
-      final backendUsername = (respJson['username'] ?? username)?.toString();
-      final email = respJson['email']?.toString();
+      final refreshToken = respJson['refresh_token'] as String?;
+      final userObject = respJson['user'] as Map<String, dynamic>?;
+      
+      // Extract user fields from nested user object
+      final backendUserId = userObject?['id']?.toString() ?? userId?.toString();
+      final backendUsername = userObject?['username']?.toString() ?? username?.toString();
+      final email = userObject?['email']?.toString();
       final isNewUser = respJson['is_new_user'] as bool? ?? false;
       final firebaseToken = respJson['firebase_custom_token'] as String?;
       
       debugPrint('[Auth] Parsed fields - email: "$email", userId: "$backendUserId", username: "$backendUsername"');
+      debugPrint('[Auth] Refresh token available: ${refreshToken != null}');
 
       if ([access, backendUserId, backendUsername].any((v) => v == null || (v as String).isEmpty)) {
         debugPrint('[Auth][ERROR] Missing fields in backend response: $respJson');
@@ -373,8 +378,11 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       await storage.write(key: 'user_id', value: backendUserId);
       await storage.write(key: 'username', value: backendUsername);
       await storage.write(key: 'is_registered', value: 'true');
-      if (email != null) {
+      if (email != null && email.isNotEmpty) {
         await storage.write(key: 'user_email', value: email);
+      }
+      if (refreshToken != null && refreshToken.isNotEmpty) {
+        await storage.write(key: 'refresh_token', value: refreshToken);
       }
 
       debugPrint('[Auth] Tokens & user saved. userId=$backendUserId username=$backendUsername email=$email isNew=$isNewUser');
