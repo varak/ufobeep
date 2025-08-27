@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../services/auth_repository.dart';
 import '../../models/user_model.dart';
@@ -8,22 +7,42 @@ import '../../theme/app_theme.dart';
 /// ChatGPT: Minimal, unified Profile using ONLY AuthRepository.
 /// Removed "Account Security" block entirely to avoid parallel sources.
 /// Future: add "Add Phone" CTA when Phone Auth exists.
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  late final AuthRepository _auth;
+
+  @override
+  void initState() {
+    super.initState();
+    _auth = AuthRepository();
+    _auth.addListener(_onAuthChange);
+  }
+
+  @override
+  void dispose() {
+    _auth.removeListener(_onAuthChange);
+    super.dispose();
+  }
+
+  void _onAuthChange() {
+    if (mounted) setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: AuthRepository(),
-      child: Consumer<AuthRepository>(
-        builder: (context, auth, _) {
-          if (!auth.isReady) {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          }
-          final UserModel? user = auth.currentUser;
-          return Scaffold(
+    if (!_auth.isReady) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+    final UserModel? user = _auth.currentUser;
+    return Scaffold(
             backgroundColor: AppColors.darkBackground,
             appBar: AppBar(
               title: const Text('Profile'),
@@ -38,7 +57,7 @@ class ProfileScreen extends StatelessWidget {
                     })
                   : _ProfileDetails(
                       user: user,
-                      onLogout: () => auth.logout(),
+                      onLogout: () => _auth.logout(),
                       onAddPhone: () {
                         // ChatGPT: Future enhancement — SMS phone verification screen
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -48,9 +67,6 @@ class ProfileScreen extends StatelessWidget {
                     ),
             ),
           );
-        },
-      ),
-    );
   }
 }
 
