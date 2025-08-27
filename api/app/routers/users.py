@@ -1339,23 +1339,23 @@ async def apple_auth(
             )
         
         email = profile.get("email")
-        apple_id = profile.get("apple_id")
+        apple_id = profile.get("apple_id")  # Keep for future use
         
         async with pool.acquire() as conn:
-            # Check if user already exists by email or Apple ID
+            # Check if user already exists by email (Apple ID column doesn't exist yet)
             user = await conn.fetchrow("""
-                SELECT id, username, email, apple_id, login_methods
+                SELECT id, username, email, login_methods
                 FROM users 
-                WHERE email = $1 OR apple_id = $2
-            """, email, apple_id)
+                WHERE email = $1
+            """, email)
             
             if user:
-                # Existing user - update last_active and Apple ID if needed
+                # Existing user - update last_active
                 await conn.execute("""
                     UPDATE users 
-                    SET last_login_at = NOW(), apple_id = $2
+                    SET last_login_at = NOW()
                     WHERE id = $1
-                """, user["id"], apple_id)
+                """, user["id"])
                 
                 # Create JWT tokens for existing user
                 from app.core.auth import create_access_token, create_refresh_token
@@ -1378,18 +1378,17 @@ async def apple_auth(
                 username = await _generate_unique_username(pool)
                 user_id = uuid.uuid4()
                 
-                # Create new user with Apple ID
+                # Create new user (Apple ID storage can be added later)
                 await conn.execute("""
                     INSERT INTO users (
-                        id, username, email, apple_id, 
+                        id, username, email, 
                         created_at, last_login_at, alert_range_km, 
                         units_metric, preferred_language, login_methods
-                    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+                    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
                 """, 
                     user_id,
                     username,
                     email,
-                    apple_id,
                     datetime.utcnow(),
                     datetime.utcnow(),
                     50.0,  # default alert range
