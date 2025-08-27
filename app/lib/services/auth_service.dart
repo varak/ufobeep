@@ -1,0 +1,363 @@
+/// Hardened Authentication Service for UFOBeep
+/// Handles ONLY email magic link authentication
+/// NO anonymous auth - users are either null (unauthenticated) or authenticated via email
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'device_service.dart';
+import '../config/environment.dart';
+import '../models/user_preferences.dart';
+
+class MagicLinkResult {
+  final bool success;
+  final String? userId;
+  final String? username;
+  final String? email;
+  final bool isNewUser;
+  final String? error;
+
+  MagicLinkResult({
+    required this.success,
+    this.userId,
+    this.username,
+    this.email,
+    this.isNewUser = false,
+    this.error,
+  });
+
+  factory MagicLinkResult.success({
+    required String userId,
+    String? username,
+    String? email,
+    bool isNewUser = false,
+  }) {
+    return MagicLinkResult(
+      success: true,
+      userId: userId,
+      username: username,
+      email: email,
+      isNewUser: isNewUser,
+    );
+  }
+
+  factory MagicLinkResult.failure(String error) {
+    return MagicLinkResult(
+      success: false,
+      error: error,
+    );
+  }
+}
+
+class AuthService {
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final AuthService _instance = AuthService._internal();
+  factory AuthService() => _instance;
+  AuthService._internal();
+
+  static const String _pendingEmailKey = 'pending_magic_link_email';
+  static const String _apiBaseUrl = 'https://api.ufobeep.com';
+  static const String _userIdKey = 'user_id';
+  static const String _usernameKey = 'username';
+  
+  final DeviceService _deviceService = DeviceService();
+
+  /// Get current user (null if not authenticated)
+  User? get currentUser => _auth.currentUser;
+
+  /// Check if user is authenticated (not anonymous - only email auth)
+  bool get isAuthenticated => _auth.currentUser != null;
+
+  /// Listen to authentication state changes
+  Stream<User?> get authStateChanges => _auth.authStateChanges();
+
+  /// Send magic link email for authentication
+  /// This does NOT create any user session until the link is verified
+  Future<void> sendMagicLink(String email) async {
+    try {
+      print('MAGIC LINK DEBUG: Starting magic link send for: $email');
+      
+      // Configure the action code settings for magic link
+      final ActionCodeSettings actionCodeSettings = ActionCodeSettings(
+        // Use Firebase's default domain which should always work
+        url: 'https://ufobeep.firebaseapp.com',
+        handleCodeInApp: true,
+        // Android configuration
+        androidPackageName: 'com.ufobeep',
+        androidInstallApp: true,
+        androidMinimumVersion: '21',
+        // iOS configuration (if needed later)
+        iOSBundleId: 'com.ufobeep.ios',
+      );
+
+      print('MAGIC LINK DEBUG: ActionCodeSettings configured');
+      print('MAGIC LINK DEBUG: URL: ${actionCodeSettings.url}');
+      print('MAGIC LINK DEBUG: Package: ${actionCodeSettings.androidPackageName}');
+
+      // Send the magic link email
+      print('MAGIC LINK DEBUG: Calling Firebase sendSignInLinkToEmail...');
+      await _auth.sendSignInLinkToEmail(
+        email: email,
+        actionCodeSettings: actionCodeSettings,
+      );
+
+      // Store the email locally for verification
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_pendingEmailKey, email);
+
+      print('MAGIC LINK DEBUG: Magic link sent successfully to: $email');
+      print('MAGIC LINK DEBUG: Email stored locally for verification');
+    } on FirebaseAuthException catch (e) {
+      print('MAGIC LINK DEBUG: Firebase Auth error sending magic link:');
+      print('  Code: ${e.code}');
+      print('  Message: ${e.message}');
+      print('  Details: ${e.toString()}');
+      throw AuthException._fromFirebaseAuthException(e);
+    } catch (e) {
+      print('MAGIC LINK DEBUG: Unknown error sending magic link: $e');
+      print('MAGIC LINK DEBUG: Error type: ${e.runtimeType}');
+      throw AuthException._fromFirebaseAuthException(e);
+    }
+  }
+
+  /// Handle incoming magic link from deep link or web redirect
+  /// This creates an authenticated session AND checks/creates backend user
+  Future<MagicLinkResult> handleMagicLink(String emailLink) async {
+    try {
+      // Get the pending email from storage
+      final prefs = await SharedPreferences.getInstance();
+      final email = prefs.getString(_pendingEmailKey);
+
+      if (email == null) {
+        return MagicLinkResult.failure('No pending email found. Please request a new magic link.');
+      }
+
+      // Verify the link is valid for email authentication
+      if (!_auth.isSignInWithEmailLink(emailLink)) {
+        return MagicLinkResult.failure('Invalid magic link. Please request a new one.');
+      }
+
+      // Sign in with the email link - this creates the authenticated session
+      final UserCredential userCredential = await _auth.signInWithEmailLink(
+        email: email,
+        emailLink: emailLink,
+      );
+
+      // Clear the pending email
+      await prefs.remove(_pendingEmailKey);
+
+      if (userCredential.user == null) {
+        return MagicLinkResult.failure('Firebase authentication failed');
+      }
+
+      print('Firebase magic link sign-in successful: ${userCredential.user?.uid}');
+
+      // Get Firebase ID token to call backend
+      final firebaseIdToken = await userCredential.user!.getIdToken(true);
+      if (firebaseIdToken == null || firebaseIdToken.isEmpty) {
+        return MagicLinkResult.failure('Failed to get Firebase ID token');
+      }
+
+      try {
+        // Get device info for backend
+        final deviceId = await _deviceService.getDeviceId();
+        final platform = Platform.isAndroid ? 'android' : (Platform.isIOS ? 'ios' : 'unknown');
+        
+        // Call backend to check/create user account
+        final response = await http.post(
+          Uri.parse('$_apiBaseUrl/users/auth/firebase'),
+          headers: {
+            'Authorization': 'Bearer $firebaseIdToken',
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode({
+            'token': firebaseIdToken,
+            'device_id': deviceId,
+            'platform': platform,
+          }),
+        ).timeout(const Duration(seconds: 12));
+        
+        print('Magic link backend auth response: ${response.statusCode} ${response.body}');
+        
+        if (response.statusCode < 200 || response.statusCode >= 300) {
+          return MagicLinkResult.failure('Backend authentication failed: ${response.statusCode}');
+        }
+        
+        // Parse response and store user info locally
+        final data = jsonDecode(response.body);
+        print('MAGIC LINK DEBUG: Full backend response: $data');
+        
+        final user = data['user'] ?? {};
+        print('MAGIC LINK DEBUG: User object from response: $user');
+        
+        final userId = user['user_id'] ?? userCredential.user!.uid;
+        final username = user['username'];
+        final userEmail = user['email'] ?? email;
+        
+        print('MAGIC LINK DEBUG: Extracted values:');
+        print('  - userId: $userId');
+        print('  - username: $username');
+        print('  - userEmail: $userEmail');
+        print('  - isNewUser: ${data['is_new_user'] ?? false}');
+        
+        // Store user info locally if we have a username
+        if (username != null && username.isNotEmpty) {
+          await _storeUserInfo(
+            userId: userId,
+            username: username,
+            deviceId: deviceId,
+            email: userEmail,
+          );
+          
+          print('Magic link auth success: user has username $username');
+          return MagicLinkResult.success(
+            userId: userId,
+            username: username,
+            email: userEmail,
+            isNewUser: data['is_new_user'] ?? false,
+          );
+        } else {
+          // User exists but no username set - they need to create one
+          print('Magic link auth success: user needs to set username');
+          return MagicLinkResult.success(
+            userId: userId,
+            username: null,
+            email: userEmail,
+            isNewUser: true, // Treat as new user flow for username setup
+          );
+        }
+        
+      } catch (e) {
+        print('Backend integration error: $e');
+        return MagicLinkResult.failure('Failed to verify account: $e');
+      }
+      
+    } catch (e) {
+      print('Error handling magic link: $e');
+      
+      // Clear any pending email on failure to prevent stale state
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_pendingEmailKey);
+      
+      return MagicLinkResult.failure('Magic link authentication failed: $e');
+    }
+  }
+
+  /// Store user info locally (similar to SocialAuthService)
+  Future<void> _storeUserInfo({
+    required String userId,
+    required String username,
+    required String deviceId,
+    String? email,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_userIdKey, userId);
+    await prefs.setString(_usernameKey, username);
+    await prefs.setBool('is_registered', true);
+    
+    if (email != null && email.isNotEmpty) {
+      await prefs.setString('user_email', email);
+    }
+    
+    // Also create default user preferences so profile screen shows full view
+    final defaultPrefs = UserPreferences(
+      language: AppEnvironment.defaultLocale,
+      alertRangeKm: 10.0, // Default from UserPreferences model
+      displayName: username,
+      email: email,
+    );
+    
+    await prefs.setString('user_preferences', jsonEncode(defaultPrefs.toJson()));
+    
+    print('MAGIC LINK DEBUG: User info and preferences stored locally:');
+    print('  - username: $username');
+    print('  - userId: $userId'); 
+    print('  - email: ${email ?? "none"}');
+    print('  - preferences: ${defaultPrefs.toJson()}');
+    
+    // Verify storage worked
+    final storedUsername = prefs.getString(_usernameKey);
+    final storedPrefs = prefs.getString('user_preferences');
+    print('MAGIC LINK DEBUG: Verification - stored username: $storedUsername');
+    print('MAGIC LINK DEBUG: Verification - stored preferences: $storedPrefs');
+  }
+
+  /// Sign out the current user
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+      
+      // Clear any pending email
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_pendingEmailKey);
+      
+      print('User signed out successfully');
+    } catch (e) {
+      print('Error signing out: $e');
+      throw AuthException._fromFirebaseAuthException(e);
+    }
+  }
+
+  /// Get the pending email (if any) for magic link verification
+  Future<String?> getPendingEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_pendingEmailKey);
+  }
+
+  /// Clear pending email (useful for error handling)
+  Future<void> clearPendingEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_pendingEmailKey);
+  }
+}
+
+/// Custom exception class for authentication errors
+class AuthException implements Exception {
+  final String code;
+  final String message;
+
+  AuthException({required this.code, required this.message});
+
+  factory AuthException._fromFirebaseAuthException(dynamic error) {
+    if (error is FirebaseAuthException) {
+      return AuthException(
+        code: error.code,
+        message: _getErrorMessage(error.code),
+      );
+    } else {
+      return AuthException(
+        code: 'unknown',
+        message: 'Authentication failed: ${error.toString()}',
+      );
+    }
+  }
+
+  static String _getErrorMessage(String code) {
+    switch (code) {
+      case 'invalid-email':
+        return 'Please enter a valid email address.';
+      case 'network-request-failed':
+        return 'Network error. Please check your connection and try again.';
+      case 'too-many-requests':
+        return 'Too many attempts. Please wait a moment and try again.';
+      case 'invalid-action-code':
+      case 'expired-action-code':
+        return 'This magic link has expired. Please request a new one.';
+      case 'invalid-link':
+        return 'Invalid magic link. Please request a new one.';
+      case 'missing-email':
+        return 'No pending email found. Please request a new magic link.';
+      default:
+        return 'Authentication failed. Please try again.';
+    }
+  }
+
+  @override
+  String toString() => 'AuthException($code): $message';
+}
+
+/// Global auth service instance
+final authService = AuthService();

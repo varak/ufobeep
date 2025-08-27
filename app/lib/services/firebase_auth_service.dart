@@ -27,26 +27,12 @@ class FirebaseAuthService {
   /// Check if user is signed in
   bool get isSignedIn => _auth.currentUser != null;
   
-  /// Check if current user is anonymous
-  bool get isAnonymous => _auth.currentUser?.isAnonymous ?? false;
+  /// Check if user has authenticated (not anonymous, only email/phone auth allowed)
+  bool get isAuthenticated => _auth.currentUser != null;
 
-  /// Initialize Firebase Auth - sign in anonymously if not signed in
-  Future<UserCredential?> initializeAuth() async {
-    try {
-      if (_auth.currentUser == null) {
-        print('No current user, signing in anonymously...');
-        final credential = await _auth.signInAnonymously();
-        print('Anonymous sign-in successful: ${credential.user?.uid}');
-        return credential;
-      } else {
-        print('User already signed in: ${_auth.currentUser?.uid}');
-        return null;
-      }
-    } catch (e) {
-      print('Error initializing Firebase Auth: $e');
-      return null;
-    }
-  }
+  /// Initialize auth listener - NO automatic sign in
+  /// App must remain in unauthenticated state until user explicitly signs in
+  Stream<User?> authStateChanges() => _auth.authStateChanges();
 
   /// Store username in Firestore and local storage
   Future<void> setUsername(String username) async {
@@ -55,11 +41,11 @@ class FirebaseAuthService {
     }
 
     try {
-      // Store in Firestore
+      // Store in Firestore - only for authenticated users
       await _firestore.collection('users').doc(currentUser!.uid).set({
         'username': username,
         'uid': currentUser!.uid,
-        'isAnonymous': currentUser!.isAnonymous,
+        'authProvider': 'email', // Only email/phone auth allowed now
         'createdAt': FieldValue.serverTimestamp(),
         'lastActive': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
@@ -148,36 +134,24 @@ class FirebaseAuthService {
         smsCode: smsCode,
       );
 
-      if (currentUser != null && currentUser!.isAnonymous) {
-        // Link phone number to existing anonymous account
-        print('Linking phone to anonymous account...');
-        final userCredential = await currentUser!.linkWithCredential(credential);
-        
-        // Update Firestore with phone number
-        await _firestore.collection('users').doc(currentUser!.uid).update({
-          'phoneNumber': userCredential.user?.phoneNumber,
-          'phoneVerified': true,
-          'lastActive': FieldValue.serverTimestamp(),
-        });
-
-        return {
-          'success': true,
-          'message': 'Phone number verified and linked successfully',
-          'uid': userCredential.user?.uid,
-          'phoneNumber': userCredential.user?.phoneNumber,
-        };
-      } else {
-        // Sign in with phone credential (new user or replacing current)
-        print('Signing in with phone credential...');
-        final userCredential = await _auth.signInWithCredential(credential);
-        
-        return {
-          'success': true,
-          'message': 'Phone number verified successfully',
-          'uid': userCredential.user?.uid,
-          'phoneNumber': userCredential.user?.phoneNumber,
-        };
-      }
+      // Always sign in with phone credential - no anonymous users allowed
+      print('Signing in with phone credential...');
+      final userCredential = await _auth.signInWithCredential(credential);
+      
+      // Create/update user document in Firestore
+      await _firestore.collection('users').doc(userCredential.user!.uid).set({
+        'phoneNumber': userCredential.user?.phoneNumber,
+        'phoneVerified': true,
+        'authProvider': 'phone',
+        'lastActive': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+      
+      return {
+        'success': true,
+        'message': 'Phone number verified successfully',
+        'uid': userCredential.user?.uid,
+        'phoneNumber': userCredential.user?.phoneNumber,
+      };
     } catch (e) {
       print('Error verifying SMS code: $e');
       return {
@@ -243,35 +217,24 @@ class FirebaseAuthService {
           emailLink: emailLink,
         );
 
-        if (currentUser != null && currentUser!.isAnonymous) {
-          // Link email to existing anonymous account
-          print('Linking email to anonymous account...');
-          final userCredential = await currentUser!.linkWithCredential(credential);
-          
-          // Update Firestore with email
-          await _firestore.collection('users').doc(currentUser!.uid).update({
-            'email': email,
-            'emailVerified': true,
-            'lastActive': FieldValue.serverTimestamp(),
-          });
-
-          return {
-            'success': true,
-            'message': 'Email verified and linked successfully',
-            'uid': userCredential.user?.uid,
-            'email': email,
-          };
-        } else {
-          // Sign in with email (new user or replacing current)
-          final userCredential = await _auth.signInWithCredential(credential);
-          
-          return {
-            'success': true,
-            'message': 'Email verified successfully',
-            'uid': userCredential.user?.uid,
-            'email': email,
-          };
-        }
+        // Always sign in with email credential - no anonymous users allowed
+        print('Signing in with email link credential...');
+        final userCredential = await _auth.signInWithCredential(credential);
+        
+        // Create/update user document in Firestore
+        await _firestore.collection('users').doc(userCredential.user!.uid).set({
+          'email': email,
+          'emailVerified': true,
+          'authProvider': 'email',
+          'lastActive': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+        
+        return {
+          'success': true,
+          'message': 'Email verified successfully',
+          'uid': userCredential.user?.uid,
+          'email': email,
+        };
       } else {
         return {
           'success': false,

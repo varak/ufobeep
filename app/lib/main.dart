@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io';
 import 'dart:convert';
 
@@ -18,6 +19,7 @@ import 'services/sound_service.dart';
 import 'services/permission_service.dart';
 import 'services/share_intent_service.dart';
 import 'services/analytics_service.dart';
+import 'services/auth_service.dart';
 import 'theme/app_theme.dart';
 
 void main() async {
@@ -102,7 +104,33 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
     // Set up share intent callback once in initState
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _setupShareIntentCallback();
+      _handleIncomingLinks();
     });
+  }
+  
+  void _handleIncomingLinks() async {
+    // Check if app was launched with a deep link
+    try {
+      // On Android, the intent data is available via platform channels
+      // For now, we'll check if there's a magic link to process
+      await _checkForMagicLink();
+    } catch (e) {
+      print('Error checking for incoming links: $e');
+    }
+  }
+  
+  Future<void> _checkForMagicLink() async {
+    try {
+      // This is a simplified approach - in a real app you'd get the intent data
+      // For now, we'll check if Firebase auth has a pending email link
+      final pendingEmail = await authService.getPendingEmail();
+      if (pendingEmail != null) {
+        print('Found pending magic link email: $pendingEmail');
+        // The actual link processing will happen when the link is clicked
+      }
+    } catch (e) {
+      print('Error checking for magic link: $e');
+    }
   }
   
   void _setupShareIntentCallback() {

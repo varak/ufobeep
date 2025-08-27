@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:app_links/app_links.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Deep link service for handling push notification and URL-based navigation
 class DeepLinkService {
@@ -186,10 +188,10 @@ class DeepLinkService {
       case 'auth':
         // Handle web auth links (e.g., https://ufobeep.com/auth/magic?token=...)
         if (pathSegments.length > 1 && pathSegments[1] == 'magic') {
-          print('Web magic link detected, navigating to main app');
-          _router!.go('/alerts');
+          print('Web magic link detected, checking authentication state...');
+          await _handleMagicLinkCompletion(queryParams);
         } else {
-          _router!.go('/auth/login');
+          _router!.go('/sign-in');
         }
         break;
       default:

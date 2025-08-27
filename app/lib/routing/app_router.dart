@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../theme/app_theme.dart';
 import '../services/analytics_service.dart';
+import '../services/auth_service.dart';
 
 import '../screens/alerts/alerts_screen.dart';
 import '../screens/alerts/alert_detail_screen.dart';
@@ -20,6 +21,7 @@ import '../screens/auth/account_recovery_screen.dart';
 import '../screens/auth/phone_setup_screen.dart';
 import '../screens/auth/firebase_phone_auth_screen.dart';
 import '../screens/auth/firebase_email_auth_screen.dart';
+import '../screens/auth/sign_in_screen.dart';
 import '../screens/splash/splash_screen.dart';
 import '../models/shared_media_data.dart';
 
@@ -94,6 +96,20 @@ GoRouter appRouter(AppRouterRef ref) {
         path: '/splash',
         name: 'splash',
         builder: (context, state) => const SplashScreen(),
+      ),
+
+      // Sign In Screen (for unauthenticated users)
+      GoRoute(
+        path: '/sign-in',
+        name: 'sign-in',
+        builder: (context, state) => const SignInScreen(),
+      ),
+
+      // Magic Link Completion (handles deep links from email)
+      GoRoute(
+        path: '/auth/complete',
+        name: 'auth-complete',
+        builder: (context, state) => _buildMagicLinkHandler(context, state),
       ),
 
       // Main App Shell with Bottom Navigation
@@ -383,6 +399,104 @@ GoRouter appRouter(AppRouterRef ref) {
 
     ],
   );
+}
+
+Widget _buildMagicLinkHandler(BuildContext context, GoRouterState state) {
+  return FutureBuilder(
+    future: _handleMagicLinkCompletion(context, state),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Scaffold(
+          backgroundColor: AppColors.darkBackground,
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(color: AppColors.brandPrimary),
+                SizedBox(height: 16),
+                Text(
+                  'Completing sign-in...',
+                  style: TextStyle(color: AppColors.textPrimary),
+                ),
+              ],
+            ),
+          ),
+        );
+      } else if (snapshot.hasError) {
+        return Scaffold(
+          backgroundColor: AppColors.darkBackground,
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.error_outline, color: AppColors.semanticError, size: 48),
+                const SizedBox(height: 16),
+                Text(
+                  'Sign-in failed: ${snapshot.error}',
+                  style: const TextStyle(color: AppColors.semanticError),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () => context.go('/sign-in'),
+                  child: const Text('Try Again'),
+                ),
+              ],
+            ),
+          ),
+        );
+      } else {
+        // Success - this will be handled by navigation in _handleMagicLinkCompletion
+        return const Scaffold(
+          backgroundColor: AppColors.darkBackground,
+          body: Center(child: CircularProgressIndicator(color: AppColors.brandPrimary)),
+        );
+      }
+    },
+  );
+}
+
+Future<void> _handleMagicLinkCompletion(BuildContext context, GoRouterState state) async {
+  try {
+    // Get the full URL from the state
+    final link = state.uri.toString();
+    print('Processing magic link: $link');
+    
+    // Use the AuthService to handle the magic link
+    final result = await authService.handleMagicLink(link);
+    
+    if (!result.success) {
+      throw Exception(result.error ?? 'Magic link authentication failed');
+    }
+    
+    print('Magic link sign-in successful!');
+    
+    // Navigate based on whether user has username set up
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      print('MAGIC LINK NAVIGATION DEBUG:');
+      print('  - result.username: "${result.username}"');
+      print('  - result.username != null: ${result.username != null}');
+      print('  - result.username!.isNotEmpty: ${result.username != null ? result.username!.isNotEmpty : "null username"}');
+      print('  - result.email: ${result.email}');
+      print('  - result.userId: ${result.userId}');
+      
+      if (result.username != null && result.username!.isNotEmpty) {
+        // User has username, go to alerts
+        print('DECISION: User has username: "${result.username}", going to alerts');
+        context.go('/alerts');
+      } else {
+        // User needs to set up username, go to registration with email pre-filled
+        print('DECISION: User needs username setup, going to registration');
+        context.go('/register', extra: {
+          'email': result.email,
+          'userId': result.userId,
+        });
+      }
+    });
+  } catch (e) {
+    print('Magic link completion failed: $e');
+    throw e;
+  }
 }
 
 class MainShell extends StatelessWidget {

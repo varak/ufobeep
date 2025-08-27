@@ -5,6 +5,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'permission_service.dart';
 import 'sound_service.dart';
 import 'device_service.dart';
@@ -95,11 +96,25 @@ class AnonymousBeepService {
         if (altUsername != null) {
           print('Found username under alternate key: $altUsername');
         }
+        throw Exception('User not authenticated. Please sign in first to send beeps.');
       }
       
       print('Sending beep as user: $username ($userId)');
       
-      // Try to get current location for anonymous beeps
+      // Get Firebase ID token for authentication
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        throw Exception('Firebase user not authenticated. Please sign in first.');
+      }
+      
+      final idToken = await currentUser.getIdToken(true);
+      if (idToken == null || idToken.isEmpty) {
+        throw Exception('Failed to get Firebase ID token. Please sign in again.');
+      }
+      
+      print('Got Firebase ID token for authenticated request');
+      
+      // Try to get current location for beeps
       Position? currentPosition;
       if (latitude == null || longitude == null) {
         if (permissionService.locationGranted) {
@@ -204,10 +219,15 @@ class AnonymousBeepService {
       
       print('Sending anonymous beep: ${json.encode(payload)}');
       
-      // Send the beep
+      // Send the beep with Firebase authentication
       final response = await _dio.post(
         '/alerts',
         data: payload,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $idToken',
+          },
+        ),
       );
       
       if (response.statusCode == 200 || response.statusCode == 201) {

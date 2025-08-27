@@ -76,8 +76,37 @@ flutter build apk --release
 
 ```bash
 # Connect to production
-ssh -p 322 mike@ufobeep.com
+ssh -p 322 ufobeep@ufobeep.com
 ```
+
+## Database Access
+
+### Query Production Database
+```bash
+# SSH and query database
+ssh -p 322 ufobeep@ufobeep.com "PGPASSWORD=\$DB_PASS psql -h localhost -U ufobeep_user -d ufobeep_db -c \"SELECT * FROM users LIMIT 5;\""
+
+# Interactive database session
+ssh -p 322 ufobeep@ufobeep.com
+PGPASSWORD=\$DB_PASS psql -h localhost -U ufobeep_user -d ufobeep_db
+
+# Common queries
+# Find user by email
+SELECT id, username, email, firebase_uid FROM users WHERE email='user@example.com';
+
+# Check recent alerts
+SELECT id, title, reporter_username, created_at FROM sightings ORDER BY created_at DESC LIMIT 10;
+
+# User device mappings
+SELECT u.username, ud.device_id, ud.platform FROM users u JOIN user_devices ud ON u.id = ud.user_id;
+```
+
+### Database Connection Details
+- **Host**: localhost 
+- **Port**: 5432 (default)
+- **Database**: ufobeep_db
+- **User**: ufobeep_user
+- **Password**: See SECRETS.md
 
 ## Service Configuration Files
 

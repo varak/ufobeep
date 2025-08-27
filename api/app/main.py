@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.middleware.request_middleware import RequestTimeoutMiddleware, ErrorHandlingMiddleware
 from app.config.environment import settings
-from app.routers import plane_match, media_serve, devices, emails, photo_analysis, mufon, copescan, users, firebase_users
+from app.routers import plane_match, media_serve, devices, emails, photo_analysis, mufon, copescan, users, firebase_users, auth_magic
 from app.routers import admin_simple as admin
 from app.services.media_service import get_media_service
 from app.services.alerts_service import AlertsService
@@ -267,8 +267,64 @@ async def startup_event():
                 WHERE push_token IS NOT NULL
             """)
             
+            # Create magic link tables
+            await conn.execute("""
+                CREATE TABLE IF NOT EXISTS magic_links (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    email VARCHAR(255) NOT NULL,
+                    hashed_nonce VARCHAR(255) NOT NULL UNIQUE,
+                    expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+                    used BOOLEAN DEFAULT false NOT NULL,
+                    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+                    user_agent VARCHAR(500),
+                    ip_address VARCHAR(45)
+                )
+            """)
+            
+            await conn.execute("""
+                CREATE INDEX IF NOT EXISTS idx_magic_links_email ON magic_links(email)
+            """)
+            await conn.execute("""
+                CREATE INDEX IF NOT EXISTS idx_magic_links_nonce ON magic_links(hashed_nonce)
+            """)
+            
+            await conn.execute("""
+                CREATE TABLE IF NOT EXISTS magic_link_attempts (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    email VARCHAR(255) NOT NULL,
+                    ip_address VARCHAR(45) NOT NULL,
+                    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+                    success BOOLEAN DEFAULT false
+                )
+            """)
+            
+            await conn.execute("""
+                CREATE INDEX IF NOT EXISTS idx_magic_link_attempts_email ON magic_link_attempts(email)
+            """)
+            await conn.execute("""
+                CREATE INDEX IF NOT EXISTS idx_magic_link_attempts_ip ON magic_link_attempts(ip_address)
+            """)
 
-            await run_photo_analysis_migration()
+            # Create photo_analysis_results table if not exists
+            try:
+                await conn.execute("""
+                    CREATE TABLE IF NOT EXISTS photo_analysis_results (
+                        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                        sighting_id UUID NOT NULL,
+                        filename VARCHAR(255) NOT NULL,
+                        classification VARCHAR(50),
+                        matched_object VARCHAR(100),
+                        confidence DECIMAL(5,4),
+                        analysis_status VARCHAR(20) DEFAULT 'pending',
+                        analysis_error TEXT,
+                        processing_duration_ms INTEGER,
+                        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+                        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+                    )
+                """)
+                print("✅ Photo analysis table created/verified")
+            except Exception as e:
+                print(f"Photo analysis table setup warning: {e}")
             
 
             from app.services.metrics_service import initialize_metrics_service
@@ -328,6 +384,8 @@ app.include_router(beep_engagement.router)
 app.include_router(users.router)
 # Include Firebase user management for authentication
 app.include_router(firebase_users.router)
+# Include magic link authentication router
+app.include_router(auth_magic.router)
 
 # Clean unified alerts architecture using alerts.router
 

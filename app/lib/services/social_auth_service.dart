@@ -79,11 +79,11 @@ class SocialAuthService {
     try {
       print('Starting Google Sign-In...');
       
-      // Nuke cached account to avoid stale tokens/permissions
+      // Force account picker by signing out first
       await _googleSignIn.signOut();
-      await _googleSignIn.disconnect().catchError((_) {});
       
-      // Trigger Google Sign-In flow
+      // Trigger Google Sign-In flow with account selection
+      // signIn() will now show account picker since we signed out
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       
       if (googleUser == null) {
@@ -153,31 +153,53 @@ class SocialAuthService {
         
         // Parse JSON response and return success
         final data = jsonDecode(response.body);
-        print('AUTH/firebase JSON: $data');
+        print('SOCIAL AUTH DEBUG: Full backend response: $data');
         
         // Extract user data from nested structure
         final user = data['user'] ?? {};
+        print('SOCIAL AUTH DEBUG: User object from response: $user');
+        
         final userId = user['user_id'] ?? cred.user!.uid;
-        final username = user['username'] ?? user['email']?.split('@')[0] ?? 'firebase_user';
+        final username = user['username'];  // Don't fallback - we need to know if it's missing
         final email = user['email'] ?? cred.user!.email;
+        final isNewUser = data['is_new_user'] ?? false;
         
-        // Store user info locally for profile screen
-        await _storeUserInfo(
-          userId: userId,
-          username: username,
-          deviceId: deviceId,
-          email: email,
-        );
+        print('SOCIAL AUTH DEBUG: Extracted values:');
+        print('  - userId: $userId');
+        print('  - username: $username');
+        print('  - userEmail: $email');
+        print('  - isNewUser: $isNewUser');
         
-        print('Firebase auth success: stored user $username ($userId)');
-        
-        return SocialAuthResult.success(
-          userId: userId,
-          username: username,
-          email: email,
-          loginMethods: List<String>.from(user['login_methods'] ?? ['firebase']),
-          isNewUser: data['is_new_user'] ?? data['created'] ?? false,
-        );
+        // Only store user info if we have a valid username
+        if (username != null && username.isNotEmpty) {
+          await _storeUserInfo(
+            userId: userId,
+            username: username,
+            deviceId: deviceId,
+            email: email,
+          );
+          
+          print('SOCIAL AUTH: Existing user with username $username');
+          
+          return SocialAuthResult.success(
+            userId: userId,
+            username: username,
+            email: email,
+            loginMethods: List<String>.from(user['login_methods'] ?? ['firebase']),
+            isNewUser: false,
+          );
+        } else {
+          // User exists but no username - they need to complete registration
+          print('SOCIAL AUTH: User exists but needs to set username');
+          
+          return SocialAuthResult(
+            success: true,
+            userId: userId,
+            username: null,
+            email: email,
+            isNewUser: true,  // Treat as new user for registration flow
+          );
+        }
       } on TimeoutException {
         return SocialAuthResult.failure('Backend auth timed out');
       } catch (e) {

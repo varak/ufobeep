@@ -254,9 +254,9 @@ class InitializationService {
 
   Future<InitializationResult> _initializeUserSystem() async {
     try {
-      // Initialize Firebase Auth first (for anonymous sign-in if needed)
-      await firebaseAuthService.initializeAuth();
-      _logInfo('Firebase Auth initialized');
+      // Firebase Auth initialization removed - only observe auth state
+      // No automatic user creation or anonymous sign-in
+      _logInfo('Auth state observer ready (no automatic sign-in)');
       
       // Initialize the user system and check registration status
       final isRegistered = await userService.initializeUser();

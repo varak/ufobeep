@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../theme/app_theme.dart';
 import '../../config/environment.dart';
 import '../../providers/app_state.dart';
 import '../../providers/initialization_provider.dart';
-import '../../providers/user_preferences_provider.dart';
-import '../../services/initialization_service.dart';
-import '../../services/social_auth_service.dart';
+import '../../services/auth_service.dart';
 import '../../widgets/splash/loading_animation.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -65,8 +64,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
         // Small delay to show completion
         await Future.delayed(const Duration(milliseconds: 1000));
         
-        // Navigate based on user registration status
-        await _navigateToNextScreen();
+        // Navigate based on Firebase auth state only
+        await _navigateBasedOnAuthState();
       } else {
         // Handle initialization failure
         _showInitializationError(initResult?.error ?? 'Unknown initialization error');
@@ -76,19 +75,43 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     }
   }
 
-  Future<void> _navigateToNextScreen() async {
+  Future<void> _navigateBasedOnAuthState() async {
     if (!mounted) return;
     
-    // Check initialization result for user registration status
-    final initResult = ref.read(initializationProvider);
-    final isRegistered = initResult?.data['isRegistered'] ?? false;
+    final currentUser = authService.currentUser;
     
-    if (isRegistered) {
-      // User is already registered, go to main app
-      context.go('/alerts');
+    if (currentUser != null) {
+      // User has Firebase auth - check if they have complete backend profile
+      print('SPLASH DEBUG: Firebase user exists: ${currentUser.uid}');
+      
+      try {
+        // Check if user has stored username (indicates complete profile)
+        final prefs = await SharedPreferences.getInstance();
+        final storedUsername = prefs.getString('username');
+        final userPreferences = prefs.getString('user_preferences');
+        
+        print('SPLASH DEBUG: Stored username: $storedUsername');
+        print('SPLASH DEBUG: User preferences exist: ${userPreferences != null}');
+        
+        if (storedUsername != null && storedUsername.isNotEmpty && userPreferences != null) {
+          // User has complete profile, go to main app
+          print('SPLASH DEBUG: Complete profile found, going to alerts');
+          context.go('/alerts');
+        } else {
+          // Firebase user exists but no local profile - sign out and start fresh
+          print('SPLASH DEBUG: Firebase user with no profile, clearing auth and going to sign-in');
+          await authService.signOut();
+          context.go('/sign-in');
+        }
+      } catch (e) {
+        print('SPLASH DEBUG: Error checking profile: $e, clearing auth and going to sign-in');
+        await authService.signOut();
+        context.go('/sign-in');
+      }
     } else {
-      // User needs registration - show options dialog
-      _showRegistrationOptions();
+      // User is unauthenticated, go to sign-in screen
+      print('SPLASH DEBUG: No Firebase user, going to sign-in');
+      context.go('/sign-in');
     }
   }
 
@@ -144,9 +167,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
-              context.go('/alerts');
+              context.go('/sign-in');
             },
-            child: const Text('Continue Anyway'),
+            child: const Text('Continue'),
           ),
         ],
       ),
@@ -158,46 +181,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     _initializeApp();
   }
 
-  Future<void> _handleGoogleSignIn() async {
-    try {
-      final socialAuthService = SocialAuthService();
-      
-      // Show loading
-      _showLoadingDialog('Signing in with Google...');
-      
-      final result = await socialAuthService.signInWithGoogle();
-      
-      // Hide loading
-      Navigator.of(context).pop();
-      
-      if (result.success) {
-        // Update app state
-        ref.read(appStateProvider.notifier).setInitialized(true);
-        
-        // Show welcome message for new users
-        if (result.isNewUser) {
-          _showWelcomeMessage(result.username!);
-        }
-        
-        // Navigate to main app
-        context.go('/alerts');
-      } else {
-        final error = result.error ?? 'Unknown error';
-        
-        _showErrorDialog('Google Sign-In Failed', error, onDismiss: () {
-          _showRegistrationOptions();
-        });
-      }
-    } catch (e) {
-      // Hide loading if still showing
-      if (Navigator.of(context).canPop()) {
-        Navigator.of(context).pop();
-      }
-      _showErrorDialog('Google Sign-In Error', e.toString(), onDismiss: () {
-        _showRegistrationOptions();
-      });
-    }
-  }
 
   void _showLoadingDialog(String message) {
     showDialog(
@@ -246,177 +229,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     );
   }
 
-  void _showWelcomeMessage(String username) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.darkSurface,
-        title: const Row(
-          children: [
-            Text('🎉', style: TextStyle(fontSize: 24)),
-            SizedBox(width: 12),
-            Text(
-              'Welcome to UFOBeep!',
-              style: TextStyle(color: AppColors.brandPrimary),
-            ),
-          ],
-        ),
-        content: Text(
-          'Your cosmic username is: $username\n\nYou\'re now ready to report and witness UFO sightings!',
-          style: const TextStyle(color: AppColors.textSecondary),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Get Started', style: TextStyle(color: AppColors.brandPrimary)),
-          ),
-        ],
-      ),
-    );
-  }
 
-  void _showRegistrationOptions() {
-    if (!mounted) return;
-    
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.darkSurface,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Row(
-          children: [
-            Text('🛸', style: TextStyle(fontSize: 24)),
-            SizedBox(width: 12),
-            Text(
-              'Welcome to UFOBeep',
-              style: TextStyle(color: AppColors.textPrimary, fontSize: 18),
-            ),
-          ],
-        ),
-        content: const Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Choose how you\'d like to get started:',
-              style: TextStyle(color: AppColors.textSecondary, fontSize: 16),
-            ),
-            SizedBox(height: 16),
-            Text(
-              '• New User: Create a new account with a cosmic username',
-              style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
-            ),
-            SizedBox(height: 8),
-            Text(
-              '• I Have an Account: Recover your existing username with a verified email',
-              style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
-            ),
-          ],
-        ),
-        actions: [
-          // Google Sign-In Button (Primary)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 12.0),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  await _handleGoogleSignIn();
-                },
-                icon: Image.network(
-                  'https://developers.google.com/identity/images/g-logo.png',
-                  height: 18,
-                  width: 18,
-                ),
-                label: const Text(
-                  'Continue with Google',
-                  style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black87,
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    side: const BorderSide(color: Colors.grey, width: 0.5),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                ),
-              ),
-            ),
-          ),
-          
-          // Divider
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Row(
-              children: const [
-                Expanded(child: Divider(color: AppColors.textTertiary)),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    'or',
-                    style: TextStyle(color: AppColors.textTertiary, fontSize: 12),
-                  ),
-                ),
-                Expanded(child: Divider(color: AppColors.textTertiary)),
-              ],
-            ),
-          ),
-          
-          // Account Recovery Button
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  context.go('/recover');
-                },
-                icon: const Icon(Icons.email_outlined, color: AppColors.brandPrimary),
-                label: const Text(
-                  'I Have an Account',
-                  style: TextStyle(color: AppColors.brandPrimary, fontWeight: FontWeight.w600),
-                ),
-                style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: AppColors.brandPrimary),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                ),
-              ),
-            ),
-          ),
-          // New User Button
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton.icon(
-              onPressed: () {
-                Navigator.of(context).pop();
-                context.go('/register');
-              },
-              icon: const Icon(Icons.person_add, color: AppColors.brandPrimary),
-              label: const Text(
-                'New User',
-                style: TextStyle(color: AppColors.brandPrimary, fontWeight: FontWeight.w600),
-              ),
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: AppColors.brandPrimary),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 12),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -471,7 +284,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   }
 
   Widget _buildLoadingSection() {
-    final initStep = ref.watch(initializationStepProvider);
     final initProgress = ref.watch(initializationProgressProvider);
     final initMessage = ref.watch(initializationMessageProvider);
     final hasError = ref.watch(hasInitializationErrorProvider);
@@ -492,15 +304,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
           isError: hasError,
         ),
         const SizedBox(height: 32),
-        if (AppEnvironment.debugMode)
-          InitializationStepIndicator(
-            currentStep: initStep.when(
-              data: (step) => step,
-              loading: () => InitializationStep.environment,
-              error: (_, __) => InitializationStep.environment,
-            ),
-            hasError: hasError,
-          ),
       ],
     );
   }

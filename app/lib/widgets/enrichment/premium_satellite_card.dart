@@ -77,7 +77,7 @@ class PremiumSatelliteCard extends StatelessWidget {
                 'SkyFi',
                 '10-50cm Resolution',
                 'Coming Soon',
-                const Color(0xFF6B46C1),
+                AppColors.brandPrimary,
                 () => _showSkyFiInfo(context),
               ),
             ],
@@ -96,53 +96,54 @@ class PremiumSatelliteCard extends StatelessWidget {
     VoidCallback onTap,
   ) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: AppColors.darkBackground,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.darkBorder),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: AppColors.brandPrimary),
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(6),
           onTap: onTap,
           child: Padding(
             padding: const EdgeInsets.all(4),
             child: Row(
               children: [
                 Icon(
-                  Icons.info_outline,
-                  color: color,
-                  size: 20,
+                  Icons.circle,
+                  size: 8,
+                  color: AppColors.brandPrimary,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 6),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '$name $resolution',
+                        '$name - $resolution',
                         style: TextStyle(
                           color: AppColors.textPrimary,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
+                      const SizedBox(height: 4),
                       Text(
                         status,
                         style: TextStyle(
-                          color: color,
-                          fontSize: 12,
+                          color: AppColors.textSecondary,
+                          fontSize: 10,
                         ),
                       ),
                     ],
                   ),
                 ),
                 Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16,
-                  color: AppColors.textTertiary,
+                  Icons.info_outline,
+                  size: 12,
+                  color: AppColors.brandPrimary,
                 ),
               ],
             ),

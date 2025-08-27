@@ -13,6 +13,8 @@ import '../../config/environment.dart';
 import '../../services/sound_service.dart';
 import '../../services/permission_service.dart';
 import '../../services/user_service.dart';
+import '../../services/auth_service.dart';
+import '../../services/social_auth_service.dart';
 import '../admin/admin_screen.dart';
 import 'user_registration_screen.dart';
 import '../../widgets/profile/user_stats_widget.dart';
@@ -255,13 +257,36 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 16),
+            
+            // Sign Out option for users who want to switch accounts
             TextButton(
-              onPressed: () => context.go('/alerts'),
+              onPressed: _handleLogout,
               child: const Text(
-                'Continue without profile',
-                style: TextStyle(color: AppColors.textSecondary),
+                'Sign Out',
+                style: TextStyle(
+                  color: AppColors.semanticError,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
+            
+            const SizedBox(height: 8),
+            
+            // DEBUG: Clear all data option
+            TextButton(
+              onPressed: _handleClearAllData,
+              child: const Text(
+                'Clear All Data (Debug)',
+                style: TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            
+            // Removed "Continue without profile" - all users must have profiles
           ],
         ),
       ),
@@ -1113,35 +1138,33 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        title,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w500,
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  if (isCritical) ...[
+                    const SizedBox(height: 4),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: AppColors.semanticError.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        'REQUIRED',
+                        style: TextStyle(
+                          color: AppColors.semanticError,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      if (isCritical)
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: AppColors.semanticError.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            'REQUIRED',
-                            style: TextStyle(
-                              color: AppColors.semanticError,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: 2),
+                    ),
+                    const SizedBox(height: 2),
+                  ] else
+                    const SizedBox(height: 2),
                   Text(
                     isGranted 
                         ? 'Granted' 
@@ -1194,6 +1217,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           if (!granted) {
             await permissionService.openPermissionSettings();
           }
+        } else {
+          // Permission already granted - allow user to manage in settings
+          await permissionService.openPermissionSettings();
         }
         break;
       case 'notifications':
@@ -1202,6 +1228,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           if (!granted) {
             await permissionService.openPermissionSettings();
           }
+        } else {
+          // Permission already granted - allow user to manage in settings
+          await permissionService.openPermissionSettings();
         }
         break;
       case 'camera':
@@ -1210,6 +1239,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           if (!granted) {
             await permissionService.openPermissionSettings();
           }
+        } else {
+          // Permission already granted - allow user to manage in settings
+          await permissionService.openPermissionSettings();
         }
         break;
       case 'photos':
@@ -1218,9 +1250,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           if (!granted) {
             await permissionService.openPermissionSettings();
           }
+        } else {
+          // Permission already granted - allow user to manage in settings
+          await permissionService.openPermissionSettings();
         }
         break;
     }
+    
+    // Refresh permission state after handling
+    await permissionService.refreshPermissions();
     
     if (mounted) {
       setState(() {});
@@ -1968,7 +2006,215 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ),
         ),
         const SizedBox(height: 24),
+
+        // Logout Button
+        _buildLogoutButton(),
+        
+        const SizedBox(height: 24),
       ],
     );
+  }
+
+  Widget _buildLogoutButton() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.darkSurface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.semanticError.withOpacity(0.3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.logout, color: AppColors.semanticError, size: 20),
+              const SizedBox(width: 8),
+              const Text(
+                'Account',
+                style: TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: _handleLogout,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.semanticError,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+              ),
+              child: const Text(
+                'Sign Out',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _handleLogout() async {
+    try {
+      // Show loading indicator
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(
+          child: CircularProgressIndicator(color: AppColors.brandPrimary),
+        ),
+      );
+
+      // Sign out from both Firebase Auth and Social Auth services
+      await Future.wait([
+        authService.signOut(),
+        SocialAuthService().signOut(),
+      ]);
+
+      // Clear user preferences
+      await ref.read(userPreferencesProvider.notifier).clearPreferences();
+
+      // Dismiss loading dialog
+      if (mounted) {
+        Navigator.pop(context);
+      }
+
+      // Navigate to sign-in screen
+      if (mounted) {
+        context.go('/sign-in');
+      }
+
+      print('User signed out successfully');
+    } catch (e) {
+      print('Error during logout: $e');
+      
+      // Dismiss loading dialog if still showing
+      if (mounted) {
+        Navigator.pop(context);
+        
+        // Show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to sign out: $e'),
+            backgroundColor: AppColors.semanticError,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _handleClearAllData() async {
+    // Show confirmation dialog
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        title: const Text(
+          'Clear All Data',
+          style: TextStyle(color: AppColors.textPrimary),
+        ),
+        content: const Text(
+          'This will completely reset the app and clear all authentication data. You will need to sign in again.',
+          style: TextStyle(color: AppColors.textSecondary),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: AppColors.semanticError),
+            child: const Text('Clear All Data'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    try {
+      // Show loading indicator
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(
+          child: CircularProgressIndicator(color: AppColors.brandPrimary),
+        ),
+      );
+
+      print('CLEAR DATA: Starting complete data clear...');
+
+      // 1. Sign out from Firebase Auth
+      await authService.signOut();
+      print('CLEAR DATA: Firebase Auth signed out');
+
+      // 2. Sign out from Social Auth (Google)
+      await SocialAuthService().signOut();
+      print('CLEAR DATA: Social Auth signed out');
+
+      // 3. Clear ALL SharedPreferences data
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+      print('CLEAR DATA: SharedPreferences cleared');
+
+      // 4. Clear user preferences
+      await ref.read(userPreferencesProvider.notifier).clearPreferences();
+      print('CLEAR DATA: User preferences cleared');
+
+      // 5. Clear any cached auth tokens or device data
+      // (DeviceService might have cached data)
+
+      print('CLEAR DATA: All data cleared successfully');
+
+      // Dismiss loading dialog
+      if (mounted) {
+        Navigator.pop(context);
+      }
+
+      // Show success message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('All data cleared successfully'),
+            backgroundColor: AppColors.semanticSuccess,
+          ),
+        );
+      }
+
+      // Navigate to sign-in screen
+      if (mounted) {
+        context.go('/sign-in');
+      }
+
+    } catch (e) {
+      print('CLEAR DATA: Error during data clear: $e');
+      
+      // Dismiss loading dialog if still showing
+      if (mounted) {
+        Navigator.pop(context);
+        
+        // Show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to clear data: $e'),
+            backgroundColor: AppColors.semanticError,
+          ),
+        );
+      }
+    }
   }
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../services/user_service.dart';
+import '../../services/auth_service.dart';
+import '../../services/social_auth_service.dart';
 import '../../theme/app_theme.dart';
 
 class UserRegistrationScreen extends StatefulWidget {
@@ -178,6 +181,23 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
                       : const Text('Create UFO ID'),
                 ),
               ),
+              const SizedBox(height: 16),
+              
+              // DEBUG: Clear all data option
+              Center(
+                child: TextButton(
+                  onPressed: _handleClearAllData,
+                  child: const Text(
+                    'Clear All Data (Debug)',
+                    style: TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
+              
               const SizedBox(height: 16),
 
               // Note about required registration
@@ -416,5 +436,100 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
         ),
       ],
     );
+  }
+
+  Future<void> _handleClearAllData() async {
+    // Show confirmation dialog
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        title: const Text(
+          'Clear All Data',
+          style: TextStyle(color: AppColors.textPrimary),
+        ),
+        content: const Text(
+          'This will completely reset the app and clear all authentication data. You will need to sign in again from scratch.',
+          style: TextStyle(color: AppColors.textSecondary),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: AppColors.semanticError),
+            child: const Text('Clear All Data'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    try {
+      // Show loading indicator
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(
+          child: CircularProgressIndicator(color: AppColors.brandPrimary),
+        ),
+      );
+
+      print('CLEAR DATA: Starting complete data clear...');
+
+      // 1. Sign out from Firebase Auth
+      await authService.signOut();
+      print('CLEAR DATA: Firebase Auth signed out');
+
+      // 2. Sign out from Social Auth (Google)
+      await SocialAuthService().signOut();
+      print('CLEAR DATA: Social Auth signed out');
+
+      // 3. Clear ALL SharedPreferences data
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+      print('CLEAR DATA: SharedPreferences cleared');
+
+      print('CLEAR DATA: All data cleared successfully');
+
+      // Dismiss loading dialog
+      if (mounted) {
+        Navigator.pop(context);
+      }
+
+      // Show success message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('All data cleared! Starting fresh...'),
+            backgroundColor: AppColors.semanticSuccess,
+          ),
+        );
+      }
+
+      // Navigate to sign-in screen
+      if (mounted) {
+        context.go('/sign-in');
+      }
+
+    } catch (e) {
+      print('CLEAR DATA: Error during data clear: $e');
+      
+      // Dismiss loading dialog if still showing
+      if (mounted) {
+        Navigator.pop(context);
+        
+        // Show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to clear data: $e'),
+            backgroundColor: AppColors.semanticError,
+          ),
+        );
+      }
+    }
   }
 }

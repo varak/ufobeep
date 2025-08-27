@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
-import '../../services/firebase_auth_service.dart';
 import '../../theme/app_theme.dart';
 
 class FirebasePhoneAuthScreen extends StatefulWidget {
@@ -129,38 +128,19 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
 
   Future<void> _linkPhoneCredential(PhoneAuthCredential credential) async {
     try {
-      final user = FirebaseAuth.instance.currentUser;
+      // No anonymous users allowed - always sign in with phone
+      print('Signing in with phone credential...');
+      final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
       
-      if (user != null && user.isAnonymous) {
-        // Link phone number to existing anonymous account
-        print('Linking phone to anonymous account...');
-        final userCredential = await user.linkWithCredential(credential);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Phone number verified: ${userCredential.user?.phoneNumber}'),
+            backgroundColor: AppColors.semanticSuccess,
+          ),
+        );
         
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Phone number verified: ${userCredential.user?.phoneNumber}'),
-              backgroundColor: AppColors.semanticSuccess,
-            ),
-          );
-          
-          context.pop(); // Return to previous screen
-        }
-      } else {
-        // Sign in with phone credential
-        print('Signing in with phone credential...');
-        final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
-        
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Phone number verified: ${userCredential.user?.phoneNumber}'),
-              backgroundColor: AppColors.semanticSuccess,
-            ),
-          );
-          
-          context.go('/profile'); // Navigate to profile
-        }
+        context.pop(); // Return to previous screen
       }
     } catch (e) {
       print('Error linking/signing in with phone: $e');
