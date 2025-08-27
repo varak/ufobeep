@@ -28,6 +28,30 @@ def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
         raise
 
 
+def create_refresh_token(data: dict, expires_delta: timedelta = None) -> str:
+    """Create JWT refresh token with longer expiration"""
+    to_encode = data.copy()
+    to_encode.update({"type": "refresh"})  # Mark as refresh token
+    
+    if expires_delta:
+        expire = datetime.now(timezone.utc) + expires_delta
+    else:
+        expire = datetime.now(timezone.utc) + timedelta(days=7)  # 7 days for refresh tokens
+    
+    to_encode.update({"exp": expire})
+    
+    try:
+        encoded_jwt = jwt.encode(
+            to_encode, 
+            settings.jwt_secret, 
+            algorithm=settings.jwt_algorithm
+        )
+        return encoded_jwt
+    except Exception as e:
+        logger.error(f"Error creating refresh token: {e}")
+        raise
+
+
 def verify_access_token(token: str) -> dict:
     """Verify and decode JWT access token with clock skew tolerance"""
     try:

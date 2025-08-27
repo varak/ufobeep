@@ -103,26 +103,44 @@ class DeepLinkHandler {
       }
 
       if (isHttpsMagic) {
-        final token = uri.queryParameters['token'];
-        debugPrint('[DeepLink] HTTPS App Link detected');
-        debugPrint('[DeepLink] token present? ${token != null}');
-        debugPrint('[DeepLink] token length: ${token?.length ?? 0}');
+        // NEW: Authorization code flow - look for 'code' parameter
+        final code = uri.queryParameters['code'];
+        final token = uri.queryParameters['token']; // Legacy fallback
         
-        if (token == null || token.isEmpty) {
-          debugPrint('[DeepLink][ERROR] No token in HTTPS magic link.');
+        debugPrint('[DeepLink] HTTPS App Link detected');
+        debugPrint('[DeepLink] code present? ${code != null}');
+        debugPrint('[DeepLink] token present? ${token != null} (legacy)');
+        
+        if (code != null && code.isNotEmpty) {
+          // NEW: Authorization code flow
+          debugPrint('[DeepLink] Using authorization code flow');
+          debugPrint('[DeepLink] code length: ${code.length}');
+          
+          await authService.beginProcessingLink();
+          final success = await authService.loginWithMagicCode(code: code);
+          debugPrint('[DeepLink] Authorization code login result: $success');
+          
+          if (success) {
+            _navigateToMainApp();
+          }
+          return;
+        } else if (token != null && token.isNotEmpty) {
+          // LEGACY: JWT token flow (keep for backward compatibility)
+          debugPrint('[DeepLink] Using legacy JWT token flow');
+          debugPrint('[DeepLink] token length: ${token.length}');
+          
+          await authService.beginProcessingLink();
+          final success = await authService.loginWithMagicToken(token: token);
+          debugPrint('[DeepLink] Legacy token login result: $success');
+          
+          if (success) {
+            _navigateToMainApp();
+          }
+          return;
+        } else {
+          debugPrint('[DeepLink][ERROR] No code or token in HTTPS magic link.');
           return;
         }
-        
-        debugPrint('[DeepLink] Calling loginWithMagicToken with token-only data');
-        await authService.beginProcessingLink();
-        final success = await authService.loginWithMagicToken(token: token);
-        debugPrint('[DeepLink] HTTPS App Link login result: $success');
-        
-        // ChatGPT's navigation approach: navigate after successful auth
-        if (success) {
-          _navigateToMainApp();
-        }
-        return;
       }
 
       debugPrint('[DeepLink] Ignored URI (not magic auth): $uri');

@@ -10,17 +10,17 @@ class MagicLink(Base):
     __tablename__ = "magic_links"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    code = Column(String(64), nullable=False, unique=True, index=True)  # Opaque authorization code
     email = Column(String(255), nullable=False, index=True)
-    hashed_nonce = Column(String(255), nullable=False, unique=True, index=True)  # This is now hashed jti
-    jti = Column(String(255), nullable=False, unique=True, index=True)  # JWT ID for tracking
     expires_at = Column(DateTime(timezone=True), nullable=False)
-    used = Column(Boolean, default=False, nullable=False)
+    used_at = Column(DateTime(timezone=True), nullable=True)  # Timestamp when code was exchanged
+    used_by_device_id = Column(String(255), nullable=True)  # Device that used the code
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     user_agent = Column(String(500))
     ip_address = Column(String(45))
     
     def __repr__(self):
-        return f"<MagicLink(email='{self.email}', used={self.used}, expires_at='{self.expires_at}')>"
+        return f"<MagicLink(email='{self.email}', used={self.used_at is not None}, expires_at='{self.expires_at}')>"
     
     @property
     def is_expired(self):
@@ -28,8 +28,12 @@ class MagicLink(Base):
         return datetime.now(timezone.utc) > self.expires_at
     
     @property
+    def is_used(self):
+        return self.used_at is not None
+    
+    @property
     def is_valid(self):
-        return not self.used and not self.is_expired
+        return not self.is_used and not self.is_expired
 
 
 class MagicLinkAttempt(Base):

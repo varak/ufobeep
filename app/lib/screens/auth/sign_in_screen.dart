@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,16 +14,62 @@ class SignInScreen extends StatefulWidget {
   State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMixin {
   final TextEditingController _emailController = TextEditingController();
   bool _isGoogleLoading = false;
   bool _isMagicLinkLoading = false;
   String? _errorMessage;
   String? _successMessage;
+  bool _magicLinkSent = false;
+  int _cooldownSeconds = 0;
+  
+  // Animation controllers for UFO icon
+  late AnimationController _pulseController;
+  late AnimationController _rotationController;
+  late Animation<double> _pulseAnimation;
+  late Animation<double> _rotationAnimation;
 
+  @override
+  void initState() {
+    super.initState();
+    
+    // Initialize animation controllers
+    _pulseController = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+    
+    _rotationController = AnimationController(
+      duration: const Duration(seconds: 3),
+      vsync: this,
+    );
+    
+    _pulseAnimation = Tween<double>(
+      begin: 0.9,
+      end: 1.1,
+    ).animate(CurvedAnimation(
+      parent: _pulseController,
+      curve: Curves.easeInOut,
+    ));
+    
+    _rotationAnimation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(CurvedAnimation(
+      parent: _rotationController,
+      curve: Curves.linear,
+    ));
+    
+    // Start animations
+    _pulseController.repeat(reverse: true);
+    _rotationController.repeat();
+  }
+  
   @override
   void dispose() {
     _emailController.dispose();
+    _pulseController.dispose();
+    _rotationController.dispose();
     super.dispose();
   }
 
@@ -104,8 +151,29 @@ class _SignInScreenState extends State<SignInScreen> {
         print('SIGN-IN DEBUG: Backend magic link sent successfully');
         setState(() {
           _isMagicLinkLoading = false;
+          _magicLinkSent = true;
+          _cooldownSeconds = 30;
           _successMessage = result['message'] ?? 'Magic link sent! Check your email and click the link to sign in.';
           _errorMessage = null;
+        });
+        
+        // Start countdown timer
+        Timer.periodic(const Duration(seconds: 1), (timer) {
+          if (_cooldownSeconds > 0) {
+            if (mounted) {
+              setState(() {
+                _cooldownSeconds--;
+              });
+            }
+          } else {
+            timer.cancel();
+            if (mounted) {
+              setState(() {
+                _magicLinkSent = false;
+                _successMessage = null; // Clear success message when cooldown ends
+              });
+            }
+          }
         });
       } else {
         print('SIGN-IN DEBUG: Backend magic link failed: ${result['message']}');
@@ -247,17 +315,43 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 child: Column(
                   children: [
-                    Text(
-                      '🛸',
-                      style: TextStyle(
-                        fontSize: 64,
-                        shadows: [
-                          Shadow(
-                            color: AppColors.brandPrimary.withOpacity(0.5),
-                            blurRadius: 20,
+                    // Animated UFO Icon
+                    AnimatedBuilder(
+                      animation: _pulseAnimation,
+                      builder: (context, child) {
+                        return Transform.scale(
+                          scale: _pulseAnimation.value,
+                          child: AnimatedBuilder(
+                            animation: _rotationAnimation,
+                            builder: (context, child) {
+                              return Transform.rotate(
+                                angle: _rotationAnimation.value * 0.1, // Subtle rotation
+                                child: Container(
+                                  width: 120,
+                                  height: 120,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: RadialGradient(
+                                      colors: [
+                                        AppColors.brandPrimary.withOpacity(0.3),
+                                        AppColors.brandPrimary.withOpacity(0.1),
+                                        Colors.transparent,
+                                      ],
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Image.asset(
+                                      'assets/icons/ufo_icon.png',
+                                      width: 96,
+                                      height: 96,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
                     const SizedBox(height: 16),
                     const Text(
@@ -418,48 +512,99 @@ class _SignInScreenState extends State<SignInScreen> {
                     
                     const SizedBox(height: 24),
                     
-                    // Send Magic Link Button
-                    ElevatedButton(
-                      onPressed: (_isGoogleLoading || _isMagicLinkLoading) ? null : _sendMagicLink,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.brandPrimary,
-                        foregroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                    // Send Magic Link Button or Countdown
+                    if (!_magicLinkSent) 
+                      OutlinedButton(
+                        onPressed: (_isGoogleLoading || _isMagicLinkLoading) ? null : _sendMagicLink,
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: AppColors.darkBackground,
+                          foregroundColor: AppColors.brandPrimary,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          side: BorderSide(
+                            color: _isMagicLinkLoading 
+                              ? AppColors.brandPrimary.withOpacity(0.3) 
+                              : AppColors.brandPrimary,
+                            width: 2,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
-                        elevation: 0,
-                      ),
-                      child: _isMagicLinkLoading
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                        child: _isMagicLinkLoading
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.brandPrimary),
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(width: 12),
-                                const Text(
-                                  'Sending Magic Link...',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
+                                  const SizedBox(width: 12),
+                                  const Text(
+                                    'Sending Magic Link...',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            )
-                          : const Text(
-                              'Send Magic Link',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                                ],
+                              )
+                            : const Text(
+                                'Send Magic Link',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
                               ),
                             ),
-                    ),
+                    )
+                    else
+                      // Cooldown message
+                      Container(
+                        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                        decoration: BoxDecoration(
+                          color: AppColors.semanticSuccess.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: AppColors.semanticSuccess,
+                            width: 2,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.check_circle,
+                              color: AppColors.semanticSuccess,
+                              size: 24,
+                            ),
+                            const SizedBox(width: 12),
+                            Flexible(
+                              child: Column(
+                                children: [
+                                  const Text(
+                                    'Magic link sent!',
+                                    style: TextStyle(
+                                      color: AppColors.semanticSuccess,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Check your email ($_cooldownSeconds s)',
+                                    style: TextStyle(
+                                      color: AppColors.semanticSuccess.withOpacity(0.8),
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     
                     const SizedBox(height: 16),
                     
@@ -495,8 +640,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                     
-                    // Success Message
-                    if (_successMessage != null)
+                    // Success Message (only show if not in cooldown state)
+                    if (_successMessage != null && !_magicLinkSent)
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(

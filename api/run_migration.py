@@ -1,79 +1,141 @@
 #!/usr/bin/env python3
 """
-Database migration runner
+Database migration runner for UFOBeep
+Runs Alembic migrations for schema updates
 """
+import os
+import sys
 import asyncio
-import asyncpg
 from pathlib import Path
 
+# Add app directory to Python path
+sys.path.insert(0, str(Path(__file__).parent / 'app'))
+
 async def run_migration():
-    """Run database migration"""
-    print("Connecting to database...")
-    
-    # Connect to database
-    conn = await asyncpg.connect(
-        host="localhost",
-        port=5432,
-        user="ufobeep_user", 
-        password="ufopostpass",
-        database="ufobeep_db"
-    )
+    """Run database migration using Alembic"""
+    print("🔄 UFOBeep Database Migration Runner")
+    print("=====================================")
     
     try:
-        # Read migration file
-        migration_path = Path("migrations/001_add_media_primary_fields.sql")
-        migration_sql = migration_path.read_text()
+        # Change to api directory
+        api_dir = Path(__file__).parent
+        os.chdir(api_dir)
         
-        print(f"Running migration: {migration_path}")
+        # Check if alembic is available
+        try:
+            import alembic
+            from alembic.config import Config
+            from alembic import command
+            print("✅ Alembic found")
+        except ImportError:
+            print("❌ Alembic not found, trying to install...")
+            os.system("pip install alembic")
+            try:
+                import alembic
+                from alembic.config import Config
+                from alembic import command
+                print("✅ Alembic installed successfully")
+            except ImportError:
+                print("❌ Failed to install Alembic")
+                return False
         
-        # Execute migration (split by semicolon to handle multiple statements)
-        statements = [stmt.strip() for stmt in migration_sql.split(';') if stmt.strip()]
+        # Check for alembic.ini
+        alembic_ini = api_dir / "alembic.ini"
+        if not alembic_ini.exists():
+            print(f"❌ alembic.ini not found at {alembic_ini}")
+            print("Creating basic alembic.ini...")
+            
+            alembic_ini_content = f"""[alembic]
+script_location = alembic
+sqlalchemy.url = postgresql://ufobeep_user:ufopostpass@localhost/ufobeep_db
+file_template = %%(year)d%%(month).2d%%(day).2d_%%H%%M%%S_%%(rev)s_%%(slug)s
+timezone = UTC
+
+[loggers]
+keys = root,sqlalchemy,alembic
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = WARN
+handlers = console
+qualname =
+
+[logger_sqlalchemy]
+level = WARN
+handlers =
+qualname = sqlalchemy.engine
+
+[logger_alembic]
+level = INFO
+handlers =
+qualname = alembic
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(levelname)-5.5s [%(name)s] %(message)s
+datefmt = %H:%M:%S
+"""
+            alembic_ini.write_text(alembic_ini_content)
+            print("✅ alembic.ini created")
         
-        for i, statement in enumerate(statements, 1):
-            if statement.strip():
-                print(f"Executing statement {i}/{len(statements)}...")
-                await conn.execute(statement)
+        # Run migration
+        print("\n🚀 Running Alembic migration...")
+        
+        alembic_cfg = Config(str(alembic_ini))
+        command.upgrade(alembic_cfg, "head")
         
         print("✅ Migration completed successfully!")
         
-        # Verify results
-        print("\nVerifying migration results...")
+        # Verify magic_links table structure
+        print("\n🔍 Verifying magic_links table structure...")
         
-        # Check if new columns exist
-        columns_result = await conn.fetch("""
-            SELECT column_name, data_type, is_nullable, column_default
-            FROM information_schema.columns 
-            WHERE table_name = 'media_files' 
-            AND column_name IN ('is_primary', 'uploaded_by_user_id', 'upload_order', 'display_priority', 'contributed_at')
-            ORDER BY column_name;
-        """)
-        
-        if columns_result:
-            print("New columns added:")
-            for row in columns_result:
-                print(f"  - {row['column_name']}: {row['data_type']} (nullable: {row['is_nullable']})")
-        else:
-            print("❌ No new columns found")
+        try:
+            import asyncpg
             
-        # Check indexes
-        indexes_result = await conn.fetch("""
-            SELECT indexname, indexdef
-            FROM pg_indexes 
-            WHERE tablename = 'media_files' 
-            AND indexname LIKE '%primary%' OR indexname LIKE '%priority%'
-            ORDER BY indexname;
-        """)
+            conn = await asyncpg.connect(
+                host="localhost",
+                port=5432,
+                user="ufobeep_user", 
+                password="ufopostpass",
+                database="ufobeep_db"
+            )
+            
+            # Check magic_links columns
+            columns_result = await conn.fetch("""
+                SELECT column_name, data_type, is_nullable, column_default
+                FROM information_schema.columns 
+                WHERE table_name = 'magic_links' 
+                ORDER BY ordinal_position;
+            """)
+            
+            if columns_result:
+                print("Magic links table columns:")
+                for row in columns_result:
+                    print(f"  - {row['column_name']}: {row['data_type']} (nullable: {row['is_nullable']})")
+            
+            await conn.close()
+            
+        except Exception as e:
+            print(f"⚠️  Could not verify table structure: {e}")
         
-        if indexes_result:
-            print("\nIndexes created:")
-            for row in indexes_result:
-                print(f"  - {row['indexname']}")
+        return True
         
     except Exception as e:
         print(f"❌ Migration failed: {e}")
-        raise
-    finally:
-        await conn.close()
+        import traceback
+        traceback.print_exc()
+        return False
 
 if __name__ == "__main__":
-    asyncio.run(run_migration())
+    success = asyncio.run(run_migration())
+    sys.exit(0 if success else 1)

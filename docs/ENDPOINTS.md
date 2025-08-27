@@ -155,42 +155,72 @@ Response: {
 Status: ✅ WORKING - Validates username format and availability
 ```
 
-### Request Magic Link (MP15 - Enhanced Auth)
+## Magic Link Authentication (Authorization Code Flow) ✅
+
+### Start Magic Link Flow
 ```
-POST /users/request-magic-link
+POST /auth/magic/start
 Body: {
-  "email": "user@example.com",
-  "device_id": "unique-device-id"
+  "email": "user@example.com"
 }
+
 Response: {
   "success": true,
-  "message": "Magic link sent to your email.",
-  "expires_in_minutes": 15
+  "message": "Magic link sent to your email",
+  "rate_limit_reset": null
 }
-Status: ✅ WORKING - Sends magic link to user's email for passwordless login
+
+Status: ✅ WORKING - Sends magic link with authorization code to email
+TTL: 15 minutes (shorter for better security)
+Rate Limiting: 3 attempts per 5-minute window per email/IP
 ```
 
-### Verify Magic Link (MP15 - Enhanced Auth) 
+### Magic Link Redirect (Browser)
 ```
-POST /users/verify-magic-link
+GET /auth/magic/complete?code={authorization_code}
+
+Behavior:
+- Validates that code exists and is not expired/used
+- Does NOT mark code as used (one-time validation)
+- Redirects to app via Android App Link:
+  https://api.ufobeep.com/auth/magic/complete?code={code}
+- If invalid/expired: Returns HTML error page
+
+Status: ✅ WORKING - Light validation + app redirect
+```
+
+### Exchange Authorization Code (App)
+```
+POST /auth/magic/exchange
 Body: {
-  "token": "magic-link-token-from-email"
+  "code": "authorization_code_from_email",
+  "device_id": "optional-device-uuid",
+  "app_version": "1.0.0",
+  "platform": "android"
 }
+
 Response: {
-  "success": true,
-  "message": "Successfully signed in!",
+  "access_token": "jwt_access_token",
+  "refresh_token": "jwt_refresh_token", 
   "user": {
-    "user_id": "uuid",
+    "id": "uuid",
     "username": "cosmic.whisper.7823",
     "email": "user@example.com"
   }
 }
-Error Response (expired/invalid):
-{
-  "success": false,
-  "message": "Invalid or expired magic link. Please request a new one."
-}
-Status: ✅ IMPLEMENTED - Verifies magic link and logs user in
+
+Error Responses:
+- 410 Gone: "Invalid code" | "Code expired" | "Code already used"
+- 500 Internal Error: "Token exchange failed. Please try again."
+
+Status: ✅ WORKING - Atomic code exchange with database transaction
+Security: One-time use enforced, race condition protection
+```
+
+### Legacy Endpoints (DEPRECATED - Remove after migration)
+```
+POST /users/request-magic-link  → Use /auth/magic/start
+POST /users/verify-magic-link   → Use /auth/magic/exchange
 ```
 
 

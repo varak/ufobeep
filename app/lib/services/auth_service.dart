@@ -407,6 +407,97 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
     }
   }
 
+  /// NEW: Authorization code flow magic link authentication
+  Future<bool> loginWithMagicCode({required String code}) async {
+    debugPrint('[Auth] loginWithMagicCode start');
+    debugPrint('[Auth] code length: ${code.length}');
+    
+    try {
+      // Exchange authorization code for tokens
+      final respJson = await _apiClient.exchangeMagicCode(code);
+      
+      if (respJson == null) {
+        debugPrint('[Auth][ERROR] Empty response from backend.');
+        _showDevSnack('Magic link failed: empty response');
+        return false;
+      }
+      
+      debugPrint('[Auth] Backend response keys: ${respJson.keys}');
+      
+      // Expected JSON: { access_token, refresh_token, user: {id, username, email} }
+      final accessToken = respJson['access_token'] as String?;
+      final refreshToken = respJson['refresh_token'] as String?;
+      final userObj = respJson['user'] as Map<String, dynamic>?;
+      
+      if (accessToken == null || userObj == null) {
+        debugPrint('[Auth][ERROR] Missing required fields in response');
+        _showDevSnack('Magic link failed: invalid response format');
+        return false;
+      }
+      
+      final userId = userObj['id']?.toString();
+      final username = userObj['username']?.toString();
+      final email = userObj['email']?.toString();
+      
+      if (userId == null || username == null) {
+        debugPrint('[Auth][ERROR] Missing user data in response');
+        _showDevSnack('Magic link failed: missing user data');
+        return false;
+      }
+      
+      // Store auth data securely
+      const storage = FlutterSecureStorage(
+        aOptions: AndroidOptions(encryptedSharedPreferences: true),
+        iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
+      );
+      
+      await storage.write(key: 'access_token', value: accessToken);
+      if (refreshToken != null) {
+        await storage.write(key: 'refresh_token', value: refreshToken);
+      }
+      await storage.write(key: 'user_id', value: userId);
+      await storage.write(key: 'username', value: username);
+      await storage.write(key: 'is_registered', value: 'true');
+      
+      if (email != null) {
+        await storage.write(key: 'user_email', value: email);
+      }
+      
+      debugPrint('[Auth] ✅ Authorization code auth successful - userId: $userId, username: $username');
+      
+      // Emit authenticated state
+      await _emit(AuthState.authenticated(
+        userId: userId,
+        username: username,
+        email: email,
+      ));
+      
+      _showDevSnack('Welcome back, $username!');
+      return true;
+      
+    } catch (e, st) {
+      debugPrint('[Auth][ERROR] loginWithMagicCode failed: $e');
+      debugPrint('[Auth][ERROR] Stack trace: $st');
+      
+      // Handle specific error cases
+      if (e is DioException) {
+        final code = e.response?.statusCode;
+        final body = e.response?.data;
+        debugPrint('[Auth][ERROR] HTTP $code body=$body');
+        
+        if (code == 410) {
+          _showDevSnack('Magic link expired or already used');
+        } else {
+          _showDevSnack('Magic link HTTP $code');
+        }
+      } else {
+        _showDevSnack('Magic link exception: $e');
+      }
+      
+      return false;
+    }
+  }
+
   /// Handle incoming Firebase magic link from deep link or web redirect (legacy)
   /// This creates an authenticated session AND checks/creates backend user
   Future<MagicLinkResult> handleMagicLink(String emailLink) async {

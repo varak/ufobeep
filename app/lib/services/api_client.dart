@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../config/environment.dart';
 import '../models/api_models.dart' as api;
@@ -813,6 +814,65 @@ class ApiClient {
       }
       throw ApiClientException(
         'Network error during token exchange: ${e.message}',
+        statusCode: e.response?.statusCode,
+      );
+    }
+  }
+
+  /// NEW: Exchange authorization code for tokens (authorization code flow)
+  Future<Map<String, dynamic>> exchangeMagicCode(String code) async {
+    try {
+      debugPrint('[ApiClient] Exchanging authorization code with backend');
+      
+      // Get device info for the request
+      String deviceId = 'unknown';
+      try {
+        const storage = FlutterSecureStorage();
+        final storedDeviceId = await storage.read(key: 'device_id');
+        if (storedDeviceId != null) {
+          deviceId = storedDeviceId;
+        }
+      } catch (e) {
+        debugPrint('[ApiClient] Could not get device ID: $e');
+      }
+      
+      final response = await _dio.post(
+        '/auth/magic/exchange',
+        data: {
+          'code': code,
+          'device_id': deviceId,
+          'app_version': '1.0.0', // TODO: Get from environment
+          'platform': Platform.isAndroid ? 'android' : 'ios',
+        },
+        options: Options(
+          headers: {'Accept': 'application/json'},
+          validateStatus: (status) => status != null && status < 500,
+        ),
+      );
+      
+      if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
+        debugPrint('[ApiClient] Authorization code exchange successful');
+        return response.data as Map<String, dynamic>;
+      } else {
+        final errorMsg = response.data is Map 
+          ? (response.data as Map)['detail'] ?? 'Code exchange failed'
+          : 'Code exchange failed';
+        throw ApiClientException(
+          'Backend code exchange failed: $errorMsg',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      debugPrint('[ApiClient] Authorization code exchange DioException: ${e.message}');
+      if (e.response?.statusCode == 410) {
+        final errorData = e.response?.data;
+        final errorMessage = errorData is Map 
+          ? (errorData['detail'] ?? 'Invalid, expired, or already used code') 
+          : 'Invalid, expired, or already used code';
+        throw ApiClientException(errorMessage, statusCode: 410);
+      }
+      throw ApiClientException(
+        'Network error during code exchange: ${e.message}',
         statusCode: e.response?.statusCode,
       );
     }

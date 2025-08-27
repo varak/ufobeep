@@ -30,6 +30,19 @@ class MagicLinkStartResponse(BaseModel):
     rate_limit_reset: Optional[int] = None
 
 
+class MagicCodeExchangeRequest(BaseModel):
+    code: str
+    device_id: Optional[str] = None
+    app_version: Optional[str] = None
+    platform: Optional[str] = None
+
+
+class MagicCodeExchangeResponse(BaseModel):
+    access_token: str
+    refresh_token: str
+    user: dict  # {id, username, email}
+
+
 class MagicLinkCompleteRequest(BaseModel):
     token: str
 
@@ -83,38 +96,19 @@ def check_rate_limit(email: str, ip_address: str, db: Session) -> bool:
     return email_attempts < MAX_ATTEMPTS_PER_WINDOW and ip_attempts < MAX_ATTEMPTS_PER_WINDOW
 
 
-def create_magic_link_token() -> tuple[str, str, str]:
-    """Create a secure JWT magic link token with jti"""
-    import uuid
-    from app.core.auth import create_access_token
-    
-    # Generate unique jti (JWT ID) for server-side tracking
-    jti = str(uuid.uuid4())
-    
-    # Create JWT token with jti and short expiration
-    expires_delta = timedelta(minutes=MAGIC_LINK_EXPIRY_MINUTES)
-    token_data = {
-        "jti": jti,
-        "type": "magic_link",
-        "exp": datetime.now(timezone.utc) + expires_delta
-    }
-    
-    jwt_token = create_access_token(data=token_data, expires_delta=expires_delta)
-    
-    # Create hash of jti for database storage (not the full JWT)
-    jti_hash = hashlib.sha256(jti.encode()).hexdigest()
-    
-    return jwt_token, jti_hash, jti
+def create_magic_code() -> str:
+    """Generate secure opaque authorization code"""
+    return secrets.token_urlsafe(32)  # 43 characters, URL-safe
 
 
-async def send_magic_link_email(email: str, token: str, background_tasks: BackgroundTasks):
+async def send_magic_link_email(email: str, code: str, background_tasks: BackgroundTasks):
     """Send magic link email using PostfixEmailService"""
     async def send_email():
         try:
             email_service = await get_email_service()
             
-            # Create magic link that completes auth and opens app
-            magic_link = f"https://api.ufobeep.com/auth/magic/complete?token={token}"
+            # Create magic link with authorization code
+            magic_link = f"https://api.ufobeep.com/auth/magic/complete?code={code}"
             
             # Create professional email content using UFOBeep theme
             html_content = f"""
@@ -349,19 +343,18 @@ async def start_magic_link(
         db.query(MagicLink).filter(
             and_(
                 MagicLink.email == email,
-                MagicLink.used == False
+                MagicLink.used_at.is_(None)
             )
-        ).update({"used": True})
+        ).update({"used_at": datetime.now(timezone.utc)})
         
-        # Generate new magic link JWT with jti
-        jwt_token, jti_hash, jti = create_magic_link_token()
-        expires_at = datetime.now(timezone.utc) + timedelta(minutes=MAGIC_LINK_EXPIRY_MINUTES)
+        # Generate new authorization code
+        code = create_magic_code()
+        expires_at = datetime.now(timezone.utc) + timedelta(minutes=15)  # Shorter TTL for better security
         
-        # Create magic link record with jti tracking
+        # Create magic link record with authorization code
         magic_link = MagicLink(
+            code=code,
             email=email,
-            hashed_nonce=jti_hash,  # Store hashed jti
-            jti=jti,  # Store actual jti for lookup
             expires_at=expires_at,
             user_agent=user_agent,
             ip_address=ip_address
@@ -370,8 +363,8 @@ async def start_magic_link(
         db.add(magic_link)
         db.commit()
         
-        # Send email in background with JWT token
-        await send_magic_link_email(email, jwt_token, background_tasks)
+        # Send email in background with authorization code
+        await send_magic_link_email(email, code, background_tasks)
         
         # Log successful attempt
         attempt = MagicLinkAttempt(
@@ -895,6 +888,214 @@ async def complete_magic_link_app(
         raise
     except Exception as e:
         logger.error(f"APP_TOKEN_EXCHANGE: ERROR - {str(e)}, IP={ip_address}")
+        raise HTTPException(
+            status_code=500,
+            detail="Token exchange failed. Please try again."
+        )
+
+
+# NEW AUTHORIZATION CODE FLOW ENDPOINTS
+
+@router.get("/complete/new")
+async def complete_magic_link_code(
+    code: str,
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    """
+    NEW: Authorization code flow GET endpoint.
+    Light validation + redirect to app - does NOT mark code as used.
+    """
+    try:
+        ip_address = get_client_ip(request)
+        logger.info(f"Magic link validation attempted from IP: {ip_address}")
+        
+        # Find magic link by authorization code
+        magic_link = db.query(MagicLink).filter(
+            and_(
+                MagicLink.code == code,
+                MagicLink.used_at.is_(None)  # Not used yet
+            )
+        ).first()
+        
+        if not magic_link:
+            logger.warning(f"MAGIC_CODE_GET: NOT_FOUND - code={code[:8]}..., IP={ip_address}")
+            from fastapi.responses import HTMLResponse
+            return HTMLResponse("""
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Invalid Magic Link</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #f5f5f5; }
+        .error { color: #e74c3c; background: white; padding: 20px; border-radius: 8px; max-width: 400px; margin: 0 auto; }
+    </style>
+</head>
+<body>
+    <div class="error">
+        <h2>Invalid Magic Link</h2>
+        <p>This magic link is invalid or has already been used.</p>
+        <p>Please request a new magic link from the app.</p>
+    </div>
+</body>
+</html>
+            """, status_code=410)
+        
+        if magic_link.is_expired:
+            logger.warning(f"MAGIC_CODE_GET: EXPIRED - email={magic_link.email}, expires_at={magic_link.expires_at}, IP={ip_address}")
+            from fastapi.responses import HTMLResponse
+            return HTMLResponse("""
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Expired Magic Link</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #f5f5f5; }
+        .error { color: #e74c3c; background: white; padding: 20px; border-radius: 8px; max-width: 400px; margin: 0 auto; }
+    </style>
+</head>
+<body>
+    <div class="error">
+        <h2>Expired Magic Link</h2>
+        <p>This magic link has expired.</p>
+        <p>Please request a new magic link from the app.</p>
+    </div>
+</body>
+</html>
+            """, status_code=410)
+        
+        logger.info(f"MAGIC_CODE_GET: VALID - email={magic_link.email}, code={code[:8]}..., IP={ip_address}")
+        
+        # Redirect to app with authorization code (triggers Android App Link)
+        from fastapi.responses import RedirectResponse
+        redirect_url = f"https://api.ufobeep.com/auth/magic/complete?code={code}"
+        return RedirectResponse(url=redirect_url, status_code=302)
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"MAGIC_CODE_GET: ERROR - {str(e)}, IP={ip_address}")
+        from fastapi.responses import HTMLResponse
+        return HTMLResponse("""
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Error</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #f5f5f5; }
+        .error { color: #e74c3c; background: white; padding: 20px; border-radius: 8px; max-width: 400px; margin: 0 auto; }
+    </style>
+</head>
+<body>
+    <div class="error">
+        <h2>Error</h2>
+        <p>Something went wrong. Please try again.</p>
+    </div>
+</body>
+</html>
+        """, status_code=500)
+
+
+@router.post("/exchange", response_model=MagicCodeExchangeResponse)
+async def exchange_magic_code(
+    request: MagicCodeExchangeRequest,
+    http_request: Request,
+    db: Session = Depends(get_db)
+):
+    """
+    NEW: Exchange authorization code for access tokens.
+    Atomic operation that marks code as used and returns JWT tokens.
+    """
+    try:
+        ip_address = get_client_ip(http_request)
+        logger.info(f"Magic code exchange attempted from IP: {ip_address}")
+        
+        # Atomic transaction with row locking to prevent race conditions
+        with db.begin():
+            # Find and lock the magic link record
+            magic_link = db.query(MagicLink).filter(
+                MagicLink.code == request.code
+            ).with_for_update().first()
+            
+            if not magic_link:
+                logger.warning(f"MAGIC_CODE_EXCHANGE: NOT_FOUND - code={request.code[:8]}..., IP={ip_address}")
+                raise HTTPException(status_code=410, detail="Invalid code")
+            
+            if magic_link.is_expired:
+                logger.warning(f"MAGIC_CODE_EXCHANGE: EXPIRED - email={magic_link.email}, expires_at={magic_link.expires_at}, IP={ip_address}")
+                raise HTTPException(status_code=410, detail="Code expired")
+            
+            if magic_link.is_used:
+                logger.warning(f"MAGIC_CODE_EXCHANGE: ALREADY_USED - email={magic_link.email}, used_at={magic_link.used_at}, IP={ip_address}")
+                raise HTTPException(status_code=410, detail="Code already used")
+            
+            # Mark as used atomically
+            magic_link.used_at = datetime.now(timezone.utc)
+            magic_link.used_by_device_id = request.device_id
+            
+            # Find or create user
+            user = db.query(User).filter(User.email == magic_link.email).first()
+            if not user:
+                # Create new user with collision-resistant username
+                max_retries = 5
+                for attempt in range(max_retries):
+                    try:
+                        random_suffix = secrets.token_hex(8)  # 16 characters
+                        username = f"user_{random_suffix}"
+                        
+                        user = User(
+                            username=username,
+                            email=magic_link.email,
+                            is_verified=True,
+                            last_login=datetime.now(timezone.utc)
+                        )
+                        db.add(user)
+                        db.flush()  # This will raise error if username collision occurs
+                        logger.info(f"MAGIC_CODE_EXCHANGE: NEW_USER - email={magic_link.email}, username={username}, IP={ip_address}")
+                        break
+                    except Exception as e:
+                        error_msg = str(e).lower()
+                        if ("unique" in error_msg or "duplicate" in error_msg) and attempt < max_retries - 1:
+                            # Username collision, try again
+                            logger.warning(f"MAGIC_CODE_EXCHANGE: USERNAME_COLLISION - attempt={attempt+1}, email={magic_link.email}, IP={ip_address}")
+                            db.rollback()
+                            continue
+                        else:
+                            logger.error(f"MAGIC_CODE_EXCHANGE: USER_CREATION_FAILED - {str(e)}, email={magic_link.email}, IP={ip_address}")
+                            raise HTTPException(status_code=500, detail="Failed to create user account")
+            else:
+                # Update existing user
+                user.last_login = datetime.now(timezone.utc)
+                user.is_verified = True
+                logger.info(f"MAGIC_CODE_EXCHANGE: EXISTING_USER - email={magic_link.email}, IP={ip_address}")
+            
+            # Create session tokens
+            from app.core.auth import create_access_token, create_refresh_token
+            access_token = create_access_token(data={"sub": str(user.id)})
+            refresh_token = create_refresh_token(data={"sub": str(user.id)})
+            
+            # Everything succeeded, commit the transaction
+            db.commit()
+            
+            logger.info(f"MAGIC_CODE_EXCHANGE: SUCCESS - user_id={user.id}, code={request.code[:8]}..., IP={ip_address}")
+            
+            return MagicCodeExchangeResponse(
+                access_token=access_token,
+                refresh_token=refresh_token,
+                user={
+                    "id": str(user.id),
+                    "username": user.username,
+                    "email": user.email
+                }
+            )
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"MAGIC_CODE_EXCHANGE: ERROR - {str(e)}, IP={ip_address}")
         raise HTTPException(
             status_code=500,
             detail="Token exchange failed. Please try again."
