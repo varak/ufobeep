@@ -29,12 +29,13 @@ def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
 
 
 def verify_access_token(token: str) -> dict:
-    """Verify and decode JWT access token"""
+    """Verify and decode JWT access token with clock skew tolerance"""
     try:
         payload = jwt.decode(
             token, 
             settings.jwt_secret, 
-            algorithms=[settings.jwt_algorithm]
+            algorithms=[settings.jwt_algorithm],
+            options={"verify_exp": True, "leeway": timedelta(seconds=300)}  # ±5 minute clock skew tolerance
         )
         return payload
     except JWTError as e:

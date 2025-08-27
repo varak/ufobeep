@@ -45,7 +45,7 @@ class MagicLinkCompleteResponse(BaseModel):
 
 
 # Configuration
-MAGIC_LINK_EXPIRY_MINUTES = 15
+MAGIC_LINK_EXPIRY_MINUTES = 30  # Extended for better reliability
 RATE_LIMIT_WINDOW_MINUTES = 5
 MAX_ATTEMPTS_PER_WINDOW = 3
 TOKEN_LENGTH = 32
@@ -245,7 +245,7 @@ async def send_magic_link_email(email: str, token: str, background_tasks: Backgr
         </div>
         <div class="content">
             <h2>Sign in to your account</h2>
-            <p>Click the button below to securely sign in to UFOBeep. This magic link will expire in 15 minutes for your security.</p>
+            <p>Click the button below to securely sign in to UFOBeep. This magic link will expire in 30 minutes for your security.</p>
             
             <center>
                 <a href="{magic_link}" class="app-button">
@@ -264,7 +264,7 @@ async def send_magic_link_email(email: str, token: str, background_tasks: Backgr
             </div>
             
             <div class="security-note">
-                <strong>Security Notice:</strong> This magic link is unique to you and will expire in 15 minutes. 
+                <strong>Security Notice:</strong> This magic link is unique to you and will expire in 30 minutes. 
                 If you didn't request this sign-in link, you can safely ignore this email.
             </div>
         </div>
@@ -421,13 +421,23 @@ async def complete_magic_link(
             token_type = payload.get("type")
             
             if not jti or token_type != "magic_link":
+                logger.warning(f"MAGIC_LINK_ERROR: BAD_TOKEN_TYPE - jti={jti}, type={token_type}, IP={ip_address}")
                 raise HTTPException(
                     status_code=400,
                     detail="Invalid magic link token"
                 )
                 
-        except JWTError:
-            logger.warning(f"Invalid JWT magic link token from IP: {ip_address}")
+        except JWTError as e:
+            error_str = str(e).lower()
+            if "expired" in error_str:
+                error_code = "EXPIRED"
+            elif "signature" in error_str:
+                error_code = "BAD_SIG"  
+            elif "audience" in error_str or "issuer" in error_str:
+                error_code = "BAD_AUD"
+            else:
+                error_code = "BAD_TOKEN"
+            logger.warning(f"MAGIC_LINK_ERROR: {error_code} - {str(e)}, IP={ip_address}")
             raise HTTPException(
                 status_code=400,
                 detail="Invalid or expired magic link"
@@ -442,23 +452,20 @@ async def complete_magic_link(
         ).first()
         
         if not magic_link:
-            logger.warning(f"Magic link not found or already used. JTI: {jti[:8]}...")
+            logger.warning(f"MAGIC_LINK_ERROR: NOT_FOUND_OR_USED - jti={jti[:8]}..., IP={ip_address}")
             raise HTTPException(
                 status_code=400,
                 detail="Invalid or already used magic link"
             )
         
         if magic_link.is_expired:
-            logger.warning(f"Expired magic link for email: {magic_link.email}")
+            logger.warning(f"MAGIC_LINK_ERROR: LINK_EXPIRED - email={magic_link.email}, expires_at={magic_link.expires_at}, IP={ip_address}")
             raise HTTPException(
                 status_code=400,
                 detail="Magic link has expired. Please request a new one."
             )
         
-        # Mark as used
-        magic_link.used = True
-        
-        # Find or create user
+        # Find or create user BEFORE marking as used
         user = db.query(User).filter(User.email == magic_link.email).first()
         is_new_user = user is None
         
@@ -471,17 +478,21 @@ async def complete_magic_link(
                 last_login=datetime.utcnow()
             )
             db.add(user)
-            logger.info(f"Created new user for email: {magic_link.email}")
+            logger.info(f"MAGIC_LINK_SUCCESS: NEW_USER - email={magic_link.email}, IP={ip_address}")
         else:
             # Update existing user
             user.last_login = datetime.utcnow()
             user.is_verified = True
-            logger.info(f"User login for existing email: {magic_link.email}")
-        
-        db.commit()
+            logger.info(f"MAGIC_LINK_SUCCESS: EXISTING_USER - email={magic_link.email}, IP={ip_address}")
         
         # Create access token
         access_token = create_access_token(data={"sub": str(user.id)})
+        
+        # Only mark as used after successful session creation
+        magic_link.used = True
+        db.commit()
+        
+        logger.info(f"MAGIC_LINK_COMPLETE: SUCCESS - user_id={user.id}, jti={jti[:8]}..., IP={ip_address}")
         
         # Check if this looks like a mobile browser
         user_agent = request.headers.get("User-Agent", "").lower()
@@ -628,3 +639,74 @@ async def complete_magic_link_post(
     Used by mobile apps that prefer POST requests.
     """
     return await complete_magic_link(request.token, http_request, db)
+
+
+@router.get("/status")
+async def magic_link_status(
+    jti: str,
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    """
+    Debug endpoint to check magic link token status.
+    Returns validity and reason for any failures.
+    """
+    try:
+        ip_address = get_client_ip(request)
+        logger.info(f"Magic link status check - jti={jti[:8]}..., IP={ip_address}")
+        
+        # Find the magic link by jti
+        magic_link = db.query(MagicLink).filter(MagicLink.jti == jti).first()
+        
+        if not magic_link:
+            return {
+                "valid": False,
+                "reason": "NOT_FOUND",
+                "message": "Magic link not found",
+                "jti": jti[:8] + "...",
+                "timestamp": datetime.now(timezone.utc).isoformat()
+            }
+        
+        # Check expiration
+        if magic_link.is_expired:
+            return {
+                "valid": False,
+                "reason": "EXPIRED", 
+                "message": f"Magic link expired at {magic_link.expires_at}",
+                "email": magic_link.email,
+                "expires_at": magic_link.expires_at.isoformat(),
+                "jti": jti[:8] + "...",
+                "timestamp": datetime.now(timezone.utc).isoformat()
+            }
+        
+        # Check if already used
+        if magic_link.used:
+            return {
+                "valid": False,
+                "reason": "ALREADY_USED",
+                "message": "Magic link has already been used",
+                "email": magic_link.email,
+                "jti": jti[:8] + "...",
+                "timestamp": datetime.now(timezone.utc).isoformat()
+            }
+        
+        # Valid and unused
+        return {
+            "valid": True,
+            "reason": "VALID",
+            "message": "Magic link is valid and unused",
+            "email": magic_link.email,
+            "expires_at": magic_link.expires_at.isoformat(),
+            "jti": jti[:8] + "...",
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"Error checking magic link status: {str(e)}")
+        return {
+            "valid": False,
+            "reason": "ERROR",
+            "message": f"Status check failed: {str(e)}",
+            "jti": jti[:8] + "..." if len(jti) > 8 else jti,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }

@@ -112,12 +112,14 @@
                 <data android:scheme="ufobeep" />
             </intent-filter>
             
-            <!-- App Links for ufobeep.com (auto-verified) -->
+            <!-- App Links for magic links (auto-verified) -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="api.ufobeep.com" />
+                <data android:scheme="https" 
+                      android:host="api.ufobeep.com" 
+                      android:pathPrefix="/auth/magic/complete" />
             </intent-filter>
             
             <!-- Additional App Links for main domain -->
