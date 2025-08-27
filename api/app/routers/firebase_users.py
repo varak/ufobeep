@@ -21,6 +21,28 @@ router = APIRouter(prefix="/firebase-users", tags=["firebase-users"])
 async def get_db() -> asyncpg.Pool:
     return await get_database_pool()
 
+# Helper function to generate unique username
+async def _generate_unique_username(db: asyncpg.Pool) -> str:
+    """Generate a unique username using the static UsernameGenerator methods"""
+    max_attempts = 100
+    for _ in range(max_attempts):
+        # Generate username using static method
+        username = UsernameGenerator.generate()
+        
+        # Check if it's unique in the database
+        existing_user = await db.fetchrow(
+            "SELECT username FROM users WHERE username = $1", username
+        )
+        
+        if not existing_user:
+            return username
+    
+    # Fallback if we can't find a unique username after max attempts
+    raise HTTPException(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        detail="Unable to generate unique username after multiple attempts"
+    )
+
 # Pydantic Models
 class UsernameRequest(BaseModel):
     """Request to set username for Firebase user"""
@@ -87,9 +109,8 @@ async def firebase_auth(
             }
         else:
             # New user - create with auto-generated username
-            username_generator = UsernameGenerator()
-            username_response = await username_generator.generate_username(db)
-            username = username_response["username"]
+            # Generate unique username using static method
+            username = await _generate_unique_username(db)
             
             # Create user record
             await db.execute("""
@@ -317,12 +338,23 @@ async def update_profile(
 async def generate_username(db: asyncpg.Pool = Depends(get_db)):
     """Generate username suggestions (public endpoint)"""
     try:
-        username_generator = UsernameGenerator()
-        username_response = await username_generator.generate_username(db)
+        # Generate primary username and alternatives using static methods
+        primary_username = await _generate_unique_username(db)
+        alternatives = []
+        
+        # Generate 4 alternative unique usernames
+        for _ in range(4):
+            try:
+                alt_username = await _generate_unique_username(db)
+                if alt_username not in alternatives and alt_username != primary_username:
+                    alternatives.append(alt_username)
+            except HTTPException:
+                # If we can't generate more unique alternatives, that's ok
+                break
         
         return {
-            "username": username_response["username"],
-            "alternatives": username_response["alternatives"]
+            "username": primary_username,
+            "alternatives": alternatives
         }
         
     except Exception as e:

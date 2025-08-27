@@ -27,6 +27,29 @@ async def get_db() -> asyncpg.Pool:
     """Get database connection pool from service"""
     return await get_database_pool()
 
+# Helper function to generate unique username
+async def _generate_unique_username(pool: asyncpg.Pool) -> str:
+    """Generate a unique username using the static UsernameGenerator methods"""
+    max_attempts = 100
+    for _ in range(max_attempts):
+        # Generate username using static method
+        username = UsernameGenerator.generate()
+        
+        # Check if it's unique in the database
+        async with pool.acquire() as conn:
+            existing_user = await conn.fetchrow(
+                "SELECT username FROM users WHERE username = $1", username
+            )
+        
+        if not existing_user:
+            return username
+    
+    # Fallback if we can't find a unique username after max attempts
+    raise HTTPException(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        detail="Unable to generate unique username after multiple attempts"
+    )
+
 
 # Pydantic Models for API
 class UsernameGenerationResponse(BaseModel):
@@ -140,14 +163,25 @@ class VisibilitySettingsRequest(BaseModel):
 # API Endpoints
 
 @router.post("/generate-username", response_model=UsernameGenerationResponse)
-async def generate_username():
+async def generate_username(pool: asyncpg.Pool = Depends(get_db)):
     """
     Generate a new unique username with alternatives
     Returns cosmic-themed username like 'cosmic.whisper.7823'
     """
     try:
-        primary_username = UsernameGenerator.generate()
-        alternatives = UsernameGenerator.generate_multiple(count=4)
+        # Generate primary unique username
+        primary_username = await _generate_unique_username(pool)
+        alternatives = []
+        
+        # Generate 4 alternative unique usernames
+        for _ in range(4):
+            try:
+                alt_username = await _generate_unique_username(pool)
+                if alt_username not in alternatives and alt_username != primary_username:
+                    alternatives.append(alt_username)
+            except HTTPException:
+                # If we can't generate more unique alternatives, that's ok
+                break
         
         return UsernameGenerationResponse(
             username=primary_username,
@@ -1228,11 +1262,16 @@ async def firebase_auth(
                 
                 # Device tracking handled by devices service
                 
+                # Create JWT tokens for existing user
+                from app.core.auth import create_access_token, create_refresh_token
+                access_token = create_access_token(data={"sub": str(user["id"])})
+                refresh_token = create_refresh_token(data={"sub": str(user["id"])})
+                
                 return {
-                    "success": True,
-                    "is_new_user": False,
+                    "access": access_token,
+                    "refresh": refresh_token,
                     "user": {
-                        "user_id": str(user["id"]),
+                        "id": str(user["id"]),
                         "username": user["username"],
                         "email": user["email"],
                         "login_methods": json.loads(user["login_methods"]) if user["login_methods"] else ["firebase"]
@@ -1241,9 +1280,7 @@ async def firebase_auth(
                 
             else:
                 # New user - create account with auto-generated username
-                username_generator = UsernameGenerator()
-                username_response = await username_generator.generate_username(pool)
-                username = username_response["username"]
+                username = await _generate_unique_username(pool)
                 user_id = uuid.uuid4()
                 
                 # Create new user with Firebase UID
@@ -1258,11 +1295,16 @@ async def firebase_auth(
                 
                 # Device tracking handled by devices service
                 
+                # Create JWT tokens for new user
+                from app.core.auth import create_access_token, create_refresh_token
+                access_token = create_access_token(data={"sub": str(user_id)})
+                refresh_token = create_refresh_token(data={"sub": str(user_id)})
+                
                 return {
-                    "success": True,
-                    "is_new_user": True,
+                    "access": access_token,
+                    "refresh": refresh_token,
                     "user": {
-                        "user_id": str(user_id),
+                        "id": str(user_id),
                         "username": username,
                         "email": firebase_user.email or '',
                         "login_methods": ["firebase"]
@@ -1273,6 +1315,109 @@ async def firebase_auth(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Firebase authentication failed: {str(e)}"
+        )
+
+
+@router.post("/auth/apple")
+async def apple_auth(
+    request: SocialLoginRequest,
+    pool: asyncpg.Pool = Depends(get_db)
+):
+    """
+    Authenticate with Apple Sign-In - MP15
+    Creates new account or links to existing account automatically
+    """
+    try:
+        # Verify Apple token using social auth service
+        social_service = SocialAuthService()
+        profile = await social_service.verify_apple_token(request.token, request.user_id)
+        
+        if not profile:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid Apple token"
+            )
+        
+        email = profile.get("email")
+        apple_id = profile.get("apple_id")
+        
+        async with pool.acquire() as conn:
+            # Check if user already exists by email or Apple ID
+            user = await conn.fetchrow("""
+                SELECT id, username, email, apple_id, login_methods
+                FROM users 
+                WHERE email = $1 OR apple_id = $2
+            """, email, apple_id)
+            
+            if user:
+                # Existing user - update last_active and Apple ID if needed
+                await conn.execute("""
+                    UPDATE users 
+                    SET last_login_at = NOW(), apple_id = $2
+                    WHERE id = $1
+                """, user["id"], apple_id)
+                
+                # Create JWT tokens for existing user
+                from app.core.auth import create_access_token, create_refresh_token
+                access_token = create_access_token(data={"sub": str(user["id"])})
+                refresh_token = create_refresh_token(data={"sub": str(user["id"])})
+                
+                return {
+                    "access": access_token,
+                    "refresh": refresh_token,
+                    "user": {
+                        "id": str(user["id"]),
+                        "username": user["username"],
+                        "email": user["email"],
+                        "login_methods": json.loads(user["login_methods"]) if user["login_methods"] else ["apple"]
+                    }
+                }
+                
+            else:
+                # New user - create account with auto-generated username
+                username = await _generate_unique_username(pool)
+                user_id = uuid.uuid4()
+                
+                # Create new user with Apple ID
+                await conn.execute("""
+                    INSERT INTO users (
+                        id, username, email, apple_id, 
+                        created_at, last_login_at, alert_range_km, 
+                        units_metric, preferred_language, login_methods
+                    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+                """, 
+                    user_id,
+                    username,
+                    email,
+                    apple_id,
+                    datetime.utcnow(),
+                    datetime.utcnow(),
+                    50.0,  # default alert range
+                    True,  # default metric units
+                    "en",  # default language
+                    json.dumps(["apple"])
+                )
+                
+                # Create JWT tokens for new user
+                from app.core.auth import create_access_token, create_refresh_token
+                access_token = create_access_token(data={"sub": str(user_id)})
+                refresh_token = create_refresh_token(data={"sub": str(user_id)})
+                
+                return {
+                    "access": access_token,
+                    "refresh": refresh_token,
+                    "user": {
+                        "id": str(user_id),
+                        "username": username,
+                        "email": email or '',
+                        "login_methods": ["apple"]
+                    }
+                }
+                
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Apple authentication failed: {str(e)}"
         )
 
 

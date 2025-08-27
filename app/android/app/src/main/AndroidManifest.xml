@@ -38,6 +38,7 @@
     <!-- Notification permissions -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     
     <!-- Hardware features -->
     <uses-feature
