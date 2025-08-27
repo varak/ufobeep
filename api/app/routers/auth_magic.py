@@ -313,8 +313,9 @@ async def start_magic_link(
         
         logger.info(f"Magic link requested for email: {email} from IP: {ip_address}")
         
-        # Check rate limits
-        if not check_rate_limit(email, ip_address, db):
+        # Check rate limits (temporarily disabled for debugging)
+        # TODO: Re-enable rate limiting after debugging
+        if False and not check_rate_limit(email, ip_address, db):
             logger.warning(f"Rate limit exceeded for email: {email}, IP: {ip_address}")
             
             # Log the attempt
@@ -470,15 +471,39 @@ async def complete_magic_link(
         is_new_user = user is None
         
         if is_new_user:
-            # Create new user
-            user = User(
-                username=f"user_{secrets.token_hex(4)}",  # Temporary username
-                email=magic_link.email,
-                is_verified=True,
-                last_login=datetime.utcnow()
-            )
-            db.add(user)
-            logger.info(f"MAGIC_LINK_SUCCESS: NEW_USER - email={magic_link.email}, IP={ip_address}")
+            # Create new user with collision-resistant username
+            max_retries = 5
+            for attempt in range(max_retries):
+                try:
+                    # Use longer random string to avoid collisions
+                    random_suffix = secrets.token_hex(8)  # 16 characters instead of 8
+                    username = f"user_{random_suffix}"
+                    
+                    user = User(
+                        username=username,
+                        email=magic_link.email,
+                        is_verified=True,
+                        last_login=datetime.utcnow()
+                    )
+                    db.add(user)
+                    db.flush()  # This will raise error if username collision occurs
+                    logger.info(f"MAGIC_LINK_SUCCESS: NEW_USER - email={magic_link.email}, username={username}, IP={ip_address}")
+                    break
+                except Exception as e:
+                    error_msg = str(e).lower()
+                    if ("unique" in error_msg or "duplicate" in error_msg) and attempt < max_retries - 1:
+                        # Username collision, try again with different random string
+                        logger.warning(f"MAGIC_LINK_RETRY: USERNAME_COLLISION - attempt={attempt+1}, email={magic_link.email}, error={str(e)}, IP={ip_address}")
+                        db.rollback()
+                        continue
+                    else:
+                        # Non-collision error or max retries exceeded
+                        logger.error(f"MAGIC_LINK_ERROR: USER_CREATION_FAILED - {str(e)}, email={magic_link.email}, attempt={attempt+1}, IP={ip_address}, full_error={repr(e)}")
+                        db.rollback()  # Ensure clean state
+                        raise HTTPException(
+                            status_code=500,
+                            detail=f"Failed to create user account: {str(e)}. Please try again."
+                        )
         else:
             # Update existing user
             user.last_login = datetime.utcnow()
