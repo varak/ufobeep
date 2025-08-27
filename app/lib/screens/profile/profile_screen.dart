@@ -64,7 +64,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Future<bool> _isUserAuthenticated() async {
     try {
       final authService = AuthService();
-      return authService.authState.isAuthenticated;
+      final authState = authService.authState;
+      print('  🔍 AUTH DEBUG:');
+      print('    authState.phase: ${authState.phase}');
+      print('    authState.isAuthenticated: ${authState.isAuthenticated}');
+      print('    authState.userId: ${authState.userId}');
+      print('    authState.username: ${authState.username}');
+      print('    authState.email: ${authState.email}');
+      return authState.isAuthenticated;
     } catch (e) {
       print('Error checking authentication: $e');
       return false;
@@ -111,13 +118,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget build(BuildContext context) {
     final userPreferences = ref.watch(userPreferencesProvider);
     
+    print('🔍 ProfileScreen DEBUG:');
+    print('  userPreferences: $userPreferences');
+    print('  userPreferences == null: ${userPreferences == null}');
+    
     // For authenticated users, always show profile even if no local preferences
     // The profile will create default preferences automatically
     if (userPreferences == null) {
+      print('  📝 userPreferences is null, checking auth status...');
       // Check if user is authenticated via AuthService
       return FutureBuilder<bool>(
         future: _isUserAuthenticated(),
         builder: (context, snapshot) {
+          print('  🔐 Auth check: connectionState=${snapshot.connectionState}, data=${snapshot.data}');
+          
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Scaffold(
               body: Center(child: CircularProgressIndicator()),
@@ -125,18 +139,25 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           }
           
           final isAuthenticated = snapshot.data ?? false;
+          print('  🔐 Final isAuthenticated: $isAuthenticated');
+          
           if (isAuthenticated) {
+            print('  ✅ User IS authenticated, initializing preferences...');
             // User is authenticated but has no local preferences
             // Create default preferences and show profile
             _initializeDefaultPreferences();
             return _buildProfileWithDefaults();
           } else {
+            print('  ❌ User NOT authenticated, showing registration prompt');
             // User is not authenticated, show registration prompt
             return _buildRegistrationPrompt();
           }
         },
       );
     }
+    
+    print('  ✅ userPreferences exist, showing full profile');
+    
 
     return Scaffold(
       appBar: AppBar(
