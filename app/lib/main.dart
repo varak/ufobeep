@@ -38,7 +38,7 @@ void main() async {
   final results = await Future.wait([
     Firebase.initializeApp(),
     SharedPreferences.getInstance(),
-    authService.initialize(), // Initialize auth service to check stored tokens
+    AuthService().initialize(), // Initialize auth service to check stored tokens
   ]);
   
   final sharedPreferences = results[1] as SharedPreferences;
@@ -102,7 +102,7 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
   void initState() {
     super.initState();
     
-    _auth = authService; // Use existing singleton
+    _auth = AuthService(); // Use existing singleton
     
     // ChatGPT's pattern: Initialize DeepLinkHandler BEFORE UI renders
     _deepLinkHandler = DeepLinkHandler();
