@@ -1,0 +1,21 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "V92WUYL75F.com.ufobeep.app",
+        "paths": [
+          "/auth/complete*",
+          "/auth/magic*",
+          "/alerts/*",
+          "/sighting/*",
+          "/compass*",
+          "/profile*"
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["V92WUYL75F.com.ufobeep.app"]
+  }
+}
