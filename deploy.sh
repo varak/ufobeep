@@ -237,11 +237,14 @@ if [ "$DEPLOY_API" = true ]; then
         echo "Installing dependencies..."
         cd api
         if [ -f "venv/bin/activate" ]; then
+            echo "Using existing virtual environment"
             source venv/bin/activate
             pip install -r requirements.txt
         else
-            echo "Virtual environment not found, using system pip"
-            pip install -r requirements.txt --break-system-packages
+            echo "Creating new virtual environment"
+            python3 -m venv venv
+            source venv/bin/activate
+            pip install -r requirements.txt
         fi
         
         echo "Running migrations..."
