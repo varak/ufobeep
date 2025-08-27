@@ -31,15 +31,17 @@ void main() async {
   final stopwatch = Stopwatch()..start();
   print('🚀 UFOBeep starting...');
   
-  // Run critical initialization in parallel
+  // Initialize environment first (needed by other services)
+  await AppEnvironment.initialize();
+  
+  // Run remaining critical initialization in parallel
   final results = await Future.wait([
     Firebase.initializeApp(),
-    AppEnvironment.initialize(),
     SharedPreferences.getInstance(),
     authService.initialize(), // Initialize auth service to check stored tokens
   ]);
   
-  final sharedPreferences = results[2] as SharedPreferences;
+  final sharedPreferences = results[1] as SharedPreferences;
   print('✅ Core initialization: ${stopwatch.elapsedMilliseconds}ms');
   
   // Set up Firebase messaging background handler early

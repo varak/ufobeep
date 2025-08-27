@@ -62,6 +62,7 @@ class DeepLinkHandler {
       // 2) ufobeep://auth/complete?token=...&user_id=...&username=... (custom scheme; full data)
       
       final isHttps = uri.scheme == 'https' && uri.host == 'api.ufobeep.com';
+      // Some backends append trailing segments or slash; accept prefix
       final isHttpsMagic = isHttps && uri.path.startsWith('/auth/magic/complete');
       final isCustom = uri.scheme == 'ufobeep' && uri.host == 'auth' && uri.path == '/complete';
 
@@ -86,6 +87,7 @@ class DeepLinkHandler {
         }
         
         debugPrint('[DeepLink] Calling loginWithMagicToken with full data');
+        await authService.beginProcessingLink();
         final success = await authService.loginWithMagicToken(
           token: token,
           userId: userId,
@@ -112,6 +114,7 @@ class DeepLinkHandler {
         }
         
         debugPrint('[DeepLink] Calling loginWithMagicToken with token-only data');
+        await authService.beginProcessingLink();
         final success = await authService.loginWithMagicToken(token: token);
         debugPrint('[DeepLink] HTTPS App Link login result: $success');
         

@@ -514,11 +514,11 @@ async def complete_magic_link(
         # Create access token
         access_token = create_access_token(data={"sub": str(user.id)})
         
-        # Only mark as used after successful session creation
-        magic_link.used = True
-        db.commit()
+        # DON'T mark as used here - let the app endpoint consume it
+        # This allows the browser to validate and redirect without consuming the token
+        db.commit()  # Still commit user creation/update
         
-        logger.info(f"MAGIC_LINK_COMPLETE: SUCCESS - user_id={user.id}, jti={jti[:8]}..., IP={ip_address}")
+        logger.info(f"MAGIC_LINK_VALIDATE: SUCCESS - user_id={user.id}, jti={jti[:8]}..., IP={ip_address} (token not consumed)")
         
         # Check if this looks like a mobile browser
         user_agent = request.headers.get("User-Agent", "").lower()

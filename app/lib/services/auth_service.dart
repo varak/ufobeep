@@ -17,24 +17,26 @@ import '../config/environment.dart';
 import '../models/user_preferences.dart';
 import '../features/auth/auth_gate.dart';
 
+/// Authentication phases to prevent race conditions
+enum AuthPhase { unknown, processingLink, authenticated, unauthenticated }
+
 /// Authentication state model (ChatGPT's recommendation)
 class AuthState {
-  final bool isAuthenticated;
+  final AuthPhase phase;
   final String? userId;
-  final String? username; 
+  final String? username;
   final String? email;
   
-  const AuthState({
-    required this.isAuthenticated,
-    this.userId,
-    this.username,
-    this.email,
-  });
+  const AuthState._(this.phase, {this.userId, this.username, this.email});
+  
+  /// Factory for unknown state
+  factory AuthState.unknown() => const AuthState._(AuthPhase.unknown);
+  
+  /// Factory for processing magic link state
+  factory AuthState.processingLink() => const AuthState._(AuthPhase.processingLink);
   
   /// Factory for unauthenticated state
-  factory AuthState.unauthenticated() {
-    return const AuthState(isAuthenticated: false);
-  }
+  factory AuthState.unauthenticated() => const AuthState._(AuthPhase.unauthenticated);
   
   /// Factory for authenticated state
   factory AuthState.authenticated({
@@ -42,13 +44,16 @@ class AuthState {
     required String username,
     String? email,
   }) {
-    return AuthState(
-      isAuthenticated: true,
+    return AuthState._(
+      AuthPhase.authenticated,
       userId: userId,
       username: username,
       email: email,
     );
   }
+  
+  /// Convenience getter for checking authentication
+  bool get isAuthenticated => phase == AuthPhase.authenticated;
   
   @override
   String toString() {
@@ -114,7 +119,7 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
   
   // State management (ChatGPT's recommendation)
   final StreamController<AuthState> _authStream = StreamController<AuthState>.broadcast();
-  AuthState _state = AuthState.unauthenticated();
+  AuthState _state = AuthState.unknown();
   
   /// Stream of authentication state changes
   Stream<AuthState> get authStream => _authStream.stream;
@@ -129,11 +134,17 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
   
   /// Emit new auth state (ChatGPT's recommendation)
   Future<void> _emit(AuthState newState) async {
-    debugPrint('[Auth] State change: ${_state.isAuthenticated} -> ${newState.isAuthenticated}');
+    debugPrint('[Auth] State change: ${_state.phase} -> ${newState.phase}');
     debugPrint('[Auth] New state: $newState');
     _state = newState;
     _authStream.add(newState);
     notifyListeners();
+  }
+  
+  /// Signal to UI we're processing a magic link (prevents premature Login screen)
+  Future<void> beginProcessingLink() async {
+    debugPrint('[Auth] beginProcessingLink()');
+    await _emit(AuthState.processingLink());
   }
 
   /// Get current user (null if not authenticated)
@@ -151,6 +162,9 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
     // Use the current state instead of checking tokens directly
     return _state.isAuthenticated ? AuthStatus.authenticated : AuthStatus.unauthenticated;
   }
+  
+  /// Current auth state getter for streaming auth gate
+  AuthState get state => _state;
 
   /// Check if user has valid authentication (Firebase Auth OR stored JWT token)
   bool _hasValidAuth() {
@@ -318,6 +332,7 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
 
       if (respJson == null) {
         debugPrint('[Auth][ERROR] Empty response from backend.');
+        _showDevSnack('Magic link failed: empty response');
         return false;
       }
 
@@ -334,6 +349,7 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
 
       if ([access, backendUserId, backendUsername].any((v) => v == null || (v as String).isEmpty)) {
         debugPrint('[Auth][ERROR] Missing fields in backend response: $respJson');
+        _showDevSnack('Magic link failed: missing fields in response');
         return false;
       }
 
@@ -378,6 +394,15 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
     } catch (e, st) {
       debugPrint('[Auth][ERROR] loginWithMagicToken failed: $e');
       debugPrint('[Auth][ERROR] Stack trace: $st');
+      // If DioError, surface HTTP status & body
+      if (e is DioException) {
+        final code = e.response?.statusCode;
+        final body = e.response?.data;
+        debugPrint('[Auth][ERROR] HTTP $code body=$body');
+        _showDevSnack('Magic link HTTP $code');
+      } else {
+        _showDevSnack('Magic link exception: $e');
+      }
       return false;
     }
   }
@@ -571,6 +596,15 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_pendingEmailKey);
   }
+  
+  /// Show development error messages (no-op in release)
+  void _showDevSnack(String msg) {
+    // No-op in release; in debug show a global snack. Replace with your app's logger/toast solution.
+    assert(() {
+      debugPrint('[DEV-SNACK] $msg');
+      return true;
+    }());
+  }
 }
 
 /// Custom exception class for authentication errors
@@ -621,7 +655,8 @@ class AuthException implements Exception {
 /// Global auth service instance
 final authService = AuthService();
 
-/// Extension to add dispose method to AuthService 
+/// Extension to add dispose method to AuthService
+
 extension AuthServiceDisposal on AuthService {
   /// Clean up resources
   void disposeResources() {
