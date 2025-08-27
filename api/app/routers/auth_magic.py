@@ -993,10 +993,128 @@ async def complete_magic_link_code(
         
         logger.info(f"MAGIC_CODE_GET: VALID - email={magic_link.email}, code={code[:8]}..., IP={ip_address}")
         
-        # Redirect to app with authorization code (triggers Android App Link)
-        from fastapi.responses import RedirectResponse
-        redirect_url = f"https://api.ufobeep.com/auth/magic/complete?code={code}"
-        return RedirectResponse(url=redirect_url, status_code=302)
+        # Progressive enhancement HTML page with JS fallback
+        from fastapi.responses import HTMLResponse
+        html_content = f"""
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opening UFOBeep...</title>
+    <style>
+        body {{ 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #0f1419; 
+            color: #ccd6f6; 
+            margin: 0; 
+            padding: 20px;
+            text-align: center;
+        }}
+        .container {{ 
+            max-width: 400px; 
+            margin: 50px auto; 
+            padding: 40px 20px;
+            background: #1a1f2e;
+            border-radius: 12px;
+        }}
+        .logo {{ 
+            font-size: 32px; 
+            color: #00d4ff; 
+            margin-bottom: 20px;
+        }}
+        .message {{ 
+            font-size: 18px; 
+            margin-bottom: 30px;
+        }}
+        .manual-button {{ 
+            display: inline-block;
+            background: #00ff88;
+            color: #0f1419;
+            padding: 16px 32px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 10px;
+        }}
+        .download-btn {{
+            background: #007bff;
+            color: white;
+        }}
+        .status {{
+            margin-top: 20px;
+            font-size: 14px;
+            color: #888;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🛸 UFOBeep</div>
+        <div class="message" id="message">
+            Authentication successful!<br>
+            Opening the app...
+        </div>
+        <div id="buttons" style="display: none;">
+            <a href="ufobeep://auth/complete?code={code}" class="manual-button">
+                Open UFOBeep
+            </a><br>
+            <a href="https://ufobeep.com/downloads/ufobeep-latest.apk" class="manual-button download-btn">
+                Download App
+            </a>
+        </div>
+        <div class="status" id="status">Attempting to open app...</div>
+    </div>
+    
+    <script>
+        let attempts = 0;
+        const maxAttempts = 3;
+        
+        function tryOpenApp() {{
+            attempts++;
+            document.getElementById('status').textContent = `Opening app (attempt ${{attempts}}/${{maxAttempts}})...`;
+            
+            // Try custom scheme first
+            try {{
+                window.location.href = 'ufobeep://auth/complete?code={code}';
+            }} catch (e) {{
+                console.log('Custom scheme failed:', e);
+            }}
+            
+            // Try Android Chrome intent fallback
+            if (navigator.userAgent.includes('Android')) {{
+                try {{
+                    window.location.href = 'intent://auth/complete?code={code}#Intent;scheme=ufobeep;package=com.ufobeep;S.browser_fallback_url=https%3A%2F%2Fufobeep.com%2Fdownloads%2Fufobeep-latest.apk;end';
+                }} catch (e) {{
+                    console.log('Intent scheme failed:', e);
+                }}
+            }}
+        }}
+        
+        // Try immediately
+        tryOpenApp();
+        
+        // Retry after delays
+        setTimeout(() => {{
+            if (attempts < maxAttempts) tryOpenApp();
+        }}, 1000);
+        
+        setTimeout(() => {{
+            if (attempts < maxAttempts) tryOpenApp();
+        }}, 3000);
+        
+        // Show manual options after 5 seconds
+        setTimeout(() => {{
+            document.getElementById('message').innerHTML = 'Having trouble opening the app?';
+            document.getElementById('buttons').style.display = 'block';
+            document.getElementById('status').textContent = 'Use the buttons above if the app didn\\'t open automatically.';
+        }}, 5000);
+    </script>
+</body>
+</html>
+        """
+        return HTMLResponse(content=html_content)
         
     except HTTPException:
         raise
