@@ -35,7 +35,7 @@ class DeepLinkHandler {
     
     // 2) Handle subsequent links (warm/foreground)
     _linkSubscription?.cancel();
-    _linkSubscription = _appLinks.linkStream.listen(
+    _linkSubscription = _appLinks.uriLinkStream.listen(
       (uri) async {
         debugPrint('🔗 DeepLinkHandler: Processing stream link: $uri');
         await _handleUri(uri);
