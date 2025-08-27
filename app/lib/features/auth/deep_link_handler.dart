@@ -55,32 +55,35 @@ class DeepLinkHandler {
       debugPrint('   Path: ${uri.path}');
       debugPrint('   Query: ${uri.queryParameters}');
       
-      // Expected: ufobeep://auth/complete?token=...&user_id=...&username=...
-      if (uri.scheme == 'ufobeep' && 
-          uri.host == 'auth' && 
-          uri.path == '/complete') {
-        
+      bool isMagicLink = false;
+      
+      // Check for App Links: https://api.ufobeep.com/auth/magic/complete?token=...
+      if (uri.scheme == 'https' && 
+          uri.host == 'api.ufobeep.com' && 
+          uri.path == '/auth/magic/complete') {
+        isMagicLink = true;
+        debugPrint('✅ DeepLinkHandler: HTTPS App Link magic link detected');
+      }
+      // Check for custom scheme: ufobeep://auth/complete?token=...&user_id=...&username=...
+      else if (uri.scheme == 'ufobeep' && 
+               uri.host == 'auth' && 
+               uri.path == '/complete') {
+        isMagicLink = true;
+        debugPrint('✅ DeepLinkHandler: Custom scheme magic link detected');
+      }
+      
+      if (isMagicLink) {
         final queryParams = uri.queryParameters;
         final token = queryParams['token'];
-        final userId = queryParams['user_id'];  
-        final username = queryParams['username'];
         
-        if (token != null && token.isNotEmpty && 
-            userId != null && userId.isNotEmpty &&
-            username != null && username.isNotEmpty) {
-          
-          debugPrint('✅ DeepLinkHandler: Valid magic link detected');
+        if (token != null && token.isNotEmpty) {
+          debugPrint('✅ DeepLinkHandler: Valid magic token found');
           debugPrint('   Token: ${token.substring(0, 20)}...');
-          debugPrint('   User ID: $userId');
-          debugPrint('   Username: $username');
           
-          // Pass all auth data to handler
+          // For HTTPS App Links, we only get the token - the backend handles user lookup
           await onMagicToken(queryParams);
         } else {
-          debugPrint('❌ DeepLinkHandler: Magic link missing required parameters');
-          debugPrint('   Token: ${token != null ? "present" : "missing"}');
-          debugPrint('   User ID: ${userId != null ? "present" : "missing"}');  
-          debugPrint('   Username: ${username != null ? "present" : "missing"}');
+          debugPrint('❌ DeepLinkHandler: Magic link missing token parameter');
         }
       } else {
         // Ignore non-magic links
