@@ -58,12 +58,12 @@ class DeepLinkHandler {
     try {
       // Robust HTTPS + custom scheme parsing with explicit logging
       // Accept either:
-      // 1) https://api.ufobeep.com/auth/magic/complete?token=...   (HTTPS App Link; token-only)
+      // 1) https://api.ufobeep.com/auth/magic/complete/new?code=...   (HTTPS App Link; code-only)
       // 2) ufobeep://auth/complete?token=...&user_id=...&username=... (custom scheme; full data)
       
       final isHttps = uri.scheme == 'https' && uri.host == 'api.ufobeep.com';
       // Some backends append trailing segments or slash; accept prefix
-      final isHttpsMagic = isHttps && uri.path.startsWith('/auth/magic/complete');
+      final isHttpsMagic = isHttps && uri.path.startsWith('/auth/magic');
       final isCustom = uri.scheme == 'ufobeep' && uri.host == 'auth' && uri.path == '/complete';
 
       debugPrint('[DeepLink] Analysis: isHttps=$isHttps, isHttpsMagic=$isHttpsMagic, isCustom=$isCustom');
