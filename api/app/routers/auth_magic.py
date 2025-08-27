@@ -361,7 +361,7 @@ async def start_magic_link(
         db.commit()
         
         # Send email in background
-        send_magic_link_email(email, token, background_tasks)
+        await send_magic_link_email(email, token, background_tasks)
         
         # Log successful attempt
         attempt = MagicLinkAttempt(
