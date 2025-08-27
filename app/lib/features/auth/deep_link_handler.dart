@@ -59,8 +59,7 @@ class DeepLinkHandler {
     try {
       final context = rootNavigatorKey.currentContext;
       if (context != null) {
-        final currentRoute = GoRouterState.of(context).location;
-        debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Current route before processing: $currentRoute');
+        debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Navigation context available');
       }
     } catch (e) {
       debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Could not get current route: $e');
@@ -182,8 +181,6 @@ class DeepLinkHandler {
         debugPrint('[DeepLink] 🔗 NAV_DEBUG: Context mounted: ${context?.mounted}');
         
         if (context != null && context.mounted) {
-          final currentLocation = GoRouterState.of(context).location;
-          debugPrint('[DeepLink] 🔗 NAV_DEBUG: Current location before navigation: $currentLocation');
           debugPrint('[DeepLink] 🔗 NAV_DEBUG: Using GoRouter to navigate to /alerts');
           context.go('/alerts');
           debugPrint('[DeepLink] 🔗 NAV_DEBUG: Navigation to /alerts completed successfully');
