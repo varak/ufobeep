@@ -993,7 +993,14 @@ async def complete_magic_link_code(
         
         logger.info(f"MAGIC_CODE_GET: VALID - email={magic_link.email}, code={code[:8]}..., IP={ip_address}")
         
-        # Progressive enhancement HTML page with JS fallback
+        # Immediate redirect to custom scheme (ChatGPT's Phase 1 solution)
+        # This bypasses GoRouter entirely and avoids the "no routes for location" error
+        from fastapi.responses import RedirectResponse
+        custom_scheme_url = f"ufobeep://auth/complete?code={code}"
+        logger.info(f"MAGIC_CODE_GET: Redirecting to custom scheme: {custom_scheme_url}")
+        return RedirectResponse(url=custom_scheme_url, status_code=302)
+        
+        # Original HTML fallback (keeping for reference, but not reached due to redirect above)
         from fastapi.responses import HTMLResponse
         html_content = f"""
 <!DOCTYPE html>
