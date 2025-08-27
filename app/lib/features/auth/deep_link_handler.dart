@@ -1,19 +1,20 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/services.dart';
-
-typedef MagicTokenHandler = Future<void> Function(Map<String, String> tokenData);
+import 'package:go_router/go_router.dart';
+import '../services/auth_service.dart';
+import '../../routing/app_router.dart';
 
 /// Centralized deep link handler that processes magic links BEFORE UI renders
 /// Based on ChatGPT's architecture recommendations for clean separation of concerns
 class DeepLinkHandler {
-  final MagicTokenHandler onMagicToken;
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
   bool _processedInitial = false;
 
-  DeepLinkHandler({required this.onMagicToken});
+  DeepLinkHandler();
 
   /// Initialize deep link handling - call this BEFORE app UI starts
   Future<void> init() async {
@@ -46,53 +47,107 @@ class DeepLinkHandler {
     );
   }
 
-  /// Process deep link URI - focus only on magic link auth
+  /// Process deep link URI - ChatGPT's comprehensive logging approach
   Future<void> _handleUri(Uri uri) async {
+    debugPrint('[DeepLink] Received URI: $uri');
+    debugPrint('[DeepLink] Scheme: ${uri.scheme}');
+    debugPrint('[DeepLink] Host: ${uri.host}');
+    debugPrint('[DeepLink] Path: ${uri.path}');
+    debugPrint('[DeepLink] Query Parameters: ${uri.queryParameters}');
+    
     try {
-      debugPrint('🔍 DeepLinkHandler: Analyzing URI:');
-      debugPrint('   Scheme: ${uri.scheme}');
-      debugPrint('   Host: ${uri.host}');
-      debugPrint('   Path: ${uri.path}');
-      debugPrint('   Query: ${uri.queryParameters}');
+      // Robust HTTPS + custom scheme parsing with explicit logging
+      // Accept either:
+      // 1) https://api.ufobeep.com/auth/magic/complete?token=...   (HTTPS App Link; token-only)
+      // 2) ufobeep://auth/complete?token=...&user_id=...&username=... (custom scheme; full data)
       
-      bool isMagicLink = false;
-      
-      // Check for App Links: https://api.ufobeep.com/auth/magic/complete?token=...
-      if (uri.scheme == 'https' && 
-          uri.host == 'api.ufobeep.com' && 
-          uri.path == '/auth/magic/complete') {
-        isMagicLink = true;
-        debugPrint('✅ DeepLinkHandler: HTTPS App Link magic link detected');
-      }
-      // Check for custom scheme: ufobeep://auth/complete?token=...&user_id=...&username=...
-      else if (uri.scheme == 'ufobeep' && 
-               uri.host == 'auth' && 
-               uri.path == '/complete') {
-        isMagicLink = true;
-        debugPrint('✅ DeepLinkHandler: Custom scheme magic link detected');
-      }
-      
-      if (isMagicLink) {
-        final queryParams = uri.queryParameters;
-        final token = queryParams['token'];
+      final isHttps = uri.scheme == 'https' && uri.host == 'api.ufobeep.com';
+      final isHttpsMagic = isHttps && uri.path.startsWith('/auth/magic/complete');
+      final isCustom = uri.scheme == 'ufobeep' && uri.host == 'auth' && uri.path == '/complete';
+
+      debugPrint('[DeepLink] Analysis: isHttps=$isHttps, isHttpsMagic=$isHttpsMagic, isCustom=$isCustom');
+
+      if (isCustom) {
+        final qp = uri.queryParameters;
+        final token = qp['token'];
+        final userId = qp['user_id'];
+        final username = qp['username'];
+        final email = qp['email'];
         
-        if (token != null && token.isNotEmpty) {
-          debugPrint('✅ DeepLinkHandler: Valid magic token found');
-          debugPrint('   Token: ${token.substring(0, 20)}...');
-          
-          // For HTTPS App Links, we only get the token - the backend handles user lookup
-          await onMagicToken(queryParams);
-        } else {
-          debugPrint('❌ DeepLinkHandler: Magic link missing token parameter');
+        debugPrint('[DeepLink] Custom scheme detected');
+        debugPrint('[DeepLink] token=${token != null ? "${token.substring(0, 20)}..." : "null"}');
+        debugPrint('[DeepLink] user_id=$userId');
+        debugPrint('[DeepLink] username=$username');
+        debugPrint('[DeepLink] email=$email');
+        
+        if (token == null || userId == null || username == null) {
+          debugPrint('[DeepLink][WARN] Missing params in custom scheme link.');
+          return;
         }
-      } else {
-        // Ignore non-magic links
-        debugPrint('ℹ️ DeepLinkHandler: Non-magic link ignored: ${uri.scheme}://${uri.host}${uri.path}');
+        
+        debugPrint('[DeepLink] Calling loginWithMagicToken with full data');
+        final success = await authService.loginWithMagicToken(
+          token: token,
+          userId: userId,
+          username: username,
+        );
+        debugPrint('[DeepLink] Custom scheme login result: $success');
+        
+        // ChatGPT's navigation approach: navigate after successful auth
+        if (success) {
+          _navigateToMainApp();
+        }
+        return;
       }
-    } catch (e, stackTrace) {
-      debugPrint('❌ DeepLinkHandler: Failed to parse deep link: $e');
-      debugPrint('📚 Stack trace: $stackTrace');
+
+      if (isHttpsMagic) {
+        final token = uri.queryParameters['token'];
+        debugPrint('[DeepLink] HTTPS App Link detected');
+        debugPrint('[DeepLink] token present? ${token != null}');
+        debugPrint('[DeepLink] token length: ${token?.length ?? 0}');
+        
+        if (token == null || token.isEmpty) {
+          debugPrint('[DeepLink][ERROR] No token in HTTPS magic link.');
+          return;
+        }
+        
+        debugPrint('[DeepLink] Calling loginWithMagicToken with token-only data');
+        final success = await authService.loginWithMagicToken(token: token);
+        debugPrint('[DeepLink] HTTPS App Link login result: $success');
+        
+        // ChatGPT's navigation approach: navigate after successful auth
+        if (success) {
+          _navigateToMainApp();
+        }
+        return;
+      }
+
+      debugPrint('[DeepLink] Ignored URI (not magic auth): $uri');
+    } catch (e, st) {
+      debugPrint('[DeepLink][ERROR] Exception handling URI: $e');
+      debugPrint('[DeepLink][ERROR] Stack trace: $st');
     }
+  }
+
+  /// Navigate to main app after successful authentication (ChatGPT's approach)
+  void _navigateToMainApp() {
+    debugPrint('[DeepLink] Navigating to main app after successful authentication');
+    
+    // Use ChatGPT's recommended post-frame callback approach to avoid navigation timing issues
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      try {
+        // Get the current context from the global navigator
+        final context = rootNavigatorKey.currentContext;
+        if (context != null && context.mounted) {
+          debugPrint('[DeepLink] Using GoRouter to navigate to /alerts');
+          context.go('/alerts');
+        } else {
+          debugPrint('[DeepLink][WARN] Navigation context not available');
+        }
+      } catch (e) {
+        debugPrint('[DeepLink][ERROR] Navigation failed: $e');
+      }
+    });
   }
 
   void dispose() {

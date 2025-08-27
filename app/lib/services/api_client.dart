@@ -51,6 +51,23 @@ class ApiClient {
 
     _dio = Dio(baseOptions);
 
+    // Add comprehensive logging interceptor (ChatGPT's recommendation)
+    if (kDebugMode) {
+      _dio.interceptors.add(
+        LogInterceptor(
+          request: true,
+          requestHeader: true,
+          requestBody: true,
+          responseHeader: true,
+          responseBody: true,
+          error: true,
+          logPrint: (obj) {
+            debugPrint('[ApiClient] $obj');
+          },
+        ),
+      );
+    }
+
     // Add request interceptor for auth
     _dio.interceptors.add(
       InterceptorsWrapper(
@@ -58,18 +75,26 @@ class ApiClient {
           if (_authToken != null) {
             options.headers['Authorization'] = 'Bearer $_authToken';
           }
+          if (kDebugMode) {
+            debugPrint('[ApiClient] → ${options.method} ${options.uri}');
+            if (options.data != null) {
+              debugPrint('[ApiClient] Request body: ${options.data}');
+            }
+          }
           handler.next(options);
         },
         onResponse: (response, handler) {
-          // Log successful responses in debug mode
-          if (AppEnvironment.isDebug) {
-            print('API Response: ${response.requestOptions.method} ${response.requestOptions.path} -> ${response.statusCode}');
+          if (kDebugMode) {
+            debugPrint('[ApiClient] ← ${response.statusCode} ${response.requestOptions.method} ${response.requestOptions.path}');
+            debugPrint('[ApiClient] Response: ${response.data}');
           }
           handler.next(response);
         },
         onError: (error, handler) {
-          // Log errors
-          print('API Error: ${error.requestOptions.method} ${error.requestOptions.path} -> ${error.response?.statusCode}: ${error.message}');
+          debugPrint('[ApiClient] ❌ ${error.requestOptions.method} ${error.requestOptions.path} -> ${error.response?.statusCode}: ${error.message}');
+          if (error.response?.data != null) {
+            debugPrint('[ApiClient] Error response: ${error.response?.data}');
+          }
           handler.next(error);
         },
       ),
@@ -750,6 +775,47 @@ class ApiClient {
   void setTimeout(Duration timeout) {
     _dio.options.connectTimeout = timeout;
     _dio.options.receiveTimeout = timeout;
+  }
+
+  // Magic link authentication endpoint (ChatGPT's recommendation)
+  Future<Map<String, dynamic>> exchangeMagicToken(String token) async {
+    try {
+      debugPrint('[ApiClient] Exchanging magic token with backend');
+      final response = await _dio.post(
+        '/auth/magic/complete/app',
+        data: {'token': token},
+        options: Options(
+          headers: {'Accept': 'application/json'},
+          validateStatus: (status) => status != null && status < 500,
+        ),
+      );
+      
+      if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
+        debugPrint('[ApiClient] Magic token exchange successful');
+        return response.data as Map<String, dynamic>;
+      } else {
+        final errorMsg = response.data is Map 
+          ? (response.data as Map)['detail'] ?? 'Token exchange failed'
+          : 'Token exchange failed';
+        throw ApiClientException(
+          'Backend token exchange failed: $errorMsg',
+          statusCode: response.statusCode,
+        );
+      }
+    } on DioException catch (e) {
+      debugPrint('[ApiClient] Magic token exchange DioException: ${e.message}');
+      if (e.response?.statusCode == 400) {
+        final errorData = e.response?.data;
+        final errorMessage = errorData is Map 
+          ? (errorData['detail'] ?? 'Invalid or expired magic link') 
+          : 'Invalid or expired magic link';
+        throw ApiClientException(errorMessage, statusCode: 400);
+      }
+      throw ApiClientException(
+        'Network error during token exchange: ${e.message}',
+        statusCode: e.response?.statusCode,
+      );
+    }
   }
 
   // Generic HTTP methods for admin functionality

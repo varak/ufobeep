@@ -7,13 +7,54 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'device_service.dart';
+import 'api_client.dart';
 import '../config/environment.dart';
 import '../models/user_preferences.dart';
 import '../features/auth/auth_gate.dart';
+
+/// Authentication state model (ChatGPT's recommendation)
+class AuthState {
+  final bool isAuthenticated;
+  final String? userId;
+  final String? username; 
+  final String? email;
+  
+  const AuthState({
+    required this.isAuthenticated,
+    this.userId,
+    this.username,
+    this.email,
+  });
+  
+  /// Factory for unauthenticated state
+  factory AuthState.unauthenticated() {
+    return const AuthState(isAuthenticated: false);
+  }
+  
+  /// Factory for authenticated state
+  factory AuthState.authenticated({
+    required String userId,
+    required String username,
+    String? email,
+  }) {
+    return AuthState(
+      isAuthenticated: true,
+      userId: userId,
+      username: username,
+      email: email,
+    );
+  }
+  
+  @override
+  String toString() {
+    return 'AuthState(isAuth: $isAuthenticated, userId: $userId, username: $username, email: $email)';
+  }
+}
 
 class MagicLinkResult {
   final bool success;
@@ -55,11 +96,13 @@ class MagicLinkResult {
   }
 }
 
-class AuthService implements AuthStateProvider {
+class AuthService extends ChangeNotifier implements AuthStateProvider {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static final AuthService _instance = AuthService._internal();
   factory AuthService() => _instance;
-  AuthService._internal();
+  AuthService._internal() {
+    _apiClient = ApiClient.instance;
+  }
 
   static const String _pendingEmailKey = 'pending_magic_link_email';
   static const String _apiBaseUrl = 'https://api.ufobeep.com';
@@ -67,10 +110,30 @@ class AuthService implements AuthStateProvider {
   static const String _usernameKey = 'username';
   
   final DeviceService _deviceService = DeviceService();
+  late final ApiClient _apiClient;
+  
+  // State management (ChatGPT's recommendation)
+  final StreamController<AuthState> _authStream = StreamController<AuthState>.broadcast();
+  AuthState _state = AuthState.unauthenticated();
+  
+  /// Stream of authentication state changes
+  Stream<AuthState> get authStream => _authStream.stream;
+  
+  /// Current authentication state
+  AuthState get authState => _state;
 
   /// Initialize the AuthService - call this early in app startup
   Future<void> initialize() async {
     await _checkStoredAuth();
+  }
+  
+  /// Emit new auth state (ChatGPT's recommendation)
+  Future<void> _emit(AuthState newState) async {
+    debugPrint('[Auth] State change: ${_state.isAuthenticated} -> ${newState.isAuthenticated}');
+    debugPrint('[Auth] New state: $newState');
+    _state = newState;
+    _authStream.add(newState);
+    notifyListeners();
   }
 
   /// Get current user (null if not authenticated)
@@ -85,8 +148,8 @@ class AuthService implements AuthStateProvider {
   /// AuthStateProvider implementation for ChatGPT's AuthGate pattern
   @override
   AuthStatus get status {
-    // Check both Firebase auth and stored JWT token
-    return _hasValidAuth() ? AuthStatus.authenticated : AuthStatus.unauthenticated;
+    // Use the current state instead of checking tokens directly
+    return _state.isAuthenticated ? AuthStatus.authenticated : AuthStatus.unauthenticated;
   }
 
   /// Check if user has valid authentication (Firebase Auth OR stored JWT token)
@@ -98,8 +161,9 @@ class AuthService implements AuthStateProvider {
   /// Cached token check result to avoid repeated async calls
   bool _hasStoredToken = false;
   
-  /// Initialize and check for stored authentication tokens
+  /// Check stored authentication and update state (ChatGPT's recommendation)
   Future<void> _checkStoredAuth() async {
+    debugPrint('[Auth] Checking stored authentication...');
     try {
       const storage = FlutterSecureStorage(
         aOptions: AndroidOptions(encryptedSharedPreferences: true),
@@ -109,17 +173,30 @@ class AuthService implements AuthStateProvider {
       final token = await storage.read(key: 'access_token');
       final userId = await storage.read(key: 'user_id');
       final username = await storage.read(key: 'username');
+      final email = await storage.read(key: 'user_email');
       
-      _hasStoredToken = token != null && token.isNotEmpty && 
-                       userId != null && userId.isNotEmpty && 
-                       username != null && username.isNotEmpty;
-                       
-      if (_hasStoredToken) {
-        print('✅ Found stored authentication tokens');
+      final hasValidTokens = token != null && token.isNotEmpty && 
+                            userId != null && userId.isNotEmpty && 
+                            username != null && username.isNotEmpty;
+      
+      debugPrint('[Auth] checkStoredAuth: hasValidTokens=$hasValidTokens');
+      debugPrint('[Auth] userId=$userId, username=$username, email=$email');
+      
+      if (hasValidTokens) {
+        debugPrint('[Auth] ✅ Found valid stored authentication tokens');
+        await _emit(AuthState.authenticated(
+          userId: userId!,
+          username: username!,
+          email: email,
+        ));
+      } else {
+        debugPrint('[Auth] ❌ No valid stored tokens found');
+        await _emit(AuthState.unauthenticated());
       }
-    } catch (e) {
-      print('⚠️ Error checking stored auth: $e');
-      _hasStoredToken = false;
+    } catch (e, st) {
+      debugPrint('[Auth][ERROR] checkStoredAuth exception: $e');
+      debugPrint('[Auth][ERROR] Stack trace: $st');
+      await _emit(AuthState.unauthenticated());
     }
   }
 
@@ -216,116 +293,92 @@ class AuthService implements AuthStateProvider {
     }
   }
 
-  /// ChatGPT's recommended method: Login with magic token data 
-  /// Handles both custom scheme (full data) and HTTPS App Links (token-only)
-  Future<void> loginWithMagicToken(Map<String, String> tokenData) async {
-    final token = tokenData['token'];
-    
-    if (token == null || token.isEmpty) {
-      throw Exception('Missing token in magic link data');
-    }
-    
-    print('🔑 ChatGPT loginWithMagicToken: Processing token data');
-    print('   Token: ${token.substring(0, 20)}...');
-    
-    // Check if we have full user data (custom scheme) or just token (HTTPS App Link)
-    String? userId = tokenData['user_id'];
-    String? username = tokenData['username'];
-    String? email = tokenData['email'];
-    bool isNewUser = tokenData['is_new_user'] == 'true';
-    
-    // If HTTPS App Link (token only), exchange with backend for user data
-    if (userId == null || username == null) {
-      print('🔄 HTTPS App Link detected - exchanging token with backend');
-      
-      try {
-        final dio = Dio();
-        final response = await dio.post(
-          '${AppEnvironment.apiBaseUrl}/auth/magic/complete/app',
-          data: {'token': token},
-          options: Options(
-            headers: {'Accept': 'application/json'},
-            validateStatus: (status) => status != null && status < 500,
-          ),
-        );
-        
-        if (response.statusCode == 200) {
-          final data = response.data as Map<String, dynamic>;
-          userId = data['user_id'] as String?;
-          username = data['username'] as String?;  
-          email = email ?? data['email'] as String?;
-          isNewUser = data['is_new_user'] as bool? ?? false;
-          
-          // Get Firebase custom token if provided
-          final firebaseToken = data['firebase_custom_token'] as String?;
-          if (firebaseToken != null && firebaseToken.isNotEmpty) {
-            try {
-              await FirebaseAuth.instance.signInWithCustomToken(firebaseToken);
-              print('✅ Firebase authentication successful');
-            } catch (e) {
-              print('⚠️ Firebase authentication failed: $e');
-              // Continue without Firebase auth - not critical
-            }
-          }
-          
-          print('✅ Token exchange successful');
-          print('   User ID: $userId');
-          print('   Username: $username');
-          print('   Is New User: $isNewUser');
-        } else {
-          final errorData = response.data;
-          final errorMessage = errorData is Map ? (errorData['detail'] ?? 'Token exchange failed') : 'Token exchange failed';
-          throw Exception('Backend token exchange failed: $errorMessage');
-        }
-      } on DioException catch (e) {
-        print('❌ Token exchange network error: ${e.message}');
-        if (e.response?.statusCode == 400) {
-          final errorData = e.response?.data;
-          final errorMessage = errorData is Map ? (errorData['detail'] ?? 'Invalid or expired magic link') : 'Invalid or expired magic link';
-          throw Exception(errorMessage);
-        }
-        throw Exception('Network error during token exchange. Please check your connection.');
-      } catch (e) {
-        print('❌ Token exchange failed: $e');
-        throw Exception('Authentication failed: ${e.toString()}');
-      }
-    } else {
-      print('✅ Custom scheme detected - using provided user data');
-    }
-    
-    // Validate we now have required user data
-    if (userId == null || username == null) {
-      throw Exception('Failed to get user data from token exchange');
-    }
-    
-    // Store auth data securely
-    const storage = FlutterSecureStorage(
-      aOptions: AndroidOptions(encryptedSharedPreferences: true),
-      iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
-    );
+  /// ChatGPT's enhanced magic token authentication method
+  /// Handles both custom scheme (full data) and HTTPS App Links (token-only)  
+  Future<bool> loginWithMagicToken({
+    required String token,
+    String? userId,
+    String? username,
+  }) async {
+    debugPrint('[Auth] loginWithMagicToken start. httpsOnly=${userId == null && username == null}');
+    debugPrint('[Auth] token length: ${token.length}');
     
     try {
-      await storage.write(key: 'access_token', value: token);
-      await storage.write(key: 'user_id', value: userId);
-      await storage.write(key: 'username', value: username);
+      Map<String, dynamic>? respJson;
+
+      if (userId != null && username != null) {
+        // CUSTOM SCHEME: already have identity; still verify token with backend
+        debugPrint('[Auth] Custom scheme flow - verifying token with backend');
+        respJson = await _apiClient.exchangeMagicToken(token);
+      } else {
+        // HTTPS APP LINK: only token present; must exchange with backend
+        debugPrint('[Auth] HTTPS App Link flow - exchanging token with backend');
+        respJson = await _apiClient.exchangeMagicToken(token);
+      }
+
+      if (respJson == null) {
+        debugPrint('[Auth][ERROR] Empty response from backend.');
+        return false;
+      }
+
+      debugPrint('[Auth] Backend response keys: ${respJson.keys}');
+
+      // Expected JSON:
+      // { access_token, user_id, username, email, is_new_user, firebase_custom_token? }
+      final access = respJson['access_token'] as String?;
+      final backendUserId = (respJson['user_id'] ?? userId)?.toString();
+      final backendUsername = (respJson['username'] ?? username)?.toString();
+      final email = respJson['email']?.toString();
+      final isNewUser = respJson['is_new_user'] as bool? ?? false;
+      final firebaseToken = respJson['firebase_custom_token'] as String?;
+
+      if ([access, backendUserId, backendUsername].any((v) => v == null || (v as String).isEmpty)) {
+        debugPrint('[Auth][ERROR] Missing fields in backend response: $respJson');
+        return false;
+      }
+
+      debugPrint('[Auth] Valid response - storing tokens and user data');
+
+      // Store authentication data
+      const storage = FlutterSecureStorage(
+        aOptions: AndroidOptions(encryptedSharedPreferences: true),
+        iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
+      );
+
+      await storage.write(key: 'access_token', value: access);
+      await storage.write(key: 'user_id', value: backendUserId);
+      await storage.write(key: 'username', value: backendUsername);
       await storage.write(key: 'is_registered', value: 'true');
-      
       if (email != null) {
         await storage.write(key: 'user_email', value: email);
       }
+
+      debugPrint('[Auth] Tokens & user saved. userId=$backendUserId username=$backendUsername email=$email isNew=$isNewUser');
       
-      print('✅ ChatGPT loginWithMagicToken: Auth data stored securely');
-      print('   Final User ID: $userId');
-      print('   Final Username: $username');
+      // Handle Firebase custom token if provided
+      if (firebaseToken != null && firebaseToken.isNotEmpty) {
+        try {
+          await FirebaseAuth.instance.signInWithCustomToken(firebaseToken);
+          debugPrint('[Auth] ✅ Firebase authentication successful');
+        } catch (e) {
+          debugPrint('[Auth] ⚠️ Firebase authentication failed: $e');
+          // Continue without Firebase auth - not critical for basic auth
+        }
+      }
       
-      // Update auth state to reflect the new authentication
-      await _checkStoredAuth();
+      // Update auth state
+      await _emit(AuthState.authenticated(
+        userId: backendUserId!,
+        username: backendUsername!,
+        email: email,
+      ));
       
-      // User is now authenticated and ready to use the app
-    } catch (e, stackTrace) {
-      print('❌ ChatGPT loginWithMagicToken failed: $e');
-      print('📚 Stack trace: $stackTrace');
-      throw Exception('Failed to store authentication data: ${e.toString()}');
+      debugPrint('[Auth] ✅ Authentication successful - state updated');
+      return true;
+    } catch (e, st) {
+      debugPrint('[Auth][ERROR] loginWithMagicToken failed: $e');
+      debugPrint('[Auth][ERROR] Stack trace: $st');
+      return false;
     }
   }
 
@@ -567,3 +620,11 @@ class AuthException implements Exception {
 
 /// Global auth service instance
 final authService = AuthService();
+
+/// Extension to add dispose method to AuthService 
+extension AuthServiceDisposal on AuthService {
+  /// Clean up resources
+  void disposeResources() {
+    _authStream.close();
+  }
+}

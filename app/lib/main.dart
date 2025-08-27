@@ -103,20 +103,7 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
     _auth = authService; // Use existing singleton
     
     // ChatGPT's pattern: Initialize DeepLinkHandler BEFORE UI renders
-    _deepLinkHandler = DeepLinkHandler(onMagicToken: (tokenData) async {
-      try {
-        print('🔗 DeepLinkHandler: Processing magic token...');
-        await _auth.loginWithMagicToken(tokenData);
-        print('✅ DeepLinkHandler: Magic token processed successfully');
-        
-        // Trigger UI rebuild to show authenticated state
-        if (mounted) setState(() {});
-      } catch (e) {
-        print('❌ DeepLinkHandler: Magic token failed: $e');
-        // Stay unauthenticated; AuthGate will show SignIn screen
-        if (mounted) setState(() {});
-      }
-    });
+    _deepLinkHandler = DeepLinkHandler();
     
     // Start deep link listening immediately
     _deepLinkHandler.init();
