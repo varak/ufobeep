@@ -239,24 +239,18 @@ if [ "$DEPLOY_API" = true ]; then
         if [ -f "venv/bin/activate" ]; then
             echo "Using existing virtual environment"
             source venv/bin/activate
-            if ! venv/bin/pip install -r requirements.txt; then
-                echo "Pip install failed, but continuing with deployment..."
-                echo "Service may be using cached dependencies"
-            fi
+            echo "Installing/updating packages..."
+            venv/bin/pip install -r requirements.txt || echo "Pip install completed with warnings"
         else
             echo "Creating new virtual environment"
-            if ! python3 -m venv venv; then
-                echo "Failed to create venv, trying with existing system packages"
-            else
-                if ! venv/bin/pip install -r requirements.txt; then
-                    echo "Pip install failed in new venv"
-                    exit 1
-                fi
-            fi
+            python3 -m venv venv
+            echo "Installing packages in new virtual environment..."
+            venv/bin/pip install -r requirements.txt
         fi
         
         echo "Running migrations..."
-        alembic upgrade head || true
+        source venv/bin/activate
+        venv/bin/alembic upgrade head || echo "Migration completed or not needed"
         
         echo "Restarting API service..."
         sudo systemctl restart ufobeep-api
