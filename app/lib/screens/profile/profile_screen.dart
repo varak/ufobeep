@@ -63,9 +63,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   
   Future<bool> _isUserAuthenticated() async {
     try {
-      final authService = ref.read(authServiceProvider);
-      final currentState = authService.currentState;
-      return currentState is AuthenticatedState;
+      final authService = AuthService();
+      return authService.authState.isAuthenticated;
     } catch (e) {
       print('Error checking authentication: $e');
       return false;
