@@ -36,6 +36,7 @@ void main() async {
     Firebase.initializeApp(),
     AppEnvironment.initialize(),
     SharedPreferences.getInstance(),
+    authService.initialize(), // Initialize auth service to check stored tokens
   ]);
   
   final sharedPreferences = results[2] as SharedPreferences;

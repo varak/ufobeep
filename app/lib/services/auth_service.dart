@@ -68,6 +68,11 @@ class AuthService implements AuthStateProvider {
   
   final DeviceService _deviceService = DeviceService();
 
+  /// Initialize the AuthService - call this early in app startup
+  Future<void> initialize() async {
+    await _checkStoredAuth();
+  }
+
   /// Get current user (null if not authenticated)
   User? get currentUser => _auth.currentUser;
 
@@ -84,11 +89,38 @@ class AuthService implements AuthStateProvider {
     return _hasValidAuth() ? AuthStatus.authenticated : AuthStatus.unauthenticated;
   }
 
-  /// Check if user has valid authentication (JWT token stored)
+  /// Check if user has valid authentication (Firebase Auth OR stored JWT token)
   bool _hasValidAuth() {
-    // For now, check if we have stored auth data
-    // TODO: Could add JWT token expiry validation here
-    return isAuthenticated;
+    // Check both Firebase Auth and stored JWT tokens
+    return isAuthenticated || _hasStoredToken;
+  }
+
+  /// Cached token check result to avoid repeated async calls
+  bool _hasStoredToken = false;
+  
+  /// Initialize and check for stored authentication tokens
+  Future<void> _checkStoredAuth() async {
+    try {
+      const storage = FlutterSecureStorage(
+        aOptions: AndroidOptions(encryptedSharedPreferences: true),
+        iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
+      );
+      
+      final token = await storage.read(key: 'access_token');
+      final userId = await storage.read(key: 'user_id');
+      final username = await storage.read(key: 'username');
+      
+      _hasStoredToken = token != null && token.isNotEmpty && 
+                       userId != null && userId.isNotEmpty && 
+                       username != null && username.isNotEmpty;
+                       
+      if (_hasStoredToken) {
+        print('✅ Found stored authentication tokens');
+      }
+    } catch (e) {
+      print('⚠️ Error checking stored auth: $e');
+      _hasStoredToken = false;
+    }
   }
 
   /// Send magic link email for authentication
@@ -285,6 +317,9 @@ class AuthService implements AuthStateProvider {
       print('✅ ChatGPT loginWithMagicToken: Auth data stored securely');
       print('   Final User ID: $userId');
       print('   Final Username: $username');
+      
+      // Update auth state to reflect the new authentication
+      await _checkStoredAuth();
       
       // User is now authenticated and ready to use the app
     } catch (e, stackTrace) {

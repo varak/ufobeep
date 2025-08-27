@@ -361,7 +361,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const Text(
-                      'Sign in with Email',
+                      'Sign in or Create Account',
                       style: TextStyle(
                         color: AppColors.textPrimary,
                         fontSize: 20,
@@ -373,7 +373,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     const SizedBox(height: 8),
                     
                     const Text(
-                      'Enter your email to receive a secure magic link',
+                      'Enter your email to sign in or create a new account.\nWe\'ll send you a secure magic link.',
                       style: TextStyle(
                         color: AppColors.textSecondary,
                         fontSize: 14,
