@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import '../services/auth_service.dart';
+import '../../services/auth_service.dart';
 import '../../routing/app_router.dart';
 
 /// Centralized deep link handler that processes magic links BEFORE UI renders
