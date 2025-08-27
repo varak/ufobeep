@@ -1060,7 +1060,9 @@ async def exchange_magic_code(
         magic_link.used_by_device_id = request.device_id
         
         # Find or create user
+        logger.info(f"MAGIC_CODE_EXCHANGE: SEARCHING_USER - email='{magic_link.email}', repr={repr(magic_link.email)}, IP={ip_address}")
         user = db.query(User).filter(User.email == magic_link.email).first()
+        logger.info(f"MAGIC_CODE_EXCHANGE: USER_FOUND - found={'YES' if user else 'NO'}, email='{magic_link.email}', IP={ip_address}")
         if not user:
             # Create new user with collision-resistant username
             from sqlalchemy.exc import IntegrityError
