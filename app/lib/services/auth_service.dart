@@ -4,6 +4,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -123,7 +124,51 @@ class AuthService {
     }
   }
 
-  /// Handle incoming magic link from deep link or web redirect
+  /// Handle JWT-based magic link completion (new system)
+  Future<MagicLinkResult> handleJWTMagicLink({
+    required String token,
+    required String userId,
+    required String username,
+    String? email,
+  }) async {
+    try {
+      print('🔑 JWT MAGIC LINK AUTH DEBUG:');
+      print('   Token: ${token.substring(0, 20)}...');
+      print('   User ID: $userId');
+      print('   Username: $username');
+      print('   Email: $email');
+      
+      // Store auth data securely
+      const storage = FlutterSecureStorage(
+        aOptions: AndroidOptions(encryptedSharedPreferences: true),
+        iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
+      );
+      
+      await storage.write(key: 'access_token', value: token);
+      await storage.write(key: 'user_id', value: userId);
+      await storage.write(key: 'username', value: username);
+      await storage.write(key: 'is_registered', value: 'true');
+      
+      if (email != null) {
+        await storage.write(key: 'user_email', value: email);
+      }
+      
+      print('✅ JWT auth data stored securely');
+      
+      return MagicLinkResult.success(
+        userId: userId,
+        username: username, 
+        email: email,
+      );
+      
+    } catch (e, stackTrace) {
+      print('❌ JWT magic link auth failed: $e');
+      print('📚 Stack trace: $stackTrace');
+      return MagicLinkResult.failure('Authentication failed: ${e.toString()}');
+    }
+  }
+
+  /// Handle incoming Firebase magic link from deep link or web redirect (legacy)
   /// This creates an authenticated session AND checks/creates backend user
   Future<MagicLinkResult> handleMagicLink(String emailLink) async {
     try {

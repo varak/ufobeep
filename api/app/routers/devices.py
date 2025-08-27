@@ -144,49 +144,6 @@ async def get_current_user_id(token: Optional[str] = Depends(security)) -> Optio
     return None
 
 
-async def get_or_create_anonymous_user(device_id: str) -> str:
-    """Create or find anonymous user for device registration"""
-    db_pool = await get_db()
-    if not db_pool:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"error": "DATABASE_UNAVAILABLE", "message": "Database connection unavailable"}
-        )
-    
-    async with db_pool.acquire() as conn:
-        # Look for existing anonymous user for this device
-        existing_user = await conn.fetchval(
-            """
-            SELECT u.id FROM users u
-            JOIN devices d ON u.id = d.user_id
-            WHERE d.device_id = $1 AND u.username LIKE 'anon_%'
-            AND d.is_active = true
-            LIMIT 1
-            """,
-            device_id
-        )
-        
-        if existing_user:
-            return str(existing_user)
-        
-        # Create new anonymous user
-        anonymous_username = f"anon_{device_id[:8]}_{int(datetime.utcnow().timestamp())}"
-        
-        user_id = await conn.fetchval(
-            """
-            INSERT INTO users (
-                username, display_name, alert_range_km, min_alert_level,
-                push_notifications, email_notifications, is_active
-            ) VALUES (
-                $1, $2, 50.0, 'low', true, false, true
-            ) RETURNING id
-            """,
-            anonymous_username,
-            f"Anonymous User"
-        )
-        
-        logger.info(f"Created anonymous user {anonymous_username} for device {device_id}")
-        return str(user_id)
 
 
 def create_device_response(device_data: dict) -> DeviceResponse:
@@ -227,9 +184,12 @@ async def register_device(
     Fixed version with proper SQL parameters
     """
     try:
-        # If no user_id, create or find anonymous user for this device
+        # Require authenticated user - no anonymous device registration allowed
         if not user_id:
-            user_id = await get_or_create_anonymous_user(request.device_id)
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail={"error": "AUTHENTICATION_REQUIRED", "message": "Device registration requires authenticated user. Please sign in first."}
+            )
         
         db_pool = await get_db()
         

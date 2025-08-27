@@ -460,42 +460,73 @@ Future<void> _handleMagicLinkCompletion(BuildContext context, GoRouterState stat
   try {
     // Get the full URL from the state
     final link = state.uri.toString();
-    print('Processing magic link: $link');
+    final queryParams = state.uri.queryParameters;
     
-    // Use the AuthService to handle the magic link
-    final result = await authService.handleMagicLink(link);
+    print('🔗 MAGIC LINK COMPLETION DEBUG:');
+    print('   Full URI: $link');
+    print('   Query Parameters: $queryParams');
+    print('   Token: ${queryParams['token']?.substring(0, 20)}...');
+    print('   User ID: ${queryParams['user_id']}');
+    print('   Username: ${queryParams['username']}');
+    print('   Email: ${queryParams['email']}');
     
-    if (!result.success) {
-      throw Exception(result.error ?? 'Magic link authentication failed');
+    // Validate required parameters
+    final token = queryParams['token'];
+    final userId = queryParams['user_id'];
+    final username = queryParams['username'];
+    
+    if (token == null || userId == null || username == null) {
+      throw Exception('Missing required auth parameters: token=$token, userId=$userId, username=$username');
     }
     
-    print('Magic link sign-in successful!');
+    print('✅ Required auth parameters validated');
+    
+    // Use the AuthService to handle the JWT-based magic link
+    final result = await authService.handleJWTMagicLink(
+      token: token,
+      userId: userId,
+      username: username,
+      email: queryParams['email'],
+    );
+    
+    if (!result.success) {
+      print('❌ AuthService.handleJWTMagicLink failed: ${result.error}');
+      throw Exception(result.error ?? 'JWT magic link authentication failed');
+    }
+    
+    print('✅ Magic link sign-in successful!');
     
     // Navigate based on whether user has username set up
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      print('MAGIC LINK NAVIGATION DEBUG:');
-      print('  - result.username: "${result.username}"');
-      print('  - result.username != null: ${result.username != null}');
-      print('  - result.username!.isNotEmpty: ${result.username != null ? result.username!.isNotEmpty : "null username"}');
-      print('  - result.email: ${result.email}');
-      print('  - result.userId: ${result.userId}');
+      print('🧭 MAGIC LINK NAVIGATION DEBUG:');
+      print('   - result.username: "${result.username}"');
+      print('   - result.username != null: ${result.username != null}');
+      print('   - result.username!.isNotEmpty: ${result.username != null ? result.username!.isNotEmpty : "null username"}');
+      print('   - result.email: ${result.email}');
+      print('   - result.userId: ${result.userId}');
       
       if (result.username != null && result.username!.isNotEmpty) {
         // User has username, go to alerts
-        print('DECISION: User has username: "${result.username}", going to alerts');
+        print('🎯 DECISION: User has username: "${result.username}", going to /alerts');
         context.go('/alerts');
       } else {
         // User needs to set up username, go to registration with email pre-filled
-        print('DECISION: User needs username setup, going to registration');
+        print('📝 DECISION: User needs username setup, going to /register');
         context.go('/register', extra: {
           'email': result.email,
           'userId': result.userId,
         });
       }
     });
-  } catch (e) {
-    print('Magic link completion failed: $e');
-    throw e;
+  } catch (e, stackTrace) {
+    print('❌ Magic link completion failed: $e');
+    print('📚 Stack trace: $stackTrace');
+    
+    // Don't throw - show error and redirect to sign-in
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      print('🚨 Redirecting to /sign-in due to error');
+      context.go('/sign-in');
+    });
   }
 }
 

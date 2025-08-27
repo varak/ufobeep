@@ -7,7 +7,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:app_links/app_links.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 /// Deep link service for handling push notification and URL-based navigation
 class DeepLinkService {
@@ -18,20 +17,6 @@ class DeepLinkService {
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
   GoRouter? _router;
-  
-  // Double-handling protection
-  final Set<String> _processedTokens = {};
-  bool _isProcessingAuth = false;
-  
-  // Secure storage instance
-  static const _secureStorage = FlutterSecureStorage(
-    aOptions: AndroidOptions(
-      encryptedSharedPreferences: true,
-    ),
-    iOptions: IOSOptions(
-      accessibility: KeychainAccessibility.first_unlock_this_device,
-    ),
-  );
 
   /// Initialize deep link handling
   Future<void> initialize(GoRouter router) async {
@@ -101,7 +86,7 @@ class DeepLinkService {
   /// Handle deep link URI
   Future<void> _handleDeepLink(Uri uri) async {
     if (_router == null) {
-      print('Router not initialized');
+      print('❌ Router not initialized');
       return;
     }
 
@@ -111,12 +96,21 @@ class DeepLinkService {
       final List<String> pathSegments = uri.pathSegments;
       final Map<String, String> queryParams = uri.queryParameters;
 
-      print('🔗 DEEP LINK DEBUG:');
-      print('   Full URI: $uri');
-      print('   Scheme: $scheme');
-      print('   Host: $host');
-      print('   Path segments: $pathSegments');
-      print('   Query params: $queryParams');
+      print('🔗 DEEP LINK HANDLER DEBUG:');
+      print('   📍 Full URI: $uri');
+      print('   📱 Scheme: $scheme');
+      print('   🌐 Host: $host');
+      print('   📂 Path segments: $pathSegments');
+      print('   ⚙️  Query params: $queryParams');
+      
+      // Special logging for auth completion
+      if (host == 'auth' && pathSegments.isNotEmpty && pathSegments[0] == 'complete') {
+        print('🔐 MAGIC LINK DEEP LINK DETECTED:');
+        print('   🎫 Token: ${queryParams['token']?.substring(0, 20)}...');
+        print('   👤 User ID: ${queryParams['user_id']}');
+        print('   📝 Username: ${queryParams['username']}');
+        print('   📧 Email: ${queryParams['email']}');
+      }
 
       // Handle ufobeep:// scheme
       if (scheme == 'ufobeep') {
@@ -301,69 +295,42 @@ class DeepLinkService {
     _router!.go(route);
   }
 
-  /// Handle auth deep links (magic link completion)
+  /// Handle auth deep links (redirect to proper GoRouter route)
   Future<void> _handleAuthLink(
     List<String> pathSegments,
     Map<String, String> queryParams,
   ) async {
+    print('🔐 AUTH LINK HANDLER DEBUG:');
+    print('   📂 Path segments: $pathSegments');
+    print('   ⚙️  Query params: $queryParams');
+    
     if (pathSegments.isEmpty) {
+      print('⚠️  No path segments, redirecting to /sign-in');
       _router!.go('/sign-in');
       return;
     }
 
     final action = pathSegments[0];
+    print('🎬 Action: $action');
     
     if (action == 'complete') {
-      // Magic link completion - extract auth data from query params
-      final token = queryParams['token'];
-      final userId = queryParams['user_id'];
-      final username = queryParams['username'];
-      final email = queryParams['email'];
-      final isNewUser = queryParams['is_new_user'] == 'true';
-
-      if (token != null && userId != null && username != null) {
-        // Double-handling protection
-        if (_isProcessingAuth) {
-          print('🔒 Auth already in progress, ignoring duplicate request');
-          return;
-        }
-        
-        if (_processedTokens.contains(token)) {
-          print('🔒 Token already processed, ignoring duplicate');
-          return;
-        }
-        
-        _isProcessingAuth = true;
-        _processedTokens.add(token);
-        
-        try {
-          print('🔑 Magic link auth data received (replacing with secure storage):');
-          print('   Token: ${token.substring(0, 20)}...');
-          print('   User ID: $userId');
-          print('   Username: $username');
-          print('   Is new user: $isNewUser');
-
-          // Store auth data securely using FlutterSecureStorage
-          await _secureStorage.write(key: 'access_token', value: token);
-          await _secureStorage.write(key: 'user_id', value: userId);
-          await _secureStorage.write(key: 'username', value: username);
-          await _secureStorage.write(key: 'is_registered', value: 'true');
-          
-          if (email != null) {
-            await _secureStorage.write(key: 'user_email', value: email);
-          }
-
-          // Navigate to alerts screen (user is now authenticated)
-          _router!.go('/alerts');
-          print('✅ Magic link authentication completed, navigated to alerts');
-        } finally {
-          _isProcessingAuth = false;
-        }
-      } else {
-        print('❌ Invalid magic link data, redirecting to sign-in');
-        _router!.go('/sign-in');
-      }
+      // Redirect to proper GoRouter route instead of handling auth here
+      // This ensures consistent auth flow through the app's routing system
+      print('🔄 DEEP LINK REDIRECT: Deep link redirecting to GoRouter /auth/complete route');
+      
+      // Build the route with query parameters
+      final uri = Uri(
+        path: '/auth/complete',
+        queryParameters: queryParams,
+      );
+      
+      final routeString = uri.toString();
+      print('🎯 Final route: $routeString');
+      
+      _router!.go(routeString);
+      print('✅ Redirect completed');
     } else {
+      print('⚠️  Unknown action: $action, redirecting to /sign-in');
       _router!.go('/sign-in');
     }
   }
