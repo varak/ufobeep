@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -183,24 +184,89 @@ class AuthService implements AuthStateProvider {
     }
   }
 
-  /// ChatGPT's recommended method: Login with magic token data directly
-  /// This processes the JWT token data from deep link without additional API calls
+  /// ChatGPT's recommended method: Login with magic token data 
+  /// Handles both custom scheme (full data) and HTTPS App Links (token-only)
   Future<void> loginWithMagicToken(Map<String, String> tokenData) async {
     final token = tokenData['token'];
-    final userId = tokenData['user_id'];
-    final username = tokenData['username'];
-    final email = tokenData['email'];
     
-    if (token == null || userId == null || username == null) {
-      throw Exception('Missing required token data: token=$token, userId=$userId, username=$username');
+    if (token == null || token.isEmpty) {
+      throw Exception('Missing token in magic link data');
     }
     
-    print('🔑 ChatGPT loginWithMagicToken: Processing auth data');
+    print('🔑 ChatGPT loginWithMagicToken: Processing token data');
     print('   Token: ${token.substring(0, 20)}...');
-    print('   User ID: $userId');
-    print('   Username: $username');
     
-    // Store auth data securely using our existing secure storage
+    // Check if we have full user data (custom scheme) or just token (HTTPS App Link)
+    String? userId = tokenData['user_id'];
+    String? username = tokenData['username'];
+    String? email = tokenData['email'];
+    bool isNewUser = tokenData['is_new_user'] == 'true';
+    
+    // If HTTPS App Link (token only), exchange with backend for user data
+    if (userId == null || username == null) {
+      print('🔄 HTTPS App Link detected - exchanging token with backend');
+      
+      try {
+        final dio = Dio();
+        final response = await dio.post(
+          '${AppEnvironment.apiUrl}/auth/magic/complete/app',
+          data: {'token': token},
+          options: Options(
+            headers: {'Accept': 'application/json'},
+            validateStatus: (status) => status != null && status < 500,
+          ),
+        );
+        
+        if (response.statusCode == 200) {
+          final data = response.data as Map<String, dynamic>;
+          userId = data['user_id'] as String?;
+          username = data['username'] as String?;  
+          email = email ?? data['email'] as String?;
+          isNewUser = data['is_new_user'] as bool? ?? false;
+          
+          // Get Firebase custom token if provided
+          final firebaseToken = data['firebase_custom_token'] as String?;
+          if (firebaseToken != null && firebaseToken.isNotEmpty) {
+            try {
+              await FirebaseAuth.instance.signInWithCustomToken(firebaseToken);
+              print('✅ Firebase authentication successful');
+            } catch (e) {
+              print('⚠️ Firebase authentication failed: $e');
+              // Continue without Firebase auth - not critical
+            }
+          }
+          
+          print('✅ Token exchange successful');
+          print('   User ID: $userId');
+          print('   Username: $username');
+          print('   Is New User: $isNewUser');
+        } else {
+          final errorData = response.data;
+          final errorMessage = errorData is Map ? (errorData['detail'] ?? 'Token exchange failed') : 'Token exchange failed';
+          throw Exception('Backend token exchange failed: $errorMessage');
+        }
+      } on DioException catch (e) {
+        print('❌ Token exchange network error: ${e.message}');
+        if (e.response?.statusCode == 400) {
+          final errorData = e.response?.data;
+          final errorMessage = errorData is Map ? (errorData['detail'] ?? 'Invalid or expired magic link') : 'Invalid or expired magic link';
+          throw Exception(errorMessage);
+        }
+        throw Exception('Network error during token exchange. Please check your connection.');
+      } catch (e) {
+        print('❌ Token exchange failed: $e');
+        throw Exception('Authentication failed: ${e.toString()}');
+      }
+    } else {
+      print('✅ Custom scheme detected - using provided user data');
+    }
+    
+    // Validate we now have required user data
+    if (userId == null || username == null) {
+      throw Exception('Failed to get user data from token exchange');
+    }
+    
+    // Store auth data securely
     const storage = FlutterSecureStorage(
       aOptions: AndroidOptions(encryptedSharedPreferences: true),
       iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
@@ -217,8 +283,9 @@ class AuthService implements AuthStateProvider {
       }
       
       print('✅ ChatGPT loginWithMagicToken: Auth data stored securely');
+      print('   Final User ID: $userId');
+      print('   Final Username: $username');
       
-      // No need to call backend - JWT already validated by backend before redirect
       // User is now authenticated and ready to use the app
     } catch (e, stackTrace) {
       print('❌ ChatGPT loginWithMagicToken failed: $e');
