@@ -11,6 +11,7 @@ import '../models/api_models.dart' as api;
 import '../models/sensor_data.dart';
 import '../models/sighting_submission.dart' as local;
 import 'anonymous_beep_service.dart';
+import 'auth_interceptor.dart';
 
 class ApiClientException implements Exception {
   final String message;
@@ -27,6 +28,28 @@ class ApiClient {
   static ApiClient? _instance;
   late final Dio _dio;
   String? _authToken;
+  
+  // ChatGPT: Static dio access for AuthRepository and AuthInterceptor
+  static final Dio dio = Dio(BaseOptions(
+    baseUrl: AppEnvironment.apiBaseUrl,
+    connectTimeout: const Duration(seconds: 10),
+    receiveTimeout: const Duration(seconds: 15),
+  ));
+
+  static void init() {
+    // ChatGPT: Ensure interceptor is installed once.
+    if (!dio.interceptors.any((i) => i is AuthInterceptor)) {
+      dio.interceptors.add(AuthInterceptor());
+    }
+  }
+
+  static void setBearer(String access) {
+    dio.options.headers['Authorization'] = 'Bearer $access';
+  }
+
+  static void clearBearer() {
+    dio.options.headers.remove('Authorization');
+  }
 
   // Singleton pattern
   static ApiClient get instance {

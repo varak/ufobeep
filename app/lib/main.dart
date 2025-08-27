@@ -20,6 +20,8 @@ import 'services/permission_service.dart';
 import 'services/share_intent_service.dart';
 import 'services/analytics_service.dart';
 import 'services/auth_service.dart';
+import 'services/api_client.dart';
+import 'services/auth_repository.dart';
 import 'features/auth/deep_link_handler.dart';
 import 'features/auth/auth_gate.dart';
 import 'theme/app_theme.dart';
@@ -27,33 +29,24 @@ import 'theme/app_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Critical startup operations in parallel
   final stopwatch = Stopwatch()..start();
   print('🚀 UFOBeep starting...');
   
   // Initialize environment first (needed by other services)
   await AppEnvironment.initialize();
   
+  // ChatGPT: Initialize ApiClient with interceptor
+  ApiClient.init();
+
+  // ChatGPT: perform silent refresh before runApp for fast/clean routing
+  final auth = AuthRepository();
+  await auth.loadSessionOnStartup();
+  
   // Run remaining critical initialization in parallel
   final results = await Future.wait([
     Firebase.initializeApp(),
     SharedPreferences.getInstance(),
   ]);
-  
-  // Initialize AuthService separately with detailed logging
-  print('🔐 CRITICAL: Initializing AuthService...');
-  try {
-    await AuthService().initialize();
-    final authState = AuthService().authState;
-    print('🔐 CRITICAL: AuthService initialized');
-    print('🔐 Phase: ${authState.phase}');
-    print('🔐 isAuthenticated: ${authState.isAuthenticated}');
-    print('🔐 userId: ${authState.userId}');
-    print('🔐 username: ${authState.username}');
-    print('🔐 email: ${authState.email}');
-  } catch (e) {
-    print('🔐 CRITICAL ERROR: AuthService init failed: $e');
-  }
   
   final sharedPreferences = results[1] as SharedPreferences;
   print('✅ Core initialization: ${stopwatch.elapsedMilliseconds}ms');

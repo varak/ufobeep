@@ -13,6 +13,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'device_service.dart';
 import 'api_client.dart';
+import 'auth_repository.dart';
 import '../config/environment.dart';
 import '../models/user_preferences.dart';
 import '../features/auth/auth_gate.dart';
@@ -366,26 +367,16 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
         return false;
       }
 
-      debugPrint('[Auth] Valid response - storing tokens and user data');
+      debugPrint('[Auth] Valid response - using AuthRepository');
 
-      // Store authentication data
-      const storage = FlutterSecureStorage(
-        aOptions: AndroidOptions(encryptedSharedPreferences: true),
-        iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
-      );
+      // ChatGPT: Use AuthRepository.updateFromMagicLinkResponse 
+      await AuthRepository().updateFromMagicLinkResponse({
+        'access': access,
+        'refresh': refreshToken,
+        'user': userObject,
+      });
 
-      await storage.write(key: 'access_token', value: access);
-      await storage.write(key: 'user_id', value: backendUserId);
-      await storage.write(key: 'username', value: backendUsername);
-      await storage.write(key: 'is_registered', value: 'true');
-      if (email != null && email.isNotEmpty) {
-        await storage.write(key: 'user_email', value: email);
-      }
-      if (refreshToken != null && refreshToken.isNotEmpty) {
-        await storage.write(key: 'refresh_token', value: refreshToken);
-      }
-
-      debugPrint('[Auth] Tokens & user saved. userId=$backendUserId username=$backendUsername email=$email isNew=$isNewUser');
+      debugPrint('[Auth] AuthRepository updated. userId=$backendUserId username=$backendUsername email=$email isNew=$isNewUser');
       
       // Handle Firebase custom token if provided
       if (firebaseToken != null && firebaseToken.isNotEmpty) {
