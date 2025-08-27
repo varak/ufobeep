@@ -209,7 +209,7 @@ class AuthService implements AuthStateProvider {
       try {
         final dio = Dio();
         final response = await dio.post(
-          '${AppEnvironment.apiUrl}/auth/magic/complete/app',
+          '${AppEnvironment.apiBaseUrl}/auth/magic/complete/app',
           data: {'token': token},
           options: Options(
             headers: {'Accept': 'application/json'},
