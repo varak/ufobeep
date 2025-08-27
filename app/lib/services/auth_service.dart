@@ -198,6 +198,11 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       
       if (hasValidTokens) {
         debugPrint('[Auth] ✅ Found valid stored authentication tokens');
+        
+        // Set auth token in ApiClient for all future requests
+        _apiClient.setAuthToken(token);
+        debugPrint('[Auth] ✅ ApiClient auth token restored from storage');
+        
         await _emit(AuthState.authenticated(
           userId: userId!,
           username: username!,
@@ -463,6 +468,10 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
         await storage.write(key: 'user_email', value: email);
       }
       
+      // Set auth token in ApiClient for all future requests
+      _apiClient.setAuthToken(accessToken);
+      debugPrint('[Auth] ✅ ApiClient auth token set');
+      
       debugPrint('[Auth] ✅ Authorization code auth successful - userId: $userId, username: $username');
       
       // Emit authenticated state
@@ -663,16 +672,34 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
   /// Sign out the current user
   Future<void> signOut() async {
     try {
-      await _auth.signOut();
+      // Clear secure storage auth data
+      const storage = FlutterSecureStorage(
+        aOptions: AndroidOptions(encryptedSharedPreferences: true),
+        iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
+      );
+      
+      await storage.delete(key: 'access_token');
+      await storage.delete(key: 'refresh_token');
+      await storage.delete(key: 'user_id');
+      await storage.delete(key: 'username');
+      await storage.delete(key: 'user_email');
+      await storage.delete(key: 'is_registered');
+      
+      // Clear auth token in ApiClient
+      _apiClient.setAuthToken(null);
       
       // Clear any pending email
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_pendingEmailKey);
       
-      print('User signed out successfully');
+      // Update auth state
+      await _emit(AuthState.unauthenticated());
+      
+      debugPrint('[Auth] ✅ User signed out successfully');
     } catch (e) {
-      print('Error signing out: $e');
-      throw AuthException._fromFirebaseAuthException(e);
+      debugPrint('[Auth][ERROR] Error signing out: $e');
+      // Still emit unauthenticated state even if cleanup fails
+      await _emit(AuthState.unauthenticated());
     }
   }
 

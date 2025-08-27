@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:uuid/uuid.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -83,36 +84,30 @@ class AnonymousBeepService {
     bool hasMedia = false,
   }) async {
     try {
-      // Get user info - all users have usernames now
-      final prefs = await SharedPreferences.getInstance();
-      final userId = prefs.getString('user_id') ?? await getOrCreateDeviceId();
-      final username = prefs.getString('username');
+      // Get user info from secure storage (magic link auth)
+      const storage = FlutterSecureStorage(
+        aOptions: AndroidOptions(encryptedSharedPreferences: true),
+        iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
+      );
       
-      if (username == null || username.isEmpty) {
-        print('WARNING: No username found in SharedPreferences!');
-        print('Available keys: ${prefs.getKeys()}');
-        // Try alternate keys
-        final altUsername = prefs.getString('user_username') ?? prefs.getString('displayName');
-        if (altUsername != null) {
-          print('Found username under alternate key: $altUsername');
-        }
+      final userId = await storage.read(key: 'user_id');
+      final username = await storage.read(key: 'username');
+      final accessToken = await storage.read(key: 'access_token');
+      
+      print('🔐 BEEP AUTH DEBUG:');
+      print('  userId: $userId');
+      print('  username: $username');  
+      print('  accessToken exists: ${accessToken != null}');
+      
+      if (username == null || username.isEmpty || userId == null || accessToken == null) {
+        print('❌ BEEP: User not authenticated (missing secure storage data)');
         throw Exception('User not authenticated. Please sign in first to send beeps.');
       }
       
-      print('Sending beep as user: $username ($userId)');
+      print('✅ BEEP: Sending beep as user: $username ($userId)');
       
-      // Get Firebase ID token for authentication
-      final currentUser = FirebaseAuth.instance.currentUser;
-      if (currentUser == null) {
-        throw Exception('Firebase user not authenticated. Please sign in first.');
-      }
-      
-      final idToken = await currentUser.getIdToken(true);
-      if (idToken == null || idToken.isEmpty) {
-        throw Exception('Failed to get Firebase ID token. Please sign in again.');
-      }
-      
-      print('Got Firebase ID token for authenticated request');
+      // Use access token from magic link auth instead of Firebase
+      print('🔐 BEEP: Using access token for authentication');
       
       // Try to get current location for beeps
       Position? currentPosition;
@@ -219,13 +214,13 @@ class AnonymousBeepService {
       
       print('Sending anonymous beep: ${json.encode(payload)}');
       
-      // Send the beep with Firebase authentication
+      // Send the beep with JWT access token authentication
       final response = await _dio.post(
         '/alerts',
         data: payload,
         options: Options(
           headers: {
-            'Authorization': 'Bearer $idToken',
+            'Authorization': 'Bearer $accessToken',
           },
         ),
       );

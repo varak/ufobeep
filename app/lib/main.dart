@@ -38,8 +38,22 @@ void main() async {
   final results = await Future.wait([
     Firebase.initializeApp(),
     SharedPreferences.getInstance(),
-    AuthService().initialize(), // Initialize auth service to check stored tokens
   ]);
+  
+  // Initialize AuthService separately with detailed logging
+  print('🔐 CRITICAL: Initializing AuthService...');
+  try {
+    await AuthService().initialize();
+    final authState = AuthService().authState;
+    print('🔐 CRITICAL: AuthService initialized');
+    print('🔐 Phase: ${authState.phase}');
+    print('🔐 isAuthenticated: ${authState.isAuthenticated}');
+    print('🔐 userId: ${authState.userId}');
+    print('🔐 username: ${authState.username}');
+    print('🔐 email: ${authState.email}');
+  } catch (e) {
+    print('🔐 CRITICAL ERROR: AuthService init failed: $e');
+  }
   
   final sharedPreferences = results[1] as SharedPreferences;
   print('✅ Core initialization: ${stopwatch.elapsedMilliseconds}ms');

@@ -116,47 +116,51 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final userPreferences = ref.watch(userPreferencesProvider);
+    // Check authentication status directly from AuthService
+    final authService = AuthService();
+    final authState = authService.authState;
     
     print('🔍 ProfileScreen DEBUG:');
-    print('  userPreferences: $userPreferences');
-    print('  userPreferences == null: ${userPreferences == null}');
+    print('  authState.phase: ${authState.phase}');
+    print('  authState.isAuthenticated: ${authState.isAuthenticated}');
+    print('  authState.userId: ${authState.userId}');
+    print('  authState.username: ${authState.username}');
+    print('  authState.email: ${authState.email}');
     
-    // For authenticated users, always show profile even if no local preferences
-    // The profile will create default preferences automatically
-    if (userPreferences == null) {
-      print('  📝 userPreferences is null, checking auth status...');
-      // Check if user is authenticated via AuthService
-      return FutureBuilder<bool>(
-        future: _isUserAuthenticated(),
-        builder: (context, snapshot) {
-          print('  🔐 Auth check: connectionState=${snapshot.connectionState}, data=${snapshot.data}');
-          
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          }
-          
-          final isAuthenticated = snapshot.data ?? false;
-          print('  🔐 Final isAuthenticated: $isAuthenticated');
-          
-          if (isAuthenticated) {
-            print('  ✅ User IS authenticated, initializing preferences...');
-            // User is authenticated but has no local preferences
-            // Create default preferences and show profile
-            _initializeDefaultPreferences();
-            return _buildProfileWithDefaults();
-          } else {
-            print('  ❌ User NOT authenticated, showing registration prompt');
-            // User is not authenticated, show registration prompt
-            return _buildRegistrationPrompt();
-          }
-        },
+    if (!authState.isAuthenticated) {
+      print('  ❌ User NOT authenticated, redirecting to sign-in');
+      // Redirect to sign-in screen instead of showing registration prompt
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.go('/sign-in');
+      });
+      return const Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 16),
+              Text('Please sign in to view your profile...'),
+            ],
+          ),
+        ),
       );
     }
     
-    print('  ✅ userPreferences exist, showing full profile');
+    // User is authenticated, show profile with their data
+    print('  ✅ User IS authenticated, showing profile');
+    
+    // Try to load preferences, but don't block the UI if they don't exist
+    final userPreferences = ref.watch(userPreferencesProvider);
+    
+    // If no preferences yet, initialize default ones asynchronously
+    if (userPreferences == null) {
+      print('  📝 No preferences found, initializing defaults...');
+      _initializeDefaultPreferences();
+      return _buildProfileWithDefaults();
+    }
+    
+    print('  ✅ Preferences loaded, showing full profile');
     
 
     return Scaffold(
@@ -170,7 +174,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         child: Column(
           children: [
             // Profile Header
-            _buildProfileHeader(userPreferences!),
+            _buildProfileHeader(authState, userPreferences!),
             
             const SizedBox(height: 24),
             
@@ -374,11 +378,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
-  Widget _buildProfileHeader(UserPreferences preferences) {
-    return FutureBuilder<String?>(
-      future: userService.getCurrentUsername(),
-      builder: (context, snapshot) {
-        final username = snapshot.data;
+  Widget _buildProfileHeader(AuthState authState, UserPreferences preferences) {
+    final username = authState.username ?? 'Unknown User';
+    final email = authState.email ?? 'No email';
+    final userId = authState.userId ?? 'Unknown ID';
+    
+    return Builder(
+      builder: (context) {
         
         return Container(
           padding: const EdgeInsets.all(20),
@@ -405,27 +411,35 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               
               const SizedBox(height: 16),
               
-              // Username or registration prompt
-              if (username != null) ...[
+              // Username and email for authenticated user
+              Text(
+                username,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const SizedBox(height: 4),
+              if (email != 'No email')
                 Text(
-                  username,
+                  email,
                   style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+                    color: AppColors.textSecondary,
+                    fontSize: 14,
                   ),
                 ),
-                const SizedBox(height: 4),
-                GestureDetector(
-                  onTap: _handleAdminTap,
-                  child: Text(
-                    'v$_appVersion',
-                    style: const TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 14,
-                    ),
+              const SizedBox(height: 4),
+              GestureDetector(
+                onTap: _handleAdminTap,
+                child: Text(
+                  'v$_appVersion',
+                  style: const TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 14,
                   ),
                 ),
+              ),
               ] else ...[
                 const Text(
                   'Welcome to UFOBeep',
