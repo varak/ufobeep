@@ -33,6 +33,7 @@ dependencies:
   
   # Local Storage
   shared_preferences: ^2.3.3
+  flutter_secure_storage: ^9.2.2
   
   # Camera & Media
   camera: ^0.11.0+2

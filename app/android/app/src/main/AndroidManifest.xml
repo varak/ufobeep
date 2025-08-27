@@ -112,14 +112,20 @@
                 <data android:scheme="ufobeep" />
             </intent-filter>
             
-            <!-- Web links for ufobeep.com -->
+            <!-- App Links for ufobeep.com (auto-verified) -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" 
-                      android:host="ufobeep.com" 
-                      android:pathPrefix="/auth" />
+                <data android:scheme="https" android:host="api.ufobeep.com" />
+            </intent-filter>
+            
+            <!-- Additional App Links for main domain -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="ufobeep.com" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

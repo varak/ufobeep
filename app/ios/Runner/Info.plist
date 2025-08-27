@@ -98,5 +98,25 @@
 		<string>accelerometer</string>
 		<string>gyroscope</string>
 	</array>
+	
+	<!-- URL Schemes for Deep Links -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.ufobeep.app.deeplink</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>ufobeep</string>
+			</array>
+		</dict>
+	</array>
+	
+	<!-- Associated Domains for App Links -->
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:api.ufobeep.com</string>
+		<string>applinks:ufobeep.com</string>
+	</array>
 </dict>
 </plist>

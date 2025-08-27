@@ -7,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:app_links/app_links.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 /// Deep link service for handling push notification and URL-based navigation
 class DeepLinkService {
@@ -17,6 +18,20 @@ class DeepLinkService {
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
   GoRouter? _router;
+  
+  // Double-handling protection
+  final Set<String> _processedTokens = {};
+  bool _isProcessingAuth = false;
+  
+  // Secure storage instance
+  static const _secureStorage = FlutterSecureStorage(
+    aOptions: AndroidOptions(
+      encryptedSharedPreferences: true,
+    ),
+    iOptions: IOSOptions(
+      accessibility: KeychainAccessibility.first_unlock_this_device,
+    ),
+  );
 
   /// Initialize deep link handling
   Future<void> initialize(GoRouter router) async {
@@ -156,9 +171,6 @@ class DeepLinkService {
         break;
       case 'profile':
         await _handleProfileLink(pathSegments, queryParams);
-        break;
-      case 'auth':
-        await _handleAuthLink(pathSegments, queryParams);
         break;
       default:
         print('Unknown UFOBeep host: $host');
@@ -310,26 +322,43 @@ class DeepLinkService {
       final isNewUser = queryParams['is_new_user'] == 'true';
 
       if (token != null && userId != null && username != null) {
-        print('🔑 Magic link auth data received:');
-        print('   Token: ${token.substring(0, 20)}...');
-        print('   User ID: $userId');
-        print('   Username: $username');
-        print('   Is new user: $isNewUser');
-
-        // Store auth data locally
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('access_token', token);
-        await prefs.setString('user_id', userId);
-        await prefs.setString('username', username);
-        await prefs.setBool('is_registered', true);
-        
-        if (email != null) {
-          await prefs.setString('user_email', email);
+        // Double-handling protection
+        if (_isProcessingAuth) {
+          print('🔒 Auth already in progress, ignoring duplicate request');
+          return;
         }
+        
+        if (_processedTokens.contains(token)) {
+          print('🔒 Token already processed, ignoring duplicate');
+          return;
+        }
+        
+        _isProcessingAuth = true;
+        _processedTokens.add(token);
+        
+        try {
+          print('🔑 Magic link auth data received (replacing with secure storage):');
+          print('   Token: ${token.substring(0, 20)}...');
+          print('   User ID: $userId');
+          print('   Username: $username');
+          print('   Is new user: $isNewUser');
 
-        // Navigate to alerts screen (user is now authenticated)
-        _router!.go('/alerts');
-        print('✅ Magic link authentication completed, navigated to alerts');
+          // Store auth data securely using FlutterSecureStorage
+          await _secureStorage.write(key: 'access_token', value: token);
+          await _secureStorage.write(key: 'user_id', value: userId);
+          await _secureStorage.write(key: 'username', value: username);
+          await _secureStorage.write(key: 'is_registered', value: 'true');
+          
+          if (email != null) {
+            await _secureStorage.write(key: 'user_email', value: email);
+          }
+
+          // Navigate to alerts screen (user is now authenticated)
+          _router!.go('/alerts');
+          print('✅ Magic link authentication completed, navigated to alerts');
+        } finally {
+          _isProcessingAuth = false;
+        }
       } else {
         print('❌ Invalid magic link data, redirecting to sign-in');
         _router!.go('/sign-in');
@@ -347,44 +376,6 @@ class DeepLinkService {
     _router!.go('/profile');
   }
 
-  /// Handle auth deep links (magic link success, login, etc.)
-  Future<void> _handleAuthLink(
-    List<String> pathSegments,
-    Map<String, String> queryParams,
-  ) async {
-    print('🔐 AUTH LINK DEBUG:');
-    print('   Path segments: $pathSegments');
-    print('   Query params: $queryParams');
-    
-    if (pathSegments.isEmpty) {
-      print('Auth link with no path, navigating to alerts');
-      _router!.go('/alerts');
-      return;
-    }
-
-    switch (pathSegments[0]) {
-      case 'success':
-        print('✅ Magic link success! Token: ${queryParams['token']}');
-        // User successfully authenticated via magic link
-        // Store token or trigger auth state update if needed
-        if (queryParams.containsKey('token')) {
-          print('   Magic link token received, user is now authenticated');
-        }
-        _router!.go('/alerts');
-        break;
-      case 'login':
-        print('🔑 Auth login link, showing login screen');
-        _router!.go('/auth/login');
-        break;
-      case 'error':
-        print('❌ Auth error link, showing login screen');
-        _router!.go('/auth/login');
-        break;
-      default:
-        print('⚠️ Unknown auth path: ${pathSegments[0]}');
-        _router!.go('/alerts');
-    }
-  }
 
   /// Handle Firebase dynamic link format (com.ufobeep:/__/auth/action?oobCode=...)
   Future<void> _handleFirebaseDynamicLink(Uri uri) async {

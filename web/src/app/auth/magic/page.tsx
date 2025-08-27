@@ -10,45 +10,40 @@ function MagicLinkContent() {
 
   useEffect(() => {
     const token = searchParams.get('token')
+    const userId = searchParams.get('user_id')
+    const username = searchParams.get('username')
+    const email = searchParams.get('email')
+    const isNewUser = searchParams.get('is_new_user')
     
-    if (!token) {
+    if (!token || !userId || !username) {
       setStatus('error')
       setMessage('Invalid magic link. Please request a new one.')
       return
     }
 
-    // Verify the token with the API
-    verifyMagicLink(token)
+    // Magic link has been verified by the backend, now try to open the app
+    handleAppLaunch(token, userId, username, email, isNewUser)
   }, [searchParams])
 
-  const verifyMagicLink = async (token: string) => {
-    try {
-      const response = await fetch('https://api.ufobeep.com/users/verify-magic-link', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token }),
-      })
-
-      const data = await response.json()
-
-      if (response.ok && data.success) {
-        setStatus('success')
-        setMessage('Successfully signed in! You can now open the UFOBeep app.')
-        
-        // Try to open the app with deep link
-        setTimeout(() => {
-          window.location.href = `ufobeep://auth/success?token=${token}`
-        }, 2000)
-      } else {
-        setStatus('error')
-        setMessage(data.message || 'Invalid or expired magic link. Please request a new one.')
-      }
-    } catch (error) {
-      setStatus('error')
-      setMessage('Something went wrong. Please try again.')
-    }
+  const handleAppLaunch = (token: string, userId: string, username: string, email?: string | null, isNewUser?: string | null) => {
+    setStatus('success')
+    setMessage('Successfully signed in! Opening UFOBeep app...')
+    
+    // Create the deep link URL with all auth data
+    const deepLinkUrl = new URL('ufobeep://auth/complete')
+    deepLinkUrl.searchParams.set('token', token)
+    deepLinkUrl.searchParams.set('user_id', userId)
+    deepLinkUrl.searchParams.set('username', username)
+    if (email) deepLinkUrl.searchParams.set('email', email)
+    if (isNewUser) deepLinkUrl.searchParams.set('is_new_user', isNewUser)
+    
+    // Try to open app immediately
+    window.location.href = deepLinkUrl.toString()
+    
+    // Fallback: show manual open button after delay
+    setTimeout(() => {
+      setMessage('Having trouble? Tap the button below to open UFOBeep.')
+    }, 3000)
   }
 
   return (
@@ -82,8 +77,35 @@ function MagicLinkContent() {
                   </div>
                 </div>
                 <p className="text-green-400 font-semibold mb-2">Success!</p>
-                <p className="text-gray-300">{message}</p>
-                <p className="text-gray-400 text-sm mt-4">Redirecting to app...</p>
+                <p className="text-gray-300 mb-4">{message}</p>
+                {message.includes('Having trouble') && (
+                  <div className="mt-4">
+                    <button 
+                      onClick={() => {
+                        const token = searchParams.get('token')
+                        const userId = searchParams.get('user_id')
+                        const username = searchParams.get('username')
+                        const email = searchParams.get('email')
+                        const isNewUser = searchParams.get('is_new_user')
+                        
+                        const deepLinkUrl = new URL('ufobeep://auth/complete')
+                        if (token) deepLinkUrl.searchParams.set('token', token)
+                        if (userId) deepLinkUrl.searchParams.set('user_id', userId)
+                        if (username) deepLinkUrl.searchParams.set('username', username)
+                        if (email) deepLinkUrl.searchParams.set('email', email)
+                        if (isNewUser) deepLinkUrl.searchParams.set('is_new_user', isNewUser)
+                        
+                        window.location.href = deepLinkUrl.toString()
+                      }}
+                      className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition"
+                    >
+                      Open UFOBeep App
+                    </button>
+                  </div>
+                )}
+                {!message.includes('Having trouble') && (
+                  <p className="text-gray-400 text-sm mt-4">Redirecting to app...</p>
+                )}
               </>
             )}
             
@@ -99,12 +121,12 @@ function MagicLinkContent() {
                 <p className="text-red-400 font-semibold mb-2">Error</p>
                 <p className="text-gray-300">{message}</p>
                 <div className="mt-6">
-                  <a 
-                    href="ufobeep://auth/login"
+                  <button 
+                    onClick={() => window.location.href = "ufobeep://"}
                     className="inline-block bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition"
                   >
                     Open UFOBeep App
-                  </a>
+                  </button>
                 </div>
               </>
             )}

@@ -256,13 +256,19 @@ if [ "$DEPLOY_API" = true ]; then
         sudo systemctl restart ufobeep-api
         
         echo "Checking API status..."
-        sleep 2
-        if ! curl -s https://api.ufobeep.com/healthz | grep -q '"ok":true'; then
-            echo "❌ API health check failed!"
-            sudo systemctl status ufobeep-api --no-pager
-            exit 1
-        fi
-        echo "✅ API is healthy"
+        sleep 5
+        # Try health check with retries
+        for i in {1..3}; do
+            if curl -s --connect-timeout 10 --max-time 15 https://api.ufobeep.com/healthz | grep -q '"ok":true'; then
+                echo "✅ API is healthy"
+                exit 0
+            fi
+            echo "Health check attempt $i failed, retrying..."
+            sleep 3
+        done
+        echo "❌ API health check failed after 3 attempts!"
+        sudo systemctl status ufobeep-api --no-pager
+        exit 1
 ENDSSH
     then
         echo -e "${GREEN}✅ API deployed${NC}"
