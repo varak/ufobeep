@@ -486,20 +486,16 @@ class UserService {
     }
   }
 
-  /// Send magic link for passwordless email authentication - MP15
+  /// Send magic link for passwordless email authentication - Backend Magic Link System
   Future<Map<String, dynamic>> sendMagicLink(String email) async {
     try {
-      final deviceService = DeviceService();
-      final deviceId = await deviceService.getDeviceId();
-      
       final response = await http.post(
-        Uri.parse('$_apiBaseUrl/users/request-magic-link'),
+        Uri.parse('$_apiBaseUrl/auth/magic/start'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'email': email,
-          'device_id': deviceId,
         }),
-      );
+      ).timeout(const Duration(seconds: 12));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -507,15 +503,79 @@ class UserService {
           'success': data['success'] ?? true,
           'message': data['message'] ?? 'Magic link sent successfully!'
         };
-      } else {
-        final error = jsonDecode(response.body);
+      } else if (response.statusCode == 429) {
+        final data = jsonDecode(response.body);
         return {
           'success': false,
-          'message': error['detail'] ?? 'Failed to send magic link'
+          'message': data['detail']['message'] ?? 'Too many attempts. Please wait before requesting another magic link.',
+          'rate_limit_reset': data['detail']['rate_limit_reset'],
+        };
+      } else {
+        final data = jsonDecode(response.body);
+        return {
+          'success': false,
+          'message': data['detail'] ?? 'Failed to send magic link'
         };
       }
     } catch (e) {
       print('Error sending magic link: $e');
+      return {
+        'success': false,
+        'message': 'Network error. Please try again.'
+      };
+    }
+  }
+  
+  /// Complete magic link authentication
+  Future<Map<String, dynamic>> completeMagicLink(String token) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$_apiBaseUrl/auth/magic/complete'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'token': token,
+        }),
+      ).timeout(const Duration(seconds: 12));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        
+        // Store user info locally if authentication successful
+        if (data['success'] == true) {
+          await _storeUserInfo(
+            userId: data['user_id'] ?? '',
+            username: data['username'] ?? '',
+            deviceId: await DeviceService().getDeviceId(),
+          );
+          
+          // Store additional auth info
+          final prefs = await SharedPreferences.getInstance();
+          if (data['email'] != null) {
+            await prefs.setString('user_email', data['email']);
+          }
+          if (data['access_token'] != null) {
+            await prefs.setString('access_token', data['access_token']);
+          }
+        }
+        
+        return {
+          'success': data['success'] ?? true,
+          'message': data['message'] ?? 'Authentication successful!',
+          'access_token': data['access_token'],
+          'user_id': data['user_id'],
+          'username': data['username'],
+          'email': data['email'],
+          'is_new_user': data['is_new_user'] ?? false,
+        };
+      } else {
+        final data = jsonDecode(response.body);
+        return {
+          'success': false,
+          'message': data['detail'] ?? 'Failed to complete magic link authentication'
+        };
+      }
+    } catch (e) {
+      print('Error completing magic link: $e');
       return {
         'success': false,
         'message': 'Network error. Please try again.'
