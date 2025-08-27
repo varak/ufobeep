@@ -414,20 +414,24 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
 
   /// NEW: Authorization code flow magic link authentication
   Future<bool> loginWithMagicCode({required String code}) async {
-    debugPrint('[Auth] loginWithMagicCode start');
-    debugPrint('[Auth] code length: ${code.length}');
+    debugPrint('[Auth] 🔐 AUTH_DEBUG: loginWithMagicCode start');
+    debugPrint('[Auth] 🔐 AUTH_DEBUG: code length: ${code.length}');
+    debugPrint('[Auth] 🔐 AUTH_DEBUG: code preview: ${code.substring(0, 8)}...');
     
     try {
       // Exchange authorization code for tokens
+      debugPrint('[Auth] 🔐 AUTH_DEBUG: Calling _apiClient.exchangeMagicCode()');
       final respJson = await _apiClient.exchangeMagicCode(code);
+      debugPrint('[Auth] 🔐 AUTH_DEBUG: API call completed');
       
       if (respJson == null) {
-        debugPrint('[Auth][ERROR] Empty response from backend.');
+        debugPrint('[Auth][ERROR] 🔐 AUTH_DEBUG: Empty response from backend.');
         _showDevSnack('Magic link failed: empty response');
         return false;
       }
       
-      debugPrint('[Auth] Backend response keys: ${respJson.keys}');
+      debugPrint('[Auth] 🔐 AUTH_DEBUG: Backend response keys: ${respJson.keys}');
+      debugPrint('[Auth] 🔐 AUTH_DEBUG: Backend response data: $respJson');
       
       // Expected JSON: { access_token, refresh_token, user: {id, username, email} }
       final accessToken = respJson['access_token'] as String?;
@@ -475,12 +479,14 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       debugPrint('[Auth] ✅ Authorization code auth successful - userId: $userId, username: $username');
       
       // Emit authenticated state
+      debugPrint('[Auth] 🔐 AUTH_DEBUG: Emitting authenticated state');
       await _emit(AuthState.authenticated(
         userId: userId,
         username: username,
         email: email,
       ));
       
+      debugPrint('[Auth] 🔐 AUTH_DEBUG: Magic link authentication completed successfully');
       _showDevSnack('Welcome back, $username!');
       return true;
       

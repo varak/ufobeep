@@ -49,11 +49,22 @@ class DeepLinkHandler {
 
   /// Process deep link URI - ChatGPT's comprehensive logging approach
   Future<void> _handleUri(Uri uri) async {
-    debugPrint('[DeepLink] Received URI: $uri');
-    debugPrint('[DeepLink] Scheme: ${uri.scheme}');
-    debugPrint('[DeepLink] Host: ${uri.host}');
-    debugPrint('[DeepLink] Path: ${uri.path}');
-    debugPrint('[DeepLink] Query Parameters: ${uri.queryParameters}');
+    debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Received URI: $uri');
+    debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Scheme: ${uri.scheme}');
+    debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Host: ${uri.host}');
+    debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Path: ${uri.path}');
+    debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Query Parameters: ${uri.queryParameters}');
+    
+    // Get current route context for debugging
+    try {
+      final context = rootNavigatorKey.currentContext;
+      if (context != null) {
+        final currentRoute = context.read<GoRouter>().location;
+        debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Current route before processing: $currentRoute');
+      }
+    } catch (e) {
+      debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Could not get current route: $e');
+    }
     
     try {
       // Robust HTTPS + custom scheme parsing with explicit logging
@@ -113,15 +124,22 @@ class DeepLinkHandler {
         
         if (code != null && code.isNotEmpty) {
           // NEW: Authorization code flow
-          debugPrint('[DeepLink] Using authorization code flow');
-          debugPrint('[DeepLink] code length: ${code.length}');
+          debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Using authorization code flow');
+          debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: code length: ${code.length}');
+          debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Full code: ${code.substring(0, 8)}...');
           
+          debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Starting AuthService.beginProcessingLink()');
           await authService.beginProcessingLink();
+          
+          debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Calling AuthService.loginWithMagicCode()');
           final success = await authService.loginWithMagicCode(code: code);
-          debugPrint('[DeepLink] Authorization code login result: $success');
+          debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Authorization code login result: $success');
           
           if (success) {
+            debugPrint('[DeepLink] 🔗 NAV_DEBUG: Navigation success, calling _navigateToMainApp()');
             _navigateToMainApp();
+          } else {
+            debugPrint('[DeepLink] 🔗 NAV_DEBUG: Navigation failed, success=false');
           }
           return;
         } else if (token != null && token.isNotEmpty) {
@@ -152,21 +170,29 @@ class DeepLinkHandler {
 
   /// Navigate to main app after successful authentication (ChatGPT's approach)
   void _navigateToMainApp() {
-    debugPrint('[DeepLink] Navigating to main app after successful authentication');
+    debugPrint('[DeepLink] 🔗 NAV_DEBUG: Starting navigation to main app after successful authentication');
     
     // Use ChatGPT's recommended post-frame callback approach to avoid navigation timing issues
     WidgetsBinding.instance.addPostFrameCallback((_) {
       try {
+        debugPrint('[DeepLink] 🔗 NAV_DEBUG: Post-frame callback executing');
         // Get the current context from the global navigator
         final context = rootNavigatorKey.currentContext;
+        debugPrint('[DeepLink] 🔗 NAV_DEBUG: Context available: ${context != null}');
+        debugPrint('[DeepLink] 🔗 NAV_DEBUG: Context mounted: ${context?.mounted}');
+        
         if (context != null && context.mounted) {
-          debugPrint('[DeepLink] Using GoRouter to navigate to /alerts');
+          final currentLocation = context.read<GoRouter>().location;
+          debugPrint('[DeepLink] 🔗 NAV_DEBUG: Current location before navigation: $currentLocation');
+          debugPrint('[DeepLink] 🔗 NAV_DEBUG: Using GoRouter to navigate to /alerts');
           context.go('/alerts');
+          debugPrint('[DeepLink] 🔗 NAV_DEBUG: Navigation to /alerts completed successfully');
         } else {
-          debugPrint('[DeepLink][WARN] Navigation context not available');
+          debugPrint('[DeepLink][WARN] 🔗 NAV_DEBUG: Navigation context not available or not mounted');
         }
-      } catch (e) {
-        debugPrint('[DeepLink][ERROR] Navigation failed: $e');
+      } catch (e, stackTrace) {
+        debugPrint('[DeepLink][ERROR] 🔗 NAV_DEBUG: Navigation failed: $e');
+        debugPrint('[DeepLink][ERROR] 🔗 NAV_DEBUG: Stack trace: $stackTrace');
       }
     });
   }
