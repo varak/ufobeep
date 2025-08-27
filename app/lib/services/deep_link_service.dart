@@ -148,6 +148,9 @@ class DeepLinkService {
       case 'chat':
         await _handleChatLink(pathSegments, queryParams);
         break;
+      case 'auth':
+        await _handleAuthLink(pathSegments, queryParams);
+        break;
       case 'compass':
         await _handleCompassLink(pathSegments, queryParams);
         break;
@@ -284,6 +287,56 @@ class DeepLinkService {
     }
     
     _router!.go(route);
+  }
+
+  /// Handle auth deep links (magic link completion)
+  Future<void> _handleAuthLink(
+    List<String> pathSegments,
+    Map<String, String> queryParams,
+  ) async {
+    if (pathSegments.isEmpty) {
+      _router!.go('/sign-in');
+      return;
+    }
+
+    final action = pathSegments[0];
+    
+    if (action == 'complete') {
+      // Magic link completion - extract auth data from query params
+      final token = queryParams['token'];
+      final userId = queryParams['user_id'];
+      final username = queryParams['username'];
+      final email = queryParams['email'];
+      final isNewUser = queryParams['is_new_user'] == 'true';
+
+      if (token != null && userId != null && username != null) {
+        print('🔑 Magic link auth data received:');
+        print('   Token: ${token.substring(0, 20)}...');
+        print('   User ID: $userId');
+        print('   Username: $username');
+        print('   Is new user: $isNewUser');
+
+        // Store auth data locally
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('access_token', token);
+        await prefs.setString('user_id', userId);
+        await prefs.setString('username', username);
+        await prefs.setBool('is_registered', true);
+        
+        if (email != null) {
+          await prefs.setString('user_email', email);
+        }
+
+        // Navigate to alerts screen (user is now authenticated)
+        _router!.go('/alerts');
+        print('✅ Magic link authentication completed, navigated to alerts');
+      } else {
+        print('❌ Invalid magic link data, redirecting to sign-in');
+        _router!.go('/sign-in');
+      }
+    } else {
+      _router!.go('/sign-in');
+    }
   }
 
   /// Handle profile deep links

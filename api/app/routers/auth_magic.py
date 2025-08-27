@@ -99,9 +99,8 @@ async def send_magic_link_email(email: str, token: str, background_tasks: Backgr
         try:
             email_service = await get_email_service()
             
-            # Create both app link and web fallback
-            app_link = f"ufobeep://auth/magic?token={token}"
-            web_link = f"https://api.ufobeep.com/auth/magic/complete?token={token}"
+            # Create magic link that completes auth and opens app
+            magic_link = f"https://api.ufobeep.com/auth/magic/complete?token={token}"
             
             # Create professional email content using UFOBeep theme
             html_content = f"""
@@ -236,23 +235,18 @@ async def send_magic_link_email(email: str, token: str, background_tasks: Backgr
             <p>Click the button below to securely sign in to UFOBeep. This magic link will expire in 15 minutes for your security.</p>
             
             <center>
-                <a href="{app_link}" class="app-button">
-                    📱 Open UFOBeep App
+                <a href="{magic_link}" class="app-button">
+                    🔑 Complete Sign In
                 </a>
             </center>
             
             <div class="web-fallback">
-                <h3 style="margin: 0 0 12px 0; color: #333; font-size: 16px;">Can't open the app?</h3>
+                <h3 style="margin: 0 0 12px 0; color: #333; font-size: 16px;">Alternative:</h3>
                 <p style="margin: 0 0 12px 0; color: #666; font-size: 14px;">
-                    Use this web link instead:
+                    Copy and paste this link in your browser:
                 </p>
-                <center>
-                    <a href="{web_link}" class="web-button">
-                        🌐 Sign in via Web
-                    </a>
-                </center>
                 <div class="link-text" style="margin-top: 12px;">
-                    {web_link}
+                    {magic_link}
                 </div>
             </div>
             
@@ -455,26 +449,129 @@ async def complete_magic_link(
         # Create access token
         access_token = create_access_token(data={"sub": str(user.id)})
         
-        # Check if this looks like a mobile app request
+        # Check if this looks like a mobile browser
         user_agent = request.headers.get("User-Agent", "").lower()
-        is_mobile_app = any(term in user_agent for term in ["ufobeep", "android", "ios", "mobile"])
+        is_mobile = any(term in user_agent for term in ["android", "iphone", "ipad", "mobile"])
         
-        if is_mobile_app:
-            # Return JSON for mobile app
-            return MagicLinkCompleteResponse(
-                success=True,
-                message="Successfully signed in!",
-                access_token=access_token,
-                user_id=str(user.id),
-                username=user.username,
-                email=user.email,
-                is_new_user=is_new_user
-            )
+        if is_mobile:
+            # Create app deep link with auth data
+            app_deep_link = f"ufobeep://auth/complete?token={access_token}&user_id={user.id}&username={user.username}&email={user.email}&is_new_user={is_new_user}"
+            
+            # Return HTML page that tries to open app, falls back to download
+            from fastapi.responses import HTMLResponse
+            html_content = f"""
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opening UFOBeep...</title>
+    <style>
+        body {{ 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #0f1419; 
+            color: #ccd6f6; 
+            margin: 0; 
+            padding: 20px;
+            text-align: center;
+        }}
+        .container {{ 
+            max-width: 400px; 
+            margin: 50px auto; 
+            padding: 40px 20px;
+            background: #1a1f2e;
+            border-radius: 12px;
+        }}
+        .logo {{ 
+            font-size: 32px; 
+            color: #00d4ff; 
+            margin-bottom: 20px;
+        }}
+        .message {{ 
+            font-size: 18px; 
+            margin-bottom: 30px;
+        }}
+        .download-btn {{ 
+            display: inline-block;
+            background: #00ff88;
+            color: #0f1419;
+            padding: 16px 32px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🛸 UFOBeep</div>
+        <div class="message">
+            Authentication successful!<br>
+            Opening the app...
+        </div>
+        <a href="https://ufobeep.com/downloads/ufobeep-latest.apk" class="download-btn">
+            Download App if Not Installed
+        </a>
+    </div>
+    
+    <script>
+        // Try to open the app immediately
+        window.location.href = "{app_deep_link}";
+        
+        // Fallback: try again after a short delay
+        setTimeout(function() {{
+            window.location.href = "{app_deep_link}";
+        }}, 1000);
+    </script>
+</body>
+</html>
+            """
+            return HTMLResponse(content=html_content)
         else:
-            # Redirect to web app with token
-            from fastapi.responses import RedirectResponse
-            web_url = f"https://ufobeep.com/auth/callback?token={access_token}&user_id={user.id}&username={user.username}&is_new_user={is_new_user}"
-            return RedirectResponse(url=web_url)
+            # Desktop browser - show instructions
+            from fastapi.responses import HTMLResponse
+            html_content = f"""
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>UFOBeep Sign In Complete</title>
+    <style>
+        body {{ 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #0f1419; 
+            color: #ccd6f6; 
+            margin: 0; 
+            padding: 20px;
+            text-align: center;
+        }}
+        .container {{ 
+            max-width: 500px; 
+            margin: 50px auto; 
+            padding: 40px;
+            background: #1a1f2e;
+            border-radius: 12px;
+        }}
+        .logo {{ 
+            font-size: 36px; 
+            color: #00d4ff; 
+            margin-bottom: 20px;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🛸 UFOBeep</div>
+        <h2>Sign In Successful!</h2>
+        <p>Your account <strong>{user.username}</strong> has been authenticated.</p>
+        <p>Please open the UFOBeep app on your mobile device to continue.</p>
+        <a href="https://ufobeep.com/downloads/ufobeep-latest.apk" style="color: #00ff88;">Download UFOBeep App</a>
+    </div>
+</body>
+</html>
+            """
+            return HTMLResponse(content=html_content)
         
     except HTTPException:
         raise
