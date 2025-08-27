@@ -59,10 +59,10 @@ except ImportError:
         REJECTED = "rejected"
     
     class AlertLevel(str, Enum):
-        LOW = "low"
-        MEDIUM = "medium"
-        HIGH = "high"
-        CRITICAL = "critical"
+        LOW = "LOW"
+        MEDIUM = "MEDIUM"
+        HIGH = "HIGH"
+        CRITICAL = "CRITICAL"
     
     class GeoCoordinates(BaseModel):
         latitude: float = Field(..., ge=-90.0, le=90.0)

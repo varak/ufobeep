@@ -2,14 +2,15 @@ from fastapi import APIRouter, HTTPException, Depends, Request, BackgroundTasks
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, func
 from datetime import datetime, timezone, timedelta
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, field_validator, ConfigDict
+from enum import Enum
 import secrets
 import hashlib
 import logging
 from typing import Optional
 
 from app.core.database import get_db
-from app.models import MagicLink, MagicLinkAttempt, User
+from app.models import MagicLink, MagicLinkAttempt, User, AlertLevel
 from app.core.auth import create_access_token
 from app.config.environment import settings
 from app.services.email_service_postfix import get_email_service
@@ -41,6 +42,30 @@ class MagicCodeExchangeResponse(BaseModel):
     access_token: str
     refresh_token: str
     user: dict  # {id, username, email}
+
+
+class UserCreateSafe(BaseModel):
+    """Safe user creation model with enum validation"""
+    model_config = ConfigDict(extra='ignore')  # Ignore unexpected fields to prevent 500s
+    
+    email: str
+    username: Optional[str] = None
+    min_alert_level: AlertLevel = AlertLevel.MEDIUM  # Server default with uppercase
+    
+    @field_validator('min_alert_level', mode='before')
+    @classmethod
+    def normalize_alert_level(cls, v):
+        """Convert any case alert level to proper enum value"""
+        if v is None:
+            return AlertLevel.MEDIUM
+        if isinstance(v, str):
+            v = v.strip().upper()
+            # Map lowercase to uppercase for backward compatibility
+            if v in ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL']:
+                return AlertLevel(v)
+            else:
+                raise ValueError(f"alertlevel must be one of LOW, MEDIUM, HIGH, CRITICAL, got: {v}")
+        return AlertLevel(v)
 
 
 class MagicLinkCompleteRequest(BaseModel):
@@ -1013,88 +1038,87 @@ async def exchange_magic_code(
         ip_address = get_client_ip(http_request)
         logger.info(f"Magic code exchange attempted from IP: {ip_address}")
         
-        # Atomic transaction with row locking to prevent race conditions
-        with db.begin():
-            # Find and lock the magic link record
-            magic_link = db.query(MagicLink).filter(
-                MagicLink.code == request.code
-            ).with_for_update().first()
-            
-            if not magic_link:
-                logger.warning(f"MAGIC_CODE_EXCHANGE: NOT_FOUND - code={request.code[:8]}..., IP={ip_address}")
-                raise HTTPException(status_code=410, detail="Invalid code")
-            
-            if magic_link.is_expired:
-                logger.warning(f"MAGIC_CODE_EXCHANGE: EXPIRED - email={magic_link.email}, expires_at={magic_link.expires_at}, IP={ip_address}")
-                raise HTTPException(status_code=410, detail="Code expired")
-            
-            if magic_link.is_used:
-                logger.warning(f"MAGIC_CODE_EXCHANGE: ALREADY_USED - email={magic_link.email}, used_at={magic_link.used_at}, IP={ip_address}")
-                raise HTTPException(status_code=410, detail="Code already used")
-            
-            # Mark as used atomically
-            magic_link.used_at = datetime.now(timezone.utc)
-            magic_link.used_by_device_id = request.device_id
-            
-            # Find or create user
-            user = db.query(User).filter(User.email == magic_link.email).first()
-            if not user:
-                # Create new user with collision-resistant username
-                max_retries = 5
-                for attempt in range(max_retries):
-                    try:
-                        random_suffix = secrets.token_hex(8)  # 16 characters
-                        username = f"user_{random_suffix}"
-                        
-                        user = User(
-                            username=username,
-                            email=magic_link.email,
-                            is_verified=True,
-                            last_login=datetime.now(timezone.utc)
-                        )
-                        db.add(user)
-                        db.flush()  # This will raise error if username collision occurs
-                        logger.info(f"MAGIC_CODE_EXCHANGE: NEW_USER - email={magic_link.email}, username={username}, IP={ip_address}")
-                        break
-                    except Exception as e:
-                        error_msg = str(e).lower()
-                        if ("unique" in error_msg or "duplicate" in error_msg) and attempt < max_retries - 1:
-                            # Username collision, try again
-                            logger.warning(f"MAGIC_CODE_EXCHANGE: USERNAME_COLLISION - attempt={attempt+1}, email={magic_link.email}, IP={ip_address}")
-                            db.rollback()
-                            continue
-                        else:
-                            logger.error(f"MAGIC_CODE_EXCHANGE: USER_CREATION_FAILED - {str(e)}, email={magic_link.email}, IP={ip_address}")
-                            raise HTTPException(status_code=500, detail="Failed to create user account")
-            else:
-                # Update existing user
-                user.last_login = datetime.now(timezone.utc)
-                user.is_verified = True
-                logger.info(f"MAGIC_CODE_EXCHANGE: EXISTING_USER - email={magic_link.email}, IP={ip_address}")
-            
-            # Create session tokens
-            from app.core.auth import create_access_token, create_refresh_token
-            access_token = create_access_token(data={"sub": str(user.id)})
-            refresh_token = create_refresh_token(data={"sub": str(user.id)})
-            
-            # Everything succeeded, commit the transaction
-            db.commit()
-            
-            logger.info(f"MAGIC_CODE_EXCHANGE: SUCCESS - user_id={user.id}, code={request.code[:8]}..., IP={ip_address}")
-            
-            return MagicCodeExchangeResponse(
-                access_token=access_token,
-                refresh_token=refresh_token,
-                user={
-                    "id": str(user.id),
-                    "username": user.username,
-                    "email": user.email
-                }
-            )
+        # Find and lock the magic link record to prevent race conditions
+        magic_link = db.query(MagicLink).filter(
+            MagicLink.code == request.code
+        ).with_for_update().first()
+        
+        if not magic_link:
+            logger.warning(f"MAGIC_CODE_EXCHANGE: NOT_FOUND - code={request.code[:8]}..., IP={ip_address}")
+            raise HTTPException(status_code=410, detail="Invalid code")
+        
+        if magic_link.is_expired:
+            logger.warning(f"MAGIC_CODE_EXCHANGE: EXPIRED - email={magic_link.email}, expires_at={magic_link.expires_at}, IP={ip_address}")
+            raise HTTPException(status_code=410, detail="Code expired")
+        
+        if magic_link.is_used:
+            logger.warning(f"MAGIC_CODE_EXCHANGE: ALREADY_USED - email={magic_link.email}, used_at={magic_link.used_at}, IP={ip_address}")
+            raise HTTPException(status_code=410, detail="Code already used")
+        
+        # Mark as used atomically
+        magic_link.used_at = datetime.now(timezone.utc)
+        magic_link.used_by_device_id = request.device_id
+        
+        # Find or create user
+        user = db.query(User).filter(User.email == magic_link.email).first()
+        if not user:
+            # Create new user with collision-resistant username
+            from sqlalchemy.exc import IntegrityError
+            max_retries = 5
+            for attempt in range(max_retries):
+                try:
+                    random_suffix = secrets.token_hex(8)  # 16 characters
+                    username = f"user_{random_suffix}"
+                    
+                    user = User(
+                        username=username,
+                        email=magic_link.email,
+                        is_verified=True,
+                        last_login=datetime.now(timezone.utc)
+                    )
+                    db.add(user)
+                    db.flush()  # This will raise error if username collision occurs
+                    logger.info(f"MAGIC_CODE_EXCHANGE: NEW_USER - email={magic_link.email}, username={username}, IP={ip_address}")
+                    break
+                except IntegrityError as e:
+                    if attempt < max_retries - 1:
+                        # Username collision, try again - no rollback needed with flush
+                        logger.warning(f"MAGIC_CODE_EXCHANGE: USERNAME_COLLISION - attempt={attempt+1}, email={magic_link.email}, IP={ip_address}")
+                        continue
+                    else:
+                        logger.error(f"MAGIC_CODE_EXCHANGE: USER_CREATION_FAILED - {str(e)}, email={magic_link.email}, IP={ip_address}")
+                        raise HTTPException(status_code=500, detail="Failed to create user account")
+        else:
+            # Update existing user
+            user.last_login = datetime.now(timezone.utc)
+            user.is_verified = True
+            logger.info(f"MAGIC_CODE_EXCHANGE: EXISTING_USER - email={magic_link.email}, IP={ip_address}")
+        
+        # Create session tokens
+        from app.core.auth import create_access_token, create_refresh_token
+        access_token = create_access_token(data={"sub": str(user.id)})
+        refresh_token = create_refresh_token(data={"sub": str(user.id)})
+        
+        # Commit the transaction
+        db.commit()
+        
+        logger.info(f"MAGIC_CODE_EXCHANGE: SUCCESS - user_id={user.id}, code={request.code[:8]}..., IP={ip_address}")
+        
+        return MagicCodeExchangeResponse(
+            access_token=access_token,
+            refresh_token=refresh_token,
+            user={
+                "id": str(user.id),
+                "username": user.username,
+                "email": user.email
+            }
+        )
             
     except HTTPException:
+        db.rollback()
         raise
     except Exception as e:
+        db.rollback()
         logger.error(f"MAGIC_CODE_EXCHANGE: ERROR - {str(e)}, IP={ip_address}")
         raise HTTPException(
             status_code=500,
