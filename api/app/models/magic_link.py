@@ -11,7 +11,8 @@ class MagicLink(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     email = Column(String(255), nullable=False, index=True)
-    hashed_nonce = Column(String(255), nullable=False, unique=True, index=True)
+    hashed_nonce = Column(String(255), nullable=False, unique=True, index=True)  # This is now hashed jti
+    jti = Column(String(255), nullable=False, unique=True, index=True)  # JWT ID for tracking
     expires_at = Column(DateTime(timezone=True), nullable=False)
     used = Column(Boolean, default=False, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

@@ -304,6 +304,21 @@ async def startup_event():
             await conn.execute("""
                 CREATE INDEX IF NOT EXISTS idx_magic_link_attempts_ip ON magic_link_attempts(ip_address)
             """)
+            
+            # Add jti column to magic_links table if it doesn't exist
+            try:
+                await conn.execute("""
+                    ALTER TABLE magic_links ADD COLUMN jti VARCHAR(255) UNIQUE
+                """)
+                await conn.execute("""
+                    CREATE INDEX IF NOT EXISTS idx_magic_links_jti ON magic_links(jti)
+                """)
+                print("✅ Added jti column to magic_links table")
+            except Exception as e:
+                if "already exists" in str(e).lower() or "duplicate" in str(e).lower():
+                    print("✅ JTI column already exists in magic_links table")
+                else:
+                    print(f"Magic links JTI column setup warning: {e}")
 
             # Create photo_analysis_results table if not exists
             try:
@@ -361,6 +376,8 @@ def ping():
 
 # Mount static files for media serving (use /static to avoid conflict with /media/upload)
 app.mount("/static", StaticFiles(directory="media"), name="media")
+# Mount well-known files for App Links and AASA verification
+app.mount("/.well-known", StaticFiles(directory="static/.well-known"), name="wellknown")
 
 # Include routers
 app.include_router(plane_match.router)

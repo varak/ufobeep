@@ -82,15 +82,28 @@ def check_rate_limit(email: str, ip_address: str, db: Session) -> bool:
     return email_attempts < MAX_ATTEMPTS_PER_WINDOW and ip_attempts < MAX_ATTEMPTS_PER_WINDOW
 
 
-def create_magic_link_token() -> tuple[str, str]:
-    """Create a secure magic link token and its hash"""
-    # Generate a secure random token
-    token = secrets.token_urlsafe(TOKEN_LENGTH)
+def create_magic_link_token() -> tuple[str, str, str]:
+    """Create a secure JWT magic link token with jti"""
+    import uuid
+    from app.core.auth import create_access_token
     
-    # Create hash for database storage
-    token_hash = hashlib.sha256(token.encode()).hexdigest()
+    # Generate unique jti (JWT ID) for server-side tracking
+    jti = str(uuid.uuid4())
     
-    return token, token_hash
+    # Create JWT token with jti and short expiration
+    expires_delta = timedelta(minutes=MAGIC_LINK_EXPIRY_MINUTES)
+    token_data = {
+        "jti": jti,
+        "type": "magic_link",
+        "exp": datetime.now(timezone.utc) + expires_delta
+    }
+    
+    jwt_token = create_access_token(data=token_data, expires_delta=expires_delta)
+    
+    # Create hash of jti for database storage (not the full JWT)
+    jti_hash = hashlib.sha256(jti.encode()).hexdigest()
+    
+    return jwt_token, jti_hash, jti
 
 
 async def send_magic_link_email(email: str, token: str, background_tasks: BackgroundTasks):
@@ -338,14 +351,15 @@ async def start_magic_link(
             )
         ).update({"used": True})
         
-        # Generate new magic link
-        token, token_hash = create_magic_link_token()
+        # Generate new magic link JWT with jti
+        jwt_token, jti_hash, jti = create_magic_link_token()
         expires_at = datetime.now(timezone.utc) + timedelta(minutes=MAGIC_LINK_EXPIRY_MINUTES)
         
-        # Create magic link record
+        # Create magic link record with jti tracking
         magic_link = MagicLink(
             email=email,
-            hashed_nonce=token_hash,
+            hashed_nonce=jti_hash,  # Store hashed jti
+            jti=jti,  # Store actual jti for lookup
             expires_at=expires_at,
             user_agent=user_agent,
             ip_address=ip_address
@@ -354,8 +368,8 @@ async def start_magic_link(
         db.add(magic_link)
         db.commit()
         
-        # Send email in background
-        await send_magic_link_email(email, token, background_tasks)
+        # Send email in background with JWT token
+        await send_magic_link_email(email, jwt_token, background_tasks)
         
         # Log successful attempt
         attempt = MagicLinkAttempt(
@@ -394,24 +408,44 @@ async def complete_magic_link(
     This handles both app deep links and web fallback.
     """
     try:
-        token_hash = hashlib.sha256(token.encode()).hexdigest()
-        ip_address = get_client_ip(request)
+        from app.core.auth import verify_access_token
+        from jose import JWTError
         
+        ip_address = get_client_ip(request)
         logger.info(f"Magic link completion attempted from IP: {ip_address}")
         
-        # Find the magic link
+        # Verify JWT token and extract jti
+        try:
+            payload = verify_access_token(token)
+            jti = payload.get("jti")
+            token_type = payload.get("type")
+            
+            if not jti or token_type != "magic_link":
+                raise HTTPException(
+                    status_code=400,
+                    detail="Invalid magic link token"
+                )
+                
+        except JWTError:
+            logger.warning(f"Invalid JWT magic link token from IP: {ip_address}")
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid or expired magic link"
+            )
+        
+        # Find the magic link by jti
         magic_link = db.query(MagicLink).filter(
             and_(
-                MagicLink.hashed_nonce == token_hash,
+                MagicLink.jti == jti,
                 MagicLink.used == False
             )
         ).first()
         
         if not magic_link:
-            logger.warning(f"Invalid or expired magic link token from IP: {ip_address}")
+            logger.warning(f"Magic link not found or already used. JTI: {jti[:8]}...")
             raise HTTPException(
                 status_code=400,
-                detail="Invalid or expired magic link"
+                detail="Invalid or already used magic link"
             )
         
         if magic_link.is_expired:

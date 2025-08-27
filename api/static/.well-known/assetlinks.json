@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.ufobeep.app",
+    "sha256_cert_fingerprints": ["15:00:5E:B2:D1:6D:6E:AD:F5:46:0C:4F:77:34:EE:8D:65:A7:09:87:60:2A:AC:97:68:D1:1C:2D:FF:1B:F0:61"]
+  }
+}]
