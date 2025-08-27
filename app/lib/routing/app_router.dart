@@ -38,6 +38,24 @@ GoRouter appRouter(AppRouterRef ref) {
     navigatorKey: _rootNavigatorKey,
     debugLogDiagnostics: true,
     initialLocation: '/splash',
+    // Redirect function to normalize HTTPS magic links to internal routes (ChatGPT's Phase 2)
+    redirect: (context, state) {
+      final location = state.uri.toString();
+      debugPrint('🔄 GoRouter redirect check: $location');
+      
+      // Handle HTTPS magic links by converting to internal route
+      if (location.startsWith('https://api.ufobeep.com/auth/magic/complete/new')) {
+        final uri = Uri.parse(location);
+        final code = uri.queryParameters['code'];
+        
+        if (code != null && code.isNotEmpty) {
+          debugPrint('🔄 Redirecting HTTPS magic link to internal route with code: ${code.substring(0, 8)}...');
+          return '/auth/magic?code=$code';
+        }
+      }
+      
+      return null; // No redirect needed
+    },
     // Add error handling for unrecognized routes
     errorBuilder: (context, state) {
       print('🚫 GO ROUTER ERROR:');
@@ -389,6 +407,63 @@ GoRouter appRouter(AppRouterRef ref) {
         path: '/auth/login',
         name: 'auth-login',
         builder: (context, state) => const AccountRecoveryScreen(),
+      ),
+
+      // Internal Magic Link Handler (ChatGPT's Phase 2 solution)
+      GoRoute(
+        path: '/auth/magic',
+        name: 'auth-magic',
+        builder: (context, state) {
+          final code = state.uri.queryParameters['code'];
+          debugPrint('🔗 Internal magic route hit with code: ${code?.substring(0, 8)}...');
+          
+          // Process the magic link immediately
+          if (code != null && code.isNotEmpty) {
+            WidgetsBinding.instance.addPostFrameCallback((_) async {
+              try {
+                debugPrint('🔗 Processing magic code via internal route');
+                await AuthService().beginProcessingLink();
+                final success = await AuthService().loginWithMagicCode(code: code);
+                
+                if (success && context.mounted) {
+                  debugPrint('🔗 Internal route login success, navigating to alerts');
+                  context.go('/alerts');
+                } else if (context.mounted) {
+                  debugPrint('🔗 Internal route login failed, navigating to sign-in');
+                  context.go('/sign-in');
+                }
+              } catch (e) {
+                debugPrint('🔗 Internal route error: $e');
+                if (context.mounted) {
+                  context.go('/sign-in');
+                }
+              }
+            });
+          }
+          
+          // Show loading screen while processing
+          return Scaffold(
+            backgroundColor: AppColors.darkBackground,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(AppColors.brandPrimary),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Authenticating...',
+                    style: TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
 
     ],

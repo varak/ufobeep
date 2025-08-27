@@ -113,7 +113,7 @@ class DeepLinkHandler {
       }
 
       if (isHttpsMagic) {
-        // NEW: Authorization code flow - look for 'code' parameter
+        // Enhanced dual-mode HTTPS handling (ChatGPT's Phase 2 solution)
         final code = uri.queryParameters['code'];
         final token = uri.queryParameters['token']; // Legacy fallback
         
@@ -122,28 +122,24 @@ class DeepLinkHandler {
         debugPrint('[DeepLink] token present? ${token != null} (legacy)');
         
         if (code != null && code.isNotEmpty) {
-          // NEW: Authorization code flow
-          debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Using authorization code flow');
-          debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: code length: ${code.length}');
-          debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Full code: ${code.substring(0, 8)}...');
+          // Phase 2: Let GoRouter handle HTTPS links via redirect function
+          debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG: HTTPS magic link with code detected');
+          debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG: Letting GoRouter normalize via redirect function');
+          debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG: GoRouter will convert to /auth/magic?code=$code');
           
-          debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Starting AuthService.beginProcessingLink()');
-          await authService.beginProcessingLink();
-          
-          debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Calling AuthService.loginWithMagicCode()');
-          final success = await authService.loginWithMagicCode(code: code);
-          debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Authorization code login result: $success');
-          
-          if (success) {
-            debugPrint('[DeepLink] 🔗 NAV_DEBUG: Navigation success, calling _navigateToMainApp()');
-            _navigateToMainApp();
+          // Navigate to the HTTPS URL - GoRouter redirect will normalize it
+          final context = rootNavigatorKey.currentContext;
+          if (context != null && context.mounted) {
+            // Use the original HTTPS URL - GoRouter will redirect to internal route
+            context.go(uri.toString());
+            debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG: Navigated to HTTPS URL for GoRouter processing');
           } else {
-            debugPrint('[DeepLink] 🔗 NAV_DEBUG: Navigation failed, success=false');
+            debugPrint('[DeepLink][WARN] No context for GoRouter navigation');
           }
           return;
         } else if (token != null && token.isNotEmpty) {
-          // LEGACY: JWT token flow (keep for backward compatibility)
-          debugPrint('[DeepLink] Using legacy JWT token flow');
+          // LEGACY: Direct JWT token flow (bypass GoRouter for legacy support)
+          debugPrint('[DeepLink] Using legacy JWT token flow (direct processing)');
           debugPrint('[DeepLink] token length: ${token.length}');
           
           await authService.beginProcessingLink();
