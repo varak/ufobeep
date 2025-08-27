@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../models/user_preferences.dart';
 import '../../providers/user_preferences_provider.dart';
@@ -695,15 +696,22 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Future<Map<String, dynamic>?> _getUserContactInfo(String type) async {
-    // Get real user data from SharedPreferences where we stored it
+    // Get real user data from FlutterSecureStorage (where AuthService stores it)
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final email = prefs.getString('user_email') ?? '';
-      final phone = prefs.getString('user_phone') ?? '';
+      const storage = FlutterSecureStorage(
+        aOptions: AndroidOptions(encryptedSharedPreferences: true),
+        iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
+      );
+      
+      final email = await storage.read(key: 'user_email') ?? '';
+      final phone = await storage.read(key: 'user_phone') ?? '';
+      
+      debugPrint('Profile: user_email from storage: "$email"');
+      debugPrint('Profile: user_phone from storage: "$phone"');
       
       return {
         'email': email,
-        'email_verified': email.isNotEmpty, // We got it from Firebase auth
+        'email_verified': email.isNotEmpty, // We got it from magic link auth
         'phone': phone,
         'phone_verified': phone.isNotEmpty,
       };

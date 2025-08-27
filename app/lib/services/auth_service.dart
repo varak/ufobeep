@@ -342,6 +342,7 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       }
 
       debugPrint('[Auth] Backend response keys: ${respJson.keys}');
+      debugPrint('[Auth] Backend response: $respJson');
 
       // Expected JSON:
       // { access_token, user_id, username, email, is_new_user, firebase_custom_token? }
@@ -351,6 +352,8 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       final email = respJson['email']?.toString();
       final isNewUser = respJson['is_new_user'] as bool? ?? false;
       final firebaseToken = respJson['firebase_custom_token'] as String?;
+      
+      debugPrint('[Auth] Parsed fields - email: "$email", userId: "$backendUserId", username: "$backendUsername"');
 
       if ([access, backendUserId, backendUsername].any((v) => v == null || (v as String).isEmpty)) {
         debugPrint('[Auth][ERROR] Missing fields in backend response: $respJson');
