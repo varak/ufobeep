@@ -6,7 +6,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../services/anonymous_beep_service.dart';
 import '../services/device_service.dart';
 
 // User registration models
@@ -133,8 +132,9 @@ class UserService {
     String preferredLanguage = 'en',
   }) async {
     try {
-      // Get device ID from existing anonymous service
-      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      // Get device ID from device service
+      final deviceService = DeviceService();
+      final deviceId = await deviceService.getDeviceId();
       
       final requestBody = {
         'device_id': deviceId,
@@ -182,7 +182,9 @@ class UserService {
   /// Get existing user by device ID (for returning users)
   Future<UserRegistrationResponse?> getUserByDeviceId() async {
     try {
-      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      // Use proper device service instead of anonymous beep service
+      final deviceService = DeviceService();
+      final deviceId = await deviceService.getDeviceId();
       
       final response = await http.get(
         Uri.parse('$_apiBaseUrl/users/by-device/$deviceId'),

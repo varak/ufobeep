@@ -55,25 +55,11 @@ async def register_device(request: RegisterDeviceRequest):
                     WHERE device_id = $7
                 """, request.fcm_token, request.platform, request.lat, request.lon, geohash_val, datetime.utcnow(), request.device_id)
             else:
-                # Create anonymous user first for new device
-                anon_user_id = await conn.fetchval("""
-                    INSERT INTO users (username, display_name, alert_range_km, min_alert_level, push_notifications, email_notifications, is_active)
-                    VALUES ($1, $2, 50.0, 'low', true, false, true)
-                    RETURNING id
-                """, f"anon_{request.device_id[:8]}", "Anonymous User")
-                
-                # Create new device
-                await conn.execute("""
-                    INSERT INTO devices (
-                        user_id, device_id, platform, push_token, push_provider,
-                        push_enabled, alert_notifications, chat_notifications, system_notifications,
-                        is_active, last_seen, registered_at, updated_at
-                    ) VALUES (
-                        $1, $2, $3, $4, 'fcm',
-                        true, true, true, true,
-                        true, $5, $5, $5
-                    )
-                """, anon_user_id, request.device_id, request.platform, request.fcm_token, datetime.utcnow())
+                # No anonymous users allowed - require authentication
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail={"error": "AUTHENTICATION_REQUIRED", "message": "Device registration requires authenticated user. Please sign in first."}
+                )
 
         logger.info(f"Registered device {request.device_id} with platform {request.platform}")
         
