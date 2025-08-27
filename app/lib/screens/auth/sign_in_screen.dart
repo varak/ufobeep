@@ -98,7 +98,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
     try {
       print('SIGN-IN DEBUG: Calling backend magic link API...');
-      final userService = UserService();
       final result = await userService.sendMagicLink(email);
       
       if (result['success'] == true) {
