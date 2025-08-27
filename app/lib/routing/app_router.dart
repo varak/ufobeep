@@ -77,13 +77,13 @@ GoRouter appRouter(AppRouterRef ref) {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () {
-                  // Navigate to alerts screen instead of crashing
-                  context.go('/alerts');
+                  // ChatGPT's fix: Navigate to sign-in instead of creating users
+                  context.go('/sign-in');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.brandPrimary,
                 ),
-                child: const Text('Go to Home', style: TextStyle(color: Colors.white)),
+                child: const Text('Back to Sign In', style: TextStyle(color: Colors.white)),
               ),
             ],
           ),
@@ -105,13 +105,9 @@ GoRouter appRouter(AppRouterRef ref) {
         builder: (context, state) => const SignInScreen(),
       ),
 
-      // Magic Link Completion (handles deep links from email)
-      GoRoute(
-        path: '/auth/complete',
-        name: 'auth-complete',
-        builder: (context, state) => _buildMagicLinkHandler(context, state),
-      ),
-
+      // Magic Link Completion removed - now handled by DeepLinkHandler in main.dart
+      // This prevents navigation errors when deep links try to route to /auth/complete
+      
       // Main App Shell with Bottom Navigation
       ShellRoute(
         builder: (context, state, child) {
@@ -401,134 +397,6 @@ GoRouter appRouter(AppRouterRef ref) {
   );
 }
 
-Widget _buildMagicLinkHandler(BuildContext context, GoRouterState state) {
-  return FutureBuilder(
-    future: _handleMagicLinkCompletion(context, state),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Scaffold(
-          backgroundColor: AppColors.darkBackground,
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(color: AppColors.brandPrimary),
-                SizedBox(height: 16),
-                Text(
-                  'Completing sign-in...',
-                  style: TextStyle(color: AppColors.textPrimary),
-                ),
-              ],
-            ),
-          ),
-        );
-      } else if (snapshot.hasError) {
-        return Scaffold(
-          backgroundColor: AppColors.darkBackground,
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.error_outline, color: AppColors.semanticError, size: 48),
-                const SizedBox(height: 16),
-                Text(
-                  'Sign-in failed: ${snapshot.error}',
-                  style: const TextStyle(color: AppColors.semanticError),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: () => context.go('/sign-in'),
-                  child: const Text('Try Again'),
-                ),
-              ],
-            ),
-          ),
-        );
-      } else {
-        // Success - this will be handled by navigation in _handleMagicLinkCompletion
-        return const Scaffold(
-          backgroundColor: AppColors.darkBackground,
-          body: Center(child: CircularProgressIndicator(color: AppColors.brandPrimary)),
-        );
-      }
-    },
-  );
-}
-
-Future<void> _handleMagicLinkCompletion(BuildContext context, GoRouterState state) async {
-  try {
-    // Get the full URL from the state
-    final link = state.uri.toString();
-    final queryParams = state.uri.queryParameters;
-    
-    print('🔗 MAGIC LINK COMPLETION DEBUG:');
-    print('   Full URI: $link');
-    print('   Query Parameters: $queryParams');
-    print('   Token: ${queryParams['token']?.substring(0, 20)}...');
-    print('   User ID: ${queryParams['user_id']}');
-    print('   Username: ${queryParams['username']}');
-    print('   Email: ${queryParams['email']}');
-    
-    // Validate required parameters
-    final token = queryParams['token'];
-    final userId = queryParams['user_id'];
-    final username = queryParams['username'];
-    
-    if (token == null || userId == null || username == null) {
-      throw Exception('Missing required auth parameters: token=$token, userId=$userId, username=$username');
-    }
-    
-    print('✅ Required auth parameters validated');
-    
-    // Use the AuthService to handle the JWT-based magic link
-    final result = await authService.handleJWTMagicLink(
-      token: token,
-      userId: userId,
-      username: username,
-      email: queryParams['email'],
-    );
-    
-    if (!result.success) {
-      print('❌ AuthService.handleJWTMagicLink failed: ${result.error}');
-      throw Exception(result.error ?? 'JWT magic link authentication failed');
-    }
-    
-    print('✅ Magic link sign-in successful!');
-    
-    // Navigate based on whether user has username set up
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      print('🧭 MAGIC LINK NAVIGATION DEBUG:');
-      print('   - result.username: "${result.username}"');
-      print('   - result.username != null: ${result.username != null}');
-      print('   - result.username!.isNotEmpty: ${result.username != null ? result.username!.isNotEmpty : "null username"}');
-      print('   - result.email: ${result.email}');
-      print('   - result.userId: ${result.userId}');
-      
-      if (result.username != null && result.username!.isNotEmpty) {
-        // User has username, go to alerts
-        print('🎯 DECISION: User has username: "${result.username}", going to /alerts');
-        context.go('/alerts');
-      } else {
-        // User needs to set up username, go to registration with email pre-filled
-        print('📝 DECISION: User needs username setup, going to /register');
-        context.go('/register', extra: {
-          'email': result.email,
-          'userId': result.userId,
-        });
-      }
-    });
-  } catch (e, stackTrace) {
-    print('❌ Magic link completion failed: $e');
-    print('📚 Stack trace: $stackTrace');
-    
-    // Don't throw - show error and redirect to sign-in
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      print('🚨 Redirecting to /sign-in due to error');
-      context.go('/sign-in');
-    });
-  }
-}
 
 class MainShell extends StatelessWidget {
   const MainShell({super.key, required this.child});

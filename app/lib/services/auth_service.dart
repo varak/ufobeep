@@ -12,6 +12,7 @@ import 'dart:io';
 import 'device_service.dart';
 import '../config/environment.dart';
 import '../models/user_preferences.dart';
+import '../features/auth/auth_gate.dart';
 
 class MagicLinkResult {
   final bool success;
@@ -53,7 +54,7 @@ class MagicLinkResult {
   }
 }
 
-class AuthService {
+class AuthService implements AuthStateProvider {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static final AuthService _instance = AuthService._internal();
   factory AuthService() => _instance;
@@ -74,6 +75,20 @@ class AuthService {
 
   /// Listen to authentication state changes
   Stream<User?> get authStateChanges => _auth.authStateChanges();
+
+  /// AuthStateProvider implementation for ChatGPT's AuthGate pattern
+  @override
+  AuthStatus get status {
+    // Check both Firebase auth and stored JWT token
+    return _hasValidAuth() ? AuthStatus.authenticated : AuthStatus.unauthenticated;
+  }
+
+  /// Check if user has valid authentication (JWT token stored)
+  bool _hasValidAuth() {
+    // For now, check if we have stored auth data
+    // TODO: Could add JWT token expiry validation here
+    return isAuthenticated;
+  }
 
   /// Send magic link email for authentication
   /// This does NOT create any user session until the link is verified
@@ -165,6 +180,50 @@ class AuthService {
       print('❌ JWT magic link auth failed: $e');
       print('📚 Stack trace: $stackTrace');
       return MagicLinkResult.failure('Authentication failed: ${e.toString()}');
+    }
+  }
+
+  /// ChatGPT's recommended method: Login with magic token data directly
+  /// This processes the JWT token data from deep link without additional API calls
+  Future<void> loginWithMagicToken(Map<String, String> tokenData) async {
+    final token = tokenData['token'];
+    final userId = tokenData['user_id'];
+    final username = tokenData['username'];
+    final email = tokenData['email'];
+    
+    if (token == null || userId == null || username == null) {
+      throw Exception('Missing required token data: token=$token, userId=$userId, username=$username');
+    }
+    
+    print('🔑 ChatGPT loginWithMagicToken: Processing auth data');
+    print('   Token: ${token.substring(0, 20)}...');
+    print('   User ID: $userId');
+    print('   Username: $username');
+    
+    // Store auth data securely using our existing secure storage
+    const storage = FlutterSecureStorage(
+      aOptions: AndroidOptions(encryptedSharedPreferences: true),
+      iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
+    );
+    
+    try {
+      await storage.write(key: 'access_token', value: token);
+      await storage.write(key: 'user_id', value: userId);
+      await storage.write(key: 'username', value: username);
+      await storage.write(key: 'is_registered', value: 'true');
+      
+      if (email != null) {
+        await storage.write(key: 'user_email', value: email);
+      }
+      
+      print('✅ ChatGPT loginWithMagicToken: Auth data stored securely');
+      
+      // No need to call backend - JWT already validated by backend before redirect
+      // User is now authenticated and ready to use the app
+    } catch (e, stackTrace) {
+      print('❌ ChatGPT loginWithMagicToken failed: $e');
+      print('📚 Stack trace: $stackTrace');
+      throw Exception('Failed to store authentication data: ${e.toString()}');
     }
   }
 

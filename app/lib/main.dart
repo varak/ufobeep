@@ -20,6 +20,8 @@ import 'services/permission_service.dart';
 import 'services/share_intent_service.dart';
 import 'services/analytics_service.dart';
 import 'services/auth_service.dart';
+import 'features/auth/deep_link_handler.dart';
+import 'features/auth/auth_gate.dart';
 import 'theme/app_theme.dart';
 
 void main() async {
@@ -90,47 +92,51 @@ class UFOBeepApp extends ConsumerStatefulWidget {
 }
 
 class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
+  late final AuthService _auth;
+  late final DeepLinkHandler _deepLinkHandler;
+  
   @override
   void initState() {
     super.initState();
     
-    // Handle initial message after the widget tree is built
+    _auth = authService; // Use existing singleton
+    
+    // ChatGPT's pattern: Initialize DeepLinkHandler BEFORE UI renders
+    _deepLinkHandler = DeepLinkHandler(onMagicToken: (tokenData) async {
+      try {
+        print('🔗 DeepLinkHandler: Processing magic token...');
+        await _auth.loginWithMagicToken(tokenData);
+        print('✅ DeepLinkHandler: Magic token processed successfully');
+        
+        // Trigger UI rebuild to show authenticated state
+        if (mounted) setState(() {});
+      } catch (e) {
+        print('❌ DeepLinkHandler: Magic token failed: $e');
+        // Stay unauthenticated; AuthGate will show SignIn screen
+        if (mounted) setState(() {});
+      }
+    });
+    
+    // Start deep link listening immediately
+    _deepLinkHandler.init();
+    
+    // Handle initial Firebase message after the widget tree is built
     if (widget.initialMessage != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _handleInitialMessage(widget.initialMessage!);
       });
     }
     
-    // Set up share intent callback once in initState
+    // Set up share intent callback once in initState  
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _setupShareIntentCallback();
-      _handleIncomingLinks();
     });
   }
   
-  void _handleIncomingLinks() async {
-    // Check if app was launched with a deep link
-    try {
-      // On Android, the intent data is available via platform channels
-      // For now, we'll check if there's a magic link to process
-      await _checkForMagicLink();
-    } catch (e) {
-      print('Error checking for incoming links: $e');
-    }
-  }
-  
-  Future<void> _checkForMagicLink() async {
-    try {
-      // This is a simplified approach - in a real app you'd get the intent data
-      // For now, we'll check if Firebase auth has a pending email link
-      final pendingEmail = await authService.getPendingEmail();
-      if (pendingEmail != null) {
-        print('Found pending magic link email: $pendingEmail');
-        // The actual link processing will happen when the link is clicked
-      }
-    } catch (e) {
-      print('Error checking for magic link: $e');
-    }
+  @override
+  void dispose() {
+    _deepLinkHandler.dispose();
+    super.dispose();
   }
   
   void _setupShareIntentCallback() {

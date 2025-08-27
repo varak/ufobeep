@@ -228,10 +228,11 @@ sightings_db = {}
 
 # Dependencies
 async def get_current_user_id(token: Optional[str] = Depends(security)) -> Optional[str]:
-    """Extract user ID from JWT token (simplified for now)"""
+    """Extract user ID from JWT token - blocks anonymous users"""
     if token and token.credentials:
         # TODO: Implement actual JWT validation
-        return "anonymous_user"
+        # For now, return None to prevent anonymous access
+        return None
     return None
 
 
