@@ -12,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/device_service.dart';
+import 'auth_repository.dart';
 
 class SocialAuthResult {
   final bool success;
@@ -170,6 +171,19 @@ class SocialAuthService {
         print('  - userEmail: $email');
         print('  - isNewUser: $isNewUser');
         
+        // Update AuthRepository with tokens and user data
+        final access = data['access'] as String?;
+        final refresh = data['refresh'] as String?;
+        
+        if (access != null && refresh != null) {
+          await AuthRepository().updateFromMagicLinkResponse({
+            'access': access,
+            'refresh': refresh,
+            'user': user,
+          });
+          print('SOCIAL AUTH: Updated AuthRepository with tokens');
+        }
+        
         // Only store user info if we have a valid username
         if (username != null && username.isNotEmpty) {
           await _storeUserInfo(
@@ -254,6 +268,20 @@ class SocialAuthService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+        
+        // Update AuthRepository with tokens and user data
+        final access = data['access'] as String?;
+        final refresh = data['refresh'] as String?;
+        final user = data['user'] ?? {};
+        
+        if (access != null && refresh != null) {
+          await AuthRepository().updateFromMagicLinkResponse({
+            'access': access,
+            'refresh': refresh,
+            'user': user,
+          });
+          print('APPLE AUTH: Updated AuthRepository with tokens');
+        }
         
         // Store user info locally
         await _storeUserInfo(
