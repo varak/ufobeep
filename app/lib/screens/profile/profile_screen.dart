@@ -61,6 +61,46 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     }
   }
   
+  Future<bool> _isUserAuthenticated() async {
+    try {
+      final authService = ref.read(authServiceProvider);
+      final currentState = authService.currentState;
+      return currentState is AuthenticatedState;
+    } catch (e) {
+      print('Error checking authentication: $e');
+      return false;
+    }
+  }
+  
+  void _initializeDefaultPreferences() async {
+    // Create default preferences for authenticated user
+    final userPrefs = ref.read(userPreferencesProvider.notifier);
+    await userPrefs.updatePreferences(UserPreferences(
+      language: 'en',
+      alertRangeKm: 50.0,
+    ));
+  }
+  
+  Widget _buildProfileWithDefaults() {
+    // Show profile with loading state while preferences are being initialized
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profile'),
+        centerTitle: true,
+      ),
+      body: const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 16),
+            Text('Loading your profile...'),
+          ],
+        ),
+      ),
+    );
+  }
+  
 
   @override
   void dispose() {
@@ -72,10 +112,31 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget build(BuildContext context) {
     final userPreferences = ref.watch(userPreferencesProvider);
     
-    // If user has no preferences at all, show registration prompt
-    // But if they have preferences (even without display name), show the full profile
+    // For authenticated users, always show profile even if no local preferences
+    // The profile will create default preferences automatically
     if (userPreferences == null) {
-      return _buildRegistrationPrompt();
+      // Check if user is authenticated via AuthService
+      return FutureBuilder<bool>(
+        future: _isUserAuthenticated(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+          
+          final isAuthenticated = snapshot.data ?? false;
+          if (isAuthenticated) {
+            // User is authenticated but has no local preferences
+            // Create default preferences and show profile
+            _initializeDefaultPreferences();
+            return _buildProfileWithDefaults();
+          } else {
+            // User is not authenticated, show registration prompt
+            return _buildRegistrationPrompt();
+          }
+        },
+      );
     }
 
     return Scaffold(
