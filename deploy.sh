@@ -239,12 +239,20 @@ if [ "$DEPLOY_API" = true ]; then
         if [ -f "venv/bin/activate" ]; then
             echo "Using existing virtual environment"
             source venv/bin/activate
-            pip install -r requirements.txt
+            if ! venv/bin/pip install -r requirements.txt; then
+                echo "Pip install failed, but continuing with deployment..."
+                echo "Service may be using cached dependencies"
+            fi
         else
             echo "Creating new virtual environment"
-            python3 -m venv venv
-            source venv/bin/activate
-            pip install -r requirements.txt
+            if ! python3 -m venv venv; then
+                echo "Failed to create venv, trying with existing system packages"
+            else
+                if ! venv/bin/pip install -r requirements.txt; then
+                    echo "Pip install failed in new venv"
+                    exit 1
+                fi
+            fi
         fi
         
         echo "Running migrations..."
