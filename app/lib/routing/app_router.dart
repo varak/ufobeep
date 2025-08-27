@@ -105,8 +105,59 @@ GoRouter appRouter(AppRouterRef ref) {
         builder: (context, state) => const SignInScreen(),
       ),
 
-      // Magic Link Completion removed - now handled by DeepLinkHandler in main.dart
-      // This prevents navigation errors when deep links try to route to /auth/complete
+      // Magic Link Completion - handle HTTPS fallback when App Links fail
+      GoRoute(
+        path: '/auth/magic/complete',
+        name: 'magic-link-complete',
+        builder: (context, state) {
+          // Redirect to sign-in with token processing message
+          // The backend should handle this via App Links, but if it reaches here,
+          // App Links verification failed
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            context.go('/sign-in');
+          });
+          
+          return Scaffold(
+            backgroundColor: AppColors.darkBackground,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.link_off,
+                    color: AppColors.semanticWarning,
+                    size: 64,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Magic Link Issue',
+                    style: TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'App Links not properly configured.\nRedirecting to sign-in...',
+                    style: TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 14,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () => context.go('/sign-in'),
+                    style: ElevatedButton.styleFrom(backgroundColor: AppColors.brandPrimary),
+                    child: const Text('Back to Sign In', style: TextStyle(color: Colors.white)),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
       
       // Main App Shell with Bottom Navigation
       ShellRoute(
