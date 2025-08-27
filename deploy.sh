@@ -250,7 +250,7 @@ if [ "$DEPLOY_API" = true ]; then
         
         echo "Running migrations..."
         source venv/bin/activate
-        venv/bin/alembic upgrade head || echo "Migration completed or not needed"
+        python run_migration.py || echo "Migration completed or not needed"
         
         echo "Restarting API service..."
         sudo systemctl restart ufobeep-api
