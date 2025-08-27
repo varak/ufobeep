@@ -23,7 +23,7 @@ class DeepLinkHandler {
     if (!_processedInitial) {
       _processedInitial = true;
       try {
-        final initialUri = await _appLinks.getInitialAppLink();
+        final initialUri = await _appLinks.getInitialLink();
         if (initialUri != null) {
           debugPrint('🔗 DeepLinkHandler: Processing initial link: $initialUri');
           await _handleUri(initialUri);
@@ -35,7 +35,7 @@ class DeepLinkHandler {
     
     // 2) Handle subsequent links (warm/foreground)
     _linkSubscription?.cancel();
-    _linkSubscription = _appLinks.uriLinkStream.listen(
+    _linkSubscription = _appLinks.linkStream.listen(
       (uri) async {
         debugPrint('🔗 DeepLinkHandler: Processing stream link: $uri');
         await _handleUri(uri);
