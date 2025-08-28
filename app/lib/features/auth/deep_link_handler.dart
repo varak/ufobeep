@@ -81,40 +81,55 @@ class DeepLinkHandler {
 
       if (isCustom) {
         final qp = uri.queryParameters;
-        final token = qp['token'];
+        final code = qp['code'];  // NEW: Look for authorization code first
+        final token = qp['token']; // LEGACY: Still check for token
         final userId = qp['user_id'];
         final username = qp['username'];
         final email = qp['email'];
         
         debugPrint('[DeepLink] Custom scheme detected');
-        debugPrint('[DeepLink] token=${token != null ? "${token.substring(0, 20)}..." : "null"}');
+        debugPrint('[DeepLink] code=${code != null ? "${code.substring(0, code.length.clamp(0, 8))}..." : "null"}');
+        debugPrint('[DeepLink] token=${token != null ? "${token.substring(0, token.length.clamp(0, 20))}..." : "null"} (legacy)');
         debugPrint('[DeepLink] user_id=$userId');
         debugPrint('[DeepLink] username=$username');
         debugPrint('[DeepLink] email=$email');
         
-        if (token == null || userId == null || username == null) {
-          debugPrint('[DeepLink][WARN] Missing params in custom scheme link.');
+        // NEW: Handle authorization code flow (preferred)
+        if (code != null && code.isNotEmpty) {
+          debugPrint('[DeepLink] Using NEW authorization code flow');
+          await authService.beginProcessingLink();
+          final success = await authService.loginWithMagicCode(code: code);
+          debugPrint('[DeepLink] Authorization code exchange result: $success');
+          
+          if (success) {
+            _navigateToMainApp();
+          }
           return;
         }
         
-        debugPrint('[DeepLink] Calling loginWithMagicToken with full data');
-        await authService.beginProcessingLink();
-        final success = await authService.loginWithMagicToken(
-          token: token,
-          userId: userId,
-          username: username,
-        );
-        debugPrint('[DeepLink] Custom scheme login result: $success');
-        
-        // ChatGPT's navigation approach: navigate after successful auth
-        if (success) {
-          _navigateToMainApp();
+        // LEGACY: Handle old token flow (backward compatibility)
+        if (token != null && userId != null && username != null) {
+          debugPrint('[DeepLink] Using LEGACY token flow (deprecated)');
+          await authService.beginProcessingLink();
+          final success = await authService.loginWithMagicToken(
+            token: token,
+            userId: userId,
+            username: username,
+          );
+          debugPrint('[DeepLink] Legacy token login result: $success');
+          
+          if (success) {
+            _navigateToMainApp();
+          }
+          return;
         }
+        
+        debugPrint('[DeepLink][WARN] Missing required params in custom scheme link.');
         return;
       }
 
       if (isHttpsMagic) {
-        // Enhanced dual-mode HTTPS handling (ChatGPT's Phase 2 solution)
+        // Enhanced code-based HTTPS handling
         final code = uri.queryParameters['code'];
         final token = uri.queryParameters['token']; // Legacy fallback
         
@@ -123,35 +138,27 @@ class DeepLinkHandler {
         debugPrint('[DeepLink] token present? ${token != null} (legacy)');
         
         if (code != null && code.isNotEmpty) {
-          // Phase 2: Let GoRouter handle HTTPS links via redirect function
-          debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG: HTTPS magic link with code detected');
-          debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG: Letting GoRouter normalize via redirect function');
-          debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG: GoRouter will convert to /auth/magic?code=$code');
+          // NEW: Direct code exchange without GoRouter complexity
+          debugPrint('[DeepLink] 🔗 HTTPS magic link with authorization code detected');
+          debugPrint('[DeepLink] 🔗 Processing code exchange directly');
           
-          // Navigate to the HTTPS URL - GoRouter redirect will normalize it
-          final context = rootNavigatorKey.currentContext;
-          if (context != null && context.mounted) {
-            debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG: About to navigate to HTTPS URL for GoRouter processing');
-            debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG: AuthRepository current state before navigation:');
-            debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG:   - isReady: ${AuthRepository().isReady}');
-            debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG:   - isHydrating: ${AuthRepository().isHydrating}');
-            debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG:   - currentUser: ${AuthRepository().currentUser?.username}');
-            
-            // Use the original HTTPS URL - GoRouter will redirect to internal route
-            context.go(uri.toString());
-            debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG: Navigated to HTTPS URL, GoRouter will handle processing');
-          } else {
-            debugPrint('[DeepLink][WARN] No context for GoRouter navigation');
+          await authService.beginProcessingLink();
+          final success = await authService.loginWithMagicCode(code: code);
+          debugPrint('[DeepLink] 🔗 Authorization code exchange result: $success');
+          
+          if (success) {
+            _navigateToMainApp();
           }
           return;
         } else if (token != null && token.isNotEmpty) {
-          // LEGACY: Direct JWT token flow (bypass GoRouter for legacy support)
-          debugPrint('[DeepLink] Using legacy JWT token flow (direct processing)');
+          // LEGACY: Direct JWT token flow (deprecated)
+          debugPrint('[DeepLink] Using legacy JWT token flow (deprecated)');
           debugPrint('[DeepLink] token length: ${token.length}');
           
+          // Try using token as code (backward compatibility)
           await authService.beginProcessingLink();
-          final success = await authService.loginWithMagicToken(token: token);
-          debugPrint('[DeepLink] Legacy token login result: $success');
+          final success = await authService.loginWithMagicCode(code: token);
+          debugPrint('[DeepLink] Legacy token->code exchange result: $success');
           
           if (success) {
             _navigateToMainApp();

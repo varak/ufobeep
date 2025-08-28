@@ -779,167 +779,27 @@ async def magic_link_status(
         }
 
 
-@router.post("/complete/app", response_model=MagicLinkCompleteResponse)
-async def complete_magic_link_app(
+# DEPRECATED: This endpoint is deprecated in favor of /exchange
+# Kept for backward compatibility during migration period
+@router.post("/complete/app", response_model=MagicLinkCompleteResponse, deprecated=True)
+async def complete_magic_link_app_legacy(
     request: MagicLinkCompleteRequest,
     http_request: Request,
     db: Session = Depends(get_db)
 ):
     """
-    Mobile app token exchange endpoint for HTTPS App Links.
-    Exchanges JWT token for user session data and Firebase custom token.
-    ChatGPT's recommended approach for token-only HTTPS deep links.
+    DEPRECATED: Legacy JWT-based endpoint. Use /exchange instead.
+    This endpoint will be removed in future versions.
     """
-    try:
-        from app.core.auth import verify_access_token, create_access_token
-        from jose import JWTError
-        import firebase_admin
-        from firebase_admin import auth as firebase_auth
-        
-        ip_address = get_client_ip(http_request)
-        logger.info(f"App token exchange attempted from IP: {ip_address}")
-        
-        # Verify JWT token and extract jti
-        try:
-            payload = verify_access_token(request.token)
-            jti = payload.get("jti")
-            token_type = payload.get("type")
-            
-            if not jti or token_type != "magic_link":
-                logger.warning(f"APP_TOKEN_EXCHANGE: BAD_TOKEN_TYPE - jti={jti}, type={token_type}, IP={ip_address}")
-                raise HTTPException(
-                    status_code=400,
-                    detail="Invalid magic link token"
-                )
-                
-        except JWTError as e:
-            error_str = str(e).lower()
-            if "expired" in error_str:
-                error_code = "EXPIRED"
-            elif "signature" in error_str:
-                error_code = "BAD_SIG"  
-            elif "audience" in error_str or "issuer" in error_str:
-                error_code = "BAD_AUD"
-            else:
-                error_code = "BAD_TOKEN"
-            logger.warning(f"APP_TOKEN_EXCHANGE: {error_code} - {str(e)}, IP={ip_address}")
-            raise HTTPException(
-                status_code=400,
-                detail="Invalid or expired magic link"
-            )
-        
-        # Find the magic link by jti
-        magic_link = db.query(MagicLink).filter(
-            and_(
-                MagicLink.jti == jti,
-                MagicLink.used == False
-            )
-        ).first()
-        
-        if not magic_link:
-            logger.warning(f"APP_TOKEN_EXCHANGE: NOT_FOUND_OR_USED - jti={jti[:8]}..., IP={ip_address}")
-            raise HTTPException(
-                status_code=400,
-                detail="Invalid or already used magic link"
-            )
-        
-        if magic_link.is_expired:
-            logger.warning(f"APP_TOKEN_EXCHANGE: LINK_EXPIRED - email={magic_link.email}, expires_at={magic_link.expires_at}, IP={ip_address}")
-            raise HTTPException(
-                status_code=400,
-                detail="Magic link has expired. Please request a new one."
-            )
-        
-        # Find or create user BEFORE marking as used
-        user = db.query(User).filter(User.email == magic_link.email).first()
-        is_new_user = user is None
-        
-        if is_new_user:
-            # Create new user with collision-resistant username
-            max_retries = 5
-            for attempt in range(max_retries):
-                try:
-                    # Use longer random string to avoid collisions
-                    random_suffix = secrets.token_hex(8)  # 16 characters
-                    username = f"user_{random_suffix}"
-                    
-                    user = User(
-                        username=username,
-                        email=magic_link.email,
-                        is_verified=True,
-                        last_login=datetime.utcnow()
-                    )
-                    db.add(user)
-                    db.flush()  # This will raise error if username collision occurs
-                    logger.info(f"APP_TOKEN_EXCHANGE: NEW_USER - email={magic_link.email}, username={username}, IP={ip_address}")
-                    break
-                except Exception as e:
-                    error_msg = str(e).lower()
-                    if ("unique" in error_msg or "duplicate" in error_msg) and attempt < max_retries - 1:
-                        # Username collision, try again with different random string
-                        logger.warning(f"APP_TOKEN_EXCHANGE: USERNAME_COLLISION - attempt={attempt+1}, email={magic_link.email}, error={str(e)}, IP={ip_address}")
-                        db.rollback()
-                        continue
-                    else:
-                        # Non-collision error or max retries exceeded
-                        logger.error(f"APP_TOKEN_EXCHANGE: USER_CREATION_FAILED - {str(e)}, email={magic_link.email}, attempt={attempt+1}, IP={ip_address}")
-                        db.rollback()
-                        raise HTTPException(
-                            status_code=500,
-                            detail=f"Failed to create user account: {str(e)}. Please try again."
-                        )
-        else:
-            # Update existing user
-            user.last_login = datetime.utcnow()
-            user.is_verified = True
-            logger.info(f"APP_TOKEN_EXCHANGE: EXISTING_USER - email={magic_link.email}, IP={ip_address}")
-        
-        # Create new access token for app session
-        access_token = create_access_token(data={"sub": str(user.id)})
-        
-        # Create Firebase custom token for authentication
-        firebase_custom_token = None
-        try:
-            firebase_custom_token = firebase_auth.create_custom_token(str(user.id))
-            # Convert bytes to string if needed
-            if isinstance(firebase_custom_token, bytes):
-                firebase_custom_token = firebase_custom_token.decode('utf-8')
-            logger.info(f"APP_TOKEN_EXCHANGE: FIREBASE_TOKEN_CREATED - user_id={user.id}, IP={ip_address}")
-        except Exception as e:
-            logger.warning(f"APP_TOKEN_EXCHANGE: FIREBASE_TOKEN_FAILED - {str(e)}, user_id={user.id}, IP={ip_address}")
-            # Continue without Firebase token - not critical for basic auth
-        
-        # Only mark as used after successful session creation
-        magic_link.used = True
-        db.commit()
-        
-        logger.info(f"APP_TOKEN_EXCHANGE: SUCCESS - user_id={user.id}, jti={jti[:8]}..., IP={ip_address}")
-        
-        # Return user session data for app authentication
-        response_data = {
-            "success": True,
-            "message": "Authentication successful",
-            "user_id": str(user.id),
-            "username": user.username,
-            "email": user.email,
-            "access_token": access_token,
-            "is_new_user": is_new_user
-        }
-        
-        # Add Firebase token if available
-        if firebase_custom_token:
-            response_data["firebase_custom_token"] = firebase_custom_token
-        
-        return MagicLinkCompleteResponse(**response_data)
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"APP_TOKEN_EXCHANGE: ERROR - {str(e)}, IP={ip_address}")
-        raise HTTPException(
-            status_code=500,
-            detail="Token exchange failed. Please try again."
-        )
+    ip_address = get_client_ip(http_request)
+    logger.warning(f"DEPRECATED endpoint /complete/app called from IP: {ip_address}")
+    logger.warning(f"Client should migrate to use /exchange endpoint with authorization code")
+    
+    # Return error directing to new endpoint
+    raise HTTPException(
+        status_code=400,
+        detail="This endpoint is deprecated. Please use POST /auth/magic/exchange with authorization code instead."
+    )
 
 
 # NEW AUTHORIZATION CODE FLOW ENDPOINTS

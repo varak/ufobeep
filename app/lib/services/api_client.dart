@@ -801,38 +801,13 @@ class ApiClient {
     _dio.options.receiveTimeout = timeout;
   }
 
-  // Magic link authentication endpoint (ChatGPT's recommendation)
+  // DEPRECATED: Legacy JWT-based magic link authentication
+  // This method is kept for backward compatibility but should not be used
+  @Deprecated('Use exchangeMagicCode instead')
   Future<Map<String, dynamic>> exchangeMagicToken(String token) async {
-    try {
-      debugPrint('[ApiClient] Exchanging magic token with backend');
-      final response = await _dio.post(
-        '/auth/magic/complete/app',
-        data: {'token': token},
-        options: Options(
-          headers: {'Accept': 'application/json'},
-          validateStatus: (status) => status != null && status < 500,
-        ),
-      );
-      
-      if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
-        debugPrint('[ApiClient] Magic token exchange successful');
-        return response.data as Map<String, dynamic>;
-      } else {
-        final errorMsg = response.data is Map 
-          ? (response.data as Map)['detail'] ?? 'Token exchange failed'
-          : 'Token exchange failed';
-        throw ApiClientException(
-          'Backend token exchange failed: $errorMsg',
-          statusCode: response.statusCode,
-        );
-      }
-    } on DioException catch (e) {
-      debugPrint('[ApiClient] Magic token exchange DioException: ${e.message}');
-      if (e.response?.statusCode == 400) {
-        final errorData = e.response?.data;
-        final errorMessage = errorData is Map 
-          ? (errorData['detail'] ?? 'Invalid or expired magic link') 
-          : 'Invalid or expired magic link';
+    // For backward compatibility, try to use token as code
+    debugPrint('[ApiClient] WARNING: exchangeMagicToken is deprecated, redirecting to exchangeMagicCode');
+    return exchangeMagicCode(token);
         throw ApiClientException(errorMessage, statusCode: 400);
       }
       throw ApiClientException(
@@ -842,7 +817,7 @@ class ApiClient {
     }
   }
 
-  /// NEW: Exchange authorization code for tokens (authorization code flow) with comprehensive debugging
+  /// NEW: Exchange authorization code for tokens (authorization code flow)
   Future<Map<String, dynamic>> exchangeMagicCode(String code) async {
     final startTime = DateTime.now();
     final reqId = "api-${startTime.millisecondsSinceEpoch}";
@@ -867,33 +842,22 @@ class ApiClient {
         debugPrint('[API][$reqId] ❌ Could not get device ID: $e');
       }
       
-      // Test basic connectivity first
-      debugPrint('[API][$reqId] Testing connectivity to ${_dio.options.baseUrl}...');
-      try {
-        final pingResponse = await _dio.get('/healthz', options: Options(
-          sendTimeout: const Duration(seconds: 3),
-          receiveTimeout: const Duration(seconds: 3),
-        ));
-        debugPrint('[API][$reqId] ✅ Connectivity test passed - Status: ${pingResponse.statusCode}');
-      } catch (e) {
-        debugPrint('[API][$reqId] ⚠️ Connectivity test failed: $e (proceeding anyway)');
-      }
-      
-      final requestData = {
+      // Prepare request body (use only 'code' as per backend API spec)
+      final requestBody = {
         'code': code,
         'device_id': deviceId,
-        'app_version': '1.0.0',
-        'platform': Platform.isAndroid ? 'android' : 'ios',
+        'platform': Platform.isAndroid ? 'android' : (Platform.isIOS ? 'ios' : 'unknown'),
+        'app_version': '1.0.0', // TODO: Get from package info
       };
       
-      debugPrint('[API][$reqId] Request payload: $requestData');
-      debugPrint('[API][$reqId] Making POST request to /auth/magic/exchange');
-      debugPrint('[API][$reqId] Timeout settings - send: 5s, receive: 5s');
+      debugPrint('[API][$reqId] Request body prepared: ${requestBody.keys}');
+      debugPrint('[API][$reqId] Calling POST /auth/magic/exchange');
+      debugPrint('[API][$reqId] Timeout settings - send: 8s, receive: 8s');
       
       final requestStartTime = DateTime.now();
       final response = await _dio.post(
         '/auth/magic/exchange',
-        data: requestData,
+        data: requestBody,
         options: Options(
           headers: {
             'Accept': 'application/json',
@@ -901,8 +865,8 @@ class ApiClient {
             'X-Request-ID': reqId,
           },
           validateStatus: (status) => status != null && status < 500,
-          sendTimeout: const Duration(seconds: 5),
-          receiveTimeout: const Duration(seconds: 5),
+          sendTimeout: const Duration(seconds: 8),
+          receiveTimeout: const Duration(seconds: 8),
         ),
       );
       
@@ -912,7 +876,6 @@ class ApiClient {
       
       debugPrint('[API][$reqId] Request duration: ${requestDuration}ms');
       debugPrint('[API][$reqId] Response status: ${response.statusCode}');
-      debugPrint('[API][$reqId] Response headers: ${response.headers}');
       debugPrint('[API][$reqId] Response data type: ${response.data.runtimeType}');
       debugPrint('[API][$reqId] Raw response data: ${response.data}');
       
@@ -923,9 +886,10 @@ class ApiClient {
         debugPrint('[API][$reqId] Response keys: ${responseData.keys.toList()}');
         debugPrint('[API][$reqId] Success field: ${responseData['success']}');
         
-        // Check for required fields
-        final hasAccess = responseData.containsKey('access');
-        final hasRefresh = responseData.containsKey('refresh'); 
+        // Check for required fields (backend now returns standardized format)
+        // Expected: { success, access, refresh, expires_in, user: {id, email, username, ...} }
+        final hasAccess = responseData.containsKey('access') || responseData.containsKey('access_token');
+        final hasRefresh = responseData.containsKey('refresh') || responseData.containsKey('refresh_token');
         final hasUser = responseData.containsKey('user');
         debugPrint('[API][$reqId] Required fields check: access=$hasAccess, refresh=$hasRefresh, user=$hasUser');
         
