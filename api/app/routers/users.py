@@ -89,6 +89,49 @@ async def _generate_unique_username(pool: asyncpg.Pool) -> str:
     )
 
 
+# CENTRALIZED user creation function - ALL auth methods MUST use this
+async def _create_new_user(
+    pool: asyncpg.Pool,
+    email: str = None,
+    firebase_uid: str = None,
+    google_id: str = None,
+    apple_id: str = None,
+    login_methods: list = None,
+    preferred_login_method: str = "magic_link",
+    profile_data: dict = None
+) -> dict:
+    """
+    CENTRALIZED user creation with proper username and selection flag.
+    ALL authentication methods MUST use this function.
+    """
+    if not login_methods:
+        login_methods = ["magic_link"]
+        
+    # Generate a proper username using the existing username generator
+    username = await _generate_unique_username(pool)
+    user_id = uuid.uuid4()
+    
+    async with pool.acquire() as conn:
+        await conn.execute("""
+            INSERT INTO users (
+                id, username, email, email_verified, firebase_uid, google_id, apple_id,
+                social_profile_data, login_methods, preferred_login_method,
+                needs_username_selection, created_at, last_login_at
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NOW(), NOW())
+        """, user_id, username, email, bool(email), firebase_uid, google_id, apple_id,
+             json.dumps(profile_data or {}), json.dumps(login_methods), preferred_login_method, True)
+    
+    return {
+        "id": user_id,
+        "username": username,
+        "email": email or "",
+        "email_verified": bool(email),
+        "login_methods": login_methods,
+        "needs_username_selection": True,
+        "display_name": (profile_data or {}).get("name")
+    }
+
+
 # Pydantic Models for API
 class UsernameGenerationResponse(BaseModel):
     """Response for username generation"""
