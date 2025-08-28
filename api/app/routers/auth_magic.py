@@ -1114,14 +1114,16 @@ async def exchange_magic_code(
         
         logger.info(f"MAGIC_CODE_EXCHANGE: SUCCESS - user_id={user.id}, code={request.code[:8]}..., IP={ip_address}")
         
-        # Use standardized auth response format
-        user_data = {
-            "id": user.id,
-            "username": user.username,
-            "email": user.email
-        }
-        
-        return standard_auth_response(user_data, access_token, refresh_token)
+        # Return response in format expected by MagicCodeExchangeResponse model
+        return MagicCodeExchangeResponse(
+            access_token=access_token,
+            refresh_token=refresh_token,
+            user={
+                "id": str(user.id),
+                "username": user.username,
+                "email": user.email
+            }
+        )
             
     except HTTPException:
         db.rollback()
