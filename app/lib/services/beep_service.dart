@@ -311,4 +311,4 @@ class BeepService {
 }
 
 // Global instance
-final anonymousBeepService = AnonymousBeepService();
+final beepService = BeepService();

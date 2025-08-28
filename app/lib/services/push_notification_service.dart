@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'device_service.dart';
 import '../providers/alerts_provider.dart';
 import 'sound_service.dart';
-import 'anonymous_beep_service.dart';
+import 'beep_service.dart';
 import 'permission_service.dart';
 import 'api_client.dart';
 import '../models/user_preferences.dart';
@@ -464,7 +464,7 @@ class PushNotificationService {
   Future<void> _registerWithFCMAPI(String fcmToken) async {
     try {
       // Get device ID from anonymous beep service
-      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      final deviceId = await beepService.getOrCreateDeviceId();
       
       // Get current location if available
       double? lat, lon;
@@ -500,7 +500,7 @@ class PushNotificationService {
   /// Test push notification via FCM API
   Future<bool> testPushNotification() async {
     try {
-      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      final deviceId = await beepService.getOrCreateDeviceId();
       
       final response = await _dio.post('/api/push/test', data: {
         'device_id': deviceId,

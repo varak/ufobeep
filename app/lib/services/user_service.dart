@@ -357,7 +357,7 @@ class UserService {
     return prefs.getString('phone');
   }
 
-  /// Update anonymous_beep_service to use username system
+  /// Update beep_service to use username system
   /// This replaces device ID lookups with user ID lookups
   Future<String> getOrCreateUserId() async {
     // Try to get existing user ID

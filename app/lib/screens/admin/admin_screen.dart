@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
-import '../../services/anonymous_beep_service.dart';
+import '../../services/beep_service.dart';
 import '../../services/push_notification_service.dart';
 import '../../services/permission_service.dart';
 import '../../services/sound_service.dart';
@@ -46,7 +46,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
     
     try {
       // Get device info
-      _deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      _deviceId = await beepService.getOrCreateDeviceId();
       _fcmToken = await pushNotificationService.getCachedToken();
       
       // Get engagement metrics
@@ -182,7 +182,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
     });
     
     try {
-      final result = await anonymousBeepService.sendBeep(
+      final result = await beepService.sendBeep(
         latitude: _currentPosition!.latitude,
         longitude: _currentPosition!.longitude,
         description: 'Admin test proximity alert',

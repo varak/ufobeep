@@ -4,7 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import '../services/api_client.dart';
 import '../services/permission_service.dart';
-import '../services/anonymous_beep_service.dart';
+import '../services/beep_service.dart';
 
 class PushService {
   static final PushService _instance = PushService._internal();
@@ -45,7 +45,7 @@ class PushService {
       PushService.instance._currentToken = token;
 
       // Get device ID from anonymous beep service
-      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      final deviceId = await beepService.getOrCreateDeviceId();
       
       // Get current location if available
       final permissionService = PermissionService();
@@ -164,7 +164,7 @@ class PushService {
         return;
       }
 
-      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      final deviceId = await beepService.getOrCreateDeviceId();
       final token = PushService.instance._currentToken;
       
       if (token == null) {
@@ -189,7 +189,7 @@ class PushService {
   /// Test push notification
   static Future<bool> testPush() async {
     try {
-      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      final deviceId = await beepService.getOrCreateDeviceId();
       
       final response = await ApiClient.post('/api/push/test', {
         'device_id': deviceId,

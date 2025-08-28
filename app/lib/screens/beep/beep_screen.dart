@@ -11,7 +11,7 @@ import 'package:go_router/go_router.dart';
 import '../../theme/app_theme.dart';
 import '../../services/sensor_service.dart';
 import '../../services/photo_metadata_service.dart';
-import '../../services/anonymous_beep_service.dart';
+import '../../services/beep_service.dart';
 import '../../services/sound_service.dart';
 import '../../services/permission_service.dart';
 import '../../services/api_client.dart';
@@ -252,12 +252,12 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       final beepDescription = description.isEmpty ? null : description;
           
       // Send anonymous beep with description
-      final beepResult = await anonymousBeepService.sendBeep(
+      final beepResult = await beepService.sendBeep(
         description: beepDescription,
       );
       
       // Set the device ID as current user so navigation button is hidden
-      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      final deviceId = await beepService.getOrCreateDeviceId();
       ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
       
       // Clear the text field if description was used

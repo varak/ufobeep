@@ -13,7 +13,7 @@ import '../../widgets/alert_sections/alert_details_section.dart';
 import '../../widgets/alert_sections/alert_direction_section.dart';
 import '../../widgets/alert_sections/alert_actions_section.dart';
 import '../../widgets/enrichment/enrichment_section.dart';
-import '../../services/anonymous_beep_service.dart';
+import '../../services/beep_service.dart';
 import '../../services/user_service.dart';
 import '../../services/api_client.dart';
 
@@ -46,7 +46,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         print('DEBUG: Loaded user ID: "$userId"');
       } catch (e) {
         // Fallback to device ID for users not yet migrated to username system
-        final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+        final deviceId = await beepService.getOrCreateDeviceId();
         print('DEBUG: Fallback to device ID: "$deviceId"');
         userId = deviceId;
       }

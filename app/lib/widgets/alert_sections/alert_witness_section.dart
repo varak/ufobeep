@@ -3,7 +3,7 @@ import '../../providers/alerts_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../services/permission_service.dart';
 import '../../services/api_client.dart';
-import '../../services/anonymous_beep_service.dart';
+import '../../services/beep_service.dart';
 import '../../services/sound_service.dart';
 
 class AlertWitnessSection extends StatefulWidget {
@@ -61,7 +61,7 @@ class _AlertWitnessSectionState extends State<AlertWitnessSection> {
       await SoundService.I.play(AlertSound.tap, haptic: true);
 
       // Get device ID
-      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      final deviceId = await beepService.getOrCreateDeviceId();
 
       // Confirm witness
       final result = await ApiClient.instance.confirmWitness(

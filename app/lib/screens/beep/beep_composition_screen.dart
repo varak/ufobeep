@@ -191,7 +191,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       }
 
       // Set device ID as current user so navigation button is hidden
-      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      final deviceId = await beepService.getOrCreateDeviceId();
       ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
       
       // Show success message

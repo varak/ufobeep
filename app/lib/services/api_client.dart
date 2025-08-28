@@ -10,7 +10,7 @@ import '../config/environment.dart';
 import '../models/api_models.dart' as api;
 import '../models/sensor_data.dart';
 import '../models/sighting_submission.dart' as local;
-import 'anonymous_beep_service.dart';
+import 'beep_service.dart';
 import 'auth_interceptor.dart';
 
 class ApiClientException implements Exception {
@@ -1266,7 +1266,7 @@ extension ApiClientExtension on ApiClient {
 
   Future<Map<String, dynamic>> triggerAlertsForSighting(String sightingId, double latitude, double longitude) async {
     try {
-      final deviceId = await anonymousBeepService.getOrCreateDeviceId();
+      final deviceId = await beepService.getOrCreateDeviceId();
       
       final response = await ApiClient.dio.post(
         '/alerts/send/$sightingId',
