@@ -160,7 +160,7 @@ class SocialAuthService {
         final user = data['user'] ?? {};
         print('SOCIAL AUTH DEBUG: User object from response: $user');
         
-        final userId = user['user_id'] ?? cred.user!.uid;
+        final userId = user['id'] ?? cred.user!.uid;
         final username = user['username'];  // Don't fallback - we need to know if it's missing
         final email = user['email'] ?? cred.user!.email;
         final isNewUser = data['is_new_user'] ?? false;
