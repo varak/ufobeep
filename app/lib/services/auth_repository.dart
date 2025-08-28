@@ -34,10 +34,35 @@ class AuthRepository with ChangeNotifier {
 
   Future<void> loadSessionOnStartup() async {
     debugPrint('[Bootstrap] Starting session load');
+    debugPrint('[Bootstrap] DEBUG: Storage instance: $_storage');
+    debugPrint('[Bootstrap] DEBUG: Looking for keys: $_kRefresh, $_kAccess');
     
     try {
-      final refresh = await _storage.read(key: _kRefresh);
-      final access = await _storage.read(key: _kAccess);
+      // Add detailed token reading with error handling
+      String? refresh;
+      String? access;
+      
+      try {
+        refresh = await _storage.read(key: _kRefresh);
+        debugPrint('[Bootstrap] DEBUG: Read refresh token - found: ${refresh != null}, length: ${refresh?.length ?? 0}');
+        if (refresh != null && refresh.isNotEmpty) {
+          debugPrint('[Bootstrap] DEBUG: Refresh token preview: ${refresh.substring(0, refresh.length.clamp(0, 20))}...');
+        }
+      } catch (e, st) {
+        debugPrint('[Bootstrap] ERROR: Failed to read refresh token: $e');
+        debugPrint('[Bootstrap] ERROR: Stack trace: $st');
+      }
+      
+      try {
+        access = await _storage.read(key: _kAccess);
+        debugPrint('[Bootstrap] DEBUG: Read access token - found: ${access != null}, length: ${access?.length ?? 0}');
+        if (access != null && access.isNotEmpty) {
+          debugPrint('[Bootstrap] DEBUG: Access token preview: ${access.substring(0, access.length.clamp(0, 20))}...');
+        }
+      } catch (e, st) {
+        debugPrint('[Bootstrap] ERROR: Failed to read access token: $e');
+        debugPrint('[Bootstrap] ERROR: Stack trace: $st');
+      }
       
       debugPrint('[Bootstrap] Stored tokens found: refresh=${refresh != null}, access=${access != null}');
       
@@ -73,17 +98,37 @@ class AuthRepository with ChangeNotifier {
   }
 
   Future<void> setTokens({required String access, required String refresh}) async {
+    debugPrint('[Auth] ========== TOKEN STORAGE START ==========');
     debugPrint('[Auth] Saving tokens: access(${access.length}), refresh(${refresh.length})');
+    debugPrint('[Auth] Storage instance: $_storage');
+    debugPrint('[Auth] Keys to write: $_kAccess, $_kRefresh');
+    debugPrint('[Auth] Access token preview: ${access.substring(0, access.length.clamp(0, 20))}...');
+    debugPrint('[Auth] Refresh token preview: ${refresh.substring(0, refresh.length.clamp(0, 20))}...');
+    
     try {
+      // Write access token with verification
       await _storage.write(key: _kAccess, value: access);
-      debugPrint('[Auth] Access token written to secure storage');
+      debugPrint('[Auth] ✅ Access token written to secure storage');
+      
+      // Immediately verify access token was stored
+      final verifyAccess = await _storage.read(key: _kAccess);
+      debugPrint('[Auth] ✅ Access token verification: found=${verifyAccess != null}, matches=${verifyAccess == access}');
+      
+      // Write refresh token with verification  
       await _storage.write(key: _kRefresh, value: refresh);
-      debugPrint('[Auth] Refresh token written to secure storage');
+      debugPrint('[Auth] ✅ Refresh token written to secure storage');
+      
+      // Immediately verify refresh token was stored
+      final verifyRefresh = await _storage.read(key: _kRefresh);
+      debugPrint('[Auth] ✅ Refresh token verification: found=${verifyRefresh != null}, matches=${verifyRefresh == refresh}');
+      
       ApiClient.setBearer(access);
-      debugPrint('[Auth] Tokens saved successfully and ApiClient updated');
+      debugPrint('[Auth] ✅ ApiClient bearer token updated');
+      debugPrint('[Auth] ========== TOKEN STORAGE SUCCESS ==========');
     } catch (e, stackTrace) {
       debugPrint('[Auth] ❌ CRITICAL: Token storage failed: $e');
       debugPrint('[Auth] ❌ Stack trace: $stackTrace');
+      debugPrint('[Auth] ========== TOKEN STORAGE FAILED ==========');
       rethrow;
     }
   }
