@@ -32,10 +32,24 @@ class AuthRepository with ChangeNotifier {
     _isHydrating = true;
     
     try {
-      // Use new centralized AuthRepository to load tokens
-      final tokens = await auth_repo.AuthRepository().load();
+      // TEMPORARY: Read from both old and new systems until migration is complete
+      String? refresh;
+      String? access;
       
-      if (tokens == null || tokens.access.isEmpty) {
+      // Try new system first
+      final newTokens = await auth_repo.AuthRepository().load();
+      if (newTokens != null && newTokens.access.isNotEmpty) {
+        access = newTokens.access;
+        refresh = newTokens.refresh;
+        debugPrint('[Bootstrap] Using tokens from new AuthRepository');
+      } else {
+        // Fallback to old system
+        refresh = await AppStorage.readWithFallback(AppStorage.refreshKey);
+        access = await AppStorage.readWithFallback(AppStorage.accessKey);
+        debugPrint('[Bootstrap] Using tokens from old AppStorage system');
+      }
+      
+      if (access == null || access.isEmpty) {
         debugPrint('[Bootstrap] No tokens found - starting unauthenticated');
         _isReady = true;
         _isHydrating = false;
@@ -43,17 +57,13 @@ class AuthRepository with ChangeNotifier {
         return;
       }
       
-      debugPrint('[Bootstrap] Tokens found - validating with /me endpoint');
-      ApiClient.setBearer(tokens.access);
+      debugPrint('[Bootstrap] Tokens found - using directly without /me validation');
+      ApiClient.setBearer(access);
       
-      try {
-        await fetchMe(); // Validate tokens by calling /me
-        debugPrint('[Bootstrap] Session restored successfully - user: ${_currentUser?.username}');
-      } catch (e) {
-        debugPrint('[Bootstrap] /me validation failed: $e - clearing tokens');
-        await auth_repo.AuthRepository().clear();
-        await clearSession();
-      }
+      // Don't validate with /me for now - just trust the tokens
+      // TODO: Re-enable /me validation after fixing the endpoint
+      debugPrint('[Bootstrap] Session restored successfully (skipping /me validation)');
+      
     } catch (e) {
       debugPrint('[Bootstrap] Session load failed: $e, clearing session');
       await clearSession();
@@ -70,12 +80,19 @@ class AuthRepository with ChangeNotifier {
     debugPrint('[Auth] Saving tokens: access(${access.length}), refresh(${refresh.length})');
     
     try {
-      // Use new centralized AuthRepository
+      // TEMPORARY: Save to BOTH old and new systems for compatibility
+      // Save to old system first (what the app currently expects)
+      await AppStorage.saveWithFallback(AppStorage.accessKey, access);
+      await AppStorage.saveWithFallback(AppStorage.refreshKey, refresh);
+      debugPrint('[Auth] ✅ Tokens saved to old AppStorage system');
+      
+      // Also save to new system for future migration
       await auth_repo.AuthRepository().persist(auth_repo.AuthTokens(
         access: access,
         refresh: refresh,
         expiresAt: DateTime.now().add(const Duration(hours: 1)),
       ));
+      debugPrint('[Auth] ✅ Tokens saved to new AuthRepository system');
       
       ApiClient.setBearer(access);
       debugPrint('[Auth] ✅ ApiClient bearer token updated');
@@ -162,6 +179,8 @@ class AuthRepository with ChangeNotifier {
   }
 
   Future<void> clearSession() async {
+    // Clear both old and new systems
+    await AppStorage.clearAllAuthData();
     await auth_repo.AuthRepository().clear();
     ApiClient.clearBearer();
     _currentUser = null;
