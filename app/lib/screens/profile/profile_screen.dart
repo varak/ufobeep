@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../services/auth_repository.dart';
 import '../../services/api_client.dart';
+import '../../services/device_service.dart';
 import '../../models/user_model.dart';
 import '../../models/user_preferences.dart';
 import '../../providers/user_preferences_provider.dart';
@@ -840,8 +841,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
     try {
       // Call the regenerate-username API endpoint
+      final deviceService = DeviceService();
       final response = await ApiClient.dio.post('/users/regenerate-username', data: {
-        'device_id': await _auth.getDeviceId(),
+        'device_id': await deviceService.getDeviceId(),
       });
 
       // Close loading dialog
