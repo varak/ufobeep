@@ -190,28 +190,53 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Text(
             'Basic Settings',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w600,
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
               color: AppColors.textPrimary,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
         const SizedBox(height: 16),
+        
         Container(
-          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: AppColors.darkSurface,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: AppColors.darkBorder.withOpacity(0.5)),
           ),
-          child: const Text(
-            'Alert range, language, units settings - Coming soon',
-            style: TextStyle(color: AppColors.textPrimary),
+          child: Column(
+            children: [
+              _buildSimpleSettingItem(
+                icon: Icons.notifications_outlined,
+                title: 'Alert Range',
+                value: preferences.alertRangeDisplay,
+                onTap: () => _showRangeSelector(preferences),
+                isFirst: true,
+              ),
+              
+              _buildDivider(),
+              
+              _buildSimpleSettingItem(
+                icon: Icons.language_outlined,
+                title: 'Language',
+                value: preferences.language.toUpperCase(),
+                onTap: () => _showLanguageSelector(preferences),
+              ),
+              
+              _buildDivider(),
+              
+              _buildSimpleSettingItem(
+                icon: Icons.straighten_outlined,
+                title: 'Units',
+                value: preferences.units == 'metric' ? 'Metric' : 'Imperial',
+                onTap: () => _toggleUnits(preferences),
+                isLast: true,
+              ),
+            ],
           ),
         ),
       ],
@@ -222,28 +247,63 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Text(
             'App Settings',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w600,
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
               color: AppColors.textPrimary,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
         const SizedBox(height: 16),
+        
+        // Quiet Hours Toggle
         Container(
-          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: AppColors.darkSurface,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: AppColors.darkBorder.withOpacity(0.5)),
           ),
-          child: const Text(
-            'Quiet hours, DND, alert filters - Coming soon',
-            style: TextStyle(color: AppColors.textPrimary),
+          child: _buildSettingsTile(
+            icon: Icons.bedtime_outlined,
+            title: 'Quiet Hours',
+            subtitle: 'Silence alerts during sleep hours',
+            value: preferences.quietHoursEnabled,
+            onChanged: _toggleQuietHours,
+            standalone: true,
+          ),
+        ),
+        
+        const SizedBox(height: 20),
+        
+        // Alert Filters Section
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Text(
+            'Alert Filters',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.darkSurface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.darkBorder.withOpacity(0.5)),
+          ),
+          child: _buildSettingsTile(
+            icon: Icons.photo_camera_outlined,
+            title: 'Media-Only Alerts',
+            subtitle: 'Only receive alerts with photos/videos',
+            value: preferences.mediaOnlyAlerts ?? false,
+            onChanged: _toggleMediaOnlyAlerts,
+            standalone: true,
           ),
         ),
       ],
@@ -548,6 +608,198 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  // Helper methods for settings UI
+  Widget _buildSimpleSettingItem({
+    required IconData icon,
+    required String title,
+    required String value,
+    VoidCallback? onTap,
+    bool isFirst = false,
+    bool isLast = false,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.vertical(
+        top: isFirst ? const Radius.circular(16) : Radius.zero,
+        bottom: isLast ? const Radius.circular(16) : Radius.zero,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+        child: Row(
+          children: [
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: AppColors.brandPrimary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                icon,
+                color: AppColors.brandPrimary,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            Text(
+              value,
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(width: 8),
+            const Icon(
+              Icons.chevron_right,
+              color: AppColors.textSecondary,
+              size: 20,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSettingsTile({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required bool value,
+    ValueChanged<bool>? onChanged,
+    bool isFirst = false,
+    bool isLast = false,
+    bool standalone = false,
+  }) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: standalone ? 16 : 12,
+        horizontal: 20,
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: AppColors.brandPrimary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(
+              icon,
+              color: AppColors.brandPrimary,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Switch(
+            value: value,
+            onChanged: onChanged,
+            activeColor: AppColors.brandPrimary,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDivider() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      height: 1,
+      color: AppColors.darkBorder.withOpacity(0.3),
+    );
+  }
+
+  // Settings action methods
+  void _showRangeSelector(UserPreferences preferences) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Alert Range'),
+        content: Text('Current: ${preferences.alertRangeDisplay}'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showLanguageSelector(UserPreferences preferences) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Language'),
+        content: Text('Current: ${preferences.language.toUpperCase()}'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _toggleUnits(UserPreferences preferences) {
+    final newUnits = preferences.units == 'metric' ? 'imperial' : 'metric';
+    ref.read(userPreferencesProvider.notifier).updatePreferences(
+      preferences.copyWith(units: newUnits),
+    );
+  }
+
+  void _toggleQuietHours(bool enabled) {
+    final preferences = ref.read(userPreferencesProvider);
+    if (preferences != null) {
+      ref.read(userPreferencesProvider.notifier).updatePreferences(
+        preferences.copyWith(quietHoursEnabled: enabled),
+      );
+    }
+  }
+
+  void _toggleMediaOnlyAlerts(bool enabled) {
+    final preferences = ref.read(userPreferencesProvider);
+    if (preferences != null) {
+      ref.read(userPreferencesProvider.notifier).updatePreferences(
+        preferences.copyWith(mediaOnlyAlerts: enabled),
+      );
+    }
   }
 }
 
