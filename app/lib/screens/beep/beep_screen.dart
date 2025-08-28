@@ -15,7 +15,7 @@ import '../../services/beep_service.dart';
 import '../../services/sound_service.dart';
 import '../../services/permission_service.dart';
 import '../../services/api_client.dart';
-import 'package:permission_handler/permission_handler.dart';\nimport 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../models/sensor_data.dart';
 import '../../models/sighting_submission.dart' as local;
 import '../../models/user_preferences.dart';
@@ -150,14 +150,10 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
         debugPrint('Skipping metadata extraction for video file');
       }
 
-      // Get current location for media beep (use Geolocator directly like BeepService)
+      // Get current location for beep (same as non-media beeps)
+      final currentLocation = await permissionService.getCurrentLocation();
       SensorData? currentSensorData;
-      try {
-        final currentLocation = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.medium,
-          timeLimit: const Duration(seconds: 10),
-        );
-        
+      if (currentLocation != null) {
         currentSensorData = SensorData(
           latitude: currentLocation.latitude,
           longitude: currentLocation.longitude,
@@ -170,8 +166,8 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
           hfovDeg: 60.0,
         );
         debugPrint('📍 Using current location for media beep: ${currentLocation.latitude}, ${currentLocation.longitude}');
-      } catch (e) {
-        debugPrint('❌ Failed to get current location for media beep: $e');
+      } else {
+        debugPrint('❌ Failed to get current location for media beep');
       }
 
       setState(() {
