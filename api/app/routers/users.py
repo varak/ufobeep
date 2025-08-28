@@ -1216,6 +1216,79 @@ async def get_visibility_settings(device_id: str):
         pass
 
 
+class SetUsernameRequest(BaseModel):
+    """Request to set custom username for user"""
+    username: str = Field(..., min_length=3, max_length=50, description="Desired username")
+    device_id: str = Field(..., description="Device identifier")
+
+
+@router.post("/set-username")
+async def set_username(request: SetUsernameRequest):
+    """
+    Set custom username for authenticated user
+    Used after social login when needs_username_selection is true
+    """
+    pool = await get_db()
+    try:
+        async with pool.acquire() as conn:
+            async with conn.transaction():
+                # Get user from device ID
+                user = await conn.fetchrow("""
+                    SELECT u.id, u.username, u.needs_username_selection
+                    FROM users u
+                    JOIN user_devices ud ON u.id = ud.user_id
+                    WHERE ud.device_id = $1
+                """, request.device_id)
+                
+                if not user:
+                    raise HTTPException(
+                        status_code=status.HTTP_404_NOT_FOUND,
+                        detail="User not found"
+                    )
+                
+                # Validate username availability
+                existing = await conn.fetchrow("""
+                    SELECT username FROM users WHERE LOWER(username) = LOWER($1)
+                """, request.username)
+                
+                if existing:
+                    raise HTTPException(
+                        status_code=status.HTTP_409_CONFLICT,
+                        detail="Username already taken"
+                    )
+                
+                # Update username and clear selection flag
+                await conn.execute("""
+                    UPDATE users 
+                    SET username = $1, needs_username_selection = FALSE, updated_at = NOW()
+                    WHERE id = $2
+                """, request.username, user['id'])
+                
+                # Update any sightings with old username reference
+                await conn.execute("""
+                    UPDATE sightings 
+                    SET reporter_username = $1
+                    WHERE reporter_id = $2::text
+                """, request.username, str(user['id']))
+                
+                return {
+                    "success": True,
+                    "message": f"Username set to {request.username}",
+                    "username": request.username,
+                    "needs_username_selection": False
+                }
+                
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to set username: {str(e)}"
+        )
+    finally:
+        pass
+
+
 # MP15: Enhanced Authentication - Social Login Endpoints
 
 class SocialLoginRequest(BaseModel):
@@ -1305,29 +1378,15 @@ async def google_login(request: SocialLoginRequest):
                     user_data["email_verified"] = True
                     
                 else:
-                    # New user - create account with auto-generated username
-                    username = await _generate_unique_username(pool)
-                    user_id = uuid.uuid4()
-                    
-                    # Create new user
-                    await conn.execute("""
-                        INSERT INTO users (
-                            id, username, email, email_verified, google_id, 
-                            social_profile_data, login_methods, preferred_login_method,
-                            created_at, last_login_at
-                        ) VALUES ($1, $2, $3, TRUE, $4, $5, $6, 'google', NOW(), NOW())
-                    """, user_id, username, profile["email"], profile["google_id"], 
-                         json.dumps(profile), json.dumps(["google", "magic_link"]))
-                    
-                    # Create user_data for response
-                    user_data = {
-                        "id": user_id,
-                        "username": username,
-                        "email": profile["email"],
-                        "email_verified": True,
-                        "login_methods": ["google", "magic_link"],
-                        "display_name": profile.get("name")
-                    }
+                    # New user - use centralized creation function
+                    user_data = await _create_new_user(
+                        pool=pool,
+                        email=profile["email"],
+                        google_id=profile["google_id"],
+                        login_methods=["google", "magic_link"],
+                        preferred_login_method="google",
+                        profile_data=profile
+                    )
                 
                 # Link device if not already linked
                 await conn.execute("""
@@ -1384,34 +1443,18 @@ async def firebase_auth(
                 return standard_auth_response(dict(user), access_token, refresh_token)
                 
             else:
-                # New user - create account with auto-generated username
-                username = await _generate_unique_username(pool)
-                user_id = uuid.uuid4()
-                
-                # Create new user with Firebase UID
-                await conn.execute("""
-                    INSERT INTO users (
-                        id, username, email, email_verified, firebase_uid,
-                        login_methods, preferred_login_method,
-                        created_at, last_login_at
-                    ) VALUES ($1, $2, $3, TRUE, $4, $5, 'firebase', NOW(), NOW())
-                """, user_id, username, firebase_user.email or '', firebase_user.uid,
-                     json.dumps(["firebase"]))
-                
-                # Device tracking handled by devices service
+                # New user - use centralized creation function
+                user_data = await _create_new_user(
+                    pool=pool,
+                    email=firebase_user.email or "",
+                    firebase_uid=firebase_user.uid,
+                    login_methods=["firebase"],
+                    preferred_login_method="firebase"
+                )
                 
                 # Create JWT tokens for new user
-                access_token = create_access_token(data={"sub": str(user_id)})
-                refresh_token = create_refresh_token(data={"sub": str(user_id)})
-                
-                # Create user_data for response
-                user_data = {
-                    "id": user_id,
-                    "username": username,
-                    "email": firebase_user.email or '',
-                    "email_verified": True,
-                    "login_methods": ["firebase"]
-                }
+                access_token = create_access_token(data={"sub": str(user_data["id"])})
+                refresh_token = create_refresh_token(data={"sub": str(user_data["id"])})
                 
                 return standard_auth_response(user_data, access_token, refresh_token)
                 
@@ -1480,28 +1523,15 @@ async def apple_auth(
                     user_data["email_verified"] = True
                     
                 else:
-                    # New user - create account with auto-generated username
-                    username = await _generate_unique_username(pool)
-                    user_id = uuid.uuid4()
-                    
-                    # Create new user
-                    await conn.execute("""
-                        INSERT INTO users (
-                            id, username, email, email_verified, 
-                            login_methods, preferred_login_method,
-                            created_at, last_login_at
-                        ) VALUES ($1, $2, $3, TRUE, $4, 'apple', NOW(), NOW())
-                    """, user_id, username, email, json.dumps(["apple", "magic_link"]))
-                    
-                    # Create user_data for response
-                    user_data = {
-                        "id": user_id,
-                        "username": username,
-                        "email": email,
-                        "email_verified": True,
-                        "login_methods": ["apple", "magic_link"],
-                        "display_name": profile.get("name")
-                    }
+                    # New user - use centralized creation function
+                    user_data = await _create_new_user(
+                        pool=pool,
+                        email=email,
+                        apple_id=profile.get("apple_id", profile.get("sub")),
+                        login_methods=["apple", "magic_link"],
+                        preferred_login_method="apple",
+                        profile_data=profile
+                    )
                 
                 # Create JWT tokens
                 access_token = create_access_token(data={"sub": str(user_data["id"])})
