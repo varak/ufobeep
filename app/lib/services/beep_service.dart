@@ -151,12 +151,12 @@ class BeepService {
         try {
           final permission = await Geolocator.checkPermission();
           if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
-            throw Exception('Location permission required for beeping. Please enable location services in Settings → Permissions.');
+            throw Exception('Location permission required for beeping. Please enable location services in Profile → Permissions.');
           } else {
-            throw Exception('Unable to get current location. Please ensure GPS is enabled and try again. If the problem persists, try moving to an area with better GPS signal.');
+            throw Exception('Unable to get current location. Please ensure GPS is enabled and try again.');
           }
         } catch (e) {
-          throw Exception('Location access failed: $e. Please check location permissions and GPS settings.');
+          throw Exception('Location access failed. Please check location permissions in Profile → Permissions.');
         }
       }
       
