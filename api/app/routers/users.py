@@ -1565,15 +1565,23 @@ async def request_magic_link(request: MagicLinkRequest):
             """, email)
             
             if not user:
-                print(f"No user found for email: {email}")
-                # Don't reveal if email exists - security best practice
-                return {
-                    "success": True,
-                    "message": "If this email is registered, a magic link has been sent.",
-                    "expires_in_minutes": 15
+                print(f"No user found for email: {email} - creating new user")
+                # New user - use centralized creation function
+                user_data = await _create_new_user(
+                    pool=pool,
+                    email=email,
+                    login_methods=["magic_link"],
+                    preferred_login_method="magic_link"
+                )
+                print(f"Created new user: {user_data['username']}")
+                user = {
+                    "id": user_data["id"],
+                    "username": user_data["username"], 
+                    "email": email,
+                    "email_verified": user_data["email_verified"]
                 }
             
-            print(f"User found: {user['username']} (verified: {user['email_verified']})")
+            print(f"User ready: {user['username']} (verified: {user['email_verified']})")
             
             # Generate magic link token
             social_service = SocialAuthService()
@@ -1643,18 +1651,18 @@ async def verify_magic_link(request: dict):
                 WHERE id = $1
             """, user["id"])
             
-            # Generate JWT or session token here if needed
-            # For now, return user info for the app to handle
+            # Get user login methods
+            user_full = await conn.fetchrow("""
+                SELECT id, username, email, email_verified, login_methods, needs_username_selection, display_name
+                FROM users WHERE id = $1
+            """, user["id"])
             
-            return {
-                "success": True,
-                "message": "Successfully signed in!",
-                "user": {
-                    "user_id": str(user["id"]),
-                    "username": user["username"],
-                    "email": user["email"]
-                }
-            }
+            # Create JWT tokens 
+            access_token = create_access_token(data={"sub": str(user_full["id"])})
+            refresh_token = create_refresh_token(data={"sub": str(user_full["id"])})
+            
+            # Return standardized auth response
+            return standard_auth_response(dict(user_full), access_token, refresh_token)
             
     finally:
         pass  # Shared pool - don't close
