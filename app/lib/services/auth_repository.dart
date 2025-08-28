@@ -102,7 +102,7 @@ class AuthRepository with ChangeNotifier {
       final refresh = payload['refresh'] as String?;
       final user = payload['user'] as Map<String, dynamic>?;
 
-      if (access == null || refresh == null || user == null) {
+      if (access == null || user == null) {
         throw Exception('Bad magic link exchange payload: missing required fields');
       }
       
@@ -110,7 +110,7 @@ class AuthRepository with ChangeNotifier {
       debugPrint('[AuthRepository] 🔄 Setting tokens...');
       
       // Store tokens atomically
-      await setTokens(access: access, refresh: refresh);
+      await setTokens(access: access, refresh: refresh ?? '');
       
       debugPrint('[AuthRepository] 🔄 Creating user model...');
       
