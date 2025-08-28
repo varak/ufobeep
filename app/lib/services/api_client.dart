@@ -825,7 +825,10 @@ class ApiClient {
       // Get device info for the request
       String deviceId = 'unknown';
       try {
-        const storage = FlutterSecureStorage();
+        const storage = FlutterSecureStorage(
+          aOptions: AndroidOptions(encryptedSharedPreferences: true),
+          iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
+        );
         final storedDeviceId = await storage.read(key: 'device_id');
         if (storedDeviceId != null) {
           deviceId = storedDeviceId;

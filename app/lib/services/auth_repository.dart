@@ -74,10 +74,18 @@ class AuthRepository with ChangeNotifier {
 
   Future<void> setTokens({required String access, required String refresh}) async {
     debugPrint('[Auth] Saving tokens: access(${access.length}), refresh(${refresh.length})');
-    await _storage.write(key: _kAccess, value: access);
-    await _storage.write(key: _kRefresh, value: refresh);
-    ApiClient.setBearer(access);
-    debugPrint('[Auth] Tokens saved successfully');
+    try {
+      await _storage.write(key: _kAccess, value: access);
+      debugPrint('[Auth] Access token written to secure storage');
+      await _storage.write(key: _kRefresh, value: refresh);
+      debugPrint('[Auth] Refresh token written to secure storage');
+      ApiClient.setBearer(access);
+      debugPrint('[Auth] Tokens saved successfully and ApiClient updated');
+    } catch (e, stackTrace) {
+      debugPrint('[Auth] ❌ CRITICAL: Token storage failed: $e');
+      debugPrint('[Auth] ❌ Stack trace: $stackTrace');
+      rethrow;
+    }
   }
 
   Future<String?> getAccessToken() => _storage.read(key: _kAccess);

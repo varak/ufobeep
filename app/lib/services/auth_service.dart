@@ -466,24 +466,6 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
         return false;
       }
       
-      // Store auth data securely
-      const storage = FlutterSecureStorage(
-        aOptions: AndroidOptions(encryptedSharedPreferences: true),
-        iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
-      );
-      
-      await storage.write(key: 'access_token', value: accessToken);
-      if (refreshToken != null) {
-        await storage.write(key: 'refresh_token', value: refreshToken);
-      }
-      await storage.write(key: 'user_id', value: userId);
-      await storage.write(key: 'username', value: username);
-      await storage.write(key: 'is_registered', value: 'true');
-      
-      if (email != null) {
-        await storage.write(key: 'user_email', value: email);
-      }
-      
       // Set auth token in ApiClient for all future requests
       _apiClient.setAuthToken(accessToken);
       debugPrint('[Auth] ✅ ApiClient auth token set');
