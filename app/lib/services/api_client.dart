@@ -808,13 +808,6 @@ class ApiClient {
     // For backward compatibility, try to use token as code
     debugPrint('[ApiClient] WARNING: exchangeMagicToken is deprecated, redirecting to exchangeMagicCode');
     return exchangeMagicCode(token);
-        throw ApiClientException(errorMessage, statusCode: 400);
-      }
-      throw ApiClientException(
-        'Network error during token exchange: ${e.message}',
-        statusCode: e.response?.statusCode,
-      );
-    }
   }
 
   /// NEW: Exchange authorization code for tokens (authorization code flow)
