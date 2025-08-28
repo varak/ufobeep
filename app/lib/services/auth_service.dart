@@ -157,6 +157,11 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
     // Set auth token in ApiClient for immediate use
     _apiClient.setAuthToken(access);
     log('[AuthService] ApiClient auth token set');
+    
+    // Fetch current user to update AuthRepository
+    log('[AuthService] Fetching user profile...');
+    await AuthRepository().fetchMe();
+    log('[AuthService] User profile updated');
   }
 
   /// Initialize the AuthService - call this early in app startup
