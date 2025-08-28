@@ -14,6 +14,7 @@ import 'dart:io';
 import 'device_service.dart';
 import 'api_client.dart';
 import 'auth_repository.dart';
+import 'storage.dart';
 import '../config/environment.dart';
 import '../models/user_preferences.dart';
 import '../features/auth/auth_gate.dart';
@@ -180,15 +181,10 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
   Future<void> _checkStoredAuth() async {
     debugPrint('[Auth] Checking stored authentication...');
     try {
-      const storage = FlutterSecureStorage(
-        aOptions: AndroidOptions(encryptedSharedPreferences: true),
-        iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
-      );
-      
-      final token = await storage.read(key: 'access_token');
-      final userId = await storage.read(key: 'user_id');
-      final username = await storage.read(key: 'username');
-      final email = await storage.read(key: 'user_email');
+      final token = await AppStorage.readWithFallback(AppStorage.accessKey);
+      final userId = await AppStorage.readWithFallback(AppStorage.userIdKey);
+      final username = await AppStorage.readWithFallback(AppStorage.usernameKey);
+      final email = await AppStorage.readWithFallback(AppStorage.emailKey);
       
       final hasValidTokens = token != null && token.isNotEmpty && 
                             userId != null && userId.isNotEmpty && 
@@ -283,19 +279,13 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       print('   Username: $username');
       print('   Email: $email');
       
-      // Store auth data securely
-      const storage = FlutterSecureStorage(
-        aOptions: AndroidOptions(encryptedSharedPreferences: true),
-        iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
-      );
-      
-      await storage.write(key: 'access_token', value: token);
-      await storage.write(key: 'user_id', value: userId);
-      await storage.write(key: 'username', value: username);
-      await storage.write(key: 'is_registered', value: 'true');
+      // Store auth data securely with fallback
+      await AppStorage.saveWithFallback(AppStorage.accessKey, token);
+      await AppStorage.saveWithFallback(AppStorage.userIdKey, userId);
+      await AppStorage.saveWithFallback(AppStorage.usernameKey, username);
       
       if (email != null) {
-        await storage.write(key: 'user_email', value: email);
+        await AppStorage.saveWithFallback(AppStorage.emailKey, email);
       }
       
       print('✅ JWT auth data stored securely');
@@ -725,18 +715,8 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
   /// Sign out the current user
   Future<void> signOut() async {
     try {
-      // Clear secure storage auth data
-      const storage = FlutterSecureStorage(
-        aOptions: AndroidOptions(encryptedSharedPreferences: true),
-        iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
-      );
-      
-      await storage.delete(key: 'access_token');
-      await storage.delete(key: 'refresh_token');
-      await storage.delete(key: 'user_id');
-      await storage.delete(key: 'username');
-      await storage.delete(key: 'user_email');
-      await storage.delete(key: 'is_registered');
+      // Clear all auth data from secure storage and fallback
+      await AppStorage.clearAllAuthData();
       
       // Clear auth token in ApiClient
       _apiClient.setAuthToken(null);

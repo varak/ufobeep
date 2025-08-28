@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:dio/dio.dart';
 import '../models/user_model.dart';
 import 'api_client.dart';
+import 'storage.dart';
 
 /// ChatGPT: Single source of truth for user + tokens.
 /// - Stores only tokens in secure storage
@@ -15,10 +16,6 @@ class AuthRepository with ChangeNotifier {
   factory AuthRepository() => _instance;
   AuthRepository._internal();
 
-  final _storage = const FlutterSecureStorage(
-    aOptions: AndroidOptions(encryptedSharedPreferences: true),
-    iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
-  );
   final _dio = ApiClient.dio;
 
   UserModel? _currentUser;
@@ -29,13 +26,10 @@ class AuthRepository with ChangeNotifier {
   bool get isReady => _isReady && !_isHydrating;
   bool get isHydrating => _isHydrating;
 
-  static const _kAccess = 'access_token';
-  static const _kRefresh = 'refresh_token';
-
   Future<void> loadSessionOnStartup() async {
     debugPrint('[Bootstrap] Starting session load');
-    debugPrint('[Bootstrap] DEBUG: Storage instance: $_storage');
-    debugPrint('[Bootstrap] DEBUG: Looking for keys: $_kRefresh, $_kAccess');
+    debugPrint('[Bootstrap] DEBUG: Using AppStorage with secure + fallback');
+    debugPrint('[Bootstrap] DEBUG: Looking for keys: ${AppStorage.refreshKey}, ${AppStorage.accessKey}');
     
     try {
       // Add detailed token reading with error handling
@@ -43,7 +37,7 @@ class AuthRepository with ChangeNotifier {
       String? access;
       
       try {
-        refresh = await _storage.read(key: _kRefresh);
+        refresh = await AppStorage.readWithFallback(AppStorage.refreshKey);
         debugPrint('[Bootstrap] DEBUG: Read refresh token - found: ${refresh != null}, length: ${refresh?.length ?? 0}');
         if (refresh != null && refresh.isNotEmpty) {
           debugPrint('[Bootstrap] DEBUG: Refresh token preview: ${refresh.substring(0, refresh.length.clamp(0, 20))}...');
@@ -54,7 +48,7 @@ class AuthRepository with ChangeNotifier {
       }
       
       try {
-        access = await _storage.read(key: _kAccess);
+        access = await AppStorage.readWithFallback(AppStorage.accessKey);
         debugPrint('[Bootstrap] DEBUG: Read access token - found: ${access != null}, length: ${access?.length ?? 0}');
         if (access != null && access.isNotEmpty) {
           debugPrint('[Bootstrap] DEBUG: Access token preview: ${access.substring(0, access.length.clamp(0, 20))}...');
@@ -100,26 +94,26 @@ class AuthRepository with ChangeNotifier {
   Future<void> setTokens({required String access, required String refresh}) async {
     debugPrint('[Auth] ========== TOKEN STORAGE START ==========');
     debugPrint('[Auth] Saving tokens: access(${access.length}), refresh(${refresh.length})');
-    debugPrint('[Auth] Storage instance: $_storage');
-    debugPrint('[Auth] Keys to write: $_kAccess, $_kRefresh');
+    debugPrint('[Auth] Using AppStorage with secure + fallback');
+    debugPrint('[Auth] Keys to write: ${AppStorage.accessKey}, ${AppStorage.refreshKey}');
     debugPrint('[Auth] Access token preview: ${access.substring(0, access.length.clamp(0, 20))}...');
     debugPrint('[Auth] Refresh token preview: ${refresh.substring(0, refresh.length.clamp(0, 20))}...');
     
     try {
-      // Write access token with verification
-      await _storage.write(key: _kAccess, value: access);
-      debugPrint('[Auth] ✅ Access token written to secure storage');
+      // Write access token with fallback and verification
+      await AppStorage.saveWithFallback(AppStorage.accessKey, access);
+      debugPrint('[Auth] ✅ Access token written to secure storage + fallback');
       
       // Immediately verify access token was stored
-      final verifyAccess = await _storage.read(key: _kAccess);
+      final verifyAccess = await AppStorage.readWithFallback(AppStorage.accessKey);
       debugPrint('[Auth] ✅ Access token verification: found=${verifyAccess != null}, matches=${verifyAccess == access}');
       
-      // Write refresh token with verification  
-      await _storage.write(key: _kRefresh, value: refresh);
-      debugPrint('[Auth] ✅ Refresh token written to secure storage');
+      // Write refresh token with fallback and verification  
+      await AppStorage.saveWithFallback(AppStorage.refreshKey, refresh);
+      debugPrint('[Auth] ✅ Refresh token written to secure storage + fallback');
       
       // Immediately verify refresh token was stored
-      final verifyRefresh = await _storage.read(key: _kRefresh);
+      final verifyRefresh = await AppStorage.readWithFallback(AppStorage.refreshKey);
       debugPrint('[Auth] ✅ Refresh token verification: found=${verifyRefresh != null}, matches=${verifyRefresh == refresh}');
       
       ApiClient.setBearer(access);
@@ -133,8 +127,8 @@ class AuthRepository with ChangeNotifier {
     }
   }
 
-  Future<String?> getAccessToken() => _storage.read(key: _kAccess);
-  Future<String?> getRefreshToken() => _storage.read(key: _kRefresh);
+  Future<String?> getAccessToken() => AppStorage.readWithFallback(AppStorage.accessKey);
+  Future<String?> getRefreshToken() => AppStorage.readWithFallback(AppStorage.refreshKey);
 
   Future<void> fetchMe() async {
     final res = await _dio.get('/me');
@@ -200,8 +194,7 @@ class AuthRepository with ChangeNotifier {
   }
 
   Future<void> clearSession() async {
-    await _storage.delete(key: _kAccess);
-    await _storage.delete(key: _kRefresh);
+    await AppStorage.clearAllAuthData();
     ApiClient.clearBearer();
     _currentUser = null;
     notifyListeners();

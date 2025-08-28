@@ -13,6 +13,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/device_service.dart';
 import 'auth_repository.dart';
+import 'storage.dart';
 
 class SocialAuthResult {
   final bool success;
