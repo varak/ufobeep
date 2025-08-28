@@ -96,55 +96,44 @@ class BeepService {
       // Access token is already set in ApiClient by AuthRepository
       print('🔐 BEEP: Using AuthRepository access token for authentication');
       
-      // Try to get current location for beeps
+      // Try to get current location for beeps - bypass complex PermissionService
       Position? currentPosition;
       if (latitude == null || longitude == null) {
         print('📍 LOCATION DEBUG: Need to get current location');
-        print('📍 Location permission granted: ${permissionService.locationGranted}');
         
-        if (permissionService.locationGranted) {
-          try {
-            print('📍 Attempting to get current location...');
-            currentPosition = await permissionService.getCurrentLocation();
+        try {
+          // Check permission directly with Geolocator (more reliable)
+          LocationPermission permission = await Geolocator.checkPermission();
+          print('📍 Direct permission check: $permission');
+          
+          if (permission == LocationPermission.denied) {
+            print('📍 Permission denied, requesting...');
+            permission = await Geolocator.requestPermission();
+            print('📍 After request: $permission');
+          }
+          
+          if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
+            print('📍 Permission granted, getting location...');
+            
+            // Get location directly with Geolocator (skip PermissionService complexity)
+            currentPosition = await Geolocator.getCurrentPosition(
+              desiredAccuracy: LocationAccuracy.medium,
+              timeLimit: const Duration(seconds: 15), // Give more time for first location
+            );
+            
             if (currentPosition != null) {
               print('✅ Got current location: ${currentPosition.latitude}, ${currentPosition.longitude}');
               print('📍 Location accuracy: ${currentPosition.accuracy}m');
-              // Play GPS success sound
               await SoundService.I.play(AlertSound.gpsOk);
-            } else {
-              print('❌ getCurrentLocation returned null');
-              // Play GPS fail sound
-              await SoundService.I.play(AlertSound.gpsFail);
-            }
-          } catch (e) {
-            print('❌ Failed to get current location: $e');
-            print('❌ Location error type: ${e.runtimeType}');
-            await SoundService.I.play(AlertSound.gpsFail);
-          }
-        } else {
-          print('📍 Location permission not granted, trying to refresh permissions...');
-          // Try to refresh permissions in case they changed
-          await permissionService.refreshPermissions();
-          print('📍 After refresh - location granted: ${permissionService.locationGranted}');
-          
-          if (permissionService.locationGranted) {
-            try {
-              print('📍 Attempting location after permission refresh...');
-              currentPosition = await permissionService.getCurrentLocation();
-              if (currentPosition != null) {
-                print('✅ Got location after refresh: ${currentPosition.latitude}, ${currentPosition.longitude}');
-                await SoundService.I.play(AlertSound.gpsOk);
-              } else {
-                print('❌ Still null location after permission refresh');
-                await SoundService.I.play(AlertSound.gpsFail);
-              }
-            } catch (e) {
-              print('❌ Error getting location after permission refresh: $e');
-              await SoundService.I.play(AlertSound.gpsFail);
             }
           } else {
-            print('❌ Location permission still denied after refresh');
+            print('❌ Location permission not granted: $permission');
+            await SoundService.I.play(AlertSound.gpsFail);
           }
+        } catch (e) {
+          print('❌ Failed to get current location: $e');
+          print('❌ Location error type: ${e.runtimeType}');
+          await SoundService.I.play(AlertSound.gpsFail);
         }
       }
       
@@ -157,12 +146,17 @@ class BeepService {
       // Location is required for beeps
       if (finalLat == null || finalLng == null) {
         print('❌ FINAL LOCATION CHECK: lat=$finalLat, lng=$finalLng');
-        print('❌ Permission granted: ${permissionService.locationGranted}');
         
-        if (!permissionService.locationGranted) {
-          throw Exception('Location permission required for beeping. Please enable location services in Settings → Permissions.');
-        } else {
-          throw Exception('Unable to get current location. Please ensure GPS is enabled and try again. If the problem persists, try moving to an area with better GPS signal.');
+        // Check permission status one more time to give helpful error
+        try {
+          final permission = await Geolocator.checkPermission();
+          if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
+            throw Exception('Location permission required for beeping. Please enable location services in Settings → Permissions.');
+          } else {
+            throw Exception('Unable to get current location. Please ensure GPS is enabled and try again. If the problem persists, try moving to an area with better GPS signal.');
+          }
+        } catch (e) {
+          throw Exception('Location access failed: $e. Please check location permissions and GPS settings.');
         }
       }
       
