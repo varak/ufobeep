@@ -435,9 +435,10 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       debugPrint('[Auth] 🔐 AUTH_DEBUG: Backend response keys: ${respJson.keys}');
       debugPrint('[Auth] 🔐 AUTH_DEBUG: Backend response data: $respJson');
       
-      // Expected JSON: { access_token, refresh_token, user: {id, username, email} }
-      final accessToken = respJson['access_token'] as String?;
-      final refreshToken = respJson['refresh_token'] as String?;
+      // Expected JSON: { access, refresh, user: {id, username, email} }
+      // Try both field names for compatibility
+      final accessToken = respJson['access'] ?? respJson['access_token'] as String?;
+      final refreshToken = respJson['refresh'] ?? respJson['refresh_token'] as String?;
       final userObj = respJson['user'] as Map<String, dynamic>?;
       
       if (accessToken == null || userObj == null) {
@@ -477,6 +478,15 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       // Set auth token in ApiClient for all future requests
       _apiClient.setAuthToken(accessToken);
       debugPrint('[Auth] ✅ ApiClient auth token set');
+      
+      // Update AuthRepository with tokens and user data
+      debugPrint('[Auth] 🔐 AUTH_DEBUG: Updating AuthRepository');
+      await AuthRepository().updateFromMagicLinkResponse({
+        'access': accessToken,
+        'refresh': refreshToken ?? '',
+        'user': userObj,
+      });
+      debugPrint('[Auth] ✅ AuthRepository updated with tokens');
       
       debugPrint('[Auth] ✅ Authorization code auth successful - userId: $userId, username: $username');
       
