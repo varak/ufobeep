@@ -19,7 +19,6 @@ import 'storage.dart';
 import '../config/environment.dart';
 import '../models/user_preferences.dart';
 import '../features/auth/auth_gate.dart';
-import '../repositories/auth_repository.dart' as auth_repo;
 
 /// Authentication phases to prevent race conditions
 enum AuthPhase { unknown, processingLink, authenticated, unauthenticated }
@@ -152,11 +151,7 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
     }
 
     log('[AuthService] Persisting tokens...');
-    await auth_repo.AuthRepository().persist(auth_repo.AuthTokens(
-      access: access,
-      refresh: refresh,
-      expiresAt: expiresAt,
-    ));
+    await AuthRepository().setTokens(access: access, refresh: refresh);
     log('[AuthService] Tokens persisted successfully');
 
     // Set auth token in ApiClient for immediate use
@@ -216,14 +211,14 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
   Future<void> _checkStoredAuth() async {
     debugPrint('[Auth] Checking stored authentication...');
     try {
-      // Use new AuthRepository to load tokens
-      final tokens = await auth_repo.AuthRepository().load();
+      // Use AuthRepository to load tokens  
+      final access = await AuthRepository().getAccessToken();
       
-      if (tokens != null && tokens.access.isNotEmpty) {
+      if (access != null && access.isNotEmpty) {
         debugPrint('[Auth] ✅ Found valid stored authentication tokens');
         
         // Set auth token in ApiClient for all future requests
-        _apiClient.setAuthToken(tokens.access);
+        _apiClient.setAuthToken(access);
         debugPrint('[Auth] ✅ ApiClient auth token restored from storage');
         
         // TODO: Get user info from /me endpoint or cached storage
@@ -728,8 +723,8 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
   /// Sign out the current user
   Future<void> signOut() async {
     try {
-      // Clear all auth data using new AuthRepository
-      await auth_repo.AuthRepository().clear();
+      // Clear all auth data using AuthRepository
+      await AuthRepository().clearSession();
       
       // Clear auth token in ApiClient
       _apiClient.setAuthToken(null);
