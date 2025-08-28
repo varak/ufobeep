@@ -4,12 +4,16 @@ Handles user registration, username generation, and user profile management
 """
 
 from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi.security import HTTPAuthorizationCredentials
 from pydantic import BaseModel, Field, validator
 from typing import Optional, List
 from datetime import datetime
 import uuid
 import asyncpg
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 from app.services.username_service import UsernameGenerator
 from app.services.user_migration_service import get_migration_service
@@ -18,9 +22,11 @@ from app.services.social_auth_service import SocialAuthService
 from app.services.database_service import get_database_pool
 from app.services.phone_service import phone_service
 from app.middleware.firebase_auth import FirebaseUser, OptionalAuth, RequiredAuth
-from app.core.auth import create_access_token, create_refresh_token
+from app.core.auth import create_access_token, create_refresh_token, verify_access_token
+from fastapi.security import HTTPBearer
 
 router = APIRouter(prefix="/users", tags=["users"])
+security = HTTPBearer(auto_error=False)
 
 
 # Standardized auth response format
@@ -142,6 +148,74 @@ class UserRegistrationResponse(BaseModel):
             if not is_valid:
                 raise ValueError(error)
         return v
+
+
+# JWT Authentication dependency
+async def get_current_user_from_jwt(token: Optional[HTTPAuthorizationCredentials] = Depends(security)):
+    """Verify JWT token and return user information"""
+    if not token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authorization header required"
+        )
+    
+    try:
+        # Verify the JWT token
+        payload = verify_access_token(token.credentials)
+        user_id = payload.get("user_id")
+        if not user_id:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token payload"
+            )
+        
+        # Get user information from database
+        pool = await get_database_pool()
+        async with pool.acquire() as conn:
+            user = await conn.fetchrow("""
+                SELECT id, username, email, display_name, is_active, is_verified,
+                       alert_range_km, units_metric, preferred_language, created_at, last_login
+                FROM users 
+                WHERE id = $1 AND is_active = true
+            """, uuid.UUID(user_id))
+            
+            if not user:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="User not found or inactive"
+                )
+            
+            return user
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"JWT authentication failed: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired token"
+        )
+
+
+@router.get("/me")
+async def get_current_user(current_user = Depends(get_current_user_from_jwt)):
+    """Get current user information from JWT token"""
+    return {
+        "success": True,
+        "user": {
+            "id": str(current_user["id"]),
+            "username": current_user["username"],
+            "email": current_user["email"],
+            "display_name": current_user["display_name"],
+            "is_active": current_user["is_active"],
+            "is_verified": current_user["is_verified"],
+            "alert_range_km": current_user["alert_range_km"],
+            "units_metric": current_user["units_metric"], 
+            "preferred_language": current_user["preferred_language"],
+            "created_at": current_user["created_at"].isoformat() if current_user["created_at"] else None,
+            "last_login": current_user["last_login"].isoformat() if current_user["last_login"] else None
+        }
+    }
 
 
 
