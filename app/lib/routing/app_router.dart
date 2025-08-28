@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -409,8 +410,8 @@ GoRouter appRouter(AppRouterRef ref) {
         builder: (context, state) => const AccountRecoveryScreen(),
       ),
 
-      // Internal Magic Link Handler (ChatGPT's Phase 2 solution)  
-      // Navigation will be handled by SplashScreen based on AuthRepository state changes
+      // Internal Magic Link Handler with Circuit Breaker (ChatGPT's Phase 2 solution)  
+      // Deterministic outcome: success → AuthRepository drives navigation; failure → back to sign-in
       GoRoute(
         path: '/auth/magic',
         name: 'auth-magic',
@@ -418,53 +419,7 @@ GoRouter appRouter(AppRouterRef ref) {
           final code = state.uri.queryParameters['code'];
           debugPrint('🔗 Internal magic route hit with code: ${code?.substring(0, 8)}...');
           
-          // Process the magic link but let AuthRepository state drive navigation
-          if (code != null && code.isNotEmpty) {
-            WidgetsBinding.instance.addPostFrameCallback((_) async {
-              try {
-                debugPrint('🔗 Processing magic code via internal route (no navigation here)');
-                await AuthService().beginProcessingLink();
-                await AuthService().loginWithMagicCode(code: code);
-                debugPrint('🔗 Magic code processing complete, AuthRepository will handle navigation');
-              } catch (e) {
-                debugPrint('🔗 Internal route error: $e');
-                // Let AuthRepository state (cleared by error) drive navigation back to sign-in
-              }
-            });
-          }
-          
-          // Show loading screen while processing
-          // Navigation will happen via AuthRepository state changes monitored by app
-          return Scaffold(
-            backgroundColor: AppColors.darkBackground,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(AppColors.brandPrimary),
-                  ),
-                  SizedBox(height: 16),
-                  Text(
-                    'Authenticating...',
-                    style: TextStyle(
-                      color: AppColors.textPrimary,
-                      fontSize: 16,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Please wait while we verify your magic link',
-                    style: TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 14,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          );
+          return MagicLinkProcessingScreen(code: code);
         },
       ),
 
@@ -483,6 +438,153 @@ class MainShell extends StatelessWidget {
     return Scaffold(
       body: child,
       bottomNavigationBar: const MainBottomNavBar(),
+    );
+  }
+}
+
+/// Magic Link Processing Screen with Circuit Breaker Pattern
+class MagicLinkProcessingScreen extends StatefulWidget {
+  final String? code;
+  
+  const MagicLinkProcessingScreen({super.key, this.code});
+  
+  @override
+  State<MagicLinkProcessingScreen> createState() => _MagicLinkProcessingScreenState();
+}
+
+class _MagicLinkProcessingScreenState extends State<MagicLinkProcessingScreen> {
+  bool _isProcessing = true;
+  String _statusMessage = 'Authenticating...';
+  String _subMessage = 'Please wait while we verify your magic link';
+  
+  @override
+  void initState() {
+    super.initState();
+    _processWithCircuitBreaker();
+  }
+  
+  void _processWithCircuitBreaker() async {
+    if (widget.code == null || widget.code!.isEmpty) {
+      _handleError('Invalid magic link - missing code');
+      return;
+    }
+    
+    try {
+      // Circuit breaker: 10 second total timeout
+      await Future.any([
+        _processMagicLink(),
+        Future.delayed(const Duration(seconds: 10), () => throw TimeoutException('Circuit breaker timeout', const Duration(seconds: 10))),
+      ]);
+      
+    } on TimeoutException {
+      _handleError('Verification timed out. Please try the magic link again.');
+    } catch (e) {
+      _handleError('Verification failed: ${e.toString()}');
+    }
+  }
+  
+  Future<void> _processMagicLink() async {
+    try {
+      debugPrint('🔗 MagicLinkProcessingScreen: Starting auth process');
+      await AuthService().beginProcessingLink();
+      
+      setState(() {
+        _subMessage = 'Exchanging authorization code...';
+      });
+      
+      final success = await AuthService().loginWithMagicCode(code: widget.code!);
+      
+      if (success && mounted) {
+        debugPrint('🔗 MagicLinkProcessingScreen: Auth successful, waiting for navigation');
+        setState(() {
+          _statusMessage = 'Success!';
+          _subMessage = 'Redirecting to your dashboard...';
+        });
+        
+        // Wait a moment for AuthRepository to update, then check navigation
+        await Future.delayed(const Duration(milliseconds: 500));
+        if (mounted) {
+          context.go('/alerts');
+        }
+      } else {
+        _handleError('Authentication failed');
+      }
+    } catch (e) {
+      _handleError('Authentication error: ${e.toString()}');
+    }
+  }
+  
+  void _handleError(String message) {
+    if (!mounted) return;
+    
+    setState(() {
+      _isProcessing = false;
+      _statusMessage = 'Authentication Failed';
+      _subMessage = message;
+    });
+    
+    // Auto-redirect to sign-in after showing error
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        context.go('/sign-in');
+      }
+    });
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.darkBackground,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isProcessing) ...[
+              const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(AppColors.brandPrimary),
+              ),
+              const SizedBox(height: 16),
+            ] else ...[
+              const Icon(
+                Icons.error_outline,
+                color: AppColors.semanticError,
+                size: 64,
+              ),
+              const SizedBox(height: 16),
+            ],
+            Text(
+              _statusMessage,
+              style: const TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              _subMessage,
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 14,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            if (!_isProcessing) ...[
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () => context.go('/sign-in'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.brandPrimary,
+                ),
+                child: const Text(
+                  'Back to Sign In',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
     );
   }
 }

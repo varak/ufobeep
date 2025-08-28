@@ -414,26 +414,34 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
     }
   }
 
-  /// NEW: Authorization code flow magic link authentication
+  /// NEW: Authorization code flow magic link authentication with timeout and deterministic error handling
   Future<bool> loginWithMagicCode({required String code}) async {
-    debugPrint('[Auth] 🔐 AUTH_DEBUG: loginWithMagicCode start');
-    debugPrint('[Auth] 🔐 AUTH_DEBUG: code length: ${code.length}');
-    debugPrint('[Auth] 🔐 AUTH_DEBUG: code preview: ${code.substring(0, 8)}...');
+    final startedAt = DateTime.now();
+    final reqId = "magic-${startedAt.millisecondsSinceEpoch}";
+    debugPrint('[MAGIC][$reqId] loginWithMagicCode start');
+    debugPrint('[MAGIC][$reqId] code length: ${code.length}');
+    debugPrint('[MAGIC][$reqId] code preview: ${code.substring(0, code.length.clamp(0, 8))}...');
     
     try {
-      // Exchange authorization code for tokens
-      debugPrint('[Auth] 🔐 AUTH_DEBUG: Calling _apiClient.exchangeMagicCode()');
-      final respJson = await _apiClient.exchangeMagicCode(code);
-      debugPrint('[Auth] 🔐 AUTH_DEBUG: API call completed');
+      // Exchange authorization code for tokens with 8-second timeout
+      debugPrint('[MAGIC][$reqId] calling _apiClient.exchangeMagicCode() with timeout');
+      final respJson = await _apiClient.exchangeMagicCode(code).timeout(
+        const Duration(seconds: 8),
+        onTimeout: () {
+          debugPrint('[MAGIC][$reqId] TIMEOUT after 8 seconds');
+          throw TimeoutException('Magic link verification timed out', const Duration(seconds: 8));
+        },
+      );
+      debugPrint('[MAGIC][$reqId] API call completed in ${DateTime.now().difference(startedAt).inMilliseconds}ms');
       
       if (respJson == null) {
-        debugPrint('[Auth][ERROR] 🔐 AUTH_DEBUG: Empty response from backend.');
-        _showDevSnack('Magic link failed: empty response');
+        debugPrint('[MAGIC][$reqId] ERROR: Empty response from backend');
+        _showDevSnack('Magic link failed: No response from server');
         return false;
       }
       
-      debugPrint('[Auth] 🔐 AUTH_DEBUG: Backend response keys: ${respJson.keys}');
-      debugPrint('[Auth] 🔐 AUTH_DEBUG: Backend response data: $respJson');
+      debugPrint('[MAGIC][$reqId] Backend response keys: ${respJson.keys}');
+      debugPrint('[MAGIC][$reqId] Backend response data: $respJson');
       
       // Expected JSON: { access, refresh, user: {id, username, email} }
       // Try both field names for compatibility
@@ -442,8 +450,8 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       final userObj = respJson['user'] as Map<String, dynamic>?;
       
       if (accessToken == null || userObj == null) {
-        debugPrint('[Auth][ERROR] Missing required fields in response');
-        _showDevSnack('Magic link failed: invalid response format');
+        debugPrint('[MAGIC][$reqId] ERROR: Missing required fields - accessToken: ${accessToken != null}, userObj: ${userObj != null}');
+        _showDevSnack('Magic link failed: Invalid server response');
         return false;
       }
       
@@ -452,8 +460,8 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       final email = userObj['email']?.toString();
       
       if (userId == null || username == null) {
-        debugPrint('[Auth][ERROR] Missing user data in response');
-        _showDevSnack('Magic link failed: missing user data');
+        debugPrint('[MAGIC][$reqId] ERROR: Missing user data - userId: $userId, username: $username');
+        _showDevSnack('Magic link failed: Missing user information');
         return false;
       }
       
@@ -480,8 +488,8 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       debugPrint('[Auth] ✅ ApiClient auth token set');
       
       // Update AuthRepository with tokens and user data
-      debugPrint('[Auth] 🔐 AUTH_DEBUG: Updating AuthRepository with magic link response');
-      debugPrint('[Auth] 🔐 AUTH_DEBUG: AuthRepository current state - isReady: ${AuthRepository().isReady}, isHydrating: ${AuthRepository().isHydrating}');
+      debugPrint('[MAGIC][$reqId] Updating AuthRepository with magic link response');
+      debugPrint('[MAGIC][$reqId] AuthRepository current state - isReady: ${AuthRepository().isReady}, isHydrating: ${AuthRepository().isHydrating}');
       
       try {
         await AuthRepository().updateFromMagicLinkResponse({
@@ -489,50 +497,63 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
           'refresh': refreshToken ?? '',
           'user': userObj,
         });
-        debugPrint('[Auth] ✅ AuthRepository updated successfully');
-        debugPrint('[Auth] 🔐 AUTH_DEBUG: AuthRepository post-update state - isReady: ${AuthRepository().isReady}, isHydrating: ${AuthRepository().isHydrating}');
-        debugPrint('[Auth] 🔐 AUTH_DEBUG: AuthRepository current user: ${AuthRepository().currentUser?.username}');
+        debugPrint('[MAGIC][$reqId] ✅ AuthRepository updated successfully');
+        debugPrint('[MAGIC][$reqId] AuthRepository post-update state - isReady: ${AuthRepository().isReady}, isHydrating: ${AuthRepository().isHydrating}');
+        debugPrint('[MAGIC][$reqId] AuthRepository current user: ${AuthRepository().currentUser?.username}');
       } catch (e, stackTrace) {
-        debugPrint('[Auth] ❌ AuthRepository update failed: $e');
-        debugPrint('[Auth] ❌ Stack trace: $stackTrace');
-        _showDevSnack('AuthRepository update failed: $e');
+        debugPrint('[MAGIC][$reqId] ❌ AuthRepository update failed: $e');
+        debugPrint('[MAGIC][$reqId] ❌ Stack trace: $stackTrace');
+        _showDevSnack('Failed to store authentication data: ${e.toString()}');
         return false;
       }
       
-      debugPrint('[Auth] ✅ Authorization code auth successful - userId: $userId, username: $username');
+      final totalMs = DateTime.now().difference(startedAt).inMilliseconds;
+      debugPrint('[MAGIC][$reqId] ✅ Magic link authentication successful in ${totalMs}ms - userId: $userId, username: $username');
       
       // Emit authenticated state
-      debugPrint('[Auth] 🔐 AUTH_DEBUG: Emitting authenticated state');
+      debugPrint('[MAGIC][$reqId] Emitting authenticated state');
       await _emit(AuthState.authenticated(
         userId: userId,
         username: username,
         email: email,
       ));
       
-      debugPrint('[Auth] 🔐 AUTH_DEBUG: Magic link authentication completed successfully');
-      debugPrint('[Auth] 🔐 AUTH_DEBUG: Final auth state check - AuthRepository ready: ${AuthRepository().isReady}');
-      debugPrint('[Auth] 🔐 AUTH_DEBUG: Final auth state check - AuthRepository user: ${AuthRepository().currentUser?.username}');
+      debugPrint('[MAGIC][$reqId] ✅ Magic link authentication completed successfully');
+      debugPrint('[MAGIC][$reqId] Final auth state - AuthRepository ready: ${AuthRepository().isReady}');
+      debugPrint('[MAGIC][$reqId] Final auth state - AuthRepository user: ${AuthRepository().currentUser?.username}');
       
       _showDevSnack('Welcome back, $username!');
       return true;
       
+    } on TimeoutException catch (e) {
+      debugPrint('[MAGIC][$reqId] ❌ TIMEOUT: ${e.message}');
+      _showDevSnack('Magic link verification timed out. Please try again.');
+      return false;
     } catch (e, st) {
-      debugPrint('[Auth][ERROR] loginWithMagicCode failed: $e');
-      debugPrint('[Auth][ERROR] Stack trace: $st');
+      final errorMs = DateTime.now().difference(startedAt).inMilliseconds;
+      debugPrint('[MAGIC][$reqId] ❌ ERROR after ${errorMs}ms: $e');
+      debugPrint('[MAGIC][$reqId] ❌ Stack trace: $st');
       
-      // Handle specific error cases
+      // Handle specific error cases with detailed logging
       if (e is DioException) {
         final code = e.response?.statusCode;
         final body = e.response?.data;
-        debugPrint('[Auth][ERROR] HTTP $code body=$body');
+        debugPrint('[MAGIC][$reqId] ❌ DioException HTTP $code body=$body');
         
         if (code == 410) {
           _showDevSnack('Magic link expired or already used');
+        } else if (code == 400) {
+          _showDevSnack('Invalid magic link format');
+        } else if (code == 404) {
+          _showDevSnack('Magic link not found');
+        } else if (code == 500) {
+          _showDevSnack('Server error processing magic link');
         } else {
-          _showDevSnack('Magic link HTTP $code');
+          _showDevSnack('Magic link failed (HTTP $code)');
         }
       } else {
-        _showDevSnack('Magic link exception: $e');
+        debugPrint('[MAGIC][$reqId] ❌ Non-DioException: ${e.runtimeType}');
+        _showDevSnack('Magic link verification failed: ${e.toString()}');
       }
       
       return false;

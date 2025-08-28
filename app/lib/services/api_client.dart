@@ -842,10 +842,14 @@ class ApiClient {
     }
   }
 
-  /// NEW: Exchange authorization code for tokens (authorization code flow)
+  /// NEW: Exchange authorization code for tokens (authorization code flow) with timeout
   Future<Map<String, dynamic>> exchangeMagicCode(String code) async {
+    final startTime = DateTime.now();
+    final reqId = "api-${startTime.millisecondsSinceEpoch}";
+    
     try {
-      debugPrint('[ApiClient] Exchanging authorization code with backend');
+      debugPrint('[API][$reqId] Exchanging authorization code with backend');
+      debugPrint('[API][$reqId] Code length: ${code.length}');
       
       // Get device info for the request
       String deviceId = 'unknown';
@@ -856,9 +860,10 @@ class ApiClient {
           deviceId = storedDeviceId;
         }
       } catch (e) {
-        debugPrint('[ApiClient] Could not get device ID: $e');
+        debugPrint('[API][$reqId] Could not get device ID: $e');
       }
       
+      debugPrint('[API][$reqId] Making POST request to /auth/magic/exchange');
       final response = await _dio.post(
         '/auth/magic/exchange',
         data: {
@@ -870,24 +875,45 @@ class ApiClient {
         options: Options(
           headers: {'Accept': 'application/json'},
           validateStatus: (status) => status != null && status < 500,
+          sendTimeout: const Duration(seconds: 5),
+          receiveTimeout: const Duration(seconds: 5),
         ),
       );
       
+      final responseTime = DateTime.now().difference(startTime).inMilliseconds;
+      debugPrint('[API][$reqId] Response received in ${responseTime}ms - Status: ${response.statusCode}');
+      
       if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
-        debugPrint('[ApiClient] Authorization code exchange successful');
-        return response.data as Map<String, dynamic>;
+        final responseData = response.data as Map<String, dynamic>;
+        debugPrint('[API][$reqId] ✅ Authorization code exchange successful');
+        debugPrint('[API][$reqId] Response keys: ${responseData.keys}');
+        debugPrint('[API][$reqId] Success field: ${responseData['success']}');
+        return responseData;
       } else {
         final errorMsg = response.data is Map 
           ? (response.data as Map)['detail'] ?? 'Code exchange failed'
           : 'Code exchange failed';
+        debugPrint('[API][$reqId] ❌ Backend error: $errorMsg (Status: ${response.statusCode})');
+        debugPrint('[API][$reqId] ❌ Response data: ${response.data}');
         throw ApiClientException(
           'Backend code exchange failed: $errorMsg',
           statusCode: response.statusCode,
         );
       }
     } on DioException catch (e) {
-      debugPrint('[ApiClient] Authorization code exchange DioException: ${e.message}');
-      if (e.response?.statusCode == 410) {
+      final errorTime = DateTime.now().difference(startTime).inMilliseconds;
+      debugPrint('[API][$reqId] ❌ DioException after ${errorTime}ms: ${e.message}');
+      debugPrint('[API][$reqId] ❌ DioException type: ${e.type}');
+      debugPrint('[API][$reqId] ❌ Response status: ${e.response?.statusCode}');
+      debugPrint('[API][$reqId] ❌ Response data: ${e.response?.data}');
+      
+      if (e.type == DioExceptionType.sendTimeout) {
+        throw ApiClientException('Request timed out after 5 seconds', statusCode: null);
+      } else if (e.type == DioExceptionType.receiveTimeout) {
+        throw ApiClientException('Response timed out after 5 seconds', statusCode: null);
+      } else if (e.type == DioExceptionType.connectionTimeout) {
+        throw ApiClientException('Connection timed out', statusCode: null);
+      } else if (e.response?.statusCode == 410) {
         final errorData = e.response?.data;
         final errorMessage = errorData is Map 
           ? (errorData['detail'] ?? 'Invalid, expired, or already used code') 
@@ -898,6 +924,10 @@ class ApiClient {
         'Network error during code exchange: ${e.message}',
         statusCode: e.response?.statusCode,
       );
+    } catch (e) {
+      final errorTime = DateTime.now().difference(startTime).inMilliseconds;
+      debugPrint('[API][$reqId] ❌ Unexpected error after ${errorTime}ms: $e');
+      throw ApiClientException('Unexpected error: $e', statusCode: null);
     }
   }
 
