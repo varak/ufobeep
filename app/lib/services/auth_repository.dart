@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import '../models/user_model.dart';
 import 'api_client.dart';
 import 'storage.dart';
+import '../repositories/auth_repository.dart' as auth_repo;
 
 /// ChatGPT: Single source of truth for user + tokens.
 /// - Stores only tokens in secure storage
@@ -28,64 +29,37 @@ class AuthRepository with ChangeNotifier {
 
   Future<void> loadSessionOnStartup() async {
     debugPrint('[Bootstrap] Starting session load');
-    debugPrint('[Bootstrap] DEBUG: Using AppStorage with secure + fallback');
-    debugPrint('[Bootstrap] DEBUG: Looking for keys: ${AppStorage.refreshKey}, ${AppStorage.accessKey}');
+    _isHydrating = true;
     
     try {
-      // Add detailed token reading with error handling
-      String? refresh;
-      String? access;
+      // Use new centralized AuthRepository to load tokens
+      final tokens = await auth_repo.AuthRepository().load();
       
-      try {
-        refresh = await AppStorage.readWithFallback(AppStorage.refreshKey);
-        debugPrint('[Bootstrap] DEBUG: Read refresh token - found: ${refresh != null}, length: ${refresh?.length ?? 0}');
-        if (refresh != null && refresh.isNotEmpty) {
-          debugPrint('[Bootstrap] DEBUG: Refresh token preview: ${refresh.substring(0, refresh.length.clamp(0, 20))}...');
-        }
-      } catch (e, st) {
-        debugPrint('[Bootstrap] ERROR: Failed to read refresh token: $e');
-        debugPrint('[Bootstrap] ERROR: Stack trace: $st');
-      }
-      
-      try {
-        access = await AppStorage.readWithFallback(AppStorage.accessKey);
-        debugPrint('[Bootstrap] DEBUG: Read access token - found: ${access != null}, length: ${access?.length ?? 0}');
-        if (access != null && access.isNotEmpty) {
-          debugPrint('[Bootstrap] DEBUG: Access token preview: ${access.substring(0, access.length.clamp(0, 20))}...');
-        }
-      } catch (e, st) {
-        debugPrint('[Bootstrap] ERROR: Failed to read access token: $e');
-        debugPrint('[Bootstrap] ERROR: Stack trace: $st');
-      }
-      
-      debugPrint('[Bootstrap] Stored tokens found: refresh=${refresh != null}, access=${access != null}');
-      
-      if (refresh == null || refresh.isEmpty) {
-        debugPrint('[Bootstrap] No refresh token - starting unauthenticated');
+      if (tokens == null || tokens.access.isEmpty) {
+        debugPrint('[Bootstrap] No tokens found - starting unauthenticated');
         _isReady = true;
+        _isHydrating = false;
         notifyListeners();
         return;
       }
       
-      // NEW: If we have both tokens, use them directly (no refresh needed)
-      if (access != null && access.isNotEmpty) {
-        debugPrint('[Bootstrap] Both tokens found - using stored access token directly');
-        ApiClient.setBearer(access);
-        await fetchMe(); // Get user info with stored access token
+      debugPrint('[Bootstrap] Tokens found - validating with /me endpoint');
+      ApiClient.setBearer(tokens.access);
+      
+      try {
+        await fetchMe(); // Validate tokens by calling /me
         debugPrint('[Bootstrap] Session restored successfully - user: ${_currentUser?.username}');
-      } else {
-        // Only refresh if access token is missing
-        debugPrint('[Bootstrap] Access token missing, attempting refresh');
-        await _refreshTokens();
-        await fetchMe();
-        debugPrint('[Bootstrap] Session refreshed successfully - user: ${_currentUser?.username}');
+      } catch (e) {
+        debugPrint('[Bootstrap] /me validation failed: $e - clearing tokens');
+        await auth_repo.AuthRepository().clear();
+        await clearSession();
       }
     } catch (e) {
       debugPrint('[Bootstrap] Session load failed: $e, clearing session');
-      // If anything fails, clear tokens
       await clearSession();
     } finally {
       _isReady = true;
+      _isHydrating = false;
       debugPrint('[Bootstrap] Complete - ready=${_isReady}, user=${_currentUser?.username ?? "none"}');
       notifyListeners();
     }
@@ -94,27 +68,14 @@ class AuthRepository with ChangeNotifier {
   Future<void> setTokens({required String access, required String refresh}) async {
     debugPrint('[Auth] ========== TOKEN STORAGE START ==========');
     debugPrint('[Auth] Saving tokens: access(${access.length}), refresh(${refresh.length})');
-    debugPrint('[Auth] Using AppStorage with secure + fallback');
-    debugPrint('[Auth] Keys to write: ${AppStorage.accessKey}, ${AppStorage.refreshKey}');
-    debugPrint('[Auth] Access token preview: ${access.substring(0, access.length.clamp(0, 20))}...');
-    debugPrint('[Auth] Refresh token preview: ${refresh.substring(0, refresh.length.clamp(0, 20))}...');
     
     try {
-      // Write access token with fallback and verification
-      await AppStorage.saveWithFallback(AppStorage.accessKey, access);
-      debugPrint('[Auth] ✅ Access token written to secure storage + fallback');
-      
-      // Immediately verify access token was stored
-      final verifyAccess = await AppStorage.readWithFallback(AppStorage.accessKey);
-      debugPrint('[Auth] ✅ Access token verification: found=${verifyAccess != null}, matches=${verifyAccess == access}');
-      
-      // Write refresh token with fallback and verification  
-      await AppStorage.saveWithFallback(AppStorage.refreshKey, refresh);
-      debugPrint('[Auth] ✅ Refresh token written to secure storage + fallback');
-      
-      // Immediately verify refresh token was stored
-      final verifyRefresh = await AppStorage.readWithFallback(AppStorage.refreshKey);
-      debugPrint('[Auth] ✅ Refresh token verification: found=${verifyRefresh != null}, matches=${verifyRefresh == refresh}');
+      // Use new centralized AuthRepository
+      await auth_repo.AuthRepository().persist(auth_repo.AuthTokens(
+        access: access,
+        refresh: refresh,
+        expiresAt: DateTime.now().add(const Duration(hours: 1)),
+      ));
       
       ApiClient.setBearer(access);
       debugPrint('[Auth] ✅ ApiClient bearer token updated');
@@ -127,8 +88,15 @@ class AuthRepository with ChangeNotifier {
     }
   }
 
-  Future<String?> getAccessToken() => AppStorage.readWithFallback(AppStorage.accessKey);
-  Future<String?> getRefreshToken() => AppStorage.readWithFallback(AppStorage.refreshKey);
+  Future<String?> getAccessToken() async {
+    final tokens = await auth_repo.AuthRepository().load();
+    return tokens?.access;
+  }
+  
+  Future<String?> getRefreshToken() async {
+    final tokens = await auth_repo.AuthRepository().load();
+    return tokens?.refresh;
+  }
 
   Future<void> fetchMe() async {
     final res = await _dio.get('/me');
@@ -194,7 +162,7 @@ class AuthRepository with ChangeNotifier {
   }
 
   Future<void> clearSession() async {
-    await AppStorage.clearAllAuthData();
+    await auth_repo.AuthRepository().clear();
     ApiClient.clearBearer();
     _currentUser = null;
     notifyListeners();

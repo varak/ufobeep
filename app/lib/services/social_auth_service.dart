@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../services/device_service.dart';
 import 'auth_repository.dart';
 import 'storage.dart';
+import 'auth_service.dart';
 
 class SocialAuthResult {
   final bool success;
@@ -172,17 +173,18 @@ class SocialAuthService {
         print('  - userEmail: $email');
         print('  - isNewUser: $isNewUser');
         
-        // Update AuthRepository with tokens and user data
+        // Update AuthRepository with tokens and user data using centralized method
         final access = data['access'] as String?;
         final refresh = data['refresh'] as String?;
         
         if (access != null && refresh != null) {
-          await AuthRepository().updateFromMagicLinkResponse({
+          await AuthService().handleLoginSuccess({
             'access': access,
             'refresh': refresh,
             'user': user,
+            'expires_in': data['expires_in'] ?? 3600,
           });
-          print('SOCIAL AUTH: Updated AuthRepository with tokens');
+          print('SOCIAL AUTH: Updated AuthRepository with tokens using centralized method');
         }
         
         // Only store user info if we have a valid username

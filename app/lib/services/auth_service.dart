@@ -10,6 +10,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'device_service.dart';
 import 'api_client.dart';
@@ -18,6 +19,7 @@ import 'storage.dart';
 import '../config/environment.dart';
 import '../models/user_preferences.dart';
 import '../features/auth/auth_gate.dart';
+import '../repositories/auth_repository.dart' as auth_repo;
 
 /// Authentication phases to prevent race conditions
 enum AuthPhase { unknown, processingLink, authenticated, unauthenticated }
@@ -128,6 +130,39 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
   
   /// Current authentication state
   AuthState get authState => _state;
+  
+  /// Centralized token persistence method
+  Future<void> handleLoginSuccess(Map<String, dynamic> json) async {
+    log('[AuthService] handleLoginSuccess called');
+    
+    // Expecting standardized format:
+    // { "success": true, "access": "...", "refresh": "...", "user": {...}, "expires_in": 3600? }
+    final access = (json['access'] ?? json['access_token'])?.toString() ?? '';
+    final refresh = (json['refresh'] ?? json['refresh_token'])?.toString() ?? '';
+    
+    if (access.isEmpty || refresh.isEmpty) {
+      log('[AuthService] Missing tokens in response → cannot persist');
+      throw Exception('Auth response missing tokens');
+    }
+    
+    DateTime? expiresAt;
+    final expiresIn = json['expires_in'];
+    if (expiresIn is num) {
+      expiresAt = DateTime.now().add(Duration(seconds: expiresIn.toInt()));
+    }
+
+    log('[AuthService] Persisting tokens...');
+    await auth_repo.AuthRepository().persist(auth_repo.AuthTokens(
+      access: access,
+      refresh: refresh,
+      expiresAt: expiresAt,
+    ));
+    log('[AuthService] Tokens persisted successfully');
+
+    // Set auth token in ApiClient for immediate use
+    _apiClient.setAuthToken(access);
+    log('[AuthService] ApiClient auth token set');
+  }
 
   /// Initialize the AuthService - call this early in app startup
   Future<void> initialize() async {
@@ -181,29 +216,22 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
   Future<void> _checkStoredAuth() async {
     debugPrint('[Auth] Checking stored authentication...');
     try {
-      final token = await AppStorage.readWithFallback(AppStorage.accessKey);
-      final userId = await AppStorage.readWithFallback(AppStorage.userIdKey);
-      final username = await AppStorage.readWithFallback(AppStorage.usernameKey);
-      final email = await AppStorage.readWithFallback(AppStorage.emailKey);
+      // Use new AuthRepository to load tokens
+      final tokens = await auth_repo.AuthRepository().load();
       
-      final hasValidTokens = token != null && token.isNotEmpty && 
-                            userId != null && userId.isNotEmpty && 
-                            username != null && username.isNotEmpty;
-      
-      debugPrint('[Auth] checkStoredAuth: hasValidTokens=$hasValidTokens');
-      debugPrint('[Auth] userId=$userId, username=$username, email=$email');
-      
-      if (hasValidTokens) {
+      if (tokens != null && tokens.access.isNotEmpty) {
         debugPrint('[Auth] ✅ Found valid stored authentication tokens');
         
         // Set auth token in ApiClient for all future requests
-        _apiClient.setAuthToken(token);
+        _apiClient.setAuthToken(tokens.access);
         debugPrint('[Auth] ✅ ApiClient auth token restored from storage');
         
+        // TODO: Get user info from /me endpoint or cached storage
+        // For now, use placeholder values - this will be updated in bootstrap logic
         await _emit(AuthState.authenticated(
-          userId: userId!,
-          username: username!,
-          email: email,
+          userId: 'token-user',
+          username: 'token-username',
+          email: null,
         ));
       } else {
         debugPrint('[Auth] ❌ No valid stored tokens found');
@@ -360,11 +388,12 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
 
       debugPrint('[Auth] Valid response - using AuthRepository');
 
-      // ChatGPT: Use AuthRepository.updateFromMagicLinkResponse 
-      await AuthRepository().updateFromMagicLinkResponse({
+      // Use centralized token persistence
+      await handleLoginSuccess({
         'access': access,
         'refresh': refreshToken,
         'user': userObject,
+        'expires_in': 3600,
       });
 
       debugPrint('[Auth] AuthRepository updated. userId=$backendUserId username=$backendUsername email=$email isNew=$isNewUser');
@@ -456,43 +485,27 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
         return false;
       }
       
-      // Set auth token in ApiClient for all future requests
-      _apiClient.setAuthToken(accessToken);
-      debugPrint('[Auth] ✅ ApiClient auth token set');
-      
-      // Update AuthRepository with tokens and user data
-      debugPrint('[MAGIC][$reqId] ==================== AUTHREPOSITORY UPDATE START ====================');
-      debugPrint('[MAGIC][$reqId] Updating AuthRepository with magic link response');
-      debugPrint('[MAGIC][$reqId] AuthRepository current state - isReady: ${AuthRepository().isReady}, isHydrating: ${AuthRepository().isHydrating}');
-      debugPrint('[MAGIC][$reqId] Current user before update: ${AuthRepository().currentUser?.username}');
-      
+      // Use centralized token persistence
+      debugPrint('[MAGIC][$reqId] ==================== TOKEN PERSISTENCE START ====================');
       final updateStartTime = DateTime.now();
       try {
-        final updateData = {
-          'access': accessToken,  // AuthRepository expects 'access' 
-          'refresh': refreshToken ?? '',  // AuthRepository expects 'refresh'
+        await handleLoginSuccess({
+          'access': accessToken,
+          'refresh': refreshToken ?? '',
           'user': userObj,
-        };
-        debugPrint('[MAGIC][$reqId] Update data keys: ${updateData.keys.toList()}');
-        debugPrint('[MAGIC][$reqId] Update data user: ${updateData['user']}');
-        
-        await AuthRepository().updateFromMagicLinkResponse(updateData);
+          'expires_in': 3600,
+        });
         
         final updateDuration = DateTime.now().difference(updateStartTime).inMilliseconds;
-        debugPrint('[MAGIC][$reqId] ✅ AuthRepository updated in ${updateDuration}ms');
-        debugPrint('[MAGIC][$reqId] AuthRepository post-update state - isReady: ${AuthRepository().isReady}, isHydrating: ${AuthRepository().isHydrating}');
-        debugPrint('[MAGIC][$reqId] AuthRepository current user: ${AuthRepository().currentUser?.username}');
-        debugPrint('[MAGIC][$reqId] AuthRepository current user ID: ${AuthRepository().currentUser?.id}');
-        debugPrint('[MAGIC][$reqId] AuthRepository current user email: ${AuthRepository().currentUser?.email}');
-        debugPrint('[MAGIC][$reqId] ==================== AUTHREPOSITORY UPDATE SUCCESS ====================');
+        debugPrint('[MAGIC][$reqId] ✅ Token persistence completed in ${updateDuration}ms');
+        debugPrint('[MAGIC][$reqId] ==================== TOKEN PERSISTENCE SUCCESS ====================');
       } catch (e, stackTrace) {
         final updateDuration = DateTime.now().difference(updateStartTime).inMilliseconds;
-        debugPrint('[MAGIC][$reqId] ==================== AUTHREPOSITORY UPDATE ERROR ====================');
-        debugPrint('[MAGIC][$reqId] ❌ AuthRepository update failed after ${updateDuration}ms: $e');
+        debugPrint('[MAGIC][$reqId] ==================== TOKEN PERSISTENCE ERROR ====================');
+        debugPrint('[MAGIC][$reqId] ❌ Token persistence failed after ${updateDuration}ms: $e');
         debugPrint('[MAGIC][$reqId] ❌ Error type: ${e.runtimeType}');
         debugPrint('[MAGIC][$reqId] ❌ Stack trace: $stackTrace');
-        debugPrint('[MAGIC][$reqId] ❌ AuthRepository state after error - isReady: ${AuthRepository().isReady}, isHydrating: ${AuthRepository().isHydrating}');
-        debugPrint('[MAGIC][$reqId] ==================== AUTHREPOSITORY UPDATE FAILURE ====================');
+        debugPrint('[MAGIC][$reqId] ==================== TOKEN PERSISTENCE FAILURE ====================');
         _showDevSnack('Failed to store authentication data: ${e.toString()}');
         return false;
       }
@@ -715,8 +728,8 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
   /// Sign out the current user
   Future<void> signOut() async {
     try {
-      // Clear all auth data from secure storage and fallback
-      await AppStorage.clearAllAuthData();
+      // Clear all auth data using new AuthRepository
+      await auth_repo.AuthRepository().clear();
       
       // Clear auth token in ApiClient
       _apiClient.setAuthToken(null);
