@@ -3,14 +3,13 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:uuid/uuid.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'permission_service.dart';
 import 'sound_service.dart';
 import 'device_service.dart';
 import 'api_client.dart';
+import 'auth_repository.dart';
 
 class BeepService {
   static const String _deviceIdKey = 'beep_device_id';
@@ -78,30 +77,24 @@ class BeepService {
     bool hasMedia = false,
   }) async {
     try {
-      // Get user info from secure storage (magic link auth)
-      const storage = FlutterSecureStorage(
-        aOptions: AndroidOptions(encryptedSharedPreferences: true),
-        iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
-      );
-      
-      final userId = await storage.read(key: 'user_id');
-      final username = await storage.read(key: 'username');
-      final accessToken = await storage.read(key: 'access_token');
+      // Get user info from AuthRepository (single source of truth)
+      final authRepo = AuthRepository();
+      final currentUser = authRepo.currentUser;
+      final accessToken = await authRepo.getAccessToken();
       
       print('🔐 BEEP AUTH DEBUG:');
-      print('  userId: $userId');
-      print('  username: $username');  
+      print('  currentUser: ${currentUser?.toJson()}');
       print('  accessToken exists: ${accessToken != null}');
       
-      if (username == null || username.isEmpty || userId == null || accessToken == null) {
-        print('❌ BEEP: User not authenticated (missing secure storage data)');
+      if (currentUser == null || accessToken == null) {
+        print('❌ BEEP: User not authenticated (no user or token in AuthRepository)');
         throw Exception('User not authenticated. Please sign in first to send beeps.');
       }
       
-      print('✅ BEEP: Sending beep as user: $username ($userId)');
+      print('✅ BEEP: Sending beep as user: ${currentUser.username} (${currentUser.id})');
       
-      // Use access token from magic link auth instead of Firebase
-      print('🔐 BEEP: Using access token for authentication');
+      // Access token is already set in ApiClient by AuthRepository
+      print('🔐 BEEP: Using AuthRepository access token for authentication');
       
       // Try to get current location for beeps
       Position? currentPosition;
@@ -152,8 +145,8 @@ class BeepService {
       
       // Build request payload
       final payload = {
-        'device_id': userId,
-        'username': username,
+        'device_id': currentUser.id,
+        'username': currentUser.username,
         'anonymous': false, // All users have usernames now
         'timestamp': DateTime.now().toUtc().toIso8601String(),
         'location': {
@@ -208,15 +201,10 @@ class BeepService {
       
       print('Sending anonymous beep: ${json.encode(payload)}');
       
-      // Send the beep with JWT access token authentication
+      // Send the beep - ApiClient.dio already has auth headers via AuthInterceptor
       final response = await _dio.post(
         '/alerts',
         data: payload,
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $accessToken',
-          },
-        ),
       );
       
       if (response.statusCode == 200 || response.statusCode == 201) {
