@@ -48,14 +48,22 @@ class AuthRepository with ChangeNotifier {
         return;
       }
       
-      debugPrint('[Bootstrap] Refresh token found, attempting silent refresh');
-      // Try silent refresh
-      await _refreshTokens();
-      await fetchMe();
-      debugPrint('[Bootstrap] Session loaded successfully - user: ${_currentUser?.username}');
+      // NEW: If we have both tokens, use them directly (no refresh needed)
+      if (access != null && access.isNotEmpty) {
+        debugPrint('[Bootstrap] Both tokens found - using stored access token directly');
+        ApiClient.setBearer(access);
+        await fetchMe(); // Get user info with stored access token
+        debugPrint('[Bootstrap] Session restored successfully - user: ${_currentUser?.username}');
+      } else {
+        // Only refresh if access token is missing
+        debugPrint('[Bootstrap] Access token missing, attempting refresh');
+        await _refreshTokens();
+        await fetchMe();
+        debugPrint('[Bootstrap] Session refreshed successfully - user: ${_currentUser?.username}');
+      }
     } catch (e) {
       debugPrint('[Bootstrap] Session load failed: $e, clearing session');
-      // If refresh fails, clear tokens
+      // If anything fails, clear tokens
       await clearSession();
     } finally {
       _isReady = true;
