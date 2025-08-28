@@ -100,8 +100,9 @@ class AuthRepository with ChangeNotifier {
   }
 
   Future<void> fetchMe() async {
-    final res = await _dio.get('/me');
-    _currentUser = UserModel.fromJson(res.data);
+    final res = await _dio.get('/users/me');
+    final userData = res.data['user'] as Map<String, dynamic>;
+    _currentUser = UserModel.fromJson(userData);
     notifyListeners();
   }
 

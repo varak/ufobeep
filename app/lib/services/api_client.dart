@@ -26,7 +26,6 @@ class ApiClientException implements Exception {
 
 class ApiClient {
   static ApiClient? _instance;
-  late final Dio _dio;
   String? _authToken;
   
   // ChatGPT: Static dio access for AuthRepository and AuthInterceptor
@@ -57,100 +56,8 @@ class ApiClient {
     return _instance!;
   }
 
-  ApiClient._internal() {
-    _initializeDio();
-  }
+  ApiClient._internal();
 
-  void _initializeDio() {
-    final baseOptions = BaseOptions(
-      baseUrl: '${AppEnvironment.apiBaseUrl}',
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'User-Agent': 'UFOBeep/1.0.0 (Flutter)',
-      },
-    );
-
-    _dio = Dio(baseOptions);
-
-    // Add comprehensive logging interceptor (ChatGPT's recommendation)
-    if (kDebugMode) {
-      _dio.interceptors.add(
-        LogInterceptor(
-          request: true,
-          requestHeader: true,
-          requestBody: true,
-          responseHeader: true,
-          responseBody: true,
-          error: true,
-          logPrint: (obj) {
-            debugPrint('[ApiClient] $obj');
-          },
-        ),
-      );
-    }
-
-    // Add request interceptor for auth
-    _dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) {
-          if (_authToken != null) {
-            options.headers['Authorization'] = 'Bearer $_authToken';
-          }
-          if (kDebugMode) {
-            debugPrint('[ApiClient] → ${options.method} ${options.uri}');
-            if (options.data != null) {
-              debugPrint('[ApiClient] Request body: ${options.data}');
-            }
-          }
-          handler.next(options);
-        },
-        onResponse: (response, handler) {
-          if (kDebugMode) {
-            debugPrint('[ApiClient] ← ${response.statusCode} ${response.requestOptions.method} ${response.requestOptions.path}');
-            debugPrint('[ApiClient] Response: ${response.data}');
-          }
-          handler.next(response);
-        },
-        onError: (error, handler) {
-          debugPrint('[ApiClient] ❌ ${error.requestOptions.method} ${error.requestOptions.path} -> ${error.response?.statusCode}: ${error.message}');
-          if (error.response?.data != null) {
-            debugPrint('[ApiClient] Error response: ${error.response?.data}');
-          }
-          handler.next(error);
-        },
-      ),
-    );
-
-    // Add retry interceptor
-    _dio.interceptors.add(
-      InterceptorsWrapper(
-        onError: (error, handler) async {
-          if (error.response?.statusCode == null && error.type == DioExceptionType.connectionTimeout) {
-            // Retry on connection timeout
-            try {
-              final retryResponse = await _dio.request(
-                error.requestOptions.path,
-                options: Options(
-                  method: error.requestOptions.method,
-                  headers: error.requestOptions.headers,
-                ),
-                data: error.requestOptions.data,
-                queryParameters: error.requestOptions.queryParameters,
-              );
-              handler.resolve(retryResponse);
-              return;
-            } catch (retryError) {
-              // If retry also fails, continue with original error
-            }
-          }
-          handler.next(error);
-        },
-      ),
-    );
-  }
 
   // Authentication
   void setAuthToken(String? token) {
@@ -221,7 +128,7 @@ class ApiClient {
   // Sighting endpoints
   Future<api.CreateSightingResponse> submitSighting(api.SightingSubmission submission) async {
     try {
-      final response = await _dio.post(
+      final response = await dio.post(
         '/alerts',
         data: submission.toJson(),
       );
@@ -279,7 +186,7 @@ class ApiClient {
         queryParams['min_alert_level'] = minAlertLevel.toLowerCase();
       }
 
-      final response = await _dio.get(
+      final response = await dio.get(
         '/alerts',
         queryParameters: queryParams,
       );
@@ -300,7 +207,7 @@ class ApiClient {
   // Media upload endpoints
   Future<api.PresignedUploadResponse> getPresignedUpload(api.PresignedUploadRequest request) async {
     try {
-      final response = await _dio.post(
+      final response = await dio.post(
         '/media/presign',
         data: request.toJson(),
       );
@@ -334,7 +241,7 @@ class ApiClient {
 
   Future<api.MediaUploadCompleteResponse> completeMediaUpload(api.MediaUploadCompleteRequest request) async {
     try {
-      final response = await _dio.post(
+      final response = await dio.post(
         '/media/complete',
         data: request.toJson(),
       );
@@ -377,7 +284,7 @@ class ApiClient {
         if (sightingId != null) 'sighting_id': sightingId,
       };
 
-      final response = await _dio.post(
+      final response = await dio.post(
         '/media/bulk-presign',
         data: bulkRequest,
       );
@@ -427,7 +334,7 @@ class ApiClient {
         if (description != null) 'description': description,
       };
 
-      final response = await _dio.post(
+      final response = await dio.post(
         '/plane-match',
         data: request,
       );
@@ -479,7 +386,7 @@ class ApiClient {
         queryParams['recent_hours'] = recentHours;
       }
 
-      final response = await _dio.get(
+      final response = await dio.get(
         '/alerts',
         queryParameters: queryParams,
       );
@@ -499,7 +406,7 @@ class ApiClient {
 
   Future<Map<String, dynamic>> getAlertDetails(String alertId) async {
     try {
-      final response = await _dio.get('/alerts/$alertId');
+      final response = await dio.get('/alerts/$alertId');
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -537,7 +444,7 @@ class ApiClient {
         queryParams['min_alert_level'] = minAlertLevel.toLowerCase();
       }
 
-      final response = await _dio.get(
+      final response = await dio.get(
         '/alerts/nearby',
         queryParameters: queryParams,
       );
@@ -557,7 +464,7 @@ class ApiClient {
 
   Future<Map<String, dynamic>> triggerAlertProcessing() async {
     try {
-      final response = await _dio.post('/alerts/trigger');
+      final response = await dio.post('/alerts/trigger');
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -574,7 +481,7 @@ class ApiClient {
 
   Future<Map<String, dynamic>> getAlertsStats() async {
     try {
-      final response = await _dio.get('/alerts/stats');
+      final response = await dio.get('/alerts/stats');
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -592,7 +499,7 @@ class ApiClient {
   // Witness aggregation endpoints for Task 7
   Future<Map<String, dynamic>> getWitnessAggregation(String alertId) async {
     try {
-      final response = await _dio.get('/alerts/$alertId/aggregation');
+      final response = await dio.get('/alerts/$alertId/aggregation');
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -609,7 +516,7 @@ class ApiClient {
 
   Future<Map<String, dynamic>> getAlertWitnesses(String alertId) async {
     try {
-      final response = await _dio.get('/alerts/$alertId/witnesses');
+      final response = await dio.get('/alerts/$alertId/witnesses');
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -626,7 +533,7 @@ class ApiClient {
 
   Future<Map<String, dynamic>> escalateAlert(String alertId) async {
     try {
-      final response = await _dio.post('/alerts/$alertId/escalate');
+      final response = await dio.post('/alerts/$alertId/escalate');
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -646,7 +553,7 @@ class ApiClient {
     try {
       debugPrint('Submitting comprehensive photo metadata for sighting $sightingId');
       
-      final response = await _dio.post(
+      final response = await dio.post(
         '/photo-metadata/$sightingId',
         data: metadata,
       );
@@ -697,7 +604,7 @@ class ApiClient {
         if (appVersion != null) 'app_version': appVersion,
       };
 
-      final response = await _dio.post(
+      final response = await dio.post(
         '/alerts/$sightingId/witnesses',
         data: request,
       );
@@ -720,7 +627,7 @@ class ApiClient {
     required String deviceId,
   }) async {
     try {
-      final response = await _dio.get('/alerts/$sightingId/witnesses/$deviceId');
+      final response = await dio.get('/alerts/$sightingId/witnesses/$deviceId');
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -738,7 +645,7 @@ class ApiClient {
   // Anonymous beep endpoints for Phase 0/1 - Quick alerts
   Future<Map<String, dynamic>> sendAnonymousBeep(Map<String, dynamic> alertData) async {
     try {
-      final response = await _dio.post('/alerts', data: alertData);
+      final response = await dio.post('/alerts', data: alertData);
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -756,7 +663,7 @@ class ApiClient {
   // Health check
   Future<bool> checkHealth() async {
     try {
-      final response = await _dio.get('/ping');
+      final response = await dio.get('/ping');
       return response.statusCode == 200 && response.data['message'] == 'pong';
     } catch (e) {
       return false;
@@ -793,12 +700,12 @@ class ApiClient {
 
   // Configuration
   void updateBaseUrl(String newBaseUrl) {
-    _dio.options.baseUrl = '$newBaseUrl';
+    dio.options.baseUrl = '$newBaseUrl';
   }
 
   void setTimeout(Duration timeout) {
-    _dio.options.connectTimeout = timeout;
-    _dio.options.receiveTimeout = timeout;
+    dio.options.connectTimeout = timeout;
+    dio.options.receiveTimeout = timeout;
   }
 
   // DEPRECATED: Legacy JWT-based magic link authentication
@@ -820,7 +727,7 @@ class ApiClient {
       debugPrint('[API][$reqId] Timestamp: ${DateTime.now().toIso8601String()}');
       debugPrint('[API][$reqId] Code length: ${code.length}');
       debugPrint('[API][$reqId] Code preview: ${code.length > 8 ? '${code.substring(0, 8)}...' : code}');
-      debugPrint('[API][$reqId] Base URL: ${_dio.options.baseUrl}');
+      debugPrint('[API][$reqId] Base URL: ${dio.options.baseUrl}');
       
       // Get device info for the request
       String deviceId = 'unknown';
@@ -851,7 +758,7 @@ class ApiClient {
       debugPrint('[API][$reqId] Timeout settings - send: 8s, receive: 8s');
       
       final requestStartTime = DateTime.now();
-      final response = await _dio.post(
+      final response = await dio.post(
         '/auth/magic/exchange',
         data: requestBody,
         options: Options(
@@ -986,7 +893,7 @@ class ApiClient {
   // Generic HTTP methods for admin functionality
   Future<Map<String, dynamic>> getJson(String endpoint) async {
     try {
-      final response = await _dio.get(endpoint);
+      final response = await dio.get(endpoint);
       
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -1003,7 +910,7 @@ class ApiClient {
 
   Future<Response> get(String endpoint) async {
     try {
-      return await _dio.get(endpoint);
+      return await dio.get(endpoint);
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -1011,7 +918,7 @@ class ApiClient {
 
   // Cleanup
   void dispose() {
-    _dio.close();
+    // Note: Don't close static dio as it's shared
     _instance = null;
   }
 }
@@ -1060,7 +967,7 @@ extension ApiClientExtension on ApiClient {
       }
       
       debugPrint('Creating sighting first to get ID...');
-      final sightingResponse = await _dio.post('/alerts', data: sightingData);
+      final sightingResponse = await dio.post('/alerts', data: sightingData);
       
       // Extract sighting ID from response
       String sightingId;
@@ -1227,7 +1134,7 @@ extension ApiClientExtension on ApiClient {
     try {
       debugPrint('Updating sighting $sightingId with media files: $fileNames');
       
-      final response = await _dio.patch('/alerts/$sightingId/media', data: {
+      final response = await dio.patch('/alerts/$sightingId/media', data: {
         'media_files': fileNames,
       });
       
@@ -1257,7 +1164,7 @@ extension ApiClientExtension on ApiClient {
       
       debugPrint('Creating presigned upload for sighting $sightingId: $fileName ($fileSize bytes)');
       
-      final response = await _dio.post('/media/presign', data: requestData);
+      final response = await dio.post('/media/presign', data: requestData);
       
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -1275,7 +1182,7 @@ extension ApiClientExtension on ApiClient {
       
       debugPrint('Completing upload for: $uploadId');
       
-      final response = await _dio.post('/media/complete', data: {
+      final response = await dio.post('/media/complete', data: {
         'upload_id': uploadId,
         'media_type': _getMediaTypeFromFile(file).toString().split('.').last,
       });
@@ -1328,7 +1235,7 @@ extension ApiClientExtension on ApiClient {
       debugPrint('Upload URL: $uploadUrl');
       debugPrint('Making POST request...');
 
-      final response = await _dio.post(
+      final response = await dio.post(
         uploadUrl,
         data: formData,
       );
@@ -1361,7 +1268,7 @@ extension ApiClientExtension on ApiClient {
     try {
       final deviceId = await anonymousBeepService.getOrCreateDeviceId();
       
-      final response = await _dio.post(
+      final response = await dio.post(
         '/alerts/send/$sightingId',
         data: {
           'device_id': deviceId,
@@ -1400,7 +1307,7 @@ extension ApiClientExtension on ApiClient {
       
       debugPrint('Creating presigned upload for: $fileName ($fileSize bytes)');
       
-      final response = await _dio.post('/media/presign', data: requestData);
+      final response = await dio.post('/media/presign', data: requestData);
       
       if (response.data is Map<String, dynamic>) {
         final data = response.data as Map<String, dynamic>;
@@ -1440,7 +1347,7 @@ extension ApiClientExtension on ApiClient {
       
       debugPrint('Completing upload for: $uploadId');
       
-      final response = await _dio.post('/media/complete', data: requestData);
+      final response = await dio.post('/media/complete', data: requestData);
       
       if (response.data is Map<String, dynamic>) {
         final data = response.data as Map<String, dynamic>;
@@ -1490,7 +1397,7 @@ extension ApiClientExtension on ApiClient {
       
       debugPrint('Creating bulk presigned uploads for ${files.length} files');
       
-      final response = await _dio.post('/media/bulk-presign', data: requestData);
+      final response = await dio.post('/media/bulk-presign', data: requestData);
       
       if (response.data is Map<String, dynamic>) {
         return response.data as Map<String, dynamic>;
@@ -1532,7 +1439,7 @@ extension ApiClientExtension on ApiClient {
         ),
       ));
       
-      final uploadResponse = await _dio.post(
+      final uploadResponse = await dio.post(
         uploadUrl,
         data: formData,
         options: Options(
