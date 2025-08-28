@@ -10,28 +10,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'permission_service.dart';
 import 'sound_service.dart';
 import 'device_service.dart';
+import 'api_client.dart';
 
 class AnonymousBeepService {
   static const String _deviceIdKey = 'anonymous_device_id';
   static const String _beepHistoryKey = 'anonymous_beep_history';
   
-  final Dio _dio;
   final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
   final Uuid _uuid = const Uuid();
   
   static final AnonymousBeepService _instance = AnonymousBeepService._internal();
   factory AnonymousBeepService() => _instance;
   
-  AnonymousBeepService._internal() : _dio = Dio(
-    BaseOptions(
-      baseUrl: 'https://api.ufobeep.com',
-      connectTimeout: const Duration(seconds: 5),
-      receiveTimeout: const Duration(seconds: 10),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    ),
-  );
+  AnonymousBeepService._internal();
+  
+  // Use the authenticated Dio instance from ApiClient
+  Dio get _dio => ApiClient.dio;
   
   Future<String> getOrCreateDeviceId() async {
     // Use the same device ID as DeviceService to ensure consistency
