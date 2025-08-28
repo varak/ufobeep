@@ -57,7 +57,6 @@ const _$LocationPrivacyEnumMap = {
   LocationPrivacy.exact: 'exact',
   LocationPrivacy.jittered: 'jittered',
   LocationPrivacy.approximate: 'approximate',
-  LocationPrivacy.hidden: 'hidden',
 };
 
 const _$SubmissionStatusEnumMap = {
