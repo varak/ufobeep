@@ -170,6 +170,14 @@ ALWAYS keep docs updated when making changes:
 - **DO NOT manually build/install APK** - use the deploy script instead
 - **Available targets**: moto, tablet, pixel, samsung, or blank for all devices
 
+## FIXED ISSUES
+- **Authentication Token Persistence** (Aug 28, 2025) - Commit `7b23b0e6`
+  - Root cause: Dual Dio HTTP client instances causing auth header confusion
+  - Solution: Eliminated instance `_dio`, use only static `ApiClient.dio`
+  - Fixed endpoint path: `/me` → `/users/me`
+  - Users now stay logged in across app restarts ✅
+  - Documentation: `docs/AUTHENTICATION_FIX.md`
+
 # CRITICAL RULE: NEVER SKIP DOCS UPDATES
 - ALWAYS update documentation when making changes
 - NEVER skip updating docs to "save time" or for any reason
