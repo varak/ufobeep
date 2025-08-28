@@ -1044,7 +1044,7 @@ async def exchange_magic_code(
     """
     try:
         ip_address = get_client_ip(http_request)
-        logger.info(f"Magic code exchange attempted from IP: {ip_address}")
+        logger.info(f"MAGIC_CODE_EXCHANGE: ATTEMPT - code={request.code[:8]}..., IP={ip_address}")
         
         # Find and lock the magic link record to prevent race conditions
         magic_link = db.query(MagicLink).filter(
@@ -1060,7 +1060,15 @@ async def exchange_magic_code(
             raise HTTPException(status_code=410, detail="Code expired")
         
         if magic_link.is_used:
-            logger.warning(f"MAGIC_CODE_EXCHANGE: ALREADY_USED - email={magic_link.email}, used_at={magic_link.used_at}, IP={ip_address}")
+            # Check if this might be a duplicate request (used very recently)
+            if magic_link.used_at:
+                time_since_used = datetime.now(timezone.utc) - magic_link.used_at
+                if time_since_used.total_seconds() < 10:  # Used within last 10 seconds
+                    logger.warning(f"MAGIC_CODE_EXCHANGE: DUPLICATE_DETECTED - code={request.code[:8]}..., used_at={magic_link.used_at}, seconds_ago={time_since_used.total_seconds():.1f}, IP={ip_address}")
+                else:
+                    logger.warning(f"MAGIC_CODE_EXCHANGE: ALREADY_USED - email={magic_link.email}, used_at={magic_link.used_at}, IP={ip_address}")
+            else:
+                logger.warning(f"MAGIC_CODE_EXCHANGE: ALREADY_USED - email={magic_link.email}, used_at={magic_link.used_at}, IP={ip_address}")
             raise HTTPException(status_code=410, detail="Code already used")
         
         # Find or create user BEFORE marking code as used

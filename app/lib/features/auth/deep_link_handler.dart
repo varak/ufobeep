@@ -14,6 +14,10 @@ class DeepLinkHandler {
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
   bool _processedInitial = false;
+  
+  // Deduplication guards to prevent duplicate code processing
+  final _inFlight = <String>{};
+  DateTime _lastProcessed = DateTime.fromMillisecondsSinceEpoch(0);
 
   DeepLinkHandler();
 
@@ -48,29 +52,61 @@ class DeepLinkHandler {
     );
   }
 
-  /// Process deep link URI - ChatGPT's comprehensive logging approach
+  /// Process deep link URI with deduplication guard
   Future<void> _handleUri(Uri uri) async {
-    debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Received URI: $uri');
-    debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Scheme: ${uri.scheme}');
-    debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Host: ${uri.host}');
-    debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Path: ${uri.path}');
-    debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Query Parameters: ${uri.queryParameters}');
+    debugPrint('[DL] Processing URI: $uri');
+    
+    // Extract code for deduplication check
+    final code = uri.queryParameters['code'];
+    if (code != null && code.isNotEmpty) {
+      // Deduplication guard #1: Time-based debouncing (300ms)
+      final now = DateTime.now();
+      if (now.difference(_lastProcessed) < const Duration(milliseconds: 300)) {
+        debugPrint('[DL] Debounced code=${code.length > 8 ? code.substring(0, 8) + '...' : code}');
+        return;
+      }
+      _lastProcessed = now;
+      
+      // Deduplication guard #2: In-flight processing check
+      if (_inFlight.contains(code)) {
+        debugPrint('[DL] Already processing code=${code.length > 8 ? code.substring(0, 8) + '...' : code}');
+        return;
+      }
+      
+      debugPrint('[DL] Processing code=${code.length > 8 ? code.substring(0, 8) + '...' : code}');
+      _inFlight.add(code);
+    }
     
     // Get current route context for debugging
     try {
       final context = rootNavigatorKey.currentContext;
       if (context != null) {
-        debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Navigation context available');
+        debugPrint('[DL] Navigation context available');
       }
     } catch (e) {
-      debugPrint('[DeepLink] 🔗 DEEP_LINK_DEBUG: Could not get current route: $e');
+      debugPrint('[DL] Could not get current route: $e');
     }
     
     try {
-      // Robust HTTPS + custom scheme parsing with explicit logging
-      // Accept either:
-      // 1) https://api.ufobeep.com/auth/magic/complete/new?code=...   (HTTPS App Link; code-only)
-      // 2) ufobeep://auth/complete?token=...&user_id=...&username=... (custom scheme; full data)
+      // Process the magic link (will be wrapped in finally for cleanup)
+      await _processAuthLink(uri);
+    } catch (e, st) {
+      debugPrint('[DL] Exception handling URI: $e');
+      debugPrint('[DL] Stack trace: $st');
+    } finally {
+      // Always cleanup in-flight tracking
+      if (code != null && code.isNotEmpty) {
+        _inFlight.remove(code);
+      }
+    }
+  }
+  
+  /// Actual magic link processing logic
+  Future<void> _processAuthLink(Uri uri) async {
+    // Robust HTTPS + custom scheme parsing with explicit logging
+    // Accept either:
+    // 1) https://api.ufobeep.com/auth/magic/complete/new?code=...   (HTTPS App Link; code-only)
+    // 2) ufobeep://auth/complete?token=...&user_id=...&username=... (custom scheme; full data)
       
       final isHttps = uri.scheme == 'https' && uri.host == 'api.ufobeep.com';
       // Some backends append trailing segments or slash; accept prefix
@@ -170,11 +206,7 @@ class DeepLinkHandler {
         }
       }
 
-      debugPrint('[DeepLink] Ignored URI (not magic auth): $uri');
-    } catch (e, st) {
-      debugPrint('[DeepLink][ERROR] Exception handling URI: $e');
-      debugPrint('[DeepLink][ERROR] Stack trace: $st');
-    }
+    debugPrint('[DL] Ignored URI (not magic auth): $uri');
   }
 
   /// Navigate to main app after successful authentication (ChatGPT's approach)

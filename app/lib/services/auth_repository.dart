@@ -15,7 +15,10 @@ class AuthRepository with ChangeNotifier {
   factory AuthRepository() => _instance;
   AuthRepository._internal();
 
-  final _storage = const FlutterSecureStorage();
+  final _storage = const FlutterSecureStorage(
+    aOptions: AndroidOptions(encryptedSharedPreferences: true),
+    iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
+  );
   final _dio = ApiClient.dio;
 
   UserModel? _currentUser;
@@ -30,37 +33,43 @@ class AuthRepository with ChangeNotifier {
   static const _kRefresh = 'refresh_token';
 
   Future<void> loadSessionOnStartup() async {
-    debugPrint('[AuthRepository] 🚀 Starting session load');
+    debugPrint('[Bootstrap] Starting session load');
     
     try {
       final refresh = await _storage.read(key: _kRefresh);
+      final access = await _storage.read(key: _kAccess);
+      
+      debugPrint('[Bootstrap] Stored tokens found: refresh=${refresh != null}, access=${access != null}');
+      
       if (refresh == null || refresh.isEmpty) {
-        debugPrint('[AuthRepository] 🚀 No refresh token found, marking as ready');
+        debugPrint('[Bootstrap] No refresh token - starting unauthenticated');
         _isReady = true;
         notifyListeners();
         return;
       }
       
-      debugPrint('[AuthRepository] 🚀 Refresh token found, attempting silent refresh');
+      debugPrint('[Bootstrap] Refresh token found, attempting silent refresh');
       // Try silent refresh
       await _refreshTokens();
       await fetchMe();
-      debugPrint('[AuthRepository] 🚀 Session loaded successfully');
+      debugPrint('[Bootstrap] Session loaded successfully - user: ${_currentUser?.username}');
     } catch (e) {
-      debugPrint('[AuthRepository] 🚀 Session load failed: $e, clearing session');
+      debugPrint('[Bootstrap] Session load failed: $e, clearing session');
       // If refresh fails, clear tokens
       await clearSession();
     } finally {
       _isReady = true;
-      debugPrint('[AuthRepository] 🚀 Session load complete, marked as ready');
+      debugPrint('[Bootstrap] Complete - ready=${_isReady}, user=${_currentUser?.username ?? "none"}');
       notifyListeners();
     }
   }
 
   Future<void> setTokens({required String access, required String refresh}) async {
+    debugPrint('[Auth] Saving tokens: access(${access.length}), refresh(${refresh.length})');
     await _storage.write(key: _kAccess, value: access);
     await _storage.write(key: _kRefresh, value: refresh);
     ApiClient.setBearer(access);
+    debugPrint('[Auth] Tokens saved successfully');
   }
 
   Future<String?> getAccessToken() => _storage.read(key: _kAccess);
