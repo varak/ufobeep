@@ -122,12 +122,18 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     } else {
       // User is not authenticated or auth state is invalid
       debugPrint('SPLASH DEBUG: No authenticated user found, going to sign-in');
+      debugPrint('SPLASH DEBUG: AuthRepository isHydrating: ${authRepo.isHydrating}');
       
-      // Clear any stale auth state to prevent confusion
-      try {
-        await authRepo.clearSession();
-      } catch (e) {
-        debugPrint('SPLASH DEBUG: Error clearing session: $e');
+      // Only clear session if not currently hydrating (to avoid race condition with magic link auth)
+      if (!authRepo.isHydrating) {
+        try {
+          await authRepo.clearSession();
+          debugPrint('SPLASH DEBUG: Cleared stale session');
+        } catch (e) {
+          debugPrint('SPLASH DEBUG: Error clearing session: $e');
+        }
+      } else {
+        debugPrint('SPLASH DEBUG: Skipping session clear - AuthRepository is hydrating');
       }
       
       context.go('/sign-in');
