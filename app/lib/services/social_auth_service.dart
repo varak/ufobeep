@@ -272,18 +272,19 @@ class SocialAuthService {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         
-        // Update AuthRepository with tokens and user data
+        // Update AuthRepository with tokens and user data using centralized method
         final access = data['access'] as String?;
         final refresh = data['refresh'] as String?;
         final user = data['user'] ?? {};
         
         if (access != null && refresh != null) {
-          await AuthRepository().updateFromMagicLinkResponse({
+          await AuthService().handleLoginSuccess({
             'access': access,
             'refresh': refresh,
             'user': user,
+            'expires_in': data['expires_in'] ?? 3600,
           });
-          print('APPLE AUTH: Updated AuthRepository with tokens');
+          print('APPLE AUTH: Updated AuthRepository with tokens using centralized method');
         }
         
         // Store user info locally

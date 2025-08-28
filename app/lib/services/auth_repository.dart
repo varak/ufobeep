@@ -106,55 +106,6 @@ class AuthRepository with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateFromMagicLinkResponse(Map<String, dynamic> payload) async {
-    // Set hydrating state to prevent race conditions
-    _isHydrating = true;
-    notifyListeners();
-    
-    debugPrint('[AuthRepository] 🔄 Starting magic link response update (hydrating)');
-    
-    try {
-      // ChatGPT: Expect backend to return { access, refresh, user: {...} }
-      final access = payload['access'] as String?;
-      final refresh = payload['refresh'] as String?;
-      final user = payload['user'] as Map<String, dynamic>?;
-
-      if (access == null || user == null) {
-        throw Exception('Bad magic link exchange payload: missing required fields');
-      }
-      
-      debugPrint('[AuthRepository] 🔄 Payload validation passed');
-      debugPrint('[AuthRepository] 🔄 Setting tokens...');
-      
-      // Store tokens atomically
-      await setTokens(access: access, refresh: refresh ?? '');
-      
-      debugPrint('[AuthRepository] 🔄 Creating user model...');
-      
-      // Update user model
-      _currentUser = UserModel.fromJson(user);
-      
-      debugPrint('[AuthRepository] ✅ Magic link update complete - user: ${_currentUser?.username}');
-      
-      // Complete hydration atomically
-      await Future.microtask(() {
-        _isHydrating = false;
-        notifyListeners();
-      });
-      
-      debugPrint('[AuthRepository] ✅ Auth state ready and hydrated');
-      
-    } catch (e, stackTrace) {
-      debugPrint('[AuthRepository] ❌ Magic link update failed: $e');
-      debugPrint('[AuthRepository] ❌ Stack trace: $stackTrace');
-      
-      // Rollback to clean state on failure
-      _isHydrating = false;
-      await clearSession();
-      
-      rethrow;
-    }
-  }
 
   Future<void> logout() async {
     try {
