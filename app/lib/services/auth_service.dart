@@ -488,21 +488,38 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       debugPrint('[Auth] ✅ ApiClient auth token set');
       
       // Update AuthRepository with tokens and user data
+      debugPrint('[MAGIC][$reqId] ==================== AUTHREPOSITORY UPDATE START ====================');
       debugPrint('[MAGIC][$reqId] Updating AuthRepository with magic link response');
       debugPrint('[MAGIC][$reqId] AuthRepository current state - isReady: ${AuthRepository().isReady}, isHydrating: ${AuthRepository().isHydrating}');
+      debugPrint('[MAGIC][$reqId] Current user before update: ${AuthRepository().currentUser?.username}');
       
+      final updateStartTime = DateTime.now();
       try {
-        await AuthRepository().updateFromMagicLinkResponse({
+        final updateData = {
           'access': accessToken,
           'refresh': refreshToken ?? '',
           'user': userObj,
-        });
-        debugPrint('[MAGIC][$reqId] ✅ AuthRepository updated successfully');
+        };
+        debugPrint('[MAGIC][$reqId] Update data keys: ${updateData.keys.toList()}');
+        debugPrint('[MAGIC][$reqId] Update data user: ${updateData['user']}');
+        
+        await AuthRepository().updateFromMagicLinkResponse(updateData);
+        
+        final updateDuration = DateTime.now().difference(updateStartTime).inMilliseconds;
+        debugPrint('[MAGIC][$reqId] ✅ AuthRepository updated in ${updateDuration}ms');
         debugPrint('[MAGIC][$reqId] AuthRepository post-update state - isReady: ${AuthRepository().isReady}, isHydrating: ${AuthRepository().isHydrating}');
         debugPrint('[MAGIC][$reqId] AuthRepository current user: ${AuthRepository().currentUser?.username}');
+        debugPrint('[MAGIC][$reqId] AuthRepository current user ID: ${AuthRepository().currentUser?.id}');
+        debugPrint('[MAGIC][$reqId] AuthRepository current user email: ${AuthRepository().currentUser?.email}');
+        debugPrint('[MAGIC][$reqId] ==================== AUTHREPOSITORY UPDATE SUCCESS ====================');
       } catch (e, stackTrace) {
-        debugPrint('[MAGIC][$reqId] ❌ AuthRepository update failed: $e');
+        final updateDuration = DateTime.now().difference(updateStartTime).inMilliseconds;
+        debugPrint('[MAGIC][$reqId] ==================== AUTHREPOSITORY UPDATE ERROR ====================');
+        debugPrint('[MAGIC][$reqId] ❌ AuthRepository update failed after ${updateDuration}ms: $e');
+        debugPrint('[MAGIC][$reqId] ❌ Error type: ${e.runtimeType}');
         debugPrint('[MAGIC][$reqId] ❌ Stack trace: $stackTrace');
+        debugPrint('[MAGIC][$reqId] ❌ AuthRepository state after error - isReady: ${AuthRepository().isReady}, isHydrating: ${AuthRepository().isHydrating}');
+        debugPrint('[MAGIC][$reqId] ==================== AUTHREPOSITORY UPDATE FAILURE ====================');
         _showDevSnack('Failed to store authentication data: ${e.toString()}');
         return false;
       }

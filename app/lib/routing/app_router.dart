@@ -484,38 +484,98 @@ class _MagicLinkProcessingScreenState extends State<MagicLinkProcessingScreen> {
   }
   
   Future<void> _processMagicLink() async {
+    final screenId = "screen-${DateTime.now().millisecondsSinceEpoch}";
+    
     try {
-      debugPrint('🔗 MagicLinkProcessingScreen: Starting auth process');
+      debugPrint('[SCREEN][$screenId] ==================== MAGIC LINK PROCESSING START ====================');
+      debugPrint('[SCREEN][$screenId] Starting auth process for code: ${widget.code!.length} chars');
+      debugPrint('[SCREEN][$screenId] Code preview: ${widget.code!.substring(0, widget.code!.length.clamp(0, 8))}...');
+      
       await AuthService().beginProcessingLink();
+      debugPrint('[SCREEN][$screenId] ✅ BeginProcessingLink completed');
       
-      setState(() {
-        _subMessage = 'Exchanging authorization code...';
-      });
+      if (mounted) {
+        setState(() {
+          _subMessage = 'Exchanging authorization code...';
+        });
+        debugPrint('[SCREEN][$screenId] Updated UI status: Exchanging authorization code');
+      }
       
+      debugPrint('[SCREEN][$screenId] Calling AuthService.loginWithMagicCode...');
+      final authStartTime = DateTime.now();
       final success = await AuthService().loginWithMagicCode(code: widget.code!);
+      final authDuration = DateTime.now().difference(authStartTime).inMilliseconds;
+      
+      debugPrint('[SCREEN][$screenId] AuthService.loginWithMagicCode completed in ${authDuration}ms');
+      debugPrint('[SCREEN][$screenId] Auth result: $success');
+      debugPrint('[SCREEN][$screenId] Widget still mounted: $mounted');
       
       if (success && mounted) {
-        debugPrint('🔗 MagicLinkProcessingScreen: Auth successful, waiting for navigation');
+        debugPrint('[SCREEN][$screenId] ==================== AUTH SUCCESS - CHECKING STATE ====================');
+        
+        // Check AuthRepository state immediately after success
+        final authRepo = AuthRepository();
+        debugPrint('[SCREEN][$screenId] AuthRepository isReady: ${authRepo.isReady}');
+        debugPrint('[SCREEN][$screenId] AuthRepository isHydrating: ${authRepo.isHydrating}');
+        debugPrint('[SCREEN][$screenId] AuthRepository currentUser: ${authRepo.currentUser?.username}');
+        debugPrint('[SCREEN][$screenId] AuthRepository user ID: ${authRepo.currentUser?.id}');
+        
         setState(() {
           _statusMessage = 'Success!';
           _subMessage = 'Redirecting to your dashboard...';
         });
+        debugPrint('[SCREEN][$screenId] Updated UI status: Success, redirecting');
         
-        // Wait a moment for AuthRepository to update, then check navigation
+        // Wait for AuthRepository to be fully ready
+        debugPrint('[SCREEN][$screenId] Waiting 500ms for AuthRepository to stabilize...');
         await Future.delayed(const Duration(milliseconds: 500));
+        
         if (mounted) {
+          // Final auth state check before navigation
+          debugPrint('[SCREEN][$screenId] Final auth state check before navigation:');
+          debugPrint('[SCREEN][$screenId]   - isReady: ${authRepo.isReady}');
+          debugPrint('[SCREEN][$screenId]   - isHydrating: ${authRepo.isHydrating}');
+          debugPrint('[SCREEN][$screenId]   - currentUser: ${authRepo.currentUser?.username}');
+          
+          debugPrint('[SCREEN][$screenId] Navigating to /alerts...');
           context.go('/alerts');
+          debugPrint('[SCREEN][$screenId] ✅ Navigation to /alerts completed');
+          debugPrint('[SCREEN][$screenId] ==================== MAGIC LINK PROCESSING SUCCESS ====================');
+        } else {
+          debugPrint('[SCREEN][$screenId] ❌ Widget unmounted, cannot navigate');
         }
       } else {
+        debugPrint('[SCREEN][$screenId] ==================== AUTH FAILURE ====================');
+        debugPrint('[SCREEN][$screenId] ❌ Authentication failed - success: $success, mounted: $mounted');
         _handleError('Authentication failed');
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint('[SCREEN][$screenId] ==================== PROCESSING ERROR ====================');
+      debugPrint('[SCREEN][$screenId] ❌ Exception during magic link processing: $e');
+      debugPrint('[SCREEN][$screenId] ❌ Error type: ${e.runtimeType}');
+      debugPrint('[SCREEN][$screenId] ❌ Stack trace: $stackTrace');
+      debugPrint('[SCREEN][$screenId] ==================== PROCESSING FAILURE ====================');
       _handleError('Authentication error: ${e.toString()}');
     }
   }
   
   void _handleError(String message) {
-    if (!mounted) return;
+    final errorId = "error-${DateTime.now().millisecondsSinceEpoch}";
+    
+    debugPrint('[ERROR][$errorId] ==================== MAGIC LINK ERROR HANDLING ====================');
+    debugPrint('[ERROR][$errorId] Error message: $message');
+    debugPrint('[ERROR][$errorId] Widget mounted: $mounted');
+    debugPrint('[ERROR][$errorId] Current auth state:');
+    
+    final authRepo = AuthRepository();
+    debugPrint('[ERROR][$errorId]   - isReady: ${authRepo.isReady}');
+    debugPrint('[ERROR][$errorId]   - isHydrating: ${authRepo.isHydrating}');
+    debugPrint('[ERROR][$errorId]   - currentUser: ${authRepo.currentUser?.username}');
+    
+    if (!mounted) {
+      debugPrint('[ERROR][$errorId] ❌ Widget unmounted, cannot update UI');
+      return;
+    }
     
     setState(() {
       _isProcessing = false;
@@ -523,11 +583,20 @@ class _MagicLinkProcessingScreenState extends State<MagicLinkProcessingScreen> {
       _subMessage = message;
     });
     
+    debugPrint('[ERROR][$errorId] Updated UI with error message');
+    debugPrint('[ERROR][$errorId] Scheduling auto-redirect to sign-in in 3 seconds');
+    
     // Auto-redirect to sign-in after showing error
     Future.delayed(const Duration(seconds: 3), () {
+      debugPrint('[ERROR][$errorId] Auto-redirect timer fired');
       if (mounted) {
+        debugPrint('[ERROR][$errorId] Navigating back to /sign-in');
         context.go('/sign-in');
+        debugPrint('[ERROR][$errorId] ✅ Navigation to /sign-in completed');
+      } else {
+        debugPrint('[ERROR][$errorId] ❌ Widget unmounted during auto-redirect');
       }
+      debugPrint('[ERROR][$errorId] ==================== ERROR HANDLING COMPLETE ====================');
     });
   }
   

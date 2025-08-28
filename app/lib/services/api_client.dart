@@ -842,14 +842,17 @@ class ApiClient {
     }
   }
 
-  /// NEW: Exchange authorization code for tokens (authorization code flow) with timeout
+  /// NEW: Exchange authorization code for tokens (authorization code flow) with comprehensive debugging
   Future<Map<String, dynamic>> exchangeMagicCode(String code) async {
     final startTime = DateTime.now();
     final reqId = "api-${startTime.millisecondsSinceEpoch}";
     
     try {
-      debugPrint('[API][$reqId] Exchanging authorization code with backend');
+      debugPrint('[API][$reqId] ==================== MAGIC CODE EXCHANGE START ====================');
+      debugPrint('[API][$reqId] Timestamp: ${DateTime.now().toIso8601String()}');
       debugPrint('[API][$reqId] Code length: ${code.length}');
+      debugPrint('[API][$reqId] Code preview: ${code.length > 8 ? '${code.substring(0, 8)}...' : code}');
+      debugPrint('[API][$reqId] Base URL: ${_dio.options.baseUrl}');
       
       // Get device info for the request
       String deviceId = 'unknown';
@@ -859,42 +862,102 @@ class ApiClient {
         if (storedDeviceId != null) {
           deviceId = storedDeviceId;
         }
+        debugPrint('[API][$reqId] Device ID: $deviceId');
       } catch (e) {
-        debugPrint('[API][$reqId] Could not get device ID: $e');
+        debugPrint('[API][$reqId] ❌ Could not get device ID: $e');
       }
       
+      // Test basic connectivity first
+      debugPrint('[API][$reqId] Testing connectivity to ${_dio.options.baseUrl}...');
+      try {
+        final pingResponse = await _dio.get('/healthz', options: Options(
+          sendTimeout: const Duration(seconds: 3),
+          receiveTimeout: const Duration(seconds: 3),
+        ));
+        debugPrint('[API][$reqId] ✅ Connectivity test passed - Status: ${pingResponse.statusCode}');
+      } catch (e) {
+        debugPrint('[API][$reqId] ⚠️ Connectivity test failed: $e (proceeding anyway)');
+      }
+      
+      final requestData = {
+        'code': code,
+        'device_id': deviceId,
+        'app_version': '1.0.0',
+        'platform': Platform.isAndroid ? 'android' : 'ios',
+      };
+      
+      debugPrint('[API][$reqId] Request payload: $requestData');
       debugPrint('[API][$reqId] Making POST request to /auth/magic/exchange');
+      debugPrint('[API][$reqId] Timeout settings - send: 5s, receive: 5s');
+      
+      final requestStartTime = DateTime.now();
       final response = await _dio.post(
         '/auth/magic/exchange',
-        data: {
-          'code': code,
-          'device_id': deviceId,
-          'app_version': '1.0.0', // TODO: Get from environment
-          'platform': Platform.isAndroid ? 'android' : 'ios',
-        },
+        data: requestData,
         options: Options(
-          headers: {'Accept': 'application/json'},
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-Request-ID': reqId,
+          },
           validateStatus: (status) => status != null && status < 500,
           sendTimeout: const Duration(seconds: 5),
           receiveTimeout: const Duration(seconds: 5),
         ),
       );
       
-      final responseTime = DateTime.now().difference(startTime).inMilliseconds;
-      debugPrint('[API][$reqId] Response received in ${responseTime}ms - Status: ${response.statusCode}');
+      final requestEndTime = DateTime.now();
+      final requestDuration = requestEndTime.difference(requestStartTime).inMilliseconds;
+      debugPrint('[API][$reqId] ==================== HTTP REQUEST COMPLETED ====================');
+      
+      debugPrint('[API][$reqId] Request duration: ${requestDuration}ms');
+      debugPrint('[API][$reqId] Response status: ${response.statusCode}');
+      debugPrint('[API][$reqId] Response headers: ${response.headers}');
+      debugPrint('[API][$reqId] Response data type: ${response.data.runtimeType}');
+      debugPrint('[API][$reqId] Raw response data: ${response.data}');
       
       if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
         final responseData = response.data as Map<String, dynamic>;
-        debugPrint('[API][$reqId] ✅ Authorization code exchange successful');
-        debugPrint('[API][$reqId] Response keys: ${responseData.keys}');
+        debugPrint('[API][$reqId] ==================== SUCCESS RESPONSE ANALYSIS ====================');
+        debugPrint('[API][$reqId] ✅ HTTP 200 received, parsing response data');
+        debugPrint('[API][$reqId] Response keys: ${responseData.keys.toList()}');
         debugPrint('[API][$reqId] Success field: ${responseData['success']}');
+        
+        // Check for required fields
+        final hasAccess = responseData.containsKey('access');
+        final hasRefresh = responseData.containsKey('refresh'); 
+        final hasUser = responseData.containsKey('user');
+        debugPrint('[API][$reqId] Required fields check: access=$hasAccess, refresh=$hasRefresh, user=$hasUser');
+        
+        if (responseData['access'] != null) {
+          final accessToken = responseData['access'] as String;
+          debugPrint('[API][$reqId] Access token length: ${accessToken.length}');
+          debugPrint('[API][$reqId] Access token preview: ${accessToken.length > 20 ? '${accessToken.substring(0, 20)}...' : accessToken}');
+        }
+        
+        if (responseData['refresh'] != null) {
+          final refreshToken = responseData['refresh'] as String;
+          debugPrint('[API][$reqId] Refresh token length: ${refreshToken.length}');
+        }
+        
+        if (responseData['user'] != null) {
+          final userData = responseData['user'] as Map<String, dynamic>;
+          debugPrint('[API][$reqId] User data keys: ${userData.keys.toList()}');
+          debugPrint('[API][$reqId] User data: $userData');
+        }
+        
+        debugPrint('[API][$reqId] ✅ Response validation passed, returning data');
+        debugPrint('[API][$reqId] ==================== MAGIC CODE EXCHANGE SUCCESS ====================');
         return responseData;
       } else {
+        debugPrint('[API][$reqId] ==================== ERROR RESPONSE ANALYSIS ====================');
         final errorMsg = response.data is Map 
           ? (response.data as Map)['detail'] ?? 'Code exchange failed'
           : 'Code exchange failed';
-        debugPrint('[API][$reqId] ❌ Backend error: $errorMsg (Status: ${response.statusCode})');
-        debugPrint('[API][$reqId] ❌ Response data: ${response.data}');
+        debugPrint('[API][$reqId] ❌ HTTP ${response.statusCode}: $errorMsg');
+        debugPrint('[API][$reqId] ❌ Full response data: ${response.data}');
+        debugPrint('[API][$reqId] ❌ Response type: ${response.data.runtimeType}');
+        debugPrint('[API][$reqId] ==================== MAGIC CODE EXCHANGE ERROR ====================');
         throw ApiClientException(
           'Backend code exchange failed: $errorMsg',
           statusCode: response.statusCode,
@@ -902,31 +965,60 @@ class ApiClient {
       }
     } on DioException catch (e) {
       final errorTime = DateTime.now().difference(startTime).inMilliseconds;
-      debugPrint('[API][$reqId] ❌ DioException after ${errorTime}ms: ${e.message}');
-      debugPrint('[API][$reqId] ❌ DioException type: ${e.type}');
-      debugPrint('[API][$reqId] ❌ Response status: ${e.response?.statusCode}');
-      debugPrint('[API][$reqId] ❌ Response data: ${e.response?.data}');
+      debugPrint('[API][$reqId] ==================== DIO EXCEPTION ANALYSIS ====================');
+      debugPrint('[API][$reqId] ❌ DioException after ${errorTime}ms');
+      debugPrint('[API][$reqId] ❌ Exception type: ${e.type}');
+      debugPrint('[API][$reqId] ❌ Exception message: ${e.message}');
+      debugPrint('[API][$reqId] ❌ Request options: ${e.requestOptions.uri}');
+      debugPrint('[API][$reqId] ❌ Request method: ${e.requestOptions.method}');
+      debugPrint('[API][$reqId] ❌ Request headers: ${e.requestOptions.headers}');
+      debugPrint('[API][$reqId] ❌ Request data: ${e.requestOptions.data}');
       
+      if (e.response != null) {
+        debugPrint('[API][$reqId] ❌ Response status: ${e.response?.statusCode}');
+        debugPrint('[API][$reqId] ❌ Response headers: ${e.response?.headers}');
+        debugPrint('[API][$reqId] ❌ Response data: ${e.response?.data}');
+        debugPrint('[API][$reqId] ❌ Response type: ${e.response?.data.runtimeType}');
+      } else {
+        debugPrint('[API][$reqId] ❌ No response object - connection failed');
+      }
+      
+      debugPrint('[API][$reqId] ❌ Stack trace: ${e.stackTrace}');
+      
+      String errorMessage;
       if (e.type == DioExceptionType.sendTimeout) {
-        throw ApiClientException('Request timed out after 5 seconds', statusCode: null);
+        errorMessage = 'Request timed out after 5 seconds';
+        debugPrint('[API][$reqId] ❌ SEND TIMEOUT detected');
       } else if (e.type == DioExceptionType.receiveTimeout) {
-        throw ApiClientException('Response timed out after 5 seconds', statusCode: null);
+        errorMessage = 'Response timed out after 5 seconds';
+        debugPrint('[API][$reqId] ❌ RECEIVE TIMEOUT detected');
       } else if (e.type == DioExceptionType.connectionTimeout) {
-        throw ApiClientException('Connection timed out', statusCode: null);
+        errorMessage = 'Connection timed out';
+        debugPrint('[API][$reqId] ❌ CONNECTION TIMEOUT detected');
+      } else if (e.type == DioExceptionType.connectionError) {
+        errorMessage = 'Connection error: ${e.message}';
+        debugPrint('[API][$reqId] ❌ CONNECTION ERROR detected');
       } else if (e.response?.statusCode == 410) {
         final errorData = e.response?.data;
-        final errorMessage = errorData is Map 
+        errorMessage = errorData is Map 
           ? (errorData['detail'] ?? 'Invalid, expired, or already used code') 
           : 'Invalid, expired, or already used code';
-        throw ApiClientException(errorMessage, statusCode: 410);
+        debugPrint('[API][$reqId] ❌ HTTP 410 - Code invalid/expired/used');
+      } else {
+        errorMessage = 'Network error during code exchange: ${e.message}';
+        debugPrint('[API][$reqId] ❌ Generic network error');
       }
-      throw ApiClientException(
-        'Network error during code exchange: ${e.message}',
-        statusCode: e.response?.statusCode,
-      );
-    } catch (e) {
+      
+      debugPrint('[API][$reqId] ==================== THROWING API CLIENT EXCEPTION ====================');
+      throw ApiClientException(errorMessage, statusCode: e.response?.statusCode);
+      
+    } catch (e, stackTrace) {
       final errorTime = DateTime.now().difference(startTime).inMilliseconds;
+      debugPrint('[API][$reqId] ==================== UNEXPECTED EXCEPTION ====================');
       debugPrint('[API][$reqId] ❌ Unexpected error after ${errorTime}ms: $e');
+      debugPrint('[API][$reqId] ❌ Error type: ${e.runtimeType}');
+      debugPrint('[API][$reqId] ❌ Stack trace: $stackTrace');
+      debugPrint('[API][$reqId] ==================== THROWING UNEXPECTED ERROR ====================');
       throw ApiClientException('Unexpected error: $e', statusCode: null);
     }
   }
