@@ -15,7 +15,7 @@ import '../../services/beep_service.dart';
 import '../../services/sound_service.dart';
 import '../../services/permission_service.dart';
 import '../../services/api_client.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:permission_handler/permission_handler.dart';\nimport 'package:geolocator/geolocator.dart';
 import '../../models/sensor_data.dart';
 import '../../models/sighting_submission.dart' as local;
 import '../../models/user_preferences.dart';
@@ -150,10 +150,14 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
         debugPrint('Skipping metadata extraction for video file');
       }
 
-      // Get current location for beep (same as non-media beeps)
-      final currentLocation = await permissionService.getCurrentLocation();
+      // Get current location for media beep (use Geolocator directly like BeepService)
       SensorData? currentSensorData;
-      if (currentLocation != null) {
+      try {
+        final currentLocation = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.medium,
+          timeLimit: const Duration(seconds: 10),
+        );
+        
         currentSensorData = SensorData(
           latitude: currentLocation.latitude,
           longitude: currentLocation.longitude,
@@ -166,8 +170,8 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
           hfovDeg: 60.0,
         );
         debugPrint('📍 Using current location for media beep: ${currentLocation.latitude}, ${currentLocation.longitude}');
-      } else {
-        debugPrint('❌ Failed to get current location for media beep');
+      } catch (e) {
+        debugPrint('❌ Failed to get current location for media beep: $e');
       }
 
       setState(() {
@@ -205,46 +209,10 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     // Play sound feedback
     await SoundService.I.play(AlertSound.tap, haptic: true);
     
-    // Ensure location is ready for beep submission (insistent permission flow)
+    // BeepService now handles location permission directly - no need for complex checks
     setState(() {
-      _errorMessage = 'Checking location permission...';
+      _errorMessage = 'Getting location...';
     });
-    
-    final locationReady = await permissionService.ensureLocationReadyForBeep();
-    
-    if (!locationReady) {
-      // Check if permanently denied
-      final locationStatus = await Permission.location.status;
-      if (locationStatus.isPermanentlyDenied) {
-        // Show settings dialog
-        final shouldOpenSettings = await _showSettingsDialog();
-        if (shouldOpenSettings) {
-          await permissionService.openPermissionSettings();
-          // Try one more time after settings
-          final finalReady = await permissionService.ensureLocationReadyForBeep();
-          if (!finalReady) {
-            setState(() {
-              _isBeeping = false;
-              _errorMessage = 'Location permission required. Please enable location access in Settings.';
-            });
-            return;
-          }
-        } else {
-          setState(() {
-            _isBeeping = false;
-            _errorMessage = 'Location permission is required to send beeps.';
-          });
-          return;
-        }
-      } else {
-        // User denied but not permanently
-        setState(() {
-          _isBeeping = false;
-          _errorMessage = 'Location permission denied. Location is required to send beeps.';
-        });
-        return;
-      }
-    }
     
     try {
       // Get description from text field if provided, otherwise null
@@ -525,35 +493,6 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                 ),
               ),
 
-              // Location status indicator
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    permissionService.locationReady 
-                        ? Icons.location_on 
-                        : Icons.location_off,
-                    size: 12,
-                    color: permissionService.locationReady 
-                        ? AppColors.semanticSuccess 
-                        : AppColors.semanticWarning,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    permissionService.locationReady 
-                        ? 'Location ready' 
-                        : 'Location needed',
-                    style: TextStyle(
-                      color: permissionService.locationReady 
-                          ? AppColors.semanticSuccess 
-                          : AppColors.semanticWarning,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
               
               const SizedBox(height: 32),
 
