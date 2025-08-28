@@ -162,7 +162,7 @@ async def get_current_user_from_jwt(token: Optional[HTTPAuthorizationCredentials
     try:
         # Verify the JWT token
         payload = verify_access_token(token.credentials)
-        user_id = payload.get("user_id")
+        user_id = payload.get("sub") or payload.get("user_id")
         if not user_id:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,

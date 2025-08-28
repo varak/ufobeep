@@ -45,9 +45,16 @@ class AuthRepository with ChangeNotifier {
         return;
       }
       
-      debugPrint('[Bootstrap] Tokens found - using directly');
+      debugPrint('[Bootstrap] Tokens found - validating with /me');
       ApiClient.setBearer(access);
-      debugPrint('[Bootstrap] Session restored successfully');
+      
+      try {
+        await fetchMe();
+        debugPrint('[Bootstrap] Session restored successfully - user: ${_currentUser?.username}');
+      } catch (e) {
+        debugPrint('[Bootstrap] /me validation failed: $e - clearing tokens');
+        await clearSession();
+      }
       
     } catch (e) {
       debugPrint('[Bootstrap] Session load failed: $e, clearing session');

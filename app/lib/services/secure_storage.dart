@@ -10,6 +10,7 @@ class SecureStorage {
   static const _kAccess = 'auth.access';
   static const _kRefresh = 'auth.refresh';
   static const _kExpiry = 'auth.expires_at';
+  static const _kUser = 'auth.user_data';
 
   // Use EncryptedSharedPreferences on Android to avoid device/keystore edge cases.
   static const _aOpts = AndroidOptions(
@@ -27,12 +28,17 @@ class SecureStorage {
     required String access,
     required String refresh,
     DateTime? expiresAt,
+    Map<String, dynamic>? userData,
   }) async {
     log('[SecureStorage] Writing tokens...');
     await _s.write(key: _kAccess, value: access);
     await _s.write(key: _kRefresh, value: refresh);
     if (expiresAt != null) {
       await _s.write(key: _kExpiry, value: expiresAt.toIso8601String());
+    }
+    if (userData != null) {
+      await _s.write(key: _kUser, value: jsonEncode(userData));
+      log('[SecureStorage] User data written: ${userData['username']}');
     }
     log('[SecureStorage] Tokens written: access=${access.isNotEmpty}, refresh=${refresh.isNotEmpty}');
   }
