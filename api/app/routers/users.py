@@ -18,8 +18,40 @@ from app.services.social_auth_service import SocialAuthService
 from app.services.database_service import get_database_pool
 from app.services.phone_service import phone_service
 from app.middleware.firebase_auth import FirebaseUser, OptionalAuth, RequiredAuth
+from app.core.auth import create_access_token, create_refresh_token
 
 router = APIRouter(prefix="/users", tags=["users"])
+
+
+# Standardized auth response format
+def standard_auth_response(user_data: dict, access_token: str, refresh_token: str, expires_in: int = 3600):
+    """
+    Standard authentication response format for all auth methods
+    Ensures consistency across Google, Apple, Firebase, and Magic Link auth
+    """
+    # Parse login_methods if it's a JSON string
+    login_methods = user_data.get("login_methods", ["email"])
+    if isinstance(login_methods, str):
+        try:
+            login_methods = json.loads(login_methods)
+        except:
+            login_methods = ["email"]
+    
+    return {
+        "success": True,
+        "token_type": "Bearer", 
+        "access": access_token,
+        "refresh": refresh_token,
+        "expires_in": expires_in,
+        "user": {
+            "id": str(user_data["id"]),
+            "email": user_data.get("email"),
+            "username": user_data.get("username"),
+            "display_name": user_data.get("display_name"),
+            "email_verified": bool(user_data.get("email_verified", False)),
+            "login_methods": login_methods
+        }
+    }
 
 
 # Database dependency - now uses shared pool
@@ -1137,6 +1169,7 @@ async def google_login(request: SocialLoginRequest):
     """
     Authenticate with Google OAuth token - MP15
     Creates new account or links to existing account
+    Returns standardized JWT response
     """
     social_service = SocialAuthService()
     
@@ -1151,31 +1184,76 @@ async def google_login(request: SocialLoginRequest):
     pool = await get_db()
     try:
         async with pool.acquire() as conn:
-            # Check if user exists by email or google_id
-            user = await conn.fetchrow("""
-                SELECT id, username, email, google_id, login_methods
-                FROM users 
-                WHERE email = $1 OR google_id = $2
-            """, profile["email"], profile["google_id"])
-            
-            if user:
-                # Existing user - link Google account if not already linked
-                if not user["google_id"]:
-                    await conn.execute("""
-                        UPDATE users 
-                        SET google_id = $1, social_profile_data = $2, last_login_at = NOW()
-                        WHERE id = $3
-                    """, profile["google_id"], json.dumps(profile), user["id"])
+            async with conn.transaction():
+                # Check if user exists by email (case-insensitive)
+                user = await conn.fetchrow("""
+                    SELECT id, username, email, google_id, login_methods, email_verified, display_name
+                    FROM users 
+                    WHERE LOWER(email) = LOWER($1)
+                    FOR UPDATE
+                """, profile["email"])
                 
-                # Add 'google' to login_methods if not present
-                login_methods = user["login_methods"] if user["login_methods"] else ["magic_link"]
-                if isinstance(login_methods, str):
-                    login_methods = json.loads(login_methods)
-                if "google" not in login_methods:
-                    login_methods.append("google")
+                if user:
+                    # Existing user - link Google account if not already linked
+                    login_methods = user["login_methods"] if user["login_methods"] else ["magic_link"]
+                    if isinstance(login_methods, str):
+                        login_methods = json.loads(login_methods)
+                    
+                    # Update Google ID and verify email if needed
+                    if not user["google_id"]:
+                        await conn.execute("""
+                            UPDATE users 
+                            SET google_id = $1, social_profile_data = $2, email_verified = TRUE, last_login_at = NOW()
+                            WHERE id = $3
+                        """, profile["google_id"], json.dumps(profile), user["id"])
+                    elif user["google_id"] != profile["google_id"]:
+                        # Email linked to different Google account
+                        raise HTTPException(
+                            status_code=409, 
+                            detail="This email is linked to a different Google account"
+                        )
+                    else:
+                        # Just update last login
+                        await conn.execute("""
+                            UPDATE users SET last_login_at = NOW() WHERE id = $1
+                        """, user["id"])
+                    
+                    # Add 'google' to login_methods if not present
+                    if "google" not in login_methods:
+                        login_methods.append("google")
+                        await conn.execute("""
+                            UPDATE users SET login_methods = $1 WHERE id = $2
+                        """, json.dumps(login_methods), user["id"])
+                    
+                    # Create updated user dict for response
+                    user_data = dict(user)
+                    user_data["login_methods"] = login_methods
+                    user_data["email_verified"] = True
+                    
+                else:
+                    # New user - create account with auto-generated username
+                    username = await _generate_unique_username(pool)
+                    user_id = uuid.uuid4()
+                    
+                    # Create new user
                     await conn.execute("""
-                        UPDATE users SET login_methods = $1 WHERE id = $2
-                    """, json.dumps(login_methods), user["id"])
+                        INSERT INTO users (
+                            id, username, email, email_verified, google_id, 
+                            social_profile_data, login_methods, preferred_login_method,
+                            created_at, last_login_at
+                        ) VALUES ($1, $2, $3, TRUE, $4, $5, $6, 'google', NOW(), NOW())
+                    """, user_id, username, profile["email"], profile["google_id"], 
+                         json.dumps(profile), json.dumps(["google", "magic_link"]))
+                    
+                    # Create user_data for response
+                    user_data = {
+                        "id": user_id,
+                        "username": username,
+                        "email": profile["email"],
+                        "email_verified": True,
+                        "login_methods": ["google", "magic_link"],
+                        "display_name": profile.get("name")
+                    }
                 
                 # Link device if not already linked
                 await conn.execute("""
@@ -1184,50 +1262,13 @@ async def google_login(request: SocialLoginRequest):
                     ON CONFLICT (device_id) DO UPDATE SET 
                         user_id = EXCLUDED.user_id,
                         last_seen_at = NOW()
-                """, user["id"], request.device_id, request.platform)
+                """, user_data["id"], request.device_id, request.platform)
                 
-                return {
-                    "success": True,
-                    "is_new_user": False,
-                    "user": {
-                        "user_id": str(user["id"]),
-                        "username": user["username"],
-                        "email": user["email"],
-                        "login_methods": login_methods
-                    }
-                }
-            
-            else:
-                # New user - create account with auto-generated username
-                username = social_service.generate_username_from_social(profile)
-                user_id = uuid.uuid4()
+                # Create JWT tokens
+                access_token = create_access_token(data={"sub": str(user_data["id"])})
+                refresh_token = create_refresh_token(data={"sub": str(user_data["id"])})
                 
-                # Create new user
-                await conn.execute("""
-                    INSERT INTO users (
-                        id, username, email, email_verified, google_id, 
-                        social_profile_data, login_methods, preferred_login_method,
-                        created_at, last_login_at
-                    ) VALUES ($1, $2, $3, TRUE, $4, $5, $6, 'google', NOW(), NOW())
-                """, user_id, username, profile["email"], profile["google_id"], 
-                     json.dumps(profile), json.dumps(["google", "magic_link"]))
-                
-                # Link device to new user
-                await conn.execute("""
-                    INSERT INTO user_devices (user_id, device_id, platform, created_at)
-                    VALUES ($1, $2, $3, NOW())
-                """, user_id, request.device_id, request.platform)
-                
-                return {
-                    "success": True,
-                    "is_new_user": True,
-                    "user": {
-                        "user_id": str(user_id),
-                        "username": username,
-                        "email": profile["email"],
-                        "login_methods": ["google", "magic_link"]
-                    }
-                }
+                return standard_auth_response(user_data, access_token, refresh_token)
                 
     finally:
         pass  # Shared pool - don't close
@@ -1263,20 +1304,10 @@ async def firebase_auth(
                 # Device tracking handled by devices service
                 
                 # Create JWT tokens for existing user
-                from app.core.auth import create_access_token, create_refresh_token
                 access_token = create_access_token(data={"sub": str(user["id"])})
                 refresh_token = create_refresh_token(data={"sub": str(user["id"])})
                 
-                return {
-                    "access": access_token,
-                    "refresh": refresh_token,
-                    "user": {
-                        "id": str(user["id"]),
-                        "username": user["username"],
-                        "email": user["email"],
-                        "login_methods": json.loads(user["login_methods"]) if user["login_methods"] else ["firebase"]
-                    }
-                }
+                return standard_auth_response(dict(user), access_token, refresh_token)
                 
             else:
                 # New user - create account with auto-generated username
@@ -1296,20 +1327,19 @@ async def firebase_auth(
                 # Device tracking handled by devices service
                 
                 # Create JWT tokens for new user
-                from app.core.auth import create_access_token, create_refresh_token
                 access_token = create_access_token(data={"sub": str(user_id)})
                 refresh_token = create_refresh_token(data={"sub": str(user_id)})
                 
-                return {
-                    "access": access_token,
-                    "refresh": refresh_token,
-                    "user": {
-                        "id": str(user_id),
-                        "username": username,
-                        "email": firebase_user.email or '',
-                        "login_methods": ["firebase"]
-                    }
+                # Create user_data for response
+                user_data = {
+                    "id": user_id,
+                    "username": username,
+                    "email": firebase_user.email or '',
+                    "email_verified": True,
+                    "login_methods": ["firebase"]
                 }
+                
+                return standard_auth_response(user_data, access_token, refresh_token)
                 
     except Exception as e:
         raise HTTPException(
@@ -1326,6 +1356,7 @@ async def apple_auth(
     """
     Authenticate with Apple Sign-In - MP15
     Creates new account or links to existing account automatically
+    Returns standardized JWT response
     """
     try:
         # Verify Apple token using social auth service
@@ -1339,79 +1370,70 @@ async def apple_auth(
             )
         
         email = profile.get("email")
-        apple_id = profile.get("apple_id")  # Keep for future use
+        apple_id = profile.get("apple_id")
         
         async with pool.acquire() as conn:
-            # Check if user already exists by email (Apple ID column doesn't exist yet)
-            user = await conn.fetchrow("""
-                SELECT id, username, email, login_methods
-                FROM users 
-                WHERE email = $1
-            """, email)
-            
-            if user:
-                # Existing user - update last_active
-                await conn.execute("""
-                    UPDATE users 
-                    SET last_login_at = NOW()
-                    WHERE id = $1
-                """, user["id"])
+            async with conn.transaction():
+                # Check if user already exists by email (case-insensitive)
+                user = await conn.fetchrow("""
+                    SELECT id, username, email, login_methods, email_verified, display_name
+                    FROM users 
+                    WHERE LOWER(email) = LOWER($1)
+                    FOR UPDATE
+                """, email)
                 
-                # Create JWT tokens for existing user
-                from app.core.auth import create_access_token, create_refresh_token
-                access_token = create_access_token(data={"sub": str(user["id"])})
-                refresh_token = create_refresh_token(data={"sub": str(user["id"])})
-                
-                return {
-                    "access": access_token,
-                    "refresh": refresh_token,
-                    "user": {
-                        "id": str(user["id"]),
-                        "username": user["username"],
-                        "email": user["email"],
-                        "login_methods": json.loads(user["login_methods"]) if user["login_methods"] else ["apple"]
-                    }
-                }
-                
-            else:
-                # New user - create account with auto-generated username
-                username = await _generate_unique_username(pool)
-                user_id = uuid.uuid4()
-                
-                # Create new user (Apple ID storage can be added later)
-                await conn.execute("""
-                    INSERT INTO users (
-                        id, username, email, 
-                        created_at, last_login_at, alert_range_km, 
-                        units_metric, preferred_language, login_methods
-                    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-                """, 
-                    user_id,
-                    username,
-                    email,
-                    datetime.utcnow(),
-                    datetime.utcnow(),
-                    50.0,  # default alert range
-                    True,  # default metric units
-                    "en",  # default language
-                    json.dumps(["apple"])
-                )
-                
-                # Create JWT tokens for new user
-                from app.core.auth import create_access_token, create_refresh_token
-                access_token = create_access_token(data={"sub": str(user_id)})
-                refresh_token = create_refresh_token(data={"sub": str(user_id)})
-                
-                return {
-                    "access": access_token,
-                    "refresh": refresh_token,
-                    "user": {
-                        "id": str(user_id),
+                if user:
+                    # Existing user - update login methods and last_active
+                    login_methods = user["login_methods"] if user["login_methods"] else ["magic_link"]
+                    if isinstance(login_methods, str):
+                        login_methods = json.loads(login_methods)
+                    
+                    if "apple" not in login_methods:
+                        login_methods.append("apple")
+                        await conn.execute("""
+                            UPDATE users 
+                            SET login_methods = $1, last_login_at = NOW(), email_verified = TRUE
+                            WHERE id = $2
+                        """, json.dumps(login_methods), user["id"])
+                    else:
+                        await conn.execute("""
+                            UPDATE users SET last_login_at = NOW() WHERE id = $1
+                        """, user["id"])
+                    
+                    # Create updated user dict for response
+                    user_data = dict(user)
+                    user_data["login_methods"] = login_methods
+                    user_data["email_verified"] = True
+                    
+                else:
+                    # New user - create account with auto-generated username
+                    username = await _generate_unique_username(pool)
+                    user_id = uuid.uuid4()
+                    
+                    # Create new user
+                    await conn.execute("""
+                        INSERT INTO users (
+                            id, username, email, email_verified, 
+                            login_methods, preferred_login_method,
+                            created_at, last_login_at
+                        ) VALUES ($1, $2, $3, TRUE, $4, 'apple', NOW(), NOW())
+                    """, user_id, username, email, json.dumps(["apple", "magic_link"]))
+                    
+                    # Create user_data for response
+                    user_data = {
+                        "id": user_id,
                         "username": username,
-                        "email": email or '',
-                        "login_methods": ["apple"]
+                        "email": email,
+                        "email_verified": True,
+                        "login_methods": ["apple", "magic_link"],
+                        "display_name": profile.get("name")
                     }
-                }
+                
+                # Create JWT tokens
+                access_token = create_access_token(data={"sub": str(user_data["id"])})
+                refresh_token = create_refresh_token(data={"sub": str(user_data["id"])})
+                
+                return standard_auth_response(user_data, access_token, refresh_token)
                 
     except Exception as e:
         raise HTTPException(

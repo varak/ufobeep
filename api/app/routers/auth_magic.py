@@ -11,13 +11,36 @@ from typing import Optional
 
 from app.core.database import get_db
 from app.models import MagicLink, MagicLinkAttempt, User, AlertLevel
-from app.core.auth import create_access_token
+from app.core.auth import create_access_token, create_refresh_token
 from app.config.environment import settings
 from app.services.email_service_postfix import get_email_service
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/auth/magic", tags=["magic-link-auth"])
+
+
+# Standardized auth response format
+def standard_auth_response(user_data: dict, access_token: str, refresh_token: str, expires_in: int = 3600):
+    """
+    Standard authentication response format for all auth methods
+    Ensures consistency across Google, Apple, Firebase, and Magic Link auth
+    """
+    return {
+        "success": True,
+        "token_type": "Bearer", 
+        "access": access_token,
+        "refresh": refresh_token,
+        "expires_in": expires_in,
+        "user": {
+            "id": str(user_data.get("id")),
+            "email": user_data.get("email"),
+            "username": user_data.get("username"),
+            "display_name": user_data.get("display_name"),
+            "email_verified": True,  # Magic link means email verified
+            "login_methods": ["magic_link"]
+        }
+    }
 
 
 # Request/Response Models
@@ -1231,15 +1254,14 @@ async def exchange_magic_code(
         
         logger.info(f"MAGIC_CODE_EXCHANGE: SUCCESS - user_id={user.id}, code={request.code[:8]}..., IP={ip_address}")
         
-        return MagicCodeExchangeResponse(
-            access_token=access_token,
-            refresh_token=refresh_token,
-            user={
-                "id": str(user.id),
-                "username": user.username,
-                "email": user.email
-            }
-        )
+        # Use standardized auth response format
+        user_data = {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email
+        }
+        
+        return standard_auth_response(user_data, access_token, refresh_token)
             
     except HTTPException:
         db.rollback()
