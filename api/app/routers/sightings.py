@@ -5,12 +5,14 @@ import logging
 import asyncio
 
 from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks, Query
-from fastapi.security import HTTPBearer
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 
 from app.config.environment import settings
 from app.schemas.media import MediaFile
 from app.services.storage_service import storage_service
+from app.services.database_service import get_database_pool
+from app.services.auth_service import verify_access_token
 
 
 logger = logging.getLogger(__name__)
@@ -227,13 +229,51 @@ sightings_db = {}
 
 
 # Dependencies
-async def get_current_user_id(token: Optional[str] = Depends(security)) -> Optional[str]:
-    """Extract user ID from JWT token - blocks anonymous users"""
-    if token and token.credentials:
-        # TODO: Implement actual JWT validation
-        # For now, return None to prevent anonymous access
+async def get_current_user_id(token: Optional[HTTPAuthorizationCredentials] = Depends(security)) -> Optional[str]:
+    """Extract user ID from JWT token"""
+    if not token:
         return None
-    return None
+    
+    try:
+        # Verify the JWT token
+        payload = verify_access_token(token.credentials)
+        user_id = payload.get("sub") or payload.get("user_id")
+        if not user_id:
+            return None
+        
+        # Get user information from database to verify user exists
+        pool = await get_database_pool()
+        async with pool.acquire() as conn:
+            user = await conn.fetchrow("""
+                SELECT id FROM users WHERE id = $1::uuid AND is_active = TRUE
+            """, user_id)
+            
+            if not user:
+                return None
+                
+            return str(user["id"])
+            
+    except Exception as e:
+        logger.warning(f"JWT token validation failed: {e}")
+        return None
+
+
+async def require_current_user_id(token: Optional[HTTPAuthorizationCredentials] = Depends(security)) -> str:
+    """Require authenticated user and return user ID"""
+    if not token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication required"
+        )
+    
+    user_id = await get_current_user_id(token)
+    if not user_id:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired authentication token"
+        )
+    
+    return user_id
 
 
 def jitter_coordinates(lat: float, lng: float) -> GeoCoordinates:
@@ -471,7 +511,7 @@ def determine_alert_level(submission: SightingSubmission) -> AlertLevel:
 async def create_sighting(
     submission: SightingSubmission,
     background_tasks: BackgroundTasks,
-    user_id: Optional[str] = Depends(get_current_user_id)
+    user_id: str = Depends(require_current_user_id)
 ):
     """
     Create a new sighting report
@@ -565,7 +605,7 @@ async def create_sighting(
 @router.get("/{sighting_id}", response_model=dict)
 async def get_sighting(
     sighting_id: str,
-    user_id: Optional[str] = Depends(get_current_user_id)
+    user_id: str = Depends(require_current_user_id)
 ):
     """
     Get sighting details by ID
@@ -643,7 +683,7 @@ async def get_sighting(
 async def update_sighting(
     sighting_id: str,
     updates: dict,
-    user_id: Optional[str] = Depends(get_current_user_id)
+    user_id: str = Depends(require_current_user_id)
 ):
     """
     Update sighting details (owner only)
@@ -717,7 +757,7 @@ async def update_sighting(
 @router.delete("/{sighting_id}")
 async def delete_sighting(
     sighting_id: str,
-    user_id: Optional[str] = Depends(get_current_user_id)
+    user_id: str = Depends(require_current_user_id)
 ):
     """
     Delete a sighting (owner only)
@@ -784,7 +824,7 @@ async def list_sightings(
     status: Optional[str] = Query(default=None),
     min_alert_level: Optional[str] = Query(default=None),
     verified_only: bool = Query(default=False),
-    user_id: Optional[str] = Depends(get_current_user_id)
+    user_id: str = Depends(require_current_user_id)
 ):
     """
     List sightings with filtering and pagination
@@ -929,7 +969,7 @@ async def process_sighting_async(sighting_id: str):
 @router.post("/{sighting_id}/enrich")
 async def trigger_sighting_enrichment(
     sighting_id: str,
-    user_id: Optional[str] = Depends(get_current_user_id)
+    user_id: str = Depends(require_current_user_id)
 ):
     """
     Manually trigger enrichment for a sighting (owner only)
