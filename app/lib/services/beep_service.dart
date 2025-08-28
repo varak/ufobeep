@@ -12,17 +12,17 @@ import 'sound_service.dart';
 import 'device_service.dart';
 import 'api_client.dart';
 
-class AnonymousBeepService {
-  static const String _deviceIdKey = 'anonymous_device_id';
-  static const String _beepHistoryKey = 'anonymous_beep_history';
+class BeepService {
+  static const String _deviceIdKey = 'beep_device_id';
+  static const String _beepHistoryKey = 'beep_history';
   
   final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
   final Uuid _uuid = const Uuid();
   
-  static final AnonymousBeepService _instance = AnonymousBeepService._internal();
-  factory AnonymousBeepService() => _instance;
+  static final BeepService _instance = BeepService._internal();
+  factory BeepService() => _instance;
   
-  AnonymousBeepService._internal();
+  BeepService._internal();
   
   // Use the authenticated Dio instance from ApiClient
   Dio get _dio => ApiClient.dio;

@@ -9,7 +9,7 @@ import '../../models/sensor_data.dart';
 import '../../models/api_models.dart' as api;
 import '../../services/api_client.dart';
 import '../../services/sound_service.dart';
-import '../../services/anonymous_beep_service.dart';
+import '../../services/beep_service.dart';
 import '../../providers/app_state.dart';
 import '../../widgets/simple_photo_display.dart';
 import '../../widgets/video_player_widget.dart';
@@ -133,7 +133,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         debugPrint('Invalid GPS coordinates (0,0) detected, will use current location');
       }
       
-      final beepResult = await anonymousBeepService.sendBeep(
+      final beepResult = await BeepService().sendBeep(
         description: finalDescription,
         latitude: validLat,
         longitude: validLon,
