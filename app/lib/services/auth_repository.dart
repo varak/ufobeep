@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:dio/dio.dart';
 import '../models/user_model.dart';
@@ -19,29 +20,39 @@ class AuthRepository with ChangeNotifier {
 
   UserModel? _currentUser;
   bool _isReady = false;
+  bool _isHydrating = false;
 
   UserModel? get currentUser => _currentUser;
-  bool get isReady => _isReady;
+  bool get isReady => _isReady && !_isHydrating;
+  bool get isHydrating => _isHydrating;
 
   static const _kAccess = 'access_token';
   static const _kRefresh = 'refresh_token';
 
   Future<void> loadSessionOnStartup() async {
+    debugPrint('[AuthRepository] 🚀 Starting session load');
+    
     try {
       final refresh = await _storage.read(key: _kRefresh);
       if (refresh == null || refresh.isEmpty) {
+        debugPrint('[AuthRepository] 🚀 No refresh token found, marking as ready');
         _isReady = true;
         notifyListeners();
         return;
       }
+      
+      debugPrint('[AuthRepository] 🚀 Refresh token found, attempting silent refresh');
       // Try silent refresh
       await _refreshTokens();
       await fetchMe();
+      debugPrint('[AuthRepository] 🚀 Session loaded successfully');
     } catch (e) {
+      debugPrint('[AuthRepository] 🚀 Session load failed: $e, clearing session');
       // If refresh fails, clear tokens
       await clearSession();
     } finally {
       _isReady = true;
+      debugPrint('[AuthRepository] 🚀 Session load complete, marked as ready');
       notifyListeners();
     }
   }
@@ -62,17 +73,53 @@ class AuthRepository with ChangeNotifier {
   }
 
   Future<void> updateFromMagicLinkResponse(Map<String, dynamic> payload) async {
-    // ChatGPT: Expect backend to return { access, refresh, user: {...} }
-    final access = payload['access'] as String?;
-    final refresh = payload['refresh'] as String?;
-    final user = payload['user'] as Map<String, dynamic>?;
-
-    if (access == null || refresh == null || user == null) {
-      throw Exception('Bad magic link exchange payload');
-    }
-    await setTokens(access: access, refresh: refresh);
-    _currentUser = UserModel.fromJson(user);
+    // Set hydrating state to prevent race conditions
+    _isHydrating = true;
     notifyListeners();
+    
+    debugPrint('[AuthRepository] 🔄 Starting magic link response update (hydrating)');
+    
+    try {
+      // ChatGPT: Expect backend to return { access, refresh, user: {...} }
+      final access = payload['access'] as String?;
+      final refresh = payload['refresh'] as String?;
+      final user = payload['user'] as Map<String, dynamic>?;
+
+      if (access == null || refresh == null || user == null) {
+        throw Exception('Bad magic link exchange payload: missing required fields');
+      }
+      
+      debugPrint('[AuthRepository] 🔄 Payload validation passed');
+      debugPrint('[AuthRepository] 🔄 Setting tokens...');
+      
+      // Store tokens atomically
+      await setTokens(access: access, refresh: refresh);
+      
+      debugPrint('[AuthRepository] 🔄 Creating user model...');
+      
+      // Update user model
+      _currentUser = UserModel.fromJson(user);
+      
+      debugPrint('[AuthRepository] ✅ Magic link update complete - user: ${_currentUser?.username}');
+      
+      // Complete hydration atomically
+      await Future.microtask(() {
+        _isHydrating = false;
+        notifyListeners();
+      });
+      
+      debugPrint('[AuthRepository] ✅ Auth state ready and hydrated');
+      
+    } catch (e, stackTrace) {
+      debugPrint('[AuthRepository] ❌ Magic link update failed: $e');
+      debugPrint('[AuthRepository] ❌ Stack trace: $stackTrace');
+      
+      // Rollback to clean state on failure
+      _isHydrating = false;
+      await clearSession();
+      
+      rethrow;
+    }
   }
 
   Future<void> logout() async {

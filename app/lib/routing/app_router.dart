@@ -409,7 +409,8 @@ GoRouter appRouter(AppRouterRef ref) {
         builder: (context, state) => const AccountRecoveryScreen(),
       ),
 
-      // Internal Magic Link Handler (ChatGPT's Phase 2 solution)
+      // Internal Magic Link Handler (ChatGPT's Phase 2 solution)  
+      // Navigation will be handled by SplashScreen based on AuthRepository state changes
       GoRoute(
         path: '/auth/magic',
         name: 'auth-magic',
@@ -417,31 +418,23 @@ GoRouter appRouter(AppRouterRef ref) {
           final code = state.uri.queryParameters['code'];
           debugPrint('🔗 Internal magic route hit with code: ${code?.substring(0, 8)}...');
           
-          // Process the magic link immediately
+          // Process the magic link but let AuthRepository state drive navigation
           if (code != null && code.isNotEmpty) {
             WidgetsBinding.instance.addPostFrameCallback((_) async {
               try {
-                debugPrint('🔗 Processing magic code via internal route');
+                debugPrint('🔗 Processing magic code via internal route (no navigation here)');
                 await AuthService().beginProcessingLink();
-                final success = await AuthService().loginWithMagicCode(code: code);
-                
-                if (success && context.mounted) {
-                  debugPrint('🔗 Internal route login success, navigating to alerts');
-                  context.go('/alerts');
-                } else if (context.mounted) {
-                  debugPrint('🔗 Internal route login failed, navigating to sign-in');
-                  context.go('/sign-in');
-                }
+                await AuthService().loginWithMagicCode(code: code);
+                debugPrint('🔗 Magic code processing complete, AuthRepository will handle navigation');
               } catch (e) {
                 debugPrint('🔗 Internal route error: $e');
-                if (context.mounted) {
-                  context.go('/sign-in');
-                }
+                // Let AuthRepository state (cleared by error) drive navigation back to sign-in
               }
             });
           }
           
           // Show loading screen while processing
+          // Navigation will happen via AuthRepository state changes monitored by app
           return Scaffold(
             backgroundColor: AppColors.darkBackground,
             body: Center(
@@ -458,6 +451,15 @@ GoRouter appRouter(AppRouterRef ref) {
                       color: AppColors.textPrimary,
                       fontSize: 16,
                     ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Please wait while we verify your magic link',
+                    style: TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 14,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),

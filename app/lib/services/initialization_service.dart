@@ -10,10 +10,12 @@ import '../config/locale_config.dart';
 import 'permission_service.dart';
 import 'user_service.dart';
 import 'firebase_auth_service.dart';
+import 'auth_repository.dart';
 
 enum InitializationStep {
   environment,
   permissions,
+  authRepository,
   userSystem,
   userPreferences,
   localization,
@@ -98,22 +100,30 @@ class InitializationService {
       initData.addAll(envResult.data);
 
       // Step 2: Initialize all permissions at startup (app won't work without them)
-      await _updateProgress(InitializationStep.permissions, 0.25, 'Requesting permissions...');
+      await _updateProgress(InitializationStep.permissions, 0.2, 'Requesting permissions...');
       final permResult = await _usePermissionService();
       if (!permResult.success) {
         return permResult;
       }
       initData.addAll(permResult.data);
 
-      // Step 3: Initialize user system
-      await _updateProgress(InitializationStep.userSystem, 0.35, 'Checking user registration...');
+      // Step 3: Initialize AuthRepository (session loading)
+      await _updateProgress(InitializationStep.authRepository, 0.3, 'Loading auth session...');
+      final authResult = await _initializeAuthRepository();
+      if (!authResult.success) {
+        return authResult;
+      }
+      initData.addAll(authResult.data);
+
+      // Step 4: Initialize user system
+      await _updateProgress(InitializationStep.userSystem, 0.4, 'Checking user registration...');
       final userResult = await _initializeUserSystem();
       if (!userResult.success) {
         return userResult;
       }
       initData.addAll(userResult.data);
 
-      // Step 4: Load user preferences
+      // Step 5: Load user preferences
       await _updateProgress(InitializationStep.userPreferences, 0.5, 'Loading preferences...');
       final prefResult = await _loadUserPreferences();
       if (!prefResult.success) {
@@ -121,7 +131,7 @@ class InitializationService {
       }
       initData.addAll(prefResult.data);
 
-      // Step 5: Initialize localization
+      // Step 6: Initialize localization
       await _updateProgress(InitializationStep.localization, 0.65, 'Setting up localization...');
       final localeResult = await _initializeLocalization(initData);
       if (!localeResult.success) {
@@ -129,7 +139,7 @@ class InitializationService {
       }
       initData.addAll(localeResult.data);
 
-      // Step 6: Network connectivity check
+      // Step 7: Network connectivity check
       await _updateProgress(InitializationStep.networkCheck, 0.8, 'Checking connectivity...');
       final networkResult = await _checkNetworkConnectivity();
       if (!networkResult.success) {
@@ -137,7 +147,7 @@ class InitializationService {
       }
       initData.addAll(networkResult.data);
 
-      // Step 7: Device information
+      // Step 8: Device information
       await _updateProgress(InitializationStep.deviceInfo, 0.9, 'Gathering device info...');
       final deviceResult = await _gatherDeviceInfo();
       if (!deviceResult.success) {
@@ -145,7 +155,7 @@ class InitializationService {
       }
       initData.addAll(deviceResult.data);
 
-      // Step 8: Complete
+      // Step 9: Complete
       await _updateProgress(InitializationStep.complete, 1.0, 'Initialization complete!');
 
       _logInfo('Initialization completed successfully');
@@ -248,6 +258,57 @@ class InitializationService {
         success: false,
         error: 'Permission initialization failed: $e',
         lastStep: InitializationStep.permissions,
+      );
+    }
+  }
+
+  Future<InitializationResult> _initializeAuthRepository() async {
+    try {
+      _logInfo('Initializing AuthRepository session...');
+      
+      final authRepo = AuthRepository();
+      
+      // Load existing session from secure storage
+      await authRepo.loadSessionOnStartup();
+      
+      // Wait for AuthRepository to be ready
+      int waitAttempts = 0;
+      const maxWaitAttempts = 30; // 3 seconds max wait
+      const waitInterval = Duration(milliseconds: 100);
+      
+      while (!authRepo.isReady && waitAttempts < maxWaitAttempts) {
+        await Future.delayed(waitInterval);
+        waitAttempts++;
+      }
+      
+      final isAuthenticated = authRepo.currentUser != null;
+      final username = authRepo.currentUser?.username;
+      
+      _logInfo('AuthRepository initialization completed');
+      _logInfo('Session loaded: $isAuthenticated, Username: ${username ?? 'none'}');
+      
+      return InitializationResult(
+        success: true,
+        lastStep: InitializationStep.authRepository,
+        data: {
+          'authRepositoryReady': authRepo.isReady,
+          'isAuthenticated': isAuthenticated,
+          'username': username,
+          'sessionLoaded': true,
+        },
+      );
+    } catch (e) {
+      _logError('AuthRepository initialization failed: $e');
+      // Don't fail initialization for auth issues - let splash screen handle routing
+      return InitializationResult(
+        success: true,
+        lastStep: InitializationStep.authRepository,
+        data: {
+          'authRepositoryReady': false,
+          'isAuthenticated': false,
+          'sessionLoaded': false,
+          'error': e.toString(),
+        },
       );
     }
   }

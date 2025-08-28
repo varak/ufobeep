@@ -480,13 +480,24 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       debugPrint('[Auth] ✅ ApiClient auth token set');
       
       // Update AuthRepository with tokens and user data
-      debugPrint('[Auth] 🔐 AUTH_DEBUG: Updating AuthRepository');
-      await AuthRepository().updateFromMagicLinkResponse({
-        'access': accessToken,
-        'refresh': refreshToken ?? '',
-        'user': userObj,
-      });
-      debugPrint('[Auth] ✅ AuthRepository updated with tokens');
+      debugPrint('[Auth] 🔐 AUTH_DEBUG: Updating AuthRepository with magic link response');
+      debugPrint('[Auth] 🔐 AUTH_DEBUG: AuthRepository current state - isReady: ${AuthRepository().isReady}, isHydrating: ${AuthRepository().isHydrating}');
+      
+      try {
+        await AuthRepository().updateFromMagicLinkResponse({
+          'access': accessToken,
+          'refresh': refreshToken ?? '',
+          'user': userObj,
+        });
+        debugPrint('[Auth] ✅ AuthRepository updated successfully');
+        debugPrint('[Auth] 🔐 AUTH_DEBUG: AuthRepository post-update state - isReady: ${AuthRepository().isReady}, isHydrating: ${AuthRepository().isHydrating}');
+        debugPrint('[Auth] 🔐 AUTH_DEBUG: AuthRepository current user: ${AuthRepository().currentUser?.username}');
+      } catch (e, stackTrace) {
+        debugPrint('[Auth] ❌ AuthRepository update failed: $e');
+        debugPrint('[Auth] ❌ Stack trace: $stackTrace');
+        _showDevSnack('AuthRepository update failed: $e');
+        return false;
+      }
       
       debugPrint('[Auth] ✅ Authorization code auth successful - userId: $userId, username: $username');
       
@@ -499,6 +510,9 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       ));
       
       debugPrint('[Auth] 🔐 AUTH_DEBUG: Magic link authentication completed successfully');
+      debugPrint('[Auth] 🔐 AUTH_DEBUG: Final auth state check - AuthRepository ready: ${AuthRepository().isReady}');
+      debugPrint('[Auth] 🔐 AUTH_DEBUG: Final auth state check - AuthRepository user: ${AuthRepository().currentUser?.username}');
+      
       _showDevSnack('Welcome back, $username!');
       return true;
       

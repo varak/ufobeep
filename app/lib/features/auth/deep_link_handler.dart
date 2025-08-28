@@ -5,6 +5,7 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import '../../services/auth_service.dart';
+import '../../services/auth_repository.dart';
 import '../../routing/app_router.dart';
 
 /// Centralized deep link handler that processes magic links BEFORE UI renders
@@ -130,9 +131,15 @@ class DeepLinkHandler {
           // Navigate to the HTTPS URL - GoRouter redirect will normalize it
           final context = rootNavigatorKey.currentContext;
           if (context != null && context.mounted) {
+            debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG: About to navigate to HTTPS URL for GoRouter processing');
+            debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG: AuthRepository current state before navigation:');
+            debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG:   - isReady: ${AuthRepository().isReady}');
+            debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG:   - isHydrating: ${AuthRepository().isHydrating}');
+            debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG:   - currentUser: ${AuthRepository().currentUser?.username}');
+            
             // Use the original HTTPS URL - GoRouter will redirect to internal route
             context.go(uri.toString());
-            debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG: Navigated to HTTPS URL for GoRouter processing');
+            debugPrint('[DeepLink] 🔗 PHASE_2_DEBUG: Navigated to HTTPS URL, GoRouter will handle processing');
           } else {
             debugPrint('[DeepLink][WARN] No context for GoRouter navigation');
           }

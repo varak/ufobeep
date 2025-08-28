@@ -8,6 +8,7 @@ import '../../config/environment.dart';
 import '../../providers/app_state.dart';
 import '../../providers/initialization_provider.dart';
 import '../../services/auth_service.dart';
+import '../../services/auth_repository.dart';
 import '../../widgets/splash/loading_animation.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -78,39 +79,57 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   Future<void> _navigateBasedOnAuthState() async {
     if (!mounted) return;
     
-    final currentUser = authService.currentUser;
+    debugPrint('SPLASH DEBUG: Starting auth-based navigation');
     
-    if (currentUser != null) {
-      // User has Firebase auth - check if they have complete backend profile
-      print('SPLASH DEBUG: Firebase user exists: ${currentUser.uid}');
-      
-      try {
-        // Check if user has stored username (indicates complete profile)
-        final prefs = await SharedPreferences.getInstance();
-        final storedUsername = prefs.getString('username');
-        final userPreferences = prefs.getString('user_preferences');
-        
-        print('SPLASH DEBUG: Stored username: $storedUsername');
-        print('SPLASH DEBUG: User preferences exist: ${userPreferences != null}');
-        
-        if (storedUsername != null && storedUsername.isNotEmpty && userPreferences != null) {
-          // User has complete profile, go to main app
-          print('SPLASH DEBUG: Complete profile found, going to alerts');
-          context.go('/alerts');
-        } else {
-          // Firebase user exists but no local profile - sign out and start fresh
-          print('SPLASH DEBUG: Firebase user with no profile, clearing auth and going to sign-in');
-          await authService.signOut();
-          context.go('/sign-in');
-        }
-      } catch (e) {
-        print('SPLASH DEBUG: Error checking profile: $e, clearing auth and going to sign-in');
-        await authService.signOut();
-        context.go('/sign-in');
+    final authRepo = AuthRepository();
+    
+    // Wait for AuthRepository to be ready (including hydration completion)
+    int waitAttempts = 0;
+    const maxWaitAttempts = 50; // 5 seconds max wait
+    const waitInterval = Duration(milliseconds: 100);
+    
+    while (!authRepo.isReady && waitAttempts < maxWaitAttempts) {
+      if (authRepo.isHydrating) {
+        debugPrint('SPLASH DEBUG: AuthRepository is hydrating, waiting... (${waitAttempts + 1}/$maxWaitAttempts)');
+      } else if (!authRepo.isReady) {
+        debugPrint('SPLASH DEBUG: AuthRepository not ready, waiting... (${waitAttempts + 1}/$maxWaitAttempts)');
       }
+      
+      await Future.delayed(waitInterval);
+      waitAttempts++;
+      
+      if (!mounted) return;
+    }
+    
+    if (!authRepo.isReady) {
+      debugPrint('SPLASH DEBUG: AuthRepository failed to become ready after ${maxWaitAttempts * 100}ms, proceeding anyway');
     } else {
-      // User is unauthenticated, go to sign-in screen
-      print('SPLASH DEBUG: No Firebase user, going to sign-in');
+      debugPrint('SPLASH DEBUG: AuthRepository is ready after ${waitAttempts * 100}ms');
+    }
+    
+    // Check authentication state from AuthRepository (single source of truth)
+    final currentUser = authRepo.currentUser;
+    
+    if (currentUser != null && currentUser.username != null) {
+      // User is fully authenticated with complete profile
+      debugPrint('SPLASH DEBUG: Authenticated user found: ${currentUser.username}');
+      debugPrint('SPLASH DEBUG: Navigating to /alerts');
+      context.go('/alerts');
+    } else if (currentUser != null && currentUser.username == null) {
+      // User exists but needs username - send to registration
+      debugPrint('SPLASH DEBUG: User exists but no username, going to registration');
+      context.go('/register');
+    } else {
+      // User is not authenticated or auth state is invalid
+      debugPrint('SPLASH DEBUG: No authenticated user found, going to sign-in');
+      
+      // Clear any stale auth state to prevent confusion
+      try {
+        await authRepo.clearSession();
+      } catch (e) {
+        debugPrint('SPLASH DEBUG: Error clearing session: $e');
+      }
+      
       context.go('/sign-in');
     }
   }
