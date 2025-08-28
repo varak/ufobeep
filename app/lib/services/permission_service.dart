@@ -35,94 +35,47 @@ class PermissionService {
   /// Check if location is ready for beep submission (permission + cached location)
   bool get locationReady => _locationGranted && _cachedLocation != null;
 
-  /// Initialize all permissions at app startup
+  /// Initialize all permissions at app startup (lightweight)
   Future<void> initializePermissions() async {
     if (_permissionsInitialized) return;
 
-    print('Initializing permissions...');
+    print('Initializing permissions (fast check)...');
     
-    // Always request permissions fresh (don't rely on cache for critical permissions)
-    await _requestAllPermissions();
-    
-    // Get initial location in background if permission was granted (for instant beeps)
-    if (_locationGranted) {
-      print('Starting background location fetch for instant beep readiness...');
-      // Don't await - run in background to avoid blocking startup
-      unawaited(_backgroundLocationFetch());
-    }
-    
-    // Cache the results
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_permissionsCheckedKey, true);
-    await _cachePermissions();
+    // Just check current status - don't request or do background work
+    await _checkCurrentPermissions();
     
     _permissionsInitialized = true;
-    print('Permissions initialized: Location=$_locationGranted, Camera=$_cameraGranted, Photos=$_photosGranted, Notifications=$_notificationGranted');
+    print('Permissions checked: Location=$_locationGranted, Camera=$_cameraGranted, Photos=$_photosGranted, Notifications=$_notificationGranted');
+  }
+  
+  /// Fast permission check without requests
+  Future<void> _checkCurrentPermissions() async {
+    try {
+      // Use Geolocator for location (consistent with BeepService)
+      final locationPermission = await Geolocator.checkPermission();
+      _locationGranted = locationPermission == LocationPermission.always || 
+                        locationPermission == LocationPermission.whileInUse;
+      
+      // Check other permissions without requesting
+      final cameraStatus = await Permission.camera.status;
+      _cameraGranted = cameraStatus == PermissionStatus.granted;
+      
+      final notificationStatus = await Permission.notification.status;
+      _notificationGranted = notificationStatus == PermissionStatus.granted;
+      
+      // Photos permission is complex, skip for now
+      _photosGranted = false;
+      
+    } catch (e) {
+      print('Error checking permissions: $e');
+      // Safe defaults
+      _locationGranted = false;
+      _cameraGranted = false;
+      _photosGranted = false;
+      _notificationGranted = false;
+    }
   }
 
-  /// Request all permissions needed by the app
-  Future<void> _requestAllPermissions() async {
-    print('Checking permissions quickly...');
-    
-    try {
-      // First check existing permissions - don't request if already granted
-      final locationStatus = await Permission.location.status;
-      final notificationStatus = await Permission.notification.status;
-      
-      if (locationStatus.isGranted && notificationStatus.isGranted) {
-        print('Permissions already granted - skipping request');
-        _locationGranted = true;
-        _notificationGranted = true;
-        return;
-      }
-      
-      // Only request permissions that aren't granted
-      final Map<Permission, PermissionStatus> statuses = await [
-        if (!locationStatus.isGranted) Permission.location,
-        if (!notificationStatus.isGranted) Permission.notification,
-      ].request();
-      
-      // Process location permission result
-      if (statuses.containsKey(Permission.location)) {
-        _locationGranted = statuses[Permission.location] == PermissionStatus.granted ||
-                          statuses[Permission.location] == PermissionStatus.limited;
-      } else {
-        // Fallback: check current status if batch request failed
-        final currentStatus = await Permission.location.status;
-        _locationGranted = currentStatus == PermissionStatus.granted ||
-                          currentStatus == PermissionStatus.limited;
-      }
-      print('Location permission: $_locationGranted');
-      
-      // Process notification permission result  
-      if (statuses.containsKey(Permission.notification)) {
-        _notificationGranted = statuses[Permission.notification] == PermissionStatus.granted;
-      } else {
-        // Fallback: check current status if batch request failed
-        final currentStatus = await Permission.notification.status;
-        _notificationGranted = currentStatus == PermissionStatus.granted;
-      }
-      print('Notification permission: $_notificationGranted');
-    } catch (e) {
-      print('Error during permission request: $e');
-      // Fallback: check current statuses individually
-      try {
-        _locationGranted = (await Permission.location.status).isGranted;
-        _notificationGranted = (await Permission.notification.status).isGranted;
-        print('Fallback permission check - Location: $_locationGranted, Notification: $_notificationGranted');
-      } catch (fallbackError) {
-        print('Fallback permission check failed: $fallbackError');
-        _locationGranted = false;
-        _notificationGranted = false;
-      }
-    }
-    
-    // Camera and Photos are now OPTIONAL - request them on-demand when needed
-    // This prevents permission prompt fatigue and lets users start using the app immediately
-    
-    // Cache the results
-    await _cachePermissions();
-  }
 
   /// Load cached permission status from storage
   Future<void> _loadCachedPermissions() async {
@@ -214,39 +167,18 @@ class PermissionService {
     }
   }
 
-  /// Get current location (only if permission granted)
+  /// Get current location (simplified - let BeepService handle this)
   Future<Position?> getCurrentLocation() async {
-    if (!_locationGranted) {
-      print('Location permission not granted');
-      return null;
-    }
-
-    // Return cached location if it's fresh (less than 5 minutes old)
-    if (_cachedLocation != null && _locationCacheTime != null) {
-      final age = DateTime.now().difference(_locationCacheTime!);
-      if (age.inMinutes < 5) {
-        print('Using cached location (${age.inSeconds}s old)');
-        return _cachedLocation;
-      }
-    }
-
+    // BeepService now handles location directly with Geolocator
+    // This method kept for compatibility but delegates to Geolocator
     try {
-      print('Getting fresh location...');
-      final position = await Geolocator.getCurrentPosition(
+      return await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.medium,
         timeLimit: const Duration(seconds: 10),
       );
-      
-      // Cache the fresh location
-      _cachedLocation = position;
-      _locationCacheTime = DateTime.now();
-      print('Location cached: ${position.latitude}, ${position.longitude}');
-      
-      return position;
     } catch (e) {
       print('Error getting current location: $e');
-      // Return cached location as fallback if available
-      return _cachedLocation;
+      return null;
     }
   }
 
@@ -272,8 +204,7 @@ class PermissionService {
 
   /// Refresh permission status (call after returning from settings)
   Future<void> refreshPermissions() async {
-    await _requestAllPermissions();
-    await _cachePermissions();
+    await _checkCurrentPermissions();
   }
   
   /// Request camera permission on-demand (when user wants to take photo)
