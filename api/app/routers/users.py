@@ -117,9 +117,9 @@ async def _create_new_user(
                 id, username, email, email_verified, firebase_uid, google_id, apple_id,
                 social_profile_data, login_methods, preferred_login_method,
                 needs_username_selection, created_at, last_login_at
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NOW(), NOW())
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, FALSE, NOW(), NOW())
         """, user_id, username, email, bool(email), firebase_uid, google_id, apple_id,
-             json.dumps(profile_data or {}), json.dumps(login_methods), preferred_login_method, True)
+             json.dumps(profile_data or {}), json.dumps(login_methods), preferred_login_method)
     
     return {
         "id": user_id,
@@ -127,7 +127,7 @@ async def _create_new_user(
         "email": email or "",
         "email_verified": bool(email),
         "login_methods": login_methods,
-        "needs_username_selection": True,
+        "needs_username_selection": False,
         "display_name": (profile_data or {}).get("name")
     }
 
