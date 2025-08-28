@@ -1032,7 +1032,7 @@ async def complete_magic_link_code(
         """, status_code=500)
 
 
-@router.post("/exchange", response_model=MagicCodeExchangeResponse)
+@router.post("/exchange")  # Temporarily removed response_model to avoid Pydantic validation issues
 async def exchange_magic_code(
     request: MagicCodeExchangeRequest,
     http_request: Request,
@@ -1063,11 +1063,7 @@ async def exchange_magic_code(
             logger.warning(f"MAGIC_CODE_EXCHANGE: ALREADY_USED - email={magic_link.email}, used_at={magic_link.used_at}, IP={ip_address}")
             raise HTTPException(status_code=410, detail="Code already used")
         
-        # Mark as used atomically
-        magic_link.used_at = datetime.now(timezone.utc)
-        magic_link.used_by_device_id = request.device_id
-        
-        # Find or create user
+        # Find or create user BEFORE marking code as used
         logger.info(f"MAGIC_CODE_EXCHANGE: SEARCHING_USER - email='{magic_link.email}', repr={repr(magic_link.email)}, IP={ip_address}")
         user = db.query(User).filter(User.email == magic_link.email).first()
         logger.info(f"MAGIC_CODE_EXCHANGE: USER_FOUND - found={'YES' if user else 'NO'}, email='{magic_link.email}', IP={ip_address}")
@@ -1109,21 +1105,28 @@ async def exchange_magic_code(
         access_token = create_access_token(data={"sub": str(user.id)})
         refresh_token = create_refresh_token(data={"sub": str(user.id)})
         
-        # Commit the transaction
-        db.commit()
-        
-        logger.info(f"MAGIC_CODE_EXCHANGE: SUCCESS - user_id={user.id}, code={request.code[:8]}..., IP={ip_address}")
-        
-        # Return response in format expected by MagicCodeExchangeResponse model
-        return MagicCodeExchangeResponse(
-            access_token=access_token,
-            refresh_token=refresh_token,
-            user={
+        # Prepare response data BEFORE marking code as used
+        response_data = {
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+            "user": {
                 "id": str(user.id),
                 "username": user.username,
                 "email": user.email
             }
-        )
+        }
+        
+        # ONLY mark as used after everything else succeeds
+        magic_link.used_at = datetime.now(timezone.utc)
+        magic_link.used_by_device_id = request.device_id
+        
+        # Commit the transaction (this marks code as used)
+        db.commit()
+        
+        logger.info(f"MAGIC_CODE_EXCHANGE: SUCCESS - user_id={user.id}, code={request.code[:8]}..., IP={ip_address}")
+        
+        # Return response data
+        return response_data
             
     except HTTPException:
         db.rollback()

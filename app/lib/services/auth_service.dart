@@ -347,8 +347,9 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
 
       // NEW: Handle the correct response format from /auth/magic/exchange
       // { access_token, refresh_token, user: { id, username, email } }
-      final access = respJson['access_token'] as String?;
-      final refreshToken = respJson['refresh_token'] as String?;
+      // Try both field names for compatibility
+      final access = respJson['access'] ?? respJson['access_token'] as String?;
+      final refreshToken = respJson['refresh'] ?? respJson['refresh_token'] as String?;
       final userObject = respJson['user'] as Map<String, dynamic>?;
       
       // Extract user fields from nested user object
@@ -496,8 +497,8 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       final updateStartTime = DateTime.now();
       try {
         final updateData = {
-          'access': accessToken,
-          'refresh': refreshToken ?? '',
+          'access': accessToken,  // AuthRepository expects 'access' 
+          'refresh': refreshToken ?? '',  // AuthRepository expects 'refresh'
           'user': userObj,
         };
         debugPrint('[MAGIC][$reqId] Update data keys: ${updateData.keys.toList()}');
