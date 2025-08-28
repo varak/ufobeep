@@ -7,7 +7,6 @@ enum LocationPrivacy {
   exact,     // Use exact coordinates
   jittered,  // Apply 100-300m jitter (default)
   approximate, // Round to ~1km precision
-  hidden,    // Don't include location
 }
 
 extension LocationPrivacyExtension on LocationPrivacy {
@@ -19,8 +18,6 @@ extension LocationPrivacyExtension on LocationPrivacy {
         return 'Approximate (±200m)';
       case LocationPrivacy.approximate:
         return 'General Area (~1km)';
-      case LocationPrivacy.hidden:
-        return 'No Location';
     }
   }
 
@@ -32,8 +29,6 @@ extension LocationPrivacyExtension on LocationPrivacy {
         return 'Add small random offset for privacy (recommended)';
       case LocationPrivacy.approximate:
         return 'Round location to nearest kilometer';
-      case LocationPrivacy.hidden:
-        return 'Don\'t share location information';
     }
   }
 
@@ -45,8 +40,6 @@ extension LocationPrivacyExtension on LocationPrivacy {
         return Icons.location_on;
       case LocationPrivacy.approximate:
         return Icons.location_city;
-      case LocationPrivacy.hidden:
-        return Icons.location_off;
     }
   }
 }
