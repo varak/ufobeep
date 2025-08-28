@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../services/auth_repository.dart';
+import '../../services/api_client.dart';
 import '../../models/user_model.dart';
 import '../../models/user_preferences.dart';
 import '../../providers/user_preferences_provider.dart';
@@ -153,13 +154,27 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           const SizedBox(height: 16),
           
           // Username and email for authenticated user
-          Text(
-            username,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textPrimary,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                username,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const SizedBox(width: 8),
+              IconButton(
+                onPressed: () => _regenerateUsername(user),
+                icon: const Icon(Icons.refresh, size: 20),
+                color: AppColors.brandPrimary,
+                tooltip: 'Generate new username',
+                constraints: const BoxConstraints(),
+                padding: const EdgeInsets.all(4),
+              ),
+            ],
           ),
           const SizedBox(height: 4),
           if (email != null)
@@ -799,6 +814,102 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ref.read(userPreferencesProvider.notifier).updatePreferences(
         preferences.copyWith(mediaOnlyAlerts: enabled),
       );
+    }
+  }
+
+  Future<void> _regenerateUsername(UserModel user) async {
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        content: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircularProgressIndicator(color: AppColors.brandPrimary),
+            SizedBox(width: 16),
+            Text(
+              'Generating new username...',
+              style: TextStyle(color: AppColors.textPrimary),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    try {
+      // Call the regenerate-username API endpoint
+      final response = await ApiClient.dio.post('/users/regenerate-username', data: {
+        'device_id': await _auth.getDeviceId(),
+      });
+
+      // Close loading dialog
+      if (mounted) Navigator.of(context).pop();
+
+      if (response.statusCode == 200) {
+        final newUsername = response.data['username'];
+        
+        // Update the user in AuthRepository
+        await _auth.fetchMe(); // Refresh user data from server
+        
+        // Show success dialog
+        if (mounted) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              backgroundColor: AppColors.darkSurface,
+              title: const Text(
+                'Username Updated!',
+                style: TextStyle(color: AppColors.textPrimary),
+              ),
+              content: Text(
+                'Your new username is: $newUsername',
+                style: const TextStyle(color: AppColors.textSecondary),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text(
+                    'OK',
+                    style: TextStyle(color: AppColors.brandPrimary),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      // Close loading dialog
+      if (mounted) Navigator.of(context).pop();
+      
+      // Show error dialog
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            backgroundColor: AppColors.darkSurface,
+            title: const Text(
+              'Error',
+              style: TextStyle(color: AppColors.error),
+            ),
+            content: Text(
+              'Failed to generate new username. Please try again.',
+              style: const TextStyle(color: AppColors.textSecondary),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text(
+                  'OK',
+                  style: TextStyle(color: AppColors.brandPrimary),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
     }
   }
 }
