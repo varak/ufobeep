@@ -66,3 +66,9 @@
 1. Uninstall app completely (to simulate new user)
 2. Install fresh APK: https://ufobeep.com/downloads/ufobeep-latest.apk
 3. Verify username generation and error handling work correctly
+
+#### Authentication Token Persistence
+- **Common Issue**: Users logged out after app restart despite valid tokens
+- **Root Cause**: Dual Dio HTTP client instances (static vs instance) causing auth header mismatch
+- **Fix**: Use single static Dio instance for all API calls with proper auth headers
+- **Reference**: See [Authentication Fix](AUTHENTICATION_FIX.md) for detailed troubleshooting

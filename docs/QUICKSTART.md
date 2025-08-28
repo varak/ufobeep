@@ -81,5 +81,6 @@ adb connect 192.168.0.49:43413  # Moto wireless
 - [Master Plan](MASTER_PLAN_v13.md) - Roadmap and features
 - [Endpoints](ENDPOINTS.md) - API documentation
 - [Deployment](DEPLOYMENT.md) - Detailed deployment guide
+- [Authentication Fix](AUTHENTICATION_FIX.md) - Token persistence bug resolution
 - [Contributing](CONTRIBUTING.md) - Git workflow
 - [CI](CI.md) - GitHub Actions setup

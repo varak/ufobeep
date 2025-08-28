@@ -155,6 +155,42 @@ Response: {
 Status: ✅ WORKING - Validates username format and availability
 ```
 
+### Get Current User (JWT Protected)
+```
+GET /users/me
+Headers: {
+  "Authorization": "Bearer <jwt_access_token>"
+}
+
+Response: {
+  "success": true,
+  "user": {
+    "id": "460911d5-e738-42f0-9a91-4e28c8886e44",
+    "username": "astral.matrix.2804", 
+    "email": "mike@emke.com",
+    "display_name": null,
+    "is_active": true,
+    "is_verified": true,
+    "alert_range_km": 50.0,
+    "units_metric": true,
+    "preferred_language": "en",
+    "created_at": "2025-08-22T07:45:49.818011+00:00",
+    "last_login": "2025-08-28T16:39:03.088940+00:00"
+  }
+}
+
+Error Responses:
+- 401 Unauthorized: "Authorization header required" | "Invalid or expired token"  
+- 404 Not Found: "User not found or inactive"
+
+Status: ✅ WORKING - Validates JWT access tokens with 'sub' field
+Notes: 
+- Used by mobile app for token validation during bootstrap
+- Fixed Aug 28, 2025: Endpoint path `/me` → `/users/me` 
+- Fixed JWT parsing: Checks both 'sub' and 'user_id' fields
+- Critical for authentication token persistence
+```
+
 ## Magic Link Authentication (Authorization Code Flow) ✅
 
 ### Start Magic Link Flow
