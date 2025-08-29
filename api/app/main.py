@@ -490,7 +490,7 @@ async def admin_test_alert(request: dict):
         proximity_service = get_proximity_alert_service(database_service.pool)
         result = await proximity_service.send_proximity_alerts(
             request.get("lat", 36.24), request.get("lng", -115.24),
-            "test-alert", request.get("device_id", "admin"), emergency_mode=True
+            "test-alert", request.get("device_id", "admin")
         )
         return {"success": True, "alerts_sent": result.get("total_alerts_sent", 0)}
     except Exception as e:
