@@ -57,7 +57,7 @@ void main() async {
   // Initialize LocationUpdateManager for battery-efficient location updates
   final locationManager = LocationUpdateManager(
     auth: auth, 
-    baseUrl: AppEnvironment.apiUrl,
+    baseUrl: AppEnvironment.apiBaseUrl,
   );
   await locationManager.start();
   print('✅ LocationUpdateManager started');
