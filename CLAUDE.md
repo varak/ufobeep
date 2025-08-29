@@ -123,6 +123,13 @@
   - Website serving properly in production mode
   - All media serving working with HTTPS proxy and thumbnails
   - API error messages now include helpful troubleshooting tips
+  - ✅ PUSH NOTIFICATIONS WORKING: Firebase singleton fix completed (Aug 29, 2025)
+    - Fixed "The default Firebase app already exists" errors with idempotent initialization
+    - Created singleton Firebase client pattern in api/app/core/firebase_client.py
+    - Added FastAPI lifespan initialization for startup-only Firebase init
+    - End-to-end beep → proximity → push notification flow verified working
+    - Successfully delivered push notifications to 2 registered devices
+    - Test endpoint /debug/fcm confirms Firebase messaging client available
 
   Mobile Testing:
 
