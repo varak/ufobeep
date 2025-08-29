@@ -31,13 +31,13 @@ class _PushDebugScreenState extends State<PushDebugScreen> {
       _statusText = 'Checking initial status...';
     });
     
-    final hasAuth = await _authRepository.hasValidTokens();
+    final accessToken = await _authRepository.getAccessToken();
     final fcmToken = await _deviceService.getFcmToken();
     final regManager = DeviceRegistrationManager();
     
     setState(() {
       _statusText = '''[DBUG][INIT] Status Check:
-├── JWT Auth: ${hasAuth ? "✓" : "✗"}
+├── JWT Auth: ${accessToken != null ? "✓" : "✗"}
 ├── FCM Token: ${fcmToken != null ? "✓ (...${fcmToken?.substring(fcmToken.length - 6)})" : "✗"}
 ├── Registration Manager: ${regManager.isRegistered ? "✓ Registered" : "✗ Not registered"}
 └── Ready for testing''';
