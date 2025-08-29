@@ -6,7 +6,7 @@ import logging
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPBearer
 from sqlalchemy.orm import Session
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 
 from app.config.environment import settings
 
@@ -60,6 +60,24 @@ class DeviceRegistrationRequest(BaseModel):
     # Locale settings
     timezone: Optional[str] = Field(None, description="Device timezone")
     locale: Optional[str] = Field(None, description="Device locale")
+    
+    # Location coordinates (required for proximity alerts)
+    lat: float = Field(..., ge=-90, le=90, description="Device latitude")
+    lon: float = Field(..., ge=-180, le=180, description="Device longitude")
+    
+    @validator('lat', 'lon')
+    def validate_coordinates_not_zero(cls, v, field):
+        if abs(v) < 0.0001:
+            # Allow if only one coordinate is near zero, reject if both are
+            return v
+        return v
+    
+    @validator('lon')
+    def validate_not_origin(cls, v, values):
+        lat = values.get('lat', 0)
+        if abs(lat) < 0.0001 and abs(v) < 0.0001:
+            raise ValueError('Invalid coordinates (0,0) - device registration requires valid location')
+        return v
 
 
 class DeviceUpdateRequest(BaseModel):
@@ -213,34 +231,17 @@ async def register_device(
             result = await conn.execute(
                 """
                 UPDATE devices SET
-                    push_token = $1,
-                    push_provider = $2,
-                    app_version = $3,
-                    os_version = $4,
-                    device_name = $5,
-                    alert_notifications = $6,
-                    chat_notifications = $7,
-                    system_notifications = $8,
-                    timezone = $9,
-                    locale = $10,
-                    last_seen = $11,
-                    updated_at = $11,
-                    token_updated_at = $11,
-                    is_active = true
-                WHERE device_id = $12
+                    push_token = $1, push_provider = $2, app_version = $3, os_version = $4, device_name = $5,
+                    alert_notifications = $6, chat_notifications = $7, system_notifications = $8,
+                    timezone = $9, locale = $10, lat = $11, lon = $12,
+                    last_seen = $13, updated_at = $13, token_updated_at = $13, is_active = true
+                WHERE device_id = $14
                 """,
-                request.push_token,
-                request.push_provider.value if request.push_provider else 'fcm',
-                request.app_version,
-                request.os_version,
-                request.device_name,
-                request.alert_notifications,
-                request.chat_notifications,
-                request.system_notifications,
-                request.timezone,
-                request.locale,
-                current_time,
-                request.device_id
+                request.push_token, request.push_provider.value if request.push_provider else 'fcm',
+                request.app_version, request.os_version, request.device_name,
+                request.alert_notifications, request.chat_notifications, request.system_notifications,
+                request.timezone, request.locale, request.lat, request.lon,
+                current_time, request.device_id
             )
             
             if result == "UPDATE 0":
@@ -248,27 +249,20 @@ async def register_device(
                 device_record_id = await conn.fetchval(
                     """
                     INSERT INTO devices (
-                        user_id, device_id, device_name, platform,
-                        app_version, os_version, push_token, push_provider, 
-                        push_enabled, alert_notifications, chat_notifications, system_notifications,
-                        is_active, last_seen, registered_at, token_updated_at, created_at, updated_at
+                        user_id, device_id, device_name, platform, app_version, os_version, 
+                        push_token, push_provider, push_enabled, 
+                        alert_notifications, chat_notifications, system_notifications,
+                        lat, lon, is_active, last_seen, registered_at, token_updated_at, created_at, updated_at
                     ) VALUES (
-                        $1, $2, $3, $4, $5, $6, $7, $8, 
-                        true, $9, $10, $11, true, $12, $12, $12, $12, $12
+                        $1, $2, $3, $4, $5, $6, $7, $8, true, $9, $10, $11, $12, $13,
+                        true, $14, $14, $14, $14, $14
                     ) RETURNING id
                     """,
-                    user_id,
-                    request.device_id,
-                    request.device_name,
-                    request.platform.value,
-                    request.app_version,
-                    request.os_version,
-                    request.push_token,
+                    user_id, request.device_id, request.device_name, request.platform.value,
+                    request.app_version, request.os_version, request.push_token,
                     request.push_provider.value if request.push_provider else 'fcm',
-                    request.alert_notifications,
-                    request.chat_notifications,
-                    request.system_notifications,
-                    current_time
+                    request.alert_notifications, request.chat_notifications, request.system_notifications,
+                    request.lat, request.lon, current_time
                 )
                 logger.info(f"Created new device {request.device_id} for user {user_id}")
             else:

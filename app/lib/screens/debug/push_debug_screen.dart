@@ -20,11 +20,13 @@ class _PushDebugScreenState extends State<PushDebugScreen> {
   String _statusText = 'Ready to debug...';
   Map<String, dynamic>? _lastResponse;
   bool _isLoading = false;
+  late Future<String?> _accessTokenFuture;
 
   @override
   void initState() {
     super.initState();
-    _checkInitialStatus();
+    // Use async pattern instead of calling _checkInitialStatus() synchronously
+    _accessTokenFuture = _authRepository.getAccessToken();
   }
 
   Future<void> _checkInitialStatus() async {
@@ -280,73 +282,178 @@ class _PushDebugScreenState extends State<PushDebugScreen> {
             ),
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: _checkInitialStatus,
+            onPressed: () {
+              setState(() {
+                _accessTokenFuture = _authRepository.getAccessToken();
+              });
+            },
             tooltip: 'Refresh Status',
           ),
         ],
       ),
-      body: Column(
-        children: [
-          // Control Panel
-          Container(
+      body: FutureBuilder<String?>(
+        future: _accessTokenFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return _buildLoadingUi();
+          }
+          
+          final accessToken = snapshot.data;
+          if (accessToken == null || accessToken.isEmpty) {
+            return _buildErrorUi('Please log in first — no access token available.');
+          }
+          
+          return _buildDebugUi(accessToken);
+        },
+      ),
+    );
+  }
+  
+  Widget _buildLoadingUi() {
+    return Column(
+      children: [
+        Expanded(
+          child: Container(
+            width: double.infinity,
             padding: const EdgeInsets.all(16),
             color: Colors.grey[900],
-            child: Column(
-              children: [
-                _buildDebugButton('🔐 Register Device Now', _registerDevice),
-                _buildDebugButton('📊 Check Server Status', _checkServerStatus),
-                _buildDebugButton('🔔 Send Test Push', _sendTestPush),
-                _buildDebugButton('🎫 Validate JWT Token', _checkJWT),
-              ],
-            ),
-          ),
-          
-          // Status Display
-          Expanded(
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              color: Colors.grey[900],
-              child: SingleChildScrollView(
-                child: SelectableText(
-                  _statusText,
-                  style: const TextStyle(
-                    fontFamily: 'monospace',
-                    fontSize: 13,
-                    color: Colors.white,
-                    height: 1.4,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          
-          // Loading Indicator
-          if (_isLoading)
-            Container(
-              padding: const EdgeInsets.all(16),
-              color: Colors.grey[900],
-              child: const Row(
+            child: const Center(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                  SizedBox(width: 12),
+                  CircularProgressIndicator(),
+                  SizedBox(height: 16),
                   Text(
-                    'Processing...',
+                    'Loading authentication status...',
                     style: TextStyle(
                       color: Colors.white70,
                       fontFamily: 'monospace',
+                      fontSize: 14,
                     ),
                   ),
                 ],
               ),
             ),
-        ],
-      ),
+          ),
+        ),
+      ],
+    );
+  }
+  
+  Widget _buildErrorUi(String message) {
+    return Column(
+      children: [
+        Expanded(
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            color: Colors.grey[900],
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.error_outline,
+                    color: Colors.red,
+                    size: 48,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    message,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontFamily: 'monospace',
+                      fontSize: 14,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        _accessTokenFuture = _authRepository.getAccessToken();
+                      });
+                    },
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+  
+  Widget _buildDebugUi(String accessToken) {
+    // Initialize status on first load with token info
+    if (_statusText == 'Ready to debug...') {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _checkInitialStatus();
+      });
+    }
+    
+    return Column(
+      children: [
+        // Control Panel
+        Container(
+          padding: const EdgeInsets.all(16),
+          color: Colors.grey[900],
+          child: Column(
+            children: [
+              _buildDebugButton('🔐 Register Device Now', _registerDevice),
+              _buildDebugButton('📊 Check Server Status', _checkServerStatus),
+              _buildDebugButton('🔔 Send Test Push', _sendTestPush),
+              _buildDebugButton('🎫 Validate JWT Token', _checkJWT),
+            ],
+          ),
+        ),
+        
+        // Status Display
+        Expanded(
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            color: Colors.grey[900],
+            child: SingleChildScrollView(
+              child: SelectableText(
+                _statusText,
+                style: const TextStyle(
+                  fontFamily: 'monospace',
+                  fontSize: 13,
+                  color: Colors.white,
+                  height: 1.4,
+                ),
+              ),
+            ),
+          ),
+        ),
+        
+        // Loading Indicator
+        if (_isLoading)
+          Container(
+            padding: const EdgeInsets.all(16),
+            color: Colors.grey[900],
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+                SizedBox(width: 12),
+                Text(
+                  'Processing...',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontFamily: 'monospace',
+                  ),
+                ),
+              ],
+            ),
+          ),
+      ],
     );
   }
 }

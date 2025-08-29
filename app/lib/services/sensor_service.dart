@@ -13,7 +13,71 @@ class SensorService {
   
   final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
 
-  /// Request location permission for proximity alerts
+  /// Get precise location for device registration - fail if unavailable
+  Future<Position?> getPreciseLocation({Duration timeout = const Duration(seconds: 10)}) async {
+    debugPrint('SensorService: Getting precise location for device registration...');
+    
+    // Ensure location services enabled
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      debugPrint('SensorService: ❌ Location services disabled');
+      return null;
+    }
+
+    // Permission flow
+    LocationPermission perm = await Geolocator.checkPermission();
+    if (perm == LocationPermission.denied) {
+      debugPrint('SensorService: Location permission denied, requesting...');
+      perm = await Geolocator.requestPermission();
+    }
+    
+    if (perm == LocationPermission.denied || perm == LocationPermission.deniedForever) {
+      debugPrint('SensorService: ❌ Location permission not granted: $perm');
+      return null;
+    }
+
+    try {
+      debugPrint('SensorService: Getting current position with ${timeout.inSeconds}s timeout...');
+      final pos = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+        timeLimit: timeout,
+      );
+      
+      // Guard against invalid (0,0) coordinates
+      if (pos.latitude.abs() < 0.0001 && pos.longitude.abs() < 0.0001) {
+        debugPrint('SensorService: ⚠️ Got (0,0) coordinates, trying last known position');
+        final last = await Geolocator.getLastKnownPosition();
+        if (last == null) {
+          debugPrint('SensorService: ❌ No last known position available');
+          return null;
+        }
+        if (last.latitude.abs() < 0.0001 && last.longitude.abs() < 0.0001) {
+          debugPrint('SensorService: ❌ Last known position also (0,0)');
+          return null;
+        }
+        debugPrint('SensorService: ✅ Using last known position: ${last.latitude}, ${last.longitude}');
+        return last;
+      }
+      
+      debugPrint('SensorService: ✅ Got current position: ${pos.latitude}, ${pos.longitude}, accuracy: ${pos.accuracy}m');
+      return pos;
+    } catch (e) {
+      debugPrint('SensorService: ⚠️ getCurrentPosition failed: $e, trying last known');
+      final last = await Geolocator.getLastKnownPosition();
+      if (last == null) {
+        debugPrint('SensorService: ❌ No fallback position available');
+        return null;
+      }
+      if (last.latitude.abs() < 0.0001 && last.longitude.abs() < 0.0001) {
+        debugPrint('SensorService: ❌ Fallback position is (0,0)');
+        return null;
+      }
+      debugPrint('SensorService: ✅ Using fallback position: ${last.latitude}, ${last.longitude}');
+      return last;
+    }
+  }
+
+  /// Request location permission for proximity alerts (legacy method)
   Future<bool> requestLocationPermission() async {
     try {
       // Check if location services are enabled

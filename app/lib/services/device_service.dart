@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:geolocator/geolocator.dart';
 import '../config/environment.dart' as env;
 import '../models/api_models.dart';
 import 'sensor_service.dart';
@@ -311,14 +312,15 @@ class DeviceService {
     }
   }
 
-  /// Register device with push token
+  /// Register device with push token and mandatory location
   Future<DeviceResponse?> registerDevice({
     required String pushToken,
+    required double latitude,
+    required double longitude,
     String? deviceName,
     bool alertNotifications = true,
     bool chatNotifications = true,
     bool systemNotifications = true,
-    bool includeLocation = true,
   }) async {
     try {
       final deviceId = await getDeviceId();
@@ -326,30 +328,18 @@ class DeviceService {
       final platform = getDevicePlatform();
       final pushProvider = getPushProvider();
 
-      // Try to get current location for proximity alerts
-      double? lat, lon;
-      if (includeLocation) {
-        try {
-          // First check/request location permission
-          final sensorService = SensorService();
-          final hasPermission = await sensorService.requestLocationPermission();
-          
-          if (hasPermission) {
-            final sensorData = await sensorService.captureSensorData();
-            if (sensorData != null && sensorData.latitude != 0.0 && sensorData.longitude != 0.0) {
-              lat = sensorData.latitude;
-              lon = sensorData.longitude;
-              print('Device registration: Including location lat=$lat, lon=$lon');
-            } else {
-              print('Device registration: Location permission granted but no valid GPS data');
-            }
-          } else {
-            print('Device registration: Location permission denied - registering without location');
-          }
-        } catch (e) {
-          print('Device registration: Failed to get location: $e');
-        }
+      // Validate required location coordinates
+      if (latitude.abs() < 0.0001 && longitude.abs() < 0.0001) {
+        print('❌ Device registration: Invalid coordinates (0,0) - registration requires valid location');
+        throw Exception('Device registration failed: Invalid location coordinates (0,0)');
       }
+      
+      if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
+        print('❌ Device registration: Coordinates out of valid range lat=$latitude, lon=$longitude');
+        throw Exception('Device registration failed: Location coordinates out of valid range');
+      }
+      
+      print('✅ Device registration: Using provided location lat=$latitude, lon=$longitude');
 
       final request = DeviceRegistrationRequest(
         deviceId: deviceId,
@@ -366,8 +356,8 @@ class DeviceService {
         systemNotifications: systemNotifications,
         timezone: DateTime.now().timeZoneName,
         locale: Platform.localeName,
-        lat: lat,
-        lon: lon,
+        lat: latitude,
+        lon: longitude,
       );
 
       final url = Uri.parse('${env.AppEnvironment.apiBaseUrl}/devices/register');

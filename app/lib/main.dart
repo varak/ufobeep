@@ -22,6 +22,7 @@ import 'services/analytics_service.dart';
 import 'services/auth_service.dart';
 import 'services/api_client.dart';
 import 'services/auth_repository.dart';
+import 'services/device_registration_manager.dart';
 import 'features/auth/deep_link_handler.dart';
 import 'features/auth/auth_gate.dart';
 import 'theme/app_theme.dart';
@@ -38,15 +39,19 @@ void main() async {
   // ChatGPT: Initialize ApiClient with interceptor
   ApiClient.init();
 
-  // ChatGPT: perform silent refresh before runApp for fast/clean routing
-  final auth = AuthRepository();
-  await auth.loadSessionOnStartup();
-  
-  // Run remaining critical initialization in parallel
+  // Run critical initialization in parallel (Firebase MUST be first)
   final results = await Future.wait([
     Firebase.initializeApp(),
     SharedPreferences.getInstance(),
   ]);
+  
+  // ChatGPT: perform silent refresh before runApp for fast/clean routing
+  final auth = AuthRepository();
+  await auth.loadSessionOnStartup();
+  
+  // Initialize DeviceRegistrationManager AFTER Firebase is initialized
+  DeviceRegistrationManager().start();
+  print('✅ DeviceRegistrationManager started');
   
   final sharedPreferences = results[1] as SharedPreferences;
   print('✅ Core initialization: ${stopwatch.elapsedMilliseconds}ms');

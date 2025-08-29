@@ -15,6 +15,7 @@ import '../services/device_service.dart';
 import 'auth_repository.dart';
 import 'storage.dart';
 import 'auth_service.dart';
+import 'device_registration_manager.dart';
 
 class SocialAuthResult {
   final bool success;
@@ -185,6 +186,10 @@ class SocialAuthService {
             'expires_in': data['expires_in'] ?? 3600,
           });
           print('SOCIAL AUTH: Updated AuthRepository with tokens using centralized method');
+          
+          // Immediately nudge device registration after successful Google login
+          await DeviceRegistrationManager().nudge();
+          print('SOCIAL AUTH: Device registration nudged');
         }
         
         // Only store user info if we have a valid username
@@ -285,6 +290,10 @@ class SocialAuthService {
             'expires_in': data['expires_in'] ?? 3600,
           });
           print('APPLE AUTH: Updated AuthRepository with tokens using centralized method');
+          
+          // Immediately nudge device registration after successful Apple login
+          await DeviceRegistrationManager().nudge();
+          print('APPLE AUTH: Device registration nudged');
         }
         
         // Store user info locally

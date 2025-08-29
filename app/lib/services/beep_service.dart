@@ -115,16 +115,29 @@ class BeepService {
           if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
             print('📍 Permission granted, getting location...');
             
-            // Get location directly with Geolocator (skip PermissionService complexity)
-            currentPosition = await Geolocator.getCurrentPosition(
-              desiredAccuracy: LocationAccuracy.medium,
-              timeLimit: const Duration(seconds: 15), // Give more time for first location
-            );
-            
-            if (currentPosition != null) {
-              print('✅ Got current location: ${currentPosition.latitude}, ${currentPosition.longitude}');
-              print('📍 Location accuracy: ${currentPosition.accuracy}m');
-              await SoundService.I.play(AlertSound.gpsOk);
+            // Try to get current location with high accuracy (no artificial timeout)
+            try {
+              currentPosition = await Geolocator.getCurrentPosition(
+                desiredAccuracy: LocationAccuracy.high,  // Use high accuracy to ensure GPS is used
+                // Removed timeLimit - let GPS acquire naturally without artificial constraints
+              );
+              
+              if (currentPosition != null) {
+                print('✅ Got current location: ${currentPosition.latitude}, ${currentPosition.longitude}');
+                print('📍 Location accuracy: ${currentPosition.accuracy}m');
+                await SoundService.I.play(AlertSound.gpsOk);
+              }
+            } catch (e) {
+              print('⚠️ Current position failed, trying last known position: $e');
+              
+              // Fallback to last known position if current fails
+              currentPosition = await Geolocator.getLastKnownPosition();
+              
+              if (currentPosition != null) {
+                print('📍 Using last known location: ${currentPosition.latitude}, ${currentPosition.longitude}');
+                print('📍 Location accuracy: ${currentPosition.accuracy}m (cached)');
+                await SoundService.I.play(AlertSound.gpsOk);
+              }
             }
           } else {
             print('❌ Location permission not granted: $permission');
