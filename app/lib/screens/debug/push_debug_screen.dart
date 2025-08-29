@@ -193,7 +193,8 @@ class _PushDebugScreenState extends State<PushDebugScreen> {
       child: ElevatedButton(
         onPressed: _isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: color ?? Theme.of(context).primaryColor,
+          backgroundColor: color ?? Colors.blue,
+          foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 12),
         ),
         child: Text(
@@ -201,6 +202,7 @@ class _PushDebugScreenState extends State<PushDebugScreen> {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
+            color: Colors.white,
           ),
         ),
       ),
