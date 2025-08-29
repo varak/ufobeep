@@ -137,12 +137,23 @@ async def get_db():
 
 # Dependencies
 async def get_current_user_id(token: Optional[str] = Depends(security)) -> Optional[str]:
-    """Extract user ID from JWT token - blocks anonymous users"""
-    if token and token.credentials:
-        # TODO: Implement actual JWT validation
-        # For now, return None to prevent anonymous access
+    """Extract user ID from JWT token"""
+    if not token or not token.credentials:
         return None
-    return None
+    
+    try:
+        from app.core.auth import verify_access_token
+        payload = verify_access_token(token.credentials)
+        user_id = payload.get("user_id")
+        if user_id:
+            logger.debug(f"Authenticated user: {user_id}")
+            return user_id
+        else:
+            logger.warning("JWT token missing user_id")
+            return None
+    except Exception as e:
+        logger.warning(f"JWT validation failed: {e}")
+        return None
 
 
 
@@ -645,6 +656,213 @@ async def update_device_location(device_id: str, request: dict):
         raise HTTPException(status_code=500, detail=f"Failed to update location: {str(e)}")
 
 
+# Debug endpoints
+@router.get("/status")
+async def get_device_registration_status(user_id: Optional[str] = Depends(get_current_user_id)):
+    """Get current device registration status for authenticated user"""
+    try:
+        if not user_id:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail={
+                    "error": "AUTHENTICATION_REQUIRED",
+                    "message": "Authentication required to check device status"
+                }
+            )
+        
+        db_pool = await get_db()
+        
+        async with db_pool.acquire() as conn:
+            device = await conn.fetchrow(
+                """
+                SELECT id, device_id, platform, push_token, push_enabled,
+                       last_seen, registered_at, is_active
+                FROM devices 
+                WHERE user_id = $1 AND is_active = true
+                ORDER BY registered_at DESC 
+                LIMIT 1
+                """,
+                user_id
+            )
+            
+            if not device:
+                return {
+                    "is_registered": False,
+                    "user_id": user_id,
+                    "message": "No active device found for user"
+                }
+            
+            return {
+                "is_registered": True,
+                "device_id": device["device_id"],
+                "platform": device["platform"],
+                "push_enabled": device["push_enabled"],
+                "fcm_token_present": bool(device["push_token"]),
+                "fcm_token_hash": device["push_token"][:8] + "..." if device["push_token"] else None,
+                "last_seen_at": device["last_seen"].isoformat() if device["last_seen"] else None,
+                "registered_at": device["registered_at"].isoformat(),
+                "user_id": user_id
+            }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting device status: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "error": "DEVICE_STATUS_FAILED",
+                "message": f"Failed to get device status: {str(e)}"
+            }
+        )
+
+
+@router.get("/admin/search")
+async def search_devices_admin(q: str):
+    """Admin endpoint to search devices table (temporary debug tool)"""
+    try:
+        db_pool = await get_db()
+        
+        async with db_pool.acquire() as conn:
+            results = await conn.fetch(
+                """
+                SELECT d.id, d.user_id, d.device_id, d.platform, 
+                       d.push_enabled, d.is_active, d.registered_at, d.last_seen,
+                       u.email, u.username
+                FROM devices d
+                LEFT JOIN users u ON d.user_id = u.id
+                WHERE d.device_id ILIKE $1 
+                   OR u.email ILIKE $1 
+                   OR u.username ILIKE $1
+                   OR CAST(d.user_id AS TEXT) ILIKE $1
+                ORDER BY d.registered_at DESC
+                LIMIT 50
+                """,
+                f"%{q}%"
+            )
+            
+            devices = []
+            for record in results:
+                device_data = dict(record)
+                device_data["registered_at"] = device_data["registered_at"].isoformat() if device_data["registered_at"] else None
+                device_data["last_seen"] = device_data["last_seen"].isoformat() if device_data["last_seen"] else None
+                devices.append(device_data)
+        
+        return {
+            "success": True,
+            "query": q,
+            "results": devices,
+            "count": len(devices)
+        }
+        
+    except Exception as e:
+        logger.error(f"Admin search failed: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Search failed: {str(e)}"
+        )
+
+
+@router.post("/debug/test-push")
+async def send_test_push_notification(user_id: Optional[str] = Depends(get_current_user_id)):
+    """Send test push notification to current user's device"""
+    try:
+        if not user_id:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail={
+                    "error": "AUTHENTICATION_REQUIRED",
+                    "message": "Authentication required for test push"
+                }
+            )
+        
+        db_pool = await get_db()
+        
+        async with db_pool.acquire() as conn:
+            device = await conn.fetchrow(
+                """
+                SELECT id, device_id, push_token, push_enabled, platform
+                FROM devices 
+                WHERE user_id = $1 AND is_active = true AND push_enabled = true
+                ORDER BY last_seen DESC 
+                LIMIT 1
+                """,
+                user_id
+            )
+            
+            if not device:
+                return {
+                    "success": False,
+                    "error": "No active push-enabled device found for user",
+                    "user_id": user_id
+                }
+            
+            if not device["push_token"]:
+                return {
+                    "success": False,
+                    "error": "Device found but no FCM token available",
+                    "device_id": device["device_id"]
+                }
+        
+        # TODO: Implement actual push service call
+        # For now, return mock success
+        return {
+            "success": True,
+            "message": "Test push sent successfully (mock)",
+            "target_device": device["device_id"],
+            "platform": device["platform"],
+            "fcm_token_hash": device["push_token"][:8] + "..." if device["push_token"] else None,
+            "note": "Push service integration pending"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Test push failed: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "error": "TEST_PUSH_FAILED",
+                "message": f"Failed to send test push: {str(e)}"
+            }
+        )
+
+
+@router.get("/debug/jwt")
+async def validate_jwt_debug(token: Optional[str] = Depends(security)):
+    """Debug endpoint to validate and decode JWT token"""
+    if not token or not token.credentials:
+        return {
+            "valid": False,
+            "error": "No token provided",
+            "token_present": bool(token),
+            "credentials_present": bool(token.credentials if token else False)
+        }
+    
+    try:
+        from app.core.auth import verify_access_token
+        payload = verify_access_token(token.credentials)
+        
+        return {
+            "valid": True,
+            "user_id": payload.get("user_id"),
+            "exp": payload.get("exp"),
+            "iat": payload.get("iat"),
+            "token_type": payload.get("type", "access"),
+            "token_length": len(token.credentials),
+            "token_preview": token.credentials[:20] + "..." if len(token.credentials) > 20 else token.credentials
+        }
+        
+    except Exception as e:
+        return {
+            "valid": False,
+            "error": str(e),
+            "error_type": type(e).__name__,
+            "token_length": len(token.credentials),
+            "token_preview": token.credentials[:20] + "..." if len(token.credentials) > 20 else token.credentials
+        }
+
+
 # Health check
 @router.get("/health")
 async def devices_health_check():
@@ -660,11 +878,19 @@ async def devices_health_check():
             active_devices = await conn.fetchval(
                 "SELECT COUNT(*) FROM devices WHERE is_active = true"
             )
+            recent_registrations = await conn.fetchval(
+                "SELECT COUNT(*) FROM devices WHERE registered_at > NOW() - INTERVAL '24 hours'"
+            )
+            push_enabled_devices = await conn.fetchval(
+                "SELECT COUNT(*) FROM devices WHERE push_enabled = true AND is_active = true"
+            )
         
         return {
             "status": "healthy",
             "total_devices": total_devices,
             "active_devices": active_devices,
+            "recent_registrations_24h": recent_registrations,
+            "push_enabled_devices": push_enabled_devices,
             "timestamp": datetime.utcnow().isoformat()
         }
     except Exception as e:
