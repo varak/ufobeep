@@ -7,6 +7,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import '../config/environment.dart' as env;
 import '../models/api_models.dart';
 import 'sensor_service.dart';
+import 'auth_repository.dart';
 
 /// Device platform enumeration
 enum DevicePlatform {
@@ -355,12 +356,24 @@ class DeviceService {
 
       final url = Uri.parse('${env.AppEnvironment.apiBaseUrl}/devices/register');
 
+      // Get auth token for API call
+      final authRepo = AuthRepository();
+      final accessToken = await authRepo.getAccessToken();
+      
+      final headers = {
+        'Content-Type': 'application/json',
+      };
+      
+      if (accessToken != null) {
+        headers['Authorization'] = 'Bearer $accessToken';
+        print('Device registration: Using auth token for registration');
+      } else {
+        print('Device registration: WARNING - No auth token available');
+      }
+
       final response = await _httpClient.post(
         url,
-        headers: {
-          'Content-Type': 'application/json',
-          // TODO: Add authorization header
-        },
+        headers: headers,
         body: jsonEncode(request.toJson()),
       );
 
