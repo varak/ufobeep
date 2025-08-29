@@ -155,7 +155,7 @@ class ProximityAlertService:
                 else:
                     logger.info("Rate limiting disabled - sending proximity alerts regardless of frequency")
                 
-                # Simple approach: get all active devices with push tokens
+                # Simple approach: get all active devices with push tokens AND recent activity
                 query = """
                     SELECT device_id, push_token, platform, lat, lon
                     FROM devices 
@@ -163,6 +163,7 @@ class ProximityAlertService:
                       AND push_enabled = true
                       AND push_token IS NOT NULL
                       AND device_id != $1
+                      AND (last_seen IS NULL OR last_seen > NOW() - INTERVAL '24 hours')
                     LIMIT 1000
                 """
                 rows = await conn.fetch(query, exclude_device_id)
@@ -208,7 +209,7 @@ class ProximityAlertService:
             logger.info(f"FALLBACK: Searching for devices within {radius_km}km of ({lat}, {lon}), excluding {exclude_device_id}")
             
             async with self.db_pool.acquire() as conn:
-                # Get all devices with location data
+                # Get all devices with location data AND recent activity (24h freshness)  
                 query = """
                     SELECT device_id, push_token, platform, lat, lon
                     FROM devices 
@@ -217,6 +218,7 @@ class ProximityAlertService:
                       AND device_id != $1
                       AND (lat IS NOT NULL AND lon IS NOT NULL)
                       AND lat != 0.0 AND lon != 0.0
+                      AND (last_seen IS NULL OR last_seen > NOW() - INTERVAL '24 hours')
                 """
                 
                 rows = await conn.fetch(query, exclude_device_id)

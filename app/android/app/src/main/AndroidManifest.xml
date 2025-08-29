@@ -16,10 +16,10 @@
         </intent>
     </queries>
     
-    <!-- Location permissions -->
+    <!-- Location permissions for smart device re-location (foreground only) -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <!-- No background location: battery-friendly foreground updates only -->
     
     <!-- Camera permissions -->
     <uses-permission android:name="android.permission.CAMERA" />

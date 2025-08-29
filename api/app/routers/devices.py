@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Optional
 from uuid import uuid4
 import logging
@@ -85,6 +85,18 @@ class DeviceUpdateRequest(BaseModel):
     os_version: Optional[str] = None
     timezone: Optional[str] = None
     locale: Optional[str] = None
+
+
+class UpdateLocationIn(BaseModel):
+    lat: float = Field(..., ge=-90, le=90, description="Device latitude")  
+    lon: float = Field(..., ge=-180, le=180, description="Device longitude")
+    
+    @validator('lon')
+    def validate_not_origin(cls, v, values):
+        lat = values.get('lat', 0)
+        if abs(lat) < 0.0001 and abs(v) < 0.0001:
+            raise ValueError('Invalid coordinates (0,0)')
+        return v
 
 
 class DeviceResponse(BaseModel):
@@ -851,6 +863,70 @@ async def send_test_push_notification(user_id: Optional[str] = Depends(get_curre
             detail={
                 "error": "TEST_PUSH_FAILED",
                 "message": f"Failed to send test push: {str(e)}"
+            }
+        )
+
+
+@router.post("/update-location", status_code=204)
+async def update_location(body: UpdateLocationIn, user_id: Optional[str] = Depends(get_current_user_id)):
+    """Update device location for the current user"""
+    try:
+        if not user_id:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail={
+                    "error": "AUTHENTICATION_REQUIRED", 
+                    "message": "Authentication required for location update"
+                }
+            )
+
+        # Additional validation for coordinates
+        if not (-90 <= body.lat <= 90 and -180 <= body.lon <= 180):
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail={
+                    "error": "INVALID_COORDINATES",
+                    "message": "Bad coordinates - lat must be -90 to 90, lon must be -180 to 180"
+                }
+            )
+        
+        if abs(body.lat) < 0.0001 and abs(body.lon) < 0.0001:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, 
+                detail={
+                    "error": "INVALID_ORIGIN",
+                    "message": "Invalid (0,0) coordinates - real location required"
+                }
+            )
+
+        db_pool = await get_db()
+        now = datetime.now(timezone.utc)
+        
+        async with db_pool.acquire() as conn:
+            # Update all active devices for this user
+            result = await conn.execute(
+                """
+                UPDATE devices 
+                SET lat = $1, lon = $2, last_seen = $3
+                WHERE user_id = $4 AND push_enabled = TRUE
+                """,
+                body.lat, body.lon, now, user_id
+            )
+            
+            logger.info(f"Updated location for user {user_id}: lat={body.lat}, lon={body.lon}")
+        
+        # Return 204 No Content on success
+        return None
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Location update failed: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "error": "LOCATION_UPDATE_FAILED",
+                "message": f"Failed to update location: {str(e)}"
             }
         )
 

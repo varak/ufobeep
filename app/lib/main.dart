@@ -23,6 +23,7 @@ import 'services/auth_service.dart';
 import 'services/api_client.dart';
 import 'services/auth_repository.dart';
 import 'services/device_registration_manager.dart';
+import 'services/location_update_manager.dart';
 import 'features/auth/deep_link_handler.dart';
 import 'features/auth/auth_gate.dart';
 import 'theme/app_theme.dart';
@@ -52,6 +53,14 @@ void main() async {
   // Initialize DeviceRegistrationManager AFTER Firebase is initialized
   DeviceRegistrationManager().start();
   print('✅ DeviceRegistrationManager started');
+  
+  // Initialize LocationUpdateManager for battery-efficient location updates
+  final locationManager = LocationUpdateManager(
+    auth: auth, 
+    baseUrl: AppEnvironment.apiUrl,
+  );
+  await locationManager.start();
+  print('✅ LocationUpdateManager started');
   
   final sharedPreferences = results[1] as SharedPreferences;
   print('✅ Core initialization: ${stopwatch.elapsedMilliseconds}ms');
