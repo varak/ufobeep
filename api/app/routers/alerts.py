@@ -88,8 +88,11 @@ async def create_alert(request: dict):
         if not has_pending_media:
             print(f"Debug: Attempting to send proximity alerts for {alert_id}")
             try:
-                # Use absolute import with proper module path
-                from api.services.proximity_alert_service import ProximityAlertService
+                import sys
+                import os
+                # Add parent directory to path to find services module
+                sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+                from services.proximity_alert_service import ProximityAlertService
                 proximity_service = ProximityAlertService(db_pool)
                 print(f"Debug: Proximity service initialized, calling send_proximity_alerts")
                 alert_result = await proximity_service.send_proximity_alerts(
