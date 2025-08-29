@@ -115,8 +115,8 @@ class SoundService {
           android: AudioContextAndroid(
             isSpeakerphoneOn: false,
             stayAwake: false,
-            contentType: AndroidContentType.sonification,
-            usageType: AndroidUsageType.notificationEvent,
+            contentType: AndroidContentType.music,
+            usageType: AndroidUsageType.media,
             audioFocus: AndroidAudioFocus.gainTransientMayDuck,
           ),
         ),
