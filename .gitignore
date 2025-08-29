@@ -37,3 +37,4 @@ api/secrets/
 # Local env files
 .env
 .env.*
+logs/
