@@ -14,10 +14,27 @@ from app.models import MagicLink, MagicLinkAttempt, User, AlertLevel
 from app.core.auth import create_access_token, create_refresh_token
 from app.config.environment import settings
 from app.services.email_service_postfix import get_email_service
+from app.services.username_service import UsernameGenerator
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/auth/magic", tags=["magic-link-auth"])
+
+
+def _generate_unique_username(db: Session) -> str:
+    """Generate a unique cosmic username using the UsernameGenerator"""
+    max_attempts = 100
+    for _ in range(max_attempts):
+        # Generate cosmic username like cosmic.whisper.7823
+        username = UsernameGenerator.generate()
+        
+        # Check if it's unique in the database
+        existing_user = db.query(User).filter(User.username == username).first()
+        if not existing_user:
+            return username
+    
+    # Fallback if we can't find a unique username (very unlikely)
+    raise HTTPException(status_code=500, detail="Unable to generate unique username")
 
 
 # Standardized auth response format
@@ -513,39 +530,27 @@ async def complete_magic_link(
         is_new_user = user is None
         
         if is_new_user:
-            # Create new user with collision-resistant username
-            max_retries = 5
-            for attempt in range(max_retries):
-                try:
-                    # Use longer random string to avoid collisions
-                    random_suffix = secrets.token_hex(8)  # 16 characters instead of 8
-                    username = f"user_{random_suffix}"
-                    
-                    user = User(
-                        username=username,
-                        email=magic_link.email,
-                        is_verified=True,
-                        last_login=datetime.utcnow()
-                    )
-                    db.add(user)
-                    db.flush()  # This will raise error if username collision occurs
-                    logger.info(f"MAGIC_LINK_SUCCESS: NEW_USER - email={magic_link.email}, username={username}, IP={ip_address}")
-                    break
-                except Exception as e:
-                    error_msg = str(e).lower()
-                    if ("unique" in error_msg or "duplicate" in error_msg) and attempt < max_retries - 1:
-                        # Username collision, try again with different random string
-                        logger.warning(f"MAGIC_LINK_RETRY: USERNAME_COLLISION - attempt={attempt+1}, email={magic_link.email}, error={str(e)}, IP={ip_address}")
-                        db.rollback()
-                        continue
-                    else:
-                        # Non-collision error or max retries exceeded
-                        logger.error(f"MAGIC_LINK_ERROR: USER_CREATION_FAILED - {str(e)}, email={magic_link.email}, attempt={attempt+1}, IP={ip_address}, full_error={repr(e)}")
-                        db.rollback()  # Ensure clean state
-                        raise HTTPException(
-                            status_code=500,
-                            detail=f"Failed to create user account: {str(e)}. Please try again."
-                        )
+            # Create new user with cosmic-themed username
+            try:
+                # Generate cosmic username like cosmic.whisper.7823
+                username = _generate_unique_username(db)
+                
+                user = User(
+                    username=username,
+                    email=magic_link.email,
+                    is_verified=True,
+                    last_login=datetime.utcnow()
+                )
+                db.add(user)
+                db.flush()
+                logger.info(f"MAGIC_LINK_SUCCESS: NEW_USER - email={magic_link.email}, username={username}, IP={ip_address}")
+            except Exception as e:
+                logger.error(f"MAGIC_LINK_ERROR: USER_CREATION_FAILED - {str(e)}, email={magic_link.email}, IP={ip_address}")
+                db.rollback()
+                raise HTTPException(
+                    status_code=500,
+                    detail="Unable to create user account. Please try again."
+                )
         else:
             # Update existing user
             user.last_login = datetime.utcnow()
@@ -1076,32 +1081,24 @@ async def exchange_magic_code(
         user = db.query(User).filter(User.email == magic_link.email).first()
         logger.info(f"MAGIC_CODE_EXCHANGE: USER_FOUND - found={'YES' if user else 'NO'}, email='{magic_link.email}', IP={ip_address}")
         if not user:
-            # Create new user with collision-resistant username
-            from sqlalchemy.exc import IntegrityError
-            max_retries = 5
-            for attempt in range(max_retries):
-                try:
-                    random_suffix = secrets.token_hex(8)  # 16 characters
-                    username = f"user_{random_suffix}"
-                    
-                    user = User(
-                        username=username,
-                        email=magic_link.email,
-                        is_verified=True,
-                        last_login=datetime.now(timezone.utc)
-                    )
-                    db.add(user)
-                    db.flush()  # This will raise error if username collision occurs
-                    logger.info(f"MAGIC_CODE_EXCHANGE: NEW_USER - email={magic_link.email}, username={username}, IP={ip_address}")
-                    break
-                except IntegrityError as e:
-                    if attempt < max_retries - 1:
-                        # Username collision, try again - no rollback needed with flush
-                        logger.warning(f"MAGIC_CODE_EXCHANGE: USERNAME_COLLISION - attempt={attempt+1}, email={magic_link.email}, IP={ip_address}")
-                        continue
-                    else:
-                        logger.error(f"MAGIC_CODE_EXCHANGE: USER_CREATION_FAILED - {str(e)}, email={magic_link.email}, IP={ip_address}")
-                        raise HTTPException(status_code=500, detail="Failed to create user account")
+            # Create new user with cosmic-themed username
+            try:
+                # Generate cosmic username like cosmic.whisper.7823
+                username = _generate_unique_username(db)
+                
+                user = User(
+                    username=username,
+                    email=magic_link.email,
+                    is_verified=True,
+                    last_login=datetime.now(timezone.utc)
+                )
+                db.add(user)
+                db.flush()
+                logger.info(f"MAGIC_CODE_EXCHANGE: NEW_USER - email={magic_link.email}, username={username}, IP={ip_address}")
+            except Exception as e:
+                logger.error(f"MAGIC_CODE_EXCHANGE: USER_CREATION_FAILED - {str(e)}, email={magic_link.email}, IP={ip_address}")
+                db.rollback()
+                raise HTTPException(status_code=500, detail="Failed to create user account")
         else:
             # Update existing user
             user.last_login = datetime.now(timezone.utc)
