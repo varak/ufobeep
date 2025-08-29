@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:dio/dio.dart';
 import '../../services/device_service.dart';
 import '../../services/device_registration_manager.dart';
 import '../../services/auth_repository.dart';
@@ -79,8 +80,27 @@ class _PushDebugScreenState extends State<PushDebugScreen> {
     });
     
     try {
-      debugPrint('[DBUG][STATUS] Calling /devices/status');
-      final response = await ApiClient.dio.get('/devices/status');
+      // Ensure we have a valid auth token
+      final accessToken = await _authRepository.getAccessToken();
+      if (accessToken == null) {
+        setState(() {
+          _statusText = '[DBUG][STATUS] ❌ No access token available - please log in first';
+        });
+        return;
+      }
+      
+      debugPrint('[DBUG][STATUS] Calling /devices/status with auth token');
+      
+      // Make authenticated request
+      final response = await ApiClient.dio.get(
+        '/devices/status',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $accessToken',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
       
       final data = response.data;
       setState(() {
@@ -114,8 +134,25 @@ class _PushDebugScreenState extends State<PushDebugScreen> {
     });
     
     try {
+      // Ensure we have a valid auth token
+      final accessToken = await _authRepository.getAccessToken();
+      if (accessToken == null) {
+        setState(() {
+          _statusText = '[DBUG][PUSH] ❌ No access token available - please log in first';
+        });
+        return;
+      }
+      
       debugPrint('[DBUG][PUSH] Calling /devices/debug/test-push');
-      final response = await ApiClient.dio.post('/devices/debug/test-push');
+      final response = await ApiClient.dio.post(
+        '/devices/debug/test-push',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $accessToken',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
       
       final data = response.data;
       setState(() {
@@ -126,7 +163,8 @@ class _PushDebugScreenState extends State<PushDebugScreen> {
 ├── Target Device: ${data['target_device'] ?? 'N/A'}
 ├── Platform: ${data['platform'] ?? 'N/A'}
 ├── FCM Hash: ${data['fcm_token_hash'] ?? 'N/A'}
-└── Note: ${data['note'] ?? 'N/A'}''';
+├── FCM Message ID: ${data['fcm_message_id'] ?? 'N/A'}
+└── Firebase Response: ${data['firebase_response'] ?? 'N/A'}''';
       });
     } catch (e) {
       debugPrint('[DBUG][PUSH] ❌ Test push error: $e');
@@ -147,8 +185,25 @@ class _PushDebugScreenState extends State<PushDebugScreen> {
     });
     
     try {
+      // Get the current access token
+      final accessToken = await _authRepository.getAccessToken();
+      if (accessToken == null) {
+        setState(() {
+          _statusText = '[DBUG][JWT] ❌ No access token available - please log in first';
+        });
+        return;
+      }
+      
       debugPrint('[DBUG][JWT] Calling /devices/debug/jwt');
-      final response = await ApiClient.dio.get('/devices/debug/jwt');
+      final response = await ApiClient.dio.get(
+        '/devices/debug/jwt',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $accessToken',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
       
       final data = response.data;
       setState(() {
