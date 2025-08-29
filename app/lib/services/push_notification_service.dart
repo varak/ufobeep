@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'device_service.dart';
+import 'device_registration_manager.dart';
 import '../providers/alerts_provider.dart';
 import 'sound_service.dart';
 import 'beep_service.dart';
@@ -48,34 +49,26 @@ class PushNotificationService {
       // Get FCM token
       final token = await getToken();
       if (token != null) {
-        // Register device with token
-        await _deviceService.registerDevice(pushToken: token);
+        // Notify DeviceRegistrationManager that FCM token is available
+        DeviceRegistrationManager().onFcmTokenAvailable(token);
         
-        // Update device location for proximity alerts
-        try {
-          final locationUpdated = await _deviceService.updateDeviceLocation();
-          if (locationUpdated) {
-            print('Device location registered for proximity alerts');
-          } else {
-            print('Device location update failed - proximity alerts may not work');
-          }
-        } catch (e) {
-          print('Error updating device location: $e');
-        }
-        
-        // Also register with FCM device API for Phase 0
-        await _registerWithFCMAPI(token);
+        // Notify about push permission being granted
+        DeviceRegistrationManager().onPushPermissionChanged(true);
         
         // Listen for token refresh
         _messaging.onTokenRefresh.listen((newToken) async {
           print('FCM token refreshed: $newToken');
-          await _deviceService.updatePushToken(newToken);
           await _cacheToken(newToken);
+          // Notify DeviceRegistrationManager of the new token
+          DeviceRegistrationManager().onFcmTokenAvailable(newToken);
         });
       }
       
       // Set up message handlers
       _setupMessageHandlers();
+    } else {
+      // Notify DeviceRegistrationManager that push permission was denied
+      DeviceRegistrationManager().onPushPermissionChanged(false);
     }
   }
 
@@ -372,7 +365,8 @@ class PushNotificationService {
       await _messaging.deleteToken();
       final newToken = await getToken();
       if (newToken != null) {
-        await _deviceService.updatePushToken(newToken);
+        // Notify DeviceRegistrationManager of the new token
+        DeviceRegistrationManager().onFcmTokenAvailable(newToken);
       }
     } catch (e) {
       print('Error refreshing token: $e');

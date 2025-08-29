@@ -97,15 +97,13 @@ class _UsernameRegenerateWidgetState extends ConsumerState<UsernameRegenerateWid
       final deviceService = DeviceService();
       final deviceId = await deviceService.getDeviceId();
 
-      // TODO: Add proper POST method to ApiClient for username regeneration
-      // For now, simulate success for UI testing
-      await Future.delayed(const Duration(seconds: 1));
-      final responseData = {
-        'success': true,
-        'username': 'cosmic-whisper-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}',
-        'message': 'Username regeneration feature coming soon!'
-      };
-      if (responseData['success'] == true || responseData['username'] != null) {
+      // Call the actual regenerate-username API endpoint
+      final response = await ApiClient.dio.post('/users/regenerate-username', data: {
+        'device_id': deviceId,
+      });
+
+      if (response.statusCode == 200 && response.data != null) {
+        final responseData = response.data;
         final newUsername = responseData['username']?.toString() ?? '';
         final message = responseData['message']?.toString() ?? 'Username updated successfully!';
 
@@ -122,11 +120,11 @@ class _UsernameRegenerateWidgetState extends ConsumerState<UsernameRegenerateWid
           // Show confirmation dialog with new username
           _showUsernameDialog(newUsername);
           
-          // Force a rebuild by updating state
-          setState(() {});
+          // Force refresh user preferences to show new username
+          ref.invalidate(userPreferencesProvider);
         }
       } else {
-        throw Exception(responseData['message'] ?? 'Failed to generate username');
+        throw Exception('Failed to generate username');
       }
     } catch (e) {
       if (mounted) {

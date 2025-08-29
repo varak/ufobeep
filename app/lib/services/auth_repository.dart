@@ -7,6 +7,7 @@ import '../models/user_model.dart';
 import 'api_client.dart';
 import 'storage.dart';
 import 'secure_storage.dart';
+import 'device_registration_manager.dart';
 
 /// ChatGPT: Single source of truth for user + tokens.
 /// - Stores only tokens in secure storage
@@ -80,6 +81,10 @@ class AuthRepository with ChangeNotifier {
       
       ApiClient.setBearer(access);
       debugPrint('[Auth] ✅ ApiClient bearer token updated');
+      
+      // Trigger device registration now that we have auth token
+      DeviceRegistrationManager().onAuthTokenAvailable(access);
+      
       debugPrint('[Auth] ========== TOKEN STORAGE SUCCESS ==========');
     } catch (e, stackTrace) {
       debugPrint('[Auth] ❌ CRITICAL: Token storage failed: $e');
@@ -112,12 +117,19 @@ class AuthRepository with ChangeNotifier {
       await _dio.post('/auth/logout');
     } catch (_) {/* best-effort */}
     await clearSession();
+    
+    // Notify DeviceRegistrationManager that auth is cleared
+    DeviceRegistrationManager().onAuthCleared();
   }
 
   Future<void> clearSession() async {
     await _secureStorage.clearTokens();
     ApiClient.clearBearer();
     _currentUser = null;
+    
+    // Notify DeviceRegistrationManager that auth is cleared
+    DeviceRegistrationManager().onAuthCleared();
+    
     notifyListeners();
   }
 
