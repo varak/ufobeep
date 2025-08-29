@@ -249,13 +249,14 @@ class _PushDebugScreenState extends State<PushDebugScreen> {
             child: Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
+              color: Colors.grey[900],
               child: SingleChildScrollView(
                 child: SelectableText(
                   _statusText,
                   style: const TextStyle(
                     fontFamily: 'monospace',
                     fontSize: 13,
-                    color: Colors.greenAccent,
+                    color: Colors.white,
                     height: 1.4,
                   ),
                 ),
