@@ -144,12 +144,13 @@ async def get_current_user_id(token: Optional[str] = Depends(security)) -> Optio
     try:
         from app.core.auth import verify_access_token
         payload = verify_access_token(token.credentials)
-        user_id = payload.get("user_id")
+        # JWT uses "sub" (subject) field for user ID, not "user_id"
+        user_id = payload.get("sub") or payload.get("user_id")
         if user_id:
             logger.debug(f"Authenticated user: {user_id}")
             return user_id
         else:
-            logger.warning("JWT token missing user_id")
+            logger.warning(f"JWT token missing user_id/sub. Payload keys: {list(payload.keys())}")
             return None
     except Exception as e:
         logger.warning(f"JWT validation failed: {e}")
