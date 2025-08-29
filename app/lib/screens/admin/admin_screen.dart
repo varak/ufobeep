@@ -7,6 +7,7 @@ import '../../services/permission_service.dart';
 import '../../services/sound_service.dart';
 import '../../services/api_client.dart';
 import '../../theme/app_theme.dart';
+import '../debug/push_debug_screen.dart';
 import 'dart:convert';
 import 'dart:math' as math;
 
@@ -502,6 +503,27 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
                 label: const Text('Test Push Notification'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.brandPrimaryLight,
+                  foregroundColor: AppColors.darkBackground,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+
+            // Push Debug Screen
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PushDebugScreen(),
+                  ),
+                ),
+                icon: const Icon(Icons.bug_report),
+                label: const Text('🔔 Push Debug Screen'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
                   foregroundColor: AppColors.darkBackground,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),

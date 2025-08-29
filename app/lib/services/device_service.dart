@@ -175,6 +175,22 @@ class DeviceService {
   final http.Client _httpClient = http.Client();
   final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
 
+  /// Get headers with authorization if available
+  Future<Map<String, String>> _getAuthHeaders() async {
+    final authRepo = AuthRepository();
+    final accessToken = await authRepo.getAccessToken();
+    
+    final headers = {
+      'Content-Type': 'application/json',
+    };
+    
+    if (accessToken != null) {
+      headers['Authorization'] = 'Bearer $accessToken';
+    }
+    
+    return headers;
+  }
+
   /// Get or generate device ID
   Future<String> getDeviceId() async {
     final prefs = await SharedPreferences.getInstance();
@@ -356,16 +372,11 @@ class DeviceService {
 
       final url = Uri.parse('${env.AppEnvironment.apiBaseUrl}/devices/register');
 
-      // Get auth token for API call
-      final authRepo = AuthRepository();
-      final accessToken = await authRepo.getAccessToken();
+      // Get auth headers using helper method
+      final headers = await _getAuthHeaders();
       
-      final headers = {
-        'Content-Type': 'application/json',
-      };
-      
-      if (accessToken != null) {
-        headers['Authorization'] = 'Bearer $accessToken';
+      // Log auth status for debugging
+      if (headers.containsKey('Authorization')) {
         print('Device registration: Using auth token for registration');
       } else {
         print('Device registration: WARNING - No auth token available');
@@ -406,10 +417,7 @@ class DeviceService {
 
       final response = await _httpClient.put(
         url,
-        headers: {
-          'Content-Type': 'application/json',
-          // TODO: Add authorization header
-        },
+        headers: await _getAuthHeaders(),
         body: jsonEncode({
           'push_token': pushToken,
           'push_provider': getPushProvider().value,
@@ -453,10 +461,7 @@ class DeviceService {
 
       final response = await _httpClient.put(
         url,
-        headers: {
-          'Content-Type': 'application/json',
-          // TODO: Add authorization header
-        },
+        headers: await _getAuthHeaders(),
         body: jsonEncode(updates),
       );
 
@@ -482,10 +487,7 @@ class DeviceService {
 
       final response = await _httpClient.post(
         url,
-        headers: {
-          'Content-Type': 'application/json',
-          // TODO: Add authorization header
-        },
+        headers: await _getAuthHeaders(),
       );
 
       if (response.statusCode == 200) {
@@ -504,9 +506,7 @@ class DeviceService {
 
       final response = await _httpClient.delete(
         url,
-        headers: {
-          // TODO: Add authorization header
-        },
+        headers: await _getAuthHeaders(),
       );
 
       if (response.statusCode == 200) {
@@ -575,6 +575,27 @@ class DeviceService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_registeredDeviceKey);
     await prefs.remove(_lastHeartbeatKey);
+  }
+
+  /// Get current FCM token
+  Future<String?> getFcmToken() async {
+    try {
+      // Try to get from SharedPreferences first for cached token
+      final prefs = await SharedPreferences.getInstance();
+      final cachedToken = prefs.getString('fcm_token');
+      
+      if (cachedToken != null) {
+        return cachedToken;
+      }
+      
+      // If no cached token, try to get from FirebaseMessaging
+      // Note: This requires firebase_messaging package to be properly initialized
+      // For now, return null if no cached token exists
+      return null;
+    } catch (e) {
+      print('Error getting FCM token: $e');
+      return null;
+    }
   }
 
   /// Check if device is registered
