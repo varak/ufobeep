@@ -82,30 +82,6 @@ def extract_coordinates_from_sensor_data(sensor_data: dict) -> Tuple[Optional[fl
     
     return None, None
 
-# Initialize FastAPI app with environment configuration and lifespan
-app = FastAPI(
-    title=settings.app_name,
-    description="Real-time UFO and anomaly sighting alert system API",
-    version=settings.app_version,
-    debug=settings.debug,
-    docs_url="/docs" if settings.debug else None,
-    redoc_url="/redoc" if settings.debug else None,
-    lifespan=lifespan,
-)
-
-# Request handling middleware (order matters - first added, last executed)
-app.add_middleware(RequestTimeoutMiddleware, timeout_seconds=30)
-app.add_middleware(ErrorHandlingMiddleware)
-
-# CORS middleware with environment-based origins
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.cors_origins_list,
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allow_headers=["*"],
-)
-
 # Database connection - now using proper service
 from app.services.database_service import database_service
 
@@ -360,6 +336,30 @@ async def lifespan(app: FastAPI):
     
     # Shutdown
     await database_service.close()
+
+# Initialize FastAPI app with environment configuration and lifespan
+app = FastAPI(
+    title=settings.app_name,
+    description="Real-time UFO and anomaly sighting alert system API",
+    version=settings.app_version,
+    debug=settings.debug,
+    docs_url="/docs" if settings.debug else None,
+    redoc_url="/redoc" if settings.debug else None,
+    lifespan=lifespan,
+)
+
+# Request handling middleware (order matters - first added, last executed)
+app.add_middleware(RequestTimeoutMiddleware, timeout_seconds=30)
+app.add_middleware(ErrorHandlingMiddleware)
+
+# CORS middleware with environment-based origins
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_origins_list,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allow_headers=["*"],
+)
 
 @app.get("/healthz")
 async def healthz():
