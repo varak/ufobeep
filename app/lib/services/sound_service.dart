@@ -161,7 +161,10 @@ class SoundService {
   /// witnessCount: Number of witnesses for emergency override logic
   /// userPrefs: User preferences for quiet hours settings (optional)
   Future<void> play(AlertSound sound, {bool haptic = false, int witnessCount = 1, dynamic userPrefs}) async {
+    print('🔊 SOUND DEBUG: Attempting to play ${sound.name} (haptic: $haptic)');
+    
     if (!_initialized) {
+      print('🔊 SOUND DEBUG: Not initialized, calling init()...');
       // Fail-safe: init on first use if caller forgot.
       await init();
     }
@@ -188,8 +191,11 @@ class SoundService {
     }
 
     if (_muted && !(isCritical && bypassMuteForCritical)) {
+      print('🔊 SOUND DEBUG: Skipping sound - muted (critical: $isCritical, bypass: $bypassMuteForCritical)');
       return;
     }
+    
+    print('🔊 SOUND DEBUG: Passed mute check, proceeding with playback...');
 
     // Simple anti-overlap policy:
     // - If something is currently playing and this is NOT critical, stop it first.
@@ -209,9 +215,12 @@ class SoundService {
 
     // Optional haptics
     if (haptic) {
+      print('🔊 SOUND DEBUG: Attempting haptic feedback...');
       final canVibrate = await Vibration.hasVibrator() ?? false;
+      print('🔊 SOUND DEBUG: Device can vibrate: $canVibrate');
       if (canVibrate) {
         Vibration.vibrate(duration: isCritical ? 120 : 40);
+        print('🔊 SOUND DEBUG: Haptic feedback triggered');
       }
     }
 
@@ -223,10 +232,18 @@ class SoundService {
 
     // Fire-and-forget: short SFX. We await to keep _current accurate.
     try {
+      print('🔊 SOUND DEBUG: Attempting to play audio via resume...');
       await player.resume(); // source already set; resume triggers immediate play
-    } catch (_) {
+      print('🔊 SOUND DEBUG: Audio resume successful');
+    } catch (e) {
+      print('🔊 SOUND DEBUG: Resume failed: $e, trying fallback...');
       // Fallback if resume fails (rare): try full play with explicit source.
-      await player.play(AssetSource('$_assetPrefix/${_fileMap[sound]}'));
+      try {
+        await player.play(AssetSource('$_assetPrefix/${_fileMap[sound]}'));
+        print('🔊 SOUND DEBUG: Fallback play successful');
+      } catch (e2) {
+        print('🔊 SOUND DEBUG: Fallback play also failed: $e2');
+      }
     }
 
     // After it finishes, clear _current. Attach a one-shot completion listener.
