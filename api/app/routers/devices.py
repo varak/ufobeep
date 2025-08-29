@@ -65,13 +65,6 @@ class DeviceRegistrationRequest(BaseModel):
     lat: float = Field(..., ge=-90, le=90, description="Device latitude")
     lon: float = Field(..., ge=-180, le=180, description="Device longitude")
     
-    @validator('lat', 'lon')
-    def validate_coordinates_not_zero(cls, v, field):
-        if abs(v) < 0.0001:
-            # Allow if only one coordinate is near zero, reject if both are
-            return v
-        return v
-    
     @validator('lon')
     def validate_not_origin(cls, v, values):
         lat = values.get('lat', 0)
