@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form, Request
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -81,7 +82,7 @@ def extract_coordinates_from_sensor_data(sensor_data: dict) -> Tuple[Optional[fl
     
     return None, None
 
-# Initialize FastAPI app with environment configuration
+# Initialize FastAPI app with environment configuration and lifespan
 app = FastAPI(
     title=settings.app_name,
     description="Real-time UFO and anomaly sighting alert system API",
@@ -89,6 +90,7 @@ app = FastAPI(
     debug=settings.debug,
     docs_url="/docs" if settings.debug else None,
     redoc_url="/redoc" if settings.debug else None,
+    lifespan=lifespan,
 )
 
 # Request handling middleware (order matters - first added, last executed)
@@ -113,12 +115,19 @@ MEDIA_DIR.mkdir(exist_ok=True)
 (MEDIA_DIR / "images").mkdir(exist_ok=True)
 (MEDIA_DIR / "thumbnails").mkdir(exist_ok=True)
 
-# Log configuration on startup
-@app.on_event("startup")
-async def startup_event():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
     settings.log_configuration()
     
-
+    # CRITICAL: Initialize Firebase EXACTLY ONCE at startup
+    from app.core.firebase_client import init_firebase
+    try:
+        init_firebase()
+        print("✅ Firebase initialized successfully at startup")
+    except Exception as e:
+        print(f"❌ Firebase startup initialization failed: {e}")
+    
     try:
         # Initialize database service with production settings
         await database_service.initialize_pool(
@@ -133,8 +142,6 @@ async def startup_event():
         )
         print("Database connection pool created successfully")
         
-        
-
         async with database_service.pool.acquire() as conn:
 
             try:
@@ -348,9 +355,10 @@ async def startup_event():
         print("Database tables initialized")
     except Exception as e:
         print(f"Database initialization failed: {e}")
-
-@app.on_event("shutdown")
-async def shutdown_event():
+    
+    yield
+    
+    # Shutdown
     await database_service.close()
 
 @app.get("/healthz")
@@ -498,6 +506,24 @@ async def admin_test_single(request: dict):
         return {"success": True, "message": "Test notification sent"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/debug/fcm")
+async def debug_fcm():
+    """Debug FCM initialization status"""
+    try:
+        from app.core.firebase_client import get_messaging
+        messaging = get_messaging()
+        return {
+            "success": True,
+            "firebase_initialized": messaging is not None,
+            "message": "Firebase messaging client available"
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "message": "Firebase messaging client failed"
+        }
 @app.get("/analysis/status/{sighting_id}")
 async def get_analysis_status(sighting_id: str):
     """Get photo analysis status for a sighting"""

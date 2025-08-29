@@ -1,42 +1,12 @@
-import firebase_admin
-from firebase_admin import credentials, messaging
-import os
 import logging
+from app.core.firebase_client import get_messaging
 
 logger = logging.getLogger(__name__)
 
-_app = None
-
-def init_fcm():
-    """Initialize Firebase Admin SDK if not already initialized"""
-    global _app
-    if _app is None:
-        creds_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
-        if not creds_path:
-            logger.error("GOOGLE_APPLICATION_CREDENTIALS not set")
-            return False
-        
-        if not os.path.exists(creds_path):
-            logger.error(f"Firebase credentials file not found: {creds_path}")
-            return False
-            
-        try:
-            cred = credentials.Certificate(creds_path)
-            _app = firebase_admin.initialize_app(cred)
-            logger.info("Firebase Admin SDK initialized successfully")
-            return True
-        except Exception as e:
-            logger.error(f"Failed to initialize Firebase Admin SDK: {e}")
-            return False
-    return True
-
 def send_to_token(token: str, data: dict, title="UFOBeep", body="New sighting nearby"):
     """Send push notification to a specific FCM token"""
-    if not init_fcm():
-        logger.error("FCM not initialized, cannot send push")
-        return None
-        
     try:
+        messaging = get_messaging()
         msg = messaging.Message(
             notification=messaging.Notification(title=title, body=body),
             data={k: str(v) for k, v in data.items()},
@@ -72,12 +42,9 @@ def send_to_tokens(tokens: list, data: dict, title="UFOBeep", body="New sighting
     """Send push notification to multiple FCM tokens"""
     if not tokens:
         return []
-        
-    if not init_fcm():
-        logger.error("FCM not initialized, cannot send push")
-        return []
     
     try:
+        messaging = get_messaging()
         msg = messaging.MulticastMessage(
             notification=messaging.Notification(title=title, body=body),
             data={k: str(v) for k, v in data.items()},
