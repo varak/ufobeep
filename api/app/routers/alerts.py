@@ -88,8 +88,8 @@ async def create_alert(request: dict):
         if not has_pending_media:
             print(f"Debug: Attempting to send proximity alerts for {alert_id}")
             try:
-                from services.proximity_alert_service import get_proximity_alert_service
-                proximity_service = get_proximity_alert_service(db_pool)
+                from ...services.proximity_alert_service import ProximityAlertService
+                proximity_service = ProximityAlertService(db_pool)
                 print(f"Debug: Proximity service initialized, calling send_proximity_alerts")
                 alert_result = await proximity_service.send_proximity_alerts(
                     jittered_location["lat"], jittered_location["lng"], alert_id, device_id
