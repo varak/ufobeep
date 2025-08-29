@@ -804,16 +804,55 @@ async def send_test_push_notification(user_id: Optional[str] = Depends(get_curre
                     "device_id": device["device_id"]
                 }
         
-        # TODO: Implement actual push service call
-        # For now, return mock success
-        return {
-            "success": True,
-            "message": "Test push sent successfully (mock)",
-            "target_device": device["device_id"],
-            "platform": device["platform"],
-            "fcm_token_hash": device["push_token"][:8] + "..." if device["push_token"] else None,
-            "note": "Push service integration pending"
-        }
+        # Send actual test push notification using Firebase Admin SDK
+        try:
+            from services.push_service import send_to_token
+            
+            push_result = send_to_token(
+                token=device["push_token"],
+                data={
+                    "type": "test_push",
+                    "device_id": device["device_id"],
+                    "timestamp": current_time.isoformat(),
+                },
+                title="🔔 UFOBeep Test",
+                body="Push notification system is working!"
+            )
+            
+            if push_result:
+                return {
+                    "success": True,
+                    "message": "Test push sent successfully",
+                    "target_device": device["device_id"],
+                    "platform": device["platform"],
+                    "fcm_token_hash": device["push_token"][:8] + "..." if device["push_token"] else None,
+                    "fcm_message_id": push_result,
+                    "firebase_response": str(push_result)
+                }
+            else:
+                return {
+                    "success": False,
+                    "message": "FCM send failed - check Firebase Admin SDK configuration",
+                    "target_device": device["device_id"],
+                    "platform": device["platform"],
+                    "fcm_token_hash": device["push_token"][:8] + "..." if device["push_token"] else None,
+                    "error": "Firebase Admin SDK returned None"
+                }
+                
+        except ImportError as e:
+            return {
+                "success": False,
+                "message": "Push service import failed",
+                "target_device": device["device_id"],
+                "error": f"Import error: {str(e)}"
+            }
+        except Exception as e:
+            return {
+                "success": False,
+                "message": "FCM send exception",
+                "target_device": device["device_id"], 
+                "error": str(e)
+            }
         
     except HTTPException:
         raise
