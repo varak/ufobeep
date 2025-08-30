@@ -11,6 +11,7 @@ import '../../services/api_client.dart';
 import '../../services/sound_service.dart';
 import '../../services/beep_service.dart';
 import '../../services/sensor_service.dart';
+import '../../services/location_service.dart';
 import '../../providers/app_state.dart';
 import '../../widgets/simple_photo_display.dart';
 import '../../widgets/video_player_widget.dart';
@@ -207,19 +208,21 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         
         // Now trigger alerts - use the actual coordinates that were sent with the beep
         debugPrint('Triggering proximity alerts...');
-        // Use validLat/validLon if they were set, otherwise use current location
-        final alertLat = validLat ?? _sensorData?.latitude ?? 0.0;
-        final alertLon = validLon ?? _sensorData?.longitude ?? 0.0;
+        // Get reliable coordinates for proximity alerts using LocationService
+        final alertCoordinates = await LocationService.I.getReliableCoordinates(
+          preferredLat: validLat,
+          preferredLon: validLon,
+          timeout: const Duration(seconds: 5),
+        );
         
-        // Only trigger alerts if we have valid coordinates
-        if (alertLat != 0.0 || alertLon != 0.0) {
+        if (alertCoordinates != null) {
           await ApiClient.instance.triggerAlertsForSighting(
             sightingId, 
-            alertLat, 
-            alertLon
+            alertCoordinates['lat']!, 
+            alertCoordinates['lon']!
           );
         } else {
-          debugPrint('Warning: Skipping proximity alerts due to invalid coordinates');
+          debugPrint('❌ No valid coordinates available - proximity alerts skipped');
         }
         debugPrint('Proximity alerts sent successfully!');
       } catch (e) {
@@ -599,4 +602,5 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     _descriptionController.dispose();
     super.dispose();
   }
+
 }

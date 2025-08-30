@@ -382,7 +382,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       Permission.location,
       Permission.camera,
       Permission.notification,
-      Permission.storage,
+      Permission.photos, // Modern replacement for deprecated storage permission
     ];
   }
   
@@ -426,8 +426,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         return Icons.camera_alt;
       case Permission.notification:
         return Icons.notifications;
-      case Permission.storage:
-        return Icons.storage;
+      case Permission.photos:
+        return Icons.photo_library;
       default:
         return Icons.security;
     }
@@ -443,8 +443,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         return 'Camera';
       case Permission.notification:
         return 'Notifications';
-      case Permission.storage:
-        return 'Storage';
+      case Permission.photos:
+        return 'Photos';
       default:
         return permission.toString().split('.').last;
     }
