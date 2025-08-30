@@ -47,6 +47,7 @@ dependencies:
   gal: ^2.3.0
   audioplayers: ^6.0.0  # <-- Audio playback for Phase 0 alert sounds
   video_player: ^2.9.2  # <-- Video playback for composition screen
+  timeago: ^3.7.0       # <-- Time formatting for comments
   
   # Permissions
   permission_handler: ^11.3.1
