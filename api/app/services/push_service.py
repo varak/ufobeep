@@ -12,6 +12,10 @@ from datetime import datetime
 from enum import Enum
 from dataclasses import dataclass, asdict
 
+# Firebase Admin SDK for modern FCM API
+from firebase_admin import messaging
+from app.core.firebase_client import get_messaging
+
 try:
     from app.config.environment import settings
 except ImportError:
@@ -111,11 +115,10 @@ class PushNotificationService:
     """Service for sending push notifications via FCM and APNS"""
     
     def __init__(self):
-        self.fcm_server_key = getattr(settings, 'fcm_server_key', None)
+        # APNS configuration (legacy FCM server key no longer needed with Firebase Admin SDK)
         self.apns_key_id = getattr(settings, 'apns_key_id', None) 
         self.apns_team_id = getattr(settings, 'apns_team_id', None)
         self.apns_bundle_id = getattr(settings, 'apns_bundle_id', 'com.ufobeep.app')
-        self.fcm_url = "https://fcm.googleapis.com/fcm/send"
         self.apns_url = "https://api.push.apple.com/3/device"
         
     async def send_notification(
@@ -206,90 +209,55 @@ class PushNotificationService:
         payload: PushPayload,
         collapse_key: Optional[str] = None
     ) -> List[Dict[str, Any]]:
-        """Send FCM push notifications"""
-        
-        if not self.fcm_server_key:
-            logger.error("FCM server key not configured")
-            return [{"success": False, "error": "FCM not configured"} for _ in targets]
-            
-        results = []
-        fcm_payload = payload.to_fcm_payload()
-        
-        if collapse_key:
-            fcm_payload["collapse_key"] = collapse_key
-            
-        headers = {
-            "Authorization": f"key={self.fcm_server_key}",
-            "Content-Type": "application/json"
-        }
-        
-        async with aiohttp.ClientSession() as session:
-            tasks = []
-            for target in targets:
-                task = self._send_single_fcm(
-                    session, target, fcm_payload, headers
-                )
-                tasks.append(task)
-                
-            results = await asyncio.gather(*tasks, return_exceptions=True)
-            
-        return [r if not isinstance(r, Exception) else {"success": False, "error": str(r)} for r in results]
-        
-    async def _send_single_fcm(
-        self,
-        session: aiohttp.ClientSession,
-        target: PushTarget,
-        payload: Dict[str, Any],
-        headers: Dict[str, str]
-    ) -> Dict[str, Any]:
-        """Send single FCM notification"""
+        """Send FCM push notifications using Firebase Admin SDK"""
         
         try:
-            fcm_message = {
-                **payload,
-                "to": target.push_token
-            }
-            
-            timeout = aiohttp.ClientTimeout(total=30.0)
-            async with session.post(
-                self.fcm_url,
-                headers=headers,
-                json=fcm_message,
-                timeout=timeout
-            ) as response:
-                
-                if response.status == 200:
-                    result = await response.json()
-                    if result.get("success", 0) > 0:
-                        logger.debug(f"FCM sent successfully to {target.device_id}")
-                        return {
-                            "success": True,
-                            "device_id": target.device_id,
-                            "message_id": result.get("results", [{}])[0].get("message_id")
-                        }
-                    else:
-                        error = result.get("results", [{}])[0].get("error", "Unknown error")
-                        logger.warning(f"FCM failed for {target.device_id}: {error}")
-                        return {
-                            "success": False, 
-                            "device_id": target.device_id,
-                            "error": error
-                        }
-                else:
-                    logger.error(f"FCM HTTP error {response.status} for {target.device_id}")
-                    return {
-                        "success": False,
-                        "device_id": target.device_id, 
-                        "error": f"HTTP {response.status}"
-                    }
-                
+            messaging_client = get_messaging()
         except Exception as e:
-            logger.error(f"FCM exception for {target.device_id}: {e}")
-            return {
-                "success": False,
-                "device_id": target.device_id,
-                "error": str(e)
-            }
+            logger.error(f"Failed to get Firebase messaging client: {e}")
+            return [{"success": False, "error": "Firebase not configured"} for _ in targets]
+            
+        results = []
+        
+        for target in targets:
+            try:
+                # Create Firebase message
+                message = messaging.Message(
+                    notification=messaging.Notification(
+                        title=payload.title,
+                        body=payload.body
+                    ),
+                    data=payload.data or {},
+                    token=target.push_token,
+                    android=messaging.AndroidConfig(
+                        notification=messaging.AndroidNotification(
+                            channel_id="ufobeep_alerts",
+                            sound=payload.sound or "default"
+                        ),
+                        collapse_key=collapse_key,
+                        data=payload.data or {}
+                    )
+                )
+                
+                # Send message
+                response = messaging.send(message)
+                logger.debug(f"FCM sent successfully to {target.device_id}: {response}")
+                
+                results.append({
+                    "success": True,
+                    "device_id": target.device_id,
+                    "message_id": response
+                })
+                
+            except Exception as e:
+                logger.error(f"FCM failed for {target.device_id}: {e}")
+                results.append({
+                    "success": False,
+                    "device_id": target.device_id,
+                    "error": str(e)
+                })
+        
+        return results
             
     async def _send_apns_notifications(
         self,
