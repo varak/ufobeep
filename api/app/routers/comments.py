@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any
-from app.security import verify_access_token
+from app.core.auth import verify_access_token
 from app.db import database
 
 router = APIRouter(prefix="/alerts", tags=["comments"])
@@ -37,3 +37,11 @@ async def create_comment(sighting_id: str, body: CommentIn, user_id: str = Depen
         {"s": sighting_id, "u": user_id}
     )
     return {"id": row["id"]}
+
+@router.post("/{sighting_id}/follow", status_code=201)
+async def follow_sighting(sighting_id: str, user_id: str = Depends(_uid)) -> Dict[str, Any]:
+    await database.execute(
+        "INSERT INTO follows(sighting_id,user_id) VALUES (:s,:u) ON CONFLICT (sighting_id,user_id) DO NOTHING",
+        {"s": sighting_id, "u": user_id}
+    )
+    return {"message": "Following sighting for notifications"}
