@@ -1057,16 +1057,38 @@ extension ApiClientExtension on ApiClient {
     }
   }
 
-  String _getContentTypeFromFile(File file) {
-    // Safely extract file extension
-    String extension;
+  /// Safely extracts filename from file path, handling content URIs and edge cases
+  String _safeExtractFilename(String filePath) {
     try {
-      final pathParts = file.path.split('.');
-      extension = pathParts.isNotEmpty ? pathParts.last.toLowerCase() : '';
+      final pathParts = filePath.split('/');
+      final fileName = pathParts.isNotEmpty ? pathParts.last : 'unknown_file';
+      if (fileName.isEmpty || fileName == '/') {
+        return 'media_file_${DateTime.now().millisecondsSinceEpoch}';
+      }
+      return fileName;
     } catch (e) {
-      debugPrint('Error extracting extension from ${file.path}: $e');
-      extension = '';
+      debugPrint('Error extracting filename from $filePath: $e');
+      return 'media_file_${DateTime.now().millisecondsSinceEpoch}';
     }
+  }
+
+  /// Safely extracts file extension from file path, handling content URIs and edge cases
+  String _safeExtractExtension(String filePath) {
+    try {
+      final pathParts = filePath.split('.');
+      final extension = pathParts.isNotEmpty ? pathParts.last.toLowerCase() : '';
+      if (extension.isEmpty) {
+        return ''; // Let calling code handle empty extension
+      }
+      return extension;
+    } catch (e) {
+      debugPrint('Error extracting extension from $filePath: $e');
+      return '';
+    }
+  }
+
+  String _getContentTypeFromFile(File file) {
+    final extension = _safeExtractExtension(file.path);
     switch (extension) {
       case 'jpg':
       case 'jpeg':
@@ -1087,15 +1109,7 @@ extension ApiClientExtension on ApiClient {
   }
 
   api.MediaType _getMediaTypeFromFile(File file) {
-    // Safely extract file extension
-    String extension;
-    try {
-      final pathParts = file.path.split('.');
-      extension = pathParts.isNotEmpty ? pathParts.last.toLowerCase() : '';
-    } catch (e) {
-      debugPrint('Error extracting extension from ${file.path}: $e');
-      extension = '';
-    }
+    final extension = _safeExtractExtension(file.path);
     if (['jpg', 'jpeg', 'png', 'gif', 'webp'].contains(extension)) {
       return api.MediaType.photo;
     } else if (['mp4', 'mov', 'avi', 'mkv'].contains(extension)) {
@@ -1128,18 +1142,7 @@ extension ApiClientExtension on ApiClient {
       debugPrint('File uploaded to storage successfully');
       
       // Step 3: File is already saved, return the API URL
-      // Safely extract filename from file path
-      String fileName;
-      try {
-        final pathParts = file.path.split('/');
-        fileName = pathParts.isNotEmpty ? pathParts.last : 'unknown_file';
-        if (fileName.isEmpty || fileName == '/') {
-          fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
-        }
-      } catch (e) {
-        debugPrint('Error extracting filename from ${file.path}: $e');
-        fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
-      }
+      final fileName = _safeExtractFilename(file.path);
       final mediaUrl = '${AppEnvironment.apiBaseUrl}/media/default/${fileName}';
       
       debugPrint('Media upload completed successfully with URL: $mediaUrl');
@@ -1179,18 +1182,7 @@ extension ApiClientExtension on ApiClient {
       debugPrint('Completing media upload...');
       await completeMediaUploadForSighting(uploadId, file);
       
-      // Safely extract filename from file path
-      String fileName;
-      try {
-        final pathParts = file.path.split('/');
-        fileName = pathParts.isNotEmpty ? pathParts.last : 'unknown_file';
-        if (fileName.isEmpty || fileName == '/') {
-          fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
-        }
-      } catch (e) {
-        debugPrint('Error extracting filename from ${file.path}: $e');
-        fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
-      }
+      final fileName = _safeExtractFilename(file.path);
       debugPrint('Media upload completed successfully with filename: $fileName');
       return fileName;
       
@@ -1221,18 +1213,7 @@ extension ApiClientExtension on ApiClient {
 
   Future<Map<String, dynamic>> createPresignedUploadForSighting(String sightingId, File file) async {
     try {
-      // Safely extract filename from file path
-      String fileName;
-      try {
-        final pathParts = file.path.split('/');
-        fileName = pathParts.isNotEmpty ? pathParts.last : 'unknown_file';
-        if (fileName.isEmpty || fileName == '/') {
-          fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
-        }
-      } catch (e) {
-        debugPrint('Error extracting filename from ${file.path}: $e');
-        fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
-      }
+      final fileName = _safeExtractFilename(file.path);
       final contentType = _getContentTypeFromFile(file);
       final fileSize = await file.length();
       
@@ -1259,18 +1240,7 @@ extension ApiClientExtension on ApiClient {
 
   Future<String> completeMediaUploadForSighting(String uploadId, File file) async {
     try {
-      // Safely extract filename from file path
-      String fileName;
-      try {
-        final pathParts = file.path.split('/');
-        fileName = pathParts.isNotEmpty ? pathParts.last : 'unknown_file';
-        if (fileName.isEmpty || fileName == '/') {
-          fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
-        }
-      } catch (e) {
-        debugPrint('Error extracting filename from ${file.path}: $e');
-        fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
-      }
+      final fileName = _safeExtractFilename(file.path);
       
       debugPrint('Completing upload for: $uploadId');
       
@@ -1314,18 +1284,7 @@ extension ApiClientExtension on ApiClient {
       
       // Add the file to the 'files' field (FastAPI expects List[UploadFile])
       debugPrint('Creating multipart file...');
-      // Safely extract filename from file path
-      String filename;
-      try {
-        final pathParts = file.path.split('/');
-        filename = pathParts.isNotEmpty ? pathParts.last : 'unknown_file';
-        if (filename.isEmpty || filename == '/') {
-          filename = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
-        }
-      } catch (e) {
-        debugPrint('Error extracting filename from ${file.path}: $e');
-        filename = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
-      }
+      final filename = _safeExtractFilename(file.path);
       
       formData.files.add(MapEntry(
         'files',
@@ -1398,18 +1357,7 @@ extension ApiClientExtension on ApiClient {
   // Media upload endpoints
   Future<Map<String, dynamic>> createPresignedUpload(File file) async {
     try {
-      // Safely extract filename from file path
-      String fileName;
-      try {
-        final pathParts = file.path.split('/');
-        fileName = pathParts.isNotEmpty ? pathParts.last : 'unknown_file';
-        if (fileName.isEmpty || fileName == '/') {
-          fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
-        }
-      } catch (e) {
-        debugPrint('Error extracting filename from ${file.path}: $e');
-        fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
-      }
+      final fileName = _safeExtractFilename(file.path);
       final contentType = _getContentTypeFromFile(file);
       final fileSize = await file.length();
       
@@ -1495,18 +1443,7 @@ extension ApiClientExtension on ApiClient {
       final fileRequests = <Map<String, dynamic>>[];
       
       for (final file in files) {
-        // Safely extract filename from file path
-        String fileName;
-        try {
-          final pathParts = file.path.split('/');
-          fileName = pathParts.isNotEmpty ? pathParts.last : 'unknown_file';
-          if (fileName.isEmpty || fileName == '/') {
-            fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
-          }
-        } catch (e) {
-          debugPrint('Error extracting filename from ${file.path}: $e');
-          fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
-        }
+        final fileName = _safeExtractFilename(file.path);
         final contentType = _getContentTypeFromFile(file);
         final fileSize = await file.length();
         

@@ -282,8 +282,14 @@ class SightingValidator {
         issues.add('Image size (${fileSizeMB.toStringAsFixed(1)}MB) exceeds limit of ${maxImageSizeMB}MB');
       }
 
-      // Check file extension
-      final extension = imageFile.path.split('.').last.toLowerCase();
+      // Check file extension - safely handle content URIs
+      String extension;
+      try {
+        final pathParts = imageFile.path.split('.');
+        extension = pathParts.isNotEmpty ? pathParts.last.toLowerCase() : '';
+      } catch (e) {
+        extension = 'jpg'; // Default fallback for content URIs
+      }
       metadata['extension'] = extension;
       
       if (!['jpg', 'jpeg', 'png', 'webp'].contains(extension)) {
