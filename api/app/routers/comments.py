@@ -30,7 +30,7 @@ async def list_comments(sighting_id: str, limit: int = 30) -> Dict[str, Any]:
     pool = await get_database_pool()
     async with pool.acquire() as conn:
         rows = await conn.fetch(
-            "SELECT id, user_id, body, media_url, created_at FROM comments WHERE sighting_id=$1 ORDER BY created_at DESC LIMIT $2",
+            "SELECT c.id, c.user_id, u.username, c.body, c.media_url, c.created_at FROM comments c JOIN users u ON c.user_id = u.id WHERE c.sighting_id=$1 ORDER BY c.created_at DESC LIMIT $2",
             sighting_id, limit
         )
     return {"items": [dict(r) for r in rows], "next_cursor": None}
