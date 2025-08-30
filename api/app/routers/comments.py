@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Header
 from pydantic import BaseModel
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any
@@ -11,11 +11,19 @@ class CommentIn(BaseModel):
     body: str
     media_url: Optional[str] = None
 
-def _uid(payload=Depends(verify_access_token)) -> str:
-    sub = payload.get("sub")
-    if not sub:
-        raise HTTPException(status_code=401, detail="Invalid token payload")
-    return str(sub)
+def _uid(authorization: str = Header(None)) -> str:
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Authorization header required")
+    
+    token = authorization.replace("Bearer ", "")
+    try:
+        payload = verify_access_token(token)
+        sub = payload.get("sub")
+        if not sub:
+            raise HTTPException(status_code=401, detail="Invalid token payload")
+        return str(sub)
+    except Exception as e:
+        raise HTTPException(status_code=401, detail=f"Token verification failed: {str(e)}")
 
 @router.get("/{sighting_id}/comments")
 async def list_comments(sighting_id: str, limit: int = 30) -> Dict[str, Any]:
