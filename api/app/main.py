@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.middleware.request_middleware import RequestTimeoutMiddleware, ErrorHandlingMiddleware
 from app.config.environment import settings
-from app.routers import plane_match, media_serve, devices, emails, photo_analysis, mufon, copescan, users, firebase_users, auth_magic, comments, share_cards
+from app.routers import plane_match, media_serve, devices, emails, photo_analysis, mufon, copescan, users, firebase_users, auth_magic, comments, share_cards, media_uploads
 from app.routers import admin_simple as admin
 from app.services.media_service import get_media_service
 from app.services.alerts_service import AlertsService
@@ -414,6 +414,8 @@ app.include_router(auth_magic.router)
 # Include MP16 routers for comments and share cards
 app.include_router(comments.router)
 app.include_router(share_cards.router)
+# Include MP16 media uploads with idempotency
+app.include_router(media_uploads.router)
 
 # Clean unified alerts architecture using alerts.router
 
