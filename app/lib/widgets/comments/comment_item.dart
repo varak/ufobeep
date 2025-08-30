@@ -40,11 +40,11 @@ class CommentItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // User ID and timestamp
+                // Username and timestamp
                 Row(
                   children: [
                     Text(
-                      _formatUserId(comment.userId),
+                      comment.username,
                       style: const TextStyle(
                         color: AppColors.textSecondary,
                         fontSize: 12,
@@ -96,11 +96,4 @@ class CommentItem extends StatelessWidget {
     );
   }
   
-  String _formatUserId(String userId) {
-    // Extract username from UUID or display truncated ID
-    if (userId.contains('-')) {
-      return 'user-${userId.substring(0, 6)}';
-    }
-    return userId.length > 10 ? '${userId.substring(0, 10)}...' : userId;
-  }
 }
