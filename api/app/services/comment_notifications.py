@@ -35,6 +35,7 @@ class CommentNotificationService:
         """
         
         try:
+            print(f"🚨 BACKGROUND TASK STARTED: notify_comment_posted for {sighting_id} by {commenter_username}")
             logger.info(f"🔔 Processing comment notification for sighting {sighting_id} by {commenter_username}")
             
             # Get all followers of this sighting (excluding the commenter)
