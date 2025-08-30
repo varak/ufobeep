@@ -71,18 +71,19 @@ async def create_comment(
     # Schedule background notification task
     if user_row:
         try:
-            # Wrap async function for BackgroundTasks execution
-            def _run_notification_task():
-                import asyncio
-                return asyncio.run(comment_notification_service.notify_comment_posted(
-                    sighting_id=sighting_id,
-                    commenter_user_id=user_id,
-                    commenter_username=user_row["username"],
-                    comment_body=body.body,
-                    db_pool=pool
-                ))
+            # Use create_task to run in the same event loop as FastAPI
+            import asyncio
+            loop = asyncio.get_running_loop()
+            task = loop.create_task(comment_notification_service.notify_comment_posted(
+                sighting_id=sighting_id,
+                commenter_user_id=user_id,
+                commenter_username=user_row["username"],
+                comment_body=body.body,
+                db_pool=pool
+            ))
             
-            background_tasks.add_task(_run_notification_task)
+            # Add a no-op background task so FastAPI knows something is scheduled
+            background_tasks.add_task(lambda: None)
         except Exception as e:
             logger.error(f"Failed to schedule notification background task: {e}")
     
