@@ -1254,9 +1254,22 @@ extension ApiClientExtension on ApiClient {
       
       // Add the file to the 'files' field (FastAPI expects List[UploadFile])
       debugPrint('Creating multipart file...');
+      // Safely extract filename from file path
+      String filename;
+      try {
+        final pathParts = file.path.split('/');
+        filename = pathParts.isNotEmpty ? pathParts.last : 'unknown_file';
+        if (filename.isEmpty || filename == '/') {
+          filename = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
+        }
+      } catch (e) {
+        debugPrint('Error extracting filename from ${file.path}: $e');
+        filename = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
+      }
+      
       formData.files.add(MapEntry(
         'files',
-        await MultipartFile.fromFile(file.path, filename: file.path.split('/').last),
+        await MultipartFile.fromFile(file.path, filename: filename),
       ));
       
       // Add form fields
