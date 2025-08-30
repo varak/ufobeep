@@ -239,8 +239,10 @@ class PushNotificationService:
                     )
                 )
                 
-                # Send message
-                response = messaging.send(message)
+                # Send message - Firebase messaging.send is synchronous, run in thread
+                import asyncio
+                loop = asyncio.get_event_loop()
+                response = await loop.run_in_executor(None, messaging.send, message)
                 logger.debug(f"FCM sent successfully to {target.device_id}: {response}")
                 
                 results.append({
