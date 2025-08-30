@@ -10,6 +10,7 @@ local.properties
 __pycache__/
 *.py[cod]
 .venv/
+venv/
 .env*
 
 # Node
@@ -38,3 +39,4 @@ api/secrets/
 .env
 .env.*
 logs/
+backups/
