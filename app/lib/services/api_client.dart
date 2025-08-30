@@ -125,6 +125,38 @@ class ApiClient {
     }
   }
 
+  // Safe response parsing to handle different response types
+  Map<String, dynamic> _safeResponseToMap(dynamic responseData, {String context = 'API response'}) {
+    debugPrint('=== SAFE RESPONSE PARSING ===');
+    debugPrint('Context: $context');
+    debugPrint('Response type: ${responseData.runtimeType}');
+    debugPrint('Response value: $responseData');
+
+    if (responseData is Map<String, dynamic>) {
+      debugPrint('✅ Response is already a Map');
+      return responseData;
+    } else if (responseData is List && responseData.isNotEmpty) {
+      debugPrint('⚠️ Response is a List, attempting to extract first Map element');
+      if (responseData.first is Map<String, dynamic>) {
+        debugPrint('✅ First element is a Map, using it');
+        return responseData.first as Map<String, dynamic>;
+      } else {
+        debugPrint('❌ First element is not a Map, wrapping List in data field');
+        return {'success': true, 'data': responseData};
+      }
+    } else if (responseData is String) {
+      debugPrint('⚠️ Response is a String, wrapping in message field');
+      return {'success': true, 'message': responseData};
+    } else {
+      debugPrint('❌ Unknown response type, creating error response');
+      return {
+        'success': false,
+        'error': 'Invalid response type: ${responseData.runtimeType}',
+        'raw_response': responseData.toString()
+      };
+    }
+  }
+
   // Sighting endpoints
   Future<api.CreateSightingResponse> submitSighting(api.SightingSubmission submission) async {
     try {
@@ -1245,7 +1277,7 @@ extension ApiClientExtension on ApiClient {
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         debugPrint('=== MEDIA UPLOAD SUCCESS ===');
-        return response.data as Map<String, dynamic>;
+        return _safeResponseToMap(response.data, context: 'Media upload response');
       } else {
         debugPrint('ERROR: Upload failed with status ${response.statusCode}');
         throw Exception('Failed to upload media: ${response.statusMessage}');
