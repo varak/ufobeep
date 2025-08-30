@@ -39,19 +39,26 @@ class CommentNotificationService:
             logger.info(f"🔔 Processing comment notification for sighting {sighting_id} by {commenter_username}")
             
             # Get all followers of this sighting (excluding the commenter)
+            print(f"🚨 Getting followers...")
             followers = await self._get_sighting_followers(sighting_id, exclude_user_id=commenter_user_id)
+            print(f"🚨 Found {len(followers)} followers")
             
             logger.info(f"🔔 Found {len(followers)} followers for sighting {sighting_id}")
             
             if not followers:
+                print(f"🚨 NO FOLLOWERS - returning early")
                 logger.info(f"No followers to notify for sighting {sighting_id}")
                 return {"total_notifications": 0, "success": True}
             
             # Get alert title for context
+            print(f"🚨 Getting alert title...")
             alert_title = await self._get_sighting_title(sighting_id)
+            print(f"🚨 Alert title: {alert_title}")
             
             # Get push targets for all followers
+            print(f"🚨 Getting push targets for users: {[f['user_id'] for f in followers]}")
             targets = await self._get_push_targets_for_users([f['user_id'] for f in followers])
+            print(f"🚨 Found {len(targets)} push targets")
             
             logger.info(f"🔔 Found {len(targets)} push targets for notification")
             
