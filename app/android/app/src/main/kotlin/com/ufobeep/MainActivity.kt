@@ -2,7 +2,9 @@ package com.ufobeep
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.media.AudioAttributes
 import android.net.Uri
 import android.os.Bundle
 import java.io.File
@@ -17,22 +19,53 @@ class MainActivity : FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // Create high-priority notification channel for UFO alerts
-        val channel = NotificationChannel(
-            "ufobeep_alerts",
-            "UFOBeep Alerts",
-            NotificationManager.IMPORTANCE_HIGH
-        ).apply {
-            description = "Urgent UFO sighting alerts from nearby witnesses"
-            enableVibration(true)
-            setShowBadge(true)
-        }
-        
-        val notificationManager = getSystemService(NotificationManager::class.java)
-        notificationManager.createNotificationChannel(channel)
+        // Fix notification channel with proper sound + vibration
+        ensureBeepChannelFixed()
         
         // Handle share intent
         handleShareIntent(intent)
+    }
+    
+    private fun ensureBeepChannelFixed() {
+        val channelId = "ufobeep_alerts"
+        val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val existing = nm.getNotificationChannel(channelId)
+        
+        val desiredSound = Uri.parse("android.resource://$packageName/${R.raw.ufobeep_chime}")
+        val desiredImportance = NotificationManager.IMPORTANCE_HIGH
+        val desiredVibration = longArrayOf(0, 300, 120, 300)
+        
+        var needsFix = false
+        if (existing == null) {
+            needsFix = true
+        } else {
+            // Check if channel needs fixing
+            if (existing.importance < desiredImportance) needsFix = true
+            if (!existing.shouldVibrate()) needsFix = true
+            if (existing.sound == null) needsFix = true
+        }
+        
+        if (needsFix) {
+            // Delete and recreate channel with correct settings
+            try { 
+                nm.deleteNotificationChannel(channelId) 
+            } catch (_: Exception) {}
+            
+            val attrs = AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION_EVENT)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build()
+                
+            val ch = NotificationChannel(channelId, "UFOBeep Alerts", desiredImportance).apply {
+                description = "Nearby sighting alerts with sound + vibration"
+                setSound(desiredSound, attrs)
+                enableVibration(true)
+                vibrationPattern = desiredVibration
+                enableLights(true)
+                setShowBadge(true)
+            }
+            nm.createNotificationChannel(ch)
+        }
     }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {

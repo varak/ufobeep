@@ -20,6 +20,7 @@ import 'services/sound_service.dart';
 import 'services/permission_service.dart';
 import 'services/share_intent_service.dart';
 import 'services/pending_share_queue.dart';
+import 'services/notifications.dart';
 import 'services/analytics_service.dart';
 import 'services/auth_service.dart';
 import 'services/api_client.dart';
@@ -42,6 +43,9 @@ void main() async {
   
   // ChatGPT: Initialize ApiClient with interceptor
   ApiClient.init();
+  
+  // Ensure notification permissions are requested early
+  await Notifications.ensureNotificationPermission();
 
   // Run critical initialization in parallel (Firebase MUST be first)
   final results = await Future.wait([
