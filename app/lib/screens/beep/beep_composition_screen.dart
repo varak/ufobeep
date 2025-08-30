@@ -11,6 +11,7 @@ import '../../services/api_client.dart';
 import '../../services/sound_service.dart';
 import '../../services/beep_service.dart';
 import '../../services/sensor_service.dart';
+import '../../services/ui_feedback_service.dart';
 import '../../services/location_service.dart';
 import '../../providers/app_state.dart';
 import '../../widgets/simple_photo_display.dart';
@@ -139,6 +140,9 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   Future<void> _submitBeep() async {
     
     if (_isSubmitting) return;
+    
+    // Play UI feedback immediately when submit button is pressed
+    UiFeedbackService().capture(haptic: true);
 
     setState(() {
       _isSubmitting = true;

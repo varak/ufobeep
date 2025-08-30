@@ -14,6 +14,7 @@ import '../../services/photo_metadata_service.dart';
 import '../../services/beep_service.dart';
 import '../../services/sound_service.dart';
 import '../../services/permission_service.dart';
+import '../../services/ui_feedback_service.dart';
 import '../../services/api_client.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../models/sensor_data.dart';
@@ -65,6 +66,9 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   }
 
   Future<void> _capturePhoto() async {
+    // Play capture feedback for immediate UI response on Moto
+    UiFeedbackService().capture(haptic: true);
+    
     // Navigate to custom camera screen that skips approval
     final description = _descriptionController.text.trim();
     context.go('/beep/camera', extra: {
@@ -74,6 +78,9 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
 
   Future<void> _pickFromGallery() async {
     if (_isCapturing) return;
+    
+    // Play click feedback for gallery selection
+    UiFeedbackService().click(haptic: true);
 
     setState(() {
       _isCapturing = true;
@@ -196,6 +203,9 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
 
   Future<void> _sendQuickBeep() async {
     if (_isBeeping) return;
+    
+    // Play immediate UI feedback for responsive feel on Moto
+    UiFeedbackService().capture(haptic: true);
     
     setState(() {
       _isBeeping = true;

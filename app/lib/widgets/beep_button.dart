@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../services/ui_feedback_service.dart';
 
 class BeepButton extends StatefulWidget {
   final VoidCallback onPressed;
@@ -49,6 +50,8 @@ class _BeepButtonState extends State<BeepButton>
   
   void _handleTapDown(TapDownDetails details) {
     _animationController.forward();
+    // Play UI feedback immediately on tap down for responsive feel
+    UiFeedbackService().click(haptic: true);
   }
   
   void _handleTapUp(TapUpDetails details) {
