@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any
 from app.core.auth import verify_access_token
-from app.db import database
+from app.services.database_service import get_database_pool
 
 router = APIRouter(prefix="/alerts", tags=["comments"])
 
@@ -19,29 +19,35 @@ def _uid(payload=Depends(verify_access_token)) -> str:
 
 @router.get("/{sighting_id}/comments")
 async def list_comments(sighting_id: str, limit: int = 30) -> Dict[str, Any]:
-    rows = await database.fetch_all(
-        "SELECT id, user_id, body, media_url, created_at FROM comments WHERE sighting_id=:s ORDER BY created_at DESC LIMIT :l",
-        {"s": sighting_id, "l": limit}
-    )
+    pool = await get_database_pool()
+    async with pool.acquire() as conn:
+        rows = await conn.fetch(
+            "SELECT id, user_id, body, media_url, created_at FROM comments WHERE sighting_id=$1 ORDER BY created_at DESC LIMIT $2",
+            sighting_id, limit
+        )
     return {"items": [dict(r) for r in rows], "next_cursor": None}
 
 @router.post("/{sighting_id}/comments", status_code=201)
 async def create_comment(sighting_id: str, body: CommentIn, user_id: str = Depends(_uid)) -> Dict[str, Any]:
     now = datetime.now(timezone.utc)
-    row = await database.fetch_one(
-        "INSERT INTO comments(sighting_id,user_id,body,media_url,created_at) VALUES (:s,:u,:b,:m,:t) RETURNING id",
-        {"s": sighting_id, "u": user_id, "b": body.body, "m": body.media_url, "t": now}
-    )
-    await database.execute(
-        "INSERT INTO follows(sighting_id,user_id) VALUES (:s,:u) ON CONFLICT (sighting_id,user_id) DO NOTHING",
-        {"s": sighting_id, "u": user_id}
-    )
+    pool = await get_database_pool()
+    async with pool.acquire() as conn:
+        row = await conn.fetchrow(
+            "INSERT INTO comments(sighting_id,user_id,body,media_url,created_at) VALUES ($1,$2,$3,$4,$5) RETURNING id",
+            sighting_id, user_id, body.body, body.media_url, now
+        )
+        await conn.execute(
+            "INSERT INTO follows(sighting_id,user_id) VALUES ($1,$2) ON CONFLICT (sighting_id,user_id) DO NOTHING",
+            sighting_id, user_id
+        )
     return {"id": row["id"]}
 
 @router.post("/{sighting_id}/follow", status_code=201)
 async def follow_sighting(sighting_id: str, user_id: str = Depends(_uid)) -> Dict[str, Any]:
-    await database.execute(
-        "INSERT INTO follows(sighting_id,user_id) VALUES (:s,:u) ON CONFLICT (sighting_id,user_id) DO NOTHING",
-        {"s": sighting_id, "u": user_id}
-    )
+    pool = await get_database_pool()
+    async with pool.acquire() as conn:
+        await conn.execute(
+            "INSERT INTO follows(sighting_id,user_id) VALUES ($1,$2) ON CONFLICT (sighting_id,user_id) DO NOTHING",
+            sighting_id, user_id
+        )
     return {"message": "Following sighting for notifications"}
