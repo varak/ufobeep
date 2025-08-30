@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:flutter_soundpool/flutter_soundpool.dart';
+import 'package:soundpool/soundpool.dart';
 import 'package:vibration/vibration.dart';
 
 class UiFeedbackService {
@@ -8,15 +8,10 @@ class UiFeedbackService {
   factory UiFeedbackService() => _i;
   UiFeedbackService._internal();
 
-  final FlutterSoundpool _pool = FlutterSoundpool.fromOptions(
+  final Soundpool _pool = Soundpool.fromOptions(
     options: const SoundpoolOptions(
       streamType: StreamType.notification, // sonification-ish
       maxStreams: 2,
-      audioAttributes: AndroidAudioAttributes(
-        usage: AndroidUsage.assistanceSonification,
-        contentType: AndroidContentType.sonification,
-        flags: AndroidAudioFlags.none,
-      ),
     ),
   );
 
