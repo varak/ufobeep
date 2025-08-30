@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../models/comment.dart';
 import '../../services/comments_service.dart';
 import '../../widgets/comments/comment_item.dart';
 import '../../widgets/comments/comment_composer.dart';
 import '../../theme/app_theme.dart';
 import '../../services/ui_feedback.dart';
+import '../../services/auth_repository.dart';
 
 class CommentsScreen extends ConsumerStatefulWidget {
   final String sightingId;
@@ -57,6 +59,29 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
   
   Future<void> _sendComment(String body) async {
     try {
+      // Check if user is authenticated first
+      final authRepo = AuthRepository();
+      final accessToken = await authRepo.getAccessToken();
+      
+      if (accessToken == null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('Please log in to post comments'),
+              backgroundColor: AppColors.semanticWarning,
+              action: SnackBarAction(
+                label: 'Log In',
+                textColor: Colors.white,
+                onPressed: () {
+                  context.go('/sign-in');
+                },
+              ),
+            ),
+          );
+        }
+        return;
+      }
+      
       final newComment = await _commentsService.postComment(widget.sightingId, body);
       
       setState(() {
@@ -79,6 +104,29 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
     await UiFeedback.click();
     
     try {
+      // Check if user is authenticated first
+      final authRepo = AuthRepository();
+      final accessToken = await authRepo.getAccessToken();
+      
+      if (accessToken == null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('Please log in to follow alerts'),
+              backgroundColor: AppColors.semanticWarning,
+              action: SnackBarAction(
+                label: 'Log In',
+                textColor: Colors.white,
+                onPressed: () {
+                  context.go('/sign-in');
+                },
+              ),
+            ),
+          );
+        }
+        return;
+      }
+      
       if (!_isFollowing) {
         await _commentsService.followSighting(widget.sightingId);
         setState(() {
