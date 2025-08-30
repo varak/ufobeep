@@ -1330,7 +1330,9 @@ extension ApiClientExtension on ApiClient {
 
   Future<Map<String, dynamic>> triggerAlertsForSighting(String sightingId, double latitude, double longitude) async {
     try {
+      debugPrint('=== TRIGGER ALERTS DEBUG START ===');
       final deviceId = await beepService.getOrCreateDeviceId();
+      debugPrint('Got device ID for alerts: $deviceId');
       
       final response = await ApiClient.dio.post(
         '/alerts/send/$sightingId',
@@ -1344,13 +1346,24 @@ extension ApiClientExtension on ApiClient {
         options: Options(headers: {'Content-Type': 'application/json'}),
       );
 
+      debugPrint('Alert trigger response status: ${response.statusCode}');
+      debugPrint('Alert trigger response data: ${response.data}');
+      
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
-        return response.data as Map<String, dynamic>;
+        debugPrint('=== TRIGGER ALERTS SUCCESS ===');
+        return _safeResponseToMap(response.data, context: 'Trigger alerts response');
       } else {
         throw Exception('Failed to trigger alerts: ${response.statusMessage}');
       }
     } on DioException catch (e) {
+      debugPrint('=== TRIGGER ALERTS DIO ERROR ===');
+      debugPrint('DioException: $e');
       throw _handleError(e);
+    } catch (e) {
+      debugPrint('=== TRIGGER ALERTS GENERAL ERROR ===');
+      debugPrint('Error: $e');
+      debugPrint('Error type: ${e.runtimeType}');
+      rethrow;
     }
   }
 
