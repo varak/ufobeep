@@ -21,8 +21,8 @@ class UiFeedbackService {
   Future<void> _warm() async {
     if (_warmed || _clickId == null) return;
     try {
-      // Moto warm-up: silent ping then small delay
-      await _pool.play(_clickId!, volume: 0.0);
+      // Moto warm-up: play then small delay to prime audio channel
+      await _pool.play(_clickId!);
       await Future.delayed(const Duration(milliseconds: 120));
       _warmed = true;
     } catch (_) {}
@@ -31,7 +31,7 @@ class UiFeedbackService {
   Future<void> click() async {
     if (_clickId == null) await init();
     try {
-      await _pool.play(_clickId!, volume: 1.0);
+      await _pool.play(_clickId!);
     } catch (_) {}
     HapticFeedback.lightImpact(); // simple, reliable haptic
   }
