@@ -1,10 +1,16 @@
-from fastapi import APIRouter, HTTPException, UploadFile, File, Form
+from fastapi import APIRouter, HTTPException, UploadFile, File, Form, Header
 from typing import List, Optional
 from app.services.alerts_service import AlertsService
 import asyncpg
 import uuid
+import logging
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/alerts", tags=["alerts"])
+
+# In-memory store for idempotency keys (in production would use Redis)
+idempotency_store = {}
 
 # Shared utilities
 async def get_db():
@@ -51,26 +57,36 @@ def format_alert_response(alert):
 
 # Alert endpoints
 @router.post("")
-async def create_alert(request: dict):
-    """Create new alert - unified endpoint replacing /beep/anonymous"""
-    print(f"Alert creation request: {request}")
+async def create_alert(request: dict, idempotency_key: Optional[str] = Header(None, alias="Idempotency-Key")):
+    """
+    Create new alert with idempotency support for Sprint A Multi-Media Alerts.
     
-    # Validate input
-    device_id = request.get('device_id')
-    if not device_id:
-        raise HTTPException(status_code=400, detail="device_id is required")
-    
-    location = request.get('location')
-    if not location or location.get('latitude') is None or location.get('longitude') is None:
-        raise HTTPException(status_code=400, detail="location with latitude and longitude required")
-    
-    # All users have usernames now
-    username = request.get('username')
-    
-    print(f"Creating alert - device_id: {device_id}, username: {username}")
-    
-    # Create alert
+    Unified endpoint replacing /beep/anonymous with duplicate prevention.
+    """
     try:
+        # Handle idempotency - if key exists, return cached result
+        if idempotency_key:
+            if idempotency_key in idempotency_store:
+                logger.info(f"Returning cached result for idempotency key: {idempotency_key}")
+                return idempotency_store[idempotency_key]
+        
+        print(f"Alert creation request: {request}")
+        
+        # Validate input
+        device_id = request.get('device_id')
+        if not device_id:
+            raise HTTPException(status_code=400, detail="device_id is required")
+        
+        location = request.get('location')
+        if not location or location.get('latitude') is None or location.get('longitude') is None:
+            raise HTTPException(status_code=400, detail="location with latitude and longitude required")
+        
+        # All users have usernames now
+        username = request.get('username')
+        
+        print(f"Creating alert - device_id: {device_id}, username: {username}")
+        
+        # Create alert
         db_pool = await get_db()
         alerts_service = AlertsService(db_pool)
         
@@ -112,7 +128,7 @@ async def create_alert(request: dict):
         else:
             alert_message = f"Your beep alerted {total_alerted} people nearby!"
         
-        return {
+        response = {
             "sighting_id": alert_id,
             "message": "Anonymous beep sent successfully", 
             "alert_message": alert_message,
@@ -124,6 +140,13 @@ async def create_alert(request: dict):
             "success": True,
             "data": {"alert_id": alert_id, "jittered_location": jittered_location}
         }
+        
+        # Cache result for idempotency
+        if idempotency_key:
+            idempotency_store[idempotency_key] = response
+            
+        logger.info(f"Successfully created alert {alert_id}")
+        return response
         
     except Exception as e:
         print(f"Error creating alert: {e}")
@@ -183,9 +206,14 @@ async def upload_alert_media(
     alert_id: str,
     files: List[UploadFile] = File(...),
     source: str = Form("user_upload"),
-    description: Optional[str] = Form(None)
+    description: Optional[str] = Form(None),
+    idempotency_key: Optional[str] = Header(None, alias="Idempotency-Key")
 ):
-    """Upload media files to an alert with processing pipeline"""
+    """
+    Upload media files to an alert with idempotency support for Sprint A Multi-Media Alerts.
+    
+    Provides processing pipeline with duplicate prevention.
+    """
     import json
     import uuid
     from datetime import datetime
@@ -194,6 +222,12 @@ async def upload_alert_media(
     from app.services.media_processing_service import MediaProcessingService
     
     try:
+        # Handle idempotency - if key exists, return cached result
+        if idempotency_key:
+            if idempotency_key in idempotency_store:
+                logger.info(f"Returning cached result for idempotency key: {idempotency_key}")
+                return idempotency_store[idempotency_key]
+        
         print(f"Media upload request: alert_id={alert_id}, files={files}, source={source}")
         print(f"Files type: {type(files)}, Files length: {len(files) if files else 'None'}")
         
@@ -300,13 +334,20 @@ async def upload_alert_media(
             
             # Don't close the pool - it's shared across the service
             
-            return {
+            response = {
                 "success": True,
                 "alert_id": alert_id,
                 "added_files": len(new_media_files),
                 "total_files": existing_media['file_count'],
                 "new_media": new_media_files
             }
+            
+            # Cache result for idempotency
+            if idempotency_key:
+                idempotency_store[idempotency_key] = response
+                
+            logger.info(f"Successfully uploaded {len(new_media_files)} media files to alert {alert_id}")
+            return response
         
     except HTTPException:
         raise
