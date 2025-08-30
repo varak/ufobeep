@@ -104,16 +104,16 @@ class SoundService {
 
     // Configure audio mode for alerts - notification/sonification approach
     try {
-      // Set global audio context optimized for notification sounds
-      await AudioPlayer.global.setGlobalAudioContext(
-        const AudioContext(
+      // Set audio context optimized for notification sounds (audioplayers v6 API)
+      await AudioPlayer.global.setAudioContext(
+        AudioContext(
           android: AudioContextAndroid(
             contentType: AndroidContentType.sonification, // Key change: sonification not music
             usageType: AndroidUsageType.notification,     // Key change: notification not media
             audioFocus: AndroidAudioFocus.gainTransientMayDuck,
             isSpeakerphoneOn: false,
             stayAwake: false,
-            respectSilence: false, // Key change: bypass sound_effects_enabled restriction
+            // Note: respectSilence not available in v6, upgrade to v7 for this feature
           ),
           iOS: AudioContextIOS(
             category: AVAudioSessionCategory.ambient, // iOS: short alert mixing
