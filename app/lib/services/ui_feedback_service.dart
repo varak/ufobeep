@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:soundpool/soundpool.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:vibration/vibration.dart';
 
 class UiFeedbackService {
@@ -8,14 +8,7 @@ class UiFeedbackService {
   factory UiFeedbackService() => _i;
   UiFeedbackService._internal();
 
-  final Soundpool _pool = Soundpool.fromOptions(
-    options: const SoundpoolOptions(
-      streamType: StreamType.notification, // sonification-ish
-      maxStreams: 2,
-    ),
-  );
-
-  int? _clickId;
+  final AudioPlayer _player = AudioPlayer();
   bool _warmed = false;
   bool _initialized = false;
 
@@ -23,12 +16,20 @@ class UiFeedbackService {
     if (_initialized) return;
     
     try {
-      if (_clickId == null) {
-        // Load the existing tap_click.mp3 as our UI sound
-        final byteData = await rootBundle.load('assets/sounds/tap_click.mp3');
-        _clickId = await _pool.load(byteData);
-        print('🔊 UI feedback service loaded tap_click.mp3');
-      }
+      // Configure for ultra-low-latency UI sounds with Android sonification
+      await _player.setAudioContext(
+        AudioContext(
+          android: AudioContextAndroid(
+            contentType: AndroidContentType.sonification,
+            usageType: AndroidUsageType.assistanceSonification,
+            audioFocus: AndroidAudioFocus.none, // Don't steal focus for UI sounds
+          ),
+        ),
+      );
+      
+      // Preload the sound
+      await _player.setSource(AssetSource('sounds/tap_click.mp3'));
+      
       await _warmIfNeeded();
       _initialized = true;
       print('🔊 UI feedback service initialized successfully');
@@ -38,12 +39,15 @@ class UiFeedbackService {
   }
 
   Future<void> _warmIfNeeded() async {
-    if (_warmed || _clickId == null) return;
-    // Moto warm-up: play once so the path is primed.
+    if (_warmed) return;
+    // Moto warm-up: play once at low volume to prime audio channel
     try {
-      print('🔊 UI feedback: warming up SoundPool for Moto...');
-      await _pool.play(_clickId!);
+      print('🔊 UI feedback: warming up AudioPlayer for Moto...');
+      await _player.setVolume(0.1);
+      await _player.resume();
       await Future.delayed(const Duration(milliseconds: 120));
+      await _player.stop();
+      await _player.setVolume(1.0);
       _warmed = true;
       print('🔊 UI feedback: warm-up complete');
     } catch (e) {
@@ -56,11 +60,10 @@ class UiFeedbackService {
       // Ensure initialized
       if (!_initialized) await init();
       
-      // Play UI click sound
-      if (_clickId != null) {
-        await _pool.play(_clickId!);
-        print('🔊 UI feedback: played click sound');
-      }
+      // Play UI click sound - fast restart for immediate response
+      await _player.stop();
+      await _player.resume();
+      print('🔊 UI feedback: played click sound');
     } catch (e) {
       print('🔊 UI feedback click sound error: $e');
     }
@@ -95,10 +98,10 @@ class UiFeedbackService {
     try {
       if (!_initialized) await init();
       
-      if (_clickId != null) {
-        await _pool.play(_clickId!);
-        print('🔊 UI feedback: played capture sound');
-      }
+      // Play capture sound - restart for immediate response
+      await _player.stop();
+      await _player.resume();
+      print('🔊 UI feedback: played capture sound');
     } catch (e) {
       print('🔊 UI feedback capture sound error: $e');
     }
@@ -126,10 +129,10 @@ class UiFeedbackService {
 
   Future<void> dispose() async {
     try {
-      _pool.release();
+      await _player.stop();
+      await _player.dispose();
       _initialized = false;
       _warmed = false;
-      _clickId = null;
     } catch (e) {
       print('🔊 UI feedback dispose error: $e');
     }
