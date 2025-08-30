@@ -102,26 +102,26 @@ class SoundService {
   Future<void> init() async {
     if (_initialized) return;
 
-    // Configure audio mode for alerts - simple approach
+    // Configure audio mode for alerts - notification/sonification approach
     try {
-      // Set global audio context for proper alert playback
-      await AudioPlayer.global.setAudioContext(
-        AudioContext(
-          iOS: AudioContextIOS(
-            category: AVAudioSessionCategory.playback,
-            options: {
-              AVAudioSessionOptions.mixWithOthers,
-            },
-          ),
+      // Set global audio context optimized for notification sounds
+      await AudioPlayer.global.setGlobalAudioContext(
+        const AudioContext(
           android: AudioContextAndroid(
+            contentType: AndroidContentType.sonification, // Key change: sonification not music
+            usageType: AndroidUsageType.notification,     // Key change: notification not media
+            audioFocus: AndroidAudioFocus.gainTransientMayDuck,
             isSpeakerphoneOn: false,
             stayAwake: false,
-            contentType: AndroidContentType.music,
-            usageType: AndroidUsageType.media,
-            audioFocus: AndroidAudioFocus.gainTransientMayDuck,
+            respectSilence: false, // Key change: bypass sound_effects_enabled restriction
+          ),
+          iOS: AudioContextIOS(
+            category: AVAudioSessionCategory.ambient, // iOS: short alert mixing
+            options: {AVAudioSessionOptions.mixWithOthers},
           ),
         ),
       );
+      print('🔊 Audio context configured for notifications');
     } catch (e) {
       print('Failed to configure audio context: $e');
       // Continue anyway - basic playback will still work
