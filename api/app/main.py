@@ -329,12 +329,18 @@ async def lifespan(app: FastAPI):
             await initialize_metrics_service(database_service.pool)
             
         print("Database tables initialized")
+        
+        # Initialize notification system with shared database pool
+        from app.lifecycle import on_startup
+        await on_startup(app)
     except Exception as e:
         print(f"Database initialization failed: {e}")
     
     yield
     
     # Shutdown
+    from app.lifecycle import on_shutdown
+    await on_shutdown(app)
     await database_service.close()
 
 # Initialize FastAPI app with environment configuration and lifespan
@@ -363,7 +369,7 @@ app.add_middleware(
 
 @app.get("/healthz")
 async def healthz():
-    """Enhanced health check with database pool status"""
+    """Enhanced health check with database pool status and notification queue monitoring"""
     health_data = {"ok": True, "timestamp": datetime.now().isoformat()}
     
     # Add database pool health
@@ -374,6 +380,32 @@ async def healthz():
             health_data["ok"] = False
     except Exception as e:
         health_data["database"] = {"healthy": False, "error": str(e)}
+        health_data["ok"] = False
+    
+    # Add notification queue health
+    try:
+        if hasattr(app.state, 'notify_queue') and hasattr(app.state, 'notify_task'):
+            queue_size = app.state.notify_queue.qsize()
+            worker_alive = not app.state.notify_task.done()
+            
+            health_data["notifications"] = {
+                "queue_size": queue_size,
+                "worker_running": worker_alive,
+                "healthy": worker_alive and queue_size < 500  # Consider unhealthy if queue backs up
+            }
+            
+            if not health_data["notifications"]["healthy"]:
+                health_data["ok"] = False
+                
+        else:
+            health_data["notifications"] = {
+                "healthy": False,
+                "error": "Notification system not initialized"
+            }
+            health_data["ok"] = False
+            
+    except Exception as e:
+        health_data["notifications"] = {"healthy": False, "error": str(e)}
         health_data["ok"] = False
     
     return health_data
