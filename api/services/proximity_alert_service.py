@@ -38,9 +38,11 @@ class ProximityAlertService:
         try:
             start_time = datetime.utcnow()
             
-            # Check for recent witnesses in the same area for escalation
-            witness_count = await self._count_recent_witnesses_nearby(lat, lon)
-            logger.info(f"Found {witness_count} recent witnesses in area for sighting {sighting_id}")
+            # Start with 1 witness (the original reporter who just submitted this sighting)
+            # Then add any additional witness confirmations from the area
+            additional_witnesses = await self._count_recent_witnesses_nearby(lat, lon)
+            witness_count = 1 + additional_witnesses  # Original reporter + confirmations
+            logger.info(f"Total witnesses for sighting {sighting_id}: {witness_count} (1 original + {additional_witnesses} confirmations)")
             
             # Determine alert escalation level based on witness count
             alert_escalation = self._determine_alert_escalation(witness_count)
@@ -354,16 +356,23 @@ class ProximityAlertService:
             return 0
     
     async def _count_recent_witnesses_nearby(self, lat: float, lon: float, radius_km: float = 10.0) -> int:
-        """Count recent sightings (last 30 minutes) within radius for escalation"""
+        """Count actual witness confirmations (not original sightings) within radius for escalation"""
         try:
             async with self.db_pool.acquire() as conn:
-                # Count sightings in the last 30 minutes within 10km
+                # Count ONLY witness confirmations, not the original sighting reports
+                # This prevents counting the original reporter as multiple witnesses
                 query = """
-                    SELECT COUNT(*) FROM sightings 
-                    WHERE created_at > NOW() - INTERVAL '30 minutes'
-                    AND status = 'created'
+                    SELECT COUNT(DISTINCT wc.device_id) 
+                    FROM witness_confirmations wc
+                    JOIN sightings s ON wc.sighting_id = s.id
+                    WHERE wc.created_at > NOW() - INTERVAL '30 minutes'
+                    AND ST_DWithin(
+                        s.location::geography,
+                        ST_MakePoint($1, $2)::geography,
+                        $3 * 1000  -- Convert km to meters
+                    )
                 """
-                count = await conn.fetchval(query)
+                count = await conn.fetchval(query, lon, lat, radius_km)
                 return count or 0
         except Exception as e:
             logger.error(f"Error counting recent witnesses: {e}")
