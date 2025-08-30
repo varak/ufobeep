@@ -239,10 +239,11 @@ class PushNotificationService:
                     )
                 )
                 
-                # Send message - Firebase messaging.send is synchronous, run in thread
-                import asyncio
-                loop = asyncio.get_event_loop()
-                response = await loop.run_in_executor(None, messaging.send, message)
+                # Send message - use modern asyncio.to_thread with timeout
+                response = await asyncio.wait_for(
+                    asyncio.to_thread(messaging.send, message),
+                    timeout=8.0
+                )
                 logger.debug(f"FCM sent successfully to {target.device_id}: {response}")
                 
                 results.append({
@@ -251,6 +252,13 @@ class PushNotificationService:
                     "message_id": response
                 })
                 
+            except asyncio.TimeoutError:
+                logger.error(f"FCM timeout after 8s for {target.device_id}")
+                results.append({
+                    "success": False,
+                    "device_id": target.device_id,
+                    "error": "Timeout after 8s"
+                })
             except Exception as e:
                 logger.error(f"FCM failed for {target.device_id}: {e}")
                 results.append({

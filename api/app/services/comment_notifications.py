@@ -36,31 +36,21 @@ class CommentNotificationService:
         """
         
         try:
-            print(f"🚨 BACKGROUND TASK STARTED: notify_comment_posted for {sighting_id} by {commenter_username}")
             logger.info(f"🔔 Processing comment notification for sighting {sighting_id} by {commenter_username}")
             
             # Get all followers of this sighting (excluding the commenter)
-            print(f"🚨 Getting followers...")
             followers = await self._get_sighting_followers(sighting_id, exclude_user_id=commenter_user_id, db_pool=db_pool)
-            print(f"🚨 Found {len(followers)} followers")
-            
             logger.info(f"🔔 Found {len(followers)} followers for sighting {sighting_id}")
             
             if not followers:
-                print(f"🚨 NO FOLLOWERS - returning early")
                 logger.info(f"No followers to notify for sighting {sighting_id}")
                 return {"total_notifications": 0, "success": True}
             
             # Get alert title for context
-            print(f"🚨 Getting alert title...")
             alert_title = await self._get_sighting_title(sighting_id, db_pool=db_pool)
-            print(f"🚨 Alert title: {alert_title}")
             
             # Get push targets for all followers
-            print(f"🚨 Getting push targets for users: {[f['user_id'] for f in followers]}")
             targets = await self._get_push_targets_for_users([f['user_id'] for f in followers], db_pool=db_pool)
-            print(f"🚨 Found {len(targets)} push targets")
-            
             logger.info(f"🔔 Found {len(targets)} push targets for notification")
             
             if not targets:
@@ -68,7 +58,6 @@ class CommentNotificationService:
                 return {"total_notifications": 0, "success": True}
             
             # Send push notifications
-            print(f"🚨 About to call push_service.send_comment_notification...")
             result = await push_service.send_comment_notification(
                 sighting_id=sighting_id,
                 commenter_username=commenter_username,
@@ -76,7 +65,6 @@ class CommentNotificationService:
                 targets=targets,
                 alert_title=alert_title
             )
-            print(f"🚨 Push service returned: {result}")
             
             logger.info(
                 f"Comment notification sent for sighting {sighting_id}: "

@@ -2,9 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException, Header, BackgroundTasks
 from pydantic import BaseModel
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any
+import logging
 from app.core.auth import verify_access_token
 from app.services.database_service import get_database_pool
 from app.services.comment_notifications import comment_notification_service
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/alerts", tags=["comments"])
 
@@ -67,21 +70,21 @@ async def create_comment(
     
     # Schedule background notification task
     if user_row:
-        print(f"🔔 Scheduling notification task for comment by {user_row['username']} on sighting {sighting_id}")
         try:
-            background_tasks.add_task(
-                comment_notification_service.notify_comment_posted,
-                sighting_id=sighting_id,
-                commenter_user_id=user_id,
-                commenter_username=user_row["username"],
-                comment_body=body.body,
-                db_pool=pool  # Pass the database pool to background task
-            )
-            print(f"🔔 Background task scheduled successfully")
+            # Wrap async function for BackgroundTasks execution
+            def _run_notification_task():
+                import asyncio
+                return asyncio.run(comment_notification_service.notify_comment_posted(
+                    sighting_id=sighting_id,
+                    commenter_user_id=user_id,
+                    commenter_username=user_row["username"],
+                    comment_body=body.body,
+                    db_pool=pool
+                ))
+            
+            background_tasks.add_task(_run_notification_task)
         except Exception as e:
-            print(f"❌ Failed to schedule background task: {e}")
-    else:
-        print(f"❌ No user found for user_id {user_id}, cannot send notifications")
+            logger.error(f"Failed to schedule notification background task: {e}")
     
     return {"id": row["id"]}
 
