@@ -11,10 +11,10 @@ import '../services/ui_feedback.dart';
 
 import '../screens/alerts/alerts_screen.dart';
 import '../screens/alerts/alert_detail_screen.dart';
+import '../screens/comments/comments_screen.dart';
 import '../screens/beep/beep_screen.dart';
 import '../screens/beep/beep_composition_screen.dart';
 import '../screens/beep/camera_capture_screen.dart';
-import '../screens/chat/chat_screen.dart';
 import '../screens/compass/compass_screen.dart';
 import '../screens/map/map_screen.dart';
 import '../screens/profile/profile_screen.dart';
@@ -148,13 +148,17 @@ GoRouter appRouter(AppRouterRef ref) {
                   return AlertDetailScreen(alertId: alertId);
                 },
                 routes: [
-                  // Chat for specific alert
+                  // Comments for specific alert
                   GoRoute(
-                    path: 'chat',
-                    name: 'alert-chat',
+                    path: 'comments',
+                    name: 'alert-comments',
                     builder: (context, state) {
                       final alertId = state.pathParameters['id']!;
-                      return ChatScreen(alertId: alertId);
+                      final alertTitle = state.uri.queryParameters['title'] ?? 'UFO Sighting';
+                      return CommentsScreen(
+                        sightingId: alertId,
+                        alertTitle: alertTitle,
+                      );
                     },
                   ),
                 ],

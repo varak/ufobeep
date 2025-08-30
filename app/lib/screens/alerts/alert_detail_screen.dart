@@ -16,6 +16,7 @@ import '../../widgets/enrichment/enrichment_section.dart';
 import '../../services/beep_service.dart';
 import '../../services/user_service.dart';
 import '../../services/api_client.dart';
+import '../../services/ui_feedback.dart';
 
 class AlertDetailScreen extends ConsumerStatefulWidget {
   const AlertDetailScreen({super.key, required this.alertId});
@@ -192,6 +193,10 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                     }
                   },
                 ),
+                const SizedBox(height: 24),
+                
+                // Comments section
+                _buildCommentsSection(alert),
               ],
             ),
           ),
@@ -559,5 +564,71 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         ],
       ),
     );
+  }
+  
+  Widget _buildCommentsSection(Alert alert) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppColors.darkSurface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.darkBorder.withOpacity(0.3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              Icon(Icons.chat_bubble_outline, color: AppColors.brandPrimary, size: 20),
+              SizedBox(width: 8),
+              Text(
+                'Discussion',
+                style: TextStyle(
+                  color: AppColors.brandPrimary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            'Join the conversation about this sighting',
+            style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () => _navigateToComments(alert),
+              icon: const Icon(Icons.comment, size: 18),
+              label: const Text('View Comments'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.brandPrimary,
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  void _navigateToComments(Alert alert) async {
+    await UiFeedback.click();
+    
+    final alertTitle = AlertTitleUtils.getContextualTitleFromAlert(alert);
+    final uri = Uri(path: '/alert/${alert.id}/comments', queryParameters: {
+      'title': alertTitle,
+    });
+    
+    if (mounted) {
+      context.go(uri.toString());
+    }
   }
 }
