@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:flutter_soundpool/flutter_soundpool.dart';
+import 'package:soundpool/soundpool.dart';
 import 'package:vibration/vibration.dart';
 
 class UiFeedbackService {
@@ -8,17 +8,8 @@ class UiFeedbackService {
   factory UiFeedbackService() => _i;
   UiFeedbackService._internal();
 
-  final FlutterSoundpool _pool = FlutterSoundpool.fromOptions(
-    options: const SoundpoolOptions(
-      maxStreams: 2,
-      streamType: StreamType.notification,
-      audioAttributes: AndroidAudioAttributes(
-        usage: AndroidUsage.assistanceSonification,
-        contentType: AndroidContentType.sonification,
-      ),
-    ),
-  );
-
+  final Soundpool _pool = Soundpool(streamType: StreamType.notification);
+  
   int? _clickId;
   bool _warmed = false;
   bool _initialized = false;
@@ -44,10 +35,10 @@ class UiFeedbackService {
 
   Future<void> _warmIfNeeded() async {
     if (_warmed || _clickId == null) return;
-    // Moto warm-up: play once silently to prime audio channel
+    // Moto warm-up: play once to prime audio channel
     try {
-      print('🔊 UI feedback: warming up FlutterSoundpool for Moto...');
-      await _pool.play(_clickId!, volume: 0.0);
+      print('🔊 UI feedback: warming up Soundpool for Moto...');
+      await _pool.play(_clickId!);
       await Future.delayed(const Duration(milliseconds: 120));
       _warmed = true;
       print('🔊 UI feedback: warm-up complete');
@@ -61,9 +52,9 @@ class UiFeedbackService {
       // Ensure initialized
       if (!_initialized) await init();
       
-      // Play UI click sound with FlutterSoundpool for immediate response
+      // Play UI click sound with Soundpool for immediate response
       if (_clickId != null) {
-        await _pool.play(_clickId!, volume: 1.0);
+        await _pool.play(_clickId!);
         print('🔊 UI feedback: played click sound');
       }
     } catch (e) {
@@ -100,9 +91,9 @@ class UiFeedbackService {
     try {
       if (!_initialized) await init();
       
-      // Play capture sound with FlutterSoundpool for immediate response
+      // Play capture sound with Soundpool for immediate response
       if (_clickId != null) {
-        await _pool.play(_clickId!, volume: 1.0);
+        await _pool.play(_clickId!);
         print('🔊 UI feedback: played capture sound');
       }
     } catch (e) {
@@ -132,7 +123,7 @@ class UiFeedbackService {
 
   Future<void> dispose() async {
     try {
-      _pool.release();
+      await _pool.dispose();
       _initialized = false;
       _warmed = false;
       _clickId = null;
