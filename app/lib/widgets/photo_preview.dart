@@ -351,7 +351,18 @@ class _PhotoPreviewState extends State<PhotoPreview> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.imageFile.path.split('/').last,
+                    () {
+                      // Safely extract filename from file path
+                      try {
+                        final pathParts = widget.imageFile.path.split('/');
+                        final fileName = pathParts.isNotEmpty ? pathParts.last : 'unknown_file';
+                        return (fileName.isEmpty || fileName == '/') 
+                          ? 'media_file' 
+                          : fileName;
+                      } catch (e) {
+                        return 'media_file';
+                      }
+                    }(),
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 12,

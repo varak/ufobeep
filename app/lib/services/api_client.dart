@@ -1058,7 +1058,15 @@ extension ApiClientExtension on ApiClient {
   }
 
   String _getContentTypeFromFile(File file) {
-    final extension = file.path.split('.').last.toLowerCase();
+    // Safely extract file extension
+    String extension;
+    try {
+      final pathParts = file.path.split('.');
+      extension = pathParts.isNotEmpty ? pathParts.last.toLowerCase() : '';
+    } catch (e) {
+      debugPrint('Error extracting extension from ${file.path}: $e');
+      extension = '';
+    }
     switch (extension) {
       case 'jpg':
       case 'jpeg':
@@ -1079,7 +1087,15 @@ extension ApiClientExtension on ApiClient {
   }
 
   api.MediaType _getMediaTypeFromFile(File file) {
-    final extension = file.path.split('.').last.toLowerCase();
+    // Safely extract file extension
+    String extension;
+    try {
+      final pathParts = file.path.split('.');
+      extension = pathParts.isNotEmpty ? pathParts.last.toLowerCase() : '';
+    } catch (e) {
+      debugPrint('Error extracting extension from ${file.path}: $e');
+      extension = '';
+    }
     if (['jpg', 'jpeg', 'png', 'gif', 'webp'].contains(extension)) {
       return api.MediaType.photo;
     } else if (['mp4', 'mov', 'avi', 'mkv'].contains(extension)) {
@@ -1112,7 +1128,18 @@ extension ApiClientExtension on ApiClient {
       debugPrint('File uploaded to storage successfully');
       
       // Step 3: File is already saved, return the API URL
-      final fileName = file.path.split('/').last;
+      // Safely extract filename from file path
+      String fileName;
+      try {
+        final pathParts = file.path.split('/');
+        fileName = pathParts.isNotEmpty ? pathParts.last : 'unknown_file';
+        if (fileName.isEmpty || fileName == '/') {
+          fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
+        }
+      } catch (e) {
+        debugPrint('Error extracting filename from ${file.path}: $e');
+        fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
+      }
       final mediaUrl = '${AppEnvironment.apiBaseUrl}/media/default/${fileName}';
       
       debugPrint('Media upload completed successfully with URL: $mediaUrl');
@@ -1152,7 +1179,18 @@ extension ApiClientExtension on ApiClient {
       debugPrint('Completing media upload...');
       await completeMediaUploadForSighting(uploadId, file);
       
-      final fileName = file.path.split('/').last;
+      // Safely extract filename from file path
+      String fileName;
+      try {
+        final pathParts = file.path.split('/');
+        fileName = pathParts.isNotEmpty ? pathParts.last : 'unknown_file';
+        if (fileName.isEmpty || fileName == '/') {
+          fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
+        }
+      } catch (e) {
+        debugPrint('Error extracting filename from ${file.path}: $e');
+        fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
+      }
       debugPrint('Media upload completed successfully with filename: $fileName');
       return fileName;
       
@@ -1183,7 +1221,18 @@ extension ApiClientExtension on ApiClient {
 
   Future<Map<String, dynamic>> createPresignedUploadForSighting(String sightingId, File file) async {
     try {
-      final fileName = file.path.split('/').last;
+      // Safely extract filename from file path
+      String fileName;
+      try {
+        final pathParts = file.path.split('/');
+        fileName = pathParts.isNotEmpty ? pathParts.last : 'unknown_file';
+        if (fileName.isEmpty || fileName == '/') {
+          fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
+        }
+      } catch (e) {
+        debugPrint('Error extracting filename from ${file.path}: $e');
+        fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
+      }
       final contentType = _getContentTypeFromFile(file);
       final fileSize = await file.length();
       
@@ -1210,7 +1259,18 @@ extension ApiClientExtension on ApiClient {
 
   Future<String> completeMediaUploadForSighting(String uploadId, File file) async {
     try {
-      final fileName = file.path.split('/').last;
+      // Safely extract filename from file path
+      String fileName;
+      try {
+        final pathParts = file.path.split('/');
+        fileName = pathParts.isNotEmpty ? pathParts.last : 'unknown_file';
+        if (fileName.isEmpty || fileName == '/') {
+          fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
+        }
+      } catch (e) {
+        debugPrint('Error extracting filename from ${file.path}: $e');
+        fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
+      }
       
       debugPrint('Completing upload for: $uploadId');
       
@@ -1338,7 +1398,18 @@ extension ApiClientExtension on ApiClient {
   // Media upload endpoints
   Future<Map<String, dynamic>> createPresignedUpload(File file) async {
     try {
-      final fileName = file.path.split('/').last;
+      // Safely extract filename from file path
+      String fileName;
+      try {
+        final pathParts = file.path.split('/');
+        fileName = pathParts.isNotEmpty ? pathParts.last : 'unknown_file';
+        if (fileName.isEmpty || fileName == '/') {
+          fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
+        }
+      } catch (e) {
+        debugPrint('Error extracting filename from ${file.path}: $e');
+        fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
+      }
       final contentType = _getContentTypeFromFile(file);
       final fileSize = await file.length();
       
@@ -1424,7 +1495,18 @@ extension ApiClientExtension on ApiClient {
       final fileRequests = <Map<String, dynamic>>[];
       
       for (final file in files) {
-        final fileName = file.path.split('/').last;
+        // Safely extract filename from file path
+        String fileName;
+        try {
+          final pathParts = file.path.split('/');
+          fileName = pathParts.isNotEmpty ? pathParts.last : 'unknown_file';
+          if (fileName.isEmpty || fileName == '/') {
+            fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
+          }
+        } catch (e) {
+          debugPrint('Error extracting filename from ${file.path}: $e');
+          fileName = 'media_file_${DateTime.now().millisecondsSinceEpoch}';
+        }
         final contentType = _getContentTypeFromFile(file);
         final fileSize = await file.length();
         
@@ -1480,7 +1562,19 @@ extension ApiClientExtension on ApiClient {
         'file',
         await MultipartFile.fromFile(
           file.path,
-          filename: file.path.split('/').last,
+          filename: (() {
+            // Safely extract filename from file path
+            try {
+              final pathParts = file.path.split('/');
+              final fileName = pathParts.isNotEmpty ? pathParts.last : 'unknown_file';
+              return (fileName.isEmpty || fileName == '/') 
+                ? 'media_file_${DateTime.now().millisecondsSinceEpoch}' 
+                : fileName;
+            } catch (e) {
+              debugPrint('Error extracting filename from ${file.path}: $e');
+              return 'media_file_${DateTime.now().millisecondsSinceEpoch}';
+            }
+          })(),
         ),
       ));
       
