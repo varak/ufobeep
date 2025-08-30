@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.media.AudioAttributes
+import android.media.SoundPool
 import android.net.Uri
 import android.os.Bundle
 import java.io.File
@@ -14,6 +15,7 @@ import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "com.ufobeep/share_intent"
+    private val UI_SFX_CHANNEL = "ui_sfx"
     private var sharedFileUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,12 +73,30 @@ class MainActivity : FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         
+        // Share intent channel
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
             when (call.method) {
                 "getSharedFile" -> {
                     val fileUri = sharedFileUri?.toString()
                     sharedFileUri = null // Clear after reading
                     result.success(fileUri)
+                }
+                else -> result.notImplemented()
+            }
+        }
+        
+        // UI SFX channel for native soundpool
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, UI_SFX_CHANNEL).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "warm" -> {
+                    UiSfx.ensureInitialized(this)
+                    UiSfx.warm()
+                    result.success(true)
+                }
+                "click" -> {
+                    UiSfx.ensureInitialized(this)
+                    UiSfx.click()
+                    result.success(true)
                 }
                 else -> result.notImplemented()
             }
@@ -108,5 +128,43 @@ class MainActivity : FlutterActivity() {
                 }
             }
         }
+    }
+}
+
+object UiSfx {
+    private var pool: SoundPool? = null
+    private var soundId: Int = 0
+    @Volatile private var loaded = false
+    @Volatile private var warmed = false
+
+    fun ensureInitialized(ctx: Context) {
+        if (pool != null) return
+        val attrs = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .build()
+        pool = SoundPool.Builder()
+            .setMaxStreams(2)
+            .setAudioAttributes(attrs)
+            .build()
+        soundId = pool!!.load(ctx, R.raw.ui_click, 1)
+        pool!!.setOnLoadCompleteListener { _, sampleId, status ->
+            loaded = (status == 0 && sampleId == soundId)
+        }
+    }
+
+    fun warm() {
+        if (!loaded || warmed) return
+        val id = pool!!.play(soundId, 0f, 0f, 1, 0, 1f) // silent prime
+        Thread {
+            try { Thread.sleep(120) } catch (_: InterruptedException) {}
+            try { pool?.stop(id) } catch (_: Exception) {}
+            warmed = true
+        }.start()
+    }
+
+    fun click() {
+        if (!loaded) return
+        pool!!.play(soundId, 1f, 1f, 1, 0, 1f)
     }
 }

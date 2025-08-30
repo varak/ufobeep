@@ -1506,38 +1506,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  soundpool:
-    dependency: "direct main"
-    description:
-      name: soundpool
-      sha256: "0e906989c0e4085772053d1d83fe33db40a40a09a2d9637132167b641e811e40"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
-  soundpool_macos:
-    dependency: transitive
-    description:
-      name: soundpool_macos
-      sha256: e0440a19d4e8f344dace336923b369184e91eebbbd8348266f4434b675bd15db
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.3.0"
-  soundpool_platform_interface:
-    dependency: transitive
-    description:
-      name: soundpool_platform_interface
-      sha256: "9787f96b54a12e236cd3715cd2cc4bcd1fc1131e834ea7b295ac849ab4e24eab"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
-  soundpool_web:
-    dependency: transitive
-    description:
-      name: soundpool_web
-      sha256: "3d1eb8d6cceb8a0aec38ff9aec4fbd11a9a8101d27b27a6eb29305b83d46aee5"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.3.0"
   source_gen:
     dependency: transitive
     description:

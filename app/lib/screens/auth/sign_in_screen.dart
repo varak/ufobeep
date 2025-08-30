@@ -6,6 +6,7 @@ import '../../theme/app_theme.dart';
 import '../../services/auth_service.dart';
 import '../../services/social_auth_service.dart';
 import '../../services/user_service.dart';
+import '../../services/ui_feedback.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -380,7 +381,10 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
-                  onPressed: (_isGoogleLoading || _isMagicLinkLoading) ? null : _handleGoogleSignIn,
+                  onPressed: (_isGoogleLoading || _isMagicLinkLoading) ? null : () async {
+                    await UiFeedback.click();
+                    _handleGoogleSignIn();
+                  },
                   icon: _isGoogleLoading 
                     ? const SizedBox(
                         width: 18,
@@ -515,7 +519,10 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
                     // Send Magic Link Button or Countdown
                     if (!_magicLinkSent) 
                       OutlinedButton(
-                        onPressed: (_isGoogleLoading || _isMagicLinkLoading) ? null : _sendMagicLink,
+                        onPressed: (_isGoogleLoading || _isMagicLinkLoading) ? null : () async {
+                          await UiFeedback.click();
+                          _sendMagicLink();
+                        },
                         style: OutlinedButton.styleFrom(
                           backgroundColor: AppColors.darkBackground,
                           foregroundColor: AppColors.brandPrimary,

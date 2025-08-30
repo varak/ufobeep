@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import '../theme/app_theme.dart';
-import '../services/ui_feedback_service.dart';
+import '../services/ui_feedback.dart';
 
 class BeepButton extends StatefulWidget {
   final VoidCallback onPressed;
@@ -25,7 +25,6 @@ class _BeepButtonState extends State<BeepButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
-  final _ui = UiFeedbackService();
   
   @override
   void initState() {
@@ -44,7 +43,7 @@ class _BeepButtonState extends State<BeepButton>
     ));
     
     // Preload + warm once; don't block UI
-    unawaited(_ui.init());
+    UiFeedback.init();
   }
   
   @override
@@ -56,7 +55,7 @@ class _BeepButtonState extends State<BeepButton>
   void _handleTapDown(TapDownDetails details) async {
     _animationController.forward();
     // Fire tick BEFORE any async/navigation - ChatGPT's pattern
-    await _ui.click();
+    await UiFeedback.click();
   }
   
   void _handleTapUp(TapUpDetails details) {

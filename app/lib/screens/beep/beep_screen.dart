@@ -15,8 +15,8 @@ import '../../services/photo_metadata_service.dart';
 import '../../services/beep_service.dart';
 import '../../services/sound_service.dart';
 import '../../services/permission_service.dart';
-import '../../services/ui_feedback_service.dart';
 import '../../services/api_client.dart';
+import '../../services/ui_feedback.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../models/sensor_data.dart';
 import '../../models/sighting_submission.dart' as local;
@@ -34,7 +34,6 @@ class BeepScreen extends ConsumerStatefulWidget {
 class _BeepScreenState extends ConsumerState<BeepScreen> {
   final ImagePicker _picker = ImagePicker();
   final SensorService _sensorService = SensorService();
-  final _ui = UiFeedbackService();
   
   local.SightingSubmission? _currentSubmission;
   bool _isCapturing = false;
@@ -48,8 +47,8 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   void initState() {
     super.initState();
     _checkSensorAvailability();
-    // Preload + warm once; don't block UI
-    unawaited(_ui.init());
+    // Warm up native UI feedback
+    UiFeedback.init();
   }
 
 
@@ -70,9 +69,6 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   }
 
   Future<void> _capturePhoto() async {
-    // Fire tick BEFORE navigation - ChatGPT's pattern
-    await _ui.click();
-    
     // Navigate to custom camera screen that skips approval
     final description = _descriptionController.text.trim();
     context.go('/beep/camera', extra: {
@@ -83,8 +79,6 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   Future<void> _pickFromGallery() async {
     if (_isCapturing) return;
     
-    // Fire tick BEFORE any async - ChatGPT's pattern
-    await _ui.click();
 
     setState(() {
       _isCapturing = true;
@@ -208,8 +202,6 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   Future<void> _sendQuickBeep() async {
     if (_isBeeping) return;
     
-    // Fire tick BEFORE any processing - ChatGPT's pattern
-    await _ui.click();
     
     setState(() {
       _isBeeping = true;
@@ -409,17 +401,22 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                           ),
                         ],
                       ),
-                      child: OutlinedButton.icon(
-                        onPressed: _isCapturing ? null : _capturePhoto,
-                        icon: const Icon(Icons.camera_alt),
-                        label: const Text('Camera'),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: AppColors.brandPrimary,
-                          backgroundColor: AppColors.brandPrimary.withOpacity(0.1),
-                          side: const BorderSide(color: AppColors.brandPrimary, width: 2),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                      child: GestureDetector(
+                        onTapDown: _isCapturing ? null : (_) async {
+                          await UiFeedback.click(); // immediate feedback
+                        },
+                        child: OutlinedButton.icon(
+                          onPressed: _isCapturing ? null : _capturePhoto,
+                          icon: const Icon(Icons.camera_alt),
+                          label: const Text('Camera'),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: AppColors.brandPrimary,
+                            backgroundColor: AppColors.brandPrimary.withOpacity(0.1),
+                            side: const BorderSide(color: AppColors.brandPrimary, width: 2),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                           ),
                         ),
                       ),
@@ -438,10 +435,14 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                           ),
                         ],
                       ),
-                      child: OutlinedButton.icon(
-                        onPressed: _isCapturing ? null : _pickFromGallery,
-                        icon: const Icon(Icons.photo_library),
-                        label: const Text('Attach'),
+                      child: GestureDetector(
+                        onTapDown: _isCapturing ? null : (_) async {
+                          await UiFeedback.click(); // immediate feedback
+                        },
+                        child: OutlinedButton.icon(
+                          onPressed: _isCapturing ? null : _pickFromGallery,
+                          icon: const Icon(Icons.photo_library),
+                          label: const Text('Attach'),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.brandPrimary,
                           backgroundColor: AppColors.brandPrimary.withOpacity(0.1),
@@ -450,6 +451,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
+                        ),
                         ),
                       ),
                     ),
@@ -472,8 +474,12 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                     ),
                   ],
                 ),
-                child: ElevatedButton.icon(
-                  onPressed: _isBeeping ? null : _sendQuickBeep,
+                child: GestureDetector(
+                  onTapDown: _isBeeping ? null : (_) async {
+                    await UiFeedback.click(); // immediate feedback
+                  },
+                  child: ElevatedButton.icon(
+                    onPressed: _isBeeping ? null : _sendQuickBeep,
                   icon: _isBeeping 
                       ? const SizedBox(
                           width: 16,
@@ -500,6 +506,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                     ),
                     elevation: 0,
                   ),
+                ),
                 ),
               ),
 

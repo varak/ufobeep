@@ -5,6 +5,7 @@ import '../providers/alerts_provider.dart';
 import '../theme/app_theme.dart';
 import '../utils/unit_conversion.dart';
 import '../providers/user_preferences_provider.dart';
+import '../services/ui_feedback.dart';
 
 class AlertCard extends ConsumerWidget {
   const AlertCard({
@@ -34,7 +35,10 @@ class AlertCard extends ConsumerWidget {
         ),
       ),
       child: InkWell(
-        onTap: onTap ?? () => context.go('/alert/${alert.id}'),
+        onTap: onTap ?? () async {
+          await UiFeedback.click();
+          context.go('/alert/${alert.id}');
+        },
         borderRadius: BorderRadius.circular(12),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -419,7 +423,10 @@ class CompactAlertCard extends ConsumerWidget {
         ),
       ),
       child: InkWell(
-        onTap: onTap ?? () => context.go('/alert/${alert.id}'),
+        onTap: onTap ?? () async {
+          await UiFeedback.click();
+          context.go('/alert/${alert.id}');
+        },
         borderRadius: BorderRadius.circular(8),
         child: Padding(
           padding: const EdgeInsets.all(12),

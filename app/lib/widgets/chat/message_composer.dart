@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
+import '../../services/ui_feedback.dart';
 
 class MessageComposer extends StatefulWidget {
   const MessageComposer({
@@ -96,7 +97,10 @@ class _MessageComposerState extends State<MessageComposer> {
 
   Widget _buildAttachButton() {
     return GestureDetector(
-      onTap: widget.isEnabled ? widget.onAttachFile : null,
+      onTap: widget.isEnabled ? () async {
+        await UiFeedback.click();
+        widget.onAttachFile?.call();
+      } : null,
       child: Container(
         width: 40,
         height: 40,
@@ -163,7 +167,10 @@ class _MessageComposerState extends State<MessageComposer> {
     final isActive = widget.isEnabled && _hasText;
     
     return GestureDetector(
-      onTap: isActive ? _sendMessage : null,
+      onTap: isActive ? () async {
+        await UiFeedback.click();
+        _sendMessage();
+      } : null,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         width: 40,

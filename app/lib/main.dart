@@ -21,7 +21,7 @@ import 'services/permission_service.dart';
 import 'services/share_intent_service.dart';
 import 'services/pending_share_queue.dart';
 import 'services/notifications.dart';
-import 'services/ui_feedback_service.dart';
+import 'services/ui_feedback.dart';
 import 'services/analytics_service.dart';
 import 'services/auth_service.dart';
 import 'services/api_client.dart';
@@ -105,7 +105,7 @@ Future<void> _initializeNonCriticalServices() async {
   // (permissions moved to splash screen initialization)
   await Future.wait([
     SoundService.I.init(),
-    UiFeedbackService().init(), // Initialize UI feedback service for Moto fix
+    UiFeedback.init(), // Initialize native UI feedback service for Moto fix
     pushNotificationService.initialize(),
   ]);
   

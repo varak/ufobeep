@@ -12,8 +12,8 @@ import '../../services/api_client.dart';
 import '../../services/sound_service.dart';
 import '../../services/beep_service.dart';
 import '../../services/sensor_service.dart';
-import '../../services/ui_feedback_service.dart';
 import '../../services/location_service.dart';
+import '../../services/ui_feedback.dart';
 import '../../providers/app_state.dart';
 import '../../widgets/simple_photo_display.dart';
 import '../../widgets/video_player_widget.dart';
@@ -41,7 +41,6 @@ class BeepCompositionScreen extends ConsumerStatefulWidget {
 class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   // Form controllers and state
   final TextEditingController _descriptionController = TextEditingController();
-  final _ui = UiFeedbackService();
   // Location privacy is now handled in user profile settings
   
   // Store sensor data in state to preserve it during rebuilds
@@ -69,8 +68,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     // Store sensor data in state immediately to preserve it during rebuilds
     _sensorData = widget.sensorData;
     
-    // Preload + warm once; don't block UI
-    unawaited(_ui.init());
+    // Warm up native UI feedback
+    UiFeedback.init();
     
     // Proactively collect location data with timeout for faster GPS lock
     _collectLocationDataWithTimeout();
@@ -146,8 +145,6 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     
     if (_isSubmitting) return;
     
-    // Fire tick BEFORE any processing - ChatGPT's pattern
-    await _ui.click();
 
     setState(() {
       _isSubmitting = true;
@@ -538,8 +535,12 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
             SizedBox(
               width: double.infinity,
               height: 56,
-              child: ElevatedButton(
-                onPressed: !_isSubmitting ? _submitBeep : null,
+              child: GestureDetector(
+                onTapDown: _isSubmitting ? null : (_) async {
+                  await UiFeedback.click(); // immediate feedback
+                },
+                child: ElevatedButton(
+                  onPressed: !_isSubmitting ? _submitBeep : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: !_isSubmitting 
                       ? AppColors.brandPrimary 
@@ -580,6 +581,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                           Text('Send Beep!'),
                         ],
                       ),
+                ),
               ),
             ),
             

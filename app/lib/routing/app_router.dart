@@ -7,6 +7,7 @@ import '../theme/app_theme.dart';
 import '../services/analytics_service.dart';
 import '../services/auth_service.dart';
 import '../services/auth_repository.dart';
+import '../services/ui_feedback.dart';
 
 import '../screens/alerts/alerts_screen.dart';
 import '../screens/alerts/alert_detail_screen.dart';
@@ -481,7 +482,8 @@ class MainBottomNavBar extends StatelessWidget {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       currentIndex: currentIndex,
-      onTap: (index) {
+      onTap: (index) async {
+        await UiFeedback.click();
         switch (index) {
           case 0:
             context.go('/alerts');
