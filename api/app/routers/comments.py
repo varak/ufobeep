@@ -74,7 +74,8 @@ async def create_comment(
                 sighting_id=sighting_id,
                 commenter_user_id=user_id,
                 commenter_username=user_row["username"],
-                comment_body=body.body
+                comment_body=body.body,
+                db_pool=pool  # Pass the database pool to background task
             )
             print(f"🔔 Background task scheduled successfully")
         except Exception as e:

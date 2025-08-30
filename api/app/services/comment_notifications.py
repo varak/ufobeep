@@ -19,7 +19,8 @@ class CommentNotificationService:
         sighting_id: str,
         commenter_user_id: str,
         commenter_username: str,
-        comment_body: str
+        comment_body: str,
+        db_pool=None
     ) -> Dict[str, Any]:
         """
         Send push notifications to all followers of a sighting when a comment is posted
@@ -40,7 +41,7 @@ class CommentNotificationService:
             
             # Get all followers of this sighting (excluding the commenter)
             print(f"🚨 Getting followers...")
-            followers = await self._get_sighting_followers(sighting_id, exclude_user_id=commenter_user_id)
+            followers = await self._get_sighting_followers(sighting_id, exclude_user_id=commenter_user_id, db_pool=db_pool)
             print(f"🚨 Found {len(followers)} followers")
             
             logger.info(f"🔔 Found {len(followers)} followers for sighting {sighting_id}")
@@ -52,12 +53,12 @@ class CommentNotificationService:
             
             # Get alert title for context
             print(f"🚨 Getting alert title...")
-            alert_title = await self._get_sighting_title(sighting_id)
+            alert_title = await self._get_sighting_title(sighting_id, db_pool=db_pool)
             print(f"🚨 Alert title: {alert_title}")
             
             # Get push targets for all followers
             print(f"🚨 Getting push targets for users: {[f['user_id'] for f in followers]}")
-            targets = await self._get_push_targets_for_users([f['user_id'] for f in followers])
+            targets = await self._get_push_targets_for_users([f['user_id'] for f in followers], db_pool=db_pool)
             print(f"🚨 Found {len(targets)} push targets")
             
             logger.info(f"🔔 Found {len(targets)} push targets for notification")
@@ -95,10 +96,10 @@ class CommentNotificationService:
             print(f"Full traceback: {traceback.format_exc()}")
             return {"total_notifications": 0, "success": False, "error": str(e)}
     
-    async def _get_sighting_followers(self, sighting_id: str, exclude_user_id: str = None) -> List[Dict[str, Any]]:
+    async def _get_sighting_followers(self, sighting_id: str, exclude_user_id: str = None, db_pool=None) -> List[Dict[str, Any]]:
         """Get all users following a sighting"""
         
-        pool = await get_database_pool()
+        pool = db_pool or await get_database_pool()
         async with pool.acquire() as conn:
             if exclude_user_id:
                 rows = await conn.fetch(
@@ -113,10 +114,10 @@ class CommentNotificationService:
         
         return [{"user_id": row["user_id"]} for row in rows]
     
-    async def _get_sighting_title(self, sighting_id: str) -> Optional[str]:
+    async def _get_sighting_title(self, sighting_id: str, db_pool=None) -> Optional[str]:
         """Get the title of a sighting for notification context"""
         
-        pool = await get_database_pool()
+        pool = db_pool or await get_database_pool()
         async with pool.acquire() as conn:
             row = await conn.fetchrow(
                 "SELECT title, description FROM sightings WHERE id = $1",
@@ -133,13 +134,13 @@ class CommentNotificationService:
         
         return None
     
-    async def _get_push_targets_for_users(self, user_ids: List[str]) -> List[PushTarget]:
+    async def _get_push_targets_for_users(self, user_ids: List[str], db_pool=None) -> List[PushTarget]:
         """Get active push targets for a list of user IDs"""
         
         if not user_ids:
             return []
         
-        pool = await get_database_pool()
+        pool = db_pool or await get_database_pool()
         async with pool.acquire() as conn:
             # Get active devices with push tokens for the users
             rows = await conn.fetch("""
