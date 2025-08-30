@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, Header
+from fastapi import APIRouter, Depends, HTTPException, Header, BackgroundTasks
 from pydantic import BaseModel
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any
 from app.core.auth import verify_access_token
 from app.services.database_service import get_database_pool
+from app.services.comment_notifications import comment_notification_service
 
 router = APIRouter(prefix="/alerts", tags=["comments"])
 
@@ -36,18 +37,44 @@ async def list_comments(sighting_id: str, limit: int = 30) -> Dict[str, Any]:
     return {"items": [dict(r) for r in rows], "next_cursor": None}
 
 @router.post("/{sighting_id}/comments", status_code=201)
-async def create_comment(sighting_id: str, body: CommentIn, user_id: str = Depends(_uid)) -> Dict[str, Any]:
+async def create_comment(
+    sighting_id: str, 
+    body: CommentIn, 
+    background_tasks: BackgroundTasks,
+    user_id: str = Depends(_uid)
+) -> Dict[str, Any]:
     now = datetime.now(timezone.utc)
     pool = await get_database_pool()
+    
     async with pool.acquire() as conn:
+        # Insert the comment
         row = await conn.fetchrow(
             "INSERT INTO comments(sighting_id,user_id,body,media_url,created_at) VALUES ($1,$2,$3,$4,$5) RETURNING id",
             sighting_id, user_id, body.body, body.media_url, now
         )
+        
+        # Auto-follow the sighting when commenting
         await conn.execute(
             "INSERT INTO follows(sighting_id,user_id) VALUES ($1,$2) ON CONFLICT (sighting_id,user_id) DO NOTHING",
             sighting_id, user_id
         )
+        
+        # Get commenter's username for notifications
+        user_row = await conn.fetchrow(
+            "SELECT username FROM users WHERE id = $1",
+            user_id
+        )
+    
+    # Schedule background notification task
+    if user_row:
+        background_tasks.add_task(
+            comment_notification_service.notify_comment_posted,
+            sighting_id=sighting_id,
+            commenter_user_id=user_id,
+            commenter_username=user_row["username"],
+            comment_body=body.body
+        )
+    
     return {"id": row["id"]}
 
 @router.post("/{sighting_id}/follow", status_code=201)

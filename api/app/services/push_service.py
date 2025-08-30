@@ -348,27 +348,34 @@ class PushNotificationService:
             collapse_key=f"sighting_{sighting_id}"
         )
         
-    async def send_chat_notification(
+    async def send_comment_notification(
         self,
         sighting_id: str,
-        room_id: str,
-        sender_name: str,
-        message_preview: str,
-        targets: List[PushTarget]
+        commenter_username: str,
+        comment_body: str,
+        targets: List[PushTarget],
+        alert_title: Optional[str] = None
     ) -> Dict[str, Any]:
-        """Send chat message notification"""
+        """Send comment notification to followers of an alert"""
+        
+        # Truncate comment for preview
+        comment_preview = comment_body[:80] + "..." if len(comment_body) > 80 else comment_body
+        
+        # Create notification title
+        title = f"💬 {commenter_username} commented"
+        if alert_title:
+            title += f" on {alert_title[:30]}..."
         
         data = {
-            "type": "chat_message",
+            "type": "comment_notification",
             "sighting_id": sighting_id,
-            "room_id": room_id,
-            "deep_link": f"ufobeep://sighting/{sighting_id}/chat",
-            "click_action": "OPEN_CHAT"
+            "deep_link": f"ufobeep://alert/{sighting_id}/comments",
+            "click_action": "OPEN_COMMENTS"
         }
         
         payload = PushPayload(
-            title=f"💬 {sender_name}",
-            body=message_preview,
+            title=title,
+            body=comment_preview,
             data=data,
             sound="default"
         )
@@ -376,8 +383,8 @@ class PushNotificationService:
         return await self.send_notification(
             targets=targets,
             payload=payload,
-            notification_type=NotificationType.CHAT,
-            collapse_key=f"chat_{room_id}"
+            notification_type=NotificationType.CHAT,  # Using CHAT type for comment notifications
+            collapse_key=f"comments_{sighting_id}"
         )
 
 
