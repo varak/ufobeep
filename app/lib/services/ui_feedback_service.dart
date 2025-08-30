@@ -39,10 +39,10 @@ class UiFeedbackService {
 
   Future<void> _warmIfNeeded() async {
     if (_warmed || _clickId == null) return;
-    // Moto warm-up: play at zero volume once so the path is primed.
+    // Moto warm-up: play once so the path is primed.
     try {
       print('🔊 UI feedback: warming up SoundPool for Moto...');
-      await _pool.play(_clickId!, volume: 0.0);
+      await _pool.play(_clickId!);
       await Future.delayed(const Duration(milliseconds: 120));
       _warmed = true;
       print('🔊 UI feedback: warm-up complete');
@@ -58,7 +58,7 @@ class UiFeedbackService {
       
       // Play UI click sound
       if (_clickId != null) {
-        await _pool.play(_clickId!, volume: 1.0);
+        await _pool.play(_clickId!);
         print('🔊 UI feedback: played click sound');
       }
     } catch (e) {
@@ -96,7 +96,7 @@ class UiFeedbackService {
       if (!_initialized) await init();
       
       if (_clickId != null) {
-        await _pool.play(_clickId!, volume: 1.0);
+        await _pool.play(_clickId!);
         print('🔊 UI feedback: played capture sound');
       }
     } catch (e) {
@@ -126,7 +126,7 @@ class UiFeedbackService {
 
   Future<void> dispose() async {
     try {
-      await _pool.dispose();
+      _pool.release();
       _initialized = false;
       _warmed = false;
       _clickId = null;
