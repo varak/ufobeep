@@ -81,6 +81,10 @@ class CommentNotificationService:
             
         except Exception as e:
             logger.error(f"Failed to send comment notifications for sighting {sighting_id}: {e}")
+            import traceback
+            logger.error(f"Full traceback: {traceback.format_exc()}")
+            print(f"❌ Comment notification error: {e}")
+            print(f"Full traceback: {traceback.format_exc()}")
             return {"total_notifications": 0, "success": False, "error": str(e)}
     
     async def _get_sighting_followers(self, sighting_id: str, exclude_user_id: str = None) -> List[Dict[str, Any]]:

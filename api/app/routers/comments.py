@@ -67,13 +67,20 @@ async def create_comment(
     
     # Schedule background notification task
     if user_row:
-        background_tasks.add_task(
-            comment_notification_service.notify_comment_posted,
-            sighting_id=sighting_id,
-            commenter_user_id=user_id,
-            commenter_username=user_row["username"],
-            comment_body=body.body
-        )
+        print(f"🔔 Scheduling notification task for comment by {user_row['username']} on sighting {sighting_id}")
+        try:
+            background_tasks.add_task(
+                comment_notification_service.notify_comment_posted,
+                sighting_id=sighting_id,
+                commenter_user_id=user_id,
+                commenter_username=user_row["username"],
+                comment_body=body.body
+            )
+            print(f"🔔 Background task scheduled successfully")
+        except Exception as e:
+            print(f"❌ Failed to schedule background task: {e}")
+    else:
+        print(f"❌ No user found for user_id {user_id}, cannot send notifications")
     
     return {"id": row["id"]}
 
