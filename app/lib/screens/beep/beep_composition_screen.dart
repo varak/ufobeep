@@ -10,6 +10,7 @@ import '../../models/api_models.dart' as api;
 import '../../services/api_client.dart';
 import '../../services/sound_service.dart';
 import '../../services/beep_service.dart';
+import '../../services/sensor_service.dart';
 import '../../providers/app_state.dart';
 import '../../widgets/simple_photo_display.dart';
 import '../../widgets/video_player_widget.dart';
@@ -64,6 +65,9 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     // Store sensor data in state immediately to preserve it during rebuilds
     _sensorData = widget.sensorData;
     
+    // Proactively collect location data with timeout for faster GPS lock
+    _collectLocationDataWithTimeout();
+    
     // Prepopulate description if provided
     if (widget.description != null && widget.description!.isNotEmpty) {
       _descriptionController.text = widget.description!;
@@ -72,8 +76,11 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     debugPrint('BeepComposition: ${widget.isVideo ? 'Video' : 'Image'}=${widget.mediaFile.existsSync()}, Sensor=${_sensorData != null}');
     if (_sensorData != null) {
       debugPrint('BeepComposition: GPS coordinates: lat=${_sensorData!.latitude}, lng=${_sensorData!.longitude}');
+    } else {
+      // Fallback: collect location data if not provided (e.g., from share intent)
+      debugPrint('BeepComposition: No sensor data provided, attempting to collect location as fallback');
+      _collectFallbackLocationData();
     }
-    
     
     // Add listener for real-time validation
     _descriptionController.addListener(_onFormFieldChanged);
@@ -84,6 +91,48 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     setState(() {});
     debugPrint('Form validation: desc=${_descriptionController.text.length} chars, valid=$_isFormValid');
     debugPrint('Form change - sensor data still present: ${_sensorData != null}, GPS: ${_sensorData?.latitude}, ${_sensorData?.longitude}');
+  }
+
+  /// Collect location data as fallback when sensorData is null (e.g., share intent flow)
+  Future<void> _collectFallbackLocationData() async {
+    try {
+      debugPrint('BeepComposition: Starting fallback location collection...');
+      final sensorService = SensorService();
+      final collectedData = await sensorService.captureSensorData();
+      
+      setState(() {
+        _sensorData = collectedData;
+      });
+      
+      if (collectedData.latitude != null && collectedData.longitude != null) {
+        debugPrint('BeepComposition: ✅ Fallback location collected - GPS: ${collectedData.latitude}, ${collectedData.longitude}');
+      } else {
+        debugPrint('BeepComposition: ⚠️ Fallback sensor data collected but no GPS coordinates available');
+      }
+    } catch (e) {
+      debugPrint('BeepComposition: ❌ Error during fallback location collection: $e');
+    }
+  }
+
+  /// Proactively collect location data with timeout for faster GPS lock
+  Future<void> _collectLocationDataWithTimeout() async {
+    try {
+      debugPrint('BeepComposition: Starting proactive location collection with 8s timeout...');
+      final sensorService = SensorService();
+      final collectedData = await sensorService.captureSensorData();
+      
+      setState(() {
+        _sensorData = collectedData;
+      });
+      
+      if (collectedData.latitude != null && collectedData.longitude != null) {
+        debugPrint('BeepComposition: ✅ Proactive location collected - GPS: ${collectedData.latitude}, ${collectedData.longitude}');
+      } else {
+        debugPrint('BeepComposition: ⚠️ Proactive sensor data collected but no GPS coordinates available');
+      }
+    } catch (e) {
+      debugPrint('BeepComposition: ❌ Error during proactive location collection: $e');
+    }
   }
 
   Future<void> _submitBeep() async {
@@ -141,7 +190,10 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         hasMedia: true, // This will defer alerts until media upload completes
       );
       
-      final sightingId = beepResult['sighting_id'];
+      final sightingId = beepResult['sighting_id']?.toString();
+      if (sightingId == null) {
+        throw Exception('Failed to get sighting ID from API response');
+      }
       debugPrint('Sighting created with ID: $sightingId (alerts deferred)');
       
       // Now upload the media file, then trigger alerts

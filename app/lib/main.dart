@@ -12,18 +12,21 @@ import 'config/environment.dart';
 import 'config/locale_config.dart';
 import 'l10n/generated/app_localizations.dart';
 import 'models/user_preferences.dart';
+import 'models/sensor_data.dart';
 import 'providers/user_preferences_provider.dart';
 import 'routing/app_router.dart';
 import 'services/push_notification_service.dart';
 import 'services/sound_service.dart';
 import 'services/permission_service.dart';
 import 'services/share_intent_service.dart';
+import 'services/pending_share_queue.dart';
 import 'services/analytics_service.dart';
 import 'services/auth_service.dart';
 import 'services/api_client.dart';
 import 'services/auth_repository.dart';
 import 'services/device_registration_manager.dart';
 import 'services/location_update_manager.dart';
+import 'services/sensor_service.dart';
 import 'features/auth/deep_link_handler.dart';
 import 'features/auth/auth_gate.dart';
 import 'theme/app_theme.dart';
@@ -100,8 +103,8 @@ Future<void> _initializeNonCriticalServices() async {
     pushNotificationService.initialize(),
   ]);
   
-  // Initialize share intent service
-  await ShareIntentService().initialize();
+  // Initialize share intent service - placeholder, actual init will be done in the app widget
+  // ShareIntentService init will be called later with proper callback
   
   print('✅ Background services ready: ${stopwatch.elapsedMilliseconds}ms');
 }
@@ -118,6 +121,11 @@ class UFOBeepApp extends ConsumerStatefulWidget {
 class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
   late final AuthService _auth;
   late final DeepLinkHandler _deepLinkHandler;
+  late final AuthRepository _authRepo;
+  VoidCallback? _authListener;
+  
+  // Queue for share intent data when user is not authenticated
+  Map<String, dynamic>? _queuedShareData;
   
   @override
   void initState() {
@@ -130,6 +138,18 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
     
     // Start deep link listening immediately
     _deepLinkHandler.init();
+    
+    // Listen for authentication state changes to process queued share data
+    _authRepo = AuthRepository();
+    _authListener = () {
+      if (_authRepo.isReady && _authRepo.currentUser != null && _queuedShareData != null) {
+        print('Main: Authentication detected, processing queued share data');
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _processQueuedShareData();
+        });
+      }
+    };
+    _authRepo.addListener(_authListener!);
     
     // Handle initial Firebase message after the widget tree is built
     if (widget.initialMessage != null) {
@@ -147,67 +167,105 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
   @override
   void dispose() {
     _deepLinkHandler.dispose();
+    if (_authListener != null) {
+      _authRepo.removeListener(_authListener!);
+    }
     super.dispose();
   }
   
   void _setupShareIntentCallback() {
     final router = ref.read(appRouterProvider);
     
-    ShareIntentService.setOnSharedMediaCallback((sharedMedia) async {
-      print('Main: Share intent callback triggered with ${sharedMedia.mediaType}: ${sharedMedia.filePath}');
-      
-      try {
-        // Create properly named file with correct extension
-        final originalFile = sharedMedia.file;
-        
-        // Verify file exists before proceeding
-        if (!await originalFile.exists()) {
-          print('ERROR: Shared file does not exist: ${originalFile.path}');
-          return;
-        }
-        
-        final bytes = await originalFile.readAsBytes();
-        final extension = _detectFileExtension(bytes, sharedMedia.isVideo);
-        final properFileName = 'shared_media_${DateTime.now().millisecondsSinceEpoch}$extension';
-        final tempDir = originalFile.parent;
-        final properFile = File('${tempDir.path}/$properFileName');
-        await originalFile.copy(properFile.path);
-        
-        // Verify the copy succeeded
-        if (!await properFile.exists()) {
-          print('ERROR: Failed to create proper file copy: ${properFile.path}');
-          return;
-        }
-        
-        print('Main: Created proper ${sharedMedia.isVideo ? 'video' : 'image'} file: ${properFile.path}');
-        
-        // Navigate directly to beep composition screen with shared media
-        
-        final extraData = {
-          'mediaFile': properFile,
-          'isVideo': sharedMedia.isVideo,
-          'sensorData': null,
-          'photoMetadata': <String, dynamic>{},
-          'description': '', // Empty description so placeholder shows
-        };
-        
-        print('Main: Navigating with extra data: ${extraData.keys}');
-        
-        router.go('/beep/compose', extra: extraData);
-        print('Main: Navigated to composition screen with shared ${sharedMedia.mediaType}');
-        
-      } catch (e, stackTrace) {
-        print('ERROR: Failed to handle shared media: $e');
-        print('Stack trace: $stackTrace');
-        
-        // Fallback: navigate to regular beep screen if share intent fails
-        router.go('/beep');
-        print('Main: Fell back to regular beep screen due to error');
-      }
+    // Initialize ShareIntentService with callback
+    ShareIntentService().init(onQueued: () async {
+      print('Main: Share intent detected, processing queue...');
+      await _processShareQueue(router);
     });
+  }
+  
+  Future<void> _processShareQueue(router) async {
+    if (!PendingShareQueue().hasItems) return;
     
-    // Check for shared files now that callback is set
-    ShareIntentService.checkForSharedFiles();
+    try {
+      final items = PendingShareQueue().items;
+      print('Main: Processing ${items.length} shared items');
+      
+      // Convert SharedMediaItems to Files
+      final files = <File>[];
+      for (final item in items) {
+        final file = File(item.uri.path);
+        if (await file.exists()) {
+          files.add(file);
+        } else {
+          print('Main: Shared file does not exist: ${item.uri.path}');
+        }
+      }
+      
+      if (files.isEmpty) {
+        print('Main: No valid shared files found');
+        PendingShareQueue().clear();
+        return;
+      }
+        
+      // Collect location data for beep composition
+      print('Main: Collecting location data for shared media...');
+      SensorData? sensorData;
+      try {
+        final sensorService = SensorService();
+        sensorData = await sensorService.captureSensorData();
+        print('Main: Location data collected successfully');
+      } catch (e) {
+        print('Main: Failed to collect sensor data: $e');
+        // Continue without sensor data
+      }
+        
+      // Check if user is authenticated
+      if (_authRepo.isReady && _authRepo.currentUser != null) {
+        print('Main: User authenticated, navigating to beep composition');
+        
+        // Navigate to beep composition screen with the first shared file
+        final firstFile = files.first;
+        final isVideo = firstFile.path.toLowerCase().endsWith('.mp4') || 
+                       firstFile.path.toLowerCase().endsWith('.mov') || 
+                       firstFile.path.toLowerCase().endsWith('.avi');
+        
+        router.go('/beep/compose', extra: {
+          'mediaFile': firstFile,
+          'isVideo': isVideo,
+          'sensorData': sensorData,
+          'photoMetadata': <String, dynamic>{},
+          'description': '',
+        });
+        
+        PendingShareQueue().clear();
+      } else {
+        print('Main: User not authenticated, queueing share data');
+        
+        // Queue the share data for after authentication  
+        final firstFile = files.first;
+        final isVideo = firstFile.path.toLowerCase().endsWith('.mp4') || 
+                       firstFile.path.toLowerCase().endsWith('.mov') || 
+                       firstFile.path.toLowerCase().endsWith('.avi');
+        
+        _queuedShareData = {
+          'mediaFile': firstFile,
+          'isVideo': isVideo,
+          'sensorData': sensorData,
+          'photoMetadata': <String, dynamic>{},
+          'description': '',
+        };
+        // Don't clear the queue yet - will clear when processed
+      }
+        
+    } catch (e, stackTrace) {
+      print('ERROR: Failed to process shared media: $e');
+      print('Stack trace: $stackTrace');
+      
+      // Fallback: navigate to regular beep screen if share intent fails
+      router.go('/beep');
+      print('Main: Fell back to regular beep screen due to error');
+      PendingShareQueue().clear();
+    }
   }
   
   /// Detects file extension from file content using magic bytes
@@ -294,6 +352,19 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
         }
         break;
     }
+  }
+
+  void _processQueuedShareData() {
+    if (_queuedShareData == null) return;
+    
+    print('Main: Processing queued share data after authentication');
+    final router = ref.read(appRouterProvider);
+    final shareData = _queuedShareData!;
+    _queuedShareData = null; // Clear the queue
+    
+    // Navigate to beep composer with the queued share data
+    router.go('/beep/compose', extra: shareData);
+    print('Main: Navigated to beep composer with queued share data');
   }
 
   @override

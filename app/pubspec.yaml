@@ -83,7 +83,11 @@ dependencies:
   # Maps
   flutter_map: ^7.0.2
   latlong2: ^0.9.1
-
+  
+  # Share Intent (for Android share-to-app functionality)
+  receive_sharing_intent: ^1.8.1
+  path: ^1.9.0
+  collection: ^1.18.0
   
   # Alerts & vibration
   flutter_local_notifications: ^17.2.4
