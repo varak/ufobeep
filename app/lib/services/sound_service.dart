@@ -38,6 +38,7 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 // Optional vibration. If you don't want it, remove and ignore the parameter.
 import 'package:vibration/vibration.dart';
 
@@ -224,6 +225,9 @@ class SoundService {
       }
     }
 
+    // Warm up audio channel before playing (fixes Moto and other Android devices)
+    await _warmUpAudio();
+    
     // If this is critical, give it a tiny head start by ensuring source is set fresh.
     // (This can help on some devices where the decoder got evicted.)
     if (isCritical) {
@@ -232,17 +236,17 @@ class SoundService {
 
     // Fire-and-forget: short SFX. We await to keep _current accurate.
     try {
-      print('🔊 SOUND DEBUG: Attempting to play audio via resume...');
+      print('🔊 SOUND DEBUG: Playing audio after warmup...');
       await player.resume(); // source already set; resume triggers immediate play
       print('🔊 SOUND DEBUG: Audio resume successful');
     } catch (e) {
-      print('🔊 SOUND DEBUG: Resume failed: $e, trying fallback...');
-      // Fallback if resume fails (rare): try full play with explicit source.
+      print('🔊 SOUND DEBUG: Resume failed: $e, trying direct play fallback...');
+      // Fallback if resume fails: try full play with explicit source.
       try {
         await player.play(AssetSource('$_assetPrefix/${_fileMap[sound]}'));
         print('🔊 SOUND DEBUG: Fallback play successful');
       } catch (e2) {
-        print('🔊 SOUND DEBUG: Fallback play also failed: $e2');
+        print('🔊 SOUND DEBUG: All playback methods failed: $e2');
       }
     }
 
@@ -329,6 +333,37 @@ class SoundService {
     return true; // Can play
   }
 
+
+  /// Warm up audio channel before playing sound (Moto fix)
+  /// Prevents Android from suppressing the start of notification sounds
+  Future<void> _warmUpAudio() async {
+    try {
+      print('🔊 Warming up audio channel...');
+      
+      // 1. Request audio focus from system
+      await SystemChannels.platform.invokeMethod<void>(
+        'SystemSound.play',
+        'focus', // request focus before playing
+      );
+      
+      // 2. Play silent warm-up to wake audio channel
+      final warmupPlayer = AudioPlayer();
+      await warmupPlayer.setVolume(0.0);
+      // Use tap sound as silent warmup (we'll play it at 0 volume)
+      await warmupPlayer.play(AssetSource('$_assetPrefix/tap_click.mp3'));
+      
+      // 3. Short delay for Moto devices to actually wake audio channel
+      await Future.delayed(const Duration(milliseconds: 150));
+      
+      // Clean up warmup player
+      await warmupPlayer.dispose();
+      
+      print('🔊 Audio channel warmed up');
+    } catch (e) {
+      print('🔊 Audio warmup failed (non-critical): $e');
+      // Continue anyway - warmup failure shouldn't block sound playback
+    }
+  }
 
   /// Dispose all players (e.g., on app shutdown or hot-restart if needed).
   Future<void> dispose() async {
