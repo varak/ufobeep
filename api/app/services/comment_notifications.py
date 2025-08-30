@@ -68,6 +68,7 @@ class CommentNotificationService:
                 return {"total_notifications": 0, "success": True}
             
             # Send push notifications
+            print(f"🚨 About to call push_service.send_comment_notification...")
             result = await push_service.send_comment_notification(
                 sighting_id=sighting_id,
                 commenter_username=commenter_username,
@@ -75,6 +76,7 @@ class CommentNotificationService:
                 targets=targets,
                 alert_title=alert_title
             )
+            print(f"🚨 Push service returned: {result}")
             
             logger.info(
                 f"Comment notification sent for sighting {sighting_id}: "
