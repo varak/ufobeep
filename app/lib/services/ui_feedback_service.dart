@@ -123,7 +123,7 @@ class UiFeedbackService {
 
   Future<void> dispose() async {
     try {
-      await _pool.dispose();
+      _pool.dispose();
       _initialized = false;
       _warmed = false;
       _clickId = null;
