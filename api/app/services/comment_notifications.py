@@ -35,8 +35,12 @@ class CommentNotificationService:
         """
         
         try:
+            logger.info(f"🔔 Processing comment notification for sighting {sighting_id} by {commenter_username}")
+            
             # Get all followers of this sighting (excluding the commenter)
             followers = await self._get_sighting_followers(sighting_id, exclude_user_id=commenter_user_id)
+            
+            logger.info(f"🔔 Found {len(followers)} followers for sighting {sighting_id}")
             
             if not followers:
                 logger.info(f"No followers to notify for sighting {sighting_id}")
@@ -47,6 +51,8 @@ class CommentNotificationService:
             
             # Get push targets for all followers
             targets = await self._get_push_targets_for_users([f['user_id'] for f in followers])
+            
+            logger.info(f"🔔 Found {len(targets)} push targets for notification")
             
             if not targets:
                 logger.info(f"No valid push targets found for sighting {sighting_id} followers")
