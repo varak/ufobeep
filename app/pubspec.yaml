@@ -46,7 +46,7 @@ dependencies:
   image: ^4.1.7
   gal: ^2.3.0
   audioplayers: ^6.0.0  # <-- Audio playback for Phase 0 alert sounds
-  soundpool: ^2.3.0  # <-- Last-known-good UI feedback for Moto
+  soundpool: 2.1.0  # <-- Fixed version for Flutter 3.32.8 compatibility
   video_player: ^2.9.2  # <-- Video playback for composition screen
   
   # Permissions

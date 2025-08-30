@@ -1510,10 +1510,10 @@ packages:
     dependency: "direct main"
     description:
       name: soundpool
-      sha256: fe7302005759d6a3561de1711e3ea818b1ba025a62375b469196dda5b654bd38
+      sha256: "0e906989c0e4085772053d1d83fe33db40a40a09a2d9637132167b641e811e40"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.1"
+    version: "2.1.0"
   soundpool_macos:
     dependency: transitive
     description:
@@ -1526,10 +1526,10 @@ packages:
     dependency: transitive
     description:
       name: soundpool_platform_interface
-      sha256: "7c6666e19319151b2036c4fc9b6da3a83f2ebf4097989e6ba1c2b0bfe3612e9f"
+      sha256: "9787f96b54a12e236cd3715cd2cc4bcd1fc1131e834ea7b295ac849ab4e24eab"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.0"
+    version: "2.1.0"
   soundpool_web:
     dependency: transitive
     description:
