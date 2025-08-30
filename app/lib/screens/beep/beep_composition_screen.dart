@@ -205,13 +205,22 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         );
         debugPrint('${widget.isVideo ? 'Video' : 'Photo'} uploaded successfully!');
         
-        // Now trigger alerts (location guaranteed to be valid from validation above)
+        // Now trigger alerts - use the actual coordinates that were sent with the beep
         debugPrint('Triggering proximity alerts...');
-        await ApiClient.instance.triggerAlertsForSighting(
-          sightingId, 
-          _sensorData!.latitude!, 
-          _sensorData!.longitude!
-        );
+        // Use validLat/validLon if they were set, otherwise use current location
+        final alertLat = validLat ?? _sensorData?.latitude ?? 0.0;
+        final alertLon = validLon ?? _sensorData?.longitude ?? 0.0;
+        
+        // Only trigger alerts if we have valid coordinates
+        if (alertLat != 0.0 || alertLon != 0.0) {
+          await ApiClient.instance.triggerAlertsForSighting(
+            sightingId, 
+            alertLat, 
+            alertLon
+          );
+        } else {
+          debugPrint('Warning: Skipping proximity alerts due to invalid coordinates');
+        }
         debugPrint('Proximity alerts sent successfully!');
       } catch (e) {
         debugPrint('CRITICAL: Media upload or alert trigger failed: $e');
