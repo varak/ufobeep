@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,6 +34,7 @@ class BeepScreen extends ConsumerStatefulWidget {
 class _BeepScreenState extends ConsumerState<BeepScreen> {
   final ImagePicker _picker = ImagePicker();
   final SensorService _sensorService = SensorService();
+  final _ui = UiFeedbackService();
   
   local.SightingSubmission? _currentSubmission;
   bool _isCapturing = false;
@@ -46,6 +48,8 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   void initState() {
     super.initState();
     _checkSensorAvailability();
+    // Preload + warm once; don't block UI
+    unawaited(_ui.init());
   }
 
 
@@ -66,8 +70,8 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   }
 
   Future<void> _capturePhoto() async {
-    // Play capture feedback for immediate UI response on Moto
-    UiFeedbackService().capture(haptic: true);
+    // Fire tick BEFORE navigation - ChatGPT's pattern
+    await _ui.click();
     
     // Navigate to custom camera screen that skips approval
     final description = _descriptionController.text.trim();
@@ -79,8 +83,8 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   Future<void> _pickFromGallery() async {
     if (_isCapturing) return;
     
-    // Play click feedback for gallery selection
-    UiFeedbackService().click(haptic: true);
+    // Fire tick BEFORE any async - ChatGPT's pattern
+    await _ui.click();
 
     setState(() {
       _isCapturing = true;
@@ -204,8 +208,8 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   Future<void> _sendQuickBeep() async {
     if (_isBeeping) return;
     
-    // Play immediate UI feedback for responsive feel on Moto
-    UiFeedbackService().capture(haptic: true);
+    // Fire tick BEFORE any processing - ChatGPT's pattern
+    await _ui.click();
     
     setState(() {
       _isBeeping = true;

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -40,6 +41,7 @@ class BeepCompositionScreen extends ConsumerStatefulWidget {
 class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   // Form controllers and state
   final TextEditingController _descriptionController = TextEditingController();
+  final _ui = UiFeedbackService();
   // Location privacy is now handled in user profile settings
   
   // Store sensor data in state to preserve it during rebuilds
@@ -66,6 +68,9 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     
     // Store sensor data in state immediately to preserve it during rebuilds
     _sensorData = widget.sensorData;
+    
+    // Preload + warm once; don't block UI
+    unawaited(_ui.init());
     
     // Proactively collect location data with timeout for faster GPS lock
     _collectLocationDataWithTimeout();
@@ -141,8 +146,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     
     if (_isSubmitting) return;
     
-    // Play UI feedback immediately when submit button is pressed
-    UiFeedbackService().capture(haptic: true);
+    // Fire tick BEFORE any processing - ChatGPT's pattern
+    await _ui.click();
 
     setState(() {
       _isSubmitting = true;
