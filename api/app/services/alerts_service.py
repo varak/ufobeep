@@ -258,9 +258,9 @@ class AlertsService:
             
             return str(alert_id)
     
-    async def create_anonymous_beep(self, device_id: str, location: Dict, 
-                                   description: str = None, username: str = None) -> Tuple[str, Dict]:
-        """Create anonymous beep with location privacy"""
+    async def create_beep(self, device_id: str, location: Dict, 
+                         description: str = None, username: str = None) -> Tuple[str, Dict]:
+        """Create beep with location privacy"""
         # Validate location
         lat = float(location['latitude'])
         lng = float(location['longitude'])
@@ -303,10 +303,30 @@ class AlertsService:
             username=username  # Pass the real username
         )
         
+        # Auto-follow the alert for the creator so they get notifications
+        if username:
+            await self._auto_follow_alert(alert_id, username)
+        
         # Call enrichment service after alert creation
         await self._enrich_alert(alert_id, lat, lng, description)
         
         return alert_id, {"lat": jittered_lat, "lng": jittered_lng}
+    
+    async def _auto_follow_alert(self, alert_id: str, username: str):
+        """Auto-follow an alert for the creator so they get comment notifications"""
+        async with self.db_pool.acquire() as conn:
+            # Get user ID from username
+            user_id = await self.get_user_id_by_username(conn, username)
+            if user_id:
+                # Insert follow record (ignore if already exists)
+                await conn.execute("""
+                    INSERT INTO follows (sighting_id, user_id) 
+                    VALUES ($1, $2) 
+                    ON CONFLICT (sighting_id, user_id) DO NOTHING
+                """, alert_id, user_id)
+                print(f"Auto-followed alert {alert_id} for user {username} ({user_id})")
+            else:
+                print(f"Could not auto-follow alert {alert_id}: user {username} not found")
     
     async def _enrich_alert(self, alert_id: str, latitude: float, longitude: float, description: str = None):
         """Call enrichment service for weather and reverse geocoding"""

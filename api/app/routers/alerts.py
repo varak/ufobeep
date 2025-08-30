@@ -90,7 +90,7 @@ async def create_alert(request: dict, idempotency_key: Optional[str] = Header(No
         db_pool = await get_db()
         alerts_service = AlertsService(db_pool)
         
-        alert_id, jittered_location = await alerts_service.create_anonymous_beep(
+        alert_id, jittered_location = await alerts_service.create_beep(
             device_id=device_id,
             location=location,
             description=request.get('description', ''),
