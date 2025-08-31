@@ -894,17 +894,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           Navigator.of(context).pop();
                           
                           try {
-                            final deviceService = DeviceService();
-                            final deviceId = await deviceService.getDeviceId();
+                            // Use the clean setUsername method - it handles everything
+                            await _auth.setUsername(username);
                             
-                            final response = await ApiClient.dio.post('/users/set-username', data: {
-                              'device_id': deviceId,
-                              'username': username,
-                            });
-                            
-                            if (response.statusCode == 200) {
-                              await _auth.fetchMe();
-                              
+                            if (mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text('Username updated to: $username'),
@@ -913,12 +906,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               );
                             }
                           } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Failed to update username'),
-                                backgroundColor: AppColors.semanticError,
-                              ),
-                            );
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Failed to update username'),
+                                  backgroundColor: AppColors.semanticError,
+                                ),
+                              );
+                            }
                           }
                         },
                         child: Container(
