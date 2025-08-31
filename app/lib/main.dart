@@ -36,6 +36,15 @@ import 'theme/app_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
+  // Add error handling so crashes show instead of white screen
+  FlutterError.onError = FlutterError.dumpErrorToConsole;
+  ErrorWidget.builder = (details) => Material(
+    child: Center(
+      child: Text('Error: ${details.exception}', 
+        style: const TextStyle(color: Colors.red, fontSize: 16)),
+    ),
+  );
+  
   final stopwatch = Stopwatch()..start();
   print('🚀 UFOBeep starting...');
   

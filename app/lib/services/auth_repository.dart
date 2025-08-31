@@ -8,6 +8,7 @@ import 'api_client.dart';
 import 'storage.dart';
 import 'secure_storage.dart';
 import 'device_registration_manager.dart';
+import 'device_service.dart';
 
 /// ChatGPT: Single source of truth for user + tokens.
 /// - Stores only tokens in secure storage
@@ -144,10 +145,34 @@ class AuthRepository with ChangeNotifier {
   }
 
   Future<void> fetchMe() async {
-    final res = await _dio.get('/users/me');
-    final userData = res.data['user'] as Map<String, dynamic>;
+    final res = await _dio.get('/users/me', options: Options(
+      headers: {'Cache-Control': 'no-cache', 'Pragma': 'no-cache'},
+    ));
+    
+    // Handle both { "user": {...} } and flat { ... } API responses
+    final Map<String, dynamic> userData;
+    if (res.data is Map<String, dynamic> && res.data.containsKey('user')) {
+      userData = res.data['user'] as Map<String, dynamic>;
+    } else {
+      userData = res.data as Map<String, dynamic>;
+    }
+    
     _currentUser = UserModel.fromJson(userData);
+    debugPrint('Fetched user: ${_currentUser?.username}');
     notifyListeners();
+  }
+
+  Future<void> setUsername(String username) async {
+    final deviceService = DeviceService();
+    final deviceId = await deviceService.getDeviceId();
+    
+    await _dio.post('/users/set-username', data: {
+      'device_id': deviceId,
+      'username': username,
+    });
+    
+    // Immediately fetch fresh user data
+    await fetchMe();
   }
 
 
