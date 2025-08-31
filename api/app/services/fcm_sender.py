@@ -29,25 +29,28 @@ def send_to_tokens(tokens: List[str],
 
     _ensure_firebase()
 
-    # Firebase Admin Python supports Multicast
-    message = messaging.MulticastMessage(
-        tokens=tokens,
-        notification=messaging.Notification(title=title, body=body),
-        data={k: str(v) for k, v in (data or {}).items()},
-    )
-
-    response = messaging.send_multicast(message, dry_run=False)
+    success_count = 0
     to_invalidate: List[str] = []
+    
+    # Send to each token individually (compatible with all Firebase Admin SDK versions)
+    for token in tokens:
+        try:
+            message = messaging.Message(
+                notification=messaging.Notification(title=title, body=body),
+                data={k: str(v) for k, v in (data or {}).items()},
+                token=token
+            )
+            
+            # This sends synchronously
+            messaging.send(message)
+            success_count += 1
+            
+        except Exception as e:
+            error_msg = str(e)
+            # Check if token is invalid
+            if ("Requested entity was not found" in error_msg) or \
+               ("registration-token-not-registered" in error_msg) or \
+               ("UNREGISTERED" in error_msg):
+                to_invalidate.append(token)
 
-    # Classify known "token is bad" cases:
-    for idx, res in enumerate(response.responses):
-        if not res.success:
-            code = getattr(res.exception, "code", "")
-            msg = str(res.exception)
-            if ("registration-token-not-registered" in code) or \
-               ("UNREGISTERED" in code) or \
-               ("Requested entity was not found" in msg):
-                if idx < len(tokens):
-                    to_invalidate.append(tokens[idx])
-
-    return response.success_count, to_invalidate
+    return success_count, to_invalidate
