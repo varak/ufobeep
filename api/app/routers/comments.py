@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Header, BackgroundTasks
+from fastapi import APIRouter, Depends, HTTPException, Header, Request
 from pydantic import BaseModel
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any
@@ -43,7 +43,7 @@ async def list_comments(sighting_id: str, limit: int = 30) -> Dict[str, Any]:
 async def create_comment(
     sighting_id: str, 
     body: CommentIn, 
-    background_tasks: BackgroundTasks,
+    request: Request,
     user_id: str = Depends(_uid)
 ) -> Dict[str, Any]:
     now = datetime.now(timezone.utc)
@@ -68,24 +68,19 @@ async def create_comment(
             user_id
         )
     
-    # Schedule background notification task
+    # Enqueue notification task to be processed by background worker
     if user_row:
         try:
-            # Use create_task to run in the same event loop as FastAPI
-            import asyncio
-            loop = asyncio.get_running_loop()
-            task = loop.create_task(comment_notification_service.notify_comment_posted(
-                sighting_id=sighting_id,
-                commenter_user_id=user_id,
-                commenter_username=user_row["username"],
-                comment_body=body.body,
-                db_pool=pool
-            ))
-            
-            # Add a no-op background task so FastAPI knows something is scheduled
-            background_tasks.add_task(lambda: None)
+            task_data = {
+                "sighting_id": sighting_id,
+                "commenter_user_id": user_id,
+                "commenter_username": user_row["username"],
+                "comment_body": body.body
+            }
+            await request.app.state.notify_queue.put(task_data)
+            logger.info(f"Notification queued for comment on sighting {sighting_id}")
         except Exception as e:
-            logger.error(f"Failed to schedule notification background task: {e}")
+            logger.error(f"Failed to queue notification task: {e}")
     
     return {"id": row["id"]}
 
