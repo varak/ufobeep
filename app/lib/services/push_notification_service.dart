@@ -180,6 +180,9 @@ class PushNotificationService {
       case 'sighting_alert':
         _handleSightingAlert(message);
         break;
+      case 'comment':
+        _handleCommentNotification(message);
+        break;
       case 'chat_message':
         _handleChatMessage(message);
         break;
@@ -294,6 +297,31 @@ class PushNotificationService {
       // Navigate to alert details instead of compass
       // The alert detail screen will have a "Navigate to Sighting" button with compass
       navigateToAlert(sightingId);
+    }
+  }
+
+  void _handleCommentNotification(RemoteMessage message) async {
+    print('Handling comment notification');
+    final sightingId = message.data['sighting_id'];
+    final commentId = message.data['comment_id'];
+    
+    if (sightingId != null) {
+      print('Comment on sighting: $sightingId (comment ID: $commentId)');
+      
+      // Play notification sound for comment
+      await SoundService.I.play(AlertSound.pushPing);
+      
+      // Navigate to the alert with comments
+      navigateToAlert(sightingId);
+      
+      // Refresh alerts to show new comment count
+      try {
+        final container = ProviderScope.containerOf(rootNavigatorKey.currentContext!);
+        container.invalidate(alertByIdProvider(sightingId));
+        print('🔄 Refreshed alert $sightingId for new comment');
+      } catch (e) {
+        print('Could not refresh alert cache: $e');
+      }
     }
   }
 
