@@ -17,6 +17,27 @@ import 'storage.dart';
 import 'auth_service.dart';
 import 'device_registration_manager.dart';
 
+// Helper function to safely convert dynamic values to Map for bracket access
+Map<String, dynamic> _asJsonMap(dynamic v) {
+  if (v == null) return {};
+  if (v is Map<String, dynamic>) return v;
+  if (v is Map) return v.map((k, val) => MapEntry(k.toString(), val));
+  if (v is List) {
+    // Turn list into a map with numeric keys, so any ['x'] access will visibly fail early.
+    return {
+      "_type": "List",
+      "length": v.length,
+      "0": v.isNotEmpty ? v[0] : null,
+    };
+  }
+  if (v is String && v.trim().startsWith('{')) {
+    try { 
+      return Map<String, dynamic>.from(jsonDecode(v)); 
+    } catch (_) {}
+  }
+  return {"_type": v.runtimeType.toString(), "value": v.toString()};
+}
+
 class SocialAuthResult {
   final bool success;
   final String? userId;
@@ -275,12 +296,20 @@ class SocialAuthService {
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+        final rawData = jsonDecode(response.body);
+        
+        // Defensive type checking using the same pattern as push notifications
+        final data = _asJsonMap(rawData);
+        
+        // Check if backend returned a List instead of expected object
+        if (data["_type"] == "List") {
+          throw StateError("Apple auth API returned a List; expected JSON object");
+        }
         
         // Update AuthRepository with tokens and user data using centralized method
         final access = data['access'] as String?;
         final refresh = data['refresh'] as String?;
-        final user = data['user'] ?? {};
+        final user = _asJsonMap(data['user']) ?? {};
         
         if (access != null && refresh != null) {
           await AuthService().handleLoginSuccess({
@@ -296,22 +325,31 @@ class SocialAuthService {
           print('APPLE AUTH: Device registration nudged');
         }
         
-        // Store user info locally
-        await _storeUserInfo(
-          userId: data['user']['user_id'],
-          username: data['user']['username'],
-          deviceId: deviceId,
-        );
-
-        print('Apple login successful: ${data['user']['username']}');
+        // Safe access to nested user data
+        final userMap = _asJsonMap(data['user']);
+        final userId = userMap['user_id'] as String?;
+        final username = userMap['username'] as String?;
         
-        return SocialAuthResult.success(
-          userId: data['user']['user_id'],
-          username: data['user']['username'],
-          email: data['user']['email'],
-          loginMethods: List<String>.from(data['user']['login_methods'] ?? []),
-          isNewUser: data['is_new_user'] ?? false,
-        );
+        if (userId != null && username != null) {
+          // Store user info locally
+          await _storeUserInfo(
+            userId: userId,
+            username: username,
+            deviceId: deviceId,
+          );
+
+          print('Apple login successful: $username');
+          
+          return SocialAuthResult.success(
+            userId: userId,
+            username: username,
+            email: userMap['email'] as String?,
+            loginMethods: List<String>.from(userMap['login_methods'] ?? []),
+            isNewUser: data['is_new_user'] ?? false,
+          );
+        } else {
+          throw StateError("Missing user_id or username in Apple auth response");
+        }
       } else {
         final errorData = jsonDecode(response.body);
         return SocialAuthResult.failure(errorData['detail'] ?? 'Apple login failed');

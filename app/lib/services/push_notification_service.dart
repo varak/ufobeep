@@ -21,6 +21,27 @@ import '../routing/app_router.dart';
 class PushNotificationService {
   static const String _permissionKey = 'push_permission_granted';
   static const String _tokenKey = 'fcm_token';
+
+  // Helper function to safely convert dynamic values to Map for bracket access
+  Map<String, dynamic> _asJsonMap(dynamic v) {
+    if (v == null) return {};
+    if (v is Map<String, dynamic>) return v;
+    if (v is Map) return v.map((k, val) => MapEntry(k.toString(), val));
+    if (v is List) {
+      // Turn list into a map with numeric keys, so any ['x'] access will visibly fail early.
+      return {
+        "_type": "List",
+        "length": v.length,
+        "0": v.isNotEmpty ? v[0] : null,
+      };
+    }
+    if (v is String && v.trim().startsWith('{')) {
+      try { 
+        return Map<String, dynamic>.from(jsonDecode(v)); 
+      } catch (_) {}
+    }
+    return {"_type": v.runtimeType.toString(), "value": v.toString()};
+  }
   
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
   final DeviceService _deviceService = deviceService;
@@ -742,68 +763,81 @@ class PushNotificationService {
     }
     
     try {
-      
-      // Get device ID and location with defensive handling
+      // Build witness payload safely
       final deviceId = await _deviceService.getDeviceId();
+      final loc = await permissionService.getCurrentLocation(); // existing
       
-      // Get current location using existing service
-      final position = await permissionService.getCurrentLocation();
-      
-      // Helper function to safely convert to double
-      double? toDouble(dynamic value) {
-        if (value == null) return null;
-        if (value is double) return value;
-        if (value is int) return value.toDouble();
-        if (value is String) return double.tryParse(value);
-        return null;
-      }
-      
-      // Extract location data with type safety
-      final double? latitude = position != null ? toDouble(position.latitude) : null;
-      final double? longitude = position != null ? toDouble(position.longitude) : null;
-      final double? altitude = position != null ? toDouble(position.altitude) : null;
-      final double? accuracy = position != null ? toDouble(position.accuracy) : null;
-      
-      // Require valid location for witness confirmation
-      if (latitude == null || longitude == null) {
-        throw Exception('Missing latitude/longitude for witness confirmation');
-      }
-      
-      // Build flat witness data (no nested objects)
-      final Map<String, dynamic> witnessData = {
-        'device_id': deviceId,
-        'witness_type': 'visual',
-        'confirmed': true,
-        'quick_action': true,
-        'still_visible': true,
-        'latitude': latitude,
-        'longitude': longitude,
-        'altitude': altitude,
-        'accuracy': accuracy,
+      // IMPORTANT: build location as a Map explicitly (no Position objects)
+      final Map<String, dynamic>? locationMap = loc == null ? null : {
+        "latitude": loc.latitude,
+        "longitude": loc.longitude,
+        "altitude": loc.altitude,
+        "accuracy": loc.accuracy,
       };
       
-      print('🔄 Sending witness confirmation with data: $witnessData');
-      final response = await ApiClient.dio.post('/alerts/$sightingId/witnesses', data: witnessData);
-      print('✅ API Response: ${response.statusCode}');
-      
-      // Safely access response data
-      if (response.data != null) {
-        final data = response.data as Map<String, dynamic>?;
-        print('Response data type: ${data.runtimeType}');
-        if (data != null && data['success'] == true) {
-          print('✅ Witness confirmation successful');
-        } else {
-          print('⚠️ Unexpected response format: ${response.data}');
-        }
+      // Build flat witness data (no nested objects, just flat fields as before)
+      final Map<String, dynamic> witnessData = {
+        "device_id": deviceId,
+        "witness_type": "visual",
+        "confirmed": true,
+        "quick_action": true,
+        "still_visible": true,
+        // Use flat location fields as per API expectation
+        "latitude": locationMap?["latitude"],
+        "longitude": locationMap?["longitude"], 
+        "altitude": locationMap?["altitude"],
+        "accuracy": locationMap?["accuracy"],
+      };
+
+      // Sanity: ensure it's a Map (not List) *before* send
+      assert(witnessData is Map<String, dynamic>);
+      print('[SEEIT] Sending payload: ${jsonEncode(witnessData)}');
+
+      final resp = await ApiClient.dio.post(
+        '/alerts/$sightingId/witnesses',
+        data: witnessData,
+        options: Options(responseType: ResponseType.json),
+      );
+
+      // Normalize response using defensive helper
+      final raw = resp.data;
+      final data = _asJsonMap(raw);
+
+      // TEMP LOGS (keep until bug is fixed)
+      debugPrint('[SEEIT] resp.type=${raw.runtimeType} keys=${data.keys}');
+      debugPrint('[SEEIT] resp.json=${jsonEncode(data)}');
+
+      // If backend returns a List in any path, fail fast with a clear message.
+      if (data["_type"] == "List") {
+        throw StateError("Witness API returned a List; Dart expects a JSON object. Normalize backend or branch here.");
       }
-      
+
+      // SAFE ACCESS: never do data['x']['y'] without guarding
+      final success = data["success"] ?? data["ok"] ?? false;
+      if (success is bool && success) {
+        print('✅ Witness confirmation successful');
+        
+        // Safe access to nested response data
+        final witnessCount = data["witness_count"] ?? data["data"]?["witness_count"] ?? 0;
+        if (witnessCount > 0) {
+          print('[SEEIT] New witness count: $witnessCount');
+        }
+      } else {
+        // handle error object safely  
+        final err = _asJsonMap(data["error"]);
+        debugPrint('[SEEIT] error=$err');
+        print('⚠️ Unexpected response format or error: ${data["message"] ?? "Unknown error"}');
+      }
+
       // Navigate to alert details
       navigateToAlert(sightingId);
       
       print('✅ Witness confirmation sent for sighting $sightingId');
-    } catch (e, stackTrace) {
+    } catch (e, st) {
+      // Emit extremely specific diagnostics to find the exact offender
+      debugPrint('[SEEIT][EXC] $e');
+      debugPrint('[SEEIT][STACK] $st');
       print('❌ Failed to send witness confirmation: $e');
-      print('Stack trace: $stackTrace');
       // Still navigate to alert even if confirmation fails
       navigateToAlert(sightingId);
     }
