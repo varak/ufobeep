@@ -1053,9 +1053,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       if (mounted) Navigator.of(context).pop(); // Close loading dialog
 
       if (response.statusCode == 200) {
-        // Update local user model
-        final updatedUser = user.copyWith(username: newUsername);
-        // Note: We should ideally refresh from server, but for now just update locally
+        // Refresh auth state to get updated username
+        await _auth.fetchMe();
         
         // Show success dialog
         if (mounted) {
