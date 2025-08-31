@@ -734,6 +734,12 @@ class PushNotificationService {
   void _handleSeeItTooAction(String sightingId) async {
     print('📱 User confirmed sighting: $sightingId');
     try {
+      // Validate sightingId is not null/empty
+      if (sightingId.trim().isEmpty) {
+        print('❌ Invalid sighting ID for witness confirmation');
+        return;
+      }
+      
       // Get current location for witness confirmation
       final deviceId = await _deviceService.getDeviceId();
       
@@ -759,14 +765,19 @@ class PushNotificationService {
         });
       }
       
-      await ApiClient.dio.post('/alerts/$sightingId/witnesses', data: witnessData);
+      print('🔄 Sending witness confirmation with data: $witnessData');
+      final response = await ApiClient.dio.post('/alerts/$sightingId/witnesses', data: witnessData);
+      print('✅ API Response: ${response.statusCode} - ${response.data}');
       
       // Navigate to alert details
       navigateToAlert(sightingId);
       
       print('✅ Witness confirmation sent for sighting $sightingId');
-    } catch (e) {
+    } catch (e, stackTrace) {
       print('❌ Failed to send witness confirmation: $e');
+      print('Stack trace: $stackTrace');
+      // Still navigate to alert even if confirmation fails
+      navigateToAlert(sightingId);
     }
   }
   
