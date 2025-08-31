@@ -308,6 +308,9 @@ class PushNotificationService {
     if (sightingId != null) {
       print('Comment on sighting: $sightingId (comment ID: $commentId)');
       
+      // Show visual notification
+      await _showCommentNotification(message);
+      
       // Play notification sound for comment
       await SoundService.I.play(AlertSound.pushPing);
       
@@ -585,6 +588,45 @@ class PushNotificationService {
     }
   }
   
+  Future<void> _showCommentNotification(RemoteMessage message) async {
+    final sightingId = message.data['sighting_id'];
+    final title = message.notification?.title ?? '💬 New Comment';
+    final body = message.notification?.body ?? 'Someone commented on an alert';
+    
+    final androidDetails = AndroidNotificationDetails(
+      'ufobeep_comments',
+      'Comment Notifications',
+      channelDescription: 'Notifications when someone comments on alerts you follow',
+      importance: Importance.high,
+      priority: Priority.high,
+      showWhen: true,
+      playSound: false, // We handle sounds separately
+      enableVibration: true,
+    );
+    
+    final iosDetails = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: false, // We handle sounds separately
+      interruptionLevel: InterruptionLevel.active,
+    );
+    
+    final notificationDetails = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
+    
+    await _localNotifications.show(
+      sightingId.hashCode + 1000, // Different ID from alert notifications
+      title,
+      body,
+      notificationDetails,
+      payload: sightingId,
+    );
+    
+    print('📱 Comment notification shown for sighting $sightingId');
+  }
+
   Future<void> _showRichNotification(String sightingId, int witnessCount, String? distance, String locationName) async {
     // Format distance for display
     String distanceText = '';
