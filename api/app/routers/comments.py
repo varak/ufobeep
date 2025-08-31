@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException, Header, Request
+from fastapi import APIRouter, Depends, HTTPException, Header
 from pydantic import BaseModel
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any
 import logging
 from app.core.auth import verify_access_token
 from app.services.database_service import get_database_pool
-from app.services.comment_notifications import comment_notification_service
+from app.services.notify import notify_users
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +43,6 @@ async def list_comments(sighting_id: str, limit: int = 30) -> Dict[str, Any]:
 async def create_comment(
     sighting_id: str, 
     body: CommentIn, 
-    request: Request,
     user_id: str = Depends(_uid)
 ) -> Dict[str, Any]:
     now = datetime.now(timezone.utc)
@@ -62,25 +61,36 @@ async def create_comment(
             sighting_id, user_id
         )
         
-        # Get commenter's username for notifications
+        # Get commenter's username and followers for notifications
         user_row = await conn.fetchrow(
             "SELECT username FROM users WHERE id = $1",
             user_id
         )
+        
+        # Get all followers of this sighting (excluding the commenter)
+        follower_rows = await conn.fetch(
+            "SELECT user_id FROM follows WHERE sighting_id = $1 AND user_id != $2",
+            sighting_id, user_id
+        )
     
-    # Enqueue notification task to be processed by background worker
-    if user_row:
+    # Send notifications using unified system (SAME as proximity alerts)
+    if user_row and follower_rows:
         try:
-            task_data = {
-                "sighting_id": sighting_id,
-                "commenter_user_id": user_id,
-                "commenter_username": user_row["username"],
-                "comment_body": body.body
-            }
-            await request.app.state.notify_queue.put(task_data)
-            logger.info(f"Notification queued for comment on sighting {sighting_id}")
+            follower_user_ids = [row["user_id"] for row in follower_rows]
+            sent = await notify_users(
+                pool,
+                follower_user_ids,
+                title=f"💬 {user_row['username']} commented",
+                body=body.body[:100] + ("..." if len(body.body) > 100 else ""),
+                data={
+                    "type": "comment",
+                    "comment_id": str(row["id"]),
+                    "sighting_id": sighting_id,
+                },
+            )
+            logger.info(f"Comment notification sent: {sent} notifications for sighting {sighting_id}")
         except Exception as e:
-            logger.error(f"Failed to queue notification task: {e}")
+            logger.error(f"Failed to send comment notifications: {e}")
     
     return {"id": row["id"]}
 
