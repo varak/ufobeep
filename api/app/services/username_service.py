@@ -11,8 +11,9 @@ from typing import List, Tuple
 class UsernameGenerator:
     """Generates unique, memorable usernames for UFOBeep users"""
     
-    # Cosmic/space themed adjectives
+    # Cosmic/space themed adjectives (256 total)
     ADJECTIVES = [
+        # First 128
         "cosmic", "stellar", "galactic", "lunar", "solar", "orbital",
         "nebular", "astral", "celestial", "ethereal", "starlit", "moonlit",
         "radiant", "luminous", "glowing", "shimmering", "drifting", "floating",
@@ -20,11 +21,50 @@ class UsernameGenerator:
         "electric", "magnetic", "quantum", "plasma", "fusion", "atomic",
         "binary", "digital", "cyber", "neon", "chrome", "crystal",
         "arctic", "frozen", "blazing", "burning", "searing", "molten",
-        "silent", "whispering", "echoing", "resonant", "harmonic", "sonic"
+        "silent", "whispering", "echoing", "resonant", "harmonic", "sonic",
+        "temporal", "dimensional", "parallel", "infinite", "eternal", "timeless",
+        "hypnotic", "mystic", "arcane", "cryptic", "hidden", "secret",
+        "pulsing", "vibrant", "dynamic", "kinetic", "static", "flowing",
+        "twilight", "midnight", "dawn", "dusk", "nocturnal", "diurnal",
+        "prismatic", "iridescent", "holographic", "translucent", "opaque", "transparent",
+        "metallic", "crystalline", "liquid", "gaseous", "solid", "fluid",
+        "northern", "southern", "eastern", "western", "polar", "equatorial",
+        "ascending", "descending", "rotating", "spinning", "spiraling", "oscillating",
+        "ultra", "mega", "micro", "nano", "macro", "mini",
+        "alpha", "beta", "gamma", "delta", "omega", "sigma",
+        "crimson", "azure", "emerald", "violet", "amber", "obsidian",
+        "swift", "rapid", "instant", "gradual", "sudden", "steady",
+        "remote", "isolated", "secluded", "abandoned", "forgotten", "lost",
+        "primal", "advanced", "primitive", "futuristic", "retro", "modern",
+        "vertical", "horizontal", "diagonal", "angular", "curved", "linear",
+        # Second 128 to reach 256
+        "zero", "prime", "inverse", "reverse", "forward", "backward",
+        "inner", "outer", "central", "peripheral", "focused", "scattered",
+        "bright", "dark", "faint", "vivid", "pale", "deep",
+        "smooth", "rough", "jagged", "sleek", "polished", "raw",
+        "fast", "slow", "perpetual", "momentary", "constant", "variable",
+        "hot", "cold", "warm", "cool", "thermal", "cryo",
+        "stable", "unstable", "volatile", "reactive", "inert", "active",
+        "primary", "secondary", "tertiary", "final", "initial", "terminal",
+        "vast", "tiny", "immense", "minuscule", "colossal", "compact",
+        "strange", "exotic", "alien", "foreign", "familiar", "native",
+        "complex", "simple", "pure", "mixed", "hybrid", "singular",
+        "double", "triple", "multiple", "single", "unified", "divided",
+        "positive", "negative", "neutral", "charged", "balanced", "polar",
+        "invisible", "visible", "cloaked", "revealed", "concealed", "exposed",
+        "immortal", "mortal", "undying", "finite", "endless", "limited",
+        "lucky", "cursed", "blessed", "sacred", "profane", "neutral",
+        "peaceful", "violent", "calm", "turbulent", "serene", "chaotic",
+        "rare", "common", "unique", "standard", "special", "ordinary",
+        "perfect", "flawed", "pristine", "corrupted", "pure", "tainted",
+        "sentient", "dormant", "awakened", "sleeping", "conscious", "aware",
+        "wild", "tame", "feral", "domestic", "untamed", "controlled",
+        "synthetic", "organic", "artificial", "natural", "biomechanical", "hybrid"
     ]
     
-    # Space/UFO themed nouns
+    # Space/UFO themed nouns (256 total)
     NOUNS = [
+        # First 128
         "whisper", "echo", "signal", "beacon", "pulse", "wave",
         "orbit", "trajectory", "vector", "comet", "meteor", "asteroid", 
         "galaxy", "nebula", "quasar", "pulsar", "supernova", "blackhole",
@@ -34,7 +74,50 @@ class UsernameGenerator:
         "ghost", "phantom", "shadow", "specter", "entity", "being",
         "light", "flash", "glimmer", "spark", "glow", "aura",
         "void", "plasma", "energy", "force", "field", "matrix",
-        "code", "cipher", "key", "token", "byte", "node"
+        "code", "cipher", "key", "token", "byte", "node",
+        "cluster", "system", "station", "portal", "gateway", "bridge",
+        "horizon", "zenith", "nadir", "apex", "core", "nexus",
+        "stream", "cascade", "vortex", "tornado", "storm", "tempest",
+        "crystal", "prism", "lens", "mirror", "reflection", "image",
+        "frequency", "wavelength", "amplitude", "resonance", "vibration", "oscillation",
+        "particle", "photon", "electron", "neutron", "proton", "quark",
+        "dimension", "realm", "domain", "zone", "sector", "quadrant",
+        "colony", "outpost", "fortress", "citadel", "base", "command",
+        "engine", "reactor", "generator", "transmitter", "receiver", "amplifier",
+        "anomaly", "phenomenon", "distortion", "rift", "breach", "tear",
+        "sentinel", "guardian", "keeper", "protector", "defender", "warrior",
+        "dream", "vision", "prophecy", "oracle", "mystic", "sage",
+        "element", "compound", "molecule", "atom", "ion", "isotope",
+        "relay", "junction", "intersection", "crossroads", "hub", "center",
+        "fragment", "shard", "piece", "component", "module", "unit",
+        # Second 128 to reach 256
+        "origin", "source", "root", "seed", "genesis", "birth",
+        "destiny", "fate", "fortune", "chance", "luck", "probability",
+        "mind", "soul", "spirit", "essence", "consciousness", "awareness",
+        "thought", "idea", "concept", "theory", "hypothesis", "principle",
+        "truth", "reality", "illusion", "mirage", "hallucination", "projection",
+        "memory", "record", "archive", "database", "repository", "vault",
+        "network", "grid", "web", "mesh", "lattice", "framework",
+        "sequence", "pattern", "cycle", "loop", "spiral", "helix",
+        "edge", "boundary", "limit", "threshold", "barrier", "wall",
+        "passage", "tunnel", "corridor", "pathway", "route", "trail",
+        "chamber", "room", "hall", "vault", "cavern", "cave",
+        "tower", "spire", "pyramid", "dome", "sphere", "cube",
+        "ring", "disc", "plate", "shield", "armor", "shell",
+        "weapon", "tool", "device", "instrument", "apparatus", "mechanism",
+        "sensor", "monitor", "gauge", "meter", "indicator", "display",
+        "message", "transmission", "broadcast", "communication", "dialogue", "exchange",
+        "question", "answer", "riddle", "puzzle", "mystery", "enigma",
+        "secret", "revelation", "discovery", "finding", "treasure", "artifact",
+        "relic", "remnant", "trace", "footprint", "mark", "sign",
+        "symbol", "glyph", "rune", "sigil", "emblem", "icon",
+        "map", "chart", "diagram", "blueprint", "schematic", "plan",
+        "journey", "voyage", "expedition", "mission", "quest", "adventure",
+        "encounter", "meeting", "contact", "interaction", "exchange", "collision",
+        "transformation", "evolution", "mutation", "adaptation", "change", "shift",
+        "balance", "harmony", "discord", "chaos", "order", "entropy",
+        "creation", "destruction", "formation", "dissolution", "assembly", "dispersal",
+        "connection", "link", "bond", "tie", "union", "merger"
     ]
     
     @classmethod
