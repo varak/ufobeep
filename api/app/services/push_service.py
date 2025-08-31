@@ -260,14 +260,44 @@ class PushNotificationService:
                     "error": "Timeout after 8s"
                 })
             except Exception as e:
-                logger.error(f"FCM failed for {target.device_id}: {e}")
+                error_message = str(e)
+                logger.error(f"FCM failed for {target.device_id}: {error_message}")
+                
+                # Clean up invalid tokens to prevent future spam
+                if "Requested entity was not found" in error_message:
+                    logger.info(f"Invalid FCM token detected for {target.device_id}, marking token as invalid")
+                    try:
+                        await self._disable_invalid_token(target.device_id, target.push_token)
+                    except Exception as cleanup_error:
+                        logger.error(f"Failed to clean up invalid token for {target.device_id}: {cleanup_error}")
+                
                 results.append({
                     "success": False,
                     "device_id": target.device_id,
-                    "error": str(e)
+                    "error": error_message
                 })
         
         return results
+    
+    async def _disable_invalid_token(self, device_id: str, push_token: str):
+        """Disable invalid FCM token to prevent future failed attempts"""
+        try:
+            from app.services.database_service import get_database_pool
+            pool = await get_database_pool()
+            
+            async with pool.acquire() as conn:
+                result = await conn.execute(
+                    """
+                    UPDATE devices 
+                    SET push_enabled = false, push_token = null, token_updated_at = NOW()
+                    WHERE device_id = $1 AND push_token = $2
+                    """,
+                    device_id, push_token
+                )
+                logger.info(f"Disabled invalid FCM token for device {device_id}")
+                
+        except Exception as e:
+            logger.error(f"Failed to disable invalid token: {e}")
             
     async def _send_apns_notifications(
         self,
