@@ -731,43 +731,69 @@ class PushNotificationService {
     print('📱 Rich notification shown for sighting $sightingId with ${witnessCount} witnesses');
   }
   
-  void _handleSeeItTooAction(String sightingId) async {
-    print('📱 User confirmed sighting: $sightingId');
+  void _handleSeeItTooAction(String sightingIdRaw) async {
+    print('📱 User confirmed sighting: $sightingIdRaw');
     try {
-      // Validate sightingId is not null/empty
-      if (sightingId.trim().isEmpty) {
+      // Validate and sanitize sighting ID 
+      final sightingId = sightingIdRaw.trim();
+      if (sightingId.isEmpty) {
         print('❌ Invalid sighting ID for witness confirmation');
         return;
       }
       
-      // Get current location for witness confirmation
+      // Get device ID and location with defensive handling
       final deviceId = await _deviceService.getDeviceId();
       
       // Get current location using existing service
       final position = await permissionService.getCurrentLocation();
       
-      // Send witness confirmation to API  
-      final witnessData = {
+      // Helper function to safely convert to double
+      double? toDouble(dynamic value) {
+        if (value == null) return null;
+        if (value is double) return value;
+        if (value is int) return value.toDouble();
+        if (value is String) return double.tryParse(value);
+        return null;
+      }
+      
+      // Extract location data with type safety
+      final double? latitude = position != null ? toDouble(position.latitude) : null;
+      final double? longitude = position != null ? toDouble(position.longitude) : null;
+      final double? altitude = position != null ? toDouble(position.altitude) : null;
+      final double? accuracy = position != null ? toDouble(position.accuracy) : null;
+      
+      // Require valid location for witness confirmation
+      if (latitude == null || longitude == null) {
+        throw Exception('Missing latitude/longitude for witness confirmation');
+      }
+      
+      // Build flat witness data (no nested objects)
+      final Map<String, dynamic> witnessData = {
         'device_id': deviceId,
         'witness_type': 'visual',
         'confirmed': true,
         'quick_action': true,
         'still_visible': true,
+        'latitude': latitude,
+        'longitude': longitude,
+        'altitude': altitude,
+        'accuracy': accuracy,
       };
-      
-      // Add location data at top level for SQL extraction
-      if (position != null) {
-        witnessData.addAll({
-          'latitude': position.latitude,
-          'longitude': position.longitude,
-          'altitude': position.altitude,
-          'accuracy': position.accuracy,
-        });
-      }
       
       print('🔄 Sending witness confirmation with data: $witnessData');
       final response = await ApiClient.dio.post('/alerts/$sightingId/witnesses', data: witnessData);
-      print('✅ API Response: ${response.statusCode} - ${response.data}');
+      print('✅ API Response: ${response.statusCode}');
+      
+      // Safely access response data
+      if (response.data != null) {
+        final data = response.data as Map<String, dynamic>?;
+        print('Response data type: ${data.runtimeType}');
+        if (data != null && data['success'] == true) {
+          print('✅ Witness confirmation successful');
+        } else {
+          print('⚠️ Unexpected response format: ${response.data}');
+        }
+      }
       
       // Navigate to alert details
       navigateToAlert(sightingId);
@@ -789,12 +815,22 @@ class PushNotificationService {
       // Get the sighting details for API recording
       final deviceId = await _deviceService.getDeviceId();
       
-      // Call API to record the dismissal
+      // Get location for dismissal record (less critical, use fallback)
+      final position = await permissionService.getCurrentLocation();
+      final latitude = position?.latitude?.toDouble() ?? 0.0;
+      final longitude = position?.longitude?.toDouble() ?? 0.0;
+      
+      // Call API to record the dismissal with flat data
       await ApiClient.dio.post('/alerts/$sightingId/witnesses', data: {
         'device_id': deviceId,
         'witness_type': 'dismissed',
         'confirmed': false,
         'quick_action': true,
+        'still_visible': false,
+        'latitude': latitude,
+        'longitude': longitude,
+        'altitude': position?.altitude?.toDouble(),
+        'accuracy': position?.accuracy?.toDouble(),
       });
       
       // Enable 1-hour DND using same pattern as profile screen

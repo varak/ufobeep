@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form, Header
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
+from pydantic import BaseModel, Field
 from app.services.alerts_service import AlertsService
 import asyncpg
 import uuid
@@ -8,6 +9,25 @@ import logging
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/alerts", tags=["alerts"])
+
+class WitnessLocation(BaseModel):
+    latitude: float
+    longitude: float
+    altitude: Optional[float] = None
+    accuracy: Optional[float] = None
+
+class WitnessConfirmation(BaseModel):
+    device_id: str = Field(..., description="Device UUID")
+    witness_type: str = Field(default="visual")
+    confirmed: bool = Field(default=True)
+    # Support either flat fields OR nested location
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    altitude: Optional[float] = None
+    accuracy: Optional[float] = None
+    location: Optional[WitnessLocation] = None
+    still_visible: Optional[bool] = Field(default=True)
+    quick_action: Optional[bool] = Field(default=False)
 
 # In-memory store for idempotency keys (in production would use Redis)
 idempotency_store = {}
@@ -359,22 +379,44 @@ async def upload_alert_media(
         raise HTTPException(status_code=500, detail=f"Media upload failed: {str(e)}")
 
 @router.post("/{alert_id}/witnesses")
-async def add_witness(alert_id: str, request: dict):
+async def add_witness(alert_id: str, payload: WitnessConfirmation):
     """Add witness confirmation to alert - RESTful endpoint"""
-    device_id = request.get("device_id")
-    if not device_id:
-        raise HTTPException(status_code=400, detail="device_id is required")
-    
     try:
+        # Normalize: prefer nested location, fallback to flat fields
+        if payload.location:
+            lat = payload.location.latitude
+            lon = payload.location.longitude
+            alt = payload.location.altitude
+            acc = payload.location.accuracy
+        else:
+            lat = payload.latitude
+            lon = payload.longitude
+            alt = payload.altitude
+            acc = payload.accuracy
+
+        if lat is None or lon is None:
+            raise HTTPException(status_code=422, detail="latitude/longitude required")
+
+        # Create normalized witness data
+        witness_data: Dict[str, Any] = {
+            "device_id": payload.device_id,
+            "witness_type": payload.witness_type,
+            "confirmed": payload.confirmed,
+            "latitude": lat,
+            "longitude": lon,
+            "altitude": alt,
+            "accuracy": acc,
+            "still_visible": payload.still_visible,
+            "quick_action": payload.quick_action,
+        }
+        
         db_pool = await get_db()
         alerts_service = AlertsService(db_pool)
         result = await alerts_service.confirm_witness(
             sighting_id=alert_id,
-            device_id=device_id,
-            witness_data=request
+            device_id=payload.device_id,
+            witness_data=witness_data
         )
-        
-        # Don't close the pool - it's shared across the service
         
         return {
             "success": True,
@@ -385,7 +427,7 @@ async def add_witness(alert_id: str, request: dict):
     except HTTPException:
         raise
     except Exception as e:
-        print(f"Error confirming witness: {e}")
+        logger.error(f"Error confirming witness: {e}")
         raise HTTPException(status_code=500, detail=f"Error confirming witness: {str(e)}")
 
 @router.get("/{alert_id}/witnesses/{device_id}")

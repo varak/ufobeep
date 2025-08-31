@@ -468,19 +468,22 @@ class AlertsService:
                         if distance_km > max_distance_km:
                             raise ValueError(f"Witness location too far from sighting ({distance_km:.1f}km). Must be within {max_distance_km:.1f}km (2x visibility) to confirm.")
             
-            # Insert witness confirmation with required fields extracted from JSON
+            # Insert witness confirmation with typed parameters (no JSON extraction)
             await conn.execute("""
                 INSERT INTO witness_confirmations 
                 (sighting_id, device_id, witness_latitude, witness_longitude, 
                  witness_altitude, location_accuracy, still_visible, confirmation_data)
-                VALUES ($1, $2, 
-                        ($3::jsonb->>'latitude')::float, 
-                        ($3::jsonb->>'longitude')::float,
-                        ($3::jsonb->>'altitude')::float,
-                        ($3::jsonb->>'accuracy')::float,
-                        COALESCE(($3::jsonb->>'still_visible')::boolean, true),
-                        $3::jsonb)
-            """, uuid.UUID(sighting_id), device_id, json.dumps(witness_data))
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+            """, 
+                uuid.UUID(sighting_id), 
+                device_id,
+                float(witness_data["latitude"]),
+                float(witness_data["longitude"]),
+                float(witness_data["altitude"]) if witness_data.get("altitude") is not None else None,
+                float(witness_data["accuracy"]) if witness_data.get("accuracy") is not None else None,
+                witness_data.get("still_visible", True),
+                json.dumps(witness_data)
+            )
             
             # Update witness count
             new_count = await conn.fetchval("""
