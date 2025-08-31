@@ -733,13 +733,15 @@ class PushNotificationService {
   
   void _handleSeeItTooAction(String sightingIdRaw) async {
     print('📱 User confirmed sighting: $sightingIdRaw');
+    
+    // Validate and sanitize sighting ID outside try block for scope access
+    final sightingId = sightingIdRaw.trim();
+    if (sightingId.isEmpty) {
+      print('❌ Invalid sighting ID for witness confirmation');
+      return;
+    }
+    
     try {
-      // Validate and sanitize sighting ID 
-      final sightingId = sightingIdRaw.trim();
-      if (sightingId.isEmpty) {
-        print('❌ Invalid sighting ID for witness confirmation');
-        return;
-      }
       
       // Get device ID and location with defensive handling
       final deviceId = await _deviceService.getDeviceId();
