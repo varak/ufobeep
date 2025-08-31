@@ -600,7 +600,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
           const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
-            child: ElevatedButton.icon(
+            child: OutlinedButton.icon(
               onPressed: () => _navigateToComments(alert),
               icon: const Icon(Icons.comment, size: 18),
               label: Text(
@@ -608,12 +608,16 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                   ? 'View Comments (${alert.commentCount})'
                   : 'View Comments'
               ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.brandPrimary,
-                foregroundColor: Colors.black,
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.brandPrimary,
+                side: const BorderSide(color: AppColors.brandPrimary, width: 1.5),
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
+                ),
+                textStyle: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),

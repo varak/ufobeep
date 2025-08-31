@@ -26,24 +26,30 @@ class EnrichmentSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Section Header
-        Row(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(
-              Icons.science,
-              color: AppColors.brandPrimary,
-              size: 20,
+            Row(
+              children: [
+                Icon(
+                  Icons.science,
+                  color: AppColors.brandPrimary,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Environmental Analysis',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 8),
-            Text(
-              'Environmental Analysis',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const Spacer(),
-            if (enrichmentData != null)
+            if (enrichmentData != null) ...[
+              const SizedBox(height: 8),
               _buildStatusChip(EnrichmentStatus.completed),
+            ],
           ],
         ),
         const SizedBox(height: 16),

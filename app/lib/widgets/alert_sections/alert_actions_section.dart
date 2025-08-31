@@ -113,7 +113,7 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
               child: OutlinedButton.icon(
                 onPressed: widget.onReportToMufon,
                 icon: const Icon(Icons.report_outlined, size: 18),
-                label: const Text('Report to MUFON'),
+                label: const Text('How to Report to MUFON'),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.brandPrimary,
                   side: const BorderSide(color: AppColors.brandPrimary, width: 1.5),
@@ -141,7 +141,7 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
       children: [
         SizedBox(
           width: double.infinity,
-          child: ElevatedButton.icon(
+          child: OutlinedButton.icon(
             onPressed: _isConfirming ? null : _confirmWitness,
             icon: _isConfirming 
                 ? const SizedBox(
@@ -149,14 +149,14 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
                     height: 18,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.brandPrimary),
                     ),
                   )
-                : const Icon(Icons.visibility, size: 18, color: Colors.black),
-            label: Text(_isConfirming ? 'Confirming...' : 'I SEE IT TOO!'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.brandPrimary,
-              foregroundColor: Colors.black,
+                : const Icon(Icons.visibility, size: 18),
+            label: Text(_isConfirming ? 'Confirming...' : 'I see it too'),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.brandPrimary,
+              side: const BorderSide(color: AppColors.brandPrimary, width: 1.5),
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),

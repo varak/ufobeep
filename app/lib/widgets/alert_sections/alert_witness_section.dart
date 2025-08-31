@@ -237,11 +237,11 @@ class _AlertWitnessSectionState extends State<AlertWitnessSection> {
           ),
           child: SizedBox(
             width: double.infinity,
-            child: ElevatedButton(
+            child: OutlinedButton(
               onPressed: _isConfirming ? null : _confirmWitness,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.brandPrimary,
-                foregroundColor: Colors.black,
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.brandPrimary,
+                side: const BorderSide(color: AppColors.brandPrimary, width: 1.5),
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
@@ -256,7 +256,7 @@ class _AlertWitnessSectionState extends State<AlertWitnessSection> {
                           height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                            valueColor: AlwaysStoppedAnimation<Color>(AppColors.brandPrimary),
                           ),
                         ),
                         SizedBox(width: 12),
@@ -275,11 +275,11 @@ class _AlertWitnessSectionState extends State<AlertWitnessSection> {
                         Icon(
                           Icons.visibility,
                           size: 20,
-                          color: Colors.black,
+                          color: AppColors.brandPrimary,
                         ),
                         SizedBox(width: 12),
                         Text(
-                          'I SEE IT TOO!',
+                          'I see it too',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
