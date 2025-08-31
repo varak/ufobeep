@@ -34,6 +34,7 @@ class Alert {
     this.photoAnalysis,
     this.totalConfirmations = 0,
     this.canConfirmWitness = true,
+    this.commentCount = 0,
   });
 
   final String id;
@@ -63,6 +64,7 @@ class Alert {
   final List<Map<String, dynamic>>? photoAnalysis;
   final int totalConfirmations;
   final bool canConfirmWitness;
+  final int commentCount;
 
   // Computed properties
   bool get isVerified => status == 'verified';
@@ -134,6 +136,7 @@ class Alert {
     List<Map<String, dynamic>>? photoAnalysis,
     int? totalConfirmations,
     bool? canConfirmWitness,
+    int? commentCount,
   }) {
     return Alert(
       id: id ?? this.id,
@@ -163,6 +166,7 @@ class Alert {
       photoAnalysis: photoAnalysis ?? this.photoAnalysis,
       totalConfirmations: totalConfirmations ?? this.totalConfirmations,
       canConfirmWitness: canConfirmWitness ?? this.canConfirmWitness,
+      commentCount: commentCount ?? this.commentCount,
     );
   }
 
@@ -266,6 +270,7 @@ class Alert {
         photoAnalysis: parsedPhotoAnalysis,
         totalConfirmations: json['total_confirmations'] as int? ?? 0,
         canConfirmWitness: json['can_confirm_witness'] as bool? ?? true,
+        commentCount: json['comment_count'] as int? ?? 0,
       );
     } catch (e) {
       print('Error parsing alert JSON for ${json['id']}: $e');

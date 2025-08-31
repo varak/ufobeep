@@ -182,6 +182,10 @@ class AlertCard extends ConsumerWidget {
                   if (alert.witnessCount > 1)
                     _buildWitnessIndicator(),
                   
+                  // Comment indicator
+                  if (alert.commentCount > 0)
+                    _buildCommentsIndicator(),
+                  
                   const Spacer(),
                   
                   // Location info
@@ -375,6 +379,43 @@ class AlertCard extends ConsumerWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildCommentsIndicator() {
+    return GestureDetector(
+      onTap: () async {
+        await UiFeedback.click();
+        context.go('/alert/${alert.id}/comments');
+      },
+      child: Container(
+        margin: const EdgeInsets.only(right: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        decoration: BoxDecoration(
+          color: AppColors.brandPrimary.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.comment,
+              size: 12,
+              color: AppColors.brandPrimary,
+            ),
+            const SizedBox(width: 4),
+            Text(
+              '${alert.commentCount}',
+              style: const TextStyle(
+                color: AppColors.brandPrimary,
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
