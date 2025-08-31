@@ -734,12 +734,41 @@ class PushNotificationService {
   void _handleSeeItTooAction(String sightingId) async {
     print('📱 User confirmed sighting: $sightingId');
     try {
-      // Send witness confirmation to API
+      // Get current location for witness confirmation
       final deviceId = await _deviceService.getDeviceId();
-      await _dio.post('/beep/$sightingId/witness', data: {
+      
+      // Get current location if available
+      double? lat, lon, altitude, accuracy;
+      try {
+        final position = await Geolocator.getCurrentPosition(
+          locationSettings: const LocationSettings(
+            accuracy: LocationAccuracy.high,
+            timeLimit: Duration(seconds: 10),
+          ),
+        );
+        lat = position.latitude;
+        lon = position.longitude;
+        altitude = position.altitude;
+        accuracy = position.accuracy;
+      } catch (e) {
+        print('Could not get location for witness confirmation: $e');
+        // Use approximate location or fail gracefully
+        lat = 0.0;
+        lon = 0.0;
+        altitude = 0.0;
+        accuracy = 1000.0;
+      }
+      
+      // Send witness confirmation to API
+      await ApiClient.dio.post('/alerts/$sightingId/witnesses', data: {
         'device_id': deviceId,
-        'witness_type': 'confirmed',
+        'witness_type': 'visual',
+        'confirmed': true,
         'quick_action': true,
+        'latitude': lat,
+        'longitude': lon,
+        'altitude': altitude,
+        'accuracy': accuracy,
       });
       
       // Navigate to alert details
@@ -760,9 +789,10 @@ class PushNotificationService {
       final deviceId = await _deviceService.getDeviceId();
       
       // Call API to record the dismissal
-      await _dio.post('/beep/$sightingId/witness', data: {
+      await ApiClient.dio.post('/alerts/$sightingId/witnesses', data: {
         'device_id': deviceId,
-        'witness_type': 'dismissed_snooze',
+        'witness_type': 'dismissed',
+        'confirmed': false,
         'quick_action': true,
       });
       
