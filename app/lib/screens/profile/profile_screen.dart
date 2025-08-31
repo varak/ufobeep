@@ -128,7 +128,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget _buildProfileHeader(UserModel user) {
     final username = user.username!; // Always present - auto-generated or user-set
     final email = user.email; // Might be null for SMS-only users
-    debugPrint('🖥️ Profile.build reading username: $username from user: ${user.id}');
     
     return Container(
       padding: const EdgeInsets.all(20),

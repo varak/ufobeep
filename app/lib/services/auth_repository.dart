@@ -149,31 +149,31 @@ class AuthRepository with ChangeNotifier {
         ? Options(headers: {'Cache-Control': 'no-cache', 'Pragma': 'no-cache'})
         : null;
     final res = await _dio.get('/users/me', options: options);
-    final userData = res.data['user'] as Map<String, dynamic>;
+    
+    // Handle both response formats: direct user object OR { "user": {...} }
+    Map<String, dynamic> userData;
+    if (res.data.containsKey('user')) {
+      userData = res.data['user'] as Map<String, dynamic>;
+    } else {
+      userData = res.data as Map<String, dynamic>;
+    }
+    
     _currentUser = UserModel.fromJson(userData);
     debugPrint('✅ fetchMe() - username updated to: ${_currentUser?.username}');
     notifyListeners();
   }
 
   Future<void> setUsername(String username) async {
-    debugPrint('🔄 AuthRepo.setUsername called with: $username');
     final deviceService = DeviceService();
     final deviceId = await deviceService.getDeviceId();
-    debugPrint('🔑 Device ID: $deviceId');
-    debugPrint('🔑 Current auth token: ${_access?.substring(0, 20)}...');
     
-    debugPrint('📡 Calling /users/set-username API');
     final response = await _dio.post('/users/set-username', data: {
       'device_id': deviceId,
       'username': username,
     });
-    debugPrint('📡 API Response: ${response.statusCode} - ${response.data}');
     
     // Immediately fetch fresh user data with no-cache
-    debugPrint('🔄 Fetching updated user data (no-cache)');
     await fetchMe(noCache: true);
-    debugPrint('🔍 AFTER fetchMe - _currentUser: ${_currentUser?.toJson()}');
-    debugPrint('✅ setUsername completed - current username: ${_currentUser?.username}');
   }
 
 
