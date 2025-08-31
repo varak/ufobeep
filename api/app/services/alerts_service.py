@@ -30,6 +30,7 @@ class Alert:
     reporter_username: Optional[str] = None
     media_files: List[Dict] = None
     enrichment: Dict = None
+    comment_count: int = 0
 
 class AlertsService:
     def __init__(self, db_pool):
@@ -41,9 +42,15 @@ class AlertsService:
             rows = await conn.fetch("""
                 SELECT s.id::text, s.title, s.description, s.category, s.alert_level, 
                        s.witness_count, s.created_at, s.reporter_id, s.sensor_data, s.media_info, s.enrichment_data,
-                       u.username as reporter_username
+                       u.username as reporter_username,
+                       COALESCE(c.comment_count, 0) as comment_count
                 FROM sightings s
                 LEFT JOIN users u ON s.reporter_id = u.id::text
+                LEFT JOIN (
+                    SELECT sighting_id, COUNT(*) as comment_count 
+                    FROM comments 
+                    GROUP BY sighting_id
+                ) c ON s.id = c.sighting_id
                 WHERE s.is_public = true 
                 ORDER BY s.created_at DESC 
                 LIMIT $1
@@ -65,7 +72,8 @@ class AlertsService:
                         reporter_id=row["reporter_id"],
                         reporter_username=row["reporter_username"],
                         media_files=self._process_media(row["media_info"], row["id"]),
-                        enrichment=self._process_enrichment(row["enrichment_data"])
+                        enrichment=self._process_enrichment(row["enrichment_data"]),
+                        comment_count=row["comment_count"]
                     ))
             
             return alerts
@@ -76,9 +84,15 @@ class AlertsService:
             row = await conn.fetchrow("""
                 SELECT s.id::text, s.title, s.description, s.category, s.alert_level,
                        s.witness_count, s.created_at, s.reporter_id, s.sensor_data, s.media_info, s.enrichment_data,
-                       u.username as reporter_username
+                       u.username as reporter_username,
+                       COALESCE(c.comment_count, 0) as comment_count
                 FROM sightings s
                 LEFT JOIN users u ON s.reporter_id = u.id::text
+                LEFT JOIN (
+                    SELECT sighting_id, COUNT(*) as comment_count 
+                    FROM comments 
+                    GROUP BY sighting_id
+                ) c ON s.id = c.sighting_id
                 WHERE s.id = $1 AND s.is_public = true
             """, uuid.UUID(alert_id))
             
@@ -101,7 +115,8 @@ class AlertsService:
                 reporter_id=row["reporter_id"],
                 reporter_username=row["reporter_username"],
                 media_files=self._process_media(row["media_info"], row["id"]),
-                enrichment=self._process_enrichment(row["enrichment_data"])
+                enrichment=self._process_enrichment(row["enrichment_data"]),
+                comment_count=row["comment_count"]
             )
     
     def _extract_location(self, sensor_data, enrichment_data) -> Optional[AlertLocation]:

@@ -52,7 +52,8 @@ def format_alert_response(alert):
         "enrichment": alert.enrichment or {},
         "photo_analysis": [],
         "total_confirmations": alert.witness_count,
-        "can_confirm_witness": True
+        "can_confirm_witness": True,
+        "comment_count": getattr(alert, 'comment_count', 0)
     }
 
 # Alert endpoints
