@@ -1018,6 +1018,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Future<void> _selectUsername(String newUsername) async {
+    final user = _auth.currentUser;
     Navigator.of(context).pop(); // Close selection dialog
     
     try {
