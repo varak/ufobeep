@@ -20,6 +20,7 @@ async def notification_consumer(app: FastAPI):
     logger.info("🔔 Notification worker started")
     
     while True:
+        task_data = None
         try:
             # Get comment notification task from queue
             task_data = await queue.get()
@@ -43,10 +44,15 @@ async def notification_consumer(app: FastAPI):
             
             logger.info(f"🔔 Notification processed for sighting {sighting_id}")
             
+        except asyncio.CancelledError:
+            logger.info("🔔 Notification worker cancelled during shutdown")
+            break
         except Exception as e:
             logger.exception(f"Notification worker error: {e}")
         finally:
-            queue.task_done()
+            # Only mark task done if we actually got a task
+            if task_data is not None:
+                queue.task_done()
 
 async def on_startup(app: FastAPI):
     """Initialize notification system using existing database pool"""
