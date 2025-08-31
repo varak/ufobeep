@@ -411,7 +411,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                           label: const Text('Camera'),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: AppColors.brandPrimary,
-                            backgroundColor: AppColors.brandPrimary.withOpacity(0.1),
+                            backgroundColor: Colors.transparent,
                             side: const BorderSide(color: AppColors.brandPrimary, width: 2),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             shape: RoundedRectangleBorder(
@@ -445,7 +445,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                           label: const Text('Attach'),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.brandPrimary,
-                          backgroundColor: AppColors.brandPrimary.withOpacity(0.1),
+                          backgroundColor: Colors.transparent,
                           side: const BorderSide(color: AppColors.brandPrimary, width: 2),
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           shape: RoundedRectangleBorder(

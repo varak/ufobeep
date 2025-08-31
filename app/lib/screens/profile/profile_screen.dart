@@ -844,6 +844,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       final deviceService = DeviceService();
       final response = await ApiClient.dio.post('/users/regenerate-username', data: {
         'device_id': await deviceService.getDeviceId(),
+        'force_regenerate': true,
       });
 
       // Close loading dialog
