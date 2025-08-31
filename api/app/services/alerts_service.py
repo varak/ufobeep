@@ -505,8 +505,8 @@ class AlertsService:
                 "confirmed": True,
                 "new_witness_count": new_count,
                 "total_confirmations": len(confirmations),
-                "confirmation_time": datetime.utcnow().isoformat(),
-                "sighting_age_minutes": int((datetime.utcnow() - sighting['created_at']).total_seconds() / 60)
+                "confirmation_time": datetime.now(timezone.utc).isoformat(),
+                "sighting_age_minutes": int((datetime.now(timezone.utc) - sighting['created_at']).total_seconds() / 60)
             }
     
     async def get_witness_aggregation(self, sighting_id: str) -> Dict:
@@ -543,7 +543,7 @@ class AlertsService:
                 })
             
             # Calculate stats
-            time_since = datetime.utcnow() - sighting['created_at']
+            time_since = datetime.now(timezone.utc) - sighting['created_at']
             minutes_since = int(time_since.total_seconds() / 60)
             
             return {
