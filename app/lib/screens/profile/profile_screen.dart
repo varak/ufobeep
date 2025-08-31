@@ -819,13 +819,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Future<void> _regenerateUsername(UserModel user) async {
-    // Just show the selection dialog directly - no API calls yet
+    final prefixes = ['cosmic', 'stellar', 'galactic', 'mysterious', 'shimmering', 'ethereal', 'celestial', 'lunar'];
+    final suffixes = ['whisper', 'beacon', 'force', 'craft', 'shadow', 'glow', 'pulse', 'wave', 'spark', 'drift'];
+    final random = DateTime.now().millisecondsSinceEpoch;
+    
     _showUsernameSelectionDialog([
-      'cosmic.whisper.${DateTime.now().millisecondsSinceEpoch % 10000}',
-      'stellar.beacon.${DateTime.now().millisecondsSinceEpoch % 9999}', 
-      'galactic.force.${DateTime.now().millisecondsSinceEpoch % 8888}',
-      'mysterious.craft.${DateTime.now().millisecondsSinceEpoch % 7777}',
-      'shimmering.shadow.${DateTime.now().millisecondsSinceEpoch % 6666}',
+      '${prefixes[random % prefixes.length]}.${suffixes[(random + 1) % suffixes.length]}.${(random % 9999) + 1000}',
+      '${prefixes[(random + 2) % prefixes.length]}.${suffixes[(random + 3) % suffixes.length]}.${((random + 1000) % 9999) + 1000}',
+      '${prefixes[(random + 4) % prefixes.length]}.${suffixes[(random + 5) % suffixes.length]}.${((random + 2000) % 9999) + 1000}',
+      '${prefixes[(random + 6) % prefixes.length]}.${suffixes[(random + 7) % suffixes.length]}.${((random + 3000) % 9999) + 1000}',
+      '${prefixes[(random + 8) % prefixes.length]}.${suffixes[(random + 9) % suffixes.length]}.${((random + 4000) % 9999) + 1000}',
     ]);
   }
 
@@ -881,14 +884,37 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       color: Colors.transparent,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(12),
-                        onTap: () {
+                        onTap: () async {
                           Navigator.of(context).pop();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Username updated to: $username'),
-                              backgroundColor: AppColors.brandPrimary,
-                            ),
-                          );
+                          
+                          try {
+                            final deviceService = DeviceService();
+                            final deviceId = await deviceService.getDeviceId();
+                            
+                            final response = await ApiClient.dio.post('/users/regenerate-username', data: {
+                              'device_id': deviceId,
+                              'force_regenerate': true,
+                            });
+                            
+                            if (response.statusCode == 200) {
+                              final actualUsername = response.data['username'];
+                              await _auth.fetchMe(); // Refresh user data
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Username updated to: $actualUsername'),
+                                  backgroundColor: AppColors.brandPrimary,
+                                ),
+                              );
+                              setState(() {}); // Refresh UI
+                            }
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Failed to update username'),
+                                backgroundColor: AppColors.semanticError,
+                              ),
+                            );
+                          }
                         },
                         child: Container(
                           padding: const EdgeInsets.all(16),
