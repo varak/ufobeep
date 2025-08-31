@@ -819,37 +819,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Future<void> _regenerateUsername(UserModel user) async {
-    try {
-      // Call the API to get username suggestions
-      final response = await ApiClient.dio.post('/users/generate-username');
-      
-      if (response.statusCode == 200) {
-        final data = response.data;
-        final primary = data['username'] as String;
-        final alternatives = List<String>.from(data['alternatives'] ?? []);
-        
-        // Show all options
-        _showUsernameSelectionDialog([primary, ...alternatives]);
-      } else {
-        // Fallback to simple generation if API fails
-        _showUsernameSelectionDialog([
-          'cosmic.whisper.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
-          'stellar.echo.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
-          'quantum.signal.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
-          'nebular.beacon.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
-          'astral.pulse.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
-        ]);
-      }
-    } catch (e) {
-      // Fallback to simple generation on error
-      _showUsernameSelectionDialog([
-        'cosmic.whisper.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
-        'stellar.echo.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
-        'quantum.signal.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
-        'nebular.beacon.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
-        'astral.pulse.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
-      ]);
-    }
+    final response = await ApiClient.dio.post('/users/generate-username');
+    final data = response.data;
+    final primary = data['username'] as String;
+    final alternatives = List<String>.from(data['alternatives'] ?? []);
+    _showUsernameSelectionDialog([primary, ...alternatives]);
   }
 
   void _showUsernameSelectionDialog(List<String> usernameOptions) {
