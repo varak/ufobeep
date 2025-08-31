@@ -603,7 +603,11 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             child: ElevatedButton.icon(
               onPressed: () => _navigateToComments(alert),
               icon: const Icon(Icons.comment, size: 18),
-              label: const Text('View Comments'),
+              label: Text(
+                alert.commentCount > 0 
+                  ? 'View Comments (${alert.commentCount})'
+                  : 'View Comments'
+              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.brandPrimary,
                 foregroundColor: Colors.black,

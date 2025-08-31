@@ -123,19 +123,11 @@ class AlertCard extends ConsumerWidget {
                     ),
                   ),
                   
-                  // Time ago
+                  // Username and time ago
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(
-                        _formatDateTime(alert.createdAt),
-                        style: const TextStyle(
-                          color: AppColors.textTertiary,
-                          fontSize: 12,
-                        ),
-                      ),
                       if (alert.reporterUsername != null) ...[
-                        const SizedBox(height: 4),
                         Text(
                           'by ${alert.reporterUsername}',
                           style: const TextStyle(
@@ -144,7 +136,15 @@ class AlertCard extends ConsumerWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
+                        const SizedBox(height: 4),
                       ],
+                      Text(
+                        _formatDateTime(alert.createdAt),
+                        style: const TextStyle(
+                          color: AppColors.textTertiary,
+                          fontSize: 12,
+                        ),
+                      ),
                       if (alert.distance != null && showDistance) ...[ 
                         const SizedBox(height: 4),
                         _buildDistanceBadge(units),
@@ -175,16 +175,16 @@ class AlertCard extends ConsumerWidget {
               // Footer row with indicators and location
               Row(
                 children: [
+                  // Comment indicator (first, most important)
+                  if (alert.commentCount > 0)
+                    _buildCommentsIndicator(),
+                  
                   // Content type indicator
                   _buildContentTypeIndicator(),
                   
                   // Witness confirmation indicator
                   if (alert.witnessCount > 1)
                     _buildWitnessIndicator(),
-                  
-                  // Comment indicator
-                  if (alert.commentCount > 0)
-                    _buildCommentsIndicator(),
                   
                   const Spacer(),
                   
