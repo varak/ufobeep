@@ -894,10 +894,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           Navigator.of(context).pop();
                           
                           try {
-                            // Use the clean setUsername method - it handles everything
-                            await _auth.setUsername(username);
+                            final deviceService = DeviceService();
+                            final deviceId = await deviceService.getDeviceId();
                             
-                            if (mounted) {
+                            final response = await ApiClient.dio.post('/users/set-username', data: {
+                              'device_id': deviceId,
+                              'username': username,
+                            });
+                            
+                            if (response.statusCode == 200) {
+                              await _auth.fetchMe();
+                              
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text('Username updated to: $username'),
@@ -906,14 +913,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               );
                             }
                           } catch (e) {
-                            if (mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Failed to update username'),
-                                  backgroundColor: AppColors.semanticError,
-                                ),
-                              );
-                            }
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Failed to update username'),
+                                backgroundColor: AppColors.semanticError,
+                              ),
+                            );
                           }
                         },
                         child: Container(
