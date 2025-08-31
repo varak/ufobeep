@@ -1130,13 +1130,6 @@ async def regenerate_username(request: UsernameRegenerateRequest):
                 WHERE id = $2
             """, new_username, user['id'])
             
-            # Update any sightings with old username reference
-            await conn.execute("""
-                UPDATE sightings 
-                SET reporter_username = $1
-                WHERE reporter_id = $2::text
-            """, new_username, str(user['id']))
-            
             return UserRegistrationResponse(
                 user_id=str(user['id']),
                 username=new_username,
