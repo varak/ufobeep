@@ -832,7 +832,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               CircularProgressIndicator(color: AppColors.brandPrimary),
               SizedBox(width: 16),
               Text(
-                'Generating new username...',
+                'Generating username options...',
                 style: TextStyle(color: AppColors.textPrimary),
               ),
             ],
@@ -840,63 +840,28 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ),
       );
 
-      // Call the regenerate-username API endpoint
-      final deviceService = DeviceService();
-      final deviceId = await deviceService.getDeviceId();
-      print('Regenerating username for device: $deviceId');
+      // Generate multiple username options
+      final response = await ApiClient.dio.post('/users/generate-username');
       
-      final response = await ApiClient.dio.post('/users/regenerate-username', data: {
-        'device_id': deviceId,
-        'force_regenerate': true,
-      });
-
-      print('Username regeneration response: ${response.statusCode} - ${response.data}');
-      
-      // Close loading dialog first
-      if (mounted) Navigator.of(context).pop();
+      if (mounted) Navigator.of(context).pop(); // Close loading dialog
 
       if (response.statusCode == 200) {
         final responseData = response.data;
-        if (responseData is Map<String, dynamic> && responseData.containsKey('username')) {
-          final newUsername = responseData['username'];
-          
-          // Update the user in AuthRepository
-          await _auth.fetchMe(); // Refresh user data from server
-          
-          // Show success dialog
-          if (mounted) {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                backgroundColor: AppColors.darkSurface,
-                title: const Text(
-                  'Username Updated!',
-                  style: TextStyle(color: AppColors.textPrimary),
-                ),
-                content: Text(
-                  'Your new username is: $newUsername',
-                  style: const TextStyle(color: AppColors.textSecondary),
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text(
-                      'OK',
-                      style: TextStyle(color: AppColors.brandPrimary),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
-        } else {
-          throw Exception('Invalid response format: missing username field');
+        final primaryUsername = responseData['username'] as String;
+        final alternatives = List<String>.from(responseData['alternatives'] ?? []);
+        
+        // Create list of all options
+        final allOptions = [primaryUsername, ...alternatives];
+        
+        // Show selection dialog
+        if (mounted) {
+          _showUsernameSelectionDialog(allOptions);
         }
       } else {
-        throw Exception('Server error: ${response.statusCode}');
+        throw Exception('Failed to generate usernames');
       }
     } catch (e) {
-      print('Username regeneration error: $e');
+      print('Username generation error: $e');
       
       // Ensure loading dialog is closed
       try {
@@ -905,7 +870,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         print('Error closing loading dialog: $popError');
       }
       
-      // Show error dialog with more details
+      // Show error dialog
       if (mounted) {
         showDialog(
           context: context,
@@ -916,7 +881,235 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               style: TextStyle(color: AppColors.error),
             ),
             content: const Text(
-              'Failed to generate new username. Please try again.',
+              'Failed to generate username options. Please try again.',
+              style: TextStyle(color: AppColors.textSecondary),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text(
+                  'OK',
+                  style: TextStyle(color: AppColors.brandPrimary),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+    }
+  }
+
+  void _showUsernameSelectionDialog(List<String> usernameOptions) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        title: const Text(
+          'Choose Your Username',
+          style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
+        ),
+        content: Container(
+          width: double.maxFinite,
+          constraints: const BoxConstraints(maxHeight: 400),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.brandPrimary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
+                ),
+                child: const Row(
+                  children: [
+                    Icon(Icons.info_outline, color: AppColors.brandPrimary, size: 20),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'You can change your username once. Choose carefully!',
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              Flexible(
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: usernameOptions.length,
+                  separatorBuilder: (context, index) => const SizedBox(height: 8),
+                  itemBuilder: (context, index) {
+                    final username = usernameOptions[index];
+                    final isFirst = index == 0;
+                    
+                    return Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(12),
+                        onTap: () => _selectUsername(username),
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: isFirst 
+                              ? AppColors.brandPrimary.withOpacity(0.1)
+                              : AppColors.darkBorder.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: isFirst 
+                                ? AppColors.brandPrimary.withOpacity(0.5)
+                                : AppColors.darkBorder.withOpacity(0.5),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  username,
+                                  style: TextStyle(
+                                    color: AppColors.textPrimary,
+                                    fontSize: 16,
+                                    fontWeight: isFirst ? FontWeight.w600 : FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              if (isFirst) 
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.brandPrimary,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: const Text(
+                                    'FEATURED',
+                                    style: TextStyle(
+                                      color: AppColors.darkBackground,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: AppColors.textSecondary),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _selectUsername(String newUsername) async {
+    Navigator.of(context).pop(); // Close selection dialog
+    
+    try {
+      // Show loading dialog
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const AlertDialog(
+          backgroundColor: AppColors.darkSurface,
+          content: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(color: AppColors.brandPrimary),
+              SizedBox(width: 16),
+              Text(
+                'Updating username...',
+                style: TextStyle(color: AppColors.textPrimary),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      final deviceService = DeviceService();
+      final deviceId = await deviceService.getDeviceId();
+      
+      final response = await ApiClient.dio.post('/users/regenerate-username', data: {
+        'device_id': deviceId,
+        'force_regenerate': true,
+      });
+      
+      if (mounted) Navigator.of(context).pop(); // Close loading dialog
+
+      if (response.statusCode == 200) {
+        // Update local user model
+        final updatedUser = user.copyWith(username: newUsername);
+        // Note: We should ideally refresh from server, but for now just update locally
+        
+        // Show success dialog
+        if (mounted) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              backgroundColor: AppColors.darkSurface,
+              title: const Text(
+                '✨ Username Updated!',
+                style: TextStyle(color: AppColors.textPrimary),
+              ),
+              content: Text(
+                'You are now $newUsername\n\nThis was your one-time username change.',
+                style: const TextStyle(color: AppColors.textSecondary),
+                textAlign: TextAlign.center,
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    // Trigger a rebuild to show new username
+                    setState(() {});
+                  },
+                  child: const Text(
+                    'Awesome!',
+                    style: TextStyle(color: AppColors.brandPrimary),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+      } else {
+        throw Exception('Failed to update username');
+      }
+    } catch (e) {
+      // Close loading dialog
+      try {
+        if (mounted) Navigator.of(context).pop();
+      } catch (popError) {
+        // Ignore
+      }
+      
+      // Show error
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            backgroundColor: AppColors.darkSurface,
+            title: const Text(
+              'Error',
+              style: TextStyle(color: AppColors.error),
+            ),
+            content: const Text(
+              'Failed to update username. Please try again.',
               style: TextStyle(color: AppColors.textSecondary),
             ),
             actions: [
