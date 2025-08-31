@@ -282,13 +282,21 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: AppColors.darkBorder.withOpacity(0.5)),
           ),
-          child: _buildSettingsTile(
-            icon: Icons.bedtime_outlined,
-            title: 'Quiet Hours',
-            subtitle: 'Silence alerts during sleep hours',
-            value: preferences.quietHoursEnabled,
-            onChanged: _toggleQuietHours,
-            standalone: true,
+          child: Column(
+            children: [
+              _buildSettingsTile(
+                icon: Icons.bedtime_outlined,
+                title: 'Quiet Hours',
+                subtitle: 'Silence alerts during sleep hours',
+                value: preferences.quietHoursEnabled,
+                onChanged: _toggleQuietHours,
+                standalone: false,
+              ),
+              if (preferences.quietHoursEnabled) ...[
+                const Divider(color: AppColors.darkBorder, height: 1),
+                _buildQuietHoursTimePickers(preferences),
+              ],
+            ],
           ),
         ),
         
@@ -807,6 +815,144 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         preferences.copyWith(quietHoursEnabled: enabled),
       );
     }
+  }
+
+  Widget _buildQuietHoursTimePickers(UserPreferences preferences) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildTimePicker(
+              'From',
+              preferences.quietHoursStart,
+              (hour) => _updateQuietHoursStart(preferences, hour),
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: _buildTimePicker(
+              'Until',
+              preferences.quietHoursEnd,
+              (hour) => _updateQuietHoursEnd(preferences, hour),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTimePicker(String label, int hour, Function(int) onChanged) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            color: AppColors.textSecondary,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 8),
+        GestureDetector(
+          onTap: () => _showTimePicker(hour, onChanged),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: AppColors.darkBackground,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: AppColors.darkBorder),
+            ),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.access_time,
+                  size: 20,
+                  color: AppColors.textSecondary,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  _formatHour(hour),
+                  style: const TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _formatHour(int hour) {
+    if (hour == 0) return '12:00 AM';
+    if (hour < 12) return '${hour}:00 AM';
+    if (hour == 12) return '12:00 PM';
+    return '${hour - 12}:00 PM';
+  }
+
+  void _showTimePicker(int currentHour, Function(int) onChanged) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        title: const Text(
+          'Select Time',
+          style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          height: 200,
+          child: ListView.builder(
+            itemCount: 24,
+            itemBuilder: (context, index) {
+              final hour = index;
+              final isSelected = hour == currentHour;
+              return ListTile(
+                title: Text(
+                  _formatHour(hour),
+                  style: TextStyle(
+                    color: isSelected ? AppColors.brandPrimary : AppColors.textPrimary,
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                  ),
+                ),
+                onTap: () {
+                  onChanged(hour);
+                  Navigator.of(context).pop();
+                },
+                selected: isSelected,
+                selectedTileColor: AppColors.brandPrimary.withOpacity(0.1),
+              );
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: AppColors.textSecondary),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _updateQuietHoursStart(UserPreferences preferences, int hour) {
+    ref.read(userPreferencesProvider.notifier).updatePreferences(
+      preferences.copyWith(quietHoursStart: hour),
+    );
+  }
+
+  void _updateQuietHoursEnd(UserPreferences preferences, int hour) {
+    ref.read(userPreferencesProvider.notifier).updatePreferences(
+      preferences.copyWith(quietHoursEnd: hour),
+    );
   }
 
   void _toggleMediaOnlyAlerts(bool enabled) {
