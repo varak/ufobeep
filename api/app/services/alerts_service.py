@@ -496,6 +496,9 @@ class AlertsService:
             # Notify the original reporter about the confirmation
             await self._notify_original_reporter_of_confirmation(conn, sighting_id, device_id, new_count)
             
+            # Auto-follow the sighting for the witness so they get comment notifications
+            await self._auto_follow_for_witness(conn, sighting_id, device_id)
+            
             # Get confirmation stats
             confirmations = await conn.fetch("""
                 SELECT device_id, confirmed_at, confirmation_data
@@ -625,3 +628,30 @@ class AlertsService:
         except Exception as e:
             print(f"❌ Failed to notify original reporter: {e}")
             # Don't fail the confirmation if notification fails
+
+    async def _auto_follow_for_witness(self, conn, sighting_id: str, device_id: str):
+        """Auto-follow a sighting for a witness so they get comment notifications"""
+        try:
+            # Get user ID from device ID
+            user_id = await conn.fetchval("""
+                SELECT user_id 
+                FROM devices 
+                WHERE device_id = $1 AND is_active = true
+            """, device_id)
+            
+            if not user_id:
+                print(f"⚠️ Could not find user for device {device_id}, skipping auto-follow")
+                return
+            
+            # Insert follow record (ignore if already exists)
+            await conn.execute("""
+                INSERT INTO follows (sighting_id, user_id) 
+                VALUES ($1, $2) 
+                ON CONFLICT (sighting_id, user_id) DO NOTHING
+            """, uuid.UUID(sighting_id), user_id)
+            
+            print(f"✅ Auto-followed sighting {sighting_id} for witness device {device_id}")
+            
+        except Exception as e:
+            print(f"❌ Failed to auto-follow for witness: {e}")
+            # Don't fail the confirmation if auto-follow fails
