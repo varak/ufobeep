@@ -942,6 +942,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               style: TextStyle(color: AppColors.textSecondary),
             ),
           ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              // Generate new options
+              _regenerateUsername(_auth.currentUser!);
+            },
+            child: const Text(
+              'More Names',
+              style: TextStyle(color: AppColors.brandPrimary),
+            ),
+          ),
         ],
       ),
     );
