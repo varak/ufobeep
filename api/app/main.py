@@ -331,8 +331,14 @@ async def lifespan(app: FastAPI):
         print("Database tables initialized")
         
         # Initialize notification system with shared database pool
-        from app.lifecycle import on_startup
-        await on_startup(app)
+        try:
+            from app.lifecycle import on_startup
+            await on_startup(app)
+            print("✅ Notification system initialized")
+        except Exception as e:
+            print(f"❌ Notification system initialization failed: {e}")
+            import traceback
+            print(f"Full traceback: {traceback.format_exc()}")
     except Exception as e:
         print(f"Database initialization failed: {e}")
     
