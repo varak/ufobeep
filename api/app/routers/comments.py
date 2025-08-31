@@ -74,9 +74,11 @@ async def create_comment(
         )
     
     # Send notifications using unified system (SAME as proximity alerts)
+    print(f"DEBUG: user_row={user_row}, follower_rows={follower_rows}")
     if user_row and follower_rows:
         try:
             follower_user_ids = [row["user_id"] for row in follower_rows]
+            print(f"DEBUG: Calling notify_users with {len(follower_user_ids)} followers")
             sent = await notify_users(
                 pool,
                 follower_user_ids,
@@ -88,8 +90,10 @@ async def create_comment(
                     "sighting_id": sighting_id,
                 },
             )
+            print(f"DEBUG: notify_users returned {sent}")
             logger.info(f"Comment notification sent: {sent} notifications for sighting {sighting_id}")
         except Exception as e:
+            print(f"DEBUG: Exception in notify_users: {e}")
             logger.error(f"Failed to send comment notifications: {e}")
     
     return {"id": row["id"]}
