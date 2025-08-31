@@ -145,20 +145,12 @@ class AuthRepository with ChangeNotifier {
   }
 
   Future<void> fetchMe() async {
-    final res = await _dio.get('/users/me', options: Options(
-      headers: {'Cache-Control': 'no-cache', 'Pragma': 'no-cache'},
-    ));
+    // Use the existing working endpoint instead of /users/me
+    final deviceService = DeviceService();
+    final deviceId = await deviceService.getDeviceId();
     
-    // Handle both { "user": {...} } and flat { ... } API responses
-    final Map<String, dynamic> userData;
-    if (res.data is Map<String, dynamic> && res.data.containsKey('user')) {
-      userData = res.data['user'] as Map<String, dynamic>;
-    } else {
-      userData = res.data as Map<String, dynamic>;
-    }
-    
-    _currentUser = UserModel.fromJson(userData);
-    debugPrint('Fetched user: ${_currentUser?.username}');
+    final res = await _dio.get('/users/by-device/$deviceId');
+    _currentUser = UserModel.fromJson(res.data);
     notifyListeners();
   }
 
