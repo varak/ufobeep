@@ -391,7 +391,7 @@ class PushNotificationService:
         return await self.send_notification(
             targets=targets,
             payload=payload,
-            notification_type=NotificationType.CHAT,  # Using CHAT type for comment notifications
+            notification_type=NotificationType.ALERT,  # Comments are alerts too
             collapse_key=f"comments_{sighting_id}"
         )
 
