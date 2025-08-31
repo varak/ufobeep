@@ -880,15 +880,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         onTap: () async {
                           Navigator.of(context).pop();
                           
-                          // Show loading
-                          showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (context) => const Center(
-                              child: CircularProgressIndicator(color: AppColors.brandPrimary),
-                            ),
-                          );
-                          
                           try {
                             final deviceService = DeviceService();
                             final deviceId = await deviceService.getDeviceId();
@@ -899,34 +890,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             });
                             
                             if (response.statusCode == 200) {
-                              final actualUsername = response.data['username'];
-                              
-                              // Update auth and force complete refresh
                               await _auth.fetchMe();
+                              setState(() {});
                               
-                              // Close loading
-                              if (mounted) Navigator.of(context).pop();
-                              
-                              // Force the entire profile screen to rebuild
-                              if (mounted) {
-                                setState(() {
-                                  // This will force the entire widget to rebuild
-                                });
-                                
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Username updated to: $actualUsername'),
-                                    backgroundColor: AppColors.brandPrimary,
-                                    duration: const Duration(seconds: 3),
-                                  ),
-                                );
-                              }
-                            } else {
-                              if (mounted) Navigator.of(context).pop();
-                              throw Exception('Failed');
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Username updated to: $username'),
+                                  backgroundColor: AppColors.brandPrimary,
+                                ),
+                              );
                             }
                           } catch (e) {
-                            if (mounted) Navigator.of(context).pop();
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text('Failed to update username'),
