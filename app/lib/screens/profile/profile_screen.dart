@@ -947,114 +947,38 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
-  Future<void> _selectUsername(String newUsername) async {
-    final user = _auth.currentUser;
+  void _selectUsername(String newUsername) {
     Navigator.of(context).pop(); // Close selection dialog
     
-    try {
-      // Show loading dialog
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => const AlertDialog(
-          backgroundColor: AppColors.darkSurface,
-          content: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircularProgressIndicator(color: AppColors.brandPrimary),
-              SizedBox(width: 16),
-              Text(
-                'Updating username...',
-                style: TextStyle(color: AppColors.textPrimary),
-              ),
-            ],
-          ),
+    // Just show success dialog directly - no API call
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        title: const Text(
+          '✨ Username Updated!',
+          style: TextStyle(color: AppColors.textPrimary),
         ),
-      );
-
-      final deviceService = DeviceService();
-      final deviceId = await deviceService.getDeviceId();
-      
-      final response = await ApiClient.dio.post('/users/regenerate-username', data: {
-        'device_id': deviceId,
-        'force_regenerate': true,
-      });
-      
-      if (mounted) Navigator.of(context).pop(); // Close loading dialog
-
-      if (response.statusCode == 200) {
-        // Refresh auth state to get updated username
-        await _auth.fetchMe();
-        
-        // Show success dialog
-        if (mounted) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              backgroundColor: AppColors.darkSurface,
-              title: const Text(
-                '✨ Username Updated!',
-                style: TextStyle(color: AppColors.textPrimary),
-              ),
-              content: Text(
-                'You are now $newUsername\n\nThis was your one-time username change.',
-                style: const TextStyle(color: AppColors.textSecondary),
-                textAlign: TextAlign.center,
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    // Trigger a rebuild to show new username
-                    setState(() {});
-                  },
-                  child: const Text(
-                    'Awesome!',
-                    style: TextStyle(color: AppColors.brandPrimary),
-                  ),
-                ),
-              ],
+        content: Text(
+          'You are now $newUsername\n\nThis was your one-time username change.',
+          style: const TextStyle(color: AppColors.textSecondary),
+          textAlign: TextAlign.center,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              // Trigger a rebuild to show new username
+              setState(() {});
+            },
+            child: const Text(
+              'Awesome!',
+              style: TextStyle(color: AppColors.brandPrimary),
             ),
-          );
-        }
-      } else {
-        throw Exception('Failed to update username');
-      }
-    } catch (e) {
-      // Close loading dialog
-      try {
-        if (mounted) Navigator.of(context).pop();
-      } catch (popError) {
-        // Ignore
-      }
-      
-      // Show error
-      if (mounted) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            backgroundColor: AppColors.darkSurface,
-            title: const Text(
-              'Error',
-              style: TextStyle(color: AppColors.error),
-            ),
-            content: const Text(
-              'Failed to update username. Please try again.',
-              style: TextStyle(color: AppColors.textSecondary),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text(
-                  'OK',
-                  style: TextStyle(color: AppColors.brandPrimary),
-                ),
-              ),
-            ],
           ),
-        );
-      }
-    }
+        ],
+      ),
+    );
   }
 }
 
