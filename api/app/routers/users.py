@@ -1082,6 +1082,62 @@ async def get_user_alert_history(device_id: str, page: int = 1, per_page: int = 
         pass
 
 
+@router.post("/set-username", response_model=UserRegistrationResponse)
+async def set_username(request: dict):
+    """Set specific username for user"""
+    pool = await get_db()
+    try:
+        async with pool.acquire() as conn:
+            # Get user from device ID
+            user = await conn.fetchrow("""
+                SELECT u.id, u.username
+                FROM users u
+                JOIN user_devices ud ON u.id = ud.user_id
+                WHERE ud.device_id = $1
+            """, request['device_id'])
+            
+            if not user:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="User not found"
+                )
+            
+            chosen_username = request['username']
+            
+            # Check if username is already taken
+            existing = await conn.fetchrow(
+                "SELECT username FROM users WHERE username = $1 AND id != $2",
+                chosen_username, user['id']
+            )
+            if existing:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="Username already taken"
+                )
+            
+            # Update username
+            await conn.execute("""
+                UPDATE users 
+                SET username = $1, updated_at = NOW()
+                WHERE id = $2
+            """, chosen_username, user['id'])
+            
+            return UserRegistrationResponse(
+                user_id=str(user['id']),
+                username=chosen_username,
+                device_id=request['device_id'],
+                is_new_user=False,
+                message=f"Username updated! You are now {chosen_username}"
+            )
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to set username: {str(e)}"
+        )
+
 @router.post("/regenerate-username", response_model=UserRegistrationResponse)
 async def regenerate_username(request: UsernameRegenerateRequest):
     """

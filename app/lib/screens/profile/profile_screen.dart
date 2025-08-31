@@ -884,14 +884,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             final deviceService = DeviceService();
                             final deviceId = await deviceService.getDeviceId();
                             
-                            final response = await ApiClient.dio.post('/users/regenerate-username', data: {
+                            final response = await ApiClient.dio.post('/users/set-username', data: {
                               'device_id': deviceId,
-                              'force_regenerate': true,
+                              'username': username,
                             });
                             
                             if (response.statusCode == 200) {
                               await _auth.fetchMe();
-                              setState(() {});
                               
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -944,10 +943,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.of(context).pop();
-              // Generate new options
-              _regenerateUsername(_auth.currentUser!);
+              // Generate new options without page refresh
+              await _regenerateUsername(_auth.currentUser!);
             },
             child: const Text(
               'More Names',
