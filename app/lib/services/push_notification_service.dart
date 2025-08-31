@@ -360,18 +360,6 @@ class PushNotificationService {
     return prefs.getBool(_permissionKey) ?? false;
   }
 
-  Future<void> refreshTokenAndRegister() async {
-    try {
-      await _messaging.deleteToken();
-      final newToken = await getToken();
-      if (newToken != null) {
-        // Notify DeviceRegistrationManager of the new token
-        DeviceRegistrationManager().onFcmTokenAvailable(newToken);
-      }
-    } catch (e) {
-      print('Error refreshing token: $e');
-    }
-  }
 
   void navigateToAlert(String alertId) {
     try {
