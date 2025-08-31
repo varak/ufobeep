@@ -322,6 +322,18 @@ class PushNotificationService {
         final container = ProviderScope.containerOf(rootNavigatorKey.currentContext!);
         container.invalidate(alertByIdProvider(sightingId));
         print('🔄 Refreshed alert $sightingId for new comment');
+        
+        // If user is already on comments screen, force a refresh by navigating again
+        final currentLocation = GoRouter.of(rootNavigatorKey.currentContext!).routeInformationProvider.value.uri.toString();
+        if (currentLocation.contains('/alert/$sightingId/comments')) {
+          print('🔄 User is on comments screen, forcing refresh');
+          // Navigate to same screen to trigger rebuild
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (rootNavigatorKey.currentContext?.mounted ?? false) {
+              rootNavigatorKey.currentContext!.go('/alert/$sightingId/comments');
+            }
+          });
+        }
       } catch (e) {
         print('Could not refresh alert cache: $e');
       }
