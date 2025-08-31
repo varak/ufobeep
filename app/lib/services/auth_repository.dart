@@ -144,10 +144,14 @@ class AuthRepository with ChangeNotifier {
     return _refresh;
   }
 
-  Future<void> fetchMe() async {
-    final res = await _dio.get('/users/me');
+  Future<void> fetchMe({bool noCache = false}) async {
+    final options = noCache 
+        ? Options(headers: {'Cache-Control': 'no-cache', 'Pragma': 'no-cache'})
+        : null;
+    final res = await _dio.get('/users/me', options: options);
     final userData = res.data['user'] as Map<String, dynamic>;
     _currentUser = UserModel.fromJson(userData);
+    debugPrint('✅ fetchMe() - username updated to: ${_currentUser?.username}');
     notifyListeners();
   }
 
@@ -164,10 +168,10 @@ class AuthRepository with ChangeNotifier {
     });
     debugPrint('📡 API Response: ${response.statusCode} - ${response.data}');
     
-    // Immediately fetch fresh user data
-    debugPrint('🔄 Fetching updated user data');
-    await fetchMe();
-    debugPrint('✅ setUsername completed');
+    // Immediately fetch fresh user data with no-cache
+    debugPrint('🔄 Fetching updated user data (no-cache)');
+    await fetchMe(noCache: true);
+    debugPrint('✅ setUsername completed - current username: ${_currentUser?.username}');
   }
 
 

@@ -1034,9 +1034,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             await _auth.setUsername(username);
                             debugPrint('✅ Username set successfully: $username');
                             
-                            // Force refresh of the profile screen
+                            // AuthRepository.notifyListeners() will trigger _onAuthChange automatically
                             if (mounted) {
-                              setState(() {});
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text('Username updated to: $username'),
