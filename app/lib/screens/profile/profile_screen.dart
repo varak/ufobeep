@@ -819,17 +819,46 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Future<void> _regenerateUsername(UserModel user) async {
-    final prefixes = ['cosmic', 'stellar', 'galactic', 'mysterious', 'shimmering', 'ethereal', 'celestial', 'lunar'];
-    final suffixes = ['whisper', 'beacon', 'force', 'craft', 'shadow', 'glow', 'pulse', 'wave', 'spark', 'drift'];
-    final random = DateTime.now().millisecondsSinceEpoch;
+    // Cosmic/space themed adjectives from API
+    final adjectives = [
+      "cosmic", "stellar", "galactic", "lunar", "solar", "orbital",
+      "nebular", "astral", "celestial", "ethereal", "starlit", "moonlit",
+      "radiant", "luminous", "glowing", "shimmering", "drifting", "floating",
+      "distant", "ancient", "mysterious", "enigmatic", "phantom", "spectral",
+      "electric", "magnetic", "quantum", "plasma", "fusion", "atomic",
+      "binary", "digital", "cyber", "neon", "chrome", "crystal",
+      "arctic", "frozen", "blazing", "burning", "searing", "molten",
+      "silent", "whispering", "echoing", "resonant", "harmonic", "sonic"
+    ];
     
-    _showUsernameSelectionDialog([
-      '${prefixes[random % prefixes.length]}.${suffixes[(random + 1) % suffixes.length]}.${(random % 9999) + 1000}',
-      '${prefixes[(random + 2) % prefixes.length]}.${suffixes[(random + 3) % suffixes.length]}.${((random + 1000) % 9999) + 1000}',
-      '${prefixes[(random + 4) % prefixes.length]}.${suffixes[(random + 5) % suffixes.length]}.${((random + 2000) % 9999) + 1000}',
-      '${prefixes[(random + 6) % prefixes.length]}.${suffixes[(random + 7) % suffixes.length]}.${((random + 3000) % 9999) + 1000}',
-      '${prefixes[(random + 8) % prefixes.length]}.${suffixes[(random + 9) % suffixes.length]}.${((random + 4000) % 9999) + 1000}',
-    ]);
+    // Space/UFO themed nouns from API
+    final nouns = [
+      "whisper", "echo", "signal", "beacon", "pulse", "wave",
+      "orbit", "trajectory", "vector", "comet", "meteor", "asteroid", 
+      "galaxy", "nebula", "quasar", "pulsar", "supernova", "blackhole",
+      "star", "planet", "moon", "satellite", "probe", "vessel",
+      "craft", "ship", "scanner", "detector", "observer", "watcher",
+      "wanderer", "traveler", "explorer", "navigator", "pilot", "captain",
+      "ghost", "phantom", "shadow", "specter", "entity", "being",
+      "light", "flash", "glimmer", "spark", "glow", "aura",
+      "void", "plasma", "energy", "force", "field", "matrix",
+      "code", "cipher", "key", "token", "byte", "node"
+    ];
+    
+    // Generate 5 random unique combinations
+    final random = DateTime.now().millisecondsSinceEpoch;
+    final List<String> usernames = [];
+    
+    for (int i = 0; i < 5; i++) {
+      adjectives.shuffle();
+      nouns.shuffle();
+      final adj = adjectives[i % adjectives.length];
+      final noun = nouns[i % nouns.length];
+      final suffix = ((random + i * 1234) % 9999) + 1000;
+      usernames.add('$adj.$noun.$suffix');
+    }
+    
+    _showUsernameSelectionDialog(usernames);
   }
 
   void _showUsernameSelectionDialog(List<String> usernameOptions) {
@@ -878,7 +907,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   separatorBuilder: (context, index) => const SizedBox(height: 8),
                   itemBuilder: (context, index) {
                     final username = usernameOptions[index];
-                    final isFirst = index == 0;
                     
                     return Material(
                       color: Colors.transparent,
@@ -945,29 +973,19 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         child: Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: isFirst 
-                              ? AppColors.brandPrimary.withOpacity(0.1)
-                              : AppColors.darkBorder.withOpacity(0.3),
+                            color: AppColors.darkBorder.withOpacity(0.3),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: isFirst 
-                                ? AppColors.brandPrimary.withOpacity(0.5)
-                                : AppColors.darkBorder.withOpacity(0.5),
+                              color: AppColors.darkBorder.withOpacity(0.5),
                             ),
                           ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  username,
-                                  style: TextStyle(
-                                    color: AppColors.textPrimary,
-                                    fontSize: 16,
-                                    fontWeight: isFirst ? FontWeight.w600 : FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ],
+                          child: Text(
+                            username,
+                            style: const TextStyle(
+                              color: AppColors.textPrimary,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
