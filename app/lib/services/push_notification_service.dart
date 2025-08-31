@@ -314,8 +314,8 @@ class PushNotificationService {
       // Play notification sound for comment
       await SoundService.I.play(AlertSound.pushPing);
       
-      // Navigate to the alert with comments
-      navigateToAlert(sightingId);
+      // Navigate directly to the comments section
+      navigateToComments(sightingId);
       
       // Refresh alerts to show new comment count
       try {
@@ -409,6 +409,21 @@ class PushNotificationService {
   }
 
   String? _pendingNavigation;
+
+  void navigateToComments(String alertId) {
+    try {
+      final context = rootNavigatorKey.currentContext;
+      if (context != null && context.mounted) {
+        context.go('/alert/$alertId/comments');
+        print('Navigated to comments: $alertId');
+      } else {
+        print('Cannot navigate: no valid context available');
+        _pendingNavigation = '/alert/$alertId/comments';
+      }
+    } catch (e) {
+      print('Error navigating to comments $alertId: $e');
+    }
+  }
 
   void navigateToChat(String chatId) {
     try {
