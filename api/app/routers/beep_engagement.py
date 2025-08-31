@@ -272,6 +272,9 @@ async def _record_witness_confirmation(
         RETURNING witness_count
     """, sighting_id)
     
+    # Notify the original reporter about the confirmation
+    await _notify_original_reporter_of_confirmation(conn, sighting_id, engagement.device_id, new_witness_count)
+    
     # Check if escalation is triggered (3, 5, 10+ witnesses)
     escalation_triggered = new_witness_count in [3, 5, 10] or (new_witness_count > 10 and new_witness_count % 5 == 0)
     
@@ -346,3 +349,55 @@ async def get_engagement_stats(sighting_id: str):
         "total_engagements": engagement_count,
         "engagement_rate": (engagement_count / max(sighting_stats['witness_count'], 1)) * 100
     }
+
+
+async def _notify_original_reporter_of_confirmation(conn, sighting_id: str, witness_device_id: str, witness_count: int):
+    """Send a beep notification to the original reporter when someone confirms their sighting"""
+    try:
+        # Get the original reporter's device info
+        original_device = await conn.fetchrow("""
+            SELECT device_id, user_id 
+            FROM sightings 
+            WHERE id = $1
+        """, sighting_id)
+        
+        if not original_device or original_device['device_id'] == witness_device_id:
+            # No original device found, or same device confirming (shouldn't happen but just in case)
+            return
+        
+        # Import FCM service to send notification
+        from app.services.proximity_alert_service import ProximityAlertService
+        proximity_service = ProximityAlertService()
+        
+        # Get the original device's FCM token
+        device_info = await conn.fetchrow("""
+            SELECT push_token, device_id 
+            FROM devices 
+            WHERE device_id = $1 AND is_active = true
+        """, original_device['device_id'])
+        
+        if not device_info or not device_info['push_token']:
+            print(f"⚠️ Original reporter device {original_device['device_id']} has no FCM token")
+            return
+            
+        # Send confirmation beep notification
+        message = f"Someone confirmed your sighting! ({witness_count} witnesses)"
+        
+        await proximity_service._send_fcm_notification(
+            device_info['push_token'],
+            title="Sighting Confirmed! 🛸",
+            body=message,
+            data={
+                "type": "sighting_confirmed",
+                "sighting_id": sighting_id,
+                "witness_count": str(witness_count),
+                "sound": "beep",
+                "priority": "high"
+            }
+        )
+        
+        print(f"✅ Sent confirmation beep to original reporter {original_device['device_id']}")
+        
+    except Exception as e:
+        print(f"❌ Failed to notify original reporter: {e}")
+        # Don't fail the confirmation if notification fails
