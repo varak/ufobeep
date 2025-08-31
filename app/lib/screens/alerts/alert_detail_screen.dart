@@ -191,6 +191,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                     if (_currentUserDeviceId != null) {
                       _checkWitnessStatus(_currentUserDeviceId!);
                     }
+                    // Also refresh the alert data to update witness count display
+                    ref.invalidate(alertByIdProvider(widget.alertId));
                   },
                 ),
                 const SizedBox(height: 24),

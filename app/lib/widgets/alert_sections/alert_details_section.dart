@@ -78,6 +78,10 @@ class AlertDetailsSection extends StatelessWidget {
               subtitle: null,
             ),
           
+          // Witness count (if more than 1)
+          if (alert.witnessCount > 1)
+            _buildWitnessRow(),
+          
           // Location info (if enabled)
           if (showLocation) ...[
             _buildDetailRow(
@@ -98,6 +102,73 @@ class AlertDetailsSection extends StatelessWidget {
     );
   }
 
+
+  Widget _buildWitnessRow() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.visibility, size: 20, color: AppColors.semanticSuccess),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Text(
+                      'Witnesses: ',
+                      style: TextStyle(
+                        color: AppColors.textTertiary,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: AppColors.semanticSuccess.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: AppColors.semanticSuccess.withOpacity(0.3)),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.visibility,
+                            size: 16,
+                            color: AppColors.semanticSuccess,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            '${alert.witnessCount}',
+                            style: const TextStyle(
+                              color: AppColors.semanticSuccess,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  '${alert.witnessCount} people confirmed this sighting',
+                  style: const TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildDetailRow(IconData icon, String label, String value, {String? subtitle}) {
     return Padding(
