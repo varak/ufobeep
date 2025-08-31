@@ -819,84 +819,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Future<void> _regenerateUsername(UserModel user) async {
-    try {
-      // Show loading dialog
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => const AlertDialog(
-          backgroundColor: AppColors.darkSurface,
-          content: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircularProgressIndicator(color: AppColors.brandPrimary),
-              SizedBox(width: 16),
-              Text(
-                'Generating username options...',
-                style: TextStyle(color: AppColors.textPrimary),
-              ),
-            ],
-          ),
-        ),
-      );
-
-      // Generate multiple username options
-      final response = await ApiClient.dio.post('/users/generate-username');
-      
-      if (mounted) Navigator.of(context).pop(); // Close loading dialog
-
-      if (response.statusCode == 200) {
-        final responseData = response.data;
-        final primaryUsername = responseData['username'] as String;
-        final alternatives = List<String>.from(responseData['alternatives'] ?? []);
-        
-        // Create list of all options
-        final allOptions = [primaryUsername, ...alternatives];
-        
-        // Show selection dialog
-        if (mounted) {
-          _showUsernameSelectionDialog(allOptions);
-        }
-      } else {
-        throw Exception('Failed to generate usernames');
-      }
-    } catch (e) {
-      print('Username generation error: $e');
-      
-      // Ensure loading dialog is closed
-      try {
-        if (mounted) Navigator.of(context).pop();
-      } catch (popError) {
-        print('Error closing loading dialog: $popError');
-      }
-      
-      // Show error dialog
-      if (mounted) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            backgroundColor: AppColors.darkSurface,
-            title: const Text(
-              'Error',
-              style: TextStyle(color: AppColors.error),
-            ),
-            content: const Text(
-              'Failed to generate username options. Please try again.',
-              style: TextStyle(color: AppColors.textSecondary),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text(
-                  'OK',
-                  style: TextStyle(color: AppColors.brandPrimary),
-                ),
-              ),
-            ],
-          ),
-        );
-      }
-    }
+    // Just show the selection dialog directly - no API calls yet
+    _showUsernameSelectionDialog([
+      'cosmic.whisper.${DateTime.now().millisecondsSinceEpoch % 10000}',
+      'stellar.beacon.${DateTime.now().millisecondsSinceEpoch % 9999}', 
+      'galactic.force.${DateTime.now().millisecondsSinceEpoch % 8888}',
+      'mysterious.craft.${DateTime.now().millisecondsSinceEpoch % 7777}',
+      'shimmering.shadow.${DateTime.now().millisecondsSinceEpoch % 6666}',
+    ]);
   }
 
   void _showUsernameSelectionDialog(List<String> usernameOptions) {
