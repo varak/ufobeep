@@ -5,7 +5,7 @@ Extracts all the database and business logic from HTTP endpoints
 import json
 import uuid
 import math
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass
 
