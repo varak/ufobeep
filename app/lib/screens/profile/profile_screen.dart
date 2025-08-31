@@ -819,80 +819,37 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Future<void> _regenerateUsername(UserModel user) async {
-    // Cosmic/space themed adjectives (128 total)
-    final adjectives = [
-      // Original 48
-      "cosmic", "stellar", "galactic", "lunar", "solar", "orbital",
-      "nebular", "astral", "celestial", "ethereal", "starlit", "moonlit",
-      "radiant", "luminous", "glowing", "shimmering", "drifting", "floating",
-      "distant", "ancient", "mysterious", "enigmatic", "phantom", "spectral",
-      "electric", "magnetic", "quantum", "plasma", "fusion", "atomic",
-      "binary", "digital", "cyber", "neon", "chrome", "crystal",
-      "arctic", "frozen", "blazing", "burning", "searing", "molten",
-      "silent", "whispering", "echoing", "resonant", "harmonic", "sonic",
-      // New additions to reach 128
-      "temporal", "dimensional", "parallel", "infinite", "eternal", "timeless",
-      "hypnotic", "mystic", "arcane", "cryptic", "hidden", "secret",
-      "pulsing", "vibrant", "dynamic", "kinetic", "static", "flowing",
-      "twilight", "midnight", "dawn", "dusk", "nocturnal", "diurnal",
-      "prismatic", "iridescent", "holographic", "translucent", "opaque", "transparent",
-      "metallic", "crystalline", "liquid", "gaseous", "solid", "fluid",
-      "northern", "southern", "eastern", "western", "polar", "equatorial",
-      "ascending", "descending", "rotating", "spinning", "spiraling", "oscillating",
-      "ultra", "mega", "micro", "nano", "macro", "mini",
-      "alpha", "beta", "gamma", "delta", "omega", "sigma",
-      "crimson", "azure", "emerald", "violet", "amber", "obsidian",
-      "swift", "rapid", "instant", "gradual", "sudden", "steady",
-      "remote", "isolated", "secluded", "abandoned", "forgotten", "lost",
-      "primal", "advanced", "primitive", "futuristic", "retro", "modern",
-      "vertical", "horizontal", "diagonal", "angular", "curved", "linear"
-    ];
-    
-    // Space/UFO themed nouns (128 total)  
-    final nouns = [
-      // Original 48
-      "whisper", "echo", "signal", "beacon", "pulse", "wave",
-      "orbit", "trajectory", "vector", "comet", "meteor", "asteroid", 
-      "galaxy", "nebula", "quasar", "pulsar", "supernova", "blackhole",
-      "star", "planet", "moon", "satellite", "probe", "vessel",
-      "craft", "ship", "scanner", "detector", "observer", "watcher",
-      "wanderer", "traveler", "explorer", "navigator", "pilot", "captain",
-      "ghost", "phantom", "shadow", "specter", "entity", "being",
-      "light", "flash", "glimmer", "spark", "glow", "aura",
-      "void", "plasma", "energy", "force", "field", "matrix",
-      "code", "cipher", "key", "token", "byte", "node",
-      // New additions to reach 128
-      "cluster", "system", "station", "portal", "gateway", "bridge",
-      "horizon", "zenith", "nadir", "apex", "core", "nexus",
-      "stream", "cascade", "vortex", "tornado", "storm", "tempest",
-      "crystal", "prism", "lens", "mirror", "reflection", "image",
-      "frequency", "wavelength", "amplitude", "resonance", "vibration", "oscillation",
-      "particle", "photon", "electron", "neutron", "proton", "quark",
-      "dimension", "realm", "domain", "zone", "sector", "quadrant",
-      "colony", "outpost", "fortress", "citadel", "base", "command",
-      "engine", "reactor", "generator", "transmitter", "receiver", "amplifier",
-      "anomaly", "phenomenon", "distortion", "rift", "breach", "tear",
-      "sentinel", "guardian", "keeper", "protector", "defender", "warrior",
-      "dream", "vision", "prophecy", "oracle", "mystic", "sage",
-      "element", "compound", "molecule", "atom", "ion", "isotope",
-      "relay", "junction", "intersection", "crossroads", "hub", "center",
-      "fragment", "shard", "piece", "component", "module", "unit"
-    ];
-    
-    // Generate 5 random unique combinations
-    final random = DateTime.now().millisecondsSinceEpoch;
-    final List<String> usernames = [];
-    
-    for (int i = 0; i < 5; i++) {
-      adjectives.shuffle();
-      nouns.shuffle();
-      final adj = adjectives[i % adjectives.length];
-      final noun = nouns[i % nouns.length];
-      final suffix = ((random + i * 1234) % 9999) + 1000;
-      usernames.add('$adj.$noun.$suffix');
+    try {
+      // Call the API to get username suggestions
+      final response = await ApiClient.dio.post('/users/generate-username');
+      
+      if (response.statusCode == 200) {
+        final data = response.data;
+        final primary = data['username'] as String;
+        final alternatives = List<String>.from(data['alternatives'] ?? []);
+        
+        // Show all options
+        _showUsernameSelectionDialog([primary, ...alternatives]);
+      } else {
+        // Fallback to simple generation if API fails
+        _showUsernameSelectionDialog([
+          'cosmic.whisper.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
+          'stellar.echo.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
+          'quantum.signal.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
+          'nebular.beacon.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
+          'astral.pulse.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
+        ]);
+      }
+    } catch (e) {
+      // Fallback to simple generation on error
+      _showUsernameSelectionDialog([
+        'cosmic.whisper.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
+        'stellar.echo.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
+        'quantum.signal.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
+        'nebular.beacon.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
+        'astral.pulse.${1000 + (DateTime.now().millisecondsSinceEpoch % 9000)}',
+      ]);
     }
-    
-    _showUsernameSelectionDialog(usernames);
   }
 
   void _showUsernameSelectionDialog(List<String> usernameOptions) {
