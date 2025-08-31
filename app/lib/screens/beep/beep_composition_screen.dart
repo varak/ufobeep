@@ -501,7 +501,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppColors.darkBorder),
+          borderSide: const BorderSide(color: AppColors.brandPrimary, width: 1.5),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
@@ -539,16 +539,18 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                 onTapDown: _isSubmitting ? null : (_) async {
                   await UiFeedback.click(); // immediate feedback
                 },
-                child: ElevatedButton(
+                child: OutlinedButton(
                   onPressed: !_isSubmitting ? _submitBeep : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: !_isSubmitting 
-                      ? AppColors.brandPrimary 
-                      : AppColors.darkBorder,
+                style: OutlinedButton.styleFrom(
                   foregroundColor: !_isSubmitting 
-                      ? Colors.black 
+                      ? AppColors.brandPrimary 
                       : AppColors.textSecondary,
-                  elevation: 0,
+                  side: BorderSide(
+                    color: !_isSubmitting 
+                        ? AppColors.brandPrimary 
+                        : AppColors.darkBorder,
+                    width: 2,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -566,7 +568,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                             height: 20,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              color: Colors.black.withOpacity(0.7),
+                              valueColor: AlwaysStoppedAnimation<Color>(AppColors.brandPrimary),
                             ),
                           ),
                           const SizedBox(width: 12),

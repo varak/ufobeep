@@ -323,11 +323,11 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                         contentPadding: const EdgeInsets.all(16),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(color: AppColors.darkBorder.withOpacity(0.5)),
+                          borderSide: const BorderSide(color: AppColors.brandPrimary, width: 1.5),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(color: AppColors.brandPrimary),
+                          borderSide: const BorderSide(color: AppColors.brandPrimary, width: 2),
                         ),
                       ),
                     ),
@@ -478,7 +478,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                   onTapDown: _isBeeping ? null : (_) async {
                     await UiFeedback.click(); // immediate feedback
                   },
-                  child: ElevatedButton.icon(
+                  child: OutlinedButton.icon(
                     onPressed: _isBeeping ? null : _sendQuickBeep,
                   icon: _isBeeping 
                       ? const SizedBox(
@@ -486,25 +486,23 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                           height: 16,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: Colors.black,
+                            valueColor: AlwaysStoppedAnimation<Color>(AppColors.brandPrimary),
                           ),
                         )
-                      : const Icon(Icons.send, color: Colors.black),
+                      : const Icon(Icons.send),
                   label: Text(
                     _isBeeping ? 'Sending...' : 'Send Beep',
                     style: const TextStyle(
-                      color: Colors.black,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.brandPrimary,
-                    foregroundColor: Colors.black,
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.brandPrimary,
+                    side: const BorderSide(color: AppColors.brandPrimary, width: 2),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    elevation: 0,
                   ),
                 ),
                 ),
