@@ -160,6 +160,7 @@ class AuthRepository with ChangeNotifier {
     final deviceService = DeviceService();
     final deviceId = await deviceService.getDeviceId();
     debugPrint('🔑 Device ID: $deviceId');
+    debugPrint('🔑 Current auth token: ${_access?.substring(0, 20)}...');
     
     debugPrint('📡 Calling /users/set-username API');
     final response = await _dio.post('/users/set-username', data: {
@@ -171,6 +172,7 @@ class AuthRepository with ChangeNotifier {
     // Immediately fetch fresh user data with no-cache
     debugPrint('🔄 Fetching updated user data (no-cache)');
     await fetchMe(noCache: true);
+    debugPrint('🔍 AFTER fetchMe - _currentUser: ${_currentUser?.toJson()}');
     debugPrint('✅ setUsername completed - current username: ${_currentUser?.username}');
   }
 
