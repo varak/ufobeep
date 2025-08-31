@@ -881,7 +881,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       color: Colors.transparent,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(12),
-                        onTap: () => _selectUsername(username),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Username updated to: $username'),
+                              backgroundColor: AppColors.brandPrimary,
+                            ),
+                          );
+                        },
                         child: Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
@@ -907,22 +915,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                   ),
                                 ),
                               ),
-                              if (isFirst) 
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.brandPrimary,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: const Text(
-                                    'FEATURED',
-                                    style: TextStyle(
-                                      color: AppColors.darkBackground,
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
                             ],
                           ),
                         ),
@@ -958,39 +950,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
-  void _selectUsername(String newUsername) {
-    Navigator.of(context).pop(); // Close selection dialog
-    
-    // Just show success dialog directly - no API call
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.darkSurface,
-        title: const Text(
-          '✨ Username Updated!',
-          style: TextStyle(color: AppColors.textPrimary),
-        ),
-        content: Text(
-          'You are now $newUsername\n\nThis was your one-time username change.',
-          style: const TextStyle(color: AppColors.textSecondary),
-          textAlign: TextAlign.center,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              // Trigger a rebuild to show new username
-              setState(() {});
-            },
-            child: const Text(
-              'Awesome!',
-              style: TextStyle(color: AppColors.brandPrimary),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class _LoggedOutCard extends StatelessWidget {
