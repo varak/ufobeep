@@ -211,10 +211,10 @@ class DeviceService {
     try {
       if (Platform.isAndroid) {
         final androidInfo = await _deviceInfo.androidInfo;
-        return 'android_${androidInfo.id}_${DateTime.now().millisecondsSinceEpoch}';
+        return 'android_${androidInfo.id}';
       } else if (Platform.isIOS) {
         final iosInfo = await _deviceInfo.iosInfo;
-        return 'ios_${iosInfo.identifierForVendor}_${DateTime.now().millisecondsSinceEpoch}';
+        return 'ios_${iosInfo.identifierForVendor}';
       } else {
         return 'unknown_${DateTime.now().millisecondsSinceEpoch}';
       }
