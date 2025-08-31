@@ -1,8 +1,23 @@
-# MASTER_PLAN_v16 — Community & Media (Step-by-Step)
+# MASTER_PLAN_v16 — Community & Media (Implementation Status)
+
+**Current Status: Sprint B Completed + Critical Bug Fixes**
 
 Goals: Multi-media per alert, Comments, Auto-follow + pushes, Share cards, Share→Compose reliability, Sleep/DND.
 
 Guardrails: keep `/alerts`, `/media/uploads`; proximity & device location must stay green.
+
+## 🎯 **Current Sprint Progress**
+- ✅ **Sprint A**: Multi-Media Alerts - COMPLETED
+- ✅ **Sprint B**: Comments + Follows + Push - COMPLETED  
+- 🔄 **Sprint C**: Share Cards + Share→Compose + Sleep/DND - IN PROGRESS
+- ⏳ **Sprint D**: Map & Ops - PENDING
+
+## 🚨 **Critical Fixes Completed (August 2025)**
+- ✅ **Witness Confirmation Bug**: Fixed "string is not subtype of int at index" crash
+- ✅ **Type Safety**: Added comprehensive defensive JSON parsing
+- ✅ **UI Consistency**: Updated button styling across all screens
+- ✅ **Push Notifications**: End-to-end witness confirmation flow working
+- ✅ **Username Regeneration**: Fixed API call with proper parameters
 
 ## Sprint A — Multi-Media Alerts
 [api] Keep MP14 endpoints. Add Idempotency on POST `/media/uploads`, `/alerts`.
@@ -39,13 +54,18 @@ Future<void> appendMedia(int alertId, List<Map<String,dynamic>> media) async {
 }
 ```
 
-Acceptance: create 3‑image alert; first as preview; no dupes on retry.
+✅ **Acceptance**: create 3‑image alert; first as preview; no dupes on retry. **STATUS: WORKING**
 
-## Sprint B — Comments + Follows + Push
+## Sprint B — Comments + Follows + Push ✅ COMPLETED
 [api] Tables `comments`, `follows`. Endpoints: GET/POST `/alerts/{id}/comments`; POST `/alerts/{id}/follow`.
 [app] Thread UI; bell to mute.
 
-**FastAPI starter provided in `api/app/routers/comments.py`.**
+✅ **Implementation Status**:
+- Comments system fully functional with thread UI
+- Auto-follow on witness confirmation working
+- Push notifications for witness confirmations and comments active
+- FCM integration delivering real-time alerts
+- "I see it too" button working reliably with type-safe API responses
 
 ## Sprint C — Share Cards + Share→Compose + Sleep/DND
 [web] OG tags; `/og/alerts/{id}.png` image (starter provided).

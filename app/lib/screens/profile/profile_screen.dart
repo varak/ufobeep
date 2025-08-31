@@ -819,75 +819,93 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Future<void> _regenerateUsername(UserModel user) async {
-    // Show loading dialog
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => const AlertDialog(
-        backgroundColor: AppColors.darkSurface,
-        content: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CircularProgressIndicator(color: AppColors.brandPrimary),
-            SizedBox(width: 16),
-            Text(
-              'Generating new username...',
-              style: TextStyle(color: AppColors.textPrimary),
-            ),
-          ],
-        ),
-      ),
-    );
-
     try {
+      // Show loading dialog
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const AlertDialog(
+          backgroundColor: AppColors.darkSurface,
+          content: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(color: AppColors.brandPrimary),
+              SizedBox(width: 16),
+              Text(
+                'Generating new username...',
+                style: TextStyle(color: AppColors.textPrimary),
+              ),
+            ],
+          ),
+        ),
+      );
+
       // Call the regenerate-username API endpoint
       final deviceService = DeviceService();
+      final deviceId = await deviceService.getDeviceId();
+      print('Regenerating username for device: $deviceId');
+      
       final response = await ApiClient.dio.post('/users/regenerate-username', data: {
-        'device_id': await deviceService.getDeviceId(),
+        'device_id': deviceId,
         'force_regenerate': true,
       });
 
-      // Close loading dialog
+      print('Username regeneration response: ${response.statusCode} - ${response.data}');
+      
+      // Close loading dialog first
       if (mounted) Navigator.of(context).pop();
 
       if (response.statusCode == 200) {
-        final newUsername = response.data['username'];
-        
-        // Update the user in AuthRepository
-        await _auth.fetchMe(); // Refresh user data from server
-        
-        // Show success dialog
-        if (mounted) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              backgroundColor: AppColors.darkSurface,
-              title: const Text(
-                'Username Updated!',
-                style: TextStyle(color: AppColors.textPrimary),
-              ),
-              content: Text(
-                'Your new username is: $newUsername',
-                style: const TextStyle(color: AppColors.textSecondary),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text(
-                    'OK',
-                    style: TextStyle(color: AppColors.brandPrimary),
-                  ),
+        final responseData = response.data;
+        if (responseData is Map<String, dynamic> && responseData.containsKey('username')) {
+          final newUsername = responseData['username'];
+          
+          // Update the user in AuthRepository
+          await _auth.fetchMe(); // Refresh user data from server
+          
+          // Show success dialog
+          if (mounted) {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                backgroundColor: AppColors.darkSurface,
+                title: const Text(
+                  'Username Updated!',
+                  style: TextStyle(color: AppColors.textPrimary),
                 ),
-              ],
-            ),
-          );
+                content: Text(
+                  'Your new username is: $newUsername',
+                  style: const TextStyle(color: AppColors.textSecondary),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text(
+                      'OK',
+                      style: TextStyle(color: AppColors.brandPrimary),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+        } else {
+          throw Exception('Invalid response format: missing username field');
         }
+      } else {
+        throw Exception('Server error: ${response.statusCode}');
       }
     } catch (e) {
-      // Close loading dialog
-      if (mounted) Navigator.of(context).pop();
+      print('Username regeneration error: $e');
       
-      // Show error dialog
+      // Ensure loading dialog is closed
+      try {
+        if (mounted) Navigator.of(context).pop();
+      } catch (popError) {
+        print('Error closing loading dialog: $popError');
+      }
+      
+      // Show error dialog with more details
       if (mounted) {
         showDialog(
           context: context,
@@ -897,9 +915,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               'Error',
               style: TextStyle(color: AppColors.error),
             ),
-            content: Text(
+            content: const Text(
               'Failed to generate new username. Please try again.',
-              style: const TextStyle(color: AppColors.textSecondary),
+              style: TextStyle(color: AppColors.textSecondary),
             ),
             actions: [
               TextButton(
