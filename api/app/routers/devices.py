@@ -232,7 +232,7 @@ async def register_device(
         current_time = datetime.utcnow()
         
         async with db_pool.acquire() as conn:
-            # Try to update existing device first
+            # Try to update existing device first - match by both device_id AND user_id
             result = await conn.execute(
                 """
                 UPDATE devices SET
@@ -240,13 +240,13 @@ async def register_device(
                     alert_notifications = $6, chat_notifications = $7, system_notifications = $8,
                     timezone = $9, locale = $10, lat = $11, lon = $12,
                     last_seen = $13, updated_at = $13, token_updated_at = $13, is_active = true
-                WHERE device_id = $14
+                WHERE device_id = $14 AND user_id = $15
                 """,
                 request.push_token, request.push_provider.value if request.push_provider else 'fcm',
                 request.app_version, request.os_version, request.device_name,
                 request.alert_notifications, request.chat_notifications, request.system_notifications,
                 request.timezone, request.locale, request.lat, request.lon,
-                current_time, request.device_id
+                current_time, request.device_id, user_id
             )
             
             if result == "UPDATE 0":
