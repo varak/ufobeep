@@ -384,11 +384,13 @@ class AlertCard extends ConsumerWidget {
   }
 
   Widget _buildCommentsIndicator() {
-    return GestureDetector(
-      onTap: () async {
-        await UiFeedback.click();
-        context.go('/alert/${alert.id}/comments');
-      },
+    return Consumer(
+      builder: (context, ref, _) {
+        return GestureDetector(
+          onTap: () async {
+            await UiFeedback.click();
+            context.go('/alert/${alert.id}/comments');
+          },
       child: Container(
         margin: const EdgeInsets.only(right: 8),
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -417,6 +419,8 @@ class AlertCard extends ConsumerWidget {
           ],
         ),
       ),
+        );
+      },
     );
   }
 
