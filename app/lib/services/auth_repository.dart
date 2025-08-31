@@ -167,6 +167,10 @@ class AuthRepository with ChangeNotifier {
     final deviceService = DeviceService();
     final deviceId = await deviceService.getDeviceId();
     
+    // TEMP: Capture token and device ID for curl test
+    print('CURL_TOKEN: $_access');
+    print('CURL_DEVICE_ID: $deviceId');
+    
     final response = await _dio.post('/users/set-username', data: {
       'device_id': deviceId,
       'username': username,
