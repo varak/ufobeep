@@ -972,10 +972,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     _showUsernameSelectionDialog([primary, ...alternatives]);
   }
 
-  void _showUsernameSelectionDialog(List<String> usernameOptions) {
+  void _showUsernameSelectionDialog(List<String> initialOptions) {
+    final usernameOptions = List<String>.from(initialOptions);
+    
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
         backgroundColor: AppColors.darkSurface,
         title: const Text(
           'Choose Your Username',
@@ -1031,7 +1034,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             await _auth.setUsername(username);
                             debugPrint('✅ Username set successfully: $username');
                             
+                            // Force refresh of the profile screen
                             if (mounted) {
+                              setState(() {});
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text('Username updated to: $username'),
@@ -1087,9 +1092,22 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ),
           TextButton(
             onPressed: () async {
-              Navigator.of(context).pop();
-              // Call API for new options - single source of truth
-              await _regenerateUsername(_auth.currentUser!);
+              // Don't close dialog - update list in place
+              try {
+                final response = await ApiClient.dio.post('/users/generate-username');
+                final data = response.data;
+                final primary = data['username'] as String;
+                final alternatives = List<String>.from(data['alternatives'] ?? []);
+                final newOptions = [primary, ...alternatives];
+                
+                // Update the dialog with new options
+                setDialogState(() {
+                  usernameOptions.clear();
+                  usernameOptions.addAll(newOptions);
+                });
+              } catch (e) {
+                debugPrint('Failed to get more names: $e');
+              }
             },
             child: const Text(
               'More Names',
@@ -1097,6 +1115,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
           ),
         ],
+      ),
       ),
     );
   }
