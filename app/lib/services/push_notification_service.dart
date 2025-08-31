@@ -740,19 +740,26 @@ class PushNotificationService {
       // Get current location using existing service
       final position = await permissionService.getCurrentLocation();
       
-      // Send witness confirmation to API
-      await ApiClient.dio.post('/alerts/$sightingId/witnesses', data: {
+      // Send witness confirmation to API  
+      final witnessData = {
         'device_id': deviceId,
         'witness_type': 'visual',
         'confirmed': true,
         'quick_action': true,
-        if (position != null) ...{
+        'still_visible': true,
+      };
+      
+      // Add location data at top level for SQL extraction
+      if (position != null) {
+        witnessData.addAll({
           'latitude': position.latitude,
           'longitude': position.longitude,
           'altitude': position.altitude,
           'accuracy': position.accuracy,
-        },
-      });
+        });
+      }
+      
+      await ApiClient.dio.post('/alerts/$sightingId/witnesses', data: witnessData);
       
       // Navigate to alert details
       navigateToAlert(sightingId);
