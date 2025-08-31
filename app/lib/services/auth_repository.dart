@@ -146,7 +146,11 @@ class AuthRepository with ChangeNotifier {
 
   Future<void> fetchMe({bool noCache = false}) async {
     final options = noCache 
-        ? Options(headers: {'Cache-Control': 'no-cache', 'Pragma': 'no-cache'})
+        ? Options(headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          })
         : null;
     final res = await _dio.get('/users/me', options: options);
     
@@ -164,15 +168,7 @@ class AuthRepository with ChangeNotifier {
   }
 
   Future<void> setUsername(String username) async {
-    final deviceService = DeviceService();
-    final deviceId = await deviceService.getDeviceId();
-    
-    // TEMP: Capture token and device ID for curl test
-    print('CURL_TOKEN: $_access');
-    print('CURL_DEVICE_ID: $deviceId');
-    
     final response = await _dio.post('/users/set-username', data: {
-      'device_id': deviceId,
       'username': username,
     });
     
