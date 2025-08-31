@@ -23,7 +23,7 @@ class CommentsScreen extends ConsumerStatefulWidget {
   ConsumerState<CommentsScreen> createState() => _CommentsScreenState();
 }
 
-class _CommentsScreenState extends ConsumerState<CommentsScreen> {
+class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBindingObserver {
   final CommentsService _commentsService = CommentsService();
   List<Comment> _comments = [];
   bool _isLoading = true;
@@ -34,6 +34,21 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
   void initState() {
     super.initState();
     _loadComments();
+    WidgetsBinding.instance.addObserver(this);
+  }
+  
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+  
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Refresh comments when app comes back to foreground
+    if (state == AppLifecycleState.resumed) {
+      _loadComments();
+    }
   }
   
   Future<void> _loadComments() async {
