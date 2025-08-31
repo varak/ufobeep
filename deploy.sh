@@ -101,7 +101,10 @@ if [ "$DEPLOY_APK" = true ]; then
     # Build fresh APK with latest changes
     echo "Building fresh APK with latest changes..."
     cd app
-    if flutter build apk --release; then
+    echo "Cleaning build cache..."
+    flutter clean
+    echo "Starting APK build (timeout: 3 minutes)..."
+    if timeout 180 flutter build apk --release --verbose; then
         echo -e "${GREEN}✅ APK build successful${NC}"
         cd ..
     else
