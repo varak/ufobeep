@@ -737,27 +737,8 @@ class PushNotificationService {
       // Get current location for witness confirmation
       final deviceId = await _deviceService.getDeviceId();
       
-      // Get current location if available
-      double? lat, lon, altitude, accuracy;
-      try {
-        final position = await Geolocator.getCurrentPosition(
-          locationSettings: const LocationSettings(
-            accuracy: LocationAccuracy.high,
-            timeLimit: Duration(seconds: 10),
-          ),
-        );
-        lat = position.latitude;
-        lon = position.longitude;
-        altitude = position.altitude;
-        accuracy = position.accuracy;
-      } catch (e) {
-        print('Could not get location for witness confirmation: $e');
-        // Use approximate location or fail gracefully
-        lat = 0.0;
-        lon = 0.0;
-        altitude = 0.0;
-        accuracy = 1000.0;
-      }
+      // Get current location using existing service
+      final position = await permissionService.getCurrentLocation();
       
       // Send witness confirmation to API
       await ApiClient.dio.post('/alerts/$sightingId/witnesses', data: {
@@ -765,10 +746,12 @@ class PushNotificationService {
         'witness_type': 'visual',
         'confirmed': true,
         'quick_action': true,
-        'latitude': lat,
-        'longitude': lon,
-        'altitude': altitude,
-        'accuracy': accuracy,
+        if (position != null) ...{
+          'latitude': position.latitude,
+          'longitude': position.longitude,
+          'altitude': position.altitude,
+          'accuracy': position.accuracy,
+        },
       });
       
       // Navigate to alert details
