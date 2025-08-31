@@ -818,25 +818,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     }
   }
 
-  void _generateUsernameOptions() {
-    // Generate locally to avoid screen rebuild
-    final adjectives = ['cosmic', 'stellar', 'quantum', 'nebular', 'astral', 'ethereal', 'mystic', 'temporal'];
-    final nouns = ['whisper', 'echo', 'signal', 'beacon', 'pulse', 'wave', 'craft', 'phantom'];
-    final random = DateTime.now().millisecondsSinceEpoch;
-    
-    final List<String> usernames = [];
-    for (int i = 0; i < 5; i++) {
-      final adj = adjectives[(random + i * 7) % adjectives.length];
-      final noun = nouns[(random + i * 11) % nouns.length]; 
-      final suffix = 1000 + ((random + i * 1337) % 9000);
-      usernames.add('$adj.$noun.$suffix');
-    }
-    
-    _showUsernameSelectionDialog(usernames);
-  }
-
   Future<void> _regenerateUsername(UserModel user) async {
-    _generateUsernameOptions();
+    final response = await ApiClient.dio.post('/users/generate-username');
+    final data = response.data;
+    final primary = data['username'] as String;
+    final alternatives = List<String>.from(data['alternatives'] ?? []);
+    _showUsernameSelectionDialog([primary, ...alternatives]);
   }
 
   void _showUsernameSelectionDialog(List<String> usernameOptions) {
@@ -894,7 +881,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           Navigator.of(context).pop();
                           
                           try {
+                            debugPrint('🔄 Attempting to set username: $username');
                             await _auth.setUsername(username);
+                            debugPrint('✅ Username set successfully: $username');
                             
                             if (mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -905,10 +894,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               );
                             }
                           } catch (e) {
+                            debugPrint('❌ Username update failed: $e');
                             if (mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Failed to update username'),
+                                SnackBar(
+                                  content: Text('Failed to update username: $e'),
                                   backgroundColor: AppColors.semanticError,
                                 ),
                               );
@@ -950,10 +940,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.of(context).pop();
-              // Generate new options without page refresh
-              _generateUsernameOptions();
+              // Call API for new options - single source of truth
+              await _regenerateUsername(_auth.currentUser!);
             },
             child: const Text(
               'More Names',

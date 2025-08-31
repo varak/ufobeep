@@ -163,16 +163,22 @@ class AuthRepository with ChangeNotifier {
   }
 
   Future<void> setUsername(String username) async {
+    debugPrint('🔄 AuthRepo.setUsername called with: $username');
     final deviceService = DeviceService();
     final deviceId = await deviceService.getDeviceId();
+    debugPrint('🔑 Device ID: $deviceId');
     
-    await _dio.post('/users/set-username', data: {
+    debugPrint('📡 Calling /users/set-username API');
+    final response = await _dio.post('/users/set-username', data: {
       'device_id': deviceId,
       'username': username,
     });
+    debugPrint('📡 API Response: ${response.statusCode} - ${response.data}');
     
     // Immediately fetch fresh user data
+    debugPrint('🔄 Fetching updated user data');
     await fetchMe();
+    debugPrint('✅ setUsername completed');
   }
 
 
