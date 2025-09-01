@@ -48,11 +48,11 @@ async def list_comments(sighting_id: str, limit: int = 30) -> Dict[str, Any]:
         comments = [dict(r) for r in rows]
         
         # If there's a description, add it as the first pseudo-comment (provides context for the conversation)
-        if sighting and sighting['description'] and sighting['description'].strip():
+        if sighting and sighting['description'] and sighting['description'].strip() and sighting['reporter_id'] and sighting['username']:
             description_comment = {
                 'id': 0,  # Special ID for original description
-                'user_id': sighting['reporter_id'] or 'unknown',
-                'username': sighting['username'] or 'Anonymous',
+                'user_id': sighting['reporter_id'],
+                'username': sighting['username'],
                 'body': sighting['description'],
                 'media_url': None,
                 'created_at': sighting['created_at'].isoformat()
