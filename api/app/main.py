@@ -7,6 +7,7 @@ from app.middleware.request_middleware import RequestTimeoutMiddleware, ErrorHan
 from app.config.environment import settings
 from app.routers import plane_match, media_serve, devices, emails, photo_analysis, mufon, copescan, users, firebase_users, auth_magic, comments, share_cards, media_uploads
 from app.routers import admin_simple as admin
+from api.routers import feeds as feeds_router
 from app.services.media_service import get_media_service
 from app.services.alerts_service import AlertsService
 from app.schemas.media import guess_media_type_from_filename
@@ -454,6 +455,8 @@ app.include_router(comments.router)
 app.include_router(share_cards.router)
 # Include MP16 media uploads with idempotency
 app.include_router(media_uploads.router)
+# Include feeds router for data ingestion
+app.include_router(feeds_router.router)
 
 # Clean unified alerts architecture using alerts.router
 
