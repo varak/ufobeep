@@ -335,16 +335,13 @@ class PushNotificationService {
       // Play notification sound for comment
       await SoundService.I.play(AlertSound.pushPing);
       
-      // Navigate directly to the comments section
-      navigateToComments(sightingId);
-      
       // Refresh alerts to show new comment count
       try {
         final container = ProviderScope.containerOf(rootNavigatorKey.currentContext!);
         container.invalidate(alertByIdProvider(sightingId));
         print('🔄 Refreshed alert $sightingId for new comment');
         
-        // If user is already on comments screen, trigger refresh instead of navigating
+        // Check if user is already on comments screen FIRST, before navigating
         final currentLocation = GoRouter.of(rootNavigatorKey.currentContext!).routeInformationProvider.value.uri.toString();
         if (currentLocation.contains('/alert/$sightingId/comments')) {
           print('🔄 User already on comments screen - triggering refresh instead of navigation');
@@ -355,6 +352,9 @@ class PushNotificationService {
       } catch (e) {
         print('Could not refresh alert cache: $e');
       }
+      
+      // Only navigate if user is NOT already on comments screen
+      navigateToComments(sightingId);
     }
   }
 
