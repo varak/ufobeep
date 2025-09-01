@@ -24,15 +24,24 @@ def mufon_auth_to_alert_event(report: Dict[str, Any]) -> Dict[str, Any]:
     # - Date Submitted -> ingested_at (handled by NOW() in SQL)
     occurred_at = report.get("date_time_of_event")  # The actual sighting time
     
+    # Extract coordinates - they might be in the raw data
+    latitude = report.get("latitude") or report.get("lat")
+    longitude = report.get("longitude") or report.get("lon")
+    
+    # Default coordinates if none found (required fields)
+    if not latitude or not longitude:
+        latitude = 0.0
+        longitude = 0.0
+    
     return {
         "event_id": event_id,
         "source": "mufon_auth",
         "source_id": report.get("mufon_case_number") or report.get("case_id"),
         "ingestion_hash": f"mufon_auth_{report.get('case_id', event_id)}",
         "occurred_at": occurred_at,  # When the sighting happened
-        "description": report.get("short_description", ""),
-        "latitude": report.get("latitude"),
-        "longitude": report.get("longitude"),
+        "description": report.get("short_description", "UFO Sighting"),
+        "latitude": float(latitude),
+        "longitude": float(longitude),
         "weather_condition": "Clear",  # Default
         "shape": report.get("shape", "").lower() if report.get("shape") else None,
         "duration": report.get("duration"),
