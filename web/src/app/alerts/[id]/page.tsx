@@ -266,22 +266,8 @@ export default function AlertPage({ params }: AlertPageProps) {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Location with map */}
-            <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-brand-primary">🗺️</span>
-                <h3 className="text-lg font-semibold text-brand-primary">Location</h3>
-              </div>
-              
-              <div className="mb-4">
-                <div className="text-text-secondary mb-2">{alert.location.name}</div>
-                <div className="text-text-tertiary text-sm">
-                  {alert.location.latitude.toFixed(4)}, {alert.location.longitude.toFixed(4)}
-                </div>
-              </div>
-              
-              <LocationMap location={alert.location} />
-            </div>
+            {/* Comments section - moved to top right */}
+            <AlertComments alertId={alert.id} />
 
             {/* Quick stats */}
             <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
@@ -306,8 +292,22 @@ export default function AlertPage({ params }: AlertPageProps) {
               </div>
             </div>
 
-            {/* Comments section */}
-            <AlertComments alertId={alert.id} />
+            {/* Location with map - moved to bottom right */}
+            <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-brand-primary">🗺️</span>
+                <h3 className="text-lg font-semibold text-brand-primary">Location</h3>
+              </div>
+              
+              <div className="mb-4">
+                <div className="text-text-secondary mb-2">{alert.location.name}</div>
+                <div className="text-text-tertiary text-sm">
+                  {alert.location.latitude.toFixed(4)}, {alert.location.longitude.toFixed(4)}
+                </div>
+              </div>
+              
+              <LocationMap location={alert.location} />
+            </div>
           </div>
         </div>
       </div>

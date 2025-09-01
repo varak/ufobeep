@@ -31,21 +31,40 @@ export default function AlertHero({ alert }: AlertHeroProps) {
       {/* Header */}
       <div className="p-6">
         <div className="flex items-start gap-4">
-          {/* UFO Icon */}
-          <div className="bg-brand-primary/10 p-3 rounded-xl border border-brand-primary/20">
-            <span className="text-2xl">🛸</span>
-          </div>
+          {/* Content type icon - contextual */}
+          {(hasMedia || hasDescription) && (
+            <div className="bg-brand-primary/10 p-3 rounded-xl border border-brand-primary/20">
+              <span className="text-2xl">
+                {hasMedia ? (
+                  alert.media_files.some(m => m.type === 'video') ? '🎥' : '📸'
+                ) : '👁️'}
+              </span>
+            </div>
+          )}
           
           {/* Title and metadata */}
           <div className="flex-1">
             <h1 className="text-2xl font-bold text-text-primary mb-2">
-              {alert.title}
+              {alert.title || 'UFO Sighting'}
             </h1>
             
             {/* Content type indicator */}
             {!hasMedia && !hasDescription && (
-              <div className="inline-block bg-text-tertiary/10 text-text-tertiary px-3 py-1 rounded-full text-sm font-medium border border-text-tertiary/20">
-                beep only
+              <div className="inline-flex items-center gap-2 bg-text-tertiary/10 text-text-tertiary px-3 py-1 rounded-full text-sm font-medium border border-text-tertiary/20">
+                <span>📡</span>
+                <span>beep only</span>
+              </div>
+            )}
+            {hasMedia && (
+              <div className="inline-flex items-center gap-2 bg-brand-primary/10 text-brand-primary px-3 py-1 rounded-full text-sm font-medium border border-brand-primary/20">
+                <span>{alert.media_files.some(m => m.type === 'video') ? '🎥' : '📸'}</span>
+                <span>{alert.media_files.length} {alert.media_files.some(m => m.type === 'video') ? 'video' : 'photo'}{alert.media_files.length > 1 ? 's' : ''}</span>
+              </div>
+            )}
+            {!hasMedia && hasDescription && (
+              <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-400 px-3 py-1 rounded-full text-sm font-medium border border-green-500/20">
+                <span>👁️</span>
+                <span>witness report</span>
               </div>
             )}
           </div>

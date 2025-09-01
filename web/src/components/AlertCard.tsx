@@ -213,7 +213,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
             {/* Title and metadata */}
             <div className="flex-1 min-w-0">
               <h3 className="text-text-primary text-sm font-semibold line-clamp-2 leading-tight mb-1">
-                {alert.title || AlertTitleUtils.getShortTitle(alert)}
+                {alert.title || 'UFO Sighting'}
               </h3>
               
               {/* Verification badge */}
