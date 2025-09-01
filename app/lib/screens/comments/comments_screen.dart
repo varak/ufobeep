@@ -35,6 +35,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
   void initState() {
     super.initState();
     _loadComments();
+    _autoFollowOnView(); // Auto-follow when viewing comments
     WidgetsBinding.instance.addObserver(this);
     // Listen for refresh notifications from push notifications
     CommentsRefreshNotifier.instance.addListener(widget.sightingId, _loadComments);
@@ -74,6 +75,26 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
         _error = e.toString();
         _isLoading = false;
       });
+    }
+  }
+  
+  Future<void> _autoFollowOnView() async {
+    try {
+      // Check if user is authenticated first
+      final authRepo = AuthRepository();
+      final accessToken = await authRepo.getAccessToken();
+      
+      if (accessToken != null) {
+        // Auto-follow when viewing comments (silent)
+        await _commentsService.followSighting(widget.sightingId);
+        setState(() {
+          _isFollowing = true;
+        });
+        print('Auto-followed alert ${widget.sightingId} when viewing comments');
+      }
+    } catch (e) {
+      // Fail silently - don't show error for auto-follow
+      print('Auto-follow failed: $e');
     }
   }
   
