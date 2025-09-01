@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 
 interface MediaFile {
-  id: string
+  id?: string
   type: string
   url: string
   thumbnail_url: string
@@ -154,7 +154,7 @@ export default function MediaGalleryModal({
           <div className="flex justify-center gap-2 max-w-full overflow-x-auto pb-2">
             {mediaFiles.map((media, index) => (
               <button
-                key={media.id}
+                key={media.id || `media-${index}`}
                 onClick={() => setCurrentIndex(index)}
                 className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all hover:scale-105 ${
                   index === currentIndex 
