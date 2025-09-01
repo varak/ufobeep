@@ -72,9 +72,9 @@ class _AlertWitnessSectionState extends State<AlertWitnessSection> {
         }
       }
 
-      // Get current location
-      final position = await permissionService.getCurrentLocation();
-      if (position == null) {
+      // Get current location using beep service (single source of truth)
+      final sensorData = await beepService.getCurrentSensorData();
+      if (sensorData.latitude == 0.0 || sensorData.longitude == 0.0) {
         _showLocationError();
         return;
       }
@@ -89,10 +89,10 @@ class _AlertWitnessSectionState extends State<AlertWitnessSection> {
       final result = await ApiClient.instance.confirmWitness(
         sightingId: widget.alert.id,
         deviceId: deviceId,
-        latitude: position.latitude,
-        longitude: position.longitude,
-        accuracy: position.accuracy,
-        altitude: position.altitude,
+        latitude: sensorData.latitude,
+        longitude: sensorData.longitude,
+        accuracy: sensorData.accuracy,
+        altitude: sensorData.altitude,
         stillVisible: true,
       );
 
