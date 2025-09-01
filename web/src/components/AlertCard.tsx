@@ -92,7 +92,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
         break
         
       case 'copy':
-        navigator.clipboard.writeText(`${shareText} - ${alertUrl}`).then(() => {
+        navigator.clipboard.writeText(alertUrl).then(() => {
           // Could add toast notification here
         }).catch(console.error)
         break
@@ -113,7 +113,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
     const primaryMedia = getPrimaryMedia()
     if (!primaryMedia) return
     
-    const mediaUrl = `${window.location.origin}${primaryMedia.url}`
+    const mediaUrl = primaryMedia.url.startsWith('http') ? primaryMedia.url : `https://api.ufobeep.com${primaryMedia.url}`
     const shareText = `Check out this UFO sighting photo/video from UFOBeep`
     
     if (typeof window !== 'undefined' && 'share' in navigator) {
