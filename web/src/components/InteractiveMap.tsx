@@ -194,21 +194,37 @@ export default function InteractiveMap({
         // Main sighting info window
         const mainInfoWindow = new window.google.maps.InfoWindow({
           content: `
-            <div style="color: #333; padding: 8px; max-width: 250px;">
-              <div style="font-weight: bold; margin-bottom: 8px; color: #00ff88;">
-                🛸 ${sighting.category === 'ufo' ? 'UFO Sighting' : 'Anomaly'}
+            <div style="color: #333; padding: 12px; max-width: 280px; font-family: system-ui, -apple-system, sans-serif;">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                <div style="background: #00ff88; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                  🛸 ${sighting.category === 'ufo' ? 'UFO SIGHTING' : 'ANOMALY'}
+                </div>
               </div>
-              <div style="font-size: 14px; margin-bottom: 4px;">
-                <strong>${sighting.title || 'Witnessed Sighting'}</strong>
+              <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px; line-height: 1.3;">
+                ${sighting.title || 'Witnessed Sighting'}
               </div>
-              <div style="font-size: 12px; color: #666; margin-bottom: 4px;">
-                📍 ${sighting.location.name}
+              <div style="font-size: 13px; color: #666; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                <span style="background: #f0f0f0; padding: 2px 6px; border-radius: 8px;">📍</span>
+                ${sighting.location.name}
               </div>
-              <div style="font-size: 12px; color: #666; margin-bottom: 4px;">
-                👁️ ${sighting.witness_count || 1} witness${(sighting.witness_count || 1) !== 1 ? 'es' : ''}
+              <div style="font-size: 13px; color: #666; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                <span style="background: #f0f0f0; padding: 2px 6px; border-radius: 8px;">👁️</span>
+                ${sighting.witness_count || 1} witness${(sighting.witness_count || 1) !== 1 ? 'es' : ''} confirmed
               </div>
-              <div style="font-size: 11px; color: #888;">
-                ${new Date(sighting.created_at).toLocaleDateString()}
+              <div style="font-size: 12px; color: #888; margin-bottom: 12px;">
+                ${new Date(sighting.created_at).toLocaleDateString('en-US', { 
+                  month: 'short', 
+                  day: 'numeric', 
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })}
+              </div>
+              <div style="padding-top: 8px; border-top: 1px solid #eee;">
+                <div style="font-size: 11px; color: #999; margin-bottom: 4px;">COORDINATES</div>
+                <div style="font-family: monospace; font-size: 11px; color: #666;">
+                  ${sighting.location.latitude.toFixed(6)}, ${sighting.location.longitude.toFixed(6)}
+                </div>
               </div>
             </div>
           `,
@@ -242,24 +258,33 @@ export default function InteractiveMap({
 
           const nearbyInfoWindow = new window.google.maps.InfoWindow({
             content: `
-              <div style="color: #333; padding: 6px; max-width: 200px;">
-                <div style="font-weight: bold; margin-bottom: 6px; color: #ff6b35;">
-                  ${nearby.category === 'ufo' ? '🛸' : '⭐'} Nearby Sighting
+              <div style="color: #333; padding: 10px; max-width: 240px; font-family: system-ui, -apple-system, sans-serif;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                  <div style="background: #ff6b35; color: white; padding: 3px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;">
+                    ${nearby.category === 'ufo' ? '🛸' : '⭐'} NEARBY
+                  </div>
                 </div>
-                <div style="font-size: 13px; margin-bottom: 3px;">
-                  <strong>${nearby.title || 'Witnessed Sighting'}</strong>
+                <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px; line-height: 1.3;">
+                  ${nearby.title || 'Witnessed Sighting'}
                 </div>
-                <div style="font-size: 11px; color: #666; margin-bottom: 3px;">
-                  📍 ${nearby.location.name}
+                <div style="font-size: 12px; color: #666; margin-bottom: 4px; display: flex; align-items: center; gap: 4px;">
+                  <span style="background: #f5f5f5; padding: 1px 4px; border-radius: 6px;">📍</span>
+                  ${nearby.location.name}
                 </div>
-                <div style="font-size: 11px; color: #666; margin-bottom: 3px;">
-                  👁️ ${nearby.witness_count || 1} witness${(nearby.witness_count || 1) !== 1 ? 'es' : ''}
+                <div style="font-size: 12px; color: #666; margin-bottom: 6px; display: flex; align-items: center; gap: 4px;">
+                  <span style="background: #f5f5f5; padding: 1px 4px; border-radius: 6px;">👁️</span>
+                  ${nearby.witness_count || 1} witness${(nearby.witness_count || 1) !== 1 ? 'es' : ''}
                 </div>
-                <div style="font-size: 10px; color: #888;">
-                  ${new Date(nearby.created_at).toLocaleDateString()}
+                <div style="font-size: 11px; color: #888; margin-bottom: 8px;">
+                  ${new Date(nearby.created_at).toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric', 
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
                 </div>
-                <div style="margin-top: 6px;">
-                  <a href="/alerts/${nearby.id}" style="color: #ff6b35; text-decoration: none; font-size: 11px;">
+                <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #eee;">
+                  <a href="/alerts/${nearby.id}" style="background: #ff6b35; color: white; text-decoration: none; font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: 8px; display: inline-block;">
                     View Details →
                   </a>
                 </div>
@@ -392,26 +417,63 @@ export default function InteractiveMap({
 
       {/* Fullscreen Modal */}
       {isFullscreen && (
-        <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col">
-          <div className="flex justify-between items-center p-4 bg-dark-surface border-b border-dark-border">
-            <div>
-              <h3 className="text-lg font-semibold text-text-primary">Interactive Map</h3>
-              <p className="text-text-secondary text-sm">
-                {sighting.location.name} • {nearbySightings.length} nearby sighting{nearbySightings.length !== 1 ? 's' : ''}
-              </p>
+        <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col animate-in fade-in duration-200">
+          <div className="flex justify-between items-center p-6 bg-dark-surface border-b border-dark-border/50 backdrop-blur-sm">
+            <div className="flex items-center gap-4">
+              <div className="text-2xl">🗺️</div>
+              <div>
+                <h3 className="text-xl font-bold text-text-primary flex items-center gap-2">
+                  Interactive Map
+                  <span className="bg-brand-primary/20 text-brand-primary px-2 py-1 rounded text-sm font-medium">
+                    UFO Sighting
+                  </span>
+                </h3>
+                <p className="text-text-secondary text-sm flex items-center gap-2 mt-1">
+                  <span>📍</span>
+                  {sighting.location.name}
+                  {nearbySightings.length > 0 && (
+                    <>
+                      <span className="text-text-tertiary">•</span>
+                      <span className="bg-orange-500/20 text-orange-300 px-2 py-0.5 rounded-full text-xs">
+                        {nearbySightings.length} nearby sighting{nearbySightings.length !== 1 ? 's' : ''}
+                      </span>
+                    </>
+                  )}
+                </p>
+              </div>
             </div>
-            <button
-              onClick={closeFullscreen}
-              className="text-text-primary hover:text-brand-primary p-2 rounded border border-dark-border transition-colors"
-            >
-              ✕ Close
-            </button>
+            <div className="flex items-center gap-2">
+              <div className="bg-dark-background/50 text-text-tertiary px-3 py-1 rounded-full text-xs">
+                Click markers for details
+              </div>
+              <button
+                onClick={closeFullscreen}
+                className="text-text-primary hover:text-brand-primary p-3 rounded-lg border border-dark-border transition-colors hover:bg-dark-background/50"
+                title="Close fullscreen map"
+              >
+                <span className="text-lg">✕</span>
+              </button>
+            </div>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 relative">
             <div 
               ref={mapRef}
               className="w-full h-full"
             />
+            <div className="absolute bottom-4 left-4 bg-dark-background/80 backdrop-blur-sm text-text-secondary px-3 py-2 rounded-lg text-sm border border-dark-border/50">
+              <div className="flex items-center gap-4 text-xs">
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                  <span>Main Sighting</span>
+                </div>
+                {nearbySightings.length > 0 && (
+                  <div className="flex items-center gap-1">
+                    <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
+                    <span>Nearby</span>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}

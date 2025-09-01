@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import ImageWithLoading from './ImageWithLoading'
+import MediaGalleryModal from './MediaGalleryModal'
 import { AlertTitleUtils } from '@/utils/alert-title-utils'
 
 interface Alert {
@@ -44,6 +45,7 @@ interface AlertCardProps {
 
 export default function AlertCard({ alert, compact = false }: AlertCardProps) {
   const [showShareMenu, setShowShareMenu] = useState(false)
+  const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
 
   // Calculate actual comment count including initial description (comment ID 0)
   const getActualCommentCount = () => {
@@ -329,7 +331,14 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
             {(() => {
               const primaryMedia = getPrimaryMedia()
               return primaryMedia ? (
-                <div className="w-full h-32 bg-gray-800 rounded-lg overflow-hidden relative mt-3">
+                <div 
+                  className="w-full h-32 bg-gray-800 rounded-lg overflow-hidden relative mt-3 cursor-pointer hover:bg-gray-700 transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setIsMediaModalOpen(true)
+                  }}
+                >
                   <ImageWithLoading 
                     src={primaryMedia.thumbnail_url || primaryMedia.url}
                     alt={AlertTitleUtils.getShortTitle(alert)}
@@ -337,6 +346,16 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                     height={128}
                     className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                   />
+                  
+                  {/* Gallery overlay */}
+                  <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 hover:opacity-100">
+                    <div className="bg-black/70 text-white px-3 py-1 rounded-lg flex items-center gap-2">
+                      <span>{alert.media_files && alert.media_files.length > 1 ? '🖼️' : '🔍'}</span>
+                      <span className="text-sm">
+                        {alert.media_files && alert.media_files.length > 1 ? 'View Gallery' : 'View Media'}
+                      </span>
+                    </div>
+                  </div>
                   {/* Video indicator */}
                   {isVideoMedia(primaryMedia) && (
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -429,6 +448,15 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
           )}
         </div>
       </div>
+      
+      {/* Media Gallery Modal */}
+      <MediaGalleryModal
+        isOpen={isMediaModalOpen}
+        onClose={() => setIsMediaModalOpen(false)}
+        mediaFiles={alert.media_files || []}
+        initialIndex={0}
+        alertTitle={AlertTitleUtils.getShortTitle(alert)}
+      />
     </div>
   )
 }
