@@ -499,6 +499,9 @@ class AlertsService:
             # Auto-follow the sighting for the witness so they get comment notifications
             await self._auto_follow_for_witness(conn, sighting_id, device_id)
             
+            # Add automatic "I saw it" comment to trigger comment notifications
+            await self._add_confirmation_comment(conn, sighting_id, device_id)
+            
             # Get confirmation stats
             confirmations = await conn.fetch("""
                 SELECT device_id, confirmed_at, confirmation_data
@@ -655,3 +658,44 @@ class AlertsService:
         except Exception as e:
             print(f"❌ Failed to auto-follow for witness: {e}")
             # Don't fail the confirmation if auto-follow fails
+
+    async def _add_confirmation_comment(self, conn, sighting_id: str, device_id: str):
+        """Add automatic 'I saw it' comment when confirming to trigger comment notifications"""
+        try:
+            # Get user info from device ID
+            user_info = await conn.fetchrow("""
+                SELECT d.user_id, u.username 
+                FROM devices d
+                JOIN users u ON d.user_id = u.id
+                WHERE d.device_id = $1 AND d.is_active = true
+            """, device_id)
+            
+            if not user_info:
+                print(f"⚠️ Could not find user for device {device_id}, skipping confirmation comment")
+                return
+            
+            # Add the confirmation comment
+            comment_id = await conn.fetchval("""
+                INSERT INTO comments 
+                (sighting_id, user_id, username, content, created_at, updated_at)
+                VALUES ($1, $2, $3, $4, NOW(), NOW())
+                RETURNING id
+            """, 
+                uuid.UUID(sighting_id), 
+                user_info['user_id'], 
+                user_info['username'],
+                "I saw it too! ✅"
+            )
+            
+            # Update comment count on sighting
+            await conn.execute("""
+                UPDATE sightings 
+                SET comment_count = comment_count + 1 
+                WHERE id = $1
+            """, uuid.UUID(sighting_id))
+            
+            print(f"✅ Added confirmation comment {comment_id} for {user_info['username']} on sighting {sighting_id}")
+            
+        except Exception as e:
+            print(f"❌ Failed to add confirmation comment: {e}")
+            # Don't fail the confirmation if comment fails
