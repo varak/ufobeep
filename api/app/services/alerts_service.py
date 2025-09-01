@@ -617,7 +617,7 @@ class AlertsService:
             import os
             sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
             from services.proximity_alert_service import ProximityAlertService
-            proximity_service = ProximityAlertService()
+            proximity_service = ProximityAlertService(self.db_pool)
             
             # Send confirmation beep notification
             message = f"Someone confirmed your sighting! ({witness_count} witnesses)"
