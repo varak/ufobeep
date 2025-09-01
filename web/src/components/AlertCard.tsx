@@ -46,6 +46,7 @@ interface AlertCardProps {
 export default function AlertCard({ alert, compact = false }: AlertCardProps) {
   const [showShareMenu, setShowShareMenu] = useState(false)
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
+  const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
 
   // Calculate actual comment count including initial description (comment ID 0)
   const getActualCommentCount = () => {
@@ -337,6 +338,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                     onClick={(e) => {
                       e.preventDefault()
                       e.stopPropagation()
+                      setSelectedMediaIndex(0)
                       setIsMediaModalOpen(true)
                     }}
                   >
@@ -370,6 +372,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                           onClick={(e) => {
                             e.preventDefault()
                             e.stopPropagation()
+                            setSelectedMediaIndex(index)
                             setIsMediaModalOpen(true)
                           }}
                         >
@@ -502,7 +505,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
         isOpen={isMediaModalOpen}
         onClose={() => setIsMediaModalOpen(false)}
         mediaFiles={alert.media_files || []}
-        initialIndex={0}
+        initialIndex={selectedMediaIndex}
         alertTitle={AlertTitleUtils.getShortTitle(alert)}
       />
     </div>
