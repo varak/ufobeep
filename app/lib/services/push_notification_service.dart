@@ -443,15 +443,19 @@ class PushNotificationService {
   void navigateToComments(String alertId) {
     try {
       final context = rootNavigatorKey.currentContext;
+      print('🔄 navigateToComments: context=${context != null}, mounted=${context?.mounted}');
       if (context != null && context.mounted) {
-        context.go('/alert/$alertId/comments');
-        print('Navigated to comments: $alertId');
+        final route = '/alert/$alertId/comments';
+        print('🔄 Navigating to route: $route');
+        context.go(route);
+        print('✅ Navigation call completed for: $alertId');
       } else {
-        print('Cannot navigate: no valid context available');
+        print('❌ Cannot navigate: no valid context available');
         _pendingNavigation = '/alert/$alertId/comments';
+        print('📝 Set pending navigation: $_pendingNavigation');
       }
     } catch (e) {
-      print('Error navigating to comments $alertId: $e');
+      print('❌ Error navigating to comments $alertId: $e');
     }
   }
 
@@ -832,6 +836,7 @@ class PushNotificationService {
       }
 
       // Navigate to comments to see the "I saw it too!" comment
+      print('🔄 Attempting to navigate to comments for sighting: $sightingId');
       navigateToComments(sightingId);
       
       print('✅ Witness confirmation sent for sighting $sightingId');
