@@ -106,7 +106,7 @@ class _MultiFileUploadScreenState extends State<MultiFileUploadScreen> {
 
       // Show success message and navigate back
       if (successCount > 0) {
-        await UiFeedback.success();
+        await UiFeedback.click();
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

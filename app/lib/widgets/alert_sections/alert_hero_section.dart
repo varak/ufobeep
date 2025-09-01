@@ -415,15 +415,15 @@ class AlertHeroSection extends StatelessWidget {
         ),
         // Video play icon overlay
         if (apiType == 'video')
-          const Positioned.fill(
+          Positioned.fill(
             child: Center(
               child: Container(
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.all(12),
+                decoration: const BoxDecoration(
                   color: Colors.black54,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.play_arrow,
                   color: Colors.white,
                   size: 32,
