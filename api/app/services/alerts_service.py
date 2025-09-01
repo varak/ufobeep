@@ -493,13 +493,11 @@ class AlertsService:
                 RETURNING witness_count
             """, uuid.UUID(sighting_id))
             
-            # Notify the original reporter about the confirmation
-            await self._notify_original_reporter_of_confirmation(conn, sighting_id, device_id, new_count)
-            
             # Auto-follow the sighting for the witness so they get comment notifications
             await self._auto_follow_for_witness(conn, sighting_id, device_id)
             
             # Add automatic "I saw it" comment to trigger comment notifications
+            # This will automatically notify all followers (including the original reporter) via the existing comment system
             await self._add_confirmation_comment(conn, sighting_id, device_id)
             
             # Get confirmation stats
@@ -673,8 +671,9 @@ class AlertsService:
         try:
             # Get user info from device ID
             user_info = await conn.fetchrow("""
-                SELECT d.user_id 
+                SELECT d.user_id, u.username 
                 FROM devices d
+                JOIN users u ON d.user_id = u.id
                 WHERE d.device_id = $1 AND d.is_active = true
             """, device_id)
             
@@ -694,8 +693,43 @@ class AlertsService:
                 "I saw it too! ✅"
             )
             
-            print(f"✅ Added confirmation comment {comment_id} for user {user_info['user_id']} on sighting {sighting_id}")
+            print(f"✅ Added confirmation comment {comment_id} for user {user_info['username']} on sighting {sighting_id}")
+            
+            # Trigger notifications to all followers using the same system as regular comments
+            await self._send_comment_notifications(conn, sighting_id, user_info['user_id'], user_info['username'])
             
         except Exception as e:
             print(f"❌ Failed to add confirmation comment: {e}")
             # Don't fail the confirmation if comment fails
+    
+    async def _send_comment_notifications(self, conn, sighting_id: str, user_id: str, username: str):
+        """Send notifications to followers when a comment is added (same logic as comment router)"""
+        try:
+            # Get followers for this sighting (excluding the commenter)
+            follower_rows = await conn.fetch("""
+                SELECT user_id FROM follows 
+                WHERE sighting_id = $1 AND user_id != $2
+            """, uuid.UUID(sighting_id), user_id)
+            
+            if follower_rows:
+                from app.services.notify import notify_users
+                follower_user_ids = [row["user_id"] for row in follower_rows]
+                
+                sent = await notify_users(
+                    self.db_pool,
+                    follower_user_ids,
+                    title=f"💬 {username} commented",
+                    body="I saw it too! ✅",
+                    data={
+                        "type": "comment",
+                        "sighting_id": sighting_id,
+                    },
+                )
+                
+                print(f"✅ Sent confirmation comment notifications to {sent} followers")
+            else:
+                print(f"⚠️ No followers to notify for sighting {sighting_id}")
+                
+        except Exception as e:
+            print(f"❌ Failed to send confirmation comment notifications: {e}")
+            # Don't fail the confirmation if notifications fail
