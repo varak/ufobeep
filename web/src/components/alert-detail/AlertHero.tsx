@@ -76,36 +76,47 @@ export default function AlertHero({ alert }: AlertHeroProps) {
         </div>
       </div>
 
-      {/* Media (if available) */}
+      {/* Media gallery if available */}
       {hasMedia && (
-        <div className="relative cursor-pointer group">
-          <img 
-            src={alert.media_files[0].web_url || alert.media_files[0].url}
-            alt={alert.title || 'UFO Sighting'}
-            className="w-full h-auto max-h-[400px] object-contain bg-dark-background group-hover:opacity-90 transition-opacity"
-            onClick={() => {
-              setSelectedMediaIndex(0)
-              setIsMediaModalOpen(true)
-            }}
-          />
-          
-          {/* Click to view gallery indicator */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
-            <div className="bg-black/70 text-white px-4 py-2 rounded-lg flex items-center gap-2">
-              <span className="text-lg">{alert.media_files.length > 1 ? '🖼️' : '🔍'}</span>
-              <span className="text-sm">
-                {alert.media_files.length > 1 ? 'View Gallery' : 'View Full Size'}
-              </span>
-            </div>
+        <div className="px-6 pb-6">
+          <div className={`flex gap-2 overflow-x-auto pb-2 ${alert.media_files.length >= 5 ? 'scrollbar-thin' : 'scrollbar-hide'}`}>
+            {alert.media_files.slice(0, 6).map((media, index) => (
+              <div 
+                key={`media-${index}`}
+                className="flex-shrink-0 w-32 h-32 bg-dark-background rounded-lg overflow-hidden relative cursor-pointer hover:ring-2 hover:ring-brand-primary/50 transition-all duration-200"
+                onClick={() => {
+                  setSelectedMediaIndex(index)
+                  setIsMediaModalOpen(true)
+                }}
+              >
+                <img 
+                  src={media.web_url || media.thumbnail_url || media.url}
+                  alt={`${alert.title || 'UFO Sighting'} - ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
+                
+                {/* Video indicator */}
+                {media.type === 'video' && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="bg-black/70 rounded-full p-1.5">
+                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M6.3 4.1c0-.8.9-1.3 1.5-.9l8.4 4.9c.6.4.6 1.4 0 1.8L7.8 14.8c-.6.4-1.5-.1-1.5-.9V4.1z"/>
+                      </svg>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Show +N overlay on last visible item if more exist */}
+                {index === 5 && alert.media_files.length > 6 && (
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                    <span className="text-white text-sm font-semibold">
+                      +{alert.media_files.length - 6}
+                    </span>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
-          
-          {/* Multiple media indicator */}
-          {alert.media_files.length > 1 && (
-            <div className="absolute top-4 right-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm flex items-center gap-2">
-              <span>🖼️</span>
-              <span>{alert.media_files.length}</span>
-            </div>
-          )}
         </div>
       )}
       
