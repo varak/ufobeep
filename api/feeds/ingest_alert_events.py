@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import List, Dict, Any
 import asyncpg
 import uuid
+import json
 
 from .mufon_authenticated_client import fetch_authenticated_reports
 from .nuforc_client import fetch_recent as fetch_nuforc, to_alert_dict as nuforc_to_alert
@@ -89,6 +90,9 @@ async def _upsert_alert_events(pool: asyncpg.Pool, events: List[Dict[str, Any]])
                 # Use source+source_id if available, otherwise use ingestion_hash
                 sql = INSERT_ALERT_EVENT if event.get("source_id") else INSERT_ALERT_EVENT_BY_HASH
                 
+                raw_data = event.get("raw")
+                raw_json = json.dumps(raw_data) if raw_data else None
+                
                 result = await conn.fetch(
                     sql,
                     event.get("event_id"),
@@ -103,7 +107,7 @@ async def _upsert_alert_events(pool: asyncpg.Pool, events: List[Dict[str, Any]])
                     event.get("shape"),
                     event.get("duration"),
                     event.get("external_url"),
-                    event.get("raw")
+                    raw_json
                 )
                 
                 if result:  # If we got a result back, it was inserted
