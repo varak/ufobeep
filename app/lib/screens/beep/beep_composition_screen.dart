@@ -154,8 +154,9 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       _errorMessage = null;
     });
 
-    // Validate location data BEFORE creating sighting
-    if (_sensorData?.latitude == null || _sensorData?.longitude == null) {
+    // Validate location data BEFORE creating sighting (only for NEW sightings)
+    if (widget.attachToSightingId == null && 
+        (_sensorData?.latitude == null || _sensorData?.longitude == null)) {
       setState(() {
         _isSubmitting = false;
         _errorMessage = 'Location data required to send UFO beep alerts to nearby users';
@@ -618,12 +619,16 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                           const Text('Sending...'),
                         ],
                       )
-                    : const Row(
+                    : Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.send_rounded, size: 20),
-                          SizedBox(width: 8),
-                          Text('Send Beep!'),
+                          Icon(widget.attachToSightingId != null 
+                              ? Icons.add_photo_alternate_rounded 
+                              : Icons.send_rounded, size: 20),
+                          const SizedBox(width: 8),
+                          Text(widget.attachToSightingId != null 
+                              ? 'Add Media' 
+                              : 'Send Beep!'),
                         ],
                       ),
                 ),
