@@ -33,11 +33,34 @@ def _uid(authorization: str = Header(None)) -> str:
 async def list_comments(sighting_id: str, limit: int = 30) -> Dict[str, Any]:
     pool = await get_database_pool()
     async with pool.acquire() as conn:
+        # Fetch regular comments (newest first for current UI compatibility)
         rows = await conn.fetch(
             "SELECT c.id, c.user_id, u.username, c.body, c.media_url, c.created_at FROM comments c JOIN users u ON c.user_id = u.id WHERE c.sighting_id=$1 ORDER BY c.created_at DESC LIMIT $2",
             sighting_id, limit
         )
-    return {"items": [dict(r) for r in rows], "next_cursor": None}
+        
+        # Also fetch the original sighting description to show as first "comment"
+        sighting = await conn.fetchrow(
+            "SELECT s.description, s.reporter_id, s.created_at, u.username FROM sightings s LEFT JOIN users u ON s.reporter_id = u.id WHERE s.id = $1",
+            sighting_id
+        )
+        
+        comments = [dict(r) for r in rows]
+        
+        # If there's a description, add it as the first pseudo-comment (provides context for the conversation)
+        if sighting and sighting['description'] and sighting['description'].strip():
+            description_comment = {
+                'id': 0,  # Special ID for original description
+                'user_id': sighting['reporter_id'] or 'unknown',
+                'username': sighting['username'] or 'Anonymous',
+                'body': sighting['description'],
+                'media_url': None,
+                'created_at': sighting['created_at'].isoformat()
+            }
+            # Add description at the top for context, even though it's chronologically first
+            comments.insert(0, description_comment)
+        
+    return {"items": comments, "next_cursor": None}
 
 @router.post("/{sighting_id}/comments", status_code=201)
 async def create_comment(
