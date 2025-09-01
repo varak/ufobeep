@@ -35,8 +35,8 @@ export default function AppDownloadCTA() {
             Ready to Start Exploring?
           </h2>
           <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-            Join thousands of observers worldwide. Download UFOBeep and be part of the next generation 
-            of citizen science and anomaly investigation.
+            Join observers worldwide. Download UFOBeep and get real-time alerts, 
+            share sightings with media, and navigate to live phenomena using AR compass.
           </p>
         </div>
 
@@ -84,7 +84,7 @@ export default function AppDownloadCTA() {
           </div>
           <div className="p-4 bg-dark-surface rounded-lg border border-dark-border">
             <div className="text-2xl mb-2">💬</div>
-            <div className="text-sm text-text-primary font-medium">Community Chat</div>
+            <div className="text-sm text-text-primary font-medium">Live Comments</div>
           </div>
           <div className="p-4 bg-dark-surface rounded-lg border border-dark-border">
             <div className="text-2xl mb-2">📊</div>
@@ -95,13 +95,13 @@ export default function AppDownloadCTA() {
         {/* Version & Compatibility Info */}
         <div className="text-center">
           <p className="text-sm text-text-tertiary mb-4">
-            Beta v1.0.0-beta.5 &quot;the Nikolai Build&quot; • Compatible with iOS 13+, Android 7+ • Free to download
+            Beta v1.0.0-beta.7 &quot;Website Refresh&quot; • Compatible with iOS 13+, Android 7+ • Free to download
           </p>
           <div className="flex justify-center gap-6 text-xs text-text-tertiary">
             <span>🔒 Privacy-focused</span>
             <span>📱 Real-time alerts</span>
-            <span>🌍 Global network</span>
-            <span>📸 Photo capture</span>
+            <span>💬 Live comments</span>
+            <span>📸 Media sharing</span>
           </div>
         </div>
       </div>

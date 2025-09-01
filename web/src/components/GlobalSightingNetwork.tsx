@@ -78,8 +78,8 @@ export default function GlobalSightingNetwork() {
             Global Sighting Network
           </h2>
           <p className="text-lg text-text-secondary max-w-3xl mx-auto">
-            Explore real-time reports from observers around the world. Each pin represents a verified 
-            sighting with community discussion, enrichment data, and navigation assistance.
+            Explore real-time reports from observers around the world. Each pin represents a sighting 
+            with community comments, enrichment data, media evidence, and precise navigation assistance.
           </p>
         </div>
         

@@ -354,8 +354,8 @@ export default function AlertsPage() {
             <div>
               <h3 className="font-semibold text-text-primary mb-4">Community</h3>
               <ul className="space-y-2 text-sm">
-                <li><span className="text-text-secondary">Matrix Chat (Coming Soon)</span></li>
-                <li><span className="text-text-secondary">API Access (Coming Soon)</span></li>
+                <li><span className="text-text-secondary">Comments System ✓</span></li>
+                <li><span className="text-text-secondary">Real-time Updates ✓</span></li>
                 <li><span className="text-text-secondary">Researcher Portal (Coming Soon)</span></li>
               </ul>
             </div>

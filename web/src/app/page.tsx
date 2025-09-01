@@ -54,54 +54,54 @@ export default function Home() {
       <section className="py-16 px-6 md:px-24 bg-dark-surface border-t border-dark-border">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-8 text-text-primary">
-            🚀 Latest Updates (Aug 2025)
+            🚀 Latest Updates (September 2025)
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
-              <div className="text-2xl mb-2">📸</div>
-              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Photo Uploads Fixed</h3>
+              <div className="text-2xl mb-2">💬</div>
+              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Comments System</h3>
               <p className="text-xs text-text-secondary">
-                Resolved tablet photo upload issues and sensor errors
+                Real-time comments with auto-refresh and smart navigation
               </p>
             </div>
             <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
-              <div className="text-2xl mb-2">🛰️</div>
-              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Satellite Imagery</h3>
+              <div className="text-2xl mb-2">🔧</div>
+              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Authentication Fix</h3>
               <p className="text-xs text-text-secondary">
-                BlackSky and SkyFi integration with clickable info modals
+                Users now stay logged in across app restarts
               </p>
             </div>
             <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
-              <div className="text-2xl mb-2">⚡</div>
-              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Performance Boost</h3>
+              <div className="text-2xl mb-2">🌐</div>
+              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Website Redesign</h3>
               <p className="text-xs text-text-secondary">
-                App startup optimized from 23s to 3-5s
-              </p>
-            </div>
-            <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
-              <div className="text-2xl mb-2">🔔</div>
-              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Proximity Alerts</h3>
-              <p className="text-xs text-text-secondary">
-                Fixed notification delivery system
+                Mobile-first alert cards with media and comment counts
               </p>
             </div>
             <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
               <div className="text-2xl mb-2">📱</div>
-              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Better Permissions</h3>
+              <h3 className="text-sm font-semibold mb-2 text-brand-primary">UI Polish</h3>
               <p className="text-xs text-text-secondary">
-                Smooth permission flow without hanging
+                Consistent colors, better spacing, improved navigation
               </p>
             </div>
             <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
-              <div className="text-2xl mb-2">🧭</div>
-              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Sensor Handling</h3>
+              <div className="text-2xl mb-2">🛸</div>
+              <h3 className="text-sm font-semibold mb-2 text-brand-primary">UFO Favicon</h3>
               <p className="text-xs text-text-secondary">
-                Smart fallbacks for tablets without magnetometer
+                Brand consistency between mobile app and website
+              </p>
+            </div>
+            <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
+              <div className="text-2xl mb-2">🔗</div>
+              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Share Improvements</h3>
+              <p className="text-xs text-text-secondary">
+                Fixed copying links and clicking images for full size
               </p>
             </div>
           </div>
           <p className="text-sm text-brand-primary font-medium">
-            All improvements are live in the latest beta release!
+            Beta v1.0.0-beta.7 now available with all improvements!
           </p>
         </div>
       </section>
@@ -161,16 +161,16 @@ export default function Home() {
             Join the Community
           </h2>
           <p className="text-lg text-text-secondary mb-12">
-            Connect with thousands of observers worldwide through real-time chat, 
-            share experiences, and help verify sightings through community moderation.
+            Connect with observers worldwide through real-time comments, 
+            share experiences, and help verify sightings through community discussion.
           </p>
           <div className="grid sm:grid-cols-2 gap-6 mb-12">
             <div className="bg-dark-surface p-6 rounded-lg border border-dark-border hover:border-brand-primary transition-colors group">
               <div className="text-3xl mb-4 group-hover:scale-110 transition-transform">💬</div>
-              <h3 className="text-lg font-semibold mb-2 text-brand-primary">Real-time Chat</h3>
+              <h3 className="text-lg font-semibold mb-2 text-brand-primary">Real-time Comments</h3>
               <p className="text-text-secondary">
-                Each sighting gets its own chat room powered by Matrix protocol 
-                for secure, decentralized communication.
+                Each sighting has live comment threads with auto-refresh updates 
+                and threaded discussions for community analysis.
               </p>
             </div>
             <div className="bg-dark-surface p-6 rounded-lg border border-dark-border hover:border-brand-primary transition-colors group">
