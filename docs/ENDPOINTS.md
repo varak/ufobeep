@@ -40,6 +40,8 @@
 - ✅ **Username Regeneration**: Added force_regenerate parameter 
 - ✅ **Type Safety**: Defensive JSON parsing for all API responses
 - ✅ **UI Consistency**: Updated button styling across beep and alert pages
+- ✅ **Unified Notifications**: Confirmation notifications now use existing comment system
+- ✅ **Auto-refresh Fix**: Fixed route pattern for comments auto-refresh when viewing
 
 Notes:
 - All POSTs require `Authorization: Bearer <token>`
