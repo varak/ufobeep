@@ -30,7 +30,11 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
         }
         
         const data = await response.json()
-        setComments(data.items || [])
+        // Reverse order to show newest comments first
+        const sortedComments = (data.items || []).sort((a, b) => 
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        )
+        setComments(sortedComments)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error')
       } finally {
