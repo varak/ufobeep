@@ -41,7 +41,7 @@ async def list_comments(sighting_id: str, limit: int = 30) -> Dict[str, Any]:
         
         # Also fetch the original sighting description to show as first "comment"
         sighting = await conn.fetchrow(
-            "SELECT s.description, s.reporter_id, s.created_at, u.username FROM sightings s LEFT JOIN users u ON s.reporter_id = u.id WHERE s.id = $1::uuid",
+            "SELECT s.description, s.reporter_id, s.created_at, u.username FROM sightings s LEFT JOIN users u ON s.reporter_id::uuid = u.id WHERE s.id = $1::uuid",
             sighting_id
         )
         
