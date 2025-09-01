@@ -817,22 +817,7 @@ class PushNotificationService {
       assert(witnessData is Map<String, dynamic>);
       print('[SEEIT] Sending payload: ${jsonEncode(witnessData)}');
 
-      // Check if comments already exist BEFORE confirming (for smart navigation)
-      bool commentsExisted = false;
-      try {
-        final commentsResp = await ApiClient.dio.get('/alerts/$sightingId/comments?limit=1');
-        final commentsData = commentsResp.data;
-        if (commentsData is Map && commentsData['items'] is List) {
-          final comments = commentsData['items'] as List;
-          // Count ANY comment including description (id: 0) as conversation existing
-          commentsExisted = comments.isNotEmpty;
-          print('🔍 Comments/conversation existed before confirmation: $commentsExisted (${comments.length} total items including description)');
-        }
-      } catch (e) {
-        print('⚠️ Could not check existing comments: $e');
-        // Default to navigating to comments on error
-        commentsExisted = true;
-      }
+      // Note: Auto-comment "I saw it too!" will be created by the backend
 
       final resp = await ApiClient.dio.post(
         '/alerts/$sightingId/witnesses',
@@ -870,15 +855,9 @@ class PushNotificationService {
         print('⚠️ Unexpected response format or error: ${data["message"] ?? "Unknown error"}');
       }
 
-      // Smart navigation: only go to comments if conversation already existed
-      if (commentsExisted) {
-        print('🔄 Comments existed - navigating to join conversation for sighting: $sightingId');
-        navigateToComments(sightingId);
-      } else {
-        print('🏠 No comments existed - staying on alert screen to show confirmation for sighting: $sightingId');
-        // Stay on current screen (alert detail) to show witness confirmation
-        // User is auto-followed via backend and will get future comment notifications
-      }
+      // Always navigate to comments after "I see it too" since auto-comment is always created
+      print('🔄 Navigating to comments - auto-comment "I saw it too!" was created for sighting: $sightingId');
+      navigateToComments(sightingId);
       
       print('✅ Witness confirmation sent for sighting $sightingId');
     } catch (e, st) {
