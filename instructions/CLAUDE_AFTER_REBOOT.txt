@@ -1,0 +1,58 @@
+============================
+CLAUDE — AFTER REBOOT SCRIPT
+============================
+
+Context:
+You previously broke DND/Quiet Hours by changing DTOs and DB contracts.
+This time you will follow a strict plan and ONLY additive, feature-flagged changes.
+
+Do this exactly:
+
+1) UNZIP THE PACKAGE
+   ```bash
+   cd ~/D/ufobeep
+   unzip ~/Downloads/ufobeep_feeds_all.zip -d ./
+   ```
+
+2) DEPENDENCIES
+   - Ensure backend has: `httpx`, `beautifulsoup4`
+
+3) WIRE ROUTER
+   - In `api/main.py` (or router mount point), add:
+     ```python
+     from api.routers import feeds as feeds_router
+     app.include_router(feeds_router.router)
+     ```
+   - Replace placeholders `get_db_pool()` and `require_admin()` in `api/routers/feeds.py` with app's DI/auth.
+
+4) MIGRATIONS (ADD-ONLY)
+   ```bash
+   psql "$DATABASE_URL" -f api/migrations/20250901_add_feed_fields.sql
+   ```
+
+5) RUN FEEDS ONCE
+   ```bash
+   # MUFON only:
+   curl -X POST -H "Authorization: Bearer $UFOBEEP_ADMIN_TOKEN" https://api.ufobeep.com/admin/feeds/mufon/run
+   # All feeds (MUFON + NUFORC):
+   curl -X POST -H "Authorization: Bearer $UFOBEEP_ADMIN_TOKEN" https://api.ufobeep.com/admin/feeds/all/run
+   ```
+
+6) SYSTEMD NIGHTLY (VPS)
+   ```bash
+   sudo cp instructions/systemd/ufobeep-feeds.service /etc/systemd/system/
+   sudo cp instructions/systemd/ufobeep-feeds.timer /etc/systemd/system/
+   echo "UFOBEEP_ADMIN_TOKEN=REDACTED" | sudo tee /etc/ufobeep.env
+   sudo systemctl daemon-reload
+   sudo systemctl enable --now ufobeep-feeds.timer
+   sudo systemctl status ufobeep-feeds.timer
+   ```
+
+7) SPRINT GUARDRAILS (DND/Quiet Hours)
+   - Open `instructions/SPRINT_GUARDRAILS_DND.md` and execute tasks in order.
+   - DO NOT modify or remove existing DTOs or DB columns.
+   - Use a `dnd_server_filtering` feature flag; default OFF; canary first.
+
+Exit when:
+- Nightly feeds run and insert new rows without duplicates.
+- DND/Quiet Hours guardrails implemented and tests passing.
