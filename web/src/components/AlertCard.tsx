@@ -327,7 +327,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                     alt={AlertTitleUtils.getShortTitle(alert)}
                     width={400}
                     height={128}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                   />
                   {/* Video indicator */}
                   {isVideoMedia(primaryMedia) && (

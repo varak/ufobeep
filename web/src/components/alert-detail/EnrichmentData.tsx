@@ -15,9 +15,9 @@ export default function EnrichmentData({ enrichment }: EnrichmentDataProps) {
 
   return (
     <div className="space-y-6">
-      {aircraft_tracking && <AircraftTrackingCard aircraftData={aircraft_tracking} />}
       {weather && <WeatherCard weather={weather} />}
       {satellites && <SatelliteCard satellites={satellites} />}
+      {aircraft_tracking && <AircraftTrackingCard aircraftData={aircraft_tracking} />}
     </div>
   )
 }

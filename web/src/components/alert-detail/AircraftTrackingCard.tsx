@@ -30,7 +30,7 @@ export default function AircraftTrackingCard({ aircraftData }: AircraftTrackingC
             <span className="text-xl">✈️</span>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-text-primary">Aircraft Tracking</h3>
+            <h3 className="text-lg font-semibold text-green-400">Aircraft Tracking</h3>
             <p className="text-sm text-text-secondary">OpenSky Network data</p>
           </div>
         </div>
@@ -50,7 +50,7 @@ export default function AircraftTrackingCard({ aircraftData }: AircraftTrackingC
             <span className="text-xl">✈️</span>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-text-primary">Aircraft Tracking</h3>
+            <h3 className="text-lg font-semibold text-green-400">Aircraft Tracking</h3>
             <p className="text-sm text-text-secondary">OpenSky Network data</p>
           </div>
         </div>
@@ -67,14 +67,14 @@ export default function AircraftTrackingCard({ aircraftData }: AircraftTrackingC
 
       {aircraftData.aircraft.length > 0 && (
         <div className="space-y-3">
-          <h4 className="text-sm font-medium text-text-primary">Nearby Aircraft</h4>
+          <h4 className="text-sm font-medium text-green-400">Nearby Aircraft</h4>
           <div className="space-y-2">
             {aircraftData.aircraft.map((aircraft, index) => (
               <div key={index} className="bg-dark-background border border-dark-border rounded-lg p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-text-primary">
+                      <span className="font-medium text-green-400">
                         {aircraft.callsign || 'Unknown'}
                       </span>
                       <span className="text-xs text-text-tertiary bg-dark-surface px-2 py-1 rounded">
