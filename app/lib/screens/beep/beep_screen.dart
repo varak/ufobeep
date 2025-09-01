@@ -89,7 +89,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       // Use the cleaner file_picker approach instead of photo_manager
       final FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.media, // This handles both images and videos
-        allowMultiple: false,
+        allowMultiple: true,  // Enable multi-file selection
         withData: false, // Don't load file data into memory
         withReadStream: false,
       );
@@ -101,61 +101,12 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
         return;
       }
 
-      final PlatformFile platformFile = result.files.first;
-      final String? filePath = platformFile.path;
+      debugPrint('Selected ${result.files.length} files');
       
-      if (filePath == null) {
-        setState(() {
-          _isCapturing = false;
-          _errorMessage = 'Could not access selected file';
-        });
-        return;
-      }
-
-      final File mediaFile = File(filePath);
+      // Process all selected files
+      final List<Map<String, dynamic>> mediaFiles = [];
       
-      // Determine if this is a video based on file extension and mime type
-      final String fileName = platformFile.name.toLowerCase();
-      final bool isVideo = fileName.endsWith('.mp4') || 
-                          fileName.endsWith('.mov') || 
-                          fileName.endsWith('.avi') || 
-                          fileName.endsWith('.webm') ||
-                          fileName.endsWith('.3gp') ||
-                          platformFile.extension?.toLowerCase() == 'mp4' ||
-                          platformFile.extension?.toLowerCase() == 'mov' ||
-                          platformFile.extension?.toLowerCase() == 'avi' ||
-                          platformFile.extension?.toLowerCase() == 'webm' ||
-                          platformFile.extension?.toLowerCase() == '3gp';
-
-      debugPrint('Selected ${isVideo ? 'video' : 'image'} file: ${mediaFile.path}');
-      debugPrint('File size: ${platformFile.size} bytes');
-      debugPrint('File extension: ${platformFile.extension}');
-      
-      // Extract metadata only for images (videos rarely have useful EXIF)
-      Map<String, dynamic> mediaMetadata = {};
-      
-      if (!isVideo) {
-        try {
-          debugPrint('Extracting metadata from image file...');
-          mediaMetadata = await PhotoMetadataService.extractComprehensiveMetadata(mediaFile);
-          debugPrint('Extracted metadata: ${mediaMetadata.keys.length} categories');
-          
-          // Create sensor data from image EXIF if GPS is available
-          final gpsData = mediaMetadata['location'] as Map<String, dynamic>?;
-          
-          if (gpsData != null && gpsData['latitude'] != null && gpsData['longitude'] != null) {
-            debugPrint('📷 Found GPS data in EXIF: ${gpsData['latitude']}, ${gpsData['longitude']} (kept for plate solving)');
-          } else {
-            debugPrint('No GPS coordinates found in image EXIF');
-          }
-        } catch (e) {
-          debugPrint('Warning: Failed to extract metadata: $e');
-        }
-      } else {
-        debugPrint('Skipping metadata extraction for video file');
-      }
-
-      // Get current location for beep (same as non-media beeps)
+      // Get current location once for all files (reuse existing logic)
       final currentLocation = await permissionService.getCurrentLocation();
       SensorData? currentSensorData;
       if (currentLocation != null) {
@@ -165,7 +116,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
           altitude: currentLocation.altitude,
           accuracy: currentLocation.accuracy,
           utc: DateTime.now(),
-          azimuthDeg: 0.0, // Will be filled by sensor service if needed
+          azimuthDeg: 0.0,
           pitchDeg: 0.0,
           rollDeg: 0.0,
           hfovDeg: 60.0,
@@ -174,20 +125,82 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       } else {
         debugPrint('❌ Failed to get current location for media beep');
       }
+      
+      for (final PlatformFile platformFile in result.files) {
+        final String? filePath = platformFile.path;
+        
+        if (filePath == null) {
+          debugPrint('Skipping file with null path: ${platformFile.name}');
+          continue;
+        }
+
+        final File mediaFile = File(filePath);
+        
+        // Determine if this is a video (reuse existing logic)
+        final String fileName = platformFile.name.toLowerCase();
+        final bool isVideo = fileName.endsWith('.mp4') || 
+                            fileName.endsWith('.mov') || 
+                            fileName.endsWith('.avi') || 
+                            fileName.endsWith('.webm') ||
+                            fileName.endsWith('.3gp') ||
+                            platformFile.extension?.toLowerCase() == 'mp4' ||
+                            platformFile.extension?.toLowerCase() == 'mov' ||
+                            platformFile.extension?.toLowerCase() == 'avi' ||
+                            platformFile.extension?.toLowerCase() == 'webm' ||
+                            platformFile.extension?.toLowerCase() == '3gp';
+
+        debugPrint('Processing ${isVideo ? 'video' : 'image'} file: ${mediaFile.path}');
+        debugPrint('File size: ${platformFile.size} bytes');
+        
+        // Extract metadata only for images (reuse existing logic)
+        Map<String, dynamic> mediaMetadata = {};
+        
+        if (!isVideo) {
+          try {
+            debugPrint('Extracting metadata from image file...');
+            mediaMetadata = await PhotoMetadataService.extractComprehensiveMetadata(mediaFile);
+            debugPrint('Extracted metadata: ${mediaMetadata.keys.length} categories');
+          } catch (e) {
+            debugPrint('Warning: Failed to extract metadata: $e');
+          }
+        }
+        
+        // Add to files list
+        mediaFiles.add({
+          'mediaFile': mediaFile,
+          'isVideo': isVideo,
+          'photoMetadata': mediaMetadata,
+          'platformFile': platformFile,
+        });
+      }
 
       setState(() {
         _isCapturing = false;
       });
 
-      // Navigate directly to composition screen
+      if (mediaFiles.isEmpty) {
+        setState(() {
+          _errorMessage = 'No valid files selected';
+        });
+        return;
+      }
+
       final description = _descriptionController.text.trim();
-      context.go('/beep/compose', extra: {
-        'mediaFile': mediaFile,
-        'isVideo': isVideo,
-        'sensorData': currentSensorData, // Use current location, not EXIF location
-        'photoMetadata': mediaMetadata, // Keep EXIF data for plate solving
-        'description': description,
-      });
+      
+      if (mediaFiles.length == 1) {
+        // Single file - use existing composition screen flow
+        final fileData = mediaFiles.first;
+        context.go('/beep/compose', extra: {
+          'mediaFile': fileData['mediaFile'],
+          'isVideo': fileData['isVideo'],
+          'sensorData': currentSensorData,
+          'photoMetadata': fileData['photoMetadata'],
+          'description': description,
+        });
+      } else {
+        // Multiple files - handle upload directly
+        await _handleMultiFileUpload(mediaFiles, currentSensorData, description);
+      }
 
     } catch (e) {
       setState(() {
@@ -197,7 +210,104 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     }
   }
 
-
+  /// Handle multiple file upload directly (reuse existing upload logic)
+  Future<void> _handleMultiFileUpload(
+    List<Map<String, dynamic>> mediaFiles, 
+    SensorData? sensorData, 
+    String description
+  ) async {
+    try {
+      // Create sighting first (reuse existing beep service logic)
+      debugPrint('Creating sighting for ${mediaFiles.length} files...');
+      
+      // Use first file's location, or current location if no GPS in images
+      final beepResult = await beepService.sendBeep(
+        description: description.isNotEmpty ? description : null,
+        latitude: sensorData?.latitude,
+        longitude: sensorData?.longitude,
+        heading: sensorData?.azimuthDeg,
+      );
+      
+      final sightingId = beepResult['id'] as String;
+      debugPrint('Created sighting: $sightingId');
+      
+      // Upload all files to the sighting (reuse existing API)
+      int uploadedCount = 0;
+      int photoCount = 0;
+      int videoCount = 0;
+      
+      for (int i = 0; i < mediaFiles.length; i++) {
+        final fileData = mediaFiles[i];
+        final File mediaFile = fileData['mediaFile'];
+        final bool isVideo = fileData['isVideo'];
+        
+        try {
+          debugPrint('Uploading file ${i + 1}/${mediaFiles.length}: ${mediaFile.path}');
+          
+          await ApiClient.instance.uploadMediaToSighting(sightingId, mediaFile);
+          
+          uploadedCount++;
+          if (isVideo) {
+            videoCount++;
+          } else {
+            photoCount++;
+          }
+          
+          debugPrint('Successfully uploaded file ${i + 1}/${mediaFiles.length}');
+        } catch (e) {
+          debugPrint('Failed to upload file ${mediaFile.path}: $e');
+          // Continue with other files
+        }
+      }
+      
+      if (uploadedCount > 0) {
+        // Auto-create comment about media addition (reuse existing comment API)
+        await _createMediaComment(sightingId, photoCount, videoCount);
+        
+        debugPrint('✅ Multi-file upload complete: $uploadedCount files uploaded');
+        
+        // Navigate back to alerts (same as regular beep)
+        if (mounted) {
+          context.go('/alerts');
+        }
+      } else {
+        setState(() {
+          _errorMessage = 'Failed to upload any files';
+        });
+      }
+      
+    } catch (e) {
+      debugPrint('Multi-file upload failed: $e');
+      setState(() {
+        _errorMessage = 'Failed to create sighting: $e';
+      });
+    }
+  }
+  
+  /// Create auto-comment for media additions (reuse existing comment system)
+  Future<void> _createMediaComment(String sightingId, int photoCount, int videoCount) async {
+    try {
+      String commentText = 'Added ';
+      
+      if (photoCount > 0 && videoCount > 0) {
+        commentText += '$photoCount ${photoCount == 1 ? 'photo' : 'photos'} and $videoCount ${videoCount == 1 ? 'video' : 'videos'}';
+      } else if (photoCount > 0) {
+        commentText += '$photoCount more ${photoCount == 1 ? 'photo' : 'photos'}';
+      } else {
+        commentText += '$videoCount more ${videoCount == 1 ? 'video' : 'videos'}';
+      }
+      
+      // Use existing comment API
+      await ApiClient.instance.post('/alerts/$sightingId/comments', data: {
+        'body': commentText,
+      });
+      
+      debugPrint('Created media comment: $commentText');
+    } catch (e) {
+      debugPrint('Failed to create media comment: $e');
+      // Don't fail the whole upload for comment failure
+    }
+  }
 
   Future<void> _sendQuickBeep() async {
     if (_isBeeping) return;
