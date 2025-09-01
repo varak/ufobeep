@@ -32,3 +32,13 @@
 .leaflet-popup-pane {
   z-index: 8 !important;
 }
+
+/* Hide scrollbar for media gallery */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
