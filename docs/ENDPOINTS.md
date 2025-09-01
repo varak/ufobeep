@@ -42,6 +42,7 @@
 - ✅ **UI Consistency**: Updated button styling across beep and alert pages
 - ✅ **Unified Notifications**: Confirmation notifications now use existing comment system
 - ✅ **Auto-refresh Fix**: Fixed route pattern for comments auto-refresh when viewing
+- ✅ **Navigation Fix**: Corrected route paths from '/alerts/alert/{id}/comments' to '/alert/{id}/comments'
 
 Notes:
 - All POSTs require `Authorization: Bearer <token>`
