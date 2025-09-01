@@ -36,16 +36,16 @@ def mufon_auth_to_alert_event(report: Dict[str, Any]) -> Dict[str, Any]:
     return {
         "event_id": event_id,
         "source": "mufon_auth",
-        "source_id": report.get("mufon_case_number") or report.get("case_id"),
+        "source_id": report.get("mufon_case_number") or report.get("case_id") or report.get("case_number"),
         "ingestion_hash": f"mufon_auth_{report.get('case_id', event_id)}",
         "occurred_at": occurred_at,  # When the sighting happened
-        "description": report.get("short_description", "UFO Sighting"),
+        "description": report.get("state") or report.get("short_description") or None,  # Real description from MUFON
         "latitude": float(latitude),
         "longitude": float(longitude),
-        "weather_condition": "Clear",  # Default
-        "shape": report.get("shape", "").lower() if report.get("shape") else None,
-        "duration": report.get("duration"),
-        "external_url": report.get("external_url"),
+        "weather_condition": None,  # Only real data
+        "shape": None,  # Will map properly later
+        "duration": None,  # Will map properly later  
+        "external_url": report.get("url") or report.get("external_url"),
         "raw": report
     }
 
