@@ -31,6 +31,10 @@ interface Alert {
   verification_score: number
   witness_count: number
   total_confirmations: number
+  reporter_username?: string | null
+  is_verified?: boolean
+  distance?: number
+  comment_count?: number
 }
 
 interface AlertCardProps {
@@ -196,77 +200,145 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
   }
 
   return (
-    <div className="bg-dark-surface border border-dark-border rounded-lg hover:border-brand-primary transition-all duration-300 hover:shadow-lg group relative">
+    <div className="bg-dark-surface border border-dark-border rounded-xl hover:border-brand-primary transition-all duration-300 hover:shadow-lg group relative">
       <Link href={`/alerts/${alert.id}`} className="block">
-        <div className="flex items-center gap-4 p-4">
-          {/* Thumbnail or icon */}
-          {(() => {
-            const primaryMedia = getPrimaryMedia()
-            return primaryMedia ? (
-              <div className="w-16 h-16 bg-gray-800 rounded-lg overflow-hidden flex-shrink-0 relative">
-                <ImageWithLoading 
-                  src={primaryMedia.thumbnail_url || primaryMedia.url}
-                  alt={AlertTitleUtils.getShortTitle(alert)}
-                  width={64}
-                  height={64}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                {/* Video indicator */}
-                {isVideoMedia(primaryMedia) && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="bg-black/70 rounded-full p-1">
-                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M6.3 4.1c0-.8.9-1.3 1.5-.9l8.4 4.9c.6.4.6 1.4 0 1.8L7.8 14.8c-.6.4-1.5-.1-1.5-.9V4.1z"/>
-                      </svg>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="w-16 h-16 bg-dark-background rounded-lg flex items-center justify-center flex-shrink-0">
-                <span className="text-text-tertiary text-xl">👁️</span>
-              </div>
-            )
-          })()}
-
-          {/* Content */}
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between mb-1">
-              <div className="text-xs text-text-tertiary">
-                {formatDate(alert.created_at)}
-              </div>
-              <div className="text-xs text-text-tertiary">
-                {(() => {
-                  const hasMedia = alert.media_files && alert.media_files.length > 0
-                  const hasDescription = alert.description?.trim()
-                  
-                  if (!hasMedia && !hasDescription) return 'beep only'
-                  if (hasMedia && !hasDescription) {
-                    const isVideo = alert.media_files[0].type === 'video'
-                    return isVideo ? 'video only' : 'image only'
-                  }
-                  if (!hasMedia) return 'Witness beeped only'
-                  const isVideo = alert.media_files[0].type === 'video'
-                  return isVideo ? '🎥 Video' : '📸 Photo'
-                })()}
-              </div>
+        <div className="p-4">
+          {/* Header row */}
+          <div className="flex items-start gap-3 mb-3">
+            {/* UFO Icon */}
+            <div className="p-2 bg-brand-primary/10 rounded-lg flex-shrink-0">
+              <span className="text-base">🛸</span>
             </div>
             
-            <div className="text-xs text-text-tertiary mb-2">
-              {formatLocation(alert.location)}
+            {/* Title and metadata */}
+            <div className="flex-1 min-w-0">
+              <h3 className="text-text-primary text-sm font-semibold line-clamp-2 leading-tight mb-1">
+                {alert.title || AlertTitleUtils.getShortTitle(alert)}
+              </h3>
+              
+              {/* Verification badge */}
+              {alert.is_verified && (
+                <div className="inline-flex items-center px-2 py-0.5 bg-brand-primary/10 border border-brand-primary/30 rounded-full mb-2">
+                  <svg className="w-2.5 h-2.5 text-brand-primary mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-brand-primary text-xs font-medium">Verified</span>
+                </div>
+              )}
+            </div>
+            
+            {/* Username and time */}
+            <div className="text-right flex-shrink-0">
+              {alert.reporter_username && (
+                <div className="text-brand-primary text-xs font-medium mb-1">
+                  by {alert.reporter_username}
+                </div>
+              )}
+              <div className="text-text-tertiary text-xs">
+                {formatDate(alert.created_at)}
+              </div>
+              {alert.distance && (
+                <div className="text-xs text-text-secondary mt-1 px-2 py-0.5 bg-dark-background rounded">
+                  {alert.distance < 1 
+                    ? `${Math.round(alert.distance * 1000)}m away`
+                    : `${alert.distance.toFixed(1)}km away`
+                  }
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Content section */}
+          <div className="space-y-2">
+            {/* Location */}
+            <div className="text-text-tertiary text-xs">
+              📍 {formatLocation(alert.location)}
             </div>
 
+            {/* Description */}
             {alert.description && (
-              <p className="text-text-secondary text-sm line-clamp-1">
+              <p className="text-text-secondary text-sm line-clamp-2 leading-relaxed">
                 {alert.description}
               </p>
             )}
+
+            {/* Footer indicators */}
+            <div className="flex items-center justify-between pt-2">
+              <div className="flex items-center gap-3">
+                {/* Comments indicator (most prominent like mobile) */}
+                {alert.comment_count && alert.comment_count > 0 ? (
+                  <div className="px-2 py-1 bg-brand-primary/10 border border-brand-primary/30 rounded-lg">
+                    <div className="flex items-center gap-1 text-xs text-brand-primary font-medium">
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
+                      </svg>
+                      <span>{alert.comment_count}</span>
+                    </div>
+                  </div>
+                ) : null}
+
+                {/* Media type indicator */}
+                <div className="text-xs text-text-tertiary">
+                  {(() => {
+                    const hasMedia = alert.media_files && alert.media_files.length > 0
+                    const hasDescription = alert.description?.trim()
+                    
+                    if (hasMedia) {
+                      const isVideo = alert.media_files[0].type === 'video'
+                      return (
+                        <span className="flex items-center gap-1">
+                          {isVideo ? '🎥' : '📸'} {alert.media_files.length > 1 ? `${alert.media_files.length}` : (isVideo ? 'Video' : 'Photo')}
+                        </span>
+                      )
+                    }
+                    if (hasDescription) {
+                      return <span className="flex items-center gap-1">👁️ Witness report</span>
+                    }
+                    return <span className="flex items-center gap-1">📡 Beep only</span>
+                  })()}
+                </div>
+              </div>
+              
+              {/* Witness count */}
+              {alert.witness_count > 1 && (
+                <div className="text-xs text-green-400 font-medium flex items-center gap-1">
+                  <span>👥</span>
+                  <span>{alert.witness_count} witnesses</span>
+                </div>
+              )}
+            </div>
+
+            {/* Media thumbnail if available */}
+            {(() => {
+              const primaryMedia = getPrimaryMedia()
+              return primaryMedia ? (
+                <div className="w-full h-32 bg-gray-800 rounded-lg overflow-hidden relative mt-3">
+                  <ImageWithLoading 
+                    src={primaryMedia.thumbnail_url || primaryMedia.url}
+                    alt={AlertTitleUtils.getShortTitle(alert)}
+                    width={400}
+                    height={128}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  {/* Video indicator */}
+                  {isVideoMedia(primaryMedia) && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="bg-black/70 rounded-full p-2">
+                        <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M6.3 4.1c0-.8.9-1.3 1.5-.9l8.4 4.9c.6.4.6 1.4 0 1.8L7.8 14.8c-.6.4-1.5-.1-1.5-.9V4.1z"/>
+                        </svg>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : null
+            })()}
           </div>
         </div>
       </Link>
 
       {/* Share button */}
-      <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
         <div className="relative">
           <button
             onClick={(e) => {
@@ -274,7 +346,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
               e.stopPropagation()
               setShowShareMenu(!showShareMenu)
             }}
-            className="p-2 bg-dark-background/80 hover:bg-brand-primary/20 rounded-full border border-dark-border hover:border-brand-primary transition-all"
+            className="p-1.5 bg-dark-background/80 hover:bg-brand-primary/20 rounded-lg border border-dark-border hover:border-brand-primary transition-all"
             title="Share alert"
           >
             <svg className="w-4 h-4 text-text-secondary hover:text-brand-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -28,6 +28,10 @@ interface Alert {
     display_priority: number
   }>
   verification_score: number
+  reporter_username?: string | null
+  is_verified?: boolean
+  distance?: number
+  comment_count?: number
 }
 
 export default function AlertsPage() {
