@@ -9,6 +9,7 @@ import '../../theme/app_theme.dart';
 import '../../models/sensor_data.dart';
 import '../../models/api_models.dart' as api;
 import '../../services/api_client.dart';
+import '../../services/comments_service.dart';
 import '../../services/sound_service.dart';
 import '../../services/beep_service.dart';
 import '../../services/sensor_service.dart';
@@ -24,6 +25,7 @@ class BeepCompositionScreen extends ConsumerStatefulWidget {
   final SensorData? sensorData;
   final Map<String, dynamic>? photoMetadata;
   final String? description;
+  final String? attachToSightingId;
 
   const BeepCompositionScreen({
     super.key,
@@ -32,6 +34,7 @@ class BeepCompositionScreen extends ConsumerStatefulWidget {
     this.sensorData,
     this.photoMetadata,
     this.description,
+    this.attachToSightingId,
   });
 
   @override
@@ -176,61 +179,101 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       const category = api.SightingCategory.ufo;
       final List<String> tags = [];
 
-      debugPrint('Submitting sighting with sensor data: ${_sensorData != null}');
+      String sightingId;
       
-      // First, create sighting without triggering alerts (media pending)
-      debugPrint('Creating sighting via sendBeep with media pending...');
-      // Check for valid GPS coordinates (not 0,0 which is invalid)
-      double? validLat = _sensorData?.latitude;
-      double? validLon = _sensorData?.longitude;
-      if (validLat == 0.0 && validLon == 0.0) {
-        validLat = null;
-        validLon = null;
-        debugPrint('Invalid GPS coordinates (0,0) detected, will use current location');
+      if (widget.attachToSightingId != null) {
+        // Adding to existing sighting
+        sightingId = widget.attachToSightingId!;
+        debugPrint('Adding media to existing sighting: $sightingId');
+      } else {
+        // Create new sighting (existing logic)
+        debugPrint('Submitting sighting with sensor data: ${_sensorData != null}');
+        debugPrint('Creating sighting via sendBeep with media pending...');
+        
+        // Check for valid GPS coordinates (REQUIRED for new alerts)
+        double? validLat = _sensorData?.latitude;
+        double? validLon = _sensorData?.longitude;
+        
+        // For new sightings, we MUST have valid coordinates
+        if (validLat == null || validLon == null || (validLat == 0.0 && validLon == 0.0)) {
+          debugPrint('❌ Invalid GPS coordinates - cannot create new sighting without location');
+          setState(() {
+            _isSubmitting = false;
+            _errorMessage = 'Valid GPS coordinates required to create new sighting. Please ensure GPS is enabled.';
+          });
+          return;
+        }
+        
+        final beepResult = await BeepService().sendBeep(
+          description: finalDescription,
+          latitude: validLat,
+          longitude: validLon,
+          heading: _sensorData?.azimuthDeg,
+          hasMedia: true, // This will defer alerts until media upload completes
+        );
+        
+        final sightingIdFromResponse = beepResult['sighting_id']?.toString();
+        if (sightingIdFromResponse == null) {
+          throw Exception('Failed to get sighting ID from API response');
+        }
+        sightingId = sightingIdFromResponse;
+        debugPrint('Sighting created with ID: $sightingId (alerts deferred)');
       }
-      
-      final beepResult = await BeepService().sendBeep(
-        description: finalDescription,
-        latitude: validLat,
-        longitude: validLon,
-        heading: _sensorData?.azimuthDeg,
-        hasMedia: true, // This will defer alerts until media upload completes
-      );
-      
-      final sightingId = beepResult['sighting_id']?.toString();
-      if (sightingId == null) {
-        throw Exception('Failed to get sighting ID from API response');
-      }
-      debugPrint('Sighting created with ID: $sightingId (alerts deferred)');
       
       // Now upload the media file, then trigger alerts
       try {
         debugPrint('Uploading ${widget.isVideo ? 'video' : 'photo'} to sighting...');
+        
+        // TODO: Add NSFW filter hook here
+        // final isContentSafe = await ContentModerationService.validateMedia(widget.mediaFile);
+        // if (!isContentSafe) {
+        //   throw Exception('Content blocked by moderation filter');
+        // }
+        
         await ApiClient.instance.uploadMediaToSighting(
           sightingId,
           widget.mediaFile,
         );
         debugPrint('${widget.isVideo ? 'Video' : 'Photo'} uploaded successfully!');
         
-        // Now trigger alerts - use the actual coordinates that were sent with the beep
-        debugPrint('Triggering proximity alerts...');
-        // Get reliable coordinates for proximity alerts using LocationService
-        final alertCoordinates = await LocationService.I.getReliableCoordinates(
-          preferredLat: validLat,
-          preferredLon: validLon,
-          timeout: const Duration(seconds: 5),
-        );
-        
-        if (alertCoordinates != null) {
-          await ApiClient.instance.triggerAlertsForSighting(
-            sightingId, 
-            alertCoordinates['lat']!, 
-            alertCoordinates['lon']!
-          );
-        } else {
-          debugPrint('❌ No valid coordinates available - proximity alerts skipped');
+        // Create auto-comment for existing sightings
+        if (widget.attachToSightingId != null) {
+          try {
+            final commentsService = CommentsService();
+            final mediaType = widget.isVideo ? 'video' : 'photo';
+            await commentsService.postComment(sightingId, 'Added 1 more $mediaType');
+            debugPrint('Created auto-comment for added media');
+          } catch (e) {
+            debugPrint('Failed to create auto-comment: $e');
+            // Don't fail the whole upload for comment failure
+          }
         }
-        debugPrint('Proximity alerts sent successfully!');
+        
+        // Trigger alerts only for new sightings
+        if (widget.attachToSightingId == null) {
+          debugPrint('Triggering proximity alerts...');
+          // Get coordinates from the sensor data for alert triggering
+          final validLat = _sensorData?.latitude == 0.0 ? null : _sensorData?.latitude;
+          final validLon = _sensorData?.longitude == 0.0 ? null : _sensorData?.longitude;
+          
+          // Get reliable coordinates for proximity alerts using LocationService
+          final alertCoordinates = await LocationService.I.getReliableCoordinates(
+            preferredLat: validLat,
+            preferredLon: validLon,
+            timeout: const Duration(seconds: 5),
+          );
+          
+          if (alertCoordinates != null) {
+            await ApiClient.instance.triggerAlertsForSighting(
+              sightingId, 
+              alertCoordinates['lat']!, 
+              alertCoordinates['lon']!
+            );
+          } else {
+            debugPrint('❌ No valid coordinates available - proximity alerts skipped');
+          }
+          debugPrint('Proximity alerts sent successfully!');
+        }
       } catch (e) {
         debugPrint('CRITICAL: Media upload or alert trigger failed: $e');
         setState(() {

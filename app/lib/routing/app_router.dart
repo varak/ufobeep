@@ -170,7 +170,10 @@ GoRouter appRouter(AppRouterRef ref) {
           GoRoute(
             path: '/beep',
             name: 'beep',
-            builder: (context, state) => const BeepScreen(),
+            builder: (context, state) {
+              final attachTo = state.uri.queryParameters['attachTo'];
+              return BeepScreen(attachToSightingId: attachTo);
+            },
             routes: [
               // Custom Camera (no approval modal)
               GoRoute(
@@ -254,6 +257,7 @@ GoRouter appRouter(AppRouterRef ref) {
                       sensorData: extra?['sensorData'],
                       photoMetadata: extra?['photoMetadata'],
                       description: extra?['description'],
+                      attachToSightingId: extra?['attachToSightingId'],
                     );
                   } catch (e, stackTrace) {
                     debugPrint('ERROR creating BeepCompositionScreen: $e');
