@@ -47,7 +47,7 @@ async def list_comments(sighting_id: str, limit: int = 30) -> Dict[str, Any]:
         
         comments = [dict(r) for r in rows]
         
-        # If there's a description, add it as the first pseudo-comment (provides context for the conversation)
+        # If there's a description, add it as the last pseudo-comment (chronologically first, so appears last in DESC order)
         if sighting and sighting['description'] and sighting['description'].strip() and sighting['reporter_id'] and sighting['username']:
             description_comment = {
                 'id': 0,  # Special ID for original description
@@ -57,8 +57,8 @@ async def list_comments(sighting_id: str, limit: int = 30) -> Dict[str, Any]:
                 'media_url': None,
                 'created_at': sighting['created_at'].isoformat()
             }
-            # Add description at the top for context, even though it's chronologically first
-            comments.insert(0, description_comment)
+            # Add description at the end (chronologically first, so last in DESC order for proper conversation flow)
+            comments.append(description_comment)
         
     return {"items": comments, "next_cursor": None}
 
