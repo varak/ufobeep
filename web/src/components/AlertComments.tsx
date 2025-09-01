@@ -30,9 +30,9 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
         }
         
         const data = await response.json()
-        // Reverse order to show newest comments first
-        const sortedComments = (data.items || []).sort((a, b) => 
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        // Sort chronologically - oldest to newest for natural conversation flow
+        const sortedComments = (data.items || []).sort((a: Comment, b: Comment) => 
+          new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
         )
         setComments(sortedComments)
       } catch (err) {
