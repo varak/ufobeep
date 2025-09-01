@@ -612,8 +612,11 @@ class AlertsService:
                 print(f"⚠️ Original reporter device {device_info['device_id'] if device_info else 'unknown'} has no FCM token")
                 return
                 
-            # Import FCM service to send notification
-            from app.services.proximity_alert_service import ProximityAlertService
+            # Import FCM service to send notification  
+            import sys
+            import os
+            sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
+            from services.proximity_alert_service import ProximityAlertService
             proximity_service = ProximityAlertService()
             
             # Send confirmation beep notification
