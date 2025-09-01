@@ -297,26 +297,16 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                   </div>
                 )}
 
-                {/* Media type indicator */}
-                <div className="px-2 py-1 bg-dark-background/30 rounded text-xs text-text-tertiary">
-                  {(() => {
-                    const hasMedia = alert.media_files && alert.media_files.length > 0
-                    const hasDescription = alert.description?.trim()
-                    
-                    if (hasMedia) {
-                      const isVideo = alert.media_files[0].type === 'video'
-                      return (
-                        <span className="flex items-center gap-1">
-                          {isVideo ? '🎥' : '📸'} {alert.media_files.length > 1 ? `${alert.media_files.length}` : (isVideo ? 'Video' : 'Photo')}
-                        </span>
-                      )
-                    }
-                    if (hasDescription) {
-                      return <span className="flex items-center gap-1">👁️ Report</span>
-                    }
-                    return <span className="flex items-center gap-1">📡 Beep only</span>
-                  })()}
-                </div>
+                {/* Content type indicator - only for non-media content */}
+                {!(alert.media_files && alert.media_files.length > 0) && (
+                  <div className="px-2 py-1 bg-dark-background/30 rounded text-xs text-text-tertiary">
+                    {alert.description?.trim() ? (
+                      <span className="flex items-center gap-1">👁️ Report</span>
+                    ) : (
+                      <span className="flex items-center gap-1">📡 Beep only</span>
+                    )}
+                  </div>
+                )}
               </div>
               
               {/* Witness count */}
@@ -333,7 +323,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
               <div className="mt-3">
                 {/* Always show thumbnails, even for single media */}
                 <div className="relative">
-                  <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                  <div className={`flex gap-2 overflow-x-auto pb-2 ${alert.media_files.length >= 5 ? 'scrollbar-thin' : 'scrollbar-hide'}`}>
                     {alert.media_files.slice(0, 6).map((media, index) => (
                       <div 
                         key={media.id}
@@ -376,17 +366,6 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                     ))}
                   </div>
                   
-                  {/* Media count indicator - only show for multiple files */}
-                  {alert.media_files.length > 1 && (
-                    <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm rounded-lg px-2 py-1 flex items-center gap-1.5">
-                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
-                      </svg>
-                      <span className="text-white text-xs font-medium">
-                        {alert.media_files.length}
-                      </span>
-                    </div>
-                  )}
                 </div>
               </div>
             )}
