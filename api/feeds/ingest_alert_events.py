@@ -3,9 +3,16 @@ from typing import List, Dict, Any
 import asyncpg
 import uuid
 import json
+from datetime import datetime
 
 from .mufon_authenticated_client import fetch_authenticated_reports
 from .nuforc_client import fetch_recent as fetch_nuforc, to_alert_dict as nuforc_to_alert
+
+class DateTimeEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return super().default(obj)
 
 # Map MUFON authenticated report to alert_events format
 def mufon_auth_to_alert_event(report: Dict[str, Any]) -> Dict[str, Any]:
@@ -91,7 +98,7 @@ async def _upsert_alert_events(pool: asyncpg.Pool, events: List[Dict[str, Any]])
                 sql = INSERT_ALERT_EVENT if event.get("source_id") else INSERT_ALERT_EVENT_BY_HASH
                 
                 raw_data = event.get("raw")
-                raw_json = json.dumps(raw_data) if raw_data else None
+                raw_json = json.dumps(raw_data, cls=DateTimeEncoder) if raw_data else None
                 
                 result = await conn.fetch(
                     sql,
