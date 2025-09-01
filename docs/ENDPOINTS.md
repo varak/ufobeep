@@ -35,14 +35,15 @@
 - Witness confirmation notifications
 - Comment notifications
 
-## Recent Fixes (Current Release)
+## Recent Fixes (September 2025)
+- ✅ **Comments Auto-Refresh**: Fixed with frame-safe CommentsRefreshNotifier using postFrameCallback
+- ✅ **Auto-Follow Reliability**: Added retry logic with exponential backoff for following sightings
+- ✅ **Smart Navigation**: "I see it too" now navigates to comments when description exists
+- ✅ **Notification Delivery**: Fixed confirmation comments to use direct DB insertion with proper notifications
+- ✅ **Type Safety**: Using Set<VoidCallback> to prevent duplicate listeners
 - ✅ **Witness Confirmation**: Fixed "string is not subtype of int at index" crash
 - ✅ **Username Regeneration**: Added force_regenerate parameter 
-- ✅ **Type Safety**: Defensive JSON parsing for all API responses
 - ✅ **UI Consistency**: Updated button styling across beep and alert pages
-- ✅ **Unified Notifications**: Confirmation notifications now use existing comment system
-- ✅ **Auto-refresh Fix**: Fixed route pattern for comments auto-refresh when viewing
-- ✅ **Navigation Fix**: Corrected route paths from '/alerts/alert/{id}/comments' to '/alert/{id}/comments'
 
 Notes:
 - All POSTs require `Authorization: Bearer <token>`

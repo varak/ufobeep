@@ -71,16 +71,25 @@ ssh -p 322 mike@ufobeep.com
 - BlackSky satellite imagery (coming soon)
 
 ## Testing Devices
-Connect 3+ devices via ADB:
+Multi-device testing setup:
 ```bash
 adb devices
-adb connect 192.168.0.49:43413  # Moto wireless
+# Expected devices:
+# HT75D0202593      device    (Moto - primary beep sender)
+# ZY22K6LB7J        device    (Pixel - comments viewer) 
+# Y5SSW8MZDIU45995  device    (Claude's Phone - witness tester)
+
+# Deploy to specific devices:
+./deploy.sh moto pixel claude
+./deploy.sh moto    # Single device
 ```
 
 ## Documentation
-- [Master Plan](MASTER_PLAN_v13.md) - Roadmap and features
-- [Endpoints](ENDPOINTS.md) - API documentation
+- [Master Plan](MASTER_PLAN_v16.md) - Current roadmap and features
+- [Endpoints](ENDPOINTS.md) - API documentation with recent fixes
+- [Comments System Fix](COMMENTS_SYSTEM_FIX.md) - Auto-refresh and navigation fixes
 - [Deployment](DEPLOYMENT.md) - Detailed deployment guide
 - [Authentication Fix](AUTHENTICATION_FIX.md) - Token persistence bug resolution
+- [Witness Confirmation Fix](WITNESS_CONFIRMATION_FIX.md) - Type safety fixes
 - [Contributing](CONTRIBUTING.md) - Git workflow
 - [CI](CI.md) - GitHub Actions setup
