@@ -45,6 +45,7 @@ else
             tablet) DEPLOY_APK=true; TARGET_DEVICES="356120372031894" ;;
             pixel) DEPLOY_APK=true; TARGET_DEVICES="HT75D0202593" ;;
             samsung) DEPLOY_APK=true; TARGET_DEVICES="Y5SSW8MZDIU45995" ;;
+            claude) DEPLOY_APK=true; TARGET_DEVICES="Y5SSW8MZDIU45995" ;;
             --auto-commit=*) 
                 AUTO_COMMIT=true
                 COMMIT_MSG="${arg#*=}"
