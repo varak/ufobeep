@@ -667,7 +667,7 @@ class AlertsService:
             # Don't fail the confirmation if auto-follow fails
 
     async def _add_confirmation_comment(self, conn, sighting_id: str, device_id: str):
-        """Add automatic 'I saw it' comment when confirming to trigger comment notifications"""
+        """Add automatic 'I saw it' comment by calling the existing comment endpoint"""
         try:
             # Get user info from device ID
             user_info = await conn.fetchrow("""
@@ -681,56 +681,28 @@ class AlertsService:
                 print(f"⚠️ Could not find user for device {device_id}, skipping confirmation comment")
                 return
             
-            # Add the confirmation comment
-            comment_id = await conn.fetchval("""
-                INSERT INTO comments 
-                (sighting_id, user_id, body, created_at, updated_at)
-                VALUES ($1, $2, $3, NOW(), NOW())
-                RETURNING id
-            """, 
-                uuid.UUID(sighting_id), 
-                user_info['user_id'], 
-                "I saw it too! ✅"
-            )
+            # Use the existing comment endpoint internally - this ensures all notification logic runs
+            import httpx
+            from app.core.auth import create_access_token
             
-            print(f"✅ Added confirmation comment {comment_id} for user {user_info['username']} on sighting {sighting_id}")
+            # Create access token for this user
+            access_token = create_access_token(data={"sub": str(user_info['user_id'])})
             
-            # Trigger notifications to all followers using the same system as regular comments
-            await self._send_comment_notifications(conn, sighting_id, user_info['user_id'], user_info['username'], comment_id)
+            # Call the existing comment endpoint
+            async with httpx.AsyncClient() as client:
+                response = await client.post(
+                    f"http://localhost:8000/alerts/{sighting_id}/comments",
+                    json={"body": "I saw it too! ✅"},
+                    headers={"Authorization": f"Bearer {access_token}"}
+                )
+                
+                if response.status_code == 201:
+                    result = response.json()
+                    print(f"✅ Added confirmation comment {result['id']} for user {user_info['username']} via existing endpoint")
+                else:
+                    print(f"❌ Failed to post confirmation comment: {response.status_code}")
             
         except Exception as e:
             print(f"❌ Failed to add confirmation comment: {e}")
             # Don't fail the confirmation if comment fails
     
-    async def _send_comment_notifications(self, conn, sighting_id: str, user_id: str, username: str, comment_id: int):
-        """Send notifications to followers when a comment is added (same logic as comment router)"""
-        try:
-            # Get followers for this sighting (excluding the commenter)
-            follower_rows = await conn.fetch("""
-                SELECT user_id FROM follows 
-                WHERE sighting_id = $1 AND user_id != $2
-            """, uuid.UUID(sighting_id), user_id)
-            
-            if follower_rows:
-                from app.services.notify import notify_users
-                follower_user_ids = [row["user_id"] for row in follower_rows]
-                
-                sent = await notify_users(
-                    self.db_pool,
-                    follower_user_ids,
-                    title=f"💬 {username} commented",
-                    body="I saw it too! ✅",
-                    data={
-                        "type": "comment",
-                        "comment_id": str(comment_id),
-                        "sighting_id": sighting_id,
-                    },
-                )
-                
-                print(f"✅ Sent confirmation comment notifications to {sent} followers")
-            else:
-                print(f"⚠️ No followers to notify for sighting {sighting_id}")
-                
-        except Exception as e:
-            print(f"❌ Failed to send confirmation comment notifications: {e}")
-            # Don't fail the confirmation if notifications fail
