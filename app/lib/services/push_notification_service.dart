@@ -831,8 +831,8 @@ class PushNotificationService {
         print('⚠️ Unexpected response format or error: ${data["message"] ?? "Unknown error"}');
       }
 
-      // Navigate to alert details
-      navigateToAlert(sightingId);
+      // Navigate to comments to see the "I saw it too!" comment
+      navigateToComments(sightingId);
       
       print('✅ Witness confirmation sent for sighting $sightingId');
     } catch (e, st) {
@@ -840,8 +840,8 @@ class PushNotificationService {
       debugPrint('[SEEIT][EXC] $e');
       debugPrint('[SEEIT][STACK] $st');
       print('❌ Failed to send witness confirmation: $e');
-      // Still navigate to alert even if confirmation fails
-      navigateToAlert(sightingId);
+      // Still navigate to comments even if confirmation fails - user expects to see their comment
+      navigateToComments(sightingId);
     }
   }
   
