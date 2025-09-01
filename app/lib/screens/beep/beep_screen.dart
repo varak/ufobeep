@@ -27,8 +27,13 @@ import '../../widgets/beep_button.dart';
 
 class BeepScreen extends ConsumerStatefulWidget {
   final String? attachToSightingId;
+  final bool autoOpenGallery;
   
-  const BeepScreen({super.key, this.attachToSightingId});
+  const BeepScreen({
+    super.key, 
+    this.attachToSightingId,
+    this.autoOpenGallery = false,
+  });
 
   @override
   ConsumerState<BeepScreen> createState() => _BeepScreenState();
@@ -50,6 +55,14 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   void initState() {
     super.initState();
     _checkSensorAvailability();
+    
+    // Auto-open gallery if requested (for adding media to existing alerts)
+    if (widget.autoOpenGallery) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _pickFromGallery();
+      });
+    }
+    
     // Warm up native UI feedback
     UiFeedback.init();
   }

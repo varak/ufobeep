@@ -172,7 +172,11 @@ GoRouter appRouter(AppRouterRef ref) {
             name: 'beep',
             builder: (context, state) {
               final attachTo = state.uri.queryParameters['attachTo'];
-              return BeepScreen(attachToSightingId: attachTo);
+              final autoGallery = state.uri.queryParameters['autoGallery'] == 'true';
+              return BeepScreen(
+                attachToSightingId: attachTo,
+                autoOpenGallery: autoGallery,
+              );
             },
             routes: [
               // Custom Camera (no approval modal)

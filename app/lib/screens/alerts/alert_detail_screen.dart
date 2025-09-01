@@ -344,6 +344,11 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     context.go(uri.toString());
   }
 
+  Future<void> _pickFromGalleryForAlert(String alertId) async {
+    // Directly open file picker and handle upload (skip beep screen UI)
+    context.go('/beep?attachTo=$alertId&autoGallery=true');
+  }
+
   void _showAddPhotosDialog(String alertId) {
     showModalBottomSheet(
       context: context,
@@ -388,9 +393,10 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: OutlinedButton.icon(
-                    onPressed: () {
+                    onPressed: () async {
                       Navigator.pop(context);
-                      context.go('/beep?attachTo=$alertId&source=gallery');
+                      // Directly open file picker instead of going to beep screen
+                      await _pickFromGalleryForAlert(alertId);
                     },
                     icon: const Icon(Icons.photo_library),
                     label: const Text('From Gallery'),
