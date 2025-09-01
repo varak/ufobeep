@@ -6,6 +6,7 @@ import AlertHero from '../../../components/alert-detail/AlertHero'
 import AlertDetails from '../../../components/alert-detail/AlertDetails'
 import EnrichmentData from '../../../components/alert-detail/EnrichmentData'
 import LocationMap from '../../../components/alert-detail/LocationMap'
+import AlertComments from '../../../components/AlertComments'
 
 interface Alert {
   id: string
@@ -304,6 +305,9 @@ export default function AlertPage({ params }: AlertPageProps) {
                 </div>
               </div>
             </div>
+
+            {/* Comments section */}
+            <AlertComments alertId={alert.id} />
           </div>
         </div>
       </div>

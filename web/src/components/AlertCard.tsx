@@ -263,22 +263,31 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
             )}
 
             {/* Footer indicators */}
-            <div className="flex items-center justify-between pt-2">
-              <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between pt-3">
+              <div className="flex items-center gap-2">
                 {/* Comments indicator (most prominent like mobile) */}
                 {alert.comment_count && alert.comment_count > 0 ? (
-                  <div className="px-2 py-1 bg-brand-primary/10 border border-brand-primary/30 rounded-lg">
-                    <div className="flex items-center gap-1 text-xs text-brand-primary font-medium">
-                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <div className="px-2 py-1 bg-brand-primary/20 border border-brand-primary/40 rounded-lg hover:bg-brand-primary/30 transition-colors">
+                    <div className="flex items-center gap-1.5 text-xs text-brand-primary font-semibold">
+                      <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
                       </svg>
-                      <span>{alert.comment_count}</span>
+                      <span>{alert.comment_count} comment{alert.comment_count !== 1 ? 's' : ''}</span>
                     </div>
                   </div>
-                ) : null}
+                ) : (
+                  <div className="px-2 py-1 bg-dark-background/50 rounded-lg">
+                    <div className="flex items-center gap-1.5 text-xs text-text-tertiary">
+                      <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
+                      </svg>
+                      <span>No comments</span>
+                    </div>
+                  </div>
+                )}
 
                 {/* Media type indicator */}
-                <div className="text-xs text-text-tertiary">
+                <div className="px-2 py-1 bg-dark-background/30 rounded text-xs text-text-tertiary">
                   {(() => {
                     const hasMedia = alert.media_files && alert.media_files.length > 0
                     const hasDescription = alert.description?.trim()
@@ -292,7 +301,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                       )
                     }
                     if (hasDescription) {
-                      return <span className="flex items-center gap-1">👁️ Witness report</span>
+                      return <span className="flex items-center gap-1">👁️ Report</span>
                     }
                     return <span className="flex items-center gap-1">📡 Beep only</span>
                   })()}
