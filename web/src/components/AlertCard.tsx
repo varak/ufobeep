@@ -327,57 +327,96 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
               )}
             </div>
 
-            {/* Media thumbnail if available */}
-            {(() => {
-              const primaryMedia = getPrimaryMedia()
-              return primaryMedia ? (
-                <div 
-                  className="w-full aspect-video bg-dark-background rounded-lg overflow-hidden relative mt-3 cursor-pointer hover:ring-2 hover:ring-brand-primary/50 transition-all duration-200"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    setIsMediaModalOpen(true)
-                  }}
-                >
-                  <ImageWithLoading 
-                    src={primaryMedia.thumbnail_url || primaryMedia.url}
-                    alt={AlertTitleUtils.getShortTitle(alert)}
-                    width={400}
-                    height={225}
-                    className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
-                  />
-                  
-                  {/* Gallery overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 hover:opacity-100 transition-all duration-300">
-                    <div className="absolute bottom-3 left-3 right-3 flex justify-between items-end">
-                      <div className="bg-black/80 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg flex items-center gap-2 text-sm font-medium">
-                        <span>{alert.media_files && alert.media_files.length > 1 ? '🖼️' : '🔍'}</span>
-                        <span>
-                          {alert.media_files && alert.media_files.length > 1 ? `View ${alert.media_files.length} items` : 'View Media'}
-                        </span>
-                      </div>
-                      {alert.media_files && alert.media_files.length > 1 && (
-                        <div className="bg-brand-primary/90 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-semibold">
-                          +{alert.media_files.length - 1}
+            {/* Media gallery if available */}
+            {alert.media_files && alert.media_files.length > 0 && (
+              <div className="mt-3">
+                {alert.media_files.length === 1 ? (
+                  /* Single media - compact display */
+                  <div 
+                    className="w-full h-40 bg-dark-background rounded-lg overflow-hidden relative cursor-pointer hover:ring-2 hover:ring-brand-primary/50 transition-all duration-200"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      setIsMediaModalOpen(true)
+                    }}
+                  >
+                    <ImageWithLoading 
+                      src={alert.media_files[0].thumbnail_url || alert.media_files[0].url}
+                      alt={AlertTitleUtils.getShortTitle(alert)}
+                      width={400}
+                      height={160}
+                      className="w-full h-full object-cover"
+                    />
+                    
+                    {/* Video indicator */}
+                    {isVideoMedia(alert.media_files[0]) && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="bg-black/70 rounded-full p-3">
+                          <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M6.3 4.1c0-.8.9-1.3 1.5-.9l8.4 4.9c.6.4.6 1.4 0 1.8L7.8 14.8c-.6.4-1.5-.1-1.5-.9V4.1z"/>
+                          </svg>
                         </div>
-                      )}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  /* Multiple media - horizontal scroll like mobile app */
+                  <div className="relative">
+                    <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                      {alert.media_files.slice(0, 6).map((media, index) => (
+                        <div 
+                          key={media.id}
+                          className="flex-shrink-0 w-32 h-32 bg-dark-background rounded-lg overflow-hidden relative cursor-pointer hover:ring-2 hover:ring-brand-primary/50 transition-all duration-200"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            setIsMediaModalOpen(true)
+                          }}
+                        >
+                          <ImageWithLoading 
+                            src={media.thumbnail_url || media.url}
+                            alt={`${AlertTitleUtils.getShortTitle(alert)} - ${index + 1}`}
+                            width={128}
+                            height={128}
+                            className="w-full h-full object-cover"
+                          />
+                          
+                          {/* Video indicator */}
+                          {isVideoMedia(media) && (
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div className="bg-black/70 rounded-full p-1.5">
+                                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                  <path d="M6.3 4.1c0-.8.9-1.3 1.5-.9l8.4 4.9c.6.4.6 1.4 0 1.8L7.8 14.8c-.6.4-1.5-.1-1.5-.9V4.1z"/>
+                                </svg>
+                              </div>
+                            </div>
+                          )}
+                          
+                          {/* Show +N overlay on last visible item if more exist */}
+                          {index === 5 && alert.media_files.length > 6 && (
+                            <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                              <span className="text-white text-sm font-semibold">
+                                +{alert.media_files.length - 6}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* Media count indicator */}
+                    <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm rounded-lg px-2 py-1 flex items-center gap-1.5">
+                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+                      </svg>
+                      <span className="text-white text-xs font-medium">
+                        {alert.media_files.length}
+                      </span>
                     </div>
                   </div>
-                  
-                  {/* Video indicator */}
-                  {isVideoMedia(primaryMedia) && (
-                    <div className="absolute top-3 right-3">
-                      <div className="bg-black/80 backdrop-blur-sm rounded-lg px-2 py-1 flex items-center gap-1.5">
-                        <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M6.3 4.1c0-.8.9-1.3 1.5-.9l8.4 4.9c.6.4.6 1.4 0 1.8L7.8 14.8c-.6.4-1.5-.1-1.5-.9V4.1z"/>
-                        </svg>
-                        <span className="text-white text-xs font-medium">Video</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ) : null
-            })()}
+                )}
+              </div>
+            )}
           </div>
         </div>
       </Link>
