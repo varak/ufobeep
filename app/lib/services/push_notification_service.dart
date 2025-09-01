@@ -817,8 +817,6 @@ class PushNotificationService {
       assert(witnessData is Map<String, dynamic>);
       print('[SEEIT] Sending payload: ${jsonEncode(witnessData)}');
 
-      // Note: Auto-comment "I saw it too!" will be created by the backend
-
       final resp = await ApiClient.dio.post(
         '/alerts/$sightingId/witnesses',
         data: witnessData,
@@ -855,9 +853,37 @@ class PushNotificationService {
         print('⚠️ Unexpected response format or error: ${data["message"] ?? "Unknown error"}');
       }
 
-      // Always navigate to comments after "I see it too" since auto-comment is always created
-      print('🔄 Navigating to comments - auto-comment "I saw it too!" was created for sighting: $sightingId');
-      navigateToComments(sightingId);
+      // Check for existing comments AFTER confirmation to get the updated state
+      bool commentsExisted = false;
+      try {
+        final commentsResp = await ApiClient.dio.get('/alerts/$sightingId/comments?limit=5');
+        final commentsData = commentsResp.data;
+        if (commentsData is Map && commentsData['items'] is List) {
+          final comments = commentsData['items'] as List;
+          // Check if there are comments OTHER than just the auto-generated "I saw it too"
+          final nonAutoComments = comments.where((comment) => 
+            comment is Map && 
+            comment['body'] != null && 
+            !comment['body'].toString().contains('I saw it too!')
+          ).toList();
+          commentsExisted = nonAutoComments.isNotEmpty;
+          print('🔍 Comments existed (excluding auto-comment): $commentsExisted (${comments.length} total, ${nonAutoComments.length} non-auto)');
+        }
+      } catch (e) {
+        print('⚠️ Could not check comments after confirmation: $e');
+        // Default to staying on alert page on error
+        commentsExisted = false;
+      }
+
+      // Smart navigation: only go to comments if there's already a conversation
+      if (commentsExisted) {
+        print('🔄 Comments existed - navigating to join conversation for sighting: $sightingId');
+        navigateToComments(sightingId);
+      } else {
+        print('🏠 No existing conversation - staying on alert screen to show confirmation for sighting: $sightingId');
+        // Stay on current screen (alert detail) to show witness confirmation
+        // User is auto-followed via backend and will get future comment notifications
+      }
       
       print('✅ Witness confirmation sent for sighting $sightingId');
     } catch (e, st) {
