@@ -240,7 +240,7 @@ export default function AlertsPage() {
             }`}
             onClick={() => setShowPhotosOnly(!showPhotosOnly)}
           >
-            <div className="text-3xl text-green-400 mb-2">
+            <div className="text-3xl text-brand-primary mb-2">
               {allAlerts.filter(a => a.media_files && a.media_files.length > 0).length}
             </div>
             <div className={`text-sm ${showPhotosOnly ? 'text-brand-primary font-medium' : 'text-text-secondary'}`}>

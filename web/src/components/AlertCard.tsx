@@ -310,7 +310,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
               
               {/* Witness count */}
               {alert.witness_count > 1 && (
-                <div className="text-xs text-green-400 font-medium flex items-center gap-1">
+                <div className="text-xs text-brand-primary font-medium flex items-center gap-1">
                   <span>👥</span>
                   <span>{alert.witness_count} witnesses</span>
                 </div>
