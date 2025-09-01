@@ -444,11 +444,11 @@ class PushNotificationService {
     try {
       final context = rootNavigatorKey.currentContext;
       if (context != null && context.mounted) {
-        context.go('/alert/$alertId/comments');
+        context.go('/alerts/alert/$alertId/comments');
         print('Navigated to comments: $alertId');
       } else {
         print('Cannot navigate: no valid context available');
-        _pendingNavigation = '/alert/$alertId/comments';
+        _pendingNavigation = '/alerts/alert/$alertId/comments';
       }
     } catch (e) {
       print('Error navigating to comments $alertId: $e');
