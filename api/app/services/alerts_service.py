@@ -610,46 +610,10 @@ class AlertsService:
                 print(f"⚠️ Original reporter device {device_info['device_id'] if device_info else 'unknown'} has no FCM token")
                 return
                 
-            # Use proper push service to send notification
-            from app.services.push_service import get_push_service, PushPayload, PushTarget
-            push_service = get_push_service(self.db_pool)
-            
-            # Get confirming device name for notification
-            confirmer_info = await conn.fetchrow(
-                "SELECT name FROM devices WHERE device_id = $1", witness_device_id
-            )
-            confirmer_name = confirmer_info['name'] if confirmer_info else "Someone"
-            
-            # Create push target (using simple structure since we're in clean state)
-            target = PushTarget(
-                device_id=device_info['device_id'],
-                push_token=device_info['push_token'],
-                provider="fcm",  # Default to FCM
-                platform="unknown",  # Platform doesn't matter for this notification
-                user_id=str(sighting_info['reporter_id']),
-                preferences={"alert_notifications": True}  # Simple preferences
-            )
-            
-            # Create notification payload
-            payload = PushPayload(
-                title=f"👁️ {confirmer_name} sees it too!",
-                body=f"Your sighting now has {witness_count} witness{'es' if witness_count != 1 else ''}",
-                data={
-                    "type": "witness_confirmation",
-                    "sighting_id": sighting_id,
-                    "witness_count": str(witness_count),
-                    "deep_link": f"ufobeep://alert/{sighting_id}/comments"
-                },
-                sound="default"
-            )
-            
-            # Send notification
-            await push_service.send_notification(
-                targets=[target],
-                payload=payload,
-                notification_type="alert",
-                collapse_key=f"witness_{sighting_id}"
-            )
+            # Note: Witness confirmation notifications are handled by the comment system
+            # When someone clicks "I see it too", it auto-adds a comment which triggers 
+            # comment notifications to followers (including the original reporter)
+            print(f"📝 Witness confirmation will be handled by auto-comment notification system")
             
             print(f"✅ Sent confirmation beep to original reporter {device_info['device_id']}")
             

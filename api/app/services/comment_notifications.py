@@ -142,7 +142,8 @@ class CommentNotificationService:
                     d.user_id,
                     d.alert_notifications,
                     d.chat_notifications,
-                    d.system_notifications
+                    d.system_notifications,
+                    d.preferences
                 FROM devices d
                 WHERE d.user_id = ANY($1)
                 AND d.is_active = true
@@ -159,10 +160,12 @@ class CommentNotificationService:
             except (ValueError, TypeError):
                 provider = PushProvider.FCM  # Default to FCM
             
+            # Handle both old columns and new JSONB preferences
+            prefs_json = row.get("preferences") or {}
             preferences = {
-                "alert_notifications": row["alert_notifications"],
-                "chat_notifications": row["chat_notifications"],
-                "system_notifications": row["system_notifications"]
+                "alert_notifications": prefs_json.get("alert_notifications", row.get("alert_notifications", True)),
+                "chat_notifications": prefs_json.get("chat_notifications", row.get("chat_notifications", True)),
+                "system_notifications": prefs_json.get("system_notifications", row.get("system_notifications", True))
             }
             
             target = PushTarget(
