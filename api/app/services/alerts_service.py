@@ -667,7 +667,11 @@ class AlertsService:
             # Don't fail the confirmation if auto-follow fails
 
     async def _add_confirmation_comment(self, conn, sighting_id: str, device_id: str):
-        """Add automatic 'I saw it' comment by calling the existing comment endpoint"""
+        """Add automatic 'I saw it' comment directly in database with proper notifications"""
+        from datetime import datetime, timezone
+        from app.services.notify import notify_users
+        import uuid
+        
         try:
             # Get user info from device ID
             user_info = await conn.fetchrow("""
@@ -681,26 +685,44 @@ class AlertsService:
                 print(f"⚠️ Could not find user for device {device_id}, skipping confirmation comment")
                 return
             
-            # Use the existing comment endpoint internally - this ensures all notification logic runs
-            import httpx
-            from app.core.auth import create_access_token
+            # Insert comment directly into database
+            now = datetime.now(timezone.utc)
+            comment_row = await conn.fetchrow("""
+                INSERT INTO comments(sighting_id, user_id, body, media_url, created_at) 
+                VALUES ($1, $2, $3, $4, $5) 
+                RETURNING id
+            """, uuid.UUID(sighting_id), user_info['user_id'], "I saw it too! ✅", None, now)
             
-            # Create access token for this user
-            access_token = create_access_token(data={"sub": str(user_info['user_id'])})
+            # Get all followers of this sighting (excluding the commenter)
+            follower_rows = await conn.fetch("""
+                SELECT user_id FROM follows 
+                WHERE sighting_id = $1 AND user_id != $2
+            """, uuid.UUID(sighting_id), user_info['user_id'])
             
-            # Call the existing comment endpoint
-            async with httpx.AsyncClient() as client:
-                response = await client.post(
-                    f"http://localhost:8000/alerts/{sighting_id}/comments",
-                    json={"body": "I saw it too! ✅"},
-                    headers={"Authorization": f"Bearer {access_token}"}
-                )
+            # Send notifications using unified system
+            print(f"DEBUG: Confirmation comment - user_info={user_info}, follower_rows={follower_rows}")
+            if follower_rows:
+                try:
+                    follower_user_ids = [row["user_id"] for row in follower_rows]
+                    print(f"DEBUG: Sending confirmation comment notification to {len(follower_user_ids)} followers")
+                    sent = await notify_users(
+                        self.db_pool,
+                        follower_user_ids,
+                        title=f"💬 {user_info['username']} commented",
+                        body="I saw it too! ✅",
+                        data={
+                            "type": "comment",
+                            "comment_id": str(comment_row["id"]),
+                            "sighting_id": sighting_id,
+                        },
+                    )
+                    print(f"DEBUG: Confirmation comment notify_users returned {sent}")
+                except Exception as e:
+                    print(f"DEBUG: Exception in confirmation comment notify_users: {e}")
+            else:
+                print("DEBUG: No followers found for confirmation comment notification")
                 
-                if response.status_code == 201:
-                    result = response.json()
-                    print(f"✅ Added confirmation comment {result['id']} for user {user_info['username']} via existing endpoint")
-                else:
-                    print(f"❌ Failed to post confirmation comment: {response.status_code}")
+            print(f"✅ Added confirmation comment {comment_row['id']} for user {user_info['username']} directly")
             
         except Exception as e:
             print(f"❌ Failed to add confirmation comment: {e}")

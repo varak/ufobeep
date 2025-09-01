@@ -322,12 +322,12 @@ class PushNotificationService {
   }
 
   void _handleCommentNotification(RemoteMessage message) async {
-    print('Handling comment notification');
+    print('🔔 Handling comment notification');
     final sightingId = message.data['sighting_id'];
     final commentId = message.data['comment_id'];
     
     if (sightingId != null) {
-      print('Comment on sighting: $sightingId (comment ID: $commentId)');
+      print('🔔 Comment on sighting: $sightingId (comment ID: $commentId)');
       
       // Show visual notification
       await _showCommentNotification(message);
@@ -335,25 +335,21 @@ class PushNotificationService {
       // Play notification sound for comment
       await SoundService.I.play(AlertSound.pushPing);
       
+      // Always trigger comments refresh for any listening screens
+      // This is safe because only screens with registered listeners will refresh
+      CommentsRefreshNotifier.instance.notifyRefresh(sightingId);
+      print('🔄 Triggered CommentsRefreshNotifier for sighting $sightingId');
+      
       // Refresh alerts to show new comment count
       try {
         final container = ProviderScope.containerOf(rootNavigatorKey.currentContext!);
         container.invalidate(alertByIdProvider(sightingId));
         print('🔄 Refreshed alert $sightingId for new comment');
-        
-        // Check if user is already on comments screen FIRST, before navigating
-        final currentLocation = GoRouter.of(rootNavigatorKey.currentContext!).routeInformationProvider.value.uri.toString();
-        if (currentLocation.contains('/alert/$sightingId/comments')) {
-          print('🔄 User already on comments screen - triggering refresh instead of navigation');
-          // Trigger comments refresh via global notifier
-          CommentsRefreshNotifier.instance.notifyRefresh(sightingId);
-          return; // Don't navigate away from comments screen
-        }
       } catch (e) {
-        print('Could not refresh alert cache: $e');
+        print('❌ Could not refresh alert cache: $e');
       }
       
-      // Only navigate if user is NOT already on comments screen
+      // Navigate to comments (this will be ignored if user is already there)
       navigateToComments(sightingId);
     }
   }
@@ -443,12 +439,26 @@ class PushNotificationService {
   void navigateToComments(String alertId) {
     try {
       final context = rootNavigatorKey.currentContext;
-      print('🔄 navigateToComments: context=${context != null}, mounted=${context?.mounted}');
       if (context != null && context.mounted) {
-        final route = '/alert/$alertId/comments';
-        print('🔄 Navigating to route: $route');
-        context.go(route);
-        print('✅ Navigation call completed for: $alertId');
+        // Check if we're already on the comments screen
+        try {
+          final currentLocation = GoRouter.of(context).routeInformationProvider.value.uri.toString();
+          final targetRoute = '/alert/$alertId/comments';
+          
+          if (currentLocation.contains(targetRoute)) {
+            print('🔄 Already on comments screen for $alertId - skipping navigation');
+            return;
+          }
+          
+          print('🔄 Navigating to comments: $targetRoute');
+          context.go(targetRoute);
+          print('✅ Navigation completed for: $alertId');
+        } catch (routeError) {
+          // Fallback: attempt navigation anyway
+          print('⚠️ Could not check current route, navigating anyway: $routeError');
+          final route = '/alert/$alertId/comments';
+          context.go(route);
+        }
       } else {
         print('❌ Cannot navigate: no valid context available');
         _pendingNavigation = '/alert/$alertId/comments';
