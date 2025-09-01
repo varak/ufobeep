@@ -323,8 +323,14 @@ class PushNotificationService {
 
   void _handleCommentNotification(RemoteMessage message) async {
     print('🔔 Handling comment notification');
-    final sightingId = message.data['sighting_id'];
-    final commentId = message.data['comment_id'];
+    print('🔔 Full message data: ${message.data}');
+    
+    // Handle various possible field names for sighting ID
+    final sightingId = message.data['sighting_id'] ?? 
+                       message.data['sightingId'] ?? 
+                       message.data['alert_id'] ?? 
+                       message.data['alertId'];
+    final commentId = message.data['comment_id'] ?? message.data['commentId'];
     
     if (sightingId != null) {
       print('🔔 Comment on sighting: $sightingId (comment ID: $commentId)');
@@ -337,20 +343,22 @@ class PushNotificationService {
       
       // Always trigger comments refresh for any listening screens
       // This is safe because only screens with registered listeners will refresh
+      print('🔔 Calling CommentsRefreshNotifier.notifyRefresh($sightingId)');
       CommentsRefreshNotifier.instance.notifyRefresh(sightingId);
-      print('🔄 Triggered CommentsRefreshNotifier for sighting $sightingId');
       
       // Refresh alerts to show new comment count
       try {
         final container = ProviderScope.containerOf(rootNavigatorKey.currentContext!);
         container.invalidate(alertByIdProvider(sightingId));
-        print('🔄 Refreshed alert $sightingId for new comment');
+        print('🔄 Refreshed alert provider for $sightingId');
       } catch (e) {
         print('❌ Could not refresh alert cache: $e');
       }
       
       // Navigate to comments (this will be ignored if user is already there)
       navigateToComments(sightingId);
+    } else {
+      print('⚠️ Comment notification missing sighting_id in data: ${message.data}');
     }
   }
 
@@ -816,10 +824,9 @@ class PushNotificationService {
         final commentsData = commentsResp.data;
         if (commentsData is Map && commentsData['items'] is List) {
           final comments = commentsData['items'] as List;
-          // Filter out the original description pseudo-comment (id: 0)
-          final realComments = comments.where((c) => c['id'] != 0).toList();
-          commentsExisted = realComments.isNotEmpty;
-          print('🔍 Comments existed before confirmation: $commentsExisted (${realComments.length} real comments)');
+          // Count ANY comment including description (id: 0) as conversation existing
+          commentsExisted = comments.isNotEmpty;
+          print('🔍 Comments/conversation existed before confirmation: $commentsExisted (${comments.length} total items including description)');
         }
       } catch (e) {
         print('⚠️ Could not check existing comments: $e');
@@ -990,14 +997,16 @@ class CommentsRefreshNotifier {
   CommentsRefreshNotifier._internal();
   static CommentsRefreshNotifier get instance => _instance;
   
-  final Map<String, List<VoidCallback>> _listeners = {};
+  final Map<String, Set<VoidCallback>> _listeners = {};
   
   void addListener(String sightingId, VoidCallback callback) {
-    _listeners[sightingId] ??= [];
-    _listeners[sightingId]!.add(callback);
+    print('📝 CommentsRefreshNotifier: addListener for sighting $sightingId');
+    (_listeners[sightingId] ??= <VoidCallback>{}).add(callback);
+    print('📝 CommentsRefreshNotifier: now ${_listeners[sightingId]!.length} listeners for $sightingId');
   }
   
   void removeListener(String sightingId, VoidCallback callback) {
+    print('📝 CommentsRefreshNotifier: removeListener for sighting $sightingId');
     _listeners[sightingId]?.remove(callback);
     if (_listeners[sightingId]?.isEmpty == true) {
       _listeners.remove(sightingId);
@@ -1006,15 +1015,26 @@ class CommentsRefreshNotifier {
   
   void notifyRefresh(String sightingId) {
     print('🔄 CommentsRefreshNotifier: notifying refresh for sighting $sightingId');
-    final callbacks = _listeners[sightingId];
-    if (callbacks != null) {
-      for (final callback in callbacks) {
-        callback();
-      }
-      print('🔄 CommentsRefreshNotifier: triggered ${callbacks.length} refresh callbacks');
-    } else {
-      print('🔄 CommentsRefreshNotifier: no listeners for sighting $sightingId');
+    final callbacks = List<VoidCallback>.from(_listeners[sightingId] ?? const []);
+    print('🔄 CommentsRefreshNotifier: found ${callbacks.length} listeners');
+    
+    if (callbacks.isEmpty) {
+      print('⚠️ CommentsRefreshNotifier: no listeners registered for sighting $sightingId');
+      print('⚠️ Current listener keys: ${_listeners.keys.toList()}');
+      return;
     }
+    
+    // Ensure callbacks run on the UI frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      print('🔄 CommentsRefreshNotifier: executing ${callbacks.length} callbacks on UI frame');
+      for (final callback in callbacks) {
+        try {
+          callback();
+        } catch (e, st) {
+          print('❌ CommentsRefreshNotifier callback error: $e\n$st');
+        }
+      }
+    });
   }
 }
 
