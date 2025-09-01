@@ -16,6 +16,7 @@ import '../../services/beep_service.dart';
 import '../../services/sound_service.dart';
 import '../../services/permission_service.dart';
 import '../../services/api_client.dart';
+import '../../services/comments_service.dart';
 import '../../services/ui_feedback.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../models/sensor_data.dart';
@@ -297,10 +298,9 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
         commentText += '$videoCount more ${videoCount == 1 ? 'video' : 'videos'}';
       }
       
-      // Use existing comment API
-      await ApiClient.instance.post('/alerts/$sightingId/comments', data: {
-        'body': commentText,
-      });
+      // Use existing comment service
+      final commentsService = CommentsService();
+      await commentsService.postComment(sightingId, commentText);
       
       debugPrint('Created media comment: $commentText');
     } catch (e) {
