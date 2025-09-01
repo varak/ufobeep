@@ -32,6 +32,7 @@ firebase-service-account-*.json
 ufobeep-service-account.json
 *.p8
 api/secrets/
+api/feeds/.secrets
 # Android local keystores (redundant but explicit)
 *.keystore
 *.jks

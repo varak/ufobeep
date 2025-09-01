@@ -142,6 +142,7 @@ def to_alert_dict(mufon_report: Dict[str, Any]) -> Dict[str, Any]:
         "occurred_at": mufon_report.get('occurred_at'),
         "title": title,
         "summary": mufon_report.get('summary', ''),
+        "description": mufon_report.get('summary', ''),  # For now, same as summary
         "city": mufon_report.get('city'),
         "state": mufon_report.get('state'),
         "country": mufon_report.get('country'),
