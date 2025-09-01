@@ -188,7 +188,11 @@ GoRouter appRouter(AppRouterRef ref) {
                 builder: (context, state) {
                   final extra = state.extra as Map<String, dynamic>?;
                   final description = extra?['description'] as String?;
-                  return CameraCaptureScreen(description: description);
+                  final attachToSightingId = extra?['attachToSightingId'] as String?;
+                  return CameraCaptureScreen(
+                    description: description,
+                    attachToSightingId: attachToSightingId,
+                  );
                 },
               ),
               // Beep Composition

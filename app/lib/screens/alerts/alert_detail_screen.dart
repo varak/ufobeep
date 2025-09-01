@@ -409,10 +409,12 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                   child: ElevatedButton.icon(
                     onPressed: () {
                       Navigator.pop(context);
-                      context.go('/beep?attachTo=$alertId');
+                      context.push('/beep/camera', extra: {
+                        'attachToSightingId': alertId,
+                      });
                     },
                     icon: const Icon(Icons.camera_alt),
-                    label: const Text('Take Photo'),
+                    label: const Text('From Camera'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.brandPrimary,
                       foregroundColor: Colors.black,

@@ -347,6 +347,18 @@ class AlertCard extends ConsumerWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
+          // Simple dot for recent activity (when comment count > 0)
+          if (alert.commentCount > 0) ...[
+            const SizedBox(width: 2),
+            Container(
+              width: 4,
+              height: 4,
+              decoration: const BoxDecoration(
+                color: AppColors.semanticSuccess,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ],
         ],
       ),
     );
