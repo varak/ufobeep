@@ -584,26 +584,32 @@ class AlertsService:
     async def _notify_original_reporter_of_confirmation(self, conn, sighting_id: str, witness_device_id: str, witness_count: int):
         """Send a beep notification to the original reporter when someone confirms their sighting"""
         try:
-            # Get the original reporter's device info
-            original_device = await conn.fetchrow("""
-                SELECT device_id, reporter_id 
+            # Get the original reporter's user ID
+            sighting_info = await conn.fetchrow("""
+                SELECT reporter_id 
                 FROM sightings 
                 WHERE id = $1
             """, uuid.UUID(sighting_id))
             
-            if not original_device or original_device['device_id'] == witness_device_id:
-                # No original device found, or same device confirming (shouldn't happen but just in case)
+            if not sighting_info or not sighting_info['reporter_id']:
+                print(f"⚠️ No reporter found for sighting {sighting_id}")
                 return
             
-            # Get the original device's FCM token
+            # Get the original reporter's device info from user ID
             device_info = await conn.fetchrow("""
                 SELECT push_token, device_id 
                 FROM devices 
-                WHERE device_id = $1 AND is_active = true
-            """, original_device['device_id'])
+                WHERE user_id = $1 AND is_active = true
+                ORDER BY updated_at DESC LIMIT 1
+            """, sighting_info['reporter_id'])
+            
+            if not device_info or device_info['device_id'] == witness_device_id:
+                # No device found, or same device confirming
+                print(f"⚠️ Original reporter device not found or same device confirming")
+                return
             
             if not device_info or not device_info['push_token']:
-                print(f"⚠️ Original reporter device {original_device['device_id']} has no FCM token")
+                print(f"⚠️ Original reporter device {device_info['device_id'] if device_info else 'unknown'} has no FCM token")
                 return
                 
             # Import FCM service to send notification
@@ -626,7 +632,7 @@ class AlertsService:
                 }
             )
             
-            print(f"✅ Sent confirmation beep to original reporter {original_device['device_id']}")
+            print(f"✅ Sent confirmation beep to original reporter {device_info['device_id']}")
             
         except Exception as e:
             print(f"❌ Failed to notify original reporter: {e}")
@@ -664,9 +670,8 @@ class AlertsService:
         try:
             # Get user info from device ID
             user_info = await conn.fetchrow("""
-                SELECT d.user_id, u.username 
+                SELECT d.user_id 
                 FROM devices d
-                JOIN users u ON d.user_id = u.id
                 WHERE d.device_id = $1 AND d.is_active = true
             """, device_id)
             
@@ -677,24 +682,16 @@ class AlertsService:
             # Add the confirmation comment
             comment_id = await conn.fetchval("""
                 INSERT INTO comments 
-                (sighting_id, user_id, username, content, created_at, updated_at)
-                VALUES ($1, $2, $3, $4, NOW(), NOW())
+                (sighting_id, user_id, body, created_at, updated_at)
+                VALUES ($1, $2, $3, NOW(), NOW())
                 RETURNING id
             """, 
                 uuid.UUID(sighting_id), 
                 user_info['user_id'], 
-                user_info['username'],
                 "I saw it too! ✅"
             )
             
-            # Update comment count on sighting
-            await conn.execute("""
-                UPDATE sightings 
-                SET comment_count = comment_count + 1 
-                WHERE id = $1
-            """, uuid.UUID(sighting_id))
-            
-            print(f"✅ Added confirmation comment {comment_id} for {user_info['username']} on sighting {sighting_id}")
+            print(f"✅ Added confirmation comment {comment_id} for user {user_info['user_id']} on sighting {sighting_id}")
             
         except Exception as e:
             print(f"❌ Failed to add confirmation comment: {e}")
