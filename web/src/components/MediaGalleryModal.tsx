@@ -111,20 +111,41 @@ export default function MediaGalleryModal({
       </div>
 
       {/* Media Display */}
-      <div className="flex-1 flex items-center justify-center p-6 relative">
+      <div className="flex-1 flex items-center justify-center p-6 relative overflow-auto">
         {isVideo ? (
           <video 
             src={getFullImageUrl(currentMedia)}
             controls
-            className="max-w-full max-h-full rounded-lg shadow-2xl"
+            className="max-w-[90vw] max-h-[70vh] rounded-lg shadow-2xl"
             autoPlay={false}
           />
         ) : (
-          <img 
-            src={getFullImageUrl(currentMedia)}
-            alt={`Media ${currentIndex + 1}`}
-            className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
-          />
+          <div className="relative group">
+            <img 
+              src={getFullImageUrl(currentMedia)}
+              alt={`Media ${currentIndex + 1}`}
+              className="max-w-[90vw] max-h-[70vh] object-contain rounded-lg shadow-2xl cursor-zoom-in transition-all duration-200"
+              onClick={(e) => {
+                // Toggle between fit-to-screen and actual size
+                const img = e.target as HTMLImageElement
+                if (img.classList.contains('max-w-[90vw]')) {
+                  img.classList.remove('max-w-[90vw]', 'max-h-[70vh]', 'cursor-zoom-in')
+                  img.classList.add('cursor-zoom-out')
+                  img.style.maxWidth = 'none'
+                  img.style.maxHeight = 'none'
+                } else {
+                  img.classList.add('max-w-[90vw]', 'max-h-[70vh]', 'cursor-zoom-in')
+                  img.classList.remove('cursor-zoom-out')
+                  img.style.maxWidth = ''
+                  img.style.maxHeight = ''
+                }
+              }}
+            />
+            {/* Zoom hint */}
+            <div className="absolute bottom-4 right-4 bg-black/70 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+              Click to zoom
+            </div>
+          </div>
         )}
 
         {/* Navigation Arrows */}
