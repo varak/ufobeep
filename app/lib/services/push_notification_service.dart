@@ -343,7 +343,7 @@ class PushNotificationService {
         
         // Check if user is already on comments screen FIRST, before navigating
         final currentLocation = GoRouter.of(rootNavigatorKey.currentContext!).routeInformationProvider.value.uri.toString();
-        if (currentLocation.contains('/alert/$sightingId/comments')) {
+        if (currentLocation.contains('/alerts/alert/$sightingId/comments')) {
           print('🔄 User already on comments screen - triggering refresh instead of navigation');
           // Trigger comments refresh via global notifier
           CommentsRefreshNotifier.instance.notifyRefresh(sightingId);
