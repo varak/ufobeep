@@ -66,9 +66,19 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
       
       final comments = await _commentsService.getComments(widget.sightingId);
       
+      // Auto-follow when viewing comments (so user gets notifications)
+      bool followSuccess = false;
+      try {
+        await _commentsService.followSighting(widget.sightingId);
+        followSuccess = true;
+      } catch (e) {
+        print('Auto-follow failed: $e');
+      }
+      
       setState(() {
         _comments = comments;
         _isLoading = false;
+        _isFollowing = followSuccess;
       });
     } catch (e) {
       setState(() {
