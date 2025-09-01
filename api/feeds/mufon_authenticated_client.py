@@ -6,7 +6,7 @@ import httpx
 from bs4 import BeautifulSoup
 from typing import List, Dict, Any, Optional, Tuple
 import hashlib
-from datetime import datetime
+from datetime import datetime, timedelta
 import asyncio
 import re
 from geopy.geocoders import Nominatim
