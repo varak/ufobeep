@@ -44,17 +44,6 @@ export default function MediaGalleryModal({
     }
   }, [isOpen])
 
-  if (!isOpen || !mediaFiles.length) return null
-
-  const currentMedia = mediaFiles[currentIndex]
-  const isVideo = currentMedia.type === 'video' || currentMedia.url?.toLowerCase().includes('.mp4')
-
-  const getFullImageUrl = (media: MediaFile) => {
-    return media.url?.startsWith('http') 
-      ? media.url 
-      : `https://api.ufobeep.com${media.url}`
-  }
-
   const goToPrevious = () => {
     setCurrentIndex(prev => prev > 0 ? prev - 1 : mediaFiles.length - 1)
   }
@@ -74,7 +63,18 @@ export default function MediaGalleryModal({
       document.addEventListener('keydown', handleKeyDown)
       return () => document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [isOpen, onClose])
+  }, [isOpen, onClose, goToPrevious, goToNext])
+
+  if (!isOpen || !mediaFiles.length) return null
+
+  const currentMedia = mediaFiles[currentIndex]
+  const isVideo = currentMedia.type === 'video' || currentMedia.url?.toLowerCase().includes('.mp4')
+
+  const getFullImageUrl = (media: MediaFile) => {
+    return media.url?.startsWith('http') 
+      ? media.url 
+      : `https://api.ufobeep.com${media.url}`
+  }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col animate-in fade-in duration-200">
