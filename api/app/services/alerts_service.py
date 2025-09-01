@@ -696,13 +696,13 @@ class AlertsService:
             print(f"✅ Added confirmation comment {comment_id} for user {user_info['username']} on sighting {sighting_id}")
             
             # Trigger notifications to all followers using the same system as regular comments
-            await self._send_comment_notifications(conn, sighting_id, user_info['user_id'], user_info['username'])
+            await self._send_comment_notifications(conn, sighting_id, user_info['user_id'], user_info['username'], comment_id)
             
         except Exception as e:
             print(f"❌ Failed to add confirmation comment: {e}")
             # Don't fail the confirmation if comment fails
     
-    async def _send_comment_notifications(self, conn, sighting_id: str, user_id: str, username: str):
+    async def _send_comment_notifications(self, conn, sighting_id: str, user_id: str, username: str, comment_id: int):
         """Send notifications to followers when a comment is added (same logic as comment router)"""
         try:
             # Get followers for this sighting (excluding the commenter)
@@ -722,6 +722,7 @@ class AlertsService:
                     body="I saw it too! ✅",
                     data={
                         "type": "comment",
+                        "comment_id": str(comment_id),
                         "sighting_id": sighting_id,
                     },
                 )
