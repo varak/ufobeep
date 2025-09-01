@@ -844,7 +844,23 @@ class PushNotificationService {
       // Emit extremely specific diagnostics to find the exact offender
       debugPrint('[SEEIT][EXC] $e');
       debugPrint('[SEEIT][STACK] $st');
-      print('❌ Failed to send witness confirmation: $e');
+      
+      // Extract clear error message from DioException
+      String errorMessage = 'Failed to send witness confirmation';
+      if (e is DioException && e.response?.data != null) {
+        try {
+          final errorData = e.response!.data;
+          if (errorData is Map) {
+            errorMessage = errorData['message'] ?? errorData['error'] ?? errorMessage;
+          } else if (errorData is String) {
+            errorMessage = errorData;
+          }
+        } catch (parseError) {
+          print('Could not parse error response: $parseError');
+        }
+      }
+      
+      print('❌ $errorMessage: $e');
       // Still navigate to comments even if confirmation fails - user expects to see their comment
       navigateToComments(sightingId);
     }
