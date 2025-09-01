@@ -63,18 +63,18 @@ export default function MediaGalleryModal({
     setCurrentIndex(prev => prev < mediaFiles.length - 1 ? prev + 1 : 0)
   }
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') onClose()
-    if (e.key === 'ArrowLeft') goToPrevious()
-    if (e.key === 'ArrowRight') goToNext()
-  }
-
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowLeft') goToPrevious()
+      if (e.key === 'ArrowRight') goToNext()
+    }
+
     if (isOpen) {
       document.addEventListener('keydown', handleKeyDown)
       return () => document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [isOpen])
+  }, [isOpen, onClose])
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col animate-in fade-in duration-200">

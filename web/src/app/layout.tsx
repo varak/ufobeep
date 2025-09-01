@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     default: 'UFOBeep - Real-time UFO Sighting Alerts',
     template: '%s | UFOBeep'
   },
-  description: 'Real-time UFO and anomaly sighting alerts with AR compass navigation, encrypted chat, and community verification. Report sightings, get instant notifications, and join the global network.',
+  description: 'Real-time UFO and anomaly sighting alerts with compass navigation, live comments, and community verification. Report sightings, get instant notifications, and join the global network.',
   keywords: ['UFO', 'sightings', 'alerts', 'anomaly', 'UAP', 'compass', 'navigation', 'community', 'reports'],
   authors: [{ name: 'UFOBeep Team' }],
   creator: 'UFOBeep',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: env.siteUrl,
     title: 'UFOBeep - Real-time UFO Sighting Alerts',
-    description: 'Real-time UFO and anomaly sighting alerts with AR compass navigation, encrypted chat, and community verification.',
+    description: 'Real-time UFO and anomaly sighting alerts with compass navigation, live comments, and community verification.',
     siteName: 'UFOBeep',
     images: [
       {
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'UFOBeep - Real-time UFO Sighting Alerts',
-    description: 'Report sightings, get instant alerts, navigate with AR compass. Join the global UFO sighting network.',
+    description: 'Report sightings, get instant alerts, navigate with compass. Join the global UFO sighting network.',
     images: ['/twitter-image.png'],
   },
   robots: {
