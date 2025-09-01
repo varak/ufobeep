@@ -35,13 +35,13 @@ async def list_comments(sighting_id: str, limit: int = 30) -> Dict[str, Any]:
     async with pool.acquire() as conn:
         # Fetch regular comments (newest first for current UI compatibility)
         rows = await conn.fetch(
-            "SELECT c.id, c.user_id, u.username, c.body, c.media_url, c.created_at FROM comments c JOIN users u ON c.user_id = u.id WHERE c.sighting_id=$1 ORDER BY c.created_at DESC LIMIT $2",
+            "SELECT c.id, c.user_id, u.username, c.body, c.media_url, c.created_at FROM comments c JOIN users u ON c.user_id = u.id WHERE c.sighting_id=$1::uuid ORDER BY c.created_at DESC LIMIT $2",
             sighting_id, limit
         )
         
         # Also fetch the original sighting description to show as first "comment"
         sighting = await conn.fetchrow(
-            "SELECT s.description, s.reporter_id, s.created_at, u.username FROM sightings s LEFT JOIN users u ON s.reporter_id = u.id WHERE s.id = $1",
+            "SELECT s.description, s.reporter_id, s.created_at, u.username FROM sightings s LEFT JOIN users u ON s.reporter_id = u.id WHERE s.id = $1::uuid",
             sighting_id
         )
         
