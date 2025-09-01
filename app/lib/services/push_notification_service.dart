@@ -344,10 +344,12 @@ class PushNotificationService {
         container.invalidate(alertByIdProvider(sightingId));
         print('🔄 Refreshed alert $sightingId for new comment');
         
-        // If user is already on comments screen, don't navigate away - just trigger refresh
+        // If user is already on comments screen, trigger refresh instead of navigating
         final currentLocation = GoRouter.of(rootNavigatorKey.currentContext!).routeInformationProvider.value.uri.toString();
         if (currentLocation.contains('/alert/$sightingId/comments')) {
-          print('🔄 User already on comments screen - skipping navigation, just playing sound');
+          print('🔄 User already on comments screen - triggering refresh instead of navigation');
+          // Trigger comments refresh via global notifier
+          CommentsRefreshNotifier.instance.notifyRefresh(sightingId);
           return; // Don't navigate away from comments screen
         }
       } catch (e) {
@@ -923,6 +925,41 @@ class PushNotificationService {
 
   void dispose() {
     // Clean up resources if needed
+  }
+}
+
+/// Global notifier to trigger comments screen refresh when needed
+class CommentsRefreshNotifier {
+  static final CommentsRefreshNotifier _instance = CommentsRefreshNotifier._internal();
+  factory CommentsRefreshNotifier() => _instance;
+  CommentsRefreshNotifier._internal();
+  static CommentsRefreshNotifier get instance => _instance;
+  
+  final Map<String, List<VoidCallback>> _listeners = {};
+  
+  void addListener(String sightingId, VoidCallback callback) {
+    _listeners[sightingId] ??= [];
+    _listeners[sightingId]!.add(callback);
+  }
+  
+  void removeListener(String sightingId, VoidCallback callback) {
+    _listeners[sightingId]?.remove(callback);
+    if (_listeners[sightingId]?.isEmpty == true) {
+      _listeners.remove(sightingId);
+    }
+  }
+  
+  void notifyRefresh(String sightingId) {
+    print('🔄 CommentsRefreshNotifier: notifying refresh for sighting $sightingId');
+    final callbacks = _listeners[sightingId];
+    if (callbacks != null) {
+      for (final callback in callbacks) {
+        callback();
+      }
+      print('🔄 CommentsRefreshNotifier: triggered ${callbacks.length} refresh callbacks');
+    } else {
+      print('🔄 CommentsRefreshNotifier: no listeners for sighting $sightingId');
+    }
   }
 }
 

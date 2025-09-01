@@ -8,6 +8,7 @@ import '../../widgets/comments/comment_composer.dart';
 import '../../theme/app_theme.dart';
 import '../../services/ui_feedback.dart';
 import '../../services/auth_repository.dart';
+import '../../services/push_notification_service.dart';
 
 class CommentsScreen extends ConsumerStatefulWidget {
   final String sightingId;
@@ -35,11 +36,15 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
     super.initState();
     _loadComments();
     WidgetsBinding.instance.addObserver(this);
+    // Listen for refresh notifications from push notifications
+    CommentsRefreshNotifier.instance.addListener(widget.sightingId, _loadComments);
   }
   
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    // Remove refresh listener
+    CommentsRefreshNotifier.instance.removeListener(widget.sightingId, _loadComments);
     super.dispose();
   }
   
