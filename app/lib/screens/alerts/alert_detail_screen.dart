@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:file_picker/file_picker.dart';
 
 import '../../providers/alerts_provider.dart';
 import '../../providers/app_state.dart';
@@ -344,6 +345,40 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     context.go(uri.toString());
   }
 
+  Future<void> _pickFromGalleryForAlert(String alertId) async {
+    try {
+      final FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.media,
+        allowMultiple: true, // Enable multiple file selection
+        withData: false,
+      );
+
+      if (result == null || result.files.isEmpty) {
+        return; // User cancelled
+      }
+
+      // Close the modal
+      Navigator.of(context).pop();
+
+      // Navigate to multi-file upload screen
+      context.push('/beep/multi-upload', extra: {
+        'files': result.files,
+        'alertId': alertId,
+      });
+
+    } catch (e) {
+      debugPrint('Error picking files: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to pick files: $e')),
+      );
+    }
+  }
+
+  void _refreshAlert() {
+    // Refresh the alert data after media upload
+    ref.refresh(alertByIdProvider(widget.alertId));
+  }
+
   void _showAddPhotosDialog(String alertId) {
     showModalBottomSheet(
       context: context,
@@ -374,10 +409,12 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                   child: ElevatedButton.icon(
                     onPressed: () {
                       Navigator.pop(context);
-                      context.go('/beep?attachTo=$alertId');
+                      context.push('/beep/camera', extra: {
+                        'attachToSightingId': alertId,
+                      });
                     },
                     icon: const Icon(Icons.camera_alt),
-                    label: const Text('Take Photo'),
+                    label: const Text('From Camera'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.brandPrimary,
                       foregroundColor: Colors.black,
@@ -388,9 +425,10 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: OutlinedButton.icon(
-                    onPressed: () {
+                    onPressed: () async {
                       Navigator.pop(context);
-                      context.go('/beep?attachTo=$alertId&source=gallery');
+                      // Directly open file picker instead of going to beep screen
+                      await _pickFromGalleryForAlert(alertId);
                     },
                     icon: const Icon(Icons.photo_library),
                     label: const Text('From Gallery'),

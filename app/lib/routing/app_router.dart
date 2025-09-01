@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:file_picker/file_picker.dart';
 
 import '../theme/app_theme.dart';
 import '../services/analytics_service.dart';
@@ -15,6 +16,7 @@ import '../screens/comments/comments_screen.dart';
 import '../screens/beep/beep_screen.dart';
 import '../screens/beep/beep_composition_screen.dart';
 import '../screens/beep/camera_capture_screen.dart';
+import '../screens/beep/multi_file_upload_screen.dart';
 import '../screens/compass/compass_screen.dart';
 import '../screens/map/map_screen.dart';
 import '../screens/profile/profile_screen.dart';
@@ -170,7 +172,14 @@ GoRouter appRouter(AppRouterRef ref) {
           GoRoute(
             path: '/beep',
             name: 'beep',
-            builder: (context, state) => const BeepScreen(),
+            builder: (context, state) {
+              final attachTo = state.uri.queryParameters['attachTo'];
+              final autoGallery = state.uri.queryParameters['autoGallery'] == 'true';
+              return BeepScreen(
+                attachToSightingId: attachTo,
+                autoOpenGallery: autoGallery,
+              );
+            },
             routes: [
               // Custom Camera (no approval modal)
               GoRoute(
@@ -179,7 +188,11 @@ GoRouter appRouter(AppRouterRef ref) {
                 builder: (context, state) {
                   final extra = state.extra as Map<String, dynamic>?;
                   final description = extra?['description'] as String?;
-                  return CameraCaptureScreen(description: description);
+                  final attachToSightingId = extra?['attachToSightingId'] as String?;
+                  return CameraCaptureScreen(
+                    description: description,
+                    attachToSightingId: attachToSightingId,
+                  );
                 },
               ),
               // Beep Composition
@@ -254,6 +267,7 @@ GoRouter appRouter(AppRouterRef ref) {
                       sensorData: extra?['sensorData'],
                       photoMetadata: extra?['photoMetadata'],
                       description: extra?['description'],
+                      attachToSightingId: extra?['attachToSightingId'],
                     );
                   } catch (e, stackTrace) {
                     debugPrint('ERROR creating BeepCompositionScreen: $e');
@@ -302,6 +316,29 @@ GoRouter appRouter(AppRouterRef ref) {
                       ),
                     );
                   }
+                },
+              ),
+              // Multi-file Upload Screen for existing alerts
+              GoRoute(
+                path: 'multi-upload',
+                name: 'multi-upload',
+                builder: (context, state) {
+                  final extra = state.extra as Map<String, dynamic>?;
+                  final files = extra?['files'] as List<PlatformFile>? ?? [];
+                  final alertId = extra?['alertId'] as String? ?? '';
+                  
+                  if (files.isEmpty || alertId.isEmpty) {
+                    return const Scaffold(
+                      body: Center(
+                        child: Text('Invalid upload parameters'),
+                      ),
+                    );
+                  }
+                  
+                  return MultiFileUploadScreen(
+                    files: files,
+                    alertId: alertId,
+                  );
                 },
               ),
             ],

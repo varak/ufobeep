@@ -26,7 +26,14 @@ import '../../providers/app_state.dart';
 import '../../widgets/beep_button.dart';
 
 class BeepScreen extends ConsumerStatefulWidget {
-  const BeepScreen({super.key});
+  final String? attachToSightingId;
+  final bool autoOpenGallery;
+  
+  const BeepScreen({
+    super.key, 
+    this.attachToSightingId,
+    this.autoOpenGallery = false,
+  });
 
   @override
   ConsumerState<BeepScreen> createState() => _BeepScreenState();
@@ -48,6 +55,14 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   void initState() {
     super.initState();
     _checkSensorAvailability();
+    
+    // Auto-open gallery if requested (for adding media to existing alerts)
+    if (widget.autoOpenGallery) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _pickFromGallery();
+      });
+    }
+    
     // Warm up native UI feedback
     UiFeedback.init();
   }
@@ -197,6 +212,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
           'sensorData': currentSensorData,
           'photoMetadata': fileData['photoMetadata'],
           'description': description,
+          'attachToSightingId': widget.attachToSightingId, // Pass through for existing alerts
         });
       } else {
         // Multiple files - handle upload directly
@@ -218,19 +234,26 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     String description
   ) async {
     try {
-      // Create sighting first (reuse existing beep service logic)
-      debugPrint('Creating sighting for ${mediaFiles.length} files...');
+      String sightingId;
       
-      // Use first file's location, or current location if no GPS in images
-      final beepResult = await beepService.sendBeep(
-        description: description.isNotEmpty ? description : null,
-        latitude: sensorData?.latitude,
-        longitude: sensorData?.longitude,
-        heading: sensorData?.azimuthDeg,
-      );
-      
-      final sightingId = beepResult['id'] as String;
-      debugPrint('Created sighting: $sightingId');
+      if (widget.attachToSightingId != null) {
+        // Adding to existing sighting
+        sightingId = widget.attachToSightingId!;
+        debugPrint('Adding ${mediaFiles.length} files to existing sighting: $sightingId');
+      } else {
+        // Create new sighting (existing logic)
+        debugPrint('Creating new sighting for ${mediaFiles.length} files...');
+        
+        final beepResult = await beepService.sendBeep(
+          description: description.isNotEmpty ? description : null,
+          latitude: sensorData?.latitude,
+          longitude: sensorData?.longitude,
+          heading: sensorData?.azimuthDeg,
+        );
+        
+        sightingId = beepResult['id'] as String;
+        debugPrint('Created sighting: $sightingId');
+      }
       
       // Upload all files to the sighting (reuse existing API)
       int uploadedCount = 0;
@@ -244,6 +267,13 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
         
         try {
           debugPrint('Uploading file ${i + 1}/${mediaFiles.length}: ${mediaFile.path}');
+          
+          // TODO: Add NSFW filter hook here
+          // final isContentSafe = await ContentModerationService.validateMedia(mediaFile);
+          // if (!isContentSafe) {
+          //   debugPrint('Content blocked by moderation filter');
+          //   continue; // Skip this file
+          // }
           
           await ApiClient.instance.uploadMediaToSighting(sightingId, mediaFile);
           
@@ -267,9 +297,15 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
         
         debugPrint('✅ Multi-file upload complete: $uploadedCount files uploaded');
         
-        // Navigate back to alerts (same as regular beep)
+        // Navigate appropriately based on context
         if (mounted) {
-          context.go('/alerts');
+          if (widget.attachToSightingId != null) {
+            // Return to the alert we added media to
+            context.go('/alert/${widget.attachToSightingId}');
+          } else {
+            // Navigate back to alerts (same as regular beep)
+            context.go('/alerts');
+          }
         }
       } else {
         setState(() {

@@ -15,8 +15,13 @@ import '../../models/sensor_data.dart';
 
 class CameraCaptureScreen extends StatefulWidget {
   final String? description;
+  final String? attachToSightingId;
   
-  const CameraCaptureScreen({super.key, this.description});
+  const CameraCaptureScreen({
+    super.key, 
+    this.description,
+    this.attachToSightingId,
+  });
 
   @override
   State<CameraCaptureScreen> createState() => _CameraCaptureScreenState();
@@ -239,6 +244,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
           'sensorData': sensorData,
           'photoMetadata': photoMetadata, // Pass comprehensive metadata for storage
           'description': widget.description, // Pass description from previous screen
+          'attachToSightingId': widget.attachToSightingId, // Pass alert ID for existing alert media
         });
       }
     } catch (e) {
@@ -345,6 +351,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
           'isVideo': true,
           'sensorData': sensorData,
           'description': widget.description,
+          'attachToSightingId': widget.attachToSightingId, // Pass alert ID for existing alert media
         });
       }
     } catch (e) {

@@ -309,6 +309,7 @@ class Alert {
       if (photoAnalysis != null) 'photo_analysis': photoAnalysis,
       'total_confirmations': totalConfirmations,
       'can_confirm_witness': canConfirmWitness,
+      'comment_count': commentCount,
     };
   }
 }
