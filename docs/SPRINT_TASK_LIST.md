@@ -19,6 +19,17 @@
 - **Files**: `main.dart`, Android manifest for intent filters
 - **Acceptance**: Share photo from gallery app → UFOBeep opens → creates beep
 
+### 2b. **Long-Press Quick Camera Capture** [Flutter] ⭐ NEW
+- **Feature**: Long-press app icon → quick camera capture → instant beep
+- **Use Case**: "I need to capture this NOW and beep it" without navigation
+- **Implementation**:
+  - Android app shortcut for quick camera access
+  - Direct camera screen launch bypassing main navigation
+  - One-tap capture and submit workflow
+  - Background location capture while camera is active
+- **Files**: `main.dart`, Android manifest shortcuts, camera screen
+- **Acceptance**: Long-press app icon → "Quick Beep" shortcut → camera opens → capture → auto-beeps with location
+
 ## 🟠 **PROFILE & SETTINGS ISSUES**
 
 ### 3. **DND/Quiet Hours Implementation** [Flutter + API]
@@ -145,7 +156,18 @@
 - **Configure**: Deployment automation
 - **Acceptance**: Push to main → APK auto-builds
 
-### 15. **Play Store Preparation** [Flutter]
+### 15. **NSFW Content Detection** [API + Flutter] ⭐ NEW
+- **Feature**: Automatic detection and filtering of inappropriate uploaded content
+- **Implementation**:
+  - Server-side image analysis using ML model (TensorFlow/PyTorch)
+  - Flag NSFW images before they reach other users
+  - Quarantine system for flagged content
+  - Admin review interface for false positives
+  - User reporting system for missed content
+- **Files**: API content moderation endpoints, upload pipeline
+- **Acceptance**: Upload inappropriate image → gets flagged → doesn't appear in public alerts
+
+### 16. **Play Store Preparation** [Flutter]
 - **Fix**: All critical bugs above
 - **Update**: App metadata and descriptions
 - **Generate**: Release signing keys

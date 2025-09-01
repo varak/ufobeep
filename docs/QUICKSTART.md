@@ -1,27 +1,31 @@
 # UFOBeep Quick Start
 
-## Project Structure
+**Last Updated**: September 1, 2025  
+**Current Status**: Pre-Play Store Sprint
+
+## 📁 Project Structure
 ```
 /home/mike/D/ufobeep/
 ├── api/          # FastAPI backend
 ├── app/          # Flutter mobile app  
 ├── web/          # Next.js web app
 ├── scripts/      # Deployment scripts
-├── docs/         # Documentation
+├── docs/         # Documentation (newly organized!)
 └── deploy.sh     # Main deployment script
 ```
 
-## Local Development
+## 🚀 Local Development
 
-### API
+### API Server
 ```bash
 cd api
 source venv/bin/activate
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload --port 8000
 # http://localhost:8000
+# Docs: http://localhost:8000/docs
 ```
 
-### Web
+### Web Application
 ```bash
 cd web
 npm install
@@ -29,67 +33,128 @@ npm run dev
 # http://localhost:3000
 ```
 
-### Mobile
+### Mobile App
 ```bash
 cd app
 flutter pub get
-flutter run
-# Or build APK:
-flutter build apk --release
+flutter run                    # Run on connected device
+flutter run -d all            # Run on all devices
+flutter build apk --release   # Build release APK
 ```
 
-## Production Deployment
+## 📦 Production Deployment
 
-### Quick Deploy
+### Quick Deploy Script
 ```bash
-./deploy.sh         # Deploy everything
-./deploy.sh api     # API only
-./deploy.sh web     # Web only
-./deploy.sh apk     # Mobile only
+./deploy.sh         # Deploy everything (recommended)
+./deploy.sh api     # API backend only
+./deploy.sh web     # Website only
+./deploy.sh apk     # Mobile APK to all devices
+./deploy.sh moto    # Deploy to Moto device only
+./deploy.sh tablet  # Deploy to tablet only  
+./deploy.sh pixel   # Deploy to Pixel only
 ```
 
 ### Production Services
 Both services managed by systemd:
-- API: `systemctl status ufobeep-api`
-- Web: `systemctl status ufobeep-web`
+```bash
+# API Service
+sudo systemctl status ufobeep-api
+sudo systemctl restart ufobeep-api
+sudo journalctl -u ufobeep-api -f
 
-### URLs
-- API: https://api.ufobeep.com
-- Web: https://ufobeep.com
-- APK: https://ufobeep.com/downloads/ufobeep-latest.apk
+# Web Service
+sudo systemctl status ufobeep-web
+sudo systemctl restart ufobeep-web
+sudo journalctl -u ufobeep-web -f
+```
 
-## SSH Access
+## 🌐 Production URLs
+- **API**: https://api.ufobeep.com
+- **Website**: https://ufobeep.com
+- **APK Download**: https://ufobeep.com/downloads/ufobeep-alpha.apk
+- **Admin**: https://ufobeep.com/admin
+
+## 🔑 SSH Access
 ```bash
 ssh -p 322 mike@ufobeep.com
+cd /home/ufobeep/ufobeep
 ```
 
-## Key Features
-- Real-time UFO alerts with location tracking
-- Multi-media evidence upload (photos/videos)
-- MUFON integration for reporting
-- Enrichment data (ISS, satellites, aircraft)
-- BlackSky satellite imagery (coming soon)
+## 📱 Device Testing
 
-## Testing Devices
-Multi-device testing setup:
+### Connected Devices
 ```bash
 adb devices
-# Expected devices:
-# HT75D0202593      device    (Moto - primary beep sender)
-# ZY22K6LB7J        device    (Pixel - comments viewer) 
+# Expected active devices:
+# HT75D0202593      device    (Moto - primary tester)
+# ZY22K6LB7J        device    (Pixel - secondary tester) 
 # Y5SSW8MZDIU45995  device    (Claude's Phone - witness tester)
-
-# Deploy to specific devices:
-./deploy.sh moto pixel claude
-./deploy.sh moto    # Single device
 ```
 
-## Documentation
-- [Master Plan](MASTER_PLAN_v16.md) - Current roadmap and features
-- [Endpoints](ENDPOINTS.md) - API documentation with recent fixes
-- [Comments System Fix](COMMENTS_SYSTEM_FIX.md) - Auto-refresh and navigation fixes
-- [Deployment](DEPLOYMENT.md) - Detailed deployment guide
-- [Authentication Fix](AUTHENTICATION_FIX.md) - Token persistence bug resolution
-- [Witness Confirmation Fix](WITNESS_CONFIRMATION_FIX.md) - Type safety fixes
-- [Contributing](CONTRIBUTING.md) - Git workflow
-- [CI](CI.md) - GitHub Actions setup
+### Deploy to Specific Devices
+```bash
+./deploy.sh moto pixel           # Multiple devices
+./deploy.sh moto                 # Single device
+adb -s HT75D0202593 install -r app/build/app/outputs/flutter-apk/app-debug.apk
+```
+
+## 🧪 Testing & Health Checks
+
+### API Health
+```bash
+# Local
+curl http://localhost:8000/health
+
+# Production
+curl https://api.ufobeep.com/health
+curl https://api.ufobeep.com/alerts?limit=5
+```
+
+### Flutter Testing
+```bash
+cd app
+flutter test
+flutter analyze
+flutter doctor
+```
+
+### Web Testing
+```bash
+cd web
+npm run lint
+npm run build
+```
+
+## 🗄️ Database Access
+```bash
+# Production (from SSH)
+PGPASSWORD=ufopostpass psql -h localhost -U ufobeep_user -d ufobeep_db
+
+# Common queries
+SELECT COUNT(*) FROM alerts;
+SELECT COUNT(*) FROM users;
+SELECT * FROM alerts ORDER BY created_at DESC LIMIT 5;
+```
+
+## 🔥 Current Sprint Focus
+1. **Multi-media upload bug** - Gallery allows multi-select but beep creation fails
+2. **Share-to-beep** - Test external app sharing
+3. **DND/Quiet hours** - Complete implementation
+4. **Language settings** - i18n support
+5. **Units settings** - Apply metric/imperial throughout app
+
+## 📚 Key Documentation
+- **[SPRINT_TASK_LIST.md](SPRINT_TASK_LIST.md)** - Active 5-week sprint plan
+- **[MASTER_PLAN_v16.md](MASTER_PLAN_v16.md)** - Current implementation status
+- **[ENDPOINTS.md](ENDPOINTS.md)** - API documentation
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Detailed deployment guide
+- **archive/completed_fixes/** - Resolved issues and fixes
+
+## 🎯 Play Store Readiness Checklist
+- [ ] Fix critical multi-media bug
+- [ ] Complete settings implementation
+- [ ] Test on multiple devices and Android versions
+- [ ] Generate release signing keys
+- [ ] Create store listings in multiple languages
+- [ ] Implement language-specific sharing platforms
