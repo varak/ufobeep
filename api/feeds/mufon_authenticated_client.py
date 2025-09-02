@@ -107,6 +107,12 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2, list_
             search_response = await client.post(search_db_url, data=search_params)
             print(f"POST search response status: {search_response.status_code}")
             
+            # Try direct access to MUFON search page
+            search_urls_to_try = [
+                "https://mufon.z2systems.com/np/clients/mufon/neonPage.jsp?pageId=19",
+                "https://mufon.app.neoncrm.com/np/clients/mufon/neonPage.jsp?pageId=19"
+            ]
+            
             search_response = None
             search_url = None
             
@@ -263,12 +269,7 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2, list_
             
         except Exception as e:
             print(f"Error performing CRM search: {e}")
-            
-            # Final fallback to public data
-            print("Final fallback to public endpoint...")
-            fallback_response = await client.get("https://mufoncms.com/last_20_public.html")
-            fallback_soup = BeautifulSoup(fallback_response.text, 'html.parser')
-            return await _parse_detailed_reports(fallback_soup, limit, client, list_only)
+            return []
 
 async def _parse_detailed_reports(soup: BeautifulSoup, limit: int, client: httpx.AsyncClient, list_only: bool = False) -> List[Dict[str, Any]]:
     """Parse detailed MUFON reports from HTML with full descriptions"""
