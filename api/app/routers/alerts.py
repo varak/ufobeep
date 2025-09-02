@@ -93,8 +93,7 @@ def format_alert_response(alert):
             "show_witness_count": False,
             "show_location_pin": False,
             "can_confirm_witness": False,
-            "comments_enabled": False,
-            "comment_count": 0  # Force comment count to 0 for MUFON alerts
+            "comments_enabled": False
         })
     
     return response
