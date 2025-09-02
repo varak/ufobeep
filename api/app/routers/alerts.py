@@ -73,7 +73,10 @@ def format_alert_response(alert):
         "photo_analysis": [],
         "total_confirmations": alert.witness_count,
         "can_confirm_witness": True,
-        "comment_count": getattr(alert, 'comment_count', 0)
+        "comment_count": getattr(alert, 'comment_count', 0),
+        "source": getattr(alert, 'source', None),
+        "occurred_at": alert.occurred_at.isoformat() if alert.occurred_at else None,
+        "external_url": getattr(alert, 'external_url', None)
     }
 
 # Alert endpoints
