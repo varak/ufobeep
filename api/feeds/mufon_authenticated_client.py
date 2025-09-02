@@ -102,13 +102,23 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2, list_
             for link in search_links:
                 print(f"  - '{link['text']}' → {link['href']}")
             
-            # Try to find and access the database search page
+            # Try to find and access the database search page - prioritize "Track UFOs"
             database_url = None
+            
+            # First priority: "Track UFOs" links
             for link in search_links:
-                if any(keyword in link['text'].lower() for keyword in ['search', 'database', 'track']):
+                if 'track ufo' in link['text'].lower():
                     database_url = link['full_url']
-                    print(f"Using database search URL: {database_url}")
+                    print(f"Using Track UFOs URL: {database_url}")
                     break
+            
+            # Second priority: other database/search links if Track UFOs not found
+            if not database_url:
+                for link in search_links:
+                    if any(keyword in link['text'].lower() for keyword in ['search database', 'database']):
+                        database_url = link['full_url']
+                        print(f"Using database search URL: {database_url}")
+                        break
             
             if not database_url:
                 print("❌ Could not find database search link on research page")
