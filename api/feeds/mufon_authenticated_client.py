@@ -13,7 +13,7 @@ from geopy.geocoders import Nominatim
 import os
 from urllib.parse import urljoin, urlparse
 
-async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2) -> List[Dict[str, Any]]:
+async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2, list_only: bool = False) -> List[Dict[str, Any]]:
     """
     Fetch detailed MUFON reports using authenticated CRM access
     Returns reports with full descriptions and enhanced data
@@ -256,9 +256,9 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2) -> Li
                 results_soup = search_soup
             
             # Parse the results
-            reports = await _parse_detailed_reports(results_soup, limit, client)
+            reports = await _parse_detailed_reports(results_soup, limit, client, list_only)
             
-            print(f"Successfully parsed {len(reports)} detailed reports from CRM search")
+            print(f"Successfully parsed {len(reports)} {'basic' if list_only else 'detailed'} reports from CRM search")
             return reports
             
         except Exception as e:
@@ -268,9 +268,9 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2) -> Li
             print("Final fallback to public endpoint...")
             fallback_response = await client.get("https://mufoncms.com/last_20_public.html")
             fallback_soup = BeautifulSoup(fallback_response.text, 'html.parser')
-            return await _parse_detailed_reports(fallback_soup, limit, client)
+            return await _parse_detailed_reports(fallback_soup, limit, client, list_only)
 
-async def _parse_detailed_reports(soup: BeautifulSoup, limit: int, client: httpx.AsyncClient) -> List[Dict[str, Any]]:
+async def _parse_detailed_reports(soup: BeautifulSoup, limit: int, client: httpx.AsyncClient, list_only: bool = False) -> List[Dict[str, Any]]:
     """Parse detailed MUFON reports from HTML with full descriptions"""
     reports = []
     
@@ -287,11 +287,12 @@ async def _parse_detailed_reports(soup: BeautifulSoup, limit: int, client: httpx
             try:
                 cells = row.find_all('td')
                 if len(cells) >= 6:
-                    report = await _parse_enhanced_row(cells, i, client)
+                    report = await _parse_enhanced_row(cells, i, client, list_only)
                     if report:
                         reports.append(report)
-                        # Rate limiting for geocoding and media processing
-                        await asyncio.sleep(0.5)
+                        # Rate limiting only needed for detailed processing
+                        if not list_only:
+                            await asyncio.sleep(0.5)
             except Exception as e:
                 print(f"Error parsing row {i}: {e}")
                 continue
@@ -321,7 +322,7 @@ async def _parse_detailed_reports(soup: BeautifulSoup, limit: int, client: httpx
     
     return reports
 
-async def _parse_enhanced_row(cells, row_index: int, client: httpx.AsyncClient) -> Optional[Dict[str, Any]]:
+async def _parse_enhanced_row(cells, row_index: int, client: httpx.AsyncClient, list_only: bool = False) -> Optional[Dict[str, Any]]:
     """Parse enhanced table row with full descriptions"""
     try:
         # Enhanced MUFON structure - extract all available data
@@ -349,11 +350,16 @@ async def _parse_enhanced_row(cells, row_index: int, client: httpx.AsyncClient) 
         # Parse date
         occurred_at = _parse_mufon_date(date_str)
         
-        # Geocode location for coordinates
-        lat, lon = await _geocode_location(city, state, country)
-        
-        # Extract and download media attachments
-        media_files = await _extract_and_download_media(cells, case_num, client)
+        # Skip heavy operations in list-only mode
+        if list_only:
+            lat, lon = None, None
+            media_files = []
+        else:
+            # Geocode location for coordinates
+            lat, lon = await _geocode_location(city, state, country)
+            
+            # Extract and download media attachments
+            media_files = await _extract_and_download_media(cells, case_num, client)
         
         return {
             "case_number": case_num,
@@ -623,6 +629,87 @@ def _clean_mufon_location(city: str, state: str, country: str) -> tuple[str, str
         city = state
     
     return city.strip() if city else "", state.strip() if state else "", country.strip()
+
+async def fetch_individual_case(case_number: str) -> Optional[Dict[str, Any]]:
+    """
+    Fetch individual MUFON case by case number from CMS with full details and media
+    """
+    # Credentials from secrets
+    username = "varak"
+    password = "ufobeep123pass"
+    
+    async with httpx.AsyncClient(follow_redirects=True, timeout=30.0) as client:
+        # Step 1: Login to CRM
+        print(f"Authenticating to MUFON CMS for case {case_number}...")
+        
+        login_page = await client.get("https://mufon.app.neoncrm.com/np/clients/mufon/login.jsp")
+        soup = BeautifulSoup(login_page.text, 'html.parser')
+        
+        # Find login form
+        login_form = None
+        for form in soup.find_all('form'):
+            if form.get('action') and 'signIn.do' in form.get('action'):
+                login_form = form
+                break
+        
+        if not login_form:
+            print("❌ Login form not found")
+            return None
+        
+        # Extract form data for login
+        form_data = {}
+        for inp in login_form.find_all('input'):
+            name = inp.get('name')
+            value = inp.get('value', '')
+            if name:
+                if name == 'loginName':
+                    form_data[name] = username
+                elif name == 'loginPassword':
+                    form_data[name] = password
+                else:
+                    form_data[name] = value
+        
+        # Perform login
+        login_response = await client.post("https://mufon.app.neoncrm.com/np/security/signIn.do", data=form_data)
+        
+        if "accountHome.do" not in str(login_response.url):
+            print("❌ Authentication failed")
+            return None
+        
+        print("✅ Successfully authenticated to MUFON CMS")
+        
+        # Step 2: Search for specific case by case number
+        try:
+            search_db_url = "https://mufon.z2systems.com/np/clients/mufon/neonPage.jsp"
+            
+            # Search for specific case by case number
+            search_params = {
+                'pageId': '19',
+                'choice': 'search',
+                'case_number': case_number,
+                'id': case_number
+            }
+            
+            print(f"Searching CMS for case number: {case_number}")
+            
+            # Try direct search for case
+            search_response = await client.get(search_db_url, params=search_params)
+            if search_response.status_code == 200:
+                search_soup = BeautifulSoup(search_response.text, 'html.parser')
+                
+                # Parse the specific case with full details (not list_only)
+                reports = await _parse_detailed_reports(search_soup, 1, client, list_only=False)
+                
+                if reports and len(reports) > 0:
+                    print(f"✅ Found detailed case {case_number}")
+                    return reports[0]
+            
+            print(f"❌ Could not find case {case_number} in CMS")
+            return None
+            
+        except Exception as e:
+            print(f"Error searching for case {case_number}: {e}")
+            return None
 
 def to_alert_dict(mufon_report: Dict[str, Any]) -> Dict[str, Any]:
     """Convert enhanced MUFON report to sighting/alert format"""

@@ -16,8 +16,8 @@ async def get_case_list() -> List[Dict[str, Any]]:
         
         print("Fetching MUFON case list (basic info only)...")
         
-        # Get basic reports but don't process detailed content
-        reports = await fetch_authenticated_reports(limit=10, days_back=2)
+        # Use list_only mode to get basic info quickly without heavy processing
+        reports = await fetch_authenticated_reports(limit=20, days_back=2, list_only=True)
         
         if not reports:
             print("⚠️ No reports returned from MUFON CMS")
@@ -26,14 +26,22 @@ async def get_case_list() -> List[Dict[str, Any]]:
         # Just return basic case info for the list
         cases = []
         for report in reports:
-            case_id = report.get("case_number") or report.get("id") or "unknown"
+            case_id = report.get("case_number") or report.get("id") or str(len(cases) + 1)
             cases.append({
                 "case_id": str(case_id),
                 "title": report.get("summary", "")[:100] or f"Case {case_id}",
                 "location": f"{report.get('city', '')}, {report.get('state', '')}".strip(", "),
-                "date": report.get("occurred_date_time", ""),
+                "date": report.get("date_str", ""),
                 "shape": report.get("shape", ""),
-                "report_data": report  # Keep full report for individual processing
+                "basic_data": {
+                    "case_number": case_id,
+                    "city": report.get("city", ""),
+                    "state": report.get("state", ""),
+                    "country": report.get("country", ""),
+                    "summary": report.get("summary", ""),
+                    "occurred_at": report.get("occurred_at", ""),
+                    "date_str": report.get("date_str", "")
+                }
             })
         
         print(f"✅ Found {len(cases)} MUFON cases (basic list)")
@@ -49,46 +57,63 @@ def extract_case_id_from_url(url: str) -> str:
     return match.group(1) if match else url.split('/')[-1]
 
 async def get_case_details(case_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-    """Get full details for a single MUFON case from authenticated CMS data"""
+    """Get full details for a single MUFON case by fetching from CMS individually"""
     try:
-        report = case_data.get("report_data", {})
         case_id = case_data.get("case_id")
+        basic_data = case_data.get("basic_data", {})
         
-        print(f"Processing MUFON case {case_id}")
+        print(f"Fetching detailed MUFON case {case_id} from CMS...")
         
-        # Build enhanced case data from authenticated CMS
+        # Use individual case fetching from authenticated client
+        from feeds.mufon_authenticated_client import fetch_individual_case
+        
+        detailed_report = await fetch_individual_case(case_id)
+        
+        if not detailed_report:
+            print(f"❌ Could not fetch detailed case {case_id}, using basic data")
+            # Fall back to basic data
+            enhanced_case = {
+                "case_id": case_id,
+                "title": f"MUFON Case {case_id}: {basic_data.get('summary', '')[:100]}",
+                "description": basic_data.get("summary", ""),
+                "location": f"{basic_data.get('city', '')}, {basic_data.get('state', '')}".strip(", "),
+                "occurred_at": basic_data.get("occurred_at", ""),
+                "reported_at": basic_data.get("date_str", ""),
+                "shape": basic_data.get("shape", ""),
+                "duration": basic_data.get("duration", ""),
+                "media_urls": [],
+                "raw_report": basic_data
+            }
+            return enhanced_case
+        
+        # Extract media URLs from detailed report
+        media_urls = []
+        if detailed_report.get("media_files"):
+            for media_file in detailed_report["media_files"]:
+                if isinstance(media_file, dict) and media_file.get("url"):
+                    media_urls.append(media_file["url"])
+                elif isinstance(media_file, str):
+                    media_urls.append(media_file)
+        
+        # Build enhanced case data from detailed CMS fetch
         enhanced_case = {
             "case_id": case_id,
-            "title": report.get("summary", "")[:200] or f"MUFON Case {case_id}",
-            "description": report.get("summary", "") or "",
-            "location": f"{report.get('city', '')}, {report.get('state', '')}".strip(", "),
-            "occurred_at": report.get("occurred_date_time", ""),
-            "reported_at": report.get("date_submitted", ""),
-            "shape": report.get("shape", ""),
-            "duration": report.get("duration", ""),
-            "media_urls": [],
-            "raw_report": report
+            "title": f"MUFON Case {case_id}: {detailed_report.get('summary', '')[:100]}",
+            "description": detailed_report.get("long_description") or detailed_report.get("summary", ""),
+            "location": f"{detailed_report.get('city', '')}, {detailed_report.get('state', '')}".strip(", "),
+            "occurred_at": detailed_report.get("occurred_at", ""),
+            "reported_at": detailed_report.get("date_str", ""),
+            "shape": detailed_report.get("shape", ""),
+            "duration": detailed_report.get("duration", ""),
+            "media_urls": media_urls,
+            "raw_report": detailed_report
         }
         
-        # Try to get media from CMS if available
-        media_fields = ['media_url', 'image_url', 'photo_url', 'attachment_url']
-        for field in media_fields:
-            if report.get(field):
-                enhanced_case["media_urls"].append(report[field])
-        
-        # Check for media in nested objects or arrays
-        if isinstance(report.get('media'), list):
-            for media in report['media']:
-                if isinstance(media, dict) and media.get('url'):
-                    enhanced_case["media_urls"].append(media['url'])
-                elif isinstance(media, str):
-                    enhanced_case["media_urls"].append(media)
-        
-        print(f"Case {case_id}: Found {len(enhanced_case['media_urls'])} media files from CMS data")
+        print(f"✅ Case {case_id}: Found {len(media_urls)} media files from detailed CMS data")
         return enhanced_case
         
     except Exception as e:
-        print(f"Error processing case data: {e}")
+        print(f"Error processing case {case_data.get('case_id')}: {e}")
         return None
 
 async def process_case_media(pool: asyncpg.Pool, sighting_id: str, media_urls: List[str]) -> Dict[str, Any]:
