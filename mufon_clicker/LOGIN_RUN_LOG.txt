@@ -1,0 +1,5 @@
+Logged in via generic.
+BLOCKED: Cannot reach Database Search: Locator.click: Timeout 4000ms exceeded.
+Call log:
+  - waiting for get_by_text(re.compile(r"database\s*search|search", re.IGNORECASE)).first
+

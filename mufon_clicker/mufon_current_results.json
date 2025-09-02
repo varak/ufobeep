@@ -1,0 +1,57 @@
+{
+  "timestamp": "2025-09-02T03:30:00.000000",
+  "url": "https://mufoncms.com/last_20_public.html",
+  "title": "MUFON Current Cases",
+  "total_cases": 2,
+  "cases": [
+    {
+      "Case_Number": "143963",
+      "Date_Submitted": "2025-09-02",
+      "DateTime_Event": "2025-08-06",
+      "Short_Description": "Metallic or solid sphere - mid air object",
+      "Long_Description": "",
+      "Location": "County Line",
+      "Attachments": "20250806210644.jpg\n20250806210641.jpg\n20250806211300.jpg\n20250806211414.mp4\n20250806211527.jpg\n20250806224139.jpg\n20250806224005.jpg",
+      "Attachments_media": [
+        {
+          "filename": "20250806210644.jpg",
+          "url": "http://mufoncms.com/cgi-bin/ffplay.pl?file=143963_submitter_file_20250806210644.jpg"
+        },
+        {
+          "filename": "20250806210641.jpg",
+          "url": "http://mufoncms.com/cgi-bin/ffplay.pl?file=143963_submitter_file_20250806210641.jpg"
+        },
+        {
+          "filename": "20250806211300.jpg",
+          "url": "http://mufoncms.com/cgi-bin/ffplay.pl?file=143963_submitter_file_20250806211300.jpg"
+        },
+        {
+          "filename": "20250806211414.mp4",
+          "url": "http://mufoncms.com/cgi-bin/ffplay.pl?file=143963_submitter_file_20250806211414.mp4"
+        },
+        {
+          "filename": "20250806211527.jpg",
+          "url": "http://mufoncms.com/cgi-bin/ffplay.pl?file=143963_submitter_file_20250806211527.jpg"
+        },
+        {
+          "filename": "20250806224139.jpg",
+          "url": "http://mufoncms.com/cgi-bin/ffplay.pl?file=143963_submitter_file_20250806224139.jpg"
+        },
+        {
+          "filename": "20250806224005.jpg",
+          "url": "http://mufoncms.com/cgi-bin/ffplay.pl?file=143963_submitter_file_20250806224005.jpg"
+        }
+      ]
+    },
+    {
+      "Case_Number": "143962",
+      "Date_Submitted": "2025-09-02",
+      "DateTime_Event": "2025-08-31",
+      "Short_Description": "Multiple orb shape objects",
+      "Long_Description": "",
+      "Location": "Currituck County",
+      "Attachments": "",
+      "Attachments_media": []
+    }
+  ]
+}

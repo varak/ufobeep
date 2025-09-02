@@ -14,7 +14,7 @@ def import_mufon_cases():
     """Import MUFON cases using existing alert endpoints"""
     
     # Load extracted MUFON data
-    data_file = Path("mufon_working_results.json")
+    data_file = Path("mufon_classified_results.json")
     if not data_file.exists():
         print("❌ No MUFON data file found")
         return
@@ -24,7 +24,7 @@ def import_mufon_cases():
     
     print(f"📊 Processing {mufon_data['total_cases']} MUFON cases...")
     
-    base_url = "http://localhost:8000"
+    base_url = "https://api.ufobeep.com"
     imported_count = 0
     classifier = UFOClassifier()  # Initialize UFO classifier
     
@@ -131,7 +131,6 @@ def import_mufon_cases():
             # Do reverse geocoding to get proper location name
             geocoding_data = {}
             try:
-                import requests
                 geocode_url = f"https://nominatim.openstreetmap.org/reverse"
                 params = {
                     'lat': lat,
@@ -226,8 +225,12 @@ def import_mufon_cases():
             
             print(f"Creating alert: {alert_data['title']}")
             
-            # Create the alert
-            response = requests.post(f"{base_url}/alerts", json=alert_data)
+            # Create the alert - MUFON imports bypass auth
+            headers = {
+                'Content-Type': 'application/json',
+                'X-Import-Source': 'mufon'  # Special header for imports
+            }
+            response = requests.post(f"{base_url}/alerts", json=alert_data, headers=headers)
             
             if response.status_code in [200, 201]:
                 alert = response.json()

@@ -1,0 +1,325 @@
+<html><head>
+	<title>NEW SERVER CMS - LOGIN</title>
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="-1">
+
+	
+<script type="text/javascript">
+     function chk_match()
+     {
+          var d = document.pwd_chk;
+
+          var p1 = d.new_password.value;
+          var p2 = d.new_password2.value;
+          var pwd = d.password.value;
+          var pwd_old = d.password_old.value;
+          var lp1 = p1.length;
+          var lp2 = p2.length;
+
+          if (p1) { document.getElementById("mark2").innerHTML = ""; }
+
+
+          // Test for invalid characters ', [space], and "
+          var patt1 = /[ ]/g;
+
+          var result = p1.match(patt1);
+          if (result) {
+               document.getElementById("mark2").innerHTML = "<font size='+0' color='#FF0000'><b><span style='background-color: #FFFF00'>Invalid Character: No Spaces</span></b></font>";
+               p1 = p1.slice(0,p1.length-1);
+               var d = document.pwd_chk;
+               d.new_password.value = p1;
+               document.getElementById("new_password").focus();
+               // var clr = setTimeout(clear_msg, 4000);
+               return;
+          }
+
+          var result = p2.match(patt1);
+          if (result) {
+               document.getElementById('mark').innerHTML = "<font size='+0' color='#FF0000'><b><span style='background-color: #FFFF00'>Invalid Character: No Spaces</span></b></font>";
+               p2 = p2.slice(0,p2.length-1);
+               var d = document.pwd_chk;
+               d.new_password2.value = p2;
+               document.getElementById('new_password2').focus();
+               // var clr = setTimeout(clear_msg, 4000);
+               return;
+          }
+
+          var patt1 = /[']/g;
+
+          var result = p1.match(patt1);
+          if (result) {
+               document.getElementById("mark2").innerHTML = "<font size='+0' color='#FF0000'><b><span style='background-color: #FFFF00'>Invalid Character: No Apostrophies</span></b></font>";
+               p1 = p1.slice(0,p1.length-1);
+               var d = document.pwd_chk;
+               d.new_password.value = p1;
+               document.getElementById("new_password").focus();
+               // var clr = setTimeout(clear_msg, 4000);
+               return;
+          }
+
+          var result = p2.match(patt1);
+          if (result) {
+               document.getElementById('mark').innerHTML = "<font size='+0' color='#FF0000'><b><span style='background-color: #FFFF00'>Invalid Character: No Apostrophies</span></b></font>";
+               p2 = p2.slice(0,p2.length-1);
+               var d = document.pwd_chk;
+               d.new_password2.value = p2;
+               document.getElementById('new_password2').focus();
+               // var clr = setTimeout(clear_msg, 4000);
+               return;
+          }
+
+          var patt1 = /["]/g;
+
+          var result = p1.match(patt1);
+          if (result) {
+               document.getElementById("mark2").innerHTML = "<font size='+0' color='#FF0000'><b><span style='background-color: #FFFF00'>Invalid Character: No Quotation Marks</span></b></font>";
+               p1 = p1.slice(0,p1.length-1);
+               var d = document.pwd_chk;
+               d.new_password.value = p1;
+               document.getElementById("new_password").focus();
+               // var clr = setTimeout(clear_msg, 4000);
+               return;
+          }
+
+          var result = p2.match(patt1);
+          if (result) {
+               document.getElementById('mark').innerHTML = "<font size='+0' color='#FF0000'><b><span style='background-color: #FFFF00'>Invalid Character: No Quotation Marks</span></b></font>";
+               p2 = p2.slice(0,p2.length-1);
+               var d = document.pwd_chk;
+               d.new_password2.value = p2;
+               document.getElementById('new_password2').focus();
+               // var clr = setTimeout(clear_msg, 4000);
+               return;
+          }
+
+
+          if (p1 == '')
+          {
+               // document.getElementById('mark2').innerHTML = "<font size='+0' color='#FF0000'><b><span style='background-color: #FFFF00'>You must supply a password</span></b></font>";
+               document.getElementById('submit').disabled = true;
+               document.getElementById('new_password').focus();
+             //  var clr = setTimeout(clear_msg, 4000);
+               return;
+          }
+          else if (p1 == pwd || p1 == pwd_old)
+          {
+               document.getElementById('mark2').innerHTML = "<font size='+0' color='#FF0000'><b><span style='background-color: #FFFF00'>New password must be different from your current and last password</span></b></font>";
+               document.getElementById('submit').disabled = true;
+               document.getElementById('new_password').focus();
+             //  var clr = setTimeout(clear_msg, 4000);
+               return;
+          }
+          else if (p1 == p2)
+          {
+               document.getElementById("msg").innerHTML = "<font size='+0' color='#FFFFFF'><b><span style='background-color: #008000'>Passwords match! Press SUBMIT to enter CMS</span></b></font>";
+               document.getElementById("mark").innerHTML = "";
+               document.getElementById("mark2").innerHTML = "";
+               document.getElementById("submit").disabled = false;
+               return;
+          }
+          else if (p1 != p2 && lp2 >= lp1)
+          {
+               document.getElementById("mark").innerHTML = "<font size='+0' color='#FF0000'><b><span style='background-color: #FFFF00'>Passwords do not match</span></b></font>";
+               document.getElementById("submit").disabled = true;
+               return;
+          }
+          else
+          {
+               document.getElementById("mark").innerHTML = "";
+               document.getElementById("mark2").innerHTML = "";
+               document.getElementById("msg").innerHTML = "";
+               document.getElementById("submit").disabled = true;
+               // clearTimeout(clr);
+               return;
+          }
+     }
+
+     function chk_len()
+     {
+          var d = document.pwd_chk;
+          var p1 = d.new_password.value;
+          var lp1 = p1.length;
+          var result = '';
+
+          if (lp1 < 7)
+          {
+               document.getElementById("mark2").innerHTML = "<font size='+0' color='#FF0000'><b>Password must be at least 7 characters</b></font>";
+               document.getElementById("new_password").focus();
+               return;
+          }
+
+          var patt1 = /[0-9]/;
+
+          result = p1.match(patt1);
+          if (!result) {
+               document.getElementById("mark2").innerHTML = "<font size='+0' color='#FF0000'><b>Password requires at least one(1) number</b></font>";
+               document.getElementById("new_password").focus();
+               return;
+          }
+
+          var patt1 = /[A-z]/;
+
+          result = p1.match(patt1);
+          if (!result) {
+               document.getElementById("mark2").innerHTML = "<font size='+0' color='#FF0000'><b>Password requires at least one(1) letter</b></font>";
+               document.getElementById("new_password").focus();
+               return;
+          }
+
+
+     }
+
+     function set_type()
+     {
+          var x = document.getElementById("Type").checked;
+
+          if (x == true)
+          {
+               document.getElementById("new_password").setAttribute("type", "text");
+               document.getElementById("new_password2").setAttribute("type", "text");
+          }
+          else
+          {
+               document.getElementById("new_password").setAttribute("type", "password");
+               document.getElementById("new_password2").setAttribute("type", "password");
+          }
+     }
+
+     function changeUsername()
+     {
+          var x = document.getElementById("usrnm").checked;
+
+          if (x == true)
+          {
+               document.getElementById("uname").disabled = false;
+          }
+          else
+          {
+               document.getElementById("uname").disabled = true;
+          }
+     }
+
+     function reset_form()
+     {
+               document.getElementById("mark").innerHTML = "";
+               document.getElementById("msg").innerHTML = "";
+               document.getElementById("mark2").innerHTML = "";
+               // document.getElementById("sub_button").innerHTML = "";
+               document.getElementById("submit").disabled = true;
+               document.getElementById("new_password").focus();
+               return;
+     }
+
+     function clear_msg()
+     {
+               document.getElementById("mark").innerHTML = "";
+               document.getElementById("msg").innerHTML = "";
+               document.getElementById("mark2").innerHTML = "";
+               return;
+     }
+
+
+</script>
+  </head>
+  <body>
+  
+<style type="text/css">
+body {
+     /* background: #EDEDED; */
+     background: #BDC7D2;
+     font-family: arial, helvetica, sans-serif;
+     font-size: 12px;
+     }
+
+h2 {
+   font-family: arial, helvetica, sans-serif;
+   font-size: 16px;
+}
+
+.button {
+	position: relative; left:1px;
+	padding: 1px 0.1em;
+	border: 1px solid #66819A;
+	font-size: 9px;
+	text-decoration: none;
+	background: #AFC8DF;
+	color: black;
+	}
+
+.button_large {
+	position: relative; left:1px;
+	padding: 1px 0.1em;
+	border: 1px solid #66819A;
+	font-size: 18px;
+	text-decoration: none;
+	background: #AFC8DF;
+	color: black;
+	}
+
+.hlp_button {
+	position: relative; left:1px;
+	padding: 2px 0.1em;
+	border: 1px solid #66819A;
+	font-size: 10px;
+	text-decoration: none;
+	background: #008000;
+	color: #FFFFFF;
+	}
+
+table {
+	border: 1px solid #66819A;
+    border-collapse: collapse;
+	background: #66819A;
+    font-family: arial, helvetica, sans-serif;
+ 	font-size: 12px;
+	}
+
+table.noborder {
+	border: none;
+    border-collapse: collapse;
+	background: #66819A;
+    font-family: arial, helvetica, sans-serif;
+ 	font-size: 12px;
+	}
+
+td.legend {
+	background: #FFFFFF;
+	}
+
+th {
+     background: #CADDEC;
+     border: 1px solid #66819A;
+   }
+
+td {
+     border: 1px solid #66819A;
+   }
+
+tr {
+     background: #AFC8DF;
+	}
+
+tr.underline {
+    border-collapse: collapse;
+    border-bottom: 1px solid #66819A;'>
+}
+
+A:link {color: black};
+A:visited {color: black};
+A:active {color: black};
+
+</style>
+
+  <center>
+  <h2>MUFON Case Management System - LOGIN SCREEN</h2>
+  <!-- form name='pwd_chk' -->
+  <table cellpadding="2" cellspacing="1" width="50%">
+  <tbody><tr>
+    <td><font color="#FF0000" size="+1">ATTENTION! </font><br><br>
+     Login failed!<br>Username or Password is incorrect.
+    </td>
+  </tr></tbody></table>
+  <input type="button" class="button" onmouseover="this.style.background='#CADDEC'" onmouseout="this.style.background='#AFC8DF'" value="BACK" onclick="location.href='login.pl'" style="">
+  <!-- /form -->
+</center></body></html>
