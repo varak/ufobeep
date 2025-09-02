@@ -43,7 +43,7 @@ async def get_db():
 
 def format_alert_response(alert):
     """Format alert data for API response"""
-    return {
+    response = {
         "id": alert.id,
         "title": alert.title,
         "description": alert.description,
@@ -78,6 +78,26 @@ def format_alert_response(alert):
         "occurred_at": alert.occurred_at.isoformat() if alert.occurred_at else None,
         "external_url": getattr(alert, 'external_url', None)
     }
+    
+    # Add MUFON-specific UI widget hiding for frontend
+    if getattr(alert, 'source', None) == "mufon":
+        response.update({
+            "hide_witness_section": True,
+            "hide_witness_widget": True,
+            "hide_location_widget": True,
+            "hide_time_modal": True,
+            "disable_time_pin": True,
+            "hide_map_widget": True,
+            "hide_map_section": True,
+            "show_map": False,
+            "show_witness_count": False,
+            "show_location_pin": False,
+            "can_confirm_witness": False,
+            "comments_enabled": False,
+            "comment_count": 0  # Force comment count to 0 for MUFON alerts
+        })
+    
+    return response
 
 # Alert endpoints
 @router.post("")
@@ -102,8 +122,12 @@ async def create_alert(request: dict, idempotency_key: Optional[str] = Header(No
             raise HTTPException(status_code=400, detail="device_id is required")
         
         location = request.get('location')
-        if not location or location.get('latitude') is None or location.get('longitude') is None:
-            raise HTTPException(status_code=400, detail="location with latitude and longitude required")
+        source = request.get('source')
+        
+        # Allow MUFON alerts without location data since they don't use notifications
+        if source != "mufon":
+            if not location or location.get('latitude') is None or location.get('longitude') is None:
+                raise HTTPException(status_code=400, detail="location with latitude and longitude required")
         
         # All users have usernames now
         username = request.get('username')

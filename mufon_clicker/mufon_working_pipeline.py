@@ -37,8 +37,12 @@ def download_media_file_httpx(url, filename, case_number, cookies):
         }
         
         with httpx.Client(cookies=cookies, headers=headers, timeout=30.0, follow_redirects=True) as client:
-            print(f"   🔽 Downloading {filename} with httpx...")
+            print(f"   🔽 Downloading {filename} from URL: {url}")
+            print(f"   🔑 Using {len(cookies)} auth cookies")
             response = client.get(url)
+            
+            print(f"   📡 Response: HTTP {response.status_code}, Size: {len(response.content)} bytes")
+            print(f"   📋 Headers: {dict(response.headers)}")
             
             if response.status_code == 200 and len(response.content) > 1000:
                 # Create media directory
@@ -50,10 +54,12 @@ def download_media_file_httpx(url, filename, case_number, cookies):
                 with open(local_path, "wb") as f:
                     f.write(response.content)
                 
-                print(f"   ✅ Downloaded {filename} ({len(response.content)} bytes)")
+                print(f"   ✅ Downloaded {filename} ({len(response.content)} bytes) to {local_path}")
                 return str(local_path)
             else:
-                print(f"   ❌ Download failed: HTTP {response.status_code}")
+                print(f"   ❌ Download failed: HTTP {response.status_code}, Size: {len(response.content)} bytes")
+                if len(response.content) < 1000:
+                    print(f"   ⚠️  Response too small, probably an error page. Content preview: {response.content[:500]}")
                 return None
                 
     except Exception as e:
@@ -187,39 +193,87 @@ def extract_mufon_day_working(date_str):
                     attachment_text = attachments_cell.inner_text().strip()
                     if attachment_text and attachment_text != "":
                         print(f"   📎 Found attachments: {attachment_text}")
-                        # Find and process attachment links
+                        
+                        # Method 1: Try to find attachment links
                         attachment_links = attachments_cell.locator('a')
-                        for j in range(attachment_links.count()):
-                            try:
-                                link = attachment_links.nth(j)
-                                filename = link.inner_text().strip()
+                        link_count = attachment_links.count()
+                        
+                        if link_count > 0:
+                            print(f"   🔗 Processing {link_count} attachment links...")
+                            for j in range(link_count):
+                                try:
+                                    print(f"   🚀 Starting to process Link {j+1}/{link_count}")
+                                    link = attachment_links.nth(j)
+                                    filename = link.inner_text().strip()
+                                    print(f"   🔍 Link {j+1}: filename='{filename}'")
+                                    
+                                    if filename and ('.jpg' in filename.lower() or '.png' in filename.lower() or '.mp4' in filename.lower() or '.mov' in filename.lower()):
+                                        print(f"   ✅ Filename matches media extensions")
+                                        # Get the actual href for download
+                                        href = link.get_attribute('href')
+                                        print(f"   🔗 href='{href}'")
+                                        if href:
+                                            if not href.startswith('http'):
+                                                href = f"https://mufoncms.com{href}"
+                                            
+                                            # Determine file type
+                                            file_type = "image" if any(ext in filename.lower() for ext in ['.jpg', '.jpeg', '.png', '.gif']) else "video"
+                                            
+                                            print(f"   📥 About to download {filename}...")
+                                            # Download with httpx (WORKING METHOD)
+                                            local_path = download_media_file_httpx(href, filename, case_number, httpx_cookies)
+                                            print(f"   📥 Download completed for {filename}")
+                                            
+                                            # Create media file entry only if download was successful
+                                            if local_path:
+                                                media_entry = {
+                                                    "filename": filename,
+                                                    "url": href,
+                                                    "type": file_type,
+                                                    "local_path": local_path
+                                                }
+                                                media_files.append(media_entry)
+                                                print(f"   ✅ Added {filename} to media_files list")
+                                            else:
+                                                print(f"   ⚠️  Skipping {filename} - download failed")
+                                        else:
+                                            print(f"   ⚠️  No href found for {filename}")
+                                    else:
+                                        print(f"   ⏭️  Skipping {filename} - not a media file")
+                                    
+                                    print(f"   ✅ Completed processing Link {j+1}/{link_count}")
+                                    
+                                except Exception as e:
+                                    print(f"   ❌ Error processing attachment link {j+1}: {e}")
+                                    print(f"   🔄 Continuing to next link...")
+                                    continue
+                        else:
+                            print(f"   ⚠️  No clickable links found, attachments may be text-only: {attachment_text}")
+                            # Method 2: Parse filenames from text and construct URLs manually
+                            lines = attachment_text.split('\n')
+                            for line in lines:
+                                filename = line.strip()
                                 if filename and ('.jpg' in filename.lower() or '.png' in filename.lower() or '.mp4' in filename.lower() or '.mov' in filename.lower()):
-                                    # Get the actual href for download
-                                    href = link.get_attribute('href')
-                                    if href:
-                                        if not href.startswith('http'):
-                                            href = f"https://mufoncms.com{href}"
-                                        
-                                        # Determine file type
-                                        file_type = "image" if any(ext in filename.lower() for ext in ['.jpg', '.jpeg', '.png', '.gif']) else "video"
-                                        
-                                        # Download with httpx (WORKING METHOD)
-                                        local_path = download_media_file_httpx(href, filename, case_number, httpx_cookies)
-                                        
-                                        # Create media file entry
+                                    # Construct MUFON URL manually
+                                    href = f"https://mufoncms.com/cgi-bin/ffplay.pl?file=case_files/{filename}"
+                                    
+                                    # Determine file type
+                                    file_type = "image" if any(ext in filename.lower() for ext in ['.jpg', '.jpeg', '.png', '.gif']) else "video"
+                                    
+                                    # Download with httpx
+                                    local_path = download_media_file_httpx(href, filename, case_number, httpx_cookies)
+                                    
+                                    # Create media file entry only if download was successful
+                                    if local_path:
                                         media_entry = {
                                             "filename": filename,
                                             "url": href,
-                                            "type": file_type
+                                            "type": file_type,
+                                            "local_path": local_path
                                         }
-                                        
-                                        # Add local path if download was successful
-                                        if local_path:
-                                            media_entry["local_path"] = local_path
-                                        
                                         media_files.append(media_entry)
-                            except Exception as e:
-                                print(f"   ❌ Error processing attachment link: {e}")
+                                    else:
+                                        print(f"   ⚠️  Skipping {filename} - download failed")
                 
                 # Skip if we've already processed this case
                 if case_number in visited_cases:

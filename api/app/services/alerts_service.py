@@ -62,7 +62,13 @@ class AlertsService:
             alerts = []
             for row in rows:
                 location = self._extract_location(row["sensor_data"], row["enrichment_data"])
-                if location:  # Only include alerts with valid locations
+                
+                # Allow MUFON alerts without location data
+                if location or row["source"] == "mufon":
+                    # Use default location for MUFON alerts without coordinates
+                    if not location and row["source"] == "mufon":
+                        location = AlertLocation(latitude=0.0, longitude=0.0, name="")
+                        
                     alerts.append(Alert(
                         id=row["id"],
                         title=row["title"],
@@ -106,7 +112,11 @@ class AlertsService:
                 return None
                 
             location = self._extract_location(row["sensor_data"], row["enrichment_data"])
-            if not location:
+            
+            # Allow MUFON alerts without location data
+            if not location and row["source"] == "mufon":
+                location = AlertLocation(latitude=0.0, longitude=0.0, name="")
+            elif not location:
                 return None
                 
             return Alert(
@@ -293,11 +303,30 @@ class AlertsService:
             
             return str(alert_id)
     
-    async def create_beep(self, device_id: str, location: Dict, 
+    async def create_beep(self, device_id: str, location: Dict = None, 
                          description: str = None, username: str = None,
                          title: str = None, source: str = None) -> Tuple[str, Dict]:
         """Create beep with location privacy"""
-        # Validate location
+        # Allow MUFON alerts without location data
+        if source == "mufon" and not location:
+            # Create MUFON alert without location data
+            alert_id = await self.create_alert(
+                title=title,
+                description=description,
+                category="ufo",
+                witness_count=1,
+                is_public=True,
+                sensor_data={},
+                alert_level="normal",
+                device_id=device_id,
+                username=username,
+                source=source
+            )
+            return alert_id, {"lat": 0.0, "lng": 0.0}
+            
+        # Validate location for non-MUFON alerts
+        if not location:
+            raise ValueError("Location required for non-MUFON alerts")
         lat = float(location['latitude'])
         lng = float(location['longitude'])
         if lat == 0.0 and lng == 0.0:
