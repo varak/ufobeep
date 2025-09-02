@@ -10,39 +10,34 @@ from datetime import datetime
 import re
 
 async def get_case_list() -> List[Dict[str, Any]]:
-    """Get list of recent MUFON cases from authenticated CMS with error handling"""
+    """Get list of recent MUFON cases using simple direct search"""
     try:
-        from feeds.mufon_authenticated_client import fetch_authenticated_reports
+        from feeds.mufon_simple_search import simple_mufon_search
         
-        # Use existing authenticated client to get basic case list with timeout
-        print("Fetching MUFON cases from authenticated CMS...")
-        reports = await fetch_authenticated_reports(limit=20, days_back=2)
+        print("Fetching MUFON cases using simple search...")
+        reports = await simple_mufon_search(limit=20, days_back=2)
         
         if not reports:
-            print("⚠️ No reports returned from MUFON CMS - possible authentication issue")
+            print("⚠️ No reports returned from MUFON simple search")
             return []
         
         cases = []
         for report in reports[:10]:  # Limit to 10 for faster processing
-            case_id = report.get("case_number") or report.get("id") or "unknown"
+            case_id = report.get("case_id") or "unknown"
             cases.append({
                 "case_id": str(case_id),
                 "title": report.get("summary", "")[:100],
-                "location": f"{report.get('city', '')}, {report.get('state', '')}".strip(", "),
-                "date": report.get("occurred_date_time", ""),
-                "shape": report.get("shape", ""),
+                "location": report.get("location", ""),
+                "date": report.get("date", ""),
+                "shape": "",  # Simple search might not have shape
                 "report_data": report  # Keep full report for processing
             })
         
-        print(f"✅ Found {len(cases)} MUFON cases from authenticated CMS")
+        print(f"✅ Found {len(cases)} MUFON cases from simple search")
         return cases
     
     except Exception as e:
-        print(f"❌ MUFON authentication or fetch failed: {e}")
-        print("This likely means:")
-        print("- MUFON credentials expired")
-        print("- MUFON CRM system is down")
-        print("- Network connectivity issue")
+        print(f"❌ MUFON simple search failed: {e}")
         return []
 
 def extract_case_id_from_url(url: str) -> str:

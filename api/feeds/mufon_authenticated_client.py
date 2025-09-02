@@ -72,49 +72,40 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2) -> Li
         print(f"Searching from {start_date.strftime('%m/%d/%Y')} to {end_date.strftime('%m/%d/%Y')}")
         
         try:
-            # Use the URL we know works - the login redirect goes to accountHome.do
-            account_home_url = str(login_response.url)  # This should be the working account home
-            print(f"Using authenticated account home: {account_home_url}")
+            # Use direct search database URL with parameters instead of form parsing
+            search_db_url = "https://mufon.z2systems.com/np/clients/mufon/neonPage.jsp"
             
-            # Explore the actual dashboard that we know exists
-            dashboard_response = await client.get(account_home_url)
-            print(f"Dashboard status: {dashboard_response.status_code}")
+            # Build search parameters directly
+            search_params = {
+                'pageId': '19',
+                'choice': 'search',  # Try search option first
+                'from_date': start_date.strftime('%m/%d/%Y'),
+                'to_date': end_date.strftime('%m/%d/%Y'),
+                'limit': limit
+            }
             
-            if dashboard_response.status_code == 200:
-                dashboard_soup = BeautifulSoup(dashboard_response.text, 'html.parser')
-                print(f"Dashboard title: {dashboard_soup.title.get_text() if dashboard_soup.title else 'No title'}")
+            print(f"Making direct search request to: {search_db_url}")
+            print(f"Search parameters: {search_params}")
+            
+            # Try direct GET request with parameters
+            search_response = await client.get(search_db_url, params=search_params)
+            print(f"Direct search response status: {search_response.status_code}")
+            
+            if search_response.status_code == 200:
+                search_soup = BeautifulSoup(search_response.text, 'html.parser')
+                print(f"Search results page title: {search_soup.title.get_text() if search_soup.title else 'No title'}")
                 
-                # Look for case management or report links
-                links = dashboard_soup.find_all('a', href=True)
-                case_links = []
-                for link in links:
-                    href = link.get('href', '')
-                    text = link.get_text().strip().lower()
-                    if any(keyword in text for keyword in ['case', 'report', 'search', 'sighting', 'cms']):
-                        full_url = urljoin(account_home_url, href) if not href.startswith('http') else href
-                        case_links.append((full_url, text))
+                # Parse results directly
+                reports = await _parse_detailed_reports(search_soup, limit, client)
+                print(f"Found {len(reports)} reports from direct search")
                 
-                print(f"Found {len(case_links)} potential case/report links:")
-                for href, text in case_links[:10]:
-                    print(f"  {text}: {href}")
-                    
-                # Prioritize the search database URL we found
-                search_database_urls = [url for url, text in case_links if 'search database' in text.lower()]
-                cms_urls = [url for url, text in case_links if 'cms' in text.lower() and 'login' not in text.lower()]
-                
-                if search_database_urls:
-                    search_urls_to_try = search_database_urls[:1]  # Use the search database first
-                    print(f"Using discovered search database URL: {search_urls_to_try[0]}")
-                elif cms_urls:
-                    search_urls_to_try = cms_urls[:1]
-                    print(f"Using CMS URL: {search_urls_to_try[0]}")
-                else:
-                    # Fall back to other discovered URLs
-                    search_urls_to_try = [url for url, text in case_links if url.startswith('http')][:3]
-                    if not search_urls_to_try:
-                        search_urls_to_try = [account_home_url]
-            else:
-                search_urls_to_try = [account_home_url]
+                if reports:
+                    return reports
+            
+            # If direct search didn't work, try POST with form data
+            print("Direct search failed, trying POST with form data...")
+            search_response = await client.post(search_db_url, data=search_params)
+            print(f"POST search response status: {search_response.status_code}")
             
             search_response = None
             search_url = None
