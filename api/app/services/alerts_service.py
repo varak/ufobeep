@@ -65,10 +65,6 @@ class AlertsService:
                 
                 # Allow MUFON alerts without location data
                 if location or row["source"] == "mufon":
-                    # Use default location for MUFON alerts without coordinates
-                    if not location and row["source"] == "mufon":
-                        location = AlertLocation(latitude=0.0, longitude=0.0, name="")
-                        
                     alerts.append(Alert(
                         id=row["id"],
                         title=row["title"],
