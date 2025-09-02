@@ -40,15 +40,21 @@ async def list_comments(sighting_id: str, limit: int = 30) -> Dict[str, Any]:
         )
         
         # Also fetch the original sighting description to show as first "comment"
+        # Skip for MUFON cases to prevent first description from being added as a comment
         sighting = await conn.fetchrow(
-            "SELECT s.description, s.reporter_id, s.created_at, u.username FROM sightings s LEFT JOIN users u ON s.reporter_id::uuid = u.id WHERE s.id = $1::uuid",
+            "SELECT s.description, s.reporter_id, s.created_at, s.source, u.username FROM sightings s LEFT JOIN users u ON s.reporter_id::uuid = u.id WHERE s.id = $1::uuid",
             sighting_id
         )
         
         comments = [dict(r) for r in rows]
         
         # If there's a description, add it as the last pseudo-comment (chronologically first, so appears last in DESC order)
-        if sighting and sighting['description'] and sighting['description'].strip() and sighting['reporter_id'] and sighting['username']:
+        # Skip for MUFON cases as requested by user
+        is_mufon_case = sighting and (sighting.get('source') == 'mufon' or sighting.get('username') == 'MUFON_Database')
+        
+        if (sighting and sighting['description'] and sighting['description'].strip() 
+            and sighting['reporter_id'] and sighting['username'] 
+            and not is_mufon_case):
             description_comment = {
                 'id': 0,  # Special ID for original description
                 'user_id': sighting['reporter_id'],

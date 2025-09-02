@@ -30,6 +30,8 @@ interface Alert {
     web_url?: string
     preview_url?: string
   }>
+  source?: string
+  reporter_username?: string
   enrichment?: {
     status: string
     weather?: {
@@ -247,7 +249,7 @@ export default function AlertPage({ params }: AlertPageProps) {
             <AlertDetails alert={alert} />
 
             {/* Environmental data */}
-            <EnrichmentData enrichment={alert.enrichment} />
+            <EnrichmentData enrichment={alert.enrichment} alert={alert} />
 
             {/* Witness count info */}
             <div className="bg-dark-surface border border-dark-border rounded-lg p-6">

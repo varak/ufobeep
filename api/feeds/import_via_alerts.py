@@ -140,12 +140,29 @@ def import_mufon_cases():
 </div>
 </div>"""
             
+            # Determine if this is historical (more than 1 year old)
+            try:
+                event_year = int(datetime_event.split('-')[0]) if '-' in datetime_event else datetime.now().year
+                is_historical = (datetime.now().year - event_year) > 1
+            except:
+                is_historical = True  # Default to historical if can't parse
+            
+            # Create a proper title based on UFO type and historical status  
+            ufo_type = classification['type'].title()
+            time_indicator = "Historical" if is_historical else "Recent"
+            
+            # Create title: "Triangle UFO Sighting (Historical MUFON)" or "Light Anomaly (Recent MUFON)"
+            if ufo_type == "Unknown":
+                title = f"UFO Sighting ({time_indicator} MUFON)"
+            else:
+                title = f"{ufo_type} UFO Sighting ({time_indicator} MUFON)"
+            
             # Create alert using existing endpoint
             alert_data = {
                 "device_id": f"mufon_importer",
                 "username": "MUFON_Database",  # Official MUFON database feed
                 "category": "ufo_sighting", 
-                "title": short_desc[:100],
+                "title": title,
                 "description": full_description,
                 "location": {
                     "latitude": lat,

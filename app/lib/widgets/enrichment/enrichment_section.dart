@@ -13,15 +13,25 @@ class EnrichmentSection extends StatelessWidget {
     this.alertCreatorDeviceId,
     this.currentUserDeviceId,
     this.isWitnessConfirmed = false,
+    this.alertSource,
+    this.reporterUsername,
   });
 
   final Map<String, dynamic>? enrichmentData;
   final String? alertCreatorDeviceId;
   final String? currentUserDeviceId;
   final bool isWitnessConfirmed;
+  final String? alertSource;
+  final String? reporterUsername;
 
   @override
   Widget build(BuildContext context) {
+    // Skip enrichment data display for MUFON cases
+    final isMufonCase = alertSource == 'mufon' || reporterUsername == 'MUFON_Database';
+    if (isMufonCase) {
+      return const SizedBox.shrink();
+    }
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

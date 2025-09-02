@@ -171,6 +171,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                     alertCreatorDeviceId: alert.reporterId,
                     currentUserDeviceId: _currentUserDeviceId,
                     isWitnessConfirmed: _isWitnessConfirmed,
+                    alertSource: alert.source,
+                    reporterUsername: alert.username,
                   ),
                   const SizedBox(height: 24),
                 ],
