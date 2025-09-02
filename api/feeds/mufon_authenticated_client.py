@@ -72,8 +72,30 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2) -> Li
         print(f"Searching from {start_date.strftime('%m/%d/%Y')} to {end_date.strftime('%m/%d/%Y')}")
         
         try:
+            # First try the main dashboard to see what's available
+            dashboard_response = await client.get("https://mufon.app.neoncrm.com/np/clients/mufon/")
+            print(f"Dashboard status: {dashboard_response.status_code}")
+            
+            if dashboard_response.status_code == 200:
+                dashboard_soup = BeautifulSoup(dashboard_response.text, 'html.parser')
+                print(f"Dashboard title: {dashboard_soup.title.get_text() if dashboard_soup.title else 'No title'}")
+                
+                # Look for case management or report links
+                links = dashboard_soup.find_all('a', href=True)
+                case_links = []
+                for link in links:
+                    href = link.get('href', '')
+                    text = link.get_text().strip().lower()
+                    if any(keyword in text for keyword in ['case', 'report', 'search', 'sighting']):
+                        case_links.append((href, text))
+                
+                print(f"Found {len(case_links)} potential case/report links:")
+                for href, text in case_links[:5]:
+                    print(f"  {text}: {href}")
+            
             # Try different search URLs that might exist in the authenticated CRM
             search_urls_to_try = [
+                "https://mufon.app.neoncrm.com/np/clients/mufon/",  # Main dashboard
                 "https://mufon.app.neoncrm.com/np/clients/mufon/reports/search",
                 "https://mufon.app.neoncrm.com/np/clients/mufon/caseManagementSystem/search.do",
                 "https://mufon.app.neoncrm.com/np/clients/mufon/search",
@@ -100,10 +122,9 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2) -> Li
                     continue
             
             if not search_response:
-                print("❌ No working search URLs found, falling back to public data")
-                fallback_response = await client.get("https://mufoncms.com/last_20_public.html")
-                fallback_soup = BeautifulSoup(fallback_response.text, 'html.parser')
-                return await _parse_detailed_reports(fallback_soup, limit, client)
+                print("❌ No working search URLs found - authentication likely failed")
+                print("Available session cookies:", list(client.cookies.keys()))
+                return []
             
             # Parse the search page to find forms or data
             search_soup = BeautifulSoup(search_response.text, 'html.parser')

@@ -21,9 +21,22 @@ async def list_mufon_cases(_admin = Depends(require_admin)):
     try:
         from feeds.mufon_case_processor import get_case_list
         cases = await get_case_list()
+        
+        if not cases:
+            return {
+                "ok": False, 
+                "cases_found": 0, 
+                "cases": [], 
+                "error": "No MUFON cases found - check authentication or try /admin/feeds/mufon/run instead"
+            }
+        
         return {"ok": True, "cases_found": len(cases), "cases": cases}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return {
+            "ok": False,
+            "error": f"MUFON fetch failed: {str(e)}",
+            "suggestion": "Check if MUFON credentials need refresh or try /admin/feeds/mufon/run"
+        }
 
 @router.post("/mufon/process/{case_id}")
 async def process_mufon_case(case_id: str, _admin = Depends(require_admin)):

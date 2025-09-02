@@ -10,26 +10,40 @@ from datetime import datetime
 import re
 
 async def get_case_list() -> List[Dict[str, Any]]:
-    """Get list of recent MUFON cases from authenticated CMS"""
-    from feeds.mufon_authenticated_client import fetch_authenticated_reports
+    """Get list of recent MUFON cases from authenticated CMS with error handling"""
+    try:
+        from feeds.mufon_authenticated_client import fetch_authenticated_reports
+        
+        # Use existing authenticated client to get basic case list with timeout
+        print("Fetching MUFON cases from authenticated CMS...")
+        reports = await fetch_authenticated_reports(limit=20, days_back=2)
+        
+        if not reports:
+            print("⚠️ No reports returned from MUFON CMS - possible authentication issue")
+            return []
+        
+        cases = []
+        for report in reports[:10]:  # Limit to 10 for faster processing
+            case_id = report.get("case_number") or report.get("id") or "unknown"
+            cases.append({
+                "case_id": str(case_id),
+                "title": report.get("summary", "")[:100],
+                "location": f"{report.get('city', '')}, {report.get('state', '')}".strip(", "),
+                "date": report.get("occurred_date_time", ""),
+                "shape": report.get("shape", ""),
+                "report_data": report  # Keep full report for processing
+            })
+        
+        print(f"✅ Found {len(cases)} MUFON cases from authenticated CMS")
+        return cases
     
-    # Use existing authenticated client to get basic case list
-    reports = await fetch_authenticated_reports(limit=20, days_back=2)
-    
-    cases = []
-    for report in reports:
-        case_id = report.get("case_number") or report.get("id") or "unknown"
-        cases.append({
-            "case_id": str(case_id),
-            "title": report.get("summary", "")[:100],
-            "location": f"{report.get('city', '')}, {report.get('state', '')}".strip(", "),
-            "date": report.get("occurred_date_time", ""),
-            "shape": report.get("shape", ""),
-            "report_data": report  # Keep full report for processing
-        })
-    
-    print(f"Found {len(cases)} MUFON cases from authenticated CMS")
-    return cases
+    except Exception as e:
+        print(f"❌ MUFON authentication or fetch failed: {e}")
+        print("This likely means:")
+        print("- MUFON credentials expired")
+        print("- MUFON CRM system is down")
+        print("- Network connectivity issue")
+        return []
 
 def extract_case_id_from_url(url: str) -> str:
     """Extract case ID from MUFON URL"""
