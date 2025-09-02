@@ -30,6 +30,8 @@ class Alert {
     this.matrixRoomId,
     this.reporterId,
     this.reporterUsername,
+    this.source,
+    this.username,
     this.enrichment,
     this.photoAnalysis,
     this.totalConfirmations = 0,
@@ -60,6 +62,8 @@ class Alert {
   final String? matrixRoomId;
   final String? reporterId;
   final String? reporterUsername;
+  final String? source;
+  final String? username;
   final Map<String, dynamic>? enrichment;
   final List<Map<String, dynamic>>? photoAnalysis;
   final int totalConfirmations;
@@ -69,6 +73,7 @@ class Alert {
   // Computed properties
   bool get isVerified => status == 'verified';
   bool get hasMedia => mediaFiles.isNotEmpty;
+  Map<String, dynamic>? get enrichmentData => enrichment;
   String get mediaUrl => hasMedia ? (primaryMediaFile?['url'] ?? mediaFiles.first['url'] ?? '') : '';
   
   // Get primary media file (or first if no primary)
@@ -132,6 +137,8 @@ class Alert {
     String? matrixRoomId,
     String? reporterId,
     String? reporterUsername,
+    String? source,
+    String? username,
     Map<String, dynamic>? enrichment,
     List<Map<String, dynamic>>? photoAnalysis,
     int? totalConfirmations,
@@ -162,6 +169,8 @@ class Alert {
       matrixRoomId: matrixRoomId ?? this.matrixRoomId,
       reporterId: reporterId ?? this.reporterId,
       reporterUsername: reporterUsername ?? this.reporterUsername,
+      source: source ?? this.source,
+      username: username ?? this.username,
       enrichment: enrichment ?? this.enrichment,
       photoAnalysis: photoAnalysis ?? this.photoAnalysis,
       totalConfirmations: totalConfirmations ?? this.totalConfirmations,
@@ -266,6 +275,8 @@ class Alert {
         matrixRoomId: json['matrix_room_id'] as String?,
         reporterId: json['reporter_id'] as String?,
         reporterUsername: json['reporter_username'] as String?,
+        source: json['source'] as String?,
+        username: json['username'] as String?,
         enrichment: json['enrichment'] as Map<String, dynamic>?,
         photoAnalysis: parsedPhotoAnalysis,
         totalConfirmations: json['total_confirmations'] as int? ?? 0,
@@ -305,6 +316,8 @@ class Alert {
       if (matrixRoomId != null) 'matrix_room_id': matrixRoomId,
       if (reporterId != null) 'reporter_id': reporterId,
       if (reporterUsername != null) 'reporter_username': reporterUsername,
+      if (source != null) 'source': source,
+      if (username != null) 'username': username,
       if (enrichment != null) 'enrichment': enrichment,
       if (photoAnalysis != null) 'photo_analysis': photoAnalysis,
       'total_confirmations': totalConfirmations,
