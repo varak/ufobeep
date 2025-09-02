@@ -157,13 +157,14 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 const SizedBox(height: 24),
                 
                 // Direction and compass - hidden for MUFON alerts
-                if (alert.username != 'MUFON_Database')
+                if (alert.username != 'MUFON_Database') ...[
                   AlertDirectionSection(
                     alert: alert,
                     onNavigate: (bearing, distance) => _navigateToSighting(alert, bearing, distance),
                     onShowMap: (userLocation, alert) => _showMapView(userLocation, alert),
                   ),
-                const SizedBox(height: 24),
+                  const SizedBox(height: 24),
+                ],
 
                 // Environmental context (if available) - hidden for MUFON alerts
                 if (alert.enrichment != null && alert.enrichment!.isNotEmpty && alert.username != 'MUFON_Database') ...[
@@ -185,7 +186,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 ],
 
                 // Action buttons (including witness confirmation) - hidden for MUFON alerts
-                if (alert.username != 'MUFON_Database')
+                if (alert.username != 'MUFON_Database') ...[
                   AlertActionsSection(
                     alert: alert,
                     currentUserDeviceId: _currentUserDeviceId,
@@ -199,8 +200,9 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                       // Also refresh the alert data to update witness count display
                     ref.invalidate(alertByIdProvider(widget.alertId));
                   },
-                ),
-                const SizedBox(height: 24),
+                  ),
+                  const SizedBox(height: 24),
+                ],
                 
                 // Comments section
                 _buildCommentsSection(alert),
