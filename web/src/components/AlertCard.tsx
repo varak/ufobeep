@@ -268,9 +268,10 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
 
             {/* Description */}
             {alert.description && (
-              <p className="text-text-secondary text-sm line-clamp-2 leading-relaxed">
-                {alert.description}
-              </p>
+              <div 
+                className="text-text-secondary text-sm line-clamp-2 leading-relaxed prose prose-sm prose-invert max-w-none"
+                dangerouslySetInnerHTML={{ __html: alert.description }}
+              />
             )}
 
             {/* Footer indicators */}

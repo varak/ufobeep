@@ -36,1146 +36,615 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2, list_
     }
     
     async with httpx.AsyncClient(follow_redirects=True, timeout=30.0, headers=headers) as client:
-        # Step 1: Go to research page like a real user
-        print("Step 1: Navigating to MUFON research page...")
-        
-        research_response = await client.get("https://mufon.com/research/")
-        if research_response.status_code != 200:
-            print(f"❌ Could not access research page: {research_response.status_code}")
-            return []
-        
-        research_soup = BeautifulSoup(research_response.text, 'html.parser')
-        print(f"✅ Research page loaded: {research_soup.title.get_text() if research_soup.title else 'No title'}")
-        
-        # Step 2: Find and follow the login link
-        print("\nStep 2: Looking for login link...")
-        
-        login_links = []
-        for link in research_soup.find_all('a', href=True):
-            text = link.get_text().lower().strip()
-            href = link.get('href')
+        try:
+            # Step 1: Go to research page like a real user
+            print("Step 1: Navigating to MUFON research page...")
             
-            if any(keyword in text for keyword in ['login', 'log in', 'sign in', 'signin']):
-                login_links.append({
-                    'text': link.get_text().strip(),
-                    'href': href,
-                    'full_url': urljoin('https://mufon.com/', href)
-                })
-        
-        print(f"Found {len(login_links)} login links:")
-        for link in login_links:
-            print(f"  - '{link['text']}' → {link['href']}")
-        
-        if not login_links:
-            print("❌ No login links found on research page")
-            return []
-        
-        # Use the first login link
-        login_url = login_links[0]['full_url']
-        print(f"Following login link: {login_url}")
-        
-        login_page = await client.get(login_url)
-        if login_page.status_code != 200:
-            print(f"❌ Could not access login page: {login_page.status_code}")
-            return []
-        
-        login_soup = BeautifulSoup(login_page.text, 'html.parser')
-        print(f"✅ Login page loaded: {login_soup.title.get_text() if login_soup.title else 'No title'}")
-        
-        # Step 3: Find and submit login form
-        print("\nStep 3: Authenticating...")
-        
-        login_form = None
-        for form in login_soup.find_all('form'):
-            action = form.get('action', '')
-            if any(keyword in action.lower() for keyword in ['signin', 'login', 'auth']):
-                login_form = form
-                break
-        
-        if not login_form:
-            print("❌ Login form not found")
-            return []
-        
-        # Extract form data for login
-        form_data = {}
-        for inp in login_form.find_all('input'):
-            name = inp.get('name', '')
-            value = inp.get('value', '')
-            input_type = inp.get('type', 'text')
-            
-            if name:
-                if any(keyword in name.lower() for keyword in ['username', 'login', 'user', 'email']):
-                    form_data[name] = username
-                elif any(keyword in name.lower() for keyword in ['password', 'pass']):
-                    form_data[name] = password
-                elif input_type == 'hidden':
-                    form_data[name] = value
-        
-        # Submit login form
-        form_action = login_form.get('action', '')
-        if not form_action.startswith('http'):
-            form_action = urljoin(str(login_page.url), form_action)
-        
-        print(f"Submitting login to: {form_action}")
-        print(f"Form data keys: {list(form_data.keys())}")
-        
-        login_response = await client.post(form_action, data=form_data)
-        
-        # Check if login was successful by looking for authenticated content
-        authenticated_soup = BeautifulSoup(login_response.text, 'html.parser')
-        page_title = authenticated_soup.title.get_text() if authenticated_soup.title else 'No title'
-        
-        # Look for signs of successful authentication
-        is_authenticated = any(keyword in page_title.lower() for keyword in ['account', 'dashboard', 'home', 'welcome']) or \
-                          any(keyword in login_response.text.lower() for keyword in ['logout', 'sign out', 'dashboard'])
-        
-        if not is_authenticated:
-            print(f"❌ Authentication may have failed. Page title: {page_title}")
-            print(f"Response URL: {login_response.url}")
-            return []
-        
-        print(f"✅ Successfully authenticated! Page: {page_title}")
-        
-        # Step 4: Now look for Track UFOs in the authenticated interface
-        print(f"\nStep 4: Looking for Track UFOs in authenticated interface...")
-        
-        # Calculate date range for search
-        end_date = datetime.now()
-        start_date = end_date - timedelta(days=days_back)
-        print(f"Will search from {start_date.strftime('%m/%d/%Y')} to {end_date.strftime('%m/%d/%Y')}")
-        
-        # Look for Track UFOs or database search links
-        track_ufo_links = []
-        for link in authenticated_soup.find_all('a', href=True):
-            text = link.get_text().lower().strip()
-            href = link.get('href')
-            
-            if any(keyword in text for keyword in ['track ufo', 'search database', 'database', 'search case', 'case search']):
-                track_ufo_links.append({
-                    'text': link.get_text().strip(),
-                    'href': href,
-                    'full_url': urljoin(str(login_response.url), href)
-                })
-        
-        print(f"Found {len(track_ufo_links)} Track UFOs/database links:")
-        for link in track_ufo_links:
-            print(f"  - '{link['text']}' → {link['href']}")
-        
-        if not track_ufo_links:
-            print("❌ No Track UFOs or database search links found in authenticated interface")
-            return []
-        
-        # Use the first relevant link
-        track_url = track_ufo_links[0]['full_url']
-        print(f"Following Track UFOs link: {track_url}")
-        
-        track_response = await client.get(track_url)
-        if track_response.status_code != 200:
-            print(f"❌ Could not access Track UFOs page: {track_response.status_code}")
-            return []
-        
-        track_soup = BeautifulSoup(track_response.text, 'html.parser')
-        print(f"✅ Track UFOs page loaded: {track_soup.title.get_text() if track_soup.title else 'No title'}")
-        
-        # Step 5: Look for Search Database link or form on this page
-        print("\nStep 5: Looking for Search Database functionality...")
-        
-        # First check if there's already a search form on this page
-        search_forms = []
-        for form in track_soup.find_all('form'):
-            inputs = form.find_all(['input', 'select', 'textarea'])
-            # Look for forms with date fields
-            has_date_fields = any('date' in inp.get('name', '').lower() for inp in inputs)
-            if has_date_fields or len(inputs) > 2:  # Likely a search form
-                search_forms.append(form)
-        
-        if search_forms:
-            print(f"Found {len(search_forms)} search forms on Track UFOs page")
-            search_form = search_forms[0]
-            current_page_soup = track_soup
-        else:
-            # Look for Search Database links
-            search_db_links = []
-            for link in track_soup.find_all('a', href=True):
-                text = link.get_text().lower().strip()
-                href = link.get('href')
-                
-                if any(keyword in text for keyword in ['search database', 'database search', 'search case', 'case search', 'search']):
-                    search_db_links.append({
-                        'text': link.get_text().strip(),
-                        'href': href,
-                        'full_url': urljoin(str(track_response.url), href)
-                    })
-            
-            print(f"Found {len(search_db_links)} Search Database links:")
-            for link in search_db_links:
-                print(f"  - '{link['text']}' → {link['href']}")
-            
-            if not search_db_links:
-                print("❌ No Search Database links found")
-                return []
-            
-            # Follow the first search database link
-            search_url = search_db_links[0]['full_url']
-            print(f"Following Search Database link: {search_url}")
-            
-            search_response = await client.get(search_url)
-            if search_response.status_code != 200:
-                print(f"❌ Could not access Search Database page: {search_response.status_code}")
-                return []
-            
-            current_page_soup = BeautifulSoup(search_response.text, 'html.parser')
-            print(f"✅ Search Database page loaded: {current_page_soup.title.get_text() if current_page_soup.title else 'No title'}")
-            
-            # Find search form on the search database page
-            search_forms = []
-            for form in current_page_soup.find_all('form'):
-                inputs = form.find_all(['input', 'select', 'textarea'])
-                has_date_fields = any('date' in inp.get('name', '').lower() for inp in inputs)
-                if has_date_fields or len(inputs) > 2:
-                    search_forms.append(form)
-            
-            if not search_forms:
-                print("❌ No search forms found on Search Database page")
-                return []
-            
-            search_form = search_forms[0]
-        
-        # Step 6: Submit the search form with date range
-        print(f"\nStep 6: Submitting search form with date range...")
-        
-        form_data = {}
-        inputs = search_form.find_all(['input', 'select', 'textarea'])
-        
-        print(f"Form has {len(inputs)} inputs:")
-        for inp in inputs[:10]:  # Show first 10 inputs
-            name = inp.get('name', 'unnamed')
-            input_type = inp.get('type', inp.name)
-            value = inp.get('value', '')
-            print(f"  - {input_type}: {name} = '{value}'")
-        
-        # Build form data
-        for inp in inputs:
-            name = inp.get('name')
-            if not name:
-                continue
-                
-            input_type = inp.get('type', inp.name)
-            value = inp.get('value', '')
-            
-            if 'date' in name.lower():
-                if any(keyword in name.lower() for keyword in ['from', 'start', 'begin']):
-                    form_data[name] = start_date.strftime('%m/%d/%Y')
-                    print(f"Set {name} = {start_date.strftime('%m/%d/%Y')}")
-                elif any(keyword in name.lower() for keyword in ['to', 'end', 'until']):
-                    form_data[name] = end_date.strftime('%m/%d/%Y')
-                    print(f"Set {name} = {end_date.strftime('%m/%d/%Y')}")
-                else:
-                    form_data[name] = value
-            elif input_type == 'hidden':
-                form_data[name] = value
-            elif 'limit' in name.lower() or 'count' in name.lower():
-                form_data[name] = str(limit)
-            elif input_type in ['checkbox', 'radio'] and value:
-                # Use default values for checkboxes/radios
-                form_data[name] = value
-            elif not value and input_type in ['text', 'email', 'number']:
-                # Leave text fields empty unless we have a specific value
-                form_data[name] = ''
-        
-        # Submit the search form
-        form_action = search_form.get('action', '')
-        if not form_action.startswith('http'):
-            base_url = str(search_response.url) if 'search_response' in locals() else str(track_response.url)
-            form_action = urljoin(base_url, form_action)
-        
-        print(f"Submitting search to: {form_action}")
-        print(f"Form data: {dict(list(form_data.items())[:5])}...")  # Show first 5 items
-        
-        results_response = await client.post(form_action, data=form_data)
-        if results_response.status_code != 200:
-            print(f"❌ Search form submission failed: {results_response.status_code}")
-            return []
-        
-        results_soup = BeautifulSoup(results_response.text, 'html.parser')
-        print(f"✅ Search results page loaded: {results_soup.title.get_text() if results_soup.title else 'No title'}")
-        
-        # Parse the search results
-        reports = await _parse_detailed_reports(results_soup, limit, client, list_only)
-        print(f"Found {len(reports)} reports from user navigation flow")
-        
-        return reports
-        
-        except Exception as e:
-            print(f"Error in user navigation flow: {e}")
-            return []
-            # Step 2a: Go to the research page first
-            print("Navigating to research page...")
             research_response = await client.get("https://mufon.com/research/")
-            
             if research_response.status_code != 200:
                 print(f"❌ Could not access research page: {research_response.status_code}")
                 return []
             
-            # Step 2b: Look for the "Search Database" or "TRACK UFO's" link
             research_soup = BeautifulSoup(research_response.text, 'html.parser')
-            print("Looking for database search link...")
+            print(f"✅ Research page loaded: {research_soup.title.get_text() if research_soup.title else 'No title'}")
             
-            # Look for database search links
-            search_links = []
+            # Step 2: Find and follow the login link
+            print("\nStep 2: Looking for login link...")
+            
+            login_links = []
             for link in research_soup.find_all('a', href=True):
-                href = link.get('href').lower()
                 text = link.get_text().lower().strip()
+                href = link.get('href')
                 
-                if any(keyword in text for keyword in ['search database', 'track ufo', 'database']) or \
-                   any(keyword in href for keyword in ['search', 'database', 'track']):
-                    search_links.append({
+                if any(keyword in text for keyword in ['login', 'log in', 'sign in', 'signin']):
+                    login_links.append({
                         'text': link.get_text().strip(),
-                        'href': link.get('href'),
-                        'full_url': urljoin('https://mufon.com/', link.get('href'))
+                        'href': href,
+                        'full_url': urljoin('https://mufon.com/', href)
                     })
             
-            print(f"Found {len(search_links)} potential database links:")
-            for link in search_links:
+            print(f"Found {len(login_links)} login links:")
+            for link in login_links:
                 print(f"  - '{link['text']}' → {link['href']}")
             
-            # Try to find and access the database search page - prioritize "Track UFOs"
-            database_url = None
+            if not login_links:
+                print("❌ No login links found on research page")
+                return []
             
-            # First priority: "Track UFOs" links
-            for link in search_links:
-                if 'track ufo' in link['text'].lower():
-                    database_url = link['full_url']
-                    print(f"Using Track UFOs URL: {database_url}")
+            # Use the first login link
+            login_url = login_links[0]['full_url']
+            print(f"Following login link: {login_url}")
+            
+            login_page = await client.get(login_url)
+            if login_page.status_code != 200:
+                print(f"❌ Could not access login page: {login_page.status_code}")
+                return []
+            
+            login_soup = BeautifulSoup(login_page.text, 'html.parser')
+            print(f"✅ Login page loaded: {login_soup.title.get_text() if login_soup.title else 'No title'}")
+            
+            # Step 3: Find and submit login form
+            print("\nStep 3: Authenticating...")
+            
+            login_form = None
+            for form in login_soup.find_all('form'):
+                action = form.get('action', '')
+                if any(keyword in action.lower() for keyword in ['signin', 'login', 'auth']):
+                    login_form = form
                     break
             
-            # Second priority: other database/search links if Track UFOs not found
-            if not database_url:
-                for link in search_links:
-                    if any(keyword in link['text'].lower() for keyword in ['search database', 'database']):
-                        database_url = link['full_url']
-                        print(f"Using database search URL: {database_url}")
-                        break
-            
-            if not database_url:
-                print("❌ Could not find database search link on research page")
+            if not login_form:
+                print("❌ Login form not found")
                 return []
             
-            # Step 2c: Access the database search page
-            print("Accessing database search page...")
-            db_response = await client.get(database_url)
+            # Extract ALL form data for login (including hidden fields and tokens)
+            form_data = {}
+            for inp in login_form.find_all('input'):
+                name = inp.get('name', '')
+                value = inp.get('value', '')
+                input_type = inp.get('type', 'text')
+                
+                if name:
+                    if any(keyword in name.lower() for keyword in ['username', 'login', 'user', 'email']) and 'password' not in name.lower():
+                        form_data[name] = username
+                        print(f"  Setting username field '{name}' = '{username}'")
+                    elif any(keyword in name.lower() for keyword in ['password', 'pass']):
+                        form_data[name] = password
+                        print(f"  Setting password field '{name}' = '[REDACTED]'")
+                    else:
+                        # Preserve ALL other fields (hidden, tokens, etc.)
+                        form_data[name] = value
+                        if input_type == 'hidden' and value:
+                            print(f"  Preserving hidden field '{name}' = '{value}'")
+                        elif value:
+                            print(f"  Preserving field '{name}' = '{value}' (type: {input_type})")
             
-            if db_response.status_code != 200:
-                print(f"❌ Could not access database search page: {db_response.status_code}")
+            # Also check for select and textarea elements
+            for element in login_form.find_all(['select', 'textarea']):
+                name = element.get('name', '')
+                if name:
+                    if element.name == 'select':
+                        selected = element.find('option', selected=True)
+                        value = selected.get('value', '') if selected else ''
+                    else:
+                        value = element.get_text()
+                    form_data[name] = value
+                    print(f"  Preserving {element.name} field '{name}' = '{value}'")
+            
+            # Submit login form
+            form_action = login_form.get('action', '')
+            if not form_action.startswith('http'):
+                form_action = urljoin(str(login_page.url), form_action)
+            
+            print(f"Submitting login to: {form_action}")
+            print(f"Form data keys: {list(form_data.keys())}")
+            
+            # Use proper headers for form submission
+            login_headers = headers.copy()
+            login_headers.update({
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Origin': f"{login_page.url.scheme}://{login_page.url.host}",
+                'Referer': str(login_page.url),
+            })
+            
+            login_response = await client.post(form_action, data=form_data, headers=login_headers)
+            
+            # Check if login was successful by looking for authenticated content
+            authenticated_soup = BeautifulSoup(login_response.text, 'html.parser')
+            page_title = authenticated_soup.title.get_text() if authenticated_soup.title else 'No title'
+            
+            # Look for signs of successful authentication
+            is_authenticated = any(keyword in page_title.lower() for keyword in ['account', 'dashboard', 'home', 'welcome']) or \
+                              any(keyword in login_response.text.lower() for keyword in ['logout', 'sign out', 'dashboard'])
+            
+            if not is_authenticated:
+                print(f"❌ Authentication may have failed. Page title: {page_title}")
+                print(f"Response URL: {login_response.url}")
                 return []
             
-            db_soup = BeautifulSoup(db_response.text, 'html.parser')
-            print(f"Database page title: {db_soup.title.get_text() if db_soup.title else 'No title'}")
+            print(f"✅ Successfully authenticated! Page: {page_title}")
             
-            # Step 2d: If this is Terms and Conditions, look for "Search Database" link to proceed
-            if 'terms and conditions' in db_soup.title.get_text().lower():
-                print("This is Terms and Conditions page, looking for Search Database link...")
+            # Step 4: Now look for Track UFOs in the authenticated interface
+            print(f"\nStep 4: Looking for Track UFOs in authenticated interface...")
+            
+            # Calculate date range for search
+            end_date = datetime.now()
+            start_date = end_date - timedelta(days=days_back)
+            print(f"Will search from {start_date.strftime('%m/%d/%Y')} to {end_date.strftime('%m/%d/%Y')}")
+            
+            # Look for Track UFOs or database search links
+            track_ufo_links = []
+            for link in authenticated_soup.find_all('a', href=True):
+                text = link.get_text().lower().strip()
+                href = link.get('href')
                 
-                # Look for links, buttons, or forms to proceed to search database
-                search_db_links = []
-                
-                # Check all links
-                for link in db_soup.find_all('a', href=True):
-                    text = link.get_text().lower().strip()
-                    href = link.get('href')
-                    
-                    if any(keyword in text for keyword in ['search', 'database', 'continue', 'proceed', 'agree', 'accept', 'yes', 'submit', 'go']):
-                        search_db_links.append({
+                if any(keyword in text for keyword in ['track ufo', 'search database', 'database', 'search case', 'case search']):
+                    # Skip javascript links
+                    if not href.startswith('javascript:') and not href.startswith('#'):
+                        track_ufo_links.append({
                             'text': link.get_text().strip(),
                             'href': href,
-                            'full_url': urljoin(database_url, href),
-                            'type': 'link'
+                            'full_url': urljoin(str(login_response.url), href)
                         })
-                
-                # Check for forms (terms acceptance forms)
-                for form in db_soup.find_all('form'):
-                    action = form.get('action', '')
-                    if action:
-                        # Look for submit buttons in the form
-                        for button in form.find_all(['input', 'button']):
-                            if button.get('type') in ['submit', 'button'] or button.name == 'button':
-                                search_db_links.append({
-                                    'text': f"Form: {button.get('value', button.get_text().strip())}",
-                                    'href': action,
-                                    'full_url': urljoin(database_url, action),
-                                    'type': 'form',
-                                    'form': form
-                                })
-                
-                # Also check for any link that goes to a different path (might be the actual search)
-                if not search_db_links:
-                    for link in db_soup.find_all('a', href=True):
-                        href = link.get('href')
-                        if href and href != '#' and not href.startswith('mailto:'):
-                            search_db_links.append({
-                                'text': link.get_text().strip() or f"Link: {href}",
-                                'href': href,
-                                'full_url': urljoin(database_url, href),
-                                'type': 'generic_link'
-                            })
-                
-                print(f"Found {len(search_db_links)} potential search database links:")
-                for link in search_db_links:
-                    print(f"  - '{link['text']}' → {link['href']}")
-                
-                # Use the first search database link/form
-                if search_db_links:
-                    selected_link = search_db_links[0]
-                    print(f"Proceeding via {selected_link['type']}: {selected_link['full_url']}")
-                    
-                    if selected_link['type'] == 'form':
-                        # Submit the form (T&C acceptance)
-                        form = selected_link['form']
-                        form_data = {}
-                        
-                        # Build form data
-                        for inp in form.find_all(['input', 'select']):
-                            name = inp.get('name')
-                            if name:
-                                if inp.get('type') == 'hidden':
-                                    form_data[name] = inp.get('value', '')
-                                elif inp.get('type') in ['checkbox', 'radio']:
-                                    if 'agree' in inp.get('value', '').lower() or 'accept' in inp.get('value', '').lower():
-                                        form_data[name] = inp.get('value', '1')
-                                elif inp.get('type') == 'submit':
-                                    form_data[name] = inp.get('value', 'Submit')
-                        
-                        print(f"Submitting T&C form with data: {form_data}")
-                        db_response = await client.post(selected_link['full_url'], data=form_data)
-                    else:
-                        # Use link
-                        db_response = await client.get(selected_link['full_url'])
-                    
-                    if db_response.status_code != 200:
-                        print(f"❌ Could not proceed to search database: {db_response.status_code}")
-                        return []
-                    
-                    db_soup = BeautifulSoup(db_response.text, 'html.parser')
-                    print(f"Actual search page title: {db_soup.title.get_text() if db_soup.title else 'No title'}")
-                else:
-                    print("❌ No search database links found on Terms and Conditions page")
-                    return []
             
-            # Step 2e: Look for search form and submit with date range
-            search_form = None
-            for form in db_soup.find_all('form'):
-                # Look for forms with date fields or search functionality
-                inputs = form.find_all(['input', 'select'])
-                has_date_fields = any('date' in inp.get('name', '').lower() for inp in inputs)
-                has_search_fields = any(inp.get('type') == 'submit' or 'search' in inp.get('name', '').lower() for inp in inputs)
-                
-                if has_date_fields or has_search_fields:
-                    search_form = form
-                    print(f"Found search form with {len(inputs)} fields")
-                    break
+            print(f"Found {len(track_ufo_links)} Track UFOs/database links:")
+            for link in track_ufo_links:
+                print(f"  - '{link['text']}' → {link['href']}")
             
-            if not search_form:
-                print("❌ Could not find search form on database page")
+            if not track_ufo_links:
+                print("❌ No Track UFOs or database search links found in authenticated interface")
                 return []
             
-            # Step 2e: Submit the search form with date range
+            # Find the actual SEARCH DATABASE link (not research/underwriting pages)
+            search_db_link = None
+            for link in track_ufo_links:
+                if 'search database' in link['text'].lower() and 'z2systems.com' in link['full_url']:
+                    search_db_link = link
+                    break
+            
+            if not search_db_link:
+                # Fallback to first link
+                search_db_link = track_ufo_links[0]
+            
+            track_url = search_db_link['full_url']
+            print(f"Following SEARCH DATABASE link: {track_url}")
+            
+            # Follow all redirects like a real browser
+            current_url = track_url
+            redirect_count = 0
+            max_redirects = 10
+            
+            while redirect_count < max_redirects:
+                print(f"Navigating to: {current_url}")
+                response = await client.get(current_url)
+                
+                if response.status_code != 200:
+                    print(f"❌ Could not access page: {response.status_code}")
+                    return []
+                
+                soup = BeautifulSoup(response.text, 'html.parser')
+                title = soup.title.get_text() if soup.title else 'No title'
+                print(f"✅ Page loaded: {title}")
+                
+                # Debug: Print some of the page content to see what's actually there
+                if 'z2systems.com' in current_url:
+                    page_preview = soup.get_text()[:1000]
+                    print(f"DEBUG - Page content preview:\n{page_preview}\n")
+                    
+                    # Look for any forms on this page
+                    all_forms = soup.find_all('form')
+                    print(f"DEBUG - Found {len(all_forms)} forms on z2systems page:")
+                    for i, form in enumerate(all_forms):
+                        action = form.get('action', 'No action')
+                        inputs = form.find_all(['input', 'select', 'textarea'])
+                        print(f"  Form {i+1}: action='{action}', {len(inputs)} inputs")
+                        for inp in inputs[:3]:  # Show first 3 inputs
+                            name = inp.get('name', 'unnamed')
+                            inp_type = inp.get('type', inp.name)
+                            print(f"    - {inp_type}: {name}")
+                
+                # Check if this page has the search form we need
+                search_forms = []
+                for form in soup.find_all('form'):
+                    action = form.get('action', '').lower()
+                    inputs = form.find_all(['input', 'select', 'textarea'])
+                    
+                    # Special handling for z2systems forms - the link.do form with choice field is the search
+                    if 'z2systems.com' in current_url and '/np/constituent/link.do' in action:
+                        # Check if it has a choice select field - this is the search form
+                        has_choice_field = any(inp.get('name') == 'choice' for inp in inputs)
+                        if has_choice_field:
+                            search_forms.append(form)
+                            print(f"Found z2systems search form with choice field!")
+                    else:
+                        # Regular form detection for other pages
+                        has_date_fields = any('date' in inp.get('name', '').lower() for inp in inputs)
+                        has_search_fields = any(any(term in inp.get('name', '').lower() for term in ['search', 'case', 'sighting', 'report', 'query']) for inp in inputs)
+                        
+                        # Skip obvious non-search forms
+                        skip_actions = ['signin', 'contact', 'newsletter', 'underwriting']
+                        if not any(skip_term in action for skip_term in skip_actions):
+                            if has_date_fields or has_search_fields or len(inputs) >= 5:
+                                search_forms.append(form)
+                
+                if search_forms:
+                    print(f"Found {len(search_forms)} potential search forms on this page!")
+                    print("✅ Found the actual database search form - using this page")
+                    # We found the search page, break out of redirect loop
+                    track_response = response
+                    track_soup = soup
+                    # Save the found forms for later use
+                    found_search_forms = search_forms
+                    break
+                
+                # Look for SPECIFIC database search redirects, not general site links
+                redirect_links = []
+                
+                # First, check if we're on a page that should have the actual search form
+                page_text = soup.get_text().lower()
+                if any(indicator in page_text for indicator in ['case search', 'database search', 'sighting search', 'search cases']):
+                    # This might already be the search page, don't redirect
+                    print("This page mentions case/database search - might be the right page")
+                else:
+                    # Look for specific database/search links that go to different domains or have search in URL
+                    for link in soup.find_all('a', href=True):
+                        text = link.get_text().lower().strip()
+                        href = link.get('href').lower()
+                        
+                        # Look for links that specifically mention database/search and go somewhere different
+                        if ('database' in text or 'search' in text) and ('search' in href or 'database' in href or 'cms' in href):
+                            # Skip the same link we just followed
+                            full_url = urljoin(str(response.url), link.get('href'))
+                            if full_url != current_url:
+                                redirect_links.append({
+                                    'text': text,
+                                    'href': link.get('href'),
+                                    'full_url': full_url
+                                })
+                
+                # Also check for meta refresh or javascript redirects
+                meta_refresh = soup.find('meta', attrs={'http-equiv': 'refresh'})
+                if meta_refresh:
+                    content = meta_refresh.get('content', '')
+                    if 'url=' in content.lower():
+                        redirect_url = content.split('url=', 1)[1]
+                        redirect_links.append({
+                            'text': 'Meta Refresh',
+                            'href': redirect_url,
+                            'full_url': urljoin(str(response.url), redirect_url)
+                        })
+                
+                if redirect_links:
+                    print(f"Found {len(redirect_links)} potential redirects:")
+                    for link in redirect_links:
+                        print(f"  - '{link['text']}' → {link['href']}")
+                    
+                    # Follow the first redirect
+                    current_url = redirect_links[0]['full_url']
+                    redirect_count += 1
+                else:
+                    # No more redirects found, use this page
+                    track_response = response
+                    track_soup = soup
+                    break
+            
+            if redirect_count >= max_redirects:
+                print(f"❌ Too many redirects ({max_redirects}), stopping")
+                return []
+            
+            # Use the forms found during the redirect loop
+            if 'found_search_forms' in locals() and found_search_forms:
+                print(f"✅ Using search form found during navigation with {len(found_search_forms[0].find_all(['input', 'select', 'textarea']))} inputs")
+                search_form = found_search_forms[0]
+                current_page_soup = track_soup
+            else:
+                print("❌ No search forms found during navigation")
+                return []
+            
+            # Step 6: Submit the search form with date range
+            print(f"\nStep 6: Submitting search form with date range...")
+            
             form_data = {}
-            form_action = search_form.get('action', '')
+            inputs = search_form.find_all(['input', 'select', 'textarea'])
+            
+            print(f"Form has {len(inputs)} inputs:")
+            for inp in inputs[:10]:  # Show first 10 inputs
+                name = inp.get('name', 'unnamed')
+                input_type = inp.get('type', inp.name)
+                value = inp.get('value', '')
+                print(f"  - {input_type}: {name} = '{value}'")
+                
+                # If this is the choice select field, show all options
+                if name == 'choice' and inp.name == 'select':
+                    print(f"    🎯 CHOICE FIELD OPTIONS:")
+                    options = inp.find_all('option')
+                    for i, option in enumerate(options):
+                        opt_value = option.get('value', '')
+                        opt_text = option.get_text().strip()
+                        selected = 'selected' if option.get('selected') else ''
+                        print(f"      {i+1}. value='{opt_value}' text='{opt_text}' {selected}")
+                    
+                    # Select the "Last 20 Reports" option for actual case data
+                    search_option = None
+                    for option in options:
+                        opt_text = option.get_text().strip()
+                        opt_value = option.get('value', '')
+                        if 'last 20 reports' in opt_text.lower() or 'mufoncms.com/last_20' in opt_value.lower():
+                            search_option = opt_value
+                            print(f"    ✅ Found Last 20 Reports option: '{search_option}' = '{opt_text}'")
+                            break
             
             # Build form data
-            for inp in search_form.find_all(['input', 'select']):
+            for inp in inputs:
                 name = inp.get('name')
                 if not name:
                     continue
                     
-                if 'date' in name.lower() and 'from' in name.lower():
-                    form_data[name] = start_date.strftime('%m/%d/%Y')
-                elif 'date' in name.lower() and 'to' in name.lower():
-                    form_data[name] = end_date.strftime('%m/%d/%Y')
-                elif inp.get('type') == 'hidden':
-                    form_data[name] = inp.get('value', '')
-                elif 'limit' in name.lower():
+                input_type = inp.get('type', inp.name)
+                value = inp.get('value', '')
+                
+                if 'date' in name.lower():
+                    if any(keyword in name.lower() for keyword in ['from', 'start', 'begin']):
+                        form_data[name] = start_date.strftime('%m/%d/%Y')
+                        print(f"Set {name} = {start_date.strftime('%m/%d/%Y')}")
+                    elif any(keyword in name.lower() for keyword in ['to', 'end', 'until']):
+                        form_data[name] = end_date.strftime('%m/%d/%Y')
+                        print(f"Set {name} = {end_date.strftime('%m/%d/%Y')}")
+                    else:
+                        form_data[name] = value
+                elif input_type == 'hidden':
+                    form_data[name] = value
+                elif 'limit' in name.lower() or 'count' in name.lower():
                     form_data[name] = str(limit)
+                elif input_type in ['checkbox', 'radio'] and value:
+                    # Use default values for checkboxes/radios
+                    form_data[name] = value
+                elif not value and input_type in ['text', 'email', 'number']:
+                    # Leave text fields empty unless we have a specific value
+                    form_data[name] = ''
             
-            print(f"Submitting search form with data: {form_data}")
+            # Submit the search form
+            form_action = search_form.get('action', '')
+            if not form_action.startswith('http'):
+                base_url = str(search_response.url) if 'search_response' in locals() else str(track_response.url)
+                form_action = urljoin(base_url, form_action)
             
-            if form_action.startswith('/'):
-                form_action = urljoin(database_url, form_action)
-            elif not form_action.startswith('http'):
-                form_action = urljoin(database_url, form_action)
+            print(f"Submitting search to: {form_action}")
+            print(f"Form data: {dict(list(form_data.items())[:5])}...")  # Show first 5 items
             
-            search_response = await client.post(form_action, data=form_data)
-            
-            if search_response.status_code != 200:
-                print(f"❌ Search form submission failed: {search_response.status_code}")
+            results_response = await client.post(form_action, data=form_data)
+            if results_response.status_code != 200:
+                print(f"❌ Search form submission failed: {results_response.status_code}")
                 return []
             
-            # Step 2f: Parse the search results
-            results_soup = BeautifulSoup(search_response.text, 'html.parser')
-            print(f"Search results page title: {results_soup.title.get_text() if results_soup.title else 'No title'}")
+            results_soup = BeautifulSoup(results_response.text, 'html.parser')
+            print(f"✅ Search results page loaded: {results_soup.title.get_text() if results_soup.title else 'No title'}")
             
-            # Parse results using the updated parser
+            # Parse the search results
             reports = await _parse_detailed_reports(results_soup, limit, client, list_only)
-            print(f"Found {len(reports)} reports from database search")
+            print(f"Found {len(reports)} reports from user navigation flow")
             
-            if reports:
-                return reports
-            
-            # If direct search didn't work, try POST with form data
-            print("Direct search failed, trying POST with form data...")
-            search_response = await client.post(search_db_url, data=search_params)
-            print(f"POST search response status: {search_response.status_code}")
-            
-            # Try direct access to MUFON search page
-            search_urls_to_try = [
-                "https://mufon.z2systems.com/np/clients/mufon/neonPage.jsp?pageId=19",
-                "https://mufon.app.neoncrm.com/np/clients/mufon/neonPage.jsp?pageId=19"
-            ]
-            
-            search_response = None
-            search_url = None
-            
-            for url in search_urls_to_try:
-                try:
-                    print(f"Trying search URL: {url}")
-                    test_response = await client.get(url)
-                    if test_response.status_code == 200:
-                        print(f"✅ Found working search URL: {url}")
-                        search_response = test_response
-                        search_url = url
-                        break
-                    else:
-                        print(f"  Status: {test_response.status_code}")
-                except Exception as e:
-                    print(f"  Error: {e}")
-                    continue
-            
-            if not search_response:
-                print("❌ No working search URLs found - authentication likely failed")
-                print("Available session cookies:", list(client.cookies.keys()))
-                return []
-            
-            # Parse the search page to find forms or data
-            search_soup = BeautifulSoup(search_response.text, 'html.parser')
-            
-            print(f"Search page title: {search_soup.title.get_text() if search_soup.title else 'No title'}")
-            
-            # Look for search forms to submit date range
-            forms = search_soup.find_all('form')
-            print(f"Found {len(forms)} forms on search page")
-            
-            search_form = None
-            for i, form in enumerate(forms):
-                action = form.get('action', 'No action')
-                method = form.get('method', 'GET')
-                inputs = form.find_all(['input', 'select', 'textarea'])
-                
-                print(f"\nForm {i+1}: {action} ({method}) with {len(inputs)} fields")
-                
-                # Look for MUFON choice select field or date-related inputs
-                has_choice_field = False
-                has_date_fields = False
-                
-                for inp in inputs:
-                    inp_type = inp.get('type', inp.name) 
-                    inp_name = inp.get('name', 'unnamed')
-                    inp_value = inp.get('value', '')
-                    
-                    print(f"  - {inp_type}: {inp_name} = '{inp_value}'")
-                    
-                    # Check for MUFON choice select field
-                    if inp_name == 'choice' and inp.name == 'select':
-                        has_choice_field = True
-                        options = inp.find_all('option')
-                        print(f"    Choice options: {[opt.get('value') or opt.get_text().strip() for opt in options]}")
-                    
-                    # Check for date fields
-                    if any(keyword in inp_name.lower() for keyword in ['date', 'from', 'to', 'start', 'end']):
-                        has_date_fields = True
-                
-                # Use form with choice field (preferred) or date fields
-                if has_choice_field:
-                    print(f"  -> Using MUFON choice field form for database search")
-                    search_form = form
-                    break
-                
-                if has_date_fields:
-                    print(f"  -> Using form with date fields")
-                    search_form = form
-                    break
-            
-            # If we found a search form with date fields, submit it
-            if search_form:
-                print(f"\n✅ Found search form, submitting date range query...")
-                
-                # Build form data for inputs and selects
-                form_data = {}
-                
-                # Handle input fields
-                for inp in search_form.find_all('input'):
-                    name = inp.get('name')
-                    value = inp.get('value', '')
-                    inp_type = inp.get('type', 'text')
-                    
-                    if name:
-                        if inp_type == 'submit':
-                            continue
-                        elif 'start' in name.lower() or 'from' in name.lower():
-                            form_data[name] = start_date.strftime('%m/%d/%Y')
-                        elif 'end' in name.lower() or 'to' in name.lower():
-                            form_data[name] = end_date.strftime('%m/%d/%Y')  
-                        else:
-                            form_data[name] = value
-                
-                # Handle select fields (like choice)
-                for select in search_form.find_all('select'):
-                    name = select.get('name')
-                    if name == 'choice':
-                        # For MUFON choice field, we need to find the right option
-                        # Try to find a search or database option
-                        options = select.find_all('option')
-                        search_value = None
-                        
-                        for option in options:
-                            option_text = option.get_text().strip().lower()
-                            option_value = option.get('value', '').strip()
-                            
-                            # Look for Case Management System - pageId=223 is the case search
-                            if 'pageId=223' in option_value:
-                                search_value = option_value
-                                print(f"  -> Using Case Management System: '{option.get_text().strip()}' (value: '{search_value}')")
-                                break
-                            # Fallback to other z2systems URLs but prefer case management
-                            elif 'z2systems.com/neonPage.jsp' in option_value and not search_value:
-                                search_value = option_value
-                                print(f"  -> Using fallback CMS option: '{option.get_text().strip()}' (value: '{search_value}')")
-                                continue
-                        
-                        # If no specific search option found, use the first non-empty option
-                        if not search_value and options:
-                            for option in options:
-                                if option.get('value') or option.get_text().strip():
-                                    search_value = option.get('value') or option.get_text().strip()
-                                    print(f"  -> Using fallback choice option: '{option.get_text().strip()}' (value: '{search_value}')")
-                                    break
-                        
-                        if search_value:
-                            form_data[name] = search_value
-                
-                # Submit search
-                form_action = search_form.get('action')
-                if form_action and not form_action.startswith('http'):
-                    if form_action.startswith('/'):
-                        form_action = f"https://mufon.app.neoncrm.com{form_action}"
-                    else:
-                        form_action = f"https://mufon.app.neoncrm.com/np/clients/mufon/{form_action}"
-                
-                search_method = search_form.get('method', 'POST').upper()
-                
-                print(f"Submitting to: {form_action} ({search_method})")
-                print(f"Form data: {form_data}")
-                
-                results_response = await client.request(search_method, form_action, data=form_data)
-                results_soup = BeautifulSoup(results_response.text, 'html.parser')
-                
-                print(f"Search results status: {results_response.status_code}")
-                
-            else:
-                # No search form found, try to parse current page for data
-                print("No search form found, parsing current page for data...")
-                results_soup = search_soup
-            
-            # Parse the results
-            reports = await _parse_detailed_reports(results_soup, limit, client, list_only)
-            
-            print(f"Successfully parsed {len(reports)} {'basic' if list_only else 'detailed'} reports from CRM search")
             return reports
             
         except Exception as e:
-            print(f"Error performing CRM search: {e}")
+            print(f"Error in user navigation flow: {e}")
             return []
 
+
 async def _parse_detailed_reports(soup: BeautifulSoup, limit: int, client: httpx.AsyncClient, list_only: bool = False) -> List[Dict[str, Any]]:
-    """Parse detailed MUFON reports from HTML with full descriptions"""
+    """Parse detailed reports from search results page"""
     reports = []
     
-    # Look for report containers - could be table rows, divs, or other structures
-    # Try multiple selectors to find the report data
+    print("Parsing search results...")
     
-    # Try table-based structure first
-    table = soup.find('table')
-    if table:
-        rows = table.find_all('tr')[1:]  # Skip header
-        print(f"Found table with {len(rows)} data rows")
-        
-        for i, row in enumerate(rows[:limit]):
-            try:
-                cells = row.find_all('td')
-                if len(cells) >= 6:
-                    report = await _parse_enhanced_row(cells, i, client, list_only)
-                    if report:
-                        reports.append(report)
-                        # Rate limiting only needed for detailed processing
-                        if not list_only:
-                            await asyncio.sleep(0.5)
-            except Exception as e:
-                print(f"Error parsing row {i}: {e}")
-                continue
+    # Look for different result structures
+    result_patterns = [
+        # Table rows - most common format
+        soup.find_all('tr'),
+        # Div containers with case info
+        soup.find_all('div', class_=re.compile(r'(case|result|report|sighting)', re.I)),
+        # List items
+        soup.find_all('li'),
+        # Paragraph blocks containing case data
+        soup.find_all('p')
+    ]
     
-    # Skip div processing in list-only mode for performance
-    if not list_only:
-        # Also try div-based structure for detailed reports
-        report_divs = soup.find_all('div', class_=re.compile(r'report|case|sighting', re.I))
-        if report_divs and len(report_divs) > len(reports):
-            print(f"Found {len(report_divs)} report divs, parsing...")
+    for pattern_name, elements in zip(['table rows', 'divs', 'list items', 'paragraphs'], result_patterns):
+        if reports:  # Skip if we already found data
+            break
             
-            for i, div in enumerate(report_divs[:limit]):
-                try:
-                    report = await _parse_enhanced_div(div, i, client, list_only)
-                    if report:
-                        # Check for duplicates
-                        duplicate = False
-                        for existing in reports:
-                            if report.get('case_number') and report['case_number'] == existing.get('case_number'):
-                                duplicate = True
-                                break
-                        
-                        if not duplicate:
-                            reports.append(report)
-                            await asyncio.sleep(0.5)
-                except Exception as e:
-                    print(f"Error parsing div {i}: {e}")
+        print(f"Checking {len(elements)} {pattern_name} for case data...")
+        
+        for element in elements:
+            try:
+                text = element.get_text().strip()
+                
+                # Skip empty or very short text
+                if len(text) < 20:
                     continue
+                
+                # Look for case number patterns
+                case_patterns = [
+                    r'case[#\s]*(\d{4,6})',  # Case #123456 or Case 123456
+                    r'#(\d{4,6})',           # #123456
+                    r'\b(\d{4,6})\b',        # Standalone 4-6 digit number
+                ]
+                
+                case_number = None
+                for pattern in case_patterns:
+                    match = re.search(pattern, text, re.I)
+                    if match:
+                        case_number = match.group(1)
+                        break
+                
+                if case_number:
+                    print(f"Found case: {case_number}")
+                    
+                    case_data = {
+                        'case_number': case_number,
+                        'raw_text': text,
+                        'source': 'MUFON_CMS',
+                        'scraped_at': datetime.now().isoformat()
+                    }
+                    
+                    # Extract date patterns
+                    date_patterns = [
+                        r'(\d{1,2}[/-]\d{1,2}[/-]\d{2,4})',  # MM/DD/YYYY or MM-DD-YYYY
+                        r'(\d{4}[/-]\d{1,2}[/-]\d{1,2})',    # YYYY/MM/DD or YYYY-MM-DD
+                        r'(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]* \d{1,2},? \d{4}', # January 1, 2023
+                    ]
+                    
+                    for pattern in date_patterns:
+                        date_match = re.search(pattern, text, re.I)
+                        if date_match:
+                            case_data['date'] = date_match.group(1)
+                            break
+                    
+                    # Extract location (City, State pattern)
+                    location_patterns = [
+                        r'([A-Za-z\s]+),\s*([A-Z]{2})\b',     # City, ST
+                        r'([A-Za-z\s]+),\s*([A-Za-z\s]+)',   # City, State/Country
+                    ]
+                    
+                    for pattern in location_patterns:
+                        location_match = re.search(pattern, text)
+                        if location_match:
+                            case_data['city'] = location_match.group(1).strip()
+                            case_data['state_country'] = location_match.group(2).strip()
+                            break
+                    
+                    # Look for description - usually in cells or child elements
+                    description_candidates = []
+                    
+                    # Check table cells
+                    if element.name == 'tr':
+                        cells = element.find_all(['td', 'th'])
+                        for cell in cells:
+                            cell_text = cell.get_text().strip()
+                            if len(cell_text) > 30 and not re.match(r'^\d+$', cell_text):  # Not just a number
+                                description_candidates.append(cell_text)
+                    
+                    # Use longest text as description
+                    if description_candidates:
+                        case_data['description'] = max(description_candidates, key=len)
+                    else:
+                        case_data['description'] = text[:500]  # First 500 chars
+                    
+                    # Generate unique hash for deduplication
+                    hash_content = f"{case_data.get('case_number', '')}{case_data.get('date', '')}{case_data.get('description', '')[:100]}"
+                    case_data['hash'] = hashlib.md5(hash_content.encode()).hexdigest()
+                    
+                    reports.append(case_data)
+                    
+                    if len(reports) >= limit:
+                        break
+                        
+            except Exception as e:
+                print(f"Error parsing element: {e}")
+                continue
+        
+        if reports:
+            print(f"Found {len(reports)} cases in {pattern_name}")
+    
+    # If no structured data found, try to parse the entire page text
+    if not reports:
+        print("No structured data found, parsing page text...")
+        page_text = soup.get_text()
+        
+        # Look for case numbers in the entire text
+        case_matches = re.finditer(r'case[#\s]*(\d{4,6})', page_text, re.I)
+        for match in case_matches:
+            case_number = match.group(1)
+            
+            # Extract surrounding context (±200 chars)
+            start = max(0, match.start() - 200)
+            end = min(len(page_text), match.end() + 200)
+            context = page_text[start:end].strip()
+            
+            case_data = {
+                'case_number': case_number,
+                'description': context,
+                'source': 'MUFON_CMS_TEXT',
+                'scraped_at': datetime.now().isoformat()
+            }
+            
+            hash_content = f"{case_number}{context[:100]}"
+            case_data['hash'] = hashlib.md5(hash_content.encode()).hexdigest()
+            
+            reports.append(case_data)
+            
+            if len(reports) >= limit:
+                break
+    
+    print(f"Total cases parsed: {len(reports)}")
+    
+    # Store to database
+    if reports:
+        await _store_to_database(reports)
     
     return reports
 
-async def _parse_enhanced_row(cells, row_index: int, client: httpx.AsyncClient, list_only: bool = False) -> Optional[Dict[str, Any]]:
-    """Parse enhanced table row with full descriptions"""
-    try:
-        # Enhanced MUFON structure - extract all available data
-        case_num = _extract_case_id_from_cells(cells) or cells[0].get_text(strip=True) if len(cells) > 0 else f"row_{row_index}"
-        date_str = cells[1].get_text(strip=True) if len(cells) > 1 else ""
-        city = cells[2].get_text(strip=True) if len(cells) > 2 else ""
-        state = cells[3].get_text(strip=True) if len(cells) > 3 else ""
-        country = cells[4].get_text(strip=True) if len(cells) > 4 else ""
-        shape = cells[5].get_text(strip=True) if len(cells) > 5 else ""
-        duration = cells[6].get_text(strip=True) if len(cells) > 6 else ""
-        
-        # Look for description fields - these might be in additional columns
-        summary = cells[7].get_text(strip=True) if len(cells) > 7 else ""
-        long_description = cells[8].get_text(strip=True) if len(cells) > 8 else ""
-        
-        # If no separate long description, try to extract from summary or look for more data
-        if not long_description and len(cells) > 8:
-            # Check if there are additional cells with description data
-            for cell in cells[8:]:
-                cell_text = cell.get_text(strip=True)
-                if len(cell_text) > len(summary):
-                    long_description = cell_text
-                    break
-        
-        # Parse date
-        occurred_at = _parse_mufon_date(date_str)
-        
-        # Skip heavy operations in list-only mode
-        if list_only:
-            lat, lon = None, None
-            media_files = []
-        else:
-            # Geocode location for coordinates
-            lat, lon = await _geocode_location(city, state, country)
-            
-            # Extract and download media attachments
-            media_files = await _extract_and_download_media(cells, case_num, client)
-        
-        return {
-            "case_number": case_num,
-            "date_str": date_str,
-            "city": city,
-            "state": state,
-            "country": country,
-            "shape": shape,
-            "duration": duration,
-            "summary": summary,
-            "long_description": long_description,  # Enhanced field
-            "occurred_at": occurred_at,
-            "lat": lat,
-            "lon": lon,
-            "url": f"https://mufoncms.com/case/{case_num}" if case_num else None,
-            "source_type": "authenticated_crm",
-            "media_files": media_files  # Include extracted media files
-        }
-        
-    except Exception as e:
-        print(f"Error parsing enhanced row: {e}")
-        return None
 
-async def _parse_enhanced_div(div, div_index: int, client: httpx.AsyncClient, list_only: bool = False) -> Optional[Dict[str, Any]]:
-    """Parse enhanced div-based report structure"""
+async def _store_to_database(reports: List[Dict[str, Any]]):
+    """Store reports to UFOBeep database"""
     try:
-        # Extract data from div structure
-        case_num = ""
-        summary = ""
-        long_description = ""
+        import asyncpg
         
-        # Look for case number from links or extract from URLs
-        case_num = _extract_case_id_from_div(div)
-        if not case_num:
-            case_links = div.find_all('a', href=re.compile(r'case|report', re.I))
-            if case_links:
-                case_num = case_links[0].get_text(strip=True)
+        conn = await asyncpg.connect(
+            host='localhost',
+            database='ufobeep_db',
+            user='ufobeep_user',
+            password='ufopostpass'
+        )
         
-        # Extract all text content and try to identify descriptions
-        text_content = div.get_text(separator=' | ', strip=True)
+        # Create table if not exists
+        await conn.execute('''
+            CREATE TABLE IF NOT EXISTS mufon_cases (
+                id SERIAL PRIMARY KEY,
+                case_number VARCHAR(50),
+                date VARCHAR(50),
+                city VARCHAR(100),
+                state_country VARCHAR(100),
+                description TEXT,
+                raw_text TEXT,
+                source VARCHAR(50),
+                hash VARCHAR(32) UNIQUE,
+                scraped_at TIMESTAMP,
+                created_at TIMESTAMP DEFAULT NOW()
+            )
+        ''')
         
-        # Split content to find short and long descriptions
-        sentences = text_content.split('|')
-        if len(sentences) >= 2:
-            summary = sentences[0].strip()
-            long_description = ' '.join(sentences[1:]).strip()
-        else:
-            summary = text_content[:200] + "..." if len(text_content) > 200 else text_content
-            long_description = text_content
-        
-        # Try to extract other fields
-        city, state, country = _extract_location_from_text(text_content)
-        shape, duration = _extract_details_from_text(text_content)
-        
-        occurred_at = datetime.utcnow()  # Fallback date
-        
-        # Skip heavy operations in list-only mode
-        if list_only:
-            lat, lon = None, None
-            media_files = []
-        else:
-            # Geocode location
-            lat, lon = await _geocode_location(city, state, country)
-            
-            # Extract media files from div content
-            media_files = []
-            for link in div.find_all('a', href=True):
-                href = link.get('href')
-                if href and any(ext in href.lower() for ext in ['.jpg', '.jpeg', '.png', '.gif', '.mp4', '.mov', '.avi']):
-                    try:
-                        if not href.startswith('http'):
-                            if href.startswith('/'):
-                                href = f"https://mufoncms.com{href}"
-                            else:
-                                href = f"https://mufoncms.com/{href}"
-                        
-                        media_info = {
-                            "url": href,
-                            "type": "image" if any(ext in href.lower() for ext in ['.jpg', '.jpeg', '.png', '.gif']) else "video",
-                            "source": "mufon_authenticated",
-                            "case_number": case_num or f"div_{div_index}"
-                        }
-                        media_files.append(media_info)
-                    except Exception as e:
-                        print(f"Error processing media from {href}: {e}")
-                        continue
-        
-        return {
-            "case_number": case_num or f"div_{div_index}",
-            "date_str": "",
-            "city": city,
-            "state": state,
-            "country": country,
-            "shape": shape,
-            "duration": duration,
-            "summary": summary,
-            "long_description": long_description,  # Enhanced field
-            "occurred_at": occurred_at,
-            "lat": lat,
-            "lon": lon,
-            "url": f"https://mufoncms.com/case/{case_num}" if case_num else None,
-            "source_type": "authenticated_crm",
-            "media_files": media_files
-        }
-        
-    except Exception as e:
-        print(f"Error parsing enhanced div: {e}")
-        return None
-
-async def _geocode_location(city: str, state: str, country: str) -> Tuple[Optional[float], Optional[float]]:
-    """Geocode location to get coordinates"""
-    if not city:
-        # Fallback to Las Vegas coordinates if no location
-        return 36.1672719, -115.1483538
-    
-    try:
-        geocoder = Nominatim(user_agent="ufobeep_feeds/1.0")
-        
-        # Build search query
-        location_parts = [p for p in [city, state, country] if p]
-        query = ", ".join(location_parts)
-        
-        location = geocoder.geocode(query, timeout=10)
-        
-        if location:
-            return float(location.latitude), float(location.longitude)
-    
-    except Exception as e:
-        print(f"Geocoding error for {city}, {state}, {country}: {e}")
-    
-    # Fallback coordinates (Las Vegas)
-    return 36.1672719, -115.1483538
-
-def _parse_mufon_date(date_str: str) -> datetime:
-    """Parse MUFON date string to datetime"""
-    try:
-        date_str = date_str.strip()
-        
-        formats = ["%m/%d/%Y", "%Y-%m-%d", "%m-%d-%Y", "%d/%m/%Y"]
-        
-        for fmt in formats:
+        # Insert reports
+        inserted_count = 0
+        for report in reports:
             try:
-                return datetime.strptime(date_str, fmt)
-            except ValueError:
-                continue
-                
-        return datetime.utcnow()
-    except:
-        return datetime.utcnow()
+                await conn.execute('''
+                    INSERT INTO mufon_cases (case_number, date, city, state_country, description, raw_text, source, hash, scraped_at)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+                    ON CONFLICT (hash) DO NOTHING
+                ''', 
+                report.get('case_number'),
+                report.get('date'),
+                report.get('city'),
+                report.get('state_country'),
+                report.get('description'),
+                report.get('raw_text'),
+                report.get('source'),
+                report.get('hash'),
+                datetime.fromisoformat(report.get('scraped_at'))
+                )
+                inserted_count += 1
+            except Exception as e:
+                print(f"Error inserting report {report.get('case_number', 'unknown')}: {e}")
+        
+        await conn.close()
+        print(f"Successfully stored {inserted_count} new reports to database")
+        
+    except Exception as e:
+        print(f"Database error: {e}")
 
-def _extract_location_from_text(text: str) -> Tuple[str, str, str]:
-    """Extract city, state, country from text content"""
-    # Simple extraction - could be enhanced based on actual format
-    city = state = country = ""
-    
-    # Look for patterns like "City, State" or "City, State, Country"
-    location_match = re.search(r'([A-Za-z\s]+),\s*([A-Z]{2})\s*,?\s*([A-Za-z\s]*)', text)
-    if location_match:
-        city = location_match.group(1).strip()
-        state = location_match.group(2).strip()
-        country = location_match.group(3).strip() or "US"
-    
-    return city, state, country
-
-def _extract_details_from_text(text: str) -> Tuple[str, str]:
-    """Extract shape and duration from text content"""
-    shape = duration = ""
-    
-    # Look for shape keywords
-    shapes = ["circle", "triangle", "disc", "sphere", "cylinder", "oval", "diamond", "rectangle", "cigar", "light"]
-    for s in shapes:
-        if s.lower() in text.lower():
-            shape = s.capitalize()
-            break
-    
-    # Look for duration patterns
-    duration_match = re.search(r'(\d+\s*(?:second|minute|hour|sec|min|hr)s?)', text, re.I)
-    if duration_match:
-        duration = duration_match.group(1)
-    
-    return shape, duration
-
-async def _extract_and_download_media(cells, case_num: str, client: httpx.AsyncClient) -> List[Dict[str, Any]]:
-    """Extract and download media attachments from MUFON report"""
-    media_files = []
-    
-    # Look for image/video links in table cells
-    for cell in cells:
-        # Find all links that might be media
-        for link in cell.find_all('a', href=True):
-            href = link.get('href')
-            if not href:
-                continue
-                
-            # Check if link points to media file
-            if any(ext in href.lower() for ext in ['.jpg', '.jpeg', '.png', '.gif', '.mp4', '.mov', '.avi']):
-                try:
-                    # Make URL absolute if needed
-                    if not href.startswith('http'):
-                        if href.startswith('/'):
-                            href = f"https://mufoncms.com{href}"
-                        else:
-                            href = f"https://mufoncms.com/{href}"
-                    
-                    # Basic media info - would need full UFOBeep media processing
-                    media_info = {
-                        "url": href,
-                        "type": "image" if any(ext in href.lower() for ext in ['.jpg', '.jpeg', '.png', '.gif']) else "video",
-                        "source": "mufon_authenticated",
-                        "case_number": case_num
-                    }
-                    media_files.append(media_info)
-                    
-                except Exception as e:
-                    print(f"Error processing media from {href}: {e}")
-                    continue
-    
-    return media_files
-
-def _extract_case_id_from_cells(cells) -> Optional[str]:
-    """Extract MUFON case ID from table cells"""
-    for cell in cells:
-        # Look for links with id= parameter
-        for link in cell.find_all('a', href=True):
-            href = link.get('href')
-            if href:
-                match = re.search(r'id=(\d+)', href)
-                if match:
-                    return match.group(1)
-        
-        # Look for case ID in text content
-        text = cell.get_text()
-        if text and text.isdigit():
-            return text
-    
-    return None
-
-def _extract_case_id_from_div(div) -> Optional[str]:
-    """Extract MUFON case ID from div content"""
-    # Look for links with id= parameter
-    for link in div.find_all('a', href=True):
-        href = link.get('href')
-        if href:
-            match = re.search(r'id=(\d+)', href)
-            if match:
-                return match.group(1)
-    
-    # Look in text content for case patterns
-    text = div.get_text()
-    match = re.search(r'(?:case|id)[\s#:]*(\d{5,})', text, re.I)
-    if match:
-        return match.group(1)
-    
-    return None
-
-def _clean_mufon_location(city: str, state: str, country: str) -> tuple[str, str, str]:
-    """Clean messy MUFON location data"""
-    # Handle leading zeros and empty cities
-    if city and (city.strip() == '0' or city.strip().startswith('0,')):
-        city = ""
-    
-    # Clean up state
-    if state and state.strip() == '0':
-        state = ""
-    
-    # Default country if missing
-    if not country or country.strip() in ['', '0']:
-        country = "US"
-    
-    # If no city but we have state, try state name
-    if not city and state:
-        city = state
-    
-    return city.strip() if city else "", state.strip() if state else "", country.strip()
-
-async def fetch_individual_case(case_number: str) -> Optional[Dict[str, Any]]:
-    """
-    Fetch individual MUFON case by case number from CMS with full details and media
-    """
-    # Credentials from secrets
-    username = "varak"
-    password = "ufobeep123pass"
-    
-    async with httpx.AsyncClient(follow_redirects=True, timeout=30.0) as client:
-        # Step 1: Login to CRM
-        print(f"Authenticating to MUFON CMS for case {case_number}...")
-        
-        login_page = await client.get("https://mufon.app.neoncrm.com/np/clients/mufon/login.jsp")
-        soup = BeautifulSoup(login_page.text, 'html.parser')
-        
-        # Find login form
-        login_form = None
-        for form in soup.find_all('form'):
-            if form.get('action') and 'signIn.do' in form.get('action'):
-                login_form = form
-                break
-        
-        if not login_form:
-            print("❌ Login form not found")
-            return None
-        
-        # Extract form data for login
-        form_data = {}
-        for inp in login_form.find_all('input'):
-            name = inp.get('name')
-            value = inp.get('value', '')
-            if name:
-                if name == 'loginName':
-                    form_data[name] = username
-                elif name == 'loginPassword':
-                    form_data[name] = password
-                else:
-                    form_data[name] = value
-        
-        # Perform login
-        login_response = await client.post("https://mufon.app.neoncrm.com/np/security/signIn.do", data=form_data)
-        
-        if "accountHome.do" not in str(login_response.url):
-            print("❌ Authentication failed")
-            return None
-        
-        print("✅ Successfully authenticated to MUFON CMS")
-        
-        # Step 2: Search for specific case by case number
-        try:
-            search_db_url = "https://mufon.z2systems.com/np/clients/mufon/neonPage.jsp"
-            
-            # Search for specific case by case number
-            search_params = {
-                'pageId': '19',
-                'choice': 'search',
-                'case_number': case_number,
-                'id': case_number
-            }
-            
-            print(f"Searching CMS for case number: {case_number}")
-            
-            # Try direct search for case
-            search_response = await client.get(search_db_url, params=search_params)
-            if search_response.status_code == 200:
-                search_soup = BeautifulSoup(search_response.text, 'html.parser')
-                
-                # Parse the specific case with full details (not list_only)
-                reports = await _parse_detailed_reports(search_soup, 1, client, list_only=False)
-                
-                if reports and len(reports) > 0:
-                    print(f"✅ Found detailed case {case_number}")
-                    return reports[0]
-            
-            print(f"❌ Could not find case {case_number} in CMS")
-            return None
-            
-        except Exception as e:
-            print(f"Error searching for case {case_number}: {e}")
-            return None
-
-def to_alert_dict(mufon_report: Dict[str, Any]) -> Dict[str, Any]:
-    """Convert enhanced MUFON report to sighting/alert format"""
-    # Create unique hash
-    content = f"{mufon_report.get('case_number', '')}-{mufon_report.get('summary', '')}-{mufon_report.get('city', '')}"
-    ingestion_hash = hashlib.sha256(content.encode()).hexdigest()
-    
-    # Build location string
-    location_parts = [mufon_report.get('city', ''), mufon_report.get('state', ''), mufon_report.get('country', '')]
-    location = ', '.join([p for p in location_parts if p])
-    
-    # Create enhanced title
-    title = f"UFO Sighting in {mufon_report.get('city', 'Unknown Location')}"
-    if mufon_report.get('shape'):
-        title += f" - {mufon_report.get('shape')} Shape"
-    
-    # Use long description if available, otherwise fall back to summary
-    description = mufon_report.get('long_description') or mufon_report.get('summary', '')
-    
-    return {
-        "source": "mufon_authenticated",
-        "source_id": mufon_report.get('case_number'),
-        "ingestion_hash": ingestion_hash,
-        "occurred_at": mufon_report.get('occurred_at'),
-        "title": title,
-        "summary": mufon_report.get('summary', ''),
-        "description": description,  # Enhanced field with full description
-        "city": mufon_report.get('city'),
-        "state": mufon_report.get('state'),
-        "country": mufon_report.get('country'),
-        "shape": mufon_report.get('shape'),
-        "duration": mufon_report.get('duration'),
-        "lat": mufon_report.get('lat'),
-        "lon": mufon_report.get('lon'),
-        "external_url": mufon_report.get('url'),
-        "raw": mufon_report
-    }
+if __name__ == "__main__":
+    # Test the authenticated client
+    reports = asyncio.run(fetch_authenticated_reports(limit=5, days_back=1))
+    for report in reports:
+        print(f"Report: {report.get('title', 'No title')}")

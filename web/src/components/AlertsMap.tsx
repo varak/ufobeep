@@ -14,6 +14,9 @@ interface Alert {
   }
   alert_level: string
   created_at: string
+  source?: string
+  username?: string
+  enrichment_data?: any
 }
 
 interface AlertsMapProps {
@@ -40,6 +43,7 @@ export default function AlertsMap({
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
   const [mapInitialized, setMapInitialized] = useState(false)
+  const [currentZoom, setCurrentZoom] = useState(zoom)
   const mapInstanceRef = useRef<any>(null)
   const markersRef = useRef<any[]>([])
   const prevAlertsRef = useRef<Alert[]>([])
@@ -91,21 +95,12 @@ export default function AlertsMap({
         })
         markersRef.current = []
         
-        // Add new markers
-        alerts.forEach((alert) => {
+        // Filter alerts by zoom level then add markers with UFO classification support
+        const filteredAlerts = filterAlertsByZoom(alerts, mapInstanceRef.current.getZoom())
+        filteredAlerts.forEach((alert) => {
           if (alert.location.latitude === 0 && alert.location.longitude === 0) return
           
-          const marker = L.circleMarker(
-            [alert.location.latitude, alert.location.longitude],
-            {
-              radius: 8,
-              fillColor: getAlertColor(alert.alert_level),
-              color: '#ffffff',
-              weight: 2,
-              opacity: 1,
-              fillOpacity: 0.8
-            }
-          )
+          const marker = createUfoMarker(L, alert, mapInstanceRef.current)
           
           const popupContent = `
             <div class="text-sm">
@@ -193,6 +188,47 @@ export default function AlertsMap({
         
         tileLayer.addTo(map)
         
+        // Add zoom change listener to update markers based on zoom level
+        map.on('zoomend', () => {
+          const newZoom = map.getZoom()
+          setCurrentZoom(newZoom)
+          
+          // Update markers based on new zoom level
+          markersRef.current.forEach(marker => {
+            if (marker) marker.remove()
+          })
+          markersRef.current = []
+          
+          // Re-add markers with new zoom filtering
+          const filteredAlerts = filterAlertsByZoom(alerts, newZoom)
+          filteredAlerts.forEach((alert) => {
+            if (alert.location.latitude === 0 && alert.location.longitude === 0) return
+            
+            const marker = createUfoMarker(L, alert, map)
+            
+            const popupContent = `
+              <div class="text-sm">
+                <h4 class="font-semibold text-gray-900 mb-1">${AlertTitleUtils.getShortTitle(alert)}</h4>
+                <p class="text-gray-600 text-xs mb-2">${alert.description}</p>
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-gray-500">${alert.location.name}</span>
+                  <span class="font-medium" style="color: ${getAlertColor(alert.alert_level)}">${alert.alert_level?.toUpperCase()}</span>
+                </div>
+                <div class="text-xs text-gray-400 mt-1">${new Date(alert.created_at).toLocaleDateString()}</div>
+              </div>
+            `
+            
+            marker.bindPopup(popupContent)
+            marker.on('click', () => {
+              setSelectedAlert(alert)
+              if (onAlertClick) onAlertClick(alert)
+            })
+            
+            marker.addTo(map)
+            markersRef.current.push(marker)
+          })
+        })
+
         // Force map to update its size
         setTimeout(() => {
           map.invalidateSize()
@@ -204,23 +240,14 @@ export default function AlertsMap({
         })
         markersRef.current = []
 
-        // Add markers for alerts (skip invalid coordinates)
-        alerts.forEach((alert) => {
+        // Filter alerts by zoom level then add markers for alerts (skip invalid coordinates) with UFO classification support
+        const filteredAlerts = filterAlertsByZoom(alerts, currentZoom)
+        filteredAlerts.forEach((alert) => {
           if (alert.location.latitude === 0 && alert.location.longitude === 0) {
             return // Skip invalid coordinates (0,0 fallback)
           }
 
-          const marker = L.circleMarker(
-            [alert.location.latitude, alert.location.longitude],
-            {
-              radius: 8,
-              fillColor: getAlertColor(alert.alert_level),
-              color: '#ffffff',
-              weight: 2,
-              opacity: 1,
-              fillOpacity: 0.8
-            }
-          )
+          const marker = createUfoMarker(L, alert, map)
 
           // Add popup
           const popupContent = `
@@ -304,6 +331,27 @@ export default function AlertsMap({
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  const filterAlertsByZoom = (alerts: Alert[], zoomLevel: number) => {
+    // Show more alerts when zoomed out, fewer when zoomed in
+    let maxAlerts: number
+    if (zoomLevel >= 12) {
+      maxAlerts = 50 // Zoomed in - show many local alerts
+    } else if (zoomLevel >= 8) {
+      maxAlerts = 25 // Medium zoom - show moderate number
+    } else if (zoomLevel >= 5) {
+      maxAlerts = 15 // Zoomed out - show fewer but important alerts
+    } else {
+      maxAlerts = 10 // Very zoomed out - show only the most recent/important
+    }
+    
+    // Sort by most recent and take only the limit
+    const sortedAlerts = [...alerts].sort((a, b) => 
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    )
+    
+    return sortedAlerts.slice(0, maxAlerts)
+  }
+
   const getAlertColor = (level: string) => {
     switch (level?.toLowerCase()) {
       case 'critical': return '#ef4444'
@@ -311,6 +359,96 @@ export default function AlertsMap({
       case 'medium': return '#eab308'
       case 'low': return '#22c55e'
       default: return '#39FF14'
+    }
+  }
+
+  const getUfoIcon = (alert: Alert) => {
+    // Check if this is a MUFON classified sighting
+    if (alert.source === 'mufon' || alert.username === 'MUFON_Database') {
+      // Try to get UFO classification from enrichment data
+      if (alert.enrichment_data && alert.enrichment_data.ufo_classification) {
+        const classification = alert.enrichment_data.ufo_classification
+        if (classification.type) {
+          const ufoType = classification.type.toLowerCase()
+          
+          // Return appropriate Unicode symbols for each UFO type
+          switch (ufoType) {
+            case 'triangle':
+              return '△' // Triangle
+            case 'disc':
+            case 'saucer':
+              return '●' // Disc/circle
+            case 'sphere':
+              return '○' // Sphere
+            case 'cigar':
+              return '─' // Horizontal line for cigar
+            case 'light':
+              return '☀' // Sun/light
+            case 'formation':
+              return '⋯' // Multiple dots for formation
+            case 'boomerang':
+              return '‹' // Angular shape
+            case 'rectangle':
+              return '▢' // Rectangle
+            case 'diamond':
+              return '◊' // Diamond
+            default:
+              return '?' // Unknown UFO type
+          }
+        }
+      }
+      // Default MUFON icon if no classification
+      return '?'
+    }
+    
+    // Regular UFO beep sightings use standard pin
+    return '📍'
+  }
+
+  const createUfoMarker = (L: any, alert: Alert, map: any) => {
+    const isClassifiedUfo = alert.source === 'mufon' || alert.username === 'MUFON_Database'
+    
+    if (isClassifiedUfo) {
+      // Create custom HTML marker for UFO types
+      const iconSymbol = getUfoIcon(alert)
+      const color = getAlertColor(alert.alert_level)
+      
+      const customIcon = L.divIcon({
+        html: `
+          <div style="
+            background: ${color}; 
+            border: 2px solid white; 
+            border-radius: 50%; 
+            width: 24px; 
+            height: 24px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 12px; 
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+          ">${iconSymbol}</div>
+        `,
+        className: 'ufo-marker',
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
+      })
+      
+      return L.marker([alert.location.latitude, alert.location.longitude], { icon: customIcon })
+    } else {
+      // Use circle markers for regular beep sightings (existing behavior)
+      return L.circleMarker(
+        [alert.location.latitude, alert.location.longitude],
+        {
+          radius: 8,
+          fillColor: getAlertColor(alert.alert_level),
+          color: '#ffffff',
+          weight: 2,
+          opacity: 1,
+          fillOpacity: 0.8
+        }
+      )
     }
   }
 

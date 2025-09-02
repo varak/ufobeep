@@ -66,6 +66,50 @@ class _MapWidgetState extends State<MapWidget> {
     return const LatLng(39.8283, -98.5795);
   }
 
+  IconData _getUfoIcon(Alert alert) {
+    // Check if this is a MUFON classified sighting
+    if (alert.source == 'mufon' || alert.username == 'MUFON_Database') {
+      // Try to get UFO classification from enrichment data
+      final enrichmentData = alert.enrichmentData;
+      if (enrichmentData != null && enrichmentData.containsKey('ufo_classification')) {
+        final classification = enrichmentData['ufo_classification'];
+        if (classification is Map && classification.containsKey('type')) {
+          final ufoType = classification['type'].toString().toLowerCase();
+          
+          // Return appropriate icons for each UFO type
+          switch (ufoType) {
+            case 'triangle':
+              return Icons.change_history; // Triangle icon
+            case 'disc':
+            case 'saucer':
+              return Icons.lens; // Disc/circle icon
+            case 'sphere':
+              return Icons.circle; // Sphere icon
+            case 'cigar':
+              return Icons.horizontal_rule; // Horizontal line for cigar
+            case 'light':
+              return Icons.wb_sunny; // Sun/light icon
+            case 'formation':
+              return Icons.scatter_plot; // Multiple dots for formation
+            case 'boomerang':
+              return Icons.keyboard_arrow_left; // Angular shape
+            case 'rectangle':
+              return Icons.crop_square; // Rectangle icon
+            case 'diamond':
+              return Icons.crop_free; // Diamond-like icon
+            default:
+              return Icons.help_outline; // Unknown UFO type
+          }
+        }
+      }
+      // Default MUFON icon if no classification
+      return Icons.help_outline;
+    }
+    
+    // Regular UFO beep sightings keep the standard location pin with existing fading behavior
+    return Icons.location_on;
+  }
+
   Color _getAlertColor(Alert alert) {
     final now = DateTime.now();
     final ageInHours = now.difference(alert.createdAt).inHours.abs();
@@ -119,9 +163,32 @@ class _MapWidgetState extends State<MapWidget> {
     }).toList();
   }
 
+  List<Alert> _filterAlertsByZoom(List<Alert> alerts) {
+    final currentZoom = _mapController.camera.zoom;
+    
+    // Show more alerts when zoomed out, fewer when zoomed in
+    int maxAlerts;
+    if (currentZoom >= 12) {
+      maxAlerts = 50; // Zoomed in - show many local alerts
+    } else if (currentZoom >= 8) {
+      maxAlerts = 25; // Medium zoom - show moderate number
+    } else if (currentZoom >= 5) {
+      maxAlerts = 15; // Zoomed out - show fewer but important alerts
+    } else {
+      maxAlerts = 10; // Very zoomed out - show only the most recent/important
+    }
+    
+    // Sort by most recent and take only the limit
+    final sortedAlerts = List<Alert>.from(alerts)
+      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    
+    return sortedAlerts.take(maxAlerts).toList();
+  }
+
   List<Marker> _buildMarkers() {
-    // Filter alerts by age first
-    final filteredAlerts = _filterReportsByAge(widget.alerts);
+    // Filter alerts by age first, then by zoom level
+    final ageFilteredAlerts = _filterReportsByAge(widget.alerts);
+    final filteredAlerts = _filterAlertsByZoom(ageFilteredAlerts);
     
     return filteredAlerts.map((alert) {
       final color = _getAlertColor(alert);
@@ -137,6 +204,9 @@ class _MapWidgetState extends State<MapWidget> {
       } else {
         markerSize = 20; // Small for older
       }
+      
+      // Get appropriate icon for UFO type
+      final icon = _getUfoIcon(alert);
       
       return Marker(
         point: LatLng(alert.latitude, alert.longitude),
@@ -166,7 +236,7 @@ class _MapWidgetState extends State<MapWidget> {
               ],
             ),
             child: Icon(
-              Icons.location_on,
+              icon,
               color: Colors.white.withOpacity(((color.alpha / 255.0) + 0.2).clamp(0.0, 1.0)),
               size: markerSize * 0.6,
             ),
@@ -202,6 +272,14 @@ class _MapWidgetState extends State<MapWidget> {
                   setState(() {
                     _selectedAlert = null;
                   });
+                },
+                onMapEvent: (MapEvent mapEvent) {
+                  // Rebuild markers when zoom changes to apply zoom-based filtering
+                  if (mapEvent is MapEventMoveEnd) {
+                    setState(() {
+                      // This will trigger _buildMarkers() to be called again
+                    });
+                  }
                 },
               ),
               children: [

@@ -250,18 +250,51 @@ class AlertsScreen extends ConsumerWidget {
           ),
         ),
         
-        // Alerts list
+        // Alerts list with pagination
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            itemCount: visibleAlerts.length,
+            itemCount: visibleAlerts.length + 1, // +1 for load more button
             itemBuilder: (context, index) {
+              // Show load more button at the end
+              if (index == visibleAlerts.length) {
+                return _buildLoadMoreButton(context, ref, visibleAlerts);
+              }
+              
               final alert = visibleAlerts[index];
               return AlertCard(alert: alert);
             },
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildLoadMoreButton(
+    BuildContext context, 
+    WidgetRef ref,
+    List<Alert> visibleAlerts,
+  ) {
+    // Only show load more if we have alerts and they might be limited by pagination
+    if (visibleAlerts.length < 15) return const SizedBox.shrink();
+    
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Center(
+        child: ElevatedButton.icon(
+          onPressed: () {
+            ref.read(alertsListProvider.notifier).loadMore();
+          },
+          icon: const Icon(Icons.expand_more),
+          label: const Text('Load More Alerts'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.darkSurface,
+            foregroundColor: AppColors.brandPrimary,
+            side: const BorderSide(color: AppColors.brandPrimary),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          ),
+        ),
+      ),
     );
   }
 }

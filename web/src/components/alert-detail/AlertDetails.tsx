@@ -51,9 +51,10 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
       {/* Description */}
       {alert.description && (
         <div className="mb-6">
-          <p className="text-text-secondary leading-relaxed">
-            {alert.description}
-          </p>
+          <div 
+            className="text-text-secondary leading-relaxed prose prose-invert max-w-none"
+            dangerouslySetInnerHTML={{ __html: alert.description }}
+          />
         </div>
       )}
 

@@ -324,7 +324,7 @@ class AlertsList extends _$AlertsList {
   }
 
   Future<List<Alert>> _fetchAlertsFromApi({
-    int limit = 20,
+    int limit = 15,
     int offset = 0,
     String? category,
     String? minAlertLevel,
