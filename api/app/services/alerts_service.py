@@ -287,7 +287,8 @@ class AlertsService:
             return str(alert_id)
     
     async def create_beep(self, device_id: str, location: Dict, 
-                         description: str = None, username: str = None) -> Tuple[str, Dict]:
+                         description: str = None, username: str = None,
+                         title: str = None, source: str = None) -> Tuple[str, Dict]:
         """Create beep with location privacy"""
         # Validate location
         lat = float(location['latitude'])
@@ -320,7 +321,7 @@ class AlertsService:
         
         # Create alert
         alert_id = await self.create_alert(
-            title=None,
+            title=title,
             description=description,
             category="ufo",
             witness_count=1,
@@ -328,7 +329,10 @@ class AlertsService:
             sensor_data=sensor_data,
             alert_level="normal",
             device_id=device_id,
-            username=username  # Pass the real username
+            username=username,
+            source=source,
+            latitude=lat,
+            longitude=lng
         )
         
         # Auto-follow the alert for the creator so they get notifications
