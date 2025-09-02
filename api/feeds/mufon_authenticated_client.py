@@ -72,8 +72,12 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2) -> Li
         print(f"Searching from {start_date.strftime('%m/%d/%Y')} to {end_date.strftime('%m/%d/%Y')}")
         
         try:
-            # First try the main dashboard to see what's available
-            dashboard_response = await client.get("https://mufon.app.neoncrm.com/np/clients/mufon/")
+            # Use the URL we know works - the login redirect goes to accountHome.do
+            account_home_url = str(login_response.url)  # This should be the working account home
+            print(f"Using authenticated account home: {account_home_url}")
+            
+            # Explore the actual dashboard that we know exists
+            dashboard_response = await client.get(account_home_url)
             print(f"Dashboard status: {dashboard_response.status_code}")
             
             if dashboard_response.status_code == 200:
@@ -86,22 +90,20 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2) -> Li
                 for link in links:
                     href = link.get('href', '')
                     text = link.get_text().strip().lower()
-                    if any(keyword in text for keyword in ['case', 'report', 'search', 'sighting']):
-                        case_links.append((href, text))
+                    if any(keyword in text for keyword in ['case', 'report', 'search', 'sighting', 'cms']):
+                        full_url = urljoin(account_home_url, href) if not href.startswith('http') else href
+                        case_links.append((full_url, text))
                 
                 print(f"Found {len(case_links)} potential case/report links:")
-                for href, text in case_links[:5]:
+                for href, text in case_links[:10]:
                     print(f"  {text}: {href}")
-            
-            # Try different search URLs that might exist in the authenticated CRM
-            search_urls_to_try = [
-                "https://mufon.app.neoncrm.com/np/clients/mufon/",  # Main dashboard
-                "https://mufon.app.neoncrm.com/np/clients/mufon/reports/search",
-                "https://mufon.app.neoncrm.com/np/clients/mufon/caseManagementSystem/search.do",
-                "https://mufon.app.neoncrm.com/np/clients/mufon/search",
-                "https://mufon.app.neoncrm.com/np/clients/mufon/reports",
-                "https://mufon.app.neoncrm.com/np/clients/mufon/caseManagementSystem/caseManagementHome.do",
-            ]
+                    
+                # Use the discovered links as our search URLs
+                search_urls_to_try = [url for url, text in case_links if url.startswith('http')][:5]
+                if not search_urls_to_try:
+                    search_urls_to_try = [account_home_url]  # At least try the account home
+            else:
+                search_urls_to_try = [account_home_url]
             
             search_response = None
             search_url = None
