@@ -248,22 +248,26 @@ export default function AlertPage({ params }: AlertPageProps) {
             {/* Alert details */}
             <AlertDetails alert={alert} />
 
-            {/* Environmental data */}
-            <EnrichmentData enrichment={alert.enrichment} alert={alert} />
+            {/* Environmental data - hidden for MUFON alerts */}
+            {alert.reporter_username !== 'MUFON_Database' && (
+              <EnrichmentData enrichment={alert.enrichment} alert={alert} />
+            )}
 
-            {/* Witness count info */}
-            <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-brand-primary">👥</span>
-                <h2 className="text-lg font-semibold text-brand-primary">Witnesses</h2>
+            {/* Witness count info - hidden for MUFON alerts */}
+            {alert.reporter_username !== 'MUFON_Database' && (
+              <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-brand-primary">👥</span>
+                  <h2 className="text-lg font-semibold text-brand-primary">Witnesses</h2>
+                </div>
+                <div className="text-2xl font-bold text-text-primary mb-2">
+                  {getWitnessCount()} {getWitnessCount() === 1 ? 'Witness' : 'Witnesses'}
+                </div>
+                <div className="text-text-secondary text-sm">
+                  {getWitnessCount() === 1 ? 'Single observer report' : 'Multiple confirmations from nearby users'}
+                </div>
               </div>
-              <div className="text-2xl font-bold text-text-primary mb-2">
-                {getWitnessCount()} {getWitnessCount() === 1 ? 'Witness' : 'Witnesses'}
-              </div>
-              <div className="text-text-secondary text-sm">
-                {getWitnessCount() === 1 ? 'Single observer report' : 'Multiple confirmations from nearby users'}
-              </div>
-            </div>
+            )}
           </div>
 
           {/* Sidebar */}
@@ -308,7 +312,10 @@ export default function AlertPage({ params }: AlertPageProps) {
                 </div>
               </div>
               
-              <LocationMap location={alert.location} />
+              {/* Map hidden for MUFON alerts */}
+              {alert.reporter_username !== 'MUFON_Database' && (
+                <LocationMap location={alert.location} />
+              )}
             </div>
           </div>
         </div>

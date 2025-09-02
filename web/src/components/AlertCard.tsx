@@ -48,9 +48,13 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
 
-  // Calculate actual comment count including initial description (comment ID 0)
+  // Calculate actual comment count - don't add description as comment for MUFON
   const getActualCommentCount = () => {
     const baseCount = alert.comment_count || 0
+    // For MUFON alerts, use exact comment count (don't add description as comment)
+    if (alert.reporter_username === 'MUFON_Database') {
+      return baseCount
+    }
     // If there's a description, add 1 for the initial description comment (ID 0)
     const hasDescription = alert.description && alert.description.trim().length > 0
     return hasDescription ? baseCount + 1 : baseCount
@@ -248,7 +252,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
               <div className="text-text-tertiary text-xs">
                 {formatDate(alert.created_at)}
               </div>
-              {alert.distance && (
+              {alert.distance !== undefined && alert.distance > 0 && (
                 <div className="text-xs text-text-secondary mt-1 px-2 py-0.5 bg-dark-background rounded">
                   {alert.distance < 1 
                     ? `${Math.round(alert.distance * 1000)}m away`
@@ -310,8 +314,8 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                 )}
               </div>
               
-              {/* Witness count */}
-              {alert.witness_count > 1 && (
+              {/* Witness count - hidden for MUFON alerts */}
+              {alert.witness_count > 1 && alert.reporter_username !== 'MUFON_Database' && (
                 <div className="text-xs text-brand-primary font-medium flex items-center gap-1">
                   <span>👥</span>
                   <span>{alert.witness_count} witnesses</span>

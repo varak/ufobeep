@@ -156,16 +156,17 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 AlertDetailsSection(alert: alert),
                 const SizedBox(height: 24),
                 
-                // Direction and compass
-                AlertDirectionSection(
-                  alert: alert,
-                  onNavigate: (bearing, distance) => _navigateToSighting(alert, bearing, distance),
-                  onShowMap: (userLocation, alert) => _showMapView(userLocation, alert),
-                ),
+                // Direction and compass - hidden for MUFON alerts
+                if (alert.username != 'MUFON_Database')
+                  AlertDirectionSection(
+                    alert: alert,
+                    onNavigate: (bearing, distance) => _navigateToSighting(alert, bearing, distance),
+                    onShowMap: (userLocation, alert) => _showMapView(userLocation, alert),
+                  ),
                 const SizedBox(height: 24),
 
-                // Environmental context (if available)
-                if (alert.enrichment != null && alert.enrichment!.isNotEmpty) ...[
+                // Environmental context (if available) - hidden for MUFON alerts
+                if (alert.enrichment != null && alert.enrichment!.isNotEmpty && alert.username != 'MUFON_Database') ...[
                   EnrichmentSection(
                     enrichmentData: alert.enrichment,
                     alertCreatorDeviceId: alert.reporterId,
@@ -183,18 +184,19 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                   const SizedBox(height: 24),
                 ],
 
-                // Action buttons (including witness confirmation)
-                AlertActionsSection(
-                  alert: alert,
-                  currentUserDeviceId: _currentUserDeviceId,
-                  onAddPhotos: () => _showAddPhotosDialog(widget.alertId),
-                  onReportToMufon: () => _showMufonReportDialog(),
-                  onWitnessConfirmed: (witnessCount) {
-                    // Refresh witness status after confirmation
-                    if (_currentUserDeviceId != null) {
-                      _checkWitnessStatus(_currentUserDeviceId!);
-                    }
-                    // Also refresh the alert data to update witness count display
+                // Action buttons (including witness confirmation) - hidden for MUFON alerts
+                if (alert.username != 'MUFON_Database')
+                  AlertActionsSection(
+                    alert: alert,
+                    currentUserDeviceId: _currentUserDeviceId,
+                    onAddPhotos: () => _showAddPhotosDialog(widget.alertId),
+                    onReportToMufon: () => _showMufonReportDialog(),
+                    onWitnessConfirmed: (witnessCount) {
+                      // Refresh witness status after confirmation
+                      if (_currentUserDeviceId != null) {
+                        _checkWitnessStatus(_currentUserDeviceId!);
+                      }
+                      // Also refresh the alert data to update witness count display
                     ref.invalidate(alertByIdProvider(widget.alertId));
                   },
                 ),
