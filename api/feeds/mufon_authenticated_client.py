@@ -215,10 +215,10 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2) -> Li
                             option_text = option.get_text().strip().lower()
                             option_value = option.get('value', '').strip()
                             
-                            # Look for search, database, reports, or recent options
-                            if any(keyword in option_text for keyword in ['search', 'database', 'report', 'recent', 'query']):
-                                search_value = option_value or option.get_text().strip()
-                                print(f"  -> Using choice option: '{option.get_text().strip()}' (value: '{search_value}')")
+                            # Look for CMS database options (z2systems URLs) instead of public reports
+                            if 'z2systems.com/neonPage.jsp' in option_value:
+                                search_value = option_value
+                                print(f"  -> Using CMS database option: '{option.get_text().strip()}' (value: '{search_value}')")
                                 break
                         
                         # If no specific search option found, use the first non-empty option
