@@ -98,10 +98,21 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2) -> Li
                 for href, text in case_links[:10]:
                     print(f"  {text}: {href}")
                     
-                # Use the discovered links as our search URLs
-                search_urls_to_try = [url for url, text in case_links if url.startswith('http')][:5]
-                if not search_urls_to_try:
-                    search_urls_to_try = [account_home_url]  # At least try the account home
+                # Prioritize the search database URL we found
+                search_database_urls = [url for url, text in case_links if 'search database' in text.lower()]
+                cms_urls = [url for url, text in case_links if 'cms' in text.lower() and 'login' not in text.lower()]
+                
+                if search_database_urls:
+                    search_urls_to_try = search_database_urls[:1]  # Use the search database first
+                    print(f"Using discovered search database URL: {search_urls_to_try[0]}")
+                elif cms_urls:
+                    search_urls_to_try = cms_urls[:1]
+                    print(f"Using CMS URL: {search_urls_to_try[0]}")
+                else:
+                    # Fall back to other discovered URLs
+                    search_urls_to_try = [url for url, text in case_links if url.startswith('http')][:3]
+                    if not search_urls_to_try:
+                        search_urls_to_try = [account_home_url]
             else:
                 search_urls_to_try = [account_home_url]
             
