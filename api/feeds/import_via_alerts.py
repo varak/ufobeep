@@ -113,12 +113,14 @@ def import_mufon_cases():
             long_desc = case.get('Long_Description', '')
             
             # Build full description for detail page with HTML formatting
-            if long_desc and len(long_desc.strip()) > 50:
+            if long_desc and len(long_desc.strip()) > 10:
                 # Use long description if available, convert newlines to paragraphs
                 full_description = f"<p>{long_desc.replace(chr(10), '</p><p>')}</p>"
             else:
-                # Expand short description with HTML
-                full_description = f"<p>{short_desc}</p><p><em>Detailed witness account and analysis.</em></p>"
+                # Use short description as the main content since long descriptions aren't available
+                full_description = f"<p>{short_desc}</p>"
+                if len(short_desc) < 100:
+                    full_description += f"<p><em>This is a MUFON case report. Additional witness details may be available in the original MUFON database.</em></p>"
             
             # Classify UFO type for MUFON enrichment data
             classification = classifier.classify(
@@ -126,6 +128,44 @@ def import_mufon_cases():
                 case.get('Short_Description', '')
             )
             
+            # Do reverse geocoding to get proper location name
+            geocoding_data = {}
+            try:
+                import requests
+                geocode_url = f"https://nominatim.openstreetmap.org/reverse"
+                params = {
+                    'lat': lat,
+                    'lon': lon,
+                    'format': 'json',
+                    'addressdetails': 1
+                }
+                headers = {'User-Agent': 'UFOBeep MUFON Import Script'}
+                
+                response = requests.get(geocode_url, params=params, headers=headers, timeout=5)
+                if response.status_code == 200:
+                    data = response.json()
+                    if data:
+                        formatted_address = data.get('display_name', location)
+                        geocoding_data = {
+                            "latitude": lat,
+                            "longitude": lon,
+                            "location_name": formatted_address,
+                            "formatted_address": formatted_address,
+                            "provider": "OpenStreetMap/Nominatim",
+                            "raw_data": data
+                        }
+                        print(f"   Reverse geocoded: {formatted_address}")
+                    
+                time.sleep(1)  # Be respectful to geocoding API
+            except Exception as e:
+                print(f"   Reverse geocoding failed: {e}")
+                geocoding_data = {
+                    "latitude": lat,
+                    "longitude": lon,
+                    "location_name": location,
+                    "formatted_address": location
+                }
+
             # Add MUFON metadata section with proper HTML formatting
             full_description += f"""
 
@@ -179,7 +219,8 @@ def import_mufon_cases():
                     "data_source": "MUFON CMS",
                     "historical_case": True,
                     "event_date": datetime_event,
-                    "submission_date": case.get('Date_Submitted', '')
+                    "submission_date": case.get('Date_Submitted', ''),
+                    "geocoding": geocoding_data
                 }
             }
             

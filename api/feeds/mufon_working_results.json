@@ -1,147 +1,17 @@
 {
-  "timestamp": "2025-09-01T21:53:30.351281",
+  "timestamp": "2025-09-02T00:27:33.993268",
   "url": "https://mufon.app.neoncrm.com/np/publicaccess/neonPage.do?pageId=19&",
   "title": "MUFON",
-  "total_cases": 11,
+  "total_cases": 1,
   "cases": [
     {
       "Case_Number": "1",
-      "Date_Submitted": "2025-09-01",
-      "DateTime_Event": "1997-02-24\n9:00PM",
-      "Short_Description": "Boomerang shaped UFO",
-      "Location": "Colorado Springs, CO, US",
+      "Date_Submitted": "2025-09-02",
+      "DateTime_Event": "2025-08-06\n9:06PM",
+      "Short_Description": "Small metallic sphere with blinking light",
+      "Location": "Mayville, WI, US",
       "Long_Description": "",
       "Attachments": ""
-    },
-    {
-      "Case_Number": "2",
-      "Date_Submitted": "2025-09-01",
-      "DateTime_Event": "2021-07-04\n7:00PM",
-      "Short_Description": "Elliptical long object",
-      "Location": "15 1/2 North-Fm 491 Colonia, TX, US",
-      "Long_Description": "",
-      "Attachments": "IMG1211.jpeg"
-    },
-    {
-      "Case_Number": "3",
-      "Date_Submitted": "2025-09-01",
-      "DateTime_Event": "2024-01-30\n12:00AM",
-      "Short_Description": "Met a Hospital Nurse who was an alien/human hybrid",
-      "Location": "0, PA, US",
-      "Long_Description": "",
-      "Attachments": ""
-    },
-    {
-      "Case_Number": "4",
-      "Date_Submitted": "2025-09-01",
-      "DateTime_Event": "2024-07-25\n12:20AM",
-      "Short_Description": "On a backpacking trip with my twin boys and their friend we witnessed one night a orange sphere in the woods.",
-      "Location": "Athens, VT, US",
-      "Long_Description": "",
-      "Attachments": ""
-    },
-    {
-      "Case_Number": "5",
-      "Date_Submitted": "2025-09-01",
-      "DateTime_Event": "2025-08-25\n5:40PM",
-      "Short_Description": "Shiny, reflective, silver, tic-tack looking object in the sky above my house. Witnessed by 2 people. No noise, no wings, no trail.",
-      "Location": "Sunbury, PA, US",
-      "Long_Description": "",
-      "Attachments": ""
-    },
-    {
-      "Case_Number": "6",
-      "Date_Submitted": "2025-09-01",
-      "DateTime_Event": "2021-07-14\n12:00AM",
-      "Short_Description": "5 golden aura entities, a 10-feet-tall membrane cloaked mass, a 7-feet tall Glowing red reptilian",
-      "Location": "0, PA, US",
-      "Long_Description": "",
-      "Attachments": ""
-    },
-    {
-      "Case_Number": "7",
-      "Date_Submitted": "2025-09-01",
-      "DateTime_Event": "2025-08-31\n3:16AM",
-      "Short_Description": "Syrindical slash cigar shaped silver object",
-      "Location": "Janesville, WI, US",
-      "Long_Description": "",
-      "Attachments": ""
-    },
-    {
-      "Case_Number": "8",
-      "Date_Submitted": "2025-09-01",
-      "DateTime_Event": "1993-09-02\n12:00AM",
-      "Short_Description": "Saw an alien shift",
-      "Location": "0, OK, US",
-      "Long_Description": "",
-      "Attachments": ""
-    },
-    {
-      "Case_Number": "9",
-      "Date_Submitted": "2025-09-01",
-      "DateTime_Event": "2025-05-12\n8:40AM",
-      "Short_Description": "Silver square oblong craft",
-      "Location": "Greensburg, PA, US",
-      "Long_Description": "",
-      "Attachments": "IMG4989.mov\nIMG4997.png\nIMG4995.png\nIMG4996.png\nIMG4990.png",
-      "Attachments_media": [
-        {
-          "url": "http://mufoncms.com/cgi-bin/ffplay.pl?file=143948_submitter_file1__IMG4989.mov",
-          "filename": "IMG4989.mov"
-        },
-        {
-          "url": "http://mufoncms.com/cgi-bin/ffplay.pl?file=143948_submitter_file2__IMG4997.png",
-          "filename": "IMG4997.png"
-        },
-        {
-          "url": "http://mufoncms.com/cgi-bin/ffplay.pl?file=143948_submitter_file3__IMG4995.png",
-          "filename": "IMG4995.png"
-        },
-        {
-          "url": "http://mufoncms.com/cgi-bin/ffplay.pl?file=143948_submitter_file4__IMG4996.png",
-          "filename": "IMG4996.png"
-        },
-        {
-          "url": "http://mufoncms.com/cgi-bin/ffplay.pl?file=143948_submitter_file5__IMG4990.png",
-          "filename": "IMG4990.png"
-        }
-      ]
-    },
-    {
-      "Case_Number": "10",
-      "Date_Submitted": "2025-09-01",
-      "DateTime_Event": "2012-05-05\n1:00AM",
-      "Short_Description": "UFO flyover at a festival",
-      "Location": "Muncie, IN, US",
-      "Long_Description": "",
-      "Attachments": ""
-    },
-    {
-      "Case_Number": "11",
-      "Date_Submitted": "2025-09-01",
-      "DateTime_Event": "2025-09-01\n5:35AM",
-      "Short_Description": "Round white light hovering",
-      "Location": "Jensen Beach, FL, US",
-      "Long_Description": "",
-      "Attachments": "IMG0961.png\nIMG0962.png\nIMG0957.mov\nIMG0950.mov",
-      "Attachments_media": [
-        {
-          "url": "http://mufoncms.com/cgi-bin/ffplay.pl?file=143946_submitter_file1__IMG0961.png",
-          "filename": "IMG0961.png"
-        },
-        {
-          "url": "http://mufoncms.com/cgi-bin/ffplay.pl?file=143946_submitter_file2__IMG0962.png",
-          "filename": "IMG0962.png"
-        },
-        {
-          "url": "http://mufoncms.com/cgi-bin/ffplay.pl?file=143946_submitter_file3__IMG0957.mov",
-          "filename": "IMG0957.mov"
-        },
-        {
-          "url": "http://mufoncms.com/cgi-bin/ffplay.pl?file=143946_submitter_file4__IMG0950.mov",
-          "filename": "IMG0950.mov"
-        }
-      ]
     }
   ]
 }

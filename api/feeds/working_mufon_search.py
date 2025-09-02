@@ -322,6 +322,60 @@ def main():
                         if any(v for v in row_data.values() if v):  # Non-empty row
                             results.append(row_data)
                             print(f"Raw case data: {row_data}")
+                
+                # Now click into each case to get long description and real case number
+                print(f"\n=== ENHANCING {len(results)} CASES WITH DETAILED DATA ===")
+                for i, case in enumerate(results):
+                    try:
+                        print(f"\nProcessing case {i+1}/{len(results)}...")
+                        
+                        # Look for clickable link in the row
+                        row_selector = f"table:nth-of-type({table_index+1}) tr:nth-of-type({results.index(case)+2})"
+                        case_link = iframe.locator(f"{row_selector} a").first
+                        
+                        if case_link.count() > 0:
+                            print(f"  Found clickable case link")
+                            case_link.click()
+                            time.sleep(2)  # Wait for case detail page
+                            
+                            # Extract real case number from URL
+                            detail_url = iframe.url if hasattr(iframe, 'url') else page.url
+                            print(f"  Detail URL: {detail_url}")
+                            
+                            # Look for actual case number in URL (e.g., /case/123456)
+                            import re
+                            case_num_match = re.search(r'case[=/](\d+)', detail_url)
+                            if case_num_match:
+                                real_case_number = case_num_match.group(1)
+                                case['Real_Case_Number'] = real_case_number
+                                print(f"  Real case number: {real_case_number}")
+                            
+                            # Extract long description from detail page
+                            long_desc_text = ""
+                            for desc_selector in ["div.description", "div.long-description", "div.details", "td:contains('Description')", "p"]:
+                                try:
+                                    desc_elem = iframe.locator(desc_selector).first
+                                    if desc_elem.count() > 0:
+                                        text = desc_elem.inner_text()
+                                        if text and len(text) > 50:
+                                            long_desc_text = text
+                                            print(f"  Found long description: {len(text)} chars")
+                                            break
+                                except:
+                                    continue
+                            
+                            if long_desc_text:
+                                case['Long_Description'] = long_desc_text
+                            
+                            # Go back to results
+                            iframe.go_back() if hasattr(iframe, 'go_back') else page.go_back()
+                            time.sleep(1)
+                        else:
+                            print(f"  No clickable link found for case")
+                    
+                    except Exception as e:
+                        print(f"  Error enhancing case {i+1}: {e}")
+                        continue
         
         # Save results
         output = {
