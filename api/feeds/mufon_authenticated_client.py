@@ -13,7 +13,7 @@ from geopy.geocoders import Nominatim
 import os
 from urllib.parse import urljoin, urlparse
 
-async def fetch_authenticated_reports(limit: int = 30) -> List[Dict[str, Any]]:
+async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2) -> List[Dict[str, Any]]:
     """
     Fetch detailed MUFON reports using authenticated CRM access
     Returns reports with full descriptions and enhanced data
@@ -63,11 +63,11 @@ async def fetch_authenticated_reports(limit: int = 30) -> List[Dict[str, Any]]:
         print("✅ Successfully authenticated to MUFON CRM")
         
         # Step 2: Perform a search within the CRM for last 30 days
-        print("\nStep 2: Searching CRM for last 2 days of reports...")
+        print(f"\nStep 2: Searching CRM for last {days_back} days of reports...")
         
-        # Calculate date range (last 2 days for nightly runs)
+        # Calculate date range for nightly runs
         end_date = datetime.now()
-        start_date = end_date - timedelta(days=2)
+        start_date = end_date - timedelta(days=days_back)
         
         print(f"Searching from {start_date.strftime('%m/%d/%Y')} to {end_date.strftime('%m/%d/%Y')}")
         
