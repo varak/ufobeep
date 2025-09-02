@@ -303,28 +303,30 @@ async def _parse_detailed_reports(soup: BeautifulSoup, limit: int, client: httpx
                 print(f"Error parsing row {i}: {e}")
                 continue
     
-    # Also try div-based structure for detailed reports
-    report_divs = soup.find_all('div', class_=re.compile(r'report|case|sighting', re.I))
-    if report_divs and len(report_divs) > len(reports):
-        print(f"Found {len(report_divs)} report divs, parsing...")
-        
-        for i, div in enumerate(report_divs[:limit]):
-            try:
-                report = await _parse_enhanced_div(div, i, client)
-                if report:
-                    # Check for duplicates
-                    duplicate = False
-                    for existing in reports:
-                        if report.get('case_number') and report['case_number'] == existing.get('case_number'):
-                            duplicate = True
-                            break
-                    
-                    if not duplicate:
-                        reports.append(report)
-                        await asyncio.sleep(0.5)
-            except Exception as e:
-                print(f"Error parsing div {i}: {e}")
-                continue
+    # Skip div processing in list-only mode for performance
+    if not list_only:
+        # Also try div-based structure for detailed reports
+        report_divs = soup.find_all('div', class_=re.compile(r'report|case|sighting', re.I))
+        if report_divs and len(report_divs) > len(reports):
+            print(f"Found {len(report_divs)} report divs, parsing...")
+            
+            for i, div in enumerate(report_divs[:limit]):
+                try:
+                    report = await _parse_enhanced_div(div, i, client, list_only)
+                    if report:
+                        # Check for duplicates
+                        duplicate = False
+                        for existing in reports:
+                            if report.get('case_number') and report['case_number'] == existing.get('case_number'):
+                                duplicate = True
+                                break
+                        
+                        if not duplicate:
+                            reports.append(report)
+                            await asyncio.sleep(0.5)
+                except Exception as e:
+                    print(f"Error parsing div {i}: {e}")
+                    continue
     
     return reports
 
@@ -389,7 +391,7 @@ async def _parse_enhanced_row(cells, row_index: int, client: httpx.AsyncClient, 
         print(f"Error parsing enhanced row: {e}")
         return None
 
-async def _parse_enhanced_div(div, div_index: int, client: httpx.AsyncClient) -> Optional[Dict[str, Any]]:
+async def _parse_enhanced_div(div, div_index: int, client: httpx.AsyncClient, list_only: bool = False) -> Optional[Dict[str, Any]]:
     """Parse enhanced div-based report structure"""
     try:
         # Extract data from div structure
@@ -422,31 +424,36 @@ async def _parse_enhanced_div(div, div_index: int, client: httpx.AsyncClient) ->
         
         occurred_at = datetime.utcnow()  # Fallback date
         
-        # Geocode location
-        lat, lon = await _geocode_location(city, state, country)
-        
-        # Extract media files from div content
-        media_files = []
-        for link in div.find_all('a', href=True):
-            href = link.get('href')
-            if href and any(ext in href.lower() for ext in ['.jpg', '.jpeg', '.png', '.gif', '.mp4', '.mov', '.avi']):
-                try:
-                    if not href.startswith('http'):
-                        if href.startswith('/'):
-                            href = f"https://mufoncms.com{href}"
-                        else:
-                            href = f"https://mufoncms.com/{href}"
-                    
-                    media_info = {
-                        "url": href,
-                        "type": "image" if any(ext in href.lower() for ext in ['.jpg', '.jpeg', '.png', '.gif']) else "video",
-                        "source": "mufon_authenticated",
-                        "case_number": case_num or f"div_{div_index}"
-                    }
-                    media_files.append(media_info)
-                except Exception as e:
-                    print(f"Error processing media from {href}: {e}")
-                    continue
+        # Skip heavy operations in list-only mode
+        if list_only:
+            lat, lon = None, None
+            media_files = []
+        else:
+            # Geocode location
+            lat, lon = await _geocode_location(city, state, country)
+            
+            # Extract media files from div content
+            media_files = []
+            for link in div.find_all('a', href=True):
+                href = link.get('href')
+                if href and any(ext in href.lower() for ext in ['.jpg', '.jpeg', '.png', '.gif', '.mp4', '.mov', '.avi']):
+                    try:
+                        if not href.startswith('http'):
+                            if href.startswith('/'):
+                                href = f"https://mufoncms.com{href}"
+                            else:
+                                href = f"https://mufoncms.com/{href}"
+                        
+                        media_info = {
+                            "url": href,
+                            "type": "image" if any(ext in href.lower() for ext in ['.jpg', '.jpeg', '.png', '.gif']) else "video",
+                            "source": "mufon_authenticated",
+                            "case_number": case_num or f"div_{div_index}"
+                        }
+                        media_files.append(media_info)
+                    except Exception as e:
+                        print(f"Error processing media from {href}: {e}")
+                        continue
         
         return {
             "case_number": case_num or f"div_{div_index}",
