@@ -75,9 +75,9 @@ export default function AlertsPage() {
       const data = await response.json()
       
       if (data.success && data.data?.alerts) {
-        // Filter out invalid coordinates (0,0 or null/undefined)
+        // Filter out invalid coordinates (0,0 or null/undefined) except for MUFON alerts
         const validAlerts = data.data.alerts.filter((alert: Alert) => 
-          alert.location.latitude !== 0 || alert.location.longitude !== 0
+          alert.location.latitude !== 0 || alert.location.longitude !== 0 || alert.reporter_username === 'MUFON_Database'
         )
         setAllAlerts(validAlerts)
       } else {
