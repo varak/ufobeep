@@ -63,11 +63,11 @@ async def fetch_authenticated_reports(limit: int = 30) -> List[Dict[str, Any]]:
         print("✅ Successfully authenticated to MUFON CRM")
         
         # Step 2: Perform a search within the CRM for last 30 days
-        print("\nStep 2: Searching CRM for last 30 days of reports...")
+        print("\nStep 2: Searching CRM for last 3 days of reports...")
         
-        # Calculate date range (last 30 days)
+        # Calculate date range (last 3 days for nightly runs)
         end_date = datetime.now()
-        start_date = end_date - timedelta(days=30)
+        start_date = end_date - timedelta(days=3)
         
         print(f"Searching from {start_date.strftime('%m/%d/%Y')} to {end_date.strftime('%m/%d/%Y')}")
         
@@ -253,7 +253,7 @@ async def _parse_enhanced_row(cells, row_index: int, client: httpx.AsyncClient) 
     """Parse enhanced table row with full descriptions"""
     try:
         # Enhanced MUFON structure - extract all available data
-        case_num = cells[0].get_text(strip=True) if len(cells) > 0 else f"row_{row_index}"
+        case_num = _extract_case_id_from_cells(cells) or cells[0].get_text(strip=True) if len(cells) > 0 else f"row_{row_index}"
         date_str = cells[1].get_text(strip=True) if len(cells) > 1 else ""
         city = cells[2].get_text(strip=True) if len(cells) > 2 else ""
         state = cells[3].get_text(strip=True) if len(cells) > 3 else ""
@@ -297,7 +297,8 @@ async def _parse_enhanced_row(cells, row_index: int, client: httpx.AsyncClient) 
             "lat": lat,
             "lon": lon,
             "url": f"https://mufoncms.com/case/{case_num}" if case_num else None,
-            "source_type": "authenticated_crm"
+            "source_type": "authenticated_crm",
+            "media_files": media_files  # Include extracted media files
         }
         
     except Exception as e:
@@ -312,10 +313,12 @@ async def _parse_enhanced_div(div, div_index: int, client: httpx.AsyncClient) ->
         summary = ""
         long_description = ""
         
-        # Look for case number
-        case_links = div.find_all('a', href=re.compile(r'case|report', re.I))
-        if case_links:
-            case_num = case_links[0].get_text(strip=True)
+        # Look for case number from links or extract from URLs
+        case_num = _extract_case_id_from_div(div)
+        if not case_num:
+            case_links = div.find_all('a', href=re.compile(r'case|report', re.I))
+            if case_links:
+                case_num = case_links[0].get_text(strip=True)
         
         # Extract all text content and try to identify descriptions
         text_content = div.get_text(separator=' | ', strip=True)
@@ -338,6 +341,29 @@ async def _parse_enhanced_div(div, div_index: int, client: httpx.AsyncClient) ->
         # Geocode location
         lat, lon = await _geocode_location(city, state, country)
         
+        # Extract media files from div content
+        media_files = []
+        for link in div.find_all('a', href=True):
+            href = link.get('href')
+            if href and any(ext in href.lower() for ext in ['.jpg', '.jpeg', '.png', '.gif', '.mp4', '.mov', '.avi']):
+                try:
+                    if not href.startswith('http'):
+                        if href.startswith('/'):
+                            href = f"https://mufoncms.com{href}"
+                        else:
+                            href = f"https://mufoncms.com/{href}"
+                    
+                    media_info = {
+                        "url": href,
+                        "type": "image" if any(ext in href.lower() for ext in ['.jpg', '.jpeg', '.png', '.gif']) else "video",
+                        "source": "mufon_authenticated",
+                        "case_number": case_num or f"div_{div_index}"
+                    }
+                    media_files.append(media_info)
+                except Exception as e:
+                    print(f"Error processing media from {href}: {e}")
+                    continue
+        
         return {
             "case_number": case_num or f"div_{div_index}",
             "date_str": "",
@@ -352,7 +378,8 @@ async def _parse_enhanced_div(div, div_index: int, client: httpx.AsyncClient) ->
             "lat": lat,
             "lon": lon,
             "url": f"https://mufoncms.com/case/{case_num}" if case_num else None,
-            "source_type": "authenticated_crm"
+            "source_type": "authenticated_crm",
+            "media_files": media_files
         }
         
     except Exception as e:
@@ -468,6 +495,62 @@ async def _extract_and_download_media(cells, case_num: str, client: httpx.AsyncC
                     continue
     
     return media_files
+
+def _extract_case_id_from_cells(cells) -> Optional[str]:
+    """Extract MUFON case ID from table cells"""
+    for cell in cells:
+        # Look for links with id= parameter
+        for link in cell.find_all('a', href=True):
+            href = link.get('href')
+            if href:
+                match = re.search(r'id=(\d+)', href)
+                if match:
+                    return match.group(1)
+        
+        # Look for case ID in text content
+        text = cell.get_text()
+        if text and text.isdigit():
+            return text
+    
+    return None
+
+def _extract_case_id_from_div(div) -> Optional[str]:
+    """Extract MUFON case ID from div content"""
+    # Look for links with id= parameter
+    for link in div.find_all('a', href=True):
+        href = link.get('href')
+        if href:
+            match = re.search(r'id=(\d+)', href)
+            if match:
+                return match.group(1)
+    
+    # Look in text content for case patterns
+    text = div.get_text()
+    match = re.search(r'(?:case|id)[\s#:]*(\d{5,})', text, re.I)
+    if match:
+        return match.group(1)
+    
+    return None
+
+def _clean_mufon_location(city: str, state: str, country: str) -> tuple[str, str, str]:
+    """Clean messy MUFON location data"""
+    # Handle leading zeros and empty cities
+    if city and (city.strip() == '0' or city.strip().startswith('0,')):
+        city = ""
+    
+    # Clean up state
+    if state and state.strip() == '0':
+        state = ""
+    
+    # Default country if missing
+    if not country or country.strip() in ['', '0']:
+        country = "US"
+    
+    # If no city but we have state, try state name
+    if not city and state:
+        city = state
+    
+    return city.strip() if city else "", state.strip() if state else "", country.strip()
 
 def to_alert_dict(mufon_report: Dict[str, Any]) -> Dict[str, Any]:
     """Convert enhanced MUFON report to sighting/alert format"""

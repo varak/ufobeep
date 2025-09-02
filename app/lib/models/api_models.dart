@@ -361,6 +361,13 @@ class Sighting {
   final DateTime createdAt;
   @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
+  final String? source;
+  @JsonKey(name: 'source_id')
+  final String? sourceId;
+  @JsonKey(name: 'external_url')
+  final String? externalUrl;
+  final String? shape;
+  final String? duration;
 
   const Sighting({
     required this.id,
