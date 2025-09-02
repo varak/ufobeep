@@ -15,24 +15,80 @@ from urllib.parse import urljoin, urlparse
 
 async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2, list_only: bool = False) -> List[Dict[str, Any]]:
     """
-    Fetch detailed MUFON reports using authenticated CRM access
-    Returns reports with full descriptions and enhanced data
+    Fetch detailed MUFON reports following user navigation flow:
+    1. Go to mufon.com/research/
+    2. Login via login link  
+    3. Navigate to Track UFOs
+    4. Find Search Database
+    5. Submit search with date range
     """
     # Credentials from secrets
     username = "varak"
     password = "ufobeep123pass"
     
-    async with httpx.AsyncClient(follow_redirects=True, timeout=30.0) as client:
-        # Step 1: Login to CRM
-        print("Authenticating to MUFON CRM...")
+    # Set up client with browser-like headers
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Accept-Encoding': 'gzip, deflate',
+        'Connection': 'keep-alive',
+    }
+    
+    async with httpx.AsyncClient(follow_redirects=True, timeout=30.0, headers=headers) as client:
+        # Step 1: Go to research page like a real user
+        print("Step 1: Navigating to MUFON research page...")
         
-        login_page = await client.get("https://mufon.app.neoncrm.com/np/clients/mufon/login.jsp")
-        soup = BeautifulSoup(login_page.text, 'html.parser')
+        research_response = await client.get("https://mufon.com/research/")
+        if research_response.status_code != 200:
+            print(f"❌ Could not access research page: {research_response.status_code}")
+            return []
         
-        # Find login form
+        research_soup = BeautifulSoup(research_response.text, 'html.parser')
+        print(f"✅ Research page loaded: {research_soup.title.get_text() if research_soup.title else 'No title'}")
+        
+        # Step 2: Find and follow the login link
+        print("\nStep 2: Looking for login link...")
+        
+        login_links = []
+        for link in research_soup.find_all('a', href=True):
+            text = link.get_text().lower().strip()
+            href = link.get('href')
+            
+            if any(keyword in text for keyword in ['login', 'log in', 'sign in', 'signin']):
+                login_links.append({
+                    'text': link.get_text().strip(),
+                    'href': href,
+                    'full_url': urljoin('https://mufon.com/', href)
+                })
+        
+        print(f"Found {len(login_links)} login links:")
+        for link in login_links:
+            print(f"  - '{link['text']}' → {link['href']}")
+        
+        if not login_links:
+            print("❌ No login links found on research page")
+            return []
+        
+        # Use the first login link
+        login_url = login_links[0]['full_url']
+        print(f"Following login link: {login_url}")
+        
+        login_page = await client.get(login_url)
+        if login_page.status_code != 200:
+            print(f"❌ Could not access login page: {login_page.status_code}")
+            return []
+        
+        login_soup = BeautifulSoup(login_page.text, 'html.parser')
+        print(f"✅ Login page loaded: {login_soup.title.get_text() if login_soup.title else 'No title'}")
+        
+        # Step 3: Find and submit login form
+        print("\nStep 3: Authenticating...")
+        
         login_form = None
-        for form in soup.find_all('form'):
-            if form.get('action') and 'signIn.do' in form.get('action'):
+        for form in login_soup.find_all('form'):
+            action = form.get('action', '')
+            if any(keyword in action.lower() for keyword in ['signin', 'login', 'auth']):
                 login_form = form
                 break
         
@@ -43,35 +99,216 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2, list_
         # Extract form data for login
         form_data = {}
         for inp in login_form.find_all('input'):
-            name = inp.get('name')
+            name = inp.get('name', '')
             value = inp.get('value', '')
+            input_type = inp.get('type', 'text')
+            
             if name:
-                if name == 'loginName':
+                if any(keyword in name.lower() for keyword in ['username', 'login', 'user', 'email']):
                     form_data[name] = username
-                elif name == 'loginPassword':
+                elif any(keyword in name.lower() for keyword in ['password', 'pass']):
                     form_data[name] = password
-                else:
+                elif input_type == 'hidden':
                     form_data[name] = value
         
-        # Perform login
-        login_response = await client.post("https://mufon.app.neoncrm.com/np/security/signIn.do", data=form_data)
+        # Submit login form
+        form_action = login_form.get('action', '')
+        if not form_action.startswith('http'):
+            form_action = urljoin(str(login_page.url), form_action)
         
-        if "accountHome.do" not in str(login_response.url):
-            print("❌ Authentication failed")
+        print(f"Submitting login to: {form_action}")
+        print(f"Form data keys: {list(form_data.keys())}")
+        
+        login_response = await client.post(form_action, data=form_data)
+        
+        # Check if login was successful by looking for authenticated content
+        authenticated_soup = BeautifulSoup(login_response.text, 'html.parser')
+        page_title = authenticated_soup.title.get_text() if authenticated_soup.title else 'No title'
+        
+        # Look for signs of successful authentication
+        is_authenticated = any(keyword in page_title.lower() for keyword in ['account', 'dashboard', 'home', 'welcome']) or \
+                          any(keyword in login_response.text.lower() for keyword in ['logout', 'sign out', 'dashboard'])
+        
+        if not is_authenticated:
+            print(f"❌ Authentication may have failed. Page title: {page_title}")
+            print(f"Response URL: {login_response.url}")
             return []
         
-        print("✅ Successfully authenticated to MUFON CRM")
+        print(f"✅ Successfully authenticated! Page: {page_title}")
         
-        # Step 2: Navigate to the research/database search like a real user
-        print(f"\nStep 2: Following user flow to database search for last {days_back} days...")
+        # Step 4: Now look for Track UFOs in the authenticated interface
+        print(f"\nStep 4: Looking for Track UFOs in authenticated interface...")
         
-        # Calculate date range for nightly runs
+        # Calculate date range for search
         end_date = datetime.now()
         start_date = end_date - timedelta(days=days_back)
+        print(f"Will search from {start_date.strftime('%m/%d/%Y')} to {end_date.strftime('%m/%d/%Y')}")
         
-        print(f"Searching from {start_date.strftime('%m/%d/%Y')} to {end_date.strftime('%m/%d/%Y')}")
+        # Look for Track UFOs or database search links
+        track_ufo_links = []
+        for link in authenticated_soup.find_all('a', href=True):
+            text = link.get_text().lower().strip()
+            href = link.get('href')
+            
+            if any(keyword in text for keyword in ['track ufo', 'search database', 'database', 'search case', 'case search']):
+                track_ufo_links.append({
+                    'text': link.get_text().strip(),
+                    'href': href,
+                    'full_url': urljoin(str(login_response.url), href)
+                })
         
-        try:
+        print(f"Found {len(track_ufo_links)} Track UFOs/database links:")
+        for link in track_ufo_links:
+            print(f"  - '{link['text']}' → {link['href']}")
+        
+        if not track_ufo_links:
+            print("❌ No Track UFOs or database search links found in authenticated interface")
+            return []
+        
+        # Use the first relevant link
+        track_url = track_ufo_links[0]['full_url']
+        print(f"Following Track UFOs link: {track_url}")
+        
+        track_response = await client.get(track_url)
+        if track_response.status_code != 200:
+            print(f"❌ Could not access Track UFOs page: {track_response.status_code}")
+            return []
+        
+        track_soup = BeautifulSoup(track_response.text, 'html.parser')
+        print(f"✅ Track UFOs page loaded: {track_soup.title.get_text() if track_soup.title else 'No title'}")
+        
+        # Step 5: Look for Search Database link or form on this page
+        print("\nStep 5: Looking for Search Database functionality...")
+        
+        # First check if there's already a search form on this page
+        search_forms = []
+        for form in track_soup.find_all('form'):
+            inputs = form.find_all(['input', 'select', 'textarea'])
+            # Look for forms with date fields
+            has_date_fields = any('date' in inp.get('name', '').lower() for inp in inputs)
+            if has_date_fields or len(inputs) > 2:  # Likely a search form
+                search_forms.append(form)
+        
+        if search_forms:
+            print(f"Found {len(search_forms)} search forms on Track UFOs page")
+            search_form = search_forms[0]
+            current_page_soup = track_soup
+        else:
+            # Look for Search Database links
+            search_db_links = []
+            for link in track_soup.find_all('a', href=True):
+                text = link.get_text().lower().strip()
+                href = link.get('href')
+                
+                if any(keyword in text for keyword in ['search database', 'database search', 'search case', 'case search', 'search']):
+                    search_db_links.append({
+                        'text': link.get_text().strip(),
+                        'href': href,
+                        'full_url': urljoin(str(track_response.url), href)
+                    })
+            
+            print(f"Found {len(search_db_links)} Search Database links:")
+            for link in search_db_links:
+                print(f"  - '{link['text']}' → {link['href']}")
+            
+            if not search_db_links:
+                print("❌ No Search Database links found")
+                return []
+            
+            # Follow the first search database link
+            search_url = search_db_links[0]['full_url']
+            print(f"Following Search Database link: {search_url}")
+            
+            search_response = await client.get(search_url)
+            if search_response.status_code != 200:
+                print(f"❌ Could not access Search Database page: {search_response.status_code}")
+                return []
+            
+            current_page_soup = BeautifulSoup(search_response.text, 'html.parser')
+            print(f"✅ Search Database page loaded: {current_page_soup.title.get_text() if current_page_soup.title else 'No title'}")
+            
+            # Find search form on the search database page
+            search_forms = []
+            for form in current_page_soup.find_all('form'):
+                inputs = form.find_all(['input', 'select', 'textarea'])
+                has_date_fields = any('date' in inp.get('name', '').lower() for inp in inputs)
+                if has_date_fields or len(inputs) > 2:
+                    search_forms.append(form)
+            
+            if not search_forms:
+                print("❌ No search forms found on Search Database page")
+                return []
+            
+            search_form = search_forms[0]
+        
+        # Step 6: Submit the search form with date range
+        print(f"\nStep 6: Submitting search form with date range...")
+        
+        form_data = {}
+        inputs = search_form.find_all(['input', 'select', 'textarea'])
+        
+        print(f"Form has {len(inputs)} inputs:")
+        for inp in inputs[:10]:  # Show first 10 inputs
+            name = inp.get('name', 'unnamed')
+            input_type = inp.get('type', inp.name)
+            value = inp.get('value', '')
+            print(f"  - {input_type}: {name} = '{value}'")
+        
+        # Build form data
+        for inp in inputs:
+            name = inp.get('name')
+            if not name:
+                continue
+                
+            input_type = inp.get('type', inp.name)
+            value = inp.get('value', '')
+            
+            if 'date' in name.lower():
+                if any(keyword in name.lower() for keyword in ['from', 'start', 'begin']):
+                    form_data[name] = start_date.strftime('%m/%d/%Y')
+                    print(f"Set {name} = {start_date.strftime('%m/%d/%Y')}")
+                elif any(keyword in name.lower() for keyword in ['to', 'end', 'until']):
+                    form_data[name] = end_date.strftime('%m/%d/%Y')
+                    print(f"Set {name} = {end_date.strftime('%m/%d/%Y')}")
+                else:
+                    form_data[name] = value
+            elif input_type == 'hidden':
+                form_data[name] = value
+            elif 'limit' in name.lower() or 'count' in name.lower():
+                form_data[name] = str(limit)
+            elif input_type in ['checkbox', 'radio'] and value:
+                # Use default values for checkboxes/radios
+                form_data[name] = value
+            elif not value and input_type in ['text', 'email', 'number']:
+                # Leave text fields empty unless we have a specific value
+                form_data[name] = ''
+        
+        # Submit the search form
+        form_action = search_form.get('action', '')
+        if not form_action.startswith('http'):
+            base_url = str(search_response.url) if 'search_response' in locals() else str(track_response.url)
+            form_action = urljoin(base_url, form_action)
+        
+        print(f"Submitting search to: {form_action}")
+        print(f"Form data: {dict(list(form_data.items())[:5])}...")  # Show first 5 items
+        
+        results_response = await client.post(form_action, data=form_data)
+        if results_response.status_code != 200:
+            print(f"❌ Search form submission failed: {results_response.status_code}")
+            return []
+        
+        results_soup = BeautifulSoup(results_response.text, 'html.parser')
+        print(f"✅ Search results page loaded: {results_soup.title.get_text() if results_soup.title else 'No title'}")
+        
+        # Parse the search results
+        reports = await _parse_detailed_reports(results_soup, limit, client, list_only)
+        print(f"Found {len(reports)} reports from user navigation flow")
+        
+        return reports
+        
+        except Exception as e:
+            print(f"Error in user navigation flow: {e}")
+            return []
             # Step 2a: Go to the research page first
             print("Navigating to research page...")
             research_response = await client.get("https://mufon.com/research/")
