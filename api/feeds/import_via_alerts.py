@@ -157,23 +157,23 @@ def import_mufon_cases():
             else:
                 title = f"{ufo_type} UFO Sighting ({time_indicator} MUFON)"
             
-            # Create alert using existing endpoint
+            # Create alert using existing endpoint with all MUFON fields
             alert_data = {
                 "device_id": f"mufon_importer",
-                "username": "MUFON_Database",  # Official MUFON database feed
+                "username": "MUFON_Database",
                 "category": "ufo_sighting", 
                 "title": title,
                 "description": full_description,
                 "location": {
                     "latitude": lat,
                     "longitude": lon,
-                    "name": location  # Store original location
+                    "name": location
                 },
                 "witness_count": 1,
                 "alert_level": "medium",
                 "source": "mufon",
+                "source_id": case.get('Case_Number'),
                 "external_id": f"mufon_{case.get('Case_Number')}",
-                "skip_enrichment": True,  # Skip live lookups for historical data
                 "enrichment_data": {
                     "ufo_classification": classification,
                     "data_source": "MUFON CMS",

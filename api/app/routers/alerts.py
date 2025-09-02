@@ -114,12 +114,37 @@ async def create_alert(request: dict, idempotency_key: Optional[str] = Header(No
         db_pool = await get_db()
         alerts_service = AlertsService(db_pool)
         
-        alert_id, jittered_location = await alerts_service.create_beep(
-            device_id=device_id,
-            location=location,
-            description=request.get('description', ''),
-            username=username
-        )
+        # Use create_alert for full field support (MUFON imports need title, source, etc.)
+        if request.get('title') or request.get('source') or request.get('enrichment_data'):
+            # Full alert creation for imports and rich content
+            alert_id = await alerts_service.create_alert(
+                title=request.get('title'),
+                description=request.get('description', ''),
+                category=request.get('category', 'ufo'),
+                witness_count=request.get('witness_count', 1),
+                alert_level=request.get('alert_level', 'medium'),
+                enrichment_data=request.get('enrichment_data'),
+                sensor_data={
+                    'location': {
+                        'latitude': location['latitude'],
+                        'longitude': location['longitude'],
+                        'name': location.get('name', 'Unknown Location')
+                    },
+                    'device_id': device_id,
+                    'source': request.get('source'),
+                    'external_id': request.get('external_id')
+                },
+                username=username
+            )
+            jittered_location = {"lat": location['latitude'], "lng": location['longitude']}
+        else:
+            # Regular beep creation with privacy jittering
+            alert_id, jittered_location = await alerts_service.create_beep(
+                device_id=device_id,
+                location=location,
+                description=request.get('description', ''),
+                username=username
+            )
         
         # Send proximity alerts (critical for notifying nearby devices)
         has_pending_media = request.get('has_media', False)

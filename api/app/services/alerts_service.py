@@ -257,7 +257,10 @@ class AlertsService:
                           is_public: bool = True, tags: List[str] = None,
                           media_info: Dict = None, sensor_data: Dict = None,
                           enrichment_data: Dict = None, alert_level: str = "normal",
-                          device_id: str = None, username: str = None) -> str:
+                          device_id: str = None, username: str = None,
+                          source: str = None, source_id: str = None, 
+                          external_url: str = None, latitude: float = None, 
+                          longitude: float = None) -> str:
         """Create new alert/sighting"""
         async with self.db_pool.acquire() as conn:
             # Get existing user by username
@@ -272,13 +275,14 @@ class AlertsService:
             alert_id = await conn.fetchval("""
                 INSERT INTO sightings 
                 (title, description, category, witness_count, is_public, tags, 
-                 media_info, sensor_data, enrichment_data, alert_level, status, reporter_id)
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+                 media_info, sensor_data, enrichment_data, alert_level, status, reporter_id,
+                 source, source_id, external_url, lat, lon)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
                 RETURNING id
             """, title, description, category, witness_count, is_public,
                 tags or [], json.dumps(media_info or {}), 
                 json.dumps(sensor_data or {}), json.dumps(enrichment_data or {}),
-                alert_level, "created", reporter_id)
+                alert_level, "created", reporter_id, source, source_id, external_url, latitude, longitude)
             
             return str(alert_id)
     
