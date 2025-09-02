@@ -15,6 +15,7 @@
 - **[QUICKSTART.md](QUICKSTART.md)** - Development environment setup
 - **[DEPLOYMENT.md](DEPLOYMENT.md)** - Deploy scripts and procedures
 - **[ENDPOINTS.md](ENDPOINTS.md)** - API endpoint documentation
+- **[MUFON_DATA.md](MUFON_DATA.md)** - MUFON data pipeline documentation
 
 ## 📖 Master Plans
 - **[MASTER_PLAN_v16.md](MASTER_PLAN_v16.md)** - Current implementation status

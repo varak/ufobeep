@@ -11,11 +11,18 @@
 - `POST /media/{id}/presign` - Get presigned upload URL
 
 ## Alerts & Sightings
-- `POST /alerts` - Create new sighting alert
-- `GET /alerts` - List alerts with filtering
+- `POST /alerts` - Create new sighting alert (supports locationless MUFON alerts)
+- `GET /alerts` - List alerts with filtering (includes MUFON source alerts)
 - `GET /alerts/{id}` - Get specific alert details
 - `POST /alerts/{id}/media` - Attach media to alert
 - `POST /alerts/{id}/witnesses` - Confirm witness sighting (FIXED: type safety issues resolved)
+
+### MUFON Integration
+MUFON-sourced alerts (`source: "mufon"`) have special handling:
+- Location data is optional (allows locationless alerts)
+- UI widgets are automatically hidden (witness, map, time modal)
+- Comment system disabled by default
+- Enriched with UFO classification data
 
 ## Comments System
 - `GET /alerts/{id}/comments` - Get alert comments
