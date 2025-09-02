@@ -9,8 +9,8 @@ def get_db_pool() -> asyncpg.Pool:
 def require_admin():
     return True
 
-from ..feeds.ingest import ingest_mufon as _ingest_mufon
-from ..feeds.ingest_all import ingest_all_feeds as _ingest_all
+from feeds.ingest import ingest_mufon as _ingest_mufon
+from feeds.ingest_all import ingest_all_feeds as _ingest_all
 
 router = APIRouter(prefix="/admin/feeds", tags=["feeds"])
 
