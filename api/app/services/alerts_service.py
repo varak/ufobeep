@@ -151,11 +151,18 @@ class AlertsService:
             sensor = self._parse_json(sensor_data)
             if sensor:
                 lat, lng = self._extract_coords_from_sensor(sensor)
+                # Extract location name from sensor data
+                location_name = "Unknown Location"
+                if sensor.get("location", {}).get("name"):
+                    location_name = sensor["location"]["name"]
+                elif sensor.get("location_name"):
+                    location_name = sensor["location_name"]
+                
                 if self._valid_coords(lat, lng):
                     return AlertLocation(
                         latitude=lat,
                         longitude=lng,
-                        name="Unknown Location"
+                        name=location_name
                     )
         
         return None
@@ -319,7 +326,7 @@ class AlertsService:
             'timestamp': datetime.utcnow().isoformat()
         }
         
-        # Create alert
+        # Create alert with coordinates
         alert_id = await self.create_alert(
             title=title,
             description=description,
