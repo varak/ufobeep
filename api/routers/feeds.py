@@ -32,20 +32,20 @@ async def process_mufon_case(case_id: str, _admin = Depends(require_admin)):
         pool = await get_db()
         from feeds.mufon_case_processor import get_case_details, insert_case_with_media
         
-        # Find case URL from the list first
+        # Find case data from the list first
         from feeds.mufon_case_processor import get_case_list
         cases = await get_case_list()
-        case_url = None
+        target_case = None
         for case in cases:
             if case.get("case_id") == case_id:
-                case_url = case.get("url")
+                target_case = case
                 break
         
-        if not case_url:
+        if not target_case:
             return {"ok": False, "error": f"Case {case_id} not found in recent cases"}
         
         # Get full case details with media
-        case_data = await get_case_details(case_url)
+        case_data = await get_case_details(target_case)
         if not case_data:
             return {"ok": False, "error": f"Could not fetch details for case {case_id}"}
             

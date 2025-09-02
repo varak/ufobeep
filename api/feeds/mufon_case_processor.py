@@ -10,129 +10,74 @@ from datetime import datetime
 import re
 
 async def get_case_list() -> List[Dict[str, Any]]:
-    """Get list of recent MUFON cases without processing details"""
-    async with httpx.AsyncClient(timeout=10.0) as client:
-        response = await client.get("https://mufoncms.com/last_20_public.html")
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        cases = []
-        table = soup.find('table')
-        if table:
-            rows = table.find_all('tr')[1:]  # Skip header
-            for row in rows[:20]:  # Limit to 20 cases
-                cells = row.find_all('td')
-                if len(cells) >= 4:
-                    # Extract case URL and ID
-                    link = cells[0].find('a')
-                    if link and link.get('href'):
-                        case_url = link.get('href')
-                        case_id = extract_case_id_from_url(case_url)
-                        
-                        cases.append({
-                            "case_id": case_id,
-                            "url": f"https://mufoncms.com{case_url}",
-                            "title": cells[0].get_text().strip(),
-                            "location": cells[1].get_text().strip(),
-                            "date": cells[2].get_text().strip(),
-                            "shape": cells[3].get_text().strip()
-                        })
-        
-        print(f"Found {len(cases)} MUFON cases")
-        return cases
+    """Get list of recent MUFON cases from authenticated CMS"""
+    from feeds.mufon_authenticated_client import fetch_authenticated_reports
+    
+    # Use existing authenticated client to get basic case list
+    reports = await fetch_authenticated_reports(limit=20, days_back=2)
+    
+    cases = []
+    for report in reports:
+        case_id = report.get("case_number") or report.get("id") or "unknown"
+        cases.append({
+            "case_id": str(case_id),
+            "title": report.get("summary", "")[:100],
+            "location": f"{report.get('city', '')}, {report.get('state', '')}".strip(", "),
+            "date": report.get("occurred_date_time", ""),
+            "shape": report.get("shape", ""),
+            "report_data": report  # Keep full report for processing
+        })
+    
+    print(f"Found {len(cases)} MUFON cases from authenticated CMS")
+    return cases
 
 def extract_case_id_from_url(url: str) -> str:
     """Extract case ID from MUFON URL"""
     match = re.search(r'/case/(\d+)', url)
     return match.group(1) if match else url.split('/')[-1]
 
-async def get_case_details(case_url: str) -> Optional[Dict[str, Any]]:
-    """Get full details for a single MUFON case including media"""
-    async with httpx.AsyncClient(timeout=30.0) as client:
-        try:
-            print(f"Fetching case details from: {case_url}")
-            response = await client.get(case_url)
-            soup = BeautifulSoup(response.text, 'html.parser')
-            
-            # Extract case data
-            case_data = {
-                "url": case_url,
-                "case_id": extract_case_id_from_url(case_url),
-                "title": "",
-                "description": "",
-                "location": "",
-                "occurred_at": "",  # When sighting occurred
-                "reported_at": "",  # When reported to MUFON
-                "shape": "",
-                "media_urls": []
-            }
-            
-            # Extract title
-            title_elem = soup.find('h1') or soup.find('h2') or soup.find('title')
-            if title_elem:
-                case_data["title"] = title_elem.get_text().strip()
-            
-            # Extract dates from various locations
-            date_patterns = [
-                r'occurred.*?:?\s*([0-9]{1,2}[/-][0-9]{1,2}[/-][0-9]{2,4})',
-                r'date.*?:?\s*([0-9]{1,2}[/-][0-9]{1,2}[/-][0-9]{2,4})', 
-                r'reported.*?:?\s*([0-9]{1,2}[/-][0-9]{1,2}[/-][0-9]{2,4})'
-            ]
-            
-            page_text = soup.get_text().lower()
-            for pattern in date_patterns:
-                matches = re.findall(pattern, page_text, re.IGNORECASE)
-                if matches:
-                    if 'occurred' in pattern or 'date' in pattern:
-                        case_data["occurred_at"] = matches[0]
-                    if 'reported' in pattern:
-                        case_data["reported_at"] = matches[0]
-            
-            # Extract location from various selectors
-            location_selectors = ['td', 'span', 'div']
-            for selector in location_selectors:
-                for elem in soup.find_all(selector):
-                    text = elem.get_text().strip()
-                    if len(text) > 5 and len(text) < 100 and (',' in text or any(state in text.upper() for state in ['CA', 'TX', 'NY', 'FL', 'IL'])):
-                        if not case_data["location"]:
-                            case_data["location"] = text
-                            break
-            
-            # Extract shape from page
-            shape_patterns = [
-                r'shape.*?:?\s*(\w+)',
-                r'object.*?:?\s*(circle|disk|triangle|sphere|cylinder|oval|rectangle|diamond|other)',
-            ]
-            for pattern in shape_patterns:
-                matches = re.findall(pattern, page_text, re.IGNORECASE)
-                if matches and not case_data["shape"]:
-                    case_data["shape"] = matches[0]
-                    break
-            
-            # Extract description from various possible locations  
-            description_parts = []
-            
-            # Look for description in divs, p tags
-            for elem in soup.find_all(['div', 'p'], string=re.compile(r'.{50,}', re.DOTALL)):
-                text = elem.get_text().strip()
-                if len(text) > 50 and 'MUFON' not in text.upper():
-                    description_parts.append(text)
-            
-            case_data["description"] = "\n\n".join(description_parts[:3])  # First 3 paragraphs
-            
-            # Extract media URLs
-            for img in soup.find_all('img'):
-                src = img.get('src')
-                if src and ('upload' in src.lower() or 'photo' in src.lower() or 'image' in src.lower()):
-                    if src.startswith('/'):
-                        src = f"https://mufoncms.com{src}"
-                    case_data["media_urls"].append(src)
-            
-            print(f"Case {case_data['case_id']}: Found {len(case_data['media_urls'])} media files")
-            return case_data
-            
-        except Exception as e:
-            print(f"Error fetching case details from {case_url}: {e}")
-            return None
+async def get_case_details(case_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Get full details for a single MUFON case from authenticated CMS data"""
+    try:
+        report = case_data.get("report_data", {})
+        case_id = case_data.get("case_id")
+        
+        print(f"Processing MUFON case {case_id}")
+        
+        # Build enhanced case data from authenticated CMS
+        enhanced_case = {
+            "case_id": case_id,
+            "title": report.get("summary", "")[:200] or f"MUFON Case {case_id}",
+            "description": report.get("summary", "") or "",
+            "location": f"{report.get('city', '')}, {report.get('state', '')}".strip(", "),
+            "occurred_at": report.get("occurred_date_time", ""),
+            "reported_at": report.get("date_submitted", ""),
+            "shape": report.get("shape", ""),
+            "duration": report.get("duration", ""),
+            "media_urls": [],
+            "raw_report": report
+        }
+        
+        # Try to get media from CMS if available
+        media_fields = ['media_url', 'image_url', 'photo_url', 'attachment_url']
+        for field in media_fields:
+            if report.get(field):
+                enhanced_case["media_urls"].append(report[field])
+        
+        # Check for media in nested objects or arrays
+        if isinstance(report.get('media'), list):
+            for media in report['media']:
+                if isinstance(media, dict) and media.get('url'):
+                    enhanced_case["media_urls"].append(media['url'])
+                elif isinstance(media, str):
+                    enhanced_case["media_urls"].append(media)
+        
+        print(f"Case {case_id}: Found {len(enhanced_case['media_urls'])} media files from CMS data")
+        return enhanced_case
+        
+    except Exception as e:
+        print(f"Error processing case data: {e}")
+        return None
 
 async def process_case_media(pool: asyncpg.Pool, sighting_id: str, media_urls: List[str]) -> Dict[str, Any]:
     """Download and process media using existing UFOBeep media system"""
