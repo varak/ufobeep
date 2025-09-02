@@ -62,8 +62,8 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2, list_
         
         print("✅ Successfully authenticated to MUFON CRM")
         
-        # Step 2: Perform a search within the CRM for last 30 days
-        print(f"\nStep 2: Searching CRM for last {days_back} days of reports...")
+        # Step 2: Navigate to the research/database search like a real user
+        print(f"\nStep 2: Following user flow to database search for last {days_back} days...")
         
         # Calculate date range for nightly runs
         end_date = datetime.now()
@@ -72,35 +72,118 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2, list_
         print(f"Searching from {start_date.strftime('%m/%d/%Y')} to {end_date.strftime('%m/%d/%Y')}")
         
         try:
-            # Use direct search database URL with parameters instead of form parsing
-            search_db_url = "https://mufon.z2systems.com/np/clients/mufon/neonPage.jsp"
+            # Step 2a: Go to the research page first
+            print("Navigating to research page...")
+            research_response = await client.get("https://mufon.com/research/")
             
-            # Build search parameters directly
-            search_params = {
-                'pageId': '19',
-                'choice': 'search',  # Try search option first
-                'from_date': start_date.strftime('%m/%d/%Y'),
-                'to_date': end_date.strftime('%m/%d/%Y'),
-                'limit': limit
-            }
+            if research_response.status_code != 200:
+                print(f"❌ Could not access research page: {research_response.status_code}")
+                return []
             
-            print(f"Making direct search request to: {search_db_url}")
-            print(f"Search parameters: {search_params}")
+            # Step 2b: Look for the "Search Database" or "TRACK UFO's" link
+            research_soup = BeautifulSoup(research_response.text, 'html.parser')
+            print("Looking for database search link...")
             
-            # Try direct GET request with parameters
-            search_response = await client.get(search_db_url, params=search_params)
-            print(f"Direct search response status: {search_response.status_code}")
-            
-            if search_response.status_code == 200:
-                search_soup = BeautifulSoup(search_response.text, 'html.parser')
-                print(f"Search results page title: {search_soup.title.get_text() if search_soup.title else 'No title'}")
+            # Look for database search links
+            search_links = []
+            for link in research_soup.find_all('a', href=True):
+                href = link.get('href').lower()
+                text = link.get_text().lower().strip()
                 
-                # Parse results directly
-                reports = await _parse_detailed_reports(search_soup, limit, client)
-                print(f"Found {len(reports)} reports from direct search")
+                if any(keyword in text for keyword in ['search database', 'track ufo', 'database']) or \
+                   any(keyword in href for keyword in ['search', 'database', 'track']):
+                    search_links.append({
+                        'text': link.get_text().strip(),
+                        'href': link.get('href'),
+                        'full_url': urljoin('https://mufon.com/', link.get('href'))
+                    })
+            
+            print(f"Found {len(search_links)} potential database links:")
+            for link in search_links:
+                print(f"  - '{link['text']}' → {link['href']}")
+            
+            # Try to find and access the database search page
+            database_url = None
+            for link in search_links:
+                if any(keyword in link['text'].lower() for keyword in ['search', 'database', 'track']):
+                    database_url = link['full_url']
+                    print(f"Using database search URL: {database_url}")
+                    break
+            
+            if not database_url:
+                print("❌ Could not find database search link on research page")
+                return []
+            
+            # Step 2c: Access the database search page
+            print("Accessing database search page...")
+            db_response = await client.get(database_url)
+            
+            if db_response.status_code != 200:
+                print(f"❌ Could not access database search page: {db_response.status_code}")
+                return []
+            
+            db_soup = BeautifulSoup(db_response.text, 'html.parser')
+            print(f"Database page title: {db_soup.title.get_text() if db_soup.title else 'No title'}")
+            
+            # Step 2d: Look for search form and submit with date range
+            search_form = None
+            for form in db_soup.find_all('form'):
+                # Look for forms with date fields or search functionality
+                inputs = form.find_all(['input', 'select'])
+                has_date_fields = any('date' in inp.get('name', '').lower() for inp in inputs)
+                has_search_fields = any(inp.get('type') == 'submit' or 'search' in inp.get('name', '').lower() for inp in inputs)
                 
-                if reports:
-                    return reports
+                if has_date_fields or has_search_fields:
+                    search_form = form
+                    print(f"Found search form with {len(inputs)} fields")
+                    break
+            
+            if not search_form:
+                print("❌ Could not find search form on database page")
+                return []
+            
+            # Step 2e: Submit the search form with date range
+            form_data = {}
+            form_action = search_form.get('action', '')
+            
+            # Build form data
+            for inp in search_form.find_all(['input', 'select']):
+                name = inp.get('name')
+                if not name:
+                    continue
+                    
+                if 'date' in name.lower() and 'from' in name.lower():
+                    form_data[name] = start_date.strftime('%m/%d/%Y')
+                elif 'date' in name.lower() and 'to' in name.lower():
+                    form_data[name] = end_date.strftime('%m/%d/%Y')
+                elif inp.get('type') == 'hidden':
+                    form_data[name] = inp.get('value', '')
+                elif 'limit' in name.lower():
+                    form_data[name] = str(limit)
+            
+            print(f"Submitting search form with data: {form_data}")
+            
+            if form_action.startswith('/'):
+                form_action = urljoin(database_url, form_action)
+            elif not form_action.startswith('http'):
+                form_action = urljoin(database_url, form_action)
+            
+            search_response = await client.post(form_action, data=form_data)
+            
+            if search_response.status_code != 200:
+                print(f"❌ Search form submission failed: {search_response.status_code}")
+                return []
+            
+            # Step 2f: Parse the search results
+            results_soup = BeautifulSoup(search_response.text, 'html.parser')
+            print(f"Search results page title: {results_soup.title.get_text() if results_soup.title else 'No title'}")
+            
+            # Parse results using the updated parser
+            reports = await _parse_detailed_reports(results_soup, limit, client, list_only)
+            print(f"Found {len(reports)} reports from database search")
+            
+            if reports:
+                return reports
             
             # If direct search didn't work, try POST with form data
             print("Direct search failed, trying POST with form data...")
