@@ -135,7 +135,44 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2, list_
             db_soup = BeautifulSoup(db_response.text, 'html.parser')
             print(f"Database page title: {db_soup.title.get_text() if db_soup.title else 'No title'}")
             
-            # Step 2d: Look for search form and submit with date range
+            # Step 2d: If this is Terms and Conditions, look for "Search Database" link to proceed
+            if 'terms and conditions' in db_soup.title.get_text().lower():
+                print("This is Terms and Conditions page, looking for Search Database link...")
+                
+                # Look for links to the actual search database
+                search_db_links = []
+                for link in db_soup.find_all('a', href=True):
+                    text = link.get_text().lower().strip()
+                    href = link.get('href')
+                    
+                    if any(keyword in text for keyword in ['search database', 'database search', 'continue', 'proceed', 'agree']):
+                        search_db_links.append({
+                            'text': link.get_text().strip(),
+                            'href': href,
+                            'full_url': urljoin(database_url, href)
+                        })
+                
+                print(f"Found {len(search_db_links)} potential search database links:")
+                for link in search_db_links:
+                    print(f"  - '{link['text']}' → {link['href']}")
+                
+                # Use the first search database link
+                if search_db_links:
+                    database_url = search_db_links[0]['full_url']
+                    print(f"Proceeding to actual search database: {database_url}")
+                    
+                    db_response = await client.get(database_url)
+                    if db_response.status_code != 200:
+                        print(f"❌ Could not access actual search database: {db_response.status_code}")
+                        return []
+                    
+                    db_soup = BeautifulSoup(db_response.text, 'html.parser')
+                    print(f"Actual search page title: {db_soup.title.get_text() if db_soup.title else 'No title'}")
+                else:
+                    print("❌ No search database links found on Terms and Conditions page")
+                    return []
+            
+            # Step 2e: Look for search form and submit with date range
             search_form = None
             for form in db_soup.find_all('form'):
                 # Look for forms with date fields or search functionality
