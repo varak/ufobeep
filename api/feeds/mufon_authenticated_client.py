@@ -63,11 +63,11 @@ async def fetch_authenticated_reports(limit: int = 30) -> List[Dict[str, Any]]:
         print("✅ Successfully authenticated to MUFON CRM")
         
         # Step 2: Perform a search within the CRM for last 30 days
-        print("\nStep 2: Searching CRM for last 3 days of reports...")
+        print("\nStep 2: Searching CRM for last 2 days of reports...")
         
-        # Calculate date range (last 3 days for nightly runs)
+        # Calculate date range (last 2 days for nightly runs)
         end_date = datetime.now()
-        start_date = end_date - timedelta(days=3)
+        start_date = end_date - timedelta(days=2)
         
         print(f"Searching from {start_date.strftime('%m/%d/%Y')} to {end_date.strftime('%m/%d/%Y')}")
         
