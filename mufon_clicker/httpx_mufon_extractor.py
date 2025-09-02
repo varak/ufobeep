@@ -114,7 +114,7 @@ def download_media_files(cases, cookies):
     
     downloaded_count = 0
     
-    with httpx.Client(cookies=cookies, headers=headers, timeout=30.0) as client:
+    with httpx.Client(cookies=cookies, headers=headers, timeout=30.0, follow_redirects=True) as client:
         for case in cases:
             case_num = case['case_number']
             

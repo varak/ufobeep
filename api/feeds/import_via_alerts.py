@@ -14,35 +14,24 @@ from ufo_classifier import UFOClassifier
 
 def extract_location_from_description(long_description, location_field):
     """Extract real location from long description text"""
+    # Check location field first - it often contains the actual location
+    if location_field:
+        # Look for "City State" pattern in location field
+        loc_match = re.search(r'\b([A-Za-z]+)\s+([A-Za-z]{4,})\b', location_field)
+        if loc_match:
+            word1, word2 = loc_match.groups()
+            return f"{word1.title()}, {word2[:2].upper()}"
+    
     if not long_description:
         return None
     
-    # Skip if location field looks like a real location already
-    if any(indicator in location_field.lower() for indicator in ['county', 'city', ', tx', ', ca', ', fl', ', ny', 'oklahoma', 'california']):
-        return location_field
+    # Look for "City State" pattern in description
+    pattern = re.search(r'\b([A-Za-z]+)\s+([A-Za-z]{4,})\b', long_description)
+    if pattern:
+        word1, word2 = pattern.groups()
+        return f"{word1.title()}, {word2[:2].upper()}"
     
-    # Look for location patterns in long description
-    location_patterns = [
-        r'([A-Z][a-z]+) ([A-Z][a-z]+)(?=\s|,|\.|$)',  # "Quincy Illinois" pattern
-        r'in ([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*), ([A-Z]{2})',  # in City, ST
-        r'([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*), ([A-Z]{2})(?:\s|\.)',  # City, ST
-        r'near ([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*), ([A-Z]{2})',  # near City, ST
-        r'in ([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)',  # in City
-        r'near ([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)',  # near City  
-    ]
-    
-    for pattern in location_patterns:
-        matches = re.findall(pattern, long_description)
-        if matches:
-            match = matches[0]
-            if isinstance(match, tuple) and len(match) == 2:  # City, State format like ("Quincy", "Illinois")
-                city, state = match
-                return f"{city} {state}"  # Let geocoding handle "Quincy Illinois"
-            else:  # Single location
-                return match if isinstance(match, str) else str(match)
-    
-    # Fallback to location field if no patterns match
-    return location_field if location_field else None
+    return None
 
 def import_mufon_cases():
     """Import MUFON cases using existing alert endpoints"""
@@ -74,7 +63,9 @@ def import_mufon_cases():
     except:
         search_year = datetime.now().year  # Fallback to current year
     
+    # Use local API directly
     base_url = "http://localhost:8000"
+    print("Using local API at http://localhost:8000")
     imported_count = 0
     classifier = UFOClassifier()  # Initialize UFO classifier
     
@@ -83,87 +74,58 @@ def import_mufon_cases():
             case_num = case.get('case_number') or case.get('Case_Number', '')
             print(f"\n--- Processing Case #{case_num} ---")
             
-            # Parse location and geocode it
-            location = case.get('location') or case.get('Location', '')
-            
-            def geocode_location(location_string):
-                """Geocode location using Nominatim (OpenStreetMap) API with creative parsing"""
-                if not location_string or location_string == "0":
-                    return 39.8283, -98.5795, "Unknown Location, US"  # US center
-                
-                # Try to extract real location from long description if location field is not helpful
-                long_desc = case.get('long_description') or case.get('Long_Description', '')
-                real_location = extract_location_from_description(long_desc, location_string)
-                query = real_location if real_location else location_string
-                
-                # Handle special cases
-                if "15 1/2 North-Fm 491 Colonia" in location_string:
-                    # This appears to be near Laredo, TX on FM 491
-                    query = "FM 491, Laredo, TX, US"
-                elif location_string.startswith("0,"):
-                    # Extract state if present (e.g., "0, PA, US" -> "Pennsylvania, US")
-                    parts = location_string.split(',')
-                    if len(parts) >= 2:
-                        state = parts[1].strip()
-                        if state and state != "0":
-                            query = f"{state}, US"
-                
-                # Clean up the query
-                query = query.replace("  ", " ").strip()
-                
-                try:
-                    # First attempt with the cleaned query
-                    url = "https://nominatim.openstreetmap.org/search"
-                    params = {
-                        'q': query,
-                        'format': 'json',
-                        'limit': 1,
-                        'countrycodes': 'us'  # Limit to US for MUFON data
-                    }
-                    
-                    headers = {'User-Agent': 'UFOBeep MUFON Import Script'}
-                    response = requests.get(url, params=params, headers=headers, timeout=5)
-                    
-                    if response.status_code == 200:
-                        data = response.json()
-                        if data:
-                            result = data[0]
-                            return float(result['lat']), float(result['lon']), result['display_name']
-                    
-                    # If first attempt fails, try extracting just city and state
-                    if ',' in location_string:
-                        # Try just the city and state (first two parts)
-                        parts = location_string.split(',')
-                        if len(parts) >= 2:
-                            fallback_query = f"{parts[0].strip()}, {parts[1].strip()}, US"
-                            params['q'] = fallback_query
-                            response = requests.get(url, params=params, headers=headers, timeout=5)
-                            
-                            if response.status_code == 200:
-                                data = response.json()
-                                if data:
-                                    result = data[0]
-                                    print(f"   Geocoded '{location_string}' as '{fallback_query}'")
-                                    return float(result['lat']), float(result['lon']), result['display_name']
-                    
-                    print(f"   Geocoding failed for: {location_string}, using US center")
-                    return 39.8283, -98.5795, location_string  # Fallback to US center
-                    
-                except Exception as e:
-                    print(f"   Geocoding error for {location_string}: {e}")
-                    return 39.8283, -98.5795, location_string  # Fallback
-            
-            lat, lon, display_name = geocode_location(location)
-            time.sleep(1)  # Be respectful to free geocoding API
-            
             # Parse the datetime event (e.g., "1997-02-24\n9:00PM")
             datetime_event = (case.get('date_time') or case.get('DateTime_Event', '')).replace('\n', ' ')
+            
+            # Get case reference from the actual case number
+            case_reference = case.get('case_number', 'Unknown')
             
             # Structure descriptions properly:
             # - Short description for alert card display
             # - Long description with MUFON metadata for detail page
             short_desc = case.get('short_description') or case.get('Short_Description', '')
             long_desc = case.get('long_description') or case.get('Long_Description', '')
+            
+            # Extract location from description and geocode
+            location = extract_location_from_description(long_desc, case.get('location', ''))
+            
+            print(f"   Original location field: '{case.get('location', '')}'")
+            print(f"   Long description: '{(long_desc or '')[:100]}...'")
+            print(f"   Extracted location: '{location}'")
+            
+            if not location:
+                print(f"   Skipping case {case_num} - no location found")
+                continue
+                
+            # Geocode the location
+            lat, lon = None, None
+            try:
+                geocode_url = "https://nominatim.openstreetmap.org/search"
+                params = {
+                    'q': location,
+                    'format': 'json',
+                    'limit': 1
+                }
+                headers_geo = {'User-Agent': 'UFOBeep MUFON Import Script'}
+                
+                response = requests.get(geocode_url, params=params, headers=headers_geo, timeout=10)
+                if response.status_code == 200:
+                    data = response.json()
+                    if data and len(data) > 0:
+                        result = data[0]
+                        lat = float(result['lat'])
+                        lon = float(result['lon'])
+                        location = result.get('display_name', location)
+                        print(f"   📍 Geocoded: {location} ({lat:.4f}, {lon:.4f})")
+                        
+                time.sleep(1)  # Rate limiting
+                        
+            except Exception as e:
+                print(f"   Geocoding error: {e}")
+                
+            if not lat or not lon:
+                print(f"   Skipping case {case_num} - geocoding failed")
+                continue
             
             # Build full description for detail page with HTML formatting
             if long_desc and len(long_desc.strip()) > 10:
@@ -227,7 +189,7 @@ def import_mufon_cases():
 <p><strong>Event Date:</strong> {datetime_event}</p>
 <p><strong>Submitted:</strong> {case.get('Date_Submitted', '')}</p>
 <p><strong>Location:</strong> {location}</p>
-<p><strong>Case Reference:</strong> #{case.get('Case_Number')}</p>
+<p><strong>Case Reference:</strong> #{case_reference}</p>
 <p><strong>UFO Type:</strong> {classification['type']} (confidence: {classification['confidence']:.1f})</p>
 </div>
 </div>"""
@@ -293,7 +255,7 @@ def import_mufon_cases():
                 'Content-Type': 'application/json',
                 'X-Import-Source': 'mufon'  # Special header for imports
             }
-            response = requests.post(f"{base_url}/beeps", json=beep_data, headers=headers)
+            response = requests.post(f"{base_url}/alerts", json=beep_data, headers=headers)
             
             if response.status_code in [200, 201]:
                 alert = response.json()
