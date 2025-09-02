@@ -10,34 +10,37 @@ from datetime import datetime
 import re
 
 async def get_case_list() -> List[Dict[str, Any]]:
-    """Get list of recent MUFON cases using simple direct search"""
+    """Get just the basic list of MUFON cases (fast)"""
     try:
-        from feeds.mufon_simple_search import simple_mufon_search
+        from feeds.mufon_authenticated_client import fetch_authenticated_reports
         
-        print("Fetching MUFON cases using simple search...")
-        reports = await simple_mufon_search(limit=20, days_back=2)
+        print("Fetching MUFON case list (basic info only)...")
+        
+        # Get basic reports but don't process detailed content
+        reports = await fetch_authenticated_reports(limit=10, days_back=2)
         
         if not reports:
-            print("⚠️ No reports returned from MUFON simple search")
+            print("⚠️ No reports returned from MUFON CMS")
             return []
         
+        # Just return basic case info for the list
         cases = []
-        for report in reports[:10]:  # Limit to 10 for faster processing
-            case_id = report.get("case_id") or "unknown"
+        for report in reports:
+            case_id = report.get("case_number") or report.get("id") or "unknown"
             cases.append({
                 "case_id": str(case_id),
-                "title": report.get("summary", "")[:100],
-                "location": report.get("location", ""),
-                "date": report.get("date", ""),
-                "shape": "",  # Simple search might not have shape
-                "report_data": report  # Keep full report for processing
+                "title": report.get("summary", "")[:100] or f"Case {case_id}",
+                "location": f"{report.get('city', '')}, {report.get('state', '')}".strip(", "),
+                "date": report.get("occurred_date_time", ""),
+                "shape": report.get("shape", ""),
+                "report_data": report  # Keep full report for individual processing
             })
         
-        print(f"✅ Found {len(cases)} MUFON cases from simple search")
+        print(f"✅ Found {len(cases)} MUFON cases (basic list)")
         return cases
     
     except Exception as e:
-        print(f"❌ MUFON simple search failed: {e}")
+        print(f"❌ MUFON case list failed: {e}")
         return []
 
 def extract_case_id_from_url(url: str) -> str:
