@@ -156,8 +156,10 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2) -> Li
                 
                 print(f"\nForm {i+1}: {action} ({method}) with {len(inputs)} fields")
                 
-                # Look for date-related inputs
-                date_fields = []
+                # Look for MUFON choice select field or date-related inputs
+                has_choice_field = False
+                has_date_fields = False
+                
                 for inp in inputs:
                     inp_type = inp.get('type', inp.name) 
                     inp_name = inp.get('name', 'unnamed')
@@ -165,11 +167,24 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2) -> Li
                     
                     print(f"  - {inp_type}: {inp_name} = '{inp_value}'")
                     
+                    # Check for MUFON choice select field
+                    if inp_name == 'choice' and inp.name == 'select':
+                        has_choice_field = True
+                        options = inp.find_all('option')
+                        print(f"    Choice options: {[opt.get('value') or opt.get_text().strip() for opt in options]}")
+                    
+                    # Check for date fields
                     if any(keyword in inp_name.lower() for keyword in ['date', 'from', 'to', 'start', 'end']):
-                        date_fields.append((inp_name, inp_type))
+                        has_date_fields = True
                 
-                if date_fields:
-                    print(f"  -> Date fields found: {date_fields}")
+                # Use form with choice field (preferred) or date fields
+                if has_choice_field:
+                    print(f"  -> Using MUFON choice field form for database search")
+                    search_form = form
+                    break
+                
+                if has_date_fields:
+                    print(f"  -> Using form with date fields")
                     search_form = form
                     break
             
@@ -177,8 +192,10 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2) -> Li
             if search_form:
                 print(f"\n✅ Found search form, submitting date range query...")
                 
-                # Build form data
+                # Build form data for inputs and selects
                 form_data = {}
+                
+                # Handle input fields
                 for inp in search_form.find_all('input'):
                     name = inp.get('name')
                     value = inp.get('value', '')
@@ -193,6 +210,36 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2) -> Li
                             form_data[name] = end_date.strftime('%m/%d/%Y')  
                         else:
                             form_data[name] = value
+                
+                # Handle select fields (like choice)
+                for select in search_form.find_all('select'):
+                    name = select.get('name')
+                    if name == 'choice':
+                        # For MUFON choice field, we need to find the right option
+                        # Try to find a search or database option
+                        options = select.find_all('option')
+                        search_value = None
+                        
+                        for option in options:
+                            option_text = option.get_text().strip().lower()
+                            option_value = option.get('value', '').strip()
+                            
+                            # Look for search, database, reports, or recent options
+                            if any(keyword in option_text for keyword in ['search', 'database', 'report', 'recent', 'query']):
+                                search_value = option_value or option.get_text().strip()
+                                print(f"  -> Using choice option: '{option.get_text().strip()}' (value: '{search_value}')")
+                                break
+                        
+                        # If no specific search option found, use the first non-empty option
+                        if not search_value and options:
+                            for option in options:
+                                if option.get('value') or option.get_text().strip():
+                                    search_value = option.get('value') or option.get_text().strip()
+                                    print(f"  -> Using fallback choice option: '{option.get_text().strip()}' (value: '{search_value}')")
+                                    break
+                        
+                        if search_value:
+                            form_data[name] = search_value
                 
                 # Submit search
                 form_action = search_form.get('action')
