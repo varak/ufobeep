@@ -5,6 +5,16 @@
   "total_cases": 2,
   "cases": [
     {
+      "Case_Number": "143964",
+      "Date_Submitted": "2025-09-02",
+      "DateTime_Event": "2025-09-01",
+      "Short_Description": "round orb traveling south to north observed in very straight line",
+      "Long_Description": "",
+      "Location": "Quincy",
+      "Attachments": "",
+      "Attachments_media": []
+    },
+    {
       "Case_Number": "143963",
       "Date_Submitted": "2025-09-02",
       "DateTime_Event": "2025-08-06",
@@ -42,16 +52,6 @@
           "url": "http://mufoncms.com/cgi-bin/ffplay.pl?file=143963_submitter_file_20250806224005.jpg"
         }
       ]
-    },
-    {
-      "Case_Number": "143962",
-      "Date_Submitted": "2025-09-02",
-      "DateTime_Event": "2025-08-31",
-      "Short_Description": "Multiple orb shape objects",
-      "Long_Description": "",
-      "Location": "Currituck County",
-      "Attachments": "",
-      "Attachments_media": []
     }
   ]
 }

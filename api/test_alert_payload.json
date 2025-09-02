@@ -1,0 +1,32 @@
+{
+    "device_id": "mufon_importer",
+    "username": "MUFON_Database",
+    "category": "ufo_sighting",
+    "title": "Test MUFON UFO Sighting",
+    "description": "<p>This is a test description for a MUFON case import.</p>",
+    "location": {
+        "latitude": 39.8283,
+        "longitude": -98.5795,
+        "name": "Test Location, US"
+    },
+    "witness_count": 1,
+    "alert_level": "medium",
+    "source": "mufon",
+    "source_id": "TEST_123",
+    "external_id": "mufon_TEST_123",
+    "enrichment_data": {
+        "ufo_classification": {
+            "type": "unknown",
+            "confidence": 0.5
+        },
+        "data_source": "MUFON CMS",
+        "historical_case": true,
+        "event_date": "2024-01-01 12:00PM",
+        "submission_date": "2024-01-02",
+        "geocoding": {
+            "latitude": 39.8283,
+            "longitude": -98.5795,
+            "location_name": "Test Location, US"
+        }
+    }
+}

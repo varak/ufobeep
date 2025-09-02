@@ -343,7 +343,8 @@ class AlertsService:
         )
         
         # Auto-follow the alert for the creator so they get notifications
-        if username:
+        # Skip for MUFON imports (historical data shouldn't trigger notifications)
+        if username and source != "mufon":
             await self._auto_follow_alert(alert_id, username)
         
         # Call enrichment service after alert creation

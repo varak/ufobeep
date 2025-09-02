@@ -5,43 +5,96 @@ Import MUFON cases using existing UFOBeep alert creation system
 import json
 import requests
 import asyncio
+import os
 from pathlib import Path
 from datetime import datetime
 import time
+import re
 from ufo_classifier import UFOClassifier
+
+def extract_location_from_description(long_description, location_field):
+    """Extract real location from long description text"""
+    if not long_description:
+        return None
+    
+    # Skip if location field looks like a real location already
+    if any(indicator in location_field.lower() for indicator in ['county', 'city', ', tx', ', ca', ', fl', ', ny', 'oklahoma', 'california']):
+        return location_field
+    
+    # Look for location patterns in long description
+    location_patterns = [
+        r'([A-Z][a-z]+) ([A-Z][a-z]+)(?=\s|,|\.|$)',  # "Quincy Illinois" pattern
+        r'in ([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*), ([A-Z]{2})',  # in City, ST
+        r'([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*), ([A-Z]{2})(?:\s|\.)',  # City, ST
+        r'near ([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*), ([A-Z]{2})',  # near City, ST
+        r'in ([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)',  # in City
+        r'near ([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)',  # near City  
+    ]
+    
+    for pattern in location_patterns:
+        matches = re.findall(pattern, long_description)
+        if matches:
+            match = matches[0]
+            if isinstance(match, tuple) and len(match) == 2:  # City, State format like ("Quincy", "Illinois")
+                city, state = match
+                return f"{city} {state}"  # Let geocoding handle "Quincy Illinois"
+            else:  # Single location
+                return match if isinstance(match, str) else str(match)
+    
+    # Fallback to location field if no patterns match
+    return location_field if location_field else None
 
 def import_mufon_cases():
     """Import MUFON cases using existing alert endpoints"""
+    import sys
+    if len(sys.argv) < 2:
+        print("Usage: python import_via_alerts.py <json_file>")
+        print("Example: python import_via_alerts.py mufon_cases.json")
+        return
     
     # Load extracted MUFON data
-    data_file = Path("mufon_classified_results.json")
+    data_file = Path(sys.argv[1])
+    
     if not data_file.exists():
-        print("❌ No MUFON data file found")
+        print(f"❌ No MUFON data file found: {data_file}")
         return
     
     with open(data_file) as f:
         mufon_data = json.load(f)
+    cases = mufon_data['cases']
+    total_cases = mufon_data['total_cases']
     
-    print(f"📊 Processing {mufon_data['total_cases']} MUFON cases...")
+    print(f"📊 Processing {total_cases} MUFON cases...")
     
-    base_url = "https://api.ufobeep.com"
+    # Extract search date from MUFON data to determine what's "recent"
+    search_date_str = mufon_data.get('search_date', '')
+    try:
+        search_date = datetime.strptime(search_date_str, '%Y-%m-%d')
+        search_year = search_date.year
+    except:
+        search_year = datetime.now().year  # Fallback to current year
+    
+    base_url = "http://localhost:8000"
     imported_count = 0
     classifier = UFOClassifier()  # Initialize UFO classifier
     
-    for case in mufon_data['cases']:
+    for case in cases:
         try:
-            print(f"\n--- Processing Case #{case.get('Case_Number')} ---")
+            case_num = case.get('case_number') or case.get('Case_Number', '')
+            print(f"\n--- Processing Case #{case_num} ---")
             
             # Parse location and geocode it
-            location = case.get('Location', '')
+            location = case.get('location') or case.get('Location', '')
             
             def geocode_location(location_string):
                 """Geocode location using Nominatim (OpenStreetMap) API with creative parsing"""
                 if not location_string or location_string == "0":
                     return 39.8283, -98.5795, "Unknown Location, US"  # US center
                 
-                # Clean up and parse the location string creatively
-                query = location_string
+                # Try to extract real location from long description if location field is not helpful
+                long_desc = case.get('long_description') or case.get('Long_Description', '')
+                real_location = extract_location_from_description(long_desc, location_string)
+                query = real_location if real_location else location_string
                 
                 # Handle special cases
                 if "15 1/2 North-Fm 491 Colonia" in location_string:
@@ -104,13 +157,13 @@ def import_mufon_cases():
             time.sleep(1)  # Be respectful to free geocoding API
             
             # Parse the datetime event (e.g., "1997-02-24\n9:00PM")
-            datetime_event = case.get('DateTime_Event', '').replace('\n', ' ')
+            datetime_event = (case.get('date_time') or case.get('DateTime_Event', '')).replace('\n', ' ')
             
             # Structure descriptions properly:
             # - Short description for alert card display
             # - Long description with MUFON metadata for detail page
-            short_desc = case.get('Short_Description', '')
-            long_desc = case.get('Long_Description', '')
+            short_desc = case.get('short_description') or case.get('Short_Description', '')
+            long_desc = case.get('long_description') or case.get('Long_Description', '')
             
             # Build full description for detail page with HTML formatting
             if long_desc and len(long_desc.strip()) > 10:
@@ -179,58 +232,68 @@ def import_mufon_cases():
 </div>
 </div>"""
             
-            # Determine if this is historical (more than 1 year old)
+            # Determine if this is historical (more than 1 year old from search date)
+            # Extract real event year from short description which contains the actual sighting date
             try:
-                event_year = int(datetime_event.split('-')[0]) if '-' in datetime_event else datetime.now().year
-                is_historical = (datetime.now().year - event_year) > 1
+                short_desc = case.get('Short_Description', '')
+                long_desc = case.get('Long_Description', '')
+                
+                # Look for year in short description first (format: "2022-10-27\n11:03PM")
+                event_year = search_year
+                if '-' in short_desc:
+                    year_match = re.search(r'(\d{4})-\d{2}-\d{2}', short_desc)
+                    if year_match:
+                        event_year = int(year_match.group(1))
+                
+                # Fallback: look for year pattern in long description
+                if event_year == search_year:
+                    year_match = re.search(r'\b(20\d{2})\b', long_desc)
+                    if year_match:
+                        event_year = int(year_match.group(1))
+                
+                is_historical = (search_year - event_year) >= 1
+                
             except:
                 is_historical = True  # Default to historical if can't parse
             
             # Create a proper title based on UFO type and historical status  
             ufo_type = classification['type'].title()
-            time_indicator = "Historical" if is_historical else "Recent"
             
-            # Create title: "Triangle UFO Sighting (Historical MUFON)" or "Light Anomaly (Recent MUFON)"
-            if ufo_type == "Unknown":
-                title = f"UFO Sighting ({time_indicator} MUFON)"
+            # Create title: "Historical MUFON Triangle UFO Sighting" or just "MUFON Triangle UFO Sighting" for recent
+            if is_historical:
+                if ufo_type == "Unknown":
+                    title = f"Historical MUFON UFO Sighting"
+                else:
+                    title = f"Historical MUFON {ufo_type} UFO Sighting"
             else:
-                title = f"{ufo_type} UFO Sighting ({time_indicator} MUFON)"
+                if ufo_type == "Unknown":
+                    title = f"MUFON UFO Sighting"
+                else:
+                    title = f"MUFON {ufo_type} UFO Sighting"
             
-            # Create alert using existing endpoint with all MUFON fields
-            alert_data = {
-                "device_id": f"mufon_importer",
-                "username": "MUFON_Database",
-                "category": "ufo_sighting", 
-                "title": title,
-                "description": full_description,
+            # Create beep using the proper pipeline (with MUFON source to skip notifications)
+            beep_data = {
+                "device_id": f"mufon_{case_num}",
                 "location": {
                     "latitude": lat,
                     "longitude": lon,
-                    "name": location
+                    "accuracy": 100.0,
+                    "name": location  # Original location text preserved
                 },
-                "witness_count": 1,
-                "alert_level": "medium",
-                "source": "mufon",
-                "source_id": case.get('Case_Number'),
-                "external_id": f"mufon_{case.get('Case_Number')}",
-                "enrichment_data": {
-                    "ufo_classification": classification,
-                    "data_source": "MUFON CMS",
-                    "historical_case": True,
-                    "event_date": datetime_event,
-                    "submission_date": case.get('Date_Submitted', ''),
-                    "geocoding": geocoding_data
-                }
+                "title": title,
+                "description": full_description,
+                "username": "MUFON_Database",
+                "source": "mufon"  # This will skip notifications
             }
             
-            print(f"Creating alert: {alert_data['title']}")
+            print(f"Creating beep: {beep_data['title']}")
             
-            # Create the alert - MUFON imports bypass auth
+            # Create the beep - uses proper enrichment pipeline
             headers = {
                 'Content-Type': 'application/json',
                 'X-Import-Source': 'mufon'  # Special header for imports
             }
-            response = requests.post(f"{base_url}/alerts", json=alert_data, headers=headers)
+            response = requests.post(f"{base_url}/beeps", json=beep_data, headers=headers)
             
             if response.status_code in [200, 201]:
                 alert = response.json()
@@ -239,19 +302,57 @@ def import_mufon_cases():
                 print(f"✅ Created alert {alert_id}")
                 
                 # Download and upload media files if they exist
-                media_files = case.get('Attachments_media', [])
+                media_files = case.get('media_files') or case.get('Attachments_media', [])
                 if media_files:
                     print(f"📎 Processing {len(media_files)} media files...")
                     
                     for media in media_files:
                         try:
-                            # Download the media file
-                            media_response = requests.get(media['url'], timeout=30)
-                            if media_response.status_code == 200:
+                            media_content = None
+                            
+                            # First check if we have a local file from extraction
+                            if 'local_path' in media and os.path.exists(media['local_path']):
+                                print(f"   📁 Using local file: {media['filename']}")
+                                with open(media['local_path'], 'rb') as f:
+                                    media_content = f.read()
+                            else:
+                                # Download from MUFON using authenticated CGI URL
+                                filename = media['filename']
+                                case_id = case_num  # Use extracted case number
+                                
+                                # Use working MUFON CGI URL format
+                                cgi_url = f"https://mufoncms.com/cgi-bin/ffplay.pl?file=case_files/{filename}"
+                                
+                                print(f"   🌐 Downloading from MUFON: {filename}")
+                                
+                                # Load auth cookies from storage state
+                                storage_state_path = Path("/home/mike/D/ufobeep/mufon_clicker/mufon_artifacts/storage_state.json")
+                                cookies = {}
+                                if storage_state_path.exists():
+                                    with open(storage_state_path) as f:
+                                        storage_data = json.load(f)
+                                        for cookie in storage_data.get('cookies', []):
+                                            cookies[cookie['name']] = cookie['value']
+                                
+                                # Download with auth cookies
+                                headers = {
+                                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                                }
+                                
+                                media_response = requests.get(cgi_url, cookies=cookies, headers=headers, timeout=30)
+                                if media_response.status_code == 200 and len(media_response.content) > 1000:
+                                    media_content = media_response.content
+                                    print(f"   ✅ Downloaded {filename} ({len(media_content)} bytes)")
+                                else:
+                                    print(f"   ❌ Failed to download {filename}: HTTP {media_response.status_code}")
+                                    continue
+                            
+                            # Upload to UFOBeep if we have content
+                            if media_content:
                                 
                                 # Upload to alert using existing media upload endpoint
                                 files = {
-                                    'files': (media['filename'], media_response.content)
+                                    'files': (media['filename'], media_content)
                                 }
                                 data = {
                                     'source': 'mufon_import'
@@ -267,6 +368,8 @@ def import_mufon_cases():
                                     print(f"   ✅ Uploaded {media['filename']}")
                                 else:
                                     print(f"   ❌ Failed to upload {media['filename']}: {upload_response.text}")
+                            else:
+                                print(f"   ❌ Failed to download {media['filename']}: HTTP {media_response.status_code}")
                                     
                         except Exception as e:
                             print(f"   ❌ Media upload error for {media['filename']}: {e}")

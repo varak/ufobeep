@@ -1,0 +1,222 @@
+[
+  {
+    "device_id": "mufon_importer",
+    "username": "MUFON_Database",
+    "category": "ufo_sighting",
+    "title": "MUFON Case #1",
+    "description": "<p>2025-01-30</p><p>9:00PM</p>",
+    "location": {
+      "latitude": 39.8283,
+      "longitude": -98.5795,
+      "name": "Orbs all over the sky, appearing in a flash and slowly floating until disappearing"
+    },
+    "witness_count": 1,
+    "alert_level": "medium",
+    "source": "mufon",
+    "source_id": "1",
+    "external_id": "mufon_1",
+    "enrichment_data": {
+      "data_source": "MUFON CMS",
+      "historical_case": true,
+      "media_count": 0
+    }
+  },
+  {
+    "device_id": "mufon_importer",
+    "username": "MUFON_Database",
+    "category": "ufo_sighting",
+    "title": "MUFON Case #140858",
+    "description": "<p>My father was taking the dog outside when he saw three bright orange lights hovering in place. By the time he called me out, they had all disappeared. After watching for a moment, we saw flashes in the sky - like camera flashes, immediately followed by the appearance of more orange balls of light. This time they showed up one at a time, slowly floating upward and then flickering out like a candle hit by a gust of wind. Over and over this happened, often matching the same exact flight pattern as the previous one - but with variations in their flickering. Some faded out like a light bulb on a dimmer-switch, others simply vanished, as well as the candle thing I mentioned earlier. A few of them suddenly accelerated to incredible speeds, each taking fast turns sometimes at nearly 90 degrees. We also noticed what appeared to be man-made aircraft headed towards their location. However, the appearance of these craft were strange and drone-like. Maybe 4 or 5 of those in about 20 minutes, and well over 20 to 30 orbs in the same time frame. It’s worth noting that both me and my father were nauseous the whole time, and my girlfriend couldn’t even come outside with us because she was vomiting. All of this got better shortly after we stopped seeing the orbs. Still can’t find the cats though. I’ve had many other sightings in the past couple of months, so many that I don’t even film them anymore it’s become so common. I have videos from other sightings, just not this one. But it was certainly interesting enough to report.</p>",
+    "location": {
+      "latitude": 39.8283,
+      "longitude": -98.5795,
+      "name": "3 bright balls of light"
+    },
+    "witness_count": 1,
+    "alert_level": "medium",
+    "source": "mufon",
+    "source_id": "140858",
+    "external_id": "mufon_140858",
+    "enrichment_data": {
+      "data_source": "MUFON CMS",
+      "historical_case": true,
+      "media_count": 1
+    }
+  },
+  {
+    "device_id": "mufon_importer",
+    "username": "MUFON_Database",
+    "category": "ufo_sighting",
+    "title": "MUFON Case #140857",
+    "description": "<p>While driving North on Alen Geona and Fairmont Parkway in Pasadena, TX. I noticed 4 white orbs, then one vanished so it stayed at 3 orbs.</p>",
+    "location": {
+      "latitude": 39.8283,
+      "longitude": -98.5795,
+      "name": "White square"
+    },
+    "witness_count": 1,
+    "alert_level": "medium",
+    "source": "mufon",
+    "source_id": "140857",
+    "external_id": "mufon_140857",
+    "enrichment_data": {
+      "data_source": "MUFON CMS",
+      "historical_case": true,
+      "media_count": 1
+    }
+  },
+  {
+    "device_id": "mufon_importer",
+    "username": "MUFON_Database",
+    "category": "ufo_sighting",
+    "title": "MUFON Case #140856",
+    "description": "<p>My daughter saw this while watching the coverage of the aircraft/helicopter crash in Washington D.C. I enlarged the picture and went frame by frame and saw an object traverse the screen at a high rate of speed. It also seemed to have an exhaust or vapor trail. There is also an aircraft on the left side of the screen.</p>",
+    "location": {
+      "latitude": 39.8283,
+      "longitude": -98.5795,
+      "name": "No entity observed"
+    },
+    "witness_count": 1,
+    "alert_level": "medium",
+    "source": "mufon",
+    "source_id": "140856",
+    "external_id": "mufon_140856",
+    "enrichment_data": {
+      "data_source": "MUFON CMS",
+      "historical_case": true,
+      "media_count": 2
+    }
+  },
+  {
+    "device_id": "mufon_importer",
+    "username": "MUFON_Database",
+    "category": "ufo_sighting",
+    "title": "MUFON Case #140854",
+    "description": "<p>Long Description of Sighting Report</p>",
+    "location": {
+      "latitude": 39.8283,
+      "longitude": -98.5795,
+      "name": "Two Police officers approached me and behaved unusual."
+    },
+    "witness_count": 1,
+    "alert_level": "medium",
+    "source": "mufon",
+    "source_id": "140854",
+    "external_id": "mufon_140854",
+    "enrichment_data": {
+      "data_source": "MUFON CMS",
+      "historical_case": true,
+      "media_count": 0
+    }
+  },
+  {
+    "device_id": "mufon_importer",
+    "username": "MUFON_Database",
+    "category": "ufo_sighting",
+    "title": "MUFON Case #140853",
+    "description": "<p>I was driving home from a night shift at University of Chicago Hospital. Coming home I noticed a unusual amount of airtraffic vapor trails but no aircraft. Eventually, closer to home, I noticed a large bright white object still in the sky. I pulled over onto a country road to observe and take picures safely.</p>",
+    "location": {
+      "latitude": 39.8283,
+      "longitude": -98.5795,
+      "name": "Not sure what this is but thought you all might want to see it"
+    },
+    "witness_count": 1,
+    "alert_level": "medium",
+    "source": "mufon",
+    "source_id": "140853",
+    "external_id": "mufon_140853",
+    "enrichment_data": {
+      "data_source": "MUFON CMS",
+      "historical_case": true,
+      "media_count": 1
+    }
+  },
+  {
+    "device_id": "mufon_importer",
+    "username": "MUFON_Database",
+    "category": "ufo_sighting",
+    "title": "MUFON Case #140852",
+    "description": "<p>I was reviewing my camera footage at my house and spotted this , crazy how it seems to have some sort of burst or aura.as it going up. Wild. I would love to here back with what you think this is.</p>",
+    "location": {
+      "latitude": 39.8283,
+      "longitude": -98.5795,
+      "name": "Two silver spheres flying same speed and direction, but not in a line"
+    },
+    "witness_count": 1,
+    "alert_level": "medium",
+    "source": "mufon",
+    "source_id": "140852",
+    "external_id": "mufon_140852",
+    "enrichment_data": {
+      "data_source": "MUFON CMS",
+      "historical_case": true,
+      "media_count": 0
+    }
+  },
+  {
+    "device_id": "mufon_importer",
+    "username": "MUFON_Database",
+    "category": "ufo_sighting",
+    "title": "MUFON Case #140851",
+    "description": "<p>At a local park facing east looking over a lake, up and to the North, our left, we saw two shiny silver sphere shaped objects. One was somewhat behind and to the side of the other one. The park, Young Pine Park, is near the airport. We could see several planes during this event. It was a very clear sunny day and I could see the planes were much higher. It was evident that the objects were between us and the planes. Also, the park is not far from a landfill and there are always buzzards and other birds circling high, but it was also evident that the objects were higher than the birds.</p>",
+    "location": {
+      "latitude": 39.8283,
+      "longitude": -98.5795,
+      "name": "Popped out of cloud, sped past plane"
+    },
+    "witness_count": 1,
+    "alert_level": "medium",
+    "source": "mufon",
+    "source_id": "140851",
+    "external_id": "mufon_140851",
+    "enrichment_data": {
+      "data_source": "MUFON CMS",
+      "historical_case": true,
+      "media_count": 1
+    }
+  },
+  {
+    "device_id": "mufon_importer",
+    "username": "MUFON_Database",
+    "category": "ufo_sighting",
+    "title": "MUFON Case #140849",
+    "description": "<p>While I was walking back into work I was sky gazing watching a plane about to fly into some dense storm clouds. As the plane (that had a chem trail) was almost to the clouds and orb shot out of the clouds so fast that it made the cloud open up about, then sped past plane at an incredible speed, probably 3 or 4x fast than plane, it made the plane look like it was dragging through the sky with how fast this orb was. There was nothing coming off the orb like there was the plane. I know it wasn't a plane and was took big, silent, and fast to be a drone. Thank you, I do have another orb sighting I will report here soon and am a member of Mufon myself and am conducting little interviews with locals around here who have seen things so I will be reporting more here soon.</p>",
+    "location": {
+      "latitude": 39.8283,
+      "longitude": -98.5795,
+      "name": "Work up naked in the middle of living room"
+    },
+    "witness_count": 1,
+    "alert_level": "medium",
+    "source": "mufon",
+    "source_id": "140849",
+    "external_id": "mufon_140849",
+    "enrichment_data": {
+      "data_source": "MUFON CMS",
+      "historical_case": true,
+      "media_count": 0
+    }
+  },
+  {
+    "device_id": "mufon_importer",
+    "username": "MUFON_Database",
+    "category": "ufo_sighting",
+    "title": "MUFON Case #140848",
+    "description": "<p>Have been taken on several times starting at 16 years old and have been abducted in Great Britain and USA once I work up naked behind a dresser that was impossible for me to get behind it took 2 grown men to move it so I could get out and have been taken of world</p>",
+    "location": {
+      "latitude": 39.8283,
+      "longitude": -98.5795,
+      "name": "Very large UAP flew directly over the top of me."
+    },
+    "witness_count": 1,
+    "alert_level": "medium",
+    "source": "mufon",
+    "source_id": "140848",
+    "external_id": "mufon_140848",
+    "enrichment_data": {
+      "data_source": "MUFON CMS",
+      "historical_case": true,
+      "media_count": 1
+    }
+  }
+]

@@ -1,0 +1,68 @@
+{
+  "search_type": "quick_results",
+  "timestamp": "2025-09-02T07:55:24.728215",
+  "total_cases": 2,
+  "cases": [
+    {
+      "case_number": "1",
+      "date_time": "2025-09-01\n6:31PM",
+      "short_description": "round orb traveling south to north observed in very straight line",
+      "long_description": "MUFON Case #1: round orb traveling south to north observed in very straight line",
+      "location": "Quincy, IL, US",
+      "media_files": [],
+      "row_index": 4
+    },
+    {
+      "case_number": "143963",
+      "date_time": "2025-08-06\n9:06PM",
+      "short_description": "Metallic or solid sphere - mid air object",
+      "long_description": "MUFON Case #143963: Sorry, This is [Name has been moved to Investigators report section/cms/LLL]. I submitted without posting my video and pics just earlier. Here are the photos. Thanks!",
+      "location": "County Line, WI, US",
+      "media_files": [
+        {
+          "filename": "20250806210644.jpg",
+          "url": "https://mufoncms.com/cgi-bin/manage_attachment_images.pl?file=20250806210644.jpg",
+          "local_path": null,
+          "type": "image"
+        },
+        {
+          "filename": "20250806210641.jpg",
+          "url": "https://mufoncms.com/cgi-bin/manage_attachment_images.pl?file=20250806210641.jpg",
+          "local_path": null,
+          "type": "image"
+        },
+        {
+          "filename": "20250806211300.jpg",
+          "url": "https://mufoncms.com/cgi-bin/manage_attachment_images.pl?file=20250806211300.jpg",
+          "local_path": null,
+          "type": "image"
+        },
+        {
+          "filename": "20250806211414.mp4",
+          "url": "https://mufoncms.com/cgi-bin/manage_attachment_images.pl?file=20250806211414.mp4",
+          "local_path": null,
+          "type": "video"
+        },
+        {
+          "filename": "20250806211527.jpg",
+          "url": "https://mufoncms.com/cgi-bin/manage_attachment_images.pl?file=20250806211527.jpg",
+          "local_path": null,
+          "type": "image"
+        },
+        {
+          "filename": "20250806224139.jpg",
+          "url": "https://mufoncms.com/cgi-bin/manage_attachment_images.pl?file=20250806224139.jpg",
+          "local_path": null,
+          "type": "image"
+        },
+        {
+          "filename": "20250806224005.jpg",
+          "url": "https://mufoncms.com/cgi-bin/manage_attachment_images.pl?file=20250806224005.jpg",
+          "local_path": null,
+          "type": "image"
+        }
+      ],
+      "row_index": 5
+    }
+  ]
+}

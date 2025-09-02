@@ -1,0 +1,61 @@
+{
+  "search_date": "2025-09-02",
+  "timestamp": "2025-09-02T05:13:58.260721",
+  "total_cases": 2,
+  "cases": [
+    {
+      "Case_Number": "1",
+      "Date_Submitted": "2025-09-02",
+      "DateTime_Event": "2025-09-02",
+      "Short_Description": "2025-09-01\n6:31PM",
+      "Long_Description": "2025-09-01\n6:31PM",
+      "Location": "round orb traveling south to north observed in very straight line",
+      "Attachments_media": []
+    },
+    {
+      "Case_Number": "143963",
+      "Date_Submitted": "2025-09-02",
+      "DateTime_Event": "2025-09-02",
+      "Short_Description": "2025-08-06\n9:06PM",
+      "Long_Description": "Sorry, This is Adam Soehner with the Dodge County Wisconsin sphere sighting. I submitted without posting my video and pics just earlier. Here are the photos. Thanks!",
+      "Location": "Metallic or solid sphere - mid air object",
+      "Attachments_media": [
+        {
+          "filename": "20250806210644.jpg",
+          "url": "https://mufoncms.com/case_files/20250806210644.jpg",
+          "type": "image"
+        },
+        {
+          "filename": "20250806210641.jpg",
+          "url": "https://mufoncms.com/case_files/20250806210641.jpg",
+          "type": "image"
+        },
+        {
+          "filename": "20250806211300.jpg",
+          "url": "https://mufoncms.com/case_files/20250806211300.jpg",
+          "type": "image"
+        },
+        {
+          "filename": "20250806211414.mp4",
+          "url": "https://mufoncms.com/case_files/20250806211414.mp4",
+          "type": "video"
+        },
+        {
+          "filename": "20250806211527.jpg",
+          "url": "https://mufoncms.com/case_files/20250806211527.jpg",
+          "type": "image"
+        },
+        {
+          "filename": "20250806224139.jpg",
+          "url": "https://mufoncms.com/case_files/20250806224139.jpg",
+          "type": "image"
+        },
+        {
+          "filename": "20250806224005.jpg",
+          "url": "https://mufoncms.com/case_files/20250806224005.jpg",
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
