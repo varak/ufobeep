@@ -221,11 +221,16 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2, list_
                             option_text = option.get_text().strip().lower()
                             option_value = option.get('value', '').strip()
                             
-                            # Look for CMS database options (z2systems URLs) instead of public reports
-                            if 'z2systems.com/neonPage.jsp' in option_value:
+                            # Look for Case Management System - pageId=223 is the case search
+                            if 'pageId=223' in option_value:
                                 search_value = option_value
-                                print(f"  -> Using CMS database option: '{option.get_text().strip()}' (value: '{search_value}')")
+                                print(f"  -> Using Case Management System: '{option.get_text().strip()}' (value: '{search_value}')")
                                 break
+                            # Fallback to other z2systems URLs but prefer case management
+                            elif 'z2systems.com/neonPage.jsp' in option_value and not search_value:
+                                search_value = option_value
+                                print(f"  -> Using fallback CMS option: '{option.get_text().strip()}' (value: '{search_value}')")
+                                continue
                         
                         # If no specific search option found, use the first non-empty option
                         if not search_value and options:
