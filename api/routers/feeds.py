@@ -1,5 +1,5 @@
 from __future__ import annotations
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 import asyncpg
 
 async def get_db():
@@ -16,11 +16,11 @@ from feeds.ingest_all import ingest_all_feeds as _ingest_all
 router = APIRouter(prefix="/admin/feeds", tags=["feeds"])
 
 @router.post("/mufon/run")
-async def run_mufon(_admin = Depends(require_admin)):
+async def run_mufon(days_back: int = Query(2, description="Number of days back to fetch"), _admin = Depends(require_admin)):
     try:
         pool = await get_db()
-        inserted = await _ingest_mufon(pool)
-        return {"ok": True, "inserted": inserted}
+        inserted = await _ingest_mufon(pool, days_back)
+        return {"ok": True, "inserted": inserted, "days_back": days_back}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

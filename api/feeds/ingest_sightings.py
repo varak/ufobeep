@@ -240,11 +240,11 @@ async def mufon_to_sighting(report: Dict[str, Any]) -> Dict[str, Any]:
         "firebase_uid": None
     }
 
-async def ingest_mufon_sightings(pool: asyncpg.Pool) -> int:
+async def ingest_mufon_sightings(pool: asyncpg.Pool, days_back: int = 2) -> int:
     """Ingest MUFON reports into the unified sightings table"""
     try:
-        # Fetch reports from MUFON (3-day window from changes in mufon_authenticated_client.py)
-        reports = await fetch_authenticated_reports(limit=30)
+        # Fetch reports from MUFON with specified date window
+        reports = await fetch_authenticated_reports(limit=30, days_back=days_back)
         
         if not reports:
             print("No MUFON reports found")
