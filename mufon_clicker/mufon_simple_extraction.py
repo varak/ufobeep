@@ -4,6 +4,7 @@ Simple MUFON extraction using exact form field knowledge
 Usage: python mufon_simple_extraction.py 2025-01-27
 """
 import sys
+import os
 from playwright.sync_api import sync_playwright
 import time
 import json
@@ -29,8 +30,18 @@ def extract_mufon_date(date_str):
         print("🔐 Logging in...")
         page.goto("https://mufon.z2systems.com/np/clients/mufon/login.jsp")
         time.sleep(2)
-        page.fill("input[name='loginName']", "varak")
-        page.fill("input[name='loginPassword']", "ufobeep123pass")
+        # Get credentials from environment variables
+        mufon_user = os.getenv('MUFON_USERNAME')
+        mufon_pass = os.getenv('MUFON_PASSWORD')
+        
+        if not mufon_user or not mufon_pass:
+            print("❌ MUFON credentials not found in environment variables")
+            print("Set MUFON_USERNAME and MUFON_PASSWORD environment variables")
+            browser.close()
+            return None
+            
+        page.fill("input[name='loginName']", mufon_user)
+        page.fill("input[name='loginPassword']", mufon_pass)
         page.click("text=Log In")
         time.sleep(5)
         
@@ -136,11 +147,25 @@ def extract_mufon_date(date_str):
                                         print(f"   ❌ Media error: {e}")
                                         continue
                     
-                    # Get long description by clicking VIEW button
+                    # Get long description and real case ID from VIEW button
                     long_description = ""
+                    real_case_id = case_number  # fallback to current
                     view_button = row.locator("input[value='VIEW']")
                     
                     if view_button.count() > 0:
+                        # Extract real MUFON case ID from VIEW button onclick/form action
+                        try:
+                            onclick_attr = view_button.get_attribute('onclick')
+                            if onclick_attr and 'id=' in onclick_attr:
+                                # Extract case ID from onclick like "viewCase('12345')" or similar
+                                import re
+                                case_id_match = re.search(r'id=(\d+)', onclick_attr)
+                                if case_id_match:
+                                    real_case_id = case_id_match.group(1)
+                                    print(f"   🆔 Extracted real MUFON case ID: {real_case_id}")
+                        except Exception as e:
+                            print(f"   ⚠️  Could not extract case ID from VIEW button: {e}")
+                        
                         print(f"   🔍 Clicking VIEW for long description...")
                         try:
                             view_button.click()
@@ -179,7 +204,7 @@ def extract_mufon_date(date_str):
                             print(f"   ❌ VIEW button error: {e}")
                     
                     case_data = {
-                        "case_number": case_number,
+                        "case_number": real_case_id,  # Use real MUFON case ID
                         "date_time": date_time,
                         "short_description": short_description,
                         "long_description": long_description if long_description else short_description,

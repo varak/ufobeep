@@ -11,14 +11,20 @@ The MUFON scraper extracts real UFO sighting data from the MUFON (Mutual UFO Net
 **ALWAYS run authentication first** before any extraction:
 
 ```bash
+# Set credentials first (SECURE - not stored in repository)
+export MUFON_USERNAME=your_username
+export MUFON_PASSWORD=your_password
+
 python3 production_mufon_login.py
 ```
 
 This script:
 - Uses Playwright to open MUFON login page
-- Fills login credentials from environment variables
+- Reads login credentials from environment variables (SECURE)
 - Saves authentication cookies to `storage_state.json`
 - Verifies access to search functionality
+
+**SECURITY:** Credentials are NEVER stored in code. They must be set as environment variables.
 
 ### 2. Data Extraction (`mufon_proper_extraction.py`)
 
@@ -133,22 +139,28 @@ Each classification includes confidence scores (0.0 to 1.0).
 
 ### Daily Extraction Workflow
 
-1. **Authenticate** (must run first):
+1. **Set credentials** (secure environment variables):
+   ```bash
+   export MUFON_USERNAME=your_username
+   export MUFON_PASSWORD=your_password
+   ```
+
+2. **Authenticate** (must run first):
    ```bash
    python3 production_mufon_login.py
    ```
 
-2. **Extract data** for specific date:
+3. **Extract data** for specific date:
    ```bash
-   python3 mufon_proper_extraction.py 2025-01-26
+   python3 mufon_simple_extraction.py 2025-01-26
    ```
 
-3. **Import to UFOBeep**:
+4. **Import to UFOBeep**:
    ```bash
    python3 import_mufon_fixed.py mufon_proper_2025_01_26.json
    ```
 
-4. **Verify import**:
+5. **Verify import**:
    ```bash
    curl -s 'https://api.ufobeep.com/alerts?limit=5' | jq '.data.alerts[] | select(.source=="mufon") | .title'
    ```
@@ -212,6 +224,24 @@ cd /home/ufobeep/ufobeep
 - ❌ API import failures
 - ❌ Missing alerts on website
 
+## Security Considerations
+
+### Credential Management
+- **NEVER commit credentials** to the repository
+- Use environment variables: `MUFON_USERNAME` and `MUFON_PASSWORD`
+- On production server, set these in `/home/ufobeep/.env` or systemd service
+- See `docs/SECRETS.md` for complete security guidelines
+
+### File Permissions
+- Ensure extraction scripts have proper permissions (644)
+- Storage state files should be protected from unauthorized access
+- Media downloads are temporary and cleaned up after import
+
+### Production Access
+- Only run extraction scripts on production server
+- Never expose MUFON credentials in logs or debug output
+- Use headless browser mode to prevent display capture
+
 ## Future Enhancements
 
 1. **Automated Daily Pipeline** - Cron job for daily extraction
@@ -219,3 +249,4 @@ cd /home/ufobeep/ufobeep
 3. **Media Validation** - Check file accessibility before import
 4. **Duplicate Detection** - Cross-reference with existing UFOBeep data
 5. **Real-time Monitoring** - Alert system for extraction failures
+6. **Credential Rotation** - Automated MUFON credential refresh

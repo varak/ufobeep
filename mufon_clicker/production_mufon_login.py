@@ -2,6 +2,7 @@
 """
 Production MUFON login to get fresh cookies on server
 """
+import os
 from playwright.sync_api import sync_playwright
 import json
 from pathlib import Path
@@ -19,9 +20,20 @@ def login_to_mufon_production():
         page.wait_for_load_state('networkidle')
         
         print("🔐 Filling login form...")
+        
+        # Get credentials from environment variables
+        mufon_user = os.getenv('MUFON_USERNAME')
+        mufon_pass = os.getenv('MUFON_PASSWORD')
+        
+        if not mufon_user or not mufon_pass:
+            print("❌ MUFON credentials not found in environment variables")
+            print("Set MUFON_USERNAME and MUFON_PASSWORD environment variables")
+            browser.close()
+            return False
+        
         # Fill the login form
-        page.fill('input[name="loginName"]', 'varak')
-        page.fill('input[name="loginPassword"]', 'ufobeep123pass')
+        page.fill('input[name="loginName"]', mufon_user)
+        page.fill('input[name="loginPassword"]', mufon_pass)
         
         # Find and click the login button
         print("📤 Submitting login...")
