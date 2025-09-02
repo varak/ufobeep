@@ -139,31 +139,83 @@ async def fetch_authenticated_reports(limit: int = 30, days_back: int = 2, list_
             if 'terms and conditions' in db_soup.title.get_text().lower():
                 print("This is Terms and Conditions page, looking for Search Database link...")
                 
-                # Look for links to the actual search database
+                # Look for links, buttons, or forms to proceed to search database
                 search_db_links = []
+                
+                # Check all links
                 for link in db_soup.find_all('a', href=True):
                     text = link.get_text().lower().strip()
                     href = link.get('href')
                     
-                    if any(keyword in text for keyword in ['search database', 'database search', 'continue', 'proceed', 'agree']):
+                    if any(keyword in text for keyword in ['search', 'database', 'continue', 'proceed', 'agree', 'accept', 'yes', 'submit', 'go']):
                         search_db_links.append({
                             'text': link.get_text().strip(),
                             'href': href,
-                            'full_url': urljoin(database_url, href)
+                            'full_url': urljoin(database_url, href),
+                            'type': 'link'
                         })
+                
+                # Check for forms (terms acceptance forms)
+                for form in db_soup.find_all('form'):
+                    action = form.get('action', '')
+                    if action:
+                        # Look for submit buttons in the form
+                        for button in form.find_all(['input', 'button']):
+                            if button.get('type') in ['submit', 'button'] or button.name == 'button':
+                                search_db_links.append({
+                                    'text': f"Form: {button.get('value', button.get_text().strip())}",
+                                    'href': action,
+                                    'full_url': urljoin(database_url, action),
+                                    'type': 'form',
+                                    'form': form
+                                })
+                
+                # Also check for any link that goes to a different path (might be the actual search)
+                if not search_db_links:
+                    for link in db_soup.find_all('a', href=True):
+                        href = link.get('href')
+                        if href and href != '#' and not href.startswith('mailto:'):
+                            search_db_links.append({
+                                'text': link.get_text().strip() or f"Link: {href}",
+                                'href': href,
+                                'full_url': urljoin(database_url, href),
+                                'type': 'generic_link'
+                            })
                 
                 print(f"Found {len(search_db_links)} potential search database links:")
                 for link in search_db_links:
                     print(f"  - '{link['text']}' → {link['href']}")
                 
-                # Use the first search database link
+                # Use the first search database link/form
                 if search_db_links:
-                    database_url = search_db_links[0]['full_url']
-                    print(f"Proceeding to actual search database: {database_url}")
+                    selected_link = search_db_links[0]
+                    print(f"Proceeding via {selected_link['type']}: {selected_link['full_url']}")
                     
-                    db_response = await client.get(database_url)
+                    if selected_link['type'] == 'form':
+                        # Submit the form (T&C acceptance)
+                        form = selected_link['form']
+                        form_data = {}
+                        
+                        # Build form data
+                        for inp in form.find_all(['input', 'select']):
+                            name = inp.get('name')
+                            if name:
+                                if inp.get('type') == 'hidden':
+                                    form_data[name] = inp.get('value', '')
+                                elif inp.get('type') in ['checkbox', 'radio']:
+                                    if 'agree' in inp.get('value', '').lower() or 'accept' in inp.get('value', '').lower():
+                                        form_data[name] = inp.get('value', '1')
+                                elif inp.get('type') == 'submit':
+                                    form_data[name] = inp.get('value', 'Submit')
+                        
+                        print(f"Submitting T&C form with data: {form_data}")
+                        db_response = await client.post(selected_link['full_url'], data=form_data)
+                    else:
+                        # Use link
+                        db_response = await client.get(selected_link['full_url'])
+                    
                     if db_response.status_code != 200:
-                        print(f"❌ Could not access actual search database: {db_response.status_code}")
+                        print(f"❌ Could not proceed to search database: {db_response.status_code}")
                         return []
                     
                     db_soup = BeautifulSoup(db_response.text, 'html.parser')
