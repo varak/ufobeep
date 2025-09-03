@@ -10,7 +10,50 @@ from pathlib import Path
 from datetime import datetime
 import time
 import re
+import httpx
 from ufo_classifier import UFOClassifier
+
+def download_media_files(media_files, download_dir="/tmp/mufon_media"):
+    """Download media files from MUFON URLs and return list with local_path"""
+    if not media_files:
+        return []
+    
+    # Create download directory
+    os.makedirs(download_dir, exist_ok=True)
+    downloaded_files = []
+    
+    for media in media_files:
+        try:
+            url = media.get('url')
+            filename = media.get('filename')
+            
+            if not url or not filename:
+                continue
+                
+            print(f"   📥 Downloading: {filename}")
+            
+            # Download with httpx (handles redirects and HTTPS properly)
+            with httpx.Client(follow_redirects=True, timeout=30) as client:
+                response = client.get(url)
+                response.raise_for_status()
+                
+                local_path = os.path.join(download_dir, filename)
+                
+                with open(local_path, 'wb') as f:
+                    f.write(response.content)
+                
+                # Add local_path to media info
+                downloaded_media = media.copy()
+                downloaded_media['local_path'] = local_path
+                downloaded_files.append(downloaded_media)
+                
+                print(f"   ✅ Downloaded: {filename} ({len(response.content)} bytes)")
+                
+        except Exception as e:
+            print(f"   ❌ Download failed for {filename}: {e}")
+            continue
+    
+    return downloaded_files
 
 def extract_real_location_from_long_description(long_description):
     """Extract actual location from MUFON long description text"""
@@ -277,6 +320,7 @@ This is a MUFON case report. Additional witness details may be available in the 
                 "description": description,
                 "username": "MUFON_Database", 
                 "source": "mufon",  # This prevents notifications/beeps
+                "case_reference": case_number,  # Add MUFON case reference
                 # UI Widget Controls - hide for MUFON
                 "witness_count": None,  # No witness count for MUFON 
                 "can_confirm_witness": False,  # Disable witness confirmation 
@@ -320,14 +364,22 @@ This is a MUFON case report. Additional witness details may be available in the 
                 alert_id = result.get('id') or result.get('sighting_id') or result.get('data', {}).get('alert_id')
                 print(f"   ✅ Created alert: {alert_id}")
                 
-                # Upload media files if any exist
+                # Download and upload media files if any exist
                 if media_files and alert_id:
-                    print(f"   📎 Uploading {len(media_files)} media files...")
-                    uploaded = upload_media_to_alert(alert_id, media_files, base_url)
-                    if uploaded:
-                        print(f"   ✅ Successfully uploaded {len(uploaded)} media files")
+                    print(f"   📎 Processing {len(media_files)} media files...")
+                    
+                    # Download media files from MUFON URLs
+                    downloaded_media = download_media_files(media_files)
+                    
+                    if downloaded_media:
+                        print(f"   📤 Uploading {len(downloaded_media)} downloaded files...")
+                        uploaded = upload_media_to_alert(alert_id, downloaded_media, base_url)
+                        if uploaded:
+                            print(f"   ✅ Successfully uploaded {len(uploaded)} media files")
+                        else:
+                            print(f"   ⚠️  Media upload failed")
                     else:
-                        print(f"   ⚠️  No media files were uploaded")
+                        print(f"   ⚠️  No media files could be downloaded")
                 
                 imported_count += 1
                 

@@ -131,8 +131,12 @@ def extract_mufon_date(date_str):
                                         href = link.get_attribute('href')
                                         
                                         if filename and any(ext in filename.lower() for ext in ['.jpg', '.png', '.mp4', '.mov', '.jpeg', '.gif']):
-                                            if href and not href.startswith('http'):
-                                                href = f"https://mufoncms.com{href}"
+                                            # Ensure HTTPS URLs for media files
+                                            if href:
+                                                if not href.startswith('http'):
+                                                    href = f"https://mufoncms.com{href}"
+                                                elif href.startswith('http://'):
+                                                    href = href.replace('http://', 'https://')
                                             
                                             file_type = "image" if any(ext in filename.lower() for ext in ['.jpg', '.jpeg', '.png', '.gif']) else "video"
                                             
