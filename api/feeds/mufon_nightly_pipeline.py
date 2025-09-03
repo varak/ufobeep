@@ -52,10 +52,20 @@ def refresh_mufon_auth():
     log("🔐 Refreshing MUFON authentication...")
     
     try:
+        # Set environment variables from .env.mufon
+        env = os.environ.copy()
+        env_file = Path("/home/ufobeep/ufobeep/.env.mufon")
+        if env_file.exists():
+            with open(env_file) as f:
+                for line in f:
+                    if '=' in line and not line.strip().startswith('#'):
+                        key, value = line.strip().split('=', 1)
+                        env[key] = value
+        
         # Run the production login script
         result = subprocess.run([
             'python3', '/home/ufobeep/ufobeep/mufon_clicker/production_mufon_login.py'
-        ], capture_output=True, text=True, cwd='/home/ufobeep/ufobeep/mufon_clicker')
+        ], capture_output=True, text=True, cwd='/home/ufobeep/ufobeep/mufon_clicker', env=env)
         
         if result.returncode == 0:
             log("✅ MUFON authentication refreshed successfully")
@@ -73,25 +83,35 @@ def extract_mufon_cases(date_str):
     log(f"🔍 Extracting MUFON cases for {date_str}...")
     
     try:
-        # Run the working pipeline extractor
+        # Set environment variables from .env.mufon
+        env = os.environ.copy()
+        env_file = Path("/home/ufobeep/ufobeep/.env.mufon")
+        if env_file.exists():
+            with open(env_file) as f:
+                for line in f:
+                    if '=' in line and not line.strip().startswith('#'):
+                        key, value = line.strip().split('=', 1)
+                        env[key] = value
+        
+        # Run the working simple extraction script
         result = subprocess.run([
-            'python3', '/home/ufobeep/ufobeep/mufon_clicker/mufon_working_pipeline.py', date_str
-        ], capture_output=True, text=True, cwd='/home/ufobeep/ufobeep/mufon_clicker')
+            'python3', '/home/ufobeep/ufobeep/mufon_clicker/mufon_simple_extraction.py', date_str
+        ], capture_output=True, text=True, cwd='/home/ufobeep/ufobeep/mufon_clicker', env=env)
         
         if result.returncode == 0:
-            # Look for the output file
-            output_file = f"/home/ufobeep/ufobeep/mufon_clicker/mufon_working_{date_str.replace('-', '_')}.json"
+            # Look for the correct output file (mufon_simple_* not mufon_working_*)
+            output_file = f"/home/ufobeep/ufobeep/mufon_clicker/mufon_simple_{date_str.replace('-', '_')}.json"
             if os.path.exists(output_file):
                 # Check how many cases were extracted
                 with open(output_file) as f:
                     data = json.load(f)
-                    case_count = data.get('total_cases', 0)
+                    case_count = data.get('total_cases', len(data.get('cases', [])))
                     media_count = sum(len(case.get('media_files', [])) for case in data.get('cases', []))
                 
                 log(f"✅ Extracted {case_count} cases with {media_count} media files")
                 return output_file
             else:
-                log("⚠️  No output file created")
+                log(f"⚠️  No output file created at {output_file}")
                 return None
         else:
             log(f"❌ Extraction failed: {result.stderr}")
@@ -137,7 +157,12 @@ def cleanup_old_files(days_to_keep=7):
         mufon_dir = Path("/home/ufobeep/ufobeep/mufon_clicker")
         cutoff_time = time.time() - (days_to_keep * 24 * 60 * 60)
         
-        # Clean up old JSON files
+        # Clean up old JSON files (both simple and working formats)
+        for json_file in mufon_dir.glob("mufon_simple_*.json"):
+            if json_file.stat().st_mtime < cutoff_time:
+                json_file.unlink()
+                log(f"🗑️  Removed old file: {json_file.name}")
+        
         for json_file in mufon_dir.glob("mufon_working_*.json"):
             if json_file.stat().st_mtime < cutoff_time:
                 json_file.unlink()

@@ -279,7 +279,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
             {alert.description && (
               <div 
                 className="text-text-secondary text-sm line-clamp-2 leading-relaxed prose prose-sm prose-invert max-w-none"
-                dangerouslySetInnerHTML={{ __html: alert.description }}
+                dangerouslySetInnerHTML={{ __html: alert.description.replace(/\n/g, '<br>') }}
               />
             )}
 

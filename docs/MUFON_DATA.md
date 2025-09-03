@@ -6,27 +6,27 @@ The MUFON Data Pipeline extracts UFO sighting reports from the MUFON Case Manage
 
 ## Pipeline Components
 
-### 1. Authentication (`production_mufon_login.py`)
+### 1. Authentication (`mufon_clicker/production_mufon_login.py`)
 - **Purpose**: Authenticate with MUFON CMS and save session cookies
-- **Input**: MUFON credentials (hardcoded in script)
+- **Input**: MUFON credentials from environment variables (.env.mufon)
 - **Output**: `mufon_artifacts/storage_state.json` (browser session state)
 - **Technology**: Playwright headless browser automation
 
 ```bash
-python3 production_mufon_login.py
+python3 mufon_clicker/production_mufon_login.py
 ```
 
-### 2. Data Extraction (`mufon_working_pipeline.py`)
+### 2. Data Extraction (`mufon_clicker/mufon_simple_extraction.py`)
 - **Purpose**: Extract MUFON cases for a specific date with media files
 - **Input**: Date (YYYY-MM-DD format), saved session cookies
 - **Output**: JSON file with cases and downloaded media files
 - **Technology**: Playwright + httpx for media downloads
 
 ```bash
-python3 mufon_working_pipeline.py 2025-01-27
+python3 mufon_clicker/mufon_simple_extraction.py 2025-01-27
 ```
 
-**Output Format**: `mufon_working_YYYY_MM_DD.json`
+**Output Format**: `mufon_simple_YYYY_MM_DD.json`
 ```json
 {
   "search_date": "2025-01-27",
@@ -59,7 +59,7 @@ python3 mufon_working_pipeline.py 2025-01-27
 - **Output**: UFO type classification with confidence score
 - **Types**: Triangle, Sphere, Light, Cigar, Disc, Formation, Unknown
 
-### 4. Data Import (`import_mufon_fixed.py`)
+### 4. Data Import (`api/feeds/import_mufon_fixed.py`)
 - **Purpose**: Import MUFON cases into UFOBeep database
 - **Input**: JSON file from extraction step
 - **Output**: UFOBeep alerts in PostgreSQL database
@@ -71,7 +71,7 @@ python3 mufon_working_pipeline.py 2025-01-27
   - UI widget customization for MUFON alerts
 
 ```bash
-python3 import_mufon_fixed.py mufon_working_2025_01_27.json
+python3 api/feeds/import_mufon_fixed.py mufon_simple_2025_01_27.json
 ```
 
 ## Complete Pipeline Process
@@ -79,16 +79,16 @@ python3 import_mufon_fixed.py mufon_working_2025_01_27.json
 ### Manual Execution
 ```bash
 # Step 1: Fresh login to get cookies
-python3 production_mufon_login.py
+python3 mufon_clicker/production_mufon_login.py
 
 # Step 2: Extract live data with fresh cookies  
-python3 mufon_working_pipeline.py 2025-01-27
+python3 mufon_clicker/mufon_simple_extraction.py 2025-01-27
 
 # Step 3: Import extracted data to database
-python3 import_mufon_fixed.py mufon_working_2025_01_27.json
+python3 api/feeds/import_mufon_fixed.py mufon_simple_2025_01_27.json
 
 # Step 4: Cleanup local files
-rm -f mufon_working_2025_01_27.json
+rm -f mufon_simple_2025_01_27.json
 rm -rf mufon_media/
 ```
 
@@ -96,10 +96,11 @@ rm -rf mufon_media/
 The complete pipeline can be run as a single command:
 ```bash
 cd /home/ufobeep/ufobeep && \\
-python3 production_mufon_login.py && \\
-python3 mufon_working_pipeline.py 2025-01-27 && \\
-python3 import_mufon_fixed.py mufon_working_2025_01_27.json && \\
-rm -f mufon_working_2025_01_27.json && rm -rf mufon_media/
+source .env.mufon && \\
+python3 mufon_clicker/production_mufon_login.py && \\
+python3 mufon_clicker/mufon_simple_extraction.py 2025-01-27 && \\
+python3 api/feeds/import_mufon_fixed.py mufon_simple_2025_01_27.json && \\
+rm -f mufon_simple_2025_01_27.json && rm -rf mufon_media/
 ```
 
 ## Technical Details

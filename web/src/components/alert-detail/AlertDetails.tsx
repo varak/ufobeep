@@ -53,7 +53,7 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
         <div className="mb-6">
           <div 
             className="text-text-secondary leading-relaxed prose prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ __html: alert.description }}
+            dangerouslySetInnerHTML={{ __html: alert.description.replace(/\n/g, '<br>') }}
           />
         </div>
       )}

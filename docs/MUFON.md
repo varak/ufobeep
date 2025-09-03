@@ -26,11 +26,13 @@ This script:
 
 **SECURITY:** Credentials are NEVER stored in code. They must be set as environment variables.
 
-### 2. Data Extraction (`mufon_proper_extraction.py`)
+### 2. Data Extraction (`mufon_simple_extraction.py`)
 
 ```bash
-python3 mufon_proper_extraction.py YYYY-MM-DD
+python3 mufon_clicker/mufon_simple_extraction.py YYYY-MM-DD
 ```
+
+**NOTE:** Use `mufon_simple_extraction.py` (the working extraction script) located in the `mufon_clicker/` directory.
 
 This script performs intelligent HTML parsing:
 
@@ -127,12 +129,14 @@ Each classification includes confidence scores (0.0 to 1.0).
 
 ```
 /home/ufobeep/ufobeep/
-├── production_mufon_login.py      # Authentication script
-├── mufon_proper_extraction.py     # HTML parsing extraction
-├── import_mufon_fixed.py          # Data import to UFOBeep
-├── ufo_classifier.py             # UFO type classification
-├── storage_state.json            # Authentication cookies
-└── mufon_proper_YYYY_MM_DD.json  # Extracted data files
+├── mufon_clicker/
+│   ├── production_mufon_login.py     # Authentication script
+│   ├── mufon_simple_extraction.py    # Working extraction script
+│   └── mufon_artifacts/storage_state.json  # Authentication cookies
+├── api/feeds/
+│   ├── import_mufon_fixed.py         # Data import to UFOBeep
+│   └── ufo_classifier.py            # UFO type classification
+└── mufon_simple_YYYY_MM_DD.json     # Extracted data files
 ```
 
 ## Workflow Process
@@ -147,17 +151,17 @@ Each classification includes confidence scores (0.0 to 1.0).
 
 2. **Authenticate** (must run first):
    ```bash
-   python3 production_mufon_login.py
+   python3 mufon_clicker/production_mufon_login.py
    ```
 
 3. **Extract data** for specific date:
    ```bash
-   python3 mufon_simple_extraction.py 2025-01-26
+   python3 mufon_clicker/mufon_simple_extraction.py 2025-01-26
    ```
 
 4. **Import to UFOBeep**:
    ```bash
-   python3 import_mufon_fixed.py mufon_proper_2025_01_26.json
+   python3 api/feeds/import_mufon_fixed.py mufon_simple_2025_01_26.json
    ```
 
 5. **Verify import**:
@@ -178,8 +182,9 @@ cd /home/ufobeep/ufobeep
 
 ### Authentication Expiry
 - MUFON sessions expire regularly
-- Always run `production_mufon_login.py` first
+- Always run `mufon_clicker/production_mufon_login.py` first
 - Check for "authentication working" confirmation
+- Ensure `.env.mufon` has `export` statements for environment variables
 
 ### Field Mapping Errors  
 - MUFON table structure can change
