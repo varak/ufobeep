@@ -245,7 +245,7 @@ export default function AlertsPage() {
           </p>
         </div>
 
-        {/* Filters */}
+        {/* Clear Filter Toggles */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           <div 
             className={`bg-dark-surface border rounded-lg p-6 text-center cursor-pointer transition-all hover:scale-105 ${
@@ -253,14 +253,17 @@ export default function AlertsPage() {
             }`}
             onClick={() => {
               setShowBeepsOnly(!showBeepsOnly)
-              if (showPhotosOnly && !showBeepsOnly) setShowPhotosOnly(false) // Reset photos filter when enabling beeps only
+              if (showPhotosOnly && !showBeepsOnly) setShowPhotosOnly(false)
             }}
           >
-            <div className="text-3xl text-brand-primary mb-2">
-              {allAlerts.filter(a => a.reporter_username !== 'MUFON_Database' && !a.reporter_username?.includes('MUFON')).length}
+            <div className="text-3xl mb-2">
+              {showBeepsOnly ? '🛸' : '🔔'}
             </div>
-            <div className={`text-sm ${showBeepsOnly ? 'text-brand-primary font-medium' : 'text-text-secondary'}`}>
-              {showBeepsOnly ? '✓ UFOBeep Only' : 'UFOBeep Originals'}
+            <div className={`text-base font-semibold mb-1 ${showBeepsOnly ? 'text-brand-primary' : 'text-text-primary'}`}>
+              {showBeepsOnly ? 'Showing UFOBeep Only' : 'Show UFOBeep Only'}
+            </div>
+            <div className="text-xs text-text-tertiary">
+              {showBeepsOnly ? 'Hiding MUFON database reports' : 'Hide MUFON database reports'}
             </div>
           </div>
           <div 
@@ -269,14 +272,14 @@ export default function AlertsPage() {
             }`}
             onClick={() => setShowPhotosOnly(!showPhotosOnly)}
           >
-            <div className="text-3xl text-brand-primary mb-2">
-              {(showBeepsOnly 
-                ? allAlerts.filter(a => a.reporter_username !== 'MUFON_Database' && !a.reporter_username?.includes('MUFON'))
-                : allAlerts
-              ).filter(a => a.media_files && a.media_files.length > 0).length}
+            <div className="text-3xl mb-2">
+              {showPhotosOnly ? '📸' : '📷'}
             </div>
-            <div className={`text-sm ${showPhotosOnly ? 'text-brand-primary font-medium' : 'text-text-secondary'}`}>
-              {showPhotosOnly ? '✓ Photos Only' : 'With Media Files'}
+            <div className={`text-base font-semibold mb-1 ${showPhotosOnly ? 'text-brand-primary' : 'text-text-primary'}`}>
+              {showPhotosOnly ? 'Showing Photos Only' : 'Show Photos Only'}
+            </div>
+            <div className="text-xs text-text-tertiary">
+              {showPhotosOnly ? 'Hiding text-only reports' : 'Hide text-only reports'}
             </div>
           </div>
         </div>

@@ -42,6 +42,10 @@ while [ $current_seconds -le $end_seconds ]; do
         python3 api/feeds/import_mufon_fixed.py "mufon_clicker/$json_file"
         
         echo "✅ Import completed for $current_date"
+        
+        # Longer delay after import to reduce database load
+        echo "⏳ Pausing 30 seconds to reduce server load..."
+        sleep 30
     else
         echo "⚠️  No data file found for $current_date, skipping..."
     fi
@@ -49,8 +53,9 @@ while [ $current_seconds -le $end_seconds ]; do
     # Move to next day
     current_seconds=$((current_seconds + 86400))
     
-    # Small delay between days to avoid overloading
-    sleep 2
+    # Longer delay between days to be respectful to MUFON servers
+    echo "⏳ Waiting 60 seconds before next day..."
+    sleep 60
 done
 
 echo ""
