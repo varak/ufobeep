@@ -672,11 +672,14 @@ Future<List<Alert>> filteredAlerts(FilteredAlertsRef ref) async {
     
     // UFOBeep Only filter - exclude MUFON reports
     if (filter.showUfoBeepOnly == true) {
-      final reporterUsername = alert.reporterUsername ?? '';
       final source = alert.source ?? '';
-      if (reporterUsername == 'MUFON_Database' || 
-          reporterUsername.contains('MUFON') ||
-          source == 'mufon') {
+      // Primary filter: check source field first (most reliable)
+      if (source == 'mufon') {
+        return false;
+      }
+      // Fallback: check username patterns (may change to icons later)
+      final reporterUsername = alert.reporterUsername ?? '';
+      if (reporterUsername == 'MUFON_Database' || reporterUsername.contains('MUFON')) {
         return false;
       }
     }
