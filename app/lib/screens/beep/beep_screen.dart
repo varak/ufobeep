@@ -203,21 +203,13 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
 
       final description = _descriptionController.text.trim();
       
-      if (mediaFiles.length == 1) {
-        // Single file - use existing composition screen flow
-        final fileData = mediaFiles.first;
-        context.go('/beep/compose', extra: {
-          'mediaFile': fileData['mediaFile'],
-          'isVideo': fileData['isVideo'],
-          'sensorData': currentSensorData,
-          'photoMetadata': fileData['photoMetadata'],
-          'description': description,
-          'attachToSightingId': widget.attachToSightingId, // Pass through for existing alerts
-        });
-      } else {
-        // Multiple files - handle upload directly
-        await _handleMultiFileUpload(mediaFiles, currentSensorData, description);
-      }
+      // Always route to composition screen - handles both single and multiple files
+      context.go('/beep/compose', extra: {
+        'mediaFiles': mediaFiles, // Pass all files as array
+        'sensorData': currentSensorData,
+        'description': description,
+        'attachToSightingId': widget.attachToSightingId, // Pass through for existing alerts
+      });
 
     } catch (e) {
       setState(() {
@@ -227,123 +219,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     }
   }
 
-  /// Handle multiple file upload directly (reuse existing upload logic)
-  Future<void> _handleMultiFileUpload(
-    List<Map<String, dynamic>> mediaFiles, 
-    SensorData? sensorData, 
-    String description
-  ) async {
-    try {
-      String sightingId;
-      
-      if (widget.attachToSightingId != null) {
-        // Adding to existing sighting
-        sightingId = widget.attachToSightingId!;
-        debugPrint('Adding ${mediaFiles.length} files to existing sighting: $sightingId');
-      } else {
-        // Create new sighting (existing logic)
-        debugPrint('Creating new sighting for ${mediaFiles.length} files...');
-        
-        final beepResult = await beepService.sendBeep(
-          description: description.isNotEmpty ? description : null,
-          latitude: sensorData?.latitude,
-          longitude: sensorData?.longitude,
-          heading: sensorData?.azimuthDeg,
-        );
-        
-        sightingId = beepResult['id'] as String;
-        debugPrint('Created sighting: $sightingId');
-      }
-      
-      // Upload all files to the sighting (reuse existing API)
-      int uploadedCount = 0;
-      int photoCount = 0;
-      int videoCount = 0;
-      
-      for (int i = 0; i < mediaFiles.length; i++) {
-        final fileData = mediaFiles[i];
-        final File mediaFile = fileData['mediaFile'];
-        final bool isVideo = fileData['isVideo'];
-        
-        try {
-          debugPrint('Uploading file ${i + 1}/${mediaFiles.length}: ${mediaFile.path}');
-          
-          // TODO: Add NSFW filter hook here
-          // final isContentSafe = await ContentModerationService.validateMedia(mediaFile);
-          // if (!isContentSafe) {
-          //   debugPrint('Content blocked by moderation filter');
-          //   continue; // Skip this file
-          // }
-          
-          await ApiClient.instance.uploadMediaToSighting(sightingId, mediaFile);
-          
-          uploadedCount++;
-          if (isVideo) {
-            videoCount++;
-          } else {
-            photoCount++;
-          }
-          
-          debugPrint('Successfully uploaded file ${i + 1}/${mediaFiles.length}');
-        } catch (e) {
-          debugPrint('Failed to upload file ${mediaFile.path}: $e');
-          // Continue with other files
-        }
-      }
-      
-      if (uploadedCount > 0) {
-        // Auto-create comment about media addition (reuse existing comment API)
-        await _createMediaComment(sightingId, photoCount, videoCount);
-        
-        debugPrint('✅ Multi-file upload complete: $uploadedCount files uploaded');
-        
-        // Navigate appropriately based on context
-        if (mounted) {
-          if (widget.attachToSightingId != null) {
-            // Return to the alert we added media to
-            context.go('/alert/${widget.attachToSightingId}');
-          } else {
-            // Navigate back to alerts (same as regular beep)
-            context.go('/alerts');
-          }
-        }
-      } else {
-        setState(() {
-          _errorMessage = 'Failed to upload any files';
-        });
-      }
-      
-    } catch (e) {
-      debugPrint('Multi-file upload failed: $e');
-      setState(() {
-        _errorMessage = 'Failed to create sighting: $e';
-      });
-    }
-  }
   
-  /// Create auto-comment for media additions (reuse existing comment system)
-  Future<void> _createMediaComment(String sightingId, int photoCount, int videoCount) async {
-    try {
-      String commentText = 'Added ';
-      
-      if (photoCount > 0 && videoCount > 0) {
-        commentText += '$photoCount ${photoCount == 1 ? 'photo' : 'photos'} and $videoCount ${videoCount == 1 ? 'video' : 'videos'}';
-      } else if (photoCount > 0) {
-        commentText += '$photoCount more ${photoCount == 1 ? 'photo' : 'photos'}';
-      } else {
-        commentText += '$videoCount more ${videoCount == 1 ? 'video' : 'videos'}';
-      }
-      
-      // Use existing comment service
-      final commentsService = CommentsService();
-      await commentsService.postComment(sightingId, commentText);
-      
-      debugPrint('Created media comment: $commentText');
-    } catch (e) {
-      debugPrint('Failed to create media comment: $e');
-      // Don't fail the whole upload for comment failure
-    }
-  }
 
   Future<void> _sendQuickBeep() async {
     if (_isBeeping) return;

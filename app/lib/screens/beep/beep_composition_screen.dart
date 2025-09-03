@@ -18,24 +18,35 @@ import '../../services/ui_feedback.dart';
 import '../../providers/app_state.dart';
 import '../../widgets/simple_photo_display.dart';
 import '../../widgets/video_player_widget.dart';
+import '../../widgets/multi_file_preview.dart';
 
 class BeepCompositionScreen extends ConsumerStatefulWidget {
-  final File mediaFile;
-  final bool isVideo;
-  final SensorData? sensorData;
+  // Legacy single-file parameters (for backward compatibility)
+  final File? mediaFile;
+  final bool? isVideo;
   final Map<String, dynamic>? photoMetadata;
+  
+  // New multi-file parameters
+  final List<Map<String, dynamic>>? mediaFiles;
+  
+  // Common parameters
+  final SensorData? sensorData;
   final String? description;
   final String? attachToSightingId;
 
   const BeepCompositionScreen({
     super.key,
-    required this.mediaFile,
-    required this.isVideo,
-    this.sensorData,
+    // Legacy constructor
+    this.mediaFile,
+    this.isVideo,
     this.photoMetadata,
+    // New constructor
+    this.mediaFiles,
+    // Common
+    this.sensorData,
     this.description,
     this.attachToSightingId,
-  });
+  }) : assert(mediaFile != null || mediaFiles != null, 'Either mediaFile or mediaFiles must be provided');
 
   @override
   ConsumerState<BeepCompositionScreen> createState() => _BeepCompositionScreenState();
@@ -49,6 +60,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   // Store sensor data in state to preserve it during rebuilds
   SensorData? _sensorData;
   
+  // Media files state - normalize both single and multi-file to List format
+  List<Map<String, dynamic>> _mediaFiles = [];
   
   // Submission state
   bool _isSubmitting = false;
@@ -71,6 +84,21 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     // Store sensor data in state immediately to preserve it during rebuilds
     _sensorData = widget.sensorData;
     
+    // Normalize media files format - handle both legacy single-file and new multi-file
+    if (widget.mediaFiles != null) {
+      // New multi-file format
+      _mediaFiles = List.from(widget.mediaFiles!);
+      debugPrint('BeepComposition: Multi-file mode with ${_mediaFiles.length} files');
+    } else if (widget.mediaFile != null) {
+      // Legacy single-file format - convert to multi-file format
+      _mediaFiles = [{
+        'mediaFile': widget.mediaFile!,
+        'isVideo': widget.isVideo ?? false,
+        'photoMetadata': widget.photoMetadata ?? {},
+      }];
+      debugPrint('BeepComposition: Legacy single-file mode converted to multi-file');
+    }
+    
     // Warm up native UI feedback
     UiFeedback.init();
     
@@ -82,7 +110,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       _descriptionController.text = widget.description!;
     }
     
-    debugPrint('BeepComposition: ${widget.isVideo ? 'Video' : 'Image'}=${widget.mediaFile.existsSync()}, Sensor=${_sensorData != null}');
+    debugPrint('BeepComposition: ${_mediaFiles.length} files, Sensor=${_sensorData != null}');
     if (_sensorData != null) {
       debugPrint('BeepComposition: GPS coordinates: lat=${_sensorData!.latitude}, lng=${_sensorData!.longitude}');
     } else {
@@ -221,33 +249,79 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         debugPrint('Sighting created with ID: $sightingId (alerts deferred)');
       }
       
-      // Now upload the media file, then trigger alerts
+      // Now upload all media files, then trigger alerts
       try {
-        debugPrint('Uploading ${widget.isVideo ? 'video' : 'photo'} to sighting...');
+        debugPrint('Uploading ${_mediaFiles.length} files to sighting...');
         
-        // TODO: Add NSFW filter hook here
-        // final isContentSafe = await ContentModerationService.validateMedia(widget.mediaFile);
-        // if (!isContentSafe) {
-        //   throw Exception('Content blocked by moderation filter');
-        // }
+        int uploadedCount = 0;
+        int photoCount = 0;
+        int videoCount = 0;
         
-        await ApiClient.instance.uploadMediaToSighting(
-          sightingId,
-          widget.mediaFile,
-        );
-        debugPrint('${widget.isVideo ? 'Video' : 'Photo'} uploaded successfully!');
+        // Upload all files sequentially
+        for (int i = 0; i < _mediaFiles.length; i++) {
+          final fileData = _mediaFiles[i];
+          final File mediaFile = fileData['mediaFile'];
+          final bool isVideo = fileData['isVideo'] ?? false;
+          
+          try {
+            debugPrint('Uploading file ${i + 1}/${_mediaFiles.length}: ${mediaFile.path}');
+            
+            // TODO: Add NSFW filter hook here
+            // final isContentSafe = await ContentModerationService.validateMedia(mediaFile);
+            // if (!isContentSafe) {
+            //   debugPrint('Content blocked by moderation filter');
+            //   continue; // Skip this file
+            // }
+            
+            await ApiClient.instance.uploadMediaToSighting(
+              sightingId,
+              mediaFile,
+            );
+            
+            uploadedCount++;
+            if (isVideo) {
+              videoCount++;
+            } else {
+              photoCount++;
+            }
+            
+            debugPrint('Successfully uploaded file ${i + 1}/${_mediaFiles.length}');
+          } catch (e) {
+            debugPrint('Failed to upload file ${mediaFile.path}: $e');
+            // Continue with other files - don't fail entire submission
+          }
+        }
+        
+        debugPrint('Upload completed: $uploadedCount/${_mediaFiles.length} files uploaded');
         
         // Create auto-comment for existing sightings
-        if (widget.attachToSightingId != null) {
+        if (widget.attachToSightingId != null && uploadedCount > 0) {
           try {
             final commentsService = CommentsService();
-            final mediaType = widget.isVideo ? 'video' : 'photo';
-            await commentsService.postComment(sightingId, 'Added 1 more $mediaType');
-            debugPrint('Created auto-comment for added media');
+            String commentText = 'Added ';
+            
+            if (photoCount > 0 && videoCount > 0) {
+              commentText += '$photoCount ${photoCount == 1 ? 'photo' : 'photos'} and $videoCount ${videoCount == 1 ? 'video' : 'videos'}';
+            } else if (photoCount > 0) {
+              commentText += '$photoCount more ${photoCount == 1 ? 'photo' : 'photos'}';
+            } else {
+              commentText += '$videoCount more ${videoCount == 1 ? 'video' : 'videos'}';
+            }
+            
+            await commentsService.postComment(sightingId, commentText);
+            debugPrint('Created auto-comment for added media: $commentText');
           } catch (e) {
             debugPrint('Failed to create auto-comment: $e');
             // Don't fail the whole upload for comment failure
           }
+        }
+        
+        // Check if any files failed to upload
+        if (uploadedCount == 0) {
+          throw Exception('No files could be uploaded');
+        } else if (uploadedCount < _mediaFiles.length) {
+          // Some files failed - show warning but continue
+          debugPrint('Warning: ${_mediaFiles.length - uploadedCount} files failed to upload');
         }
         
         // Trigger alerts only for new sightings
@@ -289,18 +363,18 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       // Note: Video files may not have EXIF data, but we'll try if metadata is present
       if (widget.photoMetadata != null) {
         try {
-          debugPrint('Submitting comprehensive ${widget.isVideo ? 'video' : 'photo'} metadata for analysis...');
+          debugPrint('Submitting comprehensive ${widget.isVideo ?? false ? 'video' : 'photo'} metadata for analysis...');
           final metadataSubmitted = await ApiClient.instance.submitPhotoMetadata(
             sightingId, 
             widget.photoMetadata!
           );
           if (metadataSubmitted) {
-            debugPrint('${widget.isVideo ? 'Video' : 'Photo'} metadata submitted successfully for external service analysis');
+            debugPrint('${widget.isVideo ?? false ? 'Video' : 'Photo'} metadata submitted successfully for external service analysis');
           } else {
-            debugPrint('Warning: ${widget.isVideo ? 'Video' : 'Photo'} metadata submission failed');
+            debugPrint('Warning: ${widget.isVideo ?? false ? 'Video' : 'Photo'} metadata submission failed');
           }
         } catch (e) {
-          debugPrint('Error submitting ${widget.isVideo ? 'video' : 'photo'} metadata: $e');
+          debugPrint('Error submitting ${widget.isVideo ?? false ? 'video' : 'photo'} metadata: $e');
         }
       }
 
@@ -351,6 +425,30 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     }
   }
 
+  // Helper methods for managing media files
+  void _removeMediaFile(int index) {
+    if (_mediaFiles.length > 1 && index < _mediaFiles.length) {
+      setState(() {
+        _mediaFiles.removeAt(index);
+      });
+      debugPrint('Removed file at index $index, ${_mediaFiles.length} files remaining');
+    }
+  }
+
+  void _reorderMediaFiles(int oldIndex, int newIndex) {
+    setState(() {
+      final item = _mediaFiles.removeAt(oldIndex);
+      _mediaFiles.insert(newIndex, item);
+    });
+    debugPrint('Reordered file from index $oldIndex to $newIndex');
+  }
+
+  // Get submit button text based on file count
+  String get _submitButtonText {
+    if (_mediaFiles.isEmpty) return 'Send Beep';
+    if (_mediaFiles.length == 1) return 'Send Beep';
+    return 'Send Beep + ${_mediaFiles.length} Files';
+  }
 
   void _retakeMedia() async {
     // Add haptic feedback
@@ -367,7 +465,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: _retakeMedia,
-          tooltip: 'Retake ${widget.isVideo ? 'Video' : 'Photo'}',
+          tooltip: 'Retake ${widget.isVideo ?? false ? 'Video' : 'Photo'}',
         ),
       ),
       backgroundColor: AppColors.darkBackground,
@@ -432,23 +530,77 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   }
 
   Widget _buildMediaSection() {
-    return Container(
-      width: double.infinity,
-      constraints: const BoxConstraints(
-        maxHeight: 400,
-        minHeight: 300,
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: widget.isVideo
-            ? VideoPlayerWidget(videoFile: widget.mediaFile)
-            : Image.file(
-                widget.mediaFile,
-                fit: BoxFit.cover,
-                width: double.infinity,
-              ),
-      ),
+    if (_mediaFiles.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    
+    return Column(
+      children: [
+        // Multi-file preview
+        MultiFilePreview(
+          mediaFiles: _mediaFiles,
+          onRemove: _removeMediaFile,
+          onReorder: _reorderMediaFiles,
+          allowEdit: true,
+        ),
+        
+        const SizedBox(height: 16),
+        
+        // Primary file display (first file)
+        if (_mediaFiles.isNotEmpty)
+          Container(
+            width: double.infinity,
+            constraints: const BoxConstraints(
+              maxHeight: 400,
+              minHeight: 300,
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: _buildPrimaryMediaDisplay(_mediaFiles.first),
+            ),
+          ),
+      ],
     );
+  }
+  
+  Widget _buildPrimaryMediaDisplay(Map<String, dynamic> fileData) {
+    final File mediaFile = fileData['mediaFile'];
+    final bool isVideo = fileData['isVideo'] ?? false;
+    
+    if (isVideo) {
+      return VideoPlayerWidget(videoFile: mediaFile);
+    } else {
+      return Image.file(
+        mediaFile,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            color: AppColors.darkBackground,
+            child: const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.broken_image,
+                    color: AppColors.textTertiary,
+                    size: 48,
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Could not load image',
+                    style: TextStyle(
+                      color: AppColors.textTertiary,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
   }
 
   Widget _buildMediaQualityInfo() {
@@ -467,7 +619,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
               const Icon(Icons.info_outline, color: AppColors.brandPrimary, size: 20),
               const SizedBox(width: 8),
               Text(
-                '${widget.isVideo ? 'Video' : 'Photo'} Quality',
+                '${widget.isVideo ?? false ? 'Video' : 'Photo'} Quality',
                 style: const TextStyle(
                   color: AppColors.brandPrimary,
                   fontSize: 16,
@@ -478,7 +630,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
           ),
           const SizedBox(height: 12),
           Text(
-            widget.isVideo
+            widget.isVideo ?? false
                 ? 'UFOBeep records videos with audio at maximum device resolution. Videos are automatically saved to your gallery in the UFOBeep album for easy sharing.'
                 : 'UFOBeep captures photos at maximum device resolution for detailed analysis. For even higher quality images, you can also upload photos from your camera gallery.',
             style: const TextStyle(
@@ -509,7 +661,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  widget.isVideo
+                  widget.isVideo ?? false
                       ? 'For longer or higher quality videos, use share-to-beep from your native camera app'
                       : 'Native camera photos often have higher megapixel counts',
                   style: const TextStyle(
@@ -628,7 +780,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                           const SizedBox(width: 8),
                           Text(widget.attachToSightingId != null 
                               ? 'Add Media' 
-                              : 'Send Beep!'),
+                              : _submitButtonText),
                         ],
                       ),
                 ),
@@ -643,8 +795,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                 await SoundService.I.play(AlertSound.tap, haptic: true);
                 _retakeMedia();
               },
-              icon: Icon(widget.isVideo ? Icons.videocam : Icons.camera_alt, size: 18),
-              label: Text('Retake ${widget.isVideo ? 'Video' : 'Photo'}'),
+              icon: Icon(widget.isVideo ?? false ? Icons.videocam : Icons.camera_alt, size: 18),
+              label: Text('Retake ${widget.isVideo ?? false ? 'Video' : 'Photo'}'),
               style: TextButton.styleFrom(
                 foregroundColor: AppColors.textSecondary,
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
