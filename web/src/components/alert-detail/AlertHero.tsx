@@ -50,8 +50,18 @@ export default function AlertHero({ alert }: AlertHeroProps) {
           {/* Title and metadata */}
           <div className="flex-1">
             <h1 className="text-2xl font-bold text-text-primary mb-2">
-              {alert.title || 'UFO Sighting'}
+              {alert.title || 'UFO Sighting Report'}
             </h1>
+            
+            {/* Show alert when title/description is missing */}
+            {(!alert.title && (!alert.description || alert.description.trim() === '')) && (
+              <div className="bg-orange-900/20 border border-orange-800 rounded-lg p-3 mb-4">
+                <div className="flex items-center gap-2 text-orange-400 text-sm">
+                  <span>⚠️</span>
+                  <span>This report was submitted without a title or description</span>
+                </div>
+              </div>
+            )}
             
             {/* Content type indicator */}
             {!hasMedia && !hasDescription && (
@@ -93,6 +103,18 @@ export default function AlertHero({ alert }: AlertHeroProps) {
                   src={media.web_url || media.thumbnail_url || media.url}
                   alt={`${alert.title || 'UFO Sighting'} - ${index + 1}`}
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    // Show placeholder for broken images
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    const parent = target.parentElement;
+                    if (parent && !parent.querySelector('.image-error')) {
+                      const errorDiv = document.createElement('div');
+                      errorDiv.className = 'image-error w-full h-full flex items-center justify-center bg-dark-background text-text-tertiary text-xs';
+                      errorDiv.innerHTML = '<div><div class="text-2xl mb-1">🖼️</div><div>Image not found</div></div>';
+                      parent.appendChild(errorDiv);
+                    }
+                  }}
                 />
                 
                 {/* Video indicator */}
