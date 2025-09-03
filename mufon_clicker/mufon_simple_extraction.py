@@ -22,7 +22,7 @@ def extract_mufon_date(date_str):
     print(f"📅 Target: {month}/{day}/{year}")
     
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False, slow_mo=500)
+        browser = p.chromium.launch(headless=True, slow_mo=500)
         context = browser.new_context()
         page = context.new_page()
         
