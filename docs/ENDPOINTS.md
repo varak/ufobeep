@@ -12,7 +12,9 @@
 
 ## Alerts & Sightings
 - `POST /alerts` - Create new sighting alert (supports locationless MUFON alerts)
-- `GET /alerts` - List alerts with filtering (includes MUFON source alerts)
+- `GET /alerts` - List alerts with pagination and total count (includes MUFON source alerts)
+  - Query params: `limit` (default: 20), `offset` (default: 0)
+  - Response: `{ success: true, data: { alerts: [...], total: 612, page: 1, limit: 20 } }`
 - `GET /alerts/{id}` - Get specific alert details
 - `POST /alerts/{id}/media` - Attach media to alert
 - `POST /alerts/{id}/witnesses` - Confirm witness sighting (FIXED: type safety issues resolved)
@@ -43,6 +45,8 @@ MUFON-sourced alerts (`source: "mufon"`) have special handling:
 - Comment notifications
 
 ## Recent Fixes (September 2025)
+- ✅ **Alerts API Pagination**: Added total count to alerts endpoint for "Showing X-Y of Z" frontend display
+- ✅ **Location Null Handling**: Fixed 500 errors when alerts have no location data (MUFON imports)
 - ✅ **Comments Auto-Refresh**: Fixed with frame-safe CommentsRefreshNotifier using postFrameCallback
 - ✅ **Auto-Follow Reliability**: Added retry logic with exponential backoff for following sightings
 - ✅ **Smart Navigation**: "I see it too" now navigates to comments when description exists
