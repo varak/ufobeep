@@ -24,6 +24,7 @@ import '../../models/sighting_submission.dart' as local;
 import '../../models/user_preferences.dart';
 import '../../providers/app_state.dart';
 import '../../widgets/beep_button.dart';
+import '../../widgets/glass_card.dart';
 
 class BeepScreen extends ConsumerStatefulWidget {
   final String? attachToSightingId;
@@ -296,244 +297,180 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Send Beep'),
-        backgroundColor: AppColors.darkSurface,
-      ),
-      backgroundColor: AppColors.darkBackground,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              // What do you see input - moved to top
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppColors.darkSurface,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.darkBorder),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'What do you see?',
-                      style: TextStyle(
-                        color: AppColors.textPrimary,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    TextField(
-                      controller: _descriptionController,
-                      maxLines: 4,
-                      style: const TextStyle(
-                        color: AppColors.textPrimary,
-                        fontSize: 16,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: 'Describe what you\'re seeing in the sky...',
-                        hintStyle: TextStyle(
-                          color: AppColors.textSecondary.withOpacity(0.7),
-                        ),
-                        border: InputBorder.none,
-                        filled: true,
-                        fillColor: AppColors.darkBackground.withOpacity(0.5),
-                        contentPadding: const EdgeInsets.all(16),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(color: AppColors.brandPrimary, width: 1.5),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(color: AppColors.brandPrimary, width: 2),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              
-              const SizedBox(height: 24),
-
-              // Error message
-              if (_errorMessage != null) ...[
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  margin: const EdgeInsets.only(bottom: 16),
-                  decoration: BoxDecoration(
-                    color: AppColors.semanticError.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: AppColors.semanticError.withOpacity(0.3)),
-                  ),
-                  child: Row(
+    return NightSkyBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: const Text(
+            'Beep',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 24,
+            ),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                // Description input in glass card
+                GlassCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(Icons.error, color: AppColors.semanticError, size: 20),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          _errorMessage!,
-                          style: const TextStyle(
-                            color: AppColors.semanticError,
-                            fontSize: 14,
+                      const Text(
+                        'What do you see?',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      TextField(
+                        controller: _descriptionController,
+                        maxLines: 4,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Describe what you\'re seeing in the sky...',
+                          hintStyle: TextStyle(
+                            color: Colors.white.withOpacity(0.5),
                           ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Colors.white.withOpacity(0.2),
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Colors.white.withOpacity(0.2),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                              color: AppColors.brandPrimary,
+                              width: 2,
+                            ),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.05),
+                          contentPadding: const EdgeInsets.all(16),
                         ),
                       ),
                     ],
                   ),
                 ),
-              ],
+                
+                const SizedBox(height: 24),
 
-              // Camera and media access section
-              Row(
-                children: [
-                  const Expanded(child: Divider(color: AppColors.darkBorder)),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      'ACCESS CAMERA OR ATTACH MEDIA',
-                      style: TextStyle(
-                        color: AppColors.textTertiary,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  const Expanded(child: Divider(color: AppColors.darkBorder)),
-                ],
-              ),
-              
-              const SizedBox(height: 16),
-              
-              // Photo options with glow effects
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.brandPrimary.withOpacity(0.3),
-                            blurRadius: 15,
-                            spreadRadius: 2,
-                          ),
-                        ],
-                      ),
-                      child: GestureDetector(
-                        onTapDown: _isCapturing ? null : (_) async {
-                          await UiFeedback.click(); // immediate feedback
-                        },
-                        child: OutlinedButton.icon(
-                          onPressed: _isCapturing ? null : _capturePhoto,
-                          icon: const Icon(Icons.camera_alt),
-                          label: const Text('Camera'),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: AppColors.brandPrimary,
-                            backgroundColor: Colors.transparent,
-                            side: const BorderSide(color: AppColors.brandPrimary, width: 2),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                // Error message in glass card
+                if (_errorMessage != null) ...[
+                  GlassCard(
+                    child: Row(
+                      children: [
+                        const Icon(Icons.error, color: AppColors.error, size: 20),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            _errorMessage!,
+                            style: const TextStyle(
+                              color: AppColors.error,
+                              fontSize: 14,
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.brandPrimary.withOpacity(0.3),
-                            blurRadius: 15,
-                            spreadRadius: 2,
-                          ),
-                        ],
-                      ),
-                      child: GestureDetector(
-                        onTapDown: _isCapturing ? null : (_) async {
-                          await UiFeedback.click(); // immediate feedback
-                        },
-                        child: OutlinedButton.icon(
-                          onPressed: _isCapturing ? null : _pickFromGallery,
-                          icon: const Icon(Icons.photo_library),
-                          label: const Text('Attach'),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: AppColors.brandPrimary,
-                          backgroundColor: Colors.transparent,
-                          side: const BorderSide(color: AppColors.brandPrimary, width: 2),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  const SizedBox(height: 16),
                 ],
-              ),
-              
-              const SizedBox(height: 24),
 
-              // Send Beep button - square style matching other buttons
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.brandPrimary.withOpacity(0.3),
-                      blurRadius: 15,
-                      spreadRadius: 2,
+                // Action buttons in glass cards
+                Row(
+                  children: [
+                    Expanded(
+                      child: GlassCard(
+                        onTap: _isCapturing ? null : () async {
+                          await UiFeedback.click();
+                          _capturePhoto();
+                        },
+                        child: const Column(
+                          children: [
+                            Icon(
+                              Icons.camera_alt,
+                              color: Colors.white,
+                              size: 32,
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              'Camera',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: GlassCard(
+                        onTap: _isCapturing ? null : () async {
+                          await UiFeedback.click();
+                          _pickFromGallery();
+                        },
+                        child: const Column(
+                          children: [
+                            Icon(
+                              Icons.photo_library,
+                              color: Colors.white,
+                              size: 32,
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              'Gallery',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                child: GestureDetector(
-                  onTapDown: _isBeeping ? null : (_) async {
-                    await UiFeedback.click(); // immediate feedback
+                
+                const SizedBox(height: 24),
+
+                // Send Beep button
+                GlowingButton(
+                  text: _isBeeping ? 'Sending...' : 'Send Beep',
+                  enabled: !_isBeeping,
+                  isLoading: _isBeeping,
+                  onTap: _isBeeping ? null : () async {
+                    await UiFeedback.click();
+                    _sendQuickBeep();
                   },
-                  child: OutlinedButton.icon(
-                    onPressed: _isBeeping ? null : _sendQuickBeep,
-                  icon: _isBeeping 
-                      ? const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(AppColors.brandPrimary),
-                          ),
-                        )
-                      : const Icon(Icons.send),
-                  label: Text(
-                    _isBeeping ? 'Sending...' : 'Send Beep',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.brandPrimary,
-                    side: const BorderSide(color: AppColors.brandPrimary, width: 2),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
                 ),
-                ),
-              ),
 
-              
-              const SizedBox(height: 32),
-
-            ],
+                const SizedBox(height: 32),
+              ],
+            ),
           ),
         ),
       ),

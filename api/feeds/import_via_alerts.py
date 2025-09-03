@@ -221,17 +221,17 @@ def import_mufon_cases():
             # Create a proper title based on UFO type and historical status  
             ufo_type = classification['type'].title()
             
-            # Create title: "Historical MUFON Triangle UFO Sighting" or just "MUFON Triangle UFO Sighting" for recent
+            # Create title: "Historical Triangle UFO Sighting" or just "Triangle UFO Sighting" for recent
             if is_historical:
                 if ufo_type == "Unknown":
-                    title = f"Historical MUFON UFO Sighting"
+                    title = f"Historical UFO Sighting"
                 else:
-                    title = f"Historical MUFON {ufo_type} UFO Sighting"
+                    title = f"Historical {ufo_type} UFO Sighting"
             else:
                 if ufo_type == "Unknown":
-                    title = f"MUFON UFO Sighting"
+                    title = f"UFO Sighting"
                 else:
-                    title = f"MUFON {ufo_type} UFO Sighting"
+                    title = f"{ufo_type} UFO Sighting"
             
             # Create beep using the proper pipeline (with MUFON source to skip notifications)
             beep_data = {

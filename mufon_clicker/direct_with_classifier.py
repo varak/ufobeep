@@ -278,9 +278,9 @@ def direct_import_with_classifier(date_str):
                 # Create title with proper format
                 ufo_type = classification['type'].title()
                 if is_historical:
-                    title = f"Historical MUFON {ufo_type} UFO Sighting" if ufo_type != "Unknown" else "Historical MUFON UFO Sighting"
+                    title = f"Historical {ufo_type} UFO Sighting" if ufo_type != "Unknown" else "Historical UFO Sighting"
                 else:
-                    title = f"MUFON {ufo_type} UFO Sighting" if ufo_type != "Unknown" else "MUFON UFO Sighting"
+                    title = f"{ufo_type} UFO Sighting" if ufo_type != "Unknown" else "UFO Sighting"
 
                 # Add MUFON metadata to description
                 full_description += f"""

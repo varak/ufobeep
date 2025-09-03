@@ -344,9 +344,9 @@ This is a MUFON case report. Additional witness details may be available in the 
 
             # Create enriched title based on UFO classification
             if ufo_type == "Unknown":
-                title = f"MUFON UFO Report"
+                title = f"UFO Report"
             else:
-                title = f"MUFON {ufo_type} UFO Report"
+                title = f"{ufo_type} UFO Report"
             
             # Create enrichment data with UFO classification for map icons
             enrichment_data = {

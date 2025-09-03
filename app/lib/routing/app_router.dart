@@ -344,31 +344,6 @@ GoRouter appRouter(AppRouterRef ref) {
             ],
           ),
 
-          // Map (main tab)
-          GoRoute(
-            path: '/map',
-            name: 'map',
-            builder: (context, state) {
-              // Extract query parameters for alert-specific map view
-              final userLat = state.uri.queryParameters['userLat'];
-              final userLon = state.uri.queryParameters['userLon'];
-              final alertLat = state.uri.queryParameters['alertLat'];
-              final alertLon = state.uri.queryParameters['alertLon'];
-              final alertId = state.uri.queryParameters['alertId'];
-              final alertName = state.uri.queryParameters['alertName'];
-              final calledFromAlert = alertId != null && alertLat != null && alertLon != null;
-              
-              return MapScreen(
-                userLat: userLat != null ? double.tryParse(userLat) : null,
-                userLon: userLon != null ? double.tryParse(userLon) : null,
-                alertLat: alertLat != null ? double.tryParse(alertLat) : null,
-                alertLon: alertLon != null ? double.tryParse(alertLon) : null,
-                alertId: alertId,
-                alertName: alertName,
-                calledFromAlert: calledFromAlert,
-              );
-            },
-          ),
 
           // Alerts (clean list without map)
           GoRoute(
@@ -514,10 +489,8 @@ class MainBottomNavBar extends StatelessWidget {
       currentIndex = 0;
     } else if (currentLocation.startsWith('/beep')) {
       currentIndex = 1;
-    } else if (currentLocation.startsWith('/map')) {
-      currentIndex = 2;
     } else if (currentLocation.startsWith('/profile')) {
-      currentIndex = 3;
+      currentIndex = 2;
     }
 
     return BottomNavigationBar(
@@ -533,9 +506,6 @@ class MainBottomNavBar extends StatelessWidget {
             context.go('/beep');
             break;
           case 2:
-            context.go('/map');
-            break;
-          case 3:
             context.go('/profile');
             break;
         }
@@ -548,10 +518,6 @@ class MainBottomNavBar extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(Icons.add_a_photo),
           label: 'Beep',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.map),
-          label: 'Map',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),

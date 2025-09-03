@@ -32,6 +32,15 @@ class AppColors {
   static const Color semanticSuccess = success;
   static const Color semanticInfo = info;
 
+  // Night sky gradient colors
+  static const Color nightSkyTop = Color(0xFF0B1726);
+  static const Color nightSkyMiddle = Color(0xFF0F2744);
+  static const Color nightSkyBottom = Color(0xFF122E53);
+
+  // Glass card colors
+  static const Color glassCardBg = Color(0x0FFFFFFF);
+  static const Color glassCardBorder = Color(0x33FFFFFF);
+
   // Overlay colors
   static const Color overlayBlack50 = Color(0x80000000);
   static const Color overlayBlack80 = Color(0xCC000000);
