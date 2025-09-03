@@ -201,6 +201,36 @@ def import_mufon_cases_fixed(json_file_path):
                 
             print(f"\n--- Processing MUFON Case #{case_number} ---")
             
+            # Check if this MUFON case already exists using case_reference as unique field
+            duplicate_found = False
+            check_url = f"{base_url}/alerts"
+            check_params = {
+                "limit": 1000,  # Check more alerts to be thorough  
+                "source": "mufon"  # Only check MUFON alerts
+            }
+            try:
+                check_response = requests.get(check_url, params=check_params, timeout=15)
+                if check_response.status_code == 200:
+                    check_data = check_response.json()
+                    if check_data.get('success') and check_data.get('data', {}).get('alerts'):
+                        existing_alerts = check_data['data']['alerts']
+                        # Check if any alert has matching case_reference
+                        for alert in existing_alerts:
+                            alert_case_ref = alert.get('case_reference')
+                            # Also check device_id pattern as fallback for older imports
+                            alert_device_id = alert.get('device_id', '')
+                            
+                            if (alert_case_ref == case_number or 
+                                alert_device_id == f"mufon_case_{case_number}"):
+                                print(f"   ⚠️  MUFON case #{case_number} already exists (Alert ID: {alert.get('id')}) - skipping")
+                                duplicate_found = True
+                                break
+            except Exception as e:
+                print(f"   ⚠️  Could not check for duplicates: {e}")
+            
+            if duplicate_found:
+                continue
+            
             # Extract event details
             date_time = case.get('date_time', '')
             short_desc = case.get('short_description', '')
@@ -337,7 +367,7 @@ This is a MUFON case report. Additional witness details may be available in the 
             
             # Create alert data - location is optional for MUFON cases
             alert_data = {
-                "device_id": f"mufon_case_{case_number}",
+                "device_id": f"mufon_case_{case_number}",  # Use case number as unique identifier
                 "title": title,
                 "description": description,
                 "username": "MUFON_Database", 

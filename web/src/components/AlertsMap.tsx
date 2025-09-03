@@ -332,16 +332,16 @@ export default function AlertsMap({
   }, [])
 
   const filterAlertsByZoom = (alerts: Alert[], zoomLevel: number) => {
-    // Show more alerts when zoomed out, fewer when zoomed in
+    // Show LOTS of alerts at all zoom levels for better map usability
     let maxAlerts: number
     if (zoomLevel >= 12) {
-      maxAlerts = 50 // Zoomed in - show many local alerts
+      maxAlerts = 200 // Zoomed in - show ALL local alerts
     } else if (zoomLevel >= 8) {
-      maxAlerts = 25 // Medium zoom - show moderate number
+      maxAlerts = 150 // Medium zoom - show many regional alerts
     } else if (zoomLevel >= 5) {
-      maxAlerts = 15 // Zoomed out - show fewer but important alerts
+      maxAlerts = 100 // Zoomed out - still show 100 alerts
     } else {
-      maxAlerts = 10 // Very zoomed out - show only the most recent/important
+      maxAlerts = 75 // Very zoomed out - show 75 most recent alerts minimum
     }
     
     // Sort by most recent and take only the limit

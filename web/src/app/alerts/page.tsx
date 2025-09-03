@@ -285,32 +285,101 @@ export default function AlertsPage() {
           </div>
         )}
         
-        {/* Pagination */}
-        {!loading && !error && alerts.length > 0 && (
-          <div className="flex justify-center items-center space-x-4 mt-12">
-            <button
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="flex items-center space-x-2 px-6 py-3 bg-dark-surface border border-dark-border rounded-lg hover:bg-dark-surface-elevated transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <span>←</span>
-              <span>Previous</span>
-            </button>
-            
-            <div className="flex items-center space-x-2">
-              <span className="text-text-secondary">Page</span>
-              <span className="bg-brand-primary text-text-inverse px-3 py-1 rounded font-semibold">{currentPage}</span>
-              <span className="text-text-secondary">of {getTotalPages()}</span>
+        {/* Enhanced Pagination */}
+        {!loading && !error && alerts.length > 0 && getTotalPages() > 1 && (
+          <div className="mt-12 mb-8">
+            {/* Pagination Controls */}
+            <div className="flex items-center justify-center space-x-2">
+              {/* First Page Button */}
+              <button
+                onClick={() => setCurrentPage(1)}
+                disabled={currentPage === 1}
+                className="px-3 py-2 bg-dark-surface border border-dark-border rounded-lg hover:bg-dark-surface-elevated transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-text-secondary"
+                title="First Page"
+              >
+                ««
+              </button>
+
+              {/* Previous Button */}
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-4 py-2 bg-dark-surface border border-dark-border rounded-lg hover:bg-dark-surface-elevated transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-text-primary"
+              >
+                ← Previous
+              </button>
+
+              {/* Page Numbers */}
+              <div className="flex items-center space-x-1">
+                {/* Show first page if not visible */}
+                {currentPage > 3 && (
+                  <>
+                    <button
+                      onClick={() => setCurrentPage(1)}
+                      className="px-3 py-2 bg-dark-surface border border-dark-border rounded hover:bg-dark-surface-elevated transition-colors text-text-secondary"
+                    >
+                      1
+                    </button>
+                    {currentPage > 4 && <span className="text-text-tertiary px-2">...</span>}
+                  </>
+                )}
+
+                {/* Pages around current page */}
+                {Array.from({ length: getTotalPages() }, (_, i) => i + 1)
+                  .filter(page => Math.abs(page - currentPage) <= 2)
+                  .map(page => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`px-3 py-2 border rounded transition-colors ${
+                        page === currentPage
+                          ? 'bg-brand-primary border-brand-primary text-white font-semibold'
+                          : 'bg-dark-surface border-dark-border hover:bg-dark-surface-elevated text-text-secondary'
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+
+                {/* Show last page if not visible */}
+                {currentPage < getTotalPages() - 2 && (
+                  <>
+                    {currentPage < getTotalPages() - 3 && <span className="text-text-tertiary px-2">...</span>}
+                    <button
+                      onClick={() => setCurrentPage(getTotalPages())}
+                      className="px-3 py-2 bg-dark-surface border border-dark-border rounded hover:bg-dark-surface-elevated transition-colors text-text-secondary"
+                    >
+                      {getTotalPages()}
+                    </button>
+                  </>
+                )}
+              </div>
+
+              {/* Next Button */}
+              <button
+                onClick={() => setCurrentPage(prev => prev + 1)}
+                disabled={!hasMore}
+                className="px-4 py-2 bg-dark-surface border border-dark-border rounded-lg hover:bg-dark-surface-elevated transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-text-primary"
+              >
+                Next →
+              </button>
+
+              {/* Last Page Button */}
+              <button
+                onClick={() => setCurrentPage(getTotalPages())}
+                disabled={currentPage === getTotalPages()}
+                className="px-3 py-2 bg-dark-surface border border-dark-border rounded-lg hover:bg-dark-surface-elevated transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-text-secondary"
+                title="Last Page"
+              >
+                »»
+              </button>
             </div>
-            
-            <button
-              onClick={() => setCurrentPage(prev => prev + 1)}
-              disabled={!hasMore}
-              className="flex items-center space-x-2 px-6 py-3 bg-dark-surface border border-dark-border rounded-lg hover:bg-dark-surface-elevated transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <span>Next</span>
-              <span>→</span>
-            </button>
+
+            {/* Showing results info */}
+            <div className="text-center text-text-tertiary text-sm mt-4">
+              Showing {((currentPage - 1) * alertsPerPage) + 1} - {Math.min(currentPage * alertsPerPage, filteredAlerts.length)} of {filteredAlerts.length} alerts
+              {showPhotosOnly && <span className="text-brand-primary ml-1"> (photos only)</span>}
+            </div>
           </div>
         )}
       </div>
