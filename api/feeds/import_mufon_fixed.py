@@ -127,24 +127,46 @@ def upload_media_to_alert(alert_id, media_files, base_url="http://localhost:8000
                     'files': (filename, f, media.get('type', 'application/octet-stream'))
                 }
                 
-                # Upload to the correct endpoint
+                # Upload to the correct endpoint with longer timeout for large files
+                file_size_mb = os.path.getsize(local_path) / (1024 * 1024)
+                timeout_seconds = max(120, int(file_size_mb * 2))  # At least 2 minutes, +2s per MB
+                print(f"   📊 File size: {file_size_mb:.1f}MB, timeout: {timeout_seconds}s")
+                
                 response = requests.post(
                     f"{base_url}/alerts/{alert_id}/media", 
                     files=files, 
-                    timeout=60
+                    timeout=timeout_seconds
                 )
                 
                 if response.status_code in [200, 201]:
                     result = response.json()
-                    print(f"   ✅ Uploaded {filename}")
-                    uploaded_files.append(result)
+                    if result.get('success'):
+                        print(f"   ✅ Uploaded {filename} - Added {result.get('added_files', 0)} files")
+                        uploaded_files.append(result)
+                    else:
+                        print(f"   ❌ Upload API returned success=false for {filename}")
+                        print(f"       Response: {result}")
                 else:
-                    print(f"   ❌ Upload failed for {filename}: {response.status_code}")
-                    if response.text:
-                        print(f"       Error: {response.text[:200]}")
+                    print(f"   ❌ Upload failed for {filename}: HTTP {response.status_code}")
+                    print(f"       Response: {response.text[:400]}")
+                    # Try to parse error details
+                    try:
+                        error_data = response.json()
+                        if 'detail' in error_data:
+                            print(f"       Error detail: {error_data['detail']}")
+                    except:
+                        pass
                 
+        except requests.exceptions.Timeout:
+            print(f"   ⏰ Upload timeout for {filename} ({file_size_mb:.1f}MB after {timeout_seconds}s)")
+        except requests.exceptions.ConnectionError as e:
+            print(f"   🔌 Connection error uploading {filename}: {e}")
+        except requests.exceptions.RequestException as e:
+            print(f"   🌐 Request error uploading {filename}: {e}")
         except Exception as e:
-            print(f"   ❌ Error uploading {media.get('filename', 'unknown')}: {e}")
+            print(f"   ❌ Unexpected error uploading {media.get('filename', 'unknown')}: {e}")
+            import traceback
+            traceback.print_exc()
     
     return uploaded_files
 
