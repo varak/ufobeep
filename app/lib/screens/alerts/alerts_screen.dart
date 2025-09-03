@@ -10,6 +10,7 @@ import '../../services/visibility_service.dart';
 import '../../widgets/alerts_filter_dialog.dart';
 import '../../widgets/alert_card.dart';
 import '../../widgets/alerts/visibility_indicator.dart';
+import '../../widgets/glass_card.dart';
 import '../../theme/app_theme.dart';
 
 class AlertsScreen extends ConsumerWidget {
@@ -22,21 +23,23 @@ class AlertsScreen extends ConsumerWidget {
     final preferencesAsync = ref.watch(userPreferencesProvider);
     final preferences = preferencesAsync;
 
-    return Scaffold(
-      backgroundColor: AppColors.darkBackground,
-      appBar: _buildAppBar(context, ref, filter),
-      body: RefreshIndicator(
-        onRefresh: () => ref.read(alertsListProvider.notifier).refresh(),
-        backgroundColor: AppColors.darkSurface,
-        color: AppColors.brandPrimary,
-        child: _buildBody(context, ref, alertsAsync, filter, preferences),
+    return NightSkyBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: _buildAppBar(context, ref, filter),
+        body: RefreshIndicator(
+          onRefresh: () => ref.read(alertsListProvider.notifier).refresh(),
+          backgroundColor: AppColors.darkSurface,
+          color: AppColors.brandPrimary,
+          child: _buildBody(context, ref, alertsAsync, filter, preferences),
+        ),
       ),
     );
   }
 
   PreferredSizeWidget _buildAppBar(BuildContext context, WidgetRef ref, AlertsFilter filter) {
     return AppBar(
-      backgroundColor: AppColors.darkSurface,
+      backgroundColor: Colors.transparent,
       elevation: 0,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +47,7 @@ class AlertsScreen extends ConsumerWidget {
           const Text(
             'All Alerts',
             style: TextStyle(
-              color: AppColors.textPrimary,
+              color: Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),

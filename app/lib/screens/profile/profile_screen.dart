@@ -12,6 +12,7 @@ import '../../models/user_preferences.dart';
 import '../../providers/user_preferences_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../config/environment.dart';
+import '../../widgets/glass_card.dart';
 import '../admin/admin_screen.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -66,17 +67,22 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final UserModel? user = _auth.currentUser;
     
     if (user == null) {
-      return Scaffold(
-        backgroundColor: AppColors.darkBackground,
-        appBar: AppBar(
-          title: const Text('Profile'),
-          backgroundColor: AppColors.darkSurface,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16),
-          child: _LoggedOutCard(onLoginPressed: () {
-            context.go('/sign-in');
-          }),
+      return NightSkyBackground(
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            title: const Text(
+              'Profile',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.transparent,
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(16),
+            child: _LoggedOutCard(onLoginPressed: () {
+              context.go('/sign-in');
+            }),
+          ),
         ),
       );
     }
@@ -84,17 +90,21 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     // User is authenticated, try to load preferences
     final userPreferences = ref.watch(userPreferencesProvider);
     
-    return Scaffold(
-      backgroundColor: AppColors.darkBackground,
-      appBar: AppBar(
-        title: const Text('Profile'),
-        centerTitle: true,
-        backgroundColor: AppColors.darkSurface,
-      ),
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        padding: const EdgeInsets.all(24),
-        child: Column(
+    return NightSkyBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: const Text(
+            'Profile',
+            style: TextStyle(color: Colors.white),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+        ),
+        body: SingleChildScrollView(
+          controller: _scrollController,
+          padding: const EdgeInsets.all(24),
+          child: Column(
           children: [
             // Profile Header
             _buildProfileHeader(user),
