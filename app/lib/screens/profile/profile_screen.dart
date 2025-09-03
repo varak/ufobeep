@@ -71,10 +71,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            title: const Text(
-              'Profile',
-              style: TextStyle(color: Colors.white),
-            ),
+            title: const Text('Profile', style: TextStyle(color: Colors.white)),
             backgroundColor: Colors.transparent,
           ),
           body: Padding(
@@ -94,17 +91,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text(
-            'Profile',
-            style: TextStyle(color: Colors.white),
-          ),
+          title: const Text('Profile', style: TextStyle(color: Colors.white)),
           centerTitle: true,
           backgroundColor: Colors.transparent,
         ),
-        body: SingleChildScrollView(
-          controller: _scrollController,
-          padding: const EdgeInsets.all(24),
-          child: Column(
+      body: SingleChildScrollView(
+        controller: _scrollController,
+        padding: const EdgeInsets.all(24),
+        child: Column(
           children: [
             // Profile Header
             _buildProfileHeader(user),
