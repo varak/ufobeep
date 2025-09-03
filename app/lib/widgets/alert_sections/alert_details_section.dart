@@ -61,16 +61,17 @@ class AlertDetailsSection extends StatelessWidget {
             const SizedBox(height: 16),
           ],
           
-          // Time info
-          _buildDetailRow(
-            Icons.access_time,
-            'Time',
-            _formatDateTime(alert.createdAt),
-            subtitle: _formatFullDateTime(alert.createdAt),
-          ),
+          // Time info (hidden for MUFON)
+          if (alert.source != 'mufon')
+            _buildDetailRow(
+              Icons.access_time,
+              'Time',
+              _formatDateTime(alert.createdAt),
+              subtitle: _formatFullDateTime(alert.createdAt),
+            ),
           
-          // Reporter info (MP13-7)
-          if (alert.reporterUsername != null) 
+          // Reporter info (MP13-7) (hidden for MUFON)
+          if (alert.reporterUsername != null && alert.source != 'mufon') 
             _buildDetailRow(
               Icons.person,
               'Reported by',
@@ -78,12 +79,12 @@ class AlertDetailsSection extends StatelessWidget {
               subtitle: null,
             ),
           
-          // Witness count (if more than 1)
-          if (alert.witnessCount > 1)
+          // Witness count (if more than 1) (hidden for MUFON)
+          if (alert.witnessCount > 1 && alert.source != 'mufon')
             _buildWitnessRow(),
           
-          // Location info (if enabled)
-          if (showLocation) ...[
+          // Location info (if enabled) (hidden for MUFON)
+          if (showLocation && alert.source != 'mufon') ...[
             _buildDetailRow(
               Icons.info_outline,
               'Location',

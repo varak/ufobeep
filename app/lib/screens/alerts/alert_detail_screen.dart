@@ -129,16 +129,20 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         print('DEBUG: Building alert detail for alert.reporterId: "${alert.reporterId}"');
         print('DEBUG: Current _currentUserDeviceId: "$_currentUserDeviceId"');
         
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(AlertTitleUtils.getContextualTitleFromAlert(alert)),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.share),
-                onPressed: () {
-                  // TODO: Share alert
-                },
-              ),
+        return NightSkyBackground(
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              title: Text(AlertTitleUtils.getContextualTitleFromAlert(alert)),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.share),
+                  onPressed: () {
+                    // TODO: Share alert
+                  },
+                ),
             ],
           ),
           body: SingleChildScrollView(
@@ -158,7 +162,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 const SizedBox(height: 24),
                 
                 // Direction and compass - hidden for MUFON alerts
-                if (alert.username != 'MUFON_Database') ...[
+                if (alert.source != 'mufon') ...[
                   AlertDirectionSection(
                     alert: alert,
                     onNavigate: (bearing, distance) => _navigateToSighting(alert, bearing, distance),
@@ -168,7 +172,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 ],
 
                 // Environmental context (if available) - hidden for MUFON alerts
-                if (alert.enrichment != null && alert.enrichment!.isNotEmpty && alert.username != 'MUFON_Database') ...[
+                if (alert.enrichment != null && alert.enrichment!.isNotEmpty && alert.source != 'mufon') ...[
                   EnrichmentSection(
                     enrichmentData: alert.enrichment,
                     alertCreatorDeviceId: alert.reporterId,
@@ -187,7 +191,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 ],
 
                 // Action buttons (including witness confirmation) - hidden for MUFON alerts
-                if (alert.username != 'MUFON_Database') ...[
+                if (alert.source != 'mufon') ...[
                   AlertActionsSection(
                     alert: alert,
                     currentUserDeviceId: _currentUserDeviceId,
@@ -210,7 +214,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               ],
             ),
           ),
-        );
+        ), // Scaffold
+        ); // NightSkyBackground
       },
       loading: () => Scaffold(
         appBar: AppBar(title: const Text('Alert')),

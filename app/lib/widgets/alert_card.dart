@@ -82,8 +82,8 @@ class AlertCard extends ConsumerWidget {
                         const SizedBox(height: 4),
                         Row(
                           children: [
-                            // Only show verification badge if verified
-                            if (alert.isVerified) ...[
+                            // Only show verification badge if verified and not MUFON
+                            if (alert.isVerified && alert.source != 'mufon') ...[
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                 decoration: BoxDecoration(
@@ -123,11 +123,11 @@ class AlertCard extends ConsumerWidget {
                     ),
                   ),
                   
-                  // Username and time ago
+                  // Username and time ago (skip for MUFON)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      if (alert.reporterUsername != null) ...[
+                      if (alert.reporterUsername != null && alert.source != 'mufon') ...[
                         Text(
                           'by ${alert.reporterUsername}',
                           style: const TextStyle(
@@ -138,14 +138,17 @@ class AlertCard extends ConsumerWidget {
                         ),
                         const SizedBox(height: 4),
                       ],
-                      Text(
-                        _formatDateTime(alert.createdAt),
-                        style: const TextStyle(
-                          color: AppColors.textTertiary,
-                          fontSize: 12,
+                      // Only show time for non-MUFON alerts
+                      if (alert.source != 'mufon')
+                        Text(
+                          _formatDateTime(alert.createdAt),
+                          style: const TextStyle(
+                            color: AppColors.textTertiary,
+                            fontSize: 12,
+                          ),
                         ),
-                      ),
-                      if (alert.distance != null && showDistance) ...[ 
+                      // Only show distance for non-MUFON alerts  
+                      if (alert.distance != null && showDistance && alert.source != 'mufon') ...[ 
                         const SizedBox(height: 4),
                         _buildDistanceBadge(units),
                       ],
@@ -522,7 +525,8 @@ class CompactAlertCard extends ConsumerWidget {
                     const SizedBox(height: 2),
                     Row(
                       children: [
-                        if (alert.distance != null) ...[ 
+                        // Only show distance for non-MUFON alerts
+                        if (alert.distance != null && alert.source != 'mufon') ...[ 
                           Text(
                             UnitConversion.formatDistance(alert.distance! * 1000, units),
                             style: const TextStyle(
@@ -538,14 +542,16 @@ class CompactAlertCard extends ConsumerWidget {
                             ),
                           ),
                         ],
-                        Text(
-                          _formatDateTime(alert.createdAt),
-                          style: const TextStyle(
-                            color: AppColors.textTertiary,
-                            fontSize: 12,
+                        // Only show time for non-MUFON alerts
+                        if (alert.source != 'mufon')
+                          Text(
+                            _formatDateTime(alert.createdAt),
+                            style: const TextStyle(
+                              color: AppColors.textTertiary,
+                              fontSize: 12,
+                            ),
                           ),
-                        ),
-                        if (alert.isVerified) ...[ 
+                        if (alert.isVerified && alert.source != 'mufon') ...[ 
                           const SizedBox(width: 4),
                           const Icon(
                             Icons.verified,
