@@ -279,7 +279,16 @@ class PlaneMatchService:
         # Calculate bearing and distance using geopy
         distance_obj = geodesic(observer_pos, target_pos)
         distance_km = distance_obj.kilometers
-        bearing_deg = distance_obj.bearing
+        
+        # Calculate bearing manually using coordinates
+        lat1, lon1 = math.radians(observer_pos[0]), math.radians(observer_pos[1])
+        lat2, lon2 = math.radians(target_pos[0]), math.radians(target_pos[1])
+        
+        dlon = lon2 - lon1
+        y = math.sin(dlon) * math.cos(lat2)
+        x = math.cos(lat1) * math.sin(lat2) - math.sin(lat1) * math.cos(lat2) * math.cos(dlon)
+        bearing_rad = math.atan2(y, x)
+        bearing_deg = math.degrees(bearing_rad)
         
         # Normalize bearing to 0-360
         if bearing_deg < 0:
