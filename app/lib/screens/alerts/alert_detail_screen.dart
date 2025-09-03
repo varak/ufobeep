@@ -18,6 +18,7 @@ import '../../services/beep_service.dart';
 import '../../services/user_service.dart';
 import '../../services/api_client.dart';
 import '../../services/ui_feedback.dart';
+import '../../widgets/glass_card.dart';
 
 class AlertDetailScreen extends ConsumerStatefulWidget {
   const AlertDetailScreen({super.key, required this.alertId});
@@ -412,36 +413,59 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             Row(
               children: [
                 Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: () {
+                  child: GlassCard(
+                    onTap: () async {
+                      await UiFeedback.click();
                       Navigator.pop(context);
                       context.push('/beep/camera', extra: {
                         'attachToSightingId': alertId,
                       });
                     },
-                    icon: const Icon(Icons.camera_alt),
-                    label: const Text('From Camera'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.brandPrimary,
-                      foregroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: const Column(
+                      children: [
+                        Icon(
+                          Icons.camera_alt,
+                          color: Colors.white,
+                          size: 32,
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Camera',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 16),
                 Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () async {
+                  child: GlassCard(
+                    onTap: () async {
+                      await UiFeedback.click();
                       Navigator.pop(context);
-                      // Directly open file picker instead of going to beep screen
                       await _pickFromGalleryForAlert(alertId);
                     },
-                    icon: const Icon(Icons.photo_library),
-                    label: const Text('From Gallery'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: AppColors.brandPrimary,
-                      side: const BorderSide(color: AppColors.brandPrimary),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: const Column(
+                      children: [
+                        Icon(
+                          Icons.photo_library,
+                          color: Colors.white,
+                          size: 32,
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Gallery',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
