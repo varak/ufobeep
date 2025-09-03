@@ -41,8 +41,33 @@ async def get_db():
         min_size=1, max_size=10
     )
 
-def format_alert_response(alert):
-    """Format alert data for API response"""
+def format_alert_response(alert, user_lat=None, user_lon=None):
+    """Format alert data for API response with optional distance calculation"""
+    
+    # Calculate distance if user location and alert location are provided
+    distance_km = 0.0
+    bearing_deg = 0.0
+    
+    if (user_lat is not None and user_lon is not None and 
+        alert.location and alert.location.latitude and alert.location.longitude):
+        # Haversine distance formula
+        import math
+        
+        lat1, lon1 = math.radians(user_lat), math.radians(user_lon)
+        lat2, lon2 = math.radians(alert.location.latitude), math.radians(alert.location.longitude)
+        
+        dlat = lat2 - lat1
+        dlon = lon2 - lon1
+        
+        a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2
+        c = 2 * math.asin(math.sqrt(a))
+        distance_km = 6371 * c  # Earth radius in km
+        
+        # Calculate bearing
+        y = math.sin(dlon) * math.cos(lat2)
+        x = math.cos(lat1) * math.sin(lat2) - math.sin(lat1) * math.cos(lat2) * math.cos(dlon)
+        bearing_deg = (math.degrees(math.atan2(y, x)) + 360) % 360
+    
     response = {
         "id": alert.id,
         "title": alert.title,
@@ -57,8 +82,8 @@ def format_alert_response(alert):
             "longitude": alert.location.longitude if alert.location else 0.0,
             "name": alert.location.name if alert.location else "Unknown Location"
         },
-        "distance_km": 0.0,
-        "bearing_deg": 0.0,
+        "distance_km": round(distance_km, 2),
+        "bearing_deg": round(bearing_deg, 1),
         "view_count": 0,
         "verification_score": 0.0,
         "media_files": alert.media_files or [],
@@ -202,8 +227,13 @@ async def create_alert(request: dict, idempotency_key: Optional[str] = Header(No
         raise HTTPException(status_code=500, detail=f"Error creating alert: {str(e)}")
 
 @router.get("")
-async def get_alerts(limit: int = 20, offset: int = 0):
-    """Get recent alerts - clean endpoint using service layer"""
+async def get_alerts(
+    limit: int = 20, 
+    offset: int = 0,
+    latitude: Optional[float] = None,
+    longitude: Optional[float] = None
+):
+    """Get recent alerts - clean endpoint using service layer with distance calculation"""
     try:
         db_pool = await get_db()
         alerts_service = AlertsService(db_pool)
@@ -212,7 +242,8 @@ async def get_alerts(limit: int = 20, offset: int = 0):
         alerts = await alerts_service.get_recent_alerts(limit=limit, offset=offset)
         total_count = await alerts_service.get_total_alerts_count()
         
-        api_alerts = [format_alert_response(alert) for alert in alerts]
+        # Calculate distances if user location is provided
+        api_alerts = [format_alert_response(alert, latitude, longitude) for alert in alerts]
         
         # Don't close the pool - it's shared across the service
         
@@ -231,8 +262,12 @@ async def get_alerts(limit: int = 20, offset: int = 0):
         raise HTTPException(status_code=500, detail=f"Error getting alerts: {str(e)}")
 
 @router.get("/{alert_id}")
-async def get_alert_details(alert_id: str):
-    """Get specific alert details - clean endpoint using service layer"""
+async def get_alert_details(
+    alert_id: str,
+    latitude: Optional[float] = None,
+    longitude: Optional[float] = None
+):
+    """Get specific alert details - clean endpoint using service layer with distance calculation"""
     try:
         db_pool = await get_db()
         alerts_service = AlertsService(db_pool)
@@ -245,7 +280,7 @@ async def get_alert_details(alert_id: str):
         
         return {
             "success": True,
-            "data": format_alert_response(alert),
+            "data": format_alert_response(alert, latitude, longitude),
             "message": "Alert found"
         }
         

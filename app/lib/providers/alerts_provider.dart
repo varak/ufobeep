@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/alerts_filter.dart';
 import '../services/api_client.dart';
+import '../services/permission_service.dart';
 
 part 'alerts_provider.g.dart';
 
@@ -332,8 +333,23 @@ class Alert {
 class AlertsList extends _$AlertsList {
   @override
   Future<List<Alert>> build() async {
-    // Fetch alerts from API
-    return await _fetchAlertsFromApi();
+    // Try to get user location for distance calculation
+    double? userLat, userLon;
+    try {
+      final location = await permissionService.getCurrentLocation();
+      if (location != null) {
+        userLat = location.latitude;
+        userLon = location.longitude;
+      }
+    } catch (e) {
+      print('Could not get user location for distance calculation: $e');
+    }
+    
+    // Fetch alerts from API with location for distance calculation
+    return await _fetchAlertsFromApi(
+      latitude: userLat,
+      longitude: userLon,
+    );
   }
 
   Future<List<Alert>> _fetchAlertsFromApi({
