@@ -236,8 +236,12 @@ export default function AlertsPage() {
           <h1 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">
             Recent UFO Alerts
           </h1>
-          <p className="text-xl text-text-secondary max-w-2xl mx-auto">
-            Latest sightings and anomaly reports from around the world
+          <p className="text-xl text-text-secondary max-w-2xl mx-auto mb-3">
+            Live UFOBeep community reports & MUFON database sightings
+          </p>
+          <p className="text-sm text-text-tertiary max-w-3xl mx-auto">
+            This feed combines real-time UFOBeep "beeps" from our mobile app users with historical reports from the MUFON (Mutual UFO Network) database. 
+            Use the filters below to view only UFOBeep originals or browse the complete collection.
           </p>
         </div>
 
@@ -260,7 +264,7 @@ export default function AlertsPage() {
               {allAlerts.filter(a => a.reporter_username !== 'MUFON_Database' && !a.reporter_username?.includes('MUFON')).length}
             </div>
             <div className={`text-sm ${showBeepsOnly ? 'text-brand-primary font-medium' : 'text-text-secondary'}`}>
-              {showBeepsOnly ? '✓ UFOBeep Beeps Only' : 'UFOBeep Beeps (Click)'}
+              {showBeepsOnly ? '✓ UFOBeep Only' : 'UFOBeep Originals'}
             </div>
           </div>
           <div 
@@ -276,7 +280,7 @@ export default function AlertsPage() {
               ).filter(a => a.media_files && a.media_files.length > 0).length}
             </div>
             <div className={`text-sm ${showPhotosOnly ? 'text-brand-primary font-medium' : 'text-text-secondary'}`}>
-              {showPhotosOnly ? '✓ Photos Only' : 'With Photos (Click)'}
+              {showPhotosOnly ? '✓ Photos Only' : 'With Media Files'}
             </div>
           </div>
         </div>
