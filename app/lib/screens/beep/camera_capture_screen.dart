@@ -118,6 +118,13 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       // Take the picture at maximum quality
       final XFile image = await _controller!.takePicture();
       
+      // Stop camera preview immediately after capture
+      await _controller?.dispose();
+      setState(() {
+        _controller = null;
+        _isInitialized = false;
+      });
+      
       // Get sensor data with retry for GPS
       SensorData? sensorData;
       try {
@@ -301,6 +308,13 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       // Stop recording and get the file
       final XFile videoFile = await _controller!.stopVideoRecording();
       debugPrint('🎥 VIDEO: Stopped recording');
+      
+      // Stop camera preview immediately after recording ends
+      await _controller?.dispose();
+      setState(() {
+        _controller = null;
+        _isInitialized = false;
+      });
       
       // Play stop sound
       await SoundService.I.play(AlertSound.gpsOk, haptic: true);

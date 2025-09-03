@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">UFOBeep</string>
+    <string name="shortcut_quick_beep_short">Quick Beep</string>
+    <string name="shortcut_quick_beep_long">Take Photo and Beep</string>
+</resources>
