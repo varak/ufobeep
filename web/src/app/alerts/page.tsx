@@ -71,7 +71,7 @@ export default function AlertsPage() {
     setLoading(true)
     try {
       // Since API offset doesn't work, fetch a large batch of recent alerts
-      const response = await fetch(`https://api.ufobeep.com/alerts?limit=100&offset=0&verified_only=false`)
+      const response = await fetch(`https://api.ufobeep.com/alerts?limit=500&offset=0&verified_only=false`)
       const data = await response.json()
       
       if (data.success && data.data?.alerts) {
