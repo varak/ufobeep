@@ -61,6 +61,58 @@ class AlertsScreen extends ConsumerWidget {
         ],
       ),
       actions: [
+        // MUFON toggle
+        PopupMenuButton<String>(
+          icon: Icon(
+            filter.showUfoBeepOnly == true ? Icons.visibility_off : Icons.visibility,
+            color: filter.showUfoBeepOnly == true 
+                ? AppColors.brandPrimary 
+                : AppColors.textSecondary,
+          ),
+          tooltip: 'Toggle MUFON sightings',
+          itemBuilder: (context) => [
+            PopupMenuItem<String>(
+              value: 'toggle',
+              child: Row(
+                children: [
+                  Icon(
+                    filter.showUfoBeepOnly == true ? Icons.visibility : Icons.visibility_off,
+                    color: AppColors.textSecondary,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    filter.showUfoBeepOnly == true ? 'Show MUFON data' : 'Hide MUFON data',
+                    style: const TextStyle(color: AppColors.textPrimary),
+                  ),
+                ],
+              ),
+            ),
+            const PopupMenuDivider(),
+            PopupMenuItem<String>(
+              value: 'info',
+              enabled: false,
+              child: Text(
+                filter.showUfoBeepOnly == true 
+                    ? 'Showing only UFOBeep reports'
+                    : 'Showing all reports including MUFON database',
+                style: const TextStyle(
+                  color: AppColors.textTertiary,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+          ],
+          onSelected: (value) {
+            if (value == 'toggle') {
+              final newFilter = filter.copyWith(
+                showUfoBeepOnly: filter.showUfoBeepOnly != true ? true : null,
+              );
+              ref.read(alertsFilterStateProvider.notifier).updateFilter(newFilter);
+            }
+          },
+        ),
+        
         // Filter button
         IconButton(
           icon: Icon(
