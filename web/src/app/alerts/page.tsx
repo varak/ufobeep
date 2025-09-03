@@ -240,7 +240,7 @@ export default function AlertsPage() {
             Live UFOBeep community reports & MUFON database sightings
           </p>
           <p className="text-sm text-text-tertiary max-w-3xl mx-auto">
-            This feed combines real-time UFOBeep "beeps" from our mobile app users with historical reports from the MUFON (Mutual UFO Network) database. 
+            This feed combines real-time UFOBeep &quot;beeps&quot; from our mobile app users with historical reports from the MUFON (Mutual UFO Network) database. 
             Use the filters below to view only UFOBeep originals or browse the complete collection.
           </p>
         </div>
