@@ -39,7 +39,14 @@ class AlertsService:
     def __init__(self, db_pool):
         self.db_pool = db_pool
     
-    async def get_recent_alerts(self, limit: int = 20) -> List[Alert]:
+    async def get_total_alerts_count(self) -> int:
+        """Get total count of public alerts"""
+        async with self.db_pool.acquire() as conn:
+            return await conn.fetchval("""
+                SELECT COUNT(*) FROM sightings WHERE is_public = true
+            """)
+    
+    async def get_recent_alerts(self, limit: int = 20, offset: int = 0) -> List[Alert]:
         """Get recent public alerts with clean data structure"""
         async with self.db_pool.acquire() as conn:
             rows = await conn.fetch("""
@@ -56,8 +63,8 @@ class AlertsService:
                 ) c ON s.id = c.sighting_id
                 WHERE s.is_public = true 
                 ORDER BY s.created_at DESC 
-                LIMIT $1
-            """, limit)
+                LIMIT $1 OFFSET $2
+            """, limit, offset)
             
             alerts = []
             for row in rows:

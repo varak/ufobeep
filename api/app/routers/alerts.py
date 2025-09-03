@@ -207,7 +207,10 @@ async def get_alerts(limit: int = 20, offset: int = 0):
     try:
         db_pool = await get_db()
         alerts_service = AlertsService(db_pool)
-        alerts = await alerts_service.get_recent_alerts(limit=limit)
+        
+        # Get both the paginated alerts and total count
+        alerts = await alerts_service.get_recent_alerts(limit=limit, offset=offset)
+        total_count = await alerts_service.get_total_alerts_count()
         
         api_alerts = [format_alert_response(alert) for alert in alerts]
         
@@ -215,10 +218,12 @@ async def get_alerts(limit: int = 20, offset: int = 0):
         
         return {
             "success": True,
-            "data": {"alerts": api_alerts},
-            "total": len(api_alerts),
-            "limit": limit,
-            "offset": offset
+            "data": {
+                "alerts": api_alerts,
+                "total": total_count,
+                "page": (offset // limit) + 1,
+                "limit": limit
+            }
         }
         
     except Exception as e:
