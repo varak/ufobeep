@@ -327,8 +327,8 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                         'What do you see?',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -458,14 +458,39 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                 const SizedBox(height: 24),
 
                 // Send Beep button
-                GlowingButton(
-                  text: _isBeeping ? 'Sending...' : 'Send Beep',
-                  enabled: !_isBeeping,
-                  isLoading: _isBeeping,
+                GlassCard(
                   onTap: _isBeeping ? null : () async {
                     await UiFeedback.click();
                     _sendQuickBeep();
                   },
+                  child: Container(
+                    height: 56,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(
+                        color: AppColors.brandPrimary,
+                        width: 2,
+                      ),
+                    ),
+                    child: _isBeeping
+                        ? const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              color: AppColors.brandPrimary,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : const Text(
+                            'Send Beep',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.brandPrimary,
+                            ),
+                          ),
+                  ),
                 ),
 
                 const SizedBox(height: 32),
