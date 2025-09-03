@@ -42,6 +42,7 @@ export default function AlertsPage() {
   const [error, setError] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [showPhotosOnly, setShowPhotosOnly] = useState(false)
+  const [showBeepsOnly, setShowBeepsOnly] = useState(false)
   const alertsPerPage = 9
 
   useEffect(() => {
@@ -52,13 +53,25 @@ export default function AlertsPage() {
   useEffect(() => {
     // Update filtered alerts when filter changes
     if (allAlerts.length > 0) {
-      const filtered = showPhotosOnly 
-        ? allAlerts.filter(alert => alert.media_files && alert.media_files.length > 0)
-        : allAlerts
+      let filtered = allAlerts
+      
+      // Apply UFOBeep beeps only filter first
+      if (showBeepsOnly) {
+        filtered = filtered.filter(alert => 
+          alert.reporter_username !== 'MUFON_Database' && 
+          !alert.reporter_username?.includes('MUFON')
+        )
+      }
+      
+      // Then apply photos filter if enabled
+      if (showPhotosOnly) {
+        filtered = filtered.filter(alert => alert.media_files && alert.media_files.length > 0)
+      }
+      
       setFilteredAlerts(filtered)
       setCurrentPage(1) // Reset to first page when filter changes
     }
-  }, [allAlerts, showPhotosOnly])
+  }, [allAlerts, showPhotosOnly, showBeepsOnly])
 
   useEffect(() => {
     // Update displayed alerts when page or filter changes
@@ -228,11 +241,27 @@ export default function AlertsPage() {
           </p>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        {/* Stats and Filters */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <div className="bg-dark-surface border border-dark-border rounded-lg p-6 text-center">
             <div className="text-3xl text-brand-primary mb-2">{allAlerts.length}</div>
             <div className="text-text-secondary">Total Reports</div>
+          </div>
+          <div 
+            className={`bg-dark-surface border rounded-lg p-6 text-center cursor-pointer transition-all hover:scale-105 ${
+              showBeepsOnly ? 'border-brand-primary bg-brand-primary/10' : 'border-dark-border hover:border-brand-primary/50'
+            }`}
+            onClick={() => {
+              setShowBeepsOnly(!showBeepsOnly)
+              if (showPhotosOnly && !showBeepsOnly) setShowPhotosOnly(false) // Reset photos filter when enabling beeps only
+            }}
+          >
+            <div className="text-3xl text-brand-primary mb-2">
+              {allAlerts.filter(a => a.reporter_username !== 'MUFON_Database' && !a.reporter_username?.includes('MUFON')).length}
+            </div>
+            <div className={`text-sm ${showBeepsOnly ? 'text-brand-primary font-medium' : 'text-text-secondary'}`}>
+              {showBeepsOnly ? '✓ UFOBeep Beeps Only' : 'UFOBeep Beeps (Click)'}
+            </div>
           </div>
           <div 
             className={`bg-dark-surface border rounded-lg p-6 text-center cursor-pointer transition-all hover:scale-105 ${
@@ -241,10 +270,13 @@ export default function AlertsPage() {
             onClick={() => setShowPhotosOnly(!showPhotosOnly)}
           >
             <div className="text-3xl text-brand-primary mb-2">
-              {allAlerts.filter(a => a.media_files && a.media_files.length > 0).length}
+              {(showBeepsOnly 
+                ? allAlerts.filter(a => a.reporter_username !== 'MUFON_Database' && !a.reporter_username?.includes('MUFON'))
+                : allAlerts
+              ).filter(a => a.media_files && a.media_files.length > 0).length}
             </div>
             <div className={`text-sm ${showPhotosOnly ? 'text-brand-primary font-medium' : 'text-text-secondary'}`}>
-              {showPhotosOnly ? '✓ Showing Photos Only' : 'With Photos (Click to Filter)'}
+              {showPhotosOnly ? '✓ Photos Only' : 'With Photos (Click)'}
             </div>
           </div>
         </div>
@@ -252,19 +284,30 @@ export default function AlertsPage() {
         {/* Alerts Grid */}
         {alerts.length === 0 ? (
           <div className="text-center py-16">
-            <div className="text-6xl mb-6">{showPhotosOnly ? '📷' : '🤔'}</div>
+            <div className="text-6xl mb-6">
+              {showBeepsOnly ? '🔔' : showPhotosOnly ? '📷' : '🤔'}
+            </div>
             <h2 className="text-2xl font-bold text-text-primary mb-4">
-              {showPhotosOnly ? 'No Alerts with Photos' : 'No Alerts Yet'}
+              {showBeepsOnly 
+                ? 'No UFOBeep Beeps Yet' 
+                : showPhotosOnly 
+                  ? 'No Alerts with Photos' 
+                  : 'No Alerts Yet'}
             </h2>
             <p className="text-text-secondary mb-8">
-              {showPhotosOnly 
-                ? 'Try viewing all alerts or check back later for photo reports!'
-                : 'Be the first to report a sighting!'
+              {showBeepsOnly
+                ? 'Be the first to report a UFOBeep sighting! Download the app to beep.'
+                : showPhotosOnly 
+                  ? 'Try viewing all alerts or check back later for photo reports!'
+                  : 'Be the first to report a sighting!'
               }
             </p>
-            {showPhotosOnly ? (
+            {(showPhotosOnly || showBeepsOnly) ? (
               <button 
-                onClick={() => setShowPhotosOnly(false)}
+                onClick={() => {
+                  setShowPhotosOnly(false)
+                  setShowBeepsOnly(false)
+                }}
                 className="bg-brand-primary text-text-inverse px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary-dark transition-colors"
               >
                 Show All Alerts
@@ -378,6 +421,7 @@ export default function AlertsPage() {
             {/* Showing results info */}
             <div className="text-center text-text-tertiary text-sm mt-4">
               Showing {((currentPage - 1) * alertsPerPage) + 1} - {Math.min(currentPage * alertsPerPage, filteredAlerts.length)} of {filteredAlerts.length} alerts
+              {showBeepsOnly && <span className="text-brand-primary ml-1"> (UFOBeep beeps only)</span>}
               {showPhotosOnly && <span className="text-brand-primary ml-1"> (photos only)</span>}
             </div>
           </div>
@@ -437,6 +481,7 @@ export default function AlertsPage() {
             <div className="flex items-center space-x-6 mt-4 md:mt-0">
               <span className="text-text-tertiary text-sm">
                 Showing {alerts.length} of {filteredAlerts.length} sightings
+                {showBeepsOnly && <span className="text-brand-primary ml-1">(UFOBeep beeps only)</span>}
                 {showPhotosOnly && <span className="text-brand-primary ml-1">(photos only)</span>}
               </span>
             </div>
