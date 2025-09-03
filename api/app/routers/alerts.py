@@ -53,9 +53,9 @@ def format_alert_response(alert):
         "witness_count": alert.witness_count,
         "created_at": alert.created_at.isoformat(),
         "location": {
-            "latitude": alert.location.latitude,
-            "longitude": alert.location.longitude,
-            "name": alert.location.name
+            "latitude": alert.location.latitude if alert.location else 0.0,
+            "longitude": alert.location.longitude if alert.location else 0.0,
+            "name": alert.location.name if alert.location else "Unknown Location"
         },
         "distance_km": 0.0,
         "bearing_deg": 0.0,
