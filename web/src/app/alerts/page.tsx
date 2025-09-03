@@ -245,12 +245,8 @@ export default function AlertsPage() {
           </p>
         </div>
 
-        {/* Stats and Filters */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-dark-surface border border-dark-border rounded-lg p-6 text-center">
-            <div className="text-3xl text-brand-primary mb-2">{allAlerts.length}</div>
-            <div className="text-text-secondary">Total Reports</div>
-          </div>
+        {/* Filters */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           <div 
             className={`bg-dark-surface border rounded-lg p-6 text-center cursor-pointer transition-all hover:scale-105 ${
               showBeepsOnly ? 'border-brand-primary bg-brand-primary/10' : 'border-dark-border hover:border-brand-primary/50'
