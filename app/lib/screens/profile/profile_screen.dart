@@ -128,7 +128,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ],
         ),
       ),
-    );
+    ), // Close Scaffold
+    ); // Close NightSkyBackground
   }
 
   Widget _buildProfileHeader(UserModel user) {
