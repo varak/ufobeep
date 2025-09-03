@@ -58,8 +58,9 @@ export default function MiniMap({ className = '', alerts = [], loading = false }
   }
 
   const handleAlertClick = (alert: Alert) => {
-    // Navigate to alert detail page
-    window.location.href = `/alerts/${alert.id}`
+    // Show alert info in sidebar instead of navigating away
+    // For now, we'll just prevent navigation - could enhance later with popup
+    console.log('Alert clicked:', alert.title || alert.id)
   }
 
   return (
