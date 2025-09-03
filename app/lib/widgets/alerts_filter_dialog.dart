@@ -105,6 +105,12 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // UFOBeep Only Toggle Section
+                    _buildSectionTitle('Alert Source'),
+                    const SizedBox(height: 12),
+                    _buildUfoBeepOnlyToggle(),
+                    const SizedBox(height: 24),
+                    
                     // Distance Slider Section
                     _buildSectionTitle('Alert Distance Range'),
                     const SizedBox(height: 12),
@@ -257,5 +263,68 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
     );
   }
 
+  Widget _buildUfoBeepOnlyToggle() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.darkBackground,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.darkBorder),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: AppColors.brandPrimary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: AppColors.brandPrimary.withOpacity(0.2)),
+            ),
+            child: const Text(
+              '🛸',
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'UFOBeep Only',
+                  style: TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  'Show only original UFOBeep reports (exclude MUFON database)',
+                  style: TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Switch(
+            value: _workingFilter.showUfoBeepOnly ?? false,
+            onChanged: (value) {
+              _updateWorkingFilter(
+                _workingFilter.copyWith(
+                  showUfoBeepOnly: value ? true : null,
+                ),
+              );
+            },
+            activeColor: AppColors.brandPrimary,
+            inactiveThumbColor: AppColors.textTertiary,
+            inactiveTrackColor: AppColors.darkBorder,
+          ),
+        ],
+      ),
+    );
+  }
 
 }

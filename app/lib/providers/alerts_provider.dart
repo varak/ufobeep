@@ -598,6 +598,10 @@ class AlertsFilterState extends _$AlertsFilterState {
     state = state.copyWith(verifiedOnly: verified);
   }
 
+  void setUfoBeepOnly(bool? ufoBeepOnly) {
+    state = state.copyWith(showUfoBeepOnly: ufoBeepOnly);
+  }
+
   void setSorting(AlertSortBy sortBy, {bool? ascending}) {
     state = state.copyWith(
       sortBy: sortBy,
@@ -664,6 +668,14 @@ Future<List<Alert>> filteredAlerts(FilteredAlertsRef ref) async {
     // Verified filter
     if (filter.verifiedOnly == true && !alert.isVerified) {
       return false;
+    }
+    
+    // UFOBeep Only filter - exclude MUFON reports
+    if (filter.showUfoBeepOnly == true) {
+      final reporterUsername = alert.reporterUsername ?? '';
+      if (reporterUsername == 'MUFON_Database' || reporterUsername.contains('MUFON')) {
+        return false;
+      }
     }
     
     return true;

@@ -282,6 +282,11 @@ Sighting _$SightingFromJson(Map<String, dynamic> json) => Sighting(
   processedAt: json['processed_at'] == null
       ? null
       : DateTime.parse(json['processed_at'] as String),
+  source: json['source'] as String?,
+  sourceId: json['source_id'] as String?,
+  externalUrl: json['external_url'] as String?,
+  shape: json['shape'] as String?,
+  duration: json['duration'] as String?,
   verifiedAt: json['verified_at'] == null
       ? null
       : DateTime.parse(json['verified_at'] as String),
@@ -310,6 +315,11 @@ Map<String, dynamic> _$SightingToJson(Sighting instance) => <String, dynamic>{
   'verified_at': instance.verifiedAt?.toIso8601String(),
   'created_at': instance.createdAt.toIso8601String(),
   'updated_at': instance.updatedAt.toIso8601String(),
+  'source': instance.source,
+  'source_id': instance.sourceId,
+  'external_url': instance.externalUrl,
+  'shape': instance.shape,
+  'duration': instance.duration,
 };
 
 const _$SightingStatusEnumMap = {

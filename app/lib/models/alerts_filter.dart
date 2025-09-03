@@ -8,6 +8,7 @@ class AlertsFilter {
   final double? maxDistanceKm;
   final int? maxAgeHours;
   final bool? verifiedOnly;
+  final bool? showUfoBeepOnly;
   final AlertSortBy sortBy;
   final bool ascending;
 
@@ -16,6 +17,7 @@ class AlertsFilter {
     this.maxDistanceKm,
     this.maxAgeHours,
     this.verifiedOnly,
+    this.showUfoBeepOnly,
     this.sortBy = AlertSortBy.newest,
     this.ascending = false,
   });
@@ -30,6 +32,7 @@ class AlertsFilter {
     double? maxDistanceKm,
     int? maxAgeHours,
     bool? verifiedOnly,
+    bool? showUfoBeepOnly,
     AlertSortBy? sortBy,
     bool? ascending,
   }) {
@@ -38,6 +41,7 @@ class AlertsFilter {
       maxDistanceKm: maxDistanceKm ?? this.maxDistanceKm,
       maxAgeHours: maxAgeHours ?? this.maxAgeHours,
       verifiedOnly: verifiedOnly ?? this.verifiedOnly,
+      showUfoBeepOnly: showUfoBeepOnly ?? this.showUfoBeepOnly,
       sortBy: sortBy ?? this.sortBy,
       ascending: ascending ?? this.ascending,
     );
@@ -47,6 +51,7 @@ class AlertsFilter {
   AlertsFilter clearDistance() => copyWith(maxDistanceKm: null);
   AlertsFilter clearAge() => copyWith(maxAgeHours: null);
   AlertsFilter clearVerified() => copyWith(verifiedOnly: null);
+  AlertsFilter clearUfoBeepOnly() => copyWith(showUfoBeepOnly: null);
   AlertsFilter clearCategories() => copyWith(categories: const {});
 
   // Reset all filters
@@ -57,7 +62,8 @@ class AlertsFilter {
     return categories.isNotEmpty ||
            maxDistanceKm != null ||
            maxAgeHours != null ||
-           verifiedOnly != null;
+           verifiedOnly != null ||
+           showUfoBeepOnly != null;
   }
 
   // Get filter summary for UI
@@ -84,6 +90,10 @@ class AlertsFilter {
       parts.add('verified only');
     }
     
+    if (showUfoBeepOnly == true) {
+      parts.add('UFOBeep only');
+    }
+    
     return parts.isEmpty ? 'All alerts' : parts.join(', ');
   }
 
@@ -97,6 +107,7 @@ class AlertsFilter {
           maxDistanceKm == other.maxDistanceKm &&
           maxAgeHours == other.maxAgeHours &&
           verifiedOnly == other.verifiedOnly &&
+          showUfoBeepOnly == other.showUfoBeepOnly &&
           sortBy == other.sortBy &&
           ascending == other.ascending;
 
@@ -106,6 +117,7 @@ class AlertsFilter {
         maxDistanceKm,
         maxAgeHours,
         verifiedOnly,
+        showUfoBeepOnly,
         sortBy,
         ascending,
       );
@@ -117,6 +129,7 @@ class AlertsFilter {
         'maxDistanceKm: $maxDistanceKm, '
         'maxAgeHours: $maxAgeHours, '
         'verifiedOnly: $verifiedOnly, '
+        'showUfoBeepOnly: $showUfoBeepOnly, '
         'sortBy: $sortBy, '
         'ascending: $ascending'
         '}';
@@ -251,12 +264,18 @@ class FilterPresets {
     sortBy: AlertSortBy.newest,
   );
 
+  static const AlertsFilter ufoBeepOnly = AlertsFilter(
+    showUfoBeepOnly: true,
+    sortBy: AlertSortBy.newest,
+  );
+
   static const List<AlertsFilter> presets = [
     all,
     nearby,
     recent,
     verified,
     ufoOnly,
+    ufoBeepOnly,
   ];
 
   static List<String> get presetNames => [
@@ -265,5 +284,6 @@ class FilterPresets {
     'Recent (24h)',
     'Verified Only',
     'UFOs Only',
+    'UFOBeep Only',
   ];
 }
