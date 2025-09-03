@@ -203,9 +203,12 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                   return <span className="text-xs text-text-tertiary">👁️</span>
                 })()}
               </div>
-              <p className="text-text-secondary text-xs line-clamp-1">
-                {formatLocation(alert.location)}
-              </p>
+              {/* Location - hidden for MUFON alerts */}
+              {alert.reporter_username !== 'MUFON_Database' && (
+                <p className="text-text-secondary text-xs line-clamp-1">
+                  {formatLocation(alert.location)}
+                </p>
+              )}
             </div>
             <div className="w-2 h-2 bg-brand-primary rounded-full animate-pulse"></div>
           </div>
@@ -265,10 +268,12 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
 
           {/* Content section */}
           <div className="space-y-2">
-            {/* Location */}
-            <div className="text-text-tertiary text-xs">
-              📍 {formatLocation(alert.location)}
-            </div>
+            {/* Location - hidden for MUFON alerts */}
+            {alert.reporter_username !== 'MUFON_Database' && (
+              <div className="text-text-tertiary text-xs">
+                📍 {formatLocation(alert.location)}
+              </div>
+            )}
 
             {/* Description */}
             {alert.description && (
