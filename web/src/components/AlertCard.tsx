@@ -36,6 +36,11 @@ interface Alert {
   is_verified?: boolean
   distance?: number
   comment_count?: number
+  enrichment?: {
+    short_description?: string
+    mufon_case_id?: string
+    [key: string]: any
+  }
 }
 
 interface AlertCardProps {
@@ -48,15 +53,29 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
 
+  // Smart description selection for preview cards
+  const getPreviewDescription = () => {
+    // MUFON alerts have short_description in enrichment
+    if (alert.enrichment?.short_description) {
+      return alert.enrichment.short_description
+    }
+    // Regular alerts use truncated main description  
+    if (alert.description) {
+      const truncated = alert.description.substring(0, 150)
+      return truncated + (alert.description.length > 150 ? '...' : '')
+    }
+    return null
+  }
+
   // Calculate actual comment count - don't add description as comment for MUFON
   const getActualCommentCount = () => {
     const baseCount = alert.comment_count || 0
     // For MUFON alerts, use exact comment count (don't add description as comment)
-    if (alert.reporter_username === 'MUFON_Database') {
+    if (alert.reporter_username === 'MUFON') {
       return baseCount
     }
     // If there's a description, add 1 for the initial description comment (ID 0)
-    const hasDescription = alert.description && alert.description.trim().length > 0
+    const hasDescription = getPreviewDescription()?.trim().length > 0
     return hasDescription ? baseCount + 1 : baseCount
   }
 
@@ -192,7 +211,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                 <span className="text-text-tertiary text-xs">{formatDate(alert.created_at)}</span>
 {(() => {
                   const hasMedia = alert.media_files?.length > 0
-                  const hasDescription = alert.description?.trim()
+                  const hasDescription = getPreviewDescription()?.trim()
                   
                   if (!hasMedia && !hasDescription) return <span className="text-xs text-text-tertiary">beep only</span>
                   if (hasMedia && !hasDescription) {
@@ -204,7 +223,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                 })()}
               </div>
               {/* Location - hidden for MUFON alerts */}
-              {alert.reporter_username !== 'MUFON_Database' && (
+              {alert.reporter_username !== 'MUFON' && (
                 <p className="text-text-secondary text-xs line-clamp-1">
                   {formatLocation(alert.location)}
                 </p>
@@ -269,19 +288,22 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
           {/* Content section */}
           <div className="space-y-2">
             {/* Location - hidden for MUFON alerts */}
-            {alert.reporter_username !== 'MUFON_Database' && (
+            {alert.reporter_username !== 'MUFON' && (
               <div className="text-text-tertiary text-xs">
                 📍 {formatLocation(alert.location)}
               </div>
             )}
 
             {/* Description */}
-            {alert.description && (
-              <div 
-                className="text-text-secondary text-sm line-clamp-2 leading-relaxed prose prose-sm prose-invert max-w-none"
-                dangerouslySetInnerHTML={{ __html: alert.description.replace(/\n/g, '<br>') }}
-              />
-            )}
+            {(() => {
+              const previewDescription = getPreviewDescription()
+              return previewDescription && (
+                <div 
+                  className="text-text-secondary text-sm line-clamp-2 leading-relaxed prose prose-sm prose-invert max-w-none"
+                  dangerouslySetInnerHTML={{ __html: previewDescription.replace(/\n/g, '<br>') }}
+                />
+              )
+            })()}
 
             {/* Footer indicators */}
             <div className="flex items-center justify-between pt-3">
@@ -310,7 +332,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                 {/* Content type indicator - only for non-media content */}
                 {!(alert.media_files && alert.media_files.length > 0) && (
                   <div className="px-2 py-1 bg-dark-background/30 rounded text-xs text-text-tertiary">
-                    {alert.description?.trim() ? (
+                    {getPreviewDescription()?.trim() ? (
                       <span className="flex items-center gap-1">👁️ Report</span>
                     ) : (
                       <span className="flex items-center gap-1">📡 Beep only</span>
@@ -320,7 +342,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
               </div>
               
               {/* Witness count - hidden for MUFON alerts */}
-              {alert.witness_count > 1 && alert.reporter_username !== 'MUFON_Database' && (
+              {alert.witness_count > 1 && alert.reporter_username !== 'MUFON' && (
                 <div className="text-xs text-brand-primary font-medium flex items-center gap-1">
                   <span>👥</span>
                   <span>{alert.witness_count} witnesses</span>

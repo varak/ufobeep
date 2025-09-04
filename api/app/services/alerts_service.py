@@ -334,14 +334,6 @@ class AlertsService:
                 json.dumps(sensor_data or {}), json.dumps(enrichment_data or {}),
                 alert_level, "created", reporter_id, source, source_id, external_url, latitude, longitude)
             
-            # Fix comment count for MUFON alerts (description gets counted as comment)
-            if source == "mufon":
-                await conn.execute("""
-                    UPDATE sightings 
-                    SET comment_count = GREATEST(comment_count - 1, 0) 
-                    WHERE id = $1
-                """, alert_id)
-            
             return str(alert_id)
     
     async def create_beep(self, device_id: str, location: Dict = None, 
@@ -456,21 +448,34 @@ class AlertsService:
             # Run enrichment
             results = await enrichment_orchestrator.enrich_sighting(context)
             
-            # Save enrichment results to database
-            enrichment_data = {}
+            # Save enrichment results to database - MERGE with existing enrichment data
+            new_enrichment_data = {}
             for processor_name, result in results.items():
                 if result.success and result.data:
-                    enrichment_data[processor_name] = result.data
+                    new_enrichment_data[processor_name] = result.data
             
-            # Update sighting with enrichment data
+            # Update sighting with enrichment data - merge instead of replace
             async with self.db_pool.acquire() as conn:
+                # Get existing enrichment data first
+                existing_row = await conn.fetchrow("""
+                    SELECT enrichment_data FROM sightings WHERE id = $1
+                """, uuid.UUID(alert_id))
+                
+                # Merge existing with new enrichment data
+                existing_enrichment = {}
+                if existing_row and existing_row['enrichment_data']:
+                    existing_enrichment = self._parse_json(existing_row['enrichment_data']) or {}
+                
+                # Merge: existing data takes precedence, new data fills in missing keys
+                merged_enrichment = {**new_enrichment_data, **existing_enrichment}
+                
                 await conn.execute("""
                     UPDATE sightings 
                     SET enrichment_data = $1
                     WHERE id = $2
-                """, json.dumps(enrichment_data), uuid.UUID(alert_id))
+                """, json.dumps(merged_enrichment), uuid.UUID(alert_id))
             
-            print(f"Enrichment completed for alert {alert_id}: {list(enrichment_data.keys())}")
+            print(f"Enrichment completed for alert {alert_id}: {list(merged_enrichment.keys())}")
             
         except Exception as e:
             print(f"Enrichment failed for alert {alert_id}: {e}")

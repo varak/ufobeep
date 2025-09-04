@@ -249,12 +249,12 @@ export default function AlertPage({ params }: AlertPageProps) {
             <AlertDetails alert={alert} />
 
             {/* Environmental data - hidden for MUFON alerts */}
-            {alert.reporter_username !== 'MUFON_Database' && (
+            {alert.reporter_username !== 'MUFON' && (
               <EnrichmentData enrichment={alert.enrichment} alert={alert} />
             )}
 
             {/* Witness count info - hidden for MUFON alerts */}
-            {alert.reporter_username !== 'MUFON_Database' && (
+            {alert.reporter_username !== 'MUFON' && (
               <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <span className="text-brand-primary">👥</span>
@@ -284,7 +284,7 @@ export default function AlertPage({ params }: AlertPageProps) {
               
               <div className="space-y-3">
                 {/* Witnesses stat - hidden for MUFON alerts */}
-                {alert.reporter_username !== 'MUFON_Database' && (
+                {alert.reporter_username !== 'MUFON' && (
                   <div className="flex justify-between">
                     <span className="text-text-tertiary text-sm">Witnesses</span>
                     <span className="text-text-primary font-medium">{getWitnessCount()}</span>
@@ -302,7 +302,7 @@ export default function AlertPage({ params }: AlertPageProps) {
             </div>
 
             {/* Location with map - hidden entirely for MUFON alerts */}
-            {alert.reporter_username !== 'MUFON_Database' && (
+            {alert.reporter_username !== 'MUFON' && (
               <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <span className="text-brand-primary">🗺️</span>

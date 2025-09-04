@@ -53,36 +53,44 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
         <h2 className="text-lg font-semibold text-brand-primary">Details</h2>
       </div>
 
-      {/* Description */}
+      {/* Description - Main description now contains full text */}
       {alert.description && (
         <div className="mb-6">
+          {/* Add MUFON Case ID header if available */}
+          {alert.enrichment?.mufon_case_id && (
+            <div className="text-text-tertiary text-sm mb-2">
+              MUFON Case #{alert.enrichment.mufon_case_id}
+            </div>
+          )}
           <div 
             className="text-text-secondary leading-relaxed prose prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ __html: alert.description.replace(/\n/g, '<br>') }}
+            dangerouslySetInnerHTML={{ 
+              __html: alert.description.replace(/\n/g, '<br>') 
+            }}
           />
         </div>
       )}
 
       {/* Time - Show MUFON times if available, otherwise show UFOBeep time */}
-      {alert.enrichment_data?.sighting_datetime || alert.enrichment_data?.report_date ? (
+      {alert.enrichment?.sighting_datetime || alert.enrichment?.report_date ? (
         <div className="flex items-start gap-3 mb-4">
           <span className="text-text-tertiary mt-0.5">📅</span>
           <div className="flex-1">
             {/* Sighting Time */}
-            {alert.enrichment_data.sighting_datetime && (
+            {alert.enrichment.sighting_datetime && (
               <div className="mb-2">
                 <div className="flex items-center gap-2">
                   <span className="text-text-tertiary text-sm font-medium">Event Time:</span>
-                  <span className="text-text-primary text-sm">{alert.enrichment_data.sighting_datetime}</span>
+                  <span className="text-text-primary text-sm">{alert.enrichment.sighting_datetime}</span>
                 </div>
               </div>
             )}
             {/* Report Time */}
-            {alert.enrichment_data.report_date && (
+            {alert.enrichment.report_date && (
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-text-tertiary text-sm font-medium">Reported:</span>
-                  <span className="text-text-secondary text-sm">{alert.enrichment_data.report_date}</span>
+                  <span className="text-text-secondary text-sm">{alert.enrichment.report_date}</span>
                 </div>
               </div>
             )}
