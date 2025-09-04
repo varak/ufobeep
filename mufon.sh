@@ -490,7 +490,20 @@ def extract_and_import_mufon(date_str):
                                         except:
                                             popup_text = popup.locator("body").inner_text()
                                         
+                                        # Simple header removal - keep all content except literal headers
                                         long_description = popup_text.strip()
+                                        if popup_text:
+                                            lines = popup_text.strip().split('\n')
+                                            # Filter out only literal header lines
+                                            filtered_lines = []
+                                            for line in lines:
+                                                line_clean = line.strip()
+                                                # Skip only literal header text, keep everything else
+                                                if line_clean and 'Long Description' not in line_clean and 'Sighting Report' not in line_clean:
+                                                    filtered_lines.append(line_clean)
+                                            
+                                            if filtered_lines:
+                                                long_description = '\n'.join(filtered_lines)
                                         log(f"📝 Found long description from popup: {long_description[:80]}...")
                                         popup.close()
                                     except Exception as e:
@@ -539,8 +552,8 @@ def extract_and_import_mufon(date_str):
                         # Prepare alert data with correct API structure
                         alert_data = {
                             "device_id": f"mufon_import_{real_case_id}",
-                            "title": classification['type'].title(),
-                            "description": f"MUFON Case #{real_case_id}\\n\\n{long_description}",
+                            "title": classification['type'].title() if classification['confidence'] >= 0.8 else "UFO Sighting",
+                            "description": f"MUFON Case #{real_case_id}\n\n{long_description}",
                             "username": "MUFON",
                             "source": "mufon",
                             "external_id": f"mufon_{real_case_id}",
