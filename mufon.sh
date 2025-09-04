@@ -550,18 +550,21 @@ def extract_and_import_mufon(date_str):
                         log(f"📤 Creating alert for MUFON Case #{real_case_id}...")
                         
                         # Prepare alert data with correct API structure
+                        # Title: Add "Sighting" suffix to UFO types
+                        if classification['confidence'] >= 0.3:
+                            title = f"{classification['type'].title()} Sighting"
+                        else:
+                            title = "UFO Sighting"
+                        
                         alert_data = {
                             "device_id": f"mufon_import_{real_case_id}",
-                            "title": classification['type'].title() if classification['confidence'] >= 0.8 else "UFO Sighting",
-                            "description": f"MUFON Case #{real_case_id}\n\n{long_description}",
+                            "title": title,
+                            "description": long_description,  # Use LONG description as main description
                             "username": "MUFON",
-                            "source": "mufon",
-                            "external_id": f"mufon_{real_case_id}",
-                            "external_url": f"https://mufon.com/case/{real_case_id}",
-                            "has_media": len(media_files) > 0
+                            "source": "mufon"
                         }
                         
-                        # Add location as nested object if we have geocoding data
+                        # Add location as simple object if we have geocoding data
                         if geo_data:
                             alert_data["location"] = {
                                 "latitude": geo_data["latitude"],
@@ -575,14 +578,26 @@ def extract_and_import_mufon(date_str):
                             "mufon_case_id": real_case_id,
                             "report_date": report_date,
                             "sighting_datetime": sighting_datetime,
-                            "location_raw": location
+                            "location_raw": location,
+                            "short_description": short_description,
+                            "long_description": long_description,
+                            "external_id": f"mufon_{real_case_id}",
+                            "external_url": f"https://mufon.com/case/{real_case_id}",
+                            "has_media": len(media_files) > 0,
+                            # Hide widgets for MUFON alerts
+                            "hide_witness_widget": True,
+                            "hide_location_widget": True
                         }
                         
-                        # Store enrichment data in the description for now 
-                        # (will be properly stored in enrichment_data field by the service)
-                        alert_data["enrichment"] = enrichment_data
+                        # Add media files to the alert payload
+                        if media_files:
+                            alert_data["media_info"] = {"files": media_files}
+                        
+                        # Use correct parameter name for API
+                        alert_data["enrichment_data"] = enrichment_data
                         
                         # Create the alert via API
+                        alert_id = None
                         try:
                             response = requests.post(
                                 "http://localhost:8000/alerts", 
@@ -590,15 +605,21 @@ def extract_and_import_mufon(date_str):
                                 timeout=30
                             )
                             if response.status_code in [200, 201]:
+                                alert_response = response.json()
+                                # Get alert_id from the sighting_id field
+                                alert_id = alert_response.get('sighting_id')
                                 log(f"✅ Created alert: {alert_id}")
+                                log(f"DEBUG: API Response keys: {list(alert_response.keys())}")
                             else:
-                                log(f"⚠️ Alert creation failed: {response.status_code} - {response.text}")
+                                log(f"❌ Failed to create alert for case #{real_case_id}: {response.status_code}")
+                                continue  # Skip media upload if alert creation failed
                         except Exception as e:
                             log(f"❌ Alert creation error: {e}")
+                            continue  # Skip media upload if alert creation failed
                         
                         log(f"📤 ALERT DETAILS:")
                         log(f"   ID: {alert_id}")
-                        log(f"   Title: MUFON Case #{real_case_id}")
+                        log(f"   Title: {title}")
                         log(f"   Report Date: {report_date}")
                         log(f"   Sighting Date/Time: {sighting_datetime}")
                         log(f"   Location: {location}")
@@ -618,7 +639,7 @@ def extract_and_import_mufon(date_str):
                         imported_count += 1
                         
                         # UPLOAD MEDIA
-                        if media_files:
+                        if media_files and alert_id:
                             log(f"📤 Uploading {len(media_files)} media files...")
                             uploaded_count = 0
                             cookies = context.cookies()

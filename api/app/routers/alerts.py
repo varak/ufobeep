@@ -211,9 +211,8 @@ async def create_alert(request: dict, idempotency_key: Optional[str] = Header(No
             "witness_count": 1,
             "location_jittered": True,
             "proximity_alerts": alert_result,
-            # Also include new format for compatibility
             "success": True,
-            "data": {"alert_id": alert_id, "jittered_location": jittered_location}
+            "data": {"jittered_location": jittered_location}
         }
         
         # Cache result for idempotency
