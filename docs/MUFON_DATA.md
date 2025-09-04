@@ -118,12 +118,13 @@ python3 api/feeds/import_mufon_fixed.py mufon_clicker/mufon_simple_2025_01_27.js
 rm -f mufon_clicker/mufon_simple_2025_01_27.json && rm -rf mufon_clicker/mufon_media/
 ```
 
-### Current Status (September 3, 2025)
+### Current Status (September 2025)
 - ✅ **Authentication**: Fixed .env.mufon exports - working
-- ✅ **Extraction**: mufon_simple_extraction.py confirmed working
-- ✅ **Import**: Processed 14/15 cases with media successfully  
-- ✅ **Cron**: Updated nightly pipeline to use correct scripts
-- ⚠️  **Note**: mufon_proper_extraction.py has iframe timeout issues - use mufon_simple_extraction.py
+- ✅ **Extraction**: mufon.sh unified script confirmed working
+- ✅ **Import**: Processed 4/4 cases with full long descriptions successfully  
+- ✅ **Parsing**: All major data extraction issues resolved
+- ✅ **Popup Handling**: Long descriptions now extracted correctly using expect_popup()
+- ⚠️  **Note**: Use mufon.sh as the single source of truth - other scripts deprecated
 
 ## Technical Details
 
@@ -133,15 +134,58 @@ rm -f mufon_clicker/mufon_simple_2025_01_27.json && rm -rf mufon_clicker/mufon_m
 - Session state reused for subsequent extractions
 - Authentication expires periodically, requiring fresh login
 
-### Data Extraction Process
-1. **Load Session**: Restore saved browser session with cookies
-2. **Navigate to Search**: Go to MUFON CMS search interface
-3. **Set Date Range**: Use coordinate clicking to set specific date
-4. **Submit Search**: Execute search and wait for results
-5. **Parse Table**: Extract case data from results table
-6. **Extract Details**: Click VIEW for each case to get long descriptions
-7. **Download Media**: Use httpx with session cookies to download attachments
-8. **Save Data**: Output JSON with cases and local media file paths
+### Data Extraction Process (Updated September 2025)
+1. **Authentication**: Handle session cookies automatically with persistent storage
+2. **Navigate to Search**: Go to MUFON CMS search interface in iframe
+3. **Set Date Range**: Use precise date selectors for target date
+4. **Submit Search**: Execute search and wait for results table
+5. **Parse Table Structure**: Extract data using correct column mapping:
+   - cells[0] = Row number (ignore)  
+   - cells[1] = Date Submitted
+   - cells[2] = Date/Time of Event
+   - cells[3] = Short Description  
+   - cells[4] = Location
+   - cells[6] = Attachments
+6. **Extract Case IDs**: Parse real MUFON case ID from VIEW button onclick attribute
+7. **Extract Long Descriptions**: Use expect_popup() context manager with proper waiting
+8. **Download Media**: Convert HTTP to HTTPS URLs for media files
+9. **Import to Database**: Create alerts directly in UFOBeep database
+
+### Critical Technical Fixes (September 2025)
+
+#### Case ID Extraction - Single Source of Truth
+```python
+# BEFORE: Using table row numbers (wrong)
+numeric_case = raw_case.replace("#", "").strip()  # Results in 1, 2, 3...
+
+# AFTER: Using VIEW button onclick (correct)  
+onclick = inp.get_attribute('onclick')
+match = re.search(r'id=(\d+)', onclick)  # Results in 143976, 143972...
+real_case_id = match.group(1)
+```
+
+#### Popup Handling - Proper Async Context
+```python
+# BEFORE: Manual page counting (unreliable)
+if len(page.context.pages) > 1:
+    popup = page.context.pages[-1]
+    popup_text = popup.locator("body").inner_text()  # Missing await!
+
+# AFTER: Context manager with proper waiting (reliable)
+with page.expect_popup() as popup_info:
+    view_input.click()
+popup = popup_info.value
+popup.wait_for_load_state("domcontentloaded")
+popup.wait_for_selector("pre", timeout=5000)
+popup_text = popup.locator("pre").inner_text()
+```
+
+#### Media URL Handling - HTTPS Conversion
+```python
+# Convert HTTP to HTTPS to avoid 301 redirects
+if href.startswith('http://'):
+    href = href.replace('http://', 'https://')
+```
 
 ### Location Processing
 - **Primary**: Extract location from long description narrative text
@@ -306,4 +350,4 @@ python3 mufon_working_pipeline.py 2025-01-27
 
 ---
 
-*Last Updated: September 2, 2025*
+*Last Updated: September 3, 2025 - Added comprehensive data parsing methods and technical fixes*

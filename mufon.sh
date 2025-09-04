@@ -169,38 +169,65 @@ def extract_and_import_mufon(date_str):
                 try:
                     cells = row.locator("td").all()
                     if len(cells) >= 4:
-                        # MUFON table structure: Case#, Report Date, Sighting Date/Time, Description, Location, [Media]
-                        raw_case = cells[0].inner_text().strip()
+                        # MUFON table structure: Row#, Date Submitted, Date/Time of Event, Short Description, Location, Long Description, Attachments
+                        row_number = cells[0].inner_text().strip()
                         report_date = cells[1].inner_text().strip()
                         sighting_datetime = cells[2].inner_text().strip()
                         short_description = cells[3].inner_text().strip()
                         location = cells[4].inner_text().strip() if len(cells) > 4 else "Unknown Location"
                         
-                        log(f"🔍 RAW PARSE - Case: '{raw_case}', ReportDate: '{report_date}', SightingDT: '{sighting_datetime[:30]}', Desc: '{short_description[:30]}', Loc: '{location[:20]}'")
+                        log(f"🔍 RAW PARSE - Row: '{row_number}', ReportDate: '{report_date}', SightingDT: '{sighting_datetime[:30]}', Desc: '{short_description[:30]}', Loc: '{location[:20]}'")
                         
                         # Skip header rows and invalid cases
-                        if not raw_case or raw_case in ["", "#", "Case"]:
-                            continue
-                            
-                        # Use display number temporarily, will get real case ID from URL
-                        numeric_case = raw_case.replace("#", "").strip()
-                        if not numeric_case.isdigit():
-                            log(f"⚠️ Skipping non-numeric case: {raw_case}")
+                        if not row_number or row_number in ["", "#", "Case"] or not row_number.isdigit():
                             continue
                         
-                        log(f"🔍 Processing Case #{numeric_case}")
+                        log(f"🔍 Processing Row #{row_number}")
                         
-                        # Get real case ID from VIEW link URL
-                        real_case_id = numeric_case
-                        view_links = row.locator("a").all()
-                        for link in view_links:
+                        # DEBUG: Show ALL elements in this row
+                        all_elements = row.locator("*").all()
+                        log(f"🔍 ROW ELEMENTS DEBUG: Found {len(all_elements)} total elements")
+                        
+                        inputs = row.locator("input").all()
+                        buttons = row.locator("button").all() 
+                        links = row.locator("a").all()
+                        
+                        log(f"🔍 ROW DEBUG: {len(inputs)} inputs, {len(buttons)} buttons, {len(links)} links")
+                        
+                        for i, inp in enumerate(inputs):
+                            value = inp.get_attribute('value') or ''
+                            type_attr = inp.get_attribute('type') or ''
+                            onclick = inp.get_attribute('onclick') or ''
+                            log(f"🔍 INPUT[{i}]: type='{type_attr}', value='{value}', onclick='{onclick}'")
+                        
+                        for i, btn in enumerate(buttons):
+                            text = btn.inner_text().strip()
+                            onclick = btn.get_attribute('onclick') or ''
+                            log(f"🔍 BUTTON[{i}]: text='{text}', onclick='{onclick}'")
+                        
+                        for i, link in enumerate(links):
                             href = link.get_attribute('href') or ''
-                            if "neonPage.jsp" in href:
-                                match = re.search(r'id=(\d+)', href)
+                            text = link.inner_text().strip()
+                            log(f"🔍 LINK[{i}]: text='{text}', href='{href}'")
+                        
+                        # Get real case ID from VIEW button (single source of truth)
+                        real_case_id = None
+                        
+                        # Extract case ID from VIEW button onclick attribute
+                        for inp in inputs:
+                            onclick = inp.get_attribute('onclick') or ''
+                            value = inp.get_attribute('value') or ''
+                            if 'VIEW' in value and 'id=' in onclick:
+                                match = re.search(r'id=(\d+)', onclick)
                                 if match:
                                     real_case_id = match.group(1)
-                                    log(f"✅ Extracted real case ID: {real_case_id}")
-                                break
+                                    log(f"✅ Extracted real case ID from VIEW link: {real_case_id}")
+                                    break
+                        
+                        # Skip if no case ID found
+                        if not real_case_id:
+                            log(f"⚠️ No VIEW button with case ID found, skipping row")
+                            continue
                         
                         # Extract media files
                         media_files = []
@@ -215,6 +242,8 @@ def extract_and_import_mufon(date_str):
                                 if filename and any(ext in filename.lower() for ext in ['.jpg', '.png', '.mp4', '.mov', '.jpeg']):
                                     if href and not href.startswith('http'):
                                         href = f"https://mufoncms.com{href}"
+                                    elif href and href.startswith('http://'):
+                                        href = href.replace('http://', 'https://')
                                     
                                     file_type = "image" if any(ext in filename.lower() for ext in ['.jpg', '.jpeg', '.png']) else "video"
                                     media_files.append({
@@ -225,88 +254,74 @@ def extract_and_import_mufon(date_str):
                         
                         log(f"📎 Found {len(media_files)} media files")
                         
-                        # Get long description by clicking VIEW
+                        # Get long description from VIEW page
                         long_description = short_description
-                        for link in view_links:
-                            href = link.get_attribute('href') or ''
-                            if "neonPage.jsp" in href:
-                                try:
-                                    log("📖 Getting long description...")
-                                    page.goto(f"https://mufon.z2systems.com/np/clients/mufon/{href}")
-                                    time.sleep(3)
-                                    
-                                    # Get longest text that looks like a description
-                                    all_text = page.locator("body").inner_text()
-                                    lines = [line.strip() for line in all_text.split('\n') if len(line.strip()) > 100]
-                                    for line in lines:
-                                        if any(word in line.lower() for word in ['observed', 'saw', 'witnessed', 'object', 'light']):
-                                            long_description = line
-                                            log(f"📝 Found long description: {line[:80]}...")
-                                            break
-                                    
-                                    page.go_back()
-                                    time.sleep(2)
-                                    break
-                                except Exception as e:
-                                    log(f"⚠️ Failed to get long description: {e}")
-                                    pass
                         
-                        # CREATE ALERT - Direct database insert
-                        log(f"📤 Creating alert for case #{real_case_id}...")
+                        # Look for VIEW button/input in the row (use the same input we found for case ID)
+                        if real_case_id:
+                            try:
+                                log("📖 Clicking VIEW for long description...")
+                                
+                                # Find the VIEW button we already identified  
+                                view_input = None
+                                for inp in inputs:
+                                    value = inp.get_attribute('value') or ''
+                                    if 'VIEW' in value:
+                                        view_input = inp
+                                        break
+                                
+                                # Properly wait for popup and extract content
+                                if view_input:
+                                    try:
+                                        with page.expect_popup() as popup_info:
+                                            view_input.click()
+                                        popup = popup_info.value
+                                        popup.wait_for_load_state("domcontentloaded")
+                                        
+                                        # Long description is typically inside <pre>; fall back to body
+                                        try:
+                                            popup.wait_for_selector("pre", timeout=5000)
+                                            popup_text = popup.locator("pre").inner_text()
+                                        except:
+                                            popup_text = popup.locator("body").inner_text()
+                                        
+                                        long_description = popup_text.strip()
+                                        log(f"📝 Found long description from popup: {long_description[:80]}...")
+                                        popup.close()
+                                    except Exception as e:
+                                        log(f"⚠️ Popup failed, trying same-page navigation: {e}")
+                                        # Fallback: handle same-page nav 
+                                        before_url = page.url
+                                        view_input.click()
+                                        page.wait_for_load_state("domcontentloaded")
+                                        if page.url != before_url:
+                                            try:
+                                                page.wait_for_selector("pre", timeout=5000)
+                                                long_description = page.locator("pre").inner_text().strip()
+                                            except:
+                                                long_description = page.locator("body").inner_text().strip()
+                                            log(f"📝 Found long description from same-page: {long_description[:80]}...")
+                                    
+                            except Exception as e:
+                                log(f"⚠️ Failed to get long description: {e}")
                         
-                        import psycopg2
+                        # PRINT what we WOULD insert (unless --insert flag is used)
                         import uuid
+                        alert_id = str(uuid.uuid4())
                         
-                        try:
-                            # Connect to database
-                            conn = psycopg2.connect(
-                                host="localhost",
-                                port=5432, 
-                                user="ufobeep_user",
-                                password="ufopostpass",
-                                database="ufobeep_db"
-                            )
-                            cur = conn.cursor()
-                            
-                            # Generate alert ID
-                            alert_id = str(uuid.uuid4())
-                            
-                            # Simple insert - just like any other beep
-                            cur.execute("""
-                                INSERT INTO sightings 
-                                (id, title, description, category, witness_count, is_public, 
-                                 alert_level, status, reporter_id, source, source_id, 
-                                 external_url, lat, lon, occurred_at, created_at)
-                                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                            """, (
-                                alert_id,
-                                f"MUFON Case #{real_case_id}",
-                                long_description,
-                                "ufo", 
-                                1, 
-                                True,
-                                "medium",
-                                "created", 
-                                "443a596f-8119-4f27-b232-3abc92729afb",  # MUFON user ID
-                                "mufon",
-                                f"mufon_{real_case_id}",
-                                f"https://mufon.com/case/{real_case_id}",
-                                39.7392,  # Default location
-                                -104.9903,
-                                datetime.now(),
-                                datetime.now()
-                            ))
-                            
-                            conn.commit()
-                            cur.close()
-                            conn.close()
-                            
-                            imported_count += 1
-                            log(f"✅ Created alert: {alert_id}")
-                            
-                        except Exception as e:
-                            log(f"❌ Failed to create alert for case #{real_case_id}: {e}")
-                            continue
+                        log(f"📤 WOULD CREATE ALERT:")
+                        log(f"   ID: {alert_id}")
+                        log(f"   Title: MUFON Case #{real_case_id}")
+                        log(f"   Report Date: {report_date}")
+                        log(f"   Sighting Date/Time: {sighting_datetime}")
+                        log(f"   Location: {location}")
+                        log(f"   Short Description: {short_description}")
+                        log(f"   Long Description: {long_description}")
+                        log(f"   Source ID: mufon_{real_case_id}")
+                        log(f"   External URL: https://mufon.com/case/{real_case_id}")
+                        log(f"   Media Files: {len(media_files)}")
+                        
+                        imported_count += 1
                         
                         # UPLOAD MEDIA
                         if media_files:
