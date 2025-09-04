@@ -402,8 +402,16 @@ class AlertsService:
         if username and source != "mufon":
             await self._auto_follow_alert(alert_id, username)
         
-        # Call enrichment service after alert creation - skip for MUFON since they provide their own enrichment data
-        if source != "mufon":
+        # Call enrichment service after alert creation
+        if source == "mufon" and enrichment_data:
+            # For MUFON: directly save the enrichment data we already have in memory
+            async with self.db_pool.acquire() as conn:
+                await conn.execute("""
+                    UPDATE sightings 
+                    SET enrichment_data = $1
+                    WHERE id = $2
+                """, json.dumps(enrichment_data), uuid.UUID(alert_id))
+        elif source != "mufon":
             await self._enrich_alert(alert_id, lat, lng, description)
         
         return alert_id, {"lat": jittered_lat, "lng": jittered_lng}
@@ -427,15 +435,6 @@ class AlertsService:
     async def _enrich_alert(self, alert_id: str, latitude: float, longitude: float, description: str = None):
         """Call enrichment service for weather and reverse geocoding"""
         try:
-            # Check if this is a MUFON alert - if so, don't override their enrichment data
-            async with self.db_pool.acquire() as conn:
-                source_check = await conn.fetchrow("""
-                    SELECT source, enrichment_data FROM sightings WHERE id = $1
-                """, uuid.UUID(alert_id))
-                
-                if source_check and source_check['source'] == 'mufon':
-                    print(f"Skipping enrichment for MUFON alert {alert_id} - preserving original MUFON data")
-                    return
             
             from app.services.enrichment_service import enrichment_orchestrator, initialize_enrichment_processors, EnrichmentContext
             

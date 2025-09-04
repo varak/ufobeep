@@ -792,10 +792,22 @@ def extract_and_import_mufon(date_str):
                         else:
                             title = "MUFON Report"
                         
+                        # Build description with MUFON metadata appended
+                        enhanced_description = long_description if long_description else ""
+                        if enhanced_description:
+                            enhanced_description += "\n\n"
+                        
+                        # Append MUFON metadata to description
+                        enhanced_description += "━━━━━━━━━━━━━━━━━━━━━━━━\n"
+                        enhanced_description += f"📋 MUFON Case #{real_case_id}\n"
+                        enhanced_description += f"📅 Reported: {report_date}\n"
+                        enhanced_description += f"👁️ Occurred: {sighting_datetime}\n"
+                        enhanced_description += f"📍 Location: {location}"
+                        
                         alert_data = {
                             "device_id": f"mufon_import_{real_case_id}",
                             "title": title,
-                            "description": long_description,  # Use LONG description as main description
+                            "description": enhanced_description,  # Use enhanced description with metadata
                             "username": "MUFON",
                             "source": "mufon"
                         }
