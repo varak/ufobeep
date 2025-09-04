@@ -148,16 +148,17 @@ class AlertsService:
             enrichment = self._parse_json(enrichment_data)
             if enrichment and "geocoding" in enrichment:
                 geocoding = enrichment["geocoding"]
-                lat = geocoding.get("latitude")
-                lng = geocoding.get("longitude")
-                location_name = geocoding.get("location_name") or geocoding.get("formatted_address", "Unknown Location")
-                if self._valid_coords(lat, lng):
-                    return AlertLocation(
-                        latitude=float(lat),
-                        longitude=float(lng),
-                        name=location_name,
-                        accuracy=50.0
-                    )
+                if geocoding:  # Check if geocoding is not None
+                    lat = geocoding.get("latitude")
+                    lng = geocoding.get("longitude")
+                    location_name = geocoding.get("location_name") or geocoding.get("formatted_address", "Unknown Location")
+                    if self._valid_coords(lat, lng):
+                        return AlertLocation(
+                            latitude=float(lat),
+                            longitude=float(lng),
+                            name=location_name,
+                            accuracy=50.0
+                        )
         
         # Fall back to sensor data
         if sensor_data:
@@ -400,19 +401,27 @@ class AlertsService:
         # Auto-follow the alert for the creator so they get notifications
         # Skip for MUFON imports (historical data shouldn't trigger notifications)
         if username and source != "mufon":
-            await self._auto_follow_alert(alert_id, username)
+            try:
+                await self._auto_follow_alert(alert_id, username)
+            except Exception as e:
+                print(f"Auto-follow failed for alert {alert_id}: {e}")
+                # Continue without auto-follow if database unavailable
         
         # Call enrichment service after alert creation
-        if source == "mufon" and enrichment_data:
-            # For MUFON: directly save the enrichment data we already have in memory
-            async with self.db_pool.acquire() as conn:
-                await conn.execute("""
-                    UPDATE sightings 
-                    SET enrichment_data = $1
-                    WHERE id = $2
-                """, json.dumps(enrichment_data), uuid.UUID(alert_id))
-        elif source != "mufon":
-            await self._enrich_alert(alert_id, lat, lng, description)
+        try:
+            if source == "mufon" and enrichment_data:
+                # For MUFON: directly save the enrichment data we already have in memory
+                async with self.db_pool.acquire() as conn:
+                    await conn.execute("""
+                        UPDATE sightings 
+                        SET enrichment_data = $1
+                        WHERE id = $2
+                    """, json.dumps(enrichment_data), uuid.UUID(alert_id))
+            elif source != "mufon":
+                await self._enrich_alert(alert_id, lat, lng, description)
+        except Exception as e:
+            print(f"Enrichment failed for alert {alert_id}: {e}")
+            # Continue without enrichment if database unavailable
         
         return alert_id, {"lat": jittered_lat, "lng": jittered_lng}
     
