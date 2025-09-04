@@ -427,6 +427,16 @@ class AlertsService:
     async def _enrich_alert(self, alert_id: str, latitude: float, longitude: float, description: str = None):
         """Call enrichment service for weather and reverse geocoding"""
         try:
+            # Check if this is a MUFON alert - if so, don't override their enrichment data
+            async with self.db_pool.acquire() as conn:
+                source_check = await conn.fetchrow("""
+                    SELECT source, enrichment_data FROM sightings WHERE id = $1
+                """, uuid.UUID(alert_id))
+                
+                if source_check and source_check['source'] == 'mufon':
+                    print(f"Skipping enrichment for MUFON alert {alert_id} - preserving original MUFON data")
+                    return
+            
             from app.services.enrichment_service import enrichment_orchestrator, initialize_enrichment_processors, EnrichmentContext
             
             # Initialize processors if not already done
