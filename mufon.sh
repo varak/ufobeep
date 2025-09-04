@@ -197,62 +197,77 @@ class UFOClassifier:
 
 def reverse_geocode(location_text: str) -> Optional[Dict[str, any]]:
     """Extract location from text and get coordinates using Nominatim"""
-    if not location_text:
+    if not location_text or len(location_text.strip()) < 3:
         return None
     
-    # Extract location patterns from text
-    location_patterns = [
-        r"in\s+([A-Za-z\s]+),\s*([A-Z]{2})",  # "in City, ST"
-        r"near\s+([A-Za-z\s]+),\s*([A-Z]{2})",  # "near City, ST"
-        r"from\s+([A-Za-z\s]+),\s*([A-Z]{2})",  # "from City, ST"
-        r"at\s+([A-Za-z\s]+),\s*([A-Z]{2})",    # "at City, ST"
-        r"([A-Za-z\s]+),\s*([A-Z]{2})"          # "City, ST"
-    ]
+    text = location_text.strip()
     
-    extracted_location = None
-    for pattern in location_patterns:
-        match = re.search(pattern, location_text, re.IGNORECASE)
-        if match:
-            city = match.group(1).strip()
-            state = match.group(2).strip()
-            extracted_location = f"{city}, {state}"
-            break
+    # Clean up MUFON location format like "Schenectady, NY, US" 
+    cleaned_location = re.sub(r',?\s*(US|USA)$', '', text, flags=re.IGNORECASE).strip()
     
-    if not extracted_location:
-        # Try simple city names
-        words = location_text.split()
-        if len(words) >= 2:
-            extracted_location = " ".join(words[:2])
+    # If it already looks like "City, ST", use it directly
+    if re.match(r'^[A-Za-z\s]+,\s*[A-Z]{2}$', cleaned_location):
+        search_location = cleaned_location
+    else:
+        # Extract location patterns from descriptions
+        location_patterns = [
+            r"in\s+([A-Za-z\s]+),\s*([A-Z]{2})\b",  # "in City, ST"
+            r"near\s+([A-Za-z\s]+),\s*([A-Z]{2})\b",  # "near City, ST"
+            r"from\s+([A-Za-z\s]+),\s*([A-Z]{2})\b",  # "from City, ST"
+            r"([A-Za-z\s]+),\s*([A-Z]{2})\b",          # "City, ST"
+        ]
+        
+        search_location = None
+        for pattern in location_patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                city = match.group(1).strip()
+                state = match.group(2).strip()
+                if len(city) > 2 and len(state) == 2:
+                    search_location = f"{city}, {state}"
+                    break
+        
+        # If no structured location found, don't geocode
+        if not search_location:
+            return None
     
-    if extracted_location:
-        try:
-            # Use Nominatim for geocoding
-            import time
-            time.sleep(1)  # Rate limit
-            
-            url = "https://nominatim.openstreetmap.org/search"
-            params = {
-                "q": extracted_location,
-                "format": "json",
-                "limit": 1,
-                "countrycodes": "us"
-            }
-            
-            headers = {"User-Agent": "UFOBeep-MUFON/1.0"}
-            
-            response = requests.get(url, params=params, headers=headers, timeout=10)
-            if response.status_code == 200:
-                data = response.json()
-                if data:
-                    result = data[0]
+    try:
+        # Use Nominatim for geocoding
+        import time
+        time.sleep(1.2)  # Rate limit
+        
+        url = "https://nominatim.openstreetmap.org/search"
+        params = {
+            "q": search_location,
+            "format": "json",
+            "limit": 1,
+            "countrycodes": "us"
+        }
+        
+        headers = {"User-Agent": "UFOBeep-MUFON/1.0 (+https://ufobeep.com)"}
+        
+        response = requests.get(url, params=params, headers=headers, timeout=15)
+        if response.status_code == 200:
+            data = response.json()
+            if data:
+                result = data[0]
+                lat = float(result["lat"])
+                lon = float(result["lon"])
+                
+                # Validate coordinates are in US bounds
+                if -180 <= lon <= -60 and 20 <= lat <= 70:
                     return {
-                        "location": extracted_location,
-                        "latitude": float(result["lat"]),
-                        "longitude": float(result["lon"]),
-                        "display_name": result.get("display_name", extracted_location)
+                        "location": search_location,
+                        "latitude": lat,
+                        "longitude": lon,
+                        "display_name": result.get("display_name", search_location)
                     }
-        except Exception as e:
-            log(f"⚠️ Geocoding failed for '{extracted_location}': {e}")
+                else:
+                    log(f"⚠️ Invalid coordinates for '{search_location}': {lat}, {lon}")
+        else:
+            log(f"⚠️ Geocoding API error {response.status_code} for '{search_location}'")
+    except Exception as e:
+        log(f"⚠️ Geocoding failed for '{search_location}': {e}")
     
     return None
 
@@ -502,7 +517,14 @@ def extract_and_import_mufon(date_str):
                         # Extract location and geocode
                         geo_data = None
                         try:
-                            geo_data = reverse_geocode(f"{location} {long_description}")
+                            # First try the location field directly
+                            if location and len(location.strip()) > 3:
+                                geo_data = reverse_geocode(location)
+                            
+                            # If that fails, try extracting from description
+                            if not geo_data and long_description:
+                                geo_data = reverse_geocode(long_description)
+                                
                             if geo_data:
                                 log(f"📍 Geocoded: {geo_data['location']} -> {geo_data['latitude']}, {geo_data['longitude']}")
                         except Exception as e:
