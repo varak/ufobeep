@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:video_player/video_player.dart';
+import 'package:file_picker/file_picker.dart';
 
 import '../../theme/app_theme.dart';
 import '../../models/sensor_data.dart';
@@ -14,6 +15,7 @@ import '../../services/sound_service.dart';
 import '../../services/beep_service.dart';
 import '../../services/sensor_service.dart';
 import '../../services/location_service.dart';
+import '../../services/photo_metadata_service.dart';
 import '../../services/ui_feedback.dart';
 import '../../providers/app_state.dart';
 import '../../widgets/simple_photo_display.dart';
@@ -456,6 +458,121 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     context.go('/beep');
   }
 
+  void _addMoreMedia() async {
+    // Add haptic feedback
+    await SoundService.I.play(AlertSound.tap, haptic: true);
+    
+    try {
+      // Use FilePicker to select additional media files
+      final FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.media,
+        allowMultiple: true,
+        withData: false,
+        withReadStream: false,
+      );
+
+      if (result == null || result.files.isEmpty) {
+        return;
+      }
+
+      debugPrint('Adding ${result.files.length} more files to composition');
+      
+      // Process new files with the same logic as gallery selection
+      final List<Map<String, dynamic>> newMediaFiles = [];
+      
+      for (final PlatformFile platformFile in result.files) {
+        try {
+          final String? filePath = platformFile.path;
+          
+          if (filePath == null || filePath.isEmpty) {
+            debugPrint('Skipping file with null/empty path: ${platformFile.name}');
+            continue;
+          }
+
+          final File mediaFile = File(filePath);
+          
+          if (!await mediaFile.exists()) {
+            debugPrint('Skipping non-existent file: $filePath');
+            continue;
+          }
+
+          // Determine if this is a video
+          final String fileName = platformFile.name.toLowerCase();
+          final String? extension = platformFile.extension?.toLowerCase();
+          final bool isVideo = fileName.endsWith('.mp4') || 
+                              fileName.endsWith('.mov') || 
+                              fileName.endsWith('.avi') || 
+                              fileName.endsWith('.webm') ||
+                              fileName.endsWith('.3gp') ||
+                              fileName.endsWith('.mkv') ||
+                              extension == 'mp4' ||
+                              extension == 'mov' ||
+                              extension == 'avi' ||
+                              extension == 'webm' ||
+                              extension == '3gp' ||
+                              extension == 'mkv';
+
+          debugPrint('Adding ${isVideo ? 'video' : 'image'} file: ${mediaFile.path}');
+          
+          // Extract metadata only for images
+          Map<String, dynamic> mediaMetadata = {};
+          
+          if (!isVideo) {
+            try {
+              mediaMetadata = await PhotoMetadataService.extractComprehensiveMetadata(mediaFile);
+              debugPrint('Extracted metadata: ${mediaMetadata.keys.length} categories');
+            } catch (e) {
+              debugPrint('Warning: Failed to extract metadata from ${mediaFile.path}: $e');
+            }
+          }
+          
+          // Add to new files list
+          newMediaFiles.add({
+            'mediaFile': mediaFile,
+            'isVideo': isVideo,
+            'photoMetadata': mediaMetadata,
+            'platformFile': platformFile,
+          });
+          
+        } catch (e) {
+          debugPrint('Error processing additional file ${platformFile.name}: $e');
+          continue;
+        }
+      }
+
+      // Add new files to existing media files list
+      if (newMediaFiles.isNotEmpty) {
+        setState(() {
+          _mediaFiles.addAll(newMediaFiles);
+        });
+        debugPrint('Added ${newMediaFiles.length} files, total now: ${_mediaFiles.length}');
+        
+        // Show success message
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Added ${newMediaFiles.length} more ${newMediaFiles.length == 1 ? 'file' : 'files'}'),
+              backgroundColor: AppColors.brandPrimary,
+              duration: const Duration(seconds: 2),
+            ),
+          );
+        }
+      }
+      
+    } catch (e) {
+      debugPrint('Error adding more media: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to add media: $e'),
+            backgroundColor: AppColors.semanticError,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -789,19 +906,40 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
             
             const SizedBox(height: 12),
             
-            // Retake Media button (smaller, secondary)
-            TextButton.icon(
-              onPressed: _isSubmitting ? null : () async {
-                await SoundService.I.play(AlertSound.tap, haptic: true);
-                _retakeMedia();
-              },
-              icon: Icon(widget.isVideo ?? false ? Icons.videocam : Icons.camera_alt, size: 18),
-              label: Text('Retake ${widget.isVideo ?? false ? 'Video' : 'Photo'}'),
-              style: TextButton.styleFrom(
-                foregroundColor: AppColors.textSecondary,
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                textStyle: const TextStyle(fontSize: 16),
-              ),
+            // Secondary action buttons row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // Add More Media button
+                TextButton.icon(
+                  onPressed: _isSubmitting ? null : () async {
+                    await SoundService.I.play(AlertSound.tap, haptic: true);
+                    _addMoreMedia();
+                  },
+                  icon: const Icon(Icons.add_photo_alternate, size: 18),
+                  label: const Text('Add More'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.brandPrimary,
+                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    textStyle: const TextStyle(fontSize: 16),
+                  ),
+                ),
+                
+                // Retake Media button
+                TextButton.icon(
+                  onPressed: _isSubmitting ? null : () async {
+                    await SoundService.I.play(AlertSound.tap, haptic: true);
+                    _retakeMedia();
+                  },
+                  icon: Icon(widget.isVideo ?? false ? Icons.videocam : Icons.camera_alt, size: 18),
+                  label: Text('Retake ${widget.isVideo ?? false ? 'Video' : 'Photo'}'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.textSecondary,
+                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    textStyle: const TextStyle(fontSize: 16),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

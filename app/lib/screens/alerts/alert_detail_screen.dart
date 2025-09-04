@@ -13,6 +13,7 @@ import '../../widgets/alert_sections/alert_hero_section.dart';
 import '../../widgets/alert_sections/alert_details_section.dart';
 import '../../widgets/alert_sections/alert_direction_section.dart';
 import '../../widgets/alert_sections/alert_actions_section.dart';
+import '../../widgets/video_player_widget.dart';
 import '../../widgets/enrichment/enrichment_section.dart';
 import '../../services/beep_service.dart';
 import '../../services/user_service.dart';
@@ -261,9 +262,10 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     if (alert.mediaFiles.isEmpty) return;
     
     final media = alert.mediaFiles[startIndex];
-    final imageUrl = media['url'] as String? ?? '';
+    final mediaUrl = media['url'] as String? ?? '';
+    final mediaType = media['type'] as String? ?? 'image';
     
-    if (imageUrl.isEmpty) return;
+    if (mediaUrl.isEmpty) return;
 
     showDialog(
       context: context,
@@ -273,37 +275,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         child: Stack(
           children: [
             Center(
-              child: InteractiveViewer(
-                panEnabled: true,
-                boundaryMargin: const EdgeInsets.all(20),
-                minScale: 0.5,
-                maxScale: 4.0,
-                child: Image.network(
-                  imageUrl,
-                  fit: BoxFit.contain,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return const Center(
-                      child: CircularProgressIndicator(color: AppColors.brandPrimary),
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.error, size: 64, color: AppColors.semanticError),
-                          SizedBox(height: 16),
-                          Text(
-                            'Failed to load image',
-                            style: TextStyle(color: AppColors.textSecondary, fontSize: 18),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
+              child: _buildFullscreenMediaContent(mediaUrl, mediaType),
             ),
             Positioned(
               top: 40,
@@ -325,6 +297,50 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildFullscreenMediaContent(String mediaUrl, String mediaType) {
+    if (mediaType == 'video') {
+      // For videos, use VideoPlayerWidget in fullscreen
+      return VideoPlayerWidget(
+        videoUrl: mediaUrl,
+        width: double.infinity,
+        height: double.infinity,
+      );
+    } else {
+      // For images, use InteractiveViewer for zoom functionality
+      return InteractiveViewer(
+        panEnabled: true,
+        boundaryMargin: const EdgeInsets.all(20),
+        minScale: 0.5,
+        maxScale: 4.0,
+        child: Image.network(
+          mediaUrl,
+          fit: BoxFit.contain,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return const Center(
+              child: CircularProgressIndicator(color: AppColors.brandPrimary),
+            );
+          },
+          errorBuilder: (context, error, stackTrace) {
+            return const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.error, size: 64, color: AppColors.semanticError),
+                  SizedBox(height: 16),
+                  Text(
+                    'Failed to load image',
+                    style: TextStyle(color: AppColors.textSecondary, fontSize: 18),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      );
+    }
   }
 
   void _navigateToSighting(Alert alert, double bearing, double distance) {
@@ -681,7 +697,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               label: Text(
                 alert.commentCount > 0 
                   ? 'View Comments (${alert.commentCount})'
-                  : 'View Comments'
+                  : 'Add Comment'
               ),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.brandPrimary,

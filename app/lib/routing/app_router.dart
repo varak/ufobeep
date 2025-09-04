@@ -204,12 +204,14 @@ GoRouter appRouter(AppRouterRef ref) {
                   
                   debugPrint('Router: Extra data keys: ${extra?.keys}');
                   
-                  final mediaFile = extra?['mediaFile'] ?? extra?['imageFile']; // Support both old and new parameter names
+                  // Support both single and multi-file formats
+                  final mediaFile = extra?['mediaFile'] ?? extra?['imageFile']; // Legacy single file
+                  final mediaFiles = extra?['mediaFiles'] as List<Map<String, dynamic>>?; // New multi-file format
                   final isVideo = extra?['isVideo'] ?? false;
                   
-                  // If no media file provided, show error and provide navigation options
-                  if (mediaFile == null) {
-                    debugPrint('ERROR: No media file in extra data for beep composition');
+                  // Check if we have either single or multi-file data
+                  if (mediaFile == null && (mediaFiles == null || mediaFiles.isEmpty)) {
+                    debugPrint('ERROR: No media file(s) in extra data for beep composition');
                     return Scaffold(
                       backgroundColor: AppColors.darkBackground,
                       appBar: AppBar(
@@ -258,14 +260,22 @@ GoRouter appRouter(AppRouterRef ref) {
                     );
                   }
                   
-                  debugPrint('Found ${isVideo ? 'video' : 'image'} file: $mediaFile');
+                  if (mediaFiles != null && mediaFiles.isNotEmpty) {
+                    debugPrint('Found ${mediaFiles.length} media files');
+                  } else {
+                    debugPrint('Found ${isVideo ? 'video' : 'image'} file: $mediaFile');
+                  }
                   
                   try {
                     return BeepCompositionScreen(
+                      // Legacy single file support
                       mediaFile: mediaFile,
                       isVideo: isVideo,
-                      sensorData: extra?['sensorData'],
                       photoMetadata: extra?['photoMetadata'],
+                      // New multi-file support
+                      mediaFiles: mediaFiles,
+                      // Common parameters
+                      sensorData: extra?['sensorData'],
                       description: extra?['description'],
                       attachToSightingId: extra?['attachToSightingId'],
                     );

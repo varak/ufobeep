@@ -96,7 +96,6 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   Future<void> _pickFromGallery() async {
     if (_isCapturing) return;
     
-
     setState(() {
       _isCapturing = true;
       _errorMessage = null;
@@ -120,75 +119,98 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
 
       debugPrint('Selected ${result.files.length} files');
       
-      // Process all selected files
+      // Process all selected files with better error handling
       final List<Map<String, dynamic>> mediaFiles = [];
       
-      // Get current location once for all files (reuse existing logic)
-      final currentLocation = await permissionService.getCurrentLocation();
+      // Get current location once for all files
       SensorData? currentSensorData;
-      if (currentLocation != null) {
-        currentSensorData = SensorData(
-          latitude: currentLocation.latitude,
-          longitude: currentLocation.longitude,
-          altitude: currentLocation.altitude,
-          accuracy: currentLocation.accuracy,
-          utc: DateTime.now(),
-          azimuthDeg: 0.0,
-          pitchDeg: 0.0,
-          rollDeg: 0.0,
-          hfovDeg: 60.0,
-        );
-        debugPrint('📍 Using current location for media beep: ${currentLocation.latitude}, ${currentLocation.longitude}');
-      } else {
-        debugPrint('❌ Failed to get current location for media beep');
+      try {
+        final currentLocation = await permissionService.getCurrentLocation();
+        if (currentLocation != null) {
+          currentSensorData = SensorData(
+            latitude: currentLocation.latitude,
+            longitude: currentLocation.longitude,
+            altitude: currentLocation.altitude,
+            accuracy: currentLocation.accuracy,
+            utc: DateTime.now(),
+            azimuthDeg: 0.0,
+            pitchDeg: 0.0,
+            rollDeg: 0.0,
+            hfovDeg: 60.0,
+          );
+          debugPrint('📍 Using current location for media beep: ${currentLocation.latitude}, ${currentLocation.longitude}');
+        } else {
+          debugPrint('❌ Failed to get current location for media beep');
+        }
+      } catch (e) {
+        debugPrint('Warning: Location access failed: $e');
+        // Continue without location - composition screen will handle this
       }
       
+      // Process files one by one with individual error handling
       for (final PlatformFile platformFile in result.files) {
-        final String? filePath = platformFile.path;
-        
-        if (filePath == null) {
-          debugPrint('Skipping file with null path: ${platformFile.name}');
+        try {
+          final String? filePath = platformFile.path;
+          
+          if (filePath == null || filePath.isEmpty) {
+            debugPrint('Skipping file with null/empty path: ${platformFile.name}');
+            continue;
+          }
+
+          final File mediaFile = File(filePath);
+          
+          // Verify file exists and is readable
+          if (!await mediaFile.exists()) {
+            debugPrint('Skipping non-existent file: $filePath');
+            continue;
+          }
+
+          // Determine if this is a video with more robust detection
+          final String fileName = platformFile.name.toLowerCase();
+          final String? extension = platformFile.extension?.toLowerCase();
+          final bool isVideo = fileName.endsWith('.mp4') || 
+                              fileName.endsWith('.mov') || 
+                              fileName.endsWith('.avi') || 
+                              fileName.endsWith('.webm') ||
+                              fileName.endsWith('.3gp') ||
+                              fileName.endsWith('.mkv') ||
+                              extension == 'mp4' ||
+                              extension == 'mov' ||
+                              extension == 'avi' ||
+                              extension == 'webm' ||
+                              extension == '3gp' ||
+                              extension == 'mkv';
+
+          debugPrint('Processing ${isVideo ? 'video' : 'image'} file: ${mediaFile.path}');
+          debugPrint('File size: ${platformFile.size} bytes');
+          
+          // Extract metadata only for images with error handling
+          Map<String, dynamic> mediaMetadata = {};
+          
+          if (!isVideo) {
+            try {
+              debugPrint('Extracting metadata from image file...');
+              mediaMetadata = await PhotoMetadataService.extractComprehensiveMetadata(mediaFile);
+              debugPrint('Extracted metadata: ${mediaMetadata.keys.length} categories');
+            } catch (e) {
+              debugPrint('Warning: Failed to extract metadata from ${mediaFile.path}: $e');
+              // Continue without metadata
+            }
+          }
+          
+          // Add to files list
+          mediaFiles.add({
+            'mediaFile': mediaFile,
+            'isVideo': isVideo,
+            'photoMetadata': mediaMetadata,
+            'platformFile': platformFile,
+          });
+          
+        } catch (e) {
+          debugPrint('Error processing file ${platformFile.name}: $e');
+          // Skip this file and continue with others
           continue;
         }
-
-        final File mediaFile = File(filePath);
-        
-        // Determine if this is a video (reuse existing logic)
-        final String fileName = platformFile.name.toLowerCase();
-        final bool isVideo = fileName.endsWith('.mp4') || 
-                            fileName.endsWith('.mov') || 
-                            fileName.endsWith('.avi') || 
-                            fileName.endsWith('.webm') ||
-                            fileName.endsWith('.3gp') ||
-                            platformFile.extension?.toLowerCase() == 'mp4' ||
-                            platformFile.extension?.toLowerCase() == 'mov' ||
-                            platformFile.extension?.toLowerCase() == 'avi' ||
-                            platformFile.extension?.toLowerCase() == 'webm' ||
-                            platformFile.extension?.toLowerCase() == '3gp';
-
-        debugPrint('Processing ${isVideo ? 'video' : 'image'} file: ${mediaFile.path}');
-        debugPrint('File size: ${platformFile.size} bytes');
-        
-        // Extract metadata only for images (reuse existing logic)
-        Map<String, dynamic> mediaMetadata = {};
-        
-        if (!isVideo) {
-          try {
-            debugPrint('Extracting metadata from image file...');
-            mediaMetadata = await PhotoMetadataService.extractComprehensiveMetadata(mediaFile);
-            debugPrint('Extracted metadata: ${mediaMetadata.keys.length} categories');
-          } catch (e) {
-            debugPrint('Warning: Failed to extract metadata: $e');
-          }
-        }
-        
-        // Add to files list
-        mediaFiles.add({
-          'mediaFile': mediaFile,
-          'isVideo': isVideo,
-          'photoMetadata': mediaMetadata,
-          'platformFile': platformFile,
-        });
       }
 
       setState(() {
@@ -197,25 +219,32 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
 
       if (mediaFiles.isEmpty) {
         setState(() {
-          _errorMessage = 'No valid files selected';
+          _errorMessage = 'No valid files could be processed. Please check file permissions and try again.';
         });
         return;
       }
 
       final description = _descriptionController.text.trim();
       
+      debugPrint('Navigating to composition screen with ${mediaFiles.length} files');
+      
       // Always route to composition screen - handles both single and multiple files
-      context.go('/beep/compose', extra: {
-        'mediaFiles': mediaFiles, // Pass all files as array
-        'sensorData': currentSensorData,
-        'description': description,
-        'attachToSightingId': widget.attachToSightingId, // Pass through for existing alerts
-      });
+      if (mounted) {
+        context.go('/beep/compose', extra: {
+          'mediaFiles': mediaFiles, // Pass all files as array
+          'sensorData': currentSensorData,
+          'description': description,
+          'attachToSightingId': widget.attachToSightingId, // Pass through for existing alerts
+        });
+      }
 
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint('Critical error in _pickFromGallery: $e');
+      debugPrint('Stack trace: $stackTrace');
+      
       setState(() {
         _isCapturing = false;
-        _errorMessage = 'Failed to pick media: $e';
+        _errorMessage = 'Failed to access gallery. Please check app permissions and try again.';
       });
     }
   }
@@ -327,7 +356,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                         'What do you see?',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 24,
+                          fontSize: 32,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
