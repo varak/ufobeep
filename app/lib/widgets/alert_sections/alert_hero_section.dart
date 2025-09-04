@@ -12,7 +12,7 @@ class AlertHeroSection extends StatelessWidget {
 
   final Alert alert;
   final bool compact;
-  final VoidCallback? onMediaTap;
+  final Function(int)? onMediaTap;
 
   @override
   Widget build(BuildContext context) {
@@ -267,7 +267,7 @@ class AlertHeroSection extends StatelessWidget {
     }
 
     return GestureDetector(
-      onTap: onMediaTap,
+      onTap: () => onMediaTap?.call(0),
       child: Container(
         width: double.infinity,
         constraints: const BoxConstraints(
@@ -321,7 +321,7 @@ class AlertHeroSection extends StatelessWidget {
                 }
 
                 return GestureDetector(
-                  onTap: onMediaTap,
+                  onTap: () => onMediaTap?.call(index),
                   child: Container(
                     width: 200,
                     margin: EdgeInsets.only(right: index < alert.mediaFiles.length - 1 ? 8 : 0),

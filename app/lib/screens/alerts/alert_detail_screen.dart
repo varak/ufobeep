@@ -153,7 +153,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 // Hero section with media
                 AlertHeroSection(
                   alert: alert,
-                  onMediaTap: () => _showFullscreenImage(alert),
+                  onMediaTap: (index) => _showFullscreenImage(alert, index),
                 ),
                 const SizedBox(height: 24),
                 
@@ -257,10 +257,10 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     );
   }
 
-  void _showFullscreenImage(Alert alert) {
+  void _showFullscreenImage(Alert alert, [int startIndex = 0]) {
     if (alert.mediaFiles.isEmpty) return;
     
-    final media = alert.mediaFiles.first;
+    final media = alert.mediaFiles[startIndex];
     final imageUrl = media['url'] as String? ?? '';
     
     if (imageUrl.isEmpty) return;
