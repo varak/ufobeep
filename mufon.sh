@@ -530,11 +530,43 @@ def extract_and_import_mufon(date_str):
                         except Exception as e:
                             log(f"⚠️ Geocoding error: {e}")
                         
-                        # PRINT what we WOULD insert (unless --insert flag is used)
+                        # CREATE ALERT in production
                         import uuid
                         alert_id = str(uuid.uuid4())
                         
-                        log(f"📤 WOULD CREATE ALERT:")
+                        log(f"📤 Creating alert for MUFON Case #{real_case_id}...")
+                        
+                        # Prepare alert data
+                        alert_data = {
+                            "id": alert_id,
+                            "title": f"MUFON Case #{real_case_id}",
+                            "description": long_description if long_description else short_description,
+                            "source": "mufon",
+                            "external_id": f"mufon_{real_case_id}",
+                            "external_url": f"https://mufon.com/case/{real_case_id}",
+                            "classification": classification,
+                            "geocoding": geo_data
+                        }
+                        
+                        if geo_data:
+                            alert_data["latitude"] = geo_data["latitude"]
+                            alert_data["longitude"] = geo_data["longitude"]
+                        
+                        # Create the alert via API
+                        try:
+                            response = requests.post(
+                                "http://localhost:8000/alerts", 
+                                json=alert_data,
+                                timeout=30
+                            )
+                            if response.status_code in [200, 201]:
+                                log(f"✅ Created alert: {alert_id}")
+                            else:
+                                log(f"⚠️ Alert creation failed: {response.status_code} - {response.text}")
+                        except Exception as e:
+                            log(f"❌ Alert creation error: {e}")
+                        
+                        log(f"📤 ALERT DETAILS:")
                         log(f"   ID: {alert_id}")
                         log(f"   Title: MUFON Case #{real_case_id}")
                         log(f"   Report Date: {report_date}")
