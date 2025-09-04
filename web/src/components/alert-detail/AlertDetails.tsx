@@ -10,6 +10,11 @@ interface Alert {
     longitude: number
     name: string
   }
+  enrichment_data?: {
+    report_date?: string
+    sighting_datetime?: string
+    [key: string]: any
+  }
 }
 
 interface AlertDetailsProps {
@@ -58,19 +63,45 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
         </div>
       )}
 
-      {/* Time */}
-      <div className="flex items-start gap-3 mb-4">
-        <span className="text-text-tertiary mt-0.5">⏰</span>
-        <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <span className="text-text-tertiary text-sm font-medium">Time:</span>
-            <span className="text-text-primary text-sm">{formatFullDate(alert.created_at)}</span>
-          </div>
-          <div className="text-text-secondary text-xs mt-1">
-            {formatDate(alert.created_at)}
+      {/* Time - Show MUFON times if available, otherwise show UFOBeep time */}
+      {alert.enrichment_data?.sighting_datetime || alert.enrichment_data?.report_date ? (
+        <div className="flex items-start gap-3 mb-4">
+          <span className="text-text-tertiary mt-0.5">📅</span>
+          <div className="flex-1">
+            {/* Sighting Time */}
+            {alert.enrichment_data.sighting_datetime && (
+              <div className="mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-text-tertiary text-sm font-medium">Event Time:</span>
+                  <span className="text-text-primary text-sm">{alert.enrichment_data.sighting_datetime}</span>
+                </div>
+              </div>
+            )}
+            {/* Report Time */}
+            {alert.enrichment_data.report_date && (
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-text-tertiary text-sm font-medium">Reported:</span>
+                  <span className="text-text-secondary text-sm">{alert.enrichment_data.report_date}</span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="flex items-start gap-3 mb-4">
+          <span className="text-text-tertiary mt-0.5">⏰</span>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <span className="text-text-tertiary text-sm font-medium">Time:</span>
+              <span className="text-text-primary text-sm">{formatFullDate(alert.created_at)}</span>
+            </div>
+            <div className="text-text-secondary text-xs mt-1">
+              {formatDate(alert.created_at)}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Location */}
       <div className="flex items-start gap-3">
