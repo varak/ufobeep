@@ -130,19 +130,21 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
         </div>
       )}
 
-      {/* Location */}
-      <div className="flex items-start gap-3">
-        <span className="text-text-tertiary mt-0.5">📍</span>
-        <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <span className="text-text-tertiary text-sm font-medium">Location:</span>
-            <span className="text-text-primary text-sm">{alert.location.name}</span>
-          </div>
-          <div className="text-text-secondary text-xs mt-1">
-            {alert.location.latitude.toFixed(4)}, {alert.location.longitude.toFixed(4)}
+      {/* Location - hidden for MUFON alerts */}
+      {alert.reporter_username !== 'MUFON' && (
+        <div className="flex items-start gap-3">
+          <span className="text-text-tertiary mt-0.5">📍</span>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <span className="text-text-tertiary text-sm font-medium">Location:</span>
+              <span className="text-text-primary text-sm">{alert.location.name}</span>
+            </div>
+            <div className="text-text-secondary text-xs mt-1">
+              {alert.location.latitude.toFixed(4)}, {alert.location.longitude.toFixed(4)}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
