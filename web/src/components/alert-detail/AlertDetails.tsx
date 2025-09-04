@@ -5,6 +5,7 @@ interface Alert {
   title: string
   description: string
   created_at: string
+  reporter_username?: string
   location: {
     latitude: number
     longitude: number
@@ -32,6 +33,17 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
       hour: '2-digit',
       minute: '2-digit'
     })
+  }
+
+  const getCleanDescription = () => {
+    if (!alert.description) return ''
+    
+    // For MUFON alerts, remove the duplicate metadata section
+    if (alert.reporter_username === 'MUFON') {
+      return alert.description.split('━━━━━━━━━━━━━━━━━━━━━━━━')[0].trim()
+    }
+    
+    return alert.description
   }
 
   const formatFullDate = (dateString: string) => {
@@ -72,7 +84,7 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
           <div 
             className="text-text-secondary leading-relaxed prose prose-invert max-w-none"
             dangerouslySetInnerHTML={{ 
-              __html: alert.description.replace(/\n/g, '<br>') 
+              __html: getCleanDescription().replace(/\n/g, '<br>') 
             }}
           />
         </div>

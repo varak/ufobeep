@@ -59,6 +59,13 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
     if (alert.enrichment?.short_description) {
       return alert.enrichment.short_description
     }
+    // For MUFON alerts, clean up the description by removing duplicate metadata
+    if (alert.reporter_username === 'MUFON' && alert.description) {
+      // Remove the appended metadata section (everything after the separator line)
+      const cleanDescription = alert.description.split('━━━━━━━━━━━━━━━━━━━━━━━━')[0].trim()
+      const truncated = cleanDescription.substring(0, 150)
+      return truncated + (cleanDescription.length > 150 ? '...' : '')
+    }
     // Regular alerts use truncated main description  
     if (alert.description) {
       const truncated = alert.description.substring(0, 150)
