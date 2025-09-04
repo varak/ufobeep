@@ -469,57 +469,6 @@ async def generate_enrichment_data(sensor_data, use_metric=True):
     enrichment_service = EnrichmentDataGenerator(use_metric=use_metric)
     return await enrichment_service.generate_enrichment_data(sensor_data)
 
-@app.post("/sightings")
-async def create_sighting(request: dict = None):
-    try:
-        if not request:
-            raise HTTPException(status_code=400, detail="Request body required")
-        
-
-        title = request.get("title", "")
-        description = request.get("description", "")
-        category = request.get("category", "ufo")
-        witness_count = request.get("witness_count", 1)
-        is_public = request.get("is_public", True)
-        tags = request.get("tags", [])
-        media_info = request.get("media_info", {})
-        sensor_data = request.get("sensor_data", {})
-        
-
-        if not title or len(title.strip()) < 5:
-            raise HTTPException(status_code=400, detail="Title must be at least 5 characters")
-        if not description or len(description.strip()) < 10:
-            raise HTTPException(status_code=400, detail="Description must be at least 10 characters")
-        
-
-        enrichment_data = await generate_enrichment_data(sensor_data)
-        
-
-        async with database_service.pool.acquire() as conn:
-            sighting_id = await conn.fetchval("""
-                INSERT INTO sightings 
-                (title, description, category, witness_count, is_public, tags, media_info, sensor_data, enrichment_data, alert_level, status)
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-                RETURNING id
-            """, title.strip(), description.strip(), category, witness_count, is_public, 
-                tags, json.dumps(media_info), json.dumps(sensor_data), json.dumps(enrichment_data), "low", "created")
-        
-        return {
-            "success": True,
-            "data": {
-                "sighting_id": str(sighting_id),
-                "status": "created",
-                "alert_level": "low"
-            },
-            "message": "Sighting created successfully",
-            "timestamp": datetime.now().isoformat()
-        }
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        print(f"Error creating sighting: {e}")
-        raise HTTPException(status_code=500, detail=f"Error creating sighting: {str(e)}")
 # OLD endpoints removed - now handled by alerts.router
 
 # OLD witness-confirm endpoint removed - now handled by alerts.router
