@@ -653,11 +653,8 @@ Future<List<Alert>> filteredAlerts(FilteredAlertsRef ref) async {
   final alertsAsync = ref.watch(alertsListProvider);
   final filter = ref.watch(alertsFilterStateProvider);
   
-  if (!alertsAsync.hasValue) {
-    return [];
-  }
-  
-  final alerts = alertsAsync.value!;
+  // Wait for alerts to load instead of returning empty list
+  final alerts = await alertsAsync.future;
   
   // Apply filters
   var filteredAlerts = alerts.where((alert) {
