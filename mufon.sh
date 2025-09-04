@@ -539,8 +539,8 @@ def extract_and_import_mufon(date_str):
                         # Prepare alert data with correct API structure
                         alert_data = {
                             "device_id": f"mufon_import_{real_case_id}",
-                            "title": f"MUFON Case #{real_case_id}",
-                            "description": long_description if long_description else short_description,
+                            "title": classification['type'].title(),
+                            "description": f"MUFON Case #{real_case_id}\\n\\n{long_description}",
                             "username": "MUFON",
                             "source": "mufon",
                             "external_id": f"mufon_{real_case_id}",
