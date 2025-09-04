@@ -64,16 +64,206 @@ from datetime import datetime
 from playwright.sync_api import sync_playwright
 import httpx
 import re
+from typing import Optional, List, Dict
 
 def log(message):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{timestamp}] {message}")
+
+class UFOClassifier:
+    """Classifies UFOs based on description text with extended pattern matching"""
+    
+    def __init__(self):
+        # UFO type patterns based on user's requested classifications
+        self.classification_patterns = {
+            "triangle": [
+                r"triangl\w+", r"three.*light", r"delta.*shape", r"arrow.*shape",
+                r"three.*corner", r"v.*shaped?", r"chevron"
+            ],
+            "disc": [
+                r"disc\w*", r"saucer", r"round.*craft", r"circular.*object",
+                r"disk\w*", r"plate.*shaped?"
+            ],
+            "sphere": [
+                r"sphere\w*", r"ball.*shaped?", r"orb\w*", r"round.*ball",
+                r"spherical", r"globe.*shaped?"
+            ],
+            "cigar": [
+                r"cigar\w*", r"cylinder\w*", r"tube.*shaped?", r"elongated.*object",
+                r"capsule.*shaped?", r"oblong.*craft"
+            ],
+            "light": [
+                r"bright.*light", r"single.*light", r"white.*light", r"glowing.*light",
+                r"beam.*light", r"flash\w*.*light", r"fireball", r"flash"
+            ],
+            "boomerang": [
+                r"boomerang", r"v.*wing", r"crescent", r"banana.*shaped?"
+            ],
+            "diamond": [
+                r"diamond.*shaped?", r"rhomb\w+", r"kite.*shaped?"
+            ],
+            "rectangle": [
+                r"rectangl\w+", r"square.*craft", r"box.*shaped?", r"cubic",
+                r"rectangular.*object", r"square.*rectangle"
+            ],
+            "oval": [
+                r"oval\w*", r"egg.*shaped?", r"elliptical", r"oblong"
+            ],
+            "cone": [
+                r"cone.*shaped?", r"conical", r"funnel.*shaped?"
+            ],
+            "cross": [
+                r"cross.*shaped?", r"cruciform", r"plus.*shaped?"
+            ],
+            "cylinder": [
+                r"cylinder\w*", r"cylindrical", r"barrel.*shaped?"
+            ],
+            "dumbbell": [
+                r"dumbbell", r"dumbell", r"barbell", r"hourglass"
+            ],
+            "teardrop": [
+                r"tear.*drop", r"teardrop", r"droplet.*shaped?"
+            ],
+            "tic-tac": [
+                r"tic.*tac", r"pill.*shaped?", r"capsule"
+            ],
+            "bullet": [
+                r"bullet.*missile", r"bullet.*shaped?", r"missile.*shaped?"
+            ],
+            "saturn": [
+                r"saturn.*like", r"ringed.*object", r"hat.*shaped?"
+            ],
+            "starlike": [
+                r"star.*like", r"stellar", r"point.*light"
+            ],
+            "blimp": [
+                r"blimp", r"airship", r"dirigible"
+            ]
+        }
+    
+    def classify(self, description: str, title: str = "") -> Dict[str, any]:
+        """Classify UFO based on description and title"""
+        if not description and not title:
+            return {"type": "unknown", "confidence": 0.0, "keywords": []}
+        
+        # Combine title and description for analysis
+        text = f"{title} {description}".lower()
+        
+        # Score each classification type
+        type_scores = {}
+        matched_keywords = {}
+        
+        for ufo_type, patterns in self.classification_patterns.items():
+            score = 0
+            keywords = []
+            
+            for pattern in patterns:
+                matches = re.findall(pattern, text, re.IGNORECASE)
+                if matches:
+                    score += len(matches) * 2
+                    keywords.extend(matches)
+            
+            if score > 0:
+                type_scores[ufo_type] = score
+                matched_keywords[ufo_type] = keywords
+        
+        # If no strong classification, try fallback analysis
+        if not type_scores:
+            return self._fallback_classification(text)
+        
+        # Find best classification
+        best_type = max(type_scores.keys(), key=lambda k: type_scores[k])
+        max_score = type_scores[best_type]
+        
+        # Calculate confidence (0.0 to 1.0)
+        confidence = min(max_score / 10.0, 1.0)
+        
+        return {
+            "type": best_type,
+            "confidence": confidence,
+            "keywords": matched_keywords.get(best_type, []),
+            "all_scores": type_scores
+        }
+    
+    def _fallback_classification(self, text: str) -> Dict[str, any]:
+        """Fallback classification for unclear descriptions"""
+        if any(word in text for word in ["round", "circular", "ball"]):
+            return {"type": "sphere", "confidence": 0.3, "keywords": ["round"]}
+        
+        if any(word in text for word in ["light", "glow", "bright"]):
+            return {"type": "light", "confidence": 0.4, "keywords": ["light"]}
+        
+        return {"type": "unknown", "confidence": 0.0, "keywords": []}
+
+def reverse_geocode(location_text: str) -> Optional[Dict[str, any]]:
+    """Extract location from text and get coordinates using Nominatim"""
+    if not location_text:
+        return None
+    
+    # Extract location patterns from text
+    location_patterns = [
+        r"in\s+([A-Za-z\s]+),\s*([A-Z]{2})",  # "in City, ST"
+        r"near\s+([A-Za-z\s]+),\s*([A-Z]{2})",  # "near City, ST"
+        r"from\s+([A-Za-z\s]+),\s*([A-Z]{2})",  # "from City, ST"
+        r"at\s+([A-Za-z\s]+),\s*([A-Z]{2})",    # "at City, ST"
+        r"([A-Za-z\s]+),\s*([A-Z]{2})"          # "City, ST"
+    ]
+    
+    extracted_location = None
+    for pattern in location_patterns:
+        match = re.search(pattern, location_text, re.IGNORECASE)
+        if match:
+            city = match.group(1).strip()
+            state = match.group(2).strip()
+            extracted_location = f"{city}, {state}"
+            break
+    
+    if not extracted_location:
+        # Try simple city names
+        words = location_text.split()
+        if len(words) >= 2:
+            extracted_location = " ".join(words[:2])
+    
+    if extracted_location:
+        try:
+            # Use Nominatim for geocoding
+            import time
+            time.sleep(1)  # Rate limit
+            
+            url = "https://nominatim.openstreetmap.org/search"
+            params = {
+                "q": extracted_location,
+                "format": "json",
+                "limit": 1,
+                "countrycodes": "us"
+            }
+            
+            headers = {"User-Agent": "UFOBeep-MUFON/1.0"}
+            
+            response = requests.get(url, params=params, headers=headers, timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                if data:
+                    result = data[0]
+                    return {
+                        "location": extracted_location,
+                        "latitude": float(result["lat"]),
+                        "longitude": float(result["lon"]),
+                        "display_name": result.get("display_name", extracted_location)
+                    }
+        except Exception as e:
+            log(f"⚠️ Geocoding failed for '{extracted_location}': {e}")
+    
+    return None
 
 def extract_and_import_mufon(date_str):
     date_obj = datetime.strptime(date_str, "%Y-%m-%d")
     month, day, year = date_obj.month, date_obj.day, date_obj.year
     
     log(f"🎯 Processing MUFON cases for {date_str}")
+    
+    # Initialize classifier
+    classifier = UFOClassifier()
     
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
@@ -305,6 +495,19 @@ def extract_and_import_mufon(date_str):
                             except Exception as e:
                                 log(f"⚠️ Failed to get long description: {e}")
                         
+                        # Classify UFO type
+                        classification = classifier.classify(long_description, short_description)
+                        log(f"🔍 UFO Classification: {classification['type']} (confidence: {classification['confidence']:.2f})")
+                        
+                        # Extract location and geocode
+                        geo_data = None
+                        try:
+                            geo_data = reverse_geocode(f"{location} {long_description}")
+                            if geo_data:
+                                log(f"📍 Geocoded: {geo_data['location']} -> {geo_data['latitude']}, {geo_data['longitude']}")
+                        except Exception as e:
+                            log(f"⚠️ Geocoding error: {e}")
+                        
                         # PRINT what we WOULD insert (unless --insert flag is used)
                         import uuid
                         alert_id = str(uuid.uuid4())
@@ -320,6 +523,13 @@ def extract_and_import_mufon(date_str):
                         log(f"   Source ID: mufon_{real_case_id}")
                         log(f"   External URL: https://mufon.com/case/{real_case_id}")
                         log(f"   Media Files: {len(media_files)}")
+                        log(f"   UFO Type: {classification['type']} (confidence: {classification['confidence']:.2f})")
+                        log(f"   Keywords: {', '.join(classification.get('keywords', []))}")
+                        if geo_data:
+                            log(f"   Coordinates: {geo_data['latitude']}, {geo_data['longitude']}")
+                            log(f"   Geocoded Location: {geo_data['display_name']}")
+                        else:
+                            log(f"   Geocoding: Failed - no coordinates extracted")
                         
                         imported_count += 1
                         
