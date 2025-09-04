@@ -190,15 +190,15 @@ def extract_and_import_mufon(date_str):
                         
                         log(f"🔍 Processing Case #{numeric_case}")
                         
-                        # Get real case ID from VIEW links
+                        # Get real case ID from VIEW link URL
                         real_case_id = numeric_case
                         view_links = row.locator("a").all()
                         for link in view_links:
                             href = link.get_attribute('href') or ''
                             if "neonPage.jsp" in href:
-                                case_match = re.search(r'caseId[=:](\d+)', href)
-                                if case_match:
-                                    real_case_id = case_match.group(1)
+                                match = re.search(r'id=(\d+)', href)
+                                if match:
+                                    real_case_id = match.group(1)
                                     log(f"✅ Extracted real case ID: {real_case_id}")
                                 break
                         
@@ -235,12 +235,13 @@ def extract_and_import_mufon(date_str):
                                     page.goto(f"https://mufon.z2systems.com/np/clients/mufon/{href}")
                                     time.sleep(3)
                                     
-                                    # Extract description
-                                    desc_elements = page.locator("td").all()
-                                    for elem in desc_elements:
-                                        text = elem.inner_text()
-                                        if len(text) > 100 and any(keyword in text.lower() for keyword in ['observed', 'saw', 'witnessed', 'description']):
-                                            long_description = text.strip()
+                                    # Get longest text that looks like a description
+                                    all_text = page.locator("body").inner_text()
+                                    lines = [line.strip() for line in all_text.split('\n') if len(line.strip()) > 100]
+                                    for line in lines:
+                                        if any(word in line.lower() for word in ['observed', 'saw', 'witnessed', 'object', 'light']):
+                                            long_description = line
+                                            log(f"📝 Found long description: {line[:80]}...")
                                             break
                                     
                                     page.go_back()
@@ -250,37 +251,62 @@ def extract_and_import_mufon(date_str):
                                     log(f"⚠️ Failed to get long description: {e}")
                                     pass
                         
-                        # CREATE ALERT
+                        # CREATE ALERT - Direct database insert
                         log(f"📤 Creating alert for case #{real_case_id}...")
-                        alert_payload = {
-                            "title": f"MUFON Case #{real_case_id}",
-                            "description": long_description,
-                            "category": "Unknown",
-                            "location": {"latitude": 39.7392, "longitude": -104.9903, "name": location},
-                            "alert_level": "medium",
-                            "source": "mufon",
-                            "external_id": f"mufon_{real_case_id}",
-                            "device_id": "mufon_scraper_device",
-                            "metadata": {
-                                "report_date": report_date,
-                                "sighting_datetime": sighting_datetime,
-                                "short_description": short_description
-                            }
-                        }
                         
-                        response = requests.post("http://localhost:8000/alerts", json=alert_payload, timeout=30)
-                        if response.status_code != 200:
-                            log(f"❌ Failed to create alert for case #{real_case_id}: {response.status_code}")
+                        import psycopg2
+                        import uuid
+                        
+                        try:
+                            # Connect to database
+                            conn = psycopg2.connect(
+                                host="localhost",
+                                port=5432, 
+                                user="ufobeep_user",
+                                password="ufopostpass",
+                                database="ufobeep_db"
+                            )
+                            cur = conn.cursor()
+                            
+                            # Generate alert ID
+                            alert_id = str(uuid.uuid4())
+                            
+                            # Simple insert - just like any other beep
+                            cur.execute("""
+                                INSERT INTO sightings 
+                                (id, title, description, category, witness_count, is_public, 
+                                 alert_level, status, reporter_id, source, source_id, 
+                                 external_url, lat, lon, occurred_at, created_at)
+                                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                            """, (
+                                alert_id,
+                                f"MUFON Case #{real_case_id}",
+                                long_description,
+                                "ufo", 
+                                1, 
+                                True,
+                                "medium",
+                                "created", 
+                                "443a596f-8119-4f27-b232-3abc92729afb",  # MUFON user ID
+                                "mufon",
+                                f"mufon_{real_case_id}",
+                                f"https://mufon.com/case/{real_case_id}",
+                                39.7392,  # Default location
+                                -104.9903,
+                                datetime.now(),
+                                datetime.now()
+                            ))
+                            
+                            conn.commit()
+                            cur.close()
+                            conn.close()
+                            
+                            imported_count += 1
+                            log(f"✅ Created alert: {alert_id}")
+                            
+                        except Exception as e:
+                            log(f"❌ Failed to create alert for case #{real_case_id}: {e}")
                             continue
-                        
-                        result = response.json()
-                        if result.get('status') != 'success':
-                            log(f"❌ Alert creation failed for case #{real_case_id}: {result}")
-                            continue
-                        
-                        alert_id = result['alert_id']
-                        imported_count += 1
-                        log(f"✅ Created alert: {alert_id}")
                         
                         # UPLOAD MEDIA
                         if media_files:
