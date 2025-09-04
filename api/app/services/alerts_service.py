@@ -334,6 +334,14 @@ class AlertsService:
                 json.dumps(sensor_data or {}), json.dumps(enrichment_data or {}),
                 alert_level, "created", reporter_id, source, source_id, external_url, latitude, longitude)
             
+            # Fix comment count for MUFON alerts (description gets counted as comment)
+            if source == "mufon":
+                await conn.execute("""
+                    UPDATE sightings 
+                    SET comment_count = GREATEST(comment_count - 1, 0) 
+                    WHERE id = $1
+                """, alert_id)
+            
             return str(alert_id)
     
     async def create_beep(self, device_id: str, location: Dict = None, 

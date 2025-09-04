@@ -499,7 +499,7 @@ def extract_and_import_mufon(date_str):
                                             for line in lines:
                                                 line_clean = line.strip()
                                                 # Skip only literal header text, keep everything else
-                                                if line_clean and 'Long Description' not in line_clean and 'Sighting Report' not in line_clean:
+                                                if line_clean and not any(header in line_clean for header in ['Long Description', 'Sighting Report', 'MUFON Case']):
                                                     filtered_lines.append(line_clean)
                                             
                                             if filtered_lines:
