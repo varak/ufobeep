@@ -17,16 +17,27 @@ python3 mufon_clicker/production_mufon_login.py
 ```
 
 ### 2. Data Extraction (`mufon_clicker/mufon_simple_extraction.py`)
-- **Purpose**: Extract MUFON cases for a specific date with media files
-- **Input**: Date (YYYY-MM-DD format), saved session cookies
+- **Purpose**: Extract MUFON cases for a specific date with media files  
+- **Input**: Date (YYYY-MM-DD format), environment variables from .env.mufon
 - **Output**: JSON file with cases and downloaded media files
 - **Technology**: Playwright + httpx for media downloads
+- **Status**: ✅ **CURRENTLY WORKING** (Last updated 00:10)
 
 ```bash
+# Must source environment first
+cd /home/ufobeep/ufobeep
+source .env.mufon
 python3 mufon_clicker/mufon_simple_extraction.py 2025-01-27
 ```
 
 **Output Format**: `mufon_simple_YYYY_MM_DD.json`
+
+**Success Example**:
+```
+🎯 MUFON Simple Extraction for 2025-09-02
+📊 Found 7 results
+💾 Results saved to mufon_simple_2025_09_02.json
+```
 ```json
 {
   "search_date": "2025-01-27",
@@ -76,32 +87,43 @@ python3 api/feeds/import_mufon_fixed.py mufon_simple_2025_01_27.json
 
 ## Complete Pipeline Process
 
-### Manual Execution
+### Manual Execution (CURRENT WORKING PROCESS)
 ```bash
-# Step 1: Fresh login to get cookies
+# Step 1: Go to working directory and load environment
+cd /home/ufobeep/ufobeep
+source .env.mufon
+
+# Step 2: Fresh login to get cookies (optional - cookies last several hours)
 python3 mufon_clicker/production_mufon_login.py
 
-# Step 2: Extract live data with fresh cookies  
+# Step 3: Extract live data for specific date  
 python3 mufon_clicker/mufon_simple_extraction.py 2025-01-27
 
-# Step 3: Import extracted data to database
-python3 api/feeds/import_mufon_fixed.py mufon_simple_2025_01_27.json
+# Step 4: Import extracted data to database with media
+python3 api/feeds/import_mufon_fixed.py mufon_clicker/mufon_simple_2025_01_27.json
 
-# Step 4: Cleanup local files
-rm -f mufon_simple_2025_01_27.json
-rm -rf mufon_media/
+# Step 5: Cleanup local files
+rm -f mufon_clicker/mufon_simple_2025_01_27.json
+rm -rf mufon_clicker/mufon_media/
 ```
 
-### Automated Execution
+### Automated Execution (CURRENT WORKING PIPELINE)
 The complete pipeline can be run as a single command:
 ```bash
-cd /home/ufobeep/ufobeep && \\
-source .env.mufon && \\
-python3 mufon_clicker/production_mufon_login.py && \\
-python3 mufon_clicker/mufon_simple_extraction.py 2025-01-27 && \\
-python3 api/feeds/import_mufon_fixed.py mufon_simple_2025_01_27.json && \\
-rm -f mufon_simple_2025_01_27.json && rm -rf mufon_media/
+cd /home/ufobeep/ufobeep && \
+source .env.mufon && \
+python3 mufon_clicker/production_mufon_login.py && \
+python3 mufon_clicker/mufon_simple_extraction.py 2025-01-27 && \
+python3 api/feeds/import_mufon_fixed.py mufon_clicker/mufon_simple_2025_01_27.json && \
+rm -f mufon_clicker/mufon_simple_2025_01_27.json && rm -rf mufon_clicker/mufon_media/
 ```
+
+### Current Status (September 3, 2025)
+- ✅ **Authentication**: Fixed .env.mufon exports - working
+- ✅ **Extraction**: mufon_simple_extraction.py confirmed working
+- ✅ **Import**: Processed 14/15 cases with media successfully  
+- ✅ **Cron**: Updated nightly pipeline to use correct scripts
+- ⚠️  **Note**: mufon_proper_extraction.py has iframe timeout issues - use mufon_simple_extraction.py
 
 ## Technical Details
 

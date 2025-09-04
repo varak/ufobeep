@@ -272,6 +272,31 @@ class AlertsService:
         )
         return str(user_id) if user_id else None
 
+    async def _ensure_mufon_user(self, conn, username: str) -> str:
+        """
+        Ensure MUFON user exists in database, create if not.
+        Returns the user's UUID primary key.
+        """
+        clean_username = username.strip()[:64]
+        
+        # Try to get existing user first
+        user_id = await conn.fetchval(
+            "SELECT id FROM users WHERE username = $1",
+            clean_username
+        )
+        
+        if user_id:
+            return str(user_id)
+        
+        # Create MUFON user
+        user_id = await conn.fetchval("""
+            INSERT INTO users (username, email, created_at) 
+            VALUES ($1, $2, NOW()) 
+            RETURNING id
+        """, clean_username, f"{clean_username.lower()}@mufon.com")
+        
+        return str(user_id)
+
     async def create_alert(self, title: str = None, description: str = None, 
                           category: str = "ufo", witness_count: int = 1,
                           is_public: bool = True, tags: List[str] = None,
@@ -288,6 +313,11 @@ class AlertsService:
             if username:
                 reporter_id = await self.get_user_id_by_username(conn, username)
                 print(f"create_alert: username={username} reporter_id={reporter_id}")
+            
+            # For MUFON imports, create the user if it doesn't exist
+            if not reporter_id and source == "mufon" and username:
+                reporter_id = await self._ensure_mufon_user(conn, username)
+                print(f"create_alert: created/found MUFON user reporter_id={reporter_id}")
             
             if not reporter_id:
                 raise ValueError(f"User not found for username={username}. User must exist before creating alerts.")

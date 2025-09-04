@@ -4,254 +4,102 @@
 
 The MUFON scraper extracts real UFO sighting data from the MUFON (Mutual UFO Network) database and imports it into UFOBeep. MUFON is the world's largest UFO investigation organization with a comprehensive database of reported sightings.
 
-## How the MUFON Scraper Works
+## How to Use the MUFON Scraper
 
-### 1. Authentication Process (`production_mufon_login.py`)
+### Single Script: mufon.sh
 
-**ALWAYS run authentication first** before any extraction:
+**ONLY USE `mufon.sh`** - This is the complete, self-contained MUFON import script:
 
 ```bash
-# Set credentials first (SECURE - not stored in repository)
+cd /home/ufobeep/ufobeep
+./mufon.sh YYYY-MM-DD
+./mufon.sh yesterday
+./mufon.sh today
+```
+
+The script:
+- Handles authentication automatically using `.env.mufon` credentials
+- Extracts sighting data from MUFON database
+- Validates case numbers (must be 5+ digits)
+- Downloads and uploads media files
+- Creates complete sightings with descriptions and media
+- Validates data insertion into database
+
+**Requirements:**
+- `.env.mufon` file with MUFON credentials must exist
+- Playwright browser dependencies installed
+- UFOBeep API running on localhost:8000
+
+### Script Operation Details
+
+The script performs the following steps:
+1. **Authentication** - Logs into MUFON using credentials from `.env.mufon`
+2. **Search Setup** - Navigates to search page and sets date filters
+3. **Data Extraction** - Parses sighting table data including:
+   - Case numbers (validates 5+ digit format)
+   - Descriptions (short and long)
+   - Location information
+   - Media attachments
+4. **Media Download** - Downloads photos/videos from MUFON servers
+5. **Import** - Creates sightings in UFOBeep database with all media
+6. **Validation** - Verifies data was stored correctly
+
+## Credentials Setup
+
+Create `.env.mufon` file in `/home/ufobeep/ufobeep/`:
+
+```bash
 export MUFON_USERNAME=your_username
 export MUFON_PASSWORD=your_password
-
-python3 production_mufon_login.py
 ```
 
-This script:
-- Uses Playwright to open MUFON login page
-- Reads login credentials from environment variables (SECURE)
-- Saves authentication cookies to `storage_state.json`
-- Verifies access to search functionality
+**SECURITY:** Credentials are NEVER stored in git repository.
 
-**SECURITY:** Credentials are NEVER stored in code. They must be set as environment variables.
-
-### 2. Data Extraction (`mufon_simple_extraction.py`)
+## Usage Examples
 
 ```bash
-python3 mufon_clicker/mufon_simple_extraction.py YYYY-MM-DD
+# Import yesterday's MUFON cases
+./mufon.sh yesterday
+
+# Import specific date
+./mufon.sh 2025-09-03
+
+# Import today's cases
+./mufon.sh today
 ```
 
-**NOTE:** Use `mufon_simple_extraction.py` (the working extraction script) located in the `mufon_clicker/` directory.
+## Troubleshooting
 
-This script performs intelligent HTML parsing:
+### Common Issues
 
-#### HTML Table Parsing
-- **Does not assume fixed column positions** 
-- Reads table headers to identify field locations dynamically
-- Maps headers to expected fields:
-  - Case number (contains "case" or "#")
-  - Date/time (contains "date" and "time") 
-  - Short description (contains "description" and "short")
-  - Location (contains "location")
-  - Attachments (contains "attach", "media", or "file")
+1. **Authentication Failed**: Check `.env.mufon` credentials
+2. **No Cases Found**: Date may have no MUFON reports
+3. **Timeouts**: MUFON site may be slow, script will retry
+4. **API Errors**: Ensure UFOBeep API is running on localhost:8000
 
-#### Form Interaction
-- Uses precise form field selectors discovered through debugging:
-  - `select[name='event_date_lo__month']` - Start month
-  - `select[name='event_date_lo__day']` - Start day  
-  - `select[name='event_date_lo__year']` - Start year
-  - `select[name='event_date_hi__month']` - End month (same as start for single day)
-  - `select[name='event_date_hi__day']` - End day
-  - `select[name='event_date_hi__year']` - End year
+### Validation
 
-#### Media File Extraction
-- Locates attachment links in the proper column
-- Downloads media files (images and videos)
-- Stores metadata with original MUFON URLs
+The script validates:
+- Case numbers must be 5+ digits
+- Descriptions must not be empty
+- Media files are properly uploaded
+- Database entries are created correctly
 
-#### Long Description Extraction
-- Clicks VIEW buttons to open case details
-- Handles popup windows or inline navigation
-- Extracts full sighting narratives
-- Finds substantial content using intelligent text analysis
+## Output
 
-### 3. Data Import (`import_mufon_fixed.py`)
+Successful runs show:
+- Authentication success
+- Case processing with case numbers
+- Media upload counts
+- Final validation results
 
-```bash
-python3 import_mufon_fixed.py filename.json
-```
+## Important Notes
 
-This script:
-- Processes extracted JSON data
-- Applies UFO classification using `ufo_classifier.py`
-- Handles locationless alerts (MUFON often has vague locations)
-- Creates UFOBeep alerts via API with proper metadata
-- Uploads media files to UFOBeep storage
+- Script requires active internet connection to MUFON servers
+- Large date ranges may take significant time to process  
+- Media files are downloaded and uploaded automatically
+- All imported sightings have source="mufon" for identification
 
-## Key Technical Details
+## Current Status
 
-### Field Mapping Issues
-
-**CRITICAL:** MUFON's "Location" field often contains **sighting descriptions**, not geographic locations:
-
-❌ Bad location data:
-- "A silver disk like object rimmed with circular lights"
-- "Two flickering stars positioned N & S of each other"
-- "Observed possible drone began recording"
-
-✅ Good location data:
-- "Las Alamos, NM"
-- "Newport, Oregon" 
-- "Charlotte, North Carolina"
-
-### Frontend Integration
-
-MUFON alerts are displayed differently:
-- **No location requirements** - alerts can exist without coordinates
-- **UI widget hiding** - witness counts, maps, and time modals disabled
-- **Special source identification** - `reporter_username: "MUFON_Database"`
-
-Frontend filter allows MUFON alerts with (0,0) coordinates:
-```javascript
-// Allow MUFON alerts even without location data
-const validAlerts = data.data.alerts.filter((alert) => 
-  alert.location.latitude !== 0 || 
-  alert.location.longitude !== 0 || 
-  alert.reporter_username === 'MUFON_Database'
-)
-```
-
-### UFO Classification
-
-The system automatically classifies MUFON reports:
-- **Triangle** - Triangular craft descriptions
-- **Sphere** - Orb or spherical objects  
-- **Formation** - Multiple objects in formation
-- **Light** - Bright lights or illumination
-- **Boomerang** - V-shaped or boomerang craft
-- **Cigar** - Cylindrical objects
-- **Unknown** - Unclassifiable reports
-
-Each classification includes confidence scores (0.0 to 1.0).
-
-## File Structure
-
-```
-/home/ufobeep/ufobeep/
-├── mufon_clicker/
-│   ├── production_mufon_login.py     # Authentication script
-│   ├── mufon_simple_extraction.py    # Working extraction script
-│   └── mufon_artifacts/storage_state.json  # Authentication cookies
-├── api/feeds/
-│   ├── import_mufon_fixed.py         # Data import to UFOBeep
-│   └── ufo_classifier.py            # UFO type classification
-└── mufon_simple_YYYY_MM_DD.json     # Extracted data files
-```
-
-## Workflow Process
-
-### Daily Extraction Workflow
-
-1. **Set credentials** (secure environment variables):
-   ```bash
-   export MUFON_USERNAME=your_username
-   export MUFON_PASSWORD=your_password
-   ```
-
-2. **Authenticate** (must run first):
-   ```bash
-   python3 mufon_clicker/production_mufon_login.py
-   ```
-
-3. **Extract data** for specific date:
-   ```bash
-   python3 mufon_clicker/mufon_simple_extraction.py 2025-01-26
-   ```
-
-4. **Import to UFOBeep**:
-   ```bash
-   python3 api/feeds/import_mufon_fixed.py mufon_simple_2025_01_26.json
-   ```
-
-5. **Verify import**:
-   ```bash
-   curl -s 'https://api.ufobeep.com/alerts?limit=5' | jq '.data.alerts[] | select(.source=="mufon") | .title'
-   ```
-
-### Production Deployment
-
-All scripts run directly on production server:
-```bash
-ssh -p 322 ufobeep@ufobeep.com
-cd /home/ufobeep/ufobeep
-# Run workflow above
-```
-
-## Common Issues
-
-### Authentication Expiry
-- MUFON sessions expire regularly
-- Always run `mufon_clicker/production_mufon_login.py` first
-- Check for "authentication working" confirmation
-- Ensure `.env.mufon` has `export` statements for environment variables
-
-### Field Mapping Errors  
-- MUFON table structure can change
-- Script uses dynamic header detection
-- Check field mapping output: `🗺️ Field mapping: {...}`
-
-### Missing Location Data
-- Many MUFON cases lack precise geographic coordinates
-- This is normal - UFOBeep handles locationless MUFON alerts
-- Frontend displays them without map integration
-
-### Media Download Failures
-- MUFON media links can be temporary or broken
-- Script continues processing even if some media fails
-- Check logs for `❌ Media error:` messages
-
-## Data Quality
-
-### Expected Results
-- **10-50 cases per day** depending on UFO activity
-- **20-70% have media files** (photos/videos)
-- **30-60% have usable location data**
-- **100% get UFO classification** with confidence scores
-
-### Data Validation
-- Case numbers must be unique
-- Dates should match extraction target
-- Long descriptions should be substantial (>100 characters)
-- Media URLs should be accessible MUFON links
-
-## Monitoring
-
-### Success Indicators
-- ✅ Authentication: "authentication working" message
-- ✅ Extraction: "Successfully extracted data" with case count
-- ✅ Import: "Import completed: X/Y cases imported"
-- ✅ Frontend: MUFON alerts visible at ufobeep.com/alerts
-
-### Failure Indicators  
-- ❌ Login timeout errors
-- ❌ Empty extraction results
-- ❌ API import failures
-- ❌ Missing alerts on website
-
-## Security Considerations
-
-### Credential Management
-- **NEVER commit credentials** to the repository
-- Use environment variables: `MUFON_USERNAME` and `MUFON_PASSWORD`
-- On production server, set these in `/home/ufobeep/.env` or systemd service
-- See `docs/SECRETS.md` for complete security guidelines
-
-### File Permissions
-- Ensure extraction scripts have proper permissions (644)
-- Storage state files should be protected from unauthorized access
-- Media downloads are temporary and cleaned up after import
-
-### Production Access
-- Only run extraction scripts on production server
-- Never expose MUFON credentials in logs or debug output
-- Use headless browser mode to prevent display capture
-
-## Future Enhancements
-
-1. **Automated Daily Pipeline** - Cron job for daily extraction
-2. **Better Location Parsing** - Improved geographic extraction from narratives  
-3. **Media Validation** - Check file accessibility before import
-4. **Duplicate Detection** - Cross-reference with existing UFOBeep data
-5. **Real-time Monitoring** - Alert system for extraction failures
-6. **Credential Rotation** - Automated MUFON credential refresh
+The MUFON import functionality is operational and tested. Use mufon.sh for all MUFON data imports.
