@@ -61,42 +61,87 @@ class AlertDetailsSection extends StatelessWidget {
             const SizedBox(height: 16),
           ],
           
-          // Time info (hidden for MUFON)
-          if (alert.source != 'mufon')
+          // MUFON-specific metadata
+          if (alert.source == 'mufon') ...[
+            // MUFON case number
+            if (alert.enrichment?['mufon_case_number'] != null)
+              _buildDetailRow(
+                Icons.numbers,
+                'MUFON Case',
+                'Case ${alert.enrichment!['mufon_case_number']}',
+              ),
+            
+            // Reported when (original sighting date)
+            if (alert.enrichment?['reported_when'] != null)
+              _buildDetailRow(
+                Icons.event,
+                'Sighting Date',
+                alert.enrichment!['reported_when'],
+              ),
+            
+            // Entered into database when
+            if (alert.enrichment?['database_when'] != null)
+              _buildDetailRow(
+                Icons.storage,
+                'Database Entry',
+                alert.enrichment!['database_when'],
+              ),
+            
+            // Location (always show for MUFON)
+            if (showLocation) ...[
+              _buildDetailRow(
+                Icons.location_on,
+                'Location',
+                '${alert.locationName ?? 'Unknown Location'}',
+                subtitle: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
+              ),
+              if (alert.distance != null)
+                _buildDetailRow(
+                  Icons.straighten,
+                  'Distance',
+                  '${alert.distance!.toStringAsFixed(1)} km away',
+                ),
+            ],
+          ],
+          
+          // UFOBeep-specific metadata (non-MUFON)
+          if (alert.source != 'mufon') ...[
+            // Time info
             _buildDetailRow(
               Icons.access_time,
               'Time',
               _formatDateTime(alert.createdAt),
               subtitle: _formatFullDateTime(alert.createdAt),
             ),
-          
-          // Reporter info (MP13-7) (hidden for MUFON)
-          if (alert.reporterUsername != null && alert.source != 'mufon') 
-            _buildDetailRow(
-              Icons.person,
-              'Reported by',
-              alert.reporterUsername!,
-              subtitle: null,
-            ),
-          
-          // Witness count (if more than 1) (hidden for MUFON)
-          if (alert.witnessCount > 1 && alert.source != 'mufon')
-            _buildWitnessRow(),
-          
-          // Location info (if enabled) (hidden for MUFON)
-          if (showLocation && alert.source != 'mufon') ...[
-            _buildDetailRow(
-              Icons.info_outline,
-              'Location',
-              '${alert.locationName ?? 'Unknown Location'}',
-              subtitle: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
-            ),
-            if (alert.distance != null)
+            
+            // Reporter info
+            if (alert.reporterUsername != null) 
               _buildDetailRow(
-                Icons.straighten,
-                'Distance',
-                '${alert.distance!.toStringAsFixed(1)} km away',
+                Icons.person,
+                'Reported by',
+                alert.reporterUsername!,
+                subtitle: null,
               ),
+            
+            // Witness count (if more than 1)
+            if (alert.witnessCount > 1)
+              _buildWitnessRow(),
+            
+            // Location info (if enabled)
+            if (showLocation) ...[
+              _buildDetailRow(
+                Icons.location_on,
+                'Location',
+                '${alert.locationName ?? 'Unknown Location'}',
+                subtitle: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
+              ),
+              if (alert.distance != null)
+                _buildDetailRow(
+                  Icons.straighten,
+                  'Distance',
+                  '${alert.distance!.toStringAsFixed(1)} km away',
+                ),
+            ],
           ],
         ],
       ),

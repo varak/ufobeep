@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../providers/alerts_provider.dart';
 import '../../theme/app_theme.dart';
+import '../video_player_widget.dart';
 
 class AlertHeroSection extends StatelessWidget {
   const AlertHeroSection({
@@ -384,54 +385,42 @@ class AlertHeroSection extends StatelessWidget {
       );
     }
 
-    return Stack(
-      children: [
-        Image.network(
-          mediaUrl,
-          fit: BoxFit.cover,
-          width: double.infinity,
-          height: double.infinity,
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) return child;
-            return const Center(
-              child: CircularProgressIndicator(color: AppColors.brandPrimary),
-            );
-          },
-          errorBuilder: (context, error, stackTrace) {
-            return Container(
-              color: AppColors.darkBackground,
-              child: const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.error, size: 48, color: AppColors.semanticError),
-                    SizedBox(height: 8),
-                    Text('Failed to load image', style: TextStyle(color: AppColors.textSecondary)),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
-        // Video play icon overlay
-        if (apiType == 'video')
-          Positioned.fill(
-            child: Center(
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: const BoxDecoration(
-                  color: Colors.black54,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.play_arrow,
-                  color: Colors.white,
-                  size: 32,
-                ),
-              ),
+    // For videos, use the VideoPlayerWidget
+    if (apiType == 'video') {
+      return VideoPlayerWidget(
+        videoUrl: mediaUrl,
+        width: double.infinity,
+        height: double.infinity,
+      );
+    }
+
+    // For images, use Image.network
+    return Image.network(
+      mediaUrl,
+      fit: BoxFit.cover,
+      width: double.infinity,
+      height: double.infinity,
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) return child;
+        return const Center(
+          child: CircularProgressIndicator(color: AppColors.brandPrimary),
+        );
+      },
+      errorBuilder: (context, error, stackTrace) {
+        return Container(
+          color: AppColors.darkBackground,
+          child: const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.error, size: 48, color: AppColors.semanticError),
+                SizedBox(height: 8),
+                Text('Failed to load image', style: TextStyle(color: AppColors.textSecondary)),
+              ],
             ),
           ),
-      ],
+        );
+      },
     );
   }
 
