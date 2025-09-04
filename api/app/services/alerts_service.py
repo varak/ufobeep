@@ -402,8 +402,9 @@ class AlertsService:
         if username and source != "mufon":
             await self._auto_follow_alert(alert_id, username)
         
-        # Call enrichment service after alert creation
-        await self._enrich_alert(alert_id, lat, lng, description)
+        # Call enrichment service after alert creation - skip for MUFON since they provide their own enrichment data
+        if source != "mufon":
+            await self._enrich_alert(alert_id, lat, lng, description)
         
         return alert_id, {"lat": jittered_lat, "lng": jittered_lng}
     

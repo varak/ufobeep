@@ -811,6 +811,11 @@ def extract_and_import_mufon(date_str):
                         enrichment_data = {
                             "classification": classification,
                             "geocoding": geo_data,
+                            # MUFON-specific fields (matching UI expectations)
+                            "mufon_case_number": real_case_id,  # UI expects mufon_case_number
+                            "reported_when": sighting_datetime,  # UI expects reported_when for sighting date
+                            "database_when": report_date,        # UI expects database_when for report date
+                            # Legacy fields (keep for compatibility)
                             "mufon_case_id": real_case_id,
                             "report_date": report_date,
                             "sighting_datetime": sighting_datetime,
