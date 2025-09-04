@@ -61,14 +61,46 @@ import time
 import json
 import requests
 from datetime import datetime
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
 import httpx
 import re
 from typing import Optional, List, Dict
+import random
+import traceback
 
 def log(message):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{timestamp}] {message}")
+
+def random_delay(min_seconds=1, max_seconds=5):
+    """Add random delay to avoid bot detection"""
+    delay = random.uniform(min_seconds, max_seconds)
+    time.sleep(delay)
+
+def retry_with_backoff(func, max_retries=3, initial_delay=5):
+    """Retry function with exponential backoff"""
+    for attempt in range(max_retries):
+        try:
+            return func()
+        except Exception as e:
+            if attempt == max_retries - 1:
+                raise
+            delay = initial_delay * (2 ** attempt) + random.uniform(0, 2)
+            log(f"⚠️ Attempt {attempt + 1} failed: {str(e)[:100]}")
+            log(f"🔄 Retrying in {delay:.1f} seconds...")
+            time.sleep(delay)
+
+def safe_browser_operation(operation, context_msg="Browser operation"):
+    """Safely execute browser operations with error handling"""
+    try:
+        return operation()
+    except PlaywrightTimeout as e:
+        log(f"⚠️ {context_msg} timeout: {e}")
+        raise
+    except Exception as e:
+        log(f"❌ {context_msg} error: {e}")
+        log(f"📍 Stack trace: {traceback.format_exc()}")
+        raise
 
 class UFOClassifier:
     """Classifies UFOs based on description text with extended pattern matching"""
@@ -271,6 +303,41 @@ def reverse_geocode(location_text: str) -> Optional[Dict[str, any]]:
     
     return None
 
+def create_browser_session(playwright_instance):
+    """Create a new browser session with anti-detection measures"""
+    browser = playwright_instance.chromium.launch(
+        headless=True,
+        args=[
+            '--no-sandbox',
+            '--disable-blink-features=AutomationControlled',
+            '--disable-web-security',
+            '--disable-features=VizDisplayCompositor',
+            '--user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        ]
+    )
+    
+    # Check for existing cookies
+    cookies_file = "/tmp/mufon_cookies.json"
+    if os.path.exists(cookies_file):
+        log("🍪 Loading existing authentication cookies...")
+        context = browser.new_context(storage_state=cookies_file)
+    else:
+        log("🔐 No stored cookies, will authenticate fresh...")
+        context = browser.new_context()
+    
+    page = context.new_page()
+    
+    # Set extra headers to avoid detection
+    page.set_extra_http_headers({
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1'
+    })
+    
+    return browser, context, page
+
 def extract_and_import_mufon(date_str):
     date_obj = datetime.strptime(date_str, "%Y-%m-%d")
     month, day, year = date_obj.month, date_obj.day, date_obj.year
@@ -280,106 +347,192 @@ def extract_and_import_mufon(date_str):
     # Initialize classifier
     classifier = UFOClassifier()
     
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+    def run_extraction():
+        with sync_playwright() as p:
+            browser, context, page = create_browser_session(p)
         
-        # Check for existing cookies
-        cookies_file = "/tmp/mufon_cookies.json"
-        if os.path.exists(cookies_file):
-            log("🍪 Loading existing authentication cookies...")
-            context = browser.new_context(storage_state=cookies_file)
-        else:
-            log("🔐 No stored cookies, will authenticate fresh...")
-            context = browser.new_context()
-        
-        page = context.new_page()
-        
-        try:
-            # AUTHENTICATE OR TEST EXISTING COOKIES
-            log("🔐 Testing MUFON authentication...")
-            page.goto("https://mufon.z2systems.com/np/clients/mufon/neonPage.jsp?pageId=19&")
-            page.wait_for_load_state('networkidle')
-            time.sleep(2)
-            
-            # Check if we got redirected to login (cookies expired)
-            current_url = page.url
-            if "signIn" in current_url or "login" in current_url:
-                log("🔐 Cookies expired, performing fresh login...")
+            try:
+                # AUTHENTICATE OR TEST EXISTING COOKIES
+                log("🔐 Testing MUFON authentication...")
                 
-                mufon_user = os.getenv('MUFON_USERNAME')
-                mufon_pass = os.getenv('MUFON_PASSWORD')
+                def authenticate():
+                    safe_browser_operation(
+                        lambda: page.goto("https://mufon.z2systems.com/np/clients/mufon/neonPage.jsp?pageId=19&", timeout=30000),
+                        "Initial page load"
+                    )
+                    random_delay(2, 4)
+                    
+                    safe_browser_operation(
+                        lambda: page.wait_for_load_state('networkidle', timeout=15000),
+                        "Wait for page load"
+                    )
+                    
+                    # Check if we got redirected to login (cookies expired)
+                    current_url = page.url
+                    if "signIn" in current_url or "login" in current_url:
+                        # Clear bad cookies before attempting fresh login
+                        cookies_file = "/tmp/mufon_cookies.json"
+                        if os.path.exists(cookies_file):
+                            log("🗑️ Clearing expired cookies...")
+                            os.remove(cookies_file)
+                        log("🔐 Cookies expired, performing fresh login...")
+                        
+                        mufon_user = os.getenv('MUFON_USERNAME')
+                        mufon_pass = os.getenv('MUFON_PASSWORD')
+                        
+                        if not mufon_user or not mufon_pass:
+                            log("❌ MUFON credentials not found")
+                            raise Exception("Missing MUFON credentials")
+                        
+                        log("📝 Filling login form...")
+                        safe_browser_operation(
+                            lambda: page.fill("input[name='loginName']", mufon_user, timeout=10000),
+                            "Fill username"
+                        )
+                        random_delay(0.5, 1.5)
+                        
+                        safe_browser_operation(
+                            lambda: page.fill("input[name='loginPassword']", mufon_pass, timeout=10000),
+                            "Fill password"
+                        )
+                        random_delay(0.5, 1.5)
+                        
+                        safe_browser_operation(
+                            lambda: page.press("input[name='loginPassword']", "Enter"),
+                            "Submit login form"
+                        )
+                        
+                        safe_browser_operation(
+                            lambda: page.wait_for_load_state('networkidle', timeout=15000),
+                            "Wait after login submit"
+                        )
+                        random_delay(2, 4)
+                        
+                        # Verify authentication worked
+                        current_url = page.url
+                        if "signIn" in current_url or "login" in current_url:
+                            log("❌ AUTHENTICATION FAILED - clearing bad cookies")
+                            cookies_file = "/tmp/mufon_cookies.json"
+                            if os.path.exists(cookies_file):
+                                os.remove(cookies_file)
+                            raise Exception("Authentication failed")
+                        
+                        # Save cookies for reuse
+                        log("💾 Saving authentication cookies...")
+                        cookies_file = "/tmp/mufon_cookies.json"
+                        context.storage_state(path=cookies_file)
+                        
+                        # Go to search page after login
+                        log("🔍 Navigating to search page after login...")
+                        safe_browser_operation(
+                            lambda: page.goto("https://mufon.z2systems.com/np/clients/mufon/neonPage.jsp?pageId=19&", timeout=30000),
+                            "Navigate to search page"
+                        )
+                        random_delay(3, 5)
+                    
+                    log("✅ Authentication successful - ready to search")
                 
-                if not mufon_user or not mufon_pass:
-                    log("❌ MUFON credentials not found")
-                    return False
+                # Try authentication with retries
+                retry_with_backoff(authenticate, max_retries=3, initial_delay=5)
                 
-                log("📝 Filling login form...")
-                page.fill("input[name='loginName']", mufon_user)
-                page.fill("input[name='loginPassword']", mufon_pass)
-                page.press("input[name='loginPassword']", "Enter")
-                page.wait_for_load_state('networkidle')
-                time.sleep(2)
+                # Get iframe and set date fields
+                def setup_search():
+                    iframe = page.frame_locator("iframe")
+                    
+                    log(f"📅 Setting date fields for {month}/{day}/{year}...")
+                    
+                    # Event Date FROM
+                    safe_browser_operation(
+                        lambda: iframe.locator("select[name='event_date_lo__month']").select_option(str(month), timeout=10000),
+                        "Select FROM month"
+                    )
+                    random_delay(0.3, 0.8)
+                    
+                    safe_browser_operation(
+                        lambda: iframe.locator("select[name='event_date_lo__day']").select_option(str(day), timeout=10000),
+                        "Select FROM day"
+                    )
+                    random_delay(0.3, 0.8)
+                    
+                    safe_browser_operation(
+                        lambda: iframe.locator("select[name='event_date_lo__year']").select_option(str(year), timeout=10000),
+                        "Select FROM year"
+                    )
+                    random_delay(0.3, 0.8)
+                    
+                    # Event Date TO (same as FROM for single day)
+                    safe_browser_operation(
+                        lambda: iframe.locator("select[name='event_date_hi__month']").select_option(str(month), timeout=10000),
+                        "Select TO month"
+                    )
+                    random_delay(0.3, 0.8)
+                    
+                    safe_browser_operation(
+                        lambda: iframe.locator("select[name='event_date_hi__day']").select_option(str(day), timeout=10000),
+                        "Select TO day"
+                    )
+                    random_delay(0.3, 0.8)
+                    
+                    safe_browser_operation(
+                        lambda: iframe.locator("select[name='event_date_hi__year']").select_option(str(year), timeout=10000),
+                        "Select TO year"
+                    )
+                    random_delay(0.5, 1.0)
+                    
+                    # Submit search
+                    log("🚀 Submitting search...")
+                    safe_browser_operation(
+                        lambda: iframe.locator("input[type='submit'][value='SUBMIT']").first.click(timeout=10000),
+                        "Submit search form"
+                    )
+                    log("⏳ Waiting for search results...")
+                    random_delay(8, 12)
                 
-                # Verify authentication worked
-                current_url = page.url
-                if "signIn" in current_url or "login" in current_url:
-                    log("❌ AUTHENTICATION FAILED")
-                    return False
+                # Try search setup with retries
+                retry_with_backoff(setup_search, max_retries=2, initial_delay=3)
                 
-                # Save cookies for reuse
-                log("💾 Saving authentication cookies...")
-                context.storage_state(path=cookies_file)
+                # Get results
+                def get_results():
+                    iframe = page.frame_locator("iframe")
+                    return safe_browser_operation(
+                        lambda: iframe.locator("table tbody tr").all(),
+                        "Get search results"
+                    )
                 
-                # Go to search page after login
-                log("🔍 Navigating to search page after login...")
-                page.goto("https://mufon.z2systems.com/np/clients/mufon/neonPage.jsp?pageId=19&")
-                time.sleep(3)
-            
-            log("✅ Authentication successful - ready to search")
-            
-            # Get iframe and set date fields
-            iframe = page.frame_locator("iframe")
-            
-            log(f"📅 Setting date fields for {month}/{day}/{year}...")
-            # Event Date FROM
-            iframe.locator("select[name='event_date_lo__month']").select_option(str(month))
-            time.sleep(0.2)
-            iframe.locator("select[name='event_date_lo__day']").select_option(str(day))
-            time.sleep(0.2)
-            iframe.locator("select[name='event_date_lo__year']").select_option(str(year))
-            time.sleep(0.2)
-            
-            # Event Date TO (same as FROM for single day)
-            iframe.locator("select[name='event_date_hi__month']").select_option(str(month))
-            time.sleep(0.2)
-            iframe.locator("select[name='event_date_hi__day']").select_option(str(day))
-            time.sleep(0.2)
-            iframe.locator("select[name='event_date_hi__year']").select_option(str(year))
-            time.sleep(0.5)
-            
-            # Submit search
-            log("🚀 Submitting search...")
-            iframe.locator("input[type='submit'][value='SUBMIT']").first.click()
-            log("⏳ Waiting for search results...")
-            time.sleep(10)
-            
-            # Get results
-            rows = iframe.locator("table tbody tr").all()
-            log(f"📊 Found {len(rows)} result rows")
-            
-            # Process each case
-            imported_count = 0
-            
-            for i, row in enumerate(rows, 1):
-                try:
-                    cells = row.locator("td").all()
-                    if len(cells) >= 4:
-                        # MUFON table structure: Row#, Date Submitted, Date/Time of Event, Short Description, Location, Long Description, Attachments
-                        row_number = cells[0].inner_text().strip()
-                        report_date = cells[1].inner_text().strip()
-                        sighting_datetime = cells[2].inner_text().strip()
-                        short_description = cells[3].inner_text().strip()
-                        location = cells[4].inner_text().strip() if len(cells) > 4 else "Unknown Location"
+                rows = retry_with_backoff(get_results, max_retries=2, initial_delay=3)
+                log(f"📊 Found {len(rows)} result rows")
+                
+                # Process each case
+                imported_count = 0
+                
+                for i, row in enumerate(rows, 1):
+                    try:
+                        cells = safe_browser_operation(
+                            lambda: row.locator("td").all(),
+                            f"Get cells for row {i}"
+                        )
+                        if len(cells) >= 4:
+                            # Extract cell text safely
+                            row_number = safe_browser_operation(
+                                lambda: cells[0].inner_text().strip(),
+                                f"Get row number for row {i}"
+                            )
+                            report_date = safe_browser_operation(
+                                lambda: cells[1].inner_text().strip(),
+                                f"Get report date for row {i}"
+                            )
+                            sighting_datetime = safe_browser_operation(
+                                lambda: cells[2].inner_text().strip(),
+                                f"Get sighting datetime for row {i}"
+                            )
+                            short_description = safe_browser_operation(
+                                lambda: cells[3].inner_text().strip(),
+                                f"Get short description for row {i}"
+                            )
+                            location = safe_browser_operation(
+                                lambda: cells[4].inner_text().strip() if len(cells) > 4 else "Unknown Location",
+                                f"Get location for row {i}"
+                            )
                         
                         log(f"🔍 RAW PARSE - Row: '{row_number}', ReportDate: '{report_date}', SightingDT: '{sighting_datetime[:30]}', Desc: '{short_description[:30]}', Loc: '{location[:20]}'")
                         
@@ -457,71 +610,126 @@ def extract_and_import_mufon(date_str):
                                         "type": file_type
                                     })
                         
-                        log(f"📎 Found {len(media_files)} media files")
-                        
-                        # Get long description from VIEW page
-                        long_description = short_description
-                        
-                        # Look for VIEW button/input in the row (use the same input we found for case ID)
-                        if real_case_id:
-                            try:
-                                log("📖 Clicking VIEW for long description...")
-                                
-                                # Find the VIEW button we already identified  
-                                view_input = None
-                                for inp in inputs:
-                                    value = inp.get_attribute('value') or ''
-                                    if 'VIEW' in value:
-                                        view_input = inp
-                                        break
-                                
-                                # Properly wait for popup and extract content
-                                if view_input:
+                            log(f"📎 Found {len(media_files)} media files")
+                            
+                            # Get long description from VIEW page with error handling
+                            long_description = short_description
+                            if real_case_id:
+                                def get_long_description():
+                                    log("📖 Clicking VIEW for long description...")
+                                    
+                                    # Find the VIEW button we already identified  
+                                    view_input = None
+                                    for inp in inputs:
+                                        value = safe_browser_operation(
+                                            lambda: inp.get_attribute('value') or '',
+                                            "Get input value"
+                                        )
+                                        if 'VIEW' in value:
+                                            view_input = inp
+                                            break
+                                    
+                                    if not view_input:
+                                        log("⚠️ No VIEW button found")
+                                        return short_description
+                                    
+                                    # Try popup approach first
                                     try:
-                                        with page.expect_popup() as popup_info:
-                                            view_input.click()
+                                        with page.expect_popup(timeout=15000) as popup_info:
+                                            safe_browser_operation(
+                                                lambda: view_input.click(),
+                                                "Click VIEW button"
+                                            )
                                         popup = popup_info.value
-                                        popup.wait_for_load_state("domcontentloaded")
+                                        safe_browser_operation(
+                                            lambda: popup.wait_for_load_state("domcontentloaded", timeout=10000),
+                                            "Wait for popup load"
+                                        )
+                                        random_delay(1, 3)
                                         
-                                        # Long description is typically inside <pre>; fall back to body
+                                        # Extract text from popup
                                         try:
-                                            popup.wait_for_selector("pre", timeout=5000)
-                                            popup_text = popup.locator("pre").inner_text()
+                                            safe_browser_operation(
+                                                lambda: popup.wait_for_selector("pre", timeout=5000),
+                                                "Wait for pre element"
+                                            )
+                                            popup_text = safe_browser_operation(
+                                                lambda: popup.locator("pre").inner_text(),
+                                                "Get pre text"
+                                            )
                                         except:
-                                            popup_text = popup.locator("body").inner_text()
+                                            popup_text = safe_browser_operation(
+                                                lambda: popup.locator("body").inner_text(),
+                                                "Get body text"
+                                            )
                                         
-                                        # Simple header removal - keep all content except literal headers
-                                        long_description = popup_text.strip()
+                                        # Clean up the text
                                         if popup_text:
                                             lines = popup_text.strip().split('\n')
-                                            # Filter out only literal header lines
                                             filtered_lines = []
                                             for line in lines:
                                                 line_clean = line.strip()
-                                                # Skip only literal header text, keep everything else
                                                 if line_clean and not any(header in line_clean for header in ['Long Description', 'Sighting Report', 'MUFON Case']):
                                                     filtered_lines.append(line_clean)
                                             
                                             if filtered_lines:
-                                                long_description = '\n'.join(filtered_lines)
-                                        log(f"📝 Found long description from popup: {long_description[:80]}...")
-                                        popup.close()
+                                                result = '\n'.join(filtered_lines)
+                                                log(f"📝 Found long description from popup: {result[:80]}...")
+                                                safe_browser_operation(
+                                                    lambda: popup.close(),
+                                                    "Close popup"
+                                                )
+                                                return result
+                                        
+                                        safe_browser_operation(
+                                            lambda: popup.close(),
+                                            "Close popup"
+                                        )
+                                        
                                     except Exception as e:
-                                        log(f"⚠️ Popup failed, trying same-page navigation: {e}")
-                                        # Fallback: handle same-page nav 
-                                        before_url = page.url
-                                        view_input.click()
-                                        page.wait_for_load_state("domcontentloaded")
-                                        if page.url != before_url:
-                                            try:
-                                                page.wait_for_selector("pre", timeout=5000)
-                                                long_description = page.locator("pre").inner_text().strip()
-                                            except:
-                                                long_description = page.locator("body").inner_text().strip()
-                                            log(f"📝 Found long description from same-page: {long_description[:80]}...")
+                                        log(f"⚠️ Popup approach failed: {e}")
+                                        # Fallback to same-page navigation
+                                        try:
+                                            before_url = page.url
+                                            safe_browser_operation(
+                                                lambda: view_input.click(),
+                                                "Click VIEW (fallback)"
+                                            )
+                                            safe_browser_operation(
+                                                lambda: page.wait_for_load_state("domcontentloaded", timeout=10000),
+                                                "Wait for page load (fallback)"
+                                            )
+                                            random_delay(1, 3)
+                                            
+                                            if page.url != before_url:
+                                                try:
+                                                    safe_browser_operation(
+                                                        lambda: page.wait_for_selector("pre", timeout=5000),
+                                                        "Wait for pre (fallback)"
+                                                    )
+                                                    result = safe_browser_operation(
+                                                        lambda: page.locator("pre").inner_text().strip(),
+                                                        "Get pre text (fallback)"
+                                                    )
+                                                except:
+                                                    result = safe_browser_operation(
+                                                        lambda: page.locator("body").inner_text().strip(),
+                                                        "Get body text (fallback)"
+                                                    )
+                                                
+                                                log(f"📝 Found long description from same-page: {result[:80]}...")
+                                                return result
+                                        except Exception as fallback_e:
+                                            log(f"⚠️ Fallback approach also failed: {fallback_e}")
                                     
-                            except Exception as e:
-                                log(f"⚠️ Failed to get long description: {e}")
+                                    return short_description  # Return short description if all fails
+                                
+                                # Try to get long description with retries
+                                try:
+                                    long_description = retry_with_backoff(get_long_description, max_retries=2, initial_delay=2)
+                                except Exception as e:
+                                    log(f"⚠️ Failed to get long description after retries: {e}")
+                                    long_description = short_description
                         
                         # Classify UFO type
                         classification = classifier.classify(long_description, short_description)
@@ -665,17 +873,46 @@ def extract_and_import_mufon(date_str):
                             
                             log(f"✅ Case #{real_case_id}: {uploaded_count}/{len(media_files)} media uploaded")
                         
-                        log(f"🎯 Case #{real_case_id} complete")
+                            log(f"🎯 Case #{real_case_id} complete")
+                            
+                            # Add random delay between cases to avoid overwhelming server
+                            if i < len(rows):  # Don't delay after last case
+                                random_delay(2, 5)
                         
-                except Exception as e:
-                    log(f"⚠️ Error processing row {i}: {e}")
-                    continue
+                    except Exception as e:
+                        log(f"⚠️ Error processing row {i}: {e}")
+                        random_delay(3, 7)  # Longer delay after errors
+                        continue
             
-            log(f"🎉 Processing completed: {imported_count} cases imported")
-            return imported_count > 0
-            
-        finally:
-            browser.close()
+                log(f"🎉 Processing completed: {imported_count} cases imported")
+                return imported_count > 0
+                
+            except Exception as main_error:
+                log(f"❌ Main processing error: {main_error}")
+                log(f"📍 Stack trace: {traceback.format_exc()}")
+                return False
+            finally:
+                try:
+                    log("🧹 Cleaning up browser session...")
+                    safe_browser_operation(
+                        lambda: browser.close(),
+                        "Close browser"
+                    )
+                except Exception as cleanup_error:
+                    log(f"⚠️ Browser cleanup error: {cleanup_error}")
+    
+    # Run extraction with retry logic
+    try:
+        log("🚀 Starting MUFON extraction with retry capability...")
+        return retry_with_backoff(run_extraction, max_retries=3, initial_delay=10)
+    except Exception as final_error:
+        log(f"❌ All extraction attempts failed: {final_error}")
+        # Clean up cookies if we keep failing
+        cookies_file = "/tmp/mufon_cookies.json"
+        if os.path.exists(cookies_file):
+            log("🗑️ Removing corrupted cookies file...")
+            os.remove(cookies_file)
+        return False
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
