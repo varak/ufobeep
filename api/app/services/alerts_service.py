@@ -338,57 +338,49 @@ class AlertsService:
     
     async def create_beep(self, device_id: str, location: Dict = None, 
                          description: str = None, username: str = None,
-                         title: str = None, source: str = None) -> Tuple[str, Dict]:
-        """Create beep with location privacy"""
-        # Allow MUFON alerts without location data
-        if source == "mufon" and not location:
-            # Create MUFON alert without location data
-            alert_id = await self.create_alert(
-                title=title,
-                description=description,
-                category="ufo",
-                witness_count=1,
-                is_public=True,
-                sensor_data={},
-                alert_level="normal",
-                device_id=device_id,
-                username=username,
-                source=source
-            )
-            return alert_id, {"lat": 0.0, "lng": 0.0}
+                         title: str = None, source: str = None, 
+                         enrichment_data: Dict = None) -> Tuple[str, Dict]:
+        """Create beep with location privacy - single create_alert call"""
+        
+        # Handle location and jittering
+        sensor_data = {}
+        lat = lng = jittered_lat = jittered_lng = 0.0
+        
+        if location:
+            lat = float(location['latitude'])
+            lng = float(location['longitude'])
             
-        # Validate location for non-MUFON alerts
-        if not location:
+            # Apply privacy jittering for regular alerts (not MUFON)
+            if source != "mufon":
+                import random
+                import math
+                jitter_radius = 100 / 111000  # 111km per degree latitude  
+                angle = random.uniform(0, 2 * math.pi)
+                distance = random.uniform(0, jitter_radius)
+                
+                jittered_lat = lat + (distance * math.cos(angle))
+                jittered_lng = lng + (distance * math.sin(angle))
+            else:
+                # No jittering for MUFON alerts
+                jittered_lat = lat
+                jittered_lng = lng
+            
+            # Build sensor data with location info
+            sensor_data = {
+                'location': {
+                    'latitude': jittered_lat,
+                    'longitude': jittered_lng,
+                    'accuracy': location.get('accuracy', 50.0),
+                    'original_latitude': lat,
+                    'original_longitude': lng
+                },
+                'device_id': device_id,
+                'timestamp': datetime.utcnow().isoformat()
+            }
+        elif source != "mufon":
             raise ValueError("Location required for non-MUFON alerts")
-        lat = float(location['latitude'])
-        lng = float(location['longitude'])
-        if lat == 0.0 and lng == 0.0:
-            raise ValueError("Invalid GPS coordinates (0,0)")
         
-        # Apply privacy jittering (100m radius)
-        import random
-        import math
-        jitter_radius = 100 / 111000  # 111km per degree latitude
-        angle = random.uniform(0, 2 * math.pi)
-        distance = random.uniform(0, jitter_radius)
-        
-        jittered_lat = lat + (distance * math.cos(angle))
-        jittered_lng = lng + (distance * math.sin(angle))
-        
-        # Build sensor data
-        sensor_data = {
-            'location': {
-                'latitude': jittered_lat,
-                'longitude': jittered_lng,
-                'accuracy': location.get('accuracy', 50.0),
-                'original_latitude': lat,
-                'original_longitude': lng
-            },
-            'device_id': device_id,
-            'timestamp': datetime.utcnow().isoformat()
-        }
-        
-        # Create alert with coordinates
+        # Single create_alert call for all cases
         alert_id = await self.create_alert(
             title=title,
             description=description,
@@ -396,12 +388,13 @@ class AlertsService:
             witness_count=1,
             is_public=True,
             sensor_data=sensor_data,
+            enrichment_data=enrichment_data,
             alert_level="normal",
             device_id=device_id,
             username=username,
             source=source,
-            latitude=lat,
-            longitude=lng
+            latitude=lat if location else None,
+            longitude=lng if location else None
         )
         
         # Auto-follow the alert for the creator so they get notifications

@@ -536,21 +536,38 @@ def extract_and_import_mufon(date_str):
                         
                         log(f"📤 Creating alert for MUFON Case #{real_case_id}...")
                         
-                        # Prepare alert data
+                        # Prepare alert data with correct API structure
                         alert_data = {
-                            "id": alert_id,
+                            "device_id": f"mufon_import_{real_case_id}",
                             "title": f"MUFON Case #{real_case_id}",
                             "description": long_description if long_description else short_description,
+                            "username": "MUFON",
                             "source": "mufon",
                             "external_id": f"mufon_{real_case_id}",
                             "external_url": f"https://mufon.com/case/{real_case_id}",
-                            "classification": classification,
-                            "geocoding": geo_data
+                            "has_media": len(media_files) > 0
                         }
                         
+                        # Add location as nested object if we have geocoding data
                         if geo_data:
-                            alert_data["latitude"] = geo_data["latitude"]
-                            alert_data["longitude"] = geo_data["longitude"]
+                            alert_data["location"] = {
+                                "latitude": geo_data["latitude"],
+                                "longitude": geo_data["longitude"]
+                            }
+                        
+                        # Store all enrichment data (classification, geocoding, etc.) 
+                        enrichment_data = {
+                            "classification": classification,
+                            "geocoding": geo_data,
+                            "mufon_case_id": real_case_id,
+                            "report_date": report_date,
+                            "sighting_datetime": sighting_datetime,
+                            "location_raw": location
+                        }
+                        
+                        # Store enrichment data in the description for now 
+                        # (will be properly stored in enrichment_data field by the service)
+                        alert_data["enrichment"] = enrichment_data
                         
                         # Create the alert via API
                         try:
