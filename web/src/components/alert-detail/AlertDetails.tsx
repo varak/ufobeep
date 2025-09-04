@@ -10,9 +10,10 @@ interface Alert {
     longitude: number
     name: string
   }
-  enrichment_data?: {
+  enrichment?: {
     report_date?: string
     sighting_datetime?: string
+    mufon_case_id?: string
     [key: string]: any
   }
 }
@@ -56,10 +57,16 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
       {/* Description - Main description now contains full text */}
       {alert.description && (
         <div className="mb-6">
-          {/* Add MUFON Case ID header if available */}
+          {/* Add MUFON attribution and case ID if available */}
           {alert.enrichment?.mufon_case_id && (
-            <div className="text-text-tertiary text-sm mb-2">
-              MUFON Case #{alert.enrichment.mufon_case_id}
+            <div className="mb-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-blue-400">🛸</span>
+                <span className="text-blue-300 font-medium">MUFON Report</span>
+              </div>
+              <div className="text-text-tertiary text-sm">
+                Case #{alert.enrichment.mufon_case_id}
+              </div>
             </div>
           )}
           <div 

@@ -51,6 +51,10 @@ fi
 export MUFON_USERNAME
 export MUFON_PASSWORD
 
+# Clear any existing cookies to force fresh authentication
+echo "🗑️ Clearing any existing cookies for fresh authentication..."
+rm -f /tmp/mufon_cookies.json
+
 # Execute embedded Python script
 echo "🔍 Running MUFON extraction and import..."
 python3 - "$DATE" << 'EOF'
@@ -367,9 +371,21 @@ def extract_and_import_mufon(date_str):
                         "Wait for page load"
                     )
                     
-                    # Check if we got redirected to login (cookies expired)
+                    # Check if we got redirected to login (cookies expired) or if page looks wrong
                     current_url = page.url
-                    if "signIn" in current_url or "login" in current_url:
+                    page_content = page.content()
+                    
+                    # More aggressive detection of auth failure
+                    auth_failed = (
+                        "signIn" in current_url or 
+                        "login" in current_url or
+                        "signin" in current_url.lower() or
+                        "authentication" in page_content.lower() or
+                        "please log in" in page_content.lower() or
+                        len(page_content) < 5000  # Page too small, likely auth issue
+                    )
+                    
+                    if auth_failed:
                         # Clear bad cookies before attempting fresh login
                         cookies_file = "/tmp/mufon_cookies.json"
                         if os.path.exists(cookies_file):
@@ -410,7 +426,19 @@ def extract_and_import_mufon(date_str):
                         
                         # Verify authentication worked
                         current_url = page.url
-                        if "signIn" in current_url or "login" in current_url:
+                        page_content = page.content()
+                        
+                        # Check if login failed
+                        login_failed = (
+                            "signIn" in current_url or 
+                            "login" in current_url or
+                            "signin" in current_url.lower() or
+                            "invalid" in page_content.lower() or
+                            "incorrect" in page_content.lower() or
+                            len(page_content) < 5000
+                        )
+                        
+                        if login_failed:
                             log("❌ AUTHENTICATION FAILED - clearing bad cookies")
                             cookies_file = "/tmp/mufon_cookies.json"
                             if os.path.exists(cookies_file):
@@ -758,11 +786,11 @@ def extract_and_import_mufon(date_str):
                         log(f"📤 Creating alert for MUFON Case #{real_case_id}...")
                         
                         # Prepare alert data with correct API structure
-                        # Title: Add "Sighting" suffix to UFO types
+                        # Title: Add "MUFON Report" for proper attribution
                         if classification['confidence'] >= 0.3:
-                            title = f"{classification['type'].title()} Sighting"
+                            title = f"MUFON {classification['type'].title()} Report"
                         else:
-                            title = "UFO Sighting"
+                            title = "MUFON Report"
                         
                         alert_data = {
                             "device_id": f"mufon_import_{real_case_id}",
@@ -859,8 +887,9 @@ def extract_and_import_mufon(date_str):
                                         media_response = client.get(media['url'])
                                         media_response.raise_for_status()
                                         
-                                        files = {'file': (media['filename'], media_response.content, 'application/octet-stream')}
-                                        upload_response = requests.post(f"http://localhost:8000/alerts/{alert_id}/media", files=files, timeout=120)
+                                        files = {'files': (media['filename'], media_response.content, 'application/octet-stream')}
+                                        data = {'source': 'mufon_import'}
+                                        upload_response = requests.post(f"http://localhost:8000/alerts/{alert_id}/media", files=files, data=data, timeout=120)
                                         
                                         if upload_response.status_code == 200:
                                             uploaded_count += 1
