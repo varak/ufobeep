@@ -75,7 +75,8 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
       return baseCount
     }
     // If there's a description, add 1 for the initial description comment (ID 0)
-    const hasDescription = getPreviewDescription()?.trim().length > 0
+    const description = getPreviewDescription()
+    const hasDescription = description ? description.trim().length > 0 : false
     return hasDescription ? baseCount + 1 : baseCount
   }
 
