@@ -650,11 +650,9 @@ class AlertsLoadingState extends _$AlertsLoadingState {
 // Filtered and Sorted Alerts Provider
 @riverpod
 Future<List<Alert>> filteredAlerts(FilteredAlertsRef ref) async {
-  final alertsAsync = ref.watch(alertsListProvider);
+  // Use ref.watch with proper async handling
+  final alerts = await ref.watch(alertsListProvider.future);
   final filter = ref.watch(alertsFilterStateProvider);
-  
-  // Wait for alerts to load instead of returning empty list
-  final alerts = await alertsAsync.future;
   
   // Apply filters
   var filteredAlerts = alerts.where((alert) {
