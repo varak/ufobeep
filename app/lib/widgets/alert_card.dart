@@ -80,8 +80,8 @@ class AlertCard extends ConsumerWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         
-                        // Location for MUFON reports - right under title
-                        if (alert.source == 'mufon' && _getLocationName(alert).isNotEmpty) ...[
+                        // Location for all reports - right under title
+                        if (_getLocationName(alert).isNotEmpty) ...[
                           const SizedBox(height: 4),
                           Text(
                             _getLocationName(alert),
@@ -159,8 +159,8 @@ class AlertCard extends ConsumerWidget {
                           fontSize: 12,
                         ),
                       ),
-                      // Only show distance for non-MUFON alerts  
-                      if (alert.distance != null && showDistance && alert.source != 'mufon') ...[ 
+                      // Only show distance for non-MUFON alerts when meaningful
+                      if (alert.distance != null && alert.distance! > 0 && showDistance && alert.source != 'mufon') ...[ 
                         const SizedBox(height: 4),
                         _buildDistanceBadge(units),
                       ],
@@ -203,30 +203,8 @@ class AlertCard extends ConsumerWidget {
                   
                   const Spacer(),
                   
-                  // Location info (only for non-MUFON alerts, MUFON shows location under title)
-                  if (alert.source != 'mufon')
-                    Expanded(
-                    flex: 2,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        if (alert.locationName != null && alert.locationName!.isNotEmpty && alert.locationName != 'Unknown Location') ...[ 
-                          Expanded(
-                            child: Text(
-                              alert.locationName!,
-                              style: const TextStyle(
-                                color: AppColors.textTertiary,
-                                fontSize: 12,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.right,
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ) else const Spacer(),
+                  // Remove redundant location display since all locations now show under title
+                  const Spacer(),
                   
                   // Arrow indicator
                   const SizedBox(width: 8),
@@ -463,8 +441,26 @@ class AlertCard extends ConsumerWidget {
         }
       }
     }
-    // Fallback to standard location name
-    return alert.locationName ?? '';
+    
+    // For UFOBeep alerts, check sensor data for locationName
+    if (alert.source == 'ufobeep') {
+      // First try to get from sensor data
+      final sensorData = alert.sensorData;
+      if (sensorData != null && sensorData.containsKey('locationName')) {
+        final sensorLocationName = sensorData['locationName']?.toString();
+        if (sensorLocationName != null && sensorLocationName.isNotEmpty) {
+          return sensorLocationName;
+        }
+      }
+    }
+    
+    // For all alerts, return location name if available and meaningful
+    if (alert.locationName != null && 
+        alert.locationName!.isNotEmpty && 
+        alert.locationName != 'Unknown Location') {
+      return alert.locationName!;
+    }
+    return '';
   }
 
   String _getMufonReportDate(Alert alert) {
@@ -576,8 +572,8 @@ class CompactAlertCard extends ConsumerWidget {
                     const SizedBox(height: 2),
                     Row(
                       children: [
-                        // Only show distance for non-MUFON alerts
-                        if (alert.distance != null && alert.source != 'mufon') ...[ 
+                        // Only show distance for non-MUFON alerts when meaningful
+                        if (alert.distance != null && alert.distance! > 0 && alert.source != 'mufon') ...[ 
                           Text(
                             UnitConversion.formatDistance(alert.distance! * 1000, units),
                             style: const TextStyle(
