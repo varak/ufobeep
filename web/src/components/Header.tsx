@@ -62,7 +62,7 @@ export default function Header() {
               </div>
             ) : (
               <Link
-                href="/auth/magic"
+                href="/auth"
                 className="px-3 py-2 rounded-md text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-dark-surface-elevated"
               >
                 Sign in
@@ -98,7 +98,7 @@ export default function Header() {
                   </button>
                 ) : (
                   <Link
-                    href="/auth/magic"
+                    href="/auth"
                     className="text-sm text-text-secondary hover:text-text-primary"
                   >
                     Sign in
