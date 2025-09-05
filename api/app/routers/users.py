@@ -1388,12 +1388,12 @@ async def google_login(request: SocialLoginRequest):
                 
                 # Link device if not already linked
                 await conn.execute("""
-                    INSERT INTO user_devices (user_id, device_id, platform, created_at)
-                    VALUES ($1, $2, $3, NOW())
+                    INSERT INTO user_devices (user_id, device_id, created_at)
+                    VALUES ($1, $2, NOW())
                     ON CONFLICT (device_id) DO UPDATE SET 
                         user_id = EXCLUDED.user_id,
                         last_seen_at = NOW()
-                """, user_data["id"], request.device_id, request.platform)
+                """, user_data["id"], request.device_id)
                 
                 # Create JWT tokens
                 access_token = create_access_token(data={"sub": str(user_data["id"])})
