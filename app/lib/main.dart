@@ -396,13 +396,8 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
       
       // Internationalization
       locale: currentLocale,
-      supportedLocales: LocaleConfig.supportedLocales,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
       localeResolutionCallback: (locales, supportedLocales) =>
           LocaleConfig.localeResolutionCallback(locales != null ? [locales] : null, supportedLocales),
     );
@@ -423,6 +418,31 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   
   print('Background notification type: $notificationType, witnesses: $witnessCount');
   
+  // Check DND/Quiet Hours before doing any background sounds/handling
+  bool muted = false;
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final prefsJson = prefs.getString('user_preferences');
+    if (prefsJson != null) {
+      final map = jsonDecode(prefsJson) as Map<String, dynamic>;
+      final user = UserPreferences.fromJson(map);
+      final now = DateTime.now();
+      if (user.dndUntil != null && user.dndUntil!.isAfter(now)) {
+        muted = true;
+      } else if (user.quietHoursEnabled) {
+        final start = user.quietHoursStart;
+        final end = user.quietHoursEnd;
+        final hour = now.hour;
+        final inWindow = start == end ? false : (start < end ? (hour >= start && hour < end) : (hour >= start || hour < end));
+        if (inWindow && !user.allowEmergencyOverride) muted = true;
+      }
+    }
+  } catch (_) {}
+  if (muted && notificationType == 'sighting_alert') {
+    print('🔕 Background: muted by DND/Quiet Hours');
+    return;
+  }
+
   // Initialize sound service for background processing
   try {
     await SoundService.I.init();

@@ -191,61 +191,33 @@ class LanguageSettingsScreen extends ConsumerWidget {
     UserPreferencesNotifier preferencesNotifier,
     String languageCode,
   ) async {
-    // Show loading indicator for immediate feedback
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => Dialog(
-        backgroundColor: AppColors.darkSurface,
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircularProgressIndicator(
-                color: AppColors.brandPrimary,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Changing language...',
-                style: TextStyle(
-                  color: AppColors.textPrimary,
-                  fontSize: 16,
-                ),
-              ),
-            ],
-          ),
+    // Non-blocking feedback instead of modal dialog to avoid UI hang
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Changing language...'),
+          duration: const Duration(milliseconds: 800),
+          backgroundColor: AppColors.textSecondary,
         ),
-      ),
-    );
+      );
+    }
 
-    // Update the language preference
     final success = await preferencesNotifier.updateLanguage(languageCode);
 
-    // Close loading dialog
-    if (context.mounted) {
-      Navigator.of(context).pop();
-    }
+    if (!context.mounted) return;
 
-    // Show success/error feedback
-    if (context.mounted) {
-      if (success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Language changed to ${LocaleConfig.getLocaleName(languageCode)}'),
-            backgroundColor: AppColors.semanticSuccess,
-            duration: const Duration(seconds: 2),
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Failed to change language'),
-            backgroundColor: AppColors.semanticError,
-            duration: const Duration(seconds: 3),
-          ),
-        );
-      }
-    }
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          success
+              ? 'Language changed to ${LocaleConfig.getLocaleName(languageCode)}'
+              : 'Failed to change language',
+        ),
+        backgroundColor:
+            success ? AppColors.semanticSuccess : AppColors.semanticError,
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 }

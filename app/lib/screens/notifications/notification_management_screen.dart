@@ -19,6 +19,7 @@ class _NotificationManagementScreenState
     extends ConsumerState<NotificationManagementScreen> {
   List<Map<String, dynamic>> _subscriptions = [];
   bool _loadingSubscriptions = true;
+  bool? _dndOverride; // Optimistic UI state for DND switch
 
   @override
   void initState() {
@@ -94,6 +95,9 @@ class _NotificationManagementScreenState
   }
 
   Future<void> _setDndEnabled(bool enabled) async {
+    setState(() {
+      _dndOverride = enabled;
+    });
     final prefsProvider = ref.read(userPreferencesProvider.notifier);
     final currentPrefs = ref.read(userPreferencesProvider);
     if (currentPrefs == null) return;
@@ -120,6 +124,25 @@ class _NotificationManagementScreenState
         ),
       );
     }
+  }
+
+  Future<void> _setDndDuration(Duration duration) async {
+    setState(() {
+      _dndOverride = true;
+    });
+    final prefsProvider = ref.read(userPreferencesProvider.notifier);
+    final currentPrefs = ref.read(userPreferencesProvider);
+    if (currentPrefs == null) return;
+    final until = DateTime.now().add(duration);
+    await prefsProvider.updatePreferences(currentPrefs.copyWith(dndUntil: until));
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('DND on until ${_formatTime(until)}'),
+        backgroundColor: AppColors.success,
+      ),
+    );
+    setState(() {});
   }
 
   Future<void> _toggleQuietHours(bool enabled) async {
@@ -222,7 +245,8 @@ class _NotificationManagementScreenState
   }
 
   Widget _buildQuickActionsSection(UserPreferences preferences) {
-    final dndActive = preferences.dndUntil?.isAfter(DateTime.now()) ?? false;
+    final providerDndActive = preferences.dndUntil?.isAfter(DateTime.now()) ?? false;
+    final dndActive = _dndOverride ?? providerDndActive;
     final dndText = dndActive 
         ? 'Until ${_formatTime(preferences.dndUntil!)}'
         : 'Temporarily silence all notifications';
@@ -240,22 +264,39 @@ class _NotificationManagementScreenState
         ),
         const SizedBox(height: 12),
         GlassCard(
-          child: SwitchListTile(
-            secondary: Icon(
-              dndActive ? Icons.do_not_disturb_on : Icons.do_not_disturb,
-              color: dndActive ? AppColors.warning : AppColors.brandPrimary,
-            ),
-            title: const Text(
-              'Do Not Disturb',
-              style: TextStyle(color: Colors.white),
-            ),
-            subtitle: Text(
-              dndText,
-              style: const TextStyle(color: Colors.white70),
-            ),
-            value: dndActive,
-            onChanged: (val) => _setDndEnabled(val),
-            activeColor: AppColors.brandPrimary,
+          child: Column(
+            children: [
+              SwitchListTile(
+                secondary: Icon(
+                  dndActive ? Icons.do_not_disturb_on : Icons.do_not_disturb,
+                  color: dndActive ? AppColors.warning : AppColors.brandPrimary,
+                ),
+                title: const Text(
+                  'Do Not Disturb',
+                  style: TextStyle(color: Colors.white),
+                ),
+                subtitle: Text(
+                  dndText,
+                  style: const TextStyle(color: Colors.white70),
+                ),
+                value: dndActive,
+                onChanged: (val) => _setDndEnabled(val),
+                activeColor: AppColors.brandPrimary,
+              ),
+              const Divider(color: Colors.white24, height: 1),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                child: Row(
+                  children: [
+                    _DndChip(label: '1h', selected: false, onTap: () => _setDndDuration(const Duration(hours: 1))),
+                    const SizedBox(width: 8),
+                    _DndChip(label: '8h', selected: false, onTap: () => _setDndDuration(const Duration(hours: 8))),
+                    const SizedBox(width: 8),
+                    _DndChip(label: '1 day', selected: false, onTap: () => _setDndDuration(const Duration(days: 1))),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -589,5 +630,35 @@ class _NotificationManagementScreenState
     final period = hour >= 12 ? 'PM' : 'AM';
     final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
     return '$displayHour:00 $period';
+  }
+}
+
+class _DndChip extends StatelessWidget {
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+  const _DndChip({required this.label, required this.selected, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.brandPrimary : Colors.white10,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: selected ? AppColors.brandPrimary : Colors.white24),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: selected ? Colors.black : Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
   }
 }

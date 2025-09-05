@@ -218,6 +218,40 @@ class PushNotificationService {
     _updateNotificationStats(opened: isBackground);
   }
 
+  Future<bool> _isDndOrQuietHoursActive() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final prefsJson = prefs.getString('user_preferences');
+      if (prefsJson == null) return false;
+      final prefsMap = jsonDecode(prefsJson) as Map<String, dynamic>;
+      final user = UserPreferences.fromJson(prefsMap);
+
+      final now = DateTime.now();
+      if (user.dndUntil != null && user.dndUntil!.isAfter(now)) {
+        print('🔕 Notifications muted by DND until ${user.dndUntil}');
+        return true;
+      }
+
+      if (user.quietHoursEnabled) {
+        final start = user.quietHoursStart; // 0-23
+        final end = user.quietHoursEnd;     // 0-23
+        final hour = now.hour;
+        final inWindow = start == end
+            ? false
+            : (start < end
+                ? (hour >= start && hour < end)
+                : (hour >= start || hour < end)); // overnight window
+        if (inWindow && !(user.allowEmergencyOverride)) {
+          print('🌙 Notifications muted by Quiet Hours ($start-$end)');
+          return true;
+        }
+      }
+    } catch (e) {
+      print('DND/QuietHours check failed: $e');
+    }
+    return false;
+  }
+
   void _handleSightingAlert(RemoteMessage message) async {
     print('Handling sighting alert notification');
     final sightingId = message.data['sighting_id'];
@@ -239,7 +273,13 @@ class PushNotificationService {
     print('📱 PROCESSING ALERT: sighting $sightingId from device $submitterDeviceId (current: $currentDeviceId)');
     
     
-    // Load user preferences for DND/quiet hours checking
+    // Respect DND/Quiet Hours: if active, do not surface or play sounds
+    if (await _isDndOrQuietHoursActive()) {
+      print('🔕 Suppressing alert notification due to DND/Quiet Hours');
+      return;
+    }
+
+    // Load user preferences for sound selection (non-blocking)
     dynamic userPrefs;
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -247,11 +287,8 @@ class PushNotificationService {
       if (prefsJson != null) {
         final prefsMap = jsonDecode(prefsJson) as Map<String, dynamic>;
         userPrefs = UserPreferences.fromJson(prefsMap);
-        print('🔇 Foreground: Loaded user preferences for DND checking');
       }
-    } catch (e) {
-      print('⚠️ Foreground: Could not load user preferences: $e');
-    }
+    } catch (_) {}
     
     // Show rich notification with action buttons
     await _showRichNotification(sightingId, witnessCount, distance, locationName);
@@ -324,6 +361,11 @@ class PushNotificationService {
   void _handleCommentNotification(RemoteMessage message) async {
     print('🔔 Handling comment notification');
     print('🔔 Full message data: ${message.data}');
+
+    if (await _isDndOrQuietHoursActive()) {
+      print('🔕 Suppressing comment notification due to DND/Quiet Hours');
+      return;
+    }
     
     // Handle various possible field names for sighting ID
     final sightingId = message.data['sighting_id'] ?? 
@@ -362,8 +404,12 @@ class PushNotificationService {
     }
   }
 
-  void _handleChatMessage(RemoteMessage message) {
+  Future<void> _handleChatMessage(RemoteMessage message) async {
     print('Handling chat message notification');
+    if (await _isDndOrQuietHoursActive()) {
+      print('🔕 Suppressing chat notification due to DND/Quiet Hours');
+      return;
+    }
     final chatId = message.data['chat_id'];
     if (chatId != null) {
       print('Chat ID: $chatId');
