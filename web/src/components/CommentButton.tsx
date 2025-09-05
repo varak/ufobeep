@@ -221,9 +221,6 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
       {!showLoginForm && !showCommentForm && isAuthenticated && (
         <form onSubmit={handleCommentSubmit} className="space-y-4">
           <div>
-            <label htmlFor="comment" className="block text-sm font-medium text-text-primary mb-2">
-              Your comment
-            </label>
             <textarea
               id="comment"
               value={comment}
@@ -305,9 +302,6 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
       {showCommentForm && (
         <form onSubmit={handleCommentSubmit} className="space-y-4">
           <div>
-            <label htmlFor="comment" className="block text-sm font-medium text-text-primary mb-2">
-              Your comment
-            </label>
             <textarea
               id="comment"
               value={comment}
