@@ -82,6 +82,27 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
     return false;
   }
 
+  // Immediate, non-blocking language update to avoid UI hangs during locale switch
+  bool setLanguageImmediate(String language) {
+    try {
+      final current = state ?? UserPreferences(
+        language: AppEnvironment.defaultLocale,
+        alertRangeKm: 10.0,
+      );
+      final updated = current.copyWith(language: language, lastUpdated: DateTime.now());
+      state = updated; // Optimistic local state update
+      // Persist asynchronously (best-effort)
+      final prefsJson = jsonEncode(updated.toJson());
+      _prefs.setString(_prefsKey, prefsJson);
+      return true;
+    } catch (e) {
+      if (AppEnvironment.enableLogging) {
+        print('Error in setLanguageImmediate: $e');
+      }
+      return false;
+    }
+  }
+
   Future<bool> updateAlertRange(double rangeKm) async {
     if (state != null) {
       return updatePreferences(state!.copyWith(alertRangeKm: rangeKm));
