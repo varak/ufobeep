@@ -26,6 +26,7 @@ echo
 # Parse arguments
 DEPLOY_API=false
 DEPLOY_WEB=false
+DEPLOY_WEB_FAST=false
 DEPLOY_APK=false
 DEPLOY_ALL=false
 AUTO_COMMIT=false
@@ -39,6 +40,7 @@ else
         case $arg in
             api) DEPLOY_API=true ;;
             web) DEPLOY_WEB=true ;;
+            web-fast) DEPLOY_WEB_FAST=true ; DEPLOY_WEB=false ;;
             apk|mobile) DEPLOY_APK=true ;;
             all) DEPLOY_ALL=true ;;
             moto) DEPLOY_APK=true; TARGET_DEVICES=$(adb devices | grep -E "192\.168\." | head -1 | cut -f1) ;;
@@ -238,18 +240,27 @@ if [ "$DEPLOY_API" = true ]; then
         cd /home/ufobeep/ufobeep
         git pull origin main
         
-        echo "Installing dependencies..."
+        echo "Installing dependencies if requirements changed..."
         cd api
-        if [ -f "venv/bin/activate" ]; then
-            echo "Using existing virtual environment"
+        REQ_HASH_NEW=$(sha256sum requirements.txt | awk '{print $1}')
+        REQ_HASH_FILE=.requirements.sha256
+        REQ_HASH_OLD=""
+        if [ -f "$REQ_HASH_FILE" ]; then
+            REQ_HASH_OLD=$(cat "$REQ_HASH_FILE")
+        fi
+        if [ "$REQ_HASH_NEW" != "$REQ_HASH_OLD" ] || [ ! -d "venv" ]; then
+            echo "Requirements changed or venv missing. (old=$REQ_HASH_OLD new=$REQ_HASH_NEW)"
+            if [ ! -d "venv" ]; then
+                python3 -m venv venv
+            fi
             source venv/bin/activate
             echo "Installing/updating packages..."
-            venv/bin/pip install -r requirements.txt || echo "Pip install completed with warnings"
-        else
-            echo "Creating new virtual environment"
-            python3 -m venv venv
-            echo "Installing packages in new virtual environment..."
+            venv/bin/pip install --upgrade pip >/dev/null 2>&1 || true
             venv/bin/pip install -r requirements.txt
+            echo "$REQ_HASH_NEW" > "$REQ_HASH_FILE"
+        else
+            echo "Requirements unchanged. Skipping pip install."
+            source venv/bin/activate
         fi
         
         echo "Running migrations..."
@@ -283,7 +294,7 @@ ENDSSH
     echo
 fi
 
-# Step 4: Deploy Web if requested
+# Step 4a: Deploy Web (remote build)
 if [ "$DEPLOY_WEB" = true ]; then
     echo -e "${BLUE}🌐 Step 4: Web App Deployment${NC}"
     echo "------------------------------"
@@ -324,6 +335,45 @@ ENDSSH
     else
         echo -e "${RED}❌ WEB DEPLOYMENT FAILED${NC}"
         exit 1
+    fi
+    echo
+fi
+
+# Step 4b: Deploy Web FAST (local build + rsync)
+if [ "$DEPLOY_WEB_FAST" = true ]; then
+    echo -e "${BLUE}🌐 Step 4: Web App Deployment (FAST)${NC}"
+    echo "-------------------------------------"
+
+    echo "Building Next.js locally (standalone)..."
+    pushd web >/dev/null
+    if command -v npm >/dev/null 2>&1; then
+        npm ci --prefer-offline --no-audit --progress=false || npm install
+        NEXT_TELEMETRY_DISABLED=1 npm run build
+    else
+        echo -e "${RED}npm not found. Aborting web-fast deploy.${NC}"
+        exit 1
+    fi
+    popd >/dev/null
+
+    echo "Syncing build artifacts to production..."
+    # Ensure directories exist on server, then rsync standalone server, static assets, and public
+    ssh -p $PROD_PORT $PROD_HOST "mkdir -p $PROD_NEXT_DIR/.next/standalone $PROD_NEXT_DIR/.next/static $PROD_NEXT_DIR/public"
+    rsync -az --delete -e "ssh -p $PROD_PORT" web/.next/standalone/ "$PROD_HOST:$PROD_NEXT_DIR/.next/standalone/"
+    rsync -az --delete -e "ssh -p $PROD_PORT" web/.next/static/ "$PROD_HOST:$PROD_NEXT_DIR/.next/static/"
+    rsync -az --delete -e "ssh -p $PROD_PORT" web/public/ "$PROD_HOST:$PROD_NEXT_DIR/public/"
+
+    echo "Restarting web service..."
+    ssh -p $PROD_PORT $PROD_HOST "sudo systemctl restart ufobeep-web && sleep 2 && sudo systemctl is-active --quiet ufobeep-web"
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}❌ WEB SERVICE RESTART FAILED${NC}"
+        exit 1
+    fi
+
+    echo "Health check..."
+    if curl -s -I https://ufobeep.com | grep -q "HTTP/2 200"; then
+        echo -e "${GREEN}✅ Web app deployed (FAST)${NC}"
+    else
+        echo -e "${YELLOW}⚠️  Web responded with non-200. Check service logs.${NC}"
     fi
     echo
 fi
