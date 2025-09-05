@@ -1813,8 +1813,10 @@ def initialize_enrichment_processors():
     enrichment_orchestrator.register_processor(satellite_processor)
     
     # Content filter processor - HuggingFace API token optional for enhanced features
-    content_processor = ContentFilterProcessor(api_token=hf_api_token, nsfw_model=hf_nsfw_model)
-    enrichment_orchestrator.register_processor(content_processor)
+    # Content filtering processor - DISABLED for now to improve performance
+    # TODO: Re-enable when NSFW filtering is needed
+    # content_processor = ContentFilterProcessor(api_token=hf_api_token, nsfw_model=hf_nsfw_model)
+    # enrichment_orchestrator.register_processor(content_processor)
     
     # BlackSky processor - premium satellite imagery feature
     from app.enrichment.blacksky_processor import BlackSkyEnrichmentProcessor
