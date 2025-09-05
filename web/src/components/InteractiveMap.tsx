@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { getAlertSlug } from '@/utils/slug'
 
 // Google Maps types declared globally in AuthContext
 
