@@ -5,9 +5,10 @@ module.exports = {
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'es', 'de'],
-    localePath: path.resolve('./public/locales'),
-    localeDetection: true,
   },
+  // next-i18next specific (do not nest under i18n for Next.js)
+  localePath: path.resolve('./public/locales'),
+  localeDetection: true,
   fallbackLng: {
     'es-ES': ['es', 'en'],
     'de-DE': ['de', 'en'],

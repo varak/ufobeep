@@ -1,7 +1,7 @@
-'use client';
+'use client'
 
-import React, { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import React, { useState, useRef, useEffect } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useTranslation } from 'next-i18next';
 import { supportedLocales, getLocaleDisplayName } from '../config/locales';
 
@@ -16,7 +16,9 @@ export function LanguageSwitcher({
   showLabel = false,
   variant = 'dropdown',
 }: LanguageSwitcherProps) {
-  const router = useRouter();
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
   const { t, i18n } = useTranslation('navigation');
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -53,19 +55,25 @@ export function LanguageSwitcher({
   }, [isOpen]);
   
   const handleLanguageChange = async (locale: string) => {
-    setIsOpen(false);
-    
-    // Store language preference
+    setIsOpen(false)
+    // Persist preference
     if (typeof window !== 'undefined') {
-      localStorage.setItem('preferred-language', locale);
-      document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000; SameSite=Lax`;
+      localStorage.setItem('preferred-language', locale)
+      document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000; SameSite=Lax`
     }
-    
-    // Navigate to the same page in the new locale
-    const { pathname, query, asPath } = router;
-    
-    await router.push({ pathname, query }, asPath, { locale });
-  };
+    // Build localized path. Assuming defaultLocale is 'en' without prefix.
+    const defaultLocale = 'en'
+    const qs = searchParams?.toString()
+    let targetPath = pathname || '/'
+    // Strip any existing locale prefix
+    const parts = targetPath.split('/').filter(Boolean)
+    if (parts.length && supportedLocaleCodes.includes(parts[0])) {
+      parts.shift()
+      targetPath = '/' + parts.join('/')
+    }
+    const localized = locale === defaultLocale ? targetPath : `/${locale}${targetPath}`
+    router.push(qs ? `${localized}?${qs}` : localized)
+  }
   
   if (variant === 'buttons') {
     return (
@@ -233,25 +241,21 @@ export function useLocaleDetection() {
   const router = useRouter();
   
   useEffect(() => {
-    // Only run on client-side
-    if (typeof window === 'undefined') return;
-    
-    const storedLocale = localStorage.getItem('preferred-language');
+    if (typeof window === 'undefined') return
+    const storedLocale = localStorage.getItem('preferred-language')
     const cookieLocale = document.cookie
       .split('; ')
       .find(row => row.startsWith('NEXT_LOCALE='))
-      ?.split('=')[1];
-    
-    const preferredLocale = storedLocale || cookieLocale;
-    
-    if (preferredLocale && 
-        preferredLocale !== router.locale && 
-        Object.keys(supportedLocales).includes(preferredLocale)) {
-      
-      const { pathname, query, asPath } = router;
-      router.push({ pathname, query }, asPath, { locale: preferredLocale });
+      ?.split('=')[1]
+    const preferred = storedLocale || cookieLocale
+    if (!preferred || !Object.keys(supportedLocales).includes(preferred)) return
+    // Determine current locale from path
+    const parts = (pathname || '/').split('/').filter(Boolean)
+    const current = supportedLocaleCodes.includes(parts[0]) ? parts[0] : 'en'
+    if (preferred !== current) {
+      handleLanguageChange(preferred)
     }
-  }, [router]);
+  }, [pathname])
 }
 
 // Component to handle locale detection on app initialization
