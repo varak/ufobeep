@@ -106,11 +106,10 @@ export default function AlertsMap({
           const popupContent = `
             <div class="text-sm">
               <h4 class="font-semibold text-gray-900 mb-1">${AlertTitleUtils.getShortTitle(alert)}</h4>
-              <p class="text-gray-600 text-xs mb-2">${alert.description}</p>
-              <div class="flex items-center justify-between text-xs">
-                <span class="text-gray-500">${alert.location.name}</span>
-                <span class="font-medium" style="color: ${getAlertColor(alert.alert_level)}">${alert.alert_level?.toUpperCase()}</span>
-              </div>
+              <p class="text-gray-600 text-xs mb-2">${(alert.description || '').replace(/\n/g, '<br>')}</p>
+              ${alert.location?.name && alert.location.name !== 'Unknown Location' ? `
+                <div class="text-xs text-gray-500">📍 Location: ${alert.location.name}</div>
+              ` : ''}
               <div class="text-xs text-gray-400 mt-1">${new Date(alert.created_at).toLocaleDateString()}</div>
               <div class="mt-2">
                 <a class="text-blue-600 underline" href="/alerts/${alert.id}/${getAlertSlug({ id: alert.id, title: alert.title || undefined, created_at: alert.created_at, location: { name: alert.location?.name } })}">View details →</a>
@@ -213,11 +212,10 @@ export default function AlertsMap({
             const popupContent = `
               <div class="text-sm">
                 <h4 class="font-semibold text-gray-900 mb-1">${AlertTitleUtils.getShortTitle(alert)}</h4>
-                <p class="text-gray-600 text-xs mb-2">${alert.description}</p>
-                <div class="flex items-center justify-between text-xs">
-                  <span class="text-gray-500">${alert.location.name}</span>
-                  <span class="font-medium" style="color: ${getAlertColor(alert.alert_level)}">${alert.alert_level?.toUpperCase()}</span>
-                </div>
+                <p class="text-gray-600 text-xs mb-2">${(alert.description || '').replace(/\n/g, '<br>')}</p>
+                ${alert.location?.name && alert.location.name !== 'Unknown Location' ? `
+                  <div class="text-xs text-gray-500">📍 Location: ${alert.location.name}</div>
+                ` : ''}
                 <div class="text-xs text-gray-400 mt-1">${new Date(alert.created_at).toLocaleDateString()}</div>
                 <div class="mt-2">
                   <a class="text-blue-600 underline" href="/alerts/${alert.id}/${getAlertSlug({ id: alert.id, title: alert.title || undefined, created_at: alert.created_at, location: { name: alert.location?.name } })}">View details →</a>
@@ -260,11 +258,10 @@ export default function AlertsMap({
           const popupContent = `
             <div class="text-sm">
               <h4 class="font-semibold text-gray-900 mb-1">${AlertTitleUtils.getShortTitle(alert)}</h4>
-              <p class="text-gray-600 text-xs mb-2">${alert.description}</p>
-              <div class="flex items-center justify-between text-xs">
-                <span class="text-gray-500">${alert.location.name}</span>
-                <span class="font-medium" style="color: ${getAlertColor(alert.alert_level)}">${alert.alert_level?.toUpperCase()}</span>
-              </div>
+              <p class="text-gray-600 text-xs mb-2">${(alert.description || '').replace(/\n/g, '<br>')}</p>
+              ${alert.location?.name && alert.location.name !== 'Unknown Location' ? `
+                <div class="text-xs text-gray-500">📍 Location: ${alert.location.name}</div>
+              ` : ''}
               <div class="text-xs text-gray-400 mt-1">${new Date(alert.created_at).toLocaleDateString()}</div>
               <div class="mt-2">
                 <a class="text-blue-600 underline" href="/alerts/${alert.id}/${getAlertSlug({ id: alert.id, title: alert.title || undefined, created_at: alert.created_at, location: { name: alert.location?.name } })}">View details →</a>
