@@ -267,7 +267,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
               {/* Location for MUFON reports - right under title */}
               {alert.reporter_username === 'MUFON' && (
                 <div className="text-text-secondary text-xs mb-2">
-                  {alert.enrichment?.location_raw || formatLocation(alert.location)}
+                  {alert.enrichment?.location_raw || alert.location?.name || formatLocation(alert.location)}
                 </div>
               )}
               

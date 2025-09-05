@@ -806,11 +806,19 @@ def extract_and_import_mufon(date_str):
                             "source": "mufon"
                         }
                         
-                        # Add location as simple object if we have geocoding data
+                        # Add location - use geocoded data if available, otherwise use clean location name with default coords
                         if geo_data:
                             alert_data["location"] = {
                                 "latitude": geo_data["latitude"],
-                                "longitude": geo_data["longitude"]
+                                "longitude": geo_data["longitude"],
+                                "name": geo_data["location"]
+                            }
+                        else:
+                            # Fallback to location name with default coordinates if geocoding failed
+                            alert_data["location"] = {
+                                "latitude": 39.7392,  # Default Denver coords
+                                "longitude": -104.9903,
+                                "name": location if location and location.strip() else "Location Unknown"
                             }
                         
                         # Store all enrichment data (classification, geocoding, etc.) 
