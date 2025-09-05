@@ -39,6 +39,7 @@ interface Alert {
   enrichment?: {
     short_description?: string
     mufon_case_id?: string
+    sighting_datetime?: string
     [key: string]: any
   }
 }
@@ -297,6 +298,13 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
             {alert.reporter_username !== 'MUFON' && (
               <div className="text-text-tertiary text-xs">
                 📍 {formatLocation(alert.location)}
+              </div>
+            )}
+
+            {/* Sighting date for MUFON alerts */}
+            {alert.reporter_username === 'MUFON' && alert.enrichment?.sighting_datetime && (
+              <div className="text-text-tertiary text-xs">
+                📅 {alert.enrichment.sighting_datetime}
               </div>
             )}
 
