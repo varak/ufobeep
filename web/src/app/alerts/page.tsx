@@ -293,20 +293,20 @@ function AlertsPageContent() {
         {alerts.length === 0 ? (
           <div className="text-center py-16">
             <div className="text-6xl mb-6">
-              {showBeepsOnly ? '🔔' : showPhotosOnly ? '📷' : '🤔'}
+              {showBeepsOnly ? '🔔' : showPhotosOnly ? '🎥' : '🤔'}
             </div>
             <h2 className="text-2xl font-bold text-text-primary mb-4">
               {showBeepsOnly 
                 ? 'No UFOBeep Beeps Yet' 
                 : showPhotosOnly 
-                  ? 'No Alerts with Photos' 
+                  ? 'No Alerts with Media' 
                   : 'No Alerts Yet'}
             </h2>
             <p className="text-text-secondary mb-8">
               {showBeepsOnly
                 ? 'Be the first to report a UFOBeep sighting! Download the app to beep.'
                 : showPhotosOnly 
-                  ? 'Try viewing all alerts or check back later for photo reports!'
+                  ? 'Try viewing all alerts or check back later for media reports!'
                   : 'Be the first to report a sighting!'
               }
             </p>
@@ -367,10 +367,10 @@ function AlertsPageContent() {
                 onClick={() => updateUrlParams({ photos: !showPhotosOnly, page: 1 })}
               >
                 <div className="text-lg mb-1">
-                  {showPhotosOnly ? '📸' : '📷'}
+                  {showPhotosOnly ? '🎥' : '📷'}
                 </div>
                 <div className={`text-sm font-medium mb-1 ${showPhotosOnly ? 'text-brand-primary' : 'text-text-primary'}`}>
-                  {showPhotosOnly ? 'Showing Photos Only' : 'Show Photos Only'}
+                  {showPhotosOnly ? 'Showing Media Only' : 'Show Media Only'}
                 </div>
                 <div className="text-xs text-text-tertiary">
                   {showPhotosOnly ? 'Hiding text-only reports' : 'Hide text-only reports'}
@@ -474,7 +474,7 @@ function AlertsPageContent() {
             <div className="text-center text-text-tertiary text-sm mt-4">
               Showing {((currentPage - 1) * alertsPerPage) + 1} - {Math.min(currentPage * alertsPerPage, filteredAlerts.length)} of {filteredAlerts.length} alerts
               {showBeepsOnly && <span className="text-brand-primary ml-1"> (UFOBeep beeps only)</span>}
-              {showPhotosOnly && <span className="text-brand-primary ml-1"> (photos only)</span>}
+              {showPhotosOnly && <span className="text-brand-primary ml-1"> (media only)</span>}
             </div>
           </div>
         )}
@@ -534,7 +534,7 @@ function AlertsPageContent() {
               <span className="text-text-tertiary text-sm">
                 Showing {alerts.length} of {filteredAlerts.length} sightings
                 {showBeepsOnly && <span className="text-brand-primary ml-1">(UFOBeep beeps only)</span>}
-                {showPhotosOnly && <span className="text-brand-primary ml-1">(photos only)</span>}
+                {showPhotosOnly && <span className="text-brand-primary ml-1">(media only)</span>}
               </span>
             </div>
           </div>
