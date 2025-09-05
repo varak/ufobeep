@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
 import AlertCard from '../../components/AlertCard'
 
 interface Alert {
@@ -35,15 +36,52 @@ interface Alert {
 }
 
 export default function AlertsPage() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [allAlerts, setAllAlerts] = useState<Alert[]>([])
   const [alerts, setAlerts] = useState<Alert[]>([])
   const [filteredAlerts, setFilteredAlerts] = useState<Alert[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [showPhotosOnly, setShowPhotosOnly] = useState(false)
-  const [showBeepsOnly, setShowBeepsOnly] = useState(false)
   const alertsPerPage = 9
+  
+  // Get URL parameters
+  const currentPage = parseInt(searchParams.get('page') || '1', 10)
+  const showPhotosOnly = searchParams.get('photos') === 'true'
+  const showBeepsOnly = searchParams.get('beeps') === 'true'
+
+  // Update URL with new parameters
+  const updateUrlParams = (params: { page?: number; photos?: boolean; beeps?: boolean }) => {
+    const newParams = new URLSearchParams(searchParams.toString())
+    
+    if (params.page !== undefined) {
+      if (params.page === 1) {
+        newParams.delete('page')
+      } else {
+        newParams.set('page', params.page.toString())
+      }
+    }
+    
+    if (params.photos !== undefined) {
+      if (params.photos) {
+        newParams.set('photos', 'true')
+      } else {
+        newParams.delete('photos')
+      }
+    }
+    
+    if (params.beeps !== undefined) {
+      if (params.beeps) {
+        newParams.set('beeps', 'true')
+      } else {
+        newParams.delete('beeps')
+      }
+    }
+    
+    const queryString = newParams.toString()
+    const newUrl = queryString ? `/alerts?${queryString}` : '/alerts'
+    router.replace(newUrl)
+  }
 
   useEffect(() => {
     // Fetch all alerts once on component mount
@@ -69,9 +107,14 @@ export default function AlertsPage() {
       }
       
       setFilteredAlerts(filtered)
-      setCurrentPage(1) // Reset to first page when filter changes
+      
+      // Reset to first page when filter changes
+      const totalPages = Math.ceil(filtered.length / alertsPerPage)
+      if (currentPage > totalPages && totalPages > 0) {
+        updateUrlParams({ page: 1 })
+      }
     }
-  }, [allAlerts, showPhotosOnly, showBeepsOnly])
+  }, [allAlerts, showPhotosOnly, showBeepsOnly, currentPage])
 
   useEffect(() => {
     // Update displayed alerts when page or filter changes
@@ -207,7 +250,7 @@ export default function AlertsPage() {
             
             <button 
               onClick={() => {
-                setCurrentPage(1)
+                updateUrlParams({ page: 1 })
                 fetchAllAlerts()
               }}
               className="bg-brand-primary text-text-inverse px-6 py-3 rounded-lg hover:bg-brand-primary-dark transition-colors"
@@ -252,8 +295,12 @@ export default function AlertsPage() {
               showBeepsOnly ? 'border-brand-primary bg-brand-primary/10' : 'border-dark-border hover:border-brand-primary/50'
             }`}
             onClick={() => {
-              setShowBeepsOnly(!showBeepsOnly)
-              if (showPhotosOnly && !showBeepsOnly) setShowPhotosOnly(false)
+              const newShowBeepsOnly = !showBeepsOnly
+              updateUrlParams({ 
+                beeps: newShowBeepsOnly,
+                photos: showPhotosOnly && newShowBeepsOnly ? false : showPhotosOnly,
+                page: 1
+              })
             }}
           >
             <div className="text-3xl mb-2">
@@ -270,7 +317,7 @@ export default function AlertsPage() {
             className={`bg-dark-surface border rounded-lg p-6 text-center cursor-pointer transition-all hover:scale-105 ${
               showPhotosOnly ? 'border-brand-primary bg-brand-primary/10' : 'border-dark-border hover:border-brand-primary/50'
             }`}
-            onClick={() => setShowPhotosOnly(!showPhotosOnly)}
+            onClick={() => updateUrlParams({ photos: !showPhotosOnly, page: 1 })}
           >
             <div className="text-3xl mb-2">
               {showPhotosOnly ? '📸' : '📷'}
@@ -307,10 +354,7 @@ export default function AlertsPage() {
             </p>
             {(showPhotosOnly || showBeepsOnly) ? (
               <button 
-                onClick={() => {
-                  setShowPhotosOnly(false)
-                  setShowBeepsOnly(false)
-                }}
+                onClick={() => updateUrlParams({ photos: false, beeps: false, page: 1 })}
                 className="bg-brand-primary text-text-inverse px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary-dark transition-colors"
               >
                 Show All Alerts
@@ -338,7 +382,7 @@ export default function AlertsPage() {
             <div className="flex items-center justify-center space-x-2">
               {/* First Page Button */}
               <button
-                onClick={() => setCurrentPage(1)}
+                onClick={() => updateUrlParams({ page: 1 })}
                 disabled={currentPage === 1}
                 className="px-3 py-2 bg-dark-surface border border-dark-border rounded-lg hover:bg-dark-surface-elevated transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-text-secondary"
                 title="First Page"
@@ -348,7 +392,7 @@ export default function AlertsPage() {
 
               {/* Previous Button */}
               <button
-                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                onClick={() => updateUrlParams({ page: Math.max(currentPage - 1, 1) })}
                 disabled={currentPage === 1}
                 className="px-4 py-2 bg-dark-surface border border-dark-border rounded-lg hover:bg-dark-surface-elevated transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-text-primary"
               >
@@ -361,7 +405,7 @@ export default function AlertsPage() {
                 {currentPage > 3 && (
                   <>
                     <button
-                      onClick={() => setCurrentPage(1)}
+                      onClick={() => updateUrlParams({ page: 1 })}
                       className="px-3 py-2 bg-dark-surface border border-dark-border rounded hover:bg-dark-surface-elevated transition-colors text-text-secondary"
                     >
                       1
@@ -376,7 +420,7 @@ export default function AlertsPage() {
                   .map(page => (
                     <button
                       key={page}
-                      onClick={() => setCurrentPage(page)}
+                      onClick={() => updateUrlParams({ page })}
                       className={`px-3 py-2 border rounded transition-colors ${
                         page === currentPage
                           ? 'bg-brand-primary border-brand-primary text-white font-semibold'
@@ -392,7 +436,7 @@ export default function AlertsPage() {
                   <>
                     {currentPage < getTotalPages() - 3 && <span className="text-text-tertiary px-2">...</span>}
                     <button
-                      onClick={() => setCurrentPage(getTotalPages())}
+                      onClick={() => updateUrlParams({ page: getTotalPages() })}
                       className="px-3 py-2 bg-dark-surface border border-dark-border rounded hover:bg-dark-surface-elevated transition-colors text-text-secondary"
                     >
                       {getTotalPages()}
@@ -403,7 +447,7 @@ export default function AlertsPage() {
 
               {/* Next Button */}
               <button
-                onClick={() => setCurrentPage(prev => prev + 1)}
+                onClick={() => updateUrlParams({ page: currentPage + 1 })}
                 disabled={!hasMore}
                 className="px-4 py-2 bg-dark-surface border border-dark-border rounded-lg hover:bg-dark-surface-elevated transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-text-primary"
               >
@@ -412,7 +456,7 @@ export default function AlertsPage() {
 
               {/* Last Page Button */}
               <button
-                onClick={() => setCurrentPage(getTotalPages())}
+                onClick={() => updateUrlParams({ page: getTotalPages() })}
                 disabled={currentPage === getTotalPages()}
                 className="px-3 py-2 bg-dark-surface border border-dark-border rounded-lg hover:bg-dark-surface-elevated transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-text-secondary"
                 title="Last Page"
