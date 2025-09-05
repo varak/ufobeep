@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 
-export default function AuthCompletePage() {
+function AuthCompleteContent() {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
   const [message, setMessage] = useState('')
   const [user, setUser] = useState<{ username: string } | null>(null)
@@ -111,5 +111,25 @@ export default function AuthCompletePage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function AuthCompletePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-dark-background flex items-center justify-center p-4">
+        <div className="bg-dark-surface border border-dark-border rounded-xl p-8 max-w-md w-full text-center">
+          <div className="mb-6">
+            <Link href="/" className="inline-block">
+              <div className="text-2xl font-bold text-brand-primary">UFOBeep</div>
+            </Link>
+          </div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary mx-auto mb-4"></div>
+          <h2 className="text-xl font-semibold text-text-primary mb-2">Loading...</h2>
+        </div>
+      </div>
+    }>
+      <AuthCompleteContent />
+    </Suspense>
   )
 }
