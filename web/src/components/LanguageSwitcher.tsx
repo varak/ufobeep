@@ -23,7 +23,10 @@ export function LanguageSwitcher({
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
-  const currentLocale = router.locale || 'en';
+  // Determine current locale from pathname prefix (e.g., /es/...)
+  const path = pathname || '/'
+  const segs = path.split('/').filter(Boolean)
+  const currentLocale = segs.length && Object.keys(supportedLocales).includes(segs[0]) ? segs[0] : 'en'
   const supportedLocaleCodes = Object.keys(supportedLocales);
   
   // Close dropdown when clicking outside
