@@ -255,8 +255,8 @@ if [ "$DEPLOY_API" = true ]; then
             fi
             source venv/bin/activate
             echo "Installing/updating packages..."
-            pip install --upgrade pip >/dev/null 2>&1 || true
-            pip install -r requirements.txt
+            python -m pip install --upgrade pip >/dev/null 2>&1 || true
+            python -m pip install -r requirements.txt --disable-pip-version-check
             echo "$REQ_HASH_NEW" > "$REQ_HASH_FILE"
         else
             echo "Requirements unchanged. Skipping pip install."
