@@ -115,11 +115,11 @@ class BeepService {
           if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
             print('📍 Permission granted, getting location...');
             
-            // Try to get current location with high accuracy (no artificial timeout)
+            // Try to get current location with high accuracy and reasonable timeout
             try {
               currentPosition = await Geolocator.getCurrentPosition(
                 desiredAccuracy: LocationAccuracy.high,  // Use high accuracy to ensure GPS is used
-                // Removed timeLimit - let GPS acquire naturally without artificial constraints
+                timeLimit: const Duration(seconds: 10),  // 10 second timeout for GPS acquisition
               );
               
               if (currentPosition != null) {

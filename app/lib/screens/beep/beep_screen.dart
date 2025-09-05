@@ -264,9 +264,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     await SoundService.I.play(AlertSound.tap, haptic: true);
     
     // BeepService now handles location permission directly - no need for complex checks
-    setState(() {
-      _errorMessage = 'Getting location...';
-    });
+    // Don't show "Getting location..." as an error - it's just status
     
     try {
       // Get description from text field if provided, otherwise null
@@ -286,6 +284,11 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       if (description.isNotEmpty) {
         _descriptionController.clear();
       }
+      
+      // Clear any error message on success
+      setState(() {
+        _errorMessage = null;
+      });
       
       // Show success and navigate to sighting detail
       if (mounted) {
