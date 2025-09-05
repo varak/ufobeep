@@ -250,6 +250,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
   
   const handleAppleLogin = async (response: any) => {
+    console.log('Apple callback triggered:', response)
+    
+    // Store the current URL as the return URL for after login (if not already stored)
+    if (typeof window !== 'undefined' && !localStorage.getItem('auth_return_url')) {
+      localStorage.setItem('auth_return_url', window.location.href)
+    }
+    
     try {
       // Send the authorization response to our API
       const result = await fetch('https://api.ufobeep.com/users/auth/apple', {
@@ -260,23 +267,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         body: JSON.stringify({
           token: response.authorization.id_token,
           device_id: 'web_' + Date.now(),
-          platform: 'web',
-          user_id: response.user ? response.user.name : undefined
+          platform: 'web'
         }),
       })
 
       const data = await result.json()
+      console.log('Apple API response:', data)
 
       if (result.ok) {
         // Store auth data
         localStorage.setItem('auth_token', data.access)
         localStorage.setItem('user_data', JSON.stringify(data.user))
         setUser(data.user)
+        console.log('Apple user logged in successfully:', data.user)
+        
+        // Get the return URL and redirect there, or reload if no return URL
+        const returnUrl = localStorage.getItem('auth_return_url')
+        localStorage.removeItem('auth_return_url')
+        
+        if (returnUrl) {
+          // Redirect back to where the user was trying to go
+          window.location.href = returnUrl
+        } else {
+          // Force a page refresh or state update to show logged-in state
+          window.location.reload()
+        }
       } else {
         console.error('Apple login failed:', data.detail)
+        alert('Apple login failed: ' + (data.detail || 'Please try again'))
       }
     } catch (error) {
       console.error('Apple login error:', error)
+      alert('Network error during Apple login. Please try again.')
     }
   }
   
@@ -289,11 +311,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       script.async = true
       script.onload = () => {
         if (window.AppleID) {
+          console.log('Apple ID SDK loaded successfully')
+          
           window.AppleID.auth.init({
             clientId: 'com.ufobeep',
             scope: 'name email',
             redirectURI: 'https://ufobeep.com',
-            state: 'web_login'
+            state: 'web_login',
+            usePopup: true  // Use popup instead of redirect
+          })
+          
+          // Set up event listeners first
+          document.addEventListener('AppleIDSignInOnSuccess', (event: any) => {
+            console.log('Apple Sign-In Success Event:', event)
+            handleAppleLogin(event.detail)
+          })
+          
+          document.addEventListener('AppleIDSignInOnFailure', (event: any) => {
+            console.error('Apple Sign-In failed:', event.detail)
+            alert('Apple Sign-In failed: ' + (event.detail.error || 'Please try again'))
           })
           
           // Render the Apple Sign-In button
@@ -306,25 +342,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                    data-type="continue" 
                    data-width="100%" 
                    data-height="44"
-                   style="width: 100%; height: 44px;">
+                   style="width: 100%; height: 44px; cursor: pointer;">
               </div>
             `
-            
-            // Listen for Apple Sign-In events
-            document.addEventListener('AppleIDSignInOnSuccess', (event: any) => {
-              handleAppleLogin(event.detail)
-            })
-            
-            document.addEventListener('AppleIDSignInOnFailure', (event: any) => {
-              console.error('Apple Sign-In failed:', event.detail.error)
-            })
+            console.log('Apple Sign-In button rendered in container:', containerId)
           }
         }
+      }
+      script.onerror = () => {
+        console.error('Failed to load Apple ID SDK')
       }
       document.head.appendChild(script)
       return true
     } else if (window.AppleID) {
-      // Apple SDK already loaded, render button
+      // Apple SDK already loaded, just render button
       const container = document.getElementById(containerId)
       if (container) {
         container.innerHTML = `
@@ -334,9 +365,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                data-type="continue" 
                data-width="100%" 
                data-height="44"
-               style="width: 100%; height: 44px;">
+               style="width: 100%; height: 44px; cursor: pointer;">
           </div>
         `
+        console.log('Apple Sign-In button re-rendered in container:', containerId)
       }
       return true
     }
