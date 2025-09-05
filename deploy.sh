@@ -356,10 +356,9 @@ if [ "$DEPLOY_WEB_FAST" = true ]; then
     popd >/dev/null
 
     echo "Syncing build artifacts to production..."
-    # Ensure directories exist on server, then rsync standalone server, static assets, and public
-    ssh -p $PROD_PORT $PROD_HOST "mkdir -p $PROD_NEXT_DIR/.next/standalone $PROD_NEXT_DIR/.next/static $PROD_NEXT_DIR/public"
-    rsync -az --delete -e "ssh -p $PROD_PORT" web/.next/standalone/ "$PROD_HOST:$PROD_NEXT_DIR/.next/standalone/"
-    rsync -az --delete -e "ssh -p $PROD_PORT" web/.next/static/ "$PROD_HOST:$PROD_NEXT_DIR/.next/static/"
+    ssh -p $PROD_PORT $PROD_HOST "mkdir -p $PROD_NEXT_DIR/.next $PROD_NEXT_DIR/public"
+    # Sync the entire .next directory to support both next start and standalone
+    rsync -az --delete -e "ssh -p $PROD_PORT" web/.next/ "$PROD_HOST:$PROD_NEXT_DIR/.next/"
     rsync -az --delete -e "ssh -p $PROD_PORT" web/public/ "$PROD_HOST:$PROD_NEXT_DIR/public/"
 
     echo "Restarting web service..."
