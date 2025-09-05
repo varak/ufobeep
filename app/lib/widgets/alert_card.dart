@@ -475,7 +475,7 @@ class AlertCard extends ConsumerWidget {
       if (enrichment.containsKey('database_when')) {
         final reportDate = enrichment['database_when']?.toString();
         if (reportDate != null && reportDate.isNotEmpty) {
-          return 'Reported: $reportDate';
+          return reportDate;
         }
       }
       // Try case number as fallback

@@ -93,11 +93,11 @@ class AlertDetailsSection extends StatelessWidget {
                 Icons.location_on,
                 'Location',
                 _getMufonLocationName(alert),
-                subtitle: alert.latitude != 0.0 && alert.longitude != 0.0 
+                subtitle: (alert.locationName != null && alert.locationName!.isNotEmpty && alert.locationName != 'Unknown Location' && alert.latitude != 0.0 && alert.longitude != 0.0)
                     ? '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}'
                     : null,
               ),
-              if (alert.distance != null)
+              if (alert.distance != null && alert.distance! > 0.0)
                 _buildDetailRow(
                   Icons.straighten,
                   'Distance',
@@ -230,23 +230,23 @@ class AlertDetailsSection extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '$label: ',
+                      '$label:',
                       style: const TextStyle(
                         color: AppColors.textTertiary,
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    Expanded(
-                      child: Text(
-                        value,
-                        style: const TextStyle(
-                          color: AppColors.textPrimary,
-                          fontSize: 14,
-                        ),
+                    const SizedBox(height: 2),
+                    Text(
+                      value,
+                      style: const TextStyle(
+                        color: AppColors.textPrimary,
+                        fontSize: 14,
                       ),
                     ),
                   ],
@@ -305,11 +305,15 @@ class AlertDetailsSection extends StatelessWidget {
 
   String _getMufonLocationName(Alert alert) {
     // For MUFON alerts, use the locationName field which contains the city, state format
-    if (alert.locationName != null && alert.locationName!.isNotEmpty) {
+    if (alert.locationName != null && alert.locationName!.isNotEmpty && alert.locationName != 'Unknown Location') {
       return alert.locationName!;
     }
     
-    // Last resort fallback
+    // Last resort fallback - return coordinates if available
+    if (alert.latitude != 0.0 && alert.longitude != 0.0) {
+      return '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}';
+    }
+    
     return 'Location Unknown';
   }
 }
