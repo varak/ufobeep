@@ -353,8 +353,11 @@ function AlertsPageContent() {
                 <div className="text-lg mb-1">
                   {showBeepsOnly ? '🛸' : '🔔'}
                 </div>
-                <div className={`text-sm font-medium ${showBeepsOnly ? 'text-brand-primary' : 'text-text-primary'}`}>
-                  {showBeepsOnly ? 'UFOBeep Only' : 'UFOBeep Only'}
+                <div className={`text-sm font-medium mb-1 ${showBeepsOnly ? 'text-brand-primary' : 'text-text-primary'}`}>
+                  {showBeepsOnly ? 'Showing UFOBeep Only' : 'Show UFOBeep Only'}
+                </div>
+                <div className="text-xs text-text-tertiary">
+                  {showBeepsOnly ? 'Hiding MUFON database' : 'Hide MUFON database'}
                 </div>
               </div>
               <div 
@@ -366,8 +369,11 @@ function AlertsPageContent() {
                 <div className="text-lg mb-1">
                   {showPhotosOnly ? '📸' : '📷'}
                 </div>
-                <div className={`text-sm font-medium ${showPhotosOnly ? 'text-brand-primary' : 'text-text-primary'}`}>
-                  {showPhotosOnly ? 'Photos Only' : 'Photos Only'}
+                <div className={`text-sm font-medium mb-1 ${showPhotosOnly ? 'text-brand-primary' : 'text-text-primary'}`}>
+                  {showPhotosOnly ? 'Showing Photos Only' : 'Show Photos Only'}
+                </div>
+                <div className="text-xs text-text-tertiary">
+                  {showPhotosOnly ? 'Hiding text-only reports' : 'Hide text-only reports'}
                 </div>
               </div>
             </div>
