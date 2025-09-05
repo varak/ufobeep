@@ -55,10 +55,6 @@ def create_refresh_token(data: dict, expires_delta: timedelta = None) -> str:
 def verify_access_token(token: str) -> dict:
     """Verify and decode JWT access token with clock skew tolerance"""
     try:
-        # Debug logging to see what token we're getting
-        logger.info(f"DEBUG: Received token for verification: '{token}' (length: {len(token)})")
-        logger.info(f"DEBUG: Token segments count: {len(token.split('.')) if token else 0}")
-        
         payload = jwt.decode(
             token, 
             settings.jwt_secret, 

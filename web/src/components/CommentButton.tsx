@@ -209,13 +209,41 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
         </div>
       )}
 
-      {!showLoginForm && !showCommentForm && (
+      {!showLoginForm && !showCommentForm && !isAuthenticated && (
         <button
           onClick={handleCommentClick}
           className="w-full bg-brand-primary hover:bg-brand-primary/90 text-white py-3 px-4 rounded-lg font-medium transition-colors"
         >
-          {isAuthenticated ? `Comment as ${user?.username}` : 'Login to Comment'}
+          Login to Comment
         </button>
+      )}
+
+      {!showLoginForm && !showCommentForm && isAuthenticated && (
+        <form onSubmit={handleCommentSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="comment" className="block text-sm font-medium text-text-primary mb-2">
+              Your comment
+            </label>
+            <textarea
+              id="comment"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Share your thoughts about this sighting..."
+              required
+              rows={4}
+              className="w-full bg-dark-background border border-dark-border rounded-lg px-4 py-3 text-text-primary placeholder-text-tertiary focus:outline-none focus:border-brand-primary resize-vertical"
+            />
+          </div>
+          <div className="flex gap-3">
+            <button
+              type="submit"
+              disabled={isSubmitting || !comment.trim()}
+              className="flex-1 bg-brand-primary hover:bg-brand-primary/90 disabled:bg-brand-primary/50 text-white py-3 px-4 rounded-lg font-medium transition-colors"
+            >
+              {isSubmitting ? 'Posting...' : 'Post Comment'}
+            </button>
+          </div>
+        </form>
       )}
 
       {showLoginForm && (
