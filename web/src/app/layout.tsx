@@ -4,6 +4,7 @@ import './globals.css'
 import { env } from '@/config/environment'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
 import { AuthProvider } from '@/contexts/AuthContext'
+import Header from '@/components/Header'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -105,6 +106,7 @@ export default function RootLayout({
       <body className={`${inter.className} bg-dark-background text-text-primary min-h-screen`}>
         <GoogleAnalytics />
         <AuthProvider>
+          <Header />
           {children}
         </AuthProvider>
       </body>

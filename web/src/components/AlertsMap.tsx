@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { AlertTitleUtils } from '@/utils/alert-title-utils'
+import { getAlertSlug } from '@/utils/slug'
 
 interface Alert {
   id: string
@@ -111,6 +112,9 @@ export default function AlertsMap({
                 <span class="font-medium" style="color: ${getAlertColor(alert.alert_level)}">${alert.alert_level?.toUpperCase()}</span>
               </div>
               <div class="text-xs text-gray-400 mt-1">${new Date(alert.created_at).toLocaleDateString()}</div>
+              <div class="mt-2">
+                <a class="text-blue-600 underline" href="/alerts/${alert.id}/${getAlertSlug({ id: alert.id, title: alert.title || undefined, created_at: alert.created_at, location: { name: alert.location?.name } })}">View details →</a>
+              </div>
             </div>
           `
           
@@ -215,6 +219,9 @@ export default function AlertsMap({
                   <span class="font-medium" style="color: ${getAlertColor(alert.alert_level)}">${alert.alert_level?.toUpperCase()}</span>
                 </div>
                 <div class="text-xs text-gray-400 mt-1">${new Date(alert.created_at).toLocaleDateString()}</div>
+                <div class="mt-2">
+                  <a class="text-blue-600 underline" href="/alerts/${alert.id}/${getAlertSlug({ id: alert.id, title: alert.title || undefined, created_at: alert.created_at, location: { name: alert.location?.name } })}">View details →</a>
+                </div>
               </div>
             `
             
@@ -259,6 +266,9 @@ export default function AlertsMap({
                 <span class="font-medium" style="color: ${getAlertColor(alert.alert_level)}">${alert.alert_level?.toUpperCase()}</span>
               </div>
               <div class="text-xs text-gray-400 mt-1">${new Date(alert.created_at).toLocaleDateString()}</div>
+              <div class="mt-2">
+                <a class="text-blue-600 underline" href="/alerts/${alert.id}/${getAlertSlug({ id: alert.id, title: alert.title || undefined, created_at: alert.created_at, location: { name: alert.location?.name } })}">View details →</a>
+              </div>
             </div>
           `
 

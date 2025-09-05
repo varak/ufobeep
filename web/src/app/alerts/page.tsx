@@ -205,6 +205,45 @@ function AlertsPageContent() {
             <p className="text-text-secondary">Loading recent alerts...</p>
           </div>
         </div>
+
+        {/* Segmented Filters */}
+        <div className="flex items-center justify-center mb-8">
+          <div className="inline-flex rounded-lg border border-dark-border overflow-hidden bg-dark-surface">
+            <button
+              className={`px-4 py-2 text-sm font-medium transition-colors ${
+                !showBeepsOnly && !showPhotosOnly
+                  ? 'bg-brand-primary text-white'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-dark-surface-elevated'
+              }`}
+              onClick={() => updateUrlParams({ beeps: false, photos: false, page: 1 })}
+              aria-pressed={!showBeepsOnly && !showPhotosOnly}
+            >
+              All
+            </button>
+            <button
+              className={`px-4 py-2 text-sm font-medium border-l border-dark-border transition-colors ${
+                showBeepsOnly
+                  ? 'bg-brand-primary text-white'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-dark-surface-elevated'
+              }`}
+              onClick={() => updateUrlParams({ beeps: true, photos: false, page: 1 })}
+              aria-pressed={showBeepsOnly}
+            >
+              Beeps
+            </button>
+            <button
+              className={`px-4 py-2 text-sm font-medium border-l border-dark-border transition-colors ${
+                showPhotosOnly
+                  ? 'bg-brand-primary text-white'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-dark-surface-elevated'
+              }`}
+              onClick={() => updateUrlParams({ photos: true, beeps: false, page: 1 })}
+              aria-pressed={showPhotosOnly}
+            >
+              Media
+            </button>
+          </div>
+        </div>
       </main>
     )
   }
@@ -333,52 +372,7 @@ function AlertsPageContent() {
           </div>
         )}
         
-        {/* Compact Filter Toggles - Now at bottom */}
-        {!loading && !error && (
-          <div className="mt-8 mb-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-md mx-auto">
-              <div 
-                className={`bg-dark-surface border rounded-md p-3 text-center cursor-pointer transition-all hover:scale-102 ${
-                  showBeepsOnly ? 'border-brand-primary bg-brand-primary/10' : 'border-dark-border hover:border-brand-primary/50'
-                }`}
-                onClick={() => {
-                  const newShowBeepsOnly = !showBeepsOnly
-                  updateUrlParams({ 
-                    beeps: newShowBeepsOnly,
-                    photos: showPhotosOnly && newShowBeepsOnly ? false : showPhotosOnly,
-                    page: 1
-                  })
-                }}
-              >
-                <div className="text-lg mb-1">
-                  {showBeepsOnly ? '🛸' : '🔔'}
-                </div>
-                <div className={`text-sm font-medium mb-1 ${showBeepsOnly ? 'text-brand-primary' : 'text-text-primary'}`}>
-                  {showBeepsOnly ? 'Showing UFOBeep Only' : 'Show UFOBeep Only'}
-                </div>
-                <div className="text-xs text-text-tertiary">
-                  {showBeepsOnly ? 'Hiding MUFON database' : 'Hide MUFON database'}
-                </div>
-              </div>
-              <div 
-                className={`bg-dark-surface border rounded-md p-3 text-center cursor-pointer transition-all hover:scale-102 ${
-                  showPhotosOnly ? 'border-brand-primary bg-brand-primary/10' : 'border-dark-border hover:border-brand-primary/50'
-                }`}
-                onClick={() => updateUrlParams({ photos: !showPhotosOnly, page: 1 })}
-              >
-                <div className="text-lg mb-1">
-                  {showPhotosOnly ? '🎥' : '📷'}
-                </div>
-                <div className={`text-sm font-medium mb-1 ${showPhotosOnly ? 'text-brand-primary' : 'text-text-primary'}`}>
-                  {showPhotosOnly ? 'Showing Media Only' : 'Show Media Only'}
-                </div>
-                <div className="text-xs text-text-tertiary">
-                  {showPhotosOnly ? 'Hiding text-only reports' : 'Hide text-only reports'}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Bottom filter tiles removed (moved to top segmented control) */}
 
         {/* Enhanced Pagination */}
         {!loading && !error && alerts.length > 0 && getTotalPages() > 1 && (

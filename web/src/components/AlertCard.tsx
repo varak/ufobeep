@@ -6,6 +6,7 @@ import ImageWithLoading from './ImageWithLoading'
 import MediaGalleryModal from './MediaGalleryModal'
 import { AlertTitleUtils } from '@/utils/alert-title-utils'
 import { convertToProxyUrl, convertMediaFilesUrls } from '@/utils/media-url-utils'
+import { getAlertSlug } from '@/utils/slug'
 
 interface Alert {
   id: string
@@ -220,8 +221,14 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
 
 
   if (compact) {
+    const slug = getAlertSlug({
+      id: alert.id,
+      title: alert.title || undefined,
+      created_at: alert.created_at,
+      location: { name: alert.location?.name, latitude: alert.location?.latitude, longitude: alert.location?.longitude }
+    })
     return (
-      <Link href={`/alerts/${alert.id}`}>
+      <Link href={`/alerts/${alert.id}/${slug}`}>
         <div className="p-4 bg-dark-surface rounded-lg border border-dark-border hover:border-brand-primary transition-colors cursor-pointer group">
           <div className="flex items-start justify-between">
             <div className="flex-1">
@@ -258,7 +265,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
 
   return (
     <div className="bg-dark-surface border border-dark-border rounded-xl hover:border-brand-primary transition-all duration-300 hover:shadow-lg group relative">
-      <Link href={`/alerts/${alert.id}`} className="block">
+      <Link href={`/alerts/${alert.id}/${getAlertSlug({ id: alert.id, title: alert.title || undefined, created_at: alert.created_at, location: { name: alert.location?.name, latitude: alert.location?.latitude, longitude: alert.location?.longitude } })}`} className="block">
         <div className="p-4">
           {/* Header row */}
           <div className="flex items-start gap-3 mb-3">

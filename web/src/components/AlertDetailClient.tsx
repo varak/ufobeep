@@ -1,0 +1,172 @@
+'use client'
+
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+import AlertHero from './alert-detail/AlertHero'
+import AlertDetails from './alert-detail/AlertDetails'
+import EnrichmentData from './alert-detail/EnrichmentData'
+import AlertComments from './AlertComments'
+import CommentButton from './CommentButton'
+import { getAlertSlug } from '@/utils/slug'
+
+interface Alert {
+  id: string
+  title: string
+  description: string
+  category: string
+  created_at: string
+  location: {
+    latitude: number
+    longitude: number
+    name: string
+  }
+  alert_level: string
+  witness_count: number
+  total_confirmations: number
+  media_files: Array<{
+    id: string
+    type: string
+    url: string
+    thumbnail_url: string
+    web_url?: string
+    preview_url?: string
+  }>
+  source?: string
+  reporter_username?: string
+  enrichment?: any
+  photo_analysis?: any
+}
+
+export default function AlertDetailClient({ params }: { params: { id: string; slug?: string[] } }) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const search = useSearchParams()
+  const [alert, setAlert] = useState<Alert | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [refreshComments, setRefreshComments] = useState(0)
+
+  useEffect(() => {
+    const fetchAlert = async () => {
+      try {
+        // Search through multiple pages to find the alert (keeps existing behavior)
+        let foundAlert: Alert | null = null
+        let currentOffset = 0
+        const limit = 100
+        const maxSearchPages = 10
+
+        for (let page = 0; page < maxSearchPages; page++) {
+          const response = await fetch(`/api/alerts?limit=${limit}&offset=${currentOffset}&verified_only=false`)
+          if (!response.ok) break
+          const data = await response.json()
+          const alerts: Alert[] = data?.data?.alerts || []
+          foundAlert = alerts.find(a => a.id === params.id) || null
+          if (foundAlert) break
+          if (alerts.length < limit) break
+          currentOffset += limit
+        }
+
+        if (!foundAlert) {
+          setError('Alert not found')
+        } else {
+          setAlert(foundAlert)
+        }
+      } catch (e) {
+        setError('Failed to load alert')
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchAlert()
+  }, [params.id])
+
+  // Client-side redirect to canonical slug URL once we have the alert
+  useEffect(() => {
+    if (!alert) return
+    const expectedSlug = getAlertSlug({
+      id: alert.id,
+      title: alert.title,
+      created_at: alert.created_at,
+      location: { name: alert.location?.name, latitude: alert.location?.latitude, longitude: alert.location?.longitude }
+    })
+    const currentSlug = Array.isArray(params.slug) && params.slug.length > 0 ? params.slug[0] : ''
+    if (expectedSlug && expectedSlug !== currentSlug) {
+      const qs = search?.toString()
+      const url = `/alerts/${alert.id}/${expectedSlug}${qs ? `?${qs}` : ''}`
+      router.replace(url)
+    }
+  }, [alert, params.slug, router, search])
+
+  if (loading) {
+    return (
+      <main className="min-h-screen py-8 px-4 md:px-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center">
+            <div className="text-6xl mb-6">🛸</div>
+            <p className="text-text-secondary mb-4">Loading alert details...</p>
+            <p className="text-text-tertiary text-sm">Searching through recent UFO sightings for alert {params.id}</p>
+          </div>
+        </div>
+      </main>
+    )
+  }
+
+  if (error || !alert) {
+    return (
+      <main className="min-h-screen py-8 px-4 md:px-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center">
+            <div className="text-6xl mb-6">⚠️</div>
+            <h1 className="text-2xl font-bold text-text-primary mb-4">Alert Not Found</h1>
+            <p className="text-text-secondary mb-8">{error || 'The requested UFO sighting alert could not be found.'}</p>
+            <Link href="/alerts">
+              <button className="bg-brand-primary text-text-inverse px-6 py-3 rounded-lg hover:bg-brand-primary-dark transition-colors">
+                ← Back to All Alerts
+              </button>
+            </Link>
+          </div>
+        </div>
+      </main>
+    )
+  }
+
+  return (
+    <main className="min-h-screen py-8 px-4 md:px-8">
+      <div className="max-w-4xl mx-auto">
+        <Link href="/alerts" className="text-brand-primary hover:text-brand-primary-light transition-colors mb-6 inline-block">
+          ← Back to All Alerts
+        </Link>
+
+        <AlertHero alert={alert} />
+
+        <div className="space-y-6">
+          <AlertDetails alert={alert} />
+
+          {alert.reporter_username !== 'MUFON' && (
+            <EnrichmentData enrichment={alert.enrichment} alert={alert} />
+          )}
+
+          {alert.reporter_username !== 'MUFON' && (
+            <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-brand-primary">👥</span>
+                <h2 className="text-lg font-semibold text-brand-primary">Witnesses</h2>
+              </div>
+              <div className="text-2xl font-bold text-text-primary mb-2">
+                {(alert.total_confirmations || alert.witness_count || 1)} {(alert.total_confirmations || alert.witness_count || 1) === 1 ? 'Witness' : 'Witnesses'}
+              </div>
+              <div className="text-text-secondary text-sm">
+                {(alert.total_confirmations || alert.witness_count || 1) === 1 ? 'Single observer report' : 'Multiple confirmations from nearby users'}
+              </div>
+            </div>
+          )}
+
+          <AlertComments alertId={alert.id} key={refreshComments} />
+          <CommentButton alertId={alert.id} onCommentAdded={() => setRefreshComments(prev => prev + 1)} />
+        </div>
+      </div>
+    </main>
+  )
+}
+
