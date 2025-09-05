@@ -5,7 +5,6 @@ import Link from 'next/link'
 import AlertHero from '../../../components/alert-detail/AlertHero'
 import AlertDetails from '../../../components/alert-detail/AlertDetails'
 import EnrichmentData from '../../../components/alert-detail/EnrichmentData'
-import LocationMap from '../../../components/alert-detail/LocationMap'
 import AlertComments from '../../../components/AlertComments'
 import CommentButton from '../../../components/CommentButton'
 
@@ -284,50 +283,7 @@ export default function AlertPage({ params }: AlertPageProps) {
           {/* Sidebar */}
           <div className="space-y-6">
 
-            {/* Quick stats */}
-            <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-brand-primary">📊</span>
-                <h3 className="text-lg font-semibold text-brand-primary">Stats</h3>
-              </div>
-              
-              <div className="space-y-3">
-                {/* Witnesses stat - hidden for MUFON alerts */}
-                {alert.reporter_username !== 'MUFON' && (
-                  <div className="flex justify-between">
-                    <span className="text-text-tertiary text-sm">Witnesses</span>
-                    <span className="text-text-primary font-medium">{getWitnessCount()}</span>
-                  </div>
-                )}
-                <div className="flex justify-between">
-                  <span className="text-text-tertiary text-sm">Media Files</span>
-                  <span className="text-text-primary font-medium">{alert.media_files?.length || 0}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-text-tertiary text-sm">Status</span>
-                  <span className="text-text-primary font-medium">Active</span>
-                </div>
-              </div>
-            </div>
 
-            {/* Location with map - hidden entirely for MUFON alerts */}
-            {alert.reporter_username !== 'MUFON' && (
-              <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="text-brand-primary">🗺️</span>
-                  <h3 className="text-lg font-semibold text-brand-primary">Location</h3>
-                </div>
-                
-                <div className="mb-4">
-                  <div className="text-text-secondary mb-2">{alert.location.name}</div>
-                  <div className="text-text-tertiary text-sm">
-                    {alert.location.latitude.toFixed(4)}, {alert.location.longitude.toFixed(4)}
-                  </div>
-                </div>
-                
-                <LocationMap location={alert.location} />
-              </div>
-            )}
           </div>
         </div>
       </div>
