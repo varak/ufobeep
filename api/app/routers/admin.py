@@ -131,21 +131,55 @@ async def delete_sighting(
     sighting_id: str,
     credentials: str = Depends(verify_admin_password)
 ):
-    """Delete a sighting and all associated media (admin only)"""
-    
-    conn = await get_db_connection()
+    """Delete a sighting and all associated data (admin only) - uses AdminService"""
     try:
-        # Delete associated media files first
-        await conn.execute("DELETE FROM media_files WHERE sighting_id = $1", sighting_id)
+        from app.main import db_pool
+        admin_service = AdminService(db_pool)
         
-        # Delete sighting
-        await conn.execute("DELETE FROM sightings WHERE id = $1", sighting_id)
+        result = await admin_service.delete_sighting(sighting_id)
         
-        return {"success": True, "message": "Sighting and associated media deleted"}
+        if result['success']:
+            return {
+                "success": True,
+                "message": f"Sighting {sighting_id} and all associated data deleted",
+                "details": {
+                    "deleted_records": result['deleted_records'],
+                    "deleted_files": result['deleted_files'],
+                    "freed_mb": result['freed_mb']
+                }
+            }
+        else:
+            raise HTTPException(status_code=404, detail="Sighting not found")
+            
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to delete sighting: {str(e)}")
-    finally:
-        await conn.close()
+
+@router.delete("/reporter/{reporter_id}")
+async def delete_sightings_by_reporter(
+    reporter_id: str,
+    credentials: str = Depends(verify_admin_password)
+):
+    """Delete all sightings from a specific reporter (admin only) - bulk delete"""
+    try:
+        from app.main import db_pool
+        admin_service = AdminService(db_pool)
+        
+        result = await admin_service.delete_sightings_by_reporter(reporter_id)
+        
+        return {
+            "success": True,
+            "message": f"Processed reporter {reporter_id}",
+            "details": {
+                "found_sightings": result['found_sightings'],
+                "deleted_count": result['deleted_count'],
+                "deleted_records": result['deleted_records'],
+                "deleted_files": result['deleted_files'],
+                "freed_mb": result['freed_mb']
+            }
+        }
+            
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete reporter sightings: {str(e)}")
 
 # Admin page endpoints
 @router.get("/sightings", response_class=HTMLResponse)

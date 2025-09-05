@@ -14,6 +14,7 @@ import '../../theme/app_theme.dart';
 import '../../config/environment.dart';
 import '../../widgets/glass_card.dart';
 import '../admin/admin_screen.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});

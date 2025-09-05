@@ -139,21 +139,159 @@ class AdminService:
             
             return sightings
     
-    async def delete_sighting(self, sighting_id: str) -> bool:
-        """Delete a sighting and all related data"""
+    async def delete_sighting(self, sighting_id: str) -> Dict[str, Any]:
+        """Delete a sighting and all related data with comprehensive cleanup"""
+        import os
+        import shutil
+        
+        deleted_records = {}
+        deleted_files = 0
+        freed_bytes = 0
+        
         async with self.db_pool.acquire() as conn:
             async with conn.transaction():
-                # Delete related records first
-                await conn.execute("""
-                    DELETE FROM witness_confirmations WHERE sighting_id = $1
+                # First, get media file paths for filesystem cleanup
+                media_files = await conn.fetch("""
+                    SELECT filename, url FROM media_files WHERE sighting_id = $1
                 """, sighting_id)
                 
-                # Delete the sighting
+                photo_files = await conn.fetch("""
+                    SELECT file_path FROM photo_metadata WHERE sighting_id = $1
+                """, sighting_id)
+                
+                # Delete from all related tables (order matters for foreign keys)
+                related_tables = [
+                    'media_files',
+                    'comments', 
+                    'follows',
+                    'photo_metadata',
+                    'photo_analysis_results',
+                    'witness_confirmations'
+                ]
+                
+                for table in related_tables:
+                    try:
+                        result = await conn.execute(f"""
+                            DELETE FROM {table} WHERE sighting_id = $1
+                        """, sighting_id)
+                        count = int(result.split()[-1]) if result.split()[-1].isdigit() else 0
+                        deleted_records[table] = count
+                    except Exception as e:
+                        deleted_records[table] = f"Error: {str(e)}"
+                
+                # Delete the main sighting record
                 result = await conn.execute("""
                     DELETE FROM sightings WHERE id = $1
                 """, sighting_id)
+                sighting_deleted = "DELETE 1" in result
                 
-                return "DELETE 1" in result
+                # Clean up media files from filesystem
+                MEDIA_BASE_PATH = '/home/ufobeep/ufobeep/media'  # Production media path
+                
+                # Clean individual media files
+                for media_file in media_files:
+                    filename = media_file['filename']
+                    if filename:
+                        file_path = os.path.join(MEDIA_BASE_PATH, str(sighting_id), filename)
+                        if os.path.exists(file_path):
+                            try:
+                                file_size = os.path.getsize(file_path)
+                                os.remove(file_path)
+                                deleted_files += 1
+                                freed_bytes += file_size
+                            except Exception:
+                                pass
+                
+                # Clean photo metadata files
+                for photo_file in photo_files:
+                    file_path = photo_file['file_path']
+                    if file_path and os.path.exists(file_path):
+                        try:
+                            file_size = os.path.getsize(file_path)
+                            os.remove(file_path)
+                            deleted_files += 1
+                            freed_bytes += file_size
+                        except Exception:
+                            pass
+                
+                # Remove sighting media directory if it exists
+                media_dir = os.path.join(MEDIA_BASE_PATH, str(sighting_id))
+                if os.path.exists(media_dir):
+                    try:
+                        # Calculate directory size before deletion
+                        dir_size = sum(os.path.getsize(os.path.join(dirpath, filename))
+                                     for dirpath, dirnames, filenames in os.walk(media_dir)
+                                     for filename in filenames)
+                        shutil.rmtree(media_dir)
+                        freed_bytes += dir_size
+                    except Exception:
+                        pass
+                
+                return {
+                    'success': sighting_deleted,
+                    'sighting_id': sighting_id,
+                    'deleted_records': deleted_records,
+                    'deleted_files': deleted_files,
+                    'freed_bytes': freed_bytes,
+                    'freed_mb': round(freed_bytes / (1024 * 1024), 2) if freed_bytes > 0 else 0
+                }
+    
+    async def delete_sightings_by_reporter(self, reporter_id: str) -> Dict[str, Any]:
+        """Delete all sightings from a specific reporter with comprehensive cleanup"""
+        async with self.db_pool.acquire() as conn:
+            # First get all sighting IDs for this reporter
+            sighting_records = await conn.fetch("""
+                SELECT id::text, title FROM sightings WHERE reporter_id = $1
+            """, reporter_id)
+            
+            if not sighting_records:
+                return {
+                    'success': True,
+                    'message': f'No sightings found for reporter {reporter_id}',
+                    'deleted_count': 0,
+                    'deleted_records': {},
+                    'deleted_files': 0,
+                    'freed_bytes': 0,
+                    'freed_mb': 0
+                }
+            
+            sighting_ids = [record['id'] for record in sighting_records]
+            
+            # Delete each sighting using the comprehensive delete method
+            total_deleted_records = {}
+            total_deleted_files = 0
+            total_freed_bytes = 0
+            successfully_deleted = 0
+            
+            for sighting_id in sighting_ids:
+                try:
+                    result = await self.delete_sighting(sighting_id)
+                    if result['success']:
+                        successfully_deleted += 1
+                        total_deleted_files += result['deleted_files']
+                        total_freed_bytes += result['freed_bytes']
+                        
+                        # Aggregate deleted records counts
+                        for table, count in result['deleted_records'].items():
+                            if isinstance(count, int):
+                                total_deleted_records[table] = total_deleted_records.get(table, 0) + count
+                            else:
+                                total_deleted_records[table] = count
+                                
+                except Exception as e:
+                    # Continue with other sightings even if one fails
+                    total_deleted_records[f'error_{sighting_id}'] = str(e)
+            
+            return {
+                'success': True,
+                'reporter_id': reporter_id,
+                'found_sightings': len(sighting_ids),
+                'deleted_count': successfully_deleted,
+                'deleted_records': total_deleted_records,
+                'deleted_files': total_deleted_files,
+                'freed_bytes': total_freed_bytes,
+                'freed_mb': round(total_freed_bytes / (1024 * 1024), 2) if total_freed_bytes > 0 else 0
+            }
     
     async def verify_sighting(self, sighting_id: str) -> bool:
         """Mark sighting as verified"""

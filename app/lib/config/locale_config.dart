@@ -1,24 +1,60 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'environment.dart';
+import '../l10n/generated/app_localizations.dart';
 
 class LocaleConfig {
-  static const List<Locale> supportedLocales = [
-    Locale('en', 'US'), // English (US)
-    Locale('es', 'ES'), // Spanish (Spain)
-    Locale('de', 'DE'), // German (Germany)
-  ];
+  // Reflect supported locales from generated localizations
+  static List<Locale> get supportedLocales => AppLocalizations.supportedLocales;
   
   static const Map<String, String> localeNames = {
     'en': 'English',
     'es': 'Español',
     'de': 'Deutsch',
+    'fr': 'Français',
+    'pt': 'Português',
+    'ru': 'Русский',
+    'ja': '日本語',
+    'zh': '中文',
+    'it': 'Italiano',
+    'tr': 'Türkçe',
+    'ar': 'العربية',
+    'pl': 'Polski',
+    'cs': 'Čeština',
+    'ko': '한국어',
+    'hi': 'हिन्दी',
+    'sv': 'Svenska',
+    'da': 'Dansk',
+    'no': 'Norsk',
+    'fi': 'Suomi',
+    'el': 'Ελληνικά',
+    'nl': 'Nederlands',
+    'he': 'עברית',
   };
   
   static const Map<String, String> localeFlags = {
     'en': '🇺🇸',
-    'es': '🇪🇸', 
+    'es': '🇪🇸',
     'de': '🇩🇪',
+    'fr': '🇫🇷',
+    'pt': '🇵🇹',
+    'ru': '🇷🇺',
+    'ja': '🇯🇵',
+    'zh': '🇨🇳',
+    'it': '🇮🇹',
+    'tr': '🇹🇷',
+    'ar': '🇸🇦',
+    'pl': '🇵🇱',
+    'cs': '🇨🇿',
+    'ko': '🇰🇷',
+    'hi': '🇮🇳',
+    'sv': '🇸🇪',
+    'da': '🇩🇰',
+    'no': '🇳🇴',
+    'fi': '🇫🇮',
+    'el': '🇬🇷',
+    'nl': '🇳🇱',
+    'he': '🇮🇱',
   };
   
   static Locale get defaultLocale {
