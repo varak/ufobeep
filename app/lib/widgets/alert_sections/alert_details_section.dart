@@ -68,7 +68,7 @@ class AlertDetailsSection extends StatelessWidget {
               _buildDetailRow(
                 Icons.numbers,
                 'MUFON Case',
-                'Case ${alert.enrichment!['mufon_case_number']}',
+                '${alert.enrichment!['mufon_case_number']}',
               ),
             
             // Reported when (original sighting date)
@@ -92,8 +92,10 @@ class AlertDetailsSection extends StatelessWidget {
               _buildDetailRow(
                 Icons.location_on,
                 'Location',
-                '${alert.locationName ?? 'Unknown Location'}',
-                subtitle: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
+                _getMufonLocationName(alert),
+                subtitle: alert.latitude != 0.0 && alert.longitude != 0.0 
+                    ? '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}'
+                    : null,
               ),
               if (alert.distance != null)
                 _buildDetailRow(
@@ -299,5 +301,20 @@ class AlertDetailsSection extends StatelessWidget {
     final amPm = localDateTime.hour >= 12 ? 'PM' : 'AM';
     
     return '$month $day, $year at $hour:$minute $amPm';
+  }
+
+  String _getMufonLocationName(Alert alert) {
+    // For MUFON alerts, use the location field which contains the city, state format
+    if (alert.location != null && alert.location!.isNotEmpty) {
+      return alert.location!;
+    }
+    
+    // Fallback to locationName if location is empty
+    if (alert.locationName != null && alert.locationName!.isNotEmpty) {
+      return alert.locationName!;
+    }
+    
+    // Last resort fallback
+    return 'Location Unknown';
   }
 }

@@ -151,15 +151,14 @@ class AlertCard extends ConsumerWidget {
                         ),
                         const SizedBox(height: 4),
                       ],
-                      // Only show time for non-MUFON alerts
-                      if (alert.source != 'mufon')
-                        Text(
-                          _formatDateTime(alert.createdAt),
-                          style: const TextStyle(
-                            color: AppColors.textTertiary,
-                            fontSize: 12,
-                          ),
+                      // Show appropriate time for all alerts
+                      Text(
+                        alert.source == 'mufon' ? _getMufonReportDate(alert) : _formatDateTime(alert.createdAt),
+                        style: const TextStyle(
+                          color: AppColors.textTertiary,
+                          fontSize: 12,
                         ),
+                      ),
                       // Only show distance for non-MUFON alerts  
                       if (alert.distance != null && showDistance && alert.source != 'mufon') ...[ 
                         const SizedBox(height: 4),
@@ -204,13 +203,14 @@ class AlertCard extends ConsumerWidget {
                   
                   const Spacer(),
                   
-                  // Location info
+                  // Location info (only for non-MUFON alerts, MUFON shows location under title)
+                  if (alert.source != 'mufon') ...
                   Expanded(
                     flex: 2,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        if (alert.locationName != null) ...[ 
+                        if (alert.locationName != null && alert.locationName!.isNotEmpty && alert.locationName != 'Unknown Location') ...[ 
                           Expanded(
                             child: Text(
                               alert.locationName!,
@@ -226,7 +226,7 @@ class AlertCard extends ConsumerWidget {
                         ],
                       ],
                     ),
-                  ),
+                  ) else const Spacer(),
                   
                   // Arrow indicator
                   const SizedBox(width: 8),
@@ -465,6 +465,29 @@ class AlertCard extends ConsumerWidget {
     }
     // Fallback to standard location name
     return alert.locationName ?? '';
+  }
+
+  String _getMufonReportDate(Alert alert) {
+    // For MUFON alerts, show the report date or case number
+    final enrichment = alert.enrichment;
+    if (enrichment != null) {
+      // Try report date first
+      if (enrichment.containsKey('database_when')) {
+        final reportDate = enrichment['database_when']?.toString();
+        if (reportDate != null && reportDate.isNotEmpty) {
+          return 'Reported: $reportDate';
+        }
+      }
+      // Try case number as fallback
+      if (enrichment.containsKey('mufon_case_number')) {
+        final caseNumber = enrichment['mufon_case_number']?.toString();
+        if (caseNumber != null && caseNumber.isNotEmpty) {
+          return 'Case #$caseNumber';
+        }
+      }
+    }
+    // Final fallback to created date
+    return _formatDateTime(alert.createdAt);
   }
 
   String _formatDateTime(DateTime dateTime) {
