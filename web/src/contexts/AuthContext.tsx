@@ -114,7 +114,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (result.ok) {
         // Store auth data
-        localStorage.setItem('auth_token', data.access_token)
+        localStorage.setItem('auth_token', data.access)
         localStorage.setItem('user_data', JSON.stringify(data.user))
         setUser(data.user)
         console.log('User logged in successfully:', data.user)
@@ -250,7 +250,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (result.ok) {
         // Store auth data
-        localStorage.setItem('auth_token', data.access_token)
+        localStorage.setItem('auth_token', data.access)
         localStorage.setItem('user_data', JSON.stringify(data.user))
         setUser(data.user)
       } else {
@@ -346,7 +346,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (response.ok) {
         // Store auth data
-        localStorage.setItem('auth_token', data.access_token)
+        localStorage.setItem('auth_token', data.access)
         localStorage.setItem('user_data', JSON.stringify(data.user))
         setUser(data.user)
 
