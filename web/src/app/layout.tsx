@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { env } from '@/config/environment'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
+import { AuthProvider } from '@/contexts/AuthContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -103,7 +104,9 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} bg-dark-background text-text-primary min-h-screen`}>
         <GoogleAnalytics />
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   )

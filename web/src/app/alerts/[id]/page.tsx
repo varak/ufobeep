@@ -7,6 +7,7 @@ import AlertDetails from '../../../components/alert-detail/AlertDetails'
 import EnrichmentData from '../../../components/alert-detail/EnrichmentData'
 import LocationMap from '../../../components/alert-detail/LocationMap'
 import AlertComments from '../../../components/AlertComments'
+import CommentButton from '../../../components/CommentButton'
 
 interface Alert {
   id: string
@@ -66,6 +67,7 @@ export default function AlertPage({ params }: AlertPageProps) {
   const [alert, setAlert] = useState<Alert | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [refreshComments, setRefreshComments] = useState(0)
 
 
   useEffect(() => {
@@ -270,7 +272,13 @@ export default function AlertPage({ params }: AlertPageProps) {
             )}
 
             {/* Comments section - moved below main content */}
-            <AlertComments alertId={alert.id} />
+            <AlertComments alertId={alert.id} key={refreshComments} />
+            
+            {/* Comment form - only show if there are existing comments or user is authenticated */}
+            <CommentButton 
+              alertId={alert.id} 
+              onCommentAdded={() => setRefreshComments(prev => prev + 1)}
+            />
           </div>
 
           {/* Sidebar */}

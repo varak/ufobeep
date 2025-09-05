@@ -136,3 +136,26 @@ async def follow_sighting(sighting_id: str, user_id: str = Depends(_uid)) -> Dic
             sighting_id, user_id
         )
     return {"message": "Following sighting for notifications"}
+
+@router.delete("/{sighting_id}/follow", status_code=200)
+async def unfollow_sighting(sighting_id: str, user_id: str = Depends(_uid)) -> Dict[str, Any]:
+    pool = await get_database_pool()
+    async with pool.acquire() as conn:
+        result = await conn.execute(
+            "DELETE FROM follows WHERE sighting_id = $1 AND user_id = $2",
+            sighting_id, user_id
+        )
+        # Check if any rows were actually deleted
+        if result == "DELETE 0":
+            return {"message": "You were not following this sighting"}
+    return {"message": "Unfollowed sighting - you will no longer receive notifications"}
+
+@router.get("/{sighting_id}/follow", status_code=200)
+async def get_follow_status(sighting_id: str, user_id: str = Depends(_uid)) -> Dict[str, Any]:
+    pool = await get_database_pool()
+    async with pool.acquire() as conn:
+        result = await conn.fetchrow(
+            "SELECT 1 FROM follows WHERE sighting_id = $1 AND user_id = $2",
+            sighting_id, user_id
+        )
+    return {"following": result is not None}
