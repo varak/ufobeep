@@ -95,6 +95,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const handleGoogleCallback = async (response: any) => {
     console.log('Google callback triggered:', response)
     
+    // Store the current URL as the return URL for after login (if not already stored)
+    if (typeof window !== 'undefined' && !localStorage.getItem('auth_return_url')) {
+      localStorage.setItem('auth_return_url', window.location.href)
+    }
+    
     try {
       // Send the ID token to our API for verification
       const result = await fetch('https://api.ufobeep.com/users/auth/google', {
@@ -119,8 +124,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(data.user)
         console.log('User logged in successfully:', data.user)
         
-        // Force a page refresh or state update to show logged-in state
-        window.location.reload()
+        // Get the return URL and redirect there, or reload if no return URL
+        const returnUrl = localStorage.getItem('auth_return_url')
+        localStorage.removeItem('auth_return_url')
+        
+        if (returnUrl) {
+          // Redirect back to where the user was trying to go
+          window.location.href = returnUrl
+        } else {
+          // Force a page refresh or state update to show logged-in state
+          window.location.reload()
+        }
       } else {
         console.error('Google login failed:', data.detail)
         alert('Login failed: ' + (data.detail || 'Please try again'))
@@ -132,6 +146,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const login = async (email: string): Promise<{ success: boolean; message: string }> => {
+    // Store the current URL as the return URL for after login
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('auth_return_url', window.location.href)
+    }
+    
     try {
       const response = await fetch('https://api.ufobeep.com/auth/magic/start', {
         method: 'POST',

@@ -41,9 +41,18 @@ function AuthCompleteContent() {
           setMessage('Successfully logged in!')
           setUser(data.user)
           
-          // Redirect to home page after 3 seconds
+          // Get the return URL and clean it up
+          const returnUrl = localStorage.getItem('auth_return_url')
+          localStorage.removeItem('auth_return_url')
+          
+          // Redirect to return URL or home page after 3 seconds
           setTimeout(() => {
-            router.push('/')
+            if (returnUrl) {
+              // Use window.location for full URL redirect
+              window.location.href = returnUrl
+            } else {
+              router.push('/')
+            }
           }, 3000)
         } else {
           setStatus('error')
