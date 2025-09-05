@@ -204,8 +204,8 @@ class AlertCard extends ConsumerWidget {
                   const Spacer(),
                   
                   // Location info (only for non-MUFON alerts, MUFON shows location under title)
-                  if (alert.source != 'mufon') ...
-                  Expanded(
+                  if (alert.source != 'mufon')
+                    Expanded(
                     flex: 2,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,

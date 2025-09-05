@@ -304,12 +304,7 @@ class AlertDetailsSection extends StatelessWidget {
   }
 
   String _getMufonLocationName(Alert alert) {
-    // For MUFON alerts, use the location field which contains the city, state format
-    if (alert.location != null && alert.location!.isNotEmpty) {
-      return alert.location!;
-    }
-    
-    // Fallback to locationName if location is empty
+    // For MUFON alerts, use the locationName field which contains the city, state format
     if (alert.locationName != null && alert.locationName!.isNotEmpty) {
       return alert.locationName!;
     }
