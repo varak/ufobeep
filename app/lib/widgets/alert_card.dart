@@ -442,17 +442,8 @@ class AlertCard extends ConsumerWidget {
       }
     }
     
-    // For UFOBeep alerts, check sensor data for locationName
-    if (alert.source == 'ufobeep') {
-      // First try to get from sensor data
-      final sensorData = alert.sensorData;
-      if (sensorData != null && sensorData.containsKey('locationName')) {
-        final sensorLocationName = sensorData['locationName']?.toString();
-        if (sensorLocationName != null && sensorLocationName.isNotEmpty) {
-          return sensorLocationName;
-        }
-      }
-    }
+    // For UFOBeep alerts, use the standard location field
+    // (sensor data location is already processed into locationName during API parsing)
     
     // For all alerts, return location name if available and meaningful
     if (alert.locationName != null && 
