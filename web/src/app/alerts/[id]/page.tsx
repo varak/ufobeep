@@ -268,12 +268,13 @@ export default function AlertPage({ params }: AlertPageProps) {
                 </div>
               </div>
             )}
+
+            {/* Comments section - moved below main content */}
+            <AlertComments alertId={alert.id} />
           </div>
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Comments section - moved to top right */}
-            <AlertComments alertId={alert.id} />
 
             {/* Quick stats */}
             <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
