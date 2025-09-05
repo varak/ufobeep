@@ -55,8 +55,8 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
     ));
     
     _rotationAnimation = Tween<double>(
-      begin: 0,
-      end: 1,
+      begin: 0.0,
+      end: 1.0,
     ).animate(CurvedAnimation(
       parent: _rotationController,
       curve: Curves.linear,
@@ -66,75 +66,89 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
     _pulseController.repeat(reverse: true);
     _rotationController.repeat();
   }
-  
+
   @override
   void dispose() {
-    _emailController.dispose();
     _pulseController.dispose();
     _rotationController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
+  Timer? _cooldownTimer;
+  
+  void _startCooldown() {
+    _cooldownSeconds = 60;
+    _cooldownTimer?.cancel();
+    _cooldownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_cooldownSeconds <= 0) {
+        timer.cancel();
+        if (mounted) {
+          setState(() {
+            _cooldownSeconds = 0;
+          });
+        }
+      } else {
+        if (mounted) {
+          setState(() {
+            _cooldownSeconds--;
+          });
+        }
+      }
+    });
+  }
+
   Future<void> _handleGoogleSignIn() async {
+    await UiFeedback.click();
+    
     setState(() {
       _isGoogleLoading = true;
       _errorMessage = null;
-      _successMessage = null;
     });
 
     try {
-      final socialAuthService = SocialAuthService();
-      final result = await socialAuthService.signInWithGoogle();
+      print('🔐 Starting Google Sign-In...');
+      final user = await SocialAuthService.signInWithGoogle();
       
-      if (result.success) {
-        if (mounted) {
-          // Check if user has a username
-          if (result.username != null && result.username!.isNotEmpty) {
-            // User has complete profile - go to main app
-            print('Google Sign-In: User has username "${result.username}", going to alerts');
-            context.go('/alerts');
-          } else {
-            // User needs to create username - go to registration
-            print('Google Sign-In: User needs username, going to registration');
-            context.go('/register');
-          }
-        }
-      } else {
-        setState(() {
-          _isGoogleLoading = false;
-          _errorMessage = result.error ?? 'Google Sign-In failed. Please try again.';
-          _successMessage = null;
-        });
+      if (user != null) {
+        print('✅ Google Sign-In successful for: ${user.email}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Welcome ${user.displayName ?? user.email}!'),
+            backgroundColor: AppColors.semanticSuccess,
+          ),
+        );
       }
     } catch (e) {
-      setState(() {
-        _isGoogleLoading = false;
-        _errorMessage = 'Google Sign-In error. Please try again.';
-        _successMessage = null;
-      });
+      print('❌ Google Sign-In failed: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Sign-in failed: $e'),
+          backgroundColor: AppColors.semanticError,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isGoogleLoading = false;
+        });
+      }
     }
   }
 
   Future<void> _sendMagicLink() async {
-    print('SIGN-IN DEBUG: _sendMagicLink called');
-    final email = _emailController.text.trim();
-    print('SIGN-IN DEBUG: Email entered: $email');
+    await UiFeedback.click();
     
-    if (email.isEmpty) {
-      print('SIGN-IN DEBUG: Email is empty');
+    if (_emailController.text.trim().isEmpty) {
       setState(() {
         _errorMessage = 'Please enter your email address';
-        _successMessage = null;
       });
       return;
     }
 
-    // Basic email validation
-    if (!email.contains('@') || !email.contains('.')) {
-      print('SIGN-IN DEBUG: Email validation failed');
+    if (!_emailController.text.trim().contains('@')) {
       setState(() {
         _errorMessage = 'Please enter a valid email address';
-        _successMessage = null;
       });
       return;
     }
@@ -142,146 +156,77 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
     setState(() {
       _isMagicLinkLoading = true;
       _errorMessage = null;
-      _successMessage = null;
     });
 
     try {
-      print('SIGN-IN DEBUG: Calling backend magic link API...');
-      final result = await userService.sendMagicLink(email);
+      print('📧 Sending magic link to: ${_emailController.text.trim()}');
+      await AuthService.sendMagicLink(_emailController.text.trim());
       
-      if (result['success'] == true) {
-        print('SIGN-IN DEBUG: Backend magic link sent successfully');
+      setState(() {
+        _successMessage = 'Magic link sent! Check your email and click the link to sign in.';
+        _magicLinkSent = true;
+      });
+      
+      _startCooldown();
+      print('✅ Magic link sent successfully');
+      
+    } catch (e) {
+      print('❌ Magic link failed: $e');
+      setState(() {
+        _errorMessage = 'Failed to send magic link. Please try again.';
+      });
+    } finally {
+      if (mounted) {
         setState(() {
           _isMagicLinkLoading = false;
-          _magicLinkSent = true;
-          _cooldownSeconds = 30;
-          _successMessage = result['message'] ?? 'Magic link sent! Check your email and click the link to sign in.';
-          _errorMessage = null;
-        });
-        
-        // Start countdown timer
-        Timer.periodic(const Duration(seconds: 1), (timer) {
-          if (_cooldownSeconds > 0) {
-            if (mounted) {
-              setState(() {
-                _cooldownSeconds--;
-              });
-            }
-          } else {
-            timer.cancel();
-            if (mounted) {
-              setState(() {
-                _magicLinkSent = false;
-                _successMessage = null; // Clear success message when cooldown ends
-              });
-            }
-          }
-        });
-      } else {
-        print('SIGN-IN DEBUG: Backend magic link failed: ${result['message']}');
-        setState(() {
-          _isMagicLinkLoading = false;
-          _errorMessage = result['message'] ?? 'Failed to send magic link. Please try again.';
-          _successMessage = null;
         });
       }
-    } catch (e) {
-      print('SIGN-IN DEBUG: Error sending magic link: $e');
-      setState(() {
-        _isMagicLinkLoading = false;
-        _errorMessage = e is AuthException ? e.message : 'Failed to send magic link. Please try again.';
-        _successMessage = null;
-      });
     }
   }
-
+  
   Future<void> _handleClearAllData() async {
-    // Show confirmation dialog
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.darkSurface,
-        title: const Text(
-          'Clear All Data',
-          style: TextStyle(color: AppColors.textPrimary),
-        ),
-        content: const Text(
-          'This will completely reset the app and clear all authentication data. You will start fresh as a new user.',
-          style: TextStyle(color: AppColors.textSecondary),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(foregroundColor: AppColors.semanticError),
-            child: const Text('Clear All Data'),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed != true) return;
-
-    try {
-      // Show loading indicator
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => const Center(
-          child: CircularProgressIndicator(color: AppColors.brandPrimary),
+    print('🗑️ Clearing all local data...');
+    
+    // Clear SharedPreferences
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    
+    // Clear AuthService data  
+    await AuthService.signOut();
+    
+    setState(() {
+      _emailController.clear();
+      _magicLinkSent = false;
+      _successMessage = null;
+      _errorMessage = null;
+      _cooldownSeconds = 0;
+    });
+    
+    print('✅ All data cleared');
+    
+    // Show snackbar after clearing
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('All data cleared'),
+          backgroundColor: AppColors.brandPrimary,
         ),
       );
-
-      print('CLEAR DATA: Starting complete data clear...');
-
-      // 1. Sign out from Firebase Auth
-      await authService.signOut();
-      print('CLEAR DATA: Firebase Auth signed out');
-
-      // 2. Sign out from Social Auth (Google)
-      await SocialAuthService().signOut();
-      print('CLEAR DATA: Social Auth signed out');
-
-      // 3. Clear ALL SharedPreferences data
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.clear();
-      print('CLEAR DATA: SharedPreferences cleared');
-
-      print('CLEAR DATA: All data cleared successfully');
-
-      // Dismiss loading dialog
-      if (mounted) {
-        Navigator.pop(context);
+    }
+  }
+  
+  Future<void> _checkExistingAuth() async {
+    print('🔍 Checking for existing authentication...');
+    try {
+      final user = await UserService.getCurrentUser();
+      if (user != null) {
+        print('👤 Found existing user: ${user.email}');
+        if (mounted && context.mounted) {
+          context.go('/');
+        }
       }
-
-      // Show success message
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('All data cleared! You can now sign in fresh.'),
-            backgroundColor: AppColors.semanticSuccess,
-          ),
-        );
-      }
-
     } catch (e) {
-      print('CLEAR DATA: Error during data clear: $e');
-      
-      // Dismiss loading dialog if still showing
-      if (mounted) {
-        Navigator.pop(context);
-        
-        // Show error message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to clear data: $e'),
-            backgroundColor: AppColors.semanticError,
-          ),
-        );
-      }
+      print('⚠️ No existing auth found: $e');
     }
   }
 
@@ -290,435 +235,412 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
     return NightSkyBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 48),
-              
-              // UFO Logo and Title
-              GlassCard(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    // Animated UFO Icon
-                    AnimatedBuilder(
-                      animation: _pulseAnimation,
-                      builder: (context, child) {
-                        return Transform.scale(
-                          scale: _pulseAnimation.value,
-                          child: AnimatedBuilder(
-                            animation: _rotationAnimation,
-                            builder: (context, child) {
-                              return Transform.rotate(
-                                angle: _rotationAnimation.value * 0.1, // Subtle rotation
-                                child: Container(
-                                  width: 120,
-                                  height: 120,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: RadialGradient(
-                                      colors: [
-                                        AppColors.brandPrimary.withOpacity(0.3),
-                                        AppColors.brandPrimary.withOpacity(0.1),
-                                        Colors.transparent,
-                                      ],
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Image.asset(
-                                      'assets/icons/ufo_icon.png',
-                                      width: 96,
-                                      height: 96,
-                                    ),
-                                  ),
-                                ),
-                              );
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 48),
+                
+                // UFO Logo and Title
+                GlassCard(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      // Animated UFO Icon
+                      AnimatedBuilder(
+                        animation: _pulseAnimation,
+                        child: AnimatedBuilder(
+                          animation: _rotationAnimation,
+                          child: Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: RadialGradient(
+                                colors: [
+                                  AppColors.brandPrimary.withOpacity(0.8),
+                                  AppColors.brandPrimary.withOpacity(0.4),
+                                  Colors.transparent,
+                                ],
+                              ),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                '🛸',
+                                style: TextStyle(fontSize: 40),
+                              ),
+                            ),
+                          ),
+                          builder: (context, child) {
+                            return Transform.rotate(
+                              angle: _rotationAnimation.value * 6.28,
+                              child: child,
+                            );
+                          },
+                        ),
+                        builder: (context, child) {
+                          return Transform.scale(
+                            scale: _pulseAnimation.value,
+                            child: child,
+                          );
+                        },
+                      ),
+                      
+                      const SizedBox(height: 24),
+                      
+                      // App Title
+                      const Text(
+                        'UFOBeep',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                      
+                      const SizedBox(height: 8),
+                      
+                      const Text(
+                        'Real-time UFO sighting alerts',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+                
+                const SizedBox(height: 32),
+                
+                // Google Sign-In Button
+                SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: ElevatedButton.icon(
+                    onPressed: _isGoogleLoading ? null : _handleGoogleSignIn,
+                    icon: _isGoogleLoading
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : Image.asset(
+                            'assets/google_logo.png',
+                            width: 20,
+                            height: 20,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.login, color: Colors.white);
                             },
                           ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'UFOBeep',
-                      style: TextStyle(
-                        color: AppColors.brandPrimary,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Real-time Sighting Alerts',
-                      style: TextStyle(
-                        color: Colors.white70,
+                    label: Text(
+                      _isGoogleLoading ? 'Signing in...' : 'Continue with Google',
+                      style: const TextStyle(
                         fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              
-              const SizedBox(height: 48),
-              
-              // Google Sign-In Button (Primary)
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: (_isGoogleLoading || _isMagicLinkLoading) ? null : () async {
-                    await UiFeedback.click();
-                    _handleGoogleSignIn();
-                  },
-                  icon: _isGoogleLoading 
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(
-                          color: Colors.black87,
-                          strokeWidth: 2,
-                        ),
-                      )
-                    : Image.network(
-                        'https://developers.google.com/identity/images/g-logo.png',
-                        height: 18,
-                        width: 18,
-                        errorBuilder: (context, error, stackTrace) => const Icon(
-                          Icons.login,
-                          size: 18,
-                          color: Colors.black87,
-                        ),
-                      ),
-                  label: Text(
-                    _isGoogleLoading ? 'Signing in...' : 'Continue with Google',
-                    style: const TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black87,
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      side: const BorderSide(color: Colors.grey, width: 0.5),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                ),
-              ),
-              
-              const SizedBox(height: 24),
-              
-              // Divider
-              const Row(
-                children: [
-                  Expanded(child: Divider(color: AppColors.textTertiary)),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      'or',
-                      style: TextStyle(color: AppColors.textTertiary, fontSize: 12),
-                    ),
-                  ),
-                  Expanded(child: Divider(color: AppColors.textTertiary)),
-                ],
-              ),
-              
-              const SizedBox(height: 24),
-              
-              // Email Magic Link Form
-              GlassCard(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const Text(
-                      'Sign in or Create Account',
-                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
                         color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                    
-                    const SizedBox(height: 8),
-                    
-                    const Text(
-                      'Enter your email to sign in or create a new account.\nWe\'ll send you a secure magic link.',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black87,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Email Input
-                    TextField(
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      enabled: !_isGoogleLoading && !_isMagicLinkLoading,
-                      style: const TextStyle(color: AppColors.textPrimary),
-                      decoration: InputDecoration(
-                        labelText: 'Email Address',
-                        labelStyle: const TextStyle(color: AppColors.textSecondary),
-                        hintText: 'your@email.com',
-                        hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(0.5)),
-                        filled: true,
-                        fillColor: Colors.transparent,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Colors.white30),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Colors.white30),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: AppColors.brandPrimary, width: 2),
-                        ),
-                        prefixIcon: const Icon(
-                          Icons.email_outlined,
+                  ),
+                ),
+                
+                const SizedBox(height: 24),
+                
+                const Row(
+                  children: [
+                    Expanded(child: Divider(color: Colors.white30)),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(
+                        'or',
+                        style: TextStyle(
                           color: Colors.white70,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      onSubmitted: (_) => _sendMagicLink(),
                     ),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Send Magic Link Button or Countdown
-                    if (!_magicLinkSent) 
-                      OutlinedButton(
-                        onPressed: (_isGoogleLoading || _isMagicLinkLoading) ? null : () async {
-                          await UiFeedback.click();
-                          _sendMagicLink();
-                        },
-                        style: OutlinedButton.styleFrom(
-                          backgroundColor: AppColors.darkBackground,
-                          foregroundColor: AppColors.brandPrimary,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          side: BorderSide(
-                            color: _isMagicLinkLoading 
-                              ? AppColors.brandPrimary.withOpacity(0.3) 
-                              : AppColors.brandPrimary,
-                            width: 2,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: _isMagicLinkLoading
-                            ? Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.brandPrimary),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  const Text(
-                                    'Sending Magic Link...',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : const Text(
-                                'Send Magic Link',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                    )
-                    else
-                      // Cooldown message
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                        decoration: BoxDecoration(
-                          color: AppColors.semanticSuccess.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: AppColors.semanticSuccess,
-                            width: 2,
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.check_circle,
-                              color: AppColors.semanticSuccess,
-                              size: 24,
-                            ),
-                            const SizedBox(width: 12),
-                            Flexible(
-                              child: Column(
-                                children: [
-                                  const Text(
-                                    'Magic link sent!',
-                                    style: TextStyle(
-                                      color: AppColors.semanticSuccess,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Check your email ($_cooldownSeconds s)',
-                                    style: TextStyle(
-                                      color: AppColors.semanticSuccess.withOpacity(0.8),
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    
-                    const SizedBox(height: 16),
-                    
-                    // Error Message
-                    if (_errorMessage != null)
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: AppColors.semanticError.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: AppColors.semanticError.withOpacity(0.3),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.error_outline,
-                              color: AppColors.semanticError,
-                              size: 20,
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                _errorMessage!,
-                                style: const TextStyle(
-                                  color: AppColors.semanticError,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    
-                    // Success Message (only show if not in cooldown state)
-                    if (_successMessage != null && !_magicLinkSent)
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: AppColors.semanticSuccess.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: AppColors.semanticSuccess.withOpacity(0.3),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.check_circle_outline,
-                              color: AppColors.semanticSuccess,
-                              size: 20,
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                _successMessage!,
-                                style: const TextStyle(
-                                  color: AppColors.semanticSuccess,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    Expanded(child: Divider(color: Colors.white30)),
                   ],
                 ),
-              ),
-              
-              const SizedBox(height: 32),
-              
-              // Security Notice
-              GlassCard(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.security,
-                          color: AppColors.brandPrimary,
-                          size: 20,
+                
+                const SizedBox(height: 24),
+                
+                // Email Magic Link Form
+                GlassCard(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text(
+                        'Sign in with Email',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
                         ),
-                        const SizedBox(width: 8),
-                        const Text(
-                          'Secure Authentication',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.center,
+                      ),
+                      
+                      const SizedBox(height: 8),
+                      
+                      const Text(
+                        'We\'ll send you a secure link to sign in',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      
+                      const SizedBox(height: 24),
+                      
+                      // Email input
+                      TextFormField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: 'Email address',
+                          labelStyle: const TextStyle(color: Colors.white70),
+                          hintText: 'your@email.com',
+                          hintStyle: const TextStyle(color: Colors.white54),
+                          prefixIcon: const Icon(Icons.email, color: Colors.white70),
+                          fillColor: Colors.transparent,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(color: Colors.white30),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(color: Colors.white30),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(color: AppColors.brandPrimary, width: 2),
+                          ),
+                        ),
+                      ),
+                      
+                      const SizedBox(height: 24),
+                      
+                      // Send Magic Link Button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 56,
+                        child: ElevatedButton.icon(
+                          onPressed: (_isMagicLinkLoading || _cooldownSeconds > 0) ? null : _sendMagicLink,
+                          icon: _isMagicLinkLoading
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : const Icon(Icons.send),
+                          label: Text(
+                            _cooldownSeconds > 0 
+                                ? 'Try again in ${_cooldownSeconds}s'
+                                : _isMagicLinkLoading 
+                                    ? 'Sending...' 
+                                    : 'Send Magic Link',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.brandPrimary,
+                            foregroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                      
+                      // Success message
+                      if (_successMessage != null) ...[
+                        const SizedBox(height: 16),
+                        Container(
+                          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                          decoration: BoxDecoration(
+                            color: AppColors.semanticSuccess.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: AppColors.semanticSuccess.withOpacity(0.3),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.mark_email_read,
+                                color: AppColors.semanticSuccess,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  _successMessage!,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Use Google Sign-In for instant access, or email magic links that expire in 15 minutes.',
+                      
+                      // Error message
+                      if (_errorMessage != null) ...[
+                        const SizedBox(height: 16),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: AppColors.semanticError.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: AppColors.semanticError.withOpacity(0.3),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.error_outline,
+                                color: AppColors.semanticError,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  _errorMessage!,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                      
+                      // Link resent message
+                      if (_magicLinkSent) ...[
+                        const SizedBox(height: 16),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: AppColors.semanticSuccess.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: AppColors.semanticSuccess.withOpacity(0.3),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.check_circle_outline,
+                                color: AppColors.semanticSuccess,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 12),
+                              const Expanded(
+                                child: Text(
+                                  'Check your email! The link expires in 15 minutes.',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                
+                const SizedBox(height: 32),
+                
+                // Security Notice
+                GlassCard(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.security,
+                            color: AppColors.brandPrimary,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Secure Authentication',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Use Google Sign-In for instant access, or email magic links that expire in 15 minutes.',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 12,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+                
+                const SizedBox(height: 32),
+                
+                // DEBUG: Clear all data option
+                Center(
+                  child: TextButton(
+                    onPressed: _handleClearAllData,
+                    child: const Text(
+                      'Clear All Data (Debug)',
                       style: TextStyle(
                         color: Colors.white70,
                         fontSize: 12,
+                        fontWeight: FontWeight.w400,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              
-              const SizedBox(height: 32),
-              
-              // DEBUG: Clear all data option
-              Center(
-                child: TextButton(
-                  onPressed: _handleClearAllData,
-                  child: const Text(
-                    'Clear All Data (Debug)',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ),
-              ),
-              
-              const SizedBox(height: 16),
-            ],
+                
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
         ),
       ),
