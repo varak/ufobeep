@@ -301,18 +301,6 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
               // UFO Logo and Title
               GlassCard(
                 padding: const EdgeInsets.all(20),
-                  border: Border.all(
-                    color: AppColors.brandPrimary.withOpacity(0.3),
-                    width: 2,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.brandPrimary.withOpacity(0.1),
-                      blurRadius: 20,
-                      spreadRadius: 5,
-                    ),
-                  ],
-                ),
                 child: Column(
                   children: [
                     // Animated UFO Icon
