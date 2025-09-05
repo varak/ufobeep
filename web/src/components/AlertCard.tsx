@@ -217,7 +217,11 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <div className="flex items-center justify-between mb-1">
-                <span className="text-text-tertiary text-xs">{formatDate(alert.created_at)}</span>
+                <span className="text-text-tertiary text-xs">
+                  {alert.reporter_username === 'MUFON' && alert.enrichment?.sighting_datetime 
+                    ? alert.enrichment.sighting_datetime 
+                    : formatDate(alert.created_at)}
+                </span>
 {(() => {
                   const hasMedia = alert.media_files?.length > 0
                   const hasDescription = getPreviewDescription()?.trim()
@@ -279,7 +283,9 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                 </div>
               )}
               <div className="text-text-tertiary text-xs">
-                {formatDate(alert.created_at)}
+                {alert.reporter_username === 'MUFON' && alert.enrichment?.sighting_datetime 
+                  ? alert.enrichment.sighting_datetime 
+                  : formatDate(alert.created_at)}
               </div>
               {alert.distance !== undefined && alert.distance > 0 && (
                 <div className="text-xs text-text-secondary mt-1 px-2 py-0.5 bg-dark-background rounded">
@@ -298,13 +304,6 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
             {alert.reporter_username !== 'MUFON' && (
               <div className="text-text-tertiary text-xs">
                 📍 {formatLocation(alert.location)}
-              </div>
-            )}
-
-            {/* Sighting date for MUFON alerts */}
-            {alert.reporter_username === 'MUFON' && alert.enrichment?.sighting_datetime && (
-              <div className="text-text-tertiary text-xs">
-                📅 {alert.enrichment.sighting_datetime}
               </div>
             )}
 
