@@ -69,13 +69,18 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
       {/* Description - Main description now contains full text */}
       {alert.description && (
         <div className="mb-6">
-          {/* MUFON attribution - removed duplicate case number since it's in header */}
+          {/* MUFON attribution with case number */}
           {alert.reporter_username === 'MUFON' && (
             <div className="mb-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 mb-1">
                 <span className="text-blue-400">🛸</span>
                 <span className="text-blue-300 font-medium">MUFON Database Report</span>
               </div>
+              {alert.enrichment?.mufon_case_id && (
+                <div className="text-text-tertiary text-sm">
+                  Case #{alert.enrichment.mufon_case_id}
+                </div>
+              )}
             </div>
           )}
           <div 
