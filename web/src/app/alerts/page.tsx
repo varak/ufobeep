@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import AlertCard from '../../components/AlertCard'
@@ -35,7 +35,7 @@ interface Alert {
   comment_count?: number
 }
 
-export default function AlertsPage() {
+function AlertsPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [allAlerts, setAllAlerts] = useState<Alert[]>([])
@@ -536,5 +536,22 @@ export default function AlertsPage() {
         </div>
       </footer>
     </main>
+  )
+}
+
+export default function AlertsPage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen py-8 px-4 md:px-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center">
+            <div className="text-6xl mb-6">🛸</div>
+            <p className="text-text-secondary">Loading recent alerts...</p>
+          </div>
+        </div>
+      </main>
+    }>
+      <AlertsPageContent />
+    </Suspense>
   )
 }
