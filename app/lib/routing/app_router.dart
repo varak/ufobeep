@@ -512,6 +512,7 @@ class MainBottomNavBar extends StatelessWidget {
       currentIndex = 2;
     }
 
+    final l10n = AppLocalizations.of(context);
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       currentIndex: currentIndex,
@@ -529,18 +530,18 @@ class MainBottomNavBar extends StatelessWidget {
             break;
         }
       },
-      items: const [
+      items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Alerts',
+          icon: const Icon(Icons.home),
+          label: l10n.alertsNav ?? l10n.homeTitle,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.add_a_photo),
-          label: 'Beep',
+          icon: const Icon(Icons.add_a_photo),
+          label: l10n.beepNav ?? 'Beep',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Profile',
+          icon: const Icon(Icons.person),
+          label: l10n.profileNav ?? l10n.profileTitle,
         ),
       ],
     );

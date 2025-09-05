@@ -29,6 +29,13 @@
   "@profileTitle": {
     "description": "Title for the profile screen"
   },
+
+  "alertsNav": "Alerts",
+  "@alertsNav": {"description": "Bottom nav label for Alerts"},
+  "beepNav": "Beep",
+  "@beepNav": {"description": "Bottom nav label for Beep"},
+  "profileNav": "Profile",
+  "@profileNav": {"description": "Bottom nav label for Profile"},
   
   "settingsTitle": "Settings",
   "@settingsTitle": {

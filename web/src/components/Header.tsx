@@ -3,6 +3,8 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
+import { useTranslation } from 'next-i18next'
+import LanguageSwitcher from './LanguageSwitcher'
 import { useAuth } from '@/contexts/AuthContext'
 // import LanguageSwitcher from './LanguageSwitcher'
 
@@ -26,6 +28,7 @@ function NavLink({ href, label }: { href: string; label: string }) {
 export default function Header() {
   const { isAuthenticated, user, logout } = useAuth()
   const [open, setOpen] = useState(false)
+  const { t } = useTranslation('navigation')
 
   return (
     <header className="sticky top-0 z-40 border-b border-dark-border bg-dark-background/85 backdrop-blur supports-[backdrop-filter]:bg-dark-background/60">
@@ -41,15 +44,14 @@ export default function Header() {
 
           {/* Center: Nav (desktop) */}
           <nav className="hidden md:flex items-center gap-1">
-            <NavLink href="/alerts" label="Alerts" />
-            <NavLink href="/map" label="Map" />
-            <NavLink href="/download" label="Download" />
+            <NavLink href="/alerts" label={t('alerts')} />
+            <NavLink href="/map" label={t('home')} />
+            <NavLink href="/download" label={t('app')} />
           </nav>
 
           {/* Right: Language + Account */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Temporarily hide LanguageSwitcher until it is App Router compatible */}
-            {/* <LanguageSwitcher variant="minimal" /> */}
+            <LanguageSwitcher variant="minimal" />
             {isAuthenticated ? (
               <div className="flex items-center gap-2">
                 <span className="text-sm text-text-secondary">{user?.username}</span>
@@ -57,7 +59,7 @@ export default function Header() {
                   className="text-xs text-text-tertiary hover:text-text-secondary"
                   onClick={logout}
                 >
-                  Logout
+                  {t('logout')}
                 </button>
               </div>
             ) : (
@@ -65,7 +67,7 @@ export default function Header() {
                 href="/auth"
                 className="px-3 py-2 rounded-md text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-dark-surface-elevated"
               >
-                Sign in
+                {t('login')}
               </Link>
             )}
           </div>
@@ -84,9 +86,9 @@ export default function Header() {
         {open && (
           <div className="md:hidden pb-3">
             <div className="flex flex-col gap-1">
-              <NavLink href="/alerts" label="Alerts" />
-              <NavLink href="/map" label="Map" />
-              <NavLink href="/download" label="Download" />
+              <NavLink href="/alerts" label={t('alerts')} />
+              <NavLink href="/map" label={t('home')} />
+              <NavLink href="/download" label={t('app')} />
               <div className="flex items-center justify-between px-1 py-2">
                 {/* <LanguageSwitcher variant="minimal" /> */}
                 {isAuthenticated ? (
@@ -94,14 +96,14 @@ export default function Header() {
                     className="text-xs text-text-tertiary hover:text-text-secondary"
                     onClick={logout}
                   >
-                    Logout
+                    {t('logout')}
                   </button>
                 ) : (
                   <Link
                     href="/auth"
                     className="text-sm text-text-secondary hover:text-text-primary"
                   >
-                    Sign in
+                    {t('login')}
                   </Link>
                 )}
               </div>
