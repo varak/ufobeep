@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
-import LanguageSwitcher from './LanguageSwitcher'
+// import LanguageSwitcher from './LanguageSwitcher'
 
 function NavLink({ href, label }: { href: string; label: string }) {
   const pathname = usePathname()
@@ -48,7 +48,8 @@ export default function Header() {
 
           {/* Right: Language + Account */}
           <div className="hidden md:flex items-center gap-3">
-            <LanguageSwitcher variant="minimal" />
+            {/* Temporarily hide LanguageSwitcher until it is App Router compatible */}
+            {/* <LanguageSwitcher variant="minimal" /> */}
             {isAuthenticated ? (
               <div className="flex items-center gap-2">
                 <span className="text-sm text-text-secondary">{user?.username}</span>
@@ -87,7 +88,7 @@ export default function Header() {
               <NavLink href="/map" label="Map" />
               <NavLink href="/download" label="Download" />
               <div className="flex items-center justify-between px-1 py-2">
-                <LanguageSwitcher variant="minimal" />
+                {/* <LanguageSwitcher variant="minimal" /> */}
                 {isAuthenticated ? (
                   <button
                     className="text-xs text-text-tertiary hover:text-text-secondary"
@@ -111,4 +112,3 @@ export default function Header() {
     </header>
   )
 }
-
