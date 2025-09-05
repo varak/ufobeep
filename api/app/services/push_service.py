@@ -7,8 +7,9 @@ import json
 import logging
 import aiohttp
 import asyncio
-from typing import List, Dict, Any, Optional, Union
-from datetime import datetime
+from typing import List, Dict, Any, Optional, Union, Tuple
+from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 from enum import Enum
 from dataclasses import dataclass, asdict
 
@@ -331,7 +332,9 @@ class PushNotificationService:
         additional_data: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
         """Send UFO sighting alert notification"""
-        
+        # Apply DND/snooze/mute filters before sending
+        targets = await self._apply_quiet_hours_and_mutes(sighting_id, targets)
+
         data = {
             "type": "sighting_alert",
             "sighting_id": sighting_id,
@@ -365,7 +368,9 @@ class PushNotificationService:
         alert_title: Optional[str] = None
     ) -> Dict[str, Any]:
         """Send comment notification to followers of an alert"""
-        
+        # Apply DND/snooze/mute filters before sending
+        targets = await self._apply_quiet_hours_and_mutes(sighting_id, targets)
+
         # Truncate comment for preview
         comment_preview = comment_body[:80] + "..." if len(comment_body) > 80 else comment_body
         
@@ -394,6 +399,128 @@ class PushNotificationService:
             notification_type=NotificationType.ALERT,  # Comments are alerts too
             collapse_key=f"comments_{sighting_id}"
         )
+
+    async def _apply_quiet_hours_and_mutes(self, sighting_id: str, targets: List[PushTarget]) -> List[PushTarget]:
+        """Filter targets by device/user DND, snooze, and per-alert mutes"""
+        if not targets:
+            return targets
+
+        try:
+            from app.services.database_service import get_database_pool
+            pool = await get_database_pool()
+        except Exception as e:
+            logger.error(f"DND filter: DB unavailable, skipping filtering: {e}")
+            return targets
+
+        user_ids = list({t.user_id for t in targets})
+        device_ids = list({t.device_id for t in targets})
+
+        device_prefs: Dict[Tuple[str, str], Dict[str, Any]] = {}
+        follow_prefs: Dict[str, Dict[str, Any]] = {}
+
+        async with pool.acquire() as conn:
+            # Load device preferences and snooze
+            try:
+                rows = await conn.fetch(
+                    """
+                    SELECT user_id, device_id, timezone, preferences, snooze_until 
+                    FROM devices 
+                    WHERE device_id = ANY($1)
+                      AND user_id = ANY($2)
+                      AND is_active = true
+                      AND push_enabled = true
+                    """,
+                    device_ids, user_ids
+                )
+                for r in rows:
+                    key = (str(r["user_id"]), r["device_id"]) 
+                    device_prefs[key] = {
+                        "timezone": r.get("timezone") or "UTC",
+                        "preferences": r.get("preferences") or {},
+                        "snooze_until": r.get("snooze_until"),
+                    }
+            except Exception as e:
+                logger.error(f"DND filter: failed loading device prefs: {e}")
+
+            # Load per-alert follow mutes/snoozes
+            try:
+                rows = await conn.fetch(
+                    """
+                    SELECT user_id, mute, snooze_until
+                    FROM follows
+                    WHERE sighting_id = $1
+                      AND user_id = ANY($2)
+                    """,
+                    sighting_id, user_ids
+                )
+                for r in rows:
+                    follow_prefs[str(r["user_id"])] = {
+                        "mute": r.get("mute", False),
+                        "snooze_until": r.get("snooze_until"),
+                    }
+            except Exception as e:
+                logger.error(f"DND filter: failed loading follow prefs: {e}")
+
+        now_utc = datetime.now(timezone.utc)
+
+        def in_dnd_window(pref: Dict[str, Any]) -> bool:
+            dnd = (pref.get("preferences") or {}).get("dnd") or {}
+            if not dnd.get("enabled"):
+                return False
+            try:
+                tzname = pref.get("timezone", "UTC")
+                tz = ZoneInfo(tzname)
+            except Exception:
+                tz = ZoneInfo("UTC")
+            local_now = now_utc.astimezone(tz)
+            start = dnd.get("start") or "22:00"
+            end = dnd.get("end") or "07:00"
+            days = dnd.get("days")  # Optional list of ints 0..6 (Sun..Sat)
+            # Day check
+            if isinstance(days, list) and len(days) > 0:
+                # Python weekday: Monday is 0, Sunday is 6; convert to 0=Sun..6=Sat
+                dow = (local_now.weekday() + 1) % 7
+                if dow not in days:
+                    return False
+            try:
+                sh, sm = [int(x) for x in start.split(":", 1)]
+                eh, em = [int(x) for x in end.split(":", 1)]
+            except Exception:
+                return False
+            start_minutes = sh * 60 + sm
+            end_minutes = eh * 60 + em
+            cur_minutes = local_now.hour * 60 + local_now.minute
+            if start_minutes <= end_minutes:
+                # Same-day window
+                return start_minutes <= cur_minutes < end_minutes
+            else:
+                # Wrap-around (e.g., 22:00–07:00)
+                return cur_minutes >= start_minutes or cur_minutes < end_minutes
+
+        filtered: List[PushTarget] = []
+        for t in targets:
+            # Per-alert mute/snooze
+            f = follow_prefs.get(t.user_id)
+            if f:
+                if f.get("mute"):
+                    continue
+                su = f.get("snooze_until")
+                if su and isinstance(su, datetime) and su.tzinfo is not None and su > now_utc:
+                    continue
+            # Device-level snooze/DND
+            p = device_prefs.get((t.user_id, t.device_id))
+            if p:
+                su = p.get("snooze_until")
+                if su and isinstance(su, datetime) and su.tzinfo is not None and su > now_utc:
+                    continue
+                if in_dnd_window(p):
+                    continue
+            filtered.append(t)
+
+        if len(filtered) != len(targets):
+            logger.info(f"DND/Snooze filtered {len(targets) - len(filtered)} of {len(targets)} targets for sighting {sighting_id}")
+
+        return filtered
 
 
 # Global service instance

@@ -85,6 +85,12 @@ class DeviceUpdateRequest(BaseModel):
     os_version: Optional[str] = None
     timezone: Optional[str] = None
     locale: Optional[str] = None
+    # DND / Snooze
+    snooze_until: Optional[str] = Field(None, description="Global snooze until ISO timestamp (UTC). Null to clear.")
+    dnd_enabled: Optional[bool] = None
+    dnd_start: Optional[str] = Field(None, description="DND start HH:MM (24h)")
+    dnd_end: Optional[str] = Field(None, description="DND end HH:MM (24h)")
+    dnd_days: Optional[List[int]] = Field(None, description="DND days [0..6] (Sun..Sat)")
 
 
 class UpdateLocationIn(BaseModel):
@@ -383,7 +389,7 @@ async def list_user_devices(user_id: Optional[str] = Depends(get_current_user_id
 
 
 @router.put("/{device_id}", response_model=DeviceDetailResponse)
-async def update_device(
+    async def update_device(
     device_id: str,
     request: DeviceUpdateRequest,
     user_id: Optional[str] = Depends(get_current_user_id)
@@ -433,13 +439,51 @@ async def update_device(
                 params = []
                 param_idx = 1
                 
-                for field, value in update_fields.items():
-                    if field == "push_provider" and value:
-                        set_clauses.append(f"push_provider = ${param_idx}")
-                        params.append(value.value)
+                # Build updates; handle DND prefs and snooze specially
+                # 1) Basic scalar fields
+                scalar_fields = [
+                    'device_name','push_token','push_enabled','alert_notifications',
+                    'chat_notifications','system_notifications','app_version','os_version',
+                    'timezone','locale','push_provider'
+                ]
+                for field in scalar_fields:
+                    if field in update_fields and update_fields[field] is not None:
+                        val = update_fields[field]
+                        if field == 'push_provider' and val:
+                            set_clauses.append(f"push_provider = ${param_idx}")
+                            params.append(val.value if hasattr(val,'value') else val)
+                        else:
+                            set_clauses.append(f"{field} = ${param_idx}")
+                            params.append(val)
+                        param_idx += 1
+
+                # 2) Snooze
+                if 'snooze_until' in update_fields:
+                    set_clauses.append(f"snooze_until = ${param_idx}")
+                    params.append(update_fields['snooze_until'])
+                    param_idx += 1
+
+                # 3) DND preferences (merge into JSONB preferences)
+                dnd_keys = ['dnd_enabled','dnd_start','dnd_end','dnd_days']
+                if any(k in update_fields for k in dnd_keys):
+                    # Fetch existing preferences
+                    prefs_row = await conn.fetchrow("SELECT preferences FROM devices WHERE id = $1", target_device_id)
+                    prefs = prefs_row['preferences'] if prefs_row and prefs_row['preferences'] else {}
+                    dnd = prefs.get('dnd', {}) if isinstance(prefs, dict) else {}
+                    if 'dnd_enabled' in update_fields and update_fields['dnd_enabled'] is not None:
+                        dnd['enabled'] = bool(update_fields['dnd_enabled'])
+                    if 'dnd_start' in update_fields and update_fields['dnd_start']:
+                        dnd['start'] = update_fields['dnd_start']
+                    if 'dnd_end' in update_fields and update_fields['dnd_end']:
+                        dnd['end'] = update_fields['dnd_end']
+                    if 'dnd_days' in update_fields and update_fields['dnd_days'] is not None:
+                        dnd['days'] = update_fields['dnd_days']
+                    if isinstance(prefs, dict):
+                        prefs['dnd'] = dnd
                     else:
-                        set_clauses.append(f"{field} = ${param_idx}")
-                        params.append(value)
+                        prefs = {'dnd': dnd}
+                    set_clauses.append(f"preferences = ${param_idx}")
+                    params.append(prefs)
                     param_idx += 1
                 
                 # Always update timestamps
