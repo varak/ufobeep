@@ -16,7 +16,7 @@ class SignInScreen extends StatefulWidget {
   State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMixin {
+class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _emailController = TextEditingController();
   bool _isGoogleLoading = false;
   bool _isMagicLinkLoading = false;
@@ -24,53 +24,9 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
   String? _successMessage;
   bool _magicLinkSent = false;
   int _cooldownSeconds = 0;
-  
-  // Animation controllers for UFO icon
-  late AnimationController _pulseController;
-  late AnimationController _rotationController;
-  late Animation<double> _pulseAnimation;
-  late Animation<double> _rotationAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    
-    // Initialize animation controllers
-    _pulseController = AnimationController(
-      duration: const Duration(seconds: 2),
-      vsync: this,
-    );
-    
-    _rotationController = AnimationController(
-      duration: const Duration(seconds: 3),
-      vsync: this,
-    );
-    
-    _pulseAnimation = Tween<double>(
-      begin: 0.9,
-      end: 1.1,
-    ).animate(CurvedAnimation(
-      parent: _pulseController,
-      curve: Curves.easeInOut,
-    ));
-    
-    _rotationAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _rotationController,
-      curve: Curves.linear,
-    ));
-    
-    // Start animations
-    _pulseController.repeat(reverse: true);
-    _rotationController.repeat();
-  }
 
   @override
   void dispose() {
-    _pulseController.dispose();
-    _rotationController.dispose();
     _emailController.dispose();
     super.dispose();
   }
@@ -253,44 +209,26 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
-                      // Animated UFO Icon
-                      AnimatedBuilder(
-                        animation: _pulseAnimation,
-                        child: AnimatedBuilder(
-                          animation: _rotationAnimation,
-                          child: Container(
-                            width: 80,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: RadialGradient(
-                                colors: [
-                                  AppColors.brandPrimary.withOpacity(0.8),
-                                  AppColors.brandPrimary.withOpacity(0.4),
-                                  Colors.transparent,
-                                ],
-                              ),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                '🛸',
-                                style: TextStyle(fontSize: 40),
-                              ),
-                            ),
+                      // UFO Icon
+                      Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: RadialGradient(
+                            colors: [
+                              AppColors.brandPrimary.withOpacity(0.8),
+                              AppColors.brandPrimary.withOpacity(0.4),
+                              Colors.transparent,
+                            ],
                           ),
-                          builder: (context, child) {
-                            return Transform.rotate(
-                              angle: _rotationAnimation.value * 6.28,
-                              child: child,
-                            );
-                          },
                         ),
-                        builder: (context, child) {
-                          return Transform.scale(
-                            scale: _pulseAnimation.value,
-                            child: child,
-                          );
-                        },
+                        child: const Center(
+                          child: Text(
+                            '🛸',
+                            style: TextStyle(fontSize: 40),
+                          ),
+                        ),
                       ),
                       
                       const SizedBox(height: 24),
@@ -309,7 +247,7 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
                       const SizedBox(height: 8),
                       
                       const Text(
-                        'Real-time UFO sighting alerts',
+                        'Real-time UFO sighting alerts and MUFON reports',
                         style: TextStyle(
                           color: Colors.white70,
                           fontSize: 16,
