@@ -9,7 +9,7 @@ interface CommentButtonProps {
 }
 
 export default function CommentButton({ alertId, onCommentAdded }: CommentButtonProps) {
-  const { user, isAuthenticated, login, getAuthToken } = useAuth()
+  const { user, isAuthenticated, login, getAuthToken, logout } = useAuth()
   const [showLoginForm, setShowLoginForm] = useState(false)
   const [showCommentForm, setShowCommentForm] = useState(false)
   const [email, setEmail] = useState('')
@@ -266,7 +266,7 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
             </span>
             <button
               onClick={() => {
-                useAuth().logout()
+                logout()
                 setMessage('')
               }}
               className="text-text-tertiary hover:text-text-secondary text-sm"

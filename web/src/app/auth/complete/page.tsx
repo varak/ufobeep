@@ -84,7 +84,7 @@ export default function AuthCompletePage() {
             </div>
             <h2 className="text-xl font-semibold text-text-primary mb-2">Welcome back!</h2>
             <p className="text-text-secondary mb-4">
-              You're now logged in as <span className="text-brand-primary font-medium">{user?.username}</span>
+              You&apos;re now logged in as <span className="text-brand-primary font-medium">{user?.username}</span>
             </p>
             <p className="text-text-tertiary text-sm">
               Redirecting you to the home page...
