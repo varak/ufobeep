@@ -19,7 +19,7 @@ function VerifyEmailContent() {
     }
 
     // Call the API to verify the email
-    fetch('https://api.ufobeep.com/users/verify-email', {
+    fetch('/api/users/verify-email', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

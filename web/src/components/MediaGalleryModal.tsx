@@ -73,7 +73,7 @@ export default function MediaGalleryModal({
   const getFullImageUrl = (media: MediaFile) => {
     return media.url?.startsWith('http') 
       ? media.url 
-      : `https://api.ufobeep.com${media.url}`
+      : `/api${media.url}`
   }
 
   return (

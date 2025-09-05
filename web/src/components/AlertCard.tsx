@@ -148,7 +148,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
     const primaryMedia = getPrimaryMedia()
     if (!primaryMedia) return
     
-    const mediaUrl = primaryMedia.url.startsWith('http') ? primaryMedia.url : `https://api.ufobeep.com${primaryMedia.url}`
+    const mediaUrl = primaryMedia.url.startsWith('http') ? primaryMedia.url : `/api${primaryMedia.url}`
     const shareText = `Check out this UFO sighting photo/video from UFOBeep`
     
     if (typeof window !== 'undefined' && 'share' in navigator) {

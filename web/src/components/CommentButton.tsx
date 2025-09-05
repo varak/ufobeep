@@ -36,7 +36,7 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
     
     try {
       const token = getAuthToken()
-      const response = await fetch(`https://api.ufobeep.com/alerts/${alertId}/follow`, {
+      const response = await fetch(`/api/alerts/${alertId}/follow`, {
         headers: {
           'Authorization': `Bearer ${token}`
         },
@@ -58,7 +58,7 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
     try {
       const token = getAuthToken()
       const method = isFollowing ? 'DELETE' : 'POST'
-      const response = await fetch(`https://api.ufobeep.com/alerts/${alertId}/follow`, {
+      const response = await fetch(`/api/alerts/${alertId}/follow`, {
         method,
         headers: {
           'Authorization': `Bearer ${token}`
@@ -139,7 +139,7 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
     
     try {
       const token = getAuthToken()
-      const response = await fetch(`https://api.ufobeep.com/alerts/${alertId}/comments`, {
+      const response = await fetch(`/api/alerts/${alertId}/comments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

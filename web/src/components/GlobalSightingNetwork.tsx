@@ -52,7 +52,7 @@ export default function GlobalSightingNetwork() {
     
     setLoading(true)
     try {
-      const response = await fetch('https://api.ufobeep.com/alerts?limit=30')
+      const response = await fetch('/api/alerts?limit=30')
       const data = await response.json()
       
       if (data.success && data.data?.alerts) {

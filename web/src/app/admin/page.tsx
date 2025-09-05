@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 export default function AdminRedirect() {
   useEffect(() => {
     // Redirect to API admin interface
-    window.location.href = 'https://api.ufobeep.com/admin'
+    window.location.href = '/api/admin'
   }, [])
 
   return (
@@ -18,7 +18,7 @@ export default function AdminRedirect() {
         </div>
         <p className="text-text-tertiary text-sm mt-8">
           If you&apos;re not redirected automatically, 
-          <a href="https://api.ufobeep.com/admin" className="text-brand-primary hover:underline ml-1">
+          <a href="/api/admin" className="text-brand-primary hover:underline ml-1">
             click here
           </a>
         </p>

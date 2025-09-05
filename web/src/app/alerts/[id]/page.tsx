@@ -81,7 +81,7 @@ export default function AlertPage({ params }: AlertPageProps) {
         for (let page = 0; page < maxSearchPages; page++) {
           console.log(`Searching for alert ${params.id} - page ${page + 1}`)
           
-          const response = await fetch(`https://api.ufobeep.com/alerts?limit=${limit}&offset=${currentOffset}&verified_only=false`)
+          const response = await fetch(`/api/alerts?limit=${limit}&offset=${currentOffset}&verified_only=false`)
           
           if (!response.ok) {
             throw new Error(`Failed to fetch alerts: ${response.status}`)

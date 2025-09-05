@@ -102,7 +102,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     
     try {
       // Send the ID token to our API for verification
-      const result = await fetch('https://api.ufobeep.com/users/auth/google', {
+      const result = await fetch('/api/users/auth/google', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -152,7 +152,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     
     try {
-      const response = await fetch('https://api.ufobeep.com/auth/magic/start', {
+      const response = await fetch('/api/auth/magic/start', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -259,7 +259,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     
     try {
       // Send the authorization response to our API
-      const result = await fetch('https://api.ufobeep.com/users/auth/apple', {
+      const result = await fetch('/api/users/auth/apple', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -409,7 +409,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   
   const completeMagicAuth = async (code: string): Promise<{ success: boolean; message: string }> => {
     try {
-      const response = await fetch('https://api.ufobeep.com/auth/magic/exchange', {
+      const response = await fetch('/api/auth/magic/exchange', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

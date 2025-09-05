@@ -31,7 +31,7 @@ export default function SubscriptionsPage() {
       // For now, using a placeholder user ID
       const userId = 'web-user-placeholder'
       
-      const response = await fetch(`https://api.ufobeep.com/users/${userId}/subscriptions`, {
+      const response = await fetch(`/api/users/${userId}/subscriptions`, {
         headers: {
           'Content-Type': 'application/json',
           // TODO: Add Authorization header when web auth is implemented
@@ -55,7 +55,7 @@ export default function SubscriptionsPage() {
 
   const unfollow = async (alertId: string) => {
     try {
-      const response = await fetch(`https://api.ufobeep.com/alerts/${alertId}/follow`, {
+      const response = await fetch(`/api/alerts/${alertId}/follow`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

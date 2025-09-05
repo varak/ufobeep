@@ -22,7 +22,7 @@ function AuthCompleteContent() {
       }
 
       try {
-        const response = await fetch('https://api.ufobeep.com/auth/magic/exchange', {
+        const response = await fetch('/api/auth/magic/exchange', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

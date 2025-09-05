@@ -23,7 +23,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await fetch(`https://api.ufobeep.com/alerts/${alertId}/comments`)
+        const response = await fetch(`/api/alerts/${alertId}/comments`)
         
         if (!response.ok) {
           throw new Error('Failed to fetch comments')

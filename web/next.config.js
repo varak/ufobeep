@@ -57,17 +57,18 @@ const nextConfig = {
     ];
   },
   
-  // Rewrites for API proxying in development
+  // Rewrites for API proxying in development and production
   async rewrites() {
-    if (process.env.NODE_ENV === 'development') {
-      return [
-        {
-          source: '/api/:path*',
-          destination: `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'}/:path*`,
-        },
-      ];
-    }
-    return [];
+    const apiDestination = process.env.NODE_ENV === 'development' 
+      ? `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'}/:path*`
+      : 'http://localhost:8000/:path*';
+      
+    return [
+      {
+        source: '/api/:path*',
+        destination: apiDestination,
+      },
+    ];
   },
 
   // Redirects for admin interface

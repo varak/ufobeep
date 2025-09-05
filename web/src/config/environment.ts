@@ -72,7 +72,7 @@ class EnvironmentConfig {
       case Environment.STAGING:
         return 'https://api-staging.ufobeep.com';
       case Environment.PRODUCTION:
-        return 'https://api.ufobeep.com';
+        return '/api';
       default:
         return 'http://localhost:8000';
     }
