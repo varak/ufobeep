@@ -792,9 +792,11 @@ def extract_and_import_mufon(date_str):
                         else:
                             title = "MUFON Report"
                         
-                        # Use clean description without appended metadata
+                        # Use clean description with location but without other duplicate metadata
                         # Frontend will handle displaying enrichment data separately
                         clean_description = long_description if long_description else ""
+                        if clean_description:
+                            clean_description += f"\n\n📍 Location: {location}"
                         
                         alert_data = {
                             "device_id": f"mufon_import_{real_case_id}",
@@ -845,7 +847,7 @@ def extract_and_import_mufon(date_str):
                         alert_id = None
                         try:
                             response = requests.post(
-                                "http://localhost:8000/alerts", 
+                                "https://api.ufobeep.com/alerts", 
                                 json=alert_data,
                                 timeout=30
                             )
@@ -898,7 +900,7 @@ def extract_and_import_mufon(date_str):
                                         
                                         files = {'files': (media['filename'], media_response.content, 'application/octet-stream')}
                                         data = {'source': 'mufon_import'}
-                                        upload_response = requests.post(f"http://localhost:8000/alerts/{alert_id}/media", files=files, data=data, timeout=120)
+                                        upload_response = requests.post(f"https://api.ufobeep.com/alerts/{alert_id}/media", files=files, data=data, timeout=120)
                                         
                                         if upload_response.status_code == 200:
                                             uploaded_count += 1

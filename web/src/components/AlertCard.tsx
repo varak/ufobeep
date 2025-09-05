@@ -258,7 +258,11 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
             {/* Title and metadata */}
             <div className="flex-1 min-w-0">
               <h3 className="text-text-primary text-sm font-semibold line-clamp-2 leading-tight mb-1">
-                {alert.title || 'UFO Sighting'}
+                {/* For MUFON alerts, include case number in header */}
+                {alert.reporter_username === 'MUFON' && alert.enrichment?.mufon_case_id
+                  ? `MUFON Report - Case #${alert.enrichment.mufon_case_id}`
+                  : (alert.title || 'UFO Sighting')
+                }
               </h3>
               
               {/* Verification badge */}
