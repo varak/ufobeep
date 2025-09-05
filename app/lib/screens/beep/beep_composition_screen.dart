@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:video_player/video_player.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../theme/app_theme.dart';
 import '../../models/sensor_data.dart';
@@ -429,11 +430,22 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
 
   // Helper methods for managing media files
   void _removeMediaFile(int index) {
-    if (_mediaFiles.length > 1 && index < _mediaFiles.length) {
+    if (index >= 0 && index < _mediaFiles.length) {
       setState(() {
         _mediaFiles.removeAt(index);
       });
       debugPrint('Removed file at index $index, ${_mediaFiles.length} files remaining');
+      
+      // Show feedback
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Attachment removed'),
+            backgroundColor: AppColors.textSecondary,
+            duration: Duration(seconds: 1),
+          ),
+        );
+      }
     }
   }
 
@@ -462,6 +474,136 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     // Add haptic feedback
     await SoundService.I.play(AlertSound.tap, haptic: true);
     
+    // Show dialog to choose between camera or gallery
+    final choice = await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColors.darkSurface,
+          title: const Text(
+            'Add More Media',
+            style: TextStyle(color: AppColors.textPrimary),
+          ),
+          content: const Text(
+            'How would you like to add more media?',
+            style: TextStyle(color: AppColors.textSecondary),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop('camera'),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.camera_alt, color: AppColors.brandPrimary),
+                  SizedBox(width: 8),
+                  Text(
+                    'Take Photo',
+                    style: TextStyle(color: AppColors.brandPrimary),
+                  ),
+                ],
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop('gallery'),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.photo_library, color: AppColors.brandPrimary),
+                  SizedBox(width: 8),
+                  Text(
+                    'From Gallery',
+                    style: TextStyle(color: AppColors.brandPrimary),
+                  ),
+                ],
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: AppColors.textSecondary),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (choice == null) return;
+
+    if (choice == 'camera') {
+      await _takeCameraPhoto();
+    } else if (choice == 'gallery') {
+      await _pickFromGallery();
+    }
+  }
+
+  Future<void> _takeCameraPhoto() async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(
+        source: ImageSource.camera,
+        preferredCameraDevice: CameraDevice.rear,
+        imageQuality: 100,
+      );
+
+      if (image == null) return;
+
+      final File mediaFile = File(image.path);
+      
+      if (!await mediaFile.exists()) {
+        debugPrint('Camera image file does not exist: ${image.path}');
+        return;
+      }
+
+      debugPrint('Adding camera photo: ${mediaFile.path}');
+      
+      // Extract metadata for camera photo
+      Map<String, dynamic> mediaMetadata = {};
+      try {
+        mediaMetadata = await PhotoMetadataService.extractComprehensiveMetadata(mediaFile);
+        debugPrint('Extracted metadata: ${mediaMetadata.keys.length} categories');
+      } catch (e) {
+        debugPrint('Warning: Failed to extract metadata from camera photo: $e');
+      }
+      
+      // Add camera photo to media files list
+      setState(() {
+        _mediaFiles.add({
+          'mediaFile': mediaFile,
+          'isVideo': false,
+          'photoMetadata': mediaMetadata,
+        });
+      });
+      
+      debugPrint('Added camera photo, total files: ${_mediaFiles.length}');
+      
+      // Show success message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Camera photo added'),
+            backgroundColor: AppColors.brandPrimary,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+      
+    } catch (e) {
+      debugPrint('Error taking camera photo: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to take photo: $e'),
+            backgroundColor: AppColors.semanticError,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _pickFromGallery() async {
     try {
       // Use FilePicker to select additional media files
       final FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -651,74 +793,14 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       return const SizedBox.shrink();
     }
     
-    return Column(
-      children: [
-        // Multi-file preview
-        MultiFilePreview(
-          mediaFiles: _mediaFiles,
-          onRemove: _removeMediaFile,
-          onReorder: _reorderMediaFiles,
-          allowEdit: true,
-        ),
-        
-        const SizedBox(height: 16),
-        
-        // Primary file display (first file)
-        if (_mediaFiles.isNotEmpty)
-          Container(
-            width: double.infinity,
-            constraints: const BoxConstraints(
-              maxHeight: 400,
-              minHeight: 300,
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: _buildPrimaryMediaDisplay(_mediaFiles.first),
-            ),
-          ),
-      ],
+    return MultiFilePreview(
+      mediaFiles: _mediaFiles,
+      onRemove: _removeMediaFile,
+      onReorder: _reorderMediaFiles,
+      allowEdit: true,
     );
   }
   
-  Widget _buildPrimaryMediaDisplay(Map<String, dynamic> fileData) {
-    final File mediaFile = fileData['mediaFile'];
-    final bool isVideo = fileData['isVideo'] ?? false;
-    
-    if (isVideo) {
-      return VideoPlayerWidget(videoFile: mediaFile);
-    } else {
-      return Image.file(
-        mediaFile,
-        fit: BoxFit.cover,
-        width: double.infinity,
-        errorBuilder: (context, error, stackTrace) {
-          return Container(
-            color: AppColors.darkBackground,
-            child: const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.broken_image,
-                    color: AppColors.textTertiary,
-                    size: 48,
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Could not load image',
-                    style: TextStyle(
-                      color: AppColors.textTertiary,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    }
-  }
 
   Widget _buildMediaQualityInfo() {
     return Container(
