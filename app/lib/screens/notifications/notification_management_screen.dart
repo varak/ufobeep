@@ -93,6 +93,35 @@ class _NotificationManagementScreenState
     );
   }
 
+  Future<void> _setDndEnabled(bool enabled) async {
+    final prefsProvider = ref.read(userPreferencesProvider.notifier);
+    final currentPrefs = ref.read(userPreferencesProvider);
+    if (currentPrefs == null) return;
+
+    if (enabled) {
+      final dndUntil = DateTime.now().add(const Duration(hours: 1));
+      final updated = currentPrefs.copyWith(dndUntil: dndUntil);
+      await prefsProvider.updatePreferences(updated);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('DND on until ${_formatTime(dndUntil)}'),
+          backgroundColor: AppColors.success,
+        ),
+      );
+    } else {
+      final updated = currentPrefs.copyWith(dndUntil: null);
+      await prefsProvider.updatePreferences(updated);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('DND off'),
+          backgroundColor: AppColors.success,
+        ),
+      );
+    }
+  }
+
   Future<void> _toggleQuietHours(bool enabled) async {
     final prefsProvider = ref.read(userPreferencesProvider.notifier);
     final currentPrefs = ref.read(userPreferencesProvider);
@@ -195,8 +224,8 @@ class _NotificationManagementScreenState
   Widget _buildQuickActionsSection(UserPreferences preferences) {
     final dndActive = preferences.dndUntil?.isAfter(DateTime.now()) ?? false;
     final dndText = dndActive 
-        ? 'DND until ${_formatTime(preferences.dndUntil!)}'
-        : 'Enable DND for 1 hour';
+        ? 'Until ${_formatTime(preferences.dndUntil!)}'
+        : 'Temporarily silence all notifications';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -211,35 +240,22 @@ class _NotificationManagementScreenState
         ),
         const SizedBox(height: 12),
         GlassCard(
-          child: Column(
-            children: [
-              ListTile(
-                leading: Icon(
-                  dndActive ? Icons.do_not_disturb_on : Icons.do_not_disturb,
-                  color: dndActive ? AppColors.warning : AppColors.brandPrimary,
-                ),
-                title: Text(
-                  dndText,
-                  style: const TextStyle(color: Colors.white),
-                ),
-                subtitle: dndActive 
-                    ? const Text(
-                        'All notifications silenced',
-                        style: TextStyle(color: Colors.white70),
-                      )
-                    : const Text(
-                        'Temporarily silence all notifications',
-                        style: TextStyle(color: Colors.white70),
-                      ),
-                trailing: dndActive
-                    ? TextButton(
-                        onPressed: () => _clearDnd(),
-                        child: const Text('Clear', style: TextStyle(color: AppColors.brandPrimary)),
-                      )
-                    : null,
-                onTap: dndActive ? null : _toggleDndFor1Hour,
-              ),
-            ],
+          child: SwitchListTile(
+            secondary: Icon(
+              dndActive ? Icons.do_not_disturb_on : Icons.do_not_disturb,
+              color: dndActive ? AppColors.warning : AppColors.brandPrimary,
+            ),
+            title: const Text(
+              'Do Not Disturb',
+              style: TextStyle(color: Colors.white),
+            ),
+            subtitle: Text(
+              dndText,
+              style: const TextStyle(color: Colors.white70),
+            ),
+            value: dndActive,
+            onChanged: (val) => _setDndEnabled(val),
+            activeColor: AppColors.brandPrimary,
           ),
         ),
       ],
