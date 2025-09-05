@@ -247,7 +247,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 icon: Icons.language_outlined,
                 title: 'Language',
                 value: preferences.language.toUpperCase(),
-                onTap: () => _showLanguageSelector(preferences),
+                onTap: () => context.push('/profile/language'),
               ),
               
               _buildDivider(),
@@ -303,36 +303,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ),
         ),
         
-        const SizedBox(height: 20),
-        
-        // Alert Filters Section
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: Text(
-            'Alert Filters',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-        const SizedBox(height: 12),
-        
-        Container(
-          decoration: BoxDecoration(
-            color: AppColors.darkSurface,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.darkBorder.withOpacity(0.5)),
-          ),
-          child: _buildSettingsTile(
-            icon: Icons.photo_camera_outlined,
-            title: 'Media-Only Alerts',
-            subtitle: 'Only receive alerts with photos/videos',
-            value: preferences.mediaOnlyAlerts ?? false,
-            onChanged: _toggleMediaOnlyAlerts,
-            standalone: true,
-          ),
-        ),
+        // Removed Alert Filters section (covered in Notifications settings)
       ],
     );
   }
@@ -823,22 +794,19 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget _buildQuietHoursTimePickers(UserPreferences preferences) {
     return Padding(
       padding: const EdgeInsets.all(16),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: _buildTimePicker(
-              'From',
-              preferences.quietHoursStart,
-              (hour) => _updateQuietHoursStart(preferences, hour),
-            ),
+          _buildTimePicker(
+            'From',
+            preferences.quietHoursStart,
+            (hour) => _updateQuietHoursStart(preferences, hour),
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: _buildTimePicker(
-              'Until',
-              preferences.quietHoursEnd,
-              (hour) => _updateQuietHoursEnd(preferences, hour),
-            ),
+          const SizedBox(height: 16),
+          _buildTimePicker(
+            'Until',
+            preferences.quietHoursEnd,
+            (hour) => _updateQuietHoursEnd(preferences, hour),
           ),
         ],
       ),
