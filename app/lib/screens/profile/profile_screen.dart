@@ -291,10 +291,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ),
           child: Column(
             children: [
-              _buildSimpleSettingItem(
+              _buildNavItemWithSubtitle(
                 icon: Icons.notifications_outlined,
                 title: 'Notifications',
-                value: 'Manage subscriptions & settings',
+                subtitle: 'Manage subscriptions & settings',
                 onTap: () => context.push('/profile/notifications'),
                 isFirst: true,
                 isLast: true,
@@ -730,6 +730,75 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             activeColor: AppColors.brandPrimary,
           ),
         ],
+      ),
+    );
+  }
+
+  // Navigation tile with subtitle below the title (no right-side value)
+  Widget _buildNavItemWithSubtitle({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    VoidCallback? onTap,
+    bool isFirst = false,
+    bool isLast = false,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.vertical(
+        top: isFirst ? const Radius.circular(16) : Radius.zero,
+        bottom: isLast ? const Radius.circular(16) : Radius.zero,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: AppColors.brandPrimary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                icon,
+                color: AppColors.brandPrimary,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            const Icon(
+              Icons.chevron_right,
+              color: AppColors.textSecondary,
+              size: 20,
+            ),
+          ],
+        ),
       ),
     );
   }
