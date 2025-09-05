@@ -5,6 +5,7 @@ import { useState } from 'react'
 import ImageWithLoading from './ImageWithLoading'
 import MediaGalleryModal from './MediaGalleryModal'
 import { AlertTitleUtils } from '@/utils/alert-title-utils'
+import { convertToProxyUrl, convertMediaFilesUrls } from '@/utils/media-url-utils'
 
 interface Alert {
   id: string
@@ -50,6 +51,14 @@ interface AlertCardProps {
 }
 
 export default function AlertCard({ alert, compact = false }: AlertCardProps) {
+  // Convert all media URLs to use main domain proxy for compatibility
+  const alertWithFixedUrls = {
+    ...alert,
+    media_files: convertMediaFilesUrls(alert.media_files)
+  }
+  // Use the converted alert for all operations
+  const alertData = alertWithFixedUrls
+  
   const [showShareMenu, setShowShareMenu] = useState(false)
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
