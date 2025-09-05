@@ -241,8 +241,8 @@ export function LanguageSwitcher({
 
 // Locale detection hook
 export function useLocaleDetection() {
-  const router = useRouter();
-  
+  const router = useRouter()
+
   useEffect(() => {
     if (typeof window === 'undefined') return
     const storedLocale = localStorage.getItem('preferred-language')
@@ -251,14 +251,20 @@ export function useLocaleDetection() {
       .find(row => row.startsWith('NEXT_LOCALE='))
       ?.split('=')[1]
     const preferred = storedLocale || cookieLocale
-    if (!preferred || !Object.keys(supportedLocales).includes(preferred)) return
-    // Determine current locale from path
-    const parts = (pathname || '/').split('/').filter(Boolean)
-    const current = supportedLocaleCodes.includes(parts[0]) ? parts[0] : 'en'
-    if (preferred !== current) {
-      handleLanguageChange(preferred)
-    }
-  }, [pathname])
+    const codes = Object.keys(supportedLocales)
+    if (!preferred || !codes.includes(preferred)) return
+
+    const path = window.location.pathname
+    const parts = path.split('/').filter(Boolean)
+    const current = parts.length && codes.includes(parts[0]) ? parts[0] : 'en'
+    if (preferred === current) return
+
+    // Strip existing prefix
+    if (parts.length && codes.includes(parts[0])) parts.shift()
+    const bare = '/' + parts.join('/')
+    const target = preferred === 'en' ? bare : `/${preferred}${bare}`
+    router.push(target + window.location.search)
+  }, [])
 }
 
 // Component to handle locale detection on app initialization
