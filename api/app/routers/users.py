@@ -1391,8 +1391,7 @@ async def google_login(request: SocialLoginRequest):
                     INSERT INTO user_devices (user_id, device_id, created_at)
                     VALUES ($1, $2, NOW())
                     ON CONFLICT (device_id) DO UPDATE SET 
-                        user_id = EXCLUDED.user_id,
-                        last_seen_at = NOW()
+                        user_id = EXCLUDED.user_id
                 """, user_data["id"], request.device_id)
                 
                 # Create JWT tokens
