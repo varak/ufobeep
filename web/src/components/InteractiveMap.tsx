@@ -2,12 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-// Extend Window interface for Google Maps
-declare global {
-  interface Window {
-    google: any
-  }
-}
+// Google Maps types declared globally in AuthContext
 
 interface Sighting {
   id: string
