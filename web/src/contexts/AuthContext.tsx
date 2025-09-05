@@ -30,6 +30,9 @@ interface AuthContextType {
   loginWithApple: () => Promise<{ success: boolean; message: string }>
   logout: () => void
   getAuthToken: () => string | null
+  renderGoogleButton: (containerId: string) => boolean
+  renderAppleButton: (containerId: string) => boolean
+  googleInitialized: boolean
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -71,6 +74,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           window.google.accounts.id.initialize({
             client_id: GOOGLE_CLIENT_ID,
             callback: handleGoogleCallback,
+            auto_select: false,
+            cancel_on_tap_outside: false,
           })
           setGoogleInitialized(true)
         }
@@ -80,6 +85,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       window.google.accounts.id.initialize({
         client_id: GOOGLE_CLIENT_ID,
         callback: handleGoogleCallback,
+        auto_select: false,
+        cancel_on_tap_outside: false,
       })
       setGoogleInitialized(true)
     }
@@ -157,7 +164,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   // Function to complete magic link authentication (called from magic link completion page)
+  const renderGoogleButton = (containerId: string) => {
+    if (!googleInitialized || !window.google) {
+      return false
+    }
+    
+    try {
+      window.google.accounts.id.renderButton(
+        document.getElementById(containerId),
+        {
+          theme: 'outline',
+          size: 'large',
+          width: '100%',
+          text: 'continue_with',
+          shape: 'rectangular',
+        }
+      )
+      return true
+    } catch (error) {
+      console.error('Failed to render Google button:', error)
+      return false
+    }
+  }
+  
   const loginWithGoogle = async (): Promise<{ success: boolean; message: string }> => {
+    // This method is now just for compatibility - actual login happens via rendered button
     if (!googleInitialized || !window.google) {
       return {
         success: false,
@@ -165,97 +196,111 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     }
     
-    try {
-      // Prompt for Google login
-      window.google.accounts.id.prompt()
-      return {
-        success: true,
-        message: 'Please complete Google login in the popup.'
-      }
-    } catch (error) {
-      return {
-        success: false,
-        message: 'Failed to start Google login.'
-      }
+    return {
+      success: true,
+      message: 'Please use the Google sign-in button above.'
     }
   }
   
-  const loginWithApple = async (): Promise<{ success: boolean; message: string }> => {
+  const handleAppleLogin = async (response: any) => {
     try {
-      // Load Apple Sign-In JS SDK if not already loaded
-      if (!window.AppleID && !document.getElementById('apple-signin-script')) {
-        const script = document.createElement('script')
-        script.id = 'apple-signin-script'
-        script.src = 'https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js'
-        script.async = true
-        document.head.appendChild(script)
-        
-        // Wait for script to load
-        await new Promise((resolve) => {
-          script.onload = resolve
-        })
-      }
-      
-      if (window.AppleID) {
-        window.AppleID.auth.init({
-          clientId: 'com.ufobeep', // Your Apple service identifier
-          scope: 'name email',
-          redirectURI: 'https://ufobeep.com/auth/apple/callback',
-          state: 'web_login',
-          usePopup: true
-        })
-        
-        const response = await window.AppleID.auth.signIn()
-        
-        // Send the authorization code to our API
-        const result = await fetch('https://api.ufobeep.com/users/auth/apple', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            token: response.authorization.id_token,
-            device_id: 'web_' + Date.now(),
-            platform: 'web',
-            user_id: response.user?.name ? JSON.stringify(response.user) : undefined
-          }),
-        })
+      // Send the authorization response to our API
+      const result = await fetch('https://api.ufobeep.com/users/auth/apple', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          token: response.authorization.id_token,
+          device_id: 'web_' + Date.now(),
+          platform: 'web',
+          user_id: response.user ? response.user.name : undefined
+        }),
+      })
 
-        const data = await result.json()
+      const data = await result.json()
 
-        if (result.ok) {
-          // Store auth data
-          localStorage.setItem('auth_token', data.access_token)
-          localStorage.setItem('user_data', JSON.stringify(data.user))
-          setUser(data.user)
-          return {
-            success: true,
-            message: 'Successfully logged in with Apple!'
-          }
-        } else {
-          return {
-            success: false,
-            message: data.detail || 'Apple login failed'
-          }
-        }
+      if (result.ok) {
+        // Store auth data
+        localStorage.setItem('auth_token', data.access_token)
+        localStorage.setItem('user_data', JSON.stringify(data.user))
+        setUser(data.user)
       } else {
-        return {
-          success: false,
-          message: 'Apple Sign-In not available. Please try email login or Google.'
-        }
+        console.error('Apple login failed:', data.detail)
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('Apple login error:', error)
-      if (error.error === 'popup_closed_by_user') {
-        return {
-          success: false,
-          message: 'Apple login cancelled.'
+    }
+  }
+  
+  const renderAppleButton = (containerId: string) => {
+    // Load Apple Sign-In JS SDK if not already loaded
+    if (!window.AppleID && !document.getElementById('apple-signin-script')) {
+      const script = document.createElement('script')
+      script.id = 'apple-signin-script'
+      script.src = 'https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js'
+      script.async = true
+      script.onload = () => {
+        if (window.AppleID) {
+          window.AppleID.auth.init({
+            clientId: 'com.ufobeep',
+            scope: 'name email',
+            redirectURI: 'https://ufobeep.com',
+            state: 'web_login'
+          })
+          
+          // Render the Apple Sign-In button
+          const container = document.getElementById(containerId)
+          if (container) {
+            container.innerHTML = `
+              <div id="appleid-signin" 
+                   data-color="black" 
+                   data-border="true" 
+                   data-type="continue" 
+                   data-width="100%" 
+                   data-height="44"
+                   style="width: 100%; height: 44px;">
+              </div>
+            `
+            
+            // Listen for Apple Sign-In events
+            document.addEventListener('AppleIDSignInOnSuccess', (event: any) => {
+              handleAppleLogin(event.detail)
+            })
+            
+            document.addEventListener('AppleIDSignInOnFailure', (event: any) => {
+              console.error('Apple Sign-In failed:', event.detail.error)
+            })
+          }
         }
       }
-      return {
-        success: false,
-        message: 'Apple login failed. Please try again.'
+      document.head.appendChild(script)
+      return true
+    } else if (window.AppleID) {
+      // Apple SDK already loaded, render button
+      const container = document.getElementById(containerId)
+      if (container) {
+        container.innerHTML = `
+          <div id="appleid-signin" 
+               data-color="black" 
+               data-border="true" 
+               data-type="continue" 
+               data-width="100%" 
+               data-height="44"
+               style="width: 100%; height: 44px;">
+          </div>
+        `
       }
+      return true
+    }
+    return false
+  }
+  
+  const loginWithApple = async (): Promise<{ success: boolean; message: string }> => {
+    // This method is now just for compatibility - actual login happens via rendered button
+    return {
+      success: true,
+      message: 'Please use the Apple sign-in button above.'
     }
   }
   
@@ -309,6 +354,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     loginWithApple,
     logout,
     getAuthToken,
+    renderGoogleButton,
+    renderAppleButton,
+    googleInitialized,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
