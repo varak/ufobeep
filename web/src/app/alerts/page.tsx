@@ -206,42 +206,50 @@ function AlertsPageContent() {
           </div>
         </div>
 
-        {/* Segmented Filters */}
-        <div className="flex items-center justify-center mb-8">
-          <div className="inline-flex rounded-lg border border-dark-border overflow-hidden bg-dark-surface">
+        {/* Filters */}
+        <div className="mb-6">
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {/* UFOBeep Only toggle */}
             <button
-              className={`px-4 py-2 text-sm font-medium transition-colors ${
-                !showBeepsOnly && !showPhotosOnly
-                  ? 'bg-brand-primary text-white'
-                  : 'text-text-secondary hover:text-text-primary hover:bg-dark-surface-elevated'
-              }`}
-              onClick={() => updateUrlParams({ beeps: false, photos: false, page: 1 })}
-              aria-pressed={!showBeepsOnly && !showPhotosOnly}
-            >
-              All
-            </button>
-            <button
-              className={`px-4 py-2 text-sm font-medium border-l border-dark-border transition-colors ${
-                showBeepsOnly
-                  ? 'bg-brand-primary text-white'
-                  : 'text-text-secondary hover:text-text-primary hover:bg-dark-surface-elevated'
-              }`}
-              onClick={() => updateUrlParams({ beeps: true, photos: false, page: 1 })}
+              type="button"
+              onClick={() => updateUrlParams({ beeps: !showBeepsOnly, page: 1 })}
               aria-pressed={showBeepsOnly}
-            >
-              Beeps
-            </button>
-            <button
-              className={`px-4 py-2 text-sm font-medium border-l border-dark-border transition-colors ${
-                showPhotosOnly
-                  ? 'bg-brand-primary text-white'
-                  : 'text-text-secondary hover:text-text-primary hover:bg-dark-surface-elevated'
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm transition-colors ${
+                showBeepsOnly
+                  ? 'border-brand-primary bg-brand-primary/15 text-brand-primary'
+                  : 'border-dark-border bg-dark-surface text-text-secondary hover:text-text-primary hover:border-brand-primary/50'
               }`}
-              onClick={() => updateUrlParams({ photos: true, beeps: false, page: 1 })}
-              aria-pressed={showPhotosOnly}
             >
-              Media
+              <span>🔔</span>
+              <span>UFOBeep Only</span>
             </button>
+
+            {/* Media Only toggle */}
+            <button
+              type="button"
+              onClick={() => updateUrlParams({ photos: !showPhotosOnly, page: 1 })}
+              aria-pressed={showPhotosOnly}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm transition-colors ${
+                showPhotosOnly
+                  ? 'border-brand-primary bg-brand-primary/15 text-brand-primary'
+                  : 'border-dark-border bg-dark-surface text-text-secondary hover:text-text-primary hover:border-brand-primary/50'
+              }`}
+            >
+              <span>📸</span>
+              <span>With Media</span>
+            </button>
+
+            {/* Clear filters */}
+            {(showBeepsOnly || showPhotosOnly) && (
+              <button
+                type="button"
+                onClick={() => updateUrlParams({ beeps: false, photos: false, page: 1 })}
+                className="inline-flex items-center gap-2 px-3 py-2 rounded-md text-sm text-text-tertiary hover:text-text-secondary"
+                aria-label="Clear filters"
+              >
+                ✖ Clear
+              </button>
+            )}
           </div>
         </div>
       </main>
