@@ -62,9 +62,19 @@ class _NotificationManagementScreenState
         _subscriptions.removeWhere((sub) => sub['sighting_id'] == sightingId);
       });
       
-      UIFeedback.success('Unfollowed "$title"');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Unfollowed "$title"'),
+          backgroundColor: AppColors.success,
+        ),
+      );
     } catch (e) {
-      UIFeedback.error('Failed to unfollow: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to unfollow: $e'),
+          backgroundColor: AppColors.error,
+        ),
+      );
     }
   }
 
@@ -81,7 +91,12 @@ class _NotificationManagementScreenState
     // Update provider and save to storage
     await prefsProvider.updatePreferences(updatedPrefs);
     
-    UIFeedback.success('DND enabled for 1 hour');
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('DND enabled for 1 hour'),
+        backgroundColor: AppColors.success,
+      ),
+    );
   }
 
   Future<void> _toggleQuietHours(bool enabled) async {
@@ -205,7 +220,7 @@ class _NotificationManagementScreenState
               ListTile(
                 leading: Icon(
                   dndActive ? Icons.do_not_disturb_on : Icons.do_not_disturb,
-                  color: dndActive ? AppColors.warningColor : AppColors.brandPrimary,
+                  color: dndActive ? AppColors.warning : AppColors.brandPrimary,
                 ),
                 title: Text(
                   dndText,
@@ -296,7 +311,7 @@ class _NotificationManagementScreenState
                 ),
                 const Divider(color: AppColors.darkBorder),
                 SwitchListTile(
-                  secondary: const Icon(Icons.warning, color: AppColors.warningColor),
+                  secondary: const Icon(Icons.warning, color: AppColors.warning),
                   title: const Text(
                     'Emergency Override',
                     style: TextStyle(color: AppColors.textPrimary),
@@ -425,7 +440,7 @@ class _NotificationManagementScreenState
             onPressed: () => _showUnfollowDialog(sightingId, title),
             child: const Text(
               'Unfollow',
-              style: TextStyle(color: AppColors.warningColor),
+              style: TextStyle(color: AppColors.warning),
             ),
           ),
           onTap: () => Navigator.of(context).pushNamed('/alert/$sightingId'),
@@ -520,7 +535,7 @@ class _NotificationManagementScreenState
               },
               child: const Text(
                 'Unfollow',
-                style: TextStyle(color: AppColors.warningColor),
+                style: TextStyle(color: AppColors.warning),
               ),
             ),
           ],
@@ -537,7 +552,12 @@ class _NotificationManagementScreenState
     final updatedPrefs = currentPrefs.copyWith(dndUntil: null);
     await prefsProvider.updatePreferences(updatedPrefs);
     
-    UIFeedback.success('DND disabled');
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('DND disabled'),
+        backgroundColor: AppColors.success,
+      ),
+    );
   }
 
   Future<void> _updatePreference(UserPreferences updatedPrefs) async {
