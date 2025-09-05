@@ -1729,3 +1729,53 @@ async def link_phone_number(
         raise HTTPException(status_code=400, detail=result["error"])
     
     return result
+
+
+@router.get("/{user_id}/subscriptions")
+async def get_user_subscriptions(user_id: str, current_user = Depends(get_current_user_from_jwt)):
+    """Get all alerts that a user is following for notifications"""
+    # Only allow users to see their own subscriptions
+    if str(current_user['id']) != user_id:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    pool = await get_database_pool()
+    async with pool.acquire() as conn:
+        # Get followed alerts with sighting details
+        subscriptions = await conn.fetch("""
+            SELECT 
+                f.sighting_id,
+                f.created_at as followed_at,
+                s.title,
+                s.description,
+                s.location_name,
+                s.latitude,
+                s.longitude,
+                s.created_at as sighting_created_at,
+                (SELECT COUNT(*) FROM comments c WHERE c.sighting_id = s.id) as comment_count
+            FROM follows f
+            JOIN sightings s ON f.sighting_id = s.id
+            WHERE f.user_id = $1
+            ORDER BY f.created_at DESC
+        """, uuid.UUID(user_id))
+        
+        # Format subscriptions for response
+        formatted_subs = []
+        for sub in subscriptions:
+            title = sub['title'] or (
+                sub['description'][:50] + '...' if sub['description'] and len(sub['description']) > 50 
+                else sub['description'] or 'UFO Sighting'
+            )
+            
+            formatted_subs.append({
+                'sighting_id': str(sub['sighting_id']),
+                'title': title,
+                'location_name': sub['location_name'] or 'Unknown Location',
+                'comment_count': sub['comment_count'],
+                'followed_at': sub['followed_at'].isoformat(),
+                'sighting_created_at': sub['sighting_created_at'].isoformat(),
+            })
+        
+        return {
+            'subscriptions': formatted_subs,
+            'total_count': len(formatted_subs)
+        }

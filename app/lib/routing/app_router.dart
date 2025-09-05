@@ -28,6 +28,7 @@ import '../screens/auth/firebase_phone_auth_screen.dart';
 import '../screens/auth/firebase_email_auth_screen.dart';
 import '../screens/auth/sign_in_screen.dart';
 import '../screens/splash/splash_screen.dart';
+import '../screens/notifications/notification_management_screen.dart';
 import '../models/shared_media_data.dart';
 
 part 'app_router.g.dart';
@@ -373,6 +374,12 @@ GoRouter appRouter(AppRouterRef ref) {
                 path: 'language',
                 name: 'language-settings',
                 builder: (context, state) => const LanguageSettingsScreen(),
+              ),
+              // Notification Management
+              GoRoute(
+                path: 'notifications',
+                name: 'notification-management',
+                builder: (context, state) => const NotificationManagementScreen(),
               ),
             ],
           ),

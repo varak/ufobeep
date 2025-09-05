@@ -291,6 +291,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ),
           child: Column(
             children: [
+              _buildSimpleSettingItem(
+                icon: Icons.notifications_outlined,
+                title: 'Notifications',
+                value: 'Manage subscriptions & settings',
+                onTap: () => context.push('/profile/notifications'),
+                isFirst: true,
+              ),
+              
+              _buildDivider(),
+              
               _buildSettingsTile(
                 icon: Icons.bedtime_outlined,
                 title: 'Quiet Hours',

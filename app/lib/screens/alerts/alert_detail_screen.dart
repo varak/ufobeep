@@ -33,6 +33,8 @@ class AlertDetailScreen extends ConsumerStatefulWidget {
 class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   String? _currentUserDeviceId;
   bool _isWitnessConfirmed = false;
+  bool _isFollowing = false;
+  bool _followingLoading = false;
 
   @override
   void initState() {
@@ -63,6 +65,9 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         
         // Check if this user is a confirmed witness
         await _checkWitnessStatus(userId);
+        
+        // Check follow status for comments
+        await _checkFollowStatus();
       }
     } catch (e) {
       print('Error loading user data: $e');
@@ -84,6 +89,74 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     } catch (e) {
       print('Error checking witness status: $e');
       // Assume not confirmed if error
+    }
+  }
+  
+  Future<void> _checkFollowStatus() async {
+    try {
+      final response = await ApiClient.dio.get('/alerts/${widget.alertId}/follow');
+      if (mounted) {
+        setState(() {
+          _isFollowing = response.data['following'] ?? false;
+        });
+      }
+    } catch (e) {
+      print('Error checking follow status: $e');
+      // Assume not following if error
+    }
+  }
+  
+  Future<void> _toggleFollow() async {
+    if (_followingLoading) return;
+    
+    setState(() {
+      _followingLoading = true;
+    });
+    
+    try {
+      if (_isFollowing) {
+        await ApiClient.dio.delete('/alerts/${widget.alertId}/follow');
+        setState(() {
+          _isFollowing = false;
+        });
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Unfollowed alert - no more comment notifications'),
+              backgroundColor: AppColors.textSecondary,
+            ),
+          );
+        }
+      } else {
+        await ApiClient.dio.post('/alerts/${widget.alertId}/follow');
+        setState(() {
+          _isFollowing = true;
+        });
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Following alert - you\'ll get comment notifications'),
+              backgroundColor: AppColors.brandPrimary,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      print('Error toggling follow: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${e.toString()}'),
+            backgroundColor: AppColors.semanticError,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _followingLoading = false;
+        });
+      }
     }
   }
 
@@ -209,6 +282,10 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                   ),
                   const SizedBox(height: 24),
                 ],
+                
+                // Follow toggle for comment notifications
+                _buildFollowSection(),
+                const SizedBox(height: 16),
                 
                 // Comments section
                 _buildCommentsSection(alert),
@@ -652,6 +729,67 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             'Analysis: ${alert.photoAnalysis!.length} photo${alert.photoAnalysis!.length == 1 ? '' : 's'} processed',
             style: const TextStyle(color: AppColors.textSecondary, fontSize: 14),
           ),
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildFollowSection() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.darkSurface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.darkBorder.withOpacity(0.3)),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            _isFollowing ? Icons.notifications : Icons.notifications_outlined,
+            color: _isFollowing ? AppColors.brandPrimary : AppColors.textSecondary,
+            size: 20,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _isFollowing ? 'Following this alert' : 'Follow for notifications',
+                  style: const TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  _isFollowing 
+                    ? 'You\'ll get notified of new comments'
+                    : 'Get notified when someone comments',
+                  style: const TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (_followingLoading) 
+            const SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: AppColors.brandPrimary,
+              ),
+            )
+          else
+            Switch(
+              value: _isFollowing,
+              onChanged: (_) => _toggleFollow(),
+              activeColor: AppColors.brandPrimary,
+            ),
         ],
       ),
     );
