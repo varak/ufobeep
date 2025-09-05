@@ -22,6 +22,7 @@ import '../../providers/app_state.dart';
 import '../../widgets/simple_photo_display.dart';
 import '../../widgets/video_player_widget.dart';
 import '../../widgets/multi_file_preview.dart';
+import '../../widgets/glass_card.dart';
 
 class BeepCompositionScreen extends ConsumerStatefulWidget {
   // Legacy single-file parameters (for backward compatibility)
@@ -474,57 +475,127 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     // Add haptic feedback
     await SoundService.I.play(AlertSound.tap, haptic: true);
     
-    // Show dialog to choose between camera or gallery
+    // Show dialog to choose between camera or gallery with proper styling
     final choice = await showDialog<String>(
       context: context,
+      barrierColor: Colors.black.withOpacity(0.7),
       builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: AppColors.darkSurface,
-          title: const Text(
-            'Add More Media',
-            style: TextStyle(color: AppColors.textPrimary),
-          ),
-          content: const Text(
-            'How would you like to add more media?',
-            style: TextStyle(color: AppColors.textSecondary),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop('camera'),
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.camera_alt, color: AppColors.brandPrimary),
-                  SizedBox(width: 8),
-                  Text(
-                    'Take Photo',
-                    style: TextStyle(color: AppColors.brandPrimary),
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: AppColors.darkSurface.withOpacity(0.95),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: AppColors.brandPrimary.withOpacity(0.3),
+                width: 1,
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Add More Media',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
                   ),
-                ],
-              ),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop('gallery'),
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.photo_library, color: AppColors.brandPrimary),
-                  SizedBox(width: 8),
-                  Text(
-                    'From Gallery',
-                    style: TextStyle(color: AppColors.brandPrimary),
+                ),
+                const SizedBox(height: 24),
+                
+                // Camera and Gallery buttons matching beep screen style
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => Navigator.of(context).pop('camera'),
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.2),
+                              width: 1,
+                            ),
+                          ),
+                          child: const Column(
+                            children: [
+                              Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                                size: 32,
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Camera',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => Navigator.of(context).pop('gallery'),
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.2),
+                              width: 1,
+                            ),
+                          ),
+                          child: const Column(
+                            children: [
+                              Icon(
+                                Icons.photo_library,
+                                color: Colors.white,
+                                size: 32,
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Gallery',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                
+                const SizedBox(height: 16),
+                
+                // Cancel button
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.7),
+                      fontSize: 16,
+                    ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text(
-                'Cancel',
-                style: TextStyle(color: AppColors.textSecondary),
-              ),
-            ),
-          ],
+          ),
         );
       },
     );
@@ -565,6 +636,21 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         debugPrint('Extracted metadata: ${mediaMetadata.keys.length} categories');
       } catch (e) {
         debugPrint('Warning: Failed to extract metadata from camera photo: $e');
+      }
+      
+      // Ensure we have location data for camera photos - refresh if needed
+      if (_sensorData == null || _sensorData?.latitude == null || _sensorData?.longitude == null) {
+        debugPrint('Camera photo: Refreshing location data for GPS coordinates');
+        try {
+          final sensorService = SensorService();
+          final freshSensorData = await sensorService.captureSensorData();
+          setState(() {
+            _sensorData = freshSensorData;
+          });
+          debugPrint('Camera photo: Refreshed sensor data - GPS: ${_sensorData?.latitude}, ${_sensorData?.longitude}');
+        } catch (e) {
+          debugPrint('Camera photo: Failed to refresh sensor data: $e');
+        }
       }
       
       // Add camera photo to media files list
