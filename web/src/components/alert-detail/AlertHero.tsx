@@ -53,15 +53,6 @@ export default function AlertHero({ alert }: AlertHeroProps) {
               {alert.title || 'UFO Sighting Report'}
             </h1>
             
-            {/* Show alert when title/description is missing */}
-            {(!alert.title && (!alert.description || alert.description.trim() === '')) && (
-              <div className="bg-orange-900/20 border border-orange-800 rounded-lg p-3 mb-4">
-                <div className="flex items-center gap-2 text-orange-400 text-sm">
-                  <span>⚠️</span>
-                  <span>This report was submitted without a title or description</span>
-                </div>
-              </div>
-            )}
             
             {/* Content type indicator */}
             {!hasMedia && !hasDescription && (
