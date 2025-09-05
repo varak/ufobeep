@@ -242,49 +242,40 @@ export default function AlertPage({ params }: AlertPageProps) {
         {/* Hero Section */}
         <AlertHero alert={alert} />
 
-        {/* Main content grid */}
-        <div className="grid lg:grid-cols-3 gap-6">
-          {/* Main content */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Alert details */}
-            <AlertDetails alert={alert} />
+        {/* Main content */}
+        <div className="space-y-6">
+          {/* Alert details */}
+          <AlertDetails alert={alert} />
 
-            {/* Environmental data - hidden for MUFON alerts */}
-            {alert.reporter_username !== 'MUFON' && (
-              <EnrichmentData enrichment={alert.enrichment} alert={alert} />
-            )}
+          {/* Environmental data - hidden for MUFON alerts */}
+          {alert.reporter_username !== 'MUFON' && (
+            <EnrichmentData enrichment={alert.enrichment} alert={alert} />
+          )}
 
-            {/* Witness count info - hidden for MUFON alerts */}
-            {alert.reporter_username !== 'MUFON' && (
-              <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="text-brand-primary">👥</span>
-                  <h2 className="text-lg font-semibold text-brand-primary">Witnesses</h2>
-                </div>
-                <div className="text-2xl font-bold text-text-primary mb-2">
-                  {getWitnessCount()} {getWitnessCount() === 1 ? 'Witness' : 'Witnesses'}
-                </div>
-                <div className="text-text-secondary text-sm">
-                  {getWitnessCount() === 1 ? 'Single observer report' : 'Multiple confirmations from nearby users'}
-                </div>
+          {/* Witness count info - hidden for MUFON alerts */}
+          {alert.reporter_username !== 'MUFON' && (
+            <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-brand-primary">👥</span>
+                <h2 className="text-lg font-semibold text-brand-primary">Witnesses</h2>
               </div>
-            )}
+              <div className="text-2xl font-bold text-text-primary mb-2">
+                {getWitnessCount()} {getWitnessCount() === 1 ? 'Witness' : 'Witnesses'}
+              </div>
+              <div className="text-text-secondary text-sm">
+                {getWitnessCount() === 1 ? 'Single observer report' : 'Multiple confirmations from nearby users'}
+              </div>
+            </div>
+          )}
 
-            {/* Comments section - moved below main content */}
-            <AlertComments alertId={alert.id} key={refreshComments} />
-            
-            {/* Comment form - only show if there are existing comments or user is authenticated */}
-            <CommentButton 
-              alertId={alert.id} 
-              onCommentAdded={() => setRefreshComments(prev => prev + 1)}
-            />
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-
-
-          </div>
+          {/* Comments section - moved below main content */}
+          <AlertComments alertId={alert.id} key={refreshComments} />
+          
+          {/* Comment form - only show if there are existing comments or user is authenticated */}
+          <CommentButton 
+            alertId={alert.id} 
+            onCommentAdded={() => setRefreshComments(prev => prev + 1)}
+          />
         </div>
       </div>
     </main>
