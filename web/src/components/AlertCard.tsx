@@ -264,12 +264,13 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                 {alert.title || 'UFO Sighting'}
               </h3>
               
-              {/* Location for MUFON reports - right under title */}
-              {alert.reporter_username === 'MUFON' && (
-                <div className="text-text-secondary text-xs mb-2">
-                  {alert.enrichment?.location_raw || alert.location?.name || formatLocation(alert.location)}
-                </div>
-              )}
+              {/* Location - right under title for all alerts */}
+              <div className="text-text-secondary text-xs mb-2">
+                {alert.reporter_username === 'MUFON' 
+                  ? (alert.enrichment?.location_raw || alert.location?.name || formatLocation(alert.location))
+                  : formatLocation(alert.location)
+                }
+              </div>
               
               {/* Verification badge */}
               {alert.is_verified && (
@@ -307,12 +308,6 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
 
           {/* Content section */}
           <div className="space-y-2">
-            {/* Location - hidden for MUFON alerts */}
-            {alert.reporter_username !== 'MUFON' && (
-              <div className="text-text-tertiary text-xs">
-                📍 {formatLocation(alert.location)}
-              </div>
-            )}
 
             {/* Description */}
             {(() => {
