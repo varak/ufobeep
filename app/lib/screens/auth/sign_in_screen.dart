@@ -211,8 +211,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     children: [
                       // UFO Icon
                       Container(
-                        width: 80,
-                        height: 80,
+                        width: 120,
+                        height: 120,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           gradient: RadialGradient(
@@ -226,7 +226,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: const Center(
                           child: Text(
                             '🛸',
-                            style: TextStyle(fontSize: 40),
+                            style: TextStyle(fontSize: 64),
                           ),
                         ),
                       ),
