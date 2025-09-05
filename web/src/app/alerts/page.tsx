@@ -288,48 +288,6 @@ function AlertsPageContent() {
           </p>
         </div>
 
-        {/* Clear Filter Toggles */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-          <div 
-            className={`bg-dark-surface border rounded-lg p-6 text-center cursor-pointer transition-all hover:scale-105 ${
-              showBeepsOnly ? 'border-brand-primary bg-brand-primary/10' : 'border-dark-border hover:border-brand-primary/50'
-            }`}
-            onClick={() => {
-              const newShowBeepsOnly = !showBeepsOnly
-              updateUrlParams({ 
-                beeps: newShowBeepsOnly,
-                photos: showPhotosOnly && newShowBeepsOnly ? false : showPhotosOnly,
-                page: 1
-              })
-            }}
-          >
-            <div className="text-3xl mb-2">
-              {showBeepsOnly ? '🛸' : '🔔'}
-            </div>
-            <div className={`text-base font-semibold mb-1 ${showBeepsOnly ? 'text-brand-primary' : 'text-text-primary'}`}>
-              {showBeepsOnly ? 'Showing UFOBeep Only' : 'Show UFOBeep Only'}
-            </div>
-            <div className="text-xs text-text-tertiary">
-              {showBeepsOnly ? 'Hiding MUFON database reports' : 'Hide MUFON database reports'}
-            </div>
-          </div>
-          <div 
-            className={`bg-dark-surface border rounded-lg p-6 text-center cursor-pointer transition-all hover:scale-105 ${
-              showPhotosOnly ? 'border-brand-primary bg-brand-primary/10' : 'border-dark-border hover:border-brand-primary/50'
-            }`}
-            onClick={() => updateUrlParams({ photos: !showPhotosOnly, page: 1 })}
-          >
-            <div className="text-3xl mb-2">
-              {showPhotosOnly ? '📸' : '📷'}
-            </div>
-            <div className={`text-base font-semibold mb-1 ${showPhotosOnly ? 'text-brand-primary' : 'text-text-primary'}`}>
-              {showPhotosOnly ? 'Showing Photos Only' : 'Show Photos Only'}
-            </div>
-            <div className="text-xs text-text-tertiary">
-              {showPhotosOnly ? 'Hiding text-only reports' : 'Hide text-only reports'}
-            </div>
-          </div>
-        </div>
 
         {/* Alerts Grid */}
         {alerts.length === 0 ? (
@@ -375,9 +333,50 @@ function AlertsPageContent() {
           </div>
         )}
         
+        {/* Compact Filter Toggles - Now at bottom */}
+        {!loading && !error && (
+          <div className="mt-8 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-md mx-auto">
+              <div 
+                className={`bg-dark-surface border rounded-md p-3 text-center cursor-pointer transition-all hover:scale-102 ${
+                  showBeepsOnly ? 'border-brand-primary bg-brand-primary/10' : 'border-dark-border hover:border-brand-primary/50'
+                }`}
+                onClick={() => {
+                  const newShowBeepsOnly = !showBeepsOnly
+                  updateUrlParams({ 
+                    beeps: newShowBeepsOnly,
+                    photos: showPhotosOnly && newShowBeepsOnly ? false : showPhotosOnly,
+                    page: 1
+                  })
+                }}
+              >
+                <div className="text-lg mb-1">
+                  {showBeepsOnly ? '🛸' : '🔔'}
+                </div>
+                <div className={`text-sm font-medium ${showBeepsOnly ? 'text-brand-primary' : 'text-text-primary'}`}>
+                  {showBeepsOnly ? 'UFOBeep Only' : 'UFOBeep Only'}
+                </div>
+              </div>
+              <div 
+                className={`bg-dark-surface border rounded-md p-3 text-center cursor-pointer transition-all hover:scale-102 ${
+                  showPhotosOnly ? 'border-brand-primary bg-brand-primary/10' : 'border-dark-border hover:border-brand-primary/50'
+                }`}
+                onClick={() => updateUrlParams({ photos: !showPhotosOnly, page: 1 })}
+              >
+                <div className="text-lg mb-1">
+                  {showPhotosOnly ? '📸' : '📷'}
+                </div>
+                <div className={`text-sm font-medium ${showPhotosOnly ? 'text-brand-primary' : 'text-text-primary'}`}>
+                  {showPhotosOnly ? 'Photos Only' : 'Photos Only'}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Enhanced Pagination */}
         {!loading && !error && alerts.length > 0 && getTotalPages() > 1 && (
-          <div className="mt-12 mb-8">
+          <div className="mt-8 mb-8">
             {/* Pagination Controls */}
             <div className="flex items-center justify-center space-x-2">
               {/* First Page Button */}
