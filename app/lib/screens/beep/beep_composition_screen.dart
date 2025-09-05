@@ -792,17 +792,27 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Compose Beep'),
-        backgroundColor: AppColors.darkSurface,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: _retakeMedia,
-          tooltip: 'Retake ${widget.isVideo ?? false ? 'Video' : 'Photo'}',
+    return NightSkyBackground(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Compose Beep',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 24,
+            ),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: _retakeMedia,
+            tooltip: 'Retake ${widget.isVideo ?? false ? 'Video' : 'Photo'}',
+          ),
         ),
-      ),
-      backgroundColor: AppColors.darkBackground,
+        backgroundColor: Colors.transparent,
       body: SafeArea(
         child: Column(
           children: [
@@ -817,6 +827,9 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                     _buildMediaSection(),
                     const SizedBox(height: 24),
                     
+                    // Form field - make it more prominent
+                    _buildDescriptionInput(),
+                    const SizedBox(height: 24),
                     
                     // Error message
                     if (_errorMessage != null) ...[
@@ -843,11 +856,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                       ),
                     ],
                     
-                    // Form field
-                    _buildDescriptionInput(),
-                    const SizedBox(height: 16),
-                    
-                    // Media quality info (after description)
+                    // Media quality info moved to bottom
                     _buildMediaQualityInfo(),
                     const SizedBox(height: 32), // Space for bottom button
                   ],
@@ -860,7 +869,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
           ],
         ),
       ),
-    );
+    ), // Close Scaffold
+    ); // Close NightSkyBackground
   }
 
   Widget _buildMediaSection() {
@@ -878,13 +888,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   
 
   Widget _buildMediaQualityInfo() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.darkSurface.withOpacity(0.6),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.darkBorder.withOpacity(0.3)),
-      ),
+    return GlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -908,7 +912,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                 ? 'UFOBeep records videos with audio at maximum device resolution. Videos are automatically saved to your gallery in the UFOBeep album for easy sharing.'
                 : 'UFOBeep captures photos at maximum device resolution for detailed analysis. For even higher quality images, you can also upload photos from your camera gallery.',
             style: const TextStyle(
-              color: AppColors.textSecondary,
+              color: Colors.white70,
               fontSize: 14,
               height: 1.4,
             ),
@@ -939,7 +943,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                       ? 'For longer or higher quality videos, use share-to-beep from your native camera app'
                       : 'Native camera photos often have higher megapixel counts',
                   style: const TextStyle(
-                    color: AppColors.textTertiary,
+                    color: Colors.white54,
                     fontSize: 12,
                   ),
                 ),
@@ -955,33 +959,59 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
 
 
   Widget _buildDescriptionInput() {
-    return TextFormField(
-      controller: _descriptionController,
-      style: const TextStyle(color: AppColors.textPrimary, fontSize: 16),
-      decoration: InputDecoration(
-        labelText: 'What did you see? (optional)',
-        labelStyle: const TextStyle(color: AppColors.textSecondary),
-        hintText: 'Bright light moving across sky, object hovering, strange shape...',
-        hintStyle: const TextStyle(color: AppColors.textTertiary),
-        filled: true,
-        fillColor: AppColors.darkSurface,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppColors.darkBorder),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppColors.brandPrimary, width: 1.5),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppColors.brandPrimary, width: 2),
-        ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+    return GlassCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Describe what you\'re seeing',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _descriptionController,
+            maxLines: 4,
+            maxLength: 300,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+            decoration: InputDecoration(
+              hintText: 'Bright light moving across sky, object hovering, strange shape...',
+              hintStyle: TextStyle(
+                color: Colors.white.withOpacity(0.5),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Colors.white.withOpacity(0.2),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Colors.white.withOpacity(0.2),
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(
+                  color: AppColors.brandPrimary,
+                  width: 2,
+                ),
+              ),
+              filled: true,
+              fillColor: Colors.white.withOpacity(0.05),
+              contentPadding: const EdgeInsets.all(16),
+            ),
+            textInputAction: TextInputAction.done,
+          ),
+        ],
       ),
-      maxLines: 3,
-      maxLength: 300,
-      textInputAction: TextInputAction.done,
     );
   }
 
@@ -991,9 +1021,9 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.darkBackground,
+        color: Colors.transparent,
         border: Border(
-          top: BorderSide(color: AppColors.darkBorder.withOpacity(0.3)),
+          top: BorderSide(color: Colors.white.withOpacity(0.1)),
         ),
       ),
       child: SafeArea(

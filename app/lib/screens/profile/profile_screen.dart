@@ -297,22 +297,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 value: 'Manage subscriptions & settings',
                 onTap: () => context.push('/profile/notifications'),
                 isFirst: true,
+                isLast: true,
               ),
-              
-              _buildDivider(),
-              
-              _buildSettingsTile(
-                icon: Icons.bedtime_outlined,
-                title: 'Quiet Hours',
-                subtitle: 'Silence alerts during sleep hours',
-                value: preferences.quietHoursEnabled,
-                onChanged: _toggleQuietHours,
-                standalone: false,
-              ),
-              if (preferences.quietHoursEnabled) ...[
-                const Divider(color: AppColors.darkBorder, height: 1),
-                _buildQuietHoursTimePickers(preferences),
-              ],
             ],
           ),
         ),
