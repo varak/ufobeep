@@ -212,7 +212,7 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
       {!showLoginForm && !showCommentForm && !isAuthenticated && (
         <button
           onClick={handleCommentClick}
-          className="w-full bg-brand-primary hover:bg-brand-primary/90 text-white py-3 px-4 rounded-lg font-medium transition-colors"
+          className="w-full border-2 border-brand-primary hover:border-brand-primary/90 hover:bg-brand-primary/10 text-brand-primary py-3 px-4 rounded-lg font-medium transition-colors bg-transparent"
         >
           Login to Comment
         </button>
