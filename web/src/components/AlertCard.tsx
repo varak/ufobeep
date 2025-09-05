@@ -264,6 +264,13 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                 {alert.title || 'UFO Sighting'}
               </h3>
               
+              {/* Location for MUFON reports - right under title */}
+              {alert.reporter_username === 'MUFON' && formatLocation(alert.location) && (
+                <div className="text-text-secondary text-xs mb-2">
+                  {formatLocation(alert.location)}
+                </div>
+              )}
+              
               {/* Verification badge */}
               {alert.is_verified && (
                 <div className="inline-flex items-center px-2 py-0.5 bg-brand-primary/10 border border-brand-primary/30 rounded-full mb-2">
