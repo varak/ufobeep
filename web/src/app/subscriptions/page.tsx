@@ -72,7 +72,7 @@ export default function SubscriptionsPage() {
       
       // Show success message
       const alertTitle = subscriptions.find(s => s.alert_id === alertId)?.alert_title || 'Alert'
-      alert(`Unfollowed "${alertTitle}" - you won't receive comment notifications anymore`)
+      alert(`Unfollowed "${alertTitle}" - you won&apos;t receive comment notifications anymore`)
     } catch (err) {
       console.error('Error unfollowing alert:', err)
       alert('Failed to unfollow alert. Please try again.')
@@ -112,7 +112,7 @@ export default function SubscriptionsPage() {
             <div>
               <h1 className="text-3xl font-bold">My Subscriptions</h1>
               <p className="text-gray-400 mt-2">
-                Alerts you're following for comment notifications
+                Alerts you&apos;re following for comment notifications
               </p>
             </div>
             <Link
@@ -159,7 +159,7 @@ export default function SubscriptionsPage() {
               </div>
               <h2 className="text-xl font-semibold text-gray-400 mb-2">No Subscriptions Yet</h2>
               <p className="text-gray-500 mb-6">
-                You're not following any alerts for comment notifications.
+                You&apos;re not following any alerts for comment notifications.
               </p>
               <Link
                 href="/alerts"
@@ -252,7 +252,7 @@ export default function SubscriptionsPage() {
             <h2 className="text-lg font-semibold mb-3">About Subscriptions</h2>
             <div className="text-gray-400 space-y-2 text-sm">
               <p>• When you comment on an alert, you automatically follow it for notifications</p>
-              <p>• You'll receive push notifications when others comment on alerts you follow</p>
+              <p>• You&apos;ll receive push notifications when others comment on alerts you follow</p>
               <p>• You can unfollow any alert to stop receiving notifications</p>
               <p>• Manage notification settings including Do Not Disturb in the mobile app</p>
             </div>
