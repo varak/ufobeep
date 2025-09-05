@@ -94,7 +94,7 @@ class WeatherEnrichmentProcessor(EnrichmentProcessor):
     
     @property
     def timeout_seconds(self) -> int:
-        return 10
+        return 3
     
     async def is_available(self) -> bool:
         return self.api_key is not None
@@ -304,7 +304,7 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
     
     @property
     def timeout_seconds(self) -> int:
-        return 15
+        return 3
     
     async def is_available(self) -> bool:
         return self._skyfield_available
@@ -595,7 +595,7 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
     
     @property
     def timeout_seconds(self) -> int:
-        return 20
+        return 3
     
     async def is_available(self) -> bool:
         # No API keys required for public TLE data
@@ -712,7 +712,7 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
             for category, url in tle_urls.items():
                 try:
                     logger.debug(f"Fetching TLE data for {category}")
-                    async with session.get(url, timeout=10) as response:
+                    async with session.get(url, timeout=3) as response:
                         if response.status == 200:
                             content = await response.text()
                             tle_lines = [line.strip() for line in content.strip().split('\n') if line.strip()]
@@ -1018,7 +1018,7 @@ class GeocodeEnrichmentProcessor(EnrichmentProcessor):
     
     @property
     def timeout_seconds(self) -> int:
-        return 8
+        return 3
     
     async def is_available(self) -> bool:
         return self.api_key is not None
@@ -1167,7 +1167,7 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
     
     @property
     def timeout_seconds(self) -> int:
-        return 15
+        return 3
     
     async def is_available(self) -> bool:
         return True
@@ -1215,7 +1215,7 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
                 'lomax': context.longitude + radius_deg
             }
             
-            async with session.get("https://opensky-network.org/api/states/all", params=params, timeout=12) as response:
+            async with session.get("https://opensky-network.org/api/states/all", params=params, timeout=3) as response:
                 if response.status != 200:
                     # Check if it's a time-related issue (photos older than ~5 minutes)
                     time_diff = (datetime.utcnow() - context.timestamp).total_seconds() / 60
@@ -1308,7 +1308,7 @@ class ContentFilterProcessor(EnrichmentProcessor):
     
     @property
     def timeout_seconds(self) -> int:
-        return 30
+        return 3
     
     async def is_available(self) -> bool:
         # Always available for basic text analysis
@@ -1395,7 +1395,7 @@ class ContentFilterProcessor(EnrichmentProcessor):
                 toxicity_url = f"https://api-inference.huggingface.co/models/{self.nsfw_model}"
                 toxicity_payload = {"inputs": text}
                 
-                async with session.post(toxicity_url, headers=headers, json=toxicity_payload, timeout=15) as response:
+                async with session.post(toxicity_url, headers=headers, json=toxicity_payload, timeout=3) as response:
                     if response.status == 200:
                         toxicity_data = await response.json()
                         if isinstance(toxicity_data, list) and len(toxicity_data) > 0:
@@ -1403,7 +1403,7 @@ class ContentFilterProcessor(EnrichmentProcessor):
                     elif response.status == 503:
                         logger.info("HuggingFace model loading, will retry...")
                         await asyncio.sleep(2)
-                        async with session.post(toxicity_url, headers=headers, json=toxicity_payload, timeout=15) as retry_response:
+                        async with session.post(toxicity_url, headers=headers, json=toxicity_payload, timeout=3) as retry_response:
                             if retry_response.status == 200:
                                 toxicity_data = await retry_response.json()
                                 if isinstance(toxicity_data, list) and len(toxicity_data) > 0:
@@ -1416,7 +1416,7 @@ class ContentFilterProcessor(EnrichmentProcessor):
                 sentiment_url = "https://api-inference.huggingface.co/models/cardiffnlp/twitter-roberta-base-sentiment-latest"
                 sentiment_payload = {"inputs": text}
                 
-                async with session.post(sentiment_url, headers=headers, json=sentiment_payload, timeout=10) as response:
+                async with session.post(sentiment_url, headers=headers, json=sentiment_payload, timeout=3) as response:
                     if response.status == 200:
                         sentiment_data = await response.json()
                         if isinstance(sentiment_data, list) and len(sentiment_data) > 0:
@@ -1433,7 +1433,7 @@ class ContentFilterProcessor(EnrichmentProcessor):
                     "parameters": {"candidate_labels": candidate_labels}
                 }
                 
-                async with session.post(classification_url, headers=headers, json=classification_payload, timeout=10) as response:
+                async with session.post(classification_url, headers=headers, json=classification_payload, timeout=3) as response:
                     if response.status == 200:
                         classification_result = await response.json()
             except Exception as e:
