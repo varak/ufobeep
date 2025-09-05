@@ -345,7 +345,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                    style="width: 100%; height: 44px; cursor: pointer;">
               </div>
             `
-            console.log('Apple Sign-In button rendered in container:', containerId)
+            console.log('Apple Sign-In button HTML rendered in container:', containerId)
+            
+            // Actually render the Apple button after DOM update
+            setTimeout(() => {
+              if (window.AppleID && window.AppleID.auth) {
+                try {
+                  window.AppleID.auth.renderButton()
+                  console.log('Apple Sign-In button activated successfully')
+                } catch (error) {
+                  console.error('Error activating Apple Sign-In button:', error)
+                }
+              }
+            }, 100)
           }
         }
       }
@@ -368,7 +380,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                style="width: 100%; height: 44px; cursor: pointer;">
           </div>
         `
-        console.log('Apple Sign-In button re-rendered in container:', containerId)
+        console.log('Apple Sign-In button HTML re-rendered in container:', containerId)
+        
+        // Actually render the Apple button after DOM update
+        setTimeout(() => {
+          if (window.AppleID && window.AppleID.auth) {
+            try {
+              window.AppleID.auth.renderButton()
+              console.log('Apple Sign-In button re-activated successfully')
+            } catch (error) {
+              console.error('Error re-activating Apple Sign-In button:', error)
+            }
+          }
+        }, 100)
       }
       return true
     }
