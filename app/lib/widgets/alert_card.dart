@@ -79,6 +79,19 @@ class AlertCard extends ConsumerWidget {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
+                        
+                        // Location for MUFON reports - right under title
+                        if (alert.source == 'mufon' && _getLocationName(alert).isNotEmpty) ...[
+                          const SizedBox(height: 4),
+                          Text(
+                            _getLocationName(alert),
+                            style: const TextStyle(
+                              color: AppColors.textSecondary,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                        
                         const SizedBox(height: 4),
                         Row(
                           children: [
@@ -437,6 +450,21 @@ class AlertCard extends ConsumerWidget {
         );
       },
     );
+  }
+
+  String _getLocationName(Alert alert) {
+    // For MUFON alerts, check enrichment data first, then location name
+    if (alert.source == 'mufon') {
+      final enrichment = alert.enrichment;
+      if (enrichment != null && enrichment.containsKey('location_raw')) {
+        final locationRaw = enrichment['location_raw']?.toString();
+        if (locationRaw != null && locationRaw.isNotEmpty) {
+          return locationRaw;
+        }
+      }
+    }
+    // Fallback to standard location name
+    return alert.locationName ?? '';
   }
 
   String _formatDateTime(DateTime dateTime) {
