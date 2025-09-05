@@ -52,7 +52,7 @@ class AlertsService:
             rows = await conn.fetch("""
                 SELECT s.id::text, s.title, s.description, s.category, s.alert_level, 
                        s.witness_count, s.created_at, s.reporter_id, s.sensor_data, s.media_info, s.enrichment_data,
-                       u.username as reporter_username, s.source, s.occurred_at, s.external_url,
+                       u.username as reporter_username, s.source, (s.enrichment_data->>'occurred_at')::timestamp as occurred_at, s.external_url,
                        COALESCE(c.comment_count, 0) as comment_count
                 FROM sightings s
                 LEFT JOIN users u ON s.reporter_id = u.id::text
@@ -62,7 +62,7 @@ class AlertsService:
                     GROUP BY sighting_id
                 ) c ON s.id = c.sighting_id
                 WHERE s.is_public = true 
-                ORDER BY COALESCE(s.occurred_at, s.created_at) DESC 
+                ORDER BY COALESCE((s.enrichment_data->>'occurred_at')::timestamp, s.created_at) DESC 
                 LIMIT $1 OFFSET $2
             """, limit, offset)
             
