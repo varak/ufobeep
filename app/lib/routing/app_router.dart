@@ -190,9 +190,11 @@ GoRouter appRouter(AppRouterRef ref) {
                   final extra = state.extra as Map<String, dynamic>?;
                   final description = extra?['description'] as String?;
                   final attachToSightingId = extra?['attachToSightingId'] as String?;
+                  final returnToComposition = extra?['returnToComposition'] as bool? ?? false;
                   return CameraCaptureScreen(
                     description: description,
                     attachToSightingId: attachToSightingId,
+                    returnToComposition: returnToComposition,
                   );
                 },
               ),

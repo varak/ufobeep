@@ -16,11 +16,13 @@ import '../../models/sensor_data.dart';
 class CameraCaptureScreen extends StatefulWidget {
   final String? description;
   final String? attachToSightingId;
+  final bool returnToComposition;
   
   const CameraCaptureScreen({
     super.key, 
     this.description,
     this.attachToSightingId,
+    this.returnToComposition = false,
   });
 
   @override
@@ -243,16 +245,25 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
         };
       }
 
-      // Navigate directly to compose screen - no approval!
+      // Navigate appropriately based on mode
       if (mounted) {
-        context.go('/beep/compose', extra: {
-          'mediaFile': savedFile,
-          'isVideo': false,
-          'sensorData': sensorData,
-          'photoMetadata': photoMetadata, // Pass comprehensive metadata for storage
-          'description': widget.description, // Pass description from previous screen
-          'attachToSightingId': widget.attachToSightingId, // Pass alert ID for existing alert media
-        });
+        if (widget.returnToComposition) {
+          // Return data to composition screen
+          context.pop({
+            'mediaFile': savedFile,
+            'photoMetadata': photoMetadata,
+          });
+        } else {
+          // Navigate directly to compose screen - no approval!
+          context.go('/beep/compose', extra: {
+            'mediaFile': savedFile,
+            'isVideo': false,
+            'sensorData': sensorData,
+            'photoMetadata': photoMetadata, // Pass comprehensive metadata for storage
+            'description': widget.description, // Pass description from previous screen
+            'attachToSightingId': widget.attachToSightingId, // Pass alert ID for existing alert media
+          });
+        }
       }
     } catch (e) {
       setState(() {
@@ -358,15 +369,25 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
         debugPrint('Failed to save video to gallery: $e');
       }
 
-      // Navigate to composition screen with video
+      // Navigate appropriately based on mode (video)
       if (mounted) {
-        context.go('/beep/compose', extra: {
-          'mediaFile': savedFile,
-          'isVideo': true,
-          'sensorData': sensorData,
-          'description': widget.description,
-          'attachToSightingId': widget.attachToSightingId, // Pass alert ID for existing alert media
-        });
+        if (widget.returnToComposition) {
+          // Return video data to composition screen
+          context.pop({
+            'mediaFile': savedFile,
+            'isVideo': true,
+            'photoMetadata': {}, // Videos don't have EXIF data
+          });
+        } else {
+          // Navigate to composition screen with video
+          context.go('/beep/compose', extra: {
+            'mediaFile': savedFile,
+            'isVideo': true,
+            'sensorData': sensorData,
+            'description': widget.description,
+            'attachToSightingId': widget.attachToSightingId, // Pass alert ID for existing alert media
+          });
+        }
       }
     } catch (e) {
       setState(() {

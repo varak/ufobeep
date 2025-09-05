@@ -202,7 +202,17 @@ class MultiFilePreview extends StatelessWidget {
   Widget _buildFileDetails(Map<String, dynamic> fileData) {
     final File mediaFile = fileData['mediaFile'];
     final bool isVideo = fileData['isVideo'] ?? false;
-    final String fileName = mediaFile.path.split('/').last;
+    
+    // Generate user-friendly display name instead of technical filename
+    String displayName;
+    if (isVideo) {
+      displayName = 'Video';
+    } else {
+      displayName = 'Photo';
+    }
+    
+    // Add number if we have multiple files of same type
+    // This will be handled by parent widget context if needed
     
     // Get file size
     String fileSize = '';
@@ -239,9 +249,7 @@ class MultiFilePreview extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  fileName.length > 30 
-                      ? '${fileName.substring(0, 27)}...' 
-                      : fileName,
+                  displayName,
                   style: const TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 12,

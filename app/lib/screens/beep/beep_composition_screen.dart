@@ -611,45 +611,34 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
 
   Future<void> _takeCameraPhoto() async {
     try {
-      final ImagePicker picker = ImagePicker();
-      final XFile? image = await picker.pickImage(
-        source: ImageSource.camera,
-        preferredCameraDevice: CameraDevice.rear,
-        imageQuality: 100,
-      );
-
-      if (image == null) return;
-
-      final File mediaFile = File(image.path);
+      // Navigate to custom camera screen with return-to-composition mode
+      final result = await context.push<Map<String, dynamic>>('/beep/camera', extra: {
+        'returnToComposition': true,
+        'attachToSightingId': widget.attachToSightingId,
+      });
+      
+      if (result == null) return;
+      
+      final File? mediaFile = result['mediaFile'] as File?;
+      final Map<String, dynamic>? photoMetadata = result['photoMetadata'] as Map<String, dynamic>?;
+      
+      if (mediaFile == null) return;
       
       if (!await mediaFile.exists()) {
-        debugPrint('Camera image file does not exist: ${image.path}');
+        debugPrint('Camera photo file does not exist: ${mediaFile.path}');
         return;
       }
 
       debugPrint('Adding camera photo: ${mediaFile.path}');
       
-      // Extract metadata for camera photo
-      Map<String, dynamic> mediaMetadata = {};
-      try {
-        mediaMetadata = await PhotoMetadataService.extractComprehensiveMetadata(mediaFile);
-        debugPrint('Extracted metadata: ${mediaMetadata.keys.length} categories');
-      } catch (e) {
-        debugPrint('Warning: Failed to extract metadata from camera photo: $e');
-      }
-      
-      // Ensure we have location data for camera photos - refresh if needed
-      if (_sensorData == null || _sensorData?.latitude == null || _sensorData?.longitude == null) {
-        debugPrint('Camera photo: Refreshing location data for GPS coordinates');
+      // Use metadata from camera screen if available, otherwise extract it
+      Map<String, dynamic> mediaMetadata = photoMetadata ?? {};
+      if (mediaMetadata.isEmpty) {
         try {
-          final sensorService = SensorService();
-          final freshSensorData = await sensorService.captureSensorData();
-          setState(() {
-            _sensorData = freshSensorData;
-          });
-          debugPrint('Camera photo: Refreshed sensor data - GPS: ${_sensorData?.latitude}, ${_sensorData?.longitude}');
+          mediaMetadata = await PhotoMetadataService.extractComprehensiveMetadata(mediaFile);
+          debugPrint('Extracted metadata: ${mediaMetadata.keys.length} categories');
         } catch (e) {
-          debugPrint('Camera photo: Failed to refresh sensor data: $e');
+          debugPrint('Warning: Failed to extract metadata from camera photo: $e');
         }
       }
       
