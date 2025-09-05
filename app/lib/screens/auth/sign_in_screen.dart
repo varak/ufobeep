@@ -118,6 +118,11 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
             backgroundColor: AppColors.semanticSuccess,
           ),
         );
+        
+        // Navigate to home screen after successful login
+        if (mounted && context.mounted) {
+          context.go('/');
+        }
       }
     } catch (e) {
       print('❌ Google Sign-In failed: $e');
@@ -346,7 +351,7 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                        color: Colors.black87,
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
