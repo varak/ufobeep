@@ -108,13 +108,13 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
 
     try {
       print('🔐 Starting Google Sign-In...');
-      final user = await SocialAuthService.signInWithGoogle();
+      final result = await SocialAuthService().signInWithGoogle();
       
-      if (user != null) {
-        print('✅ Google Sign-In successful for: ${user.email}');
+      if (result.success && result.userId != null) {
+        print('✅ Google Sign-In successful for: ${result.email}');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Welcome ${user.displayName ?? user.email}!'),
+            content: Text('Welcome ${result.username ?? result.email}!'),
             backgroundColor: AppColors.semanticSuccess,
           ),
         );
@@ -160,7 +160,7 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
 
     try {
       print('📧 Sending magic link to: ${_emailController.text.trim()}');
-      await AuthService.sendMagicLink(_emailController.text.trim());
+      await AuthService().sendMagicLink(_emailController.text.trim());
       
       setState(() {
         _successMessage = 'Magic link sent! Check your email and click the link to sign in.';
@@ -192,7 +192,7 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
     await prefs.clear();
     
     // Clear AuthService data  
-    await AuthService.signOut();
+    await AuthService().signOut();
     
     setState(() {
       _emailController.clear();
@@ -218,9 +218,9 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
   Future<void> _checkExistingAuth() async {
     print('🔍 Checking for existing authentication...');
     try {
-      final user = await UserService.getCurrentUser();
-      if (user != null) {
-        print('👤 Found existing user: ${user.email}');
+      final user = await UserService.instance.getCurrentUser();
+      if (user['userId'] != null && user['userId']!.isNotEmpty) {
+        print('👤 Found existing user: ${user['username']}');
         if (mounted && context.mounted) {
           context.go('/');
         }
