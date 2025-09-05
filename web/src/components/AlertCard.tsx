@@ -320,23 +320,23 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
               )
             })()}
 
-            {/* Footer indicators */}
-            <div className="flex items-center justify-between pt-3">
-              <div className="flex items-center gap-2">
-                {/* Comments indicator (only show if there are comments) */}
-                {getActualCommentCount() > 0 && (
-                  <div className="px-2 py-1 bg-brand-primary/20 border border-brand-primary/40 rounded-lg hover:bg-brand-primary/30 transition-colors">
-                    <div className="flex items-center gap-1.5 text-xs text-brand-primary font-semibold">
-                      <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
-                      </svg>
-                      <span>{getActualCommentCount()} comment{getActualCommentCount() !== 1 ? 's' : ''}</span>
+            {/* Footer indicators - only show when no media */}
+            {!(alert.media_files && alert.media_files.length > 0) && (
+              <div className="flex items-center justify-between pt-3">
+                <div className="flex items-center gap-2">
+                  {/* Comments indicator (only show if there are comments) */}
+                  {getActualCommentCount() > 0 && (
+                    <div className="px-2 py-1 bg-brand-primary/20 border border-brand-primary/40 rounded-lg hover:bg-brand-primary/30 transition-colors">
+                      <div className="flex items-center gap-1.5 text-xs text-brand-primary font-semibold">
+                        <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
+                        </svg>
+                        <span>{getActualCommentCount()} comment{getActualCommentCount() !== 1 ? 's' : ''}</span>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {/* Content type indicator - only for non-media content */}
-                {!(alert.media_files && alert.media_files.length > 0) && (
+                  {/* Content type indicator - only for non-media content */}
                   <div className="px-2 py-1 bg-dark-background/30 rounded text-xs text-text-tertiary">
                     {getPreviewDescription()?.trim() ? (
                       <span className="flex items-center gap-1">👁️ Report</span>
@@ -344,17 +344,17 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                       <span className="flex items-center gap-1">📡 Beep only</span>
                     )}
                   </div>
+                </div>
+                
+                {/* Witness count - hidden for MUFON alerts */}
+                {alert.witness_count > 1 && alert.reporter_username !== 'MUFON' && (
+                  <div className="text-xs text-brand-primary font-medium flex items-center gap-1">
+                    <span>👥</span>
+                    <span>{alert.witness_count} witnesses</span>
+                  </div>
                 )}
               </div>
-              
-              {/* Witness count - hidden for MUFON alerts */}
-              {alert.witness_count > 1 && alert.reporter_username !== 'MUFON' && (
-                <div className="text-xs text-brand-primary font-medium flex items-center gap-1">
-                  <span>👥</span>
-                  <span>{alert.witness_count} witnesses</span>
-                </div>
-              )}
-            </div>
+            )}
 
             {/* Media gallery if available */}
             {alert.media_files && alert.media_files.length > 0 && (
@@ -403,7 +403,31 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                       </div>
                     ))}
                   </div>
+                </div>
+                
+                {/* Comments indicator below media */}
+                <div className="flex items-center justify-between pt-2">
+                  <div className="flex items-center gap-2">
+                    {/* Comments indicator (only show if there are comments) */}
+                    {getActualCommentCount() > 0 && (
+                      <div className="px-2 py-1 bg-brand-primary/20 border border-brand-primary/40 rounded-lg hover:bg-brand-primary/30 transition-colors">
+                        <div className="flex items-center gap-1.5 text-xs text-brand-primary font-semibold">
+                          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
+                          </svg>
+                          <span>{getActualCommentCount()} comment{getActualCommentCount() !== 1 ? 's' : ''}</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   
+                  {/* Witness count - hidden for MUFON alerts */}
+                  {alert.witness_count > 1 && alert.reporter_username !== 'MUFON' && (
+                    <div className="text-xs text-brand-primary font-medium flex items-center gap-1">
+                      <span>👥</span>
+                      <span>{alert.witness_count} witnesses</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
