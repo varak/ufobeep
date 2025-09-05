@@ -24,6 +24,10 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
   useEffect(() => {
     if (isAuthenticated) {
       checkFollowStatus()
+      // Close login form if user just authenticated
+      setShowLoginForm(false)
+      setMessage('Successfully logged in!')
+      setMessageType('success')
     }
   }, [isAuthenticated, alertId])
 
@@ -111,6 +115,21 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
       }, 100)
     }
   }, [showLoginForm, googleInitialized, renderGoogleButton, renderAppleButton])
+  
+  // Listen for storage changes (when auth happens in popup/tab)
+  useEffect(() => {
+    const handleStorageChange = () => {
+      // Check if user data was added to localStorage
+      const userData = localStorage.getItem('user_data')
+      if (userData && !isAuthenticated) {
+        // Force component to re-check auth state
+        window.location.reload()
+      }
+    }
+    
+    window.addEventListener('storage', handleStorageChange)
+    return () => window.removeEventListener('storage', handleStorageChange)
+  }, [isAuthenticated])
 
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

@@ -93,6 +93,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
   
   const handleGoogleCallback = async (response: any) => {
+    console.log('Google callback triggered:', response)
+    
     try {
       // Send the ID token to our API for verification
       const result = await fetch('https://api.ufobeep.com/users/auth/google', {
@@ -108,17 +110,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
 
       const data = await result.json()
+      console.log('API response:', data)
 
       if (result.ok) {
         // Store auth data
         localStorage.setItem('auth_token', data.access_token)
         localStorage.setItem('user_data', JSON.stringify(data.user))
         setUser(data.user)
+        console.log('User logged in successfully:', data.user)
+        
+        // Force a page refresh or state update to show logged-in state
+        window.location.reload()
       } else {
         console.error('Google login failed:', data.detail)
+        alert('Login failed: ' + (data.detail || 'Please try again'))
       }
     } catch (error) {
       console.error('Google login error:', error)
+      alert('Network error during login. Please try again.')
     }
   }
 
@@ -170,16 +179,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     
     try {
+      // Clear any existing content
+      const container = document.getElementById(containerId)
+      if (!container) return false
+      
+      container.innerHTML = ''
+      
+      // Render Google Sign-In button with proper callback handling
       window.google.accounts.id.renderButton(
-        document.getElementById(containerId),
+        container,
         {
           theme: 'outline',
           size: 'large',
           width: '100%',
           text: 'continue_with',
           shape: 'rectangular',
+          type: 'standard',
+          callback: handleGoogleCallback
         }
       )
+      
+      // Also show One Tap if user hasn't dismissed it recently
+      window.google.accounts.id.prompt((notification: any) => {
+        if (notification.isNotDisplayed()) {
+          console.log('One Tap was not displayed:', notification.getNotDisplayedReason())
+        } else if (notification.isSkippedMoment()) {
+          console.log('One Tap was skipped:', notification.getSkippedReason())
+        }
+      })
+      
       return true
     } catch (error) {
       console.error('Failed to render Google button:', error)
