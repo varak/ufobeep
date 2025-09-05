@@ -5,6 +5,7 @@ import '../../models/comment.dart';
 import '../../services/comments_service.dart';
 import '../../widgets/comments/comment_item.dart';
 import '../../widgets/comments/comment_composer.dart';
+import '../../widgets/glass_card.dart';
 import '../../theme/app_theme.dart';
 import '../../services/ui_feedback.dart';
 import '../../services/auth_repository.dart';
@@ -231,11 +232,13 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
   
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.darkBackground,
-      appBar: AppBar(
-        backgroundColor: AppColors.darkSurface,
-        foregroundColor: AppColors.textPrimary,
+    return NightSkyBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          foregroundColor: Colors.white,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -244,7 +247,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
               widget.alertTitle,
               style: const TextStyle(
                 fontSize: 12,
-                color: AppColors.textSecondary,
+                color: Colors.white70,
                 fontWeight: FontWeight.normal,
               ),
             ),
@@ -276,7 +279,8 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
           ),
         ],
       ),
-    );
+    ), // Close Scaffold
+    ); // Close NightSkyBackground
   }
   
   Widget _buildCommentsBody() {
@@ -300,7 +304,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
             Text(
               'Failed to load comments',
               style: const TextStyle(
-                color: AppColors.textPrimary,
+                color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
@@ -309,7 +313,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
             Text(
               _error!,
               style: const TextStyle(
-                color: AppColors.textSecondary,
+                color: Colors.white70,
                 fontSize: 14,
               ),
               textAlign: TextAlign.center,
@@ -336,13 +340,13 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
             Icon(
               Icons.chat_bubble_outline,
               size: 48,
-              color: AppColors.textSecondary,
+              color: Colors.white54,
             ),
             SizedBox(height: 16),
             Text(
               'No comments yet',
               style: TextStyle(
-                color: AppColors.textPrimary,
+                color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
@@ -351,7 +355,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
             Text(
               'Be the first to comment on this sighting',
               style: TextStyle(
-                color: AppColors.textSecondary,
+                color: Colors.white70,
                 fontSize: 14,
               ),
             ),

@@ -9,6 +9,7 @@ import '../../models/alerts_filter.dart';
 import '../../widgets/alerts_filter_dialog.dart';
 import '../../widgets/alert_card.dart';
 import '../../widgets/map_widget.dart';
+import '../../widgets/glass_card.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -19,21 +20,23 @@ class HomeScreen extends ConsumerWidget {
     final filter = ref.watch(alertsFilterStateProvider);
     final isLoading = ref.watch(alertsLoadingStateProvider);
 
-    return Scaffold(
-      backgroundColor: AppColors.darkBackground,
-      appBar: _buildAppBar(context, ref, filter),
-      body: RefreshIndicator(
-        onRefresh: () => ref.read(alertsLoadingStateProvider.notifier).refresh(),
-        backgroundColor: AppColors.darkSurface,
-        color: AppColors.brandPrimary,
-        child: _buildAsyncBody(context, ref, filteredAlertsAsync, isLoading, filter),
+    return NightSkyBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: _buildAppBar(context, ref, filter),
+        body: RefreshIndicator(
+          onRefresh: () => ref.read(alertsLoadingStateProvider.notifier).refresh(),
+          backgroundColor: Colors.black54,
+          color: AppColors.brandPrimary,
+          child: _buildAsyncBody(context, ref, filteredAlertsAsync, isLoading, filter),
+        ),
       ),
     );
   }
 
   PreferredSizeWidget _buildAppBar(BuildContext context, WidgetRef ref, AlertsFilter filter) {
     return AppBar(
-      backgroundColor: AppColors.darkSurface,
+      backgroundColor: Colors.transparent,
       elevation: 0,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,7 +44,7 @@ class HomeScreen extends ConsumerWidget {
           const Text(
             'UFOBeep',
             style: TextStyle(
-              color: AppColors.textPrimary,
+              color: Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -64,9 +67,9 @@ class HomeScreen extends ConsumerWidget {
             Icons.sort,
             color: filter.sortBy != AlertSortBy.newest 
                 ? AppColors.brandPrimary 
-                : AppColors.textSecondary,
+                : Colors.white70,
           ),
-          color: AppColors.darkSurface,
+          color: Colors.black54,
           onSelected: (sortBy) {
             ref.read(alertsFilterStateProvider.notifier).setSorting(sortBy);
           },
@@ -90,7 +93,7 @@ class HomeScreen extends ConsumerWidget {
                       style: TextStyle(
                         color: filter.sortBy == sortBy 
                             ? AppColors.brandPrimary 
-                            : AppColors.textPrimary,
+                            : Colors.white,
                       ),
                     ),
                   ),
@@ -106,7 +109,7 @@ class HomeScreen extends ConsumerWidget {
             Icons.filter_list,
             color: filter.hasActiveFilters 
                 ? AppColors.brandPrimary 
-                : AppColors.textSecondary,
+                : Colors.white70,
           ),
           onPressed: () {
             showDialog(
@@ -150,7 +153,7 @@ class HomeScreen extends ConsumerWidget {
             Text(
               'Loading alerts...',
               style: TextStyle(
-                color: AppColors.textSecondary,
+                color: Colors.white70,
                 fontSize: 16,
               ),
             ),
@@ -172,7 +175,7 @@ class HomeScreen extends ConsumerWidget {
               const Text(
                 'Failed to load alerts',
                 style: TextStyle(
-                  color: AppColors.textPrimary,
+                  color: Colors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),
@@ -181,7 +184,7 @@ class HomeScreen extends ConsumerWidget {
               Text(
                 error.toString(),
                 style: const TextStyle(
-                  color: AppColors.textSecondary,
+                  color: Colors.white70,
                   fontSize: 14,
                 ),
                 textAlign: TextAlign.center,
@@ -221,7 +224,7 @@ class HomeScreen extends ConsumerWidget {
             Text(
               'Loading alerts...',
               style: TextStyle(
-                color: AppColors.textSecondary,
+                color: Colors.white70,
                 fontSize: 16,
               ),
             ),
@@ -244,7 +247,7 @@ class HomeScreen extends ConsumerWidget {
               Text(
                 '${alerts.length} alert${alerts.length != 1 ? 's' : ''} found',
                 style: const TextStyle(
-                  color: AppColors.textSecondary,
+                  color: Colors.white70,
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
@@ -292,7 +295,7 @@ class HomeScreen extends ConsumerWidget {
                       const Text(
                         'Recent Alerts',
                         style: TextStyle(
-                          color: AppColors.textPrimary,
+                          color: Colors.white,
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
@@ -359,7 +362,7 @@ class _EmptyAlertsView extends StatelessWidget {
             Text(
               hasFilters ? 'No matching alerts' : 'No alerts nearby',
               style: const TextStyle(
-                color: AppColors.textPrimary,
+                color: Colors.white,
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
               ),
@@ -372,7 +375,7 @@ class _EmptyAlertsView extends StatelessWidget {
                   ? 'Try adjusting your filters to see more results'
                   : 'Be the first to report a sighting in your area',
               style: const TextStyle(
-                color: AppColors.textSecondary,
+                color: Colors.white70,
                 fontSize: 16,
                 height: 1.4,
               ),

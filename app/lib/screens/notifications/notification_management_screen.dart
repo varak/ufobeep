@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
-
 import '../../theme/app_theme.dart';
 import '../../models/user_preferences.dart';
 import '../../providers/user_preferences_provider.dart';
 import '../../services/api_client.dart';
 import '../../services/user_service.dart';
-import '../../services/ui_feedback.dart';
 import '../../widgets/glass_card.dart';
 
 class NotificationManagementScreen extends ConsumerStatefulWidget {
@@ -23,7 +19,6 @@ class _NotificationManagementScreenState
     extends ConsumerState<NotificationManagementScreen> {
   List<Map<String, dynamic>> _subscriptions = [];
   bool _loadingSubscriptions = true;
-  bool _loadingPreferences = true;
 
   @override
   void initState() {
@@ -79,7 +74,6 @@ class _NotificationManagementScreenState
   }
 
   Future<void> _toggleDndFor1Hour() async {
-    final prefs = await SharedPreferences.getInstance();
     final prefsProvider = ref.read(userPreferencesProvider.notifier);
     
     final currentPrefs = ref.read(userPreferencesProvider);
@@ -134,7 +128,7 @@ class _NotificationManagementScreenState
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.dark(
               primary: AppColors.brandPrimary,
-              surface: AppColors.darkSurface,
+              surface: Colors.transparent,
             ),
           ),
           child: child!,
@@ -151,24 +145,26 @@ class _NotificationManagementScreenState
   Widget build(BuildContext context) {
     final preferences = ref.watch(userPreferencesProvider);
     
-    return Scaffold(
-      backgroundColor: AppColors.darkBackground,
-      appBar: AppBar(
-        backgroundColor: AppColors.darkSurface,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: const Text(
-          'Notification Settings',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w600,
+    return NightSkyBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          title: const Text(
+            'Notification Settings',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
+        body: _buildBody(preferences),
       ),
-      body: _buildBody(preferences),
     );
   }
 
@@ -208,7 +204,7 @@ class _NotificationManagementScreenState
         const Text(
           'Quick Actions',
           style: TextStyle(
-            color: AppColors.textPrimary,
+            color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
@@ -224,16 +220,16 @@ class _NotificationManagementScreenState
                 ),
                 title: Text(
                   dndText,
-                  style: const TextStyle(color: AppColors.textPrimary),
+                  style: const TextStyle(color: Colors.white),
                 ),
                 subtitle: dndActive 
                     ? const Text(
                         'All notifications silenced',
-                        style: TextStyle(color: AppColors.textSecondary),
+                        style: TextStyle(color: Colors.white70),
                       )
                     : const Text(
                         'Temporarily silence all notifications',
-                        style: TextStyle(color: AppColors.textSecondary),
+                        style: TextStyle(color: Colors.white70),
                       ),
                 trailing: dndActive
                     ? TextButton(
@@ -257,7 +253,7 @@ class _NotificationManagementScreenState
         const Text(
           'Quiet Hours',
           style: TextStyle(
-            color: AppColors.textPrimary,
+            color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
@@ -270,55 +266,55 @@ class _NotificationManagementScreenState
                 secondary: const Icon(Icons.bedtime, color: AppColors.brandPrimary),
                 title: const Text(
                   'Quiet Hours',
-                  style: TextStyle(color: AppColors.textPrimary),
+                  style: TextStyle(color: Colors.white),
                 ),
                 subtitle: Text(
                   preferences.quietHoursEnabled
                       ? 'Active ${_formatHour(preferences.quietHoursStart)} - ${_formatHour(preferences.quietHoursEnd)}'
                       : 'Silence notifications during sleep hours',
-                  style: const TextStyle(color: AppColors.textSecondary),
+                  style: const TextStyle(color: Colors.white70),
                 ),
                 value: preferences.quietHoursEnabled,
                 onChanged: _toggleQuietHours,
                 activeColor: AppColors.brandPrimary,
               ),
               if (preferences.quietHoursEnabled) ...[
-                const Divider(color: AppColors.darkBorder),
+                const Divider(color: Colors.white30),
                 ListTile(
-                  leading: const Icon(Icons.nights_stay, color: AppColors.textSecondary),
+                  leading: const Icon(Icons.nights_stay, color: Colors.white70),
                   title: const Text(
                     'Start Time',
-                    style: TextStyle(color: AppColors.textPrimary),
+                    style: TextStyle(color: Colors.white),
                   ),
                   subtitle: Text(
                     _formatHour(preferences.quietHoursStart),
-                    style: const TextStyle(color: AppColors.textSecondary),
+                    style: const TextStyle(color: Colors.white70),
                   ),
                   onTap: () => _showQuietHoursTimePicker(true),
                 ),
-                const Divider(color: AppColors.darkBorder),
+                const Divider(color: Colors.white30),
                 ListTile(
-                  leading: const Icon(Icons.wb_sunny, color: AppColors.textSecondary),
+                  leading: const Icon(Icons.wb_sunny, color: Colors.white70),
                   title: const Text(
                     'End Time',
-                    style: TextStyle(color: AppColors.textPrimary),
+                    style: TextStyle(color: Colors.white),
                   ),
                   subtitle: Text(
                     _formatHour(preferences.quietHoursEnd),
-                    style: const TextStyle(color: AppColors.textSecondary),
+                    style: const TextStyle(color: Colors.white70),
                   ),
                   onTap: () => _showQuietHoursTimePicker(false),
                 ),
-                const Divider(color: AppColors.darkBorder),
+                const Divider(color: Colors.white30),
                 SwitchListTile(
                   secondary: const Icon(Icons.warning, color: AppColors.warning),
                   title: const Text(
                     'Emergency Override',
-                    style: TextStyle(color: AppColors.textPrimary),
+                    style: TextStyle(color: Colors.white),
                   ),
                   subtitle: const Text(
                     'Allow critical alerts during quiet hours',
-                    style: TextStyle(color: AppColors.textSecondary),
+                    style: TextStyle(color: Colors.white70),
                   ),
                   value: preferences.allowEmergencyOverride,
                   onChanged: (value) => _updatePreference(
@@ -344,7 +340,7 @@ class _NotificationManagementScreenState
             const Text(
               'Following Alerts',
               style: TextStyle(
-                color: AppColors.textPrimary,
+                color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
               ),
@@ -353,7 +349,7 @@ class _NotificationManagementScreenState
               Text(
                 '${_subscriptions.length} active',
                 style: const TextStyle(
-                  color: AppColors.textSecondary,
+                  color: Colors.white70,
                   fontSize: 14,
                 ),
               ),
@@ -375,14 +371,14 @@ class _NotificationManagementScreenState
                         children: [
                           Icon(
                             Icons.notifications_off,
-                            color: AppColors.textSecondary,
+                            color: Colors.white70,
                             size: 48,
                           ),
                           SizedBox(height: 12),
                           Text(
                             'No Active Subscriptions',
                             style: TextStyle(
-                              color: AppColors.textPrimary,
+                              color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                             ),
@@ -390,7 +386,7 @@ class _NotificationManagementScreenState
                           SizedBox(height: 8),
                           Text(
                             'Comment on alerts to follow them for notifications',
-                            style: TextStyle(color: AppColors.textSecondary),
+                            style: TextStyle(color: Colors.white70),
                             textAlign: TextAlign.center,
                           ),
                         ],
@@ -417,14 +413,14 @@ class _NotificationManagementScreenState
           leading: const Icon(Icons.notifications_active, color: AppColors.brandPrimary),
           title: Text(
             title.length > 50 ? '${title.substring(0, 50)}...' : title,
-            style: const TextStyle(color: AppColors.textPrimary),
+            style: const TextStyle(color: Colors.white),
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 location,
-                style: const TextStyle(color: AppColors.textSecondary),
+                style: const TextStyle(color: Colors.white70),
               ),
               if (commentCount > 0)
                 Text(
@@ -445,7 +441,7 @@ class _NotificationManagementScreenState
           ),
           onTap: () => Navigator.of(context).pushNamed('/alert/$sightingId'),
         ),
-        if (!isLast) const Divider(color: AppColors.darkBorder),
+        if (!isLast) const Divider(color: Colors.white30),
       ],
     );
   }
@@ -457,7 +453,7 @@ class _NotificationManagementScreenState
         const Text(
           'Notification Types',
           style: TextStyle(
-            color: AppColors.textPrimary,
+            color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
@@ -470,11 +466,11 @@ class _NotificationManagementScreenState
                 secondary: const Icon(Icons.location_on, color: AppColors.brandPrimary),
                 title: const Text(
                   'Location Alerts',
-                  style: TextStyle(color: AppColors.textPrimary),
+                  style: TextStyle(color: Colors.white),
                 ),
                 subtitle: const Text(
                   'New sightings in your area',
-                  style: TextStyle(color: AppColors.textSecondary),
+                  style: TextStyle(color: Colors.white70),
                 ),
                 value: preferences.enableLocationAlerts,
                 onChanged: (value) => _updatePreference(
@@ -482,16 +478,16 @@ class _NotificationManagementScreenState
                 ),
                 activeColor: AppColors.brandPrimary,
               ),
-              const Divider(color: AppColors.darkBorder),
+              const Divider(color: Colors.white30),
               SwitchListTile(
                 secondary: const Icon(Icons.push_pin, color: AppColors.brandPrimary),
                 title: const Text(
                   'Push Notifications',
-                  style: TextStyle(color: AppColors.textPrimary),
+                  style: TextStyle(color: Colors.white),
                 ),
                 subtitle: const Text(
                   'All notification types',
-                  style: TextStyle(color: AppColors.textSecondary),
+                  style: TextStyle(color: Colors.white70),
                 ),
                 value: preferences.enablePushNotifications,
                 onChanged: (value) => _updatePreference(
@@ -511,21 +507,21 @@ class _NotificationManagementScreenState
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: AppColors.darkSurface,
+          backgroundColor: Colors.transparent,
           title: const Text(
             'Unfollow Alert',
-            style: TextStyle(color: AppColors.textPrimary),
+            style: TextStyle(color: Colors.white),
           ),
           content: Text(
             'Stop receiving notifications for "$title"?',
-            style: const TextStyle(color: AppColors.textSecondary),
+            style: const TextStyle(color: Colors.white70),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: const Text(
                 'Cancel',
-                style: TextStyle(color: AppColors.textSecondary),
+                style: TextStyle(color: Colors.white70),
               ),
             ),
             TextButton(

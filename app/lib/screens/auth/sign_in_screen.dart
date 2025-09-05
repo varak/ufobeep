@@ -7,6 +7,7 @@ import '../../services/auth_service.dart';
 import '../../services/social_auth_service.dart';
 import '../../services/user_service.dart';
 import '../../services/ui_feedback.dart';
+import '../../widgets/glass_card.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -286,8 +287,9 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.darkBackground,
+    return NightSkyBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
@@ -297,11 +299,8 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
               const SizedBox(height: 48),
               
               // UFO Logo and Title
-              Container(
+              GlassCard(
                 padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: AppColors.darkSurface,
-                  borderRadius: BorderRadius.circular(20),
                   border: Border.all(
                     color: AppColors.brandPrimary.withOpacity(0.3),
                     width: 2,
@@ -367,7 +366,7 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
                     const Text(
                       'Real-time Sighting Alerts',
                       style: TextStyle(
-                        color: AppColors.textSecondary,
+                        color: Colors.white70,
                         fontSize: 16,
                       ),
                     ),
@@ -445,23 +444,15 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
               const SizedBox(height: 24),
               
               // Email Magic Link Form
-              Container(
+              GlassCard(
                 padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: AppColors.darkSurface,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: AppColors.darkBorder,
-                    width: 1,
-                  ),
-                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const Text(
                       'Sign in or Create Account',
                       style: TextStyle(
-                        color: AppColors.textPrimary,
+                        color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -473,7 +464,7 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
                     const Text(
                       'Enter your email to sign in or create a new account.\nWe\'ll send you a secure magic link.',
                       style: TextStyle(
-                        color: AppColors.textSecondary,
+                        color: Colors.white70,
                         fontSize: 14,
                       ),
                       textAlign: TextAlign.center,
@@ -493,14 +484,14 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
                         hintText: 'your@email.com',
                         hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(0.5)),
                         filled: true,
-                        fillColor: AppColors.darkBackground,
+                        fillColor: Colors.transparent,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: AppColors.darkBorder),
+                          borderSide: const BorderSide(color: Colors.white30),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: AppColors.darkBorder),
+                          borderSide: const BorderSide(color: Colors.white30),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -508,7 +499,7 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
                         ),
                         prefixIcon: const Icon(
                           Icons.email_outlined,
-                          color: AppColors.textSecondary,
+                          color: Colors.white70,
                         ),
                       ),
                       onSubmitted: (_) => _sendMagicLink(),
@@ -685,15 +676,8 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
               const SizedBox(height: 32),
               
               // Security Notice
-              Container(
+              GlassCard(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppColors.darkSurface.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: AppColors.darkBorder.withOpacity(0.5),
-                  ),
-                ),
                 child: Column(
                   children: [
                     Row(
@@ -708,7 +692,7 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
                         const Text(
                           'Secure Authentication',
                           style: TextStyle(
-                            color: AppColors.textPrimary,
+                            color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
@@ -719,7 +703,7 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
                     const Text(
                       'Use Google Sign-In for instant access, or email magic links that expire in 15 minutes.',
                       style: TextStyle(
-                        color: AppColors.textSecondary,
+                        color: Colors.white70,
                         fontSize: 12,
                       ),
                       textAlign: TextAlign.center,
@@ -737,7 +721,7 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
                   child: const Text(
                     'Clear All Data (Debug)',
                     style: TextStyle(
-                      color: AppColors.textSecondary,
+                      color: Colors.white70,
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                     ),

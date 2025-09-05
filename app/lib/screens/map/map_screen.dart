@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../providers/alerts_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/map_widget.dart';
+import '../../widgets/glass_card.dart';
 
 class MapScreen extends ConsumerWidget {
   const MapScreen({
@@ -30,15 +31,21 @@ class MapScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final alertsAsync = ref.watch(alertsListProvider);
 
-    return Scaffold(
+    return NightSkyBackground(
+      child: Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: Text(calledFromAlert && alertName != null 
-            ? 'Map - ${Uri.decodeComponent(alertName!)}' 
-            : 'Live Sightings Map'),
-        backgroundColor: AppColors.darkSurface,
+        title: Text(
+          calledFromAlert && alertName != null 
+              ? 'Map - ${Uri.decodeComponent(alertName!)}' 
+              : 'Live Sightings Map',
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leading: calledFromAlert 
             ? IconButton(
-                icon: const Icon(Icons.arrow_back),
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
                 onPressed: () {
                   if (alertId != null) {
                     context.go('/alert/$alertId');
@@ -49,7 +56,6 @@ class MapScreen extends ConsumerWidget {
               )
             : null,
       ),
-      backgroundColor: AppColors.darkBackground,
       body: alertsAsync.when(
         data: (alerts) {
           return Column(
@@ -66,38 +72,34 @@ class MapScreen extends ConsumerWidget {
               ),
               
               // Bottom info bar
-              Container(
+              Padding(
                 padding: const EdgeInsets.all(16),
-                decoration: const BoxDecoration(
-                  color: AppColors.darkSurface,
-                  border: Border(
-                    top: BorderSide(color: AppColors.darkBorder),
+                child: GlassCard(
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.location_on,
+                        color: AppColors.brandPrimary,
+                        size: 16,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        '${alerts.where((alert) => DateTime.now().difference(alert.createdAt).inDays <= 7).length} recent sightings',
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const Spacer(),
+                      const Text(
+                        'Tap markers for details',
+                        style: TextStyle(
+                          color: Colors.white54,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.location_on,
-                      color: AppColors.brandPrimary,
-                      size: 16,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      '${alerts.where((alert) => DateTime.now().difference(alert.createdAt).inDays <= 7).length} recent sightings',
-                      style: const TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 14,
-                      ),
-                    ),
-                    const Spacer(),
-                    const Text(
-                      'Tap markers for details',
-                      style: TextStyle(
-                        color: AppColors.textTertiary,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
                 ),
               ),
             ],
@@ -107,33 +109,43 @@ class MapScreen extends ConsumerWidget {
           child: CircularProgressIndicator(color: AppColors.brandPrimary),
         ),
         error: (error, stack) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.error_outline,
-                color: AppColors.semanticError,
-                size: 64,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: GlassCard(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.error_outline,
+                    color: AppColors.semanticError,
+                    size: 64,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Failed to load map',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    error.toString(),
+                    style: const TextStyle(color: Colors.white70),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () => ref.invalidate(alertsListProvider),
+                    child: const Text('Try Again'),
+                  ),
+                ],
               ),
-              const SizedBox(height: 16),
-              Text(
-                'Failed to load map',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                error.toString(),
-                style: const TextStyle(color: AppColors.textSecondary),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () => ref.invalidate(alertsListProvider),
-                child: const Text('Try Again'),
-              ),
-            ],
+            ),
           ),
         ),
+      ),
       ),
     );
   }

@@ -12,6 +12,7 @@ import '../../widgets/compass/compass_info.dart';
 import '../../widgets/compass/pilot_compass_display.dart';
 import '../../widgets/compass/pilot_info.dart';
 import '../../widgets/compass/ar_overlay.dart';
+import '../../widgets/glass_card.dart';
 
 enum CompassMode {
   standard,
@@ -118,21 +119,21 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
     final l10n = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.darkSurface,
+      backgroundColor: Colors.transparent,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
-      builder: (context) => Container(
+      builder: (context) => GlassCard(
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               l10n.compassMode,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
+                color: Colors.white,
               ),
             ),
             const SizedBox(height: 20),
@@ -142,15 +143,15 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
                 Icons.explore,
                 color: _mode == CompassMode.standard 
                     ? AppColors.brandPrimary 
-                    : AppColors.textTertiary,
+                    : Colors.white30,
               ),
               title: Text(
                 l10n.compassStandardMode,
-                style: TextStyle(color: AppColors.textPrimary),
+                style: const TextStyle(color: Colors.white),
               ),
               subtitle: Text(
                 l10n.compassStandardDescription,
-                style: TextStyle(color: AppColors.textSecondary),
+                style: const TextStyle(color: Colors.white70),
               ),
               trailing: _mode == CompassMode.standard
                   ? Icon(Icons.check, color: AppColors.brandPrimary)
@@ -168,15 +169,15 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
                 Icons.flight,
                 color: _mode == CompassMode.pilot 
                     ? AppColors.brandPrimary 
-                    : AppColors.textTertiary,
+                    : Colors.white30,
               ),
               title: Text(
                 l10n.compassPilotMode,
-                style: TextStyle(color: AppColors.textPrimary),
+                style: const TextStyle(color: Colors.white),
               ),
               subtitle: Text(
                 l10n.compassPilotDescription,
-                style: TextStyle(color: AppColors.textSecondary),
+                style: const TextStyle(color: Colors.white70),
               ),
               trailing: _mode == CompassMode.pilot
                   ? Icon(Icons.check, color: AppColors.brandPrimary)
@@ -199,8 +200,9 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
     final compassDataAsync = ref.watch(compassDataProvider);
     final l10n = AppLocalizations.of(context);
     
-    return Scaffold(
-      backgroundColor: AppColors.darkBackground,
+    return NightSkyBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text('Orient - ${_mode == CompassMode.standard ? 'Standard' : 'Pilot Mode'}'),
         leading: IconButton(
@@ -240,6 +242,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
         data: (compassData) => _buildCompassContent(compassData),
         loading: () => _buildLoadingState(),
         error: (error, stack) => _buildErrorState(error),
+      ),
       ),
     );
   }
@@ -342,7 +345,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
 
 
   Widget _buildCompassExplanation() {
-    return Container(
+    return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -355,8 +358,8 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
               shape: BoxShape.circle,
               gradient: RadialGradient(
                 colors: [
-                  AppColors.brandPrimary.withOpacity(0.2),
-                  AppColors.brandPrimary.withOpacity(0.05),
+                  AppColors.brandPrimary.withValues(alpha: 0.2),
+                  AppColors.brandPrimary.withValues(alpha: 0.05),
                   Colors.transparent,
                 ],
               ),
@@ -373,7 +376,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
           const Text(
             'Sighting Direction Compass',
             style: TextStyle(
-              color: AppColors.textPrimary,
+              color: Colors.white,
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
@@ -385,7 +388,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
             'When you get an alert, this compass shows you exactly where to look in the sky. Go outside and line up the red and blue arrows.',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: AppColors.textSecondary,
+              color: Colors.white70,
               fontSize: 16,
               height: 1.5,
             ),
@@ -393,17 +396,11 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
           
           const SizedBox(height: 24),
           
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppColors.brandPrimary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
-            ),
-            child: const Column(
+          GlassCard(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'How it works:',
                   style: TextStyle(
                     color: AppColors.brandPrimary,
@@ -411,14 +408,14 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                SizedBox(height: 12),
-                Text(
+                const SizedBox(height: 12),
+                const Text(
                   '1. Go outside and hold your phone flat\n'
                   '2. Line up the red and blue arrows on the compass\n'
                   '3. Look around the whole sky in that direction\n'
                   '4. This shows where the witness was relative to you',
                   style: TextStyle(
-                    color: AppColors.textPrimary,
+                    color: Colors.white,
                     fontSize: 14,
                     height: 1.4,
                   ),
@@ -433,7 +430,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
             'Tap "Navigate" on any alert to use the compass',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: AppColors.textTertiary,
+              color: Colors.white30,
               fontSize: 14,
               fontStyle: FontStyle.italic,
             ),
@@ -460,41 +457,37 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
                     target: _currentTarget,
                   ),
                   const SizedBox(height: 24),
-                  Card(
-                    color: AppColors.darkSurface,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          CircularProgressIndicator(
-                            color: AppColors.brandPrimary,
-                            strokeWidth: 2,
-                          ),
-                          const SizedBox(width: 16),
-                          const Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Initializing Compass...',
-                                  style: TextStyle(
-                                    color: AppColors.textPrimary,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                  GlassCard(
+                    child: Row(
+                      children: [
+                        CircularProgressIndicator(
+                          color: AppColors.brandPrimary,
+                          strokeWidth: 2,
+                        ),
+                        const SizedBox(width: 16),
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Initializing Compass...',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                                SizedBox(height: 4),
-                                Text(
-                                  'Accessing sensors (some tablets may not support compass)',
-                                  style: TextStyle(
-                                    color: AppColors.textSecondary,
-                                    fontSize: 12,
-                                  ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                'Accessing sensors (some tablets may not support compass)',
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 12,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -522,7 +515,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
             const Text(
               'Compass Unavailable',
               style: TextStyle(
-                color: AppColors.textPrimary,
+                color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
               ),
@@ -532,7 +525,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
               'Unable to access compass sensors: ${error.toString()}',
               textAlign: TextAlign.center,
               style: const TextStyle(
-                color: AppColors.textSecondary,
+                color: Colors.white70,
                 fontSize: 14,
               ),
             ),
@@ -554,13 +547,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
     final target = _currentTarget;
     if (target == null) return const SizedBox();
 
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.brandPrimary.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
-      ),
+    return GlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -583,7 +570,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
           const Text(
             '1. Go outside and line up the red and blue arrows',
             style: TextStyle(
-              color: AppColors.textPrimary,
+              color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -592,7 +579,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
           const Text(
             '2. You\'ll be looking in the direction of the sighting',
             style: TextStyle(
-              color: AppColors.textPrimary,
+              color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -601,7 +588,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
           const Text(
             '3. Be sure to look around the whole sky',
             style: TextStyle(
-              color: AppColors.textPrimary,
+              color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -612,7 +599,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.darkBackground.withOpacity(0.5),
+              color: Colors.black26,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Column(
@@ -622,7 +609,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
                   Text(
                     'Distance: ${target.formattedDistance}',
                     style: const TextStyle(
-                      color: AppColors.textSecondary,
+                      color: Colors.white70,
                       fontSize: 14,
                     ),
                   ),
@@ -631,7 +618,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
                 const Text(
                   'This shows where the witness was when they saw something, relative to your location.',
                   style: TextStyle(
-                    color: AppColors.textSecondary,
+                    color: Colors.white70,
                     fontSize: 14,
                     height: 1.3,
                   ),
@@ -665,13 +652,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
     else if (bearingToTarget < 292.5) direction = 'W';
     else direction = 'NW';
 
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.semanticInfo.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.semanticInfo.withOpacity(0.3)),
-      ),
+    return GlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -694,7 +675,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
           Text(
             'Fly heading ${bearingToTarget.toStringAsFixed(0)}° $direction',
             style: const TextStyle(
-              color: AppColors.textPrimary,
+              color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -703,7 +684,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
           Text(
             'Turn $turnDirection ${turnDegrees.toStringAsFixed(0)}° to intercept',
             style: const TextStyle(
-              color: AppColors.textPrimary,
+              color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -714,7 +695,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.darkBackground.withOpacity(0.5),
+              color: Colors.black26,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Column(
@@ -724,7 +705,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
                   Text(
                     'Distance: ${target.formattedDistance}',
                     style: const TextStyle(
-                      color: AppColors.textSecondary,
+                      color: Colors.white70,
                       fontSize: 14,
                     ),
                   ),
@@ -734,7 +715,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
                   Text(
                     'Wind: ${pilotData.wind!.formattedWind}',
                     style: const TextStyle(
-                      color: AppColors.textSecondary,
+                      color: Colors.white70,
                       fontSize: 14,
                     ),
                   ),
@@ -743,7 +724,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
                 const Text(
                   'This heading leads to the witness location where the sighting was reported.',
                   style: TextStyle(
-                    color: AppColors.textSecondary,
+                    color: Colors.white70,
                     fontSize: 14,
                     height: 1.3,
                   ),
