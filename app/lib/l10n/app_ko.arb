@@ -1,43 +1,130 @@
 {
-  "@@locale": "ko",
-  "appName": "UFOBeep",
-  "ok": "OK",
-  "cancel": "Cancel",
-  "close": "Close",
-  "save": "Save",
-  "delete": "Delete",
-  "edit": "Edit",
-  "retry": "Retry",
-  "yes": "Yes",
-  "no": "No",
-  "back": "Back",
-  "next": "Next",
-  "done": "Done",
-  "loading": "Loading…",
-  "processing": "Processing…",
-  "errorGeneric": "Something went wrong.",
-  "networkError": "Network error. Check your connection.",
-  "permissionsRequired": "Permissions required",
-  "learnMore": "Learn more",
-  "welcomeTitle": "Welcome to UFOBeep",
-  "welcomeSubtitle": "Real-time UFO alerts near you",
-  "signIn": "Sign in",
-  "signOut": "Sign out",
-  "continueAsGuest": "Continue as guest",
-  "enterUsername": "Enter a username",
-  "username": "Username",
-  "usernameUpdated": "Username updated",
-  "profile": "Profile",
-  "settings": "Settings",
-  "tabAlerts": "Alerts",
-  "tabBeep": "Beep",
-  "tabChat": "Chat",
-  "tabMap": "Map",
-  "tabSettings": "Settings",
-  "alertsTitle": "Nearby Alerts",
-  "noAlerts": "No alerts nearby yet.",
-  "pullToRefresh": "Pull to refresh",
-  "alertDistance": "{distance} away",
+  "@@locale": "en",
+  "appName": "UFO버프",
+  "ok": "이름 *",
+  "cancel": "이름 *",
+  "close": "이름 *",
+  "save": "제품 정보",
+  "delete": "이름 *",
+  "edit": "제품정보",
+  "retry": "이름 *",
+  "yes": "이름 *",
+  "no": "이름 *",
+  "back": "이름 *",
+  "next": "이름 *",
+  "done": "이름 *",
+  "loading": "로드 중 ..",
+  "processing": "기타..",
+  "errorGeneric": "뭔가 잘못되었습니다.",
+  "networkError": "네트워크 오류. 연결 확인.",
+  "permissionsRequired": "제출",
+  "learnMore": "더 알아보기",
+  "welcomeTitle": "UFOBeep에 오신 것을 환영합니다",
+  "welcomeSubtitle": "실시간 UFO 알림",
+  "signIn": "이름 *",
+  "signOut": "이름 *",
+  "continueAsGuest": "이용 안내",
+  "enterUsername": "사용자 이름",
+  "username": "사용자 이름",
+  "usernameUpdated": "사용자 이름 업데이트",
+  "profile": "제품정보",
+  "settings": "지원하다",
+  "tabAlerts": "지원하다",
+  "tabBeep": "뚱 베어",
+  "tabChat": "이름 *",
+  "tabMap": "지도보기",
+  "tabSettings": "지원하다",
+  "alertsTitle": "근처 Alerts",
+  "noAlerts": "아직 경고가 없습니다.",
+  "pullToRefresh": "새로 고침",
+  "alertDistance": "{distance} 멀리",
+  "alertDirection": "베어링 {bearing}°",
+  "viewAlert": "공지사항",
+  "viewOnMap": "지도 보기",
+  "iSeeItToo": "나는 그것을 본다",
+  "confirmWitnessed": "당신은이 광경을 목격?",
+  "witnessConfirmed": "감사합니다 - 확인이 게시되었습니다.",
+  "createBeepTitle": "Beep을 보내기",
+  "beepExplain": "당신이 볼 수있는 캡처 및 가까운 watchers에 경고.",
+  "capturePhoto": "캡처 사진",
+  "captureVideo": "캡처 동영상",
+  "pickFromGallery": "갤러리에서 선택",
+  "descriptionHint": "당신이 하늘에서 본 것을 설명 ..",
+  "submitBeep": "공지사항",
+  "beepSent": "Beep 전송",
+  "uploadingMedia": "미디어 업로드 ..",
+  "includeLocation": "위치 포함",
+  "includeTimestamp": "타임스탬프 포함",
+  "beepFailed": "Beep을 보낼 실패.",
+  "mediaProcessing": "처리 미디어 ..",
+  "cameraPermissionTitle": "관련 동영상",
+  "cameraPermissionBody": "UFO 사진 및 비디오를 캡처 할 수있는 Grant 카메라 액세스.",
+  "locationPermissionTitle": "오시는 길",
+  "locationPermissionBody": "자주 묻는 질문.",
+  "microphonePermissionTitle": "마이크 액세스 필요",
+  "microphonePermissionBody": "비디오 캡처에 대한 Grant 마이크 액세스.",
+  "openSettings": "설정 열기",
+  "alertDetailTitle": "연락처",
+  "reportedBy": "{username}에 의해 신고",
+  "reportedAt": "{timeAgo}를 보고",
+  "distanceAway": "{distance} 멀리",
+  "bearingToObject": "목표에 방위: ₢ 킹",
+  "openCompass": "열린 compass",
+  "openAR": "AR 오버레이를 엽니다",
+  "openChat": "채팅 열기",
+  "commentsTitle": "이름 *",
+  "addComment": "자주 묻는 질문",
+  "send": "지원하다",
+  "commentPosted": "댓글 게시",
+  "autoFollowEnabled": "이 경고를 따르십시오.",
+  "noCommentsYet": "아직 댓글이 없습니다. 처음!",
+  "newCommentNotification": "당신을 따르는 광경에 새로운 의견.",
+  "mapTitle": "본문 바로가기",
+  "compassTitle": "한국어",
+  "compassSettings": "Compass 설정",
+  "compassMode": "Compass 형태",
+  "compassStandardMode": "표준 형태",
+  "compassPilotMode": "파일 형식",
+  "compassStandardDescription": "기본 제목 및 탐색",
+  "compassPilotDescription": "ETA 및 벡터로 고급 항법",
+  "pointingTo": "{direction}에 포팅",
+  "calibratingCompass": "캘리브레이션",
+  "openAROverlay": "AR 오버레이를 엽니다",
+  "pushTitleAlertNearby": "당신 가까이에 UFO 경고",
+  "pushBodyAlertNearby": "새로운 광경은 {distance}를 나타냈습니다.",
+  "pushTitleComment": "새로운 의견",
+  "pushBodyComment": "누군가가 당신을 따르는 광경에 언급했다.",
+  "pushTitleWitness": "Witness 확인",
+  "pushBodyWitness": "사용자가 동일한 객체를 확인합니다.",
+  "weather": "날씨 예보",
+  "cloudCover": "구름 덮개: ₢ 킹",
+  "wind": "바람: {speed} {unit}",
+  "nearbyAircraft": "인근 항공기",
+  "noAircraft": "인근 항공기 없음",
+  "loadingContext": "환경 컨텍스트를로드 ..",
+  "settingsTitle": "지원하다",
+  "notifications": "공지사항",
+  "enablePushNotifications": "푸시 알림 활성화",
+  "quietHours": "영업시간",
+  "quietHoursDesc": "선택된 시간 사이에 침묵 경고.",
+  "dndMode": "뚱 베어",
+  "dndUntil": "할 수 없습니다",
+  "language": "* 이름",
+  "chooseLanguage": "한국어",
+  "units": "제품정보",
+  "unitsImperial": "제국 (미, mph)",
+  "unitsMetric": "미터 (km, km/h)",
+  "privacyPolicy": "회사 소개",
+  "termsOfUse": "이용 약관",
+  "errorNoLocation": "자주 묻는 질문 맑은 하늘 전망과 함께 다시 시도하십시오.",
+  "errorNoCamera": "이 장치에서 사용할 수없는 카메라.",
+  "errorUploadFailed": "업로드 실패. 다시 시도하십시오.",
+  "errorPermissionDenied": "권한이 없습니다.",
+  "errorInvalidUsername": "그 사용자 이름은 사용할 수 없습니다.",
+  "nothingToShow": "아직 표시되지 않았습니다.",
+  "storeShortDesc": "즉시 UFO 알림. 캡처, 확인 및 실시간 채팅.",
+  "storeLongDesc": "UFOBeep은 누군가가 UFO를 가까이 두고 있을 때 실시간 알림을 보냅니다. 캡처 사진 및 동영상, 탭으로 시력 확인, 방향 및 거리보기, 동료 skywatchers와 채팅.",
+  "keywords": "UFO, UAP, OVNI의 aliens의 sightings,skywatch, 경보, 레이더, 우회",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +133,6 @@
       }
     }
   },
-  "alertDirection": "Bearing {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -55,33 +141,6 @@
       }
     }
   },
-  "viewAlert": "View alert",
-  "viewOnMap": "View on map",
-  "iSeeItToo": "I see it too",
-  "confirmWitnessed": "Confirm you witnessed this sighting?",
-  "witnessConfirmed": "Thanks — your confirmation was posted.",
-  "createBeepTitle": "Send a Beep",
-  "beepExplain": "Capture what you see and alert nearby watchers.",
-  "capturePhoto": "Capture photo",
-  "captureVideo": "Capture video",
-  "pickFromGallery": "Choose from gallery",
-  "descriptionHint": "Describe what you're seeing in the sky…",
-  "submitBeep": "Send Beep",
-  "beepSent": "Beep sent",
-  "uploadingMedia": "Uploading media…",
-  "includeLocation": "Include location",
-  "includeTimestamp": "Include timestamp",
-  "beepFailed": "Failed to send Beep.",
-  "mediaProcessing": "Processing media…",
-  "cameraPermissionTitle": "Camera access needed",
-  "cameraPermissionBody": "Grant camera access to capture UFO photos and videos.",
-  "locationPermissionTitle": "Location access needed",
-  "locationPermissionBody": "We use your location to send and receive nearby alerts.",
-  "microphonePermissionTitle": "Microphone access needed",
-  "microphonePermissionBody": "Grant microphone access for video capture with audio.",
-  "openSettings": "Open settings",
-  "alertDetailTitle": "Sighting Details",
-  "reportedBy": "Reported by {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -90,7 +149,6 @@
       }
     }
   },
-  "reportedAt": "Reported {timeAgo}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -99,7 +157,6 @@
       }
     }
   },
-  "distanceAway": "{distance} away",
   "@distanceAway": {
     "placeholders": {
       "distance": {
@@ -108,7 +165,6 @@
       }
     }
   },
-  "bearingToObject": "Bearing to object: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -117,25 +173,6 @@
       }
     }
   },
-  "openCompass": "Open compass",
-  "openAR": "Open AR overlay",
-  "openChat": "Open chat",
-  "commentsTitle": "Comments",
-  "addComment": "Add a comment…",
-  "send": "Send",
-  "commentPosted": "Comment posted",
-  "autoFollowEnabled": "You’re now following this alert.",
-  "noCommentsYet": "No comments yet. Be the first!",
-  "newCommentNotification": "New comment on a sighting you follow.",
-  "mapTitle": "Live Map",
-  "compassTitle": "Compass",
-  "compassSettings": "Compass Settings",
-  "compassMode": "Compass Mode",
-  "compassStandardMode": "Standard Mode",
-  "compassPilotMode": "Pilot Mode",
-  "compassStandardDescription": "Basic heading and navigation",
-  "compassPilotDescription": "Advanced navigation with ETA and vectoring",
-  "pointingTo": "Pointing to {direction}",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -144,10 +181,6 @@
       }
     }
   },
-  "calibratingCompass": "Calibrating compass…",
-  "openAROverlay": "Open AR overlay",
-  "pushTitleAlertNearby": "UFO alert near you",
-  "pushBodyAlertNearby": "A new sighting was reported {distance} away.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -156,12 +189,6 @@
       }
     }
   },
-  "pushTitleComment": "New comment",
-  "pushBodyComment": "Someone commented on a sighting you follow.",
-  "pushTitleWitness": "Witness confirmation",
-  "pushBodyWitness": "A user confirmed they see the same object.",
-  "weather": "Weather",
-  "cloudCover": "Cloud cover: {percent}%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -170,7 +197,6 @@
       }
     }
   },
-  "wind": "Wind: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -182,31 +208,5 @@
         "example": "mph"
       }
     }
-  },
-  "nearbyAircraft": "Nearby aircraft",
-  "noAircraft": "No aircraft nearby",
-  "loadingContext": "Loading environmental context…",
-  "settingsTitle": "Settings",
-  "notifications": "Notifications",
-  "enablePushNotifications": "Enable push notifications",
-  "quietHours": "Quiet hours",
-  "quietHoursDesc": "Silence alerts between selected hours.",
-  "dndMode": "Do Not Disturb",
-  "dndUntil": "Do not disturb until",
-  "language": "Language",
-  "chooseLanguage": "Choose language",
-  "units": "Units",
-  "unitsImperial": "Imperial (mi, mph)",
-  "unitsMetric": "Metric (km, km/h)",
-  "privacyPolicy": "Privacy Policy",
-  "termsOfUse": "Terms of Use",
-  "errorNoLocation": "Location unavailable. Try again outside with clear sky view.",
-  "errorNoCamera": "Camera unavailable on this device.",
-  "errorUploadFailed": "Upload failed. Please try again.",
-  "errorPermissionDenied": "Permission denied.",
-  "errorInvalidUsername": "That username isn’t available.",
-  "nothingToShow": "Nothing to show yet.",
-  "storeShortDesc": "Instant UFO alerts near you. Capture, confirm, and chat in real time.",
-  "storeLongDesc": "UFOBeep sends real-time alerts when someone spots a UFO nearby. Capture photos and videos, confirm sightings with a tap, view direction & distance, and chat with fellow skywatchers.",
-  "keywords": "UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass"
+  }
 }
