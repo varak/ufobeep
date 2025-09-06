@@ -104,6 +104,9 @@ if [ "$DEPLOY_APK" = true ]; then
     # Build fresh APK with latest changes
     echo "Building fresh APK with latest changes..."
     cd app
+    # Ensure Gradle can write cache even in restricted environments
+    export GRADLE_USER_HOME="$PWD/.gradle-cache"
+    mkdir -p "$GRADLE_USER_HOME"
     echo "Cleaning build cache..."
     flutter clean
     echo "Starting APK build (timeout: 3 minutes)..."
