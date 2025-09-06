@@ -108,12 +108,19 @@ if [ "$DEPLOY_APK" = true ]; then
     flutter clean
     echo "Starting APK build (timeout: 3 minutes)..."
     if timeout 180 flutter build apk --release --verbose; then
-        echo -e "${GREEN}✅ APK build successful${NC}"
+        echo -e "${GREEN}✅ APK release build successful${NC}"
         cd ..
     else
-        echo -e "${RED}❌ APK build failed!${NC}"
-        cd ..
-        exit 1
+        echo -e "${YELLOW}⚠️  Release build failed. Trying debug build...${NC}"
+        # Attempt a quick debug build to enable device testing
+        if timeout 180 flutter build apk --debug --verbose; then
+            echo -e "${GREEN}✅ APK debug build successful${NC}"
+            cd ..
+        else
+            echo -e "${RED}❌ APK build failed!${NC}"
+            cd ..
+            exit 1
+        fi
     fi
     
     # Find latest APK
