@@ -244,42 +244,43 @@ if [ "$DEPLOY_API" = true ]; then
         cd api
         REQ_HASH_NEW=$(sha256sum requirements.txt | awk '{print $1}')
         REQ_HASH_FILE=.requirements.sha256
+        VENV_DIR="../venv"
         REQ_HASH_OLD=""
         if [ -f "$REQ_HASH_FILE" ]; then
             REQ_HASH_OLD=$(cat "$REQ_HASH_FILE")
         fi
         # Ensure a healthy venv (recreate if broken/permission issues)
-        if [ -d "venv" ] && [ ! -x "venv/bin/pip" ]; then
+        if [ -d "$VENV_DIR" ] && [ ! -x "$VENV_DIR/bin/pip" ]; then
             echo "Existing venv is not executable; recreating..."
-            rm -rf venv
+            rm -rf "$VENV_DIR"
         fi
 
-        if [ "$REQ_HASH_NEW" != "$REQ_HASH_OLD" ] || [ ! -d "venv" ]; then
+        if [ "$REQ_HASH_NEW" != "$REQ_HASH_OLD" ] || [ ! -d "$VENV_DIR" ]; then
             echo "Requirements changed or venv missing. (old=$REQ_HASH_OLD new=$REQ_HASH_NEW)"
-            if [ ! -d "venv" ]; then
-                python3 -m venv venv
+            if [ ! -d "$VENV_DIR" ]; then
+                python3 -m venv "$VENV_DIR"
             fi
-            source venv/bin/activate
+            source "$VENV_DIR/bin/activate"
             echo "Installing/updating packages..."
             # Prefer venv pip directly for maximum compatibility
-            if [ -x "venv/bin/pip" ]; then
-                VENV_PIP="venv/bin/pip"
+            if [ -x "$VENV_DIR/bin/pip" ]; then
+                VENV_PIP="$VENV_DIR/bin/pip"
             else
                 # Try ensurepip if pip is missing
-                if [ -x "venv/bin/python3" ]; then venv/bin/python3 -m ensurepip --upgrade || true; fi
-                if [ -x "venv/bin/python" ]; then venv/bin/python -m ensurepip --upgrade || true; fi
-                VENV_PIP="venv/bin/pip"
+                if [ -x "$VENV_DIR/bin/python3" ]; then "$VENV_DIR/bin/python3" -m ensurepip --upgrade || true; fi
+                if [ -x "$VENV_DIR/bin/python" ]; then "$VENV_DIR/bin/python" -m ensurepip --upgrade || true; fi
+                VENV_PIP="$VENV_DIR/bin/pip"
             fi
             "$VENV_PIP" install --upgrade pip >/dev/null 2>&1 || true
             "$VENV_PIP" install -r requirements.txt --disable-pip-version-check
             echo "$REQ_HASH_NEW" > "$REQ_HASH_FILE"
         else
             echo "Requirements unchanged. Skipping pip install."
-            source venv/bin/activate
+            source "$VENV_DIR/bin/activate"
         fi
         
         echo "Running migrations..."
-        source venv/bin/activate
+        source "$VENV_DIR/bin/activate"
         python run_migration.py || echo "Migration completed or not needed"
         
         echo "Restarting API service..."
