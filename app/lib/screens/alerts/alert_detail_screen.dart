@@ -20,6 +20,7 @@ import '../../services/user_service.dart';
 import '../../services/api_client.dart';
 import '../../services/ui_feedback.dart';
 import '../../widgets/glass_card.dart';
+import '../../l10n/app_localizations.dart';
 
 class AlertDetailScreen extends ConsumerStatefulWidget {
   const AlertDetailScreen({super.key, required this.alertId});
@@ -190,7 +191,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () => ref.invalidate(alertByIdProvider(widget.alertId)),
-                        child: const Text('Retry'),
+                        child: Text(AppLocalizations.of(context).retry),
                       ),
                     ],
                   ),
@@ -326,7 +327,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () => ref.invalidate(alertByIdProvider(widget.alertId)),
-                child: const Text('Try Again'),
+                child: Text(AppLocalizations.of(context).retry),
               ),
             ],
           ),

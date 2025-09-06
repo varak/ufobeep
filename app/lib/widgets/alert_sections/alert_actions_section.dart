@@ -6,6 +6,7 @@ import '../../services/permission_service.dart';
 import '../../services/api_client.dart';
 import '../../services/beep_service.dart';
 import '../../services/sound_service.dart';
+import '../../l10n/app_localizations.dart';
 
 // Helper function to safely convert dynamic values to Map for bracket access
 Map<String, dynamic> _asJsonMap(dynamic v) {
@@ -175,7 +176,9 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
                     ),
                   )
                 : const Icon(Icons.visibility, size: 18),
-            label: Text(_isConfirming ? 'Confirming...' : 'I see it too'),
+            label: Text(_isConfirming 
+                ? AppLocalizations.of(context).processing 
+                : AppLocalizations.of(context).iSeeItToo),
             style: OutlinedButton.styleFrom(
               foregroundColor: AppColors.brandPrimary,
               side: const BorderSide(color: AppColors.brandPrimary, width: 1.5),

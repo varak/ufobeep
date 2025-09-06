@@ -74,7 +74,7 @@ class AlertsScreen extends ConsumerWidget {
                 ? AppColors.brandPrimary 
                 : AppColors.textSecondary,
           ),
-          tooltip: 'Toggle MUFON sightings',
+          tooltip: l10n.toggleMufonTooltip,
           itemBuilder: (context) => [
             PopupMenuItem<String>(
               value: 'toggle',
@@ -87,7 +87,7 @@ class AlertsScreen extends ConsumerWidget {
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    filter.showUfoBeepOnly == true ? 'Show MUFON data' : 'Hide MUFON data',
+                    filter.showUfoBeepOnly == true ? l10n.showMufonData : l10n.hideMufonData,
                     style: const TextStyle(color: AppColors.textPrimary),
                   ),
                 ],
@@ -99,8 +99,8 @@ class AlertsScreen extends ConsumerWidget {
               enabled: false,
               child: Text(
                 filter.showUfoBeepOnly == true 
-                    ? 'Showing only UFOBeep reports'
-                    : 'Showing all reports including MUFON database',
+                    ? l10n.showingUfoBeepOnly
+                    : l10n.showingAllReports,
                 style: const TextStyle(
                   color: AppColors.textTertiary,
                   fontSize: 12,
@@ -159,15 +159,15 @@ class AlertsScreen extends ConsumerWidget {
   ) {
     return alertsAsync.when(
       data: (alerts) => _buildAlertsList(context, ref, alerts, filter, preferences),
-      loading: () => const Center(
+      loading: () => Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(color: AppColors.brandPrimary),
-            SizedBox(height: 16),
+            const CircularProgressIndicator(color: AppColors.brandPrimary),
+            const SizedBox(height: 16),
             Text(
-              'Loading alerts...',
-              style: TextStyle(
+              AppLocalizations.of(context).loading,
+              style: const TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 16,
               ),
@@ -187,9 +187,9 @@ class AlertsScreen extends ConsumerWidget {
                 size: 64,
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Failed to load alerts',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context).errorGeneric,
+                style: const TextStyle(
                   color: AppColors.textPrimary,
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -209,7 +209,7 @@ class AlertsScreen extends ConsumerWidget {
                 onPressed: () {
                   ref.invalidate(alertsListProvider);
                 },
-                child: const Text('Try Again'),
+                child: Text(AppLocalizations.of(context).retry),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.brandPrimary,
                   side: const BorderSide(color: AppColors.brandPrimary),
@@ -296,7 +296,7 @@ class AlertsScreen extends ConsumerWidget {
               if (preferences != null && visibleAlerts.length < alerts.length) ...[
                 const SizedBox(width: 8),
                 Text(
-                  '(${alerts.length - visibleAlerts.length} filtered)',
+                  '(${alerts.length - visibleAlerts.length} ${AppLocalizations.of(context).filteredSuffix})',
                   style: const TextStyle(
                     color: AppColors.textTertiary,
                     fontSize: 12,
@@ -343,7 +343,7 @@ class AlertsScreen extends ConsumerWidget {
             ref.read(alertsListProvider.notifier).loadMore();
           },
           icon: const Icon(Icons.expand_more),
-          label: const Text('Load More Alerts'),
+          label: Text(AppLocalizations.of(context).loadMoreAlerts),
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.darkSurface,
             foregroundColor: AppColors.brandPrimary,
@@ -405,7 +405,7 @@ class _EmptyAlertsView extends StatelessWidget {
             
             Text(
               hasFilters
-                  ? AppLocalizations.of(context).alertsFilter
+                  ? AppLocalizations.of(context).alertsFilterHelp
                   : AppLocalizations.of(context).noAlerts,
               style: const TextStyle(
                 color: AppColors.textSecondary,

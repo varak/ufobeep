@@ -414,4 +414,63 @@ class AppLocalizationsSv extends AppLocalizations {
   @override
   String get keywords =>
       'UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass';
+
+  @override
+  String get noAlertsFound => 'No matching alerts';
+
+  @override
+  String get alertsFilterHelp =>
+      'Try adjusting your filters to see more results';
+
+  @override
+  String get verified => 'Verified';
+
+  @override
+  String get beepOnly => 'beep only';
+
+  @override
+  String get videoOnly => 'video only';
+
+  @override
+  String get imageOnly => 'image only';
+
+  @override
+  String get timeJustNow => 'Just now';
+
+  @override
+  String timeDaysAgo(int count) {
+    return '${count}d ago';
+  }
+
+  @override
+  String timeHoursAgo(int count) {
+    return '${count}h ago';
+  }
+
+  @override
+  String timeMinutesAgo(int count) {
+    return '${count}m ago';
+  }
+
+  @override
+  String get loadMoreAlerts => 'Load More Alerts';
+
+  @override
+  String get toggleMufonTooltip => 'Toggle MUFON sightings';
+
+  @override
+  String get showMufonData => 'Show MUFON data';
+
+  @override
+  String get hideMufonData => 'Hide MUFON data';
+
+  @override
+  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
+
+  @override
+  String get showingAllReports =>
+      'Showing all reports including MUFON database';
+
+  @override
+  String get filteredSuffix => 'filtered';
 }

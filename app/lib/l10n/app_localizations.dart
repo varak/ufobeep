@@ -887,6 +887,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass'**
   String get keywords;
+
+  /// No description provided for @noAlertsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching alerts'**
+  String get noAlertsFound;
+
+  /// No description provided for @alertsFilterHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Try adjusting your filters to see more results'**
+  String get alertsFilterHelp;
+
+  /// No description provided for @verified.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get verified;
+
+  /// No description provided for @beepOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'beep only'**
+  String get beepOnly;
+
+  /// No description provided for @videoOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'video only'**
+  String get videoOnly;
+
+  /// No description provided for @imageOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'image only'**
+  String get imageOnly;
+
+  /// No description provided for @timeJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get timeJustNow;
+
+  /// No description provided for @timeDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}d ago'**
+  String timeDaysAgo(int count);
+
+  /// No description provided for @timeHoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}h ago'**
+  String timeHoursAgo(int count);
+
+  /// No description provided for @timeMinutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}m ago'**
+  String timeMinutesAgo(int count);
+
+  /// No description provided for @loadMoreAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Load More Alerts'**
+  String get loadMoreAlerts;
+
+  /// No description provided for @toggleMufonTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle MUFON sightings'**
+  String get toggleMufonTooltip;
+
+  /// No description provided for @showMufonData.
+  ///
+  /// In en, this message translates to:
+  /// **'Show MUFON data'**
+  String get showMufonData;
+
+  /// No description provided for @hideMufonData.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide MUFON data'**
+  String get hideMufonData;
+
+  /// No description provided for @showingUfoBeepOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing only UFOBeep reports'**
+  String get showingUfoBeepOnly;
+
+  /// No description provided for @showingAllReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing all reports including MUFON database'**
+  String get showingAllReports;
+
+  /// No description provided for @filteredSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'filtered'**
+  String get filteredSuffix;
 }
 
 class _AppLocalizationsDelegate

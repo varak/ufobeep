@@ -108,7 +108,7 @@ class AlertCard extends ConsumerWidget {
                                     color: AppColors.brandPrimary.withOpacity(0.3),
                                   ),
                                 ),
-                                child: const Row(
+                                child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(
@@ -118,8 +118,8 @@ class AlertCard extends ConsumerWidget {
                                     ),
                                     SizedBox(width: 2),
                                     Text(
-                                      'Verified',
-                                      style: TextStyle(
+                                      l10n.verified,
+                                      style: const TextStyle(
                                         color: AppColors.brandPrimary,
                                         fontSize: 9,
                                         fontWeight: FontWeight.w500,
@@ -264,13 +264,13 @@ class AlertCard extends ConsumerWidget {
     final hasDescription = alert.description?.trim().isNotEmpty ?? false;
     
     if (!hasMedia && !hasDescription) {
-      return _buildBadge('beep only', Icons.location_on, AppColors.textTertiary);
+      return _buildBadge(l10n.beepOnly, Icons.location_on, AppColors.textTertiary);
     }
     
     if (hasMedia && !hasDescription) {
       final isVideo = alert.mediaFiles.first['type'] == 'video';
       return _buildBadge(
-        isVideo ? 'video only' : 'image only', 
+        isVideo ? l10n.videoOnly : l10n.imageOnly, 
         isVideo ? Icons.videocam : Icons.photo, 
         AppColors.brandPrimary
       );
@@ -480,19 +480,20 @@ class AlertCard extends ConsumerWidget {
   }
 
   String _formatDateTime(DateTime dateTime) {
+    final l10n = AppLocalizations.of(context);
     // Ensure both times are in the same timezone (local)
     final now = DateTime.now();
     final localDateTime = dateTime.toLocal();
     final difference = now.difference(localDateTime);
 
     if (difference.inDays > 0) {
-      return '${difference.inDays}d ago';
+      return l10n.timeDaysAgo(count: difference.inDays);
     } else if (difference.inHours > 0) {
-      return '${difference.inHours}h ago';
+      return l10n.timeHoursAgo(count: difference.inHours);
     } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}m ago';
+      return l10n.timeMinutesAgo(count: difference.inMinutes);
     } else {
-      return 'Just now';
+      return l10n.timeJustNow;
     }
   }
 }
@@ -619,19 +620,20 @@ class CompactAlertCard extends ConsumerWidget {
   }
 
   String _formatDateTime(DateTime dateTime) {
+    final l10n = AppLocalizations.of(context);
     // Ensure both times are in the same timezone (local)
     final now = DateTime.now();
     final localDateTime = dateTime.toLocal();
     final difference = now.difference(localDateTime);
 
     if (difference.inDays > 0) {
-      return '${difference.inDays}d ago';
+      return l10n.timeDaysAgo(count: difference.inDays);
     } else if (difference.inHours > 0) {
-      return '${difference.inHours}h ago';
+      return l10n.timeHoursAgo(count: difference.inHours);
     } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}m ago';
+      return l10n.timeMinutesAgo(count: difference.inMinutes);
     } else {
-      return 'Just now';
+      return l10n.timeJustNow;
     }
   }
 }

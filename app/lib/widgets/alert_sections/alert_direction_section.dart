@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import '../../providers/alerts_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../services/permission_service.dart';
+import '../../l10n/app_localizations.dart';
 
 class AlertDirectionSection extends StatelessWidget {
   const AlertDirectionSection({
@@ -60,8 +61,8 @@ class AlertDirectionSection extends StatelessWidget {
       future: permissionService.getCurrentLocation(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const Row(
-            children: [
+          return Row(
+            children: const [
               Icon(Icons.explore, color: AppColors.textTertiary, size: 20),
               SizedBox(width: 12),
               Text(
@@ -154,7 +155,7 @@ class AlertDirectionSection extends StatelessWidget {
                   OutlinedButton.icon(
                     onPressed: () => onNavigate!(bearing, distance),
                     icon: const Icon(Icons.explore, size: 16),
-                    label: const Text('Orient'),
+                    label: Text(AppLocalizations.of(context).openCompass),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.brandPrimary,
                       side: const BorderSide(color: AppColors.brandPrimary),
@@ -169,7 +170,7 @@ class AlertDirectionSection extends StatelessWidget {
                   OutlinedButton.icon(
                     onPressed: () => onShowMap!(userLocation, alert),
                     icon: const Icon(Icons.map, size: 16),
-                    label: const Text('Map'),
+                    label: Text(AppLocalizations.of(context).viewOnMap),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.brandPrimary,
                       side: const BorderSide(color: AppColors.brandPrimary),
