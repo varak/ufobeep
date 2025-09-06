@@ -255,8 +255,17 @@ if [ "$DEPLOY_API" = true ]; then
             fi
             source venv/bin/activate
             echo "Installing/updating packages..."
-            python -m pip install --upgrade pip >/dev/null 2>&1 || true
-            python -m pip install -r requirements.txt --disable-pip-version-check
+            # Prefer venv pip directly for maximum compatibility
+            if [ -x "venv/bin/pip" ]; then
+                VENV_PIP="venv/bin/pip"
+            else
+                # Try ensurepip if pip is missing
+                if [ -x "venv/bin/python3" ]; then venv/bin/python3 -m ensurepip --upgrade || true; fi
+                if [ -x "venv/bin/python" ]; then venv/bin/python -m ensurepip --upgrade || true; fi
+                VENV_PIP="venv/bin/pip"
+            fi
+            "$VENV_PIP" install --upgrade pip >/dev/null 2>&1 || true
+            "$VENV_PIP" install -r requirements.txt --disable-pip-version-check
             echo "$REQ_HASH_NEW" > "$REQ_HASH_FILE"
         else
             echo "Requirements unchanged. Skipping pip install."
