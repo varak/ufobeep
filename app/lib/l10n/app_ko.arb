@@ -129,6 +129,12 @@
   "newCommentNotification": "New comment on a sighting you follow.",
   "mapTitle": "Live Map",
   "compassTitle": "Compass",
+  "compassSettings": "Compass Settings",
+  "compassMode": "Compass Mode",
+  "compassStandardMode": "Standard Mode",
+  "compassPilotMode": "Pilot Mode",
+  "compassStandardDescription": "Basic heading and navigation",
+  "compassPilotDescription": "Advanced navigation with ETA and vectoring",
   "pointingTo": "Pointing to {direction}",
   "@pointingTo": {
     "placeholders": {

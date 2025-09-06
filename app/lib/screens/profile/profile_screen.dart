@@ -14,7 +14,7 @@ import '../../theme/app_theme.dart';
 import '../../config/environment.dart';
 import '../../widgets/glass_card.dart';
 import '../admin/admin_screen.dart';
-import '../../l10n/generated/app_localizations.dart';
+import '../../l10n/app_localizations.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -93,7 +93,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context).profileTitle, style: const TextStyle(color: Colors.white)),
+          title: Text(AppLocalizations.of(context).profile, style: const TextStyle(color: Colors.white)),
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,

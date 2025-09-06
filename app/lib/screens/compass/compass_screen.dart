@@ -6,7 +6,7 @@ import '../../models/compass_data.dart';
 import '../../models/pilot_data.dart';
 import '../../services/compass_service.dart';
 import '../../theme/app_theme.dart';
-import '../../l10n/generated/app_localizations.dart';
+import '../../l10n/app_localizations.dart';
 import '../../widgets/compass/compass_display.dart';
 import '../../widgets/compass/compass_info.dart';
 import '../../widgets/compass/pilot_compass_display.dart';

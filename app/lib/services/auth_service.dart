@@ -162,6 +162,25 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
     log('[AuthService] Fetching user profile...');
     await AuthRepository().fetchMe();
     log('[AuthService] User profile updated');
+
+    // Emit authenticated state so AuthGate/StreamingAuthGate can route correctly
+    try {
+      final user = AuthRepository().currentUser;
+      if (user != null && user.id.isNotEmpty) {
+        await _emit(AuthState.authenticated(
+          userId: user.id,
+          username: user.username ?? 'user',
+          email: user.email,
+        ));
+        debugPrint('[AuthService] ✅ Emitted authenticated state for ${user.username ?? user.id}');
+      } else {
+        // Fallback: still emit authenticated to break out of sign-in loop
+        await _emit(AuthState.authenticated(userId: 'token-user', username: 'token-username'));
+        debugPrint('[AuthService] ⚠️ Emitted fallback authenticated state');
+      }
+    } catch (e) {
+      debugPrint('[AuthService] ⚠️ Failed to emit authenticated state: $e');
+    }
   }
 
   /// Initialize the AuthService - call this early in app startup

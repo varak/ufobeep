@@ -624,6 +624,42 @@ abstract class AppLocalizations {
   /// **'Compass'**
   String get compassTitle;
 
+  /// No description provided for @compassSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Compass Settings'**
+  String get compassSettings;
+
+  /// No description provided for @compassMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Compass Mode'**
+  String get compassMode;
+
+  /// No description provided for @compassStandardMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard Mode'**
+  String get compassStandardMode;
+
+  /// No description provided for @compassPilotMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Pilot Mode'**
+  String get compassPilotMode;
+
+  /// No description provided for @compassStandardDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic heading and navigation'**
+  String get compassStandardDescription;
+
+  /// No description provided for @compassPilotDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced navigation with ETA and vectoring'**
+  String get compassPilotDescription;
+
   /// No description provided for @pointingTo.
   ///
   /// In en, this message translates to:

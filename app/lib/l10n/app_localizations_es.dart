@@ -15,88 +15,88 @@ class AppLocalizationsEs extends AppLocalizations {
   String get ok => 'OK';
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => 'Cancelar';
 
   @override
-  String get close => 'Close';
+  String get close => 'Cerrar';
 
   @override
-  String get save => 'Save';
+  String get save => 'Guardar';
 
   @override
-  String get delete => 'Delete';
+  String get delete => 'Eliminar';
 
   @override
-  String get edit => 'Edit';
+  String get edit => 'Editar';
 
   @override
-  String get retry => 'Retry';
+  String get retry => 'Reintentar';
 
   @override
-  String get yes => 'Yes';
+  String get yes => 'Sí';
 
   @override
   String get no => 'No';
 
   @override
-  String get back => 'Back';
+  String get back => 'Atrás';
 
   @override
-  String get next => 'Next';
+  String get next => 'Siguiente';
 
   @override
-  String get done => 'Done';
+  String get done => 'Listo';
 
   @override
-  String get loading => 'Loading…';
+  String get loading => 'Cargando…';
 
   @override
-  String get processing => 'Processing…';
+  String get processing => 'Procesando…';
 
   @override
-  String get errorGeneric => 'Something went wrong.';
+  String get errorGeneric => 'Algo salió mal.';
 
   @override
-  String get networkError => 'Network error. Check your connection.';
+  String get networkError => 'Error de red. Verifica tu conexión.';
 
   @override
-  String get permissionsRequired => 'Permissions required';
+  String get permissionsRequired => 'Permisos requeridos';
 
   @override
-  String get learnMore => 'Learn more';
+  String get learnMore => 'Más información';
 
   @override
-  String get welcomeTitle => 'Welcome to UFOBeep';
+  String get welcomeTitle => 'Bienvenido a UFOBeep';
 
   @override
-  String get welcomeSubtitle => 'Real-time UFO alerts near you';
+  String get welcomeSubtitle => 'Alertas de OVNIs en tiempo real cerca de ti';
 
   @override
-  String get signIn => 'Sign in';
+  String get signIn => 'Iniciar sesión';
 
   @override
-  String get signOut => 'Sign out';
+  String get signOut => 'Cerrar sesión';
 
   @override
-  String get continueAsGuest => 'Continue as guest';
+  String get continueAsGuest => 'Continuar como invitado';
 
   @override
-  String get enterUsername => 'Enter a username';
+  String get enterUsername => 'Ingresa un nombre de usuario';
 
   @override
-  String get username => 'Username';
+  String get username => 'Usuario';
 
   @override
-  String get usernameUpdated => 'Username updated';
+  String get usernameUpdated => 'Usuario actualizado';
 
   @override
-  String get profile => 'Profile';
+  String get profile => 'Perfil';
 
   @override
-  String get settings => 'Settings';
+  String get settings => 'Configuración';
 
   @override
-  String get tabAlerts => 'Alerts';
+  String get tabAlerts => 'Alertas';
 
   @override
   String get tabBeep => 'Beep';
@@ -105,19 +105,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tabChat => 'Chat';
 
   @override
-  String get tabMap => 'Map';
+  String get tabMap => 'Mapa';
 
   @override
-  String get tabSettings => 'Settings';
+  String get tabSettings => 'Ajustes';
 
   @override
-  String get alertsTitle => 'Nearby Alerts';
+  String get alertsTitle => 'Alertas cercanas';
 
   @override
-  String get noAlerts => 'No alerts nearby yet.';
+  String get noAlerts => 'Aún no hay alertas cercanas.';
 
   @override
-  String get pullToRefresh => 'Pull to refresh';
+  String get pullToRefresh => 'Desliza para actualizar';
 
   @override
   String alertDistance(String distance) {
@@ -126,145 +126,167 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String alertDirection(int bearing) {
-    return 'Bearing $bearing°';
+    return 'Rumbo $bearing°';
   }
 
   @override
-  String get viewAlert => 'View alert';
+  String get viewAlert => 'Ver alerta';
 
   @override
-  String get viewOnMap => 'View on map';
+  String get viewOnMap => 'Ver en el mapa';
 
   @override
-  String get iSeeItToo => 'I see it too';
+  String get iSeeItToo => '¡Yo también lo veo!';
 
   @override
-  String get confirmWitnessed => 'Confirm you witnessed this sighting?';
+  String get confirmWitnessed =>
+      '¿Confirmas que presenciaste este avistamiento?';
 
   @override
-  String get witnessConfirmed => 'Thanks — your confirmation was posted.';
+  String get witnessConfirmed => 'Gracias — tu confirmación fue publicada.';
 
   @override
-  String get createBeepTitle => 'Send a Beep';
+  String get createBeepTitle => 'Enviar un Beep';
 
   @override
-  String get beepExplain => 'Capture what you see and alert nearby watchers.';
+  String get beepExplain =>
+      'Captura lo que ves y avisa a los observadores cercanos.';
 
   @override
-  String get capturePhoto => 'Capture photo';
+  String get capturePhoto => 'Tomar foto';
 
   @override
-  String get captureVideo => 'Capture video';
+  String get captureVideo => 'Grabar video';
 
   @override
-  String get pickFromGallery => 'Choose from gallery';
+  String get pickFromGallery => 'Elegir de la galería';
 
   @override
-  String get descriptionHint => 'Describe what you\'re seeing in the sky…';
+  String get descriptionHint => 'Describe lo que ves en el cielo…';
 
   @override
-  String get submitBeep => 'Send Beep';
+  String get submitBeep => 'Enviar Beep';
 
   @override
-  String get beepSent => 'Beep sent';
+  String get beepSent => 'Beep enviado';
 
   @override
-  String get uploadingMedia => 'Uploading media…';
+  String get uploadingMedia => 'Subiendo contenido…';
 
   @override
-  String get includeLocation => 'Include location';
+  String get includeLocation => 'Incluir ubicación';
 
   @override
-  String get includeTimestamp => 'Include timestamp';
+  String get includeTimestamp => 'Incluir fecha y hora';
 
   @override
-  String get beepFailed => 'Failed to send Beep.';
+  String get beepFailed => 'No se pudo enviar el Beep.';
 
   @override
-  String get mediaProcessing => 'Processing media…';
+  String get mediaProcessing => 'Procesando contenido…';
 
   @override
-  String get cameraPermissionTitle => 'Camera access needed';
+  String get cameraPermissionTitle => 'Se necesita acceso a la cámara';
 
   @override
   String get cameraPermissionBody =>
-      'Grant camera access to capture UFO photos and videos.';
+      'Concede acceso para capturar fotos y videos de OVNIs.';
 
   @override
-  String get locationPermissionTitle => 'Location access needed';
+  String get locationPermissionTitle => 'Se necesita acceso a la ubicación';
 
   @override
   String get locationPermissionBody =>
-      'We use your location to send and receive nearby alerts.';
+      'Usamos tu ubicación para enviar y recibir alertas cercanas.';
 
   @override
-  String get microphonePermissionTitle => 'Microphone access needed';
+  String get microphonePermissionTitle => 'Se necesita acceso al micrófono';
 
   @override
   String get microphonePermissionBody =>
-      'Grant microphone access for video capture with audio.';
+      'Concede acceso para grabar video con audio.';
 
   @override
-  String get openSettings => 'Open settings';
+  String get openSettings => 'Abrir ajustes';
 
   @override
-  String get alertDetailTitle => 'Sighting Details';
+  String get alertDetailTitle => 'Detalles del avistamiento';
 
   @override
   String reportedBy(String username) {
-    return 'Reported by $username';
+    return 'Reportado por $username';
   }
 
   @override
   String reportedAt(String timeAgo) {
-    return 'Reported $timeAgo';
+    return 'Reportado hace $timeAgo';
   }
 
   @override
   String distanceAway(String distance) {
-    return '$distance away';
+    return 'a $distance';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return 'Bearing to object: $bearing°';
+    return 'Rumbo al objeto: $bearing°';
   }
 
   @override
-  String get openCompass => 'Open compass';
+  String get openCompass => 'Abrir brújula';
 
   @override
-  String get openAR => 'Open AR overlay';
+  String get openAR => 'Abrir capa AR';
 
   @override
-  String get openChat => 'Open chat';
+  String get openChat => 'Abrir chat';
 
   @override
-  String get commentsTitle => 'Comments';
+  String get commentsTitle => 'Comentarios';
 
   @override
-  String get addComment => 'Add a comment…';
+  String get addComment => 'Añadir un comentario…';
 
   @override
-  String get send => 'Send';
+  String get send => 'Enviar';
 
   @override
-  String get commentPosted => 'Comment posted';
+  String get commentPosted => 'Comentario publicado';
 
   @override
-  String get autoFollowEnabled => 'You’re now following this alert.';
+  String get autoFollowEnabled => 'Ahora sigues esta alerta.';
 
   @override
-  String get noCommentsYet => 'No comments yet. Be the first!';
+  String get noCommentsYet => 'Aún no hay comentarios. ¡Sé el primero!';
 
   @override
-  String get newCommentNotification => 'New comment on a sighting you follow.';
+  String get newCommentNotification =>
+      'Nuevo comentario en un avistamiento que sigues.';
 
   @override
-  String get mapTitle => 'Live Map';
+  String get mapTitle => 'Mapa en vivo';
 
   @override
-  String get compassTitle => 'Compass';
+  String get compassTitle => 'Brújula';
+
+  @override
+  String get compassSettings => 'Compass Settings';
+
+  @override
+  String get compassMode => 'Compass Mode';
+
+  @override
+  String get compassStandardMode => 'Standard Mode';
+
+  @override
+  String get compassPilotMode => 'Pilot Mode';
+
+  @override
+  String get compassStandardDescription => 'Basic heading and navigation';
+
+  @override
+  String get compassPilotDescription =>
+      'Advanced navigation with ETA and vectoring';
 
   @override
   String pointingTo(String direction) {
@@ -272,33 +294,34 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get calibratingCompass => 'Calibrating compass…';
+  String get calibratingCompass => 'Calibrando brújula…';
 
   @override
-  String get openAROverlay => 'Open AR overlay';
+  String get openAROverlay => 'Abrir capa AR';
 
   @override
-  String get pushTitleAlertNearby => 'UFO alert near you';
+  String get pushTitleAlertNearby => 'Alerta de OVNI cerca de ti';
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'A new sighting was reported $distance away.';
+    return 'Se reportó un nuevo avistamiento a $distance.';
   }
 
   @override
-  String get pushTitleComment => 'New comment';
+  String get pushTitleComment => 'Nuevo comentario';
 
   @override
-  String get pushBodyComment => 'Someone commented on a sighting you follow.';
+  String get pushBodyComment =>
+      'Alguien comentó en un avistamiento que sigues.';
 
   @override
-  String get pushTitleWitness => 'Witness confirmation';
+  String get pushTitleWitness => 'Confirmación de testigo';
 
   @override
-  String get pushBodyWitness => 'A user confirmed they see the same object.';
+  String get pushBodyWitness => 'Un usuario confirmó que ve el mismo objeto.';
 
   @override
-  String get weather => 'Weather';
+  String get weather => 'Clima';
 
   @override
   String cloudCover(int percent) {
@@ -311,84 +334,84 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get nearbyAircraft => 'Nearby aircraft';
+  String get nearbyAircraft => 'Aeronaves cercanas';
 
   @override
-  String get noAircraft => 'No aircraft nearby';
+  String get noAircraft => 'No hay aeronaves cercanas';
 
   @override
-  String get loadingContext => 'Loading environmental context…';
+  String get loadingContext => 'Cargando contexto ambiental…';
 
   @override
-  String get settingsTitle => 'Settings';
+  String get settingsTitle => 'Ajustes';
 
   @override
-  String get notifications => 'Notifications';
+  String get notifications => 'Notificaciones';
 
   @override
-  String get enablePushNotifications => 'Enable push notifications';
+  String get enablePushNotifications => 'Activar notificaciones push';
 
   @override
-  String get quietHours => 'Quiet hours';
+  String get quietHours => 'Horas de silencio';
 
   @override
-  String get quietHoursDesc => 'Silence alerts between selected hours.';
+  String get quietHoursDesc => 'Silencia alertas entre horas seleccionadas.';
 
   @override
-  String get dndMode => 'Do Not Disturb';
+  String get dndMode => 'No molestar';
 
   @override
-  String get dndUntil => 'Do not disturb until';
+  String get dndUntil => 'No molestar hasta';
 
   @override
-  String get language => 'Language';
+  String get language => 'Idioma';
 
   @override
-  String get chooseLanguage => 'Choose language';
+  String get chooseLanguage => 'Elegir idioma';
 
   @override
-  String get units => 'Units';
+  String get units => 'Unidades';
 
   @override
-  String get unitsImperial => 'Imperial (mi, mph)';
+  String get unitsImperial => 'Imperiales (mi, mph)';
 
   @override
-  String get unitsMetric => 'Metric (km, km/h)';
+  String get unitsMetric => 'Métricas (km, km/h)';
 
   @override
-  String get privacyPolicy => 'Privacy Policy';
+  String get privacyPolicy => 'Política de privacidad';
 
   @override
-  String get termsOfUse => 'Terms of Use';
+  String get termsOfUse => 'Términos de uso';
 
   @override
   String get errorNoLocation =>
-      'Location unavailable. Try again outside with clear sky view.';
+      'Ubicación no disponible. Intenta afuera con cielo despejado.';
 
   @override
-  String get errorNoCamera => 'Camera unavailable on this device.';
+  String get errorNoCamera => 'Cámara no disponible en este dispositivo.';
 
   @override
-  String get errorUploadFailed => 'Upload failed. Please try again.';
+  String get errorUploadFailed => 'Falló la carga. Inténtalo de nuevo.';
 
   @override
-  String get errorPermissionDenied => 'Permission denied.';
+  String get errorPermissionDenied => 'Permiso denegado.';
 
   @override
-  String get errorInvalidUsername => 'That username isn’t available.';
+  String get errorInvalidUsername => 'Ese usuario no está disponible.';
 
   @override
-  String get nothingToShow => 'Nothing to show yet.';
+  String get nothingToShow => 'Nada para mostrar aún.';
 
   @override
   String get storeShortDesc =>
-      'Instant UFO alerts near you. Capture, confirm, and chat in real time.';
+      'Alertas instantáneas de OVNIs cerca de ti. Captura, confirma y chatea en tiempo real.';
 
   @override
   String get storeLongDesc =>
-      'UFOBeep sends real-time alerts when someone spots a UFO nearby. Capture photos and videos, confirm sightings with a tap, view direction & distance, and chat with fellow skywatchers.';
+      'UFOBeep envía alertas en tiempo real cuando alguien observa un OVNI cerca. Captura fotos y videos, confirma avistamientos con un toque, ve dirección y distancia, y chatea con otros observadores.';
 
   @override
   String get keywords =>
-      'UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass';
+      'OVNI,UAP,aliens,avistamientos,observación,alertas,radar,brújula';
 }

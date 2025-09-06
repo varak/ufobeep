@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../config/locale_config.dart';
-import '../../l10n/generated/app_localizations.dart';
+import '../../l10n/app_localizations.dart';
 import '../../providers/user_preferences_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/profile/language_selector.dart';
@@ -19,7 +19,7 @@ class LanguageSettingsScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.darkBackground,
       appBar: AppBar(
-        title: Text(l10n.languageTitle),
+        title: Text(l10n.language),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),

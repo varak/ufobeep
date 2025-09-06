@@ -30,7 +30,7 @@ import '../screens/auth/sign_in_screen.dart';
 import '../screens/splash/splash_screen.dart';
 import '../screens/notifications/notification_management_screen.dart';
 import '../models/shared_media_data.dart';
-import '../l10n/generated/app_localizations.dart';
+import '../l10n/app_localizations.dart';
 
 part 'app_router.g.dart';
 
@@ -534,15 +534,15 @@ class MainBottomNavBar extends StatelessWidget {
       items: [
         BottomNavigationBarItem(
           icon: const Icon(Icons.home),
-          label: l10n.homeTitle,
+          label: l10n.tabAlerts,
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.add_a_photo),
-          label: l10n.beepTitle,
+          label: l10n.tabBeep,
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.person),
-          label: l10n.profileTitle,
+          label: l10n.profile,
         ),
       ],
     );

@@ -267,6 +267,25 @@ class AppLocalizationsEl extends AppLocalizations {
   String get compassTitle => 'Compass';
 
   @override
+  String get compassSettings => 'Compass Settings';
+
+  @override
+  String get compassMode => 'Compass Mode';
+
+  @override
+  String get compassStandardMode => 'Standard Mode';
+
+  @override
+  String get compassPilotMode => 'Pilot Mode';
+
+  @override
+  String get compassStandardDescription => 'Basic heading and navigation';
+
+  @override
+  String get compassPilotDescription =>
+      'Advanced navigation with ETA and vectoring';
+
+  @override
   String pointingTo(String direction) {
     return 'Pointing to $direction';
   }

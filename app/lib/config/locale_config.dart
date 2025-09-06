@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'environment.dart';
-import '../l10n/generated/app_localizations.dart';
+import '../l10n/app_localizations.dart';
 
 class LocaleConfig {
   // Reflect supported locales from generated localizations

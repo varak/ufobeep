@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import AlertHero from './alert-detail/AlertHero'
 import AlertDetails from './alert-detail/AlertDetails'
@@ -46,6 +46,12 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [refreshComments, setRefreshComments] = useState(0)
+  const [translated, setTranslated] = useState<string | null>(null)
+  const [translating, setTranslating] = useState(false)
+  const userLang = useMemo(() => {
+    if (typeof window === 'undefined') return 'en'
+    return (navigator.language || 'en').split('-')[0]
+  }, [])
 
   useEffect(() => {
     const fetchAlert = async () => {
@@ -71,6 +77,7 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
           setError('Alert not found')
         } else {
           setAlert(foundAlert)
+          setTranslated(null)
         }
       } catch (e) {
         setError('Failed to load alert')
@@ -97,6 +104,21 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
       router.replace(url)
     }
   }, [alert, params.slug, router, search])
+
+  const handleTranslate = async () => {
+    if (!alert?.description) return
+    setTranslating(true)
+    try {
+      const { translateText } = await import('@/lib/translate')
+      const target = userLang || 'en'
+      const out = await translateText(alert.description, target, { source: 'auto', format: 'text' })
+      setTranslated(out || '')
+    } catch (e) {
+      setTranslated(null)
+    } finally {
+      setTranslating(false)
+    }
+  }
 
   if (loading) {
     return (
@@ -141,7 +163,23 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
         <AlertHero alert={alert} />
 
         <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div />
+            <button
+              className="text-sm px-3 py-1 rounded border border-dark-border text-text-secondary hover:text-text-primary hover:border-text-secondary"
+              onClick={handleTranslate}
+              disabled={translating || !alert?.description}
+            >
+              {translating ? 'Translating…' : 'Translate description'}
+            </button>
+          </div>
           <AlertDetails alert={alert} />
+          {translated !== null && translated !== '' && (
+            <div className="bg-dark-surface border border-dark-border rounded-lg p-4">
+              <div className="text-sm text-text-tertiary mb-2">Translated</div>
+              <div className="text-text-secondary whitespace-pre-wrap">{translated}</div>
+            </div>
+          )}
 
           {alert.reporter_username !== 'MUFON' && (
             <EnrichmentData enrichment={alert.enrichment} alert={alert} />
@@ -169,4 +207,3 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
     </main>
   )
 }
-

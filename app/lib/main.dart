@@ -10,7 +10,7 @@ import 'dart:convert';
 
 import 'config/environment.dart';
 import 'config/locale_config.dart';
-import 'l10n/generated/app_localizations.dart';
+import 'l10n/app_localizations.dart';
 import 'models/user_preferences.dart';
 import 'models/sensor_data.dart';
 import 'providers/user_preferences_provider.dart';
