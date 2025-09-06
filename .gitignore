@@ -2,6 +2,13 @@
 **/build/
 **/.dart_tool/
 .gradle/
+app/.gradle/
+app/.gradle-cache/
+app/.home/
+app/android/.gradle/
+app/android/.gradle-cache/
+app/.gradle-cache/**
+app/.home/**
 local.properties
 *.keystore
 *.jks

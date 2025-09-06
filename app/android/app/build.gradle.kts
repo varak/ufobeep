@@ -32,7 +32,8 @@ android {
 
     defaultConfig {
         applicationId = "com.ufobeep"
-        minSdk = 31
+        // Keep minSdk compatible with older devices (Moto, older Pixel)
+        minSdk = 24
         targetSdk = 34
         versionCode = flutter.versionCode
         versionName = flutter.versionName
