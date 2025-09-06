@@ -144,7 +144,7 @@ class AlertCard extends ConsumerWidget {
                     children: [
                       if (alert.reporterUsername != null && alert.source != 'mufon') ...[
                         Text(
-                          l10n.reportedBy(username: alert.reporterUsername!),
+                          l10n.reportedBy(alert.reporterUsername!),
                           style: const TextStyle(
                             color: AppColors.brandPrimary,
                             fontSize: 11,
@@ -155,7 +155,9 @@ class AlertCard extends ConsumerWidget {
                       ],
                       // Show appropriate time for all alerts
                       Text(
-                        alert.source == 'mufon' ? _getMufonReportDate(alert) : _formatDateTime(alert.createdAt),
+                        alert.source == 'mufon' 
+                            ? _getMufonReportDate(context, alert) 
+                            : _formatDateTime(context, alert.createdAt),
                         style: const TextStyle(
                           color: AppColors.textTertiary,
                           fontSize: 12,
@@ -197,7 +199,7 @@ class AlertCard extends ConsumerWidget {
                     _buildCommentsIndicator(),
                   
                   // Content type indicator
-                  _buildContentTypeIndicator(),
+                  _buildContentTypeIndicator(l10n),
                   
                   // Witness confirmation indicator
                   if (alert.witnessCount > 1)
@@ -258,7 +260,7 @@ class AlertCard extends ConsumerWidget {
     );
   }
 
-  Widget _buildContentTypeIndicator() {
+  Widget _buildContentTypeIndicator(AppLocalizations l10n) {
     // Simple JSON interpretation logic
     final hasMedia = alert.mediaFiles.isNotEmpty;
     final hasDescription = alert.description?.trim().isNotEmpty ?? false;
@@ -456,7 +458,7 @@ class AlertCard extends ConsumerWidget {
     return '';
   }
 
-  String _getMufonReportDate(Alert alert) {
+  String _getMufonReportDate(BuildContext context, Alert alert) {
     // For MUFON alerts, show the report date or case number
     final enrichment = alert.enrichment;
     if (enrichment != null) {
@@ -476,10 +478,10 @@ class AlertCard extends ConsumerWidget {
       }
     }
     // Final fallback to created date
-    return _formatDateTime(alert.createdAt);
+    return _formatDateTime(context, alert.createdAt);
   }
 
-  String _formatDateTime(DateTime dateTime) {
+  String _formatDateTime(BuildContext context, DateTime dateTime) {
     final l10n = AppLocalizations.of(context);
     // Ensure both times are in the same timezone (local)
     final now = DateTime.now();
@@ -487,11 +489,11 @@ class AlertCard extends ConsumerWidget {
     final difference = now.difference(localDateTime);
 
     if (difference.inDays > 0) {
-      return l10n.timeDaysAgo(count: difference.inDays);
+      return l10n.timeDaysAgo(difference.inDays);
     } else if (difference.inHours > 0) {
-      return l10n.timeHoursAgo(count: difference.inHours);
+      return l10n.timeHoursAgo(difference.inHours);
     } else if (difference.inMinutes > 0) {
-      return l10n.timeMinutesAgo(count: difference.inMinutes);
+      return l10n.timeMinutesAgo(difference.inMinutes);
     } else {
       return l10n.timeJustNow;
     }
@@ -586,7 +588,7 @@ class CompactAlertCard extends ConsumerWidget {
                         // Only show time for non-MUFON alerts
                         if (alert.source != 'mufon')
                           Text(
-                            _formatDateTime(alert.createdAt),
+                            _formatDateTime(context, alert.createdAt),
                             style: const TextStyle(
                               color: AppColors.textTertiary,
                               fontSize: 12,
@@ -619,7 +621,7 @@ class CompactAlertCard extends ConsumerWidget {
     );
   }
 
-  String _formatDateTime(DateTime dateTime) {
+  String _formatDateTime(BuildContext context, DateTime dateTime) {
     final l10n = AppLocalizations.of(context);
     // Ensure both times are in the same timezone (local)
     final now = DateTime.now();
@@ -627,11 +629,11 @@ class CompactAlertCard extends ConsumerWidget {
     final difference = now.difference(localDateTime);
 
     if (difference.inDays > 0) {
-      return l10n.timeDaysAgo(count: difference.inDays);
+      return l10n.timeDaysAgo(difference.inDays);
     } else if (difference.inHours > 0) {
-      return l10n.timeHoursAgo(count: difference.inHours);
+      return l10n.timeHoursAgo(difference.inHours);
     } else if (difference.inMinutes > 0) {
-      return l10n.timeMinutesAgo(count: difference.inMinutes);
+      return l10n.timeMinutesAgo(difference.inMinutes);
     } else {
       return l10n.timeJustNow;
     }
