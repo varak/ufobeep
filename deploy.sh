@@ -248,6 +248,12 @@ if [ "$DEPLOY_API" = true ]; then
         if [ -f "$REQ_HASH_FILE" ]; then
             REQ_HASH_OLD=$(cat "$REQ_HASH_FILE")
         fi
+        # Ensure a healthy venv (recreate if broken/permission issues)
+        if [ -d "venv" ] && [ ! -x "venv/bin/pip" ]; then
+            echo "Existing venv is not executable; recreating..."
+            rm -rf venv
+        fi
+
         if [ "$REQ_HASH_NEW" != "$REQ_HASH_OLD" ] || [ ! -d "venv" ]; then
             echo "Requirements changed or venv missing. (old=$REQ_HASH_OLD new=$REQ_HASH_NEW)"
             if [ ! -d "venv" ]; then
