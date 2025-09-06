@@ -32,7 +32,7 @@ android {
 
     defaultConfig {
         applicationId = "com.ufobeep"
-        minSdk = 24
+        minSdk = 31
         targetSdk = 34
         versionCode = flutter.versionCode
         versionName = flutter.versionName
