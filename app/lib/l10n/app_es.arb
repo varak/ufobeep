@@ -1,43 +1,130 @@
 {
-  "@@locale": "es",
+  "@@locale": "en",
   "appName": "UFOBeep",
   "ok": "OK",
   "cancel": "Cancelar",
-  "close": "Cerrar",
+  "close": "Cerca",
   "save": "Guardar",
-  "delete": "Eliminar",
+  "delete": "Suprimir",
   "edit": "Editar",
-  "retry": "Reintentar",
+  "retry": "Retry",
   "yes": "Sí",
   "no": "No",
   "back": "Atrás",
   "next": "Siguiente",
-  "done": "Listo",
-  "loading": "Cargando…",
-  "processing": "Procesando…",
+  "done": "Hecho",
+  "loading": "Cargando..",
+  "processing": "Procesando..",
   "errorGeneric": "Algo salió mal.",
-  "networkError": "Error de red. Verifica tu conexión.",
-  "permissionsRequired": "Permisos requeridos",
-  "learnMore": "Más información",
+  "networkError": "Error de red. Comprueba tu conexión.",
+  "permissionsRequired": "Permisos necesarios",
+  "learnMore": "Aprender más",
   "welcomeTitle": "Bienvenido a UFOBeep",
-  "welcomeSubtitle": "Alertas de OVNIs en tiempo real cerca de ti",
+  "welcomeSubtitle": "Alertas de OVNI en tiempo real cerca de usted",
   "signIn": "Iniciar sesión",
-  "signOut": "Cerrar sesión",
+  "signOut": "Suscríbase",
   "continueAsGuest": "Continuar como invitado",
-  "enterUsername": "Ingresa un nombre de usuario",
-  "username": "Usuario",
-  "usernameUpdated": "Usuario actualizado",
+  "enterUsername": "Introduzca un nombre de usuario",
+  "username": "Nombre de usuario",
+  "usernameUpdated": "Nombre de usuario actualizado",
   "profile": "Perfil",
-  "settings": "Configuración",
+  "settings": "Ajustes",
   "tabAlerts": "Alertas",
   "tabBeep": "Beep",
   "tabChat": "Chat",
   "tabMap": "Mapa",
   "tabSettings": "Ajustes",
   "alertsTitle": "Alertas cercanas",
-  "noAlerts": "Aún no hay alertas cercanas.",
-  "pullToRefresh": "Desliza para actualizar",
-  "alertDistance": "{distance} away",
+  "noAlerts": "Todavía no hay alertas cerca.",
+  "pullToRefresh": "Tire para refrescar",
+  "alertDistance": "{distance}",
+  "alertDirection": "Rodamiento {bearing}_°",
+  "viewAlert": "Alerta",
+  "viewOnMap": "Ver mapa",
+  "iSeeItToo": "Yo también lo veo",
+  "confirmWitnessed": "Confirma que has presenciado este avistamiento?",
+  "witnessConfirmed": "Gracias — su confirmación fue publicada.",
+  "createBeepTitle": "Enviar un pitido",
+  "beepExplain": "Captura lo que ves y alerta a los observadores cercanos.",
+  "capturePhoto": "Imagen de captura",
+  "captureVideo": "Capturar vídeo",
+  "pickFromGallery": "Elija de la galería",
+  "descriptionHint": "Describe lo que estás viendo en el cielo..",
+  "submitBeep": "Enviar Beep",
+  "beepSent": "Beep sent",
+  "uploadingMedia": "Subiendo medios..",
+  "includeLocation": "Incluido el lugar",
+  "includeTimestamp": "Incluir el temporizador",
+  "beepFailed": "Failed to send Beep.",
+  "mediaProcessing": "Procesando medios..",
+  "cameraPermissionTitle": "Acceso a la cámara necesitada",
+  "cameraPermissionBody": "Permite acceso a la cámara para capturar fotos y videos OVNI.",
+  "locationPermissionTitle": "Acceso a la ubicación necesaria",
+  "locationPermissionBody": "Usamos su ubicación para enviar y recibir alertas cercanas.",
+  "microphonePermissionTitle": "Acceso al micrófono necesario",
+  "microphonePermissionBody": "Acceso al micrófono de Grant para captura de vídeo con audio.",
+  "openSettings": "Configuración abierta",
+  "alertDetailTitle": "Detalles de visión",
+  "reportedBy": "Reportado por {username}",
+  "reportedAt": "Reportado {timeAgo}",
+  "distanceAway": "{distance}",
+  "bearingToObject": "Rodamiento para oponerse: __PH_0_",
+  "openCompass": "Brújula abierta",
+  "openAR": "Open AR overlay",
+  "openChat": "Charla abierta",
+  "commentsTitle": "Comentarios",
+  "addComment": "Añadir un comentario..",
+  "send": "Enviar",
+  "commentPosted": "Comentario publicado",
+  "autoFollowEnabled": "Ahora estás siguiendo esta alerta.",
+  "noCommentsYet": "Todavía no hay comentarios. ¡Sé el primero!",
+  "newCommentNotification": "Nuevo comentario sobre un avistamiento que sigue.",
+  "mapTitle": "Mapa en vivo",
+  "compassTitle": "Compass",
+  "compassSettings": "Ajustes de compatibilidad",
+  "compassMode": "Modo Compasivo",
+  "compassStandardMode": "Modo estándar",
+  "compassPilotMode": "Modo piloto",
+  "compassStandardDescription": "Encabezamiento básico y navegación",
+  "compassPilotDescription": "Navegación avanzada con ETA y vectorización",
+  "pointingTo": "Apuntando a {direction}",
+  "calibratingCompass": "Calibrando la brújula..",
+  "openAROverlay": "Open AR overlay",
+  "pushTitleAlertNearby": "OVNI alerta cerca de usted",
+  "pushBodyAlertNearby": "Se reportó un nuevo avistamiento {distance}_.",
+  "pushTitleComment": "Nuevo comentario",
+  "pushBodyComment": "Alguien comentó sobre un avistamiento que sigues.",
+  "pushTitleWitness": "Confirmación de testigos",
+  "pushBodyWitness": "Un usuario confirmó que ven el mismo objeto.",
+  "weather": "El tiempo",
+  "cloudCover": "Cubierta en la nube: ¿Por qué",
+  "wind": "Viento:",
+  "nearbyAircraft": "Aviones cercanos",
+  "noAircraft": "No hay aviones cerca",
+  "loadingContext": "Cargando contexto ambiental..",
+  "settingsTitle": "Ajustes",
+  "notifications": "Notificaciones",
+  "enablePushNotifications": "Permitir notificaciones de empuje",
+  "quietHours": "Horas tranquilas",
+  "quietHoursDesc": "Alertas de silencio entre horas seleccionadas.",
+  "dndMode": "No te molestes",
+  "dndUntil": "No molestar hasta",
+  "language": "Idioma",
+  "chooseLanguage": "Elija idioma",
+  "units": "Unidades",
+  "unitsImperial": "Imperial (mi, mph)",
+  "unitsMetric": "Metro (km/h)",
+  "privacyPolicy": "Política de privacidad",
+  "termsOfUse": "Términos de uso",
+  "errorNoLocation": "Ubicación no disponible. Pruebe de nuevo afuera con vista clara al cielo.",
+  "errorNoCamera": "Cámara no disponible en este dispositivo.",
+  "errorUploadFailed": "La carga falló. Por favor, inténtalo de nuevo.",
+  "errorPermissionDenied": "Permiso negado.",
+  "errorInvalidUsername": "Ese nombre de usuario no está disponible.",
+  "nothingToShow": "Aún no hay nada que mostrar.",
+  "storeShortDesc": "Instant UFO alertas cerca de usted. Captura, confirma y chatea en tiempo real.",
+  "storeLongDesc": "UFOBeep envía alertas en tiempo real cuando alguien ve a un OVNI cerca. Captura fotos y videos, confirma los avistamientos con un grifo, la dirección de la vista & distancia, y chatea con otros observadores de cielo.",
+  "keywords": "UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +133,6 @@
       }
     }
   },
-  "alertDirection": "Rumbo {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -55,33 +141,6 @@
       }
     }
   },
-  "viewAlert": "Ver alerta",
-  "viewOnMap": "Ver en el mapa",
-  "iSeeItToo": "¡Yo también lo veo!",
-  "confirmWitnessed": "¿Confirmas que presenciaste este avistamiento?",
-  "witnessConfirmed": "Gracias — tu confirmación fue publicada.",
-  "createBeepTitle": "Enviar un Beep",
-  "beepExplain": "Captura lo que ves y avisa a los observadores cercanos.",
-  "capturePhoto": "Tomar foto",
-  "captureVideo": "Grabar video",
-  "pickFromGallery": "Elegir de la galería",
-  "descriptionHint": "Describe lo que ves en el cielo…",
-  "submitBeep": "Enviar Beep",
-  "beepSent": "Beep enviado",
-  "uploadingMedia": "Subiendo contenido…",
-  "includeLocation": "Incluir ubicación",
-  "includeTimestamp": "Incluir fecha y hora",
-  "beepFailed": "No se pudo enviar el Beep.",
-  "mediaProcessing": "Procesando contenido…",
-  "cameraPermissionTitle": "Se necesita acceso a la cámara",
-  "cameraPermissionBody": "Concede acceso para capturar fotos y videos de OVNIs.",
-  "locationPermissionTitle": "Se necesita acceso a la ubicación",
-  "locationPermissionBody": "Usamos tu ubicación para enviar y recibir alertas cercanas.",
-  "microphonePermissionTitle": "Se necesita acceso al micrófono",
-  "microphonePermissionBody": "Concede acceso para grabar video con audio.",
-  "openSettings": "Abrir ajustes",
-  "alertDetailTitle": "Detalles del avistamiento",
-  "reportedBy": "Reportado por {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -90,7 +149,6 @@
       }
     }
   },
-  "reportedAt": "Reportado hace {timeAgo}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -99,7 +157,6 @@
       }
     }
   },
-  "distanceAway": "a {distance}",
   "@distanceAway": {
     "placeholders": {
       "distance": {
@@ -108,7 +165,6 @@
       }
     }
   },
-  "bearingToObject": "Rumbo al objeto: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -117,31 +173,6 @@
       }
     }
   },
-  "openCompass": "Abrir brújula",
-  "openAR": "Abrir capa AR",
-  "openChat": "Abrir chat",
-  "commentsTitle": "Comentarios",
-  "addComment": "Añadir un comentario…",
-  "send": "Enviar",
-  "commentPosted": "Comentario publicado",
-  "autoFollowEnabled": "Ahora sigues esta alerta.",
-  "noCommentsYet": "Aún no hay comentarios. ¡Sé el primero!",
-  "newCommentNotification": "Nuevo comentario en un avistamiento que sigues.",
-  "mapTitle": "Mapa en vivo",
-  "compassTitle": "Brújula",
-  "compassSettings": "Ajustes de brújula",
-  "compassMode": "Modo de brújula",
-  "compassStandardMode": "Modo estándar",
-  "compassPilotMode": "Modo piloto",
-  "compassStandardDescription": "Navegación y rumbo básicos",
-  "compassPilotDescription": "Navegación avanzada con ETA y vectorización",
-  "compassSettings": "Compass Settings",
-  "compassMode": "Compass Mode",
-  "compassStandardMode": "Standard Mode",
-  "compassPilotMode": "Pilot Mode",
-  "compassStandardDescription": "Basic heading and navigation",
-  "compassPilotDescription": "Advanced navigation with ETA and vectoring",
-  "pointingTo": "Pointing to {direction}",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -150,10 +181,6 @@
       }
     }
   },
-  "calibratingCompass": "Calibrando brújula…",
-  "openAROverlay": "Abrir capa AR",
-  "pushTitleAlertNearby": "Alerta de OVNI cerca de ti",
-  "pushBodyAlertNearby": "Se reportó un nuevo avistamiento a {distance}.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -162,12 +189,6 @@
       }
     }
   },
-  "pushTitleComment": "Nuevo comentario",
-  "pushBodyComment": "Alguien comentó en un avistamiento que sigues.",
-  "pushTitleWitness": "Confirmación de testigo",
-  "pushBodyWitness": "Un usuario confirmó que ve el mismo objeto.",
-  "weather": "Clima",
-  "cloudCover": "Cloud cover: {percent}%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -176,7 +197,6 @@
       }
     }
   },
-  "wind": "Wind: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -188,31 +208,5 @@
         "example": "mph"
       }
     }
-  },
-  "nearbyAircraft": "Aeronaves cercanas",
-  "noAircraft": "No hay aeronaves cercanas",
-  "loadingContext": "Cargando contexto ambiental…",
-  "settingsTitle": "Ajustes",
-  "notifications": "Notificaciones",
-  "enablePushNotifications": "Activar notificaciones push",
-  "quietHours": "Horas de silencio",
-  "quietHoursDesc": "Silencia alertas entre horas seleccionadas.",
-  "dndMode": "No molestar",
-  "dndUntil": "No molestar hasta",
-  "language": "Idioma",
-  "chooseLanguage": "Elegir idioma",
-  "units": "Unidades",
-  "unitsImperial": "Imperiales (mi, mph)",
-  "unitsMetric": "Métricas (km, km/h)",
-  "privacyPolicy": "Política de privacidad",
-  "termsOfUse": "Términos de uso",
-  "errorNoLocation": "Ubicación no disponible. Intenta afuera con cielo despejado.",
-  "errorNoCamera": "Cámara no disponible en este dispositivo.",
-  "errorUploadFailed": "Falló la carga. Inténtalo de nuevo.",
-  "errorPermissionDenied": "Permiso denegado.",
-  "errorInvalidUsername": "Ese usuario no está disponible.",
-  "nothingToShow": "Nada para mostrar aún.",
-  "storeShortDesc": "Alertas instantáneas de OVNIs cerca de ti. Captura, confirma y chatea en tiempo real.",
-  "storeLongDesc": "UFOBeep envía alertas en tiempo real cuando alguien observa un OVNI cerca. Captura fotos y videos, confirma avistamientos con un toque, ve dirección y distancia, y chatea con otros observadores.",
-  "keywords": "OVNI,UAP,aliens,avistamientos,observación,alertas,radar,brújula"
+  }
 }
