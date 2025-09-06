@@ -1,43 +1,130 @@
 {
-  "@@locale": "he",
-  "appName": "UFOBeep",
-  "ok": "OK",
-  "cancel": "Cancel",
-  "close": "Close",
-  "save": "Save",
+  "@@locale": "en",
+  "appName": "עב\"ם",
+  "ok": "בסדר",
+  "cancel": "ביטול",
+  "close": "סגור",
+  "save": "להציל",
   "delete": "Delete",
-  "edit": "Edit",
+  "edit": "Editעריכה",
   "retry": "Retry",
-  "yes": "Yes",
-  "no": "No",
-  "back": "Back",
-  "next": "Next",
-  "done": "Done",
-  "loading": "Loading…",
-  "processing": "Processing…",
-  "errorGeneric": "Something went wrong.",
-  "networkError": "Network error. Check your connection.",
-  "permissionsRequired": "Permissions required",
-  "learnMore": "Learn more",
-  "welcomeTitle": "Welcome to UFOBeep",
-  "welcomeSubtitle": "Real-time UFO alerts near you",
-  "signIn": "Sign in",
-  "signOut": "Sign out",
-  "continueAsGuest": "Continue as guest",
-  "enterUsername": "Enter a username",
-  "username": "Username",
-  "usernameUpdated": "Username updated",
-  "profile": "Profile",
-  "settings": "Settings",
-  "tabAlerts": "Alerts",
+  "yes": "כן",
+  "no": "לא",
+  "back": "בחזרה",
+  "next": "הבא",
+  "done": "עשה",
+  "loading": "לטעון..",
+  "processing": "עיבוד..",
+  "errorGeneric": "משהו השתבש.",
+  "networkError": "טעות ברשת בדוק את הקשר שלך.",
+  "permissionsRequired": "אישורים דרושים",
+  "learnMore": "למד עוד",
+  "welcomeTitle": "ברוכים הבאים ל- UFOBeep",
+  "welcomeSubtitle": "אזהרות עב\"מים בזמן אמת לידך",
+  "signIn": "היכנס",
+  "signOut": "המונחים",
+  "continueAsGuest": "להמשיך כאורח",
+  "enterUsername": "הכנס שם משתמש",
+  "username": "שם המשתמש",
+  "usernameUpdated": "שם המשתמש מעודכן",
+  "profile": "פרופיל",
+  "settings": "הגדרות",
+  "tabAlerts": "התראות",
   "tabBeep": "Beep",
-  "tabChat": "Chat",
-  "tabMap": "Map",
-  "tabSettings": "Settings",
-  "alertsTitle": "Nearby Alerts",
-  "noAlerts": "No alerts nearby yet.",
-  "pullToRefresh": "Pull to refresh",
-  "alertDistance": "{distance} away",
+  "tabChat": "צ'אט Chat",
+  "tabMap": "מפה",
+  "tabSettings": "הגדרות",
+  "alertsTitle": "התראות בקרבת מקום",
+  "noAlerts": "עדיין לא אזהרות.",
+  "pullToRefresh": "למשוך כדי לרענן",
+  "alertDistance": "PH_0_______התרחק",
+  "alertDirection": "המונחים: PH_0_ °",
+  "viewAlert": "View alert",
+  "viewOnMap": "צפייה במפה",
+  "iSeeItToo": "אני רואה את זה גם",
+  "confirmWitnessed": "האם הייתם עדים למראה הזה?",
+  "witnessConfirmed": "תודה – האישור שלך פורסם.",
+  "createBeepTitle": "שלח ביפ",
+  "beepExplain": "לתפוס את מה שאתה רואה ולהזהיר צופים סמוכים.",
+  "capturePhoto": "ללכוד תמונה",
+  "captureVideo": "ללכוד וידאו",
+  "pickFromGallery": "בחרו בגלריה",
+  "descriptionHint": "תאר מה אתה רואה בשמים..",
+  "submitBeep": "שלח Beep",
+  "beepSent": "Beep",
+  "uploadingMedia": "העלאת אמצעי התקשורת..",
+  "includeLocation": "כולל מיקום",
+  "includeTimestamp": "עקבו אחרי Timestamp",
+  "beepFailed": "נכשל לשלוח את Beep.",
+  "mediaProcessing": "אמצעי עיבוד..",
+  "cameraPermissionTitle": "גישה למצלמה הנדרשת",
+  "cameraPermissionBody": "גישה למצלמה ללכידת תמונות וסרטונים עב\"מים.",
+  "locationPermissionTitle": "גישה למיקומים הדרושים",
+  "locationPermissionBody": "אנו משתמשים במיקום שלך כדי לשלוח ולקבל התראות הקרובות.",
+  "microphonePermissionTitle": "גישה מיקרו-טלפון הנדרשת",
+  "microphonePermissionBody": "גישה מיקרופון עבור וידאו לכידת עם אודיו.",
+  "openSettings": "הגדרות פתוחות",
+  "alertDetailTitle": "פרטים",
+  "reportedBy": "תגית: PH_0___",
+  "reportedAt": "תגית: PH_0____",
+  "distanceAway": "PH_0_______התרחק",
+  "bearingToObject": "להתווכח: PH_0__ °",
+  "openCompass": "המצפן הפתוח",
+  "openAR": "פתח את AR Overlay",
+  "openChat": "צ'אט פתוח",
+  "commentsTitle": "הערות",
+  "addComment": "הוסף תגובה..",
+  "send": "שלח",
+  "commentPosted": "תגית:",
+  "autoFollowEnabled": "עכשיו אתה עוקב אחר האזהרה הזו.",
+  "noCommentsYet": "עדיין לא הערות. להיות הראשון!",
+  "newCommentNotification": "תגובה חדשה על מראה שאתה עוקב.",
+  "mapTitle": "מפה חיה",
+  "compassTitle": "Compass",
+  "compassSettings": "הגדרות Compass",
+  "compassMode": "המונחים:",
+  "compassStandardMode": "מצב סטנדרטי",
+  "compassPilotMode": "מצב טייס",
+  "compassStandardDescription": "כותרות בסיסיות וניווט",
+  "compassPilotDescription": "ניווט מתקדם עם ETA וקטורינג",
+  "pointingTo": "המונחים: PH_0____",
+  "calibratingCompass": "מצפן קצר..",
+  "openAROverlay": "פתח את AR Overlay",
+  "pushTitleAlertNearby": "אזהרות עב\"מ קרוב אליך",
+  "pushBodyAlertNearby": "תצפית חדשה דווחה -_PH_0____.",
+  "pushTitleComment": "תגובה חדשה",
+  "pushBodyComment": "מישהו אמר על מראה שאתה עוקב.",
+  "pushTitleWitness": "אישור עדים",
+  "pushBodyWitness": "משתמש אישר שהוא רואה את אותו האובייקט.",
+  "weather": "מזג אוויר",
+  "cloudCover": "כיסוי ענן: PH_0__%",
+  "wind": "רוח:_PH_0_____________________________________________________________________________________",
+  "nearbyAircraft": "מטוסים בקרבת מקום",
+  "noAircraft": "אין מטוס בקרבת מקום",
+  "loadingContext": "קשר סביבתי..",
+  "settingsTitle": "הגדרות",
+  "notifications": "זיהוי",
+  "enablePushNotifications": "הודעות דחיפה",
+  "quietHours": "שעות שקטות",
+  "quietHoursDesc": "שתיקה מזהירה בין שעות נבחרות.",
+  "dndMode": "אל תתבלבל",
+  "dndUntil": "אל תפריע עד",
+  "language": "שפה",
+  "chooseLanguage": "בחירת שפה",
+  "units": "יחידות",
+  "unitsImperial": "אימפריאל (מי, mph)",
+  "unitsMetric": "Metric ( ק\"מ, ק\"מ)",
+  "privacyPolicy": "מדיניות הפרטיות",
+  "termsOfUse": "תנאי שימוש",
+  "errorNoLocation": "מיקום לא זמין נסה שוב בחוץ עם נוף השמיים ברור.",
+  "errorNoCamera": "המצלמה אינה זמינה במכשיר זה.",
+  "errorUploadFailed": "ההעלאה נכשלה. אנא נסה שוב.",
+  "errorPermissionDenied": "הכחשה.",
+  "errorInvalidUsername": "שם משתמש זה אינו זמין.",
+  "nothingToShow": "עדיין אין מה להראות.",
+  "storeShortDesc": "אזהרות עב\"מים מיידיות קרוב אליך. לתפוס, לאשר ולשוחח בזמן אמת.",
+  "storeLongDesc": "עב\"ם שולח התראות בזמן אמת כאשר מישהו ממקם עב\"מ קרוב. ללכוד תמונות וסרטונים, לאשר מראות עם ברז, כיוון נוף ומרחק, וצ'אט עם צופים אחרים.",
+  "keywords": "עב\"מים,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +133,6 @@
       }
     }
   },
-  "alertDirection": "Bearing {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -55,33 +141,6 @@
       }
     }
   },
-  "viewAlert": "View alert",
-  "viewOnMap": "View on map",
-  "iSeeItToo": "I see it too",
-  "confirmWitnessed": "Confirm you witnessed this sighting?",
-  "witnessConfirmed": "Thanks — your confirmation was posted.",
-  "createBeepTitle": "Send a Beep",
-  "beepExplain": "Capture what you see and alert nearby watchers.",
-  "capturePhoto": "Capture photo",
-  "captureVideo": "Capture video",
-  "pickFromGallery": "Choose from gallery",
-  "descriptionHint": "Describe what you're seeing in the sky…",
-  "submitBeep": "Send Beep",
-  "beepSent": "Beep sent",
-  "uploadingMedia": "Uploading media…",
-  "includeLocation": "Include location",
-  "includeTimestamp": "Include timestamp",
-  "beepFailed": "Failed to send Beep.",
-  "mediaProcessing": "Processing media…",
-  "cameraPermissionTitle": "Camera access needed",
-  "cameraPermissionBody": "Grant camera access to capture UFO photos and videos.",
-  "locationPermissionTitle": "Location access needed",
-  "locationPermissionBody": "We use your location to send and receive nearby alerts.",
-  "microphonePermissionTitle": "Microphone access needed",
-  "microphonePermissionBody": "Grant microphone access for video capture with audio.",
-  "openSettings": "Open settings",
-  "alertDetailTitle": "Sighting Details",
-  "reportedBy": "Reported by {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -90,7 +149,6 @@
       }
     }
   },
-  "reportedAt": "Reported {timeAgo}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -99,7 +157,6 @@
       }
     }
   },
-  "distanceAway": "{distance} away",
   "@distanceAway": {
     "placeholders": {
       "distance": {
@@ -108,7 +165,6 @@
       }
     }
   },
-  "bearingToObject": "Bearing to object: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -117,25 +173,6 @@
       }
     }
   },
-  "openCompass": "Open compass",
-  "openAR": "Open AR overlay",
-  "openChat": "Open chat",
-  "commentsTitle": "Comments",
-  "addComment": "Add a comment…",
-  "send": "Send",
-  "commentPosted": "Comment posted",
-  "autoFollowEnabled": "You’re now following this alert.",
-  "noCommentsYet": "No comments yet. Be the first!",
-  "newCommentNotification": "New comment on a sighting you follow.",
-  "mapTitle": "Live Map",
-  "compassTitle": "Compass",
-  "compassSettings": "Compass Settings",
-  "compassMode": "Compass Mode",
-  "compassStandardMode": "Standard Mode",
-  "compassPilotMode": "Pilot Mode",
-  "compassStandardDescription": "Basic heading and navigation",
-  "compassPilotDescription": "Advanced navigation with ETA and vectoring",
-  "pointingTo": "Pointing to {direction}",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -144,10 +181,6 @@
       }
     }
   },
-  "calibratingCompass": "Calibrating compass…",
-  "openAROverlay": "Open AR overlay",
-  "pushTitleAlertNearby": "UFO alert near you",
-  "pushBodyAlertNearby": "A new sighting was reported {distance} away.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -156,12 +189,6 @@
       }
     }
   },
-  "pushTitleComment": "New comment",
-  "pushBodyComment": "Someone commented on a sighting you follow.",
-  "pushTitleWitness": "Witness confirmation",
-  "pushBodyWitness": "A user confirmed they see the same object.",
-  "weather": "Weather",
-  "cloudCover": "Cloud cover: {percent}%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -170,7 +197,6 @@
       }
     }
   },
-  "wind": "Wind: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -182,31 +208,5 @@
         "example": "mph"
       }
     }
-  },
-  "nearbyAircraft": "Nearby aircraft",
-  "noAircraft": "No aircraft nearby",
-  "loadingContext": "Loading environmental context…",
-  "settingsTitle": "Settings",
-  "notifications": "Notifications",
-  "enablePushNotifications": "Enable push notifications",
-  "quietHours": "Quiet hours",
-  "quietHoursDesc": "Silence alerts between selected hours.",
-  "dndMode": "Do Not Disturb",
-  "dndUntil": "Do not disturb until",
-  "language": "Language",
-  "chooseLanguage": "Choose language",
-  "units": "Units",
-  "unitsImperial": "Imperial (mi, mph)",
-  "unitsMetric": "Metric (km, km/h)",
-  "privacyPolicy": "Privacy Policy",
-  "termsOfUse": "Terms of Use",
-  "errorNoLocation": "Location unavailable. Try again outside with clear sky view.",
-  "errorNoCamera": "Camera unavailable on this device.",
-  "errorUploadFailed": "Upload failed. Please try again.",
-  "errorPermissionDenied": "Permission denied.",
-  "errorInvalidUsername": "That username isn’t available.",
-  "nothingToShow": "Nothing to show yet.",
-  "storeShortDesc": "Instant UFO alerts near you. Capture, confirm, and chat in real time.",
-  "storeLongDesc": "UFOBeep sends real-time alerts when someone spots a UFO nearby. Capture photos and videos, confirm sightings with a tap, view direction & distance, and chat with fellow skywatchers.",
-  "keywords": "UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass"
+  }
 }

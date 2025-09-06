@@ -1,5 +1,5 @@
 {
-  "@@locale": "no",
+  "@@locale": "en",
   "appName": "UFOBeep",
   "ok": "OK",
   "cancel": "Cancel",
@@ -38,23 +38,7 @@
   "noAlerts": "No alerts nearby yet.",
   "pullToRefresh": "Pull to refresh",
   "alertDistance": "{distance} away",
-  "@alertDistance": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "1.2 mi"
-      }
-    }
-  },
   "alertDirection": "Bearing {bearing}°",
-  "@alertDirection": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "137"
-      }
-    }
-  },
   "viewAlert": "View alert",
   "viewOnMap": "View on map",
   "iSeeItToo": "I see it too",
@@ -82,41 +66,9 @@
   "openSettings": "Open settings",
   "alertDetailTitle": "Sighting Details",
   "reportedBy": "Reported by {username}",
-  "@reportedBy": {
-    "placeholders": {
-      "username": {
-        "type": "String",
-        "example": "stargazer01"
-      }
-    }
-  },
   "reportedAt": "Reported {timeAgo}",
-  "@reportedAt": {
-    "placeholders": {
-      "timeAgo": {
-        "type": "String",
-        "example": "5m ago"
-      }
-    }
-  },
   "distanceAway": "{distance} away",
-  "@distanceAway": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "2.4 km"
-      }
-    }
-  },
   "bearingToObject": "Bearing to object: {bearing}°",
-  "@bearingToObject": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "92"
-      }
-    }
-  },
   "openCompass": "Open compass",
   "openAR": "Open AR overlay",
   "openChat": "Open chat",
@@ -136,53 +88,17 @@
   "compassStandardDescription": "Basic heading and navigation",
   "compassPilotDescription": "Advanced navigation with ETA and vectoring",
   "pointingTo": "Pointing to {direction}",
-  "@pointingTo": {
-    "placeholders": {
-      "direction": {
-        "type": "String",
-        "example": "SE"
-      }
-    }
-  },
   "calibratingCompass": "Calibrating compass…",
   "openAROverlay": "Open AR overlay",
   "pushTitleAlertNearby": "UFO alert near you",
   "pushBodyAlertNearby": "A new sighting was reported {distance} away.",
-  "@pushBodyAlertNearby": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "0.8 mi"
-      }
-    }
-  },
   "pushTitleComment": "New comment",
   "pushBodyComment": "Someone commented on a sighting you follow.",
   "pushTitleWitness": "Witness confirmation",
   "pushBodyWitness": "A user confirmed they see the same object.",
   "weather": "Weather",
   "cloudCover": "Cloud cover: {percent}%",
-  "@cloudCover": {
-    "placeholders": {
-      "percent": {
-        "type": "int",
-        "example": "63"
-      }
-    }
-  },
   "wind": "Wind: {speed} {unit}",
-  "@wind": {
-    "placeholders": {
-      "speed": {
-        "type": "num",
-        "example": "12.4"
-      },
-      "unit": {
-        "type": "String",
-        "example": "mph"
-      }
-    }
-  },
   "nearbyAircraft": "Nearby aircraft",
   "noAircraft": "No aircraft nearby",
   "loadingContext": "Loading environmental context…",
@@ -208,5 +124,89 @@
   "nothingToShow": "Nothing to show yet.",
   "storeShortDesc": "Instant UFO alerts near you. Capture, confirm, and chat in real time.",
   "storeLongDesc": "UFOBeep sends real-time alerts when someone spots a UFO nearby. Capture photos and videos, confirm sightings with a tap, view direction & distance, and chat with fellow skywatchers.",
-  "keywords": "UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass"
+  "keywords": "UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass",
+  "@alertDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2 mi"
+      }
+    }
+  },
+  "@alertDirection": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "137"
+      }
+    }
+  },
+  "@reportedBy": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "@reportedAt": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "5m ago"
+      }
+    }
+  },
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.4 km"
+      }
+    }
+  },
+  "@bearingToObject": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "92"
+      }
+    }
+  },
+  "@pointingTo": {
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "SE"
+      }
+    }
+  },
+  "@pushBodyAlertNearby": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "0.8 mi"
+      }
+    }
+  },
+  "@cloudCover": {
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "63"
+      }
+    }
+  },
+  "@wind": {
+    "placeholders": {
+      "speed": {
+        "type": "num",
+        "example": "12.4"
+      },
+      "unit": {
+        "type": "String",
+        "example": "mph"
+      }
+    }
+  }
 }

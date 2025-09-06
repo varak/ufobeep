@@ -1,43 +1,130 @@
 {
-  "@@locale": "el",
-  "appName": "UFOBeep",
-  "ok": "OK",
-  "cancel": "Cancel",
-  "close": "Close",
-  "save": "Save",
-  "delete": "Delete",
-  "edit": "Edit",
-  "retry": "Retry",
-  "yes": "Yes",
-  "no": "No",
-  "back": "Back",
-  "next": "Next",
-  "done": "Done",
-  "loading": "Loading…",
-  "processing": "Processing…",
-  "errorGeneric": "Something went wrong.",
-  "networkError": "Network error. Check your connection.",
-  "permissionsRequired": "Permissions required",
-  "learnMore": "Learn more",
-  "welcomeTitle": "Welcome to UFOBeep",
-  "welcomeSubtitle": "Real-time UFO alerts near you",
-  "signIn": "Sign in",
-  "signOut": "Sign out",
-  "continueAsGuest": "Continue as guest",
-  "enterUsername": "Enter a username",
-  "username": "Username",
-  "usernameUpdated": "Username updated",
-  "profile": "Profile",
+  "@@locale": "en",
+  "appName": "ΑΤΙΑ μπιπ",
+  "ok": "ΕΝΤΆΞΕΙ",
+  "cancel": "Ακύρωση",
+  "close": "Κλείσιμο",
+  "save": "Αποθήκευση",
+  "delete": "Διαγραφή",
+  "edit": "Επεξεργασία",
+  "retry": "Επανάληψη",
+  "yes": "Ναι",
+  "no": "Όχι",
+  "back": "Πίσω",
+  "next": "Επόμενο",
+  "done": "Έγινε",
+  "loading": "Φόρτωση..",
+  "processing": "Επεξεργασία..",
+  "errorGeneric": "Κάτι πήγε στραβά.",
+  "networkError": "Σφάλμα δικτύου. Έλεγξε τη σύνδεσή σου.",
+  "permissionsRequired": "Απαιτούμενες άδειες",
+  "learnMore": "Μάθετε περισσότερα",
+  "welcomeTitle": "Καλώς ήρθατε στο UFOBeep",
+  "welcomeSubtitle": "Σε πραγματικό χρόνο UFO ειδοποιήσεις κοντά σας",
+  "signIn": "Υπογραφή",
+  "signOut": "Υπογραφή",
+  "continueAsGuest": "Συνέχεια ως επισκέπτης",
+  "enterUsername": "Εισάγετε ένα όνομα χρήστη",
+  "username": "Όνομα χρήστη",
+  "usernameUpdated": "Ενημέρωση ονόματος χρήστη",
+  "profile": "Προφίλ",
   "settings": "Settings",
-  "tabAlerts": "Alerts",
-  "tabBeep": "Beep",
-  "tabChat": "Chat",
-  "tabMap": "Map",
+  "tabAlerts": "Καταχωρίσεις",
+  "tabBeep": "Μπιπ",
+  "tabChat": "Συζήτηση",
+  "tabMap": "Χάρτης",
   "tabSettings": "Settings",
-  "alertsTitle": "Nearby Alerts",
-  "noAlerts": "No alerts nearby yet.",
-  "pullToRefresh": "Pull to refresh",
-  "alertDistance": "{distance} away",
+  "alertsTitle": "Κοντινές ειδοποιήσεις",
+  "noAlerts": "Δεν υπάρχουν ειδοποιήσεις ακόμα κοντά.",
+  "pullToRefresh": "Τραβήξτε για ανανέωση",
+  "alertDistance": "__PH_0_ μακριά",
+  "alertDirection": "Διόπτευση __PH_0_°",
+  "viewAlert": "Προβολή συναγερμού",
+  "viewOnMap": "Προβολή στο χάρτη",
+  "iSeeItToo": "Το βλέπω κι εγώ",
+  "confirmWitnessed": "Επιβεβαιώστε ότι είδατε αυτό το θέαμα?",
+  "witnessConfirmed": "Ευχαριστώ — η επιβεβαίωσή σας δημοσιεύτηκε.",
+  "createBeepTitle": "Στείλτε ένα μπιπ",
+  "beepExplain": "Συλλάβετε ό, τι βλέπετε και ειδοποιήστε τους κοντινούς παρατηρητές.",
+  "capturePhoto": "Φωτογραφία σύλληψης",
+  "captureVideo": "Λήψη βίντεο",
+  "pickFromGallery": "Επιλέξτε από τη συλλογή",
+  "descriptionHint": "Περιγράψτε τι βλέπετε στον ουρανό..",
+  "submitBeep": "Αποστολή μπιπ",
+  "beepSent": "Αποστολή μπιπ",
+  "uploadingMedia": "Αποστολή μέσων ενημέρωσης..",
+  "includeLocation": "Συμπερίληψη τοποθεσίας",
+  "includeTimestamp": "Συμπερίληψη χρονοσφραγίδας",
+  "beepFailed": "Αποτυχία αποστολής του Μπιπ.",
+  "mediaProcessing": "Επεξεργασία μέσων..",
+  "cameraPermissionTitle": "Απαιτείται πρόσβαση κάμερας",
+  "cameraPermissionBody": "Επιχορήγηση πρόσβασης κάμερας για να συλλάβει UFO φωτογραφίες και βίντεο.",
+  "locationPermissionTitle": "Απαιτείται πρόσβαση τοποθεσίας",
+  "locationPermissionBody": "Χρησιμοποιούμε την τοποθεσία σας για να στείλουμε και να λάβουμε κοντινές ειδοποιήσεις.",
+  "microphonePermissionTitle": "Απαιτούμενη πρόσβαση μικροφώνου",
+  "microphonePermissionBody": "Επιχορήγηση πρόσβασης μικροφώνου για λήψη βίντεο με ήχο.",
+  "openSettings": "Άνοιγμα ρυθμίσεων",
+  "alertDetailTitle": "Ορατότητα λεπτομερειών",
+  "reportedBy": "Αναφέρθηκε από __PH_0_",
+  "reportedAt": "Αναφέρθηκε __PH_0_",
+  "distanceAway": "__PH_0_ μακριά",
+  "bearingToObject": "Διόπτευση προς ένσταση: __PH_0_°",
+  "openCompass": "Ανοικτή πυξίδα",
+  "openAR": "Άνοιγμα επικάλυψης AR",
+  "openChat": "Άνοιγμα συνομιλίας",
+  "commentsTitle": "Σχόλια",
+  "addComment": "Προσθέστε ένα σχόλιο..",
+  "send": "Αποστολή",
+  "commentPosted": "Σχόλιο δημοσιεύτηκε",
+  "autoFollowEnabled": "Τώρα ακολουθείτε αυτή την προειδοποίηση.",
+  "noCommentsYet": "Κανένα σχόλιο ακόμα. Γίνε ο πρώτος!",
+  "newCommentNotification": "Νέο σχόλιο για μια παρατήρηση που ακολουθείτε.",
+  "mapTitle": "Ζωντανός χάρτης",
+  "compassTitle": "Πυξίδα",
+  "compassSettings": "Settings πυξίδας",
+  "compassMode": "Λειτουργία πυξίδας",
+  "compassStandardMode": "Τυπική λειτουργία",
+  "compassPilotMode": "Πιλοτική λειτουργία",
+  "compassStandardDescription": "Βασική κλάση και πλοήγηση",
+  "compassPilotDescription": "Προηγμένη πλοήγηση με ETA και διανυσματική",
+  "pointingTo": "Επισημαίνοντας στο {direction}",
+  "calibratingCompass": "Βαθμονόμηση πυξίδας..",
+  "openAROverlay": "Άνοιγμα επικάλυψης AR",
+  "pushTitleAlertNearby": "Συναγερμός UFO κοντά σας",
+  "pushBodyAlertNearby": "Μια νέα παρατήρηση αναφέρθηκε __PH_0_ μακριά.",
+  "pushTitleComment": "Νέο σχόλιο",
+  "pushBodyComment": "Κάποιος σχολίασε ότι σε είδε να ακολουθείς.",
+  "pushTitleWitness": "Επιβεβαίωση μάρτυρα",
+  "pushBodyWitness": "Ένας χρήστης επιβεβαίωσε ότι βλέπουν το ίδιο αντικείμενο.",
+  "weather": "Καιρός",
+  "cloudCover": "Σύννεφο: __PH_0_%",
+  "wind": "Άνεμος: {speed}_PH_1_",
+  "nearbyAircraft": "Κοντινά αεροσκάφη",
+  "noAircraft": "Κανένα αεροσκάφος κοντά",
+  "loadingContext": "Φόρτωση περιβαλλοντικού πλαισίου..",
+  "settingsTitle": "Settings",
+  "notifications": "Κοινοποιήσεις",
+  "enablePushNotifications": "Ενεργοποίηση ειδοποιήσεων ώθησης",
+  "quietHours": "Ώρες ησυχίας",
+  "quietHoursDesc": "Συναγερμός σιωπής μεταξύ επιλεγμένων ωρών.",
+  "dndMode": "Μην ενοχλείστε",
+  "dndUntil": "Μην ενοχλείστε μέχρι",
+  "language": "Γλώσσα",
+  "chooseLanguage": "Επιλογή γλώσσας",
+  "units": "Μονάδες",
+  "unitsImperial": "Αυτοκρατορικό (mi, mph)",
+  "unitsMetric": "Μετρικό (km, km/h)",
+  "privacyPolicy": "Πολιτική απορρήτου",
+  "termsOfUse": "Όροι χρήσης",
+  "errorNoLocation": "Τοποθεσία μη διαθέσιμη. Δοκιμάστε ξανά έξω με καθαρή θέα στον ουρανό.",
+  "errorNoCamera": "Η κάμερα δεν είναι διαθέσιμη σε αυτή τη συσκευή.",
+  "errorUploadFailed": "Η αποστολή απέτυχε. Παρακαλώ προσπαθήστε ξανά.",
+  "errorPermissionDenied": "Η άδεια απορρίπτεται.",
+  "errorInvalidUsername": "Αυτό το όνομα χρήστη δεν είναι διαθέσιμο.",
+  "nothingToShow": "Δεν έχω κάτι να δείξω ακόμα.",
+  "storeShortDesc": "Άμεση συναγερμούς UFO κοντά σας. Συλλάβετε, επιβεβαιώστε και συνομιλήστε σε πραγματικό χρόνο.",
+  "storeLongDesc": "Το UFOBeep στέλνει ειδοποιήσεις σε πραγματικό χρόνο όταν κάποιος εντοπίζει ένα UFO κοντά. Συλλάβετε φωτογραφίες και βίντεο, επιβεβαιώστε τις εμφανίσεις με μια βρύση, την κατεύθυνση προβολής και την απόσταση, και συνομιλήστε με άλλους παρατηρητές του ουρανού.",
+  "keywords": "UFO, UAP, OVNI, aliens, παρατηρήσεις, Skywatch, alerts, Radar, compass",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +133,6 @@
       }
     }
   },
-  "alertDirection": "Bearing {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -55,33 +141,6 @@
       }
     }
   },
-  "viewAlert": "View alert",
-  "viewOnMap": "View on map",
-  "iSeeItToo": "I see it too",
-  "confirmWitnessed": "Confirm you witnessed this sighting?",
-  "witnessConfirmed": "Thanks — your confirmation was posted.",
-  "createBeepTitle": "Send a Beep",
-  "beepExplain": "Capture what you see and alert nearby watchers.",
-  "capturePhoto": "Capture photo",
-  "captureVideo": "Capture video",
-  "pickFromGallery": "Choose from gallery",
-  "descriptionHint": "Describe what you're seeing in the sky…",
-  "submitBeep": "Send Beep",
-  "beepSent": "Beep sent",
-  "uploadingMedia": "Uploading media…",
-  "includeLocation": "Include location",
-  "includeTimestamp": "Include timestamp",
-  "beepFailed": "Failed to send Beep.",
-  "mediaProcessing": "Processing media…",
-  "cameraPermissionTitle": "Camera access needed",
-  "cameraPermissionBody": "Grant camera access to capture UFO photos and videos.",
-  "locationPermissionTitle": "Location access needed",
-  "locationPermissionBody": "We use your location to send and receive nearby alerts.",
-  "microphonePermissionTitle": "Microphone access needed",
-  "microphonePermissionBody": "Grant microphone access for video capture with audio.",
-  "openSettings": "Open settings",
-  "alertDetailTitle": "Sighting Details",
-  "reportedBy": "Reported by {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -90,7 +149,6 @@
       }
     }
   },
-  "reportedAt": "Reported {timeAgo}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -99,7 +157,6 @@
       }
     }
   },
-  "distanceAway": "{distance} away",
   "@distanceAway": {
     "placeholders": {
       "distance": {
@@ -108,7 +165,6 @@
       }
     }
   },
-  "bearingToObject": "Bearing to object: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -117,25 +173,6 @@
       }
     }
   },
-  "openCompass": "Open compass",
-  "openAR": "Open AR overlay",
-  "openChat": "Open chat",
-  "commentsTitle": "Comments",
-  "addComment": "Add a comment…",
-  "send": "Send",
-  "commentPosted": "Comment posted",
-  "autoFollowEnabled": "You’re now following this alert.",
-  "noCommentsYet": "No comments yet. Be the first!",
-  "newCommentNotification": "New comment on a sighting you follow.",
-  "mapTitle": "Live Map",
-  "compassTitle": "Compass",
-  "compassSettings": "Compass Settings",
-  "compassMode": "Compass Mode",
-  "compassStandardMode": "Standard Mode",
-  "compassPilotMode": "Pilot Mode",
-  "compassStandardDescription": "Basic heading and navigation",
-  "compassPilotDescription": "Advanced navigation with ETA and vectoring",
-  "pointingTo": "Pointing to {direction}",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -144,10 +181,6 @@
       }
     }
   },
-  "calibratingCompass": "Calibrating compass…",
-  "openAROverlay": "Open AR overlay",
-  "pushTitleAlertNearby": "UFO alert near you",
-  "pushBodyAlertNearby": "A new sighting was reported {distance} away.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -156,12 +189,6 @@
       }
     }
   },
-  "pushTitleComment": "New comment",
-  "pushBodyComment": "Someone commented on a sighting you follow.",
-  "pushTitleWitness": "Witness confirmation",
-  "pushBodyWitness": "A user confirmed they see the same object.",
-  "weather": "Weather",
-  "cloudCover": "Cloud cover: {percent}%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -170,7 +197,6 @@
       }
     }
   },
-  "wind": "Wind: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -182,31 +208,5 @@
         "example": "mph"
       }
     }
-  },
-  "nearbyAircraft": "Nearby aircraft",
-  "noAircraft": "No aircraft nearby",
-  "loadingContext": "Loading environmental context…",
-  "settingsTitle": "Settings",
-  "notifications": "Notifications",
-  "enablePushNotifications": "Enable push notifications",
-  "quietHours": "Quiet hours",
-  "quietHoursDesc": "Silence alerts between selected hours.",
-  "dndMode": "Do Not Disturb",
-  "dndUntil": "Do not disturb until",
-  "language": "Language",
-  "chooseLanguage": "Choose language",
-  "units": "Units",
-  "unitsImperial": "Imperial (mi, mph)",
-  "unitsMetric": "Metric (km, km/h)",
-  "privacyPolicy": "Privacy Policy",
-  "termsOfUse": "Terms of Use",
-  "errorNoLocation": "Location unavailable. Try again outside with clear sky view.",
-  "errorNoCamera": "Camera unavailable on this device.",
-  "errorUploadFailed": "Upload failed. Please try again.",
-  "errorPermissionDenied": "Permission denied.",
-  "errorInvalidUsername": "That username isn’t available.",
-  "nothingToShow": "Nothing to show yet.",
-  "storeShortDesc": "Instant UFO alerts near you. Capture, confirm, and chat in real time.",
-  "storeLongDesc": "UFOBeep sends real-time alerts when someone spots a UFO nearby. Capture photos and videos, confirm sightings with a tap, view direction & distance, and chat with fellow skywatchers.",
-  "keywords": "UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass"
+  }
 }
