@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 import '../../providers/alerts_provider.dart';
 import '../../theme/app_theme.dart';
 import '../video_player_widget.dart';
@@ -189,11 +190,13 @@ class AlertHeroSection extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  _formatDateTime(alert.createdAt),
-                  style: const TextStyle(
-                    color: AppColors.textTertiary,
-                    fontSize: 12,
+                Builder(
+                  builder: (ctx) => Text(
+                    _formatDateTime(ctx, alert.createdAt),
+                    style: const TextStyle(
+                      color: AppColors.textTertiary,
+                      fontSize: 12,
+                    ),
                   ),
                 ),
               ],
@@ -424,20 +427,21 @@ class AlertHeroSection extends StatelessWidget {
     );
   }
 
-  String _formatDateTime(DateTime dateTime) {
+  String _formatDateTime(BuildContext context, DateTime dateTime) {
     // Ensure both times are in the same timezone (local)
     final now = DateTime.now();
     final localDateTime = dateTime.toLocal();
     final difference = now.difference(localDateTime);
 
+    final l10n = AppLocalizations.of(context);
     if (difference.inDays > 0) {
-      return '${difference.inDays} day${difference.inDays == 1 ? '' : 's'} ago';
+      return l10n.timeDaysAgo(difference.inDays);
     } else if (difference.inHours > 0) {
-      return '${difference.inHours} hour${difference.inHours == 1 ? '' : 's'} ago';
+      return l10n.timeHoursAgo(difference.inHours);
     } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes} minute${difference.inMinutes == 1 ? '' : 's'} ago';
+      return l10n.timeMinutesAgo(difference.inMinutes);
     } else {
-      return 'Just now';
+      return l10n.timeJustNow;
     }
   }
 }

@@ -132,9 +132,9 @@
   "videoOnly": "וידאו רק",
   "imageOnly": "תמונה רק",
   "timeJustNow": "רק עכשיו",
-  "timeDaysAgo": "PH_0____D_ ago",
-  "timeHoursAgo": "PH_0_h ago",
-  "timeMinutesAgo": "PH_0__m ago",
+  "timeDaysAgo": "{count}d ago",
+  "timeHoursAgo": "{count}h ago",
+  "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "עוד התראות",
   "toggleMufonTooltip": "משקפי MUFON",
   "showMufonData": "מידע על MUFON",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "מצלמה",
+  "gallery": "גלריה",
+  "basicSettings": "הגדרות בסיסיות",
+  "appSettings": "הגדרות App Settings",
+  "alertRange": "המונחים",
+  "manageNotificationsDesc": "ניהול מנויים והגדרות",
+  "permissionsTitle": "הרשאות",
+  "permissionLocation": "מיקום Location",
+  "permissionCamera": "מצלמה",
+  "permissionNotifications": "זיהוי",
+  "permissionPhotos": "תמונות",
+  "permissionGranted": "גרנט",
+  "permissionNotGranted": "לא הוענק",
+  "permissionGrant": "גרנט",
+  "generateUsername": "ליצור שם משתמש חדש",
+  "adminTools": "כלי Admin",
+  "openAdminPanel": "Open Admin Panel",
+  "webAdminInterface": "Web Admin Interface",
+  "adminBetaNotice": "Beta בונה רק כלי Admin לבדיקת התראות קרבה, לדחוף הודעות, ואבחון מערכת.",
+  "whatDoYouSee": "מה אתה רואה?",
+  "ufoSighting": "עב\"ם עקבו",
+  "actionsTitle": "פעולות",
+  "addPhotosAndVideos": "הוסף תמונות וסרטונים",
+  "howToReportToMufon": "כיצד לדווח על MUFON",
+  "reportToMufon": "דיווח על MUFON",
+  "whyReportToMufon": "למה לדווח על MUFON?",
+  "openMufonReport": "פתוח MUFON דיווח",
+  "confirmedWitness": "אישרת את המראה הזה",
+  "witnessesHaveConfirmed": "_PH_0__ אנשים אישרו את המראה הזה",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "סוג",
+  "ufoTypeSphere": "Sphere",
+  "ufoTypeTriangle": "משולש",
+  "ufoTypeDisk": "דיסק",
+  "ufoTypeLight": "אור",
+  "ufoTypeFireball": "כדור האש",
+  "ufoTypeCylinder": "Cylinder",
+  "ufoTypeCigar": "סיגריה",
+  "ufoTypeRectangle": "Rectangle",
+  "ufoTypeFormation": "המונחים",
+  "ufoTypeUnknown": "לא ידוע"
 }

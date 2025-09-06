@@ -427,17 +427,17 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '时间轴:';
+    return '${count}d ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '0 小时前';
+    return '${count}h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '0 分钟前';
+    return '${count}m ago';
   }
 
   @override
@@ -518,4 +518,222 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get retakeVideo => '重取视频';
+
+  @override
+  String get camera => '摄影机';
+
+  @override
+  String get gallery => '图片库';
+
+  @override
+  String get basicSettings => '基本设置';
+
+  @override
+  String get appSettings => '应用程序设置';
+
+  @override
+  String get alertRange => '警报范围';
+
+  @override
+  String get manageNotificationsDesc => '管理订阅设置( S)';
+
+  @override
+  String get permissionsTitle => '权限';
+
+  @override
+  String get permissionLocation => '地点';
+
+  @override
+  String get permissionCamera => '摄影机';
+
+  @override
+  String get permissionNotifications => '通知';
+
+  @override
+  String get permissionPhotos => '照片';
+
+  @override
+  String get permissionGranted => '获准';
+
+  @override
+  String get permissionNotGranted => '不予批准';
+
+  @override
+  String get permissionGrant => '赠款';
+
+  @override
+  String get generateUsername => '生成新用户名';
+
+  @override
+  String get adminTools => '管理工具';
+
+  @override
+  String get openAdminPanel => '打开管理面板';
+
+  @override
+  String get webAdminInterface => 'Web 管理员界面';
+
+  @override
+  String get adminBetaNotice => '贝塔只构建。 用于测试近距离警报、推进通知和系统诊断的行政管理工具.';
+
+  @override
+  String get whatDoYouSee => '你看见什么了?';
+
+  @override
+  String get ufoSighting => '不明飞行物 观察';
+
+  @override
+  String get envAnalysisTitle => 'Environmental Analysis';
+
+  @override
+  String get envAnalysisPending => 'Analysis Pending';
+
+  @override
+  String get envAnalysisPendingDesc =>
+      'Environmental data will be available once processing begins.';
+
+  @override
+  String get unknownAircraft => 'Unknown Aircraft';
+
+  @override
+  String get moreAircraft => 'more aircraft';
+
+  @override
+  String get premiumImageryTitle => 'Premium Satellite Imagery';
+
+  @override
+  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+
+  @override
+  String get sightingTypeLabel => '类型';
+
+  @override
+  String get ufoTypeSphere => '球体';
+
+  @override
+  String get ufoTypeTriangle => '三角形';
+
+  @override
+  String get ufoTypeDisk => '磁盘';
+
+  @override
+  String get ufoTypeLight => '光线';
+
+  @override
+  String get ufoTypeFireball => '火球';
+
+  @override
+  String get ufoTypeCylinder => '圆柱';
+
+  @override
+  String get ufoTypeCigar => '雪茄';
+
+  @override
+  String get ufoTypeRectangle => '矩形';
+
+  @override
+  String get ufoTypeFormation => '组建';
+
+  @override
+  String get ufoTypeUnknown => '未知';
+
+  @override
+  String get ufoTypeBoomerang => 'Boomerang';
+
+  @override
+  String get ufoTypeDiamond => 'Diamond';
+
+  @override
+  String get ufoTypeOval => 'Oval';
+
+  @override
+  String get ufoTypeCone => 'Cone';
+
+  @override
+  String get ufoTypeCross => 'Cross';
+
+  @override
+  String get ufoTypeDumbbell => 'Dumbbell';
+
+  @override
+  String get ufoTypeTeardrop => 'Teardrop';
+
+  @override
+  String get ufoTypeTicTac => 'Tic Tac';
+
+  @override
+  String get ufoTypeBullet => 'Bullet';
+
+  @override
+  String get ufoTypeSaturn => 'Saturn';
+
+  @override
+  String get ufoTypeStarLike => 'Star-like';
+
+  @override
+  String get ufoTypeBlimp => 'Blimp';
+
+  @override
+  String get actionsTitle => '行动';
+
+  @override
+  String get addPhotosAndVideos => '添加照片和视频( V)';
+
+  @override
+  String get howToReportToMufon => '如何向毛里求斯财政部报告';
+
+  @override
+  String get reportToMufon => '向毛里求斯财政部报告';
+
+  @override
+  String get whyReportToMufon => '为什么向MUFON报告?';
+
+  @override
+  String get openMufonReport => '打开MUFON 报告';
+
+  @override
+  String get confirmedWitness => '你确认了这次目击';
+
+  @override
+  String witnessesHaveConfirmed(int count) {
+    return '人们已经确认这次目击';
+  }
+
+  @override
+  String get aircraftTrackingTitle => 'Aircraft Tracking';
+
+  @override
+  String get weatherConditionsTitle => 'Weather Conditions';
+
+  @override
+  String get noSatellitePasses => 'No visible satellite passes found';
+
+  @override
+  String get contentAnalysisTitle => 'Content Analysis';
+
+  @override
+  String get contentSafe => 'Content is safe';
+
+  @override
+  String get contentFlagged => 'Content flagged for review';
+
+  @override
+  String get confidenceLabel => 'Confidence';
+
+  @override
+  String get methodLabel => 'Method';
+
+  @override
+  String get premiumImageryAccessOnly =>
+      'Premium satellite imagery is only available to:';
+
+  @override
+  String get premiumAccessCreators => 'Alert creators';
+
+  @override
+  String get premiumAccessWitnesses =>
+      'Confirmed witnesses within visibility range';
+
+  @override
+  String get comingSoon => 'Coming Soon';
 }

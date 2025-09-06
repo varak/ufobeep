@@ -132,9 +132,9 @@
   "videoOnly": "video endast",
   "imageOnly": "bild endast",
   "timeJustNow": "Just nu",
-  "timeDaysAgo": "{count}d för",
-  "timeHoursAgo": "{count} för",
-  "timeMinutesAgo": "{count} för",
+  "timeDaysAgo": "{count}d ago",
+  "timeHoursAgo": "{count}h ago",
+  "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "Load More Alerts",
   "toggleMufonTooltip": "Toggle MUFON observationer",
   "showMufonData": "Visa MUFON-data",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "Kamera",
+  "gallery": "Galleriet",
+  "basicSettings": "Grundläggande inställningar",
+  "appSettings": "App Inställningar",
+  "alertRange": "Alert Range",
+  "manageNotificationsDesc": "Hantera prenumerationer och inställningar",
+  "permissionsTitle": "Tillstånd",
+  "permissionLocation": "Plats",
+  "permissionCamera": "Kamera",
+  "permissionNotifications": "Meddelanden",
+  "permissionPhotos": "Foton",
+  "permissionGranted": "Beviljas",
+  "permissionNotGranted": "Inte beviljad",
+  "permissionGrant": "Grant",
+  "generateUsername": "Skapa nytt användarnamn",
+  "adminTools": "Admin verktyg",
+  "openAdminPanel": "Open Admin Panel",
+  "webAdminInterface": "Web Admin Interface",
+  "adminBetaNotice": "Beta bygger bara. Admin verktyg för att testa närhetsvarningar, push-meddelanden och systemdiagnostik.",
+  "whatDoYouSee": "Vad ser du?",
+  "ufoSighting": "UFO Sighting",
+  "actionsTitle": "Aktiviteter",
+  "addPhotosAndVideos": "Lägg till foton och videor",
+  "howToReportToMufon": "Hur man rapporterar till Mufon",
+  "reportToMufon": "Rapport till MUFON",
+  "whyReportToMufon": "Varför rapportera till MUFON?",
+  "openMufonReport": "Open MUFON Rapport",
+  "confirmedWitness": "Du bekräftade denna observation",
+  "witnessesHaveConfirmed": "{count} människor har bekräftat denna observation",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "Typ",
+  "ufoTypeSphere": "Sfären",
+  "ufoTypeTriangle": "Triangeln",
+  "ufoTypeDisk": "Disk",
+  "ufoTypeLight": "Ljus ljus",
+  "ufoTypeFireball": "Fireball",
+  "ufoTypeCylinder": "Cylinder",
+  "ufoTypeCigar": "Cigar",
+  "ufoTypeRectangle": "Rectangle",
+  "ufoTypeFormation": "Formation",
+  "ufoTypeUnknown": "Okänd"
 }

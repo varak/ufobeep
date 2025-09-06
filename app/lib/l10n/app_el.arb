@@ -132,9 +132,9 @@
   "videoOnly": "μόνο βίντεο",
   "imageOnly": "μόνο εικόνα",
   "timeJustNow": "Μόλις τώρα",
-  "timeDaysAgo": "_PH_0_D πριν",
-  "timeHoursAgo": "__PH_0_h πριν",
-  "timeMinutesAgo": "_PH_0_m πριν",
+  "timeDaysAgo": "{count}d ago",
+  "timeHoursAgo": "{count}h ago",
+  "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "Φόρτωση περισσότερων ειδοποιήσεων",
   "toggleMufonTooltip": "Εναλλαγή προβολών MUFON",
   "showMufonData": "Εμφάνιση δεδομένων MUFON",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "Κάμερα",
+  "gallery": "Γκαλερί",
+  "basicSettings": "Βασικές ρυθμίσεις",
+  "appSettings": "Settings εφαρμογών",
+  "alertRange": "Εύρος ειδοποίησης",
+  "manageNotificationsDesc": "Διαχείριση συνδρομών & ρυθμίσεων",
+  "permissionsTitle": "Άδειες",
+  "permissionLocation": "Τοποθεσία",
+  "permissionCamera": "Κάμερα",
+  "permissionNotifications": "Κοινοποιήσεις",
+  "permissionPhotos": "Φωτογραφίες",
+  "permissionGranted": "Χορηγείται",
+  "permissionNotGranted": "Δεν έχει χορηγηθεί",
+  "permissionGrant": "Επιχορήγηση",
+  "generateUsername": "Δημιουργία νέου ονόματος χρήστη",
+  "adminTools": "Εργαλεία διαχείρισης",
+  "openAdminPanel": "Άνοιγμα πίνακα διαχειριστή",
+  "webAdminInterface": "Διεπαφή διαχειριστή ιστού",
+  "adminBetaNotice": "Η Βήτα χτίζει μόνο. Εργαλεία διαχείρισης για τη δοκιμή ειδοποιήσεων εγγύτητας, ειδοποιήσεις ώθησης και διαγνωστικά συστημάτων.",
+  "whatDoYouSee": "Τι βλέπεις?",
+  "ufoSighting": "ΑΤΙΑ Ορατότητα",
+  "actionsTitle": "Δράσεις",
+  "addPhotosAndVideos": "Προσθήκη φωτογραφιών & βίντεο",
+  "howToReportToMufon": "Πώς να αναφέρετε στο MUFON",
+  "reportToMufon": "Αναφορά στο MUFON",
+  "whyReportToMufon": "Γιατί αναφέρεσαι στο MUFON?",
+  "openMufonReport": "Άνοιγμα MUFON Έκθεση",
+  "confirmedWitness": "Επιβεβαίωσες αυτή την παρατήρηση",
+  "witnessesHaveConfirmed": "__PH_0_ οι άνθρωποι έχουν επιβεβαιώσει αυτή την παρατήρηση",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "Τύπος",
+  "ufoTypeSphere": "Σφαίρα",
+  "ufoTypeTriangle": "Τρίγωνο",
+  "ufoTypeDisk": "Δίσκος",
+  "ufoTypeLight": "Φως",
+  "ufoTypeFireball": "Πυρόμπαλα",
+  "ufoTypeCylinder": "Κύλινδρος",
+  "ufoTypeCigar": "Πούρα",
+  "ufoTypeRectangle": "Ορθογώνιο",
+  "ufoTypeFormation": "Σχηματισμός",
+  "ufoTypeUnknown": "Άγνωστο"
 }

@@ -439,17 +439,17 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '- For nylig';
+    return '${count}d ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '- For længe siden';
+    return '${count}h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '_ _ PH _ 0 _ m siden';
+    return '${count}m ago';
   }
 
   @override
@@ -531,4 +531,224 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get retakeVideo => 'Genoptag video';
+
+  @override
+  String get camera => 'Kamera';
+
+  @override
+  String get gallery => 'Galleri';
+
+  @override
+  String get basicSettings => 'Grundlæggende indstillinger';
+
+  @override
+  String get appSettings => 'App indstillinger';
+
+  @override
+  String get alertRange => 'Advarselsområde';
+
+  @override
+  String get manageNotificationsDesc =>
+      'Administrer abonnementer og indstillinger';
+
+  @override
+  String get permissionsTitle => 'Tilladelser';
+
+  @override
+  String get permissionLocation => 'Sted';
+
+  @override
+  String get permissionCamera => 'Kamera';
+
+  @override
+  String get permissionNotifications => 'Meddelelser';
+
+  @override
+  String get permissionPhotos => 'Fotos';
+
+  @override
+  String get permissionGranted => 'Tildelt';
+
+  @override
+  String get permissionNotGranted => 'Ikke tilladt';
+
+  @override
+  String get permissionGrant => 'Tilskud';
+
+  @override
+  String get generateUsername => 'Generér nyt brugernavn';
+
+  @override
+  String get adminTools => 'Admin- værktøjer';
+
+  @override
+  String get openAdminPanel => 'Åbn Admin- panel';
+
+  @override
+  String get webAdminInterface => 'Web Admin- grænseflade';
+
+  @override
+  String get adminBetaNotice =>
+      'Beta bygger kun. Adminér værktøjer til test nærhed advarsler, skubbe meddelelser, og system diagnostik.';
+
+  @override
+  String get whatDoYouSee => 'Hvad ser du?';
+
+  @override
+  String get ufoSighting => 'UFO Sigtning';
+
+  @override
+  String get envAnalysisTitle => 'Environmental Analysis';
+
+  @override
+  String get envAnalysisPending => 'Analysis Pending';
+
+  @override
+  String get envAnalysisPendingDesc =>
+      'Environmental data will be available once processing begins.';
+
+  @override
+  String get unknownAircraft => 'Unknown Aircraft';
+
+  @override
+  String get moreAircraft => 'more aircraft';
+
+  @override
+  String get premiumImageryTitle => 'Premium Satellite Imagery';
+
+  @override
+  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+
+  @override
+  String get sightingTypeLabel => 'Type';
+
+  @override
+  String get ufoTypeSphere => 'Sphere Formand';
+
+  @override
+  String get ufoTypeTriangle => 'Trekant';
+
+  @override
+  String get ufoTypeDisk => 'Disk';
+
+  @override
+  String get ufoTypeLight => 'Lys';
+
+  @override
+  String get ufoTypeFireball => 'Fireball';
+
+  @override
+  String get ufoTypeCylinder => 'Cylinder';
+
+  @override
+  String get ufoTypeCigar => 'Cigar';
+
+  @override
+  String get ufoTypeRectangle => 'Rektangel';
+
+  @override
+  String get ufoTypeFormation => 'Dannelse';
+
+  @override
+  String get ufoTypeUnknown => 'Ukendt';
+
+  @override
+  String get ufoTypeBoomerang => 'Boomerang';
+
+  @override
+  String get ufoTypeDiamond => 'Diamond';
+
+  @override
+  String get ufoTypeOval => 'Oval';
+
+  @override
+  String get ufoTypeCone => 'Cone';
+
+  @override
+  String get ufoTypeCross => 'Cross';
+
+  @override
+  String get ufoTypeDumbbell => 'Dumbbell';
+
+  @override
+  String get ufoTypeTeardrop => 'Teardrop';
+
+  @override
+  String get ufoTypeTicTac => 'Tic Tac';
+
+  @override
+  String get ufoTypeBullet => 'Bullet';
+
+  @override
+  String get ufoTypeSaturn => 'Saturn';
+
+  @override
+  String get ufoTypeStarLike => 'Star-like';
+
+  @override
+  String get ufoTypeBlimp => 'Blimp';
+
+  @override
+  String get actionsTitle => 'Handlinger';
+
+  @override
+  String get addPhotosAndVideos => 'Tilføj billeder og videoer';
+
+  @override
+  String get howToReportToMufon => 'Sådan rapporterer du til MUFON';
+
+  @override
+  String get reportToMufon => 'Rapport til MUFON';
+
+  @override
+  String get whyReportToMufon => 'Hvorfor rapportere til MUFON?';
+
+  @override
+  String get openMufonReport => 'Åbne MUFON Rapport';
+
+  @override
+  String get confirmedWitness => 'Du bekræftede denne observation';
+
+  @override
+  String witnessesHaveConfirmed(int count) {
+    return '_ _ PH _ 0 _ _ folk har bekræftet denne observation';
+  }
+
+  @override
+  String get aircraftTrackingTitle => 'Aircraft Tracking';
+
+  @override
+  String get weatherConditionsTitle => 'Weather Conditions';
+
+  @override
+  String get noSatellitePasses => 'No visible satellite passes found';
+
+  @override
+  String get contentAnalysisTitle => 'Content Analysis';
+
+  @override
+  String get contentSafe => 'Content is safe';
+
+  @override
+  String get contentFlagged => 'Content flagged for review';
+
+  @override
+  String get confidenceLabel => 'Confidence';
+
+  @override
+  String get methodLabel => 'Method';
+
+  @override
+  String get premiumImageryAccessOnly =>
+      'Premium satellite imagery is only available to:';
+
+  @override
+  String get premiumAccessCreators => 'Alert creators';
+
+  @override
+  String get premiumAccessWitnesses =>
+      'Confirmed witnesses within visibility range';
+
+  @override
+  String get comingSoon => 'Coming Soon';
 }

@@ -132,9 +132,9 @@
   "videoOnly": "kun video",
   "imageOnly": "kun billede",
   "timeJustNow": "Lige nu",
-  "timeDaysAgo": "- For nylig",
-  "timeHoursAgo": "- For længe siden",
-  "timeMinutesAgo": "_ _ PH _ 0 _ m siden",
+  "timeDaysAgo": "{count}d ago",
+  "timeHoursAgo": "{count}h ago",
+  "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "Indlæs flere rapporter",
   "toggleMufonTooltip": "Slå MUFON-observationer til og fra",
   "showMufonData": "Vis MUFON data",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "Kamera",
+  "gallery": "Galleri",
+  "basicSettings": "Grundlæggende indstillinger",
+  "appSettings": "App indstillinger",
+  "alertRange": "Advarselsområde",
+  "manageNotificationsDesc": "Administrer abonnementer og indstillinger",
+  "permissionsTitle": "Tilladelser",
+  "permissionLocation": "Sted",
+  "permissionCamera": "Kamera",
+  "permissionNotifications": "Meddelelser",
+  "permissionPhotos": "Fotos",
+  "permissionGranted": "Tildelt",
+  "permissionNotGranted": "Ikke tilladt",
+  "permissionGrant": "Tilskud",
+  "generateUsername": "Generér nyt brugernavn",
+  "adminTools": "Admin- værktøjer",
+  "openAdminPanel": "Åbn Admin- panel",
+  "webAdminInterface": "Web Admin- grænseflade",
+  "adminBetaNotice": "Beta bygger kun. Adminér værktøjer til test nærhed advarsler, skubbe meddelelser, og system diagnostik.",
+  "whatDoYouSee": "Hvad ser du?",
+  "ufoSighting": "UFO Sigtning",
+  "actionsTitle": "Handlinger",
+  "addPhotosAndVideos": "Tilføj billeder og videoer",
+  "howToReportToMufon": "Sådan rapporterer du til MUFON",
+  "reportToMufon": "Rapport til MUFON",
+  "whyReportToMufon": "Hvorfor rapportere til MUFON?",
+  "openMufonReport": "Åbne MUFON Rapport",
+  "confirmedWitness": "Du bekræftede denne observation",
+  "witnessesHaveConfirmed": "_ _ PH _ 0 _ _ folk har bekræftet denne observation",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "Type",
+  "ufoTypeSphere": "Sphere Formand",
+  "ufoTypeTriangle": "Trekant",
+  "ufoTypeDisk": "Disk",
+  "ufoTypeLight": "Lys",
+  "ufoTypeFireball": "Fireball",
+  "ufoTypeCylinder": "Cylinder",
+  "ufoTypeCigar": "Cigar",
+  "ufoTypeRectangle": "Rektangel",
+  "ufoTypeFormation": "Dannelse",
+  "ufoTypeUnknown": "Ukendt"
 }

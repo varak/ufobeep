@@ -446,7 +446,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h önce';
+    return '${count}h ago';
   }
 
   @override
@@ -534,4 +534,223 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get retakeVideo => 'Retake Video';
+
+  @override
+  String get camera => 'Kamera';
+
+  @override
+  String get gallery => 'Gallery';
+
+  @override
+  String get basicSettings => 'Temel Ayarlar';
+
+  @override
+  String get appSettings => 'App Ayarları';
+
+  @override
+  String get alertRange => 'Alert Range';
+
+  @override
+  String get manageNotificationsDesc => 'Aboneliği ve ayarları yönetin';
+
+  @override
+  String get permissionsTitle => 'İzinler';
+
+  @override
+  String get permissionLocation => 'Konum Location';
+
+  @override
+  String get permissionCamera => 'Kamera';
+
+  @override
+  String get permissionNotifications => 'Bildirimler';
+
+  @override
+  String get permissionPhotos => 'Fotoğraflar';
+
+  @override
+  String get permissionGranted => 'Granted';
+
+  @override
+  String get permissionNotGranted => 'Verilmedi';
+
+  @override
+  String get permissionGrant => 'Grant';
+
+  @override
+  String get generateUsername => 'Genrate new user';
+
+  @override
+  String get adminTools => 'Admin Tools';
+
+  @override
+  String get openAdminPanel => 'Open Admin Panel';
+
+  @override
+  String get webAdminInterface => 'Web Admin Interface';
+
+  @override
+  String get adminBetaNotice =>
+      'Beta sadece inşa eder. Yakın uyarıları test etmek için yönetici araçları, bildirimleri zorlama ve sistem tanıları.';
+
+  @override
+  String get whatDoYouSee => 'Ne görüyorsunuz?';
+
+  @override
+  String get ufoSighting => 'UFO UFO Sighting';
+
+  @override
+  String get envAnalysisTitle => 'Environmental Analysis';
+
+  @override
+  String get envAnalysisPending => 'Analysis Pending';
+
+  @override
+  String get envAnalysisPendingDesc =>
+      'Environmental data will be available once processing begins.';
+
+  @override
+  String get unknownAircraft => 'Unknown Aircraft';
+
+  @override
+  String get moreAircraft => 'more aircraft';
+
+  @override
+  String get premiumImageryTitle => 'Premium Satellite Imagery';
+
+  @override
+  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+
+  @override
+  String get sightingTypeLabel => 'Tipi';
+
+  @override
+  String get ufoTypeSphere => 'Sphere';
+
+  @override
+  String get ufoTypeTriangle => 'Üçgen';
+
+  @override
+  String get ufoTypeDisk => 'Disk';
+
+  @override
+  String get ufoTypeLight => 'Işık Işığı';
+
+  @override
+  String get ufoTypeFireball => 'Fireball';
+
+  @override
+  String get ufoTypeCylinder => 'Silindir';
+
+  @override
+  String get ufoTypeCigar => 'Cigar';
+
+  @override
+  String get ufoTypeRectangle => 'Rect';
+
+  @override
+  String get ufoTypeFormation => 'Formasyon';
+
+  @override
+  String get ufoTypeUnknown => 'Bilinmeyen';
+
+  @override
+  String get ufoTypeBoomerang => 'Boomerang';
+
+  @override
+  String get ufoTypeDiamond => 'Diamond';
+
+  @override
+  String get ufoTypeOval => 'Oval';
+
+  @override
+  String get ufoTypeCone => 'Cone';
+
+  @override
+  String get ufoTypeCross => 'Cross';
+
+  @override
+  String get ufoTypeDumbbell => 'Dumbbell';
+
+  @override
+  String get ufoTypeTeardrop => 'Teardrop';
+
+  @override
+  String get ufoTypeTicTac => 'Tic Tac';
+
+  @override
+  String get ufoTypeBullet => 'Bullet';
+
+  @override
+  String get ufoTypeSaturn => 'Saturn';
+
+  @override
+  String get ufoTypeStarLike => 'Star-like';
+
+  @override
+  String get ufoTypeBlimp => 'Blimp';
+
+  @override
+  String get actionsTitle => 'Eylemler';
+
+  @override
+  String get addPhotosAndVideos => 'Fotoğraflar ve Videolar ekleyin';
+
+  @override
+  String get howToReportToMufon => 'MUFON\'a Nasıl Rapor Verilir';
+
+  @override
+  String get reportToMufon => 'MUFON\'a Rapor';
+
+  @override
+  String get whyReportToMufon => 'Neden MUFON\'a Rapor?';
+
+  @override
+  String get openMufonReport => 'Açık MUFON Rapor';
+
+  @override
+  String get confirmedWitness => 'Bu manzarayı doğruladın';
+
+  @override
+  String witnessesHaveConfirmed(int count) {
+    return '$count insanlar bu manzarayı doğruladı';
+  }
+
+  @override
+  String get aircraftTrackingTitle => 'Aircraft Tracking';
+
+  @override
+  String get weatherConditionsTitle => 'Weather Conditions';
+
+  @override
+  String get noSatellitePasses => 'No visible satellite passes found';
+
+  @override
+  String get contentAnalysisTitle => 'Content Analysis';
+
+  @override
+  String get contentSafe => 'Content is safe';
+
+  @override
+  String get contentFlagged => 'Content flagged for review';
+
+  @override
+  String get confidenceLabel => 'Confidence';
+
+  @override
+  String get methodLabel => 'Method';
+
+  @override
+  String get premiumImageryAccessOnly =>
+      'Premium satellite imagery is only available to:';
+
+  @override
+  String get premiumAccessCreators => 'Alert creators';
+
+  @override
+  String get premiumAccessWitnesses =>
+      'Confirmed witnesses within visibility range';
+
+  @override
+  String get comingSoon => 'Coming Soon';
 }

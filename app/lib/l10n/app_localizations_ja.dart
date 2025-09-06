@@ -427,17 +427,17 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '__PH_0_d 前に';
+    return '${count}d ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '__PH_0_h 前に';
+    return '${count}h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '__PH_0_m 前に';
+    return '${count}m ago';
   }
 
   @override
@@ -518,4 +518,222 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get retakeVideo => 'Retake ビデオ';
+
+  @override
+  String get camera => 'カメラ';
+
+  @override
+  String get gallery => 'ギャラリー';
+
+  @override
+  String get basicSettings => '基本設定';
+
+  @override
+  String get appSettings => 'アプリの設定';
+
+  @override
+  String get alertRange => 'アラート範囲';
+
+  @override
+  String get manageNotificationsDesc => 'サブスクリプションと設定の管理';
+
+  @override
+  String get permissionsTitle => 'パーミッション';
+
+  @override
+  String get permissionLocation => 'アクセス';
+
+  @override
+  String get permissionCamera => 'カメラ';
+
+  @override
+  String get permissionNotifications => 'お知らせ';
+
+  @override
+  String get permissionPhotos => 'ニュース';
+
+  @override
+  String get permissionGranted => '助成対象者';
+
+  @override
+  String get permissionNotGranted => '免責事項';
+
+  @override
+  String get permissionGrant => '助成金';
+
+  @override
+  String get generateUsername => '新しいユーザー名を生成する';
+
+  @override
+  String get adminTools => '管理者ツール';
+
+  @override
+  String get openAdminPanel => '開いた管理者のパネル';
+
+  @override
+  String get webAdminInterface => 'ウェブ管理者インターフェイス';
+
+  @override
+  String get adminBetaNotice => 'ベータビルドのみ。 近接アラートのテスト、プッシュ通知、システム診断のための管理ツール.';
+
+  @override
+  String get whatDoYouSee => 'お問い合わせ?';
+
+  @override
+  String get ufoSighting => 'ユーチューブ スタイリング';
+
+  @override
+  String get envAnalysisTitle => 'Environmental Analysis';
+
+  @override
+  String get envAnalysisPending => 'Analysis Pending';
+
+  @override
+  String get envAnalysisPendingDesc =>
+      'Environmental data will be available once processing begins.';
+
+  @override
+  String get unknownAircraft => 'Unknown Aircraft';
+
+  @override
+  String get moreAircraft => 'more aircraft';
+
+  @override
+  String get premiumImageryTitle => 'Premium Satellite Imagery';
+
+  @override
+  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+
+  @override
+  String get sightingTypeLabel => 'タイプ:';
+
+  @override
+  String get ufoTypeSphere => 'スフィア';
+
+  @override
+  String get ufoTypeTriangle => 'トライアングル';
+
+  @override
+  String get ufoTypeDisk => 'ディスク';
+
+  @override
+  String get ufoTypeLight => 'ライトライト';
+
+  @override
+  String get ufoTypeFireball => 'ファイアーボール';
+
+  @override
+  String get ufoTypeCylinder => 'シリンダー';
+
+  @override
+  String get ufoTypeCigar => 'シガー';
+
+  @override
+  String get ufoTypeRectangle => '長方形';
+
+  @override
+  String get ufoTypeFormation => 'フォーム';
+
+  @override
+  String get ufoTypeUnknown => '未知の';
+
+  @override
+  String get ufoTypeBoomerang => 'Boomerang';
+
+  @override
+  String get ufoTypeDiamond => 'Diamond';
+
+  @override
+  String get ufoTypeOval => 'Oval';
+
+  @override
+  String get ufoTypeCone => 'Cone';
+
+  @override
+  String get ufoTypeCross => 'Cross';
+
+  @override
+  String get ufoTypeDumbbell => 'Dumbbell';
+
+  @override
+  String get ufoTypeTeardrop => 'Teardrop';
+
+  @override
+  String get ufoTypeTicTac => 'Tic Tac';
+
+  @override
+  String get ufoTypeBullet => 'Bullet';
+
+  @override
+  String get ufoTypeSaturn => 'Saturn';
+
+  @override
+  String get ufoTypeStarLike => 'Star-like';
+
+  @override
+  String get ufoTypeBlimp => 'Blimp';
+
+  @override
+  String get actionsTitle => 'アクション';
+
+  @override
+  String get addPhotosAndVideos => '写真とビデオを追加';
+
+  @override
+  String get howToReportToMufon => 'MUFONへの報告方法';
+
+  @override
+  String get reportToMufon => 'MUFONへの報告';
+
+  @override
+  String get whyReportToMufon => 'なぜMUFONへの報告?';
+
+  @override
+  String get openMufonReport => 'MUFONを開く レポート';
+
+  @override
+  String get confirmedWitness => 'この視線を確認しました';
+
+  @override
+  String witnessesHaveConfirmed(int count) {
+    return '$count 人々はこの視線を確認しました';
+  }
+
+  @override
+  String get aircraftTrackingTitle => 'Aircraft Tracking';
+
+  @override
+  String get weatherConditionsTitle => 'Weather Conditions';
+
+  @override
+  String get noSatellitePasses => 'No visible satellite passes found';
+
+  @override
+  String get contentAnalysisTitle => 'Content Analysis';
+
+  @override
+  String get contentSafe => 'Content is safe';
+
+  @override
+  String get contentFlagged => 'Content flagged for review';
+
+  @override
+  String get confidenceLabel => 'Confidence';
+
+  @override
+  String get methodLabel => 'Method';
+
+  @override
+  String get premiumImageryAccessOnly =>
+      'Premium satellite imagery is only available to:';
+
+  @override
+  String get premiumAccessCreators => 'Alert creators';
+
+  @override
+  String get premiumAccessWitnesses =>
+      'Confirmed witnesses within visibility range';
+
+  @override
+  String get comingSoon => 'Coming Soon';
 }

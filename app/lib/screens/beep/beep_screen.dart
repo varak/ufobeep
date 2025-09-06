@@ -335,9 +335,9 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text(
-            'Beep',
-            style: TextStyle(
+          title: Text(
+            l10n.tabBeep,
+            style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w700,
               fontSize: 24,
@@ -357,9 +357,9 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'What do you see?',
-                        style: TextStyle(
+                      Text(
+                        l10n.whatDoYouSee,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 32,
                           fontWeight: FontWeight.w700,
@@ -374,7 +374,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                           fontSize: 16,
                         ),
                         decoration: InputDecoration(
-                          hintText: 'Describe what you\'re seeing in the sky...',
+                          hintText: l10n.descriptionHint,
                           hintStyle: TextStyle(
                             color: Colors.white.withOpacity(0.5),
                           ),
@@ -448,7 +448,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              l10n.capturePhoto,
+                              l10n.camera,
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -475,7 +475,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              l10n.pickFromGallery,
+                              l10n.gallery,
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -548,20 +548,20 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
             const Icon(Icons.location_on, color: AppColors.brandPrimary),
             const SizedBox(width: 8),
             Text(
-              l10n.locationPermissionTitle,
+              AppLocalizations.of(context).locationPermissionTitle,
               style: const TextStyle(color: AppColors.textPrimary),
             ),
           ],
         ),
         content: Text(
-          l10n.locationPermissionBody,
+          AppLocalizations.of(context).locationPermissionBody,
           style: const TextStyle(color: AppColors.textSecondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: Text(
-              l10n.cancel,
+              AppLocalizations.of(context).cancel,
               style: const TextStyle(color: AppColors.textTertiary),
             ),
           ),
@@ -571,7 +571,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
               backgroundColor: AppColors.brandPrimary,
               foregroundColor: Colors.black,
             ),
-            child: Text(l10n.openSettings),
+            child: Text(AppLocalizations.of(context).openSettings),
           ),
         ],
       ),
@@ -589,21 +589,21 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
             const Icon(Icons.settings, color: AppColors.semanticWarning),
             const SizedBox(width: 8),
             Text(
-              l10n.permissionsRequired,
+              AppLocalizations.of(context).permissionsRequired,
               style: const TextStyle(color: AppColors.textPrimary),
             ),
           ],
         ),
         content: Text(
-          l10n.locationPermissionBody,
+          AppLocalizations.of(context).locationPermissionBody,
           style: const TextStyle(color: AppColors.textSecondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(color: AppColors.textTertiary),
+            child: Text(
+              AppLocalizations.of(context).cancel,
+              style: const TextStyle(color: AppColors.textTertiary),
             ),
           ),
           ElevatedButton(
@@ -612,7 +612,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
               backgroundColor: AppColors.semanticWarning,
               foregroundColor: Colors.black,
             ),
-            child: Text(l10n.openSettings),
+            child: Text(AppLocalizations.of(context).openSettings),
           ),
         ],
       ),

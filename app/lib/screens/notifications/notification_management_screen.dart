@@ -5,6 +5,7 @@ import '../../models/user_preferences.dart';
 import '../../providers/user_preferences_provider.dart';
 import '../../services/api_client.dart';
 import '../../services/user_service.dart';
+import '../../services/beep_service.dart';
 import '../../widgets/glass_card.dart';
 
 class NotificationManagementScreen extends ConsumerStatefulWidget {
@@ -38,6 +39,21 @@ class _NotificationManagementScreenState
           _subscriptions = List<Map<String, dynamic>>.from(response.data['subscriptions'] ?? []);
           _loadingSubscriptions = false;
         });
+      }
+      
+      // Fallback: if empty, also check device-based subscriptions for non-auth flows
+      if ((_subscriptions.isEmpty) && mounted) {
+        try {
+          final deviceId = await BeepService().getOrCreateDeviceId();
+          final resp2 = await ApiClient.dio.get('/alerts/following', queryParameters: {
+            'device_id': deviceId,
+          });
+          if (resp2.data is Map && resp2.data['subscriptions'] is List) {
+            setState(() {
+              _subscriptions = List<Map<String, dynamic>>.from(resp2.data['subscriptions']);
+            });
+          }
+        } catch (_) {}
       }
     } catch (e) {
       print('Error loading subscriptions: $e');

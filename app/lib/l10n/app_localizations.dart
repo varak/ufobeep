@@ -1097,6 +1097,432 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Retake Video'**
   String get retakeVideo;
+
+  /// No description provided for @camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get camera;
+
+  /// No description provided for @gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get gallery;
+
+  /// No description provided for @basicSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic Settings'**
+  String get basicSettings;
+
+  /// No description provided for @appSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'App Settings'**
+  String get appSettings;
+
+  /// No description provided for @alertRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert Range'**
+  String get alertRange;
+
+  /// No description provided for @manageNotificationsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage subscriptions & settings'**
+  String get manageNotificationsDesc;
+
+  /// No description provided for @permissionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions'**
+  String get permissionsTitle;
+
+  /// No description provided for @permissionLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get permissionLocation;
+
+  /// No description provided for @permissionCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get permissionCamera;
+
+  /// No description provided for @permissionNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get permissionNotifications;
+
+  /// No description provided for @permissionPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get permissionPhotos;
+
+  /// No description provided for @permissionGranted.
+  ///
+  /// In en, this message translates to:
+  /// **'Granted'**
+  String get permissionGranted;
+
+  /// No description provided for @permissionNotGranted.
+  ///
+  /// In en, this message translates to:
+  /// **'Not granted'**
+  String get permissionNotGranted;
+
+  /// No description provided for @permissionGrant.
+  ///
+  /// In en, this message translates to:
+  /// **'Grant'**
+  String get permissionGrant;
+
+  /// No description provided for @generateUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate new username'**
+  String get generateUsername;
+
+  /// No description provided for @adminTools.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin Tools'**
+  String get adminTools;
+
+  /// No description provided for @openAdminPanel.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Admin Panel'**
+  String get openAdminPanel;
+
+  /// No description provided for @webAdminInterface.
+  ///
+  /// In en, this message translates to:
+  /// **'Web Admin Interface'**
+  String get webAdminInterface;
+
+  /// No description provided for @adminBetaNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Beta builds only. Admin tools for testing proximity alerts, push notifications, and system diagnostics.'**
+  String get adminBetaNotice;
+
+  /// No description provided for @whatDoYouSee.
+  ///
+  /// In en, this message translates to:
+  /// **'What do you see?'**
+  String get whatDoYouSee;
+
+  /// No description provided for @ufoSighting.
+  ///
+  /// In en, this message translates to:
+  /// **'UFO Sighting'**
+  String get ufoSighting;
+
+  /// No description provided for @envAnalysisTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Environmental Analysis'**
+  String get envAnalysisTitle;
+
+  /// No description provided for @envAnalysisPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis Pending'**
+  String get envAnalysisPending;
+
+  /// No description provided for @envAnalysisPendingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Environmental data will be available once processing begins.'**
+  String get envAnalysisPendingDesc;
+
+  /// No description provided for @unknownAircraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown Aircraft'**
+  String get unknownAircraft;
+
+  /// No description provided for @moreAircraft.
+  ///
+  /// In en, this message translates to:
+  /// **'more aircraft'**
+  String get moreAircraft;
+
+  /// No description provided for @premiumImageryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Satellite Imagery'**
+  String get premiumImageryTitle;
+
+  /// No description provided for @premiumImagerySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'High-resolution commercial imagery'**
+  String get premiumImagerySubtitle;
+
+  /// No description provided for @sightingTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get sightingTypeLabel;
+
+  /// No description provided for @ufoTypeSphere.
+  ///
+  /// In en, this message translates to:
+  /// **'Sphere'**
+  String get ufoTypeSphere;
+
+  /// No description provided for @ufoTypeTriangle.
+  ///
+  /// In en, this message translates to:
+  /// **'Triangle'**
+  String get ufoTypeTriangle;
+
+  /// No description provided for @ufoTypeDisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Disk'**
+  String get ufoTypeDisk;
+
+  /// No description provided for @ufoTypeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get ufoTypeLight;
+
+  /// No description provided for @ufoTypeFireball.
+  ///
+  /// In en, this message translates to:
+  /// **'Fireball'**
+  String get ufoTypeFireball;
+
+  /// No description provided for @ufoTypeCylinder.
+  ///
+  /// In en, this message translates to:
+  /// **'Cylinder'**
+  String get ufoTypeCylinder;
+
+  /// No description provided for @ufoTypeCigar.
+  ///
+  /// In en, this message translates to:
+  /// **'Cigar'**
+  String get ufoTypeCigar;
+
+  /// No description provided for @ufoTypeRectangle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rectangle'**
+  String get ufoTypeRectangle;
+
+  /// No description provided for @ufoTypeFormation.
+  ///
+  /// In en, this message translates to:
+  /// **'Formation'**
+  String get ufoTypeFormation;
+
+  /// No description provided for @ufoTypeUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get ufoTypeUnknown;
+
+  /// No description provided for @ufoTypeBoomerang.
+  ///
+  /// In en, this message translates to:
+  /// **'Boomerang'**
+  String get ufoTypeBoomerang;
+
+  /// No description provided for @ufoTypeDiamond.
+  ///
+  /// In en, this message translates to:
+  /// **'Diamond'**
+  String get ufoTypeDiamond;
+
+  /// No description provided for @ufoTypeOval.
+  ///
+  /// In en, this message translates to:
+  /// **'Oval'**
+  String get ufoTypeOval;
+
+  /// No description provided for @ufoTypeCone.
+  ///
+  /// In en, this message translates to:
+  /// **'Cone'**
+  String get ufoTypeCone;
+
+  /// No description provided for @ufoTypeCross.
+  ///
+  /// In en, this message translates to:
+  /// **'Cross'**
+  String get ufoTypeCross;
+
+  /// No description provided for @ufoTypeDumbbell.
+  ///
+  /// In en, this message translates to:
+  /// **'Dumbbell'**
+  String get ufoTypeDumbbell;
+
+  /// No description provided for @ufoTypeTeardrop.
+  ///
+  /// In en, this message translates to:
+  /// **'Teardrop'**
+  String get ufoTypeTeardrop;
+
+  /// No description provided for @ufoTypeTicTac.
+  ///
+  /// In en, this message translates to:
+  /// **'Tic Tac'**
+  String get ufoTypeTicTac;
+
+  /// No description provided for @ufoTypeBullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Bullet'**
+  String get ufoTypeBullet;
+
+  /// No description provided for @ufoTypeSaturn.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturn'**
+  String get ufoTypeSaturn;
+
+  /// No description provided for @ufoTypeStarLike.
+  ///
+  /// In en, this message translates to:
+  /// **'Star-like'**
+  String get ufoTypeStarLike;
+
+  /// No description provided for @ufoTypeBlimp.
+  ///
+  /// In en, this message translates to:
+  /// **'Blimp'**
+  String get ufoTypeBlimp;
+
+  /// No description provided for @actionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get actionsTitle;
+
+  /// No description provided for @addPhotosAndVideos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Photos & Videos'**
+  String get addPhotosAndVideos;
+
+  /// No description provided for @howToReportToMufon.
+  ///
+  /// In en, this message translates to:
+  /// **'How to Report to MUFON'**
+  String get howToReportToMufon;
+
+  /// No description provided for @reportToMufon.
+  ///
+  /// In en, this message translates to:
+  /// **'Report to MUFON'**
+  String get reportToMufon;
+
+  /// No description provided for @whyReportToMufon.
+  ///
+  /// In en, this message translates to:
+  /// **'Why Report to MUFON?'**
+  String get whyReportToMufon;
+
+  /// No description provided for @openMufonReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Open MUFON Report'**
+  String get openMufonReport;
+
+  /// No description provided for @confirmedWitness.
+  ///
+  /// In en, this message translates to:
+  /// **'You confirmed this sighting'**
+  String get confirmedWitness;
+
+  /// No description provided for @witnessesHaveConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} people have confirmed this sighting'**
+  String witnessesHaveConfirmed(int count);
+
+  /// No description provided for @aircraftTrackingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Aircraft Tracking'**
+  String get aircraftTrackingTitle;
+
+  /// No description provided for @weatherConditionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather Conditions'**
+  String get weatherConditionsTitle;
+
+  /// No description provided for @noSatellitePasses.
+  ///
+  /// In en, this message translates to:
+  /// **'No visible satellite passes found'**
+  String get noSatellitePasses;
+
+  /// No description provided for @contentAnalysisTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Content Analysis'**
+  String get contentAnalysisTitle;
+
+  /// No description provided for @contentSafe.
+  ///
+  /// In en, this message translates to:
+  /// **'Content is safe'**
+  String get contentSafe;
+
+  /// No description provided for @contentFlagged.
+  ///
+  /// In en, this message translates to:
+  /// **'Content flagged for review'**
+  String get contentFlagged;
+
+  /// No description provided for @confidenceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Confidence'**
+  String get confidenceLabel;
+
+  /// No description provided for @methodLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Method'**
+  String get methodLabel;
+
+  /// No description provided for @premiumImageryAccessOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium satellite imagery is only available to:'**
+  String get premiumImageryAccessOnly;
+
+  /// No description provided for @premiumAccessCreators.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert creators'**
+  String get premiumAccessCreators;
+
+  /// No description provided for @premiumAccessWitnesses.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed witnesses within visibility range'**
+  String get premiumAccessWitnesses;
+
+  /// No description provided for @comingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming Soon'**
+  String get comingSoon;
 }
 
 class _AppLocalizationsDelegate

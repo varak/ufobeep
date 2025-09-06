@@ -132,9 +132,9 @@
   "videoOnly": "alleen video",
   "imageOnly": "alleen afbeelding",
   "timeJustNow": "Net",
-  "timeDaysAgo": "{count}d geleden",
-  "timeHoursAgo": "{count}h geleden",
-  "timeMinutesAgo": "__PH_0_m geleden",
+  "timeDaysAgo": "{count}d ago",
+  "timeHoursAgo": "{count}h ago",
+  "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "Meer waarschuwingen laden",
   "toggleMufonTooltip": "MUFON waarnemingen aan/uit",
   "showMufonData": "MUFON-gegevens tonen",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "Camera",
+  "gallery": "Galerij",
+  "basicSettings": "Basisinstellingen",
+  "appSettings": "Appinstellingen",
+  "alertRange": "Waarschuwingsbereik",
+  "manageNotificationsDesc": "Abonnementeninstellingen beheren",
+  "permissionsTitle": "Rechten",
+  "permissionLocation": "Locatie",
+  "permissionCamera": "Camera",
+  "permissionNotifications": "Kennisgevingen",
+  "permissionPhotos": "Foto's",
+  "permissionGranted": "Toegestaan",
+  "permissionNotGranted": "Niet toegekend",
+  "permissionGrant": "Subsidie",
+  "generateUsername": "Nieuwe gebruikersnaam aanmaken",
+  "adminTools": "Beheergereedschappen",
+  "openAdminPanel": "Beheerpaneel openen",
+  "webAdminInterface": "Webbeheerderinterface",
+  "adminBetaNotice": "Beta bouwt alleen. Admin tools voor het testen van nabijheid waarschuwingen, push meldingen, en systeemdiagnostiek.",
+  "whatDoYouSee": "Wat zie je?",
+  "ufoSighting": "UFO Waarneming",
+  "actionsTitle": "Acties",
+  "addPhotosAndVideos": "Foto's en video's toevoegen",
+  "howToReportToMufon": "Hoe rapporteren aan MUFON",
+  "reportToMufon": "Verslag aan MUFON",
+  "whyReportToMufon": "Waarom verslag uitbrengen aan MUFON?",
+  "openMufonReport": "MUFON openen Verslag",
+  "confirmedWitness": "Je hebt deze waarneming bevestigd",
+  "witnessesHaveConfirmed": "Mensen hebben deze waarneming bevestigd",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "Type",
+  "ufoTypeSphere": "Bol",
+  "ufoTypeTriangle": "Driehoek",
+  "ufoTypeDisk": "Schijf",
+  "ufoTypeLight": "Licht",
+  "ufoTypeFireball": "Vuurbal",
+  "ufoTypeCylinder": "Cilinder",
+  "ufoTypeCigar": "Sigaren",
+  "ufoTypeRectangle": "Rechthoek",
+  "ufoTypeFormation": "Vorming",
+  "ufoTypeUnknown": "Onbekend"
 }

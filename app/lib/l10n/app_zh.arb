@@ -132,9 +132,9 @@
   "videoOnly": "只有视频",
   "imageOnly": "仅图像",
   "timeJustNow": "刚才",
-  "timeDaysAgo": "时间轴:",
-  "timeHoursAgo": "0 小时前",
-  "timeMinutesAgo": "0 分钟前",
+  "timeDaysAgo": "{count}d ago",
+  "timeHoursAgo": "{count}h ago",
+  "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "装入更多提醒",
   "toggleMufonTooltip": "切换MUFON的目击",
   "showMufonData": "显示 MUFON 数据",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "摄影机",
+  "gallery": "图片库",
+  "basicSettings": "基本设置",
+  "appSettings": "应用程序设置",
+  "alertRange": "警报范围",
+  "manageNotificationsDesc": "管理订阅设置( S)",
+  "permissionsTitle": "权限",
+  "permissionLocation": "地点",
+  "permissionCamera": "摄影机",
+  "permissionNotifications": "通知",
+  "permissionPhotos": "照片",
+  "permissionGranted": "获准",
+  "permissionNotGranted": "不予批准",
+  "permissionGrant": "赠款",
+  "generateUsername": "生成新用户名",
+  "adminTools": "管理工具",
+  "openAdminPanel": "打开管理面板",
+  "webAdminInterface": "Web 管理员界面",
+  "adminBetaNotice": "贝塔只构建。 用于测试近距离警报、推进通知和系统诊断的行政管理工具.",
+  "whatDoYouSee": "你看见什么了?",
+  "ufoSighting": "不明飞行物 观察",
+  "actionsTitle": "行动",
+  "addPhotosAndVideos": "添加照片和视频( V)",
+  "howToReportToMufon": "如何向毛里求斯财政部报告",
+  "reportToMufon": "向毛里求斯财政部报告",
+  "whyReportToMufon": "为什么向MUFON报告?",
+  "openMufonReport": "打开MUFON 报告",
+  "confirmedWitness": "你确认了这次目击",
+  "witnessesHaveConfirmed": "人们已经确认这次目击",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "类型",
+  "ufoTypeSphere": "球体",
+  "ufoTypeTriangle": "三角形",
+  "ufoTypeDisk": "磁盘",
+  "ufoTypeLight": "光线",
+  "ufoTypeFireball": "火球",
+  "ufoTypeCylinder": "圆柱",
+  "ufoTypeCigar": "雪茄",
+  "ufoTypeRectangle": "矩形",
+  "ufoTypeFormation": "组建",
+  "ufoTypeUnknown": "未知"
 }

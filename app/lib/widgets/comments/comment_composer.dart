@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
+import '../glass_card.dart';
 import '../../services/ui_feedback.dart';
 
 class CommentComposer extends StatefulWidget {
@@ -66,14 +67,8 @@ class _CommentComposerState extends State<CommentComposer> {
   
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
-        color: AppColors.darkSurface,
-        border: Border(
-          top: BorderSide(color: AppColors.darkBorder, width: 1),
-        ),
-      ),
+    return GlassCard(
+      padding: const EdgeInsets.all(12),
       child: Row(
         children: [
           Expanded(
@@ -86,7 +81,7 @@ class _CommentComposerState extends State<CommentComposer> {
               onSubmitted: (_) => _sendComment(),
               style: const TextStyle(
                 color: AppColors.textPrimary,
-                fontSize: 14,
+                fontSize: 15,
               ),
               decoration: InputDecoration(
                 hintText: widget.placeholder,

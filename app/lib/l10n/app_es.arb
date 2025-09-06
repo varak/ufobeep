@@ -133,7 +133,7 @@
   "imageOnly": "imagen sólo",
   "timeJustNow": "Ahora",
   "timeDaysAgo": "{count}d ago",
-  "timeHoursAgo": "__PH_0_h ago",
+  "timeHoursAgo": "{count}h ago",
   "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "Cargar más alertas",
   "toggleMufonTooltip": "Toggle MUFON sightings",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "Cámara",
+  "gallery": "Galería",
+  "basicSettings": "Ajustes básicos",
+  "appSettings": "Ajustes de la aplicación",
+  "alertRange": "Distancia de alerta",
+  "manageNotificationsDesc": "Gestionar suscripciones y ajustes",
+  "permissionsTitle": "Permisos",
+  "permissionLocation": "Ubicación",
+  "permissionCamera": "Cámara",
+  "permissionNotifications": "Notificaciones",
+  "permissionPhotos": "Fotos",
+  "permissionGranted": "Subvenciones",
+  "permissionNotGranted": "No concedido",
+  "permissionGrant": "Grant",
+  "generateUsername": "Generar nuevo nombre de usuario",
+  "adminTools": "Herramientas de Admin",
+  "openAdminPanel": "Open Admin Panel",
+  "webAdminInterface": "Interfaz de Admin Web",
+  "adminBetaNotice": "Beta solo construye. Herramientas para probar alertas de proximidad, notificaciones de empuje y diagnóstico del sistema.",
+  "whatDoYouSee": "¿Qué ves?",
+  "ufoSighting": "OVNI Avistamiento",
+  "actionsTitle": "Acciones",
+  "addPhotosAndVideos": "Añadir fotos > Videos",
+  "howToReportToMufon": "Cómo reportar a MUFON",
+  "reportToMufon": "Informe a MUFON",
+  "whyReportToMufon": "¿Por qué reportarle a MUFON?",
+  "openMufonReport": "Open MUFON Informe",
+  "confirmedWitness": "Usted confirmó este avistamiento",
+  "witnessesHaveConfirmed": "La gente ha confirmado este avistamiento",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "Tipo",
+  "ufoTypeSphere": "Sphere",
+  "ufoTypeTriangle": "Triángulo",
+  "ufoTypeDisk": "Disk",
+  "ufoTypeLight": "Luz",
+  "ufoTypeFireball": "Bola de fuego",
+  "ufoTypeCylinder": "Cilindro",
+  "ufoTypeCigar": "Cigarro",
+  "ufoTypeRectangle": "Rectángulo",
+  "ufoTypeFormation": "Formación",
+  "ufoTypeUnknown": "Desconocida"
 }

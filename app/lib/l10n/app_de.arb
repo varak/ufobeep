@@ -132,9 +132,9 @@
   "videoOnly": "nur",
   "imageOnly": "nur",
   "timeJustNow": "Jetzt",
-  "timeDaysAgo": "{count}d vor",
-  "timeHoursAgo": "__PH_0_h vor",
-  "timeMinutesAgo": "__PH_0_m vor",
+  "timeDaysAgo": "{count}d ago",
+  "timeHoursAgo": "{count}h ago",
+  "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "Mehr Informationen",
   "toggleMufonTooltip": "Toggle MUFON Visier",
   "showMufonData": "MUFON Daten anzeigen",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "Kamera",
+  "gallery": "Galerie",
+  "basicSettings": "Grundeinstellungen",
+  "appSettings": "App-Einstellungen",
+  "alertRange": "Alarmbereich",
+  "manageNotificationsDesc": "Abonnements verwalten & Einstellungen",
+  "permissionsTitle": "Genehmigungen",
+  "permissionLocation": "Standort",
+  "permissionCamera": "Kamera",
+  "permissionNotifications": "Mitteilungen",
+  "permissionPhotos": "Fotos",
+  "permissionGranted": "Gefördert",
+  "permissionNotGranted": "Nicht gewährt",
+  "permissionGrant": "Beihilfe",
+  "generateUsername": "Neue Benutzernamen generieren",
+  "adminTools": "Admin Tools",
+  "openAdminPanel": "Open Admin Panel",
+  "webAdminInterface": "Web Admin Interface",
+  "adminBetaNotice": "Beta baut nur. Admin-Tools zum Testen von Nähenwarnungen, Push-Benachrichtigungen und Systemdiagnosen.",
+  "whatDoYouSee": "Was siehst du?",
+  "ufoSighting": "UFO Sichtung",
+  "actionsTitle": "Maßnahmen",
+  "addPhotosAndVideos": "Fotos und Videos hinzufügen",
+  "howToReportToMufon": "Wie man MUFON meldet",
+  "reportToMufon": "Bericht an MUFON",
+  "whyReportToMufon": "Warum Bericht an MUFON?",
+  "openMufonReport": "Open MUFON Bericht",
+  "confirmedWitness": "Sie haben diese Sichtweise bestätigt",
+  "witnessesHaveConfirmed": "{count} Menschen haben diese Sichtweise bestätigt",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "Typ",
+  "ufoTypeSphere": "Sphäre",
+  "ufoTypeTriangle": "Dreieck",
+  "ufoTypeDisk": "Festplattenspeicher",
+  "ufoTypeLight": "Licht",
+  "ufoTypeFireball": "Feuerball",
+  "ufoTypeCylinder": "Zylinder",
+  "ufoTypeCigar": "Zigarren",
+  "ufoTypeRectangle": "Rechteck",
+  "ufoTypeFormation": "Bildung",
+  "ufoTypeUnknown": "Unbekannt"
 }

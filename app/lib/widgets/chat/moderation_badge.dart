@@ -277,14 +277,15 @@ class ModerationDetails extends StatelessWidget {
     final now = DateTime.now();
     final difference = now.difference(dateTime);
     
+    final l10n = AppLocalizations.of(context);
     if (difference.inDays > 0) {
-      return '${difference.inDays}d ago';
+      return l10n.timeDaysAgo(difference.inDays);
     } else if (difference.inHours > 0) {
-      return '${difference.inHours}h ago';
+      return l10n.timeHoursAgo(difference.inHours);
     } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}m ago';
+      return l10n.timeMinutesAgo(difference.inMinutes);
     } else {
-      return 'Just now';
+      return l10n.timeJustNow;
     }
   }
 }

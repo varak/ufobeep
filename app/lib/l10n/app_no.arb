@@ -132,9 +132,9 @@
   "videoOnly": "kun video",
   "imageOnly": "bare bilde",
   "timeJustNow": "Akkurat nå",
-  "timeDaysAgo": "_PH_0_d siden",
-  "timeHoursAgo": "__PH_0_h ago",
-  "timeMinutesAgo": "_PH_0_m ago",
+  "timeDaysAgo": "{count}d ago",
+  "timeHoursAgo": "{count}h ago",
+  "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "Last inn flere varsler",
   "toggleMufonTooltip": "Bytt MUFON-syn",
   "showMufonData": "Vis MUFON-data",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "Kamera",
+  "gallery": "Galleri",
+  "basicSettings": "Basisinnstillinger",
+  "appSettings": "Appinnstillinger",
+  "alertRange": "Varselområde",
+  "manageNotificationsDesc": "Administrer abonnementer og innstillinger",
+  "permissionsTitle": "Tillatelser",
+  "permissionLocation": "Beliggenhet",
+  "permissionCamera": "Kamera",
+  "permissionNotifications": "Varsler",
+  "permissionPhotos": "Bilder",
+  "permissionGranted": "Forutsetning",
+  "permissionNotGranted": "Ikke gitt",
+  "permissionGrant": "Grant",
+  "generateUsername": "Opprett nytt brukernavn",
+  "adminTools": "Admin verktøy",
+  "openAdminPanel": "Åpne Admin-panelet",
+  "webAdminInterface": "Web Admin-grensesnitt",
+  "adminBetaNotice": "Beta bygger bare. Administrasjonsverktøy for å teste nærhetsvarsler, pressevarsler og systemdiagnostikk.",
+  "whatDoYouSee": "Hva ser du?",
+  "ufoSighting": "UFO Sighting",
+  "actionsTitle": "Handlinger",
+  "addPhotosAndVideos": "Legg til bilder og videoer",
+  "howToReportToMufon": "Hvordan rapportere til MUFON",
+  "reportToMufon": "Rapporter til MUFON",
+  "whyReportToMufon": "Hvorfor rapportere til MUFON?",
+  "openMufonReport": "Åpne MUFON Rapport",
+  "confirmedWitness": "Du bekreftet dette synet",
+  "witnessesHaveConfirmed": "{count}_ personer har bekreftet denne observasjonen",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "Type",
+  "ufoTypeSphere": "Skulen",
+  "ufoTypeTriangle": "Trekant",
+  "ufoTypeDisk": "Disk",
+  "ufoTypeLight": "Lys",
+  "ufoTypeFireball": "Fireball",
+  "ufoTypeCylinder": "Sylinder",
+  "ufoTypeCigar": "Cigar",
+  "ufoTypeRectangle": "Rektangel",
+  "ufoTypeFormation": "Formasjon",
+  "ufoTypeUnknown": "Ukjend"
 }

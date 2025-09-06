@@ -92,7 +92,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return NightSkyBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
+          appBar: AppBar(
           title: Text(AppLocalizations.of(context).profile, style: const TextStyle(color: Colors.white)),
           centerTitle: true,
           backgroundColor: Colors.transparent,
@@ -179,7 +179,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 onPressed: () => _regenerateUsername(user),
                 icon: const Icon(Icons.refresh, size: 20),
                 color: AppColors.brandPrimary,
-                tooltip: 'Generate new username',
+                tooltip: AppLocalizations.of(context).generateUsername,
                 constraints: const BoxConstraints(),
                 padding: const EdgeInsets.all(4),
               ),
@@ -217,7 +217,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Text(
-            'Basic Settings',
+            AppLocalizations.of(context).basicSettings,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w600,
@@ -231,7 +231,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             children: [
               _buildSimpleSettingItem(
                 icon: Icons.notifications_outlined,
-                title: 'Alert Range',
+                title: AppLocalizations.of(context).alertRange,
                 value: preferences.alertRangeDisplay,
                 onTap: () => _showRangeSelector(preferences),
                 isFirst: true,
@@ -241,7 +241,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               
               _buildSimpleSettingItem(
                 icon: Icons.language_outlined,
-                title: 'Language',
+                title: AppLocalizations.of(context).language,
                 value: preferences.language.toUpperCase(),
                 onTap: () => context.push('/profile/language'),
               ),
@@ -250,8 +250,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               
               _buildSimpleSettingItem(
                 icon: Icons.straighten_outlined,
-                title: 'Units',
-                value: preferences.units == 'metric' ? 'Metric' : 'Imperial',
+                title: AppLocalizations.of(context).units,
+                value: preferences.units == 'metric' 
+                    ? AppLocalizations.of(context).unitsMetric 
+                    : AppLocalizations.of(context).unitsImperial,
                 onTap: () => _toggleUnits(preferences),
                 isLast: true,
               ),
@@ -269,7 +271,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Text(
-            'App Settings',
+            AppLocalizations.of(context).appSettings,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w600,
@@ -284,8 +286,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             children: [
               _buildNavItemWithSubtitle(
                 icon: Icons.notifications_outlined,
-                title: 'Notifications',
-                subtitle: 'Manage subscriptions & settings',
+                title: AppLocalizations.of(context).notifications,
+                subtitle: AppLocalizations.of(context).manageNotificationsDesc,
                 onTap: () => context.push('/profile/notifications'),
                 isFirst: true,
                 isLast: true,
@@ -312,11 +314,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 4),
               child: Text(
-                'Permissions',
-                style: TextStyle(
+                AppLocalizations.of(context).permissionsTitle,
+                style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w600,
                   color: AppColors.textPrimary,
@@ -363,11 +365,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         color: isGranted ? AppColors.brandPrimary : AppColors.textSecondary,
       ),
       title: Text(
-        _getPermissionName(permission),
+        _getPermissionName(context, permission),
         style: const TextStyle(color: AppColors.textPrimary),
       ),
       subtitle: Text(
-        isGranted ? 'Granted' : 'Not granted',
+        isGranted 
+          ? AppLocalizations.of(context).permissionGranted 
+          : AppLocalizations.of(context).permissionNotGranted,
         style: TextStyle(
           color: isGranted ? AppColors.brandPrimary : AppColors.textSecondary,
         ),
@@ -379,7 +383,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               await permission.request();
               setState(() {}); // Refresh the UI
             },
-            child: const Text('Grant'),
+            child: Text(AppLocalizations.of(context).permissionGrant),
           ),
     );
   }
@@ -401,18 +405,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     }
   }
   
-  String _getPermissionName(Permission permission) {
+  String _getPermissionName(BuildContext context, Permission permission) {
     switch (permission) {
       case Permission.location:
       case Permission.locationAlways:
       case Permission.locationWhenInUse:
-        return 'Location';
+        return AppLocalizations.of(context).permissionLocation;
       case Permission.camera:
-        return 'Camera';
+        return AppLocalizations.of(context).permissionCamera;
       case Permission.notification:
-        return 'Notifications';
+        return AppLocalizations.of(context).permissionNotifications;
       case Permission.photos:
-        return 'Photos';
+        return AppLocalizations.of(context).permissionPhotos;
       default:
         return permission.toString().split('.').last;
     }
@@ -481,9 +485,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     size: 20,
                   ),
                   const SizedBox(width: 8),
-                  const Text(
-                    'Admin Tools',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context).adminTools,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: AppColors.brandPrimary,
@@ -518,7 +522,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     );
                   },
                   icon: const Icon(Icons.dashboard),
-                  label: const Text('Open Admin Panel'),
+                  label: Text(AppLocalizations.of(context).openAdminPanel),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.brandPrimary,
                     foregroundColor: AppColors.darkBackground,
@@ -540,7 +544,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     }
                   },
                   icon: const Icon(Icons.web),
-                  label: const Text('Web Admin Interface'),
+                  label: Text(AppLocalizations.of(context).webAdminInterface),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.brandPrimaryLight,
                     foregroundColor: AppColors.darkBackground,
@@ -551,9 +555,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               
               const SizedBox(height: 12),
               
-              const Text(
-                '⚠️ Beta builds only. Admin tools for testing proximity alerts, push notifications, and system diagnostics.',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context).adminBetaNotice,
+                style: const TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 12,
                 ),
@@ -581,9 +585,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ),
         ),
         icon: const Icon(Icons.logout, size: 20),
-        label: const Text(
-          'Sign Out',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        label: Text(
+          AppLocalizations.of(context).signOut,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
     );

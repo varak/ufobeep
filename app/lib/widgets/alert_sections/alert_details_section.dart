@@ -3,6 +3,7 @@ import '../../providers/alerts_provider.dart';
 import '../../theme/app_theme.dart';
 import '../glass_card.dart';
 import '../../l10n/app_localizations.dart';
+import '../../utils/unit_conversion.dart';
 
 class AlertDetailsSection extends StatelessWidget {
   const AlertDetailsSection({
@@ -10,11 +11,13 @@ class AlertDetailsSection extends StatelessWidget {
     required this.alert,
     this.showDescription = true,
     this.showLocation = true,
+    this.units = 'metric',
   });
 
   final Alert alert;
   final bool showDescription;
   final bool showLocation;
+  final String units;
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +91,7 @@ class AlertDetailsSection extends StatelessWidget {
               _buildDetailRow(
                 Icons.location_on,
                 AppLocalizations.of(context).locationLabel,
-                _getMufonLocationName(alert),
+                _getMufonLocationName(context, alert),
                 subtitle: (alert.locationName != null && alert.locationName!.isNotEmpty && alert.locationName != 'Unknown Location' && alert.latitude != 0.0 && alert.longitude != 0.0)
                     ? '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}'
                     : null,
@@ -97,7 +100,7 @@ class AlertDetailsSection extends StatelessWidget {
                 _buildDetailRow(
                   Icons.straighten,
                   AppLocalizations.of(context).distanceLabel,
-                  '${alert.distance!.toStringAsFixed(1)} km away',
+                  UnitConversion.formatDistance(alert.distance! * 1000, units),
                 ),
             ],
           ],
@@ -123,7 +126,7 @@ class AlertDetailsSection extends StatelessWidget {
             
             // Witness count (if more than 1)
             if (alert.witnessCount > 1)
-              _buildWitnessRow(),
+              _buildWitnessRow(context),
             
             // Location info (if enabled)
             if (showLocation) ...[
@@ -137,9 +140,18 @@ class AlertDetailsSection extends StatelessWidget {
                 _buildDetailRow(
                   Icons.straighten,
                   AppLocalizations.of(context).distanceLabel,
-                  '${alert.distance!.toStringAsFixed(1)} km away',
+                  UnitConversion.formatDistance(alert.distance! * 1000, units),
                 ),
             ],
+          ],
+          // Classification (MUFON type) if present
+          if (alert.source == 'mufon') ...[
+            if (alert.enrichment?['classification'] != null || alert.enrichment?['ufo_type'] != null)
+              _buildDetailRow(
+                Icons.category,
+                AppLocalizations.of(context).sightingTypeLabel,
+                _classificationLabel(AppLocalizations.of(context)),
+              ),
           ],
         ],
       ),
@@ -147,7 +159,7 @@ class AlertDetailsSection extends StatelessWidget {
   }
 
 
-  Widget _buildWitnessRow() {
+  Widget _buildWitnessRow(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -299,7 +311,7 @@ class AlertDetailsSection extends StatelessWidget {
     return '$month $day, $year at $hour:$minute $amPm';
   }
 
-  String _getMufonLocationName(Alert alert) {
+  String _getMufonLocationName(BuildContext context, Alert alert) {
     // For MUFON alerts, use the locationName field which contains the city, state format
     if (alert.locationName != null && alert.locationName!.isNotEmpty && alert.locationName != 'Unknown Location') {
       return alert.locationName!;
@@ -311,5 +323,65 @@ class AlertDetailsSection extends StatelessWidget {
     }
     
     return AppLocalizations.of(context).locationUnknown;
+  }
+
+  String _classificationLabel(AppLocalizations l10n) {
+    final c = alert.enrichment?['classification']?.toString().toLowerCase().trim() 
+        ?? alert.enrichment?['ufo_type']?.toString().toLowerCase().trim();
+    switch (c) {
+      case 'sphere':
+        return l10n.ufoTypeSphere;
+      case 'triangle':
+        return l10n.ufoTypeTriangle;
+      case 'disk':
+      case 'disc':
+        return l10n.ufoTypeDisk;
+      case 'light':
+        return l10n.ufoTypeLight;
+      case 'fireball':
+        return l10n.ufoTypeFireball;
+      case 'cylinder':
+        return l10n.ufoTypeCylinder;
+      case 'cigar':
+        return l10n.ufoTypeCigar;
+      case 'rectangle':
+      case 'box':
+        return l10n.ufoTypeRectangle;
+      case 'formation':
+      case 'fleet':
+        return l10n.ufoTypeFormation;
+      case 'boomerang':
+        return l10n.ufoTypeBoomerang;
+      case 'diamond':
+        return l10n.ufoTypeDiamond;
+      case 'oval':
+        return l10n.ufoTypeOval;
+      case 'cone':
+        return l10n.ufoTypeCone;
+      case 'cross':
+        return l10n.ufoTypeCross;
+      case 'dumbbell':
+        return l10n.ufoTypeDumbbell;
+      case 'teardrop':
+        return l10n.ufoTypeTeardrop;
+      case 'tic tac':
+      case 'tic-tac':
+      case 'tictac':
+        return l10n.ufoTypeTicTac;
+      case 'bullet':
+        return l10n.ufoTypeBullet;
+      case 'saturn':
+      case 'saturn-like':
+      case 'saturn like':
+        return l10n.ufoTypeSaturn;
+      case 'star-like':
+      case 'star like':
+      case 'starlike':
+        return l10n.ufoTypeStarLike;
+      case 'blimp':
+        return l10n.ufoTypeBlimp;
+      default:
+        return l10n.ufoTypeUnknown;
+    }
   }
 }

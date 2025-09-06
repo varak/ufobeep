@@ -132,9 +132,9 @@
   "videoOnly": "केवल वीडियो",
   "imageOnly": "केवल छवि",
   "timeJustNow": "अभी",
-  "timeDaysAgo": "To make a ph_0_d",
-  "timeHoursAgo": "H_0_h__h___h____h___h___h___h____h_____h___h___h____h_________h________________________________________________________________________________________________________________________________________________________",
-  "timeMinutesAgo": "^PH_0_m पहले",
+  "timeDaysAgo": "{count}d ago",
+  "timeHoursAgo": "{count}h ago",
+  "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "लोड अधिक अलर्ट",
   "toggleMufonTooltip": "टॉगल MUFON sighting",
   "showMufonData": "MUFON डेटा दिखाएं",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "कैमरा",
+  "gallery": "गैलरी",
+  "basicSettings": "मूल सेटिंग",
+  "appSettings": "ऐप सेटिंग",
+  "alertRange": "चेतावनी रेंज",
+  "manageNotificationsDesc": "सदस्यता और सेटिंग्स प्रबंधित करें",
+  "permissionsTitle": "अनुमतियां",
+  "permissionLocation": "स्थान",
+  "permissionCamera": "कैमरा",
+  "permissionNotifications": "अधिसूचनाएं",
+  "permissionPhotos": "तस्वीरें",
+  "permissionGranted": "अनुदान",
+  "permissionNotGranted": "नहीं देना",
+  "permissionGrant": "अनुदान",
+  "generateUsername": "नया उपयोगकर्ता नाम जेनरेट करें",
+  "adminTools": "व्यवस्थापक उपकरण",
+  "openAdminPanel": "ओपन एडमिन पैनल",
+  "webAdminInterface": "वेब व्यवस्थापक इंटरफ़ेस",
+  "adminBetaNotice": "बीटा केवल बनाता है। निकटता अलर्ट, पुश नोटिफिकेशन और सिस्टम निदान के परीक्षण के लिए व्यवस्थापक उपकरण।.",
+  "whatDoYouSee": "आप क्या देखते हैं?",
+  "ufoSighting": "यूएफओ दृष्टि",
+  "actionsTitle": "कार्य",
+  "addPhotosAndVideos": "फ़ोटो और वीडियो जोड़ें",
+  "howToReportToMufon": "कैसे रिपोर्ट करने के लिए MUFON",
+  "reportToMufon": "MUFON की रिपोर्ट",
+  "whyReportToMufon": "क्यों रिपोर्ट करने के लिए MUFON?",
+  "openMufonReport": "ओपन MUFON रिपोर्ट",
+  "confirmedWitness": "आपने इस दर्शन की पुष्टि की",
+  "witnessesHaveConfirmed": "{count}__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "प्रकार",
+  "ufoTypeSphere": "क्षेत्र",
+  "ufoTypeTriangle": "त्रिभुज",
+  "ufoTypeDisk": "डिस्क",
+  "ufoTypeLight": "प्रकाश",
+  "ufoTypeFireball": "फायरबॉल",
+  "ufoTypeCylinder": "सिलेंडर",
+  "ufoTypeCigar": "सिगार",
+  "ufoTypeRectangle": "आयत",
+  "ufoTypeFormation": "गठन",
+  "ufoTypeUnknown": "अज्ञात"
 }

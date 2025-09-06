@@ -132,9 +132,9 @@
   "videoOnly": "ainoastaan video",
   "imageOnly": "vain kuva",
   "timeJustNow": "Juuri nyt",
-  "timeDaysAgo": "_PH_0_d sitten",
-  "timeHoursAgo": "_PH_0_h sitten",
-  "timeMinutesAgo": "_PH_0_m sitten",
+  "timeDaysAgo": "{count}d ago",
+  "timeHoursAgo": "{count}h ago",
+  "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "Lataa lisää hälytyksiä",
   "toggleMufonTooltip": "Vaihda MUFON- havaintoja",
   "showMufonData": "Näytä MUFON- tiedot",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "Kamera",
+  "gallery": "Galleria",
+  "basicSettings": "Perusasetukset",
+  "appSettings": "Sovelluksen asetukset",
+  "alertRange": "Varoitusalue",
+  "manageNotificationsDesc": "Hallitse tilauksia ja asetuksia",
+  "permissionsTitle": "Lupa",
+  "permissionLocation": "Sijainti",
+  "permissionCamera": "Kamera",
+  "permissionNotifications": "Ilmoitukset",
+  "permissionPhotos": "Valokuvat",
+  "permissionGranted": "Myönnetty",
+  "permissionNotGranted": "Ei myönnetty",
+  "permissionGrant": "Avustus",
+  "generateUsername": "Luo uusi käyttäjätunnus",
+  "adminTools": "Hallitse työkaluja",
+  "openAdminPanel": "Avaa hallintapaneeli",
+  "webAdminInterface": "Web Admin- käyttöliittymä",
+  "adminBetaNotice": "Beta rakentaa vain. Hallitse työkaluja, joilla testataan lähikuulutuksia, työntöilmoituksia ja järjestelmän diagnostiikkaa.",
+  "whatDoYouSee": "Mitä näet?",
+  "ufoSighting": "UFO Näkyminen",
+  "actionsTitle": "Toimet",
+  "addPhotosAndVideos": "Lisää kuvia ja videoita",
+  "howToReportToMufon": "Miten raportoida MUFON",
+  "reportToMufon": "Raportoi MUFONille",
+  "whyReportToMufon": "Miksi ilmoittautua Mufoniin?",
+  "openMufonReport": "Avaa MUFON Kertomus",
+  "confirmedWitness": "Varmistit tämän",
+  "witnessesHaveConfirmed": "_PH_0_ ihmiset ovat vahvistaneet tämän havainnon",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "Tyyppi",
+  "ufoTypeSphere": "Pallo",
+  "ufoTypeTriangle": "Kolmio",
+  "ufoTypeDisk": "Levy",
+  "ufoTypeLight": "Valo",
+  "ufoTypeFireball": "Tulipallo",
+  "ufoTypeCylinder": "Sylinteri",
+  "ufoTypeCigar": "Sikari",
+  "ufoTypeRectangle": "Suorakulmio",
+  "ufoTypeFormation": "Muotoilu",
+  "ufoTypeUnknown": "Tuntematon"
 }

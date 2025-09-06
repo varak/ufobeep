@@ -132,9 +132,9 @@
   "videoOnly": "tylko wideo",
   "imageOnly": "tylko obraz",
   "timeJustNow": "Przed chwilą",
-  "timeDaysAgo": "_ _ PH _ 0 _ _ d temu",
-  "timeHoursAgo": "_ _ PH _ 0 _ _ _ h temu",
-  "timeMinutesAgo": "_ _ PH _ 0 _ _ m temu",
+  "timeDaysAgo": "{count}d ago",
+  "timeHoursAgo": "{count}h ago",
+  "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "Wczytaj więcej alarmów",
   "toggleMufonTooltip": "Włączenie / wyłączenie obserwacji MUFON",
   "showMufonData": "Pokaż dane MUFON",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "Kamera",
+  "gallery": "Galeria",
+  "basicSettings": "Ustawienia podstawowe",
+  "appSettings": "Ustawienia aplikacji",
+  "alertRange": "Zakres alarmów",
+  "manageNotificationsDesc": "Zarządzanie subskrypcjami i ustawieniami",
+  "permissionsTitle": "Uprawnienia",
+  "permissionLocation": "Lokalizacja",
+  "permissionCamera": "Kamera",
+  "permissionNotifications": "Powiadomienia",
+  "permissionPhotos": "Zdjęcia",
+  "permissionGranted": "Udzielone",
+  "permissionNotGranted": "Nieprzyznane",
+  "permissionGrant": "Dotacja",
+  "generateUsername": "Generuj nową nazwę użytkownika",
+  "adminTools": "Admin Narzędzia",
+  "openAdminPanel": "Otwórz panel administracyjny",
+  "webAdminInterface": "Interfejs administratora sieci Web",
+  "adminBetaNotice": "Beta tylko buduje. Admin narzędzia do testowania alarmów zbliżeniowych, powiadomień push i diagnostyki systemu.",
+  "whatDoYouSee": "Co widzisz?",
+  "ufoSighting": "UFO Zwiedzanie",
+  "actionsTitle": "Działania",
+  "addPhotosAndVideos": "Dodaj zdjęcia i filmy",
+  "howToReportToMufon": "Jak zgłosić się do MUFON",
+  "reportToMufon": "Sprawozdanie dla MUFON",
+  "whyReportToMufon": "Po co zgłaszać się do MUFON?",
+  "openMufonReport": "Otwórz MUFON Sprawozdanie",
+  "confirmedWitness": "Potwierdziłeś to",
+  "witnessesHaveConfirmed": "Ludzie potwierdzili to rozpoznanie",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "Rodzaj",
+  "ufoTypeSphere": "Kula",
+  "ufoTypeTriangle": "Trójkąt",
+  "ufoTypeDisk": "Dysk",
+  "ufoTypeLight": "Światło",
+  "ufoTypeFireball": "Fireball",
+  "ufoTypeCylinder": "Cylinder",
+  "ufoTypeCigar": "Cygaro",
+  "ufoTypeRectangle": "Prostokąt",
+  "ufoTypeFormation": "Formacja",
+  "ufoTypeUnknown": "Nieznany"
 }

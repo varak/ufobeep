@@ -132,9 +132,9 @@
   "videoOnly": "비디오 만",
   "imageOnly": "이미지 만",
   "timeJustNow": "지금 시작",
-  "timeDaysAgo": "{count}d 전",
-  "timeHoursAgo": "{count}h 전",
-  "timeMinutesAgo": "{count}m 전",
+  "timeDaysAgo": "{count}d ago",
+  "timeHoursAgo": "{count}h ago",
+  "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "더 많은 경고",
   "toggleMufonTooltip": "사이트 맵",
   "showMufonData": "MUFON 자료 보기",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "관련 기사",
+  "gallery": "회사연혁",
+  "basicSettings": "기본 설정",
+  "appSettings": "앱 설정",
+  "alertRange": "Alert 범위",
+  "manageNotificationsDesc": "구독 및 설정 관리",
+  "permissionsTitle": "제출",
+  "permissionLocation": "- 연혁",
+  "permissionCamera": "관련 기사",
+  "permissionNotifications": "공지사항",
+  "permissionPhotos": "사진 갤러리",
+  "permissionGranted": "지원하다",
+  "permissionNotGranted": "이름 *",
+  "permissionGrant": "지원하다",
+  "generateUsername": "새로운 사용자 정의",
+  "adminTools": "관리자 도구",
+  "openAdminPanel": "Open Admin 패널",
+  "webAdminInterface": "웹 관리자 인터페이스",
+  "adminBetaNotice": "베타 빌드 만. 테스트 근접 경고, 푸시 알림 및 시스템 진단을위한 관리자 도구.",
+  "whatDoYouSee": "무엇을 볼까요?",
+  "ufoSighting": "사이트맵 뚱 베어",
+  "actionsTitle": "팟캐스트",
+  "addPhotosAndVideos": "사진 및 동영상 추가",
+  "howToReportToMufon": "MUFON에 보고하는 방법",
+  "reportToMufon": "MUFON 소개",
+  "whyReportToMufon": "왜 MUFON에 보고?",
+  "openMufonReport": "MUFON 오픈 제품정보",
+  "confirmedWitness": "이 광경을 확인",
+  "witnessesHaveConfirmed": "{count} 사람들은 이 광경을 확인했습니다",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "제품정보",
+  "ufoTypeSphere": "사이트 맵",
+  "ufoTypeTriangle": "연락처",
+  "ufoTypeDisk": "제품정보",
+  "ufoTypeLight": "제품 정보",
+  "ufoTypeFireball": "불꽃놀이",
+  "ufoTypeCylinder": "자료실",
+  "ufoTypeCigar": "시가",
+  "ufoTypeRectangle": "관련 상품",
+  "ufoTypeFormation": "이름 *",
+  "ufoTypeUnknown": "이름 *"
 }

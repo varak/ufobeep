@@ -438,17 +438,17 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return 'Před';
+    return '${count}d ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '_ _ PH _ 0 _ _ h před';
+    return '${count}h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'Před tím';
+    return '${count}m ago';
   }
 
   @override
@@ -529,4 +529,223 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get retakeVideo => 'Retake video';
+
+  @override
+  String get camera => 'Kamera';
+
+  @override
+  String get gallery => 'Galerie';
+
+  @override
+  String get basicSettings => 'Základní nastavení';
+
+  @override
+  String get appSettings => 'Nastavení aplikace';
+
+  @override
+  String get alertRange => 'Rozsah upozornění';
+
+  @override
+  String get manageNotificationsDesc => 'Správa předplatného a nastavení';
+
+  @override
+  String get permissionsTitle => 'Povolení';
+
+  @override
+  String get permissionLocation => 'Umístění';
+
+  @override
+  String get permissionCamera => 'Kamera';
+
+  @override
+  String get permissionNotifications => 'Oznámení';
+
+  @override
+  String get permissionPhotos => 'Fotografie';
+
+  @override
+  String get permissionGranted => 'Povoleno';
+
+  @override
+  String get permissionNotGranted => 'Nepřiznáno';
+
+  @override
+  String get permissionGrant => 'Grant';
+
+  @override
+  String get generateUsername => 'Vytvořit nové uživatelské jméno';
+
+  @override
+  String get adminTools => 'Admin nástroje';
+
+  @override
+  String get openAdminPanel => 'Otevřít admin panel';
+
+  @override
+  String get webAdminInterface => 'Web Admin rozhraní';
+
+  @override
+  String get adminBetaNotice =>
+      'Beta jen staví. Administrátorské nástroje pro testování upozornění na blízkost, tlačení oznámení a systémové diagnostiky.';
+
+  @override
+  String get whatDoYouSee => 'Co vidíš?';
+
+  @override
+  String get ufoSighting => 'UFO Vidění';
+
+  @override
+  String get envAnalysisTitle => 'Environmental Analysis';
+
+  @override
+  String get envAnalysisPending => 'Analysis Pending';
+
+  @override
+  String get envAnalysisPendingDesc =>
+      'Environmental data will be available once processing begins.';
+
+  @override
+  String get unknownAircraft => 'Unknown Aircraft';
+
+  @override
+  String get moreAircraft => 'more aircraft';
+
+  @override
+  String get premiumImageryTitle => 'Premium Satellite Imagery';
+
+  @override
+  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+
+  @override
+  String get sightingTypeLabel => 'Typ';
+
+  @override
+  String get ufoTypeSphere => 'Koule';
+
+  @override
+  String get ufoTypeTriangle => 'Trojúhelník';
+
+  @override
+  String get ufoTypeDisk => 'Disk';
+
+  @override
+  String get ufoTypeLight => 'Světlo';
+
+  @override
+  String get ufoTypeFireball => 'Fireball';
+
+  @override
+  String get ufoTypeCylinder => 'Válec';
+
+  @override
+  String get ufoTypeCigar => 'Doutník';
+
+  @override
+  String get ufoTypeRectangle => 'Obdélník';
+
+  @override
+  String get ufoTypeFormation => 'Formace';
+
+  @override
+  String get ufoTypeUnknown => 'Neznámé';
+
+  @override
+  String get ufoTypeBoomerang => 'Boomerang';
+
+  @override
+  String get ufoTypeDiamond => 'Diamond';
+
+  @override
+  String get ufoTypeOval => 'Oval';
+
+  @override
+  String get ufoTypeCone => 'Cone';
+
+  @override
+  String get ufoTypeCross => 'Cross';
+
+  @override
+  String get ufoTypeDumbbell => 'Dumbbell';
+
+  @override
+  String get ufoTypeTeardrop => 'Teardrop';
+
+  @override
+  String get ufoTypeTicTac => 'Tic Tac';
+
+  @override
+  String get ufoTypeBullet => 'Bullet';
+
+  @override
+  String get ufoTypeSaturn => 'Saturn';
+
+  @override
+  String get ufoTypeStarLike => 'Star-like';
+
+  @override
+  String get ufoTypeBlimp => 'Blimp';
+
+  @override
+  String get actionsTitle => 'Akce';
+
+  @override
+  String get addPhotosAndVideos => 'Přidat fotografie a videa';
+
+  @override
+  String get howToReportToMufon => 'Jak podat zprávu MUFON';
+
+  @override
+  String get reportToMufon => 'Zpráva pro MUFON';
+
+  @override
+  String get whyReportToMufon => 'Proč se hlásit na MUFON?';
+
+  @override
+  String get openMufonReport => 'Open MUFON Zpráva';
+
+  @override
+  String get confirmedWitness => 'Potvrdil jste toto pozorování';
+
+  @override
+  String witnessesHaveConfirmed(int count) {
+    return 'Lidé potvrdili toto pozorování';
+  }
+
+  @override
+  String get aircraftTrackingTitle => 'Aircraft Tracking';
+
+  @override
+  String get weatherConditionsTitle => 'Weather Conditions';
+
+  @override
+  String get noSatellitePasses => 'No visible satellite passes found';
+
+  @override
+  String get contentAnalysisTitle => 'Content Analysis';
+
+  @override
+  String get contentSafe => 'Content is safe';
+
+  @override
+  String get contentFlagged => 'Content flagged for review';
+
+  @override
+  String get confidenceLabel => 'Confidence';
+
+  @override
+  String get methodLabel => 'Method';
+
+  @override
+  String get premiumImageryAccessOnly =>
+      'Premium satellite imagery is only available to:';
+
+  @override
+  String get premiumAccessCreators => 'Alert creators';
+
+  @override
+  String get premiumAccessWitnesses =>
+      'Confirmed witnesses within visibility range';
+
+  @override
+  String get comingSoon => 'Coming Soon';
 }

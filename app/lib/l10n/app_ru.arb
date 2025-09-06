@@ -132,7 +132,7 @@
   "videoOnly": "только видео",
   "imageOnly": "только изображение",
   "timeJustNow": "Только сейчас",
-  "timeDaysAgo": "PH_0_d назад",
+  "timeDaysAgo": "{count}d ago",
   "timeHoursAgo": "{count}h ago",
   "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "Загрузите больше предупреждений",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "Камера",
+  "gallery": "Галерея",
+  "basicSettings": "Основные настройки",
+  "appSettings": "Настройки приложений",
+  "alertRange": "Диапазон тревоги",
+  "manageNotificationsDesc": "Управление подписками и настройками",
+  "permissionsTitle": "Разрешения",
+  "permissionLocation": "Расположение",
+  "permissionCamera": "Камера",
+  "permissionNotifications": "Уведомления",
+  "permissionPhotos": "Фото",
+  "permissionGranted": "Предоставленный",
+  "permissionNotGranted": "Не предоставлено",
+  "permissionGrant": "Грант",
+  "generateUsername": "Создайте новое имя пользователя",
+  "adminTools": "Инструменты Admin",
+  "openAdminPanel": "Открытая панель администратора",
+  "webAdminInterface": "Веб-интерфейс администратора",
+  "adminBetaNotice": "Бета строит только Инструменты администратора для тестирования предупреждений о близости, push-уведомлений и системной диагностики.",
+  "whatDoYouSee": "Что ты видишь?",
+  "ufoSighting": "НЛО прицел",
+  "actionsTitle": "Меры",
+  "addPhotosAndVideos": "Добавить фото и видео",
+  "howToReportToMufon": "Как сообщить в MUFON",
+  "reportToMufon": "Сообщить MUFON",
+  "whyReportToMufon": "Зачем отчитываться перед MUFON?",
+  "openMufonReport": "Открыть MUFON Доклад",
+  "confirmedWitness": "Вы подтвердили это наблюдение",
+  "witnessesHaveConfirmed": "{count} люди подтвердили это наблюдение",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "Тип",
+  "ufoTypeSphere": "Сфера",
+  "ufoTypeTriangle": "Треугольник",
+  "ufoTypeDisk": "Диск",
+  "ufoTypeLight": "Свет",
+  "ufoTypeFireball": "Огненный шар",
+  "ufoTypeCylinder": "Цилиндр",
+  "ufoTypeCigar": "Сигара",
+  "ufoTypeRectangle": "Прямоугольник",
+  "ufoTypeFormation": "Формирование",
+  "ufoTypeUnknown": "Неизвестный"
 }

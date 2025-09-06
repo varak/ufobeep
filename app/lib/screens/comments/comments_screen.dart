@@ -6,6 +6,7 @@ import '../../services/comments_service.dart';
 import '../../widgets/comments/comment_item.dart';
 import '../../widgets/comments/comment_composer.dart';
 import '../../widgets/glass_card.dart';
+import '../../l10n/app_localizations.dart';
 import '../../theme/app_theme.dart';
 import '../../services/ui_feedback.dart';
 import '../../services/auth_repository.dart';
@@ -242,7 +243,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Comments', style: TextStyle(fontSize: 16)),
+            Text(AppLocalizations.of(context).commentsTitle, style: const TextStyle(fontSize: 16)),
             Text(
               widget.alertTitle,
               style: const TextStyle(
@@ -275,7 +276,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
           // Comment composer
           CommentComposer(
             onSendComment: _sendComment,
-            placeholder: 'Add a comment...',
+            placeholder: AppLocalizations.of(context).addComment,
           ),
         ],
       ),
@@ -302,7 +303,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
             ),
             const SizedBox(height: 16),
             Text(
-              'Failed to load comments',
+              AppLocalizations.of(context).errorGeneric,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
@@ -325,7 +326,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
                 backgroundColor: AppColors.brandPrimary,
                 foregroundColor: Colors.black,
               ),
-              child: const Text('Retry'),
+              child: Text(AppLocalizations.of(context).retry),
             ),
           ],
         ),
@@ -333,7 +334,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
     }
     
     if (_comments.isEmpty) {
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -344,19 +345,11 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
             ),
             SizedBox(height: 16),
             Text(
-              'No comments yet',
-              style: TextStyle(
+              AppLocalizations.of(context).noCommentsYet,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Be the first to comment on this sighting',
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 14,
               ),
             ),
           ],

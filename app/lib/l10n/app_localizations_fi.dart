@@ -437,17 +437,17 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '_PH_0_d sitten';
+    return '${count}d ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '_PH_0_h sitten';
+    return '${count}h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '_PH_0_m sitten';
+    return '${count}m ago';
   }
 
   @override
@@ -529,4 +529,223 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get retakeVideo => 'Palauta video';
+
+  @override
+  String get camera => 'Kamera';
+
+  @override
+  String get gallery => 'Galleria';
+
+  @override
+  String get basicSettings => 'Perusasetukset';
+
+  @override
+  String get appSettings => 'Sovelluksen asetukset';
+
+  @override
+  String get alertRange => 'Varoitusalue';
+
+  @override
+  String get manageNotificationsDesc => 'Hallitse tilauksia ja asetuksia';
+
+  @override
+  String get permissionsTitle => 'Lupa';
+
+  @override
+  String get permissionLocation => 'Sijainti';
+
+  @override
+  String get permissionCamera => 'Kamera';
+
+  @override
+  String get permissionNotifications => 'Ilmoitukset';
+
+  @override
+  String get permissionPhotos => 'Valokuvat';
+
+  @override
+  String get permissionGranted => 'Myönnetty';
+
+  @override
+  String get permissionNotGranted => 'Ei myönnetty';
+
+  @override
+  String get permissionGrant => 'Avustus';
+
+  @override
+  String get generateUsername => 'Luo uusi käyttäjätunnus';
+
+  @override
+  String get adminTools => 'Hallitse työkaluja';
+
+  @override
+  String get openAdminPanel => 'Avaa hallintapaneeli';
+
+  @override
+  String get webAdminInterface => 'Web Admin- käyttöliittymä';
+
+  @override
+  String get adminBetaNotice =>
+      'Beta rakentaa vain. Hallitse työkaluja, joilla testataan lähikuulutuksia, työntöilmoituksia ja järjestelmän diagnostiikkaa.';
+
+  @override
+  String get whatDoYouSee => 'Mitä näet?';
+
+  @override
+  String get ufoSighting => 'UFO Näkyminen';
+
+  @override
+  String get envAnalysisTitle => 'Environmental Analysis';
+
+  @override
+  String get envAnalysisPending => 'Analysis Pending';
+
+  @override
+  String get envAnalysisPendingDesc =>
+      'Environmental data will be available once processing begins.';
+
+  @override
+  String get unknownAircraft => 'Unknown Aircraft';
+
+  @override
+  String get moreAircraft => 'more aircraft';
+
+  @override
+  String get premiumImageryTitle => 'Premium Satellite Imagery';
+
+  @override
+  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+
+  @override
+  String get sightingTypeLabel => 'Tyyppi';
+
+  @override
+  String get ufoTypeSphere => 'Pallo';
+
+  @override
+  String get ufoTypeTriangle => 'Kolmio';
+
+  @override
+  String get ufoTypeDisk => 'Levy';
+
+  @override
+  String get ufoTypeLight => 'Valo';
+
+  @override
+  String get ufoTypeFireball => 'Tulipallo';
+
+  @override
+  String get ufoTypeCylinder => 'Sylinteri';
+
+  @override
+  String get ufoTypeCigar => 'Sikari';
+
+  @override
+  String get ufoTypeRectangle => 'Suorakulmio';
+
+  @override
+  String get ufoTypeFormation => 'Muotoilu';
+
+  @override
+  String get ufoTypeUnknown => 'Tuntematon';
+
+  @override
+  String get ufoTypeBoomerang => 'Boomerang';
+
+  @override
+  String get ufoTypeDiamond => 'Diamond';
+
+  @override
+  String get ufoTypeOval => 'Oval';
+
+  @override
+  String get ufoTypeCone => 'Cone';
+
+  @override
+  String get ufoTypeCross => 'Cross';
+
+  @override
+  String get ufoTypeDumbbell => 'Dumbbell';
+
+  @override
+  String get ufoTypeTeardrop => 'Teardrop';
+
+  @override
+  String get ufoTypeTicTac => 'Tic Tac';
+
+  @override
+  String get ufoTypeBullet => 'Bullet';
+
+  @override
+  String get ufoTypeSaturn => 'Saturn';
+
+  @override
+  String get ufoTypeStarLike => 'Star-like';
+
+  @override
+  String get ufoTypeBlimp => 'Blimp';
+
+  @override
+  String get actionsTitle => 'Toimet';
+
+  @override
+  String get addPhotosAndVideos => 'Lisää kuvia ja videoita';
+
+  @override
+  String get howToReportToMufon => 'Miten raportoida MUFON';
+
+  @override
+  String get reportToMufon => 'Raportoi MUFONille';
+
+  @override
+  String get whyReportToMufon => 'Miksi ilmoittautua Mufoniin?';
+
+  @override
+  String get openMufonReport => 'Avaa MUFON Kertomus';
+
+  @override
+  String get confirmedWitness => 'Varmistit tämän';
+
+  @override
+  String witnessesHaveConfirmed(int count) {
+    return '_PH_0_ ihmiset ovat vahvistaneet tämän havainnon';
+  }
+
+  @override
+  String get aircraftTrackingTitle => 'Aircraft Tracking';
+
+  @override
+  String get weatherConditionsTitle => 'Weather Conditions';
+
+  @override
+  String get noSatellitePasses => 'No visible satellite passes found';
+
+  @override
+  String get contentAnalysisTitle => 'Content Analysis';
+
+  @override
+  String get contentSafe => 'Content is safe';
+
+  @override
+  String get contentFlagged => 'Content flagged for review';
+
+  @override
+  String get confidenceLabel => 'Confidence';
+
+  @override
+  String get methodLabel => 'Method';
+
+  @override
+  String get premiumImageryAccessOnly =>
+      'Premium satellite imagery is only available to:';
+
+  @override
+  String get premiumAccessCreators => 'Alert creators';
+
+  @override
+  String get premiumAccessWitnesses =>
+      'Confirmed witnesses within visibility range';
+
+  @override
+  String get comingSoon => 'Coming Soon';
 }

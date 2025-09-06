@@ -588,7 +588,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                   onPressed: () => Navigator.of(context).pop(),
                   child: Text(
                     AppLocalizations.of(context).cancel,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white.withOpacity(0.7),
                       fontSize: 16,
                     ),

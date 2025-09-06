@@ -132,9 +132,9 @@
   "videoOnly": "ビデオのみ",
   "imageOnly": "画像のみ",
   "timeJustNow": "今すぐ登録",
-  "timeDaysAgo": "__PH_0_d 前に",
-  "timeHoursAgo": "__PH_0_h 前に",
-  "timeMinutesAgo": "__PH_0_m 前に",
+  "timeDaysAgo": "{count}d ago",
+  "timeHoursAgo": "{count}h ago",
+  "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "より多くのアラートをロードする",
   "toggleMufonTooltip": "MUFONの視線をトグル",
   "showMufonData": "MUFONデータを表示する",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "カメラ",
+  "gallery": "ギャラリー",
+  "basicSettings": "基本設定",
+  "appSettings": "アプリの設定",
+  "alertRange": "アラート範囲",
+  "manageNotificationsDesc": "サブスクリプションと設定の管理",
+  "permissionsTitle": "パーミッション",
+  "permissionLocation": "アクセス",
+  "permissionCamera": "カメラ",
+  "permissionNotifications": "お知らせ",
+  "permissionPhotos": "ニュース",
+  "permissionGranted": "助成対象者",
+  "permissionNotGranted": "免責事項",
+  "permissionGrant": "助成金",
+  "generateUsername": "新しいユーザー名を生成する",
+  "adminTools": "管理者ツール",
+  "openAdminPanel": "開いた管理者のパネル",
+  "webAdminInterface": "ウェブ管理者インターフェイス",
+  "adminBetaNotice": "ベータビルドのみ。 近接アラートのテスト、プッシュ通知、システム診断のための管理ツール.",
+  "whatDoYouSee": "お問い合わせ?",
+  "ufoSighting": "ユーチューブ スタイリング",
+  "actionsTitle": "アクション",
+  "addPhotosAndVideos": "写真とビデオを追加",
+  "howToReportToMufon": "MUFONへの報告方法",
+  "reportToMufon": "MUFONへの報告",
+  "whyReportToMufon": "なぜMUFONへの報告?",
+  "openMufonReport": "MUFONを開く レポート",
+  "confirmedWitness": "この視線を確認しました",
+  "witnessesHaveConfirmed": "{count} 人々はこの視線を確認しました",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "タイプ:",
+  "ufoTypeSphere": "スフィア",
+  "ufoTypeTriangle": "トライアングル",
+  "ufoTypeDisk": "ディスク",
+  "ufoTypeLight": "ライトライト",
+  "ufoTypeFireball": "ファイアーボール",
+  "ufoTypeCylinder": "シリンダー",
+  "ufoTypeCigar": "シガー",
+  "ufoTypeRectangle": "長方形",
+  "ufoTypeFormation": "フォーム",
+  "ufoTypeUnknown": "未知の"
 }

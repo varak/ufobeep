@@ -132,9 +132,9 @@
   "videoOnly": "vidéo seulement",
   "imageOnly": "image seulement",
   "timeJustNow": "Juste maintenant",
-  "timeDaysAgo": "{count}d il y a",
-  "timeHoursAgo": "Il y a {count}h",
-  "timeMinutesAgo": "Il y a {count}m",
+  "timeDaysAgo": "{count}d ago",
+  "timeHoursAgo": "{count}h ago",
+  "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "Charger d'autres alertes",
   "toggleMufonTooltip": "Éliminer les observations du MUFON",
   "showMufonData": "Afficher les données MUFON",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "Caméra",
+  "gallery": "Galerie",
+  "basicSettings": "Paramètres de base",
+  "appSettings": "Paramètres de l' application",
+  "alertRange": "Gamme d'alerte",
+  "manageNotificationsDesc": "Gérer les abonnements et les paramètres",
+  "permissionsTitle": "Autorisations",
+  "permissionLocation": "Lieu",
+  "permissionCamera": "Caméra",
+  "permissionNotifications": "Notifications",
+  "permissionPhotos": "Photos",
+  "permissionGranted": "Accordée",
+  "permissionNotGranted": "Non accordée",
+  "permissionGrant": "Subvention",
+  "generateUsername": "Générer un nouveau nom d'utilisateur",
+  "adminTools": "Outils d'administration",
+  "openAdminPanel": "Ouvrir le panneau Admin",
+  "webAdminInterface": "Interface Web Admin",
+  "adminBetaNotice": "Beta construit seulement. Outils d'administration pour tester les alertes de proximité, les notifications de poussée et les diagnostics système.",
+  "whatDoYouSee": "Que voyez-vous ?",
+  "ufoSighting": "OVNI Vue",
+  "actionsTitle": "Actions",
+  "addPhotosAndVideos": "Ajouter des photos et des vidéos",
+  "howToReportToMufon": "Comment se présenter au MUFON",
+  "reportToMufon": "Rapport au MUFON",
+  "whyReportToMufon": "Pourquoi se présenter au MUFON?",
+  "openMufonReport": "Ouvrir le MUFON Rapport annuel",
+  "confirmedWitness": "Vous avez confirmé cette observation",
+  "witnessesHaveConfirmed": "Les gens ont confirmé cette observation",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "Type",
+  "ufoTypeSphere": "Sphère",
+  "ufoTypeTriangle": "Triangle",
+  "ufoTypeDisk": "Disque",
+  "ufoTypeLight": "Lumière",
+  "ufoTypeFireball": "Boule de feu",
+  "ufoTypeCylinder": "Cylindre",
+  "ufoTypeCigar": "Cigares",
+  "ufoTypeRectangle": "Rectangle",
+  "ufoTypeFormation": "Formation",
+  "ufoTypeUnknown": "Inconnu"
 }

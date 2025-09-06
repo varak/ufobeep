@@ -440,17 +440,17 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '_ _ PH _ 0 _ _ d temu';
+    return '${count}d ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '_ _ PH _ 0 _ _ _ h temu';
+    return '${count}h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '_ _ PH _ 0 _ _ m temu';
+    return '${count}m ago';
   }
 
   @override
@@ -532,4 +532,224 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get retakeVideo => 'Zapisz wideo';
+
+  @override
+  String get camera => 'Kamera';
+
+  @override
+  String get gallery => 'Galeria';
+
+  @override
+  String get basicSettings => 'Ustawienia podstawowe';
+
+  @override
+  String get appSettings => 'Ustawienia aplikacji';
+
+  @override
+  String get alertRange => 'Zakres alarmów';
+
+  @override
+  String get manageNotificationsDesc =>
+      'Zarządzanie subskrypcjami i ustawieniami';
+
+  @override
+  String get permissionsTitle => 'Uprawnienia';
+
+  @override
+  String get permissionLocation => 'Lokalizacja';
+
+  @override
+  String get permissionCamera => 'Kamera';
+
+  @override
+  String get permissionNotifications => 'Powiadomienia';
+
+  @override
+  String get permissionPhotos => 'Zdjęcia';
+
+  @override
+  String get permissionGranted => 'Udzielone';
+
+  @override
+  String get permissionNotGranted => 'Nieprzyznane';
+
+  @override
+  String get permissionGrant => 'Dotacja';
+
+  @override
+  String get generateUsername => 'Generuj nową nazwę użytkownika';
+
+  @override
+  String get adminTools => 'Admin Narzędzia';
+
+  @override
+  String get openAdminPanel => 'Otwórz panel administracyjny';
+
+  @override
+  String get webAdminInterface => 'Interfejs administratora sieci Web';
+
+  @override
+  String get adminBetaNotice =>
+      'Beta tylko buduje. Admin narzędzia do testowania alarmów zbliżeniowych, powiadomień push i diagnostyki systemu.';
+
+  @override
+  String get whatDoYouSee => 'Co widzisz?';
+
+  @override
+  String get ufoSighting => 'UFO Zwiedzanie';
+
+  @override
+  String get envAnalysisTitle => 'Environmental Analysis';
+
+  @override
+  String get envAnalysisPending => 'Analysis Pending';
+
+  @override
+  String get envAnalysisPendingDesc =>
+      'Environmental data will be available once processing begins.';
+
+  @override
+  String get unknownAircraft => 'Unknown Aircraft';
+
+  @override
+  String get moreAircraft => 'more aircraft';
+
+  @override
+  String get premiumImageryTitle => 'Premium Satellite Imagery';
+
+  @override
+  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+
+  @override
+  String get sightingTypeLabel => 'Rodzaj';
+
+  @override
+  String get ufoTypeSphere => 'Kula';
+
+  @override
+  String get ufoTypeTriangle => 'Trójkąt';
+
+  @override
+  String get ufoTypeDisk => 'Dysk';
+
+  @override
+  String get ufoTypeLight => 'Światło';
+
+  @override
+  String get ufoTypeFireball => 'Fireball';
+
+  @override
+  String get ufoTypeCylinder => 'Cylinder';
+
+  @override
+  String get ufoTypeCigar => 'Cygaro';
+
+  @override
+  String get ufoTypeRectangle => 'Prostokąt';
+
+  @override
+  String get ufoTypeFormation => 'Formacja';
+
+  @override
+  String get ufoTypeUnknown => 'Nieznany';
+
+  @override
+  String get ufoTypeBoomerang => 'Boomerang';
+
+  @override
+  String get ufoTypeDiamond => 'Diamond';
+
+  @override
+  String get ufoTypeOval => 'Oval';
+
+  @override
+  String get ufoTypeCone => 'Cone';
+
+  @override
+  String get ufoTypeCross => 'Cross';
+
+  @override
+  String get ufoTypeDumbbell => 'Dumbbell';
+
+  @override
+  String get ufoTypeTeardrop => 'Teardrop';
+
+  @override
+  String get ufoTypeTicTac => 'Tic Tac';
+
+  @override
+  String get ufoTypeBullet => 'Bullet';
+
+  @override
+  String get ufoTypeSaturn => 'Saturn';
+
+  @override
+  String get ufoTypeStarLike => 'Star-like';
+
+  @override
+  String get ufoTypeBlimp => 'Blimp';
+
+  @override
+  String get actionsTitle => 'Działania';
+
+  @override
+  String get addPhotosAndVideos => 'Dodaj zdjęcia i filmy';
+
+  @override
+  String get howToReportToMufon => 'Jak zgłosić się do MUFON';
+
+  @override
+  String get reportToMufon => 'Sprawozdanie dla MUFON';
+
+  @override
+  String get whyReportToMufon => 'Po co zgłaszać się do MUFON?';
+
+  @override
+  String get openMufonReport => 'Otwórz MUFON Sprawozdanie';
+
+  @override
+  String get confirmedWitness => 'Potwierdziłeś to';
+
+  @override
+  String witnessesHaveConfirmed(int count) {
+    return 'Ludzie potwierdzili to rozpoznanie';
+  }
+
+  @override
+  String get aircraftTrackingTitle => 'Aircraft Tracking';
+
+  @override
+  String get weatherConditionsTitle => 'Weather Conditions';
+
+  @override
+  String get noSatellitePasses => 'No visible satellite passes found';
+
+  @override
+  String get contentAnalysisTitle => 'Content Analysis';
+
+  @override
+  String get contentSafe => 'Content is safe';
+
+  @override
+  String get contentFlagged => 'Content flagged for review';
+
+  @override
+  String get confidenceLabel => 'Confidence';
+
+  @override
+  String get methodLabel => 'Method';
+
+  @override
+  String get premiumImageryAccessOnly =>
+      'Premium satellite imagery is only available to:';
+
+  @override
+  String get premiumAccessCreators => 'Alert creators';
+
+  @override
+  String get premiumAccessWitnesses =>
+      'Confirmed witnesses within visibility range';
+
+  @override
+  String get comingSoon => 'Coming Soon';
 }

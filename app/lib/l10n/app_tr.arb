@@ -133,7 +133,7 @@
   "imageOnly": "sadece görüntü sadece görüntü",
   "timeJustNow": "Sadece şimdi",
   "timeDaysAgo": "{count}d ago",
-  "timeHoursAgo": "{count}h önce",
+  "timeHoursAgo": "{count}h ago",
   "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "Load More Alerts",
   "toggleMufonTooltip": "Toggle MUFON görüşüyor",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "Kamera",
+  "gallery": "Gallery",
+  "basicSettings": "Temel Ayarlar",
+  "appSettings": "App Ayarları",
+  "alertRange": "Alert Range",
+  "manageNotificationsDesc": "Aboneliği ve ayarları yönetin",
+  "permissionsTitle": "İzinler",
+  "permissionLocation": "Konum Location",
+  "permissionCamera": "Kamera",
+  "permissionNotifications": "Bildirimler",
+  "permissionPhotos": "Fotoğraflar",
+  "permissionGranted": "Granted",
+  "permissionNotGranted": "Verilmedi",
+  "permissionGrant": "Grant",
+  "generateUsername": "Genrate new user",
+  "adminTools": "Admin Tools",
+  "openAdminPanel": "Open Admin Panel",
+  "webAdminInterface": "Web Admin Interface",
+  "adminBetaNotice": "Beta sadece inşa eder. Yakın uyarıları test etmek için yönetici araçları, bildirimleri zorlama ve sistem tanıları.",
+  "whatDoYouSee": "Ne görüyorsunuz?",
+  "ufoSighting": "UFO UFO Sighting",
+  "actionsTitle": "Eylemler",
+  "addPhotosAndVideos": "Fotoğraflar ve Videolar ekleyin",
+  "howToReportToMufon": "MUFON'a Nasıl Rapor Verilir",
+  "reportToMufon": "MUFON'a Rapor",
+  "whyReportToMufon": "Neden MUFON'a Rapor?",
+  "openMufonReport": "Açık MUFON Rapor",
+  "confirmedWitness": "Bu manzarayı doğruladın",
+  "witnessesHaveConfirmed": "{count} insanlar bu manzarayı doğruladı",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "Tipi",
+  "ufoTypeSphere": "Sphere",
+  "ufoTypeTriangle": "Üçgen",
+  "ufoTypeDisk": "Disk",
+  "ufoTypeLight": "Işık Işığı",
+  "ufoTypeFireball": "Fireball",
+  "ufoTypeCylinder": "Silindir",
+  "ufoTypeCigar": "Cigar",
+  "ufoTypeRectangle": "Rect",
+  "ufoTypeFormation": "Formasyon",
+  "ufoTypeUnknown": "Bilinmeyen"
 }

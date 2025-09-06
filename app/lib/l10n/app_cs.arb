@@ -132,9 +132,9 @@
   "videoOnly": "pouze video",
   "imageOnly": "pouze obrázek",
   "timeJustNow": "Právě teď",
-  "timeDaysAgo": "Před",
-  "timeHoursAgo": "_ _ PH _ 0 _ _ h před",
-  "timeMinutesAgo": "Před tím",
+  "timeDaysAgo": "{count}d ago",
+  "timeHoursAgo": "{count}h ago",
+  "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "Načíst více upozornění",
   "toggleMufonTooltip": "Zapnout pozorování mufonu",
   "showMufonData": "Zobrazit data MUFON",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "Kamera",
+  "gallery": "Galerie",
+  "basicSettings": "Základní nastavení",
+  "appSettings": "Nastavení aplikace",
+  "alertRange": "Rozsah upozornění",
+  "manageNotificationsDesc": "Správa předplatného a nastavení",
+  "permissionsTitle": "Povolení",
+  "permissionLocation": "Umístění",
+  "permissionCamera": "Kamera",
+  "permissionNotifications": "Oznámení",
+  "permissionPhotos": "Fotografie",
+  "permissionGranted": "Povoleno",
+  "permissionNotGranted": "Nepřiznáno",
+  "permissionGrant": "Grant",
+  "generateUsername": "Vytvořit nové uživatelské jméno",
+  "adminTools": "Admin nástroje",
+  "openAdminPanel": "Otevřít admin panel",
+  "webAdminInterface": "Web Admin rozhraní",
+  "adminBetaNotice": "Beta jen staví. Administrátorské nástroje pro testování upozornění na blízkost, tlačení oznámení a systémové diagnostiky.",
+  "whatDoYouSee": "Co vidíš?",
+  "ufoSighting": "UFO Vidění",
+  "actionsTitle": "Akce",
+  "addPhotosAndVideos": "Přidat fotografie a videa",
+  "howToReportToMufon": "Jak podat zprávu MUFON",
+  "reportToMufon": "Zpráva pro MUFON",
+  "whyReportToMufon": "Proč se hlásit na MUFON?",
+  "openMufonReport": "Open MUFON Zpráva",
+  "confirmedWitness": "Potvrdil jste toto pozorování",
+  "witnessesHaveConfirmed": "Lidé potvrdili toto pozorování",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "Typ",
+  "ufoTypeSphere": "Koule",
+  "ufoTypeTriangle": "Trojúhelník",
+  "ufoTypeDisk": "Disk",
+  "ufoTypeLight": "Světlo",
+  "ufoTypeFireball": "Fireball",
+  "ufoTypeCylinder": "Válec",
+  "ufoTypeCigar": "Doutník",
+  "ufoTypeRectangle": "Obdélník",
+  "ufoTypeFormation": "Formace",
+  "ufoTypeUnknown": "Neznámé"
 }

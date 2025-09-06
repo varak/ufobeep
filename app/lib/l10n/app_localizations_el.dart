@@ -442,17 +442,17 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '_PH_0_D πριν';
+    return '${count}d ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '__PH_0_h πριν';
+    return '${count}h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '_PH_0_m πριν';
+    return '${count}m ago';
   }
 
   @override
@@ -534,4 +534,223 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get retakeVideo => 'Επανάληψη βίντεο';
+
+  @override
+  String get camera => 'Κάμερα';
+
+  @override
+  String get gallery => 'Γκαλερί';
+
+  @override
+  String get basicSettings => 'Βασικές ρυθμίσεις';
+
+  @override
+  String get appSettings => 'Settings εφαρμογών';
+
+  @override
+  String get alertRange => 'Εύρος ειδοποίησης';
+
+  @override
+  String get manageNotificationsDesc => 'Διαχείριση συνδρομών & ρυθμίσεων';
+
+  @override
+  String get permissionsTitle => 'Άδειες';
+
+  @override
+  String get permissionLocation => 'Τοποθεσία';
+
+  @override
+  String get permissionCamera => 'Κάμερα';
+
+  @override
+  String get permissionNotifications => 'Κοινοποιήσεις';
+
+  @override
+  String get permissionPhotos => 'Φωτογραφίες';
+
+  @override
+  String get permissionGranted => 'Χορηγείται';
+
+  @override
+  String get permissionNotGranted => 'Δεν έχει χορηγηθεί';
+
+  @override
+  String get permissionGrant => 'Επιχορήγηση';
+
+  @override
+  String get generateUsername => 'Δημιουργία νέου ονόματος χρήστη';
+
+  @override
+  String get adminTools => 'Εργαλεία διαχείρισης';
+
+  @override
+  String get openAdminPanel => 'Άνοιγμα πίνακα διαχειριστή';
+
+  @override
+  String get webAdminInterface => 'Διεπαφή διαχειριστή ιστού';
+
+  @override
+  String get adminBetaNotice =>
+      'Η Βήτα χτίζει μόνο. Εργαλεία διαχείρισης για τη δοκιμή ειδοποιήσεων εγγύτητας, ειδοποιήσεις ώθησης και διαγνωστικά συστημάτων.';
+
+  @override
+  String get whatDoYouSee => 'Τι βλέπεις?';
+
+  @override
+  String get ufoSighting => 'ΑΤΙΑ Ορατότητα';
+
+  @override
+  String get envAnalysisTitle => 'Environmental Analysis';
+
+  @override
+  String get envAnalysisPending => 'Analysis Pending';
+
+  @override
+  String get envAnalysisPendingDesc =>
+      'Environmental data will be available once processing begins.';
+
+  @override
+  String get unknownAircraft => 'Unknown Aircraft';
+
+  @override
+  String get moreAircraft => 'more aircraft';
+
+  @override
+  String get premiumImageryTitle => 'Premium Satellite Imagery';
+
+  @override
+  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+
+  @override
+  String get sightingTypeLabel => 'Τύπος';
+
+  @override
+  String get ufoTypeSphere => 'Σφαίρα';
+
+  @override
+  String get ufoTypeTriangle => 'Τρίγωνο';
+
+  @override
+  String get ufoTypeDisk => 'Δίσκος';
+
+  @override
+  String get ufoTypeLight => 'Φως';
+
+  @override
+  String get ufoTypeFireball => 'Πυρόμπαλα';
+
+  @override
+  String get ufoTypeCylinder => 'Κύλινδρος';
+
+  @override
+  String get ufoTypeCigar => 'Πούρα';
+
+  @override
+  String get ufoTypeRectangle => 'Ορθογώνιο';
+
+  @override
+  String get ufoTypeFormation => 'Σχηματισμός';
+
+  @override
+  String get ufoTypeUnknown => 'Άγνωστο';
+
+  @override
+  String get ufoTypeBoomerang => 'Boomerang';
+
+  @override
+  String get ufoTypeDiamond => 'Diamond';
+
+  @override
+  String get ufoTypeOval => 'Oval';
+
+  @override
+  String get ufoTypeCone => 'Cone';
+
+  @override
+  String get ufoTypeCross => 'Cross';
+
+  @override
+  String get ufoTypeDumbbell => 'Dumbbell';
+
+  @override
+  String get ufoTypeTeardrop => 'Teardrop';
+
+  @override
+  String get ufoTypeTicTac => 'Tic Tac';
+
+  @override
+  String get ufoTypeBullet => 'Bullet';
+
+  @override
+  String get ufoTypeSaturn => 'Saturn';
+
+  @override
+  String get ufoTypeStarLike => 'Star-like';
+
+  @override
+  String get ufoTypeBlimp => 'Blimp';
+
+  @override
+  String get actionsTitle => 'Δράσεις';
+
+  @override
+  String get addPhotosAndVideos => 'Προσθήκη φωτογραφιών & βίντεο';
+
+  @override
+  String get howToReportToMufon => 'Πώς να αναφέρετε στο MUFON';
+
+  @override
+  String get reportToMufon => 'Αναφορά στο MUFON';
+
+  @override
+  String get whyReportToMufon => 'Γιατί αναφέρεσαι στο MUFON?';
+
+  @override
+  String get openMufonReport => 'Άνοιγμα MUFON Έκθεση';
+
+  @override
+  String get confirmedWitness => 'Επιβεβαίωσες αυτή την παρατήρηση';
+
+  @override
+  String witnessesHaveConfirmed(int count) {
+    return '__PH_0_ οι άνθρωποι έχουν επιβεβαιώσει αυτή την παρατήρηση';
+  }
+
+  @override
+  String get aircraftTrackingTitle => 'Aircraft Tracking';
+
+  @override
+  String get weatherConditionsTitle => 'Weather Conditions';
+
+  @override
+  String get noSatellitePasses => 'No visible satellite passes found';
+
+  @override
+  String get contentAnalysisTitle => 'Content Analysis';
+
+  @override
+  String get contentSafe => 'Content is safe';
+
+  @override
+  String get contentFlagged => 'Content flagged for review';
+
+  @override
+  String get confidenceLabel => 'Confidence';
+
+  @override
+  String get methodLabel => 'Method';
+
+  @override
+  String get premiumImageryAccessOnly =>
+      'Premium satellite imagery is only available to:';
+
+  @override
+  String get premiumAccessCreators => 'Alert creators';
+
+  @override
+  String get premiumAccessWitnesses =>
+      'Confirmed witnesses within visibility range';
+
+  @override
+  String get comingSoon => 'Coming Soon';
 }

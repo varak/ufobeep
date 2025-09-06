@@ -527,4 +527,223 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get retakeVideo => 'Retake Video';
+
+  @override
+  String get camera => 'Camera';
+
+  @override
+  String get gallery => 'Gallery';
+
+  @override
+  String get basicSettings => 'Basic Settings';
+
+  @override
+  String get appSettings => 'App Settings';
+
+  @override
+  String get alertRange => 'Alert Range';
+
+  @override
+  String get manageNotificationsDesc => 'Manage subscriptions & settings';
+
+  @override
+  String get permissionsTitle => 'Permissions';
+
+  @override
+  String get permissionLocation => 'Location';
+
+  @override
+  String get permissionCamera => 'Camera';
+
+  @override
+  String get permissionNotifications => 'Notifications';
+
+  @override
+  String get permissionPhotos => 'Photos';
+
+  @override
+  String get permissionGranted => 'Granted';
+
+  @override
+  String get permissionNotGranted => 'Not granted';
+
+  @override
+  String get permissionGrant => 'Grant';
+
+  @override
+  String get generateUsername => 'Generate new username';
+
+  @override
+  String get adminTools => 'Admin Tools';
+
+  @override
+  String get openAdminPanel => 'Open Admin Panel';
+
+  @override
+  String get webAdminInterface => 'Web Admin Interface';
+
+  @override
+  String get adminBetaNotice =>
+      'Beta builds only. Admin tools for testing proximity alerts, push notifications, and system diagnostics.';
+
+  @override
+  String get whatDoYouSee => 'What do you see?';
+
+  @override
+  String get ufoSighting => 'UFO Sighting';
+
+  @override
+  String get envAnalysisTitle => 'Environmental Analysis';
+
+  @override
+  String get envAnalysisPending => 'Analysis Pending';
+
+  @override
+  String get envAnalysisPendingDesc =>
+      'Environmental data will be available once processing begins.';
+
+  @override
+  String get unknownAircraft => 'Unknown Aircraft';
+
+  @override
+  String get moreAircraft => 'more aircraft';
+
+  @override
+  String get premiumImageryTitle => 'Premium Satellite Imagery';
+
+  @override
+  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+
+  @override
+  String get sightingTypeLabel => 'Type';
+
+  @override
+  String get ufoTypeSphere => 'Sphere';
+
+  @override
+  String get ufoTypeTriangle => 'Triangle';
+
+  @override
+  String get ufoTypeDisk => 'Disk';
+
+  @override
+  String get ufoTypeLight => 'Light';
+
+  @override
+  String get ufoTypeFireball => 'Fireball';
+
+  @override
+  String get ufoTypeCylinder => 'Cylinder';
+
+  @override
+  String get ufoTypeCigar => 'Cigar';
+
+  @override
+  String get ufoTypeRectangle => 'Rectangle';
+
+  @override
+  String get ufoTypeFormation => 'Formation';
+
+  @override
+  String get ufoTypeUnknown => 'Unknown';
+
+  @override
+  String get ufoTypeBoomerang => 'Boomerang';
+
+  @override
+  String get ufoTypeDiamond => 'Diamond';
+
+  @override
+  String get ufoTypeOval => 'Oval';
+
+  @override
+  String get ufoTypeCone => 'Cone';
+
+  @override
+  String get ufoTypeCross => 'Cross';
+
+  @override
+  String get ufoTypeDumbbell => 'Dumbbell';
+
+  @override
+  String get ufoTypeTeardrop => 'Teardrop';
+
+  @override
+  String get ufoTypeTicTac => 'Tic Tac';
+
+  @override
+  String get ufoTypeBullet => 'Bullet';
+
+  @override
+  String get ufoTypeSaturn => 'Saturn';
+
+  @override
+  String get ufoTypeStarLike => 'Star-like';
+
+  @override
+  String get ufoTypeBlimp => 'Blimp';
+
+  @override
+  String get actionsTitle => 'Actions';
+
+  @override
+  String get addPhotosAndVideos => 'Add Photos & Videos';
+
+  @override
+  String get howToReportToMufon => 'How to Report to MUFON';
+
+  @override
+  String get reportToMufon => 'Report to MUFON';
+
+  @override
+  String get whyReportToMufon => 'Why Report to MUFON?';
+
+  @override
+  String get openMufonReport => 'Open MUFON Report';
+
+  @override
+  String get confirmedWitness => 'You confirmed this sighting';
+
+  @override
+  String witnessesHaveConfirmed(int count) {
+    return '$count people have confirmed this sighting';
+  }
+
+  @override
+  String get aircraftTrackingTitle => 'Aircraft Tracking';
+
+  @override
+  String get weatherConditionsTitle => 'Weather Conditions';
+
+  @override
+  String get noSatellitePasses => 'No visible satellite passes found';
+
+  @override
+  String get contentAnalysisTitle => 'Content Analysis';
+
+  @override
+  String get contentSafe => 'Content is safe';
+
+  @override
+  String get contentFlagged => 'Content flagged for review';
+
+  @override
+  String get confidenceLabel => 'Confidence';
+
+  @override
+  String get methodLabel => 'Method';
+
+  @override
+  String get premiumImageryAccessOnly =>
+      'Premium satellite imagery is only available to:';
+
+  @override
+  String get premiumAccessCreators => 'Alert creators';
+
+  @override
+  String get premiumAccessWitnesses =>
+      'Confirmed witnesses within visibility range';
+
+  @override
+  String get comingSoon => 'Coming Soon';
 }

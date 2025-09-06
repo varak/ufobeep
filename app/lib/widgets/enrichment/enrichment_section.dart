@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
+import '../glass_card.dart';
 import '../../models/alert_enrichment.dart';
 import '../../utils/unit_conversion.dart';
 import '../../providers/user_preferences_provider.dart';
@@ -48,7 +50,7 @@ class EnrichmentSection extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  'Environmental Analysis',
+                  AppLocalizations.of(context).envAnalysisTitle,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w600,
@@ -99,10 +101,9 @@ class EnrichmentSection extends StatelessWidget {
   }
 
   Widget _buildPendingState() {
-    return Card(
-      color: AppColors.darkSurface,
+    return GlassCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(4),
         child: Column(
           children: [
             Icon(
@@ -111,21 +112,25 @@ class EnrichmentSection extends StatelessWidget {
               color: AppColors.textTertiary,
             ),
             const SizedBox(height: 12),
-            Text(
-              'Analysis Pending',
-              style: TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+            Builder(
+              builder: (context) => Text(
+                AppLocalizations.of(context).envAnalysisPending,
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
             const SizedBox(height: 8),
-            Text(
-              'Environmental data will be available once processing begins.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppColors.textSecondary,
-                fontSize: 14,
+            Builder(
+              builder: (context) => Text(
+                AppLocalizations.of(context).envAnalysisPendingDesc,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 14,
+                ),
               ),
             ),
           ],
@@ -135,29 +140,22 @@ class EnrichmentSection extends StatelessWidget {
   }
 
   Widget _buildLoadingState() {
-    return Card(
-      color: AppColors.darkSurface,
+    return GlassCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         child: Column(
           children: [
             const CircularProgressIndicator(color: AppColors.brandPrimary),
             const SizedBox(height: 16),
-            Text(
-              'Analyzing Environment...',
-              style: TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Checking weather, celestial objects, and satellite data.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppColors.textSecondary,
-                fontSize: 14,
+            // Reuse pending title for loading to keep copy simple/consistent
+            Builder(
+              builder: (context) => Text(
+                AppLocalizations.of(context).envAnalysisPending,
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ],
@@ -167,19 +165,18 @@ class EnrichmentSection extends StatelessWidget {
   }
 
   Widget _buildErrorState(String error) {
-    return Card(
-      color: AppColors.semanticError.withOpacity(0.1),
+    return GlassCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         child: Column(
           children: [
-            Icon(
+            const Icon(
               Icons.error_outline,
               size: 48,
               color: AppColors.semanticError,
             ),
             const SizedBox(height: 12),
-            Text(
+            const Text(
               'Analysis Failed',
               style: TextStyle(
                 color: AppColors.semanticError,
@@ -191,7 +188,7 @@ class EnrichmentSection extends StatelessWidget {
             Text(
               error,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 14,
               ),
@@ -259,10 +256,9 @@ class EnrichmentSection extends StatelessWidget {
     final total = data['total'] as int? ?? 0;
     final summary = data['summary'] as String? ?? 'No aircraft detected';
 
-    return Card(
-      color: AppColors.darkSurface,
+    return GlassCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -270,7 +266,12 @@ class EnrichmentSection extends StatelessWidget {
               children: [
                 const Text('✈️', style: TextStyle(fontSize: 20)),
                 const SizedBox(width: 8),
-                Text('Aircraft Tracking', style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.w600)),
+                Builder(
+                  builder: (context) => Text(
+                    AppLocalizations.of(context).aircraftTrackingTitle,
+                    style: const TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
+                ),
                 const Spacer(),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -284,7 +285,7 @@ class EnrichmentSection extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            Text(summary, style: TextStyle(color: AppColors.textSecondary, fontSize: 14)),
+            Text(summary, style: const TextStyle(color: AppColors.textSecondary, fontSize: 14)),
             if (aircraft.isNotEmpty) ...[
               const SizedBox(height: 12),
               ...aircraft.take(3).map((a) {
@@ -303,20 +304,27 @@ class EnrichmentSection extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        callsign.isEmpty ? 'Unknown Aircraft' : callsign,
-                        style: TextStyle(color: AppColors.textPrimary, fontSize: 14, fontWeight: FontWeight.w500),
+                      Builder(
+                        builder: (context) => Text(
+                          callsign.isEmpty ? AppLocalizations.of(context).unknownAircraft : callsign,
+                          style: const TextStyle(color: AppColors.textPrimary, fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
                       ),
                       Text(
                         '${distance.toStringAsFixed(1)}km away${altitude != null ? ' • ${altitude}ft' : ''}',
-                        style: TextStyle(color: AppColors.textTertiary, fontSize: 12),
+                        style: const TextStyle(color: AppColors.textTertiary, fontSize: 12),
                       ),
                     ],
                   ),
                 );
               }),
               if (total > 3)
-                Text('+${total - 3} more aircraft', style: TextStyle(color: AppColors.textTertiary, fontSize: 12)),
+                Builder(
+                  builder: (context) => Text(
+                    '+${total - 3} ${AppLocalizations.of(context).moreAircraft}',
+                    style: const TextStyle(color: AppColors.textTertiary, fontSize: 12),
+                  ),
+                ),
             ],
           ],
         ),
@@ -363,10 +371,9 @@ class EnrichmentSection extends StatelessWidget {
 
   /// Build upgrade prompt for users who can't access premium satellite imagery
   Widget _buildPremiumUpgradePrompt() {
-    return Card(
-      color: AppColors.darkSurface,
+    return GlassCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -379,19 +386,23 @@ class EnrichmentSection extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Premium Satellite Imagery',
-                        style: TextStyle(
-                          color: AppColors.textSecondary,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                      Builder(
+                        builder: (context) => Text(
+                          AppLocalizations.of(context).premiumImageryTitle,
+                          style: const TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                      Text(
-                        'High-resolution commercial imagery',
-                        style: TextStyle(
-                          color: AppColors.textTertiary,
-                          fontSize: 12,
+                      Builder(
+                        builder: (context) => Text(
+                          AppLocalizations.of(context).premiumImagerySubtitle,
+                          style: const TextStyle(
+                            color: AppColors.textTertiary,
+                            fontSize: 12,
+                          ),
                         ),
                       ),
                     ],
@@ -414,25 +425,29 @@ class EnrichmentSection extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Premium satellite imagery is only available to:',
+                  Builder(
+                    builder: (context) => Text(
+                      AppLocalizations.of(context).premiumImageryAccessOnly,
                     style: TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+                  ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
                       Icon(Icons.person, color: AppColors.brandPrimary, size: 16),
                       const SizedBox(width: 8),
-                      Text(
-                        'Alert creators',
+                      Builder(
+                        builder: (context) => Text(
+                          AppLocalizations.of(context).premiumAccessCreators,
                         style: TextStyle(
                           color: AppColors.textPrimary,
                           fontSize: 13,
                         ),
+                      ),
                       ),
                     ],
                   ),
@@ -441,12 +456,14 @@ class EnrichmentSection extends StatelessWidget {
                     children: [
                       Icon(Icons.visibility, color: AppColors.brandPrimary, size: 16),
                       const SizedBox(width: 8),
-                      Text(
-                        'Confirmed witnesses within visibility range',
+                      Builder(
+                        builder: (context) => Text(
+                          AppLocalizations.of(context).premiumAccessWitnesses,
                         style: TextStyle(
                           color: AppColors.textPrimary,
                           fontSize: 13,
                         ),
+                      ),
                       ),
                     ],
                   ),
@@ -477,11 +494,13 @@ class EnrichmentSection extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        Text(
-                          'Coming Soon',
+                        Builder(
+                          builder: (context) => Text(
+                            AppLocalizations.of(context).comingSoon,
                           style: TextStyle(
                             color: AppColors.textTertiary,
                             fontSize: 11,
+                          ),
                           ),
                         ),
                       ],
@@ -508,11 +527,13 @@ class EnrichmentSection extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        Text(
-                          'Coming Soon',
+                        Builder(
+                          builder: (context) => Text(
+                            AppLocalizations.of(context).comingSoon,
                           style: TextStyle(
                             color: AppColors.textTertiary,
                             fontSize: 11,
+                          ),
                           ),
                         ),
                       ],
@@ -537,10 +558,9 @@ class WeatherCardFromJson extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userPrefs = ref.watch(userPreferencesProvider);
     final units = userPrefs?.units ?? 'metric';
-    return Card(
-      color: AppColors.darkSurface,
+    return GlassCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -549,7 +569,7 @@ class WeatherCardFromJson extends ConsumerWidget {
                 Icon(Icons.wb_sunny, color: AppColors.brandPrimary, size: 20),
                 const SizedBox(width: 8),
                 Text(
-                  'Weather Conditions',
+                  AppLocalizations.of(context).weatherConditionsTitle,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w600,
@@ -682,10 +702,9 @@ class CelestialCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: AppColors.darkSurface,
+    return GlassCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -851,10 +870,9 @@ class SatelliteCardFromJson extends StatelessWidget {
     final starlinkPasses = satelliteData['starlink_passes'] as List<dynamic>? ?? [];
     final allPasses = [...issPasses, ...starlinkPasses];
     
-    return Card(
-      color: AppColors.darkSurface,
+    return GlassCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -891,11 +909,13 @@ class SatelliteCardFromJson extends StatelessWidget {
             ...starlinkPasses.map((pass) => _buildSatellitePass(pass)),
             
             if (allPasses.isEmpty)
-              Text(
-                'No visible satellite passes found',
-                style: TextStyle(
-                  color: AppColors.textSecondary,
-                  fontSize: 14,
+              Builder(
+                builder: (context) => Text(
+                  AppLocalizations.of(context).noSatellitePasses,
+                  style: const TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 14,
+                  ),
                 ),
               ),
           ],
@@ -1001,10 +1021,9 @@ class ContentAnalysisCardFromJson extends StatelessWidget {
     final isSafe = contentData['is_safe'] ?? true;
     final confidence = contentData['confidence'] ?? 0.0;
     
-    return Card(
-      color: AppColors.darkSurface,
+    return GlassCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1013,7 +1032,7 @@ class ContentAnalysisCardFromJson extends StatelessWidget {
                 Icon(Icons.security, color: AppColors.brandPrimary, size: 20),
                 const SizedBox(width: 8),
                 Text(
-                  'Content Analysis',
+                  AppLocalizations.of(context).contentAnalysisTitle,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w600,
@@ -1033,7 +1052,7 @@ class ContentAnalysisCardFromJson extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  isSafe ? 'Content is safe' : 'Content flagged for review',
+                  isSafe ? AppLocalizations.of(context).contentSafe : AppLocalizations.of(context).contentFlagged,
                   style: TextStyle(
                     color: isSafe ? AppColors.semanticSuccess : AppColors.semanticWarning,
                     fontSize: 14,
@@ -1049,7 +1068,7 @@ class ContentAnalysisCardFromJson extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Confidence: ',
+                  '${AppLocalizations.of(context).confidenceLabel}: ',
                   style: TextStyle(
                     color: AppColors.textTertiary,
                     fontSize: 12,
@@ -1069,7 +1088,7 @@ class ContentAnalysisCardFromJson extends StatelessWidget {
             if (contentData['analysis_method'] != null) ...[
               const SizedBox(height: 8),
               Text(
-                'Method: ${contentData['analysis_method']}',
+                '${AppLocalizations.of(context).methodLabel}: ${contentData['analysis_method']}',
                 style: TextStyle(
                   color: AppColors.textTertiary,
                   fontSize: 12,

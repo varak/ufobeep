@@ -436,17 +436,17 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return 'To make a ph_0_d';
+    return '${count}d ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'H_0_h__h___h____h___h___h___h____h_____h___h___h____h_________h________________________________________________________________________________________________________________________________________________________';
+    return '${count}h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '^PH_0_m पहले';
+    return '${count}m ago';
   }
 
   @override
@@ -527,4 +527,223 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get retakeVideo => 'वीडियो';
+
+  @override
+  String get camera => 'कैमरा';
+
+  @override
+  String get gallery => 'गैलरी';
+
+  @override
+  String get basicSettings => 'मूल सेटिंग';
+
+  @override
+  String get appSettings => 'ऐप सेटिंग';
+
+  @override
+  String get alertRange => 'चेतावनी रेंज';
+
+  @override
+  String get manageNotificationsDesc => 'सदस्यता और सेटिंग्स प्रबंधित करें';
+
+  @override
+  String get permissionsTitle => 'अनुमतियां';
+
+  @override
+  String get permissionLocation => 'स्थान';
+
+  @override
+  String get permissionCamera => 'कैमरा';
+
+  @override
+  String get permissionNotifications => 'अधिसूचनाएं';
+
+  @override
+  String get permissionPhotos => 'तस्वीरें';
+
+  @override
+  String get permissionGranted => 'अनुदान';
+
+  @override
+  String get permissionNotGranted => 'नहीं देना';
+
+  @override
+  String get permissionGrant => 'अनुदान';
+
+  @override
+  String get generateUsername => 'नया उपयोगकर्ता नाम जेनरेट करें';
+
+  @override
+  String get adminTools => 'व्यवस्थापक उपकरण';
+
+  @override
+  String get openAdminPanel => 'ओपन एडमिन पैनल';
+
+  @override
+  String get webAdminInterface => 'वेब व्यवस्थापक इंटरफ़ेस';
+
+  @override
+  String get adminBetaNotice =>
+      'बीटा केवल बनाता है। निकटता अलर्ट, पुश नोटिफिकेशन और सिस्टम निदान के परीक्षण के लिए व्यवस्थापक उपकरण।.';
+
+  @override
+  String get whatDoYouSee => 'आप क्या देखते हैं?';
+
+  @override
+  String get ufoSighting => 'यूएफओ दृष्टि';
+
+  @override
+  String get envAnalysisTitle => 'Environmental Analysis';
+
+  @override
+  String get envAnalysisPending => 'Analysis Pending';
+
+  @override
+  String get envAnalysisPendingDesc =>
+      'Environmental data will be available once processing begins.';
+
+  @override
+  String get unknownAircraft => 'Unknown Aircraft';
+
+  @override
+  String get moreAircraft => 'more aircraft';
+
+  @override
+  String get premiumImageryTitle => 'Premium Satellite Imagery';
+
+  @override
+  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+
+  @override
+  String get sightingTypeLabel => 'प्रकार';
+
+  @override
+  String get ufoTypeSphere => 'क्षेत्र';
+
+  @override
+  String get ufoTypeTriangle => 'त्रिभुज';
+
+  @override
+  String get ufoTypeDisk => 'डिस्क';
+
+  @override
+  String get ufoTypeLight => 'प्रकाश';
+
+  @override
+  String get ufoTypeFireball => 'फायरबॉल';
+
+  @override
+  String get ufoTypeCylinder => 'सिलेंडर';
+
+  @override
+  String get ufoTypeCigar => 'सिगार';
+
+  @override
+  String get ufoTypeRectangle => 'आयत';
+
+  @override
+  String get ufoTypeFormation => 'गठन';
+
+  @override
+  String get ufoTypeUnknown => 'अज्ञात';
+
+  @override
+  String get ufoTypeBoomerang => 'Boomerang';
+
+  @override
+  String get ufoTypeDiamond => 'Diamond';
+
+  @override
+  String get ufoTypeOval => 'Oval';
+
+  @override
+  String get ufoTypeCone => 'Cone';
+
+  @override
+  String get ufoTypeCross => 'Cross';
+
+  @override
+  String get ufoTypeDumbbell => 'Dumbbell';
+
+  @override
+  String get ufoTypeTeardrop => 'Teardrop';
+
+  @override
+  String get ufoTypeTicTac => 'Tic Tac';
+
+  @override
+  String get ufoTypeBullet => 'Bullet';
+
+  @override
+  String get ufoTypeSaturn => 'Saturn';
+
+  @override
+  String get ufoTypeStarLike => 'Star-like';
+
+  @override
+  String get ufoTypeBlimp => 'Blimp';
+
+  @override
+  String get actionsTitle => 'कार्य';
+
+  @override
+  String get addPhotosAndVideos => 'फ़ोटो और वीडियो जोड़ें';
+
+  @override
+  String get howToReportToMufon => 'कैसे रिपोर्ट करने के लिए MUFON';
+
+  @override
+  String get reportToMufon => 'MUFON की रिपोर्ट';
+
+  @override
+  String get whyReportToMufon => 'क्यों रिपोर्ट करने के लिए MUFON?';
+
+  @override
+  String get openMufonReport => 'ओपन MUFON रिपोर्ट';
+
+  @override
+  String get confirmedWitness => 'आपने इस दर्शन की पुष्टि की';
+
+  @override
+  String witnessesHaveConfirmed(int count) {
+    return '${count}__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+  }
+
+  @override
+  String get aircraftTrackingTitle => 'Aircraft Tracking';
+
+  @override
+  String get weatherConditionsTitle => 'Weather Conditions';
+
+  @override
+  String get noSatellitePasses => 'No visible satellite passes found';
+
+  @override
+  String get contentAnalysisTitle => 'Content Analysis';
+
+  @override
+  String get contentSafe => 'Content is safe';
+
+  @override
+  String get contentFlagged => 'Content flagged for review';
+
+  @override
+  String get confidenceLabel => 'Confidence';
+
+  @override
+  String get methodLabel => 'Method';
+
+  @override
+  String get premiumImageryAccessOnly =>
+      'Premium satellite imagery is only available to:';
+
+  @override
+  String get premiumAccessCreators => 'Alert creators';
+
+  @override
+  String get premiumAccessWitnesses =>
+      'Confirmed witnesses within visibility range';
+
+  @override
+  String get comingSoon => 'Coming Soon';
 }

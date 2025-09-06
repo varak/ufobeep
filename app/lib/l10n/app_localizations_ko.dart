@@ -428,17 +428,17 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d 전';
+    return '${count}d ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h 전';
+    return '${count}h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m 전';
+    return '${count}m ago';
   }
 
   @override
@@ -519,4 +519,222 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get retakeVideo => 'Retake 비디오';
+
+  @override
+  String get camera => '관련 기사';
+
+  @override
+  String get gallery => '회사연혁';
+
+  @override
+  String get basicSettings => '기본 설정';
+
+  @override
+  String get appSettings => '앱 설정';
+
+  @override
+  String get alertRange => 'Alert 범위';
+
+  @override
+  String get manageNotificationsDesc => '구독 및 설정 관리';
+
+  @override
+  String get permissionsTitle => '제출';
+
+  @override
+  String get permissionLocation => '- 연혁';
+
+  @override
+  String get permissionCamera => '관련 기사';
+
+  @override
+  String get permissionNotifications => '공지사항';
+
+  @override
+  String get permissionPhotos => '사진 갤러리';
+
+  @override
+  String get permissionGranted => '지원하다';
+
+  @override
+  String get permissionNotGranted => '이름 *';
+
+  @override
+  String get permissionGrant => '지원하다';
+
+  @override
+  String get generateUsername => '새로운 사용자 정의';
+
+  @override
+  String get adminTools => '관리자 도구';
+
+  @override
+  String get openAdminPanel => 'Open Admin 패널';
+
+  @override
+  String get webAdminInterface => '웹 관리자 인터페이스';
+
+  @override
+  String get adminBetaNotice => '베타 빌드 만. 테스트 근접 경고, 푸시 알림 및 시스템 진단을위한 관리자 도구.';
+
+  @override
+  String get whatDoYouSee => '무엇을 볼까요?';
+
+  @override
+  String get ufoSighting => '사이트맵 뚱 베어';
+
+  @override
+  String get envAnalysisTitle => 'Environmental Analysis';
+
+  @override
+  String get envAnalysisPending => 'Analysis Pending';
+
+  @override
+  String get envAnalysisPendingDesc =>
+      'Environmental data will be available once processing begins.';
+
+  @override
+  String get unknownAircraft => 'Unknown Aircraft';
+
+  @override
+  String get moreAircraft => 'more aircraft';
+
+  @override
+  String get premiumImageryTitle => 'Premium Satellite Imagery';
+
+  @override
+  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+
+  @override
+  String get sightingTypeLabel => '제품정보';
+
+  @override
+  String get ufoTypeSphere => '사이트 맵';
+
+  @override
+  String get ufoTypeTriangle => '연락처';
+
+  @override
+  String get ufoTypeDisk => '제품정보';
+
+  @override
+  String get ufoTypeLight => '제품 정보';
+
+  @override
+  String get ufoTypeFireball => '불꽃놀이';
+
+  @override
+  String get ufoTypeCylinder => '자료실';
+
+  @override
+  String get ufoTypeCigar => '시가';
+
+  @override
+  String get ufoTypeRectangle => '관련 상품';
+
+  @override
+  String get ufoTypeFormation => '이름 *';
+
+  @override
+  String get ufoTypeUnknown => '이름 *';
+
+  @override
+  String get ufoTypeBoomerang => 'Boomerang';
+
+  @override
+  String get ufoTypeDiamond => 'Diamond';
+
+  @override
+  String get ufoTypeOval => 'Oval';
+
+  @override
+  String get ufoTypeCone => 'Cone';
+
+  @override
+  String get ufoTypeCross => 'Cross';
+
+  @override
+  String get ufoTypeDumbbell => 'Dumbbell';
+
+  @override
+  String get ufoTypeTeardrop => 'Teardrop';
+
+  @override
+  String get ufoTypeTicTac => 'Tic Tac';
+
+  @override
+  String get ufoTypeBullet => 'Bullet';
+
+  @override
+  String get ufoTypeSaturn => 'Saturn';
+
+  @override
+  String get ufoTypeStarLike => 'Star-like';
+
+  @override
+  String get ufoTypeBlimp => 'Blimp';
+
+  @override
+  String get actionsTitle => '팟캐스트';
+
+  @override
+  String get addPhotosAndVideos => '사진 및 동영상 추가';
+
+  @override
+  String get howToReportToMufon => 'MUFON에 보고하는 방법';
+
+  @override
+  String get reportToMufon => 'MUFON 소개';
+
+  @override
+  String get whyReportToMufon => '왜 MUFON에 보고?';
+
+  @override
+  String get openMufonReport => 'MUFON 오픈 제품정보';
+
+  @override
+  String get confirmedWitness => '이 광경을 확인';
+
+  @override
+  String witnessesHaveConfirmed(int count) {
+    return '$count 사람들은 이 광경을 확인했습니다';
+  }
+
+  @override
+  String get aircraftTrackingTitle => 'Aircraft Tracking';
+
+  @override
+  String get weatherConditionsTitle => 'Weather Conditions';
+
+  @override
+  String get noSatellitePasses => 'No visible satellite passes found';
+
+  @override
+  String get contentAnalysisTitle => 'Content Analysis';
+
+  @override
+  String get contentSafe => 'Content is safe';
+
+  @override
+  String get contentFlagged => 'Content flagged for review';
+
+  @override
+  String get confidenceLabel => 'Confidence';
+
+  @override
+  String get methodLabel => 'Method';
+
+  @override
+  String get premiumImageryAccessOnly =>
+      'Premium satellite imagery is only available to:';
+
+  @override
+  String get premiumAccessCreators => 'Alert creators';
+
+  @override
+  String get premiumAccessWitnesses =>
+      'Confirmed witnesses within visibility range';
+
+  @override
+  String get comingSoon => 'Coming Soon';
 }

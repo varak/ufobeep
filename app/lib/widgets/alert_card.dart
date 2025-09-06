@@ -7,6 +7,7 @@ import '../utils/unit_conversion.dart';
 import '../providers/user_preferences_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../services/ui_feedback.dart';
+import 'glass_card.dart';
 
 class AlertCard extends ConsumerWidget {
   const AlertCard({
@@ -25,26 +26,13 @@ class AlertCard extends ConsumerWidget {
     final userPrefs = ref.watch(userPreferencesProvider);
     final l10n = AppLocalizations.of(context);
     final units = userPrefs?.units ?? 'metric';
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      elevation: 2,
-      color: AppColors.darkSurface,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(
-          color: AppColors.brandPrimary.withOpacity(0.2),
-          width: 1,
-        ),
-      ),
-      child: InkWell(
-        onTap: onTap ?? () async {
-          await UiFeedback.click();
-          context.go('/alert/${alert.id}');
-        },
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
+    return GlassCard(
+      padding: const EdgeInsets.all(12),
+      onTap: onTap ?? () async {
+        await UiFeedback.click();
+        context.go('/alert/${alert.id}');
+      },
+      child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header row
@@ -72,10 +60,10 @@ class AlertCard extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          alert.title,
+                          alert.title == 'UFO Sighting' ? l10n.ufoSighting : alert.title,
                           style: const TextStyle(
                             color: AppColors.textPrimary,
-                            fontSize: 16,
+                            fontSize: 18,
                             fontWeight: FontWeight.w600,
                           ),
                           maxLines: 2,
@@ -89,7 +77,7 @@ class AlertCard extends ConsumerWidget {
                             _getLocationName(alert),
                             style: const TextStyle(
                               color: AppColors.textSecondary,
-                              fontSize: 12,
+                              fontSize: 13,
                             ),
                           ),
                         ],
@@ -121,8 +109,8 @@ class AlertCard extends ConsumerWidget {
                                       l10n.verified,
                                       style: const TextStyle(
                                         color: AppColors.brandPrimary,
-                                        fontSize: 9,
-                                        fontWeight: FontWeight.w500,
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                   ],
@@ -144,7 +132,7 @@ class AlertCard extends ConsumerWidget {
                     children: [
                       if (alert.reporterUsername != null && alert.source != 'mufon') ...[
                         Text(
-                          l10n.reportedBy(alert.reporterUsername!),
+                          alert.reporterUsername!,
                           style: const TextStyle(
                             color: AppColors.brandPrimary,
                             fontSize: 11,
@@ -181,8 +169,8 @@ class AlertCard extends ConsumerWidget {
                   alert.description!,
                   style: const TextStyle(
                     color: AppColors.textSecondary,
-                    fontSize: 14,
-                    height: 1.4,
+                    fontSize: 16,
+                    height: 1.5,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -222,7 +210,6 @@ class AlertCard extends ConsumerWidget {
             ],
           ),
         ),
-      ),
     );
   }
 
@@ -264,6 +251,10 @@ class AlertCard extends ConsumerWidget {
     // Simple JSON interpretation logic
     final hasMedia = alert.mediaFiles.isNotEmpty;
     final hasDescription = alert.description?.trim().isNotEmpty ?? false;
+    final classification = _getMufonClassificationLabel(l10n);
+    if (classification != null) {
+      return _buildBadge(classification, Icons.category, AppColors.brandPrimary);
+    }
     
     if (!hasMedia && !hasDescription) {
       return _buildBadge(l10n.beepOnly, Icons.location_on, AppColors.textTertiary);
@@ -288,6 +279,68 @@ class AlertCard extends ConsumerWidget {
     }
     
     return const SizedBox.shrink();
+  }
+
+  String? _getMufonClassificationLabel(AppLocalizations l10n) {
+    if (alert.source != 'mufon') return null;
+    final c = alert.enrichment?['classification']?.toString().toLowerCase().trim() 
+        ?? alert.enrichment?['ufo_type']?.toString().toLowerCase().trim();
+    if (c == null || c.isEmpty) return null;
+    switch (c) {
+      case 'sphere':
+        return l10n.ufoTypeSphere;
+      case 'triangle':
+        return l10n.ufoTypeTriangle;
+      case 'disk':
+      case 'disc':
+        return l10n.ufoTypeDisk;
+      case 'light':
+        return l10n.ufoTypeLight;
+      case 'fireball':
+        return l10n.ufoTypeFireball;
+      case 'cylinder':
+        return l10n.ufoTypeCylinder;
+      case 'cigar':
+        return l10n.ufoTypeCigar;
+      case 'rectangle':
+      case 'box':
+        return l10n.ufoTypeRectangle;
+      case 'formation':
+      case 'fleet':
+        return l10n.ufoTypeFormation;
+      case 'boomerang':
+        return l10n.ufoTypeBoomerang;
+      case 'diamond':
+        return l10n.ufoTypeDiamond;
+      case 'oval':
+        return l10n.ufoTypeOval;
+      case 'cone':
+        return l10n.ufoTypeCone;
+      case 'cross':
+        return l10n.ufoTypeCross;
+      case 'dumbbell':
+        return l10n.ufoTypeDumbbell;
+      case 'teardrop':
+        return l10n.ufoTypeTeardrop;
+      case 'tic tac':
+      case 'tic-tac':
+      case 'tictac':
+        return l10n.ufoTypeTicTac;
+      case 'bullet':
+        return l10n.ufoTypeBullet;
+      case 'saturn':
+      case 'saturn-like':
+      case 'saturn like':
+        return l10n.ufoTypeSaturn;
+      case 'star-like':
+      case 'star like':
+      case 'starlike':
+        return l10n.ufoTypeStarLike;
+      case 'blimp':
+        return l10n.ufoTypeBlimp;
+      default:
+        return l10n.ufoTypeUnknown;
+    }
   }
   
   Widget _buildBadge(String text, IconData icon, Color color) {

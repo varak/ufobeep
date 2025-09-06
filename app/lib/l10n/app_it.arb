@@ -132,9 +132,9 @@
   "videoOnly": "video solo",
   "imageOnly": "immagine solo",
   "timeJustNow": "Adesso",
-  "timeDaysAgo": "Traduzione:",
-  "timeHoursAgo": "Traduzione:",
-  "timeMinutesAgo": "Traduzione:",
+  "timeDaysAgo": "{count}d ago",
+  "timeHoursAgo": "{count}h ago",
+  "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "Carica più avvisi",
   "toggleMufonTooltip": "Toggle MUFON avvistamenti",
   "showMufonData": "Mostra i dati MUFON",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "Macchina fotografica",
+  "gallery": "Galleria",
+  "basicSettings": "Impostazioni di base",
+  "appSettings": "Impostazioni app",
+  "alertRange": "Gamma di allarme",
+  "manageNotificationsDesc": "Gestione degli abbonamenti e delle impostazioni",
+  "permissionsTitle": "Permissioni",
+  "permissionLocation": "Location",
+  "permissionCamera": "Macchina fotografica",
+  "permissionNotifications": "Notifica",
+  "permissionPhotos": "Fotografie",
+  "permissionGranted": "Concesso",
+  "permissionNotGranted": "Non concesso",
+  "permissionGrant": "Grant",
+  "generateUsername": "Generare nuovo nome utente",
+  "adminTools": "Strumenti di amministrazione",
+  "openAdminPanel": "Pannello di amministrazione aperto",
+  "webAdminInterface": "Interfaccia Web Admin",
+  "adminBetaNotice": "Beta costruisce solo. Strumenti di amministrazione per la prova di avvisi di prossimità, notifiche push e diagnostica di sistema.",
+  "whatDoYouSee": "Cosa vedi?",
+  "ufoSighting": "UFO Sighting",
+  "actionsTitle": "Azioni",
+  "addPhotosAndVideos": "Aggiungi foto e video",
+  "howToReportToMufon": "Come arrivare a MUFON",
+  "reportToMufon": "Rapporto a MUFON",
+  "whyReportToMufon": "Perché segnalare a MUFON?",
+  "openMufonReport": "Aprire MUFON Relazione",
+  "confirmedWitness": "Hai confermato questo avvistamento",
+  "witnessesHaveConfirmed": "{count} le persone hanno confermato questo avvistamento",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "Tipo",
+  "ufoTypeSphere": "Sfera",
+  "ufoTypeTriangle": "Triangolo",
+  "ufoTypeDisk": "Disk",
+  "ufoTypeLight": "Luce",
+  "ufoTypeFireball": "Fireball",
+  "ufoTypeCylinder": "Cilindro",
+  "ufoTypeCigar": "Sigari",
+  "ufoTypeRectangle": "Rettangolo",
+  "ufoTypeFormation": "Formazione",
+  "ufoTypeUnknown": "Sconosciuto"
 }

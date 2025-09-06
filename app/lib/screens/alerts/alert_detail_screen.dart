@@ -7,6 +7,7 @@ import 'package:file_picker/file_picker.dart';
 
 import '../../providers/alerts_provider.dart';
 import '../../providers/app_state.dart';
+import '../../providers/user_preferences_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/alert_title_utils.dart';
 import '../../widgets/alert_sections/alert_hero_section.dart';
@@ -132,7 +133,10 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
   Future<void> _checkFollowStatus() async {
     try {
-      final response = await ApiClient.dio.get('/alerts/${widget.alertId}/follow');
+      final response = await ApiClient.dio.get(
+        '/alerts/${widget.alertId}/follow',
+        queryParameters: _currentUserDeviceId != null ? {'device_id': _currentUserDeviceId} : null,
+      );
       if (mounted) {
         setState(() {
           _isFollowing = response.data['following'] ?? false;
@@ -153,7 +157,10 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     
     try {
       if (_isFollowing) {
-        await ApiClient.dio.delete('/alerts/${widget.alertId}/follow');
+        await ApiClient.dio.delete(
+          '/alerts/${widget.alertId}/follow',
+          data: _currentUserDeviceId != null ? {'device_id': _currentUserDeviceId} : null,
+        );
         setState(() {
           _isFollowing = false;
         });
@@ -166,7 +173,10 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
           );
         }
       } else {
-        await ApiClient.dio.post('/alerts/${widget.alertId}/follow');
+        await ApiClient.dio.post(
+          '/alerts/${widget.alertId}/follow',
+          data: _currentUserDeviceId != null ? {'device_id': _currentUserDeviceId} : null,
+        );
         setState(() {
           _isFollowing = true;
         });
@@ -245,7 +255,14 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
           child: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              title: Text(AlertTitleUtils.getContextualTitleFromAlert(alert)),
+              title: Builder(
+                builder: (ctx) {
+                  final raw = AlertTitleUtils.getContextualTitleFromAlert(alert);
+                  final l10n = AppLocalizations.of(ctx);
+                  final display = raw == 'UFO Sighting' ? l10n.ufoSighting : raw;
+                  return Text(display);
+                },
+              ),
               backgroundColor: Colors.transparent,
               elevation: 0,
               actions: [
@@ -270,7 +287,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 const SizedBox(height: 24),
                 
                 // Alert details
-                AlertDetailsSection(alert: alert),
+                AlertDetailsSection(alert: alert, units: (ref.read(userPreferencesProvider)?.units ?? 'metric')),
                 const SizedBox(height: 24),
                 
                 // Direction and compass - hidden for MUFON alerts
@@ -627,14 +644,14 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: AppColors.darkSurface,
-          title: const Row(
+          title: Row(
             children: [
-              Icon(Icons.report_outlined, color: AppColors.brandPrimary),
-              SizedBox(width: 8),
-              Text('Report to MUFON'),
+              const Icon(Icons.report_outlined, color: AppColors.brandPrimary),
+              const SizedBox(width: 8),
+              Text(AppLocalizations.of(context).reportToMufon),
             ],
           ),
-          content: const SingleChildScrollView(
+          content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -659,8 +676,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 ),
                 SizedBox(height: 16),
                 Text(
-                  'Why Report to MUFON?',
-                  style: TextStyle(
+                  AppLocalizations.of(context).whyReportToMufon,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                     color: AppColors.textPrimary,
@@ -690,9 +707,9 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text(
-                'Cancel',
-                style: TextStyle(color: AppColors.textSecondary),
+              child: Text(
+                AppLocalizations.of(context).cancel,
+                style: const TextStyle(color: AppColors.textSecondary),
               ),
             ),
             ElevatedButton.icon(
@@ -721,7 +738,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 }
               },
               icon: const Icon(Icons.open_in_browser),
-              label: const Text('Open MUFON Report'),
+              label: Text(AppLocalizations.of(context).openMufonReport),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.brandPrimary,
                 foregroundColor: Colors.black,
@@ -767,13 +784,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   }
   
   Widget _buildFollowSection() {
-    return Container(
+    return GlassCard(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.darkSurface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.darkBorder.withOpacity(0.3)),
-      ),
       child: Row(
         children: [
           Icon(

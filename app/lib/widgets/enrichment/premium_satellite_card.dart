@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
+import '../glass_card.dart';
+import '../../l10n/app_localizations.dart';
 import '../dialogs/blacksky_info_dialog.dart';
 import '../dialogs/skyfi_info_dialog.dart';
 
@@ -20,10 +22,9 @@ class PremiumSatelliteCard extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return Card(
-      color: AppColors.darkSurface,
+    return GlassCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -36,18 +37,22 @@ class PremiumSatelliteCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Premium Satellite Imagery',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w600,
+                      Builder(
+                        builder: (context) => Text(
+                          AppLocalizations.of(context).premiumImageryTitle,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                      Text(
-                        'High-resolution commercial imagery options',
-                        style: TextStyle(
-                          color: AppColors.textTertiary,
-                          fontSize: 12,
+                      Builder(
+                        builder: (context) => Text(
+                          AppLocalizations.of(context).premiumImagerySubtitle,
+                          style: const TextStyle(
+                            color: AppColors.textTertiary,
+                            fontSize: 12,
+                          ),
                         ),
                       ),
                     ],

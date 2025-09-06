@@ -446,7 +446,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String timeHoursAgo(int count) {
-    return '__PH_0_h ago';
+    return '${count}h ago';
   }
 
   @override
@@ -533,4 +533,223 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get retakeVideo => 'Retomar vídeo';
+
+  @override
+  String get camera => 'Cámara';
+
+  @override
+  String get gallery => 'Galería';
+
+  @override
+  String get basicSettings => 'Ajustes básicos';
+
+  @override
+  String get appSettings => 'Ajustes de la aplicación';
+
+  @override
+  String get alertRange => 'Distancia de alerta';
+
+  @override
+  String get manageNotificationsDesc => 'Gestionar suscripciones y ajustes';
+
+  @override
+  String get permissionsTitle => 'Permisos';
+
+  @override
+  String get permissionLocation => 'Ubicación';
+
+  @override
+  String get permissionCamera => 'Cámara';
+
+  @override
+  String get permissionNotifications => 'Notificaciones';
+
+  @override
+  String get permissionPhotos => 'Fotos';
+
+  @override
+  String get permissionGranted => 'Subvenciones';
+
+  @override
+  String get permissionNotGranted => 'No concedido';
+
+  @override
+  String get permissionGrant => 'Grant';
+
+  @override
+  String get generateUsername => 'Generar nuevo nombre de usuario';
+
+  @override
+  String get adminTools => 'Herramientas de Admin';
+
+  @override
+  String get openAdminPanel => 'Open Admin Panel';
+
+  @override
+  String get webAdminInterface => 'Interfaz de Admin Web';
+
+  @override
+  String get adminBetaNotice =>
+      'Beta solo construye. Herramientas para probar alertas de proximidad, notificaciones de empuje y diagnóstico del sistema.';
+
+  @override
+  String get whatDoYouSee => '¿Qué ves?';
+
+  @override
+  String get ufoSighting => 'OVNI Avistamiento';
+
+  @override
+  String get envAnalysisTitle => 'Environmental Analysis';
+
+  @override
+  String get envAnalysisPending => 'Analysis Pending';
+
+  @override
+  String get envAnalysisPendingDesc =>
+      'Environmental data will be available once processing begins.';
+
+  @override
+  String get unknownAircraft => 'Unknown Aircraft';
+
+  @override
+  String get moreAircraft => 'more aircraft';
+
+  @override
+  String get premiumImageryTitle => 'Premium Satellite Imagery';
+
+  @override
+  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+
+  @override
+  String get sightingTypeLabel => 'Tipo';
+
+  @override
+  String get ufoTypeSphere => 'Sphere';
+
+  @override
+  String get ufoTypeTriangle => 'Triángulo';
+
+  @override
+  String get ufoTypeDisk => 'Disk';
+
+  @override
+  String get ufoTypeLight => 'Luz';
+
+  @override
+  String get ufoTypeFireball => 'Bola de fuego';
+
+  @override
+  String get ufoTypeCylinder => 'Cilindro';
+
+  @override
+  String get ufoTypeCigar => 'Cigarro';
+
+  @override
+  String get ufoTypeRectangle => 'Rectángulo';
+
+  @override
+  String get ufoTypeFormation => 'Formación';
+
+  @override
+  String get ufoTypeUnknown => 'Desconocida';
+
+  @override
+  String get ufoTypeBoomerang => 'Boomerang';
+
+  @override
+  String get ufoTypeDiamond => 'Diamond';
+
+  @override
+  String get ufoTypeOval => 'Oval';
+
+  @override
+  String get ufoTypeCone => 'Cone';
+
+  @override
+  String get ufoTypeCross => 'Cross';
+
+  @override
+  String get ufoTypeDumbbell => 'Dumbbell';
+
+  @override
+  String get ufoTypeTeardrop => 'Teardrop';
+
+  @override
+  String get ufoTypeTicTac => 'Tic Tac';
+
+  @override
+  String get ufoTypeBullet => 'Bullet';
+
+  @override
+  String get ufoTypeSaturn => 'Saturn';
+
+  @override
+  String get ufoTypeStarLike => 'Star-like';
+
+  @override
+  String get ufoTypeBlimp => 'Blimp';
+
+  @override
+  String get actionsTitle => 'Acciones';
+
+  @override
+  String get addPhotosAndVideos => 'Añadir fotos > Videos';
+
+  @override
+  String get howToReportToMufon => 'Cómo reportar a MUFON';
+
+  @override
+  String get reportToMufon => 'Informe a MUFON';
+
+  @override
+  String get whyReportToMufon => '¿Por qué reportarle a MUFON?';
+
+  @override
+  String get openMufonReport => 'Open MUFON Informe';
+
+  @override
+  String get confirmedWitness => 'Usted confirmó este avistamiento';
+
+  @override
+  String witnessesHaveConfirmed(int count) {
+    return 'La gente ha confirmado este avistamiento';
+  }
+
+  @override
+  String get aircraftTrackingTitle => 'Aircraft Tracking';
+
+  @override
+  String get weatherConditionsTitle => 'Weather Conditions';
+
+  @override
+  String get noSatellitePasses => 'No visible satellite passes found';
+
+  @override
+  String get contentAnalysisTitle => 'Content Analysis';
+
+  @override
+  String get contentSafe => 'Content is safe';
+
+  @override
+  String get contentFlagged => 'Content flagged for review';
+
+  @override
+  String get confidenceLabel => 'Confidence';
+
+  @override
+  String get methodLabel => 'Method';
+
+  @override
+  String get premiumImageryAccessOnly =>
+      'Premium satellite imagery is only available to:';
+
+  @override
+  String get premiumAccessCreators => 'Alert creators';
+
+  @override
+  String get premiumAccessWitnesses =>
+      'Confirmed witnesses within visibility range';
+
+  @override
+  String get comingSoon => 'Coming Soon';
 }

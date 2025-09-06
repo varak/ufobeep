@@ -440,7 +440,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return 'PH_0_d назад';
+    return '${count}d ago';
   }
 
   @override
@@ -532,4 +532,223 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get retakeVideo => 'Восстановить видео';
+
+  @override
+  String get camera => 'Камера';
+
+  @override
+  String get gallery => 'Галерея';
+
+  @override
+  String get basicSettings => 'Основные настройки';
+
+  @override
+  String get appSettings => 'Настройки приложений';
+
+  @override
+  String get alertRange => 'Диапазон тревоги';
+
+  @override
+  String get manageNotificationsDesc => 'Управление подписками и настройками';
+
+  @override
+  String get permissionsTitle => 'Разрешения';
+
+  @override
+  String get permissionLocation => 'Расположение';
+
+  @override
+  String get permissionCamera => 'Камера';
+
+  @override
+  String get permissionNotifications => 'Уведомления';
+
+  @override
+  String get permissionPhotos => 'Фото';
+
+  @override
+  String get permissionGranted => 'Предоставленный';
+
+  @override
+  String get permissionNotGranted => 'Не предоставлено';
+
+  @override
+  String get permissionGrant => 'Грант';
+
+  @override
+  String get generateUsername => 'Создайте новое имя пользователя';
+
+  @override
+  String get adminTools => 'Инструменты Admin';
+
+  @override
+  String get openAdminPanel => 'Открытая панель администратора';
+
+  @override
+  String get webAdminInterface => 'Веб-интерфейс администратора';
+
+  @override
+  String get adminBetaNotice =>
+      'Бета строит только Инструменты администратора для тестирования предупреждений о близости, push-уведомлений и системной диагностики.';
+
+  @override
+  String get whatDoYouSee => 'Что ты видишь?';
+
+  @override
+  String get ufoSighting => 'НЛО прицел';
+
+  @override
+  String get envAnalysisTitle => 'Environmental Analysis';
+
+  @override
+  String get envAnalysisPending => 'Analysis Pending';
+
+  @override
+  String get envAnalysisPendingDesc =>
+      'Environmental data will be available once processing begins.';
+
+  @override
+  String get unknownAircraft => 'Unknown Aircraft';
+
+  @override
+  String get moreAircraft => 'more aircraft';
+
+  @override
+  String get premiumImageryTitle => 'Premium Satellite Imagery';
+
+  @override
+  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+
+  @override
+  String get sightingTypeLabel => 'Тип';
+
+  @override
+  String get ufoTypeSphere => 'Сфера';
+
+  @override
+  String get ufoTypeTriangle => 'Треугольник';
+
+  @override
+  String get ufoTypeDisk => 'Диск';
+
+  @override
+  String get ufoTypeLight => 'Свет';
+
+  @override
+  String get ufoTypeFireball => 'Огненный шар';
+
+  @override
+  String get ufoTypeCylinder => 'Цилиндр';
+
+  @override
+  String get ufoTypeCigar => 'Сигара';
+
+  @override
+  String get ufoTypeRectangle => 'Прямоугольник';
+
+  @override
+  String get ufoTypeFormation => 'Формирование';
+
+  @override
+  String get ufoTypeUnknown => 'Неизвестный';
+
+  @override
+  String get ufoTypeBoomerang => 'Boomerang';
+
+  @override
+  String get ufoTypeDiamond => 'Diamond';
+
+  @override
+  String get ufoTypeOval => 'Oval';
+
+  @override
+  String get ufoTypeCone => 'Cone';
+
+  @override
+  String get ufoTypeCross => 'Cross';
+
+  @override
+  String get ufoTypeDumbbell => 'Dumbbell';
+
+  @override
+  String get ufoTypeTeardrop => 'Teardrop';
+
+  @override
+  String get ufoTypeTicTac => 'Tic Tac';
+
+  @override
+  String get ufoTypeBullet => 'Bullet';
+
+  @override
+  String get ufoTypeSaturn => 'Saturn';
+
+  @override
+  String get ufoTypeStarLike => 'Star-like';
+
+  @override
+  String get ufoTypeBlimp => 'Blimp';
+
+  @override
+  String get actionsTitle => 'Меры';
+
+  @override
+  String get addPhotosAndVideos => 'Добавить фото и видео';
+
+  @override
+  String get howToReportToMufon => 'Как сообщить в MUFON';
+
+  @override
+  String get reportToMufon => 'Сообщить MUFON';
+
+  @override
+  String get whyReportToMufon => 'Зачем отчитываться перед MUFON?';
+
+  @override
+  String get openMufonReport => 'Открыть MUFON Доклад';
+
+  @override
+  String get confirmedWitness => 'Вы подтвердили это наблюдение';
+
+  @override
+  String witnessesHaveConfirmed(int count) {
+    return '$count люди подтвердили это наблюдение';
+  }
+
+  @override
+  String get aircraftTrackingTitle => 'Aircraft Tracking';
+
+  @override
+  String get weatherConditionsTitle => 'Weather Conditions';
+
+  @override
+  String get noSatellitePasses => 'No visible satellite passes found';
+
+  @override
+  String get contentAnalysisTitle => 'Content Analysis';
+
+  @override
+  String get contentSafe => 'Content is safe';
+
+  @override
+  String get contentFlagged => 'Content flagged for review';
+
+  @override
+  String get confidenceLabel => 'Confidence';
+
+  @override
+  String get methodLabel => 'Method';
+
+  @override
+  String get premiumImageryAccessOnly =>
+      'Premium satellite imagery is only available to:';
+
+  @override
+  String get premiumAccessCreators => 'Alert creators';
+
+  @override
+  String get premiumAccessWitnesses =>
+      'Confirmed witnesses within visibility range';
+
+  @override
+  String get comingSoon => 'Coming Soon';
 }

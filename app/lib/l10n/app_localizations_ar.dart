@@ -434,17 +434,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return 'قبل';
+    return '${count}d ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'قبل';
+    return '${count}h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'قبل';
+    return '${count}m ago';
   }
 
   @override
@@ -526,4 +526,223 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get retakeVideo => 'Retake Video';
+
+  @override
+  String get camera => 'آلة تصوير';
+
+  @override
+  String get gallery => 'Gallery';
+
+  @override
+  String get basicSettings => 'الأساسيات';
+
+  @override
+  String get appSettings => 'App Settings';
+
+  @override
+  String get alertRange => 'إنذار رانج';
+
+  @override
+  String get manageNotificationsDesc => 'الاشتراكات في المؤسسة';
+
+  @override
+  String get permissionsTitle => 'الانبعاثات';
+
+  @override
+  String get permissionLocation => 'الموقع';
+
+  @override
+  String get permissionCamera => 'آلة تصوير';
+
+  @override
+  String get permissionNotifications => 'الإخطارات';
+
+  @override
+  String get permissionPhotos => 'Photos';
+
+  @override
+  String get permissionGranted => 'منح';
+
+  @override
+  String get permissionNotGranted => 'لم تُمنح';
+
+  @override
+  String get permissionGrant => 'غرانت';
+
+  @override
+  String get generateUsername => 'توليد اسم مستخدم جديد';
+
+  @override
+  String get adminTools => 'الأدوات المخصصة';
+
+  @override
+  String get openAdminPanel => 'الفريق المفتوح العضوية';
+
+  @override
+  String get webAdminInterface => 'Web Admin Interface';
+
+  @override
+  String get adminBetaNotice =>
+      'بيتا يبني فقط أداتين لاختبار تنبيهات القرب والإخطارات بالدفع و تشخيص النظام.';
+
+  @override
+  String get whatDoYouSee => 'ماذا ترى؟?';
+
+  @override
+  String get ufoSighting => 'UFO البصر';
+
+  @override
+  String get envAnalysisTitle => 'Environmental Analysis';
+
+  @override
+  String get envAnalysisPending => 'Analysis Pending';
+
+  @override
+  String get envAnalysisPendingDesc =>
+      'Environmental data will be available once processing begins.';
+
+  @override
+  String get unknownAircraft => 'Unknown Aircraft';
+
+  @override
+  String get moreAircraft => 'more aircraft';
+
+  @override
+  String get premiumImageryTitle => 'Premium Satellite Imagery';
+
+  @override
+  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+
+  @override
+  String get sightingTypeLabel => 'النوع';
+
+  @override
+  String get ufoTypeSphere => 'نصف الكرة';
+
+  @override
+  String get ufoTypeTriangle => 'المثلث';
+
+  @override
+  String get ufoTypeDisk => 'Disk';
+
+  @override
+  String get ufoTypeLight => 'الضوء';
+
+  @override
+  String get ufoTypeFireball => 'كرة نارية';
+
+  @override
+  String get ufoTypeCylinder => 'Cylinder';
+
+  @override
+  String get ufoTypeCigar => 'سيجار';
+
+  @override
+  String get ufoTypeRectangle => 'Rectangle';
+
+  @override
+  String get ufoTypeFormation => 'الاستمارة';
+
+  @override
+  String get ufoTypeUnknown => 'غير معروف';
+
+  @override
+  String get ufoTypeBoomerang => 'Boomerang';
+
+  @override
+  String get ufoTypeDiamond => 'Diamond';
+
+  @override
+  String get ufoTypeOval => 'Oval';
+
+  @override
+  String get ufoTypeCone => 'Cone';
+
+  @override
+  String get ufoTypeCross => 'Cross';
+
+  @override
+  String get ufoTypeDumbbell => 'Dumbbell';
+
+  @override
+  String get ufoTypeTeardrop => 'Teardrop';
+
+  @override
+  String get ufoTypeTicTac => 'Tic Tac';
+
+  @override
+  String get ufoTypeBullet => 'Bullet';
+
+  @override
+  String get ufoTypeSaturn => 'Saturn';
+
+  @override
+  String get ufoTypeStarLike => 'Star-like';
+
+  @override
+  String get ufoTypeBlimp => 'Blimp';
+
+  @override
+  String get actionsTitle => 'الإجراءات';
+
+  @override
+  String get addPhotosAndVideos => 'أضف الصور الفوتوغرافية';
+
+  @override
+  String get howToReportToMufon => 'How to Report to MUFON';
+
+  @override
+  String get reportToMufon => 'Report to MUFON';
+
+  @override
+  String get whyReportToMufon => 'لماذا نبلغ (مافون)؟?';
+
+  @override
+  String get openMufonReport => 'مفتوح التقرير';
+
+  @override
+  String get confirmedWitness => 'لقد أكدت هذا المشهد';
+
+  @override
+  String witnessesHaveConfirmed(int count) {
+    return 'الناس أكدوا هذا';
+  }
+
+  @override
+  String get aircraftTrackingTitle => 'Aircraft Tracking';
+
+  @override
+  String get weatherConditionsTitle => 'Weather Conditions';
+
+  @override
+  String get noSatellitePasses => 'No visible satellite passes found';
+
+  @override
+  String get contentAnalysisTitle => 'Content Analysis';
+
+  @override
+  String get contentSafe => 'Content is safe';
+
+  @override
+  String get contentFlagged => 'Content flagged for review';
+
+  @override
+  String get confidenceLabel => 'Confidence';
+
+  @override
+  String get methodLabel => 'Method';
+
+  @override
+  String get premiumImageryAccessOnly =>
+      'Premium satellite imagery is only available to:';
+
+  @override
+  String get premiumAccessCreators => 'Alert creators';
+
+  @override
+  String get premiumAccessWitnesses =>
+      'Confirmed witnesses within visibility range';
+
+  @override
+  String get comingSoon => 'Coming Soon';
 }

@@ -132,9 +132,9 @@
   "videoOnly": "الفيديو فقط",
   "imageOnly": "الصورة فقط",
   "timeJustNow": "الآن",
-  "timeDaysAgo": "قبل",
-  "timeHoursAgo": "قبل",
-  "timeMinutesAgo": "قبل",
+  "timeDaysAgo": "{count}d ago",
+  "timeHoursAgo": "{count}h ago",
+  "timeMinutesAgo": "{count}m ago",
   "loadMoreAlerts": "عدد أكبر من التحذيرات",
   "toggleMufonTooltip": "مشاهدات (مافون)",
   "showMufonData": "بيانات البرنامج",
@@ -283,5 +283,53 @@
         "example": "2"
       }
     }
-  }
+  },
+  "camera": "آلة تصوير",
+  "gallery": "Gallery",
+  "basicSettings": "الأساسيات",
+  "appSettings": "App Settings",
+  "alertRange": "إنذار رانج",
+  "manageNotificationsDesc": "الاشتراكات في المؤسسة",
+  "permissionsTitle": "الانبعاثات",
+  "permissionLocation": "الموقع",
+  "permissionCamera": "آلة تصوير",
+  "permissionNotifications": "الإخطارات",
+  "permissionPhotos": "Photos",
+  "permissionGranted": "منح",
+  "permissionNotGranted": "لم تُمنح",
+  "permissionGrant": "غرانت",
+  "generateUsername": "توليد اسم مستخدم جديد",
+  "adminTools": "الأدوات المخصصة",
+  "openAdminPanel": "الفريق المفتوح العضوية",
+  "webAdminInterface": "Web Admin Interface",
+  "adminBetaNotice": "بيتا يبني فقط أداتين لاختبار تنبيهات القرب والإخطارات بالدفع و تشخيص النظام.",
+  "whatDoYouSee": "ماذا ترى؟?",
+  "ufoSighting": "UFO البصر",
+  "actionsTitle": "الإجراءات",
+  "addPhotosAndVideos": "أضف الصور الفوتوغرافية",
+  "howToReportToMufon": "How to Report to MUFON",
+  "reportToMufon": "Report to MUFON",
+  "whyReportToMufon": "لماذا نبلغ (مافون)؟?",
+  "openMufonReport": "مفتوح التقرير",
+  "confirmedWitness": "لقد أكدت هذا المشهد",
+  "witnessesHaveConfirmed": "الناس أكدوا هذا",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sightingTypeLabel": "النوع",
+  "ufoTypeSphere": "نصف الكرة",
+  "ufoTypeTriangle": "المثلث",
+  "ufoTypeDisk": "Disk",
+  "ufoTypeLight": "الضوء",
+  "ufoTypeFireball": "كرة نارية",
+  "ufoTypeCylinder": "Cylinder",
+  "ufoTypeCigar": "سيجار",
+  "ufoTypeRectangle": "Rectangle",
+  "ufoTypeFormation": "الاستمارة",
+  "ufoTypeUnknown": "غير معروف"
 }
