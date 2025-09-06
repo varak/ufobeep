@@ -23,6 +23,7 @@ import '../../widgets/simple_photo_display.dart';
 import '../../widgets/video_player_widget.dart';
 import '../../widgets/multi_file_preview.dart';
 import '../../widgets/glass_card.dart';
+import '../../l10n/app_localizations.dart';
 
 class BeepCompositionScreen extends ConsumerStatefulWidget {
   // Legacy single-file parameters (for backward compatibility)
@@ -191,7 +192,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         (_sensorData?.latitude == null || _sensorData?.longitude == null)) {
       setState(() {
         _isSubmitting = false;
-        _errorMessage = 'Location data required to send UFO beep alerts to nearby users';
+        _errorMessage = AppLocalizations.of(context).errorNoLocation;
       });
       await SoundService.I.play(AlertSound.gpsFail, haptic: true);
       return; // Don't create sighting without location
@@ -357,7 +358,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         debugPrint('CRITICAL: Media upload or alert trigger failed: $e');
         setState(() {
           _isSubmitting = false;
-          _errorMessage = 'Failed to send beep: $e';
+          _errorMessage = AppLocalizations.of(context).beepFailed;
         });
         await SoundService.I.play(AlertSound.gpsFail, haptic: true);
         return; // Stop the process, show error to user
@@ -440,8 +441,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       // Show feedback
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Attachment removed'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context).delete),
             backgroundColor: AppColors.textSecondary,
             duration: Duration(seconds: 1),
           ),
@@ -495,9 +496,9 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  'Add More Media',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context).edit,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
@@ -521,7 +522,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                               width: 1,
                             ),
                           ),
-                          child: const Column(
+                          child: Column(
                             children: [
                               Icon(
                                 Icons.camera_alt,
@@ -530,8 +531,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                'Camera',
-                                style: TextStyle(
+                                AppLocalizations.of(context).capturePhoto,
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -556,7 +557,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                               width: 1,
                             ),
                           ),
-                          child: const Column(
+                          child: Column(
                             children: [
                               Icon(
                                 Icons.photo_library,
@@ -565,8 +566,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                'Gallery',
-                                style: TextStyle(
+                                AppLocalizations.of(context).pickFromGallery,
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -586,8 +587,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child: Text(
-                    'Cancel',
-                    style: TextStyle(
+                    AppLocalizations.of(context).cancel,
+                    style: const TextStyle(
                       color: Colors.white.withOpacity(0.7),
                       fontSize: 16,
                     ),
@@ -656,8 +657,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       // Show success message
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Camera photo added'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context).beepSent),
             backgroundColor: AppColors.brandPrimary,
             duration: Duration(seconds: 2),
           ),
@@ -669,7 +670,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to take photo: $e'),
+            content: Text(AppLocalizations.of(context).beepFailed),
             backgroundColor: AppColors.semanticError,
             duration: const Duration(seconds: 3),
           ),
@@ -963,9 +964,9 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Describe what you\'re seeing',
-            style: TextStyle(
+          Text(
+            AppLocalizations.of(context).beepExplain,
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 24,
               fontWeight: FontWeight.w700,
@@ -981,7 +982,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
               fontSize: 16,
             ),
             decoration: InputDecoration(
-              hintText: 'Bright light moving across sky, object hovering, strange shape...',
+              hintText: AppLocalizations.of(context).descriptionHint,
               hintStyle: TextStyle(
                 color: Colors.white.withOpacity(0.5),
               ),
@@ -1018,6 +1019,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
 
 
   Widget _buildBottomActions() {
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -1072,7 +1074,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                             ),
                           ),
                           const SizedBox(width: 12),
-                          const Text('Sending...'),
+                          Text(l10n.processing),
                         ],
                       )
                     : Row(
@@ -1083,8 +1085,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                               : Icons.send_rounded, size: 20),
                           const SizedBox(width: 8),
                           Text(widget.attachToSightingId != null 
-                              ? 'Add Media' 
-                              : _submitButtonText),
+                              ? AppLocalizations.of(context).addMedia 
+                              : l10n.submitBeep),
                         ],
                       ),
                 ),
@@ -1104,7 +1106,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                     _addMoreMedia();
                   },
                   icon: const Icon(Icons.add_photo_alternate, size: 18),
-                  label: const Text('Add More'),
+                  label: Text(AppLocalizations.of(context).addMoreMedia),
                   style: TextButton.styleFrom(
                     foregroundColor: AppColors.brandPrimary,
                     padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -1119,7 +1121,11 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                     _retakeMedia();
                   },
                   icon: Icon(widget.isVideo ?? false ? Icons.videocam : Icons.camera_alt, size: 18),
-                  label: Text('Retake ${widget.isVideo ?? false ? 'Video' : 'Photo'}'),
+                  label: Text(
+                    widget.isVideo ?? false 
+                      ? AppLocalizations.of(context).retakeVideo 
+                      : AppLocalizations.of(context).retakePhoto
+                  ),
                   style: TextButton.styleFrom(
                     foregroundColor: AppColors.textSecondary,
                     padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),

@@ -989,6 +989,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'filtered'**
   String get filteredSuffix;
+
+  /// No description provided for @detailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get detailsTitle;
+
+  /// No description provided for @mufonCase.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON Case'**
+  String get mufonCase;
+
+  /// No description provided for @sightingDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Sighting Date'**
+  String get sightingDate;
+
+  /// No description provided for @databaseEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Database Entry'**
+  String get databaseEntry;
+
+  /// No description provided for @locationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get locationLabel;
+
+  /// No description provided for @distanceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance'**
+  String get distanceLabel;
+
+  /// No description provided for @timeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get timeLabel;
+
+  /// No description provided for @reportedByLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reported by'**
+  String get reportedByLabel;
+
+  /// No description provided for @unknownLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown Location'**
+  String get unknownLocation;
+
+  /// No description provided for @locationUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Unknown'**
+  String get locationUnknown;
+
+  /// No description provided for @witnessesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Witnesses'**
+  String get witnessesLabel;
+
+  /// No description provided for @witnessesCountMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} people confirmed this sighting'**
+  String witnessesCountMessage(int count);
+
+  /// No description provided for @photoAnalysisTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo Analysis'**
+  String get photoAnalysisTitle;
+
+  /// No description provided for @mediaItemsProcessed.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis: {count} media file(s) processed'**
+  String mediaItemsProcessed(int count);
+
+  /// No description provided for @addMoreMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Add More'**
+  String get addMoreMedia;
+
+  /// No description provided for @addMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Media'**
+  String get addMedia;
+
+  /// No description provided for @retakePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Retake Photo'**
+  String get retakePhoto;
+
+  /// No description provided for @retakeVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Retake Video'**
+  String get retakeVideo;
 }
 
 class _AppLocalizationsDelegate

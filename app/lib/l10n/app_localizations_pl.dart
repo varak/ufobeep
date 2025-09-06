@@ -417,61 +417,119 @@ class AppLocalizationsPl extends AppLocalizations {
       'UFO, UAP, OVNI, kosmici, obserwacje, zegarki, alarmy, radar, kompas';
 
   @override
-  String get noAlertsFound => 'No matching alerts';
+  String get noAlertsFound => 'Brak odpowiadających wpisów';
 
   @override
   String get alertsFilterHelp =>
-      'Try adjusting your filters to see more results';
+      'Spróbuj dostosować filtry, aby zobaczyć więcej wyników';
 
   @override
-  String get verified => 'Verified';
+  String get verified => 'Zweryfikowane';
 
   @override
-  String get beepOnly => 'beep only';
+  String get beepOnly => 'tylko sygnał dźwiękowy';
 
   @override
-  String get videoOnly => 'video only';
+  String get videoOnly => 'tylko wideo';
 
   @override
-  String get imageOnly => 'image only';
+  String get imageOnly => 'tylko obraz';
 
   @override
-  String get timeJustNow => 'Just now';
+  String get timeJustNow => 'Przed chwilą';
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return '_ _ PH _ 0 _ _ d temu';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '_ _ PH _ 0 _ _ _ h temu';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return '_ _ PH _ 0 _ _ m temu';
   }
 
   @override
-  String get loadMoreAlerts => 'Load More Alerts';
+  String get loadMoreAlerts => 'Wczytaj więcej alarmów';
 
   @override
-  String get toggleMufonTooltip => 'Toggle MUFON sightings';
+  String get toggleMufonTooltip => 'Włączenie / wyłączenie obserwacji MUFON';
 
   @override
-  String get showMufonData => 'Show MUFON data';
+  String get showMufonData => 'Pokaż dane MUFON';
 
   @override
-  String get hideMufonData => 'Hide MUFON data';
+  String get hideMufonData => 'Ukryj dane MUFON';
 
   @override
-  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
+  String get showingUfoBeepOnly => 'Pokazywanie tylko raportów UFOBeep';
 
   @override
   String get showingAllReports =>
-      'Showing all reports including MUFON database';
+      'Wyświetlanie wszystkich raportów, w tym bazy danych MUFON';
 
   @override
-  String get filteredSuffix => 'filtered';
+  String get filteredSuffix => 'filtrowane';
+
+  @override
+  String get detailsTitle => 'Szczegóły';
+
+  @override
+  String get mufonCase => 'MUFON Przypadek';
+
+  @override
+  String get sightingDate => 'Data obserwacji';
+
+  @override
+  String get databaseEntry => 'Wpis do bazy danych';
+
+  @override
+  String get locationLabel => 'Lokalizacja';
+
+  @override
+  String get distanceLabel => 'Odległość';
+
+  @override
+  String get timeLabel => 'Czas';
+
+  @override
+  String get reportedByLabel => 'Zgłoszone przez';
+
+  @override
+  String get unknownLocation => 'Nieznana lokalizacja';
+
+  @override
+  String get locationUnknown => 'Lokalizacja nieznana';
+
+  @override
+  String get witnessesLabel => 'Świadkowie';
+
+  @override
+  String witnessesCountMessage(int count) {
+    return 'Ludzie potwierdzili to rozpoznanie';
+  }
+
+  @override
+  String get photoAnalysisTitle => 'Analiza zdjęć';
+
+  @override
+  String mediaItemsProcessed(int count) {
+    return 'Analiza: _ _ PH _ 0 _ _ plik (-y) multimedialny (-e) przetworzony (-e)';
+  }
+
+  @override
+  String get addMoreMedia => 'Dodaj więcej';
+
+  @override
+  String get addMedia => 'Dodaj media';
+
+  @override
+  String get retakePhoto => 'Retake Photo';
+
+  @override
+  String get retakeVideo => 'Zapisz wideo';
 }

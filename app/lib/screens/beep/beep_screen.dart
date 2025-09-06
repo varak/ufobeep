@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
 import '../../services/sensor_service.dart';
 import '../../services/photo_metadata_service.dart';
 import '../../services/beep_service.dart';
@@ -329,6 +330,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return NightSkyBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -437,7 +439,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                           await UiFeedback.click();
                           _capturePhoto();
                         },
-                        child: const Column(
+                        child: Column(
                           children: [
                             Icon(
                               Icons.camera_alt,
@@ -446,8 +448,8 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              'Camera',
-                              style: TextStyle(
+                              l10n.capturePhoto,
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -464,7 +466,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                           await UiFeedback.click();
                           _pickFromGallery();
                         },
-                        child: const Column(
+                        child: Column(
                           children: [
                             Icon(
                               Icons.photo_library,
@@ -473,8 +475,8 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              'Gallery',
-                              style: TextStyle(
+                              l10n.pickFromGallery,
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -514,9 +516,9 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                               strokeWidth: 2,
                             ),
                           )
-                        : const Text(
-                            'Send Beep',
-                            style: TextStyle(
+                        : Text(
+                            l10n.submitBeep,
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
                               color: AppColors.brandPrimary,
@@ -545,26 +547,22 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
           children: [
             const Icon(Icons.location_on, color: AppColors.brandPrimary),
             const SizedBox(width: 8),
-            const Text(
-              'Location Required',
-              style: TextStyle(color: AppColors.textPrimary),
+            Text(
+              l10n.locationPermissionTitle,
+              style: const TextStyle(color: AppColors.textPrimary),
             ),
           ],
         ),
-        content: const Text(
-          'UFOBeep needs your location to:\n\n'
-          '• Send alerts to nearby people\n'
-          '• Help others navigate to the sighting\n'
-          '• Provide accurate distance information\n\n'
-          'Your exact location is never shared publicly.',
-          style: TextStyle(color: AppColors.textSecondary),
+        content: Text(
+          l10n.locationPermissionBody,
+          style: const TextStyle(color: AppColors.textSecondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: Text(
-              'Cancel',
-              style: TextStyle(color: AppColors.textTertiary),
+              l10n.cancel,
+              style: const TextStyle(color: AppColors.textTertiary),
             ),
           ),
           ElevatedButton(
@@ -573,7 +571,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
               backgroundColor: AppColors.brandPrimary,
               foregroundColor: Colors.black,
             ),
-            child: const Text('Allow Location'),
+            child: Text(l10n.openSettings),
           ),
         ],
       ),
@@ -590,16 +588,15 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
           children: [
             const Icon(Icons.settings, color: AppColors.semanticWarning),
             const SizedBox(width: 8),
-            const Text(
-              'Settings Required',
-              style: TextStyle(color: AppColors.textPrimary),
+            Text(
+              l10n.permissionsRequired,
+              style: const TextStyle(color: AppColors.textPrimary),
             ),
           ],
         ),
-        content: const Text(
-          'Location permission was permanently denied. To use UFOBeep, you must enable location access in your device Settings.\n\n'
-          'UFOBeep requires location to send and receive sighting alerts.',
-          style: TextStyle(color: AppColors.textSecondary),
+        content: Text(
+          l10n.locationPermissionBody,
+          style: const TextStyle(color: AppColors.textSecondary),
         ),
         actions: [
           TextButton(
@@ -615,7 +612,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
               backgroundColor: AppColors.semanticWarning,
               foregroundColor: Colors.black,
             ),
-            child: const Text('Open Settings'),
+            child: Text(l10n.openSettings),
           ),
         ],
       ),
@@ -628,4 +625,3 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     super.dispose();
   }
 }
-

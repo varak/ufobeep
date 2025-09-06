@@ -125,6 +125,41 @@
   "storeShortDesc": "Okamžité varování UFO. Zachycení, potvrzení a rozhovor v reálném čase.",
   "storeLongDesc": "UFOBeep posílá upozornění v reálném čase, když někdo spatří poblíž UFO. Zachytit fotografie a videa, potvrdit pozorování s klepnutím, zobrazit směr a vzdálenost, a chatovat s kolegy skywatchers.",
   "keywords": "UFO, UAP, OVNI, mimozemšťané, pozorování, Skywatch, upozornění, radar, kompas",
+  "noAlertsFound": "Žádné odpovídající záznamy",
+  "alertsFilterHelp": "Zkuste nastavit filtry, abyste viděli další výsledky",
+  "verified": "Ověřeno",
+  "beepOnly": "pouze pípnutí",
+  "videoOnly": "pouze video",
+  "imageOnly": "pouze obrázek",
+  "timeJustNow": "Právě teď",
+  "timeDaysAgo": "Před",
+  "timeHoursAgo": "_ _ PH _ 0 _ _ h před",
+  "timeMinutesAgo": "Před tím",
+  "loadMoreAlerts": "Načíst více upozornění",
+  "toggleMufonTooltip": "Zapnout pozorování mufonu",
+  "showMufonData": "Zobrazit data MUFON",
+  "hideMufonData": "Skrýt data MUFON",
+  "showingUfoBeepOnly": "Zobrazení pouze zpráv UFOBeep",
+  "showingAllReports": "Zobrazení všech zpráv včetně databáze MUFON",
+  "filteredSuffix": "filtrované",
+  "detailsTitle": "Podrobnosti",
+  "mufonCase": "MUFON Případ",
+  "sightingDate": "Datum pozorování",
+  "databaseEntry": "Záznam databáze",
+  "locationLabel": "Umístění",
+  "distanceLabel": "Vzdálenost",
+  "timeLabel": "Čas",
+  "reportedByLabel": "Reported by",
+  "unknownLocation": "Neznámé umístění",
+  "locationUnknown": "Umístění není známo",
+  "witnessesLabel": "Svědci",
+  "witnessesCountMessage": "_ _ PH _ 0 _ _ lidé potvrdili toto pozorování",
+  "photoAnalysisTitle": "Analýza fotografií",
+  "mediaItemsProcessed": "Analýza: _ _ PH _ 0 _ _ media soubor (y) zpracován",
+  "addMoreMedia": "Přidat více",
+  "addMedia": "Přidat média",
+  "retakePhoto": "Fotografie znovu",
+  "retakeVideo": "Retake video",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -206,6 +241,46 @@
       "unit": {
         "type": "String",
         "example": "mph"
+      }
+    }
+  },
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
       }
     }
   }

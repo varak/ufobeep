@@ -125,6 +125,41 @@
   "storeShortDesc": "即时UFO警报接近你 抓住,确认,实时聊天.",
   "storeLongDesc": "UFOBEP在附近发现UFO时发出实时警报. 捕捉照片和录像,用水龙头证实目击情况,查看方向和距离,并与天空观察者同行聊天.",
   "keywords": "UFO、UAP、OVNI、aliens、视觉、天空表、警报、雷达、辅助设备",
+  "noAlertsFound": "没有匹配的提示",
+  "alertsFilterHelp": "尝试调整过滤器以查看更多结果",
+  "verified": "已验证",
+  "beepOnly": "只有哔声",
+  "videoOnly": "只有视频",
+  "imageOnly": "仅图像",
+  "timeJustNow": "刚才",
+  "timeDaysAgo": "时间轴:",
+  "timeHoursAgo": "0 小时前",
+  "timeMinutesAgo": "0 分钟前",
+  "loadMoreAlerts": "装入更多提醒",
+  "toggleMufonTooltip": "切换MUFON的目击",
+  "showMufonData": "显示 MUFON 数据",
+  "hideMufonData": "隐藏 MUFON 数据",
+  "showingUfoBeepOnly": "只显示 UFOBEP 报告",
+  "showingAllReports": "显示包括MUFON数据库在内的所有报告",
+  "filteredSuffix": "过滤",
+  "detailsTitle": "细节",
+  "mufonCase": "毛里求斯 大小写",
+  "sightingDate": "观察日期",
+  "databaseEntry": "数据库条目",
+  "locationLabel": "地点",
+  "distanceLabel": "距离",
+  "timeLabel": "时间",
+  "reportedByLabel": "报告",
+  "unknownLocation": "未知位置",
+  "locationUnknown": "位置未知",
+  "witnessesLabel": "证人",
+  "witnessesCountMessage": "人们确认这次目击",
+  "photoAnalysisTitle": "照片分析",
+  "mediaItemsProcessed": "分析:_PH_0_媒体文件已处理",
+  "addMoreMedia": "添加更多内容",
+  "addMedia": "添加媒体",
+  "retakePhoto": "重取照片",
+  "retakeVideo": "重取视频",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -206,6 +241,46 @@
       "unit": {
         "type": "String",
         "example": "mph"
+      }
+    }
+  },
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
       }
     }
   }

@@ -125,6 +125,41 @@
   "storeShortDesc": "Alertas de OVNI instantâneos perto de ti. Capturar, confirmar e conversar em tempo real.",
   "storeLongDesc": "OVNIBeep envia alertas em tempo real quando alguém vê um OVNI por perto. Capture fotos e vídeos, confirme avistamentos com toque, view direction & distance e converse com outros observadores do céu.",
   "keywords": "OVNI,UAP,OVNI,aliens,estrelas,sightings,skywatch,alerts,radar,compass",
+  "noAlertsFound": "Sem alertas correspondentes",
+  "alertsFilterHelp": "Tente ajustar seus filtros para ver mais resultados",
+  "verified": "Verificado",
+  "beepOnly": "apenas bip",
+  "videoOnly": "somente vídeo",
+  "imageOnly": "somente imagem",
+  "timeJustNow": "Agora mesmo",
+  "timeDaysAgo": "__PH_0_d há",
+  "timeHoursAgo": "{count}h há",
+  "timeMinutesAgo": "{count} há",
+  "loadMoreAlerts": "Carregar mais alertas",
+  "toggleMufonTooltip": "Alternar os avistamentos do MUFON",
+  "showMufonData": "Mostrar dados MUFON",
+  "hideMufonData": "Ocultar dados MUFON",
+  "showingUfoBeepOnly": "Mostrando apenas relatórios UFOBeep",
+  "showingAllReports": "A mostrar todos os relatórios, incluindo a base de dados MUFON",
+  "filteredSuffix": "filtrado",
+  "detailsTitle": "Detalhes",
+  "mufonCase": "MUFON Processo",
+  "sightingDate": "Data de observação",
+  "databaseEntry": "Entrada da Base de Dados",
+  "locationLabel": "Localização",
+  "distanceLabel": "Distância",
+  "timeLabel": "Hora",
+  "reportedByLabel": "Reportado por",
+  "unknownLocation": "Localização desconhecida",
+  "locationUnknown": "Localização Desconhecido",
+  "witnessesLabel": "Testemunhas",
+  "witnessesCountMessage": "{count}_ pessoas confirmaram este avistamento",
+  "photoAnalysisTitle": "Análise Fotográfica",
+  "mediaItemsProcessed": "Análise: {count} arquivos de mídia processados",
+  "addMoreMedia": "Adicionar mais",
+  "addMedia": "Adicionar mídia",
+  "retakePhoto": "Retirar foto",
+  "retakeVideo": "Retomar vídeo",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -206,6 +241,46 @@
       "unit": {
         "type": "String",
         "example": "mph"
+      }
+    }
+  },
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
       }
     }
   }

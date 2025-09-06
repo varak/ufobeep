@@ -412,61 +412,118 @@ class AppLocalizationsAr extends AppLocalizations {
       'UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass';
 
   @override
-  String get noAlertsFound => 'No matching alerts';
+  String get noAlertsFound => 'لا تنبيهات مطابقة';
 
   @override
-  String get alertsFilterHelp =>
-      'Try adjusting your filters to see more results';
+  String get alertsFilterHelp => 'حاول تعديل مرشحيك لرؤية المزيد من النتائج';
 
   @override
-  String get verified => 'Verified';
+  String get verified => 'مصدق عليه';
 
   @override
-  String get beepOnly => 'beep only';
+  String get beepOnly => 'البيرة فقط';
 
   @override
-  String get videoOnly => 'video only';
+  String get videoOnly => 'الفيديو فقط';
 
   @override
-  String get imageOnly => 'image only';
+  String get imageOnly => 'الصورة فقط';
 
   @override
-  String get timeJustNow => 'Just now';
+  String get timeJustNow => 'الآن';
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return 'قبل';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return 'قبل';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return 'قبل';
   }
 
   @override
-  String get loadMoreAlerts => 'Load More Alerts';
+  String get loadMoreAlerts => 'عدد أكبر من التحذيرات';
 
   @override
-  String get toggleMufonTooltip => 'Toggle MUFON sightings';
+  String get toggleMufonTooltip => 'مشاهدات (مافون)';
 
   @override
-  String get showMufonData => 'Show MUFON data';
+  String get showMufonData => 'بيانات البرنامج';
 
   @override
-  String get hideMufonData => 'Hide MUFON data';
+  String get hideMufonData => 'إخفاء البيانات';
 
   @override
-  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
+  String get showingUfoBeepOnly => 'لا تظهر سوى تقارير الجيب';
 
   @override
   String get showingAllReports =>
-      'Showing all reports including MUFON database';
+      ':: عرض جميع التقارير بما في ذلك قاعدة بيانات مون';
 
   @override
-  String get filteredSuffix => 'filtered';
+  String get filteredSuffix => 'ممتلئة';
+
+  @override
+  String get detailsTitle => 'التفاصيل';
+
+  @override
+  String get mufonCase => 'MUFON القضية';
+
+  @override
+  String get sightingDate => 'المصارعة';
+
+  @override
+  String get databaseEntry => 'دخول قاعدة البيانات';
+
+  @override
+  String get locationLabel => 'الموقع';
+
+  @override
+  String get distanceLabel => 'المسافة';
+
+  @override
+  String get timeLabel => 'الوقت';
+
+  @override
+  String get reportedByLabel => 'Reported by';
+
+  @override
+  String get unknownLocation => 'مكان مجهول';
+
+  @override
+  String get locationUnknown => 'الموقع غير معروف';
+
+  @override
+  String get witnessesLabel => 'الشهود';
+
+  @override
+  String witnessesCountMessage(int count) {
+    return 'الناس أكدوا هذا';
+  }
+
+  @override
+  String get photoAnalysisTitle => 'تحليل الصور';
+
+  @override
+  String mediaItemsProcessed(int count) {
+    return 'Analysis: ${count}_media file(s) processed';
+  }
+
+  @override
+  String get addMoreMedia => 'أكثر';
+
+  @override
+  String get addMedia => 'وسائط الإعلام';
+
+  @override
+  String get retakePhoto => 'Retake Photo';
+
+  @override
+  String get retakeVideo => 'Retake Video';
 }

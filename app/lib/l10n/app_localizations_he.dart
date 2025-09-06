@@ -411,61 +411,118 @@ class AppLocalizationsHe extends AppLocalizations {
       'עב\"מים,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass';
 
   @override
-  String get noAlertsFound => 'No matching alerts';
+  String get noAlertsFound => 'אין אזהרות';
 
   @override
   String get alertsFilterHelp =>
-      'Try adjusting your filters to see more results';
+      'נסה להתאים את המסננים שלך כדי לראות תוצאות נוספות';
 
   @override
-  String get verified => 'Verified';
+  String get verified => 'מאומת';
 
   @override
-  String get beepOnly => 'beep only';
+  String get beepOnly => 'להיות רק';
 
   @override
-  String get videoOnly => 'video only';
+  String get videoOnly => 'וידאו רק';
 
   @override
-  String get imageOnly => 'image only';
+  String get imageOnly => 'תמונה רק';
 
   @override
-  String get timeJustNow => 'Just now';
+  String get timeJustNow => 'רק עכשיו';
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return 'PH_0____D_ ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return 'PH_0_h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return 'PH_0__m ago';
   }
 
   @override
-  String get loadMoreAlerts => 'Load More Alerts';
+  String get loadMoreAlerts => 'עוד התראות';
 
   @override
-  String get toggleMufonTooltip => 'Toggle MUFON sightings';
+  String get toggleMufonTooltip => 'משקפי MUFON';
 
   @override
-  String get showMufonData => 'Show MUFON data';
+  String get showMufonData => 'מידע על MUFON';
 
   @override
-  String get hideMufonData => 'Hide MUFON data';
+  String get hideMufonData => 'מידע על MUFON';
 
   @override
-  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
+  String get showingUfoBeepOnly => 'מציג רק דוחות עב\"מ';
 
   @override
-  String get showingAllReports =>
-      'Showing all reports including MUFON database';
+  String get showingAllReports => 'הצג את כל הדיווחים כולל MUFON';
 
   @override
-  String get filteredSuffix => 'filtered';
+  String get filteredSuffix => 'סינון';
+
+  @override
+  String get detailsTitle => 'פרטים';
+
+  @override
+  String get mufonCase => 'MUFON מקרה';
+
+  @override
+  String get sightingDate => 'תאריך יציאה';
+
+  @override
+  String get databaseEntry => 'מסד נתונים כניסה';
+
+  @override
+  String get locationLabel => 'מיקום Location';
+
+  @override
+  String get distanceLabel => 'מרחק';
+
+  @override
+  String get timeLabel => 'הזמן';
+
+  @override
+  String get reportedByLabel => 'דיווח על';
+
+  @override
+  String get unknownLocation => 'מיקום לא ידוע';
+
+  @override
+  String get locationUnknown => 'מיקום לא ידוע';
+
+  @override
+  String get witnessesLabel => 'עדים';
+
+  @override
+  String witnessesCountMessage(int count) {
+    return '_PH_0___ אנשים אישרו את המראה הזה';
+  }
+
+  @override
+  String get photoAnalysisTitle => 'Photo Analysis';
+
+  @override
+  String mediaItemsProcessed(int count) {
+    return 'ניתוח:_PH_0____קובץ מדיה(s) מעובד';
+  }
+
+  @override
+  String get addMoreMedia => 'הוסף עוד';
+
+  @override
+  String get addMedia => 'הוסף';
+
+  @override
+  String get retakePhoto => 'Retake Photo';
+
+  @override
+  String get retakeVideo => 'Retake וידאו';
 }

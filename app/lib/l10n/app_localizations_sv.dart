@@ -416,61 +416,118 @@ class AppLocalizationsSv extends AppLocalizations {
       'UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass';
 
   @override
-  String get noAlertsFound => 'No matching alerts';
+  String get noAlertsFound => 'Inga matchande varningar';
 
   @override
   String get alertsFilterHelp =>
-      'Try adjusting your filters to see more results';
+      'Försök att justera dina filter för att se fler resultat';
 
   @override
-  String get verified => 'Verified';
+  String get verified => 'Verifierad';
 
   @override
-  String get beepOnly => 'beep only';
+  String get beepOnly => 'beep endast';
 
   @override
-  String get videoOnly => 'video only';
+  String get videoOnly => 'video endast';
 
   @override
-  String get imageOnly => 'image only';
+  String get imageOnly => 'bild endast';
 
   @override
-  String get timeJustNow => 'Just now';
+  String get timeJustNow => 'Just nu';
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return '${count}d för';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '$count för';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return '$count för';
   }
 
   @override
   String get loadMoreAlerts => 'Load More Alerts';
 
   @override
-  String get toggleMufonTooltip => 'Toggle MUFON sightings';
+  String get toggleMufonTooltip => 'Toggle MUFON observationer';
 
   @override
-  String get showMufonData => 'Show MUFON data';
+  String get showMufonData => 'Visa MUFON-data';
 
   @override
-  String get hideMufonData => 'Hide MUFON data';
+  String get hideMufonData => 'Dölj MUFON-data';
 
   @override
-  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
+  String get showingUfoBeepOnly => 'Visa endast UFOBeep-rapporter';
 
   @override
-  String get showingAllReports =>
-      'Showing all reports including MUFON database';
+  String get showingAllReports => 'Visa alla rapporter inklusive MUFON-databas';
 
   @override
-  String get filteredSuffix => 'filtered';
+  String get filteredSuffix => 'filtrerad';
+
+  @override
+  String get detailsTitle => 'Detaljer';
+
+  @override
+  String get mufonCase => 'Mufonen fall';
+
+  @override
+  String get sightingDate => 'Sighting Date';
+
+  @override
+  String get databaseEntry => 'Databasinträde';
+
+  @override
+  String get locationLabel => 'Plats';
+
+  @override
+  String get distanceLabel => 'Avstånd';
+
+  @override
+  String get timeLabel => 'Tid';
+
+  @override
+  String get reportedByLabel => 'Rapporterad av';
+
+  @override
+  String get unknownLocation => 'Okänd plats';
+
+  @override
+  String get locationUnknown => 'Plats okänd';
+
+  @override
+  String get witnessesLabel => 'Vittnen';
+
+  @override
+  String witnessesCountMessage(int count) {
+    return '$count människor bekräftade denna observation';
+  }
+
+  @override
+  String get photoAnalysisTitle => 'Fotoanalys';
+
+  @override
+  String mediaItemsProcessed(int count) {
+    return 'Analys: $count media file(s) bearbetad';
+  }
+
+  @override
+  String get addMoreMedia => 'Lägg till mer';
+
+  @override
+  String get addMedia => 'Lägg till media';
+
+  @override
+  String get retakePhoto => 'Retake Photo';
+
+  @override
+  String get retakeVideo => 'Retake Video';
 }

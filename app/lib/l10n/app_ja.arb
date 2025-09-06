@@ -125,6 +125,41 @@
   "storeShortDesc": "近くのインスタントUFOアラート。 リアルタイムでキャプチャ、確認、チャット.",
   "storeLongDesc": "UFOBeep は、近くの UFO を指すときにリアルタイムのアラートを送信します。 写真やビデオをキャプチャし、タップ、ビューの方向と距離を確認し、仲間のSkywatchersとチャットします.",
   "keywords": "UFO、UAP、OVNI、aliens、視線、skywatch、alerts、レーダー、compass",
+  "noAlertsFound": "マッチングアラートなし",
+  "alertsFilterHelp": "フィルターを調整して、より多くの結果を見る",
+  "verified": "プロフィール",
+  "beepOnly": "ビープのみ",
+  "videoOnly": "ビデオのみ",
+  "imageOnly": "画像のみ",
+  "timeJustNow": "今すぐ登録",
+  "timeDaysAgo": "__PH_0_d 前に",
+  "timeHoursAgo": "__PH_0_h 前に",
+  "timeMinutesAgo": "__PH_0_m 前に",
+  "loadMoreAlerts": "より多くのアラートをロードする",
+  "toggleMufonTooltip": "MUFONの視線をトグル",
+  "showMufonData": "MUFONデータを表示する",
+  "hideMufonData": "MUFONデータを隠す",
+  "showingUfoBeepOnly": "UFOBeepレポートのみを表示する",
+  "showingAllReports": "MUFONデータベースを含むすべてのレポートを表示",
+  "filteredSuffix": "フィルター",
+  "detailsTitle": "ニュース",
+  "mufonCase": "MUFONについて 導入事例",
+  "sightingDate": "予定日",
+  "databaseEntry": "データベースのエントリ",
+  "locationLabel": "アクセス",
+  "distanceLabel": "アクセス",
+  "timeLabel": "タイムタイム",
+  "reportedByLabel": "レポート",
+  "unknownLocation": "未知の場所",
+  "locationUnknown": "所在地 不明",
+  "witnessesLabel": "ウィッチネス",
+  "witnessesCountMessage": "{count} 人々はこの視線を確認しました",
+  "photoAnalysisTitle": "フォト分析",
+  "mediaItemsProcessed": "解析: {count} 処理されたメディアファイル",
+  "addMoreMedia": "詳しくはこちら",
+  "addMedia": "メディアの追加",
+  "retakePhoto": "写真を撮る",
+  "retakeVideo": "Retake ビデオ",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -206,6 +241,46 @@
       "unit": {
         "type": "String",
         "example": "mph"
+      }
+    }
+  },
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
       }
     }
   }

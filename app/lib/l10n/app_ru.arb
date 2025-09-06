@@ -125,6 +125,41 @@
   "storeShortDesc": "Мгновенное предупреждение НЛО рядом с вами. Захват, подтверждение и чат в режиме реального времени.",
   "storeLongDesc": "UFOBeep отправляет оповещения в режиме реального времени, когда кто-то замечает НЛО поблизости. Захватите фотографии и видео, подтвердите наблюдения с помощью крана, просмотрите направление и расстояние и пообщайтесь с другими наблюдателями неба.",
   "keywords": "НЛО, UAP, OVNI, инопланетяне, наблюдения, небесные часы, оповещения, радар, компаст",
+  "noAlertsFound": "Никаких совпадающих предупреждений",
+  "alertsFilterHelp": "Попробуйте настроить фильтры, чтобы увидеть больше результатов",
+  "verified": "Проверенный",
+  "beepOnly": "только гудок",
+  "videoOnly": "только видео",
+  "imageOnly": "только изображение",
+  "timeJustNow": "Только сейчас",
+  "timeDaysAgo": "PH_0_d назад",
+  "timeHoursAgo": "{count}h ago",
+  "timeMinutesAgo": "{count}m ago",
+  "loadMoreAlerts": "Загрузите больше предупреждений",
+  "toggleMufonTooltip": "Наблюдения MUFON",
+  "showMufonData": "Показать данные MUFON",
+  "hideMufonData": "Скрыть данные MUFON",
+  "showingUfoBeepOnly": "Об этом сообщает UFOBeep",
+  "showingAllReports": "Показать все отчеты, включая базу данных MUFON",
+  "filteredSuffix": "фильтрованный",
+  "detailsTitle": "Подробности",
+  "mufonCase": "МУФОН Дело",
+  "sightingDate": "Дата наблюдения",
+  "databaseEntry": "Вход в базу данных",
+  "locationLabel": "Расположение",
+  "distanceLabel": "Расстояние",
+  "timeLabel": "Время",
+  "reportedByLabel": "Докладчик",
+  "unknownLocation": "Неизвестное местоположение",
+  "locationUnknown": "Местонахождение неизвестно",
+  "witnessesLabel": "Свидетели",
+  "witnessesCountMessage": "{count} люди подтвердили это наблюдение",
+  "photoAnalysisTitle": "Анализ фотографий",
+  "mediaItemsProcessed": "Анализ: {count} медиафайл(ы), обработанный",
+  "addMoreMedia": "Добавить больше",
+  "addMedia": "Добавить медиа",
+  "retakePhoto": "Восстановить фото",
+  "retakeVideo": "Восстановить видео",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -206,6 +241,46 @@
       "unit": {
         "type": "String",
         "example": "mph"
+      }
+    }
+  },
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
       }
     }
   }

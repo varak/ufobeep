@@ -125,6 +125,41 @@
   "storeShortDesc": "즉시 UFO 알림. 캡처, 확인 및 실시간 채팅.",
   "storeLongDesc": "UFOBeep은 누군가가 UFO를 가까이 두고 있을 때 실시간 알림을 보냅니다. 캡처 사진 및 동영상, 탭으로 시력 확인, 방향 및 거리보기, 동료 skywatchers와 채팅.",
   "keywords": "UFO, UAP, OVNI의 aliens의 sightings,skywatch, 경보, 레이더, 우회",
+  "noAlertsFound": "일치하는 경고 없음",
+  "alertsFilterHelp": "필터를 조정하여 더 많은 결과를 볼 수 있습니다",
+  "verified": "인증 및 인증",
+  "beepOnly": "뚱 베어",
+  "videoOnly": "비디오 만",
+  "imageOnly": "이미지 만",
+  "timeJustNow": "지금 시작",
+  "timeDaysAgo": "{count}d 전",
+  "timeHoursAgo": "{count}h 전",
+  "timeMinutesAgo": "{count}m 전",
+  "loadMoreAlerts": "더 많은 경고",
+  "toggleMufonTooltip": "사이트 맵",
+  "showMufonData": "MUFON 자료 보기",
+  "hideMufonData": "MUFON 데이터 숨기기",
+  "showingUfoBeepOnly": "UFOBeep 보고",
+  "showingAllReports": "MUFON 데이터베이스를 포함한 모든 보고서보기",
+  "filteredSuffix": "필터링",
+  "detailsTitle": "제품 정보",
+  "mufonCase": "사이트맵 제품정보",
+  "sightingDate": "관련 기사",
+  "databaseEntry": "데이터베이스",
+  "locationLabel": "- 연혁",
+  "distanceLabel": "주요 특징",
+  "timeLabel": "(주)",
+  "reportedByLabel": "관련 기사",
+  "unknownLocation": "자주 묻는 질문",
+  "locationUnknown": "위치 Unknown",
+  "witnessesLabel": "뚱 베어",
+  "witnessesCountMessage": "{count} 사람들이 이 광경을 확인",
+  "photoAnalysisTitle": "사진 분석",
+  "mediaItemsProcessed": "분석: {count} 미디어 파일 처리",
+  "addMoreMedia": "더 보기",
+  "addMedia": "미디어 추가",
+  "retakePhoto": "Retake 사진",
+  "retakeVideo": "Retake 비디오",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -206,6 +241,46 @@
       "unit": {
         "type": "String",
         "example": "mph"
+      }
+    }
+  },
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
       }
     }
   }

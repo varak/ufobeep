@@ -125,6 +125,41 @@
   "storeShortDesc": "Natychmiastowe alarmy UFO. Złapać, potwierdzić i porozmawiać w czasie rzeczywistym.",
   "storeLongDesc": "UFOBeep wysyła ostrzeżenia w czasie rzeczywistym, gdy ktoś widzi UFO w pobliżu. Przechwytywanie zdjęć i filmów wideo, potwierdzanie widoków za pomocą kranu, wyświetlanie kierunku i odległości oraz czat z innymi obserwatorami.",
   "keywords": "UFO, UAP, OVNI, kosmici, obserwacje, zegarki, alarmy, radar, kompas",
+  "noAlertsFound": "Brak odpowiadających wpisów",
+  "alertsFilterHelp": "Spróbuj dostosować filtry, aby zobaczyć więcej wyników",
+  "verified": "Zweryfikowane",
+  "beepOnly": "tylko sygnał dźwiękowy",
+  "videoOnly": "tylko wideo",
+  "imageOnly": "tylko obraz",
+  "timeJustNow": "Przed chwilą",
+  "timeDaysAgo": "_ _ PH _ 0 _ _ d temu",
+  "timeHoursAgo": "_ _ PH _ 0 _ _ _ h temu",
+  "timeMinutesAgo": "_ _ PH _ 0 _ _ m temu",
+  "loadMoreAlerts": "Wczytaj więcej alarmów",
+  "toggleMufonTooltip": "Włączenie / wyłączenie obserwacji MUFON",
+  "showMufonData": "Pokaż dane MUFON",
+  "hideMufonData": "Ukryj dane MUFON",
+  "showingUfoBeepOnly": "Pokazywanie tylko raportów UFOBeep",
+  "showingAllReports": "Wyświetlanie wszystkich raportów, w tym bazy danych MUFON",
+  "filteredSuffix": "filtrowane",
+  "detailsTitle": "Szczegóły",
+  "mufonCase": "MUFON Przypadek",
+  "sightingDate": "Data obserwacji",
+  "databaseEntry": "Wpis do bazy danych",
+  "locationLabel": "Lokalizacja",
+  "distanceLabel": "Odległość",
+  "timeLabel": "Czas",
+  "reportedByLabel": "Zgłoszone przez",
+  "unknownLocation": "Nieznana lokalizacja",
+  "locationUnknown": "Lokalizacja nieznana",
+  "witnessesLabel": "Świadkowie",
+  "witnessesCountMessage": "Ludzie potwierdzili to rozpoznanie",
+  "photoAnalysisTitle": "Analiza zdjęć",
+  "mediaItemsProcessed": "Analiza: _ _ PH _ 0 _ _ plik (-y) multimedialny (-e) przetworzony (-e)",
+  "addMoreMedia": "Dodaj więcej",
+  "addMedia": "Dodaj media",
+  "retakePhoto": "Retake Photo",
+  "retakeVideo": "Zapisz wideo",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -206,6 +241,46 @@
       "unit": {
         "type": "String",
         "example": "mph"
+      }
+    }
+  },
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
       }
     }
   }

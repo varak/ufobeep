@@ -406,61 +406,117 @@ class AppLocalizationsKo extends AppLocalizations {
       'UFO, UAP, OVNI의 aliens의 sightings,skywatch, 경보, 레이더, 우회';
 
   @override
-  String get noAlertsFound => 'No matching alerts';
+  String get noAlertsFound => '일치하는 경고 없음';
 
   @override
-  String get alertsFilterHelp =>
-      'Try adjusting your filters to see more results';
+  String get alertsFilterHelp => '필터를 조정하여 더 많은 결과를 볼 수 있습니다';
 
   @override
-  String get verified => 'Verified';
+  String get verified => '인증 및 인증';
 
   @override
-  String get beepOnly => 'beep only';
+  String get beepOnly => '뚱 베어';
 
   @override
-  String get videoOnly => 'video only';
+  String get videoOnly => '비디오 만';
 
   @override
-  String get imageOnly => 'image only';
+  String get imageOnly => '이미지 만';
 
   @override
-  String get timeJustNow => 'Just now';
+  String get timeJustNow => '지금 시작';
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return '${count}d 전';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '${count}h 전';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return '${count}m 전';
   }
 
   @override
-  String get loadMoreAlerts => 'Load More Alerts';
+  String get loadMoreAlerts => '더 많은 경고';
 
   @override
-  String get toggleMufonTooltip => 'Toggle MUFON sightings';
+  String get toggleMufonTooltip => '사이트 맵';
 
   @override
-  String get showMufonData => 'Show MUFON data';
+  String get showMufonData => 'MUFON 자료 보기';
 
   @override
-  String get hideMufonData => 'Hide MUFON data';
+  String get hideMufonData => 'MUFON 데이터 숨기기';
 
   @override
-  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
+  String get showingUfoBeepOnly => 'UFOBeep 보고';
 
   @override
-  String get showingAllReports =>
-      'Showing all reports including MUFON database';
+  String get showingAllReports => 'MUFON 데이터베이스를 포함한 모든 보고서보기';
 
   @override
-  String get filteredSuffix => 'filtered';
+  String get filteredSuffix => '필터링';
+
+  @override
+  String get detailsTitle => '제품 정보';
+
+  @override
+  String get mufonCase => '사이트맵 제품정보';
+
+  @override
+  String get sightingDate => '관련 기사';
+
+  @override
+  String get databaseEntry => '데이터베이스';
+
+  @override
+  String get locationLabel => '- 연혁';
+
+  @override
+  String get distanceLabel => '주요 특징';
+
+  @override
+  String get timeLabel => '(주)';
+
+  @override
+  String get reportedByLabel => '관련 기사';
+
+  @override
+  String get unknownLocation => '자주 묻는 질문';
+
+  @override
+  String get locationUnknown => '위치 Unknown';
+
+  @override
+  String get witnessesLabel => '뚱 베어';
+
+  @override
+  String witnessesCountMessage(int count) {
+    return '$count 사람들이 이 광경을 확인';
+  }
+
+  @override
+  String get photoAnalysisTitle => '사진 분석';
+
+  @override
+  String mediaItemsProcessed(int count) {
+    return '분석: $count 미디어 파일 처리';
+  }
+
+  @override
+  String get addMoreMedia => '더 보기';
+
+  @override
+  String get addMedia => '미디어 추가';
+
+  @override
+  String get retakePhoto => 'Retake 사진';
+
+  @override
+  String get retakeVideo => 'Retake 비디오';
 }

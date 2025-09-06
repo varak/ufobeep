@@ -125,6 +125,41 @@
   "storeShortDesc": "तत्काल यूएफओ आपके पास अलर्ट करता है। वास्तविक समय में कैप्चर, पुष्टि और चैट करें।.",
   "storeLongDesc": "UFOBeep वास्तविक समय अलर्ट भेजता है जब कोई UFO पास रखता है। फ़ोटो और वीडियो कैप्चर करें, एक टैप के साथ दृश्यों की पुष्टि करें, दिशा और दूरी देखें, और साथी स्काईवॉकर्स के साथ चैट करें।.",
   "keywords": "यूएफओ, यूएपी, ओवीएनआई, एलियंस, दर्शन, स्काईवॉच, एलर्ट्स, रडार,कम्पास",
+  "noAlertsFound": "कोई मेलिंग अलर्ट नहीं",
+  "alertsFilterHelp": "अधिक परिणाम देखने के लिए अपने फिल्टर को समायोजित करने की कोशिश करें",
+  "verified": "सत्यापित",
+  "beepOnly": "केवल बीप",
+  "videoOnly": "केवल वीडियो",
+  "imageOnly": "केवल छवि",
+  "timeJustNow": "अभी",
+  "timeDaysAgo": "To make a ph_0_d",
+  "timeHoursAgo": "H_0_h__h___h____h___h___h___h____h_____h___h___h____h_________h________________________________________________________________________________________________________________________________________________________",
+  "timeMinutesAgo": "^PH_0_m पहले",
+  "loadMoreAlerts": "लोड अधिक अलर्ट",
+  "toggleMufonTooltip": "टॉगल MUFON sighting",
+  "showMufonData": "MUFON डेटा दिखाएं",
+  "hideMufonData": "MUFON डेटा छुपाएं",
+  "showingUfoBeepOnly": "केवल UFOBeep रिपोर्ट दिखा रहा है",
+  "showingAllReports": "MUFON डेटाबेस सहित सभी रिपोर्ट दिखा रहा है",
+  "filteredSuffix": "फ़िल्टर",
+  "detailsTitle": "विवरण",
+  "mufonCase": "MUFON मामला",
+  "sightingDate": "दर्शन तिथि",
+  "databaseEntry": "डेटाबेस प्रविष्टि",
+  "locationLabel": "स्थान",
+  "distanceLabel": "दूरी",
+  "timeLabel": "समय",
+  "reportedByLabel": "रिपोर्ट द्वारा",
+  "unknownLocation": "अज्ञात स्थान",
+  "locationUnknown": "अज्ञात",
+  "witnessesLabel": "गवाही",
+  "witnessesCountMessage": "{count}________________________________________________________________________________________________________________________________________",
+  "photoAnalysisTitle": "फोटो विश्लेषण",
+  "mediaItemsProcessed": "विश्लेषण: {count} मीडिया फ़ाइल (s) संसाधित",
+  "addMoreMedia": "अधिक जानिए",
+  "addMedia": "मीडिया जोड़ें",
+  "retakePhoto": "फोटो",
+  "retakeVideo": "वीडियो",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -206,6 +241,46 @@
       "unit": {
         "type": "String",
         "example": "mph"
+      }
+    }
+  },
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
       }
     }
   }

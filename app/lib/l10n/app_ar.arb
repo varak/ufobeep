@@ -125,6 +125,41 @@
   "storeShortDesc": "تنبيهات (أوفو) على مقربة منك التقاط، تأكيد، والحديث في الوقت الحقيقي.",
   "storeLongDesc": "(أوفيب) يرسل تنبيهات في الوقت الحقيقي عندما يكتشف شخص ما طائرة مروحية قريبة التقط صوراً و أشرطة فيديو، تأكد من مشاهدتها بمسافة من النقر، وجهة النظر.",
   "keywords": "UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass",
+  "noAlertsFound": "لا تنبيهات مطابقة",
+  "alertsFilterHelp": "حاول تعديل مرشحيك لرؤية المزيد من النتائج",
+  "verified": "مصدق عليه",
+  "beepOnly": "البيرة فقط",
+  "videoOnly": "الفيديو فقط",
+  "imageOnly": "الصورة فقط",
+  "timeJustNow": "الآن",
+  "timeDaysAgo": "قبل",
+  "timeHoursAgo": "قبل",
+  "timeMinutesAgo": "قبل",
+  "loadMoreAlerts": "عدد أكبر من التحذيرات",
+  "toggleMufonTooltip": "مشاهدات (مافون)",
+  "showMufonData": "بيانات البرنامج",
+  "hideMufonData": "إخفاء البيانات",
+  "showingUfoBeepOnly": "لا تظهر سوى تقارير الجيب",
+  "showingAllReports": ":: عرض جميع التقارير بما في ذلك قاعدة بيانات مون",
+  "filteredSuffix": "ممتلئة",
+  "detailsTitle": "التفاصيل",
+  "mufonCase": "MUFON القضية",
+  "sightingDate": "المصارعة",
+  "databaseEntry": "دخول قاعدة البيانات",
+  "locationLabel": "الموقع",
+  "distanceLabel": "المسافة",
+  "timeLabel": "الوقت",
+  "reportedByLabel": "Reported by",
+  "unknownLocation": "مكان مجهول",
+  "locationUnknown": "الموقع غير معروف",
+  "witnessesLabel": "الشهود",
+  "witnessesCountMessage": "الناس أكدوا هذا",
+  "photoAnalysisTitle": "تحليل الصور",
+  "mediaItemsProcessed": "Analysis: {count}_media file(s) processed",
+  "addMoreMedia": "أكثر",
+  "addMedia": "وسائط الإعلام",
+  "retakePhoto": "Retake Photo",
+  "retakeVideo": "Retake Video",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -206,6 +241,46 @@
       "unit": {
         "type": "String",
         "example": "mph"
+      }
+    }
+  },
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
       }
     }
   }

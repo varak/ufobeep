@@ -417,30 +417,30 @@ class AppLocalizationsRu extends AppLocalizations {
       'НЛО, UAP, OVNI, инопланетяне, наблюдения, небесные часы, оповещения, радар, компаст';
 
   @override
-  String get noAlertsFound => 'No matching alerts';
+  String get noAlertsFound => 'Никаких совпадающих предупреждений';
 
   @override
   String get alertsFilterHelp =>
-      'Try adjusting your filters to see more results';
+      'Попробуйте настроить фильтры, чтобы увидеть больше результатов';
 
   @override
-  String get verified => 'Verified';
+  String get verified => 'Проверенный';
 
   @override
-  String get beepOnly => 'beep only';
+  String get beepOnly => 'только гудок';
 
   @override
-  String get videoOnly => 'video only';
+  String get videoOnly => 'только видео';
 
   @override
-  String get imageOnly => 'image only';
+  String get imageOnly => 'только изображение';
 
   @override
-  String get timeJustNow => 'Just now';
+  String get timeJustNow => 'Только сейчас';
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return 'PH_0_d назад';
   }
 
   @override
@@ -454,24 +454,82 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get loadMoreAlerts => 'Load More Alerts';
+  String get loadMoreAlerts => 'Загрузите больше предупреждений';
 
   @override
-  String get toggleMufonTooltip => 'Toggle MUFON sightings';
+  String get toggleMufonTooltip => 'Наблюдения MUFON';
 
   @override
-  String get showMufonData => 'Show MUFON data';
+  String get showMufonData => 'Показать данные MUFON';
 
   @override
-  String get hideMufonData => 'Hide MUFON data';
+  String get hideMufonData => 'Скрыть данные MUFON';
 
   @override
-  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
+  String get showingUfoBeepOnly => 'Об этом сообщает UFOBeep';
 
   @override
   String get showingAllReports =>
-      'Showing all reports including MUFON database';
+      'Показать все отчеты, включая базу данных MUFON';
 
   @override
-  String get filteredSuffix => 'filtered';
+  String get filteredSuffix => 'фильтрованный';
+
+  @override
+  String get detailsTitle => 'Подробности';
+
+  @override
+  String get mufonCase => 'МУФОН Дело';
+
+  @override
+  String get sightingDate => 'Дата наблюдения';
+
+  @override
+  String get databaseEntry => 'Вход в базу данных';
+
+  @override
+  String get locationLabel => 'Расположение';
+
+  @override
+  String get distanceLabel => 'Расстояние';
+
+  @override
+  String get timeLabel => 'Время';
+
+  @override
+  String get reportedByLabel => 'Докладчик';
+
+  @override
+  String get unknownLocation => 'Неизвестное местоположение';
+
+  @override
+  String get locationUnknown => 'Местонахождение неизвестно';
+
+  @override
+  String get witnessesLabel => 'Свидетели';
+
+  @override
+  String witnessesCountMessage(int count) {
+    return '$count люди подтвердили это наблюдение';
+  }
+
+  @override
+  String get photoAnalysisTitle => 'Анализ фотографий';
+
+  @override
+  String mediaItemsProcessed(int count) {
+    return 'Анализ: $count медиафайл(ы), обработанный';
+  }
+
+  @override
+  String get addMoreMedia => 'Добавить больше';
+
+  @override
+  String get addMedia => 'Добавить медиа';
+
+  @override
+  String get retakePhoto => 'Восстановить фото';
+
+  @override
+  String get retakeVideo => 'Восстановить видео';
 }

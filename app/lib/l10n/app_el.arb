@@ -125,6 +125,41 @@
   "storeShortDesc": "Άμεση συναγερμούς UFO κοντά σας. Συλλάβετε, επιβεβαιώστε και συνομιλήστε σε πραγματικό χρόνο.",
   "storeLongDesc": "Το UFOBeep στέλνει ειδοποιήσεις σε πραγματικό χρόνο όταν κάποιος εντοπίζει ένα UFO κοντά. Συλλάβετε φωτογραφίες και βίντεο, επιβεβαιώστε τις εμφανίσεις με μια βρύση, την κατεύθυνση προβολής και την απόσταση, και συνομιλήστε με άλλους παρατηρητές του ουρανού.",
   "keywords": "UFO, UAP, OVNI, aliens, παρατηρήσεις, Skywatch, alerts, Radar, compass",
+  "noAlertsFound": "Καμία αντίστοιχη καταχώριση",
+  "alertsFilterHelp": "Δοκιμάστε να ρυθμίσετε τα φίλτρα σας για να δείτε περισσότερα αποτελέσματα",
+  "verified": "Επαληθευμένο",
+  "beepOnly": "μόνο μπιπ",
+  "videoOnly": "μόνο βίντεο",
+  "imageOnly": "μόνο εικόνα",
+  "timeJustNow": "Μόλις τώρα",
+  "timeDaysAgo": "_PH_0_D πριν",
+  "timeHoursAgo": "__PH_0_h πριν",
+  "timeMinutesAgo": "_PH_0_m πριν",
+  "loadMoreAlerts": "Φόρτωση περισσότερων ειδοποιήσεων",
+  "toggleMufonTooltip": "Εναλλαγή προβολών MUFON",
+  "showMufonData": "Εμφάνιση δεδομένων MUFON",
+  "hideMufonData": "Απόκρυψη δεδομένων MUFON",
+  "showingUfoBeepOnly": "Εμφάνιση μόνο αναφορών UFOBeep",
+  "showingAllReports": "Εμφάνιση όλων των αναφορών συμπεριλαμβανομένης της βάσης δεδομένων MUFON",
+  "filteredSuffix": "φιλτράρεται",
+  "detailsTitle": "Λεπτομέρειες",
+  "mufonCase": "ΜΟΥΦΟΝ Υπόθεση",
+  "sightingDate": "Ημερομηνία παρατήρησης",
+  "databaseEntry": "Είσοδος βάσης δεδομένων",
+  "locationLabel": "Τοποθεσία",
+  "distanceLabel": "Απόσταση",
+  "timeLabel": "Χρόνος",
+  "reportedByLabel": "Αναφέρθηκε από",
+  "unknownLocation": "Άγνωστη τοποθεσία",
+  "locationUnknown": "Άγνωστη τοποθεσία",
+  "witnessesLabel": "Μάρτυρες",
+  "witnessesCountMessage": "__PH_0_ οι άνθρωποι επιβεβαίωσαν αυτή την παρατήρηση",
+  "photoAnalysisTitle": "Ανάλυση φωτογραφιών",
+  "mediaItemsProcessed": "Ανάλυση: __PH_0_ Επεξεργασία αρχείου(ων) πολυμέσων",
+  "addMoreMedia": "Προσθήκη περισσότερων",
+  "addMedia": "Προσθήκη μέσου",
+  "retakePhoto": "Επανάληψη φωτογραφίας",
+  "retakeVideo": "Επανάληψη βίντεο",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -206,6 +241,46 @@
       "unit": {
         "type": "String",
         "example": "mph"
+      }
+    }
+  },
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
       }
     }
   }

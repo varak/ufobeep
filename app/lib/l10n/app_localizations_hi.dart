@@ -413,61 +413,118 @@ class AppLocalizationsHi extends AppLocalizations {
       'यूएफओ, यूएपी, ओवीएनआई, एलियंस, दर्शन, स्काईवॉच, एलर्ट्स, रडार,कम्पास';
 
   @override
-  String get noAlertsFound => 'No matching alerts';
+  String get noAlertsFound => 'कोई मेलिंग अलर्ट नहीं';
 
   @override
   String get alertsFilterHelp =>
-      'Try adjusting your filters to see more results';
+      'अधिक परिणाम देखने के लिए अपने फिल्टर को समायोजित करने की कोशिश करें';
 
   @override
-  String get verified => 'Verified';
+  String get verified => 'सत्यापित';
 
   @override
-  String get beepOnly => 'beep only';
+  String get beepOnly => 'केवल बीप';
 
   @override
-  String get videoOnly => 'video only';
+  String get videoOnly => 'केवल वीडियो';
 
   @override
-  String get imageOnly => 'image only';
+  String get imageOnly => 'केवल छवि';
 
   @override
-  String get timeJustNow => 'Just now';
+  String get timeJustNow => 'अभी';
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return 'To make a ph_0_d';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return 'H_0_h__h___h____h___h___h___h____h_____h___h___h____h_________h________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return '^PH_0_m पहले';
   }
 
   @override
-  String get loadMoreAlerts => 'Load More Alerts';
+  String get loadMoreAlerts => 'लोड अधिक अलर्ट';
 
   @override
-  String get toggleMufonTooltip => 'Toggle MUFON sightings';
+  String get toggleMufonTooltip => 'टॉगल MUFON sighting';
 
   @override
-  String get showMufonData => 'Show MUFON data';
+  String get showMufonData => 'MUFON डेटा दिखाएं';
 
   @override
-  String get hideMufonData => 'Hide MUFON data';
+  String get hideMufonData => 'MUFON डेटा छुपाएं';
 
   @override
-  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
+  String get showingUfoBeepOnly => 'केवल UFOBeep रिपोर्ट दिखा रहा है';
 
   @override
-  String get showingAllReports =>
-      'Showing all reports including MUFON database';
+  String get showingAllReports => 'MUFON डेटाबेस सहित सभी रिपोर्ट दिखा रहा है';
 
   @override
-  String get filteredSuffix => 'filtered';
+  String get filteredSuffix => 'फ़िल्टर';
+
+  @override
+  String get detailsTitle => 'विवरण';
+
+  @override
+  String get mufonCase => 'MUFON मामला';
+
+  @override
+  String get sightingDate => 'दर्शन तिथि';
+
+  @override
+  String get databaseEntry => 'डेटाबेस प्रविष्टि';
+
+  @override
+  String get locationLabel => 'स्थान';
+
+  @override
+  String get distanceLabel => 'दूरी';
+
+  @override
+  String get timeLabel => 'समय';
+
+  @override
+  String get reportedByLabel => 'रिपोर्ट द्वारा';
+
+  @override
+  String get unknownLocation => 'अज्ञात स्थान';
+
+  @override
+  String get locationUnknown => 'अज्ञात';
+
+  @override
+  String get witnessesLabel => 'गवाही';
+
+  @override
+  String witnessesCountMessage(int count) {
+    return '${count}________________________________________________________________________________________________________________________________________';
+  }
+
+  @override
+  String get photoAnalysisTitle => 'फोटो विश्लेषण';
+
+  @override
+  String mediaItemsProcessed(int count) {
+    return 'विश्लेषण: $count मीडिया फ़ाइल (s) संसाधित';
+  }
+
+  @override
+  String get addMoreMedia => 'अधिक जानिए';
+
+  @override
+  String get addMedia => 'मीडिया जोड़ें';
+
+  @override
+  String get retakePhoto => 'फोटो';
+
+  @override
+  String get retakeVideo => 'वीडियो';
 }

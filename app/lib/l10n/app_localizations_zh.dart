@@ -405,61 +405,117 @@ class AppLocalizationsZh extends AppLocalizations {
   String get keywords => 'UFO、UAP、OVNI、aliens、视觉、天空表、警报、雷达、辅助设备';
 
   @override
-  String get noAlertsFound => 'No matching alerts';
+  String get noAlertsFound => '没有匹配的提示';
 
   @override
-  String get alertsFilterHelp =>
-      'Try adjusting your filters to see more results';
+  String get alertsFilterHelp => '尝试调整过滤器以查看更多结果';
 
   @override
-  String get verified => 'Verified';
+  String get verified => '已验证';
 
   @override
-  String get beepOnly => 'beep only';
+  String get beepOnly => '只有哔声';
 
   @override
-  String get videoOnly => 'video only';
+  String get videoOnly => '只有视频';
 
   @override
-  String get imageOnly => 'image only';
+  String get imageOnly => '仅图像';
 
   @override
-  String get timeJustNow => 'Just now';
+  String get timeJustNow => '刚才';
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return '时间轴:';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '0 小时前';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return '0 分钟前';
   }
 
   @override
-  String get loadMoreAlerts => 'Load More Alerts';
+  String get loadMoreAlerts => '装入更多提醒';
 
   @override
-  String get toggleMufonTooltip => 'Toggle MUFON sightings';
+  String get toggleMufonTooltip => '切换MUFON的目击';
 
   @override
-  String get showMufonData => 'Show MUFON data';
+  String get showMufonData => '显示 MUFON 数据';
 
   @override
-  String get hideMufonData => 'Hide MUFON data';
+  String get hideMufonData => '隐藏 MUFON 数据';
 
   @override
-  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
+  String get showingUfoBeepOnly => '只显示 UFOBEP 报告';
 
   @override
-  String get showingAllReports =>
-      'Showing all reports including MUFON database';
+  String get showingAllReports => '显示包括MUFON数据库在内的所有报告';
 
   @override
-  String get filteredSuffix => 'filtered';
+  String get filteredSuffix => '过滤';
+
+  @override
+  String get detailsTitle => '细节';
+
+  @override
+  String get mufonCase => '毛里求斯 大小写';
+
+  @override
+  String get sightingDate => '观察日期';
+
+  @override
+  String get databaseEntry => '数据库条目';
+
+  @override
+  String get locationLabel => '地点';
+
+  @override
+  String get distanceLabel => '距离';
+
+  @override
+  String get timeLabel => '时间';
+
+  @override
+  String get reportedByLabel => '报告';
+
+  @override
+  String get unknownLocation => '未知位置';
+
+  @override
+  String get locationUnknown => '位置未知';
+
+  @override
+  String get witnessesLabel => '证人';
+
+  @override
+  String witnessesCountMessage(int count) {
+    return '人们确认这次目击';
+  }
+
+  @override
+  String get photoAnalysisTitle => '照片分析';
+
+  @override
+  String mediaItemsProcessed(int count) {
+    return '分析:_PH_0_媒体文件已处理';
+  }
+
+  @override
+  String get addMoreMedia => '添加更多内容';
+
+  @override
+  String get addMedia => '添加媒体';
+
+  @override
+  String get retakePhoto => '重取照片';
+
+  @override
+  String get retakeVideo => '重取视频';
 }

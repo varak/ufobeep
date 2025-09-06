@@ -415,61 +415,118 @@ class AppLocalizationsCs extends AppLocalizations {
       'UFO, UAP, OVNI, mimozemšťané, pozorování, Skywatch, upozornění, radar, kompas';
 
   @override
-  String get noAlertsFound => 'No matching alerts';
+  String get noAlertsFound => 'Žádné odpovídající záznamy';
 
   @override
   String get alertsFilterHelp =>
-      'Try adjusting your filters to see more results';
+      'Zkuste nastavit filtry, abyste viděli další výsledky';
 
   @override
-  String get verified => 'Verified';
+  String get verified => 'Ověřeno';
 
   @override
-  String get beepOnly => 'beep only';
+  String get beepOnly => 'pouze pípnutí';
 
   @override
-  String get videoOnly => 'video only';
+  String get videoOnly => 'pouze video';
 
   @override
-  String get imageOnly => 'image only';
+  String get imageOnly => 'pouze obrázek';
 
   @override
-  String get timeJustNow => 'Just now';
+  String get timeJustNow => 'Právě teď';
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return 'Před';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '_ _ PH _ 0 _ _ h před';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return 'Před tím';
   }
 
   @override
-  String get loadMoreAlerts => 'Load More Alerts';
+  String get loadMoreAlerts => 'Načíst více upozornění';
 
   @override
-  String get toggleMufonTooltip => 'Toggle MUFON sightings';
+  String get toggleMufonTooltip => 'Zapnout pozorování mufonu';
 
   @override
-  String get showMufonData => 'Show MUFON data';
+  String get showMufonData => 'Zobrazit data MUFON';
 
   @override
-  String get hideMufonData => 'Hide MUFON data';
+  String get hideMufonData => 'Skrýt data MUFON';
 
   @override
-  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
+  String get showingUfoBeepOnly => 'Zobrazení pouze zpráv UFOBeep';
 
   @override
-  String get showingAllReports =>
-      'Showing all reports including MUFON database';
+  String get showingAllReports => 'Zobrazení všech zpráv včetně databáze MUFON';
 
   @override
-  String get filteredSuffix => 'filtered';
+  String get filteredSuffix => 'filtrované';
+
+  @override
+  String get detailsTitle => 'Podrobnosti';
+
+  @override
+  String get mufonCase => 'MUFON Případ';
+
+  @override
+  String get sightingDate => 'Datum pozorování';
+
+  @override
+  String get databaseEntry => 'Záznam databáze';
+
+  @override
+  String get locationLabel => 'Umístění';
+
+  @override
+  String get distanceLabel => 'Vzdálenost';
+
+  @override
+  String get timeLabel => 'Čas';
+
+  @override
+  String get reportedByLabel => 'Reported by';
+
+  @override
+  String get unknownLocation => 'Neznámé umístění';
+
+  @override
+  String get locationUnknown => 'Umístění není známo';
+
+  @override
+  String get witnessesLabel => 'Svědci';
+
+  @override
+  String witnessesCountMessage(int count) {
+    return '_ _ PH _ 0 _ _ lidé potvrdili toto pozorování';
+  }
+
+  @override
+  String get photoAnalysisTitle => 'Analýza fotografií';
+
+  @override
+  String mediaItemsProcessed(int count) {
+    return 'Analýza: _ _ PH _ 0 _ _ media soubor (y) zpracován';
+  }
+
+  @override
+  String get addMoreMedia => 'Přidat více';
+
+  @override
+  String get addMedia => 'Přidat média';
+
+  @override
+  String get retakePhoto => 'Fotografie znovu';
+
+  @override
+  String get retakeVideo => 'Retake video';
 }

@@ -418,26 +418,26 @@ class AppLocalizationsTr extends AppLocalizations {
       'UFO,UAP,OVNI,aliens,görenler,skywatch,alerts,radar,compass';
 
   @override
-  String get noAlertsFound => 'No matching alerts';
+  String get noAlertsFound => 'Eşleşen uyarılar yok';
 
   @override
   String get alertsFilterHelp =>
-      'Try adjusting your filters to see more results';
+      'Daha fazla sonuç görmek için filtrelerinizi ayarlamaya çalışın';
 
   @override
-  String get verified => 'Verified';
+  String get verified => 'Onaylandı';
 
   @override
-  String get beepOnly => 'beep only';
+  String get beepOnly => 'beep sadece';
 
   @override
-  String get videoOnly => 'video only';
+  String get videoOnly => 'video sadece video';
 
   @override
-  String get imageOnly => 'image only';
+  String get imageOnly => 'sadece görüntü sadece görüntü';
 
   @override
-  String get timeJustNow => 'Just now';
+  String get timeJustNow => 'Sadece şimdi';
 
   @override
   String timeDaysAgo(int count) {
@@ -446,7 +446,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '${count}h önce';
   }
 
   @override
@@ -458,21 +458,80 @@ class AppLocalizationsTr extends AppLocalizations {
   String get loadMoreAlerts => 'Load More Alerts';
 
   @override
-  String get toggleMufonTooltip => 'Toggle MUFON sightings';
+  String get toggleMufonTooltip => 'Toggle MUFON görüşüyor';
 
   @override
   String get showMufonData => 'Show MUFON data';
 
   @override
-  String get hideMufonData => 'Hide MUFON data';
+  String get hideMufonData => 'Hide MUFON verileri';
 
   @override
-  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
+  String get showingUfoBeepOnly => 'Sadece UFOBeep raporlarını göstermek';
 
   @override
   String get showingAllReports =>
-      'Showing all reports including MUFON database';
+      'MUFON veritabanı dahil tüm raporları göstermek';
 
   @override
-  String get filteredSuffix => 'filtered';
+  String get filteredSuffix => 'filtrelenmiş filtre';
+
+  @override
+  String get detailsTitle => 'Detaylar';
+
+  @override
+  String get mufonCase => 'MUFON Vaka Örneği';
+
+  @override
+  String get sightingDate => 'Sighting Date';
+
+  @override
+  String get databaseEntry => 'Veritabanı';
+
+  @override
+  String get locationLabel => 'Konum Location';
+
+  @override
+  String get distanceLabel => 'Mesafe';
+
+  @override
+  String get timeLabel => 'Zaman Zamanı';
+
+  @override
+  String get reportedByLabel => 'Rapora göre';
+
+  @override
+  String get unknownLocation => 'Bilinmeyen Konum';
+
+  @override
+  String get locationUnknown => 'Konum Bilinmeyen';
+
+  @override
+  String get witnessesLabel => 'Tanık Şahitler';
+
+  @override
+  String witnessesCountMessage(int count) {
+    return '$count insanlar bu manzarayı doğruladı';
+  }
+
+  @override
+  String get photoAnalysisTitle => 'Photo Analysis';
+
+  @override
+  String mediaItemsProcessed(int count) {
+    return 'Analiz: $count medya dosyası (s) işlendi';
+  }
+
+  @override
+  String get addMoreMedia =>
+      'Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add';
+
+  @override
+  String get addMedia => 'Media Add Media';
+
+  @override
+  String get retakePhoto => 'Retake Photo';
+
+  @override
+  String get retakeVideo => 'Retake Video';
 }

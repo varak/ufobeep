@@ -125,6 +125,41 @@
   "storeShortDesc": "Anında UFO sizi yakınlaştırıyor. Yakalayın, onaylayın ve gerçek zamanlı sohbet edin.",
   "storeLongDesc": "UFOBeep, birinin yakınlardaki bir UFO bulduğunda gerçek zamanlı uyarılar gönderir. Fotoğraflar ve videolar yakalayın, bir dokunuş, bakış açısı ve mesafe ile görüş ve diğer gök gözlemcileriyle sohbet edin.",
   "keywords": "UFO,UAP,OVNI,aliens,görenler,skywatch,alerts,radar,compass",
+  "noAlertsFound": "Eşleşen uyarılar yok",
+  "alertsFilterHelp": "Daha fazla sonuç görmek için filtrelerinizi ayarlamaya çalışın",
+  "verified": "Onaylandı",
+  "beepOnly": "beep sadece",
+  "videoOnly": "video sadece video",
+  "imageOnly": "sadece görüntü sadece görüntü",
+  "timeJustNow": "Sadece şimdi",
+  "timeDaysAgo": "{count}d ago",
+  "timeHoursAgo": "{count}h önce",
+  "timeMinutesAgo": "{count}m ago",
+  "loadMoreAlerts": "Load More Alerts",
+  "toggleMufonTooltip": "Toggle MUFON görüşüyor",
+  "showMufonData": "Show MUFON data",
+  "hideMufonData": "Hide MUFON verileri",
+  "showingUfoBeepOnly": "Sadece UFOBeep raporlarını göstermek",
+  "showingAllReports": "MUFON veritabanı dahil tüm raporları göstermek",
+  "filteredSuffix": "filtrelenmiş filtre",
+  "detailsTitle": "Detaylar",
+  "mufonCase": "MUFON Vaka Örneği",
+  "sightingDate": "Sighting Date",
+  "databaseEntry": "Veritabanı",
+  "locationLabel": "Konum Location",
+  "distanceLabel": "Mesafe",
+  "timeLabel": "Zaman Zamanı",
+  "reportedByLabel": "Rapora göre",
+  "unknownLocation": "Bilinmeyen Konum",
+  "locationUnknown": "Konum Bilinmeyen",
+  "witnessesLabel": "Tanık Şahitler",
+  "witnessesCountMessage": "{count} insanlar bu manzarayı doğruladı",
+  "photoAnalysisTitle": "Photo Analysis",
+  "mediaItemsProcessed": "Analiz: {count} medya dosyası (s) işlendi",
+  "addMoreMedia": "Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add",
+  "addMedia": "Media Add Media",
+  "retakePhoto": "Retake Photo",
+  "retakeVideo": "Retake Video",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -206,6 +241,46 @@
       "unit": {
         "type": "String",
         "example": "mph"
+      }
+    }
+  },
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
       }
     }
   }

@@ -125,6 +125,41 @@
   "storeShortDesc": "UFO-hälytys. Vangitkaa, vahvistakaa ja jutelkaa reaaliajassa.",
   "storeLongDesc": "Ufopieppi lähettää reaaliaikaisia hälytyksiä, kun joku näkee ufon lähellä. Ota valokuvia ja videoita, vahvista havaintoja hanalla, katso suunta & etäisyys, ja keskustella muiden skywaters.",
   "keywords": "UFO, UAP,OVNI, muukalaiset, nähtävyydet,skykello, hälytys, radar, kompassi",
+  "noAlertsFound": "Ei osumia",
+  "alertsFilterHelp": "Yritä säätää suodattimia nähdäksesi lisää tuloksia",
+  "verified": "Varmennettu",
+  "beepOnly": "vain piip",
+  "videoOnly": "ainoastaan video",
+  "imageOnly": "vain kuva",
+  "timeJustNow": "Juuri nyt",
+  "timeDaysAgo": "_PH_0_d sitten",
+  "timeHoursAgo": "_PH_0_h sitten",
+  "timeMinutesAgo": "_PH_0_m sitten",
+  "loadMoreAlerts": "Lataa lisää hälytyksiä",
+  "toggleMufonTooltip": "Vaihda MUFON- havaintoja",
+  "showMufonData": "Näytä MUFON- tiedot",
+  "hideMufonData": "Piilota MUFON- tiedot",
+  "showingUfoBeepOnly": "Näytetään vain UFOBeepin raportit",
+  "showingAllReports": "Näytetään kaikki raportit mukaan lukien MUFON- tietokanta",
+  "filteredSuffix": "suodatettu",
+  "detailsTitle": "Yksityiskohdat",
+  "mufonCase": "MUFON Asia",
+  "sightingDate": "Näkymispäivä",
+  "databaseEntry": "Tietokannan tietue",
+  "locationLabel": "Sijainti",
+  "distanceLabel": "Etäisyys",
+  "timeLabel": "Aika",
+  "reportedByLabel": "Raportoinut",
+  "unknownLocation": "Tuntematon sijainti",
+  "locationUnknown": "Sijainti tuntematon",
+  "witnessesLabel": "Todistajat",
+  "witnessesCountMessage": "_PH_0_ ihmiset vahvistivat tämän havainnon",
+  "photoAnalysisTitle": "Valokuva-analyysi",
+  "mediaItemsProcessed": "Analyysi: {count} mediatiedosto [s] käsitelty",
+  "addMoreMedia": "Lisää lisää",
+  "addMedia": "Lisää media",
+  "retakePhoto": "Uusi kuva",
+  "retakeVideo": "Palauta video",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -206,6 +241,46 @@
       "unit": {
         "type": "String",
         "example": "mph"
+      }
+    }
+  },
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
       }
     }
   }

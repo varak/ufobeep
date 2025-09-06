@@ -469,4 +469,62 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get filteredSuffix => 'filtered';
+
+  @override
+  String get detailsTitle => 'Details';
+
+  @override
+  String get mufonCase => 'MUFON Case';
+
+  @override
+  String get sightingDate => 'Sighting Date';
+
+  @override
+  String get databaseEntry => 'Database Entry';
+
+  @override
+  String get locationLabel => 'Location';
+
+  @override
+  String get distanceLabel => 'Distance';
+
+  @override
+  String get timeLabel => 'Time';
+
+  @override
+  String get reportedByLabel => 'Reported by';
+
+  @override
+  String get unknownLocation => 'Unknown Location';
+
+  @override
+  String get locationUnknown => 'Location Unknown';
+
+  @override
+  String get witnessesLabel => 'Witnesses';
+
+  @override
+  String witnessesCountMessage(int count) {
+    return '$count people confirmed this sighting';
+  }
+
+  @override
+  String get photoAnalysisTitle => 'Photo Analysis';
+
+  @override
+  String mediaItemsProcessed(int count) {
+    return 'Analysis: $count media file(s) processed';
+  }
+
+  @override
+  String get addMoreMedia => 'Add More';
+
+  @override
+  String get addMedia => 'Add Media';
+
+  @override
+  String get retakePhoto => 'Retake Photo';
+
+  @override
+  String get retakeVideo => 'Retake Video';
 }

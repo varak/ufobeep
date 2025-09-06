@@ -416,61 +416,119 @@ class AppLocalizationsDa extends AppLocalizations {
       'UFO, UAP, OVNI, udlændinge, observationer, skywatch, advarsler, radar, kompas';
 
   @override
-  String get noAlertsFound => 'No matching alerts';
+  String get noAlertsFound => 'Ingen matchende indberetninger';
 
   @override
   String get alertsFilterHelp =>
-      'Try adjusting your filters to see more results';
+      'Prøv at justere dine filtre for at se flere resultater';
 
   @override
-  String get verified => 'Verified';
+  String get verified => 'Verificeret';
 
   @override
-  String get beepOnly => 'beep only';
+  String get beepOnly => 'kun bip';
 
   @override
-  String get videoOnly => 'video only';
+  String get videoOnly => 'kun video';
 
   @override
-  String get imageOnly => 'image only';
+  String get imageOnly => 'kun billede';
 
   @override
-  String get timeJustNow => 'Just now';
+  String get timeJustNow => 'Lige nu';
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return '- For nylig';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '- For længe siden';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return '_ _ PH _ 0 _ m siden';
   }
 
   @override
-  String get loadMoreAlerts => 'Load More Alerts';
+  String get loadMoreAlerts => 'Indlæs flere rapporter';
 
   @override
-  String get toggleMufonTooltip => 'Toggle MUFON sightings';
+  String get toggleMufonTooltip => 'Slå MUFON-observationer til og fra';
 
   @override
-  String get showMufonData => 'Show MUFON data';
+  String get showMufonData => 'Vis MUFON data';
 
   @override
-  String get hideMufonData => 'Hide MUFON data';
+  String get hideMufonData => 'Skjul MUFON data';
 
   @override
-  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
+  String get showingUfoBeepOnly => 'Viser kun UFOBeep rapporter';
 
   @override
   String get showingAllReports =>
-      'Showing all reports including MUFON database';
+      'Viser alle rapporter herunder MUFON database';
 
   @override
-  String get filteredSuffix => 'filtered';
+  String get filteredSuffix => 'filtreret';
+
+  @override
+  String get detailsTitle => 'Detaljer';
+
+  @override
+  String get mufonCase => 'MUFON Sag';
+
+  @override
+  String get sightingDate => 'Observationsdato';
+
+  @override
+  String get databaseEntry => 'Databaseindgang';
+
+  @override
+  String get locationLabel => 'Sted';
+
+  @override
+  String get distanceLabel => 'Afstand';
+
+  @override
+  String get timeLabel => 'Tid';
+
+  @override
+  String get reportedByLabel => 'Indberettet af';
+
+  @override
+  String get unknownLocation => 'Ukendt placering';
+
+  @override
+  String get locationUnknown => 'Sted ukendt';
+
+  @override
+  String get witnessesLabel => 'Vidner';
+
+  @override
+  String witnessesCountMessage(int count) {
+    return '_ _ PH _ 0 _ _ folk bekræftede denne observation';
+  }
+
+  @override
+  String get photoAnalysisTitle => 'Fotoanalyse';
+
+  @override
+  String mediaItemsProcessed(int count) {
+    return 'Analyse: _ _ PH _ 0 _ _ mediefiler behandlet';
+  }
+
+  @override
+  String get addMoreMedia => 'Tilføj mere';
+
+  @override
+  String get addMedia => 'Tilføj medie';
+
+  @override
+  String get retakePhoto => 'Genoptag foto';
+
+  @override
+  String get retakeVideo => 'Genoptag video';
 }

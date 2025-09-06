@@ -125,6 +125,41 @@
   "storeShortDesc": "Omedelbara UFO-varningar nära dig. Fånga, bekräfta och chatta i realtid.",
   "storeLongDesc": "UFOBeep skickar realtidsvarningar när någon upptäcker en UFO i närheten. Fånga foton och videor, bekräfta observationer med en kran, visa riktning och avstånd och chatta med andra skywatchers.",
   "keywords": "UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass",
+  "noAlertsFound": "Inga matchande varningar",
+  "alertsFilterHelp": "Försök att justera dina filter för att se fler resultat",
+  "verified": "Verifierad",
+  "beepOnly": "beep endast",
+  "videoOnly": "video endast",
+  "imageOnly": "bild endast",
+  "timeJustNow": "Just nu",
+  "timeDaysAgo": "{count}d för",
+  "timeHoursAgo": "{count} för",
+  "timeMinutesAgo": "{count} för",
+  "loadMoreAlerts": "Load More Alerts",
+  "toggleMufonTooltip": "Toggle MUFON observationer",
+  "showMufonData": "Visa MUFON-data",
+  "hideMufonData": "Dölj MUFON-data",
+  "showingUfoBeepOnly": "Visa endast UFOBeep-rapporter",
+  "showingAllReports": "Visa alla rapporter inklusive MUFON-databas",
+  "filteredSuffix": "filtrerad",
+  "detailsTitle": "Detaljer",
+  "mufonCase": "Mufonen fall",
+  "sightingDate": "Sighting Date",
+  "databaseEntry": "Databasinträde",
+  "locationLabel": "Plats",
+  "distanceLabel": "Avstånd",
+  "timeLabel": "Tid",
+  "reportedByLabel": "Rapporterad av",
+  "unknownLocation": "Okänd plats",
+  "locationUnknown": "Plats okänd",
+  "witnessesLabel": "Vittnen",
+  "witnessesCountMessage": "{count} människor bekräftade denna observation",
+  "photoAnalysisTitle": "Fotoanalys",
+  "mediaItemsProcessed": "Analys: {count} media file(s) bearbetad",
+  "addMoreMedia": "Lägg till mer",
+  "addMedia": "Lägg till media",
+  "retakePhoto": "Retake Photo",
+  "retakeVideo": "Retake Video",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -206,6 +241,46 @@
       "unit": {
         "type": "String",
         "example": "mph"
+      }
+    }
+  },
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
       }
     }
   }

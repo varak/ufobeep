@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../providers/alerts_provider.dart';
 import '../../theme/app_theme.dart';
+import '../glass_card.dart';
+import '../../l10n/app_localizations.dart';
 
 class AlertDetailsSection extends StatelessWidget {
   const AlertDetailsSection({
@@ -16,29 +18,23 @@ class AlertDetailsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
+    return GlassCard(
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.darkSurface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.darkBorder.withOpacity(0.3)),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Section header
-          const Row(
+          Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.info_outline,
                 color: AppColors.brandPrimary,
                 size: 20,
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(
-                'Details',
-                style: TextStyle(
+                AppLocalizations.of(context).detailsTitle,
+                style: const TextStyle(
                   color: AppColors.brandPrimary,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -67,7 +63,7 @@ class AlertDetailsSection extends StatelessWidget {
             if (alert.enrichment?['mufon_case_number'] != null)
               _buildDetailRow(
                 Icons.numbers,
-                'MUFON Case',
+                AppLocalizations.of(context).mufonCase,
                 '${alert.enrichment!['mufon_case_number']}',
               ),
             
@@ -75,7 +71,7 @@ class AlertDetailsSection extends StatelessWidget {
             if (alert.enrichment?['reported_when'] != null)
               _buildDetailRow(
                 Icons.event,
-                'Sighting Date',
+                AppLocalizations.of(context).sightingDate,
                 alert.enrichment!['reported_when'],
               ),
             
@@ -83,7 +79,7 @@ class AlertDetailsSection extends StatelessWidget {
             if (alert.enrichment?['database_when'] != null)
               _buildDetailRow(
                 Icons.storage,
-                'Database Entry',
+                AppLocalizations.of(context).databaseEntry,
                 alert.enrichment!['database_when'],
               ),
             
@@ -91,7 +87,7 @@ class AlertDetailsSection extends StatelessWidget {
             if (showLocation) ...[
               _buildDetailRow(
                 Icons.location_on,
-                'Location',
+                AppLocalizations.of(context).locationLabel,
                 _getMufonLocationName(alert),
                 subtitle: (alert.locationName != null && alert.locationName!.isNotEmpty && alert.locationName != 'Unknown Location' && alert.latitude != 0.0 && alert.longitude != 0.0)
                     ? '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}'
@@ -100,7 +96,7 @@ class AlertDetailsSection extends StatelessWidget {
               if (alert.distance != null && alert.distance! > 0.0)
                 _buildDetailRow(
                   Icons.straighten,
-                  'Distance',
+                  AppLocalizations.of(context).distanceLabel,
                   '${alert.distance!.toStringAsFixed(1)} km away',
                 ),
             ],
@@ -111,8 +107,8 @@ class AlertDetailsSection extends StatelessWidget {
             // Time info
             _buildDetailRow(
               Icons.access_time,
-              'Time',
-              _formatDateTime(alert.createdAt),
+              AppLocalizations.of(context).timeLabel,
+              _formatDateTime(context, alert.createdAt),
               subtitle: _formatFullDateTime(alert.createdAt),
             ),
             
@@ -120,7 +116,7 @@ class AlertDetailsSection extends StatelessWidget {
             if (alert.reporterUsername != null) 
               _buildDetailRow(
                 Icons.person,
-                'Reported by',
+                AppLocalizations.of(context).reportedByLabel,
                 alert.reporterUsername!,
                 subtitle: null,
               ),
@@ -133,14 +129,14 @@ class AlertDetailsSection extends StatelessWidget {
             if (showLocation) ...[
               _buildDetailRow(
                 Icons.location_on,
-                'Location',
-                '${alert.locationName ?? 'Unknown Location'}',
+                AppLocalizations.of(context).locationLabel,
+                '${alert.locationName ?? AppLocalizations.of(context).unknownLocation}',
                 subtitle: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
               ),
               if (alert.distance != null)
                 _buildDetailRow(
                   Icons.straighten,
-                  'Distance',
+                  AppLocalizations.of(context).distanceLabel,
                   '${alert.distance!.toStringAsFixed(1)} km away',
                 ),
             ],
@@ -165,9 +161,9 @@ class AlertDetailsSection extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Text(
-                      'Witnesses: ',
-                      style: TextStyle(
+                    Text(
+                      '${AppLocalizations.of(context).witnessesLabel}: ',
+                      style: const TextStyle(
                         color: AppColors.textTertiary,
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -204,7 +200,7 @@ class AlertDetailsSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  '${alert.witnessCount} people confirmed this sighting',
+                  AppLocalizations.of(context).witnessesCountMessage(alert.witnessCount),
                   style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 12,
@@ -269,20 +265,20 @@ class AlertDetailsSection extends StatelessWidget {
     );
   }
 
-  String _formatDateTime(DateTime dateTime) {
-    // Ensure both times are in the same timezone (local)
+  String _formatDateTime(BuildContext context, DateTime dateTime) {
+    final l10n = AppLocalizations.of(context);
     final now = DateTime.now();
     final localDateTime = dateTime.toLocal();
     final difference = now.difference(localDateTime);
 
     if (difference.inDays > 0) {
-      return '${difference.inDays}d ago';
+      return l10n.timeDaysAgo(difference.inDays);
     } else if (difference.inHours > 0) {
-      return '${difference.inHours}h ago';
+      return l10n.timeHoursAgo(difference.inHours);
     } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}m ago';
+      return l10n.timeMinutesAgo(difference.inMinutes);
     } else {
-      return 'Just now';
+      return l10n.timeJustNow;
     }
   }
 
@@ -314,6 +310,6 @@ class AlertDetailsSection extends StatelessWidget {
       return '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}';
     }
     
-    return 'Location Unknown';
+    return AppLocalizations.of(context).locationUnknown;
   }
 }

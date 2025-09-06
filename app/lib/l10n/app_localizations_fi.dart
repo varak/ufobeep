@@ -414,61 +414,119 @@ class AppLocalizationsFi extends AppLocalizations {
       'UFO, UAP,OVNI, muukalaiset, nähtävyydet,skykello, hälytys, radar, kompassi';
 
   @override
-  String get noAlertsFound => 'No matching alerts';
+  String get noAlertsFound => 'Ei osumia';
 
   @override
   String get alertsFilterHelp =>
-      'Try adjusting your filters to see more results';
+      'Yritä säätää suodattimia nähdäksesi lisää tuloksia';
 
   @override
-  String get verified => 'Verified';
+  String get verified => 'Varmennettu';
 
   @override
-  String get beepOnly => 'beep only';
+  String get beepOnly => 'vain piip';
 
   @override
-  String get videoOnly => 'video only';
+  String get videoOnly => 'ainoastaan video';
 
   @override
-  String get imageOnly => 'image only';
+  String get imageOnly => 'vain kuva';
 
   @override
-  String get timeJustNow => 'Just now';
+  String get timeJustNow => 'Juuri nyt';
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return '_PH_0_d sitten';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '_PH_0_h sitten';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return '_PH_0_m sitten';
   }
 
   @override
-  String get loadMoreAlerts => 'Load More Alerts';
+  String get loadMoreAlerts => 'Lataa lisää hälytyksiä';
 
   @override
-  String get toggleMufonTooltip => 'Toggle MUFON sightings';
+  String get toggleMufonTooltip => 'Vaihda MUFON- havaintoja';
 
   @override
-  String get showMufonData => 'Show MUFON data';
+  String get showMufonData => 'Näytä MUFON- tiedot';
 
   @override
-  String get hideMufonData => 'Hide MUFON data';
+  String get hideMufonData => 'Piilota MUFON- tiedot';
 
   @override
-  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
+  String get showingUfoBeepOnly => 'Näytetään vain UFOBeepin raportit';
 
   @override
   String get showingAllReports =>
-      'Showing all reports including MUFON database';
+      'Näytetään kaikki raportit mukaan lukien MUFON- tietokanta';
 
   @override
-  String get filteredSuffix => 'filtered';
+  String get filteredSuffix => 'suodatettu';
+
+  @override
+  String get detailsTitle => 'Yksityiskohdat';
+
+  @override
+  String get mufonCase => 'MUFON Asia';
+
+  @override
+  String get sightingDate => 'Näkymispäivä';
+
+  @override
+  String get databaseEntry => 'Tietokannan tietue';
+
+  @override
+  String get locationLabel => 'Sijainti';
+
+  @override
+  String get distanceLabel => 'Etäisyys';
+
+  @override
+  String get timeLabel => 'Aika';
+
+  @override
+  String get reportedByLabel => 'Raportoinut';
+
+  @override
+  String get unknownLocation => 'Tuntematon sijainti';
+
+  @override
+  String get locationUnknown => 'Sijainti tuntematon';
+
+  @override
+  String get witnessesLabel => 'Todistajat';
+
+  @override
+  String witnessesCountMessage(int count) {
+    return '_PH_0_ ihmiset vahvistivat tämän havainnon';
+  }
+
+  @override
+  String get photoAnalysisTitle => 'Valokuva-analyysi';
+
+  @override
+  String mediaItemsProcessed(int count) {
+    return 'Analyysi: $count mediatiedosto [s] käsitelty';
+  }
+
+  @override
+  String get addMoreMedia => 'Lisää lisää';
+
+  @override
+  String get addMedia => 'Lisää media';
+
+  @override
+  String get retakePhoto => 'Uusi kuva';
+
+  @override
+  String get retakeVideo => 'Palauta video';
 }

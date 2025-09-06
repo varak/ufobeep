@@ -21,6 +21,7 @@ import '../../services/api_client.dart';
 import '../../services/ui_feedback.dart';
 import '../../widgets/glass_card.dart';
 import '../../l10n/app_localizations.dart';
+import '../../services/comments_service.dart';
 
 class AlertDetailScreen extends ConsumerStatefulWidget {
   const AlertDetailScreen({super.key, required this.alertId});
@@ -36,11 +37,19 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   bool _isWitnessConfirmed = false;
   bool _isFollowing = false;
   bool _followingLoading = false;
+  final TextEditingController _commentController = TextEditingController();
+  bool _isPostingComment = false;
 
   @override
   void initState() {
     super.initState();
     _loadUserData();
+  }
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadUserData() async {
@@ -93,6 +102,34 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     }
   }
   
+  Future<void> _postInlineComment(String sightingId) async {
+    final text = _commentController.text.trim();
+    if (text.isEmpty || _isPostingComment) return;
+    setState(() { _isPostingComment = true; });
+    try {
+      final service = CommentsService();
+      await service.postComment(sightingId, text);
+      if (mounted) {
+        _commentController.clear();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context).commentPosted), backgroundColor: AppColors.brandPrimary),
+        );
+        // Refresh details to update comment count
+        ref.invalidate(alertByIdProvider(widget.alertId));
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context).errorGeneric), backgroundColor: AppColors.semanticError),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() { _isPostingComment = false; });
+      }
+    }
+  }
+
   Future<void> _checkFollowStatus() async {
     try {
       final response = await ApiClient.dio.get('/alerts/${widget.alertId}/follow');
@@ -700,24 +737,18 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   // These will be modularized later if needed
 
   Widget _buildPhotoAnalysisSection(Alert alert) {
-    return Container(
-      width: double.infinity,
+    return GlassCard(
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.darkSurface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.darkBorder.withOpacity(0.3)),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.photo, color: AppColors.brandPrimary, size: 20),
-              SizedBox(width: 8),
+              const Icon(Icons.photo, color: AppColors.brandPrimary, size: 20),
+              const SizedBox(width: 8),
               Text(
-                'Photo Analysis',
-                style: TextStyle(
+                AppLocalizations.of(context).photoAnalysisTitle,
+                style: const TextStyle(
                   color: AppColors.brandPrimary,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -727,7 +758,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Analysis: ${alert.photoAnalysis!.length} photo${alert.photoAnalysis!.length == 1 ? '' : 's'} processed',
+            AppLocalizations.of(context).mediaItemsProcessed(alert.photoAnalysis!.length),
             style: const TextStyle(color: AppColors.textSecondary, fontSize: 14),
           ),
         ],
@@ -756,7 +787,9 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _isFollowing ? 'Following this alert' : 'Follow for notifications',
+                  _isFollowing 
+                    ? AppLocalizations.of(context).autoFollowEnabled 
+                    : AppLocalizations.of(context).notifications,
                   style: const TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 16,
@@ -766,8 +799,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 const SizedBox(height: 2),
                 Text(
                   _isFollowing 
-                    ? 'You\'ll get notified of new comments'
-                    : 'Get notified when someone comments',
+                    ? AppLocalizations.of(context).newCommentNotification
+                    : AppLocalizations.of(context).enablePushNotifications,
                   style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 14,
@@ -808,13 +841,13 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.chat_bubble_outline, color: AppColors.brandPrimary, size: 20),
-              SizedBox(width: 8),
+              const Icon(Icons.chat_bubble_outline, color: AppColors.brandPrimary, size: 20),
+              const SizedBox(width: 8),
               Text(
-                'Discussion',
-                style: TextStyle(
+                AppLocalizations.of(context).commentsTitle,
+                style: const TextStyle(
                   color: AppColors.brandPrimary,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -823,35 +856,60 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             ],
           ),
           const SizedBox(height: 12),
-          const Text(
-            'Join the conversation about this sighting',
-            style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
-          ),
-          const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton.icon(
-              onPressed: () => _navigateToComments(alert),
-              icon: const Icon(Icons.comment, size: 18),
-              label: Text(
-                alert.commentCount > 0 
-                  ? 'View Comments (${alert.commentCount})'
-                  : 'Add Comment'
+          // Inline comment input
+          TextField(
+            controller: _commentController,
+            maxLines: 3,
+            minLines: 1,
+            style: const TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              hintText: AppLocalizations.of(context).addComment,
+              hintStyle: const TextStyle(color: AppColors.textSecondary),
+              filled: true,
+              fillColor: Colors.white10,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(color: AppColors.darkBorder.withOpacity(0.3)),
               ),
-              style: OutlinedButton.styleFrom(
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(color: AppColors.darkBorder.withOpacity(0.3)),
+              ),
+              focusedBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderSide: BorderSide(color: AppColors.brandPrimary, width: 2),
+              ),
+              contentPadding: const EdgeInsets.all(12),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Align(
+            alignment: Alignment.centerRight,
+            child: ElevatedButton.icon(
+              onPressed: _isPostingComment ? null : () => _postInlineComment(alert.id),
+              icon: _isPostingComment
+                  ? const SizedBox(
+                      width: 16, height: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.brandPrimary),
+                    )
+                  : const Icon(Icons.send, size: 16),
+              label: Text(AppLocalizations.of(context).send),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.darkSurface,
                 foregroundColor: AppColors.brandPrimary,
-                side: const BorderSide(color: AppColors.brandPrimary, width: 1.5),
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                textStyle: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+                side: const BorderSide(color: AppColors.brandPrimary),
               ),
             ),
           ),
+          const SizedBox(height: 8),
+          // Link to full comments view (optional)
+          if (alert.commentCount > 0)
+            TextButton.icon(
+              onPressed: () => _navigateToComments(alert),
+              icon: const Icon(Icons.forum, size: 18, color: AppColors.brandPrimary),
+              label: Text('(${alert.commentCount})'),
+              style: TextButton.styleFrom(foregroundColor: AppColors.brandPrimary),
+            ),
         ],
       ),
     );

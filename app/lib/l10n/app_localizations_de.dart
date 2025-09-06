@@ -418,61 +418,119 @@ class AppLocalizationsDe extends AppLocalizations {
       'UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass';
 
   @override
-  String get noAlertsFound => 'No matching alerts';
+  String get noAlertsFound => 'Keine passenden Alarme';
 
   @override
   String get alertsFilterHelp =>
-      'Try adjusting your filters to see more results';
+      'Versuchen Sie, Ihre Filter anzupassen, um mehr Ergebnisse zu sehen';
 
   @override
-  String get verified => 'Verified';
+  String get verified => 'Verifiziert';
 
   @override
-  String get beepOnly => 'beep only';
+  String get beepOnly => 'nur noch';
 
   @override
-  String get videoOnly => 'video only';
+  String get videoOnly => 'nur';
 
   @override
-  String get imageOnly => 'image only';
+  String get imageOnly => 'nur';
 
   @override
-  String get timeJustNow => 'Just now';
+  String get timeJustNow => 'Jetzt';
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return '${count}d vor';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '__PH_0_h vor';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return '__PH_0_m vor';
   }
 
   @override
-  String get loadMoreAlerts => 'Load More Alerts';
+  String get loadMoreAlerts => 'Mehr Informationen';
 
   @override
-  String get toggleMufonTooltip => 'Toggle MUFON sightings';
+  String get toggleMufonTooltip => 'Toggle MUFON Visier';
 
   @override
-  String get showMufonData => 'Show MUFON data';
+  String get showMufonData => 'MUFON Daten anzeigen';
 
   @override
-  String get hideMufonData => 'Hide MUFON data';
+  String get hideMufonData => 'MUFON Daten verbergen';
 
   @override
-  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
+  String get showingUfoBeepOnly => 'Nur UFOBeep-Berichte anzeigen';
 
   @override
   String get showingAllReports =>
-      'Showing all reports including MUFON database';
+      'Alle Berichte einschließlich MUFON-Datenbank anzeigen';
 
   @override
-  String get filteredSuffix => 'filtered';
+  String get filteredSuffix => 'filtriert';
+
+  @override
+  String get detailsTitle => 'Details';
+
+  @override
+  String get mufonCase => 'MUFON Rechtssache';
+
+  @override
+  String get sightingDate => 'Sighting Date';
+
+  @override
+  String get databaseEntry => 'Datenbankeintrag';
+
+  @override
+  String get locationLabel => 'Standort';
+
+  @override
+  String get distanceLabel => 'Entfernung';
+
+  @override
+  String get timeLabel => 'Zeit';
+
+  @override
+  String get reportedByLabel => 'Bericht';
+
+  @override
+  String get unknownLocation => 'Unbekannte Lage';
+
+  @override
+  String get locationUnknown => 'Ort Unbekannt';
+
+  @override
+  String get witnessesLabel => 'Zeugen';
+
+  @override
+  String witnessesCountMessage(int count) {
+    return '$count Personen haben diese Sichtweise bestätigt';
+  }
+
+  @override
+  String get photoAnalysisTitle => 'Photoanalyse';
+
+  @override
+  String mediaItemsProcessed(int count) {
+    return 'Analyse: __PH_0_ Mediendatei(en) verarbeitet';
+  }
+
+  @override
+  String get addMoreMedia => 'Mehr erfahren';
+
+  @override
+  String get addMedia => 'Medien hinzufügen';
+
+  @override
+  String get retakePhoto => 'Retake Photo';
+
+  @override
+  String get retakeVideo => 'Retake Video';
 }

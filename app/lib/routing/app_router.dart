@@ -158,7 +158,7 @@ GoRouter appRouter(AppRouterRef ref) {
                     name: 'alert-comments',
                     builder: (context, state) {
                       final alertId = state.pathParameters['id']!;
-                      final alertTitle = state.uri.queryParameters['title'] ?? 'UFO Sighting';
+                      final alertTitle = state.uri.queryParameters['title'] ?? AppLocalizations.of(context).alertDetailTitle;
                       return CommentsScreen(
                         sightingId: alertId,
                         alertTitle: alertTitle,

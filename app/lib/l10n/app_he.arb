@@ -125,6 +125,41 @@
   "storeShortDesc": "אזהרות עב\"מים מיידיות קרוב אליך. לתפוס, לאשר ולשוחח בזמן אמת.",
   "storeLongDesc": "עב\"ם שולח התראות בזמן אמת כאשר מישהו ממקם עב\"מ קרוב. ללכוד תמונות וסרטונים, לאשר מראות עם ברז, כיוון נוף ומרחק, וצ'אט עם צופים אחרים.",
   "keywords": "עב\"מים,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass",
+  "noAlertsFound": "אין אזהרות",
+  "alertsFilterHelp": "נסה להתאים את המסננים שלך כדי לראות תוצאות נוספות",
+  "verified": "מאומת",
+  "beepOnly": "להיות רק",
+  "videoOnly": "וידאו רק",
+  "imageOnly": "תמונה רק",
+  "timeJustNow": "רק עכשיו",
+  "timeDaysAgo": "PH_0____D_ ago",
+  "timeHoursAgo": "PH_0_h ago",
+  "timeMinutesAgo": "PH_0__m ago",
+  "loadMoreAlerts": "עוד התראות",
+  "toggleMufonTooltip": "משקפי MUFON",
+  "showMufonData": "מידע על MUFON",
+  "hideMufonData": "מידע על MUFON",
+  "showingUfoBeepOnly": "מציג רק דוחות עב\"מ",
+  "showingAllReports": "הצג את כל הדיווחים כולל MUFON",
+  "filteredSuffix": "סינון",
+  "detailsTitle": "פרטים",
+  "mufonCase": "MUFON מקרה",
+  "sightingDate": "תאריך יציאה",
+  "databaseEntry": "מסד נתונים כניסה",
+  "locationLabel": "מיקום Location",
+  "distanceLabel": "מרחק",
+  "timeLabel": "הזמן",
+  "reportedByLabel": "דיווח על",
+  "unknownLocation": "מיקום לא ידוע",
+  "locationUnknown": "מיקום לא ידוע",
+  "witnessesLabel": "עדים",
+  "witnessesCountMessage": "_PH_0___ אנשים אישרו את המראה הזה",
+  "photoAnalysisTitle": "Photo Analysis",
+  "mediaItemsProcessed": "ניתוח:_PH_0____קובץ מדיה(s) מעובד",
+  "addMoreMedia": "הוסף עוד",
+  "addMedia": "הוסף",
+  "retakePhoto": "Retake Photo",
+  "retakeVideo": "Retake וידאו",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -206,6 +241,46 @@
       "unit": {
         "type": "String",
         "example": "mph"
+      }
+    }
+  },
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
       }
     }
   }

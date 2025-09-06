@@ -405,61 +405,117 @@ class AppLocalizationsJa extends AppLocalizations {
   String get keywords => 'UFO、UAP、OVNI、aliens、視線、skywatch、alerts、レーダー、compass';
 
   @override
-  String get noAlertsFound => 'No matching alerts';
+  String get noAlertsFound => 'マッチングアラートなし';
 
   @override
-  String get alertsFilterHelp =>
-      'Try adjusting your filters to see more results';
+  String get alertsFilterHelp => 'フィルターを調整して、より多くの結果を見る';
 
   @override
-  String get verified => 'Verified';
+  String get verified => 'プロフィール';
 
   @override
-  String get beepOnly => 'beep only';
+  String get beepOnly => 'ビープのみ';
 
   @override
-  String get videoOnly => 'video only';
+  String get videoOnly => 'ビデオのみ';
 
   @override
-  String get imageOnly => 'image only';
+  String get imageOnly => '画像のみ';
 
   @override
-  String get timeJustNow => 'Just now';
+  String get timeJustNow => '今すぐ登録';
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return '__PH_0_d 前に';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '__PH_0_h 前に';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return '__PH_0_m 前に';
   }
 
   @override
-  String get loadMoreAlerts => 'Load More Alerts';
+  String get loadMoreAlerts => 'より多くのアラートをロードする';
 
   @override
-  String get toggleMufonTooltip => 'Toggle MUFON sightings';
+  String get toggleMufonTooltip => 'MUFONの視線をトグル';
 
   @override
-  String get showMufonData => 'Show MUFON data';
+  String get showMufonData => 'MUFONデータを表示する';
 
   @override
-  String get hideMufonData => 'Hide MUFON data';
+  String get hideMufonData => 'MUFONデータを隠す';
 
   @override
-  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
+  String get showingUfoBeepOnly => 'UFOBeepレポートのみを表示する';
 
   @override
-  String get showingAllReports =>
-      'Showing all reports including MUFON database';
+  String get showingAllReports => 'MUFONデータベースを含むすべてのレポートを表示';
 
   @override
-  String get filteredSuffix => 'filtered';
+  String get filteredSuffix => 'フィルター';
+
+  @override
+  String get detailsTitle => 'ニュース';
+
+  @override
+  String get mufonCase => 'MUFONについて 導入事例';
+
+  @override
+  String get sightingDate => '予定日';
+
+  @override
+  String get databaseEntry => 'データベースのエントリ';
+
+  @override
+  String get locationLabel => 'アクセス';
+
+  @override
+  String get distanceLabel => 'アクセス';
+
+  @override
+  String get timeLabel => 'タイムタイム';
+
+  @override
+  String get reportedByLabel => 'レポート';
+
+  @override
+  String get unknownLocation => '未知の場所';
+
+  @override
+  String get locationUnknown => '所在地 不明';
+
+  @override
+  String get witnessesLabel => 'ウィッチネス';
+
+  @override
+  String witnessesCountMessage(int count) {
+    return '$count 人々はこの視線を確認しました';
+  }
+
+  @override
+  String get photoAnalysisTitle => 'フォト分析';
+
+  @override
+  String mediaItemsProcessed(int count) {
+    return '解析: $count 処理されたメディアファイル';
+  }
+
+  @override
+  String get addMoreMedia => '詳しくはこちら';
+
+  @override
+  String get addMedia => 'メディアの追加';
+
+  @override
+  String get retakePhoto => '写真を撮る';
+
+  @override
+  String get retakeVideo => 'Retake ビデオ';
 }

@@ -137,7 +137,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final username = user.username!; // Always present - auto-generated or user-set
     final email = user.email; // Might be null for SMS-only users
     
-    return Container(
+    return GlassCard(
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
@@ -226,12 +226,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ),
         const SizedBox(height: 16),
         
-        Container(
-          decoration: BoxDecoration(
-            color: AppColors.darkSurface,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.darkBorder.withOpacity(0.5)),
-          ),
+        GlassCard(
           child: Column(
             children: [
               _buildSimpleSettingItem(
@@ -284,12 +279,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         const SizedBox(height: 16),
         
         // Quiet Hours Toggle
-        Container(
-          decoration: BoxDecoration(
-            color: AppColors.darkSurface,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.darkBorder.withOpacity(0.5)),
-          ),
+        GlassCard(
           child: Column(
             children: [
               _buildNavItemWithSubtitle(
@@ -334,12 +324,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.darkSurface,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.darkBorder.withOpacity(0.5)),
-              ),
+            GlassCard(
               child: Column(
                 children: permissions.map((permission) {
                   return FutureBuilder<PermissionStatus>(
@@ -483,13 +468,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return Column(
       children: [
         const SizedBox(height: 16),
-        Container(
+        GlassCard(
           padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: AppColors.darkSurface,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
-          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

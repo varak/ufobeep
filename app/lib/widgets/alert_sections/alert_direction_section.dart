@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import '../../providers/alerts_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../services/permission_service.dart';
+import '../glass_card.dart';
 import '../../l10n/app_localizations.dart';
 
 class AlertDirectionSection extends StatelessWidget {
@@ -20,14 +21,8 @@ class AlertDirectionSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
+    return GlassCard(
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.darkSurface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.darkBorder.withOpacity(0.3)),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
