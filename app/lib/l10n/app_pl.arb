@@ -1,43 +1,130 @@
 {
-  "@@locale": "pl",
+  "@@locale": "en",
   "appName": "UFOBeep",
   "ok": "OK",
-  "cancel": "Cancel",
-  "close": "Close",
-  "save": "Save",
-  "delete": "Delete",
-  "edit": "Edit",
+  "cancel": "Anuluj",
+  "close": "Zamknij",
+  "save": "Zapisz",
+  "delete": "Usuń",
+  "edit": "Edycja",
   "retry": "Retry",
-  "yes": "Yes",
-  "no": "No",
-  "back": "Back",
-  "next": "Next",
-  "done": "Done",
-  "loading": "Loading…",
-  "processing": "Processing…",
-  "errorGeneric": "Something went wrong.",
-  "networkError": "Network error. Check your connection.",
-  "permissionsRequired": "Permissions required",
-  "learnMore": "Learn more",
-  "welcomeTitle": "Welcome to UFOBeep",
-  "welcomeSubtitle": "Real-time UFO alerts near you",
-  "signIn": "Sign in",
-  "signOut": "Sign out",
-  "continueAsGuest": "Continue as guest",
-  "enterUsername": "Enter a username",
-  "username": "Username",
-  "usernameUpdated": "Username updated",
-  "profile": "Profile",
-  "settings": "Settings",
-  "tabAlerts": "Alerts",
+  "yes": "Tak",
+  "no": "Nie",
+  "back": "Tył",
+  "next": "Następny",
+  "done": "Gotowe",
+  "loading": "Ładowanie..",
+  "processing": "Przetwarzanie..",
+  "errorGeneric": "Coś poszło nie tak.",
+  "networkError": "Błąd sieci. Sprawdź połączenie.",
+  "permissionsRequired": "Wymagane uprawnienia",
+  "learnMore": "Więcej informacji",
+  "welcomeTitle": "Witamy w UFOBeep",
+  "welcomeSubtitle": "Real- time UFO alerts near you",
+  "signIn": "Podpisz",
+  "signOut": "Podpisz",
+  "continueAsGuest": "Kontynuuj jako gość",
+  "enterUsername": "Podaj nazwę użytkownika",
+  "username": "Nazwa użytkownika",
+  "usernameUpdated": "Aktualizacja nazwy użytkownika",
+  "profile": "Profil",
+  "settings": "Ustawienia",
+  "tabAlerts": "Wpisy",
   "tabBeep": "Beep",
-  "tabChat": "Chat",
-  "tabMap": "Map",
-  "tabSettings": "Settings",
-  "alertsTitle": "Nearby Alerts",
-  "noAlerts": "No alerts nearby yet.",
-  "pullToRefresh": "Pull to refresh",
-  "alertDistance": "{distance} away",
+  "tabChat": "Rozmowa",
+  "tabMap": "Mapa",
+  "tabSettings": "Ustawienia",
+  "alertsTitle": "Wpisy w pobliżu",
+  "noAlerts": "Żadnych alarmów w pobliżu.",
+  "pullToRefresh": "Pociągnij, aby odświeżyć",
+  "alertDistance": "_ _ PH _ 0 _ _ _ daleko",
+  "alertDirection": "Położenie _ _ PH _ 0 _ _ °",
+  "viewAlert": "Pokaż wpis",
+  "viewOnMap": "Zobacz na mapie",
+  "iSeeItToo": "Ja też to widzę",
+  "confirmWitnessed": "Potwierdzić, że był pan świadkiem?",
+  "witnessConfirmed": "Dzięki - twoje potwierdzenie zostało wysłane.",
+  "createBeepTitle": "Wyślij sygnał",
+  "beepExplain": "Uchwyć to, co widzisz i zaalarmuj pobliskich obserwatorów.",
+  "capturePhoto": "Przechwytywanie zdjęć",
+  "captureVideo": "Przechwytywanie wideo",
+  "pickFromGallery": "Wybierz z galerii",
+  "descriptionHint": "Opisz to, co widzisz na niebie..",
+  "submitBeep": "Wyślij Beep",
+  "beepSent": "Beep wysłany",
+  "uploadingMedia": "Wysyłanie mediów..",
+  "includeLocation": "Dołącz lokalizację",
+  "includeTimestamp": "Dołącz znacznik czasu",
+  "beepFailed": "Nie udało się wysłać Beepa.",
+  "mediaProcessing": "Przetwarzanie mediów..",
+  "cameraPermissionTitle": "Wymagany dostęp do kamery",
+  "cameraPermissionBody": "Dostęp do kamery, aby uchwycić UFO zdjęcia i filmy.",
+  "locationPermissionTitle": "Wymagany dostęp do lokalizacji",
+  "locationPermissionBody": "Używamy Twojej lokalizacji do wysyłania i odbierania pobliskich alarmów.",
+  "microphonePermissionTitle": "Potrzebny dostęp do mikrofonu",
+  "microphonePermissionBody": "Dostęp do mikrofonu Granta do nagrywania wideo z audio.",
+  "openSettings": "Otwórz ustawienia",
+  "alertDetailTitle": "Podglądanie szczegółów",
+  "reportedBy": "Zgłoszony przez _ _ PH _ 0 _ _",
+  "reportedAt": "Zgłoszone _ _ PH _ 0 _ _",
+  "distanceAway": "_ _ PH _ 0 _ _ _ daleko",
+  "bearingToObject": "Nakładanie na obiekt: _ _ PH _ 0 _ _ °",
+  "openCompass": "Otworzyć kompas",
+  "openAR": "Otworzyć nakładkę AR",
+  "openChat": "Otwórz czat",
+  "commentsTitle": "Uwagi",
+  "addComment": "Dodaj komentarz..",
+  "send": "Wyślij",
+  "commentPosted": "Komentarz opublikowany",
+  "autoFollowEnabled": "Teraz podążasz za tym alarmem.",
+  "noCommentsYet": "Jeszcze żadnych komentarzy. Bądź pierwszy!",
+  "newCommentNotification": "Nowy komentarz na temat obserwacji, którą śledzisz.",
+  "mapTitle": "Mapa na żywo",
+  "compassTitle": "Kompas",
+  "compassSettings": "Ustawienia kompasu",
+  "compassMode": "Tryb kompasu",
+  "compassStandardMode": "Tryb standardowy",
+  "compassPilotMode": "Tryb pilota",
+  "compassStandardDescription": "Nagłówek i nawigacja",
+  "compassPilotDescription": "Zaawansowana nawigacja z ETA i wektoring",
+  "pointingTo": "Wskazanie _ _ PH _ 0 _ _",
+  "calibratingCompass": "Kalibracyjny kompas..",
+  "openAROverlay": "Otworzyć nakładkę AR",
+  "pushTitleAlertNearby": "Alarm UFO w pobliżu ciebie",
+  "pushBodyAlertNearby": "Zgłoszono nowe spostrzeżenie _ _ PH _ 0 _ _.",
+  "pushTitleComment": "Nowy komentarz",
+  "pushBodyComment": "Ktoś skomentował twoją obserwację.",
+  "pushTitleWitness": "Potwierdzenie świadków",
+  "pushBodyWitness": "Użytkownik potwierdził, że widzi ten sam obiekt.",
+  "weather": "Pogoda",
+  "cloudCover": "Pokrywa chmurowa: _ _ PH _ 0 _ _%",
+  "wind": "Wiatr: _ _ PH _ 0 _ _ _ _ PH _ 1 _ _",
+  "nearbyAircraft": "Pobliskie statki powietrzne",
+  "noAircraft": "Brak samolotów w pobliżu",
+  "loadingContext": "Wczytywanie kontekstu środowiskowego..",
+  "settingsTitle": "Ustawienia",
+  "notifications": "Powiadomienia",
+  "enablePushNotifications": "Włącz powiadomienia push",
+  "quietHours": "Godziny ciszy",
+  "quietHoursDesc": "Alarmy ciszy między wybranymi godzinami.",
+  "dndMode": "Nie przeszkadzać",
+  "dndUntil": "Nie należy przeszkadzać do czasu",
+  "language": "Język",
+  "chooseLanguage": "Wybierz język",
+  "units": "Jednostki",
+  "unitsImperial": "Imperial (mi, mph)",
+  "unitsMetric": "Metric (km, km / h)",
+  "privacyPolicy": "Polityka prywatności",
+  "termsOfUse": "Warunki korzystania",
+  "errorNoLocation": "Lokalizacja niedostępna. Spróbuj ponownie na zewnątrz z czystym widokiem na niebo.",
+  "errorNoCamera": "Kamera niedostępna na tym urządzeniu.",
+  "errorUploadFailed": "Wysyłanie nie powiodło się. Proszę spróbować jeszcze raz.",
+  "errorPermissionDenied": "Odmawiam.",
+  "errorInvalidUsername": "Ta nazwa użytkownika nie jest dostępna.",
+  "nothingToShow": "Jeszcze nic do pokazania.",
+  "storeShortDesc": "Natychmiastowe alarmy UFO. Złapać, potwierdzić i porozmawiać w czasie rzeczywistym.",
+  "storeLongDesc": "UFOBeep wysyła ostrzeżenia w czasie rzeczywistym, gdy ktoś widzi UFO w pobliżu. Przechwytywanie zdjęć i filmów wideo, potwierdzanie widoków za pomocą kranu, wyświetlanie kierunku i odległości oraz czat z innymi obserwatorami.",
+  "keywords": "UFO, UAP, OVNI, kosmici, obserwacje, zegarki, alarmy, radar, kompas",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +133,6 @@
       }
     }
   },
-  "alertDirection": "Bearing {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -55,33 +141,6 @@
       }
     }
   },
-  "viewAlert": "View alert",
-  "viewOnMap": "View on map",
-  "iSeeItToo": "I see it too",
-  "confirmWitnessed": "Confirm you witnessed this sighting?",
-  "witnessConfirmed": "Thanks — your confirmation was posted.",
-  "createBeepTitle": "Send a Beep",
-  "beepExplain": "Capture what you see and alert nearby watchers.",
-  "capturePhoto": "Capture photo",
-  "captureVideo": "Capture video",
-  "pickFromGallery": "Choose from gallery",
-  "descriptionHint": "Describe what you're seeing in the sky…",
-  "submitBeep": "Send Beep",
-  "beepSent": "Beep sent",
-  "uploadingMedia": "Uploading media…",
-  "includeLocation": "Include location",
-  "includeTimestamp": "Include timestamp",
-  "beepFailed": "Failed to send Beep.",
-  "mediaProcessing": "Processing media…",
-  "cameraPermissionTitle": "Camera access needed",
-  "cameraPermissionBody": "Grant camera access to capture UFO photos and videos.",
-  "locationPermissionTitle": "Location access needed",
-  "locationPermissionBody": "We use your location to send and receive nearby alerts.",
-  "microphonePermissionTitle": "Microphone access needed",
-  "microphonePermissionBody": "Grant microphone access for video capture with audio.",
-  "openSettings": "Open settings",
-  "alertDetailTitle": "Sighting Details",
-  "reportedBy": "Reported by {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -90,7 +149,6 @@
       }
     }
   },
-  "reportedAt": "Reported {timeAgo}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -99,7 +157,6 @@
       }
     }
   },
-  "distanceAway": "{distance} away",
   "@distanceAway": {
     "placeholders": {
       "distance": {
@@ -108,7 +165,6 @@
       }
     }
   },
-  "bearingToObject": "Bearing to object: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -117,25 +173,6 @@
       }
     }
   },
-  "openCompass": "Open compass",
-  "openAR": "Open AR overlay",
-  "openChat": "Open chat",
-  "commentsTitle": "Comments",
-  "addComment": "Add a comment…",
-  "send": "Send",
-  "commentPosted": "Comment posted",
-  "autoFollowEnabled": "You’re now following this alert.",
-  "noCommentsYet": "No comments yet. Be the first!",
-  "newCommentNotification": "New comment on a sighting you follow.",
-  "mapTitle": "Live Map",
-  "compassTitle": "Compass",
-  "compassSettings": "Compass Settings",
-  "compassMode": "Compass Mode",
-  "compassStandardMode": "Standard Mode",
-  "compassPilotMode": "Pilot Mode",
-  "compassStandardDescription": "Basic heading and navigation",
-  "compassPilotDescription": "Advanced navigation with ETA and vectoring",
-  "pointingTo": "Pointing to {direction}",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -144,10 +181,6 @@
       }
     }
   },
-  "calibratingCompass": "Calibrating compass…",
-  "openAROverlay": "Open AR overlay",
-  "pushTitleAlertNearby": "UFO alert near you",
-  "pushBodyAlertNearby": "A new sighting was reported {distance} away.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -156,12 +189,6 @@
       }
     }
   },
-  "pushTitleComment": "New comment",
-  "pushBodyComment": "Someone commented on a sighting you follow.",
-  "pushTitleWitness": "Witness confirmation",
-  "pushBodyWitness": "A user confirmed they see the same object.",
-  "weather": "Weather",
-  "cloudCover": "Cloud cover: {percent}%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -170,7 +197,6 @@
       }
     }
   },
-  "wind": "Wind: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -182,31 +208,5 @@
         "example": "mph"
       }
     }
-  },
-  "nearbyAircraft": "Nearby aircraft",
-  "noAircraft": "No aircraft nearby",
-  "loadingContext": "Loading environmental context…",
-  "settingsTitle": "Settings",
-  "notifications": "Notifications",
-  "enablePushNotifications": "Enable push notifications",
-  "quietHours": "Quiet hours",
-  "quietHoursDesc": "Silence alerts between selected hours.",
-  "dndMode": "Do Not Disturb",
-  "dndUntil": "Do not disturb until",
-  "language": "Language",
-  "chooseLanguage": "Choose language",
-  "units": "Units",
-  "unitsImperial": "Imperial (mi, mph)",
-  "unitsMetric": "Metric (km, km/h)",
-  "privacyPolicy": "Privacy Policy",
-  "termsOfUse": "Terms of Use",
-  "errorNoLocation": "Location unavailable. Try again outside with clear sky view.",
-  "errorNoCamera": "Camera unavailable on this device.",
-  "errorUploadFailed": "Upload failed. Please try again.",
-  "errorPermissionDenied": "Permission denied.",
-  "errorInvalidUsername": "That username isn’t available.",
-  "nothingToShow": "Nothing to show yet.",
-  "storeShortDesc": "Instant UFO alerts near you. Capture, confirm, and chat in real time.",
-  "storeLongDesc": "UFOBeep sends real-time alerts when someone spots a UFO nearby. Capture photos and videos, confirm sightings with a tap, view direction & distance, and chat with fellow skywatchers.",
-  "keywords": "UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass"
+  }
 }
