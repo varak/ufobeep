@@ -12,7 +12,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get appName => 'UFOBeep';
 
   @override
-  String get ok => 'OK';
+  String get ok => 'TAMAM TAMAM';
 
   @override
   String get cancel => 'Cancel';
@@ -21,7 +21,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get close => 'Close';
 
   @override
-  String get save => 'Save';
+  String get save => 'Kaydet';
 
   @override
   String get delete => 'Delete';
@@ -33,70 +33,70 @@ class AppLocalizationsTr extends AppLocalizations {
   String get retry => 'Retry';
 
   @override
-  String get yes => 'Yes';
+  String get yes => 'Evet';
 
   @override
-  String get no => 'No';
+  String get no => 'Hayır hayır hayır';
 
   @override
-  String get back => 'Back';
+  String get back => 'Geri dön';
 
   @override
-  String get next => 'Next';
+  String get next => 'Sonraki';
 
   @override
   String get done => 'Done';
 
   @override
-  String get loading => 'Loading…';
+  String get loading => 'Yükleniyor..';
 
   @override
-  String get processing => 'Processing…';
+  String get processing => 'İşleme..';
 
   @override
-  String get errorGeneric => 'Something went wrong.';
+  String get errorGeneric => 'Bir şey yanlış gitti.';
 
   @override
-  String get networkError => 'Network error. Check your connection.';
+  String get networkError => 'Ağ hatası. bağlantınızı kontrol edin.';
 
   @override
-  String get permissionsRequired => 'Permissions required';
+  String get permissionsRequired => 'İzinler gerekli';
 
   @override
-  String get learnMore => 'Learn more';
+  String get learnMore => 'Daha fazlasını öğrenin';
 
   @override
-  String get welcomeTitle => 'Welcome to UFOBeep';
+  String get welcomeTitle => 'UFOBeep\'e hoş geldiniz';
 
   @override
-  String get welcomeSubtitle => 'Real-time UFO alerts near you';
+  String get welcomeSubtitle => 'Gerçek zamanlı UFO, size yakın uyarılar';
 
   @override
-  String get signIn => 'Sign in';
+  String get signIn => 'Sign in Sign in';
 
   @override
   String get signOut => 'Sign out';
 
   @override
-  String get continueAsGuest => 'Continue as guest';
+  String get continueAsGuest => 'Misafir olarak devam et';
 
   @override
-  String get enterUsername => 'Enter a username';
+  String get enterUsername => 'Bir kullanıcı adı girin';
 
   @override
   String get username => 'Username';
 
   @override
-  String get usernameUpdated => 'Username updated';
+  String get usernameUpdated => 'Username güncellendi';
 
   @override
-  String get profile => 'Profile';
+  String get profile => 'Profil Profili';
 
   @override
-  String get settings => 'Settings';
+  String get settings => 'Ayarlar';
 
   @override
-  String get tabAlerts => 'Alerts';
+  String get tabAlerts => 'Uyarılar';
 
   @override
   String get tabBeep => 'Beep';
@@ -108,16 +108,16 @@ class AppLocalizationsTr extends AppLocalizations {
   String get tabMap => 'Map';
 
   @override
-  String get tabSettings => 'Settings';
+  String get tabSettings => 'Ayarlar';
 
   @override
   String get alertsTitle => 'Nearby Alerts';
 
   @override
-  String get noAlerts => 'No alerts nearby yet.';
+  String get noAlerts => 'Henüz yakınlarda uyarı yok.';
 
   @override
-  String get pullToRefresh => 'Pull to refresh';
+  String get pullToRefresh => 'Yeniden yenilemek için';
 
   @override
   String alertDistance(String distance) {
@@ -126,93 +126,95 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String alertDirection(int bearing) {
-    return 'Bearing $bearing°';
+    return 'Page $bearing°';
   }
 
   @override
-  String get viewAlert => 'View alert';
+  String get viewAlert => 'View uyarı';
 
   @override
-  String get viewOnMap => 'View on map';
+  String get viewOnMap => 'Haritada görüntüle';
 
   @override
-  String get iSeeItToo => 'I see it too';
+  String get iSeeItToo => 'Onu da görüyorum';
 
   @override
-  String get confirmWitnessed => 'Confirm you witnessed this sighting?';
+  String get confirmWitnessed => 'Bu görüşe tanık oldunuz mu?';
 
   @override
-  String get witnessConfirmed => 'Thanks — your confirmation was posted.';
+  String get witnessConfirmed => 'Teşekkürler - onayınız yayınlandı.';
 
   @override
-  String get createBeepTitle => 'Send a Beep';
+  String get createBeepTitle => 'Bir Beep gönder';
 
   @override
-  String get beepExplain => 'Capture what you see and alert nearby watchers.';
+  String get beepExplain =>
+      'Yakındaki bekçileri gördüğünüzü ve uyarmayı yakalayın.';
 
   @override
-  String get capturePhoto => 'Capture photo';
+  String get capturePhoto => 'Yakalanan fotoğraf';
 
   @override
-  String get captureVideo => 'Capture video';
+  String get captureVideo => 'Yakalanan video';
 
   @override
-  String get pickFromGallery => 'Choose from gallery';
+  String get pickFromGallery => 'Galeriden seçin';
 
   @override
-  String get descriptionHint => 'Describe what you\'re seeing in the sky…';
+  String get descriptionHint => 'Gökyüzünde ne gördüğünü açıklayın..';
 
   @override
-  String get submitBeep => 'Send Beep';
+  String get submitBeep => 'Gönder';
 
   @override
   String get beepSent => 'Beep sent';
 
   @override
-  String get uploadingMedia => 'Uploading media…';
+  String get uploadingMedia => 'Medyayı yüklemek..';
 
   @override
-  String get includeLocation => 'Include location';
+  String get includeLocation => 'Site Ekle';
 
   @override
-  String get includeTimestamp => 'Include timestamp';
+  String get includeTimestamp => 'Zamanları ekleyin';
 
   @override
-  String get beepFailed => 'Failed to send Beep.';
+  String get beepFailed => 'Beep göndermeye başarısız oldu.';
 
   @override
-  String get mediaProcessing => 'Processing media…';
+  String get mediaProcessing => 'İşleme medyası..';
 
   @override
-  String get cameraPermissionTitle => 'Camera access needed';
+  String get cameraPermissionTitle =>
+      'Camera access needed needed needed needed';
 
   @override
   String get cameraPermissionBody =>
-      'Grant camera access to capture UFO photos and videos.';
+      'UFO fotoğraf ve videoları yakalamak için kamera erişimi.';
 
   @override
-  String get locationPermissionTitle => 'Location access needed';
+  String get locationPermissionTitle => 'Konum access needed needed needed';
 
   @override
   String get locationPermissionBody =>
-      'We use your location to send and receive nearby alerts.';
+      'Konumunuzu yakındaki uyarıları göndermek ve almak için kullanıyoruz.';
 
   @override
-  String get microphonePermissionTitle => 'Microphone access needed';
+  String get microphonePermissionTitle => 'Mikrophone erişim gerekli gerekli';
 
   @override
   String get microphonePermissionBody =>
-      'Grant microphone access for video capture with audio.';
+      'Video için mikrofon erişimi ses ile yakalamak için.';
 
   @override
-  String get openSettings => 'Open settings';
+  String get openSettings => 'Açık ayarlar';
 
   @override
   String get alertDetailTitle => 'Sighting Details';
 
   @override
   String reportedBy(String username) {
-    return 'Reported by $username';
+    return '$username';
   }
 
   @override
@@ -227,7 +229,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return 'Bearing to object: $bearing°';
+    return 'Nesneye bakın: $bearing°';
   }
 
   @override
@@ -237,177 +239,181 @@ class AppLocalizationsTr extends AppLocalizations {
   String get openAR => 'Open AR overlay';
 
   @override
-  String get openChat => 'Open chat';
+  String get openChat => 'Açık sohbet';
 
   @override
-  String get commentsTitle => 'Comments';
+  String get commentsTitle => 'Yorumlar';
 
   @override
-  String get addComment => 'Add a comment…';
+  String get addComment => 'Yorum ekleyin..';
 
   @override
-  String get send => 'Send';
+  String get send => 'Send Send Send Gönder';
 
   @override
-  String get commentPosted => 'Comment posted';
+  String get commentPosted => 'Yorum yayınlandı';
 
   @override
-  String get autoFollowEnabled => 'You’re now following this alert.';
+  String get autoFollowEnabled => 'Şimdi bu uyarıyı takip ediyorsunuz.';
 
   @override
-  String get noCommentsYet => 'No comments yet. Be the first!';
+  String get noCommentsYet => 'Henüz yorum yok. İlk ol!';
 
   @override
-  String get newCommentNotification => 'New comment on a sighting you follow.';
+  String get newCommentNotification =>
+      'Takip ettiğiniz bir görüşe yeni bir yorum.';
 
   @override
-  String get mapTitle => 'Live Map';
+  String get mapTitle => 'Canlı Harita';
 
   @override
   String get compassTitle => 'Compass';
 
   @override
-  String get compassSettings => 'Compass Settings';
+  String get compassSettings => 'Compass Ayarlar';
 
   @override
   String get compassMode => 'Compass Mode';
 
   @override
-  String get compassStandardMode => 'Standard Mode';
+  String get compassStandardMode => 'Standart Mod';
 
   @override
-  String get compassPilotMode => 'Pilot Mode';
+  String get compassPilotMode => 'Pilot Mod';
 
   @override
-  String get compassStandardDescription => 'Basic heading and navigation';
+  String get compassStandardDescription => 'Temel başlık ve navigasyon';
 
   @override
   String get compassPilotDescription =>
-      'Advanced navigation with ETA and vectoring';
+      'ETA ve vektöring ile Gelişmiş navigasyon';
 
   @override
   String pointingTo(String direction) {
-    return 'Pointing to $direction';
+    return '$direction';
   }
 
   @override
-  String get calibratingCompass => 'Calibrating compass…';
+  String get calibratingCompass => 'Kalibrating compass..';
 
   @override
   String get openAROverlay => 'Open AR overlay';
 
   @override
-  String get pushTitleAlertNearby => 'UFO alert near you';
+  String get pushTitleAlertNearby => 'UFO Uyarısı yakınınızda';
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'A new sighting was reported $distance away.';
+    return 'Yeni bir görüşe göre $distance away.';
   }
 
   @override
-  String get pushTitleComment => 'New comment';
+  String get pushTitleComment => 'Yeni Yorum';
 
   @override
-  String get pushBodyComment => 'Someone commented on a sighting you follow.';
+  String get pushBodyComment =>
+      'Birisi takip ettiğiniz bir görüş üzerine yorum yaptı.';
 
   @override
-  String get pushTitleWitness => 'Witness confirmation';
+  String get pushTitleWitness => 'Tanık Onay';
 
   @override
-  String get pushBodyWitness => 'A user confirmed they see the same object.';
+  String get pushBodyWitness =>
+      'Bir kullanıcı aynı nesneyi gördüklerini doğruladı.';
 
   @override
-  String get weather => 'Weather';
+  String get weather => 'Hava';
 
   @override
   String cloudCover(int percent) {
-    return 'Cloud cover: $percent%';
+    return 'Cloud cover: $percent%%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Wind: $speed $unit';
+    return 'Rüzgar: $speed $unit';
   }
 
   @override
-  String get nearbyAircraft => 'Nearby aircraft';
+  String get nearbyAircraft => 'Nearby uçakları';
 
   @override
-  String get noAircraft => 'No aircraft nearby';
+  String get noAircraft => 'Yakınlarda hiç uçak yok';
 
   @override
-  String get loadingContext => 'Loading environmental context…';
+  String get loadingContext => 'Çevre bağlamı yükleniyor..';
 
   @override
-  String get settingsTitle => 'Settings';
+  String get settingsTitle => 'Ayarlar';
 
   @override
-  String get notifications => 'Notifications';
+  String get notifications => 'Bildirimler';
 
   @override
-  String get enablePushNotifications => 'Enable push notifications';
+  String get enablePushNotifications => 'Enable push bildirimleri';
 
   @override
-  String get quietHours => 'Quiet hours';
+  String get quietHours => 'Sessiz saatler';
 
   @override
-  String get quietHoursDesc => 'Silence alerts between selected hours.';
+  String get quietHoursDesc => 'Seçilen saatler arasında sessizlik uyarıları.';
 
   @override
-  String get dndMode => 'Do Not Disturb';
+  String get dndMode => 'Yapmayın';
 
   @override
-  String get dndUntil => 'Do not disturb until';
+  String get dndUntil => 'Ne kadar rahatsız etmeyin';
 
   @override
-  String get language => 'Language';
+  String get language => 'Dil Dili';
 
   @override
-  String get chooseLanguage => 'Choose language';
+  String get chooseLanguage => 'Dil seçin';
 
   @override
-  String get units => 'Units';
+  String get units => 'Birimler';
 
   @override
-  String get unitsImperial => 'Imperial (mi, mph)';
+  String get unitsImperial => 'İmparatorluk (mi, mph)';
 
   @override
-  String get unitsMetric => 'Metric (km, km/h)';
+  String get unitsMetric => 'Top (km, km/h)';
 
   @override
-  String get privacyPolicy => 'Privacy Policy';
+  String get privacyPolicy => 'Gizlilik Politikası';
 
   @override
-  String get termsOfUse => 'Terms of Use';
+  String get termsOfUse => 'Kullanım Şartları';
 
   @override
   String get errorNoLocation =>
-      'Location unavailable. Try again outside with clear sky view.';
+      'Konum mevcut değil. Açık gökyüzü görünümü ile tekrar dışarı deneyin.';
 
   @override
-  String get errorNoCamera => 'Camera unavailable on this device.';
+  String get errorNoCamera => 'Kamera bu cihazda mevcut değil.';
 
   @override
-  String get errorUploadFailed => 'Upload failed. Please try again.';
+  String get errorUploadFailed =>
+      'Yükleme başarısız oldu. Lütfen tekrar deneyin.';
 
   @override
-  String get errorPermissionDenied => 'Permission denied.';
+  String get errorPermissionDenied => 'İzin inkar etti.';
 
   @override
-  String get errorInvalidUsername => 'That username isn’t available.';
+  String get errorInvalidUsername => 'Bu kullanıcı mevcut değildir.';
 
   @override
-  String get nothingToShow => 'Nothing to show yet.';
+  String get nothingToShow => 'Henüz göstermek için hiçbir şey yok.';
 
   @override
   String get storeShortDesc =>
-      'Instant UFO alerts near you. Capture, confirm, and chat in real time.';
+      'Anında UFO sizi yakınlaştırıyor. Yakalayın, onaylayın ve gerçek zamanlı sohbet edin.';
 
   @override
   String get storeLongDesc =>
-      'UFOBeep sends real-time alerts when someone spots a UFO nearby. Capture photos and videos, confirm sightings with a tap, view direction & distance, and chat with fellow skywatchers.';
+      'UFOBeep, birinin yakınlardaki bir UFO bulduğunda gerçek zamanlı uyarılar gönderir. Fotoğraflar ve videolar yakalayın, bir dokunuş, bakış açısı ve mesafe ile görüş ve diğer gök gözlemcileriyle sohbet edin.';
 
   @override
   String get keywords =>
-      'UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass';
+      'UFO,UAP,OVNI,aliens,görenler,skywatch,alerts,radar,compass';
 }

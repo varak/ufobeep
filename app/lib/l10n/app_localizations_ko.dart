@@ -9,405 +9,399 @@ class AppLocalizationsKo extends AppLocalizations {
   AppLocalizationsKo([String locale = 'ko']) : super(locale);
 
   @override
-  String get appName => 'UFOBeep';
+  String get appName => 'UFO버프';
 
   @override
-  String get ok => 'OK';
+  String get ok => '이름 *';
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => '이름 *';
 
   @override
-  String get close => 'Close';
+  String get close => '이름 *';
 
   @override
-  String get save => 'Save';
+  String get save => '제품 정보';
 
   @override
-  String get delete => 'Delete';
+  String get delete => '이름 *';
 
   @override
-  String get edit => 'Edit';
+  String get edit => '제품정보';
 
   @override
-  String get retry => 'Retry';
+  String get retry => '이름 *';
 
   @override
-  String get yes => 'Yes';
+  String get yes => '이름 *';
 
   @override
-  String get no => 'No';
+  String get no => '이름 *';
 
   @override
-  String get back => 'Back';
+  String get back => '이름 *';
 
   @override
-  String get next => 'Next';
+  String get next => '이름 *';
 
   @override
-  String get done => 'Done';
+  String get done => '이름 *';
 
   @override
-  String get loading => 'Loading…';
+  String get loading => '로드 중 ..';
 
   @override
-  String get processing => 'Processing…';
+  String get processing => '기타..';
 
   @override
-  String get errorGeneric => 'Something went wrong.';
+  String get errorGeneric => '뭔가 잘못되었습니다.';
 
   @override
-  String get networkError => 'Network error. Check your connection.';
+  String get networkError => '네트워크 오류. 연결 확인.';
 
   @override
-  String get permissionsRequired => 'Permissions required';
+  String get permissionsRequired => '제출';
 
   @override
-  String get learnMore => 'Learn more';
+  String get learnMore => '더 알아보기';
 
   @override
-  String get welcomeTitle => 'Welcome to UFOBeep';
+  String get welcomeTitle => 'UFOBeep에 오신 것을 환영합니다';
 
   @override
-  String get welcomeSubtitle => 'Real-time UFO alerts near you';
+  String get welcomeSubtitle => '실시간 UFO 알림';
 
   @override
-  String get signIn => 'Sign in';
+  String get signIn => '이름 *';
 
   @override
-  String get signOut => 'Sign out';
+  String get signOut => '이름 *';
 
   @override
-  String get continueAsGuest => 'Continue as guest';
+  String get continueAsGuest => '이용 안내';
 
   @override
-  String get enterUsername => 'Enter a username';
+  String get enterUsername => '사용자 이름';
 
   @override
-  String get username => 'Username';
+  String get username => '사용자 이름';
 
   @override
-  String get usernameUpdated => 'Username updated';
+  String get usernameUpdated => '사용자 이름 업데이트';
 
   @override
-  String get profile => 'Profile';
+  String get profile => '제품정보';
 
   @override
-  String get settings => 'Settings';
+  String get settings => '지원하다';
 
   @override
-  String get tabAlerts => 'Alerts';
+  String get tabAlerts => '지원하다';
 
   @override
-  String get tabBeep => 'Beep';
+  String get tabBeep => '뚱 베어';
 
   @override
-  String get tabChat => 'Chat';
+  String get tabChat => '이름 *';
 
   @override
-  String get tabMap => 'Map';
+  String get tabMap => '지도보기';
 
   @override
-  String get tabSettings => 'Settings';
+  String get tabSettings => '지원하다';
 
   @override
-  String get alertsTitle => 'Nearby Alerts';
+  String get alertsTitle => '근처 Alerts';
 
   @override
-  String get noAlerts => 'No alerts nearby yet.';
+  String get noAlerts => '아직 경고가 없습니다.';
 
   @override
-  String get pullToRefresh => 'Pull to refresh';
+  String get pullToRefresh => '새로 고침';
 
   @override
   String alertDistance(String distance) {
-    return '$distance away';
+    return '$distance 멀리';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Bearing $bearing°';
+    return '베어링 $bearing°';
   }
 
   @override
-  String get viewAlert => 'View alert';
+  String get viewAlert => '공지사항';
 
   @override
-  String get viewOnMap => 'View on map';
+  String get viewOnMap => '지도 보기';
 
   @override
-  String get iSeeItToo => 'I see it too';
+  String get iSeeItToo => '나는 그것을 본다';
 
   @override
-  String get confirmWitnessed => 'Confirm you witnessed this sighting?';
+  String get confirmWitnessed => '당신은이 광경을 목격?';
 
   @override
-  String get witnessConfirmed => 'Thanks — your confirmation was posted.';
+  String get witnessConfirmed => '감사합니다 - 확인이 게시되었습니다.';
 
   @override
-  String get createBeepTitle => 'Send a Beep';
+  String get createBeepTitle => 'Beep을 보내기';
 
   @override
-  String get beepExplain => 'Capture what you see and alert nearby watchers.';
+  String get beepExplain => '당신이 볼 수있는 캡처 및 가까운 watchers에 경고.';
 
   @override
-  String get capturePhoto => 'Capture photo';
+  String get capturePhoto => '캡처 사진';
 
   @override
-  String get captureVideo => 'Capture video';
+  String get captureVideo => '캡처 동영상';
 
   @override
-  String get pickFromGallery => 'Choose from gallery';
+  String get pickFromGallery => '갤러리에서 선택';
 
   @override
-  String get descriptionHint => 'Describe what you\'re seeing in the sky…';
+  String get descriptionHint => '당신이 하늘에서 본 것을 설명 ..';
 
   @override
-  String get submitBeep => 'Send Beep';
+  String get submitBeep => '공지사항';
 
   @override
-  String get beepSent => 'Beep sent';
+  String get beepSent => 'Beep 전송';
 
   @override
-  String get uploadingMedia => 'Uploading media…';
+  String get uploadingMedia => '미디어 업로드 ..';
 
   @override
-  String get includeLocation => 'Include location';
+  String get includeLocation => '위치 포함';
 
   @override
-  String get includeTimestamp => 'Include timestamp';
+  String get includeTimestamp => '타임스탬프 포함';
 
   @override
-  String get beepFailed => 'Failed to send Beep.';
+  String get beepFailed => 'Beep을 보낼 실패.';
 
   @override
-  String get mediaProcessing => 'Processing media…';
+  String get mediaProcessing => '처리 미디어 ..';
 
   @override
-  String get cameraPermissionTitle => 'Camera access needed';
+  String get cameraPermissionTitle => '관련 동영상';
 
   @override
-  String get cameraPermissionBody =>
-      'Grant camera access to capture UFO photos and videos.';
+  String get cameraPermissionBody => 'UFO 사진 및 비디오를 캡처 할 수있는 Grant 카메라 액세스.';
 
   @override
-  String get locationPermissionTitle => 'Location access needed';
+  String get locationPermissionTitle => '오시는 길';
 
   @override
-  String get locationPermissionBody =>
-      'We use your location to send and receive nearby alerts.';
+  String get locationPermissionBody => '자주 묻는 질문.';
 
   @override
-  String get microphonePermissionTitle => 'Microphone access needed';
+  String get microphonePermissionTitle => '마이크 액세스 필요';
 
   @override
-  String get microphonePermissionBody =>
-      'Grant microphone access for video capture with audio.';
+  String get microphonePermissionBody => '비디오 캡처에 대한 Grant 마이크 액세스.';
 
   @override
-  String get openSettings => 'Open settings';
+  String get openSettings => '설정 열기';
 
   @override
-  String get alertDetailTitle => 'Sighting Details';
+  String get alertDetailTitle => '연락처';
 
   @override
   String reportedBy(String username) {
-    return 'Reported by $username';
+    return '$username에 의해 신고';
   }
 
   @override
   String reportedAt(String timeAgo) {
-    return 'Reported $timeAgo';
+    return '$timeAgo를 보고';
   }
 
   @override
   String distanceAway(String distance) {
-    return '$distance away';
+    return '$distance 멀리';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return 'Bearing to object: $bearing°';
+    return '목표에 방위: ₢ 킹';
   }
 
   @override
-  String get openCompass => 'Open compass';
+  String get openCompass => '열린 compass';
 
   @override
-  String get openAR => 'Open AR overlay';
+  String get openAR => 'AR 오버레이를 엽니다';
 
   @override
-  String get openChat => 'Open chat';
+  String get openChat => '채팅 열기';
 
   @override
-  String get commentsTitle => 'Comments';
+  String get commentsTitle => '이름 *';
 
   @override
-  String get addComment => 'Add a comment…';
+  String get addComment => '자주 묻는 질문';
 
   @override
-  String get send => 'Send';
+  String get send => '지원하다';
 
   @override
-  String get commentPosted => 'Comment posted';
+  String get commentPosted => '댓글 게시';
 
   @override
-  String get autoFollowEnabled => 'You’re now following this alert.';
+  String get autoFollowEnabled => '이 경고를 따르십시오.';
 
   @override
-  String get noCommentsYet => 'No comments yet. Be the first!';
+  String get noCommentsYet => '아직 댓글이 없습니다. 처음!';
 
   @override
-  String get newCommentNotification => 'New comment on a sighting you follow.';
+  String get newCommentNotification => '당신을 따르는 광경에 새로운 의견.';
 
   @override
-  String get mapTitle => 'Live Map';
+  String get mapTitle => '본문 바로가기';
 
   @override
-  String get compassTitle => 'Compass';
+  String get compassTitle => '한국어';
 
   @override
-  String get compassSettings => 'Compass Settings';
+  String get compassSettings => 'Compass 설정';
 
   @override
-  String get compassMode => 'Compass Mode';
+  String get compassMode => 'Compass 형태';
 
   @override
-  String get compassStandardMode => 'Standard Mode';
+  String get compassStandardMode => '표준 형태';
 
   @override
-  String get compassPilotMode => 'Pilot Mode';
+  String get compassPilotMode => '파일 형식';
 
   @override
-  String get compassStandardDescription => 'Basic heading and navigation';
+  String get compassStandardDescription => '기본 제목 및 탐색';
 
   @override
-  String get compassPilotDescription =>
-      'Advanced navigation with ETA and vectoring';
+  String get compassPilotDescription => 'ETA 및 벡터로 고급 항법';
 
   @override
   String pointingTo(String direction) {
-    return 'Pointing to $direction';
+    return '$direction에 포팅';
   }
 
   @override
-  String get calibratingCompass => 'Calibrating compass…';
+  String get calibratingCompass => '캘리브레이션';
 
   @override
-  String get openAROverlay => 'Open AR overlay';
+  String get openAROverlay => 'AR 오버레이를 엽니다';
 
   @override
-  String get pushTitleAlertNearby => 'UFO alert near you';
+  String get pushTitleAlertNearby => '당신 가까이에 UFO 경고';
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'A new sighting was reported $distance away.';
+    return '새로운 광경은 $distance를 나타냈습니다.';
   }
 
   @override
-  String get pushTitleComment => 'New comment';
+  String get pushTitleComment => '새로운 의견';
 
   @override
-  String get pushBodyComment => 'Someone commented on a sighting you follow.';
+  String get pushBodyComment => '누군가가 당신을 따르는 광경에 언급했다.';
 
   @override
-  String get pushTitleWitness => 'Witness confirmation';
+  String get pushTitleWitness => 'Witness 확인';
 
   @override
-  String get pushBodyWitness => 'A user confirmed they see the same object.';
+  String get pushBodyWitness => '사용자가 동일한 객체를 확인합니다.';
 
   @override
-  String get weather => 'Weather';
+  String get weather => '날씨 예보';
 
   @override
   String cloudCover(int percent) {
-    return 'Cloud cover: $percent%';
+    return '구름 덮개: ₢ 킹';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Wind: $speed $unit';
+    return '바람: $speed $unit';
   }
 
   @override
-  String get nearbyAircraft => 'Nearby aircraft';
+  String get nearbyAircraft => '인근 항공기';
 
   @override
-  String get noAircraft => 'No aircraft nearby';
+  String get noAircraft => '인근 항공기 없음';
 
   @override
-  String get loadingContext => 'Loading environmental context…';
+  String get loadingContext => '환경 컨텍스트를로드 ..';
 
   @override
-  String get settingsTitle => 'Settings';
+  String get settingsTitle => '지원하다';
 
   @override
-  String get notifications => 'Notifications';
+  String get notifications => '공지사항';
 
   @override
-  String get enablePushNotifications => 'Enable push notifications';
+  String get enablePushNotifications => '푸시 알림 활성화';
 
   @override
-  String get quietHours => 'Quiet hours';
+  String get quietHours => '영업시간';
 
   @override
-  String get quietHoursDesc => 'Silence alerts between selected hours.';
+  String get quietHoursDesc => '선택된 시간 사이에 침묵 경고.';
 
   @override
-  String get dndMode => 'Do Not Disturb';
+  String get dndMode => '뚱 베어';
 
   @override
-  String get dndUntil => 'Do not disturb until';
+  String get dndUntil => '할 수 없습니다';
 
   @override
-  String get language => 'Language';
+  String get language => '* 이름';
 
   @override
-  String get chooseLanguage => 'Choose language';
+  String get chooseLanguage => '한국어';
 
   @override
-  String get units => 'Units';
+  String get units => '제품정보';
 
   @override
-  String get unitsImperial => 'Imperial (mi, mph)';
+  String get unitsImperial => '제국 (미, mph)';
 
   @override
-  String get unitsMetric => 'Metric (km, km/h)';
+  String get unitsMetric => '미터 (km, km/h)';
 
   @override
-  String get privacyPolicy => 'Privacy Policy';
+  String get privacyPolicy => '회사 소개';
 
   @override
-  String get termsOfUse => 'Terms of Use';
+  String get termsOfUse => '이용 약관';
 
   @override
-  String get errorNoLocation =>
-      'Location unavailable. Try again outside with clear sky view.';
+  String get errorNoLocation => '자주 묻는 질문 맑은 하늘 전망과 함께 다시 시도하십시오.';
 
   @override
-  String get errorNoCamera => 'Camera unavailable on this device.';
+  String get errorNoCamera => '이 장치에서 사용할 수없는 카메라.';
 
   @override
-  String get errorUploadFailed => 'Upload failed. Please try again.';
+  String get errorUploadFailed => '업로드 실패. 다시 시도하십시오.';
 
   @override
-  String get errorPermissionDenied => 'Permission denied.';
+  String get errorPermissionDenied => '권한이 없습니다.';
 
   @override
-  String get errorInvalidUsername => 'That username isn’t available.';
+  String get errorInvalidUsername => '그 사용자 이름은 사용할 수 없습니다.';
 
   @override
-  String get nothingToShow => 'Nothing to show yet.';
+  String get nothingToShow => '아직 표시되지 않았습니다.';
 
   @override
-  String get storeShortDesc =>
-      'Instant UFO alerts near you. Capture, confirm, and chat in real time.';
+  String get storeShortDesc => '즉시 UFO 알림. 캡처, 확인 및 실시간 채팅.';
 
   @override
   String get storeLongDesc =>
-      'UFOBeep sends real-time alerts when someone spots a UFO nearby. Capture photos and videos, confirm sightings with a tap, view direction & distance, and chat with fellow skywatchers.';
+      'UFOBeep은 누군가가 UFO를 가까이 두고 있을 때 실시간 알림을 보냅니다. 캡처 사진 및 동영상, 탭으로 시력 확인, 방향 및 거리보기, 동료 skywatchers와 채팅.';
 
   @override
   String get keywords =>
-      'UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass';
+      'UFO, UAP, OVNI의 aliens의 sightings,skywatch, 경보, 레이더, 우회';
 }

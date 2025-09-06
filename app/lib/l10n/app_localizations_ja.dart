@@ -9,405 +9,398 @@ class AppLocalizationsJa extends AppLocalizations {
   AppLocalizationsJa([String locale = 'ja']) : super(locale);
 
   @override
-  String get appName => 'UFOBeep';
+  String get appName => 'UFOビープ';
 
   @override
-  String get ok => 'OK';
+  String get ok => 'お問い合わせ';
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => 'キャンセル';
 
   @override
-  String get close => 'Close';
+  String get close => 'ふりがな';
 
   @override
-  String get save => 'Save';
+  String get save => '保存する';
 
   @override
-  String get delete => 'Delete';
+  String get delete => '削除';
 
   @override
-  String get edit => 'Edit';
+  String get edit => '編集';
 
   @override
-  String get retry => 'Retry';
+  String get retry => 'リトリート';
 
   @override
-  String get yes => 'Yes';
+  String get yes => 'お問い合わせ';
 
   @override
-  String get no => 'No';
+  String get no => 'なし';
 
   @override
-  String get back => 'Back';
+  String get back => 'バックナンバー';
 
   @override
-  String get next => 'Next';
+  String get next => '次へ';
 
   @override
-  String get done => 'Done';
+  String get done => 'ログイン';
 
   @override
-  String get loading => 'Loading…';
+  String get loading => 'ローディング..';
 
   @override
-  String get processing => 'Processing…';
+  String get processing => '加工..';
 
   @override
-  String get errorGeneric => 'Something went wrong.';
+  String get errorGeneric => '何かが間違っていた.';
 
   @override
-  String get networkError => 'Network error. Check your connection.';
+  String get networkError => 'ネットワークエラー。 接続を確認してください.';
 
   @override
-  String get permissionsRequired => 'Permissions required';
+  String get permissionsRequired => '必要な許可';
 
   @override
-  String get learnMore => 'Learn more';
+  String get learnMore => 'もっと詳しく';
 
   @override
-  String get welcomeTitle => 'Welcome to UFOBeep';
+  String get welcomeTitle => 'UFOBeepへようこそ';
 
   @override
-  String get welcomeSubtitle => 'Real-time UFO alerts near you';
+  String get welcomeSubtitle => '近くのリアルタイム UFO アラート';
 
   @override
-  String get signIn => 'Sign in';
+  String get signIn => 'サインイン';
 
   @override
-  String get signOut => 'Sign out';
+  String get signOut => 'サインアップ';
 
   @override
-  String get continueAsGuest => 'Continue as guest';
+  String get continueAsGuest => 'ゲストとして';
 
   @override
-  String get enterUsername => 'Enter a username';
+  String get enterUsername => 'ユーザー名を入力してください';
 
   @override
-  String get username => 'Username';
+  String get username => 'ユーザ名';
 
   @override
-  String get usernameUpdated => 'Username updated';
+  String get usernameUpdated => '更新されたユーザー名';
 
   @override
-  String get profile => 'Profile';
+  String get profile => 'プロフィール';
 
   @override
-  String get settings => 'Settings';
+  String get settings => 'コンテンツ';
 
   @override
-  String get tabAlerts => 'Alerts';
+  String get tabAlerts => 'アラート';
 
   @override
-  String get tabBeep => 'Beep';
+  String get tabBeep => 'ビープ';
 
   @override
-  String get tabChat => 'Chat';
+  String get tabChat => 'チャット';
 
   @override
-  String get tabMap => 'Map';
+  String get tabMap => 'サイトマップ';
 
   @override
-  String get tabSettings => 'Settings';
+  String get tabSettings => 'コンテンツ';
 
   @override
-  String get alertsTitle => 'Nearby Alerts';
+  String get alertsTitle => '近くのアラート';
 
   @override
-  String get noAlerts => 'No alerts nearby yet.';
+  String get noAlerts => '近隣のアラートはありません.';
 
   @override
-  String get pullToRefresh => 'Pull to refresh';
+  String get pullToRefresh => 'リフレッシュするプル';
 
   @override
   String alertDistance(String distance) {
-    return '$distance away';
+    return '__PH_0_ 離れて';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Bearing $bearing°';
+    return '軸受け_PH_0__°';
   }
 
   @override
-  String get viewAlert => 'View alert';
+  String get viewAlert => 'アラートを見る';
 
   @override
-  String get viewOnMap => 'View on map';
+  String get viewOnMap => 'サイトマップ';
 
   @override
-  String get iSeeItToo => 'I see it too';
+  String get iSeeItToo => '見てみる';
 
   @override
-  String get confirmWitnessed => 'Confirm you witnessed this sighting?';
+  String get confirmWitnessed => '目撃したことを確認しますか?';
 
   @override
-  String get witnessConfirmed => 'Thanks — your confirmation was posted.';
+  String get witnessConfirmed => 'ありがとうございます.';
 
   @override
-  String get createBeepTitle => 'Send a Beep';
+  String get createBeepTitle => 'ビープを送る';
 
   @override
-  String get beepExplain => 'Capture what you see and alert nearby watchers.';
+  String get beepExplain => '近く見ているものをキャプチャし、近くの監視者に警告します.';
 
   @override
-  String get capturePhoto => 'Capture photo';
+  String get capturePhoto => '写真のキャプチャ';
 
   @override
-  String get captureVideo => 'Capture video';
+  String get captureVideo => 'ビデオのキャプチャ';
 
   @override
-  String get pickFromGallery => 'Choose from gallery';
+  String get pickFromGallery => 'ギャラリーから選ぶ';
 
   @override
-  String get descriptionHint => 'Describe what you\'re seeing in the sky…';
+  String get descriptionHint => '空を眺めているものを記述する..';
 
   @override
-  String get submitBeep => 'Send Beep';
+  String get submitBeep => 'ビープを送る';
 
   @override
-  String get beepSent => 'Beep sent';
+  String get beepSent => 'フィードバック';
 
   @override
-  String get uploadingMedia => 'Uploading media…';
+  String get uploadingMedia => 'メディアのアップロード..';
 
   @override
-  String get includeLocation => 'Include location';
+  String get includeLocation => '場所を含んで下さい';
 
   @override
-  String get includeTimestamp => 'Include timestamp';
+  String get includeTimestamp => 'タイムスタンプを含める';
 
   @override
-  String get beepFailed => 'Failed to send Beep.';
+  String get beepFailed => 'ビープを送ることができません.';
 
   @override
-  String get mediaProcessing => 'Processing media…';
+  String get mediaProcessing => '加工媒体..';
 
   @override
-  String get cameraPermissionTitle => 'Camera access needed';
+  String get cameraPermissionTitle => '必要なカメラアクセス';
 
   @override
-  String get cameraPermissionBody =>
-      'Grant camera access to capture UFO photos and videos.';
+  String get cameraPermissionBody => 'UFO の写真やビデオをキャプチャするためのカメラアクセスを許可します.';
 
   @override
-  String get locationPermissionTitle => 'Location access needed';
+  String get locationPermissionTitle => '必要な場所へのアクセス';
 
   @override
-  String get locationPermissionBody =>
-      'We use your location to send and receive nearby alerts.';
+  String get locationPermissionBody => '近隣のアラートを送受信する場所を使用します.';
 
   @override
-  String get microphonePermissionTitle => 'Microphone access needed';
+  String get microphonePermissionTitle => '必要なマイクアクセス';
 
   @override
-  String get microphonePermissionBody =>
-      'Grant microphone access for video capture with audio.';
+  String get microphonePermissionBody => 'ビデオキャプチャ用のマイクアクセスを音声で付与します.';
 
   @override
-  String get openSettings => 'Open settings';
+  String get openSettings => 'オープン設定';
 
   @override
-  String get alertDetailTitle => 'Sighting Details';
+  String get alertDetailTitle => '観光スポット詳細';
 
   @override
   String reportedBy(String username) {
-    return 'Reported by $username';
+    return 'レポート:_PH_0__';
   }
 
   @override
   String reportedAt(String timeAgo) {
-    return 'Reported $timeAgo';
+    return '報告する ${timeAgo}_';
   }
 
   @override
   String distanceAway(String distance) {
-    return '$distance away';
+    return '__PH_0_ 離れて';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return 'Bearing to object: $bearing°';
+    return '目的への軸受け:  __ 0 0';
   }
 
   @override
-  String get openCompass => 'Open compass';
+  String get openCompass => 'コンパスを開く';
 
   @override
-  String get openAR => 'Open AR overlay';
+  String get openAR => 'AR オーバーレイを開く';
 
   @override
-  String get openChat => 'Open chat';
+  String get openChat => 'チャットを開く';
 
   @override
-  String get commentsTitle => 'Comments';
+  String get commentsTitle => 'コメント';
 
   @override
-  String get addComment => 'Add a comment…';
+  String get addComment => 'コメントを追加..';
 
   @override
-  String get send => 'Send';
+  String get send => 'お問い合わせ';
 
   @override
-  String get commentPosted => 'Comment posted';
+  String get commentPosted => 'コメント投稿';
 
   @override
-  String get autoFollowEnabled => 'You’re now following this alert.';
+  String get autoFollowEnabled => 'このアラートに続いています.';
 
   @override
-  String get noCommentsYet => 'No comments yet. Be the first!';
+  String get noCommentsYet => 'コメントはまだありません。 まずは!';
 
   @override
-  String get newCommentNotification => 'New comment on a sighting you follow.';
+  String get newCommentNotification => 'あなたがフォローする目撃に関する新しいコメント.';
 
   @override
-  String get mapTitle => 'Live Map';
+  String get mapTitle => 'ライブマップ';
 
   @override
-  String get compassTitle => 'Compass';
+  String get compassTitle => 'コンパス';
 
   @override
-  String get compassSettings => 'Compass Settings';
+  String get compassSettings => 'コンパス設定';
 
   @override
-  String get compassMode => 'Compass Mode';
+  String get compassMode => 'コンパスモード';
 
   @override
-  String get compassStandardMode => 'Standard Mode';
+  String get compassStandardMode => '標準モード';
 
   @override
-  String get compassPilotMode => 'Pilot Mode';
+  String get compassPilotMode => 'パイロットモード';
 
   @override
-  String get compassStandardDescription => 'Basic heading and navigation';
+  String get compassStandardDescription => '基本的な見出しとナビゲーション';
 
   @override
-  String get compassPilotDescription =>
-      'Advanced navigation with ETA and vectoring';
+  String get compassPilotDescription => 'ETAとベクターの高度なナビゲーション';
 
   @override
   String pointingTo(String direction) {
-    return 'Pointing to $direction';
+    return 'へのポイント $direction';
   }
 
   @override
-  String get calibratingCompass => 'Calibrating compass…';
+  String get calibratingCompass => 'キャリブレーションコンパス..';
 
   @override
-  String get openAROverlay => 'Open AR overlay';
+  String get openAROverlay => 'AR オーバーレイを開く';
 
   @override
-  String get pushTitleAlertNearby => 'UFO alert near you';
+  String get pushTitleAlertNearby => 'あなたの近くにUFOアラート';
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'A new sighting was reported $distance away.';
+    return '新たな視力が報告されました。 ${distance}_ 離れて.';
   }
 
   @override
-  String get pushTitleComment => 'New comment';
+  String get pushTitleComment => '新規コメント';
 
   @override
-  String get pushBodyComment => 'Someone commented on a sighting you follow.';
+  String get pushBodyComment => '誰かがフォローする目撃にコメントしました.';
 
   @override
-  String get pushTitleWitness => 'Witness confirmation';
+  String get pushTitleWitness => 'ウィットネスの確認';
 
   @override
-  String get pushBodyWitness => 'A user confirmed they see the same object.';
+  String get pushBodyWitness => '同じオブジェクトが確認されたユーザ.';
 
   @override
-  String get weather => 'Weather';
+  String get weather => 'ふりがな';
 
   @override
   String cloudCover(int percent) {
-    return 'Cloud cover: $percent%';
+    return '雲カバー: 特許取得済';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Wind: $speed $unit';
+    return '風:_PH_0____${unit}_';
   }
 
   @override
-  String get nearbyAircraft => 'Nearby aircraft';
+  String get nearbyAircraft => '近隣の航空機';
 
   @override
-  String get noAircraft => 'No aircraft nearby';
+  String get noAircraft => '近くの航空機無し';
 
   @override
-  String get loadingContext => 'Loading environmental context…';
+  String get loadingContext => '環境のコンテキストをロードする..';
 
   @override
-  String get settingsTitle => 'Settings';
+  String get settingsTitle => 'コンテンツ';
 
   @override
-  String get notifications => 'Notifications';
+  String get notifications => 'お知らせ';
 
   @override
-  String get enablePushNotifications => 'Enable push notifications';
+  String get enablePushNotifications => 'プッシュ通知を有効にする';
 
   @override
-  String get quietHours => 'Quiet hours';
+  String get quietHours => '静かな時間';
 
   @override
-  String get quietHoursDesc => 'Silence alerts between selected hours.';
+  String get quietHoursDesc => '選択した時間間のサイレンスアラート.';
 
   @override
-  String get dndMode => 'Do Not Disturb';
+  String get dndMode => '蒸留しない';
 
   @override
-  String get dndUntil => 'Do not disturb until';
+  String get dndUntil => '邪魔しないでください';
 
   @override
-  String get language => 'Language';
+  String get language => '用語集';
 
   @override
-  String get chooseLanguage => 'Choose language';
+  String get chooseLanguage => '言語を選択';
 
   @override
-  String get units => 'Units';
+  String get units => 'ユニット';
 
   @override
-  String get unitsImperial => 'Imperial (mi, mph)';
+  String get unitsImperial => 'インペリアル(ミ, mph)';
 
   @override
-  String get unitsMetric => 'Metric (km, km/h)';
+  String get unitsMetric => 'メートル(km/h)';
 
   @override
-  String get privacyPolicy => 'Privacy Policy';
+  String get privacyPolicy => 'プライバシーポリシー';
 
   @override
-  String get termsOfUse => 'Terms of Use';
+  String get termsOfUse => '利用規約';
 
   @override
-  String get errorNoLocation =>
-      'Location unavailable. Try again outside with clear sky view.';
+  String get errorNoLocation => '利用できない場所 空を眺めながらもう一度お試しください.';
 
   @override
-  String get errorNoCamera => 'Camera unavailable on this device.';
+  String get errorNoCamera => 'このデバイスでカメラが利用できなくなった.';
 
   @override
-  String get errorUploadFailed => 'Upload failed. Please try again.';
+  String get errorUploadFailed => 'アップロードが失敗しました。 お問い合わせ.';
 
   @override
-  String get errorPermissionDenied => 'Permission denied.';
+  String get errorPermissionDenied => '許可が拒否されました.';
 
   @override
-  String get errorInvalidUsername => 'That username isn’t available.';
+  String get errorInvalidUsername => 'ユーザー名は利用できません.';
 
   @override
-  String get nothingToShow => 'Nothing to show yet.';
+  String get nothingToShow => '何も見せません.';
 
   @override
-  String get storeShortDesc =>
-      'Instant UFO alerts near you. Capture, confirm, and chat in real time.';
+  String get storeShortDesc => '近くのインスタントUFOアラート。 リアルタイムでキャプチャ、確認、チャット.';
 
   @override
   String get storeLongDesc =>
-      'UFOBeep sends real-time alerts when someone spots a UFO nearby. Capture photos and videos, confirm sightings with a tap, view direction & distance, and chat with fellow skywatchers.';
+      'UFOBeep は、近くの UFO を指すときにリアルタイムのアラートを送信します。 写真やビデオをキャプチャし、タップ、ビューの方向と距離を確認し、仲間のSkywatchersとチャットします.';
 
   @override
-  String get keywords =>
-      'UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass';
+  String get keywords => 'UFO、UAP、OVNI、aliens、視線、skywatch、alerts、レーダー、compass';
 }
