@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -28,11 +29,21 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
         final prefsMap = jsonDecode(prefsJson) as Map<String, dynamic>;
         state = UserPreferences.fromJson(prefsMap);
       } else {
-        // Set default preferences
-        state = UserPreferences(
-          language: AppEnvironment.defaultLocale,
+        // First run: detect device locale and use it if supported
+        final deviceLang = ui.PlatformDispatcher.instance.locale.languageCode;
+        final supported = LocaleConfig.supportedLocales
+            .any((l) => l.languageCode == deviceLang);
+
+        final initial = UserPreferences(
+          language: supported ? deviceLang : AppEnvironment.defaultLocale,
           alertRangeKm: 10.0,
         );
+        state = initial;
+        // Persist immediately so subsequent launches keep the choice
+        try {
+          final jsonStr = jsonEncode(initial.toJson());
+          await _prefs.setString(_prefsKey, jsonStr);
+        } catch (_) {}
       }
     } catch (e) {
       if (AppEnvironment.enableLogging) {
