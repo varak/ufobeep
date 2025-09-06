@@ -5,6 +5,7 @@ import '../providers/alerts_provider.dart';
 import '../theme/app_theme.dart';
 import '../utils/unit_conversion.dart';
 import '../providers/user_preferences_provider.dart';
+import '../l10n/app_localizations.dart';
 import '../services/ui_feedback.dart';
 
 class AlertCard extends ConsumerWidget {
@@ -22,6 +23,7 @@ class AlertCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userPrefs = ref.watch(userPreferencesProvider);
+    final l10n = AppLocalizations.of(context);
     final units = userPrefs?.units ?? 'metric';
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -142,7 +144,7 @@ class AlertCard extends ConsumerWidget {
                     children: [
                       if (alert.reporterUsername != null && alert.source != 'mufon') ...[
                         Text(
-                          'by ${alert.reporterUsername}',
+                          l10n.reportedBy(username: alert.reporterUsername!),
                           style: const TextStyle(
                             color: AppColors.brandPrimary,
                             fontSize: 11,

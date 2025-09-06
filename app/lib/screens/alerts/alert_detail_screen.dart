@@ -494,14 +494,14 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Add Photos & Videos',
+              AppLocalizations.of(context).edit,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: AppColors.textPrimary,
               ),
             ),
             const SizedBox(height: 16),
             Text(
-              'Additional photos will be attached to this sighting',
+              AppLocalizations.of(context).beepExplain,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -519,7 +519,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                         'attachToSightingId': alertId,
                       });
                     },
-                    child: const Column(
+                    child: Column(
                       children: [
                         Icon(
                           Icons.camera_alt,
@@ -528,8 +528,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          'Camera',
-                          style: TextStyle(
+                          AppLocalizations.of(context).capturePhoto,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -547,7 +547,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                       Navigator.pop(context);
                       await _pickFromGalleryForAlert(alertId);
                     },
-                    child: const Column(
+                    child: Column(
                       children: [
                         Icon(
                           Icons.photo_library,
@@ -556,8 +556,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          'Gallery',
-                          style: TextStyle(
+                          AppLocalizations.of(context).pickFromGallery,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -572,9 +572,9 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             const SizedBox(height: 12),
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(
-                'Cancel',
-                style: TextStyle(color: AppColors.textSecondary),
+              child: Text(
+                AppLocalizations.of(context).cancel,
+                style: const TextStyle(color: AppColors.textSecondary),
               ),
             ),
           ],

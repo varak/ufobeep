@@ -8,6 +8,7 @@ import '../../models/user_preferences.dart';
 import '../../models/alert_enrichment.dart';
 import '../../services/visibility_service.dart';
 import '../../widgets/alerts_filter_dialog.dart';
+import '../../l10n/app_localizations.dart';
 import '../../widgets/alert_card.dart';
 import '../../widgets/alerts/visibility_indicator.dart';
 import '../../widgets/glass_card.dart';
@@ -38,14 +39,15 @@ class AlertsScreen extends ConsumerWidget {
   }
 
   PreferredSizeWidget _buildAppBar(BuildContext context, WidgetRef ref, AlertsFilter filter) {
+    final l10n = AppLocalizations.of(context);
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'All Alerts',
+          Text(
+            l10n.alertsTitle,
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,
@@ -391,7 +393,7 @@ class _EmptyAlertsView extends StatelessWidget {
             const SizedBox(height: 24),
             
             Text(
-              hasFilters ? 'No matching alerts' : 'No alerts available',
+              hasFilters ? AppLocalizations.of(context).noAlertsFound : AppLocalizations.of(context).noAlerts,
               style: const TextStyle(
                 color: AppColors.textPrimary,
                 fontSize: 20,
@@ -403,8 +405,8 @@ class _EmptyAlertsView extends StatelessWidget {
             
             Text(
               hasFilters
-                  ? 'Try adjusting your filters to see more results'
-                  : 'No alerts have been reported yet',
+                  ? AppLocalizations.of(context).alertsFilter
+                  : AppLocalizations.of(context).noAlerts,
               style: const TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 16,
