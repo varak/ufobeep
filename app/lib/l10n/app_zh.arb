@@ -1,43 +1,130 @@
 {
-  "@@locale": "zh",
-  "appName": "UFOBeep",
-  "ok": "OK",
-  "cancel": "Cancel",
-  "close": "Close",
-  "save": "Save",
-  "delete": "Delete",
-  "edit": "Edit",
-  "retry": "Retry",
-  "yes": "Yes",
-  "no": "No",
-  "back": "Back",
-  "next": "Next",
-  "done": "Done",
-  "loading": "Loading…",
-  "processing": "Processing…",
-  "errorGeneric": "Something went wrong.",
-  "networkError": "Network error. Check your connection.",
-  "permissionsRequired": "Permissions required",
-  "learnMore": "Learn more",
-  "welcomeTitle": "Welcome to UFOBeep",
-  "welcomeSubtitle": "Real-time UFO alerts near you",
-  "signIn": "Sign in",
-  "signOut": "Sign out",
-  "continueAsGuest": "Continue as guest",
-  "enterUsername": "Enter a username",
-  "username": "Username",
-  "usernameUpdated": "Username updated",
-  "profile": "Profile",
-  "settings": "Settings",
-  "tabAlerts": "Alerts",
-  "tabBeep": "Beep",
-  "tabChat": "Chat",
-  "tabMap": "Map",
-  "tabSettings": "Settings",
-  "alertsTitle": "Nearby Alerts",
-  "noAlerts": "No alerts nearby yet.",
-  "pullToRefresh": "Pull to refresh",
-  "alertDistance": "{distance} away",
+  "@@locale": "en",
+  "appName": "打开",
+  "ok": "还好",
+  "cancel": "取消",
+  "close": "关闭",
+  "save": "保存",
+  "delete": "删除",
+  "edit": "编辑",
+  "retry": "重试",
+  "yes": "对",
+  "no": "没有",
+  "back": "回来",
+  "next": "下一个",
+  "done": "写好了",
+  "loading": "正在装入..",
+  "processing": "正在处理..",
+  "errorGeneric": "出了点问题.",
+  "networkError": "网络错误 。 检查你的连接.",
+  "permissionsRequired": "需要权限",
+  "learnMore": "学更多",
+  "welcomeTitle": "欢迎来到UFOBEP",
+  "welcomeSubtitle": "在你附近实时UFO警报",
+  "signIn": "签名",
+  "signOut": "签字",
+  "continueAsGuest": "继续做客",
+  "enterUsername": "输入用户名",
+  "username": "用户名",
+  "usernameUpdated": "用户名已更新",
+  "profile": "简介",
+  "settings": "设置",
+  "tabAlerts": "警报",
+  "tabBeep": "哔",
+  "tabChat": "聊天",
+  "tabMap": "地图",
+  "tabSettings": "设置",
+  "alertsTitle": "近距离警告",
+  "noAlerts": "附近还没有警报.",
+  "pullToRefresh": "拉来拉去",
+  "alertDistance": "离开",
+  "alertDirection": "方位为_PH_0_%",
+  "viewAlert": "查看提醒",
+  "viewOnMap": "在地图上查看",
+  "iSeeItToo": "我也看见了",
+  "confirmWitnessed": "确认你目睹了这次目击?",
+  "witnessConfirmed": "谢谢,你的确认已经公布.",
+  "createBeepTitle": "发出哔声",
+  "beepExplain": "抓住你看到的 并提醒附近的监视者.",
+  "capturePhoto": "抓取照片",
+  "captureVideo": "抓取视频",
+  "pickFromGallery": "从画廊中选择",
+  "descriptionHint": "描述你在天空中看到的..",
+  "submitBeep": "发出哔声",
+  "beepSent": "发出哔声",
+  "uploadingMedia": "正在上传媒体..",
+  "includeLocation": "包含位置",
+  "includeTimestamp": "包含时间戳",
+  "beepFailed": "发送哔声失败 .",
+  "mediaProcessing": "正在处理媒体..",
+  "cameraPermissionTitle": "需要摄像",
+  "cameraPermissionBody": "授权摄像头拍摄UFO照片和视频.",
+  "locationPermissionTitle": "需要访问的地点",
+  "locationPermissionBody": "我们用你的位置发送和接收附近的警报.",
+  "microphonePermissionTitle": "需要使用微型电话",
+  "microphonePermissionBody": "允许麦克风进入 视频捕捉带音频.",
+  "openSettings": "打开设置",
+  "alertDetailTitle": "查看细节",
+  "reportedBy": "报告作者:_PH_0__",
+  "reportedAt": "报告 _PH_0__",
+  "distanceAway": "离开",
+  "bearingToObject": "反对: - PH_0+++++++++++++++++++++++++++++++++++++",
+  "openCompass": "打开指南针",
+  "openAR": "打开 AR 覆盖",
+  "openChat": "打开聊天",
+  "commentsTitle": "评论",
+  "addComment": "添加注释..",
+  "send": "发送",
+  "commentPosted": "张贴的评论",
+  "autoFollowEnabled": "你们现在正在遵守这一警告.",
+  "noCommentsYet": "还没有评论。 成为第一个!",
+  "newCommentNotification": "新的评论你跟踪.",
+  "mapTitle": "现场地图",
+  "compassTitle": "指南针",
+  "compassSettings": "指南针设置",
+  "compassMode": "编译模式",
+  "compassStandardMode": "标准模式",
+  "compassPilotMode": "试点模式",
+  "compassStandardDescription": "基本航向和导航",
+  "compassPilotDescription": "带有ETA和矢量的高级导航",
+  "pointingTo": "指向 _PH_0__ (中文(简体) )",
+  "calibratingCompass": "校准指南针..",
+  "openAROverlay": "打开 AR 覆盖",
+  "pushTitleAlertNearby": "你身边的UFO警报",
+  "pushBodyAlertNearby": "据报道,有新的目击地点在_PH_0_离开.",
+  "pushTitleComment": "新评论",
+  "pushBodyComment": "有人评论你跟踪的一幕.",
+  "pushTitleWitness": "证人确认",
+  "pushBodyWitness": "一个用户确认他们看到了同一个对象.",
+  "weather": "天气",
+  "cloudCover": "云盖曰: - PH_0+++++++++++++++++++++++++++++++++++++",
+  "wind": "风:_PH_0___PH_1_",
+  "nearbyAircraft": "近地点飞机",
+  "noAircraft": "附近没有飞机",
+  "loadingContext": "正在装入环境背景..",
+  "settingsTitle": "设置",
+  "notifications": "通知",
+  "enablePushNotifications": "启用按键通知",
+  "quietHours": "安静时间",
+  "quietHoursDesc": "选定时数之间的静态提示 .",
+  "dndMode": "不要烦恼",
+  "dndUntil": "不要打扰到这里",
+  "language": "语言",
+  "chooseLanguage": "选择语言",
+  "units": "单位",
+  "unitsImperial": "帝国语( mi, mph)",
+  "unitsMetric": "计量(公里,公里/小时)",
+  "privacyPolicy": "隐私政策",
+  "termsOfUse": "使用条件",
+  "errorNoLocation": "没有位置 。 再用清空的天眼试试看.",
+  "errorNoCamera": "此设备没有摄像头 .",
+  "errorUploadFailed": "上传失败 。 请再试一次.",
+  "errorPermissionDenied": "拒绝许可.",
+  "errorInvalidUsername": "这个用户名不可用 .",
+  "nothingToShow": "还没显示什么.",
+  "storeShortDesc": "即时UFO警报接近你 抓住,确认,实时聊天.",
+  "storeLongDesc": "UFOBEP在附近发现UFO时发出实时警报. 捕捉照片和录像,用水龙头证实目击情况,查看方向和距离,并与天空观察者同行聊天.",
+  "keywords": "UFO、UAP、OVNI、aliens、视觉、天空表、警报、雷达、辅助设备",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +133,6 @@
       }
     }
   },
-  "alertDirection": "Bearing {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -55,33 +141,6 @@
       }
     }
   },
-  "viewAlert": "View alert",
-  "viewOnMap": "View on map",
-  "iSeeItToo": "I see it too",
-  "confirmWitnessed": "Confirm you witnessed this sighting?",
-  "witnessConfirmed": "Thanks — your confirmation was posted.",
-  "createBeepTitle": "Send a Beep",
-  "beepExplain": "Capture what you see and alert nearby watchers.",
-  "capturePhoto": "Capture photo",
-  "captureVideo": "Capture video",
-  "pickFromGallery": "Choose from gallery",
-  "descriptionHint": "Describe what you're seeing in the sky…",
-  "submitBeep": "Send Beep",
-  "beepSent": "Beep sent",
-  "uploadingMedia": "Uploading media…",
-  "includeLocation": "Include location",
-  "includeTimestamp": "Include timestamp",
-  "beepFailed": "Failed to send Beep.",
-  "mediaProcessing": "Processing media…",
-  "cameraPermissionTitle": "Camera access needed",
-  "cameraPermissionBody": "Grant camera access to capture UFO photos and videos.",
-  "locationPermissionTitle": "Location access needed",
-  "locationPermissionBody": "We use your location to send and receive nearby alerts.",
-  "microphonePermissionTitle": "Microphone access needed",
-  "microphonePermissionBody": "Grant microphone access for video capture with audio.",
-  "openSettings": "Open settings",
-  "alertDetailTitle": "Sighting Details",
-  "reportedBy": "Reported by {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -90,7 +149,6 @@
       }
     }
   },
-  "reportedAt": "Reported {timeAgo}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -99,7 +157,6 @@
       }
     }
   },
-  "distanceAway": "{distance} away",
   "@distanceAway": {
     "placeholders": {
       "distance": {
@@ -108,7 +165,6 @@
       }
     }
   },
-  "bearingToObject": "Bearing to object: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -117,25 +173,6 @@
       }
     }
   },
-  "openCompass": "Open compass",
-  "openAR": "Open AR overlay",
-  "openChat": "Open chat",
-  "commentsTitle": "Comments",
-  "addComment": "Add a comment…",
-  "send": "Send",
-  "commentPosted": "Comment posted",
-  "autoFollowEnabled": "You’re now following this alert.",
-  "noCommentsYet": "No comments yet. Be the first!",
-  "newCommentNotification": "New comment on a sighting you follow.",
-  "mapTitle": "Live Map",
-  "compassTitle": "Compass",
-  "compassSettings": "Compass Settings",
-  "compassMode": "Compass Mode",
-  "compassStandardMode": "Standard Mode",
-  "compassPilotMode": "Pilot Mode",
-  "compassStandardDescription": "Basic heading and navigation",
-  "compassPilotDescription": "Advanced navigation with ETA and vectoring",
-  "pointingTo": "Pointing to {direction}",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -144,10 +181,6 @@
       }
     }
   },
-  "calibratingCompass": "Calibrating compass…",
-  "openAROverlay": "Open AR overlay",
-  "pushTitleAlertNearby": "UFO alert near you",
-  "pushBodyAlertNearby": "A new sighting was reported {distance} away.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -156,12 +189,6 @@
       }
     }
   },
-  "pushTitleComment": "New comment",
-  "pushBodyComment": "Someone commented on a sighting you follow.",
-  "pushTitleWitness": "Witness confirmation",
-  "pushBodyWitness": "A user confirmed they see the same object.",
-  "weather": "Weather",
-  "cloudCover": "Cloud cover: {percent}%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -170,7 +197,6 @@
       }
     }
   },
-  "wind": "Wind: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -182,31 +208,5 @@
         "example": "mph"
       }
     }
-  },
-  "nearbyAircraft": "Nearby aircraft",
-  "noAircraft": "No aircraft nearby",
-  "loadingContext": "Loading environmental context…",
-  "settingsTitle": "Settings",
-  "notifications": "Notifications",
-  "enablePushNotifications": "Enable push notifications",
-  "quietHours": "Quiet hours",
-  "quietHoursDesc": "Silence alerts between selected hours.",
-  "dndMode": "Do Not Disturb",
-  "dndUntil": "Do not disturb until",
-  "language": "Language",
-  "chooseLanguage": "Choose language",
-  "units": "Units",
-  "unitsImperial": "Imperial (mi, mph)",
-  "unitsMetric": "Metric (km, km/h)",
-  "privacyPolicy": "Privacy Policy",
-  "termsOfUse": "Terms of Use",
-  "errorNoLocation": "Location unavailable. Try again outside with clear sky view.",
-  "errorNoCamera": "Camera unavailable on this device.",
-  "errorUploadFailed": "Upload failed. Please try again.",
-  "errorPermissionDenied": "Permission denied.",
-  "errorInvalidUsername": "That username isn’t available.",
-  "nothingToShow": "Nothing to show yet.",
-  "storeShortDesc": "Instant UFO alerts near you. Capture, confirm, and chat in real time.",
-  "storeLongDesc": "UFOBeep sends real-time alerts when someone spots a UFO nearby. Capture photos and videos, confirm sightings with a tap, view direction & distance, and chat with fellow skywatchers.",
-  "keywords": "UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass"
+  }
 }

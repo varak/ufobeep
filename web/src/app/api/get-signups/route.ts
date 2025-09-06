@@ -5,8 +5,7 @@ import path from 'path'
 export async function GET(request: NextRequest) {
   try {
     // Check for a simple auth token in query params (you should change this)
-    const { searchParams } = new URL(request.url)
-    const token = searchParams.get('token')
+    const token = request.nextUrl.searchParams.get('token')
     
     // Simple token check - CHANGE THIS IN PRODUCTION
     if (token !== 'ufobeep-admin-2024') {
