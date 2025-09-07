@@ -24,6 +24,7 @@ import '../../services/ui_feedback.dart';
 import '../../widgets/glass_card.dart';
 import '../../l10n/app_localizations.dart';
 import '../../services/comments_service.dart';
+import '../../models/comment.dart';
 
 class AlertDetailScreen extends ConsumerStatefulWidget {
   const AlertDetailScreen({super.key, required this.alertId});
@@ -897,14 +898,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   }
   
   Widget _buildCommentsSection(Alert alert) {
-    return Container(
-      width: double.infinity,
+    return GlassCard(
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.darkSurface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.darkBorder.withOpacity(0.3)),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -920,9 +915,77 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
+              if (alert.commentCount > 0) ...[
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: AppColors.brandPrimary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
+                  ),
+                  child: Text(
+                    '${alert.commentCount}',
+                    style: const TextStyle(
+                      color: AppColors.brandPrimary,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
+          
+          // Show existing comments if any
+          if (alert.commentCount > 0) ...[
+            FutureBuilder<List<Comment>>(
+              future: CommentsService().getComments(alert.id, limit: 5),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: CircularProgressIndicator(color: AppColors.brandPrimary, strokeWidth: 2),
+                    ),
+                  );
+                }
+                
+                if (snapshot.hasError) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Error loading comments',
+                      style: const TextStyle(color: AppColors.semanticError, fontSize: 14),
+                    ),
+                  );
+                }
+                
+                final comments = snapshot.data ?? [];
+                if (comments.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+                
+                return Column(
+                  children: [
+                    ...comments.map((comment) => _buildCommentItem(comment)).toList(),
+                    if (alert.commentCount > 5)
+                      TextButton.icon(
+                        onPressed: () => _navigateToComments(alert),
+                        icon: const Icon(Icons.forum, size: 18, color: AppColors.brandPrimary),
+                        label: Text('View all ${alert.commentCount} comments'),
+                        style: TextButton.styleFrom(foregroundColor: AppColors.brandPrimary),
+                      ),
+                    const SizedBox(height: 16),
+                    const Divider(color: AppColors.darkBorder, thickness: 1),
+                    const SizedBox(height: 16),
+                  ],
+                );
+              },
+            ),
+          ],
+          
           // Inline comment input
           TextField(
             controller: _commentController,
@@ -968,20 +1031,92 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 8),
-          // Link to full comments view (optional)
-          if (alert.commentCount > 0)
-            TextButton.icon(
-              onPressed: () => _navigateToComments(alert),
-              icon: const Icon(Icons.forum, size: 18, color: AppColors.brandPrimary),
-              label: Text('(${alert.commentCount})'),
-              style: TextButton.styleFrom(foregroundColor: AppColors.brandPrimary),
-            ),
         ],
       ),
     );
   }
   
+  Widget _buildCommentItem(Comment comment) {
+    final timeAgo = _formatCommentTime(comment.createdAt);
+    
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                  color: AppColors.brandPrimary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
+                ),
+                child: const Icon(
+                  Icons.person,
+                  size: 16,
+                  color: AppColors.brandPrimary,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      comment.username,
+                      style: const TextStyle(
+                        color: AppColors.textPrimary,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      timeAgo,
+                      style: const TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.only(left: 36),
+            child: Text(
+              comment.body,
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 14,
+                height: 1.4,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  String _formatCommentTime(DateTime dateTime) {
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+    
+    if (difference.inDays > 0) {
+      return '${difference.inDays}d ago';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours}h ago';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes}m ago';
+    } else {
+      return 'Just now';
+    }
+  }
+
   void _navigateToComments(Alert alert) async {
     await UiFeedback.click();
     

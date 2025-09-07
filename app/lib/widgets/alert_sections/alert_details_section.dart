@@ -99,9 +99,9 @@ class AlertDetailsSection extends StatelessWidget {
             ],
             
             // Share link for MUFON reports (integrated into details box)
-            const SizedBox(height: 8),
+            const SizedBox(height: 4),
             const Divider(color: AppColors.darkBorder, thickness: 1),
-            const SizedBox(height: 8),
+            const SizedBox(height: 4),
             _buildShareLinkRow(context, alert),
           ],
           
