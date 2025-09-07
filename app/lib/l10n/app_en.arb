@@ -188,7 +188,7 @@
   "loadingContext": "Loading environmental context…",
   "settingsTitle": "Settings",
   "notifications": "Notifications",
-  "enablePushNotifications": "Enable push notifications",
+  "enablePushNotifications": "Get notifications for future comments",
   "quietHours": "Quiet hours",
   "quietHoursDesc": "Silence alerts between selected hours.",
   "dndMode": "Do Not Disturb",
