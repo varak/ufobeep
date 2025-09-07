@@ -454,8 +454,8 @@ class AlertsList extends _$AlertsList {
     } catch (e) {
       // On API error, return empty data
       print('Error fetching alerts: $e');
-      return const AlertsListData(
-        alerts: [],
+      return AlertsListData(
+        alerts: const [],
         total: 0,
         currentPage: page,
         hasMore: false,
@@ -595,8 +595,8 @@ Future<Alert?> alertById(AlertByIdRef ref, String alertId) async {
     // Fallback to cache if API fails
     final alertsAsync = ref.watch(alertsListProvider);
     if (alertsAsync.hasValue) {
-      final alerts = alertsAsync.value!;
-      for (final alert in alerts) {
+      final alertsData = alertsAsync.value!;
+      for (final alert in alertsData.alerts) {
         if (alert.id == alertId) {
           print('Using cached alert $alertId');
           return alert;
@@ -615,8 +615,8 @@ Future<Alert?> alertById(AlertByIdRef ref, String alertId) async {
       // Check cache one time for 404/timeout cases
       final alertsAsync = ref.watch(alertsListProvider);
       if (alertsAsync.hasValue) {
-        final alerts = alertsAsync.value!;
-        for (final alert in alerts) {
+        final alertsData = alertsAsync.value!;
+        for (final alert in alertsData.alerts) {
           if (alert.id == alertId) {
             return alert;
           }
@@ -630,8 +630,8 @@ Future<Alert?> alertById(AlertByIdRef ref, String alertId) async {
     // For other errors, fallback to cached data
     final alertsAsync = ref.watch(alertsListProvider);
     if (alertsAsync.hasValue) {
-      final alerts = alertsAsync.value!;
-      for (final alert in alerts) {
+      final alertsData = alertsAsync.value!;
+      for (final alert in alertsData.alerts) {
         if (alert.id == alertId) {
           return alert;
         }
