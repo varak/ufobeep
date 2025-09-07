@@ -142,16 +142,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       } catch (e) {
         debugPrint('❌ CAMERA: Failed to capture sensor data: $e');
         sensorData = null;
-        // Show user-friendly message about location
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Location not available: $e'),
-              backgroundColor: AppColors.semanticError,
-              duration: const Duration(seconds: 3),
-            ),
-          );
-        }
+        // Note: GPS errors are logged but not shown to user to avoid red flash
       }
 
       // Save to UFOBeep folder

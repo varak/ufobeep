@@ -497,7 +497,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  AppLocalizations.of(context).edit,
+                  AppLocalizations.of(context).addMedia,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -515,10 +515,10 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                         child: Container(
                           padding: const EdgeInsets.all(20),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.1),
+                            color: AppColors.brandPrimary.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: Colors.white.withOpacity(0.2),
+                              color: AppColors.brandPrimary.withOpacity(0.3),
                               width: 1,
                             ),
                           ),
@@ -526,14 +526,14 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                             children: [
                               Icon(
                                 Icons.camera_alt,
-                                color: Colors.white,
+                                color: AppColors.brandPrimary,
                                 size: 32,
                               ),
                               SizedBox(height: 8),
                               Text(
                                 AppLocalizations.of(context).capturePhoto,
                                 style: const TextStyle(
-                                  color: Colors.white,
+                                  color: AppColors.brandPrimary,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -550,10 +550,10 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                         child: Container(
                           padding: const EdgeInsets.all(20),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.1),
+                            color: AppColors.brandPrimary.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: Colors.white.withOpacity(0.2),
+                              color: AppColors.brandPrimary.withOpacity(0.3),
                               width: 1,
                             ),
                           ),
@@ -561,14 +561,14 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                             children: [
                               Icon(
                                 Icons.photo_library,
-                                color: Colors.white,
+                                color: AppColors.brandPrimary,
                                 size: 32,
                               ),
                               SizedBox(height: 8),
                               Text(
                                 AppLocalizations.of(context).pickFromGallery,
                                 style: const TextStyle(
-                                  color: Colors.white,
+                                  color: AppColors.brandPrimary,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                 ),
