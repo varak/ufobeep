@@ -228,15 +228,62 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         double? validLat = _sensorData?.latitude;
         double? validLon = _sensorData?.longitude;
         
-        // For new sightings, we MUST have valid coordinates
+        // If sensor GPS is missing or invalid, try to extract from photo EXIF as fallback
         if (validLat == null || validLon == null || (validLat == 0.0 && validLon == 0.0)) {
-          debugPrint('❌ Invalid GPS coordinates - cannot create new sighting without location');
+          debugPrint('⚠️ Sensor GPS invalid, attempting to extract from photo EXIF...');
+          
+          // Try to extract GPS from any attached photos
+          for (final fileData in _mediaFiles) {
+            final File mediaFile = fileData['mediaFile'];
+            final bool isVideo = fileData['isVideo'] ?? false;
+            
+            if (!isVideo) { // Only photos have EXIF GPS data
+              try {
+                final photoMetadata = await PhotoMetadataService.extractComprehensiveMetadata(mediaFile);
+                final locationData = photoMetadata['location'];
+                
+                if (locationData != null && 
+                    locationData['latitude'] != null && 
+                    locationData['longitude'] != null &&
+                    locationData['latitude'] != 0.0 &&
+                    locationData['longitude'] != 0.0) {
+                  
+                  validLat = locationData['latitude'];
+                  validLon = locationData['longitude'];
+                  debugPrint('✅ Extracted GPS from photo: lat=$validLat, lon=$validLon');
+                  
+                  // Update sensor data with extracted coordinates
+                  _sensorData = SensorData(
+                    utc: _sensorData?.utc ?? DateTime.now(),
+                    latitude: validLat,
+                    longitude: validLon,
+                    accuracy: 10.0, // Lower accuracy since from photo
+                    altitude: locationData['altitude'] ?? _sensorData?.altitude ?? 0.0,
+                    azimuthDeg: _sensorData?.azimuthDeg ?? 0.0,
+                    pitchDeg: _sensorData?.pitchDeg ?? 0.0,
+                    rollDeg: _sensorData?.rollDeg ?? 0.0,
+                    hfovDeg: _sensorData?.hfovDeg ?? 60.0,
+                  );
+                  break; // Found valid GPS, stop searching
+                }
+              } catch (e) {
+                debugPrint('Failed to extract GPS from photo: $e');
+              }
+            }
+          }
+        }
+        
+        // Final validation - only fail if we absolutely have no GPS data
+        if (validLat == null || validLon == null || (validLat == 0.0 && validLon == 0.0)) {
+          debugPrint('❌ No valid GPS coordinates found in sensor data or photo EXIF');
           setState(() {
             _isSubmitting = false;
-            _errorMessage = 'Valid GPS coordinates required to create new sighting. Please ensure GPS is enabled.';
+            _errorMessage = 'GPS location required. Please enable GPS or take photos with location enabled.';
           });
           return;
         }
+        
+        debugPrint('📍 Final GPS coordinates: lat=$validLat, lon=$validLon');
         
         final beepResult = await BeepService().sendBeep(
           description: finalDescription,
