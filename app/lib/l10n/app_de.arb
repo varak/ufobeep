@@ -374,5 +374,20 @@
         "example": "12345"
       }
     }
+  },
+  "directionDistanceTitle": "Richtung und Distanz",
+  "mufonCaseTitle": "MUFON Rechtssache",
+  "satellitePassesTitle": "Satellitenempfang",
+  "satellitePassExplanation": "Sichtbare Satelliten passieren während der Sichtzeit. Viele UFO-Berichte sind tatsächlich Satelliten oder Leerzeichen.",
+  "followingAlert": "Nach dem Alarm - Sie erhalten Kommentare Benachrichtigungen",
+  "unfollowedAlert": "Unfollowed alert - no more comment Benachrichtigungen",
+  "alertFollowError": "Fehler bei der Aktualisierung",
+  "@mufonCaseTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
   }
 }

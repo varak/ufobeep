@@ -374,5 +374,20 @@
         "example": "12345"
       }
     }
+  },
+  "directionDistanceTitle": "方向及び間隔",
+  "mufonCaseTitle": "MUFONについて ケース #_PH_0__",
+  "satellitePassesTitle": "衛星パス",
+  "satellitePassExplanation": "視力時間枠の間に可視衛星パス. 多くのUFOレポートは、実際には衛星や宇宙の破片です.",
+  "followingAlert": "次のアラート - コメント通知を取得します",
+  "unfollowedAlert": "フォローされていないアラート - コメント通知はありません",
+  "alertFollowError": "エラー更新 ステータスをフォローする",
+  "@mufonCaseTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
   }
 }

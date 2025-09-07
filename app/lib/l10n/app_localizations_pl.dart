@@ -768,4 +768,30 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get comingSoon => 'Wkrótce';
+
+  @override
+  String get directionDistanceTitle => 'Direction & Distance';
+
+  @override
+  String mufonCaseTitle(String caseNumber) {
+    return 'MUFON Case #$caseNumber';
+  }
+
+  @override
+  String get satellitePassesTitle => 'Satellite Passes';
+
+  @override
+  String get satellitePassExplanation =>
+      'Visible satellite passes during the sighting timeframe. Many UFO reports are actually satellites or space debris.';
+
+  @override
+  String get followingAlert =>
+      'Following alert - you\'ll get comment notifications';
+
+  @override
+  String get unfollowedAlert =>
+      'Unfollowed alert - no more comment notifications';
+
+  @override
+  String get alertFollowError => 'Error updating follow status';
 }

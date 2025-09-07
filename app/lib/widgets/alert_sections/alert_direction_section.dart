@@ -6,6 +6,7 @@ import '../../theme/app_theme.dart';
 import '../../services/permission_service.dart';
 import '../glass_card.dart';
 import '../../l10n/app_localizations.dart';
+import '../../utils/unit_conversion.dart';
 
 class AlertDirectionSection extends StatelessWidget {
   const AlertDirectionSection({
@@ -35,7 +36,7 @@ class AlertDirectionSection extends StatelessWidget {
               ),
               SizedBox(width: 8),
               Text(
-                'Direction & Distance',
+                AppLocalizations.of(context).directionDistanceTitle,
                 style: TextStyle(
                   color: AppColors.brandPrimary,
                   fontSize: 16,
@@ -132,7 +133,7 @@ class AlertDirectionSection extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '${distance.toStringAsFixed(1)} km away',
+                    AppLocalizations.of(context).distanceAway(UnitConversion.formatDistance(distance * 1000, 'metric')),
                     style: const TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 14,

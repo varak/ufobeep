@@ -374,5 +374,20 @@
         "example": "12345"
       }
     }
+  },
+  "directionDistanceTitle": "Направление и расстояние",
+  "mufonCaseTitle": "МУФОН Дело #{caseNumber}",
+  "satellitePassesTitle": "Спутниковые проходы",
+  "satellitePassExplanation": "Видимый спутник проходит во время наблюдения. Многие сообщения об НЛО на самом деле являются спутниками или космическим мусором.",
+  "followingAlert": "После предупреждения - вы получите уведомления о комментариях",
+  "unfollowedAlert": "Unfollowed alert - больше никаких комментариев",
+  "alertFollowError": "Обновление ошибок Следуйте за статусом",
+  "@mufonCaseTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
   }
 }

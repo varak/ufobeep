@@ -374,5 +374,20 @@
         "example": "12345"
       }
     }
+  },
+  "directionDistanceTitle": "Direction & Distance",
+  "mufonCaseTitle": "MUFON Cas #{caseNumber}",
+  "satellitePassesTitle": "Cartes satellites",
+  "satellitePassExplanation": "Satellite visible passe pendant la période d'observation. De nombreux rapports ovnis sont en fait des satellites ou des débris spatiaux.",
+  "followingAlert": "Après l'alerte - vous obtiendrez des notifications de commentaires",
+  "unfollowedAlert": "Alerte non suivie - plus de notifications de commentaires",
+  "alertFollowError": "Erreur de mise à jour suivre l'état",
+  "@mufonCaseTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
   }
 }

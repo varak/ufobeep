@@ -374,5 +374,20 @@
         "example": "12345"
       }
     }
+  },
+  "directionDistanceTitle": "Direction ' Distance",
+  "mufonCaseTitle": "MUFON القضية",
+  "satellitePassesTitle": "تصاريح ساتلية",
+  "satellitePassExplanation": "قمر صناعي مرئي يمر خلال الإطار الزمني وكثير من تقارير المدار الثابت بالنسبة للأرض هي في الواقع سواتل أو حطام فضائي.",
+  "followingAlert": "بعد تنبيه - سوف تحصل على إشعارات التعليق",
+  "unfollowedAlert": "إنذار غير متوفر - لا مزيد من إخطارات التعليق",
+  "alertFollowError": "استكمال الأخطاء",
+  "@mufonCaseTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
   }
 }

@@ -768,4 +768,30 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get comingSoon => 'Скоро придет';
+
+  @override
+  String get directionDistanceTitle => 'Направление и расстояние';
+
+  @override
+  String mufonCaseTitle(String caseNumber) {
+    return 'МУФОН Дело #$caseNumber';
+  }
+
+  @override
+  String get satellitePassesTitle => 'Спутниковые проходы';
+
+  @override
+  String get satellitePassExplanation =>
+      'Видимый спутник проходит во время наблюдения. Многие сообщения об НЛО на самом деле являются спутниками или космическим мусором.';
+
+  @override
+  String get followingAlert =>
+      'После предупреждения - вы получите уведомления о комментариях';
+
+  @override
+  String get unfollowedAlert =>
+      'Unfollowed alert - больше никаких комментариев';
+
+  @override
+  String get alertFollowError => 'Обновление ошибок Следуйте за статусом';
 }

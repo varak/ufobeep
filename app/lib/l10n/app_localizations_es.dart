@@ -769,4 +769,30 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get comingSoon => 'Pronto';
+
+  @override
+  String get directionDistanceTitle => 'Dirección \" Distancia';
+
+  @override
+  String mufonCaseTitle(String caseNumber) {
+    return 'MUFON Caso..';
+  }
+
+  @override
+  String get satellitePassesTitle => 'Pases por satélite';
+
+  @override
+  String get satellitePassExplanation =>
+      'El satélite visible pasa durante el período de visualización. Muchos informes de OVNI son en realidad satélites o desechos espaciales.';
+
+  @override
+  String get followingAlert =>
+      'Después de la alerta - obtendrá notificaciones de comentarios';
+
+  @override
+  String get unfollowedAlert =>
+      'Alerta sin seguimiento - no más notificaciones de comentarios';
+
+  @override
+  String get alertFollowError => 'Actualización de errores';
 }

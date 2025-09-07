@@ -374,5 +374,20 @@
         "example": "12345"
       }
     }
+  },
+  "directionDistanceTitle": "Dirección \" Distancia",
+  "mufonCaseTitle": "MUFON Caso..",
+  "satellitePassesTitle": "Pases por satélite",
+  "satellitePassExplanation": "El satélite visible pasa durante el período de visualización. Muchos informes de OVNI son en realidad satélites o desechos espaciales.",
+  "followingAlert": "Después de la alerta - obtendrá notificaciones de comentarios",
+  "unfollowedAlert": "Alerta sin seguimiento - no más notificaciones de comentarios",
+  "alertFollowError": "Actualización de errores",
+  "@mufonCaseTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
   }
 }

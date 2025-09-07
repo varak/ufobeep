@@ -1037,7 +1037,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   }
   
   Widget _buildCommentItem(Comment comment) {
-    final timeAgo = _formatCommentTime(comment.createdAt);
+    final timeAgo = _formatCommentTime(context, comment.createdAt);
     
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
@@ -1062,14 +1062,14 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       comment.username,
                       style: const TextStyle(
                         color: AppColors.textPrimary,
-                        fontSize: 14,
+                        fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -1092,7 +1092,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               comment.body,
               style: const TextStyle(
                 color: AppColors.textSecondary,
-                fontSize: 14,
+                fontSize: 16,
                 height: 1.4,
               ),
             ),
@@ -1102,18 +1102,19 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     );
   }
   
-  String _formatCommentTime(DateTime dateTime) {
+  String _formatCommentTime(BuildContext context, DateTime dateTime) {
+    final l10n = AppLocalizations.of(context);
     final now = DateTime.now();
     final difference = now.difference(dateTime);
     
     if (difference.inDays > 0) {
-      return '${difference.inDays}d ago';
+      return l10n.timeDaysAgo(difference.inDays);
     } else if (difference.inHours > 0) {
-      return '${difference.inHours}h ago';
+      return l10n.timeHoursAgo(difference.inHours);
     } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}m ago';
+      return l10n.timeMinutesAgo(difference.inMinutes);
     } else {
-      return 'Just now';
+      return l10n.timeJustNow;
     }
   }
 

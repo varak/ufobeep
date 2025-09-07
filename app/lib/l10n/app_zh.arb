@@ -374,5 +374,20 @@
         "example": "12345"
       }
     }
+  },
+  "directionDistanceTitle": "方向距离( D)",
+  "mufonCaseTitle": "毛里求斯 案件QQPH_0___",
+  "satellitePassesTitle": "卫星通行证",
+  "satellitePassExplanation": "可见卫星在目视时间内通过. 许多UFO报告实际上是卫星或空间碎片.",
+  "followingAlert": "注意后 - 你会收到评论通知",
+  "unfollowedAlert": "未遵循提醒 - 没有更多评论通知",
+  "alertFollowError": "更新跟随状态出错",
+  "@mufonCaseTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
   }
 }

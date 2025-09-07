@@ -374,5 +374,20 @@
         "example": "12345"
       }
     }
+  },
+  "directionDistanceTitle": "Direcção & Distância",
+  "mufonCaseTitle": "MUFON Caso #__PH_0_",
+  "satellitePassesTitle": "Passagens por Satélite",
+  "satellitePassExplanation": "O satélite visível passa durante o período de avistamento. Muitos relatórios de OVNIs são realmente satélites ou detritos espaciais.",
+  "followingAlert": "A seguir alerta - você receberá notificações de comentários",
+  "unfollowedAlert": "Alerta não seguido - sem notificações de comentários",
+  "alertFollowError": "Erro ao atualizar o status da sequência",
+  "@mufonCaseTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
   }
 }

@@ -1,1 +1,111 @@
-{}
+{
+  "cs": [
+    "directionDistanceTitle",
+    "mufonCaseTitle",
+    "satellitePassesTitle",
+    "satellitePassExplanation",
+    "followingAlert",
+    "unfollowedAlert",
+    "alertFollowError"
+  ],
+
+  "da": [
+    "directionDistanceTitle",
+    "mufonCaseTitle",
+    "satellitePassesTitle",
+    "satellitePassExplanation",
+    "followingAlert",
+    "unfollowedAlert",
+    "alertFollowError"
+  ],
+
+  "el": [
+    "directionDistanceTitle",
+    "mufonCaseTitle",
+    "satellitePassesTitle",
+    "satellitePassExplanation",
+    "followingAlert",
+    "unfollowedAlert",
+    "alertFollowError"
+  ],
+
+  "fi": [
+    "directionDistanceTitle",
+    "mufonCaseTitle",
+    "satellitePassesTitle",
+    "satellitePassExplanation",
+    "followingAlert",
+    "unfollowedAlert",
+    "alertFollowError"
+  ],
+
+  "he": [
+    "directionDistanceTitle",
+    "mufonCaseTitle",
+    "satellitePassesTitle",
+    "satellitePassExplanation",
+    "followingAlert",
+    "unfollowedAlert",
+    "alertFollowError"
+  ],
+
+  "hi": [
+    "directionDistanceTitle",
+    "mufonCaseTitle",
+    "satellitePassesTitle",
+    "satellitePassExplanation",
+    "followingAlert",
+    "unfollowedAlert",
+    "alertFollowError"
+  ],
+
+  "ko": [
+    "directionDistanceTitle",
+    "mufonCaseTitle",
+    "satellitePassesTitle",
+    "satellitePassExplanation",
+    "followingAlert",
+    "unfollowedAlert",
+    "alertFollowError"
+  ],
+
+  "nl": [
+    "directionDistanceTitle",
+    "mufonCaseTitle",
+    "satellitePassesTitle",
+    "satellitePassExplanation",
+    "followingAlert",
+    "unfollowedAlert",
+    "alertFollowError"
+  ],
+
+  "no": [
+    "directionDistanceTitle",
+    "mufonCaseTitle",
+    "satellitePassesTitle",
+    "satellitePassExplanation",
+    "followingAlert",
+    "unfollowedAlert",
+    "alertFollowError"
+  ],
+
+  "pl": [
+    "directionDistanceTitle",
+    "mufonCaseTitle",
+    "satellitePassesTitle",
+    "satellitePassExplanation",
+    "followingAlert",
+    "unfollowedAlert",
+    "alertFollowError"
+  ],
+
+  "sv": [
+    "directionDistanceTitle",
+    "mufonCaseTitle",
+    "satellitePassesTitle",
+    "satellitePassExplanation",
+    "followingAlert",
+    "unfollowedAlert",
+    "alertFollowError"
+  ]
+}

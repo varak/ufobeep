@@ -758,4 +758,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get comingSoon => 'قادم قريبا';
+
+  @override
+  String get directionDistanceTitle => 'Direction \' Distance';
+
+  @override
+  String mufonCaseTitle(String caseNumber) {
+    return 'MUFON القضية';
+  }
+
+  @override
+  String get satellitePassesTitle => 'تصاريح ساتلية';
+
+  @override
+  String get satellitePassExplanation =>
+      'قمر صناعي مرئي يمر خلال الإطار الزمني وكثير من تقارير المدار الثابت بالنسبة للأرض هي في الواقع سواتل أو حطام فضائي.';
+
+  @override
+  String get followingAlert => 'بعد تنبيه - سوف تحصل على إشعارات التعليق';
+
+  @override
+  String get unfollowedAlert => 'إنذار غير متوفر - لا مزيد من إخطارات التعليق';
+
+  @override
+  String get alertFollowError => 'استكمال الأخطاء';
 }

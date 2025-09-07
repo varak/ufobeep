@@ -747,4 +747,28 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get comingSoon => '近日公開';
+
+  @override
+  String get directionDistanceTitle => '方向及び間隔';
+
+  @override
+  String mufonCaseTitle(String caseNumber) {
+    return 'MUFONについて ケース #_PH_0__';
+  }
+
+  @override
+  String get satellitePassesTitle => '衛星パス';
+
+  @override
+  String get satellitePassExplanation =>
+      '視力時間枠の間に可視衛星パス. 多くのUFOレポートは、実際には衛星や宇宙の破片です.';
+
+  @override
+  String get followingAlert => '次のアラート - コメント通知を取得します';
+
+  @override
+  String get unfollowedAlert => 'フォローされていないアラート - コメント通知はありません';
+
+  @override
+  String get alertFollowError => 'エラー更新 ステータスをフォローする';
 }

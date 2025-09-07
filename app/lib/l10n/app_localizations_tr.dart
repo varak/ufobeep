@@ -768,4 +768,29 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get comingSoon => 'Yakında Geliyor';
+
+  @override
+  String get directionDistanceTitle => 'Yön & Uzaktan';
+
+  @override
+  String mufonCaseTitle(String caseNumber) {
+    return 'MUFON Vaka #$caseNumber';
+  }
+
+  @override
+  String get satellitePassesTitle => 'Uydu Passes';
+
+  @override
+  String get satellitePassExplanation =>
+      'Visible uydu, zaman çerçevesi sırasında geçer. Birçok UFO raporu aslında uydular veya uzay enkazıdır.';
+
+  @override
+  String get followingAlert => 'Uyarıyı takiben - bildirimleri alacaksınız';
+
+  @override
+  String get unfollowedAlert =>
+      'Takip edilemez uyarı - daha fazla yorum bildirim';
+
+  @override
+  String get alertFollowError => 'Hata Güncellemesi';
 }

@@ -1547,6 +1547,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Coming Soon'**
   String get comingSoon;
+
+  /// No description provided for @directionDistanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Direction & Distance'**
+  String get directionDistanceTitle;
+
+  /// No description provided for @mufonCaseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON Case #{caseNumber}'**
+  String mufonCaseTitle(String caseNumber);
+
+  /// No description provided for @satellitePassesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Satellite Passes'**
+  String get satellitePassesTitle;
+
+  /// No description provided for @satellitePassExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Visible satellite passes during the sighting timeframe. Many UFO reports are actually satellites or space debris.'**
+  String get satellitePassExplanation;
+
+  /// No description provided for @followingAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'Following alert - you\'ll get comment notifications'**
+  String get followingAlert;
+
+  /// No description provided for @unfollowedAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfollowed alert - no more comment notifications'**
+  String get unfollowedAlert;
+
+  /// No description provided for @alertFollowError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error updating follow status'**
+  String get alertFollowError;
 }
 
 class _AppLocalizationsDelegate

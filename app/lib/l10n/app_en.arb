@@ -376,5 +376,23 @@
   "premiumImageryAccessOnly": "Premium satellite imagery is only available to:",
   "premiumAccessCreators": "Alert creators",
   "premiumAccessWitnesses": "Confirmed witnesses within visibility range",
-  "comingSoon": "Coming Soon"
+  "comingSoon": "Coming Soon",
+  
+  "directionDistanceTitle": "Direction & Distance",
+  "ufoSighting": "UFO Sighting",
+  "beepOnly": "beep only",
+  "mufonCaseTitle": "MUFON Case #{caseNumber}",
+  "@mufonCaseTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
+  "satellitePassesTitle": "Satellite Passes",
+  "satellitePassExplanation": "Visible satellite passes during the sighting timeframe. Many UFO reports are actually satellites or space debris.",
+  "followingAlert": "Following alert - you'll get comment notifications",
+  "unfollowedAlert": "Unfollowed alert - no more comment notifications",
+  "alertFollowError": "Error updating follow status"
 }

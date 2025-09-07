@@ -374,5 +374,20 @@
         "example": "12345"
       }
     }
+  },
+  "directionDistanceTitle": "Direzione & Distanza",
+  "mufonCaseTitle": "MUFON Caso #",
+  "satellitePassesTitle": "Passi satellitari",
+  "satellitePassExplanation": "Passa satellite visibile durante il tempo di avvistamento. Molti rapporti UFO sono in realtà satelliti o detriti spaziali.",
+  "followingAlert": "In seguito all'avviso - otterrai notifiche di commento",
+  "unfollowedAlert": "Avviso non seguito - non più notifiche di commento",
+  "alertFollowError": "Aggiornamento degli errori",
+  "@mufonCaseTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
   }
 }

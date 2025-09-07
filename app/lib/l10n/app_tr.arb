@@ -374,5 +374,20 @@
         "example": "12345"
       }
     }
+  },
+  "directionDistanceTitle": "Yön & Uzaktan",
+  "mufonCaseTitle": "MUFON Vaka #{caseNumber}",
+  "satellitePassesTitle": "Uydu Passes",
+  "satellitePassExplanation": "Visible uydu, zaman çerçevesi sırasında geçer. Birçok UFO raporu aslında uydular veya uzay enkazıdır.",
+  "followingAlert": "Uyarıyı takiben - bildirimleri alacaksınız",
+  "unfollowedAlert": "Takip edilemez uyarı - daha fazla yorum bildirim",
+  "alertFollowError": "Hata Güncellemesi",
+  "@mufonCaseTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
   }
 }
