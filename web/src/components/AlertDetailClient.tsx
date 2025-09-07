@@ -53,6 +53,16 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
     return (navigator.language || 'en').split('-')[0]
   }, [])
 
+  // Parse openImage URL parameter for auto-opening specific image
+  const openImageIndex = useMemo(() => {
+    const openImageParam = search.get('openImage')
+    if (openImageParam !== null) {
+      const index = parseInt(openImageParam, 10)
+      return isNaN(index) ? undefined : index
+    }
+    return undefined
+  }, [search])
+
   useEffect(() => {
     const fetchAlert = async () => {
       try {
@@ -160,7 +170,7 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
           ← Back to All Alerts
         </Link>
 
-        <AlertHero alert={alert} />
+        <AlertHero alert={alert} openImageIndex={openImageIndex} />
 
         <div className="space-y-6">
           <div className="flex items-center justify-between">

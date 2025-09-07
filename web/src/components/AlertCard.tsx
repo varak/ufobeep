@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import ImageWithLoading from './ImageWithLoading'
 import MediaGalleryModal from './MediaGalleryModal'
 import { AlertTitleUtils } from '@/utils/alert-title-utils'
@@ -60,9 +61,17 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
   // Use the converted alert for all operations
   const alertData = alertWithFixedUrls
   
+  const router = useRouter()
   const [showShareMenu, setShowShareMenu] = useState(false)
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
+
+  // Helper function to get detail URL with optional image parameter
+  const getDetailUrl = (imageIndex?: number) => {
+    const slug = getAlertSlug(alert)
+    const baseUrl = slug ? `/alerts/${alert.id}/${slug}` : `/alerts/${alert.id}`
+    return imageIndex !== undefined ? `${baseUrl}?openImage=${imageIndex}` : baseUrl
+  }
 
   // Smart description selection for preview cards
   const getPreviewDescription = () => {
@@ -255,6 +264,36 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
               <p className="text-text-secondary text-xs line-clamp-1">
                 {formatLocation(alert.location)}
               </p>
+              
+              {/* Small thumbnail preview for compact cards */}
+              {alert.media_files && alert.media_files.length > 0 && (
+                <div className="flex gap-1 mt-2">
+                  {alert.media_files.slice(0, 3).map((media, index) => (
+                    <div 
+                      key={media.id}
+                      className="w-6 h-6 bg-dark-background rounded overflow-hidden cursor-pointer hover:ring-1 hover:ring-brand-primary/50 transition-all"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        router.push(getDetailUrl(index))
+                      }}
+                    >
+                      <ImageWithLoading 
+                        src={media.thumbnail_url || media.url}
+                        alt={`Preview ${index + 1}`}
+                        width={24}
+                        height={24}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ))}
+                  {alert.media_files.length > 3 && (
+                    <div className="w-6 h-6 bg-dark-background/50 rounded flex items-center justify-center text-xs text-text-tertiary">
+                      +{alert.media_files.length - 3}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
             <div className="w-2 h-2 bg-brand-primary rounded-full animate-pulse"></div>
           </div>
@@ -385,8 +424,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                         onClick={(e) => {
                           e.preventDefault()
                           e.stopPropagation()
-                          setSelectedMediaIndex(index)
-                          setIsMediaModalOpen(true)
+                          router.push(getDetailUrl(index))
                         }}
                       >
                         <ImageWithLoading 

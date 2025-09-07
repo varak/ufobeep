@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import MediaGalleryModal from '../MediaGalleryModal'
 
@@ -24,9 +24,10 @@ interface Alert {
 
 interface AlertHeroProps {
   alert: Alert
+  openImageIndex?: number
 }
 
-export default function AlertHero({ alert }: AlertHeroProps) {
+export default function AlertHero({ alert, openImageIndex }: AlertHeroProps) {
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
   const router = useRouter()
@@ -40,6 +41,17 @@ export default function AlertHero({ alert }: AlertHeroProps) {
     router.replace(url.pathname + url.search, { scroll: false })
     setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100)
   }
+
+  // Auto-open image modal if openImageIndex is provided
+  const hasAutoOpened = useRef(false)
+  useEffect(() => {
+    if (openImageIndex !== undefined && hasMedia && !hasAutoOpened.current) {
+      const validIndex = Math.max(0, Math.min(openImageIndex, alert.media_files.length - 1))
+      setSelectedMediaIndex(validIndex)
+      setIsMediaModalOpen(true)
+      hasAutoOpened.current = true
+    }
+  }, [openImageIndex, hasMedia, alert.media_files])
 
   return (
     <div className="bg-dark-surface border border-dark-border rounded-lg overflow-hidden mb-6">
