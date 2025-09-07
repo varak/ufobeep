@@ -16,10 +16,13 @@ cd /home/ufobeep/ufobeep
 ./mufon.sh YYYY-MM-DD
 ./mufon.sh yesterday  
 ./mufon.sh today
+./mufon.sh YYYY-MM-DD:YYYY-MM-DD   # date range (inclusive)
+./mufon.sh yesterday:today         # relative range
 
 # Local development usage
 cd /home/mike/D/ufobeep
 ./mufon.sh YYYY-MM-DD
+./mufon.sh YYYY-MM-DD:YYYY-MM-DD
 ```
 
 ### What It Does
@@ -86,9 +89,17 @@ Playwright and Python dependencies are already installed on production.
 # Import today's cases
 ./mufon.sh today
 
+# Import a specific date range (inclusive)
+./mufon.sh 2025-08-01:2025-08-15
+
+# Import a relative range (yesterday through today)
+./mufon.sh yesterday:today
+
 # View output while running
 ./mufon.sh yesterday | tee mufon_import.log
 ```
+
+Note: Date range support is built directly into `mufon.sh`, replacing the need for `mass_mufon_import.sh`.
 
 ### Expected Output
 ```

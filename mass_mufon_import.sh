@@ -5,6 +5,7 @@
 
 echo "🚀 Starting Mass MUFON Import from August 1st, 2025"
 echo "=================================================="
+echo "⚠️  Deprecated: Use './mufon.sh YYYY-MM-DD:YYYY-MM-DD' instead."
 
 # Start date: August 1st, 2025
 start_date="2025-08-01"

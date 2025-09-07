@@ -3,31 +3,65 @@
 # Usage: ./mufon.sh 2025-01-27
 # Usage: ./mufon.sh yesterday 
 # Usage: ./mufon.sh today
+# Usage: ./mufon.sh 2025-08-01:2025-08-15   # date range (inclusive)
+# Usage: ./mufon.sh yesterday:today         # relative range
 
 set -e
 
 if [ $# -eq 0 ]; then
-    echo "Usage: ./mufon.sh <date>"
+    echo "Usage: ./mufon.sh <date or range>"
     echo "Examples:"
     echo "  ./mufon.sh 2025-01-27"
     echo "  ./mufon.sh yesterday"
     echo "  ./mufon.sh today"
+    echo "  ./mufon.sh 2025-08-01:2025-08-15"
+    echo "  ./mufon.sh yesterday:today"
     exit 1
 fi
 
 DATE_INPUT="$1"
 
-# Handle relative dates
-if [ "$DATE_INPUT" = "yesterday" ]; then
-    DATE=$(date -d "yesterday" +%Y-%m-%d)
-elif [ "$DATE_INPUT" = "today" ]; then
-    DATE=$(date +%Y-%m-%d)
-else
-    DATE="$DATE_INPUT"
-fi
+# Helper: resolve tokens like 'today'/'yesterday' to YYYY-MM-DD
+resolve_date_token() {
+    local token="$1"
+    if [ "$token" = "yesterday" ]; then
+        date -d "yesterday" +%Y-%m-%d
+    elif [ "$token" = "today" ]; then
+        date +%Y-%m-%d
+    else
+        if ! date -d "$token" +%Y-%m-%d >/dev/null 2>&1; then
+            echo ""
+            return 1
+        fi
+        date -d "$token" +%Y-%m-%d
+    fi
+}
 
-echo "🚀 MUFON Pipeline Starting for $DATE"
-echo "===================================="
+# Compute display header but delay the actual run until after env is loaded
+if [[ "$DATE_INPUT" == *:* ]]; then
+    START_TOKEN="${DATE_INPUT%%:*}"
+    END_TOKEN="${DATE_INPUT##*:}"
+    START_DATE=$(resolve_date_token "$START_TOKEN") || true
+    END_DATE=$(resolve_date_token "$END_TOKEN") || true
+    if [ -z "$START_DATE" ] || [ -z "$END_DATE" ]; then
+        echo "❌ Invalid date range: '$DATE_INPUT'"
+        exit 1
+    fi
+    if [[ "$START_DATE" > "$END_DATE" ]]; then
+        echo "❌ Start date ($START_DATE) is after end date ($END_DATE)"
+        exit 1
+    fi
+    echo "🚀 MUFON Pipeline Starting for range $START_DATE to $END_DATE"
+    echo "============================================================"
+else
+    DATE=$(resolve_date_token "$DATE_INPUT") || true
+    if [ -z "$DATE" ]; then
+        echo "❌ Invalid date: '$DATE_INPUT'"
+        exit 1
+    fi
+    echo "🚀 MUFON Pipeline Starting for $DATE"
+    echo "===================================="
+fi
 
 # Change to working directory
 # cd /home/ufobeep/ufobeep
@@ -51,13 +85,11 @@ fi
 export MUFON_USERNAME
 export MUFON_PASSWORD
 
-# Clear any existing cookies to force fresh authentication
-echo "🗑️ Clearing any existing cookies for fresh authentication..."
-rm -f /tmp/mufon_cookies.json
-
-# Execute embedded Python script
-echo "🔍 Running MUFON extraction and import..."
-python3 - "$DATE" << 'EOF'
+# Bash function to run the embedded Python for a single date
+run_mufon_for_date() {
+    local RUN_DATE="$1"
+    echo "🔍 Running MUFON extraction and import for $RUN_DATE..."
+    python3 - "$RUN_DATE" << 'EOF'
 #!/usr/bin/env python3
 import sys
 import os
@@ -970,11 +1002,61 @@ if __name__ == "__main__":
     success = extract_and_import_mufon(sys.argv[1])
     sys.exit(0 if success else 1)
 EOF
+    return $?
+}
 
-SCRIPT_EXIT=$?
-if [ $SCRIPT_EXIT -eq 0 ]; then
-    echo "✅ MUFON import completed successfully!"
+# Clear any existing cookies once before processing
+echo "🗑️ Clearing any existing cookies for fresh authentication..."
+rm -f /tmp/mufon_cookies.json
+
+# In range mode, loop days; otherwise run single date
+if [[ "$DATE_INPUT" == *:* ]]; then
+    current_date="$START_DATE"
+    last_date="$END_DATE"
+    day_count=0
+    success_count=0
+    error_count=0
+    echo "📅 Import range: $START_DATE to $END_DATE"
+    echo "⏱️  2-second delay between each day"
+    echo ""
+    while [[ "$current_date" <= "$last_date" ]]; do
+        day_count=$((day_count + 1))
+        echo "📅 Day $day_count: Processing $current_date"
+        if run_mufon_for_date "$current_date"; then
+            echo "✅ Successfully imported data for $current_date"
+            success_count=$((success_count + 1))
+        else
+            echo "❌ Failed to import data for $current_date"
+            error_count=$((error_count + 1))
+        fi
+        # Next day
+        current_date=$(date -d "$current_date + 1 day" +%Y-%m-%d)
+        if [[ "$current_date" <= "$last_date" ]]; then
+            echo "⏳ Waiting 2 seconds..."
+            sleep 2
+            echo ""
+        fi
+    done
+    echo ""
+    echo "🎉 MUFON Range Import Complete!"
+    echo "================================"
+    echo "📊 Total days processed: $day_count"
+    echo "✅ Successful imports: $success_count"
+    echo "❌ Failed imports: $error_count"
+    echo "📅 Date range: $START_DATE to $END_DATE"
+    if [ $error_count -eq 0 ]; then
+        echo "🎯 All imports completed successfully!"
+        exit 0
+    else
+        echo "⚠️  Some imports failed. Check logs above for details."
+        exit 1
+    fi
 else
-    echo "❌ MUFON import failed"
-    exit 1
+    if run_mufon_for_date "$DATE"; then
+        echo "✅ MUFON import completed successfully!"
+        exit 0
+    else
+        echo "❌ MUFON import failed"
+        exit 1
+    fi
 fi
