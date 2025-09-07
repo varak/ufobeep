@@ -92,7 +92,7 @@ POST /alerts/{alert_id}/media
   "filename": "evidence_photo.jpg",
   "uploaded_by": "stellar-phoenix-9876",
   "is_witness_upload": true,
-  "url": "https://api.ufobeep.com/media/alert123/stellar-phoenix-9876_evidence.jpg"
+  "url": "https://ufobeep.com/api/media/alert123/stellar-phoenix-9876_evidence.jpg"
 }
 ```
 

@@ -11,8 +11,8 @@
 
 ## Production URLs
 - **Website**: https://ufobeep.com
-- **API**: https://api.ufobeep.com  
-- **Admin**: https://api.ufobeep.com/admin
+- **API**: https://ufobeep.com/api  
+- **Admin**: https://ufobeep.com/api/admin
 - **SSH**: `ssh -p 322 ufobeep@ufobeep.com`
 
 ## Key Commands
@@ -32,7 +32,7 @@ adb devices  # Check connected devices
 adb -s DEVICE_ID install -r build/app/outputs/flutter-apk/app-release.apk
 
 # Test anonymous beep
-curl -X POST https://api.ufobeep.com/beep/anonymous -H "Content-Type: application/json" -d '{"device_id":"test","location":{"latitude":36.24,"longitude":-115.24},"description":"test"}'
+curl -X POST https://ufobeep.com/api/beep/anonymous -H "Content-Type: application/json" -d '{"device_id":"test","location":{"latitude":36.24,"longitude":-115.24},"description":"test"}'
 ```
 
 ## Current Issues

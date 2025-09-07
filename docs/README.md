@@ -54,4 +54,4 @@ archive/
 ## 📞 Support
 - GitHub Issues: [github.com/varak/ufobeep/issues](https://github.com/varak/ufobeep/issues)
 - Production: ufobeep.com
-- API: api.ufobeep.com
+- API: ufobeep.com/api

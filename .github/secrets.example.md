@@ -9,7 +9,7 @@ This file documents all the required GitHub secrets for the CI/CD pipelines.
 - `VPS_USER` - SSH username for VPS
 - `VPS_SSH_KEY` - Private SSH key for VPS access (base64 encoded)
 - `VPS_PORT` - SSH port (default: 22)
-- `API_DOMAIN` - API domain (e.g., api.ufobeep.com)
+- `API_DOMAIN` - API domain (e.g., ufobeep.com)
 
 ### Docker Registry
 - `GITHUB_TOKEN` - Automatically provided by GitHub Actions (for ghcr.io)
@@ -36,7 +36,7 @@ This file documents all the required GitHub secrets for the CI/CD pipelines.
 - `VERCEL_PROJECT_ID` - Vercel project ID
 
 ### Environment Variables
-- `API_BASE_URL` - Production API URL (e.g., https://api.ufobeep.com)
+- `API_BASE_URL` - Production API URL (e.g., https://ufobeep.com/api)
 - `SITE_URL` - Production site URL (e.g., https://ufobeep.com)
 - `MATRIX_BASE_URL` - Matrix server URL (e.g., https://matrix.org)
 

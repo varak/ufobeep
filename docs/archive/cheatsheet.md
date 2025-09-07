@@ -9,7 +9,7 @@
 
 ## Server Architecture
 - **Single FastAPI server** serving all endpoints
-- **Production URL**: https://api.ufobeep.com
+- **Production URL**: https://ufobeep.com/api
 - **Local development**: `/home/mike/D/ufobeep`
 
 ## Core API Endpoints (v12 Updates)
@@ -143,15 +143,15 @@ content_flags (
 
 ```bash
 # Test user registration
-curl -X POST https://api.ufobeep.com/users/generate-id
+curl -X POST https://ufobeep.com/api/users/generate-id
 
 # Test witness media upload
-curl -X POST https://api.ufobeep.com/alerts/{id}/media \
+curl -X POST https://ufobeep.com/api/alerts/{id}/media \
   -H "X-User-ID: cosmic-whisper-7823" \
   -F "file=@witness_photo.jpg"
 
 # Test content flagging
-curl -X POST https://api.ufobeep.com/alerts/{id}/media/{file}/flag \
+curl -X POST https://ufobeep.com/api/alerts/{id}/media/{file}/flag \
   -d '{"flag_type": "NSFW", "user_id": "stellar-phoenix-9876"}'
 ```
 

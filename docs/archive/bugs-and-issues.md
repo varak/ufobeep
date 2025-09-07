@@ -177,7 +177,7 @@
 ### 🔍 INVESTIGATION-001: Backend Health Check
 **Assigned:** Next priority  
 **Tasks:**
-- [ ] Check production server status at ufobeep.com/api.ufobeep.com
+- [ ] Check production server status at ufobeep.com/ufobeep.com/api
 - [ ] Test API endpoints: GET /health, POST /sightings
 - [ ] Verify database connectivity
 - [ ] Check Docker containers status

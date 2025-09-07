@@ -70,7 +70,7 @@ sudo journalctl -u ufobeep-web -f
 ```
 
 ## 🌐 Production URLs
-- **API**: https://api.ufobeep.com
+- **API**: https://ufobeep.com/api
 - **Website**: https://ufobeep.com
 - **APK Download**: https://ufobeep.com/downloads/ufobeep-alpha.apk
 - **Admin**: https://ufobeep.com/admin
@@ -107,8 +107,8 @@ adb -s HT75D0202593 install -r app/build/app/outputs/flutter-apk/app-debug.apk
 curl http://localhost:8000/health
 
 # Production
-curl https://api.ufobeep.com/health
-curl https://api.ufobeep.com/alerts?limit=5
+curl https://ufobeep.com/api/health
+curl https://ufobeep.com/api/alerts?limit=5
 ```
 
 ### Flutter Testing

@@ -91,10 +91,10 @@ These are configured in:
 To verify Firebase authentication is working:
 ```bash
 # Test the health endpoint
-curl https://api.ufobeep.com/healthz
+curl https://ufobeep.com/api/healthz
 
 # Test Firebase auth (requires valid Firebase ID token)
-curl -i https://api.ufobeep.com/users/auth/firebase \
+curl -i https://ufobeep.com/api/users/auth/firebase \
   -H "Authorization: Bearer <FIREBASE_ID_TOKEN>" \
   -H "Content-Type: application/json" \
   -d '{}'

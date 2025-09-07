@@ -98,6 +98,13 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
     fetchAlert()
   }, [params.id])
 
+  // Scroll to top when alert detail page loads (unless opening a specific image)
+  useEffect(() => {
+    if (!loading && alert && openImageIndex === undefined) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [loading, alert, openImageIndex])
+
   // Client-side redirect to canonical slug URL once we have the alert
   useEffect(() => {
     if (!alert) return

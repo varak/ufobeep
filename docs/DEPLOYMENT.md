@@ -20,7 +20,7 @@ Both API and Web are managed by systemd on production:
 ### API Service
 - **Service**: `ufobeep-api.service`
 - **Port**: 8000
-- **URL**: https://api.ufobeep.com
+- **URL**: https://ufobeep.com/api
 
 ```bash
 # Check status
