@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -290,50 +291,59 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 AlertDetailsSection(alert: alert, units: (ref.read(userPreferencesProvider)?.units ?? 'metric')),
                 const SizedBox(height: 16),
                 
-                // Short share URL
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppColors.darkSurface,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.darkBorder),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.link,
-                        size: 16,
-                        color: AppColors.textSecondary,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          'ufobeep.com/alert/${alert.id.substring(0, 4)}',
-                          style: const TextStyle(
-                            color: AppColors.textSecondary,
-                            fontSize: 13,
-                            fontFamily: 'monospace',
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          // TODO: Copy to clipboard
-                        },
-                        icon: const Icon(
-                          Icons.copy,
+                // Short share URL - only show separately for non-MUFON alerts (MUFON has it integrated)
+                if (alert.source != 'mufon') ...[
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppColors.darkSurface,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: AppColors.darkBorder),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.link,
                           size: 16,
                           color: AppColors.textSecondary,
                         ),
-                        style: IconButton.styleFrom(
-                          minimumSize: const Size(32, 32),
-                          padding: const EdgeInsets.all(4),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'ufobeep.com/alert/${alert.id.substring(0, 4)}',
+                            style: const TextStyle(
+                              color: AppColors.textSecondary,
+                              fontSize: 13,
+                              fontFamily: 'monospace',
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
+                        IconButton(
+                          onPressed: () {
+                            Clipboard.setData(ClipboardData(text: 'ufobeep.com/alert/${alert.id.substring(0, 4)}'));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Link copied to clipboard'),
+                                duration: Duration(seconds: 2),
+                                backgroundColor: AppColors.brandPrimary,
+                              ),
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.copy,
+                            size: 16,
+                            color: AppColors.textSecondary,
+                          ),
+                          style: IconButton.styleFrom(
+                            minimumSize: const Size(32, 32),
+                            padding: const EdgeInsets.all(4),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 24),
+                  const SizedBox(height: 24),
+                ],
                 
                 // Direction and compass - hidden for MUFON alerts
                 if (alert.source != 'mufon') ...[

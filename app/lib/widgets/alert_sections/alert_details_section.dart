@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../providers/alerts_provider.dart';
 import '../../theme/app_theme.dart';
 import '../glass_card.dart';
@@ -36,7 +37,9 @@ class AlertDetailsSection extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                AppLocalizations.of(context).detailsTitle,
+                alert.source == 'mufon' && alert.enrichment?['mufon_case_number'] != null
+                    ? 'MUFON Case #${alert.enrichment!['mufon_case_number']} Details'
+                    : AppLocalizations.of(context).detailsTitle,
                 style: const TextStyle(
                   color: AppColors.brandPrimary,
                   fontSize: 16,
@@ -62,39 +65,30 @@ class AlertDetailsSection extends StatelessWidget {
           
           // MUFON-specific metadata
           if (alert.source == 'mufon') ...[
-            // MUFON case number
-            if (alert.enrichment?['mufon_case_number'] != null)
-              _buildDetailRow(
-                Icons.numbers,
-                AppLocalizations.of(context).mufonCase,
-                '${alert.enrichment!['mufon_case_number']}',
-              ),
+            // MUFON case number now shown in header instead
             
-            // Reported when (original sighting date)
+            // Sighting date
             if (alert.enrichment?['reported_when'] != null)
               _buildDetailRow(
                 Icons.event,
-                AppLocalizations.of(context).sightingDate,
+                'Sighting Date',
                 alert.enrichment!['reported_when'],
               ),
             
-            // Entered into database when
+            // Date entered into MUFON database
             if (alert.enrichment?['database_when'] != null)
               _buildDetailRow(
                 Icons.storage,
-                AppLocalizations.of(context).databaseEntry,
+                'Date Entered into MUFON Database',
                 alert.enrichment!['database_when'],
               ),
             
-            // Location (always show for MUFON)
-            if (showLocation) ...[
+            // Location - only show the name, no lat/long subtitle for MUFON
+            if (showLocation && alert.locationName != null && alert.locationName!.isNotEmpty) ...[
               _buildDetailRow(
                 Icons.location_on,
-                AppLocalizations.of(context).locationLabel,
+                'Location',
                 _getMufonLocationName(context, alert),
-                subtitle: (alert.locationName != null && alert.locationName!.isNotEmpty && alert.locationName != 'Unknown Location' && alert.latitude != 0.0 && alert.longitude != 0.0)
-                    ? '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}'
-                    : null,
               ),
               if (alert.distance != null && alert.distance! > 0.0)
                 _buildDetailRow(
@@ -103,6 +97,12 @@ class AlertDetailsSection extends StatelessWidget {
                   UnitConversion.formatDistance(alert.distance! * 1000, units),
                 ),
             ],
+            
+            // Share link for MUFON reports (integrated into details box)
+            const SizedBox(height: 8),
+            const Divider(color: AppColors.darkBorder, thickness: 1),
+            const SizedBox(height: 8),
+            _buildShareLinkRow(context, alert),
           ],
           
           // UFOBeep-specific metadata (non-MUFON)
@@ -144,15 +144,7 @@ class AlertDetailsSection extends StatelessWidget {
                 ),
             ],
           ],
-          // Classification (MUFON type) if present and valid
-          if (alert.source == 'mufon') ...[
-            if (_classificationLabel(AppLocalizations.of(context)).isNotEmpty)
-              _buildDetailRow(
-                Icons.category,
-                AppLocalizations.of(context).sightingTypeLabel,
-                _classificationLabel(AppLocalizations.of(context)),
-              ),
-          ],
+          // UFO type classification removed for MUFON reports
         ],
       ),
     );
@@ -323,6 +315,82 @@ class AlertDetailsSection extends StatelessWidget {
     }
     
     return AppLocalizations.of(context).locationUnknown;
+  }
+
+  Widget _buildShareLinkRow(BuildContext context, Alert alert) {
+    final shortLink = 'ufobeep.com/alert/${alert.id.substring(0, 4)}';
+    
+    return InkWell(
+      onTap: () {
+        Clipboard.setData(ClipboardData(text: shortLink));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Link copied to clipboard'),
+            duration: Duration(seconds: 2),
+            backgroundColor: AppColors.brandPrimary,
+          ),
+        );
+      },
+      borderRadius: BorderRadius.circular(8),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.link,
+              size: 20,
+              color: AppColors.textTertiary,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Share Link',
+                    style: const TextStyle(
+                      color: AppColors.textTertiary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    shortLink,
+                    style: const TextStyle(
+                      color: AppColors.brandPrimary,
+                      fontSize: 14,
+                      fontFamily: 'monospace',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                Clipboard.setData(ClipboardData(text: shortLink));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Link copied to clipboard'),
+                    duration: Duration(seconds: 2),
+                    backgroundColor: AppColors.brandPrimary,
+                  ),
+                );
+              },
+              icon: const Icon(
+                Icons.copy,
+                size: 18,
+                color: AppColors.textSecondary,
+              ),
+              style: IconButton.styleFrom(
+                minimumSize: const Size(32, 32),
+                padding: const EdgeInsets.all(4),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   String _classificationLabel(AppLocalizations l10n) {
