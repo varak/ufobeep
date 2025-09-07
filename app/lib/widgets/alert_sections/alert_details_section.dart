@@ -144,9 +144,9 @@ class AlertDetailsSection extends StatelessWidget {
                 ),
             ],
           ],
-          // Classification (MUFON type) if present
+          // Classification (MUFON type) if present and valid
           if (alert.source == 'mufon') ...[
-            if (alert.enrichment?['classification'] != null || alert.enrichment?['ufo_type'] != null)
+            if (_classificationLabel(AppLocalizations.of(context)).isNotEmpty)
               _buildDetailRow(
                 Icons.category,
                 AppLocalizations.of(context).sightingTypeLabel,
@@ -328,6 +328,12 @@ class AlertDetailsSection extends StatelessWidget {
   String _classificationLabel(AppLocalizations l10n) {
     final c = alert.enrichment?['classification']?.toString().toLowerCase().trim() 
         ?? alert.enrichment?['ufo_type']?.toString().toLowerCase().trim();
+    
+    // Return null for empty/null classifications to hide the section
+    if (c == null || c.isEmpty) {
+      return '';
+    }
+    
     switch (c) {
       case 'sphere':
         return l10n.ufoTypeSphere;

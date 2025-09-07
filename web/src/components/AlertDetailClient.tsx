@@ -173,23 +173,7 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
         <AlertHero alert={alert} openImageIndex={openImageIndex} />
 
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div />
-            <button
-              className="text-sm px-3 py-1 rounded border border-dark-border text-text-secondary hover:text-text-primary hover:border-text-secondary"
-              onClick={handleTranslate}
-              disabled={translating || !alert?.description}
-            >
-              {translating ? 'Translating…' : 'Translate description'}
-            </button>
-          </div>
           <AlertDetails alert={alert} />
-          {translated !== null && translated !== '' && (
-            <div className="bg-dark-surface border border-dark-border rounded-lg p-4">
-              <div className="text-sm text-text-tertiary mb-2">Translated</div>
-              <div className="text-text-secondary whitespace-pre-wrap">{translated}</div>
-            </div>
-          )}
 
           {alert.reporter_username !== 'MUFON' && (
             <EnrichmentData enrichment={alert.enrichment} alert={alert} />

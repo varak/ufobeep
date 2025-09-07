@@ -90,7 +90,7 @@ class AlertCard extends ConsumerWidget {
           alert.title == 'UFO Sighting' ? l10n.ufoSighting : alert.title,
           style: const TextStyle(
             color: AppColors.textPrimary,
-            fontSize: 18,
+            fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
           maxLines: 2,
@@ -102,7 +102,7 @@ class AlertCard extends ConsumerWidget {
             _getLocationName(alert),
             style: const TextStyle(
               color: AppColors.textSecondary,
-              fontSize: 13,
+              fontSize: 15,
             ),
           ),
         ],
@@ -184,7 +184,7 @@ class AlertCard extends ConsumerWidget {
       alert.description!,
       style: const TextStyle(
         color: AppColors.textSecondary,
-        fontSize: 16,
+        fontSize: 18,
         height: 1.5,
       ),
       maxLines: 2,
@@ -247,14 +247,13 @@ class AlertCard extends ConsumerWidget {
   Widget _buildContentTypeIndicator(AppLocalizations l10n) {
     final hasMedia = alert.mediaFiles.isNotEmpty;
     final hasDescription = alert.description?.trim().isNotEmpty ?? false;
-    final classification = _getMufonClassificationLabel(l10n);
-    
-    if (classification != null) {
-      return _buildBadge(classification, Icons.category, AppColors.brandPrimary);
-    }
     
     if (!hasMedia && !hasDescription) {
       return _buildBadge(l10n.beepOnly, Icons.location_on, AppColors.textTertiary);
+    }
+    
+    if (!hasMedia && hasDescription) {
+      return _buildBadge('Report Only', Icons.visibility, AppColors.textTertiary);
     }
     
     if (hasMedia && !hasDescription) {
@@ -296,7 +295,7 @@ class AlertCard extends ConsumerWidget {
             text,
             style: TextStyle(
               color: color,
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -327,7 +326,7 @@ class AlertCard extends ConsumerWidget {
             '${alert.witnessCount}',
             style: const TextStyle(
               color: AppColors.semanticSuccess,
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -352,7 +351,7 @@ class AlertCard extends ConsumerWidget {
             decoration: BoxDecoration(
               color: AppColors.brandPrimary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(6),
-              border: Border.all(color: AppColors.brandPrimary.withValues(alpha: 0.3)),
+              border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -367,7 +366,7 @@ class AlertCard extends ConsumerWidget {
                   '${alert.commentCount}',
                   style: const TextStyle(
                     color: AppColors.brandPrimary,
-                    fontSize: 10,
+                    fontSize: 12,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -385,7 +384,7 @@ class AlertCard extends ConsumerWidget {
     final mediaToShow = alert.mediaFiles.take(3).toList();
     
     return SizedBox(
-      height: 24,
+      height: 64,
       child: Row(
         children: [
           ...mediaToShow.asMap().entries.map((entry) {
@@ -402,8 +401,8 @@ class AlertCard extends ConsumerWidget {
                 }
               },
               child: Container(
-                width: 24,
-                height: 24,
+                width: 64,
+                height: 64,
                 margin: EdgeInsets.only(right: index < mediaToShow.length - 1 ? 4 : 0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
@@ -426,7 +425,7 @@ class AlertCard extends ConsumerWidget {
                               color: AppColors.darkSurface,
                               child: Icon(
                                 isVideo ? Icons.videocam : Icons.photo,
-                                size: 12,
+                                size: 32,
                                 color: AppColors.textTertiary,
                               ),
                             );
@@ -437,7 +436,7 @@ class AlertCard extends ConsumerWidget {
                               color: AppColors.darkSurface,
                               child: Icon(
                                 isVideo ? Icons.videocam : Icons.photo,
-                                size: 12,
+                                size: 32,
                                 color: AppColors.textTertiary,
                               ),
                             );
@@ -464,7 +463,7 @@ class AlertCard extends ConsumerWidget {
                             ),
                             child: const Icon(
                               Icons.play_arrow,
-                              size: 6,
+                              size: 12,
                               color: Colors.white,
                             ),
                           ),
@@ -484,8 +483,8 @@ class AlertCard extends ConsumerWidget {
                 }
               },
               child: Container(
-                width: 24,
-                height: 24,
+                width: 64,
+                height: 64,
                 margin: const EdgeInsets.only(left: 4),
                 decoration: BoxDecoration(
                   color: AppColors.brandPrimary.withOpacity(0.1),
