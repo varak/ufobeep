@@ -72,8 +72,7 @@ export default async function Page({ params, searchParams }: {
 
   return (
     <AlertDetailClient 
-      alertId={alert.id} 
-      openImageIndex={openImageIndex}
+      params={{ id: alert.id, slug: [params.slug] }}
     />
   )
 }
