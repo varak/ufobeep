@@ -180,9 +180,7 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
         <AlertHero alert={alert} openImageIndex={openImageIndex} />
 
         <div className="space-y-6">
-          {alert.reporter_username !== 'MUFON' && (
-            <AlertDetails alert={alert} />
-          )}
+          <AlertDetails alert={alert} />
 
           {alert.reporter_username !== 'MUFON' && (
             <EnrichmentData enrichment={alert.enrichment} alert={alert} />

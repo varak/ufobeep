@@ -61,10 +61,12 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
 
   return (
     <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
-      <div className="flex items-center gap-2 mb-4">
-        <span className="text-brand-primary">ℹ️</span>
-        <h2 className="text-lg font-semibold text-brand-primary">Details</h2>
-      </div>
+      {alert.reporter_username !== 'MUFON' && (
+        <div className="flex items-center gap-2 mb-4">
+          <span className="text-brand-primary">ℹ️</span>
+          <h2 className="text-lg font-semibold text-brand-primary">Details</h2>
+        </div>
+      )}
 
       {/* Description - Main description now contains full text */}
       {alert.description && (
