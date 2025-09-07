@@ -74,7 +74,7 @@ export async function findAlertBySlug(slug: string): Promise<any | null> {
     let currentOffset = 0
 
     for (let page = 0; page < maxSearchPages; page++) {
-      const baseUrl = process.env.NEXT_PUBLIC_SITE_BASE_URL || ''
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_BASE_URL || 'https://ufobeep.com'
       const res = await fetch(`${baseUrl}/api/alerts?limit=${limit}&offset=${currentOffset}&verified_only=false`, { cache: 'no-store' })
       if (!res.ok) break
       
