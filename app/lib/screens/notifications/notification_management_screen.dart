@@ -20,7 +20,6 @@ class _NotificationManagementScreenState
     extends ConsumerState<NotificationManagementScreen> {
   List<Map<String, dynamic>> _subscriptions = [];
   bool _loadingSubscriptions = true;
-  bool? _dndOverride; // Optimistic UI state for DND switch
 
   @override
   void initState() {
@@ -111,9 +110,6 @@ class _NotificationManagementScreenState
   }
 
   Future<void> _setDndEnabled(bool enabled) async {
-    setState(() {
-      _dndOverride = enabled;
-    });
     final prefsProvider = ref.read(userPreferencesProvider.notifier);
     final currentPrefs = ref.read(userPreferencesProvider);
     if (currentPrefs == null) return;
@@ -130,12 +126,13 @@ class _NotificationManagementScreenState
         ),
       );
     } else {
+      // Clear DND by setting dndUntil to null
       final updated = currentPrefs.copyWith(dndUntil: null);
       await prefsProvider.updatePreferences(updated);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('DND off'),
+          content: Text('DND disabled - notifications restored'),
           backgroundColor: AppColors.success,
         ),
       );
@@ -143,9 +140,6 @@ class _NotificationManagementScreenState
   }
 
   Future<void> _setDndDuration(Duration duration) async {
-    setState(() {
-      _dndOverride = true;
-    });
     final prefsProvider = ref.read(userPreferencesProvider.notifier);
     final currentPrefs = ref.read(userPreferencesProvider);
     if (currentPrefs == null) return;
@@ -261,8 +255,7 @@ class _NotificationManagementScreenState
   }
 
   Widget _buildQuickActionsSection(UserPreferences preferences) {
-    final providerDndActive = preferences.dndUntil?.isAfter(DateTime.now()) ?? false;
-    final dndActive = _dndOverride ?? providerDndActive;
+    final dndActive = preferences.dndUntil?.isAfter(DateTime.now()) ?? false;
     final dndText = dndActive 
         ? 'Until ${_formatTime(preferences.dndUntil!)}'
         : 'Temporarily silence all notifications';
