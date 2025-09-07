@@ -27,10 +27,18 @@ export interface SluggableAlertLike {
 }
 
 export function getAlertSlug(alert: SluggableAlertLike) {
-  const locName = alert.location?.name ||
-    (typeof alert.location?.latitude === 'number' && typeof alert.location?.longitude === 'number'
-      ? `${alert.location.latitude.toFixed(4)}, ${alert.location.longitude.toFixed(4)}`
-      : 'unknown')
+  let locName = alert.location?.name
+  
+  // Skip empty, null, or placeholder location names
+  if (!locName || locName === 'Unknown Location' || locName.trim() === '') {
+    // Fallback to coordinates if available
+    if (typeof alert.location?.latitude === 'number' && typeof alert.location?.longitude === 'number') {
+      locName = `${alert.location.latitude.toFixed(4)}, ${alert.location.longitude.toFixed(4)}`
+    } else {
+      locName = 'unknown'
+    }
+  }
+  
   return generateSlug(alert.title || 'UFO Sighting', locName, alert.created_at)
 }
 
