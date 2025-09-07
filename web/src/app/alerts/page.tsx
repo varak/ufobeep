@@ -143,7 +143,7 @@ function AlertsPageContent() {
     setLoading(true)
     try {
       // Fetch recent alerts with small limit for fast loading
-      const response = await fetch(`/api/alerts?limit=30&offset=0&verified_only=false`)
+      const response = await fetch(`/api/alerts?limit=500&offset=0&verified_only=false`)
       const data = await response.json()
       
       if (data.success && data.data?.alerts) {
