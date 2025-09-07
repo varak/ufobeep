@@ -7,7 +7,7 @@ from typing import Dict, Iterable
 import asyncio
 import asyncpg
 
-from .push_targets import tokens_for_users
+from .push_targets import tokens_for_users, tokens_for_users_excluding_device
 from . import fcm_sender
 
 INVALIDATE_SQL = """
@@ -37,6 +37,48 @@ async def notify_users(pool: asyncpg.Pool,
         Number of successful sends
     """
     tokens = await tokens_for_users(pool, user_ids)
+    if not tokens:
+        return 0
+
+    # Offload the blocking network I/O to a thread
+    success_count, to_invalidate = await asyncio.to_thread(
+        fcm_sender.send_to_tokens, tokens, title, body, data
+    )
+
+    # Immediately clean up any invalid tokens
+    if to_invalidate:
+        async with pool.acquire() as conn:
+            async with conn.transaction():
+                await conn.execute(INVALIDATE_SQL, to_invalidate)
+                # Hard purge right away so they are never seen again
+                await conn.execute(PURGE_SQL)
+
+    return success_count
+
+
+async def notify_users_excluding_device(pool: asyncpg.Pool,
+                                       user_ids: Iterable[str],
+                                       exclude_device_id: str,
+                                       title: str,
+                                       body: str,
+                                       data: Dict[str, str]) -> int:
+    """
+    Send push notifications to a list of users, excluding a specific device.
+    
+    This function solves the issue where users get notified on the same device 
+    they performed an action from. It sends notifications to ALL other devices
+    of the target users, but excludes the originating device.
+    
+    Use cases:
+    - Comment notifications: Don't notify the commenting device, but do notify
+      other devices belonging to the same user
+    - Beep notifications: Don't notify the beeping device, but do notify other
+      devices of the same user if they're following the alert
+    
+    Returns:
+        Number of successful sends
+    """
+    tokens = await tokens_for_users_excluding_device(pool, user_ids, exclude_device_id)
     if not tokens:
         return 0
 

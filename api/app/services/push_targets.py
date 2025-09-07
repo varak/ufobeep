@@ -6,38 +6,53 @@ Ensures consistent token selection logic across proximity alerts and comment not
 from typing import Iterable, List
 import asyncpg
 
-LATEST_TOKEN_SQL_FOR_USERS = """
-WITH ranked AS (
-  SELECT
-    d.user_id,
-    d.push_token,
-    d.updated_at,
-    ROW_NUMBER() OVER (
-      PARTITION BY d.user_id, d.push_token
-      ORDER BY COALESCE(d.updated_at, NOW()) DESC
-    ) AS rn
-  FROM devices d
-  WHERE d.user_id = ANY($1)
-    AND d.is_active = TRUE
-    AND d.push_enabled = TRUE
-    AND d.push_token IS NOT NULL
-    AND d.token_status = 'valid'
-)
-SELECT DISTINCT push_token
-FROM ranked
-WHERE rn = 1
+ALL_TOKENS_SQL_FOR_USERS = """
+SELECT DISTINCT d.push_token
+FROM devices d
+WHERE d.user_id = ANY($1)
+  AND d.is_active = TRUE
+  AND d.push_enabled = TRUE
+  AND d.push_token IS NOT NULL
+  AND d.token_status = 'valid'
 """
 
 async def tokens_for_users(pool: asyncpg.Pool, user_ids: Iterable[str]) -> List[str]:
     """
     Get valid FCM tokens for a list of user IDs.
-    Returns only the most recent token per user to avoid duplicates.
+    Returns ALL tokens for all devices belonging to these users.
     """
     ids = list(user_ids)
     if not ids:
         return []
     
     async with pool.acquire() as conn:
-        rows = await conn.fetch(LATEST_TOKEN_SQL_FOR_USERS, ids)
+        rows = await conn.fetch(ALL_TOKENS_SQL_FOR_USERS, ids)
+    
+    return [r["push_token"] for r in rows]
+
+
+TOKENS_FOR_USERS_EXCLUDE_DEVICE_SQL = """
+SELECT DISTINCT d.push_token
+FROM devices d
+WHERE d.user_id = ANY($1)
+  AND d.is_active = TRUE
+  AND d.push_enabled = TRUE
+  AND d.push_token IS NOT NULL
+  AND d.token_status = 'valid'
+  AND d.device_id != $2
+"""
+
+
+async def tokens_for_users_excluding_device(pool: asyncpg.Pool, user_ids: Iterable[str], exclude_device_id: str) -> List[str]:
+    """
+    Get valid FCM tokens for a list of user IDs, excluding a specific device.
+    Returns ALL tokens for all devices belonging to these users, except the excluded device.
+    """
+    ids = list(user_ids)
+    if not ids:
+        return []
+    
+    async with pool.acquire() as conn:
+        rows = await conn.fetch(TOKENS_FOR_USERS_EXCLUDE_DEVICE_SQL, ids, exclude_device_id)
     
     return [r["push_token"] for r in rows]

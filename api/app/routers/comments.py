@@ -5,7 +5,7 @@ from typing import Optional, Dict, Any
 import logging
 from app.core.auth import verify_access_token
 from app.services.database_service import get_database_pool
-from app.services.notify import notify_users
+from app.services.notify import notify_users_excluding_device
 
 logger = logging.getLogger(__name__)
 
@@ -14,6 +14,7 @@ router = APIRouter(prefix="/alerts", tags=["comments"])
 class CommentIn(BaseModel):
     body: str
     media_url: Optional[str] = None
+    device_id: Optional[str] = None
 
 def _uid(authorization: str = Header(None)) -> str:
     if not authorization or not authorization.startswith("Bearer "):
@@ -78,10 +79,10 @@ async def create_comment(
     pool = await get_database_pool()
     
     async with pool.acquire() as conn:
-        # Insert the comment
+        # Insert the comment with device_id
         row = await conn.fetchrow(
-            "INSERT INTO comments(sighting_id,user_id,body,media_url,created_at) VALUES ($1,$2,$3,$4,$5) RETURNING id",
-            sighting_id, user_id, body.body, body.media_url, now
+            "INSERT INTO comments(sighting_id,user_id,body,media_url,device_id,created_at) VALUES ($1,$2,$3,$4,$5,$6) RETURNING id",
+            sighting_id, user_id, body.body, body.media_url, body.device_id, now
         )
         
         # Auto-follow the sighting when commenting
@@ -96,18 +97,41 @@ async def create_comment(
             user_id
         )
         
-        # Get all followers of this sighting (excluding the commenter)
+        # Get all followers of this sighting (including the commenter - we'll exclude by device instead)
         follower_rows = await conn.fetch(
-            "SELECT user_id FROM follows WHERE sighting_id = $1 AND user_id != $2",
-            sighting_id, user_id
+            "SELECT user_id FROM follows WHERE sighting_id = $1",
+            sighting_id
         )
     
-    # Send notifications using unified system (SAME as proximity alerts)
+    # Send notifications using device-exclusion system 
     print(f"DEBUG: user_row={user_row}, follower_rows={follower_rows}")
-    if user_row and follower_rows:
+    if user_row and follower_rows and body.device_id:
         try:
             follower_user_ids = [row["user_id"] for row in follower_rows]
-            print(f"DEBUG: Calling notify_users with {len(follower_user_ids)} followers")
+            print(f"DEBUG: Calling notify_users_excluding_device with {len(follower_user_ids)} followers, excluding device {body.device_id}")
+            sent = await notify_users_excluding_device(
+                pool,
+                follower_user_ids,
+                exclude_device_id=body.device_id,
+                title=f"💬 {user_row['username']} commented",
+                body=body.body[:100] + ("..." if len(body.body) > 100 else ""),
+                data={
+                    "type": "comment",
+                    "comment_id": str(row["id"]),
+                    "sighting_id": sighting_id,
+                },
+            )
+            print(f"DEBUG: notify_users_excluding_device returned {sent}")
+            logger.info(f"Comment notification sent: {sent} notifications for sighting {sighting_id} (excluded device {body.device_id})")
+        except Exception as e:
+            print(f"DEBUG: Exception in notify_users_excluding_device: {e}")
+            logger.error(f"Failed to send comment notifications: {e}")
+    elif user_row and follower_rows and not body.device_id:
+        # Fallback to user-exclusion if no device_id provided (for backward compatibility)
+        try:
+            follower_user_ids = [row["user_id"] for row in follower_rows if row["user_id"] != user_id]
+            print(f"DEBUG: No device_id provided, falling back to user-exclusion with {len(follower_user_ids)} followers")
+            from app.services.notify import notify_users
             sent = await notify_users(
                 pool,
                 follower_user_ids,
@@ -119,11 +143,11 @@ async def create_comment(
                     "sighting_id": sighting_id,
                 },
             )
-            print(f"DEBUG: notify_users returned {sent}")
-            logger.info(f"Comment notification sent: {sent} notifications for sighting {sighting_id}")
+            print(f"DEBUG: fallback notify_users returned {sent}")
+            logger.info(f"Comment notification sent (fallback): {sent} notifications for sighting {sighting_id}")
         except Exception as e:
-            print(f"DEBUG: Exception in notify_users: {e}")
-            logger.error(f"Failed to send comment notifications: {e}")
+            print(f"DEBUG: Exception in fallback notify_users: {e}")
+            logger.error(f"Failed to send comment notifications (fallback): {e}")
     
     return {"id": row["id"]}
 

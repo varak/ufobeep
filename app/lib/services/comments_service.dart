@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import '../models/comment.dart';
 import '../services/api_client.dart';
 import '../services/auth_repository.dart';
+import '../services/device_service.dart';
 
 class CommentsService {
   static final CommentsService _instance = CommentsService._internal();
@@ -39,6 +40,11 @@ class CommentsService {
         throw Exception('Authentication required to post comments');
       }
       
+      // Get device ID for proper notification exclusion
+      final deviceService = DeviceService();
+      final deviceId = await deviceService.getDeviceId();
+      print('📱 Using device ID for comment: $deviceId');
+      
       // Set the bearer token before making the request
       ApiClient.setBearer(accessToken);
       print('🔑 Bearer token set for comments request');
@@ -46,6 +52,7 @@ class CommentsService {
       final response = await ApiClient.dio.post('/alerts/$sightingId/comments', data: {
         'body': body,
         'media_url': mediaUrl,
+        'device_id': deviceId, // Include device ID for proper exclusion
       });
       
       print('🗣️ Comment post response status: ${response.statusCode}');
