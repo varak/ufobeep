@@ -368,10 +368,10 @@ async def upload_alert_media(
                     print(f"Media processing failed for {file.filename}: {e}")
                     # Fallback to basic URLs if processing fails
                     processed_urls = {
-                        'original': f'https://api.ufobeep.com/media/{alert_id}/{unique_filename}',
-                        'thumbnail': f'https://api.ufobeep.com/media/{alert_id}/{unique_filename}',
-                        'web': f'https://api.ufobeep.com/media/{alert_id}/{unique_filename}',
-                        'preview': f'https://api.ufobeep.com/media/{alert_id}/{unique_filename}'
+                        'original': f'https://ufobeep.com/api/media/{alert_id}/{unique_filename}',
+                        'thumbnail': f'https://ufobeep.com/api/media/{alert_id}/{unique_filename}',
+                        'web': f'https://ufobeep.com/api/media/{alert_id}/{unique_filename}',
+                        'preview': f'https://ufobeep.com/api/media/{alert_id}/{unique_filename}'
                     }
                 
                 # Create media file entry with all variants

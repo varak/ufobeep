@@ -222,7 +222,7 @@ class AlertsService:
             if media and isinstance(media, dict) and "files" in media:
                 for media_file in media["files"]:
                     filename = media_file.get("filename", "")
-                    media_url = f"https://api.ufobeep.com/media/{sighting_id}/{filename}"
+                    media_url = f"https://ufobeep.com/api/media/{sighting_id}/{filename}"
                     
                     # Determine media type
                     media_type = media_file.get("type", "image")

@@ -42,20 +42,20 @@ class MediaProcessingService:
             else:
                 # Unknown file type, just return original
                 return {
-                    'original': f'https://api.ufobeep.com/media/{alert_id}/{file_path.name}',
-                    'thumbnail': f'https://api.ufobeep.com/media/{alert_id}/{file_path.name}',
-                    'web': f'https://api.ufobeep.com/media/{alert_id}/{file_path.name}',
-                    'preview': f'https://api.ufobeep.com/media/{alert_id}/{file_path.name}'
+                    'original': f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}',
+                    'thumbnail': f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}',
+                    'web': f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}',
+                    'preview': f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}'
                 }
                 
         except Exception as e:
             logger.error(f"Error processing media {file_path}: {e}")
             # Return original on error
             return {
-                'original': f'https://api.ufobeep.com/media/{alert_id}/{file_path.name}',
-                'thumbnail': f'https://api.ufobeep.com/media/{alert_id}/{file_path.name}',
-                'web': f'https://api.ufobeep.com/media/{alert_id}/{file_path.name}',
-                'preview': f'https://api.ufobeep.com/media/{alert_id}/{file_path.name}'
+                'original': f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}',
+                'thumbnail': f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}',
+                'web': f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}',
+                'preview': f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}'
             }
     
     def _process_image(self, file_path: Path, alert_id: str) -> Dict[str, str]:
@@ -123,10 +123,10 @@ class MediaProcessingService:
             return self._get_original_urls(file_path, alert_id)
         
         result = {
-            'original': f'https://api.ufobeep.com/media/{alert_id}/{file_path.name}',
-            'thumbnail': f'https://api.ufobeep.com/media/{alert_id}/{base_name}.thumb.jpg',
-            'web': f'https://api.ufobeep.com/media/{alert_id}/{base_name}.web.jpg',
-            'preview': f'https://api.ufobeep.com/media/{alert_id}/{base_name}.preview.jpg'
+            'original': f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}',
+            'thumbnail': f'https://ufobeep.com/api/media/{alert_id}/{base_name}.thumb.jpg',
+            'web': f'https://ufobeep.com/api/media/{alert_id}/{base_name}.web.jpg',
+            'preview': f'https://ufobeep.com/api/media/{alert_id}/{base_name}.preview.jpg'
         }
         
         # Add EXIF data if extracted successfully
@@ -192,10 +192,10 @@ class MediaProcessingService:
             self._create_video_placeholder(preview_path, self.PREVIEW_SIZE)
         
         return {
-            'original': f'https://api.ufobeep.com/media/{alert_id}/{file_path.name}',
-            'thumbnail': f'https://api.ufobeep.com/media/{alert_id}/{base_name}.thumb.jpg',
-            'web': f'https://api.ufobeep.com/media/{alert_id}/{base_name}.web.jpg',
-            'preview': f'https://api.ufobeep.com/media/{alert_id}/{base_name}.preview.jpg'
+            'original': f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}',
+            'thumbnail': f'https://ufobeep.com/api/media/{alert_id}/{base_name}.thumb.jpg',
+            'web': f'https://ufobeep.com/api/media/{alert_id}/{base_name}.web.jpg',
+            'preview': f'https://ufobeep.com/api/media/{alert_id}/{base_name}.preview.jpg'
         }
     
     def _create_video_placeholder(self, output_path: Path, size: Tuple[int, int]):
@@ -365,7 +365,7 @@ class MediaProcessingService:
 
     def _get_original_urls(self, file_path: Path, alert_id: str) -> Dict[str, str]:
         """Return original URLs when processing fails"""
-        original_url = f'https://api.ufobeep.com/media/{alert_id}/{file_path.name}'
+        original_url = f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}'
         return {
             'original': original_url,
             'thumbnail': original_url,

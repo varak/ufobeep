@@ -52,8 +52,8 @@ async def list_sighting_media(sighting_id: str):
                 
                 media_files.append({
                     "filename": file_path.name,
-                    "url": f"https://api.ufobeep.com/media/{sighting_id}/{file_path.name}",
-                    "thumbnail_url": f"https://api.ufobeep.com/media/{sighting_id}/{file_path.name}?thumbnail=true",
+                    "url": f"https://ufobeep.com/api/media/{sighting_id}/{file_path.name}",
+                    "thumbnail_url": f"https://ufobeep.com/api/media/{sighting_id}/{file_path.name}?thumbnail=true",
                     "size_bytes": stat.st_size,
                     "modified_at": stat.st_mtime,
                     "is_image": file_path.suffix.lower() in ('.jpg', '.jpeg', '.png', '.gif', '.bmp'),

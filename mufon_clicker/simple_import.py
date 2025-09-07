@@ -15,7 +15,7 @@ def import_mufon_cases(json_file):
     
     print(f"📊 Importing {data['total_cases']} MUFON cases to UFOBeep...")
     
-    api_url = "https://api.ufobeep.com/alerts"
+    api_url = "https://ufobeep.com/api/alerts"
     imported_count = 0
     
     for case in data['cases']:

@@ -173,7 +173,7 @@ async def send_magic_link_email(email: str, code: str, background_tasks: Backgro
             email_service = await get_email_service()
             
             # Create magic link with authorization code
-            magic_link = f"https://api.ufobeep.com/auth/magic/complete/new?code={code}"
+            magic_link = f"https://ufobeep.com/api/auth/magic/complete/new?code={code}"
             
             # Create professional email content using UFOBeep theme
             html_content = f"""

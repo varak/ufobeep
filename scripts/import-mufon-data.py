@@ -81,7 +81,7 @@ def parse_mufon_table(text: str) -> List[Dict[str, Any]]:
     
     return sightings
 
-def import_to_ufobeep(sightings: List[Dict[str, Any]], api_url: str = "https://api.ufobeep.com"):
+def import_to_ufobeep(sightings: List[Dict[str, Any]], api_url: str = "https://ufobeep.com/api"):
     """Import sightings to UFOBeep via API"""
     
     # Prepare import request

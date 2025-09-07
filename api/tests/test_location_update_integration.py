@@ -11,7 +11,7 @@ Requirements:
 - Either ACCESS_JWT (real token) or JWT_SECRET + TEST_USER_ID (for minting)
 
 Usage:
-    export API_BASE="https://api.ufobeep.com"
+    export API_BASE="https://ufobeep.com/api"
     export ACCESS_JWT="<paste real access token>"   # preferred
     # OR:
     export JWT_SECRET="<server jwt secret>"

@@ -63,7 +63,7 @@ try:
             data = {'source': 'mufon_import'}
             
             upload_response = requests.post(
-                f'https://api.ufobeep.com/alerts/{alert_id}/media',
+                f'https://ufobeep.com/api/alerts/{alert_id}/media',
                 files=files,
                 data=data,
                 timeout=60
@@ -82,7 +82,7 @@ try:
         data = {'source': 'mufon_import'}
         
         upload_response = requests.post(
-            f'https://api.ufobeep.com/alerts/{alert_id}/media',
+            f'https://ufobeep.com/api/alerts/{alert_id}/media',
             files=files,
             data=data,
             timeout=60

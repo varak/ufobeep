@@ -65,7 +65,7 @@ async def upload_media_files(
             media_item = {
                 "id": media_id,
                 "filename": file.filename,
-                "url": upload_result.get("url", f"https://api.ufobeep.com/media/{media_id}"),
+                "url": upload_result.get("url", f"https://ufobeep.com/api/media/{media_id}"),
                 "thumbnail_url": upload_result.get("thumbnail_url"),
                 "type": upload_result.get("type", "unknown"),
                 "size": upload_result.get("size", 0),

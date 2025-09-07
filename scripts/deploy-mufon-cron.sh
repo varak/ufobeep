@@ -138,7 +138,7 @@ echo ""
 echo -e "${YELLOW}Test commands:${NC}"
 echo "  Test import: /home/ufobeep/ufobeep/scripts/mufon-nightly-import.sh"
 echo "  View logs: tail -f /home/ufobeep/ufobeep/logs/mufon-import-*.log"
-echo "  Check API: curl https://api.ufobeep.com/mufon/recent"
+echo "  Check API: curl https://ufobeep.com/api/mufon/recent"
 
 ENDSSH
 

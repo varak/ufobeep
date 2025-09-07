@@ -5,7 +5,7 @@ import requests
 import time
 import sys
 
-API_URL = "https://api.ufobeep.com"
+API_URL = "https://ufobeep.com/api"
 
 def test_magic_link_flow(email="test@example.com"):
     print(f"Testing magic link flow with email: {email}")

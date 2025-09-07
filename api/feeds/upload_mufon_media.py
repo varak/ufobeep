@@ -19,7 +19,7 @@ def upload_media():
     with open("mufon_working_results.json") as f:
         mufon_data = json.load(f)
     
-    base_url = "https://api.ufobeep.com"
+    base_url = "https://ufobeep.com/api"
     
     for case in mufon_data['cases']:
         case_num = case.get('Case_Number')

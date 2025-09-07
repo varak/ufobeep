@@ -91,7 +91,7 @@ def direct_import_with_classifier(date_str):
         print("❌ Invalid date format. Use YYYY-MM-DD")
         return
 
-    base_url = "https://api.ufobeep.com"
+    base_url = "https://ufobeep.com/api"
     classifier = UFOClassifier()
     imported_count = 0
 

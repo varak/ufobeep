@@ -74,7 +74,7 @@ class MediaService:
         file_size = os.path.getsize(file_path)
         
         # Create media record
-        base_url = "https://api.ufobeep.com"
+        base_url = "https://ufobeep.com/api"
         media_info = {
             "id": str(uuid.uuid4()),
             "type": "image",

@@ -344,7 +344,7 @@ if [ "$DEPLOY_API" = true ]; then
         sleep 5
         # Try health check with retries
         for i in {1..3}; do
-            if curl -s --connect-timeout 10 --max-time 15 https://api.ufobeep.com/healthz | grep -q '"ok":true'; then
+            if curl -s --connect-timeout 10 --max-time 15 https://ufobeep.com/api/healthz | grep -q '"ok":true'; then
                 echo "✅ API is healthy"
                 exit 0
             fi
@@ -451,7 +451,7 @@ fi
 echo -e "${GREEN}🎉 DEPLOYMENT COMPLETE!${NC}"
 echo
 echo "Deployed components:"
-[ "$DEPLOY_API" = true ] && echo "  ✅ API: https://api.ufobeep.com"
+[ "$DEPLOY_API" = true ] && echo "  ✅ API: https://ufobeep.com/api"
 [ "$DEPLOY_WEB" = true ] && echo "  ✅ Web: https://ufobeep.com"
 [ "$DEPLOY_APK" = true ] && echo "  ✅ APK: https://ufobeep.com/downloads/ufobeep-latest.apk"
 echo

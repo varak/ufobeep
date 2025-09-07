@@ -46,7 +46,7 @@ class FilesystemStorageService:
         # Return upload response pointing to our direct upload endpoint
         return PresignedUploadResponse(
             upload_id=upload_id,
-            upload_url="https://api.ufobeep.com/media/upload",  # Direct upload endpoint
+            upload_url="https://ufobeep.com/api/media/upload",  # Direct upload endpoint
             expires_at=datetime.utcnow(),  # Not used for filesystem
             max_file_size=50 * 1024 * 1024,  # 50MB
             fields={
@@ -134,8 +134,8 @@ class FilesystemStorageService:
         if len(parts) >= 3 and parts[0] == 'sightings':
             sighting_id = parts[1]
             filename = parts[2]
-            return f"https://api.ufobeep.com/media/{sighting_id}/{filename}"
-        return f"https://api.ufobeep.com/media/{object_key}"
+            return f"https://ufobeep.com/api/media/{sighting_id}/{filename}"
+        return f"https://ufobeep.com/api/media/{object_key}"
     
     def _get_content_type(self, file_path: Path) -> str:
         """Determine content type from file extension"""

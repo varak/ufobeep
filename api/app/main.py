@@ -40,7 +40,7 @@ def process_media_files(media_info, sighting_id: str) -> list:
                     media_type = media_file.get("type") or guess_media_type_from_filename(filename).value
                     
                     # Use new URL structure if available, fallback to old
-                    url = media_file.get("url") or f"https://api.ufobeep.com/media/{sighting_id}/{filename}"
+                    url = media_file.get("url") or f"https://ufobeep.com/api/media/{sighting_id}/{filename}"
                     thumbnail_url = media_file.get("thumbnail_url") or (f"{url}?thumbnail=true" if media_type == "video" else url)
                     web_url = media_file.get("web_url", url)
                     preview_url = media_file.get("preview_url", thumbnail_url)

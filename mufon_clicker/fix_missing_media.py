@@ -46,7 +46,7 @@ for alert_id, case_id, media_files in cases_needing_media:
             data = {'source': 'mufon_import'}
             
             upload_response = requests.post(
-                f'https://api.ufobeep.com/alerts/{alert_id}/media',
+                f'https://ufobeep.com/api/alerts/{alert_id}/media',
                 files=files,
                 data=data,
                 timeout=30

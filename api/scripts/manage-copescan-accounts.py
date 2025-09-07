@@ -26,7 +26,7 @@ import string
 # Configuration
 CONFIG_FILE = "/home/ufobeep/copescan-config.json"
 ACCOUNTS_FILE = "/home/ufobeep/copescan-accounts.json"
-API_BASE_URL = "https://api.ufobeep.com/copescan"
+API_BASE_URL = "https://ufobeep.com/api/copescan"
 FRESH_COPE_URL = "https://www.freshcope.com/rewards/earn"
 
 def generate_secure_password(length=12):
