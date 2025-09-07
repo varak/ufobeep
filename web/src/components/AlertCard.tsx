@@ -7,7 +7,7 @@ import ImageWithLoading from './ImageWithLoading'
 import MediaGalleryModal from './MediaGalleryModal'
 import { AlertTitleUtils } from '@/utils/alert-title-utils'
 import { convertToProxyUrl, convertMediaFilesUrls } from '@/utils/media-url-utils'
-import { getAlertSlug } from '@/utils/slug'
+import { getAlertSlug, getShortAlertUrl } from '@/utils/slug'
 
 interface Alert {
   id: string
@@ -131,7 +131,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
     e.preventDefault()
     e.stopPropagation()
     
-    const alertUrl = `${window.location.origin}/alerts/${getAlertSlug(alert)}`
+    const alertUrl = `${window.location.origin}${getShortAlertUrl(alert.id)}`
     const shareText = `UFO Sighting Alert: ${alert.description || 'Anomaly reported'} - ${formatLocation(alert.location)}`
     
     switch (type) {

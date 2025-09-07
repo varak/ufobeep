@@ -45,6 +45,11 @@ export function getAlertSlug(alert: SluggableAlertLike) {
   return generateSlug(alert.title || 'UFO Sighting', locName, alert.created_at, alert.id)
 }
 
+export function getShortAlertUrl(alertId: string): string {
+  // Return short 6-character URL for sharing
+  return `/alert/${alertId.substring(0, 6)}`
+}
+
 export function extractIdFromSlug(slug: string): string | null {
   // Extract the last 6-character part of the slug as the ID hash
   const parts = slug.split('-')
