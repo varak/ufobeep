@@ -159,19 +159,25 @@ if [ "$DEPLOY_APK" = true ]; then
     if [ "$SKIP_CLEAN" = false ]; then
         echo "Cleaning build cache..."
         flutter clean
+        # Only clean gradle cache in clean mode to prevent Git slowdown
+        echo "Cleaning Gradle artifacts..."
+        rm -rf .gradle-cache* .home 2>/dev/null || true
+        chmod -R u+w .gradle-cache* .home 2>/dev/null || true
+        rm -rf .gradle-cache* .home 2>/dev/null || true
     else
         echo "Skipping clean build (using --fast mode)..."
+        echo "Preserving Gradle cache for faster builds..."
     fi
-    # Clean gradle cache artifacts to prevent Git slowdown (fixes 10s enumeration time)
-    echo "Cleaning Gradle artifacts..."
-    rm -rf .gradle-cache* .home 2>/dev/null || true
-    chmod -R u+w .gradle-cache* .home 2>/dev/null || true
-    rm -rf .gradle-cache* .home 2>/dev/null || true
     echo "Starting APK build (timeout: 3 minutes)..."
     if timeout 180 flutter build apk --release --verbose; then
         echo -e "${GREEN}✅ APK release build successful${NC}"
-        # Clean up artifacts immediately after build to keep repo fast
-        rm -rf .gradle-cache* .home 2>/dev/null || true
+        # Only clean up artifacts in clean mode to preserve cache for fast builds
+        if [ "$SKIP_CLEAN" = false ]; then
+            echo "Cleaning up build artifacts..."
+            rm -rf .gradle-cache* .home 2>/dev/null || true
+        else
+            echo "Preserving build cache for future fast builds..."
+        fi
         cd ..
     else
         echo -e "${YELLOW}⚠️  Release build failed. Trying debug build...${NC}"
