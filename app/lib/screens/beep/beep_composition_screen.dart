@@ -796,9 +796,9 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     return NightSkyBackground(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            'Compose Beep',
-            style: TextStyle(
+          title: Text(
+            AppLocalizations.of(context).tabBeep,
+            style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w700,
               fontSize: 24,
@@ -857,8 +857,6 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                       ),
                     ],
                     
-                    // Media quality info moved to bottom
-                    _buildMediaQualityInfo(),
                     const SizedBox(height: 32), // Space for bottom button
                   ],
                 ),
@@ -888,73 +886,6 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   }
   
 
-  Widget _buildMediaQualityInfo() {
-    return GlassCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.info_outline, color: AppColors.brandPrimary, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                '${widget.isVideo ?? false ? 'Video' : 'Photo'} Quality',
-                style: const TextStyle(
-                  color: AppColors.brandPrimary,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            widget.isVideo ?? false
-                ? 'UFOBeep records videos with audio at maximum device resolution. Videos are automatically saved to your gallery in the UFOBeep album for easy sharing.'
-                : 'UFOBeep captures photos at maximum device resolution for detailed analysis. For even higher quality images, you can also upload photos from your camera gallery.',
-            style: const TextStyle(
-              color: Colors.white70,
-              fontSize: 14,
-              height: 1.4,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppColors.brandPrimary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
-                ),
-                child: const Text(
-                  '💡 Tip',
-                  style: TextStyle(
-                    color: AppColors.brandPrimary,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  widget.isVideo ?? false
-                      ? 'For longer or higher quality videos, use share-to-beep from your native camera app'
-                      : 'Native camera photos often have higher megapixel counts',
-                  style: const TextStyle(
-                    color: Colors.white54,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 
 
 
@@ -965,10 +896,10 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            AppLocalizations.of(context).beepExplain,
+            AppLocalizations.of(context).whatDoYouSee,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 24,
+              fontSize: 32,
               fontWeight: FontWeight.w700,
             ),
           ),
