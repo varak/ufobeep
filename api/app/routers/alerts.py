@@ -228,7 +228,7 @@ async def create_alert(request: dict, idempotency_key: Optional[str] = Header(No
 
 @router.get("")
 async def get_alerts(
-    limit: int = 20, 
+    limit: int = 500,  # Increased from 20 to show all alerts
     offset: int = 0,
     latitude: Optional[float] = None,
     longitude: Optional[float] = None

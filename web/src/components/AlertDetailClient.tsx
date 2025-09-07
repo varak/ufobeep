@@ -7,7 +7,6 @@ import AlertHero from './alert-detail/AlertHero'
 import AlertDetails from './alert-detail/AlertDetails'
 import EnrichmentData from './alert-detail/EnrichmentData'
 import AlertComments from './AlertComments'
-import CommentButton from './CommentButton'
 import { getAlertSlug } from '@/utils/slug'
 
 interface Alert {
@@ -45,7 +44,6 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
   const [alert, setAlert] = useState<Alert | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [refreshComments, setRefreshComments] = useState(0)
   const [translated, setTranslated] = useState<string | null>(null)
   const [translating, setTranslating] = useState(false)
   const userLang = useMemo(() => {
@@ -201,8 +199,7 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
             </div>
           )}
 
-          <AlertComments alertId={alert.id} key={refreshComments} />
-          <CommentButton alertId={alert.id} onCommentAdded={() => setRefreshComments(prev => prev + 1)} />
+          <AlertComments alertId={alert.id} />
         </div>
       </div>
     </main>
