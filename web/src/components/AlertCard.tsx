@@ -69,7 +69,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
   // Helper function to get detail URL with optional image parameter
   const getDetailUrl = (imageIndex?: number) => {
     const slug = getAlertSlug(alert)
-    const baseUrl = slug ? `/alerts/${alert.id}/${slug}` : `/alerts/${alert.id}`
+    const baseUrl = `/alerts/${slug}`
     return imageIndex !== undefined ? `${baseUrl}?openImage=${imageIndex}` : baseUrl
   }
 
@@ -131,7 +131,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
     e.preventDefault()
     e.stopPropagation()
     
-    const alertUrl = `${window.location.origin}/alerts/${alert.id}`
+    const alertUrl = `${window.location.origin}/alerts/${getAlertSlug(alert)}`
     const shareText = `UFO Sighting Alert: ${alert.description || 'Anomaly reported'} - ${formatLocation(alert.location)}`
     
     switch (type) {
@@ -237,7 +237,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
       location: { name: alert.location?.name, latitude: alert.location?.latitude, longitude: alert.location?.longitude }
     })
     return (
-      <Link href={`/alerts/${alert.id}/${slug}`}>
+      <Link href={`/alerts/${slug}`}>
         <div className="p-4 bg-dark-surface rounded-lg border border-dark-border hover:border-brand-primary transition-colors cursor-pointer group">
           <div className="flex items-start justify-between">
             <div className="flex-1">
@@ -304,7 +304,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
 
   return (
     <div className="bg-dark-surface border border-dark-border rounded-xl hover:border-brand-primary transition-all duration-300 hover:shadow-lg group relative">
-      <Link href={`/alerts/${alert.id}/${getAlertSlug({ id: alert.id, title: alert.title || undefined, created_at: alert.created_at, location: { name: alert.location?.name, latitude: alert.location?.latitude, longitude: alert.location?.longitude } })}`} className="block">
+      <Link href={`/alerts/${getAlertSlug({ id: alert.id, title: alert.title || undefined, created_at: alert.created_at, location: { name: alert.location?.name, latitude: alert.location?.latitude, longitude: alert.location?.longitude } })}`} className="block">
         <div className="p-4">
           {/* Header row */}
           <div className="flex items-start gap-3 mb-3">

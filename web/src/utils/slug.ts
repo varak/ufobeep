@@ -1,4 +1,4 @@
-export function generateSlug(title: string, location: string, date: string) {
+export function generateSlug(title: string, location: string, date: string, id?: string) {
   const titlePart = (title || 'ufo-sighting')
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, '')
@@ -14,7 +14,10 @@ export function generateSlug(title: string, location: string, date: string) {
 
   const datePart = new Date(date || Date.now()).toISOString().split('T')[0]
 
-  return `${titlePart}-${locationPart}-${datePart}`
+  // Add short ID hash for uniqueness while keeping URL clean
+  const idPart = id ? id.substring(0, 8) : ''
+
+  return `${titlePart}-${locationPart}-${datePart}-${idPart}`
     .replace(/--+/g, '-')
     .replace(/^-|-$/g, '')
 }
@@ -39,6 +42,51 @@ export function getAlertSlug(alert: SluggableAlertLike) {
     }
   }
   
-  return generateSlug(alert.title || 'UFO Sighting', locName, alert.created_at)
+  return generateSlug(alert.title || 'UFO Sighting', locName, alert.created_at, alert.id)
+}
+
+export function extractIdFromSlug(slug: string): string | null {
+  // Extract the last 8-character part of the slug as the ID hash
+  const parts = slug.split('-')
+  const lastPart = parts[parts.length - 1]
+  
+  // Check if the last part looks like an ID (8 chars, alphanumeric)
+  if (lastPart && lastPart.length === 8 && /^[a-z0-9]+$/.test(lastPart)) {
+    return lastPart
+  }
+  
+  return null
+}
+
+export async function findAlertBySlug(slug: string): Promise<any | null> {
+  try {
+    const idHash = extractIdFromSlug(slug)
+    if (!idHash) return null
+    
+    // Search through alerts to find one with matching ID prefix
+    const limit = 100
+    const maxSearchPages = 10
+    let currentOffset = 0
+
+    for (let page = 0; page < maxSearchPages; page++) {
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_BASE_URL || ''
+      const res = await fetch(`${baseUrl}/api/alerts?limit=${limit}&offset=${currentOffset}&verified_only=false`, { cache: 'no-store' })
+      if (!res.ok) break
+      
+      const data = await res.json()
+      const alerts = data?.data?.alerts || []
+      
+      const foundAlert = alerts.find((alert: any) => alert.id?.startsWith(idHash))
+      if (foundAlert) return foundAlert
+      
+      if (alerts.length < limit) break
+      currentOffset += limit
+    }
+    
+    return null
+  } catch (error) {
+    console.error('Error finding alert by slug:', error)
+    return null
+  }
 }
 
