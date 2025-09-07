@@ -26,6 +26,7 @@ class AlertCard extends ConsumerWidget {
     final userPrefs = ref.watch(userPreferencesProvider);
     final l10n = AppLocalizations.of(context);
     final units = userPrefs?.units ?? 'metric';
+    
     return GlassCard(
       padding: const EdgeInsets.all(12),
       onTap: onTap ?? () async {
@@ -35,190 +36,177 @@ class AlertCard extends ConsumerWidget {
         }
       },
       child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header row
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // UFO icon
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppColors.brandPrimary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Text(
-                      '🛸',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  
-                  const SizedBox(width: 12),
-                  
-                  // Title and metadata
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          alert.title == 'UFO Sighting' ? l10n.ufoSighting : alert.title,
-                          style: const TextStyle(
-                            color: AppColors.textPrimary,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        
-                        // Location for all reports - right under title
-                        if (_getLocationName(alert).isNotEmpty) ...[
-                          const SizedBox(height: 4),
-                          Text(
-                            _getLocationName(alert),
-                            style: const TextStyle(
-                              color: AppColors.textSecondary,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ],
-                        
-                        const SizedBox(height: 4),
-                        Row(
-                          children: [
-                            // Only show verification badge if verified and not MUFON
-                            if (alert.isVerified && alert.source != 'mufon') ...[
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                decoration: BoxDecoration(
-                                  color: AppColors.brandPrimary.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: AppColors.brandPrimary.withOpacity(0.3),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      Icons.verified,
-                                      color: AppColors.brandPrimary,
-                                      size: 10,
-                                    ),
-                                    SizedBox(width: 2),
-                                    Text(
-                                      l10n.verified,
-                                      style: const TextStyle(
-                                        color: AppColors.brandPrimary,
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ] else ...[
-                              // Show empty space to maintain layout consistency
-                              const SizedBox(height: 16),
-                            ],
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  
-                  // Username and time ago (skip for MUFON)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      if (alert.reporterUsername != null && alert.source != 'mufon') ...[
-                        Text(
-                          alert.reporterUsername!,
-                          style: const TextStyle(
-                            color: AppColors.brandPrimary,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                      ],
-                      // Show appropriate time for all alerts
-                      Text(
-                        alert.source == 'mufon' 
-                            ? _getMufonReportDate(context, alert) 
-                            : _formatDateTime(context, alert.createdAt),
-                        style: const TextStyle(
-                          color: AppColors.textTertiary,
-                          fontSize: 12,
-                        ),
-                      ),
-                      // Only show distance for non-MUFON alerts when meaningful
-                      if (alert.distance != null && alert.distance! > 0 && showDistance && alert.source != 'mufon') ...[ 
-                        const SizedBox(height: 4),
-                        _buildDistanceBadge(units),
-                      ],
-                    ],
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 12),
-              
-              // Media thumbnails (if available)
-              if (alert.mediaFiles.isNotEmpty)
-                _buildMediaThumbnails(context),
-              
-              if (alert.mediaFiles.isNotEmpty)
-                const SizedBox(height: 12),
-              
-              // Description preview (if available)
-              if (alert.description != null && alert.description!.isNotEmpty)
-                Text(
-                  alert.description!,
-                  style: const TextStyle(
-                    color: AppColors.textSecondary,
-                    fontSize: 16,
-                    height: 1.5,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              
-              if (alert.description != null && alert.description!.isNotEmpty)
-                const SizedBox(height: 12),
-              
-              // Footer row with indicators and location
-              Row(
-                children: [
-                  // Comment indicator (first, most important)
-                  if (alert.commentCount > 0)
-                    _buildCommentsIndicator(),
-                  
-                  // Content type indicator
-                  _buildContentTypeIndicator(l10n),
-                  
-                  // Witness confirmation indicator
-                  if (alert.witnessCount > 1)
-                    _buildWitnessIndicator(),
-                  
-                  const Spacer(),
-                  
-                  // Remove redundant location display since all locations now show under title
-                  const Spacer(),
-                  
-                  // Arrow indicator
-                  const SizedBox(width: 8),
-                  const Icon(
-                    Icons.arrow_forward_ios,
-                    size: 12,
-                    color: AppColors.textTertiary,
-                  ),
-                ],
-              ),
-            ],
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildHeaderRow(context, l10n, units),
+          const SizedBox(height: 12),
+          if (alert.mediaFiles.isNotEmpty) ...[
+            _buildMediaThumbnails(context),
+            const SizedBox(height: 12),
+          ],
+          if (alert.description?.isNotEmpty == true) ...[
+            _buildDescription(),
+            const SizedBox(height: 12),
+          ],
+          _buildFooterRow(l10n),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeaderRow(BuildContext context, AppLocalizations l10n, String units) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildUfoIcon(),
+        const SizedBox(width: 12),
+        Expanded(
+          child: _buildTitleAndMetadata(context, l10n),
+        ),
+        _buildTimestampAndDistance(context, units),
+      ],
+    );
+  }
+
+  Widget _buildUfoIcon() {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: AppColors.brandPrimary.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: const Text(
+        '🛸',
+        style: TextStyle(fontSize: 16),
+      ),
+    );
+  }
+
+  Widget _buildTitleAndMetadata(BuildContext context, AppLocalizations l10n) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          alert.title == 'UFO Sighting' ? l10n.ufoSighting : alert.title,
+          style: const TextStyle(
+            color: AppColors.textPrimary,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+        if (_getLocationName(alert).isNotEmpty) ...[
+          const SizedBox(height: 4),
+          Text(
+            _getLocationName(alert),
+            style: const TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 13,
+            ),
+          ),
+        ],
+        const SizedBox(height: 4),
+        _buildVerificationBadge(l10n),
+      ],
+    );
+  }
+
+  Widget _buildVerificationBadge(AppLocalizations l10n) {
+    if (alert.isVerified && alert.source != 'mufon') {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        decoration: BoxDecoration(
+          color: AppColors.brandPrimary.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: AppColors.brandPrimary.withValues(alpha: 0.3),
           ),
         ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.verified,
+              color: AppColors.brandPrimary,
+              size: 10,
+            ),
+            const SizedBox(width: 2),
+            Text(
+              l10n.verified,
+              style: const TextStyle(
+                color: AppColors.brandPrimary,
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    return const SizedBox(height: 16);
+  }
+
+  Widget _buildTimestampAndDistance(BuildContext context, String units) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        if (alert.reporterUsername != null && alert.source != 'mufon') ...[
+          Text(
+            alert.reporterUsername!,
+            style: const TextStyle(
+              color: AppColors.brandPrimary,
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 4),
+        ],
+        Text(
+          alert.source == 'mufon' 
+              ? _getMufonReportDate(context, alert) 
+              : _formatDateTime(context, alert.createdAt),
+          style: const TextStyle(
+            color: AppColors.textTertiary,
+            fontSize: 12,
+          ),
+        ),
+        if (alert.distance != null && alert.distance! > 0 && showDistance && alert.source != 'mufon') ...[
+          const SizedBox(height: 4),
+          _buildDistanceBadge(units),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildDescription() {
+    return Text(
+      alert.description!,
+      style: const TextStyle(
+        color: AppColors.textSecondary,
+        fontSize: 16,
+        height: 1.5,
+      ),
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+
+  Widget _buildFooterRow(AppLocalizations l10n) {
+    return Row(
+      children: [
+        if (alert.commentCount > 0)
+          _buildCommentsIndicator(),
+        _buildContentTypeIndicator(l10n),
+        if (alert.witnessCount > 1)
+          _buildWitnessIndicator(),
+        const Spacer(),
+        const Icon(
+          Icons.arrow_forward_ios,
+          size: 12,
+          color: AppColors.textTertiary,
+        ),
+      ],
     );
   }
 
@@ -229,21 +217,21 @@ class AlertCard extends ConsumerWidget {
     Color badgeColor;
     
     if (distance < 1.0) {
-      badgeColor = AppColors.semanticError; // Very close - red
+      badgeColor = AppColors.semanticError;
     } else if (distance < 5.0) {
-      badgeColor = AppColors.semanticWarning; // Close - orange
+      badgeColor = AppColors.semanticWarning;
     } else if (distance < 15.0) {
-      badgeColor = AppColors.brandPrimary; // Medium - green
+      badgeColor = AppColors.brandPrimary;
     } else {
-      badgeColor = AppColors.textTertiary; // Far - gray
+      badgeColor = AppColors.textTertiary;
     }
     
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: badgeColor.withOpacity(0.1),
+        color: badgeColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: badgeColor.withOpacity(0.3)),
+        border: Border.all(color: badgeColor.withValues(alpha: 0.3)),
       ),
       child: Text(
         UnitConversion.formatDistance(distance * 1000, units),
@@ -257,10 +245,10 @@ class AlertCard extends ConsumerWidget {
   }
 
   Widget _buildContentTypeIndicator(AppLocalizations l10n) {
-    // Simple JSON interpretation logic
     final hasMedia = alert.mediaFiles.isNotEmpty;
     final hasDescription = alert.description?.trim().isNotEmpty ?? false;
     final classification = _getMufonClassificationLabel(l10n);
+    
     if (classification != null) {
       return _buildBadge(classification, Icons.category, AppColors.brandPrimary);
     }
@@ -288,6 +276,240 @@ class AlertCard extends ConsumerWidget {
     }
     
     return const SizedBox.shrink();
+  }
+
+  Widget _buildBadge(String text, IconData icon, Color color) {
+    return Container(
+      margin: const EdgeInsets.only(right: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 12, color: color),
+          const SizedBox(width: 4),
+          Text(
+            text,
+            style: TextStyle(
+              color: color,
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWitnessIndicator() {
+    return Container(
+      margin: const EdgeInsets.only(right: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: AppColors.semanticSuccess.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: AppColors.semanticSuccess.withValues(alpha: 0.3)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            Icons.visibility,
+            size: 12,
+            color: AppColors.semanticSuccess,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            '${alert.witnessCount}',
+            style: const TextStyle(
+              color: AppColors.semanticSuccess,
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCommentsIndicator() {
+    return Consumer(
+      builder: (context, ref, _) {
+        return GestureDetector(
+          onTap: () async {
+            await UiFeedback.click();
+            if (context.mounted) {
+              context.go('/alert/${alert.id}/comments');
+            }
+          },
+          child: Container(
+            margin: const EdgeInsets.only(right: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration: BoxDecoration(
+              color: AppColors.brandPrimary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(color: AppColors.brandPrimary.withValues(alpha: 0.3)),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.comment,
+                  size: 12,
+                  color: AppColors.brandPrimary,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  '${alert.commentCount}',
+                  style: const TextStyle(
+                    color: AppColors.brandPrimary,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildMediaThumbnails(BuildContext context) {
+    if (alert.mediaFiles.isEmpty) return const SizedBox.shrink();
+    
+    final mediaToShow = alert.mediaFiles.take(3).toList();
+    
+    return SizedBox(
+      height: 24,
+      child: Row(
+        children: [
+          ...mediaToShow.asMap().entries.map((entry) {
+            final index = entry.key;
+            final media = entry.value;
+            final isVideo = (media['type'] ?? 'image') == 'video';
+            final thumbnailUrl = media['thumbnail_url'] ?? media['url'];
+            
+            return GestureDetector(
+              onTap: () async {
+                await UiFeedback.click();
+                if (context.mounted) {
+                  context.go('/alert/${alert.id}?openImage=$index');
+                }
+              },
+              child: Container(
+                width: 24,
+                height: 24,
+                margin: EdgeInsets.only(right: index < mediaToShow.length - 1 ? 4 : 0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                    color: AppColors.brandPrimary.withValues(alpha: 0.3),
+                    width: 0.5,
+                  ),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(3.5),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      if (thumbnailUrl != null)
+                        Image.network(
+                          thumbnailUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              color: AppColors.darkSurface,
+                              child: Icon(
+                                isVideo ? Icons.videocam : Icons.photo,
+                                size: 12,
+                                color: AppColors.textTertiary,
+                              ),
+                            );
+                          },
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Container(
+                              color: AppColors.darkSurface,
+                              child: Icon(
+                                isVideo ? Icons.videocam : Icons.photo,
+                                size: 12,
+                                color: AppColors.textTertiary,
+                              ),
+                            );
+                          },
+                        )
+                      else
+                        Container(
+                          color: AppColors.darkSurface,
+                          child: Icon(
+                            isVideo ? Icons.videocam : Icons.photo,
+                            size: 12,
+                            color: AppColors.textTertiary,
+                          ),
+                        ),
+                      if (isVideo)
+                        Positioned(
+                          bottom: 1,
+                          right: 1,
+                          child: Container(
+                            padding: const EdgeInsets.all(1),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.6),
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                            child: const Icon(
+                              Icons.play_arrow,
+                              size: 6,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
+          if (alert.mediaFiles.length > 3)
+            GestureDetector(
+              onTap: () async {
+                await UiFeedback.click();
+                if (context.mounted) {
+                  context.go('/alert/${alert.id}?openImage=0');
+                }
+              },
+              child: Container(
+                width: 24,
+                height: 24,
+                margin: const EdgeInsets.only(left: 4),
+                decoration: BoxDecoration(
+                  color: AppColors.brandPrimary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                    color: AppColors.brandPrimary.withValues(alpha: 0.3),
+                    width: 0.5,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    '+${alert.mediaFiles.length - 3}',
+                    style: const TextStyle(
+                      color: AppColors.brandPrimary,
+                      fontSize: 8,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
   }
 
   String? _getMufonClassificationLabel(AppLocalizations l10n) {
@@ -351,294 +573,8 @@ class AlertCard extends ConsumerWidget {
         return l10n.ufoTypeUnknown;
     }
   }
-  
-  Widget _buildBadge(String text, IconData icon, Color color) {
-    return Container(
-      margin: const EdgeInsets.only(right: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: color.withOpacity(0.3)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 12, color: color),
-          const SizedBox(width: 4),
-          Text(
-            text,
-            style: TextStyle(
-              color: color,
-              fontSize: 10,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMediaIndicator() {
-    return Container(
-      margin: const EdgeInsets.only(right: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
-        color: AppColors.brandPrimary.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            alert.mediaFiles.any((media) => (media['type'] ?? 'image') == 'video')
-                ? Icons.videocam
-                : Icons.photo,
-            size: 12,
-            color: AppColors.brandPrimary,
-          ),
-          const SizedBox(width: 4),
-          Text(
-            '${alert.mediaFiles.length}',
-            style: const TextStyle(
-              color: AppColors.brandPrimary,
-              fontSize: 10,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          // Simple dot for recent activity (when comment count > 0)
-          if (alert.commentCount > 0) ...[
-            const SizedBox(width: 2),
-            Container(
-              width: 4,
-              height: 4,
-              decoration: const BoxDecoration(
-                color: AppColors.semanticSuccess,
-                shape: BoxShape.circle,
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _buildWitnessIndicator() {
-    return Container(
-      margin: const EdgeInsets.only(right: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
-        color: AppColors.semanticSuccess.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: AppColors.semanticSuccess.withOpacity(0.3)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(
-            Icons.visibility,
-            size: 12,
-            color: AppColors.semanticSuccess,
-          ),
-          const SizedBox(width: 4),
-          Text(
-            '${alert.witnessCount}',
-            style: const TextStyle(
-              color: AppColors.semanticSuccess,
-              fontSize: 10,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCommentsIndicator() {
-    return Consumer(
-      builder: (context, ref, _) {
-        return GestureDetector(
-          onTap: () async {
-            await UiFeedback.click();
-            if (context.mounted) {
-              context.go('/alert/${alert.id}/comments');
-            }
-          },
-      child: Container(
-        margin: const EdgeInsets.only(right: 8),
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-        decoration: BoxDecoration(
-          color: AppColors.brandPrimary.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(6),
-          border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(
-              Icons.comment,
-              size: 12,
-              color: AppColors.brandPrimary,
-            ),
-            const SizedBox(width: 4),
-            Text(
-              '${alert.commentCount}',
-              style: const TextStyle(
-                color: AppColors.brandPrimary,
-                fontSize: 10,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
-        );
-      },
-    );
-  }
-
-  Widget _buildMediaThumbnails(BuildContext context) {
-    if (alert.mediaFiles.isEmpty) return const SizedBox.shrink();
-    
-    // Show up to 3 thumbnails
-    final mediaToShow = alert.mediaFiles.take(3).toList();
-    
-    return SizedBox(
-      height: 24,
-      child: Row(
-        children: [
-          ...mediaToShow.asMap().entries.map((entry) {
-            final index = entry.key;
-            final media = entry.value;
-            final isVideo = (media['type'] ?? 'image') == 'video';
-            final thumbnailUrl = media['thumbnail_url'] ?? media['url'];
-            
-            return GestureDetector(
-              onTap: () async {
-                await UiFeedback.click();
-                if (context.mounted) {
-                  context.go('/alert/${alert.id}?openImage=$index');
-                }
-              },
-              child: Container(
-                width: 24,
-                height: 24,
-                margin: EdgeInsets.only(right: index < mediaToShow.length - 1 ? 4 : 0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                  border: Border.all(
-                    color: AppColors.brandPrimary.withOpacity(0.3),
-                    width: 0.5,
-                  ),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(3.5),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      // Thumbnail image
-                      if (thumbnailUrl != null)
-                        Image.network(
-                          thumbnailUrl,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              color: AppColors.darkSurface,
-                              child: Icon(
-                                isVideo ? Icons.videocam : Icons.photo,
-                                size: 12,
-                                color: AppColors.textTertiary,
-                              ),
-                            );
-                          },
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Container(
-                              color: AppColors.darkSurface,
-                              child: Icon(
-                                isVideo ? Icons.videocam : Icons.photo,
-                                size: 12,
-                                color: AppColors.textTertiary,
-                              ),
-                            );
-                          },
-                        )
-                      else
-                        Container(
-                          color: AppColors.darkSurface,
-                          child: Icon(
-                            isVideo ? Icons.videocam : Icons.photo,
-                            size: 12,
-                            color: AppColors.textTertiary,
-                          ),
-                        ),
-                      
-                      // Video indicator overlay
-                      if (isVideo)
-                        Positioned(
-                          bottom: 1,
-                          right: 1,
-                          child: Container(
-                            padding: const EdgeInsets.all(1),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.6),
-                              borderRadius: BorderRadius.circular(2),
-                            ),
-                            child: const Icon(
-                              Icons.play_arrow,
-                              size: 6,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }),
-          
-          // Show "+N more" indicator if there are more than 3 media files
-          if (alert.mediaFiles.length > 3)
-            GestureDetector(
-              onTap: () async {
-                await UiFeedback.click();
-                if (context.mounted) {
-                  context.go('/alert/${alert.id}?openImage=0');
-                }
-              },
-              child: Container(
-                width: 24,
-                height: 24,
-                margin: const EdgeInsets.only(left: 4),
-                decoration: BoxDecoration(
-                  color: AppColors.brandPrimary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(4),
-                  border: Border.all(
-                    color: AppColors.brandPrimary.withOpacity(0.3),
-                    width: 0.5,
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    '+${alert.mediaFiles.length - 3}',
-                    style: const TextStyle(
-                      color: AppColors.brandPrimary,
-                      fontSize: 8,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
 
   String _getLocationName(Alert alert) {
-    // For MUFON alerts, check enrichment data first, then location name
     if (alert.source == 'mufon') {
       final enrichment = alert.enrichment;
       if (enrichment != null && enrichment.containsKey('location_raw')) {
@@ -649,10 +585,6 @@ class AlertCard extends ConsumerWidget {
       }
     }
     
-    // For UFOBeep alerts, use the standard location field
-    // (sensor data location is already processed into locationName during API parsing)
-    
-    // For all alerts, return location name if available and meaningful
     if (alert.locationName != null && 
         alert.locationName!.isNotEmpty && 
         alert.locationName != 'Unknown Location') {
@@ -662,17 +594,14 @@ class AlertCard extends ConsumerWidget {
   }
 
   String _getMufonReportDate(BuildContext context, Alert alert) {
-    // For MUFON alerts, show the report date or case number
     final enrichment = alert.enrichment;
     if (enrichment != null) {
-      // Try report date first
       if (enrichment.containsKey('database_when')) {
         final reportDate = enrichment['database_when']?.toString();
         if (reportDate != null && reportDate.isNotEmpty) {
           return reportDate;
         }
       }
-      // Try case number as fallback
       if (enrichment.containsKey('mufon_case_number')) {
         final caseNumber = enrichment['mufon_case_number']?.toString();
         if (caseNumber != null && caseNumber.isNotEmpty) {
@@ -680,13 +609,11 @@ class AlertCard extends ConsumerWidget {
         }
       }
     }
-    // Final fallback to created date
     return _formatDateTime(context, alert.createdAt);
   }
 
   String _formatDateTime(BuildContext context, DateTime dateTime) {
     final l10n = AppLocalizations.of(context);
-    // Ensure both times are in the same timezone (local)
     final now = DateTime.now();
     final localDateTime = dateTime.toLocal();
     final difference = now.difference(localDateTime);
@@ -703,7 +630,7 @@ class AlertCard extends ConsumerWidget {
   }
 }
 
-// Keep CompactAlertCard for backward compatibility if needed
+// Keep CompactAlertCard for backward compatibility
 class CompactAlertCard extends ConsumerWidget {
   const CompactAlertCard({
     super.key,
@@ -725,7 +652,7 @@ class CompactAlertCard extends ConsumerWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
         side: BorderSide(
-          color: AppColors.darkBorder.withOpacity(0.3),
+          color: AppColors.darkBorder.withValues(alpha: 0.3),
         ),
       ),
       child: InkWell(
@@ -740,11 +667,10 @@ class CompactAlertCard extends ConsumerWidget {
           padding: const EdgeInsets.all(12),
           child: Row(
             children: [
-              // UFO icon
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: AppColors.brandPrimary.withOpacity(0.1),
+                  color: AppColors.brandPrimary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: const Text(
@@ -752,10 +678,7 @@ class CompactAlertCard extends ConsumerWidget {
                   style: TextStyle(fontSize: 14),
                 ),
               ),
-              
               const SizedBox(width: 12),
-              
-              // Content
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -773,8 +696,7 @@ class CompactAlertCard extends ConsumerWidget {
                     const SizedBox(height: 2),
                     Row(
                       children: [
-                        // Only show distance for non-MUFON alerts when meaningful
-                        if (alert.distance != null && alert.distance! > 0 && alert.source != 'mufon') ...[ 
+                        if (alert.distance != null && alert.distance! > 0 && alert.source != 'mufon') ...[
                           Text(
                             UnitConversion.formatDistance(alert.distance! * 1000, units),
                             style: const TextStyle(
@@ -790,7 +712,6 @@ class CompactAlertCard extends ConsumerWidget {
                             ),
                           ),
                         ],
-                        // Only show time for non-MUFON alerts
                         if (alert.source != 'mufon')
                           Text(
                             _formatDateTime(context, alert.createdAt),
@@ -799,7 +720,7 @@ class CompactAlertCard extends ConsumerWidget {
                               fontSize: 12,
                             ),
                           ),
-                        if (alert.isVerified && alert.source != 'mufon') ...[ 
+                        if (alert.isVerified && alert.source != 'mufon') ...[
                           const SizedBox(width: 4),
                           const Icon(
                             Icons.verified,
@@ -812,8 +733,6 @@ class CompactAlertCard extends ConsumerWidget {
                   ],
                 ),
               ),
-              
-              // Arrow
               const Icon(
                 Icons.arrow_forward_ios,
                 size: 14,
@@ -828,7 +747,6 @@ class CompactAlertCard extends ConsumerWidget {
 
   String _formatDateTime(BuildContext context, DateTime dateTime) {
     final l10n = AppLocalizations.of(context);
-    // Ensure both times are in the same timezone (local)
     final now = DateTime.now();
     final localDateTime = dateTime.toLocal();
     final difference = now.difference(localDateTime);

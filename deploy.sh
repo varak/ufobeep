@@ -54,6 +54,42 @@ else
                 COMMIT_MSG="${arg#*=}"
                 ;;
             nogit) SKIP_GIT=true ;;
+            --help|-h|help) 
+                echo "UFOBeep Production Deployment Script"
+                echo "===================================="
+                echo ""
+                echo "USAGE:"
+                echo "  ./deploy.sh [options] [targets]"
+                echo ""
+                echo "TARGETS:"
+                echo "  api          Deploy only API backend"
+                echo "  web          Deploy only Next.js web frontend"
+                echo "  web-fast     Deploy web with local build + rsync (faster)"
+                echo "  apk|mobile   Deploy APK to all connected devices"
+                echo "  moto         Deploy APK to Moto device only"
+                echo "  tablet       Deploy APK to tablet device only" 
+                echo "  pixel        Deploy APK to Pixel device only"
+                echo "  samsung      Deploy APK to Samsung device only"
+                echo "  all          Deploy everything (default if no targets)"
+                echo ""
+                echo "OPTIONS:"
+                echo "  --auto-commit=\"msg\"  Auto-commit with message before deploy"
+                echo "  nogit                Skip git operations entirely"
+                echo "  --help, -h           Show this help message"
+                echo ""
+                echo "EXAMPLES:"
+                echo "  ./deploy.sh                    # Deploy everything"
+                echo "  ./deploy.sh api web            # Deploy API and web only"
+                echo "  ./deploy.sh moto tablet        # Deploy APK to specific devices"
+                echo "  ./deploy.sh web-fast           # Quick web deploy"
+                echo "  ./deploy.sh --auto-commit=\"Fix bug\" api  # Auto-commit then deploy API"
+                echo ""
+                echo "DEVICE MANAGEMENT:"
+                echo "  Once APK is built by first device deployment, other devices"
+                echo "  can be deployed without rebuilding using device-specific targets."
+                echo ""
+                exit 0
+                ;;
             *) echo -e "${RED}Unknown option: $arg${NC}"; exit 1 ;;
         esac
     done
