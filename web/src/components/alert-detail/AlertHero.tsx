@@ -58,16 +58,10 @@ export default function AlertHero({ alert, openImageIndex }: AlertHeroProps) {
       {/* Header */}
       <div className="p-6">
         <div className="flex items-start gap-4">
-          {/* Content type icon - contextual */}
-          {(hasMedia || hasDescription) && (
-            <div className="bg-brand-primary/10 p-3 rounded-xl border border-brand-primary/20">
-              <span className="text-2xl">
-                {hasMedia ? (
-                  alert.media_files.some(m => m.type === 'video') ? '🎥' : '📸'
-                ) : '👁️'}
-              </span>
-            </div>
-          )}
+          {/* UFOBeep icon for all reports */}
+          <div className="bg-brand-primary/10 p-3 rounded-xl border border-brand-primary/20">
+            <span className="text-2xl">🛸</span>
+          </div>
           
           {/* Title and metadata */}
           <div className="flex-1">
@@ -75,31 +69,25 @@ export default function AlertHero({ alert, openImageIndex }: AlertHeroProps) {
               {alert.title || 'UFO Sighting Report'}
             </h1>
             
-            
-            {/* Content type indicator */}
+            {/* Content type indicator - only show "witness report" when no media to explain lack */}
             {!hasMedia && !hasDescription && (
               <div className="inline-flex items-center gap-2 bg-text-tertiary/10 text-text-tertiary px-3 py-1 rounded-full text-sm font-medium border border-text-tertiary/20">
                 <span>📡</span>
                 <span>beep only</span>
               </div>
             )}
-            {hasMedia && (
-              <div className="inline-flex items-center gap-2 bg-brand-primary/10 text-brand-primary px-3 py-1 rounded-full text-sm font-medium border border-brand-primary/20">
-                <span>{alert.media_files.some(m => m.type === 'video') ? '🎥' : '📸'}</span>
-                <span>{alert.media_files.length} {alert.media_files.some(m => m.type === 'video') ? 'video' : 'photo'}{alert.media_files.length > 1 ? 's' : ''}</span>
-              </div>
-            )}
             {!hasMedia && hasDescription && (
               <div className="inline-flex items-center gap-2 bg-brand-primary/10 text-brand-primary px-3 py-1 rounded-full text-sm font-medium border border-brand-primary/20">
                 <span>👁️</span>
-                <span>witness report</span>
+                <span>witness report only</span>
               </div>
             )}
+            {/* Remove redundant media count badge - thumbnails already show how many */}
           </div>
         </div>
       </div>
 
-      {/* Media gallery if available */}
+      {/* Media gallery - thumbnails show count visually, no need for text badge */}
       {hasMedia && (
         <div className="px-6 pb-6">
           <div className={`flex gap-2 overflow-x-auto pb-2 ${alert.media_files.length >= 5 ? 'scrollbar-thin' : 'scrollbar-hide'}`}>
