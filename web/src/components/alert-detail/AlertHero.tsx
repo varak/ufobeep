@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import MediaGalleryModal from '../MediaGalleryModal'
 
 interface Alert {
@@ -28,8 +29,17 @@ interface AlertHeroProps {
 export default function AlertHero({ alert }: AlertHeroProps) {
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
+  const router = useRouter()
   const hasMedia = alert.media_files && alert.media_files.length > 0
   const hasDescription = alert.description?.trim()
+
+  const handleCloseModal = () => {
+    setIsMediaModalOpen(false)
+    const url = new URL(window.location.href)
+    url.searchParams.delete('openImage')
+    router.replace(url.pathname + url.search, { scroll: false })
+    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100)
+  }
 
   return (
     <div className="bg-dark-surface border border-dark-border rounded-lg overflow-hidden mb-6">
@@ -136,7 +146,7 @@ export default function AlertHero({ alert }: AlertHeroProps) {
       {/* Media Gallery Modal */}
       <MediaGalleryModal
         isOpen={isMediaModalOpen}
-        onClose={() => setIsMediaModalOpen(false)}
+        onClose={handleCloseModal}
         mediaFiles={alert.media_files || []}
         initialIndex={selectedMediaIndex}
         alertTitle={alert.title}

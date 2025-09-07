@@ -156,7 +156,7 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
   return (
     <main className="min-h-screen py-8 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
-        <Link href="/alerts" className="text-brand-primary hover:text-brand-primary-light transition-colors mb-6 inline-block">
+        <Link href={`/alerts#alert-${alert.id}`} className="text-brand-primary hover:text-brand-primary-light transition-colors mb-6 inline-block">
           ← Back to All Alerts
         </Link>
 
