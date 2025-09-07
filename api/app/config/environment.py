@@ -188,7 +188,7 @@ class Settings(BaseSettings):
     def base_url(self) -> str:
         """Get the base URL for this API instance"""
         if self.is_production:
-            return "https://api.ufobeep.com"
+            return "https://ufobeep.com/api"
         elif self.is_staging:
             return "https://api-staging.ufobeep.com"
         else:
