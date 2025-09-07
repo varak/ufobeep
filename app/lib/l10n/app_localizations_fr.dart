@@ -350,7 +350,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get notifications => 'Notifications';
 
   @override
-  String get enablePushNotifications => 'Activer les notifications push';
+  String get enablePushNotifications =>
+      'Obtenir des notifications pour les commentaires futurs';
 
   @override
   String get quietHours => 'Heures calmes';
@@ -442,17 +443,17 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return '${count}d il y a';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return 'Il y a ${count}h';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return 'Il y a ${count}m';
   }
 
   @override
@@ -484,10 +485,25 @@ class AppLocalizationsFr extends AppLocalizations {
   String get mufonCase => 'MUFON Affaire';
 
   @override
+  String mufonCaseDetailsTitle(String caseNumber) {
+    return 'MUFON Cas #__PH_0_ Détails';
+  }
+
+  @override
   String get sightingDate => 'Date de la visite';
 
   @override
+  String get mufonDatabaseEntryDate =>
+      'Date d\'entrée dans le MUFON Base de données';
+
+  @override
   String get databaseEntry => 'Entrée de la base de données';
+
+  @override
+  String get shareLink => 'Partager le lien';
+
+  @override
+  String get linkCopied => 'Lien copié dans le presse-papiers';
 
   @override
   String get locationLabel => 'Lieu';
@@ -601,26 +617,26 @@ class AppLocalizationsFr extends AppLocalizations {
   String get ufoSighting => 'OVNI Vue';
 
   @override
-  String get envAnalysisTitle => 'Environmental Analysis';
+  String get envAnalysisTitle => 'Analyse environnementale';
 
   @override
-  String get envAnalysisPending => 'Analysis Pending';
+  String get envAnalysisPending => 'Analyse en cours';
 
   @override
   String get envAnalysisPendingDesc =>
-      'Environmental data will be available once processing begins.';
+      'Les données environnementales seront disponibles une fois le traitement commencé.';
 
   @override
-  String get unknownAircraft => 'Unknown Aircraft';
+  String get unknownAircraft => 'Aéronef inconnu';
 
   @override
-  String get moreAircraft => 'more aircraft';
+  String get moreAircraft => 'plus d\'avions';
 
   @override
-  String get premiumImageryTitle => 'Premium Satellite Imagery';
+  String get premiumImageryTitle => 'Satellite Premium Imagerie';
 
   @override
-  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+  String get premiumImagerySubtitle => 'Imagerie commerciale haute résolution';
 
   @override
   String get sightingTypeLabel => 'Type';
@@ -659,19 +675,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get ufoTypeBoomerang => 'Boomerang';
 
   @override
-  String get ufoTypeDiamond => 'Diamond';
+  String get ufoTypeDiamond => 'Diamant';
 
   @override
-  String get ufoTypeOval => 'Oval';
+  String get ufoTypeOval => 'Ovale';
 
   @override
-  String get ufoTypeCone => 'Cone';
+  String get ufoTypeCone => 'Cône';
 
   @override
-  String get ufoTypeCross => 'Cross';
+  String get ufoTypeCross => 'Croix';
 
   @override
-  String get ufoTypeDumbbell => 'Dumbbell';
+  String get ufoTypeDumbbell => 'Bouteille';
 
   @override
   String get ufoTypeTeardrop => 'Teardrop';
@@ -683,10 +699,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get ufoTypeBullet => 'Bullet';
 
   @override
-  String get ufoTypeSaturn => 'Saturn';
+  String get ufoTypeSaturn => 'Saturne';
 
   @override
-  String get ufoTypeStarLike => 'Star-like';
+  String get ufoTypeStarLike => 'Comme une étoile';
 
   @override
   String get ufoTypeBlimp => 'Blimp';
@@ -718,40 +734,41 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get aircraftTrackingTitle => 'Aircraft Tracking';
+  String get aircraftTrackingTitle => 'Suivi des aéronefs';
 
   @override
-  String get weatherConditionsTitle => 'Weather Conditions';
+  String get weatherConditionsTitle => 'Conditions météorologiques';
 
   @override
-  String get noSatellitePasses => 'No visible satellite passes found';
+  String get noSatellitePasses =>
+      'Aucune carte satellite visible n\'a été trouvée';
 
   @override
-  String get contentAnalysisTitle => 'Content Analysis';
+  String get contentAnalysisTitle => 'Analyse du contenu';
 
   @override
-  String get contentSafe => 'Content is safe';
+  String get contentSafe => 'Le contenu est sûr';
 
   @override
-  String get contentFlagged => 'Content flagged for review';
+  String get contentFlagged => 'Contenu signalé pour examen';
 
   @override
-  String get confidenceLabel => 'Confidence';
+  String get confidenceLabel => 'Confiance';
 
   @override
-  String get methodLabel => 'Method';
+  String get methodLabel => 'Méthode';
 
   @override
   String get premiumImageryAccessOnly =>
-      'Premium satellite imagery is only available to:';
+      'L\'imagerie satellitaire haut de gamme est disponible uniquement pour :';
 
   @override
-  String get premiumAccessCreators => 'Alert creators';
+  String get premiumAccessCreators => 'Les créateurs d\'alerte';
 
   @override
   String get premiumAccessWitnesses =>
-      'Confirmed witnesses within visibility range';
+      'Témoins confirmés à portée de visibilité';
 
   @override
-  String get comingSoon => 'Coming Soon';
+  String get comingSoon => 'Bientôt';
 }

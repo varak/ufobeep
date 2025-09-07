@@ -348,7 +348,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get notifications => 'Oznámení';
 
   @override
-  String get enablePushNotifications => 'Povolit push notifications';
+  String get enablePushNotifications => 'Získat oznámení pro budoucí komentáře';
 
   @override
   String get quietHours => 'Tiché hodiny';
@@ -438,17 +438,17 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return 'Před';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '_ _ PH _ 0 _ _ h před';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return 'Před tím';
   }
 
   @override
@@ -479,10 +479,24 @@ class AppLocalizationsCs extends AppLocalizations {
   String get mufonCase => 'MUFON Případ';
 
   @override
+  String mufonCaseDetailsTitle(String caseNumber) {
+    return 'MUFON Případ # _ _ PH _ 0 _ _ Podrobnosti';
+  }
+
+  @override
   String get sightingDate => 'Datum pozorování';
 
   @override
+  String get mufonDatabaseEntryDate => 'Datum zařazení do MUFON Databáze';
+
+  @override
   String get databaseEntry => 'Záznam databáze';
+
+  @override
+  String get shareLink => 'Sdílet odkaz';
+
+  @override
+  String get linkCopied => 'Odkaz zkopírován do schránky';
 
   @override
   String get locationLabel => 'Umístění';
@@ -595,26 +609,26 @@ class AppLocalizationsCs extends AppLocalizations {
   String get ufoSighting => 'UFO Vidění';
 
   @override
-  String get envAnalysisTitle => 'Environmental Analysis';
+  String get envAnalysisTitle => 'Environmentální analýza';
 
   @override
-  String get envAnalysisPending => 'Analysis Pending';
+  String get envAnalysisPending => 'Probíhá analýza';
 
   @override
   String get envAnalysisPendingDesc =>
-      'Environmental data will be available once processing begins.';
+      'Údaje o životním prostředí budou k dispozici, jakmile začne zpracování.';
 
   @override
-  String get unknownAircraft => 'Unknown Aircraft';
+  String get unknownAircraft => 'Neznámé letadlo';
 
   @override
-  String get moreAircraft => 'more aircraft';
+  String get moreAircraft => 'více letadel';
 
   @override
   String get premiumImageryTitle => 'Premium Satellite Imagery';
 
   @override
-  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+  String get premiumImagerySubtitle => 'Obchodní obrázky s vysokým rozlišením';
 
   @override
   String get sightingTypeLabel => 'Typ';
@@ -650,7 +664,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get ufoTypeUnknown => 'Neznámé';
 
   @override
-  String get ufoTypeBoomerang => 'Boomerang';
+  String get ufoTypeBoomerang => 'Bumerang';
 
   @override
   String get ufoTypeDiamond => 'Diamond';
@@ -659,31 +673,31 @@ class AppLocalizationsCs extends AppLocalizations {
   String get ufoTypeOval => 'Oval';
 
   @override
-  String get ufoTypeCone => 'Cone';
+  String get ufoTypeCone => 'Kukuřice';
 
   @override
-  String get ufoTypeCross => 'Cross';
+  String get ufoTypeCross => 'Kříže';
 
   @override
   String get ufoTypeDumbbell => 'Dumbbell';
 
   @override
-  String get ufoTypeTeardrop => 'Teardrop';
+  String get ufoTypeTeardrop => 'Slza';
 
   @override
   String get ufoTypeTicTac => 'Tic Tac';
 
   @override
-  String get ufoTypeBullet => 'Bullet';
+  String get ufoTypeBullet => 'Kulka';
 
   @override
   String get ufoTypeSaturn => 'Saturn';
 
   @override
-  String get ufoTypeStarLike => 'Star-like';
+  String get ufoTypeStarLike => 'Star- like';
 
   @override
-  String get ufoTypeBlimp => 'Blimp';
+  String get ufoTypeBlimp => 'Balón';
 
   @override
   String get actionsTitle => 'Akce';
@@ -712,40 +726,40 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get aircraftTrackingTitle => 'Aircraft Tracking';
+  String get aircraftTrackingTitle => 'Sledování letadel';
 
   @override
-  String get weatherConditionsTitle => 'Weather Conditions';
+  String get weatherConditionsTitle => 'Podmínky počasí';
 
   @override
-  String get noSatellitePasses => 'No visible satellite passes found';
+  String get noSatellitePasses =>
+      'Žádné viditelné satelitní propustky nalezeny';
 
   @override
-  String get contentAnalysisTitle => 'Content Analysis';
+  String get contentAnalysisTitle => 'Analýza obsahu';
 
   @override
-  String get contentSafe => 'Content is safe';
+  String get contentSafe => 'Obsah je bezpečný';
 
   @override
-  String get contentFlagged => 'Content flagged for review';
+  String get contentFlagged => 'Obsah označený k přezkoumání';
 
   @override
-  String get confidenceLabel => 'Confidence';
+  String get confidenceLabel => 'Důvěra';
 
   @override
-  String get methodLabel => 'Method';
+  String get methodLabel => 'Metoda';
 
   @override
   String get premiumImageryAccessOnly =>
-      'Premium satellite imagery is only available to:';
+      'Premium satelitní snímky je k dispozici pouze pro:';
 
   @override
-  String get premiumAccessCreators => 'Alert creators';
+  String get premiumAccessCreators => 'Tvůrci výstrahy';
 
   @override
-  String get premiumAccessWitnesses =>
-      'Confirmed witnesses within visibility range';
+  String get premiumAccessWitnesses => 'Potvrzení svědci v dosahu viditelnosti';
 
   @override
-  String get comingSoon => 'Coming Soon';
+  String get comingSoon => 'Už brzy';
 }

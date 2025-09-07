@@ -349,7 +349,8 @@ class AppLocalizationsSv extends AppLocalizations {
   String get notifications => 'Meddelanden';
 
   @override
-  String get enablePushNotifications => 'Aktivera push-meddelanden';
+  String get enablePushNotifications =>
+      'Få meddelanden för framtida kommentarer';
 
   @override
   String get quietHours => 'Tyst timmar';
@@ -439,17 +440,17 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return '${count}d för';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '$count för';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return '$count för';
   }
 
   @override
@@ -480,10 +481,24 @@ class AppLocalizationsSv extends AppLocalizations {
   String get mufonCase => 'Mufonen fall';
 
   @override
+  String mufonCaseDetailsTitle(String caseNumber) {
+    return 'Mufonen Fall #__PH_0_ detaljer';
+  }
+
+  @override
   String get sightingDate => 'Sighting Date';
 
   @override
+  String get mufonDatabaseEntryDate => 'Datum in i MUFON Databas';
+
+  @override
   String get databaseEntry => 'Databasinträde';
+
+  @override
+  String get shareLink => 'Dela Link';
+
+  @override
+  String get linkCopied => 'Link kopierad till Clipboard';
 
   @override
   String get locationLabel => 'Plats';
@@ -597,26 +612,26 @@ class AppLocalizationsSv extends AppLocalizations {
   String get ufoSighting => 'UFO Sighting';
 
   @override
-  String get envAnalysisTitle => 'Environmental Analysis';
+  String get envAnalysisTitle => 'Miljöanalys';
 
   @override
-  String get envAnalysisPending => 'Analysis Pending';
+  String get envAnalysisPending => 'Analys i väntan';
 
   @override
   String get envAnalysisPendingDesc =>
-      'Environmental data will be available once processing begins.';
+      'Miljödata kommer att finnas tillgängliga när behandlingen påbörjas.';
 
   @override
-  String get unknownAircraft => 'Unknown Aircraft';
+  String get unknownAircraft => 'Okända flygplan';
 
   @override
-  String get moreAircraft => 'more aircraft';
+  String get moreAircraft => 'fler flygplan';
 
   @override
-  String get premiumImageryTitle => 'Premium Satellite Imagery';
+  String get premiumImageryTitle => 'Premium satellit Imagery';
 
   @override
-  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+  String get premiumImagerySubtitle => 'Högupplöst kommersiellt bildspråk';
 
   @override
   String get sightingTypeLabel => 'Typ';
@@ -655,7 +670,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get ufoTypeBoomerang => 'Boomerang';
 
   @override
-  String get ufoTypeDiamond => 'Diamond';
+  String get ufoTypeDiamond => 'Diamant';
 
   @override
   String get ufoTypeOval => 'Oval';
@@ -664,7 +679,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get ufoTypeCone => 'Cone';
 
   @override
-  String get ufoTypeCross => 'Cross';
+  String get ufoTypeCross => 'Korset korsar';
 
   @override
   String get ufoTypeDumbbell => 'Dumbbell';
@@ -679,10 +694,10 @@ class AppLocalizationsSv extends AppLocalizations {
   String get ufoTypeBullet => 'Bullet';
 
   @override
-  String get ufoTypeSaturn => 'Saturn';
+  String get ufoTypeSaturn => 'Saturnus';
 
   @override
-  String get ufoTypeStarLike => 'Star-like';
+  String get ufoTypeStarLike => 'Star-liknande';
 
   @override
   String get ufoTypeBlimp => 'Blimp';
@@ -717,37 +732,37 @@ class AppLocalizationsSv extends AppLocalizations {
   String get aircraftTrackingTitle => 'Aircraft Tracking';
 
   @override
-  String get weatherConditionsTitle => 'Weather Conditions';
+  String get weatherConditionsTitle => 'Väderförhållanden';
 
   @override
-  String get noSatellitePasses => 'No visible satellite passes found';
+  String get noSatellitePasses => 'Inga synliga satellitpass hittades';
 
   @override
-  String get contentAnalysisTitle => 'Content Analysis';
+  String get contentAnalysisTitle => 'Innehållsanalys';
 
   @override
-  String get contentSafe => 'Content is safe';
+  String get contentSafe => 'Innehållet är säkert';
 
   @override
-  String get contentFlagged => 'Content flagged for review';
+  String get contentFlagged => 'Innehåll flaggat för granskning';
 
   @override
-  String get confidenceLabel => 'Confidence';
+  String get confidenceLabel => 'Förtroende';
 
   @override
-  String get methodLabel => 'Method';
+  String get methodLabel => 'Metod';
 
   @override
   String get premiumImageryAccessOnly =>
-      'Premium satellite imagery is only available to:';
+      'Premium satellitbilder är endast tillgängliga för:';
 
   @override
-  String get premiumAccessCreators => 'Alert creators';
+  String get premiumAccessCreators => 'Varningsskapare';
 
   @override
   String get premiumAccessWitnesses =>
-      'Confirmed witnesses within visibility range';
+      'Bekräftade vittnen inom synlighetsområdet';
 
   @override
-  String get comingSoon => 'Coming Soon';
+  String get comingSoon => 'Kommer snart';
 }

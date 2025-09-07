@@ -341,7 +341,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get notifications => 'お知らせ';
 
   @override
-  String get enablePushNotifications => 'プッシュ通知を有効にする';
+  String get enablePushNotifications => '今後のコメントの通知を得る';
 
   @override
   String get quietHours => '静かな時間';
@@ -427,17 +427,17 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return '__PH_0_d 前に';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '__PH_0_h 前に';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return '__PH_0_m 前に';
   }
 
   @override
@@ -468,10 +468,24 @@ class AppLocalizationsJa extends AppLocalizations {
   String get mufonCase => 'MUFONについて 導入事例';
 
   @override
+  String mufonCaseDetailsTitle(String caseNumber) {
+    return 'MUFONについて ケース #$caseNumber';
+  }
+
+  @override
   String get sightingDate => '予定日';
 
   @override
+  String get mufonDatabaseEntryDate => 'MUFON に入力された日付 データベース';
+
+  @override
   String get databaseEntry => 'データベースのエントリ';
+
+  @override
+  String get shareLink => 'シェアリンク';
+
+  @override
+  String get linkCopied => 'クリップボードにコピーされたリンク';
 
   @override
   String get locationLabel => 'アクセス';
@@ -583,26 +597,25 @@ class AppLocalizationsJa extends AppLocalizations {
   String get ufoSighting => 'ユーチューブ スタイリング';
 
   @override
-  String get envAnalysisTitle => 'Environmental Analysis';
+  String get envAnalysisTitle => '環境分析';
 
   @override
-  String get envAnalysisPending => 'Analysis Pending';
+  String get envAnalysisPending => '解析の終わること';
 
   @override
-  String get envAnalysisPendingDesc =>
-      'Environmental data will be available once processing begins.';
+  String get envAnalysisPendingDesc => '処理が始まると環境データが使用可能になります.';
 
   @override
-  String get unknownAircraft => 'Unknown Aircraft';
+  String get unknownAircraft => '未知の航空機';
 
   @override
-  String get moreAircraft => 'more aircraft';
+  String get moreAircraft => 'より多くの航空機';
 
   @override
-  String get premiumImageryTitle => 'Premium Satellite Imagery';
+  String get premiumImageryTitle => 'プレミアム衛星 イメージ';
 
   @override
-  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+  String get premiumImagerySubtitle => '高解像度商用イメージ';
 
   @override
   String get sightingTypeLabel => 'タイプ:';
@@ -638,40 +651,40 @@ class AppLocalizationsJa extends AppLocalizations {
   String get ufoTypeUnknown => '未知の';
 
   @override
-  String get ufoTypeBoomerang => 'Boomerang';
+  String get ufoTypeBoomerang => 'ブーメラン';
 
   @override
-  String get ufoTypeDiamond => 'Diamond';
+  String get ufoTypeDiamond => 'ダイヤモンド';
 
   @override
-  String get ufoTypeOval => 'Oval';
+  String get ufoTypeOval => 'オーバル';
 
   @override
-  String get ufoTypeCone => 'Cone';
+  String get ufoTypeCone => 'コーン';
 
   @override
-  String get ufoTypeCross => 'Cross';
+  String get ufoTypeCross => 'ログイン';
 
   @override
-  String get ufoTypeDumbbell => 'Dumbbell';
+  String get ufoTypeDumbbell => 'ダンベル';
 
   @override
-  String get ufoTypeTeardrop => 'Teardrop';
+  String get ufoTypeTeardrop => 'ティアドロップ';
 
   @override
-  String get ufoTypeTicTac => 'Tic Tac';
+  String get ufoTypeTicTac => 'シックタック';
 
   @override
-  String get ufoTypeBullet => 'Bullet';
+  String get ufoTypeBullet => 'ニュース';
 
   @override
-  String get ufoTypeSaturn => 'Saturn';
+  String get ufoTypeSaturn => 'サターン';
 
   @override
-  String get ufoTypeStarLike => 'Star-like';
+  String get ufoTypeStarLike => '星のような';
 
   @override
-  String get ufoTypeBlimp => 'Blimp';
+  String get ufoTypeBlimp => 'ログイン';
 
   @override
   String get actionsTitle => 'アクション';
@@ -700,40 +713,38 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get aircraftTrackingTitle => 'Aircraft Tracking';
+  String get aircraftTrackingTitle => '航空機の追跡';
 
   @override
-  String get weatherConditionsTitle => 'Weather Conditions';
+  String get weatherConditionsTitle => '気象条件';
 
   @override
-  String get noSatellitePasses => 'No visible satellite passes found';
+  String get noSatellitePasses => '目に見えない衛星パスが見つかりません';
 
   @override
-  String get contentAnalysisTitle => 'Content Analysis';
+  String get contentAnalysisTitle => 'コンテンツ分析';
 
   @override
-  String get contentSafe => 'Content is safe';
+  String get contentSafe => 'コンテンツは安全です';
 
   @override
-  String get contentFlagged => 'Content flagged for review';
+  String get contentFlagged => '審査対象のコンテンツ';
 
   @override
-  String get confidenceLabel => 'Confidence';
+  String get confidenceLabel => 'コンプライアンス';
 
   @override
-  String get methodLabel => 'Method';
+  String get methodLabel => 'メソッド';
 
   @override
-  String get premiumImageryAccessOnly =>
-      'Premium satellite imagery is only available to:';
+  String get premiumImageryAccessOnly => 'プレミアム衛星画像のみ利用可能です:';
 
   @override
-  String get premiumAccessCreators => 'Alert creators';
+  String get premiumAccessCreators => 'アラート作成者';
 
   @override
-  String get premiumAccessWitnesses =>
-      'Confirmed witnesses within visibility range';
+  String get premiumAccessWitnesses => '可視範囲内で確認された証人';
 
   @override
-  String get comingSoon => 'Coming Soon';
+  String get comingSoon => '近日公開';
 }

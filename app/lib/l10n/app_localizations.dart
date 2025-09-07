@@ -1002,17 +1002,41 @@ abstract class AppLocalizations {
   /// **'MUFON Case'**
   String get mufonCase;
 
+  /// No description provided for @mufonCaseDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON Case #{caseNumber} Details'**
+  String mufonCaseDetailsTitle(String caseNumber);
+
   /// No description provided for @sightingDate.
   ///
   /// In en, this message translates to:
   /// **'Sighting Date'**
   String get sightingDate;
 
+  /// No description provided for @mufonDatabaseEntryDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date Entered into MUFON Database'**
+  String get mufonDatabaseEntryDate;
+
   /// No description provided for @databaseEntry.
   ///
   /// In en, this message translates to:
   /// **'Database Entry'**
   String get databaseEntry;
+
+  /// No description provided for @shareLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Link'**
+  String get shareLink;
+
+  /// No description provided for @linkCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Link copied to clipboard'**
+  String get linkCopied;
 
   /// No description provided for @locationLabel.
   ///

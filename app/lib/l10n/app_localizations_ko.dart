@@ -341,7 +341,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get notifications => '공지사항';
 
   @override
-  String get enablePushNotifications => '푸시 알림 활성화';
+  String get enablePushNotifications => '미래에 대한 알림 받기';
 
   @override
   String get quietHours => '영업시간';
@@ -428,17 +428,17 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return '${count}d 전';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '${count}h 전';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return '${count}m 전';
   }
 
   @override
@@ -469,10 +469,24 @@ class AppLocalizationsKo extends AppLocalizations {
   String get mufonCase => '사이트맵 제품정보';
 
   @override
+  String mufonCaseDetailsTitle(String caseNumber) {
+    return '사이트맵 케이스 #$caseNumber 세부 사항';
+  }
+
+  @override
   String get sightingDate => '관련 기사';
 
   @override
+  String get mufonDatabaseEntryDate => '날짜 입력 MUFON 관련 기사';
+
+  @override
   String get databaseEntry => '데이터베이스';
+
+  @override
+  String get shareLink => '공유 링크';
+
+  @override
+  String get linkCopied => '클립보드에 복사 링크';
 
   @override
   String get locationLabel => '- 연혁';
@@ -584,26 +598,25 @@ class AppLocalizationsKo extends AppLocalizations {
   String get ufoSighting => '사이트맵 뚱 베어';
 
   @override
-  String get envAnalysisTitle => 'Environmental Analysis';
+  String get envAnalysisTitle => '환경분석';
 
   @override
-  String get envAnalysisPending => 'Analysis Pending';
+  String get envAnalysisPending => '분석 Pending';
 
   @override
-  String get envAnalysisPendingDesc =>
-      'Environmental data will be available once processing begins.';
+  String get envAnalysisPendingDesc => '환경 데이터는 한 번 처리가 시작됩니다.';
 
   @override
-  String get unknownAircraft => 'Unknown Aircraft';
+  String get unknownAircraft => '알 수없는 항공기';
 
   @override
-  String get moreAircraft => 'more aircraft';
+  String get moreAircraft => '더 많은 항공기';
 
   @override
-  String get premiumImageryTitle => 'Premium Satellite Imagery';
+  String get premiumImageryTitle => '프리미엄 위성 이미지';
 
   @override
-  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+  String get premiumImagerySubtitle => '고해상도 상업 이미지';
 
   @override
   String get sightingTypeLabel => '제품정보';
@@ -639,40 +652,40 @@ class AppLocalizationsKo extends AppLocalizations {
   String get ufoTypeUnknown => '이름 *';
 
   @override
-  String get ufoTypeBoomerang => 'Boomerang';
+  String get ufoTypeBoomerang => '프로모션';
 
   @override
-  String get ufoTypeDiamond => 'Diamond';
+  String get ufoTypeDiamond => '담당자: Ms';
 
   @override
-  String get ufoTypeOval => 'Oval';
+  String get ufoTypeOval => '오벌';
 
   @override
-  String get ufoTypeCone => 'Cone';
+  String get ufoTypeCone => '한국어';
 
   @override
-  String get ufoTypeCross => 'Cross';
+  String get ufoTypeCross => '기타';
 
   @override
-  String get ufoTypeDumbbell => 'Dumbbell';
+  String get ufoTypeDumbbell => '카테고리';
 
   @override
-  String get ufoTypeTeardrop => 'Teardrop';
+  String get ufoTypeTeardrop => '옵션 정보';
 
   @override
-  String get ufoTypeTicTac => 'Tic Tac';
+  String get ufoTypeTicTac => '카테고리';
 
   @override
-  String get ufoTypeBullet => 'Bullet';
+  String get ufoTypeBullet => '주요연혁';
 
   @override
-  String get ufoTypeSaturn => 'Saturn';
+  String get ufoTypeSaturn => '인기 카테고리';
 
   @override
-  String get ufoTypeStarLike => 'Star-like';
+  String get ufoTypeStarLike => '이름 *';
 
   @override
-  String get ufoTypeBlimp => 'Blimp';
+  String get ufoTypeBlimp => '뚱 베어';
 
   @override
   String get actionsTitle => '팟캐스트';
@@ -701,40 +714,38 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get aircraftTrackingTitle => 'Aircraft Tracking';
+  String get aircraftTrackingTitle => '항공기 추적';
 
   @override
-  String get weatherConditionsTitle => 'Weather Conditions';
+  String get weatherConditionsTitle => '기상 조건';
 
   @override
-  String get noSatellitePasses => 'No visible satellite passes found';
+  String get noSatellitePasses => '눈에 보이는 위성 패스 발견';
 
   @override
-  String get contentAnalysisTitle => 'Content Analysis';
+  String get contentAnalysisTitle => '콘텐츠 분석';
 
   @override
-  String get contentSafe => 'Content is safe';
+  String get contentSafe => '내용은 안전합니다';
 
   @override
-  String get contentFlagged => 'Content flagged for review';
+  String get contentFlagged => 'Content flagged 에 대한 리뷰';
 
   @override
-  String get confidenceLabel => 'Confidence';
+  String get confidenceLabel => '지원하다';
 
   @override
-  String get methodLabel => 'Method';
+  String get methodLabel => '제품 설명';
 
   @override
-  String get premiumImageryAccessOnly =>
-      'Premium satellite imagery is only available to:';
+  String get premiumImageryAccessOnly => '프리미엄 위성 이미지는 오직 사용할 수 있습니다:';
 
   @override
-  String get premiumAccessCreators => 'Alert creators';
+  String get premiumAccessCreators => 'Alert 제작자';
 
   @override
-  String get premiumAccessWitnesses =>
-      'Confirmed witnesses within visibility range';
+  String get premiumAccessWitnesses => '가시 범위 내에서 확인된 증언';
 
   @override
-  String get comingSoon => 'Coming Soon';
+  String get comingSoon => '현재 위치';
 }

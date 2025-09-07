@@ -346,7 +346,8 @@ class AppLocalizationsFi extends AppLocalizations {
   String get notifications => 'Ilmoitukset';
 
   @override
-  String get enablePushNotifications => 'Käytä työntöilmoituksia';
+  String get enablePushNotifications =>
+      'Hae ilmoituksia tulevia kommentteja varten';
 
   @override
   String get quietHours => 'Hiljaiset tunnit';
@@ -437,17 +438,17 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return '_PH_0_d sitten';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '_PH_0_h sitten';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return '_PH_0_m sitten';
   }
 
   @override
@@ -479,10 +480,24 @@ class AppLocalizationsFi extends AppLocalizations {
   String get mufonCase => 'MUFON Asia';
 
   @override
+  String mufonCaseDetailsTitle(String caseNumber) {
+    return 'MUFON Asian #__PH_0_ Yksityiskohdat';
+  }
+
+  @override
   String get sightingDate => 'Näkymispäivä';
 
   @override
+  String get mufonDatabaseEntryDate => 'Päivämäärä Tietokanta';
+
+  @override
   String get databaseEntry => 'Tietokannan tietue';
+
+  @override
+  String get shareLink => 'Jaa linkki';
+
+  @override
+  String get linkCopied => 'Linkki kopioitu leikepöydälle';
 
   @override
   String get locationLabel => 'Sijainti';
@@ -595,26 +610,26 @@ class AppLocalizationsFi extends AppLocalizations {
   String get ufoSighting => 'UFO Näkyminen';
 
   @override
-  String get envAnalysisTitle => 'Environmental Analysis';
+  String get envAnalysisTitle => 'Ympäristöanalyysi';
 
   @override
-  String get envAnalysisPending => 'Analysis Pending';
+  String get envAnalysisPending => 'Analyysi kesken';
 
   @override
   String get envAnalysisPendingDesc =>
-      'Environmental data will be available once processing begins.';
+      'Ympäristötiedot ovat saatavilla käsittelyn aloittamisen jälkeen.';
 
   @override
-  String get unknownAircraft => 'Unknown Aircraft';
+  String get unknownAircraft => 'Tuntematon ilma-alus';
 
   @override
-  String get moreAircraft => 'more aircraft';
+  String get moreAircraft => 'enemmän ilma-aluksia';
 
   @override
-  String get premiumImageryTitle => 'Premium Satellite Imagery';
+  String get premiumImageryTitle => 'Premium-satelliitti Kuvasto';
 
   @override
-  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+  String get premiumImagerySubtitle => 'Korkearesoluutioiset kaupalliset kuvat';
 
   @override
   String get sightingTypeLabel => 'Tyyppi';
@@ -653,7 +668,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get ufoTypeBoomerang => 'Boomerang';
 
   @override
-  String get ufoTypeDiamond => 'Diamond';
+  String get ufoTypeDiamond => 'Timantti';
 
   @override
   String get ufoTypeOval => 'Oval';
@@ -662,10 +677,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get ufoTypeCone => 'Cone';
 
   @override
-  String get ufoTypeCross => 'Cross';
+  String get ufoTypeCross => 'Risti';
 
   @override
-  String get ufoTypeDumbbell => 'Dumbbell';
+  String get ufoTypeDumbbell => 'Käsipaino';
 
   @override
   String get ufoTypeTeardrop => 'Teardrop';
@@ -674,13 +689,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get ufoTypeTicTac => 'Tic Tac';
 
   @override
-  String get ufoTypeBullet => 'Bullet';
+  String get ufoTypeBullet => 'Luoti';
 
   @override
-  String get ufoTypeSaturn => 'Saturn';
+  String get ufoTypeSaturn => 'Saturnus';
 
   @override
-  String get ufoTypeStarLike => 'Star-like';
+  String get ufoTypeStarLike => 'Tähtimäinen';
 
   @override
   String get ufoTypeBlimp => 'Blimp';
@@ -712,40 +727,40 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get aircraftTrackingTitle => 'Aircraft Tracking';
+  String get aircraftTrackingTitle => 'Ilma-alusten seuranta';
 
   @override
-  String get weatherConditionsTitle => 'Weather Conditions';
+  String get weatherConditionsTitle => 'Sääolosuhteet';
 
   @override
-  String get noSatellitePasses => 'No visible satellite passes found';
+  String get noSatellitePasses => 'Ei näkyviä satelliitteja ei löytynyt';
 
   @override
-  String get contentAnalysisTitle => 'Content Analysis';
+  String get contentAnalysisTitle => 'Sisältöanalyysi';
 
   @override
-  String get contentSafe => 'Content is safe';
+  String get contentSafe => 'Sisältö on turvallista';
 
   @override
-  String get contentFlagged => 'Content flagged for review';
+  String get contentFlagged => 'Tarkasteltavaksi merkitty sisältö';
 
   @override
-  String get confidenceLabel => 'Confidence';
+  String get confidenceLabel => 'Luottamus';
 
   @override
-  String get methodLabel => 'Method';
+  String get methodLabel => 'Menetelmä';
 
   @override
   String get premiumImageryAccessOnly =>
-      'Premium satellite imagery is only available to:';
+      'Premium satelliittikuvia on saatavilla vain:';
 
   @override
-  String get premiumAccessCreators => 'Alert creators';
+  String get premiumAccessCreators => 'Varoituksen luojat';
 
   @override
   String get premiumAccessWitnesses =>
-      'Confirmed witnesses within visibility range';
+      'Vahvistetut todistajat näkyvyysalueella';
 
   @override
-  String get comingSoon => 'Coming Soon';
+  String get comingSoon => 'Tulossa pian';
 }

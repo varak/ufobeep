@@ -477,10 +477,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mufonCase => 'MUFON Case';
 
   @override
+  String mufonCaseDetailsTitle(String caseNumber) {
+    return 'MUFON Case #$caseNumber Details';
+  }
+
+  @override
   String get sightingDate => 'Sighting Date';
 
   @override
+  String get mufonDatabaseEntryDate => 'Date Entered into MUFON Database';
+
+  @override
   String get databaseEntry => 'Database Entry';
+
+  @override
+  String get shareLink => 'Share Link';
+
+  @override
+  String get linkCopied => 'Link copied to clipboard';
 
   @override
   String get locationLabel => 'Location';

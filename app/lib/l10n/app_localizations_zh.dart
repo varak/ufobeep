@@ -341,7 +341,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get notifications => '通知';
 
   @override
-  String get enablePushNotifications => '启用按键通知';
+  String get enablePushNotifications => '获取通知供今后评论';
 
   @override
   String get quietHours => '安静时间';
@@ -427,17 +427,17 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return '时间轴:';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '0 小时前';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return '0 分钟前';
   }
 
   @override
@@ -468,10 +468,24 @@ class AppLocalizationsZh extends AppLocalizations {
   String get mufonCase => '毛里求斯 大小写';
 
   @override
+  String mufonCaseDetailsTitle(String caseNumber) {
+    return '毛里求斯 案例 QQPH_ 0__ 细节';
+  }
+
+  @override
   String get sightingDate => '观察日期';
 
   @override
+  String get mufonDatabaseEntryDate => '输入 MUFON 的日期 数据库';
+
+  @override
   String get databaseEntry => '数据库条目';
+
+  @override
+  String get shareLink => '共享链接';
+
+  @override
+  String get linkCopied => '链接复制到剪贴板';
 
   @override
   String get locationLabel => '地点';
@@ -583,26 +597,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ufoSighting => '不明飞行物 观察';
 
   @override
-  String get envAnalysisTitle => 'Environmental Analysis';
+  String get envAnalysisTitle => '环境分析';
 
   @override
-  String get envAnalysisPending => 'Analysis Pending';
+  String get envAnalysisPending => '待分析';
 
   @override
-  String get envAnalysisPendingDesc =>
-      'Environmental data will be available once processing begins.';
+  String get envAnalysisPendingDesc => '一旦开始处理,将可获得环境数据.';
 
   @override
-  String get unknownAircraft => 'Unknown Aircraft';
+  String get unknownAircraft => '未知飞机';
 
   @override
-  String get moreAircraft => 'more aircraft';
+  String get moreAircraft => '更多飞机';
 
   @override
-  String get premiumImageryTitle => 'Premium Satellite Imagery';
+  String get premiumImageryTitle => '钚卫星 图像';
 
   @override
-  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+  String get premiumImagerySubtitle => '高分辨率商业图像';
 
   @override
   String get sightingTypeLabel => '类型';
@@ -638,40 +651,40 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ufoTypeUnknown => '未知';
 
   @override
-  String get ufoTypeBoomerang => 'Boomerang';
+  String get ufoTypeBoomerang => ' Boom';
 
   @override
-  String get ufoTypeDiamond => 'Diamond';
+  String get ufoTypeDiamond => '钻石';
 
   @override
-  String get ufoTypeOval => 'Oval';
+  String get ufoTypeOval => '奥巴马';
 
   @override
-  String get ufoTypeCone => 'Cone';
+  String get ufoTypeCone => '锥形';
 
   @override
-  String get ufoTypeCross => 'Cross';
+  String get ufoTypeCross => '交叉';
 
   @override
-  String get ufoTypeDumbbell => 'Dumbbell';
+  String get ufoTypeDumbbell => '哑铃';
 
   @override
-  String get ufoTypeTeardrop => 'Teardrop';
+  String get ufoTypeTeardrop => '泪滴';
 
   @override
-  String get ufoTypeTicTac => 'Tic Tac';
+  String get ufoTypeTicTac => '塔克语Name';
 
   @override
-  String get ufoTypeBullet => 'Bullet';
+  String get ufoTypeBullet => '子弹';
 
   @override
-  String get ufoTypeSaturn => 'Saturn';
+  String get ufoTypeSaturn => '土星号';
 
   @override
-  String get ufoTypeStarLike => 'Star-like';
+  String get ufoTypeStarLike => '像星星一样';
 
   @override
-  String get ufoTypeBlimp => 'Blimp';
+  String get ufoTypeBlimp => '闪烁';
 
   @override
   String get actionsTitle => '行动';
@@ -700,40 +713,38 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get aircraftTrackingTitle => 'Aircraft Tracking';
+  String get aircraftTrackingTitle => '飞机跟踪';
 
   @override
-  String get weatherConditionsTitle => 'Weather Conditions';
+  String get weatherConditionsTitle => '天气条件';
 
   @override
-  String get noSatellitePasses => 'No visible satellite passes found';
+  String get noSatellitePasses => '未发现可见的卫星通过';
 
   @override
-  String get contentAnalysisTitle => 'Content Analysis';
+  String get contentAnalysisTitle => '内容分析';
 
   @override
-  String get contentSafe => 'Content is safe';
+  String get contentSafe => '内容是安全的';
 
   @override
-  String get contentFlagged => 'Content flagged for review';
+  String get contentFlagged => '标注供审查的内容';
 
   @override
-  String get confidenceLabel => 'Confidence';
+  String get confidenceLabel => '信心';
 
   @override
-  String get methodLabel => 'Method';
+  String get methodLabel => '方法';
 
   @override
-  String get premiumImageryAccessOnly =>
-      'Premium satellite imagery is only available to:';
+  String get premiumImageryAccessOnly => '精度卫星图像仅提供给:';
 
   @override
-  String get premiumAccessCreators => 'Alert creators';
+  String get premiumAccessCreators => '提醒创建者';
 
   @override
-  String get premiumAccessWitnesses =>
-      'Confirmed witnesses within visibility range';
+  String get premiumAccessWitnesses => '在可见范围内确认的证人';
 
   @override
-  String get comingSoon => 'Coming Soon';
+  String get comingSoon => '快来了';
 }

@@ -349,7 +349,8 @@ class AppLocalizationsEl extends AppLocalizations {
   String get notifications => 'Κοινοποιήσεις';
 
   @override
-  String get enablePushNotifications => 'Ενεργοποίηση ειδοποιήσεων ώθησης';
+  String get enablePushNotifications =>
+      'Λήψη κοινοποιήσεων για μελλοντικά σχόλια';
 
   @override
   String get quietHours => 'Ώρες ησυχίας';
@@ -442,17 +443,17 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return '_PH_0_D πριν';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '__PH_0_h πριν';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return '_PH_0_m πριν';
   }
 
   @override
@@ -484,10 +485,25 @@ class AppLocalizationsEl extends AppLocalizations {
   String get mufonCase => 'ΜΟΥΦΟΝ Υπόθεση';
 
   @override
+  String mufonCaseDetailsTitle(String caseNumber) {
+    return 'ΜΟΥΦΟΝ Υπόθεση #__PH_0_ Λεπτομέρειες';
+  }
+
+  @override
   String get sightingDate => 'Ημερομηνία παρατήρησης';
 
   @override
+  String get mufonDatabaseEntryDate =>
+      'Ημερομηνία εισόδου στο MUFON Βάση δεδομένων';
+
+  @override
   String get databaseEntry => 'Είσοδος βάσης δεδομένων';
+
+  @override
+  String get shareLink => 'Κοινοποίηση δεσμού';
+
+  @override
+  String get linkCopied => 'Δεσμός αντιγραφόμενο στο πρόχειρο';
 
   @override
   String get locationLabel => 'Τοποθεσία';
@@ -600,26 +616,26 @@ class AppLocalizationsEl extends AppLocalizations {
   String get ufoSighting => 'ΑΤΙΑ Ορατότητα';
 
   @override
-  String get envAnalysisTitle => 'Environmental Analysis';
+  String get envAnalysisTitle => 'Περιβαλλοντική ανάλυση';
 
   @override
-  String get envAnalysisPending => 'Analysis Pending';
+  String get envAnalysisPending => 'Εν αναμονή ανάλυσης';
 
   @override
   String get envAnalysisPendingDesc =>
-      'Environmental data will be available once processing begins.';
+      'Τα περιβαλλοντικά δεδομένα θα είναι διαθέσιμα μόλις αρχίσει η επεξεργασία.';
 
   @override
-  String get unknownAircraft => 'Unknown Aircraft';
+  String get unknownAircraft => 'Άγνωστο αεροσκάφος';
 
   @override
-  String get moreAircraft => 'more aircraft';
+  String get moreAircraft => 'περισσότερα αεροσκάφη';
 
   @override
-  String get premiumImageryTitle => 'Premium Satellite Imagery';
+  String get premiumImageryTitle => 'Premium δορυφόρος Εικόνα';
 
   @override
-  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+  String get premiumImagerySubtitle => 'Εμπορικές εικόνες υψηλής ανάλυσης';
 
   @override
   String get sightingTypeLabel => 'Τύπος';
@@ -655,40 +671,40 @@ class AppLocalizationsEl extends AppLocalizations {
   String get ufoTypeUnknown => 'Άγνωστο';
 
   @override
-  String get ufoTypeBoomerang => 'Boomerang';
+  String get ufoTypeBoomerang => 'Μπούμερανγκ';
 
   @override
-  String get ufoTypeDiamond => 'Diamond';
+  String get ufoTypeDiamond => 'Διαμάντι';
 
   @override
-  String get ufoTypeOval => 'Oval';
+  String get ufoTypeOval => 'Οβάλ';
 
   @override
-  String get ufoTypeCone => 'Cone';
+  String get ufoTypeCone => 'Κώνος';
 
   @override
-  String get ufoTypeCross => 'Cross';
+  String get ufoTypeCross => 'Σταυρός';
 
   @override
-  String get ufoTypeDumbbell => 'Dumbbell';
+  String get ufoTypeDumbbell => 'Βλακείες';
 
   @override
-  String get ufoTypeTeardrop => 'Teardrop';
+  String get ufoTypeTeardrop => 'Δάκρυο';
 
   @override
   String get ufoTypeTicTac => 'Tic Tac';
 
   @override
-  String get ufoTypeBullet => 'Bullet';
+  String get ufoTypeBullet => 'Σφαίρα';
 
   @override
-  String get ufoTypeSaturn => 'Saturn';
+  String get ufoTypeSaturn => 'Κρόνος';
 
   @override
-  String get ufoTypeStarLike => 'Star-like';
+  String get ufoTypeStarLike => 'Αστρική';
 
   @override
-  String get ufoTypeBlimp => 'Blimp';
+  String get ufoTypeBlimp => 'Μπλίμπ';
 
   @override
   String get actionsTitle => 'Δράσεις';
@@ -717,40 +733,41 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get aircraftTrackingTitle => 'Aircraft Tracking';
+  String get aircraftTrackingTitle => 'Παρακολούθηση αεροσκαφών';
 
   @override
-  String get weatherConditionsTitle => 'Weather Conditions';
+  String get weatherConditionsTitle => 'Καιρικές συνθήκες';
 
   @override
-  String get noSatellitePasses => 'No visible satellite passes found';
+  String get noSatellitePasses => 'Δε βρέθηκαν ορατά δορυφορικά περάσματα';
 
   @override
-  String get contentAnalysisTitle => 'Content Analysis';
+  String get contentAnalysisTitle => 'Ανάλυση περιεχομένου';
 
   @override
-  String get contentSafe => 'Content is safe';
+  String get contentSafe => 'Το περιεχόμενο είναι ασφαλές';
 
   @override
-  String get contentFlagged => 'Content flagged for review';
+  String get contentFlagged =>
+      'Περιεχόμενο που φέρει τη σήμανση για επανεξέταση';
 
   @override
-  String get confidenceLabel => 'Confidence';
+  String get confidenceLabel => 'Εμπιστοσύνη';
 
   @override
-  String get methodLabel => 'Method';
+  String get methodLabel => 'Μέθοδος';
 
   @override
   String get premiumImageryAccessOnly =>
-      'Premium satellite imagery is only available to:';
+      'Premium δορυφορική εικόνα είναι διαθέσιμη μόνο για:';
 
   @override
-  String get premiumAccessCreators => 'Alert creators';
+  String get premiumAccessCreators => 'Προειδοποίηση δημιουργών';
 
   @override
   String get premiumAccessWitnesses =>
-      'Confirmed witnesses within visibility range';
+      'Επιβεβαιωμένοι μάρτυρες εντός εμβέλειας ορατότητας';
 
   @override
-  String get comingSoon => 'Coming Soon';
+  String get comingSoon => 'Έρχομαι Σύντομα';
 }

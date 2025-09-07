@@ -346,7 +346,8 @@ class AppLocalizationsHi extends AppLocalizations {
   String get notifications => 'अधिसूचनाएं';
 
   @override
-  String get enablePushNotifications => 'पुश नोटिफिकेशन सक्षम करें';
+  String get enablePushNotifications =>
+      'भविष्य की टिप्पणियों के लिए अधिसूचनाएं प्राप्त करें';
 
   @override
   String get quietHours => 'चुप घंटे';
@@ -436,17 +437,17 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return 'To make a ph_0_d';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return 'H_0_h__h___h____h___h___h___h____h_____h___h___h____h_________h________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return '^PH_0_m पहले';
   }
 
   @override
@@ -477,10 +478,24 @@ class AppLocalizationsHi extends AppLocalizations {
   String get mufonCase => 'MUFON मामला';
 
   @override
+  String mufonCaseDetailsTitle(String caseNumber) {
+    return 'MUFON केस #${caseNumber}_ Details';
+  }
+
+  @override
   String get sightingDate => 'दर्शन तिथि';
 
   @override
+  String get mufonDatabaseEntryDate => 'तारीख MUFON में प्रवेश किया डेटाबेस';
+
+  @override
   String get databaseEntry => 'डेटाबेस प्रविष्टि';
+
+  @override
+  String get shareLink => 'शेयर लिंक';
+
+  @override
+  String get linkCopied => 'लिंक क्लिपबोर्ड पर कॉपी';
 
   @override
   String get locationLabel => 'स्थान';
@@ -593,26 +608,26 @@ class AppLocalizationsHi extends AppLocalizations {
   String get ufoSighting => 'यूएफओ दृष्टि';
 
   @override
-  String get envAnalysisTitle => 'Environmental Analysis';
+  String get envAnalysisTitle => 'पर्यावरणीय विश्लेषण';
 
   @override
-  String get envAnalysisPending => 'Analysis Pending';
+  String get envAnalysisPending => 'विश्लेषण लंबित';
 
   @override
   String get envAnalysisPendingDesc =>
-      'Environmental data will be available once processing begins.';
+      'प्रक्रिया शुरू होने के बाद पर्यावरण डेटा उपलब्ध होगा।.';
 
   @override
-  String get unknownAircraft => 'Unknown Aircraft';
+  String get unknownAircraft => 'अज्ञात विमान';
 
   @override
-  String get moreAircraft => 'more aircraft';
+  String get moreAircraft => 'विमान';
 
   @override
-  String get premiumImageryTitle => 'Premium Satellite Imagery';
+  String get premiumImageryTitle => 'प्रीमियम सैटेलाइट इमेजरी';
 
   @override
-  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+  String get premiumImagerySubtitle => 'उच्च संकल्प वाणिज्यिक imagery';
 
   @override
   String get sightingTypeLabel => 'प्रकार';
@@ -648,40 +663,40 @@ class AppLocalizationsHi extends AppLocalizations {
   String get ufoTypeUnknown => 'अज्ञात';
 
   @override
-  String get ufoTypeBoomerang => 'Boomerang';
+  String get ufoTypeBoomerang => 'बुमेरांग';
 
   @override
-  String get ufoTypeDiamond => 'Diamond';
+  String get ufoTypeDiamond => 'हीरा';
 
   @override
-  String get ufoTypeOval => 'Oval';
+  String get ufoTypeOval => 'ओवल';
 
   @override
-  String get ufoTypeCone => 'Cone';
+  String get ufoTypeCone => 'शंकु';
 
   @override
-  String get ufoTypeCross => 'Cross';
+  String get ufoTypeCross => 'क्रॉस';
 
   @override
-  String get ufoTypeDumbbell => 'Dumbbell';
+  String get ufoTypeDumbbell => 'डंबल';
 
   @override
-  String get ufoTypeTeardrop => 'Teardrop';
+  String get ufoTypeTeardrop => 'टियरड्रॉप';
 
   @override
   String get ufoTypeTicTac => 'Tic Tac';
 
   @override
-  String get ufoTypeBullet => 'Bullet';
+  String get ufoTypeBullet => 'बुलेट';
 
   @override
-  String get ufoTypeSaturn => 'Saturn';
+  String get ufoTypeSaturn => 'शनि';
 
   @override
-  String get ufoTypeStarLike => 'Star-like';
+  String get ufoTypeStarLike => 'स्टार लाइक';
 
   @override
-  String get ufoTypeBlimp => 'Blimp';
+  String get ufoTypeBlimp => 'ब्लींप';
 
   @override
   String get actionsTitle => 'कार्य';
@@ -710,40 +725,40 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
-  String get aircraftTrackingTitle => 'Aircraft Tracking';
+  String get aircraftTrackingTitle => 'विमान ट्रैकिंग';
 
   @override
-  String get weatherConditionsTitle => 'Weather Conditions';
+  String get weatherConditionsTitle => 'मौसम की स्थिति';
 
   @override
-  String get noSatellitePasses => 'No visible satellite passes found';
+  String get noSatellitePasses => 'कोई दृश्य उपग्रह नहीं मिला';
 
   @override
-  String get contentAnalysisTitle => 'Content Analysis';
+  String get contentAnalysisTitle => 'सामग्री विश्लेषण';
 
   @override
-  String get contentSafe => 'Content is safe';
+  String get contentSafe => 'सामग्री सुरक्षित है';
 
   @override
-  String get contentFlagged => 'Content flagged for review';
+  String get contentFlagged => 'समीक्षा के लिए सामग्री ध्वजांकित';
 
   @override
-  String get confidenceLabel => 'Confidence';
+  String get confidenceLabel => 'गोपनीयता';
 
   @override
-  String get methodLabel => 'Method';
+  String get methodLabel => 'विधि';
 
   @override
   String get premiumImageryAccessOnly =>
-      'Premium satellite imagery is only available to:';
+      'प्रीमियम उपग्रह इमेजरी केवल उपलब्ध है:';
 
   @override
-  String get premiumAccessCreators => 'Alert creators';
+  String get premiumAccessCreators => 'चेतावनी निर्माता';
 
   @override
   String get premiumAccessWitnesses =>
-      'Confirmed witnesses within visibility range';
+      'दृश्यता रेंज के भीतर गवाहों की पुष्टि की';
 
   @override
-  String get comingSoon => 'Coming Soon';
+  String get comingSoon => 'सोन';
 }

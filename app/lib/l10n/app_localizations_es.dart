@@ -349,7 +349,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get notifications => 'Notificaciones';
 
   @override
-  String get enablePushNotifications => 'Permitir notificaciones de empuje';
+  String get enablePushNotifications =>
+      'Obtenga notificaciones para comentarios futuros';
 
   @override
   String get quietHours => 'Horas tranquilas';
@@ -446,7 +447,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '__PH_0_h ago';
   }
 
   @override
@@ -483,10 +484,24 @@ class AppLocalizationsEs extends AppLocalizations {
   String get mufonCase => 'MUFON Caso';
 
   @override
+  String mufonCaseDetailsTitle(String caseNumber) {
+    return 'MUFON Caso #$caseNumber';
+  }
+
+  @override
   String get sightingDate => 'Fecha de visión';
 
   @override
+  String get mufonDatabaseEntryDate => 'Fecha ingresada en MUFON Base de datos';
+
+  @override
   String get databaseEntry => 'Entrada de bases de datos';
+
+  @override
+  String get shareLink => 'Compartir Enlace';
+
+  @override
+  String get linkCopied => 'Enlace copiado a portapapeles';
 
   @override
   String get locationLabel => 'Ubicación';
@@ -602,23 +617,24 @@ class AppLocalizationsEs extends AppLocalizations {
   String get envAnalysisTitle => 'Environmental Analysis';
 
   @override
-  String get envAnalysisPending => 'Analysis Pending';
+  String get envAnalysisPending => 'Análisis';
 
   @override
   String get envAnalysisPendingDesc =>
-      'Environmental data will be available once processing begins.';
+      'Los datos ambientales estarán disponibles una vez que comience el procesamiento.';
 
   @override
-  String get unknownAircraft => 'Unknown Aircraft';
+  String get unknownAircraft => 'Aviones desconocidos';
 
   @override
-  String get moreAircraft => 'more aircraft';
+  String get moreAircraft => 'más aeronaves';
 
   @override
-  String get premiumImageryTitle => 'Premium Satellite Imagery';
+  String get premiumImageryTitle => 'Satélite Premium Imagen';
 
   @override
-  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+  String get premiumImagerySubtitle =>
+      'Imágenes comerciales de alta resolución';
 
   @override
   String get sightingTypeLabel => 'Tipo';
@@ -657,7 +673,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get ufoTypeBoomerang => 'Boomerang';
 
   @override
-  String get ufoTypeDiamond => 'Diamond';
+  String get ufoTypeDiamond => 'Diamante';
 
   @override
   String get ufoTypeOval => 'Oval';
@@ -678,10 +694,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get ufoTypeTicTac => 'Tic Tac';
 
   @override
-  String get ufoTypeBullet => 'Bullet';
+  String get ufoTypeBullet => 'Bala';
 
   @override
-  String get ufoTypeSaturn => 'Saturn';
+  String get ufoTypeSaturn => 'Saturno';
 
   @override
   String get ufoTypeStarLike => 'Star-like';
@@ -719,37 +735,38 @@ class AppLocalizationsEs extends AppLocalizations {
   String get aircraftTrackingTitle => 'Aircraft Tracking';
 
   @override
-  String get weatherConditionsTitle => 'Weather Conditions';
+  String get weatherConditionsTitle => 'Condiciones meteorológicas';
 
   @override
-  String get noSatellitePasses => 'No visible satellite passes found';
+  String get noSatellitePasses =>
+      'No se encontraron pases de satélite visibles';
 
   @override
-  String get contentAnalysisTitle => 'Content Analysis';
+  String get contentAnalysisTitle => 'Análisis de contenidos';
 
   @override
-  String get contentSafe => 'Content is safe';
+  String get contentSafe => 'El contenido es seguro';
 
   @override
-  String get contentFlagged => 'Content flagged for review';
+  String get contentFlagged => 'Contenido marcado para su examen';
 
   @override
-  String get confidenceLabel => 'Confidence';
+  String get confidenceLabel => 'Confianza';
 
   @override
-  String get methodLabel => 'Method';
+  String get methodLabel => 'Método';
 
   @override
   String get premiumImageryAccessOnly =>
-      'Premium satellite imagery is only available to:';
+      'Las imágenes de satélite Premium solo están disponibles para:';
 
   @override
-  String get premiumAccessCreators => 'Alert creators';
+  String get premiumAccessCreators => 'Creadores de alerta';
 
   @override
   String get premiumAccessWitnesses =>
-      'Confirmed witnesses within visibility range';
+      'Testigos confirmados dentro del rango de visibilidad';
 
   @override
-  String get comingSoon => 'Coming Soon';
+  String get comingSoon => 'Pronto';
 }

@@ -344,7 +344,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get notifications => 'זיהוי';
 
   @override
-  String get enablePushNotifications => 'הודעות דחיפה';
+  String get enablePushNotifications => 'קבלו הודעות להערות עתידיות';
 
   @override
   String get quietHours => 'שעות שקטות';
@@ -434,17 +434,17 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return 'PH_0____D_ ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return 'PH_0_h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return 'PH_0__m ago';
   }
 
   @override
@@ -475,10 +475,24 @@ class AppLocalizationsHe extends AppLocalizations {
   String get mufonCase => 'MUFON מקרה';
 
   @override
+  String mufonCaseDetailsTitle(String caseNumber) {
+    return 'MUFON מקרה #${caseNumber}_פרטים';
+  }
+
+  @override
   String get sightingDate => 'תאריך יציאה';
 
   @override
+  String get mufonDatabaseEntryDate => 'תאריך כניסה ל MUFON מסד נתונים';
+
+  @override
   String get databaseEntry => 'מסד נתונים כניסה';
+
+  @override
+  String get shareLink => 'קישור';
+
+  @override
+  String get linkCopied => 'קישור להורדה';
 
   @override
   String get locationLabel => 'מיקום Location';
@@ -591,26 +605,26 @@ class AppLocalizationsHe extends AppLocalizations {
   String get ufoSighting => 'עב\"ם עקבו';
 
   @override
-  String get envAnalysisTitle => 'Environmental Analysis';
+  String get envAnalysisTitle => 'ניתוח סביבתי';
 
   @override
-  String get envAnalysisPending => 'Analysis Pending';
+  String get envAnalysisPending => 'ניתוח Pending';
 
   @override
   String get envAnalysisPendingDesc =>
-      'Environmental data will be available once processing begins.';
+      'נתונים סביבתיים יהיו זמינים לאחר תחילת העיבוד.';
 
   @override
-  String get unknownAircraft => 'Unknown Aircraft';
+  String get unknownAircraft => 'מטוסים לא ידועים';
 
   @override
-  String get moreAircraft => 'more aircraft';
+  String get moreAircraft => 'יותר מטוסים';
 
   @override
-  String get premiumImageryTitle => 'Premium Satellite Imagery';
+  String get premiumImageryTitle => 'Premium Satellite צילום';
 
   @override
-  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+  String get premiumImagerySubtitle => 'תמונות מסחריות ברזולוציה גבוהה';
 
   @override
   String get sightingTypeLabel => 'סוג';
@@ -646,10 +660,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get ufoTypeUnknown => 'לא ידוע';
 
   @override
-  String get ufoTypeBoomerang => 'Boomerang';
+  String get ufoTypeBoomerang => 'בומרנג';
 
   @override
-  String get ufoTypeDiamond => 'Diamond';
+  String get ufoTypeDiamond => 'יהלומים';
 
   @override
   String get ufoTypeOval => 'Oval';
@@ -658,10 +672,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get ufoTypeCone => 'Cone';
 
   @override
-  String get ufoTypeCross => 'Cross';
+  String get ufoTypeCross => 'צלב';
 
   @override
-  String get ufoTypeDumbbell => 'Dumbbell';
+  String get ufoTypeDumbbell => 'במבוכה';
 
   @override
   String get ufoTypeTeardrop => 'Teardrop';
@@ -670,13 +684,13 @@ class AppLocalizationsHe extends AppLocalizations {
   String get ufoTypeTicTac => 'Tic Tac';
 
   @override
-  String get ufoTypeBullet => 'Bullet';
+  String get ufoTypeBullet => 'קליעים';
 
   @override
-  String get ufoTypeSaturn => 'Saturn';
+  String get ufoTypeSaturn => 'שבתאי';
 
   @override
-  String get ufoTypeStarLike => 'Star-like';
+  String get ufoTypeStarLike => 'כוכבים';
 
   @override
   String get ufoTypeBlimp => 'Blimp';
@@ -708,40 +722,38 @@ class AppLocalizationsHe extends AppLocalizations {
   }
 
   @override
-  String get aircraftTrackingTitle => 'Aircraft Tracking';
+  String get aircraftTrackingTitle => 'מעקב מטוסים';
 
   @override
-  String get weatherConditionsTitle => 'Weather Conditions';
+  String get weatherConditionsTitle => 'תנאי מזג אוויר';
 
   @override
-  String get noSatellitePasses => 'No visible satellite passes found';
+  String get noSatellitePasses => 'אין מעבר ללוויינים גלויים';
 
   @override
-  String get contentAnalysisTitle => 'Content Analysis';
+  String get contentAnalysisTitle => 'ניתוח תוכן';
 
   @override
-  String get contentSafe => 'Content is safe';
+  String get contentSafe => 'התוכן בטוח';
 
   @override
-  String get contentFlagged => 'Content flagged for review';
+  String get contentFlagged => 'המונחים: review';
 
   @override
-  String get confidenceLabel => 'Confidence';
+  String get confidenceLabel => 'אמון';
 
   @override
-  String get methodLabel => 'Method';
+  String get methodLabel => 'שיטות';
 
   @override
-  String get premiumImageryAccessOnly =>
-      'Premium satellite imagery is only available to:';
+  String get premiumImageryAccessOnly => 'תמונת לוויין Premium זמינה רק ל:';
 
   @override
-  String get premiumAccessCreators => 'Alert creators';
+  String get premiumAccessCreators => 'יוצרי התראה';
 
   @override
-  String get premiumAccessWitnesses =>
-      'Confirmed witnesses within visibility range';
+  String get premiumAccessWitnesses => 'עדים בולטים בטווח הנראות';
 
   @override
-  String get comingSoon => 'Coming Soon';
+  String get comingSoon => 'בקרוב';
 }
