@@ -308,7 +308,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          'ufobeep.com/alert/${alert.id.substring(0, 6)}',
+                          'ufobeep.com/alert/${alert.id.substring(0, 4)}',
                           style: const TextStyle(
                             color: AppColors.textSecondary,
                             fontSize: 13,

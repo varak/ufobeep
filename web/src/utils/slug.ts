@@ -15,7 +15,7 @@ export function generateSlug(title: string, location: string, date: string, id?:
   const datePart = new Date(date || Date.now()).toISOString().split('T')[0]
 
   // Add short ID hash for uniqueness while keeping URL clean
-  const idPart = id ? id.substring(0, 6) : ''
+  const idPart = id ? id.substring(0, 4) : ''
 
   return `${titlePart}-${locationPart}-${datePart}-${idPart}`
     .replace(/--+/g, '-')
@@ -46,17 +46,17 @@ export function getAlertSlug(alert: SluggableAlertLike) {
 }
 
 export function getShortAlertUrl(alertId: string): string {
-  // Return short 6-character URL for sharing
-  return `/alert/${alertId.substring(0, 6)}`
+  // Return short 4-character URL for sharing
+  return `/alert/${alertId.substring(0, 4)}`
 }
 
 export function extractIdFromSlug(slug: string): string | null {
-  // Extract the last 6-character part of the slug as the ID hash
+  // Extract the last 4-character part of the slug as the ID hash
   const parts = slug.split('-')
   const lastPart = parts[parts.length - 1]
   
-  // Check if the last part looks like an ID (6 chars, alphanumeric)
-  if (lastPart && lastPart.length === 6 && /^[a-z0-9]+$/.test(lastPart)) {
+  // Check if the last part looks like an ID (4 chars, alphanumeric)
+  if (lastPart && lastPart.length === 4 && /^[a-z0-9]+$/.test(lastPart)) {
     return lastPart
   }
   

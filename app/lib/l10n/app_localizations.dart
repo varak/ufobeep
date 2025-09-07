@@ -765,7 +765,7 @@ abstract class AppLocalizations {
   /// No description provided for @enablePushNotifications.
   ///
   /// In en, this message translates to:
-  /// **'Enable push notifications'**
+  /// **'Get notifications for future comments'**
   String get enablePushNotifications;
 
   /// No description provided for @quietHours.

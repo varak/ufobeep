@@ -345,7 +345,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notifications => 'Notifications';
 
   @override
-  String get enablePushNotifications => 'Enable push notifications';
+  String get enablePushNotifications => 'Get notifications for future comments';
 
   @override
   String get quietHours => 'Quiet hours';
