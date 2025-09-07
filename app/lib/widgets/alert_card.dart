@@ -30,7 +30,9 @@ class AlertCard extends ConsumerWidget {
       padding: const EdgeInsets.all(12),
       onTap: onTap ?? () async {
         await UiFeedback.click();
-        context.go('/alert/${alert.id}');
+        if (context.mounted) {
+          context.go('/alert/${alert.id}');
+        }
       },
       child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,6 +164,13 @@ class AlertCard extends ConsumerWidget {
               ),
               
               const SizedBox(height: 12),
+              
+              // Media thumbnails (if available)
+              if (alert.mediaFiles.isNotEmpty)
+                _buildMediaThumbnails(context),
+              
+              if (alert.mediaFiles.isNotEmpty)
+                const SizedBox(height: 12),
               
               // Description preview (if available)
               if (alert.description != null && alert.description!.isNotEmpty)
@@ -452,7 +461,9 @@ class AlertCard extends ConsumerWidget {
         return GestureDetector(
           onTap: () async {
             await UiFeedback.click();
-            context.go('/alert/${alert.id}/comments');
+            if (context.mounted) {
+              context.go('/alert/${alert.id}/comments');
+            }
           },
       child: Container(
         margin: const EdgeInsets.only(right: 8),
@@ -484,6 +495,145 @@ class AlertCard extends ConsumerWidget {
       ),
         );
       },
+    );
+  }
+
+  Widget _buildMediaThumbnails(BuildContext context) {
+    if (alert.mediaFiles.isEmpty) return const SizedBox.shrink();
+    
+    // Show up to 3 thumbnails
+    final mediaToShow = alert.mediaFiles.take(3).toList();
+    
+    return SizedBox(
+      height: 24,
+      child: Row(
+        children: [
+          ...mediaToShow.asMap().entries.map((entry) {
+            final index = entry.key;
+            final media = entry.value;
+            final isVideo = (media['type'] ?? 'image') == 'video';
+            final thumbnailUrl = media['thumbnail_url'] ?? media['url'];
+            
+            return GestureDetector(
+              onTap: () async {
+                await UiFeedback.click();
+                if (context.mounted) {
+                  context.go('/alert/${alert.id}?openImage=$index');
+                }
+              },
+              child: Container(
+                width: 24,
+                height: 24,
+                margin: EdgeInsets.only(right: index < mediaToShow.length - 1 ? 4 : 0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                    color: AppColors.brandPrimary.withOpacity(0.3),
+                    width: 0.5,
+                  ),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(3.5),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      // Thumbnail image
+                      if (thumbnailUrl != null)
+                        Image.network(
+                          thumbnailUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              color: AppColors.darkSurface,
+                              child: Icon(
+                                isVideo ? Icons.videocam : Icons.photo,
+                                size: 12,
+                                color: AppColors.textTertiary,
+                              ),
+                            );
+                          },
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Container(
+                              color: AppColors.darkSurface,
+                              child: Icon(
+                                isVideo ? Icons.videocam : Icons.photo,
+                                size: 12,
+                                color: AppColors.textTertiary,
+                              ),
+                            );
+                          },
+                        )
+                      else
+                        Container(
+                          color: AppColors.darkSurface,
+                          child: Icon(
+                            isVideo ? Icons.videocam : Icons.photo,
+                            size: 12,
+                            color: AppColors.textTertiary,
+                          ),
+                        ),
+                      
+                      // Video indicator overlay
+                      if (isVideo)
+                        Positioned(
+                          bottom: 1,
+                          right: 1,
+                          child: Container(
+                            padding: const EdgeInsets.all(1),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.6),
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                            child: const Icon(
+                              Icons.play_arrow,
+                              size: 6,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
+          
+          // Show "+N more" indicator if there are more than 3 media files
+          if (alert.mediaFiles.length > 3)
+            GestureDetector(
+              onTap: () async {
+                await UiFeedback.click();
+                if (context.mounted) {
+                  context.go('/alert/${alert.id}?openImage=0');
+                }
+              },
+              child: Container(
+                width: 24,
+                height: 24,
+                margin: const EdgeInsets.only(left: 4),
+                decoration: BoxDecoration(
+                  color: AppColors.brandPrimary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                    color: AppColors.brandPrimary.withOpacity(0.3),
+                    width: 0.5,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    '+${alert.mediaFiles.length - 3}',
+                    style: const TextStyle(
+                      color: AppColors.brandPrimary,
+                      fontSize: 8,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 
@@ -581,7 +731,9 @@ class CompactAlertCard extends ConsumerWidget {
       child: InkWell(
         onTap: onTap ?? () async {
           await UiFeedback.click();
-          context.go('/alert/${alert.id}');
+          if (context.mounted) {
+            context.go('/alert/${alert.id}');
+          }
         },
         borderRadius: BorderRadius.circular(8),
         child: Padding(
