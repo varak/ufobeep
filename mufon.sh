@@ -835,7 +835,8 @@ def extract_and_import_mufon(date_str):
                             "title": title,
                             "description": clean_description,  # Use clean description without metadata
                             "username": "MUFON",
-                            "source": "mufon"
+                            "source": "mufon",
+                            "occurred_at": occurred_at_iso  # Include the parsed occurrence timestamp
                         }
                         
                         # Add location - use geocoded data if available, otherwise use clean location name with default coords
@@ -853,6 +854,38 @@ def extract_and_import_mufon(date_str):
                                 "name": location if location and location.strip() else "Location Unknown"
                             }
                         
+                        # Parse sighting_datetime to ISO timestamp for occurred_at
+                        occurred_at_iso = None
+                        if sighting_datetime:
+                            try:
+                                # MUFON format: "2025-09-07\n6:48AM"
+                                # Clean up the datetime string
+                                clean_datetime = sighting_datetime.replace('\n', ' ').strip()
+                                
+                                # Try to parse various MUFON datetime formats
+                                from datetime import datetime, timezone
+                                try:
+                                    # Try "YYYY-MM-DD HH:MMAM/PM" format
+                                    parsed_dt = datetime.strptime(clean_datetime, "%Y-%m-%d %I:%M%p")
+                                except ValueError:
+                                    try:
+                                        # Try "YYYY-MM-DD H:MMAM/PM" format (single digit hour)
+                                        parsed_dt = datetime.strptime(clean_datetime, "%Y-%m-%d %I:%M%p")
+                                    except ValueError:
+                                        try:
+                                            # Try just the date if time parsing fails
+                                            parsed_dt = datetime.strptime(clean_datetime.split()[0], "%Y-%m-%d")
+                                        except ValueError:
+                                            # Fallback to current time if all parsing fails
+                                            parsed_dt = datetime.now()
+                                
+                                # Convert to UTC ISO format
+                                occurred_at_iso = parsed_dt.replace(tzinfo=timezone.utc).isoformat()
+                                log(f"🕐 Parsed sighting_datetime '{sighting_datetime}' -> '{occurred_at_iso}'")
+                            except Exception as e:
+                                log(f"⚠️ Failed to parse sighting_datetime '{sighting_datetime}': {e}")
+                                occurred_at_iso = None
+
                         # Store all enrichment data (classification, geocoding, etc.) 
                         enrichment_data = {
                             "classification": classification,
@@ -865,6 +898,7 @@ def extract_and_import_mufon(date_str):
                             "mufon_case_id": real_case_id,
                             "report_date": report_date,
                             "sighting_datetime": sighting_datetime,
+                            "occurred_at": occurred_at_iso,  # Proper ISO timestamp for occurred_at
                             "location_raw": location,
                             "short_description": short_description,
                             "long_description": long_description,

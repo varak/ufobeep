@@ -38,9 +38,8 @@ interface Alert {
 function AlertsPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [allAlerts, setAllAlerts] = useState<Alert[]>([])
   const [alerts, setAlerts] = useState<Alert[]>([])
-  const [filteredAlerts, setFilteredAlerts] = useState<Alert[]>([])
+  const [totalAlerts, setTotalAlerts] = useState<number>(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const alertsPerPage = 9
@@ -84,44 +83,9 @@ function AlertsPageContent() {
   }
 
   useEffect(() => {
-    // Fetch all alerts once on component mount
-    fetchAllAlerts()
-  }, [])
-
-  useEffect(() => {
-    // Update filtered alerts when filter changes
-    if (allAlerts.length > 0) {
-      let filtered = allAlerts
-      
-      // Apply UFOBeep beeps only filter first
-      if (showBeepsOnly) {
-        filtered = filtered.filter(alert => 
-          alert.reporter_username !== 'MUFON_Database' && 
-          !alert.reporter_username?.includes('MUFON')
-        )
-      }
-      
-      // Then apply photos filter if enabled
-      if (showPhotosOnly) {
-        filtered = filtered.filter(alert => alert.media_files && alert.media_files.length > 0)
-      }
-      
-      setFilteredAlerts(filtered)
-      
-      // Reset to first page when filter changes
-      const totalPages = Math.ceil(filtered.length / alertsPerPage)
-      if (currentPage > totalPages && totalPages > 0) {
-        updateUrlParams({ page: 1 })
-      }
-    }
-  }, [allAlerts, showPhotosOnly, showBeepsOnly, currentPage])
-
-  useEffect(() => {
-    // Update displayed alerts when page or filter changes
-    if (filteredAlerts.length > 0) {
-      updateDisplayedAlerts(currentPage)
-    }
-  }, [currentPage, filteredAlerts])
+    // Fetch alerts for current page when page or filters change
+    fetchAlertsPage(currentPage)
+  }, [currentPage, showPhotosOnly, showBeepsOnly])
 
   useEffect(() => {
     // Handle anchor scrolling after alerts are loaded
@@ -139,11 +103,11 @@ function AlertsPageContent() {
     }
   }, [alerts])
 
-  const fetchAllAlerts = async () => {
+  const fetchAlertsPage = async (page: number) => {
     setLoading(true)
     try {
-      // Fetch recent alerts with small limit for fast loading
-      const response = await fetch(`/api/alerts?limit=500&offset=0&verified_only=false`)
+      const offset = (page - 1) * alertsPerPage
+      const response = await fetch(`/api/alerts?limit=${alertsPerPage}&offset=${offset}&verified_only=false`)
       const data = await response.json()
       
       if (data.success && data.data?.alerts) {
@@ -151,7 +115,14 @@ function AlertsPageContent() {
         const validAlerts = data.data.alerts.filter((alert: Alert) => 
           alert.location.latitude !== 0 || alert.location.longitude !== 0 || alert.reporter_username === 'MUFON_Database'
         )
-        setAllAlerts(validAlerts)
+        
+        // For server-side pagination, we set the alerts directly
+        setAlerts(validAlerts)
+        
+        // Store total count from API response
+        if (data.data.total !== undefined) {
+          setTotalAlerts(data.data.total)
+        }
       } else {
         setError('Failed to load alerts')
       }
@@ -162,13 +133,7 @@ function AlertsPageContent() {
     }
   }
 
-  const updateDisplayedAlerts = (page: number) => {
-    const startIndex = (page - 1) * alertsPerPage
-    const endIndex = startIndex + alertsPerPage
-    setAlerts(filteredAlerts.slice(startIndex, endIndex))
-  }
-
-  const getTotalPages = () => Math.ceil(filteredAlerts.length / alertsPerPage)
+  const getTotalPages = () => Math.ceil(totalAlerts / alertsPerPage)
   const hasMore = currentPage < getTotalPages()
 
   const formatDate = (dateString: string) => {
@@ -314,7 +279,7 @@ function AlertsPageContent() {
             <button 
               onClick={() => {
                 updateUrlParams({ page: 1 })
-                fetchAllAlerts()
+                fetchAlertsPage(1)
               }}
               className="bg-brand-primary text-text-inverse px-6 py-3 rounded-lg hover:bg-brand-primary-dark transition-colors"
             >
@@ -492,7 +457,7 @@ function AlertsPageContent() {
 
             {/* Showing results info */}
             <div className="text-center text-text-tertiary text-sm mt-4">
-              Showing {((currentPage - 1) * alertsPerPage) + 1} - {Math.min(currentPage * alertsPerPage, filteredAlerts.length)} of {filteredAlerts.length} alerts
+              Showing {((currentPage - 1) * alertsPerPage) + 1} - {Math.min(currentPage * alertsPerPage, totalAlerts)} of {totalAlerts} alerts
               {showBeepsOnly && <span className="text-brand-primary ml-1"> (UFOBeep beeps only)</span>}
               {showPhotosOnly && <span className="text-brand-primary ml-1"> (media only)</span>}
             </div>
@@ -552,7 +517,7 @@ function AlertsPageContent() {
             </p>
             <div className="flex items-center space-x-6 mt-4 md:mt-0">
               <span className="text-text-tertiary text-sm">
-                Showing {alerts.length} of {filteredAlerts.length} sightings
+                Showing {alerts.length} of {totalAlerts} sightings
                 {showBeepsOnly && <span className="text-brand-primary ml-1">(UFOBeep beeps only)</span>}
                 {showPhotosOnly && <span className="text-brand-primary ml-1">(media only)</span>}
               </span>

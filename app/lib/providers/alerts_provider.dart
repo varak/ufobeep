@@ -328,11 +328,42 @@ class Alert {
   }
 }
 
+// Alerts List Data Model
+class AlertsListData {
+  final List<Alert> alerts;
+  final int total;
+  final int currentPage;
+  final bool hasMore;
+
+  const AlertsListData({
+    required this.alerts,
+    required this.total,
+    required this.currentPage,
+    required this.hasMore,
+  });
+
+  AlertsListData copyWith({
+    List<Alert>? alerts,
+    int? total,
+    int? currentPage,
+    bool? hasMore,
+  }) {
+    return AlertsListData(
+      alerts: alerts ?? this.alerts,
+      total: total ?? this.total,
+      currentPage: currentPage ?? this.currentPage,
+      hasMore: hasMore ?? this.hasMore,
+    );
+  }
+}
+
 // Alerts List Provider
 @riverpod
 class AlertsList extends _$AlertsList {
+  static const int alertsPerPage = 15;
+  
   @override
-  Future<List<Alert>> build() async {
+  Future<AlertsListData> build() async {
     // Try to get user location for distance calculation
     double? userLat, userLon;
     try {
@@ -345,16 +376,16 @@ class AlertsList extends _$AlertsList {
       print('Could not get user location for distance calculation: $e');
     }
     
-    // Fetch alerts from API with location for distance calculation
-    return await _fetchAlertsFromApi(
+    // Fetch first page of alerts from API
+    return await _fetchAlertsPage(
+      page: 1,
       latitude: userLat,
       longitude: userLon,
     );
   }
 
-  Future<List<Alert>> _fetchAlertsFromApi({
-    int limit = 15,
-    int offset = 0,
+  Future<AlertsListData> _fetchAlertsPage({
+    required int page,
     String? category,
     String? minAlertLevel,
     double? maxDistanceKm,
@@ -365,9 +396,10 @@ class AlertsList extends _$AlertsList {
   }) async {
     try {
       final apiClient = ApiClient.instance;
+      final offset = (page - 1) * alertsPerPage;
       
       final response = await apiClient.listAlerts(
-        limit: limit,
+        limit: alertsPerPage,
         offset: offset,
         category: category,
         minAlertLevel: minAlertLevel,
@@ -384,6 +416,7 @@ class AlertsList extends _$AlertsList {
       if (response['success'] == true && response['data'] != null && response['data']['alerts'] != null) {
         final alertsData = response['data'] as Map<String, dynamic>;
         final alertsList = alertsData['alerts'] as List<dynamic>;
+        final total = alertsData['total'] as int? ?? alertsList.length;
         
         // Filter out invalid coordinates like the website does
         final validAlerts = alertsList.where((alert) {
@@ -394,18 +427,21 @@ class AlertsList extends _$AlertsList {
           return lat != null && lng != null && (lat != 0.0 || lng != 0.0);
         }).toList();
         
-        if (validAlerts.isEmpty) {
-          print('UFOBEEP: No valid alerts found (filtered out invalid coordinates)');
-          return [];
-        }
-        
         try {
           final parsedAlerts = validAlerts
               .cast<Map<String, dynamic>>()
               .map((alertJson) => Alert.fromApiJson(alertJson))
               .toList();
-          print('UFOBEEP: Successfully parsed ${parsedAlerts.length} valid alerts');
-          return parsedAlerts;
+          print('UFOBEEP: Successfully parsed ${parsedAlerts.length} valid alerts, total=${total}');
+          
+          final hasMore = offset + parsedAlerts.length < total;
+          
+          return AlertsListData(
+            alerts: parsedAlerts,
+            total: total,
+            currentPage: page,
+            hasMore: hasMore,
+          );
         } catch (parseError) {
           print('UFOBEEP: ERROR parsing alerts: $parseError');
           print('UFOBEEP: First valid alert raw data: ${validAlerts.isNotEmpty ? validAlerts.first : 'N/A'}');
@@ -416,10 +452,14 @@ class AlertsList extends _$AlertsList {
         throw Exception(response['message'] ?? 'Failed to fetch alerts');
       }
     } catch (e) {
-      // On API error, return empty list with error state
+      // On API error, return empty data
       print('Error fetching alerts: $e');
-      // In production, you might want to set an error state instead
-      return [];
+      return const AlertsListData(
+        alerts: [],
+        total: 0,
+        currentPage: page,
+        hasMore: false,
+      );
     }
   }
 
@@ -434,7 +474,8 @@ class AlertsList extends _$AlertsList {
   }) async {
     state = const AsyncLoading();
     
-    final alerts = await _fetchAlertsFromApi(
+    final alertsData = await _fetchAlertsPage(
+      page: 1,
       category: category,
       minAlertLevel: minAlertLevel,
       maxDistanceKm: maxDistanceKm,
@@ -444,7 +485,7 @@ class AlertsList extends _$AlertsList {
       verifiedOnly: verifiedOnly,
     );
     
-    state = AsyncData(alerts);
+    state = AsyncData(alertsData);
   }
 
   Future<void> loadMore({
@@ -456,10 +497,12 @@ class AlertsList extends _$AlertsList {
     int? recentHours,
     bool verifiedOnly = false,
   }) async {
-    final currentAlerts = state.value ?? [];
+    final currentData = state.value;
+    if (currentData == null || !currentData.hasMore) return;
     
-    final newAlerts = await _fetchAlertsFromApi(
-      offset: currentAlerts.length,
+    final nextPage = currentData.currentPage + 1;
+    final newPageData = await _fetchAlertsPage(
+      page: nextPage,
       category: category,
       minAlertLevel: minAlertLevel,
       maxDistanceKm: maxDistanceKm,
@@ -469,24 +512,47 @@ class AlertsList extends _$AlertsList {
       verifiedOnly: verifiedOnly,
     );
     
-    state = AsyncData([...currentAlerts, ...newAlerts]);
+    final updatedData = currentData.copyWith(
+      alerts: [...currentData.alerts, ...newPageData.alerts],
+      currentPage: nextPage,
+      hasMore: newPageData.hasMore,
+    );
+    
+    state = AsyncData(updatedData);
   }
 
   void addAlert(Alert alert) {
-    final currentAlerts = state.value ?? [];
-    state = AsyncData([alert, ...currentAlerts]);
+    final currentData = state.value;
+    if (currentData == null) return;
+    
+    final updatedData = currentData.copyWith(
+      alerts: [alert, ...currentData.alerts],
+      total: currentData.total + 1,
+    );
+    state = AsyncData(updatedData);
   }
 
   void removeAlert(String alertId) {
-    final currentAlerts = state.value ?? [];
-    state = AsyncData(currentAlerts.where((alert) => alert.id != alertId).toList());
+    final currentData = state.value;
+    if (currentData == null) return;
+    
+    final updatedAlerts = currentData.alerts.where((alert) => alert.id != alertId).toList();
+    final updatedData = currentData.copyWith(
+      alerts: updatedAlerts,
+      total: currentData.total - 1,
+    );
+    state = AsyncData(updatedData);
   }
 
   void updateAlert(Alert updatedAlert) {
-    final currentAlerts = state.value ?? [];
-    state = AsyncData(currentAlerts.map((alert) {
+    final currentData = state.value;
+    if (currentData == null) return;
+    
+    final updatedAlerts = currentData.alerts.map((alert) {
       return alert.id == updatedAlert.id ? updatedAlert : alert;
-    }).toList());
+    }).toList();
+    final updatedData = currentData.copyWith(alerts: updatedAlerts);
+    state = AsyncData(updatedData);
   }
 }
 
@@ -651,11 +717,11 @@ class AlertsLoadingState extends _$AlertsLoadingState {
 @riverpod
 Future<List<Alert>> filteredAlerts(FilteredAlertsRef ref) async {
   // Use ref.watch with proper async handling
-  final alerts = await ref.watch(alertsListProvider.future);
+  final alertsData = await ref.watch(alertsListProvider.future);
   final filter = ref.watch(alertsFilterStateProvider);
   
   // Apply filters
-  var filteredAlerts = alerts.where((alert) {
+  var filteredAlerts = alertsData.alerts.where((alert) {
     // Category filter
     if (filter.categories.isNotEmpty && !filter.categories.contains(alert.category)) {
       return false;

@@ -143,7 +143,7 @@ class _AlertByIdProviderElement extends AutoDisposeFutureProviderElement<Alert?>
   String get alertId => (origin as AlertByIdProvider).alertId;
 }
 
-String _$filteredAlertsHash() => r'32a5bc345af8fad9592496da787073560ff00565';
+String _$filteredAlertsHash() => r'98d05713a39e304108a962432a8c2096bff812b7';
 
 /// See also [filteredAlerts].
 @ProviderFor(filteredAlerts)
@@ -355,12 +355,12 @@ class _NearbyAlertsProviderElement
   String? get minAlertLevel => (origin as NearbyAlertsProvider).minAlertLevel;
 }
 
-String _$alertsListHash() => r'fb2c84fed0e6c5b41efe9cf7e36c1eb5d076e953';
+String _$alertsListHash() => r'1e8ff11dd72f8a1fee05d9e7b36ca7e3696ca59c';
 
 /// See also [AlertsList].
 @ProviderFor(AlertsList)
 final alertsListProvider =
-    AutoDisposeAsyncNotifierProvider<AlertsList, List<Alert>>.internal(
+    AutoDisposeAsyncNotifierProvider<AlertsList, AlertsListData>.internal(
       AlertsList.new,
       name: r'alertsListProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -370,7 +370,7 @@ final alertsListProvider =
       allTransitiveDependencies: null,
     );
 
-typedef _$AlertsList = AutoDisposeAsyncNotifier<List<Alert>>;
+typedef _$AlertsList = AutoDisposeAsyncNotifier<AlertsListData>;
 String _$alertsFilterStateHash() => r'add126697452659f6b5daf5bcac55122bd2d26d3';
 
 /// See also [AlertsFilterState].

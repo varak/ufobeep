@@ -62,7 +62,7 @@ class AlertsService:
                     GROUP BY sighting_id
                 ) c ON s.id = c.sighting_id
                 WHERE s.is_public = true 
-                ORDER BY COALESCE((s.enrichment_data->>'occurred_at')::timestamp, s.created_at) DESC 
+                ORDER BY s.occurred_at DESC 
                 LIMIT $1 OFFSET $2
             """, limit, offset)
             
@@ -306,7 +306,7 @@ class AlertsService:
                           device_id: str = None, username: str = None,
                           source: str = None, source_id: str = None, 
                           external_url: str = None, latitude: float = None, 
-                          longitude: float = None) -> str:
+                          longitude: float = None, occurred_at: str = None) -> str:
         """Create new alert/sighting"""
         async with self.db_pool.acquire() as conn:
             # Get existing user by username
@@ -323,24 +323,33 @@ class AlertsService:
             if not reporter_id:
                 raise ValueError(f"User not found for username={username}. User must exist before creating alerts.")
             
+            # Parse occurred_at if provided
+            occurred_at_timestamp = None
+            if occurred_at:
+                try:
+                    from datetime import datetime
+                    occurred_at_timestamp = datetime.fromisoformat(occurred_at.replace('Z', '+00:00'))
+                except Exception as e:
+                    print(f"Warning: Failed to parse occurred_at '{occurred_at}': {e}")
+
             alert_id = await conn.fetchval("""
                 INSERT INTO sightings 
                 (title, description, category, witness_count, is_public, tags, 
                  media_info, sensor_data, enrichment_data, alert_level, status, reporter_id,
-                 source, source_id, external_url, lat, lon)
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
+                 source, source_id, external_url, lat, lon, occurred_at)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
                 RETURNING id
             """, title, description, category, witness_count, is_public,
                 tags or [], json.dumps(media_info or {}), 
                 json.dumps(sensor_data or {}), json.dumps(enrichment_data or {}),
-                alert_level, "created", reporter_id, source, source_id, external_url, latitude, longitude)
+                alert_level, "created", reporter_id, source, source_id, external_url, latitude, longitude, occurred_at_timestamp)
             
             return str(alert_id)
     
     async def create_beep(self, device_id: str, location: Dict = None, 
                          description: str = None, username: str = None,
                          title: str = None, source: str = None, 
-                         enrichment_data: Dict = None) -> Tuple[str, Dict]:
+                         enrichment_data: Dict = None, occurred_at: str = None) -> Tuple[str, Dict]:
         """Create beep with location privacy - single create_alert call"""
         
         # Handle location and jittering
@@ -395,7 +404,8 @@ class AlertsService:
             username=username,
             source=source,
             latitude=lat if location else None,
-            longitude=lng if location else None
+            longitude=lng if location else None,
+            occurred_at=occurred_at
         )
         
         # Auto-follow the alert for the creator so they get notifications

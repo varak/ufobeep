@@ -157,8 +157,11 @@ class AlertsScreen extends ConsumerWidget {
     AlertsFilter filter,
     UserPreferences? preferences,
   ) {
+    // Get the raw alerts data to access pagination info
+    final alertsDataAsync = ref.watch(alertsListProvider);
+    
     return alertsAsync.when(
-      data: (alerts) => _buildAlertsList(context, ref, alerts, filter, preferences),
+      data: (alerts) => _buildAlertsList(context, ref, alerts, filter, preferences, alertsDataAsync.value),
       loading: () => Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -228,6 +231,7 @@ class AlertsScreen extends ConsumerWidget {
     List<Alert> alerts, 
     AlertsFilter filter,
     UserPreferences? preferences,
+    AlertsListData? alertsData,
   ) {
     if (alerts.isEmpty) {
       return _EmptyAlertsView(hasFilters: filter.hasActiveFilters);
@@ -311,11 +315,11 @@ class AlertsScreen extends ConsumerWidget {
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            itemCount: visibleAlerts.length + 1, // +1 for load more button
+            itemCount: visibleAlerts.length + (alertsData?.hasMore == true ? 1 : 0), // +1 for load more button if has more
             itemBuilder: (context, index) {
               // Show load more button at the end
               if (index == visibleAlerts.length) {
-                return _buildLoadMoreButton(context, ref, visibleAlerts);
+                return _buildLoadMoreButton(context, ref, alertsData);
               }
               
               final alert = visibleAlerts[index];
@@ -330,26 +334,39 @@ class AlertsScreen extends ConsumerWidget {
   Widget _buildLoadMoreButton(
     BuildContext context, 
     WidgetRef ref,
-    List<Alert> visibleAlerts,
+    AlertsListData? alertsData,
   ) {
-    // Only show load more if we have alerts and they might be limited by pagination
-    if (visibleAlerts.length < 15) return const SizedBox.shrink();
+    if (alertsData == null || !alertsData.hasMore) {
+      return const SizedBox.shrink();
+    }
     
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Center(
-        child: ElevatedButton.icon(
-          onPressed: () {
-            ref.read(alertsListProvider.notifier).loadMore();
-          },
-          icon: const Icon(Icons.expand_more),
-          label: Text(AppLocalizations.of(context).loadMoreAlerts),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.darkSurface,
-            foregroundColor: AppColors.brandPrimary,
-            side: const BorderSide(color: AppColors.brandPrimary),
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          ),
+        child: Column(
+          children: [
+            Text(
+              'Showing ${alertsData.alerts.length} of ${alertsData.total} alerts',
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 12,
+              ),
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton.icon(
+              onPressed: () {
+                ref.read(alertsListProvider.notifier).loadMore();
+              },
+              icon: const Icon(Icons.expand_more),
+              label: Text(AppLocalizations.of(context).loadMoreAlerts),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.darkSurface,
+                foregroundColor: AppColors.brandPrimary,
+                side: const BorderSide(color: AppColors.brandPrimary),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              ),
+            ),
+          ],
         ),
       ),
     );
