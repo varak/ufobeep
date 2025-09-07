@@ -255,8 +255,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                   // Update sensor data with extracted coordinates
                   _sensorData = SensorData(
                     utc: _sensorData?.utc ?? DateTime.now(),
-                    latitude: validLat,
-                    longitude: validLon,
+                    latitude: validLat!,
+                    longitude: validLon!,
                     accuracy: 10.0, // Lower accuracy since from photo
                     altitude: locationData['altitude'] ?? _sensorData?.altitude ?? 0.0,
                     azimuthDeg: _sensorData?.azimuthDeg ?? 0.0,
