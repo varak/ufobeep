@@ -394,7 +394,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                   {/* Content type indicator - only for non-media content */}
                   <div className="px-2 py-1 bg-dark-background/30 rounded text-xs text-text-tertiary">
                     {getPreviewDescription()?.trim() ? (
-                      <span className="flex items-center gap-1">👁️ Report</span>
+                      <span className="flex items-center gap-1">👁️ Report Only</span>
                     ) : (
                       <span className="flex items-center gap-1">📡 Beep only</span>
                     )}
