@@ -153,9 +153,16 @@ if [ "$DEPLOY_APK" = true ]; then
     mkdir -p "$HOME"
     echo "Cleaning build cache..."
     flutter clean
+    # Clean gradle cache artifacts to prevent Git slowdown (fixes 10s enumeration time)
+    echo "Cleaning Gradle artifacts..."
+    rm -rf .gradle-cache* .home 2>/dev/null || true
+    chmod -R u+w .gradle-cache* .home 2>/dev/null || true
+    rm -rf .gradle-cache* .home 2>/dev/null || true
     echo "Starting APK build (timeout: 3 minutes)..."
     if timeout 180 flutter build apk --release --verbose; then
         echo -e "${GREEN}✅ APK release build successful${NC}"
+        # Clean up artifacts immediately after build to keep repo fast
+        rm -rf .gradle-cache* .home 2>/dev/null || true
         cd ..
     else
         echo -e "${YELLOW}⚠️  Release build failed. Trying debug build...${NC}"
