@@ -72,7 +72,7 @@ class AlertCard extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: AppColors.brandPrimary.withValues(alpha: 0.1),
+        color: AppColors.brandPrimary.withOpacity(0.1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: const Text(
@@ -117,10 +117,10 @@ class AlertCard extends ConsumerWidget {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         decoration: BoxDecoration(
-          color: AppColors.brandPrimary.withValues(alpha: 0.1),
+          color: AppColors.brandPrimary.withOpacity(0.1),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: AppColors.brandPrimary.withValues(alpha: 0.3),
+            color: AppColors.brandPrimary.withOpacity(0.3),
           ),
         ),
         child: Row(
@@ -229,9 +229,9 @@ class AlertCard extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: badgeColor.withValues(alpha: 0.1),
+        color: badgeColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: badgeColor.withValues(alpha: 0.3)),
+        border: Border.all(color: badgeColor.withOpacity(0.3)),
       ),
       child: Text(
         UnitConversion.formatDistance(distance * 1000, units),
@@ -283,9 +283,9 @@ class AlertCard extends ConsumerWidget {
       margin: const EdgeInsets.only(right: 8),
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
+        color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
+        border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -310,9 +310,9 @@ class AlertCard extends ConsumerWidget {
       margin: const EdgeInsets.only(right: 8),
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: AppColors.semanticSuccess.withValues(alpha: 0.1),
+        color: AppColors.semanticSuccess.withOpacity(0.1),
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: AppColors.semanticSuccess.withValues(alpha: 0.3)),
+        border: Border.all(color: AppColors.semanticSuccess.withOpacity(0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -350,7 +350,7 @@ class AlertCard extends ConsumerWidget {
             margin: const EdgeInsets.only(right: 8),
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
-              color: AppColors.brandPrimary.withValues(alpha: 0.1),
+              color: AppColors.brandPrimary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(6),
               border: Border.all(color: AppColors.brandPrimary.withValues(alpha: 0.3)),
             ),
@@ -408,7 +408,7 @@ class AlertCard extends ConsumerWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
                   border: Border.all(
-                    color: AppColors.brandPrimary.withValues(alpha: 0.3),
+                    color: AppColors.brandPrimary.withOpacity(0.3),
                     width: 0.5,
                   ),
                 ),
@@ -459,7 +459,7 @@ class AlertCard extends ConsumerWidget {
                           child: Container(
                             padding: const EdgeInsets.all(1),
                             decoration: BoxDecoration(
-                              color: Colors.black.withValues(alpha: 0.6),
+                              color: Colors.black.withOpacity(0.6),
                               borderRadius: BorderRadius.circular(2),
                             ),
                             child: const Icon(
@@ -488,10 +488,10 @@ class AlertCard extends ConsumerWidget {
                 height: 24,
                 margin: const EdgeInsets.only(left: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.brandPrimary.withValues(alpha: 0.1),
+                  color: AppColors.brandPrimary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(4),
                   border: Border.all(
-                    color: AppColors.brandPrimary.withValues(alpha: 0.3),
+                    color: AppColors.brandPrimary.withOpacity(0.3),
                     width: 0.5,
                   ),
                 ),
@@ -652,7 +652,7 @@ class CompactAlertCard extends ConsumerWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
         side: BorderSide(
-          color: AppColors.darkBorder.withValues(alpha: 0.3),
+          color: AppColors.darkBorder.withOpacity(0.3),
         ),
       ),
       child: InkWell(
@@ -670,7 +670,7 @@ class CompactAlertCard extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: AppColors.brandPrimary.withValues(alpha: 0.1),
+                  color: AppColors.brandPrimary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: const Text(
