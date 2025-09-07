@@ -123,6 +123,22 @@ function AlertsPageContent() {
     }
   }, [currentPage, filteredAlerts])
 
+  useEffect(() => {
+    // Handle anchor scrolling after alerts are loaded
+    if (alerts.length > 0 && typeof window !== 'undefined') {
+      const hash = window.location.hash
+      if (hash.startsWith('#alert-')) {
+        const alertId = hash.substring(7) // Remove '#alert-' prefix
+        const element = document.getElementById(`alert-${alertId}`)
+        if (element) {
+          setTimeout(() => {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          }, 100) // Small delay to ensure DOM is fully rendered
+        }
+      }
+    }
+  }, [alerts])
+
   const fetchAllAlerts = async () => {
     setLoading(true)
     try {
@@ -375,7 +391,9 @@ function AlertsPageContent() {
         ) : (
           <div className="max-w-2xl mx-auto space-y-3">
             {alerts.map((alert) => (
-              <AlertCard key={alert.id} alert={alert} />
+              <div key={alert.id} id={`alert-${alert.id}`}>
+                <AlertCard alert={alert} />
+              </div>
             ))}
           </div>
         )}
