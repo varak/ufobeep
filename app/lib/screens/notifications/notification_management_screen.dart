@@ -6,6 +6,7 @@ import '../../providers/user_preferences_provider.dart';
 import '../../services/api_client.dart';
 import '../../services/user_service.dart';
 import '../../services/beep_service.dart';
+import '../../services/auth_repository.dart';
 import '../../widgets/glass_card.dart';
 
 class NotificationManagementScreen extends ConsumerStatefulWidget {
@@ -29,9 +30,41 @@ class _NotificationManagementScreenState
 
   Future<void> _loadSubscriptions() async {
     try {
+      print('🔄 Loading user subscriptions...');
+      
       // Get user's followed alerts
       final userId = await userService.getCurrentUserId();
+      print('📱 User ID: $userId');
+      
+      if (userId == null) {
+        print('❌ No user ID found - user not authenticated');
+        if (mounted) {
+          setState(() {
+            _loadingSubscriptions = false;
+          });
+        }
+        return;
+      }
+      
+      // Ensure authentication token is set
+      final authRepo = AuthRepository();
+      final accessToken = await authRepo.getAccessToken();
+      if (accessToken != null) {
+        ApiClient.setBearer(accessToken);
+        print('🔑 Bearer token set for subscriptions request');
+      } else {
+        print('❌ No access token found - authentication required');
+        if (mounted) {
+          setState(() {
+            _loadingSubscriptions = false;
+          });
+        }
+        return;
+      }
+      
+      print('📡 Calling /users/$userId/subscriptions...');
       final response = await ApiClient.dio.get('/users/$userId/subscriptions');
+      print('✅ Subscriptions response: ${response.data}');
       
       if (mounted) {
         setState(() {
@@ -40,22 +73,36 @@ class _NotificationManagementScreenState
         });
       }
       
+      print('🎯 Loaded ${_subscriptions.length} subscriptions');
+      
       // Fallback: if empty, also check device-based subscriptions for non-auth flows
       if ((_subscriptions.isEmpty) && mounted) {
+        print('📱 No user subscriptions found, trying device-based fallback...');
         try {
           final deviceId = await BeepService().getOrCreateDeviceId();
+          print('📱 Device ID: $deviceId');
           final resp2 = await ApiClient.dio.get('/alerts/following', queryParameters: {
             'device_id': deviceId,
           });
+          print('📡 Device fallback response: ${resp2.data}');
           if (resp2.data is Map && resp2.data['subscriptions'] is List) {
             setState(() {
               _subscriptions = List<Map<String, dynamic>>.from(resp2.data['subscriptions']);
             });
+            print('🎯 Loaded ${_subscriptions.length} subscriptions from device fallback');
           }
-        } catch (_) {}
+        } catch (fallbackError) {
+          print('⚠️ Device fallback failed: $fallbackError');
+        }
       }
     } catch (e) {
-      print('Error loading subscriptions: $e');
+      print('❌ Error loading subscriptions: $e');
+      if (e.toString().contains('401')) {
+        print('🔐 Authentication error - user needs to log in again');
+      } else if (e.toString().contains('403')) {
+        print('🚫 Permission denied - user cannot access their own subscriptions');
+      }
+      
       if (mounted) {
         setState(() {
           _loadingSubscriptions = false;

@@ -183,3 +183,37 @@ async def get_follow_status(sighting_id: str, user_id: str = Depends(_uid)) -> D
             sighting_id, user_id
         )
     return {"following": result is not None}
+
+@router.get("/following", status_code=200)
+async def get_user_subscriptions(user_id: str = Depends(_uid)) -> Dict[str, Any]:
+    """Get all sightings that the user is following"""
+    pool = await get_database_pool()
+    async with pool.acquire() as conn:
+        rows = await conn.fetch("""
+            SELECT 
+                s.id as sighting_id,
+                s.title,
+                s.description,
+                s.location_name,
+                s.created_at,
+                COUNT(c.id) as comment_count
+            FROM follows f
+            JOIN sightings s ON f.sighting_id = s.id
+            LEFT JOIN comments c ON s.id = c.sighting_id
+            WHERE f.user_id = $1
+            GROUP BY s.id, s.title, s.description, s.location_name, s.created_at
+            ORDER BY f.created_at DESC
+            LIMIT 50
+        """, user_id)
+        
+        subscriptions = []
+        for row in rows:
+            subscriptions.append({
+                'sighting_id': str(row['sighting_id']),
+                'title': row['title'] or (row['description'][:50] + '...' if row['description'] else 'UFO Sighting'),
+                'location_name': row['location_name'] or 'Unknown Location',
+                'comment_count': row['comment_count'],
+                'created_at': row['created_at'].isoformat()
+            })
+    
+    return {"subscriptions": subscriptions}
