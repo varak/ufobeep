@@ -31,6 +31,7 @@ DEPLOY_APK=false
 DEPLOY_ALL=false
 AUTO_COMMIT=false
 SKIP_GIT=false
+SKIP_CLEAN=true
 COMMIT_MSG=""
 TARGET_DEVICES=""
 
@@ -54,6 +55,8 @@ else
                 COMMIT_MSG="${arg#*=}"
                 ;;
             nogit) SKIP_GIT=true ;;
+            --fast) SKIP_CLEAN=true ;;
+            --clean) SKIP_CLEAN=false ;;
             --help|-h|help) 
                 echo "UFOBeep Production Deployment Script"
                 echo "===================================="
@@ -75,6 +78,8 @@ else
                 echo "OPTIONS:"
                 echo "  --auto-commit=\"msg\"  Auto-commit with message before deploy"
                 echo "  nogit                Skip git operations entirely"
+                echo "  --fast               Skip flutter clean (default, faster builds)"
+                echo "  --clean              Force flutter clean (use when build issues occur)"
                 echo "  --help, -h           Show this help message"
                 echo ""
                 echo "EXAMPLES:"
@@ -151,8 +156,12 @@ if [ "$DEPLOY_APK" = true ]; then
     # In case Gradle insists on ~/.gradle, sandbox HOME to a local writable dir
     export HOME="$PWD/.home"
     mkdir -p "$HOME"
-    echo "Cleaning build cache..."
-    flutter clean
+    if [ "$SKIP_CLEAN" = false ]; then
+        echo "Cleaning build cache..."
+        flutter clean
+    else
+        echo "Skipping clean build (using --fast mode)..."
+    fi
     # Clean gradle cache artifacts to prevent Git slowdown (fixes 10s enumeration time)
     echo "Cleaning Gradle artifacts..."
     rm -rf .gradle-cache* .home 2>/dev/null || true
