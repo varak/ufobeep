@@ -83,8 +83,8 @@ class AlertHeroSection extends StatelessWidget {
                               color: AppColors.textTertiary.withOpacity(0.3),
                             ),
                           ),
-                          child: Text(
-                            AppLocalizations.of(context).beepOnly,
+                          child: const Text(
+                            'beep only',
                             style: TextStyle(
                               color: AppColors.textTertiary,
                               fontSize: 12,
@@ -118,7 +118,7 @@ class AlertHeroSection extends StatelessWidget {
                                   ),
                                   SizedBox(width: 4),
                                   Text(
-                                    AppLocalizations.of(context).verified,
+                                    'Verified',
                                     style: TextStyle(
                                       color: AppColors.brandPrimary,
                                       fontSize: 12,

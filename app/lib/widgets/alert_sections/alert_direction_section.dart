@@ -36,7 +36,7 @@ class AlertDirectionSection extends StatelessWidget {
               ),
               SizedBox(width: 8),
               Text(
-                AppLocalizations.of(context).directionDistanceTitle,
+                'Direction & Distance',
                 style: TextStyle(
                   color: AppColors.brandPrimary,
                   fontSize: 16,
