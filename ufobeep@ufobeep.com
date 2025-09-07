@@ -1019,7 +1019,7 @@ if [[ "$DATE_INPUT" == *:* ]]; then
     echo "📅 Import range: $START_DATE to $END_DATE"
     echo "⏱️  2-second delay between each day"
     echo ""
-    while [[ "$current_date" < "$last_date" || "$current_date" == "$last_date" ]]; do
+    while [[ "$current_date" <= "$last_date" ]]; do
         day_count=$((day_count + 1))
         echo "📅 Day $day_count: Processing $current_date"
         if run_mufon_for_date "$current_date"; then
@@ -1031,7 +1031,7 @@ if [[ "$DATE_INPUT" == *:* ]]; then
         fi
         # Next day
         current_date=$(date -d "$current_date + 1 day" +%Y-%m-%d)
-        if [[ "$current_date" < "$last_date" || "$current_date" == "$last_date" ]]; then
+        if [[ "$current_date" <= "$last_date" ]]; then
             echo "⏳ Waiting 2 seconds..."
             sleep 2
             echo ""

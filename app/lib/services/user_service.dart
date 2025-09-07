@@ -94,7 +94,7 @@ class UserProfile {
 }
 
 class UserService {
-  static const String _apiBaseUrl = 'https://api.ufobeep.com';
+  static const String _apiBaseUrl = 'https://ufobeep.com/api';
   static const String _userIdKey = 'user_id';
   static const String _usernameKey = 'username';
   static const String _isRegisteredKey = 'is_registered';

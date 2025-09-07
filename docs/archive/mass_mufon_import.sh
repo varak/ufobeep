@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Mass MUFON import script - imports from August 1st forward with delays
-# Usage: ./mass_mufon_import.sh
+# [ARCHIVED] Mass MUFON import script - superseded by range support in mufon.sh
+# Usage: ./mufon.sh YYYY-MM-DD:YYYY-MM-DD
 
 echo "🚀 Starting Mass MUFON Import from August 1st, 2025"
 echo "=================================================="

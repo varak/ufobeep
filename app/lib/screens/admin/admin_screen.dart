@@ -1402,7 +1402,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
   void _openEngagementAnalytics() async {
     // Open the full engagement analytics page in browser
     try {
-      const url = 'https://api.ufobeep.com/admin/engagement/metrics';
+      const url = 'https://ufobeep.com/api/admin/engagement/metrics';
       // For mobile app, we'll show a message and copy URL to clipboard
       setState(() {
         _statusMessage = 'Opening engagement analytics dashboard...';
@@ -1422,7 +1422,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
               style: TextStyle(color: AppColors.brandPrimary),
             ),
             content: const Text(
-              'Open your browser and go to:\n\nhttps://api.ufobeep.com/admin/engagement/metrics\n\nUse admin credentials to view engagement analytics, including user interactions with alerts and basic usage statistics.',
+              'Open your browser and go to:\n\nhttps://ufobeep.com/api/admin/engagement/metrics\n\nUse admin credentials to view engagement analytics, including user interactions with alerts and basic usage statistics.',
               style: TextStyle(color: AppColors.textPrimary),
             ),
             actions: [
@@ -1490,7 +1490,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
                 Text('• Engagement rate: Calculated live', style: TextStyle(color: AppColors.textPrimary)),
                 SizedBox(height: 12),
                 Text(
-                  'For detailed metrics and analytics, use the web dashboard at api.ufobeep.com/admin',
+                  'For detailed metrics and analytics, use the web dashboard at ufobeep.com/api/admin',
                   style: TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 12,

@@ -51,7 +51,7 @@ GoRouter appRouter(AppRouterRef ref) {
       debugPrint('🔄 GoRouter redirect check: $location');
       
       // Handle HTTPS magic links by converting to internal route
-      if (location.startsWith('https://api.ufobeep.com/auth/magic/complete/new')) {
+      if (location.startsWith('https://ufobeep.com/api/auth/magic/complete/new')) {
         final uri = Uri.parse(location);
         final code = uri.queryParameters['code'];
         

@@ -538,7 +538,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () async {
-                    final url = Uri.parse('https://api.ufobeep.com/admin/');
+                    final url = Uri.parse('https://ufobeep.com/api/admin/');
                     if (await canLaunchUrl(url)) {
                       await launchUrl(url, mode: LaunchMode.externalApplication);
                     }

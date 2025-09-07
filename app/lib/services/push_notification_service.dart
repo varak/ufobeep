@@ -52,7 +52,7 @@ class PushNotificationService {
   factory PushNotificationService() => _instance;
   PushNotificationService._internal() {
     _dio = Dio(BaseOptions(
-      baseUrl: 'https://api.ufobeep.com',
+      baseUrl: 'https://ufobeep.com/api',
       connectTimeout: const Duration(seconds: 5),
       receiveTimeout: const Duration(seconds: 10),
       headers: {'Content-Type': 'application/json'},

@@ -105,10 +105,10 @@ class DeepLinkHandler {
   Future<void> _processAuthLink(Uri uri) async {
     // Robust HTTPS + custom scheme parsing with explicit logging
     // Accept either:
-    // 1) https://api.ufobeep.com/auth/magic/complete/new?code=...   (HTTPS App Link; code-only)
+    // 1) https://ufobeep.com/api/auth/magic/complete/new?code=...   (HTTPS App Link; code-only)
     // 2) ufobeep://auth/complete?token=...&user_id=...&username=... (custom scheme; full data)
       
-      final isHttps = uri.scheme == 'https' && uri.host == 'api.ufobeep.com';
+      final isHttps = uri.scheme == 'https' && uri.host == 'ufobeep.com/api';
       // Some backends append trailing segments or slash; accept prefix
       final isHttpsMagic = isHttps && uri.path.startsWith('/auth/magic');
       final isCustom = uri.scheme == 'ufobeep' && uri.host == 'auth' && uri.path == '/complete';

@@ -113,7 +113,7 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
   }
 
   static const String _pendingEmailKey = 'pending_magic_link_email';
-  static const String _apiBaseUrl = 'https://api.ufobeep.com';
+  static const String _apiBaseUrl = 'https://ufobeep.com/api';
   static const String _userIdKey = 'user_id';
   static const String _usernameKey = 'username';
   

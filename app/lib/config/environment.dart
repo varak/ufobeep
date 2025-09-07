@@ -51,7 +51,7 @@ class AppEnvironment {
       case Environment.staging:
         return 'https://api-staging.ufobeep.com';
       case Environment.production:
-        return 'https://api.ufobeep.com';
+        return 'https://ufobeep.com/api';
     }
   }
   
