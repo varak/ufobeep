@@ -1,12 +1,11 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
 import { env } from '@/config/environment'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
 import { AuthProvider } from '@/contexts/AuthContext'
 import Header from '@/components/Header'
 
-const inter = Inter({ subsets: ['latin'] })
+// Removed Inter from next/font/google to avoid build-time network fetch
 
 export const metadata: Metadata = {
   title: {
@@ -99,11 +98,9 @@ export default function RootLayout({
             }),
           }}
         />
-        {/* Preconnect to external domains */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Removed Google Fonts preconnects to avoid external dependency during build */}
       </head>
-      <body className={`${inter.className} bg-dark-background text-text-primary min-h-screen`}>
+      <body className={`bg-dark-background text-text-primary min-h-screen`}>
         <GoogleAnalytics />
         <AuthProvider>
           <Header />

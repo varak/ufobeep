@@ -399,9 +399,13 @@ if [ "$DEPLOY_WEB" = true ]; then
         git pull origin main
         cd web
         
-        echo "Installing dependencies..."
-        npm install
-        
+        echo "Installing dependencies (clean)..."
+        rm -rf node_modules
+        npm ci || npm install
+
+        echo "Cleaning previous build..."
+        rm -rf .next
+
         echo "Building production bundle..."
         npm run build
         

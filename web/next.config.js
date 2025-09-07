@@ -8,23 +8,16 @@ const nextConfig = {
     // optimizeCss: true,
   },
   
-  // Build configuration
-  output: 'standalone',
+  // Build configuration: use default output (avoid standalone to prevent sharp requirement)
   
   // Image optimization
   images: {
-    domains: ['localhost', 'ufobeep.com', 'api.ufobeep.com'],
+    domains: ['localhost', 'ufobeep.com'],
     formats: ['image/webp', 'image/avif'],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'ufobeep.com',
-        port: '',
-        pathname: '/media/**',
-      },
-      {
-        protocol: 'https', 
-        hostname: 'api.ufobeep.com',
         port: '',
         pathname: '/media/**',
       }
@@ -76,7 +69,8 @@ const nextConfig = {
     return [
       {
         source: '/admin/:path*',
-        destination: 'https://api.ufobeep.com/admin/:path*',
+        // api.ufobeep.com is deprecated; route admin under main domain
+        destination: '/api/admin/:path*',
         permanent: false,
       },
     ];
