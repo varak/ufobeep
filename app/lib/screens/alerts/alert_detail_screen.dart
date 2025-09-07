@@ -322,9 +322,9 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                           onPressed: () {
                             Clipboard.setData(ClipboardData(text: 'ufobeep.com/alert/${alert.id.substring(0, 4)}'));
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Link copied to clipboard'),
-                                duration: Duration(seconds: 2),
+                              SnackBar(
+                                content: Text(AppLocalizations.of(context).linkCopied),
+                                duration: const Duration(seconds: 2),
                                 backgroundColor: AppColors.brandPrimary,
                               ),
                             );

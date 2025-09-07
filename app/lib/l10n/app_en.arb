@@ -252,8 +252,20 @@
   "filteredSuffix": "filtered",
   "detailsTitle": "Details",
   "mufonCase": "MUFON Case",
+  "mufonCaseDetailsTitle": "MUFON Case #{caseNumber} Details",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
   "sightingDate": "Sighting Date",
+  "mufonDatabaseEntryDate": "Date Entered into MUFON Database",
   "databaseEntry": "Database Entry",
+  "shareLink": "Share Link",
+  "linkCopied": "Link copied to clipboard",
   "locationLabel": "Location",
   "distanceLabel": "Distance",
   "timeLabel": "Time",

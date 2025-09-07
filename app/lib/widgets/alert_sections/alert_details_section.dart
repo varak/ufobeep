@@ -38,7 +38,7 @@ class AlertDetailsSection extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 alert.source == 'mufon' && alert.enrichment?['mufon_case_number'] != null
-                    ? 'MUFON Case #${alert.enrichment!['mufon_case_number']} Details'
+                    ? AppLocalizations.of(context).mufonCaseDetailsTitle(alert.enrichment!['mufon_case_number'])
                     : AppLocalizations.of(context).detailsTitle,
                 style: const TextStyle(
                   color: AppColors.brandPrimary,
@@ -79,7 +79,7 @@ class AlertDetailsSection extends StatelessWidget {
             if (alert.enrichment?['database_when'] != null)
               _buildDetailRow(
                 Icons.storage,
-                'Date Entered into MUFON Database',
+                AppLocalizations.of(context).mufonDatabaseEntryDate,
                 alert.enrichment!['database_when'],
               ),
             
@@ -324,9 +324,9 @@ class AlertDetailsSection extends StatelessWidget {
       onTap: () {
         Clipboard.setData(ClipboardData(text: shortLink));
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Link copied to clipboard'),
-            duration: Duration(seconds: 2),
+          SnackBar(
+            content: Text(AppLocalizations.of(context).linkCopied),
+            duration: const Duration(seconds: 2),
             backgroundColor: AppColors.brandPrimary,
           ),
         );
@@ -347,7 +347,7 @@ class AlertDetailsSection extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Share Link',
+                    AppLocalizations.of(context).shareLink,
                     style: const TextStyle(
                       color: AppColors.textTertiary,
                       fontSize: 14,
@@ -370,9 +370,9 @@ class AlertDetailsSection extends StatelessWidget {
               onPressed: () {
                 Clipboard.setData(ClipboardData(text: shortLink));
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Link copied to clipboard'),
-                    duration: Duration(seconds: 2),
+                  SnackBar(
+                    content: Text(AppLocalizations.of(context).linkCopied),
+                    duration: const Duration(seconds: 2),
                     backgroundColor: AppColors.brandPrimary,
                   ),
                 );
