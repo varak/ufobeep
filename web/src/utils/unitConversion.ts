@@ -1,13 +1,68 @@
 /**
  * Unit conversion utilities for displaying data in metric or imperial units
- * Website defaults to imperial units (US standard)
+ * with automatic language/region detection for international users
  */
 
 export type UnitSystem = 'metric' | 'imperial';
 
+/**
+ * Map of language codes to their typical unit systems
+ * Imperial: US, UK (partially), Myanmar, Liberia  
+ * Metric: Most of the world
+ */
+const LANGUAGE_TO_UNITS: Record<string, UnitSystem> = {
+  'en': 'imperial',  // English (primarily US/UK)
+  'es': 'metric',    // Spanish
+  'de': 'metric',    // German
+  'fr': 'metric',    // French
+  'it': 'metric',    // Italian
+  'pt': 'metric',    // Portuguese
+  'ru': 'metric',    // Russian
+  'zh': 'metric',    // Chinese
+  'ja': 'metric',    // Japanese
+  'ko': 'metric',    // Korean
+  'ar': 'metric',    // Arabic
+  'hi': 'metric',    // Hindi
+  'tr': 'metric',    // Turkish
+  'nl': 'metric',    // Dutch
+  'sv': 'metric',    // Swedish
+  'da': 'metric',    // Danish
+  'no': 'metric',    // Norwegian
+  'fi': 'metric',    // Finnish
+  'pl': 'metric',    // Polish
+  'cs': 'metric',    // Czech
+  'el': 'metric',    // Greek
+  'he': 'metric',    // Hebrew
+};
+
 export class UnitConversion {
   static readonly METRIC = 'metric';
   static readonly IMPERIAL = 'imperial';
+  
+  /**
+   * Get the default unit system for a language code
+   * Falls back to metric if language not found
+   */
+  static getDefaultUnitsForLanguage(languageCode: string): UnitSystem {
+    return LANGUAGE_TO_UNITS[languageCode.toLowerCase()] || 'metric';
+  }
+  
+  /**
+   * Auto-detect user's preferred units from browser language
+   */
+  static getAutoUnits(): UnitSystem {
+    if (typeof window === 'undefined') return 'metric'; // SSR fallback
+    
+    const browserLang = window.navigator.language.split('-')[0]; // e.g., 'en-US' -> 'en'
+    return this.getDefaultUnitsForLanguage(browserLang);
+  }
+  
+  /**
+   * Check if a language typically uses imperial units
+   */
+  static languageUsesImperial(languageCode: string): boolean {
+    return LANGUAGE_TO_UNITS[languageCode.toLowerCase()] === 'imperial';
+  }
   
   /**
    * Convert temperature from Celsius to the preferred unit
@@ -139,5 +194,47 @@ export class UnitConversion {
       humidity: weatherData.humidity_percent ? `${weatherData.humidity_percent}%` : '--%',
       cloudCover: weatherData.cloud_cover_percent ? `${weatherData.cloud_cover_percent}%` : '--%',
     };
+  }
+  
+  // ============ LANGUAGE-AWARE METHODS ============
+  
+  /**
+   * Format distance with automatic unit detection from language
+   */
+  static formatDistanceAuto(distanceM: number, languageCode?: string): string {
+    const units = languageCode ? 
+      this.getDefaultUnitsForLanguage(languageCode) : 
+      this.getAutoUnits();
+    return this.formatDistance(distanceM, units);
+  }
+  
+  /**
+   * Format temperature with automatic unit detection from language  
+   */
+  static formatTemperatureAuto(tempC: number | null, languageCode?: string): string {
+    const units = languageCode ? 
+      this.getDefaultUnitsForLanguage(languageCode) : 
+      this.getAutoUnits();
+    return this.formatTemperature(tempC, units);
+  }
+  
+  /**
+   * Format speed with automatic unit detection from language
+   */
+  static formatSpeedAuto(speedMs: number, languageCode?: string): string {
+    const units = languageCode ? 
+      this.getDefaultUnitsForLanguage(languageCode) : 
+      this.getAutoUnits();
+    return this.formatSpeed(speedMs, units);
+  }
+  
+  /**
+   * Format altitude with automatic unit detection from language
+   */
+  static formatAltitudeAuto(altitudeM: number, languageCode?: string): string {
+    const units = languageCode ? 
+      this.getDefaultUnitsForLanguage(languageCode) : 
+      this.getAutoUnits();
+    return this.formatAltitude(altitudeM, units);
   }
 }

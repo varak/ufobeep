@@ -1,7 +1,77 @@
 /// Unit conversion utilities for displaying data in metric or imperial units
+/// with automatic language/region detection
 class UnitConversion {
   static const String metric = 'metric';
   static const String imperial = 'imperial';
+
+  /// Map of language codes to their typical unit systems
+  /// Imperial: US, UK (partially), Myanmar, Liberia  
+  /// Metric: Most of the world
+  static const Map<String, String> _languageToUnits = {
+    'en': imperial,  // English (primarily US/UK)
+    'es': metric,    // Spanish
+    'de': metric,    // German
+    'fr': metric,    // French
+    'it': metric,    // Italian
+    'pt': metric,    // Portuguese
+    'ru': metric,    // Russian
+    'zh': metric,    // Chinese
+    'ja': metric,    // Japanese
+    'ko': metric,    // Korean
+    'ar': metric,    // Arabic
+    'hi': metric,    // Hindi
+    'tr': metric,    // Turkish
+    'nl': metric,    // Dutch
+    'sv': metric,    // Swedish
+    'da': metric,    // Danish
+    'no': metric,    // Norwegian
+    'fi': metric,    // Finnish
+    'pl': metric,    // Polish
+    'cs': metric,    // Czech
+    'el': metric,    // Greek
+    'he': metric,    // Hebrew
+  };
+
+  /// Get the default unit system for a language code
+  /// Falls back to metric if language not found
+  static String getDefaultUnitsForLanguage(String languageCode) {
+    return _languageToUnits[languageCode.toLowerCase()] ?? metric;
+  }
+
+  /// Check if a language typically uses imperial units
+  static bool languageUsesImperial(String languageCode) {
+    return _languageToUnits[languageCode.toLowerCase()] == imperial;
+  }
+
+  /// Format distance with automatic unit detection from language
+  static String formatDistanceAuto(double distanceM, String languageCode, {String? overrideUnits}) {
+    final units = overrideUnits ?? getDefaultUnitsForLanguage(languageCode);
+    return formatDistance(distanceM, units);
+  }
+
+  /// Format temperature with automatic unit detection from language  
+  static String formatTemperatureAuto(dynamic tempC, String languageCode, {String? overrideUnits}) {
+    final units = overrideUnits ?? getDefaultUnitsForLanguage(languageCode);
+    return formatTemperature(tempC, units);
+  }
+
+  /// Format speed with automatic unit detection from language
+  static String formatSpeedAuto(double speedMs, String languageCode, {String? overrideUnits}) {
+    final units = overrideUnits ?? getDefaultUnitsForLanguage(languageCode);
+    return formatSpeed(speedMs, units);
+  }
+
+  /// Format altitude with automatic unit detection from language
+  static String formatAltitudeAuto(double altitudeM, String languageCode, {String? overrideUnits}) {
+    final units = overrideUnits ?? getDefaultUnitsForLanguage(languageCode);
+    return formatAltitude(altitudeM, units);
+  }
+
+  /// Get distance unit label with automatic detection from language
+  static String getDistanceUnitAuto(String languageCode, {String? overrideUnits}) {
+    final units = overrideUnits ?? getDefaultUnitsForLanguage(languageCode);
+    return getDistanceUnit(units);
+  }
 
   /// Convert temperature from Celsius to the preferred unit
   static String formatTemperature(dynamic tempC, String units) {

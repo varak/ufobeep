@@ -9,6 +9,7 @@ import { AlertTitleUtils } from '@/utils/alert-title-utils'
 import { convertToProxyUrl, convertMediaFilesUrls } from '@/utils/media-url-utils'
 import { getAlertSlug, getShortAlertUrl } from '@/utils/slug'
 import { formatDistance, getUnitPreference } from '@/utils/units'
+import { UnitConversion } from '@/utils/unitConversion'
 
 interface Alert {
   id: string
@@ -299,11 +300,10 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                 })()}
                 {alert.distance_km !== undefined && alert.distance_km > 0 && (
                   <span className="text-text-tertiary text-xs font-normal ml-1">
-                    {formatDistance({ 
-                      distanceKm: alert.distance_km, 
-                      useImperial: getUnitPreference(),
-                      locale: typeof window !== 'undefined' ? navigator.language : 'en'
-                    })}
+                    {UnitConversion.formatDistanceFromKm(
+                      alert.distance_km,
+                      UnitConversion.getAutoUnits()
+                    )}
                   </span>
                 )}
               </p>
@@ -384,11 +384,10 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                 })()}
                 {alert.distance_km !== undefined && alert.distance_km > 0 && (
                   <span className="text-text-tertiary text-xs font-normal ml-2">
-                    {formatDistance({ 
-                      distanceKm: alert.distance_km, 
-                      useImperial: getUnitPreference(),
-                      locale: typeof window !== 'undefined' ? navigator.language : 'en'
-                    })}
+                    {UnitConversion.formatDistanceFromKm(
+                      alert.distance_km,
+                      UnitConversion.getAutoUnits()
+                    )}
                   </span>
                 )}
               </div>

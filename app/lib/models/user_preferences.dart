@@ -169,6 +169,45 @@ class UserPreferences {
     }
   }
 
+  /// Get effective unit system - uses user preference or auto-detects from language
+  String get effectiveUnits {
+    // If user has explicitly set units, use that
+    if (units != 'metric') return units;
+    
+    // Otherwise, auto-detect from language
+    // Import is at top of file
+    return _getDefaultUnitsForLanguage(language);
+  }
+
+  /// Internal method to get default units for language (matches UnitConversion logic)
+  static String _getDefaultUnitsForLanguage(String languageCode) {
+    const Map<String, String> languageToUnits = {
+      'en': 'imperial',  // English (primarily US/UK)
+      'es': 'metric',    // Spanish
+      'de': 'metric',    // German
+      'fr': 'metric',    // French
+      'it': 'metric',    // Italian
+      'pt': 'metric',    // Portuguese
+      'ru': 'metric',    // Russian
+      'zh': 'metric',    // Chinese
+      'ja': 'metric',    // Japanese
+      'ko': 'metric',    // Korean
+      'ar': 'metric',    // Arabic
+      'hi': 'metric',    // Hindi
+      'tr': 'metric',    // Turkish
+      'nl': 'metric',    // Dutch
+      'sv': 'metric',    // Swedish
+      'da': 'metric',    // Danish
+      'no': 'metric',    // Norwegian
+      'fi': 'metric',    // Finnish
+      'pl': 'metric',    // Polish
+      'cs': 'metric',    // Czech
+      'el': 'metric',    // Greek
+      'he': 'metric',    // Hebrew
+    };
+    return languageToUnits[languageCode.toLowerCase()] ?? 'metric';
+  }
+
   static const List<String> availableLanguages = ['en', 'es', 'de'];
   static const List<String> availableCategories = [
     'ufo', 'anomaly', 'aircraft', 'missing_person', 'unclassified'

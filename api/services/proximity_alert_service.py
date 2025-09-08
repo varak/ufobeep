@@ -6,6 +6,7 @@ import logging
 from .push_service import send_to_token
 
 from app.routers.admin import rate_limit_enabled, rate_limit_threshold
+from app.utils.dnd_utils import is_in_quiet_window, is_dnd_active, should_override_quiet_hours
 
 logger = logging.getLogger(__name__)
 
@@ -157,43 +158,79 @@ class ProximityAlertService:
                 else:
                     logger.info("Rate limiting disabled - sending proximity alerts regardless of frequency")
                 
-                # Simple approach: get all active devices with push tokens AND recent activity
+                # Get devices with user preferences for DND, quiet hours, and alert range
                 query = """
-                    SELECT device_id, push_token, platform, lat, lon
+                    SELECT 
+                        device_id, push_token, platform, lat, lon,
+                        alert_range_km, preferences, snooze_until
                     FROM devices 
                     WHERE is_active = true 
                       AND push_enabled = true
                       AND push_token IS NOT NULL
                       AND device_id != $1
                       AND (last_seen IS NULL OR last_seen > NOW() - INTERVAL '24 hours')
+                      AND (snooze_until IS NULL OR snooze_until <= NOW())
                     LIMIT 1000
                 """
                 rows = await conn.fetch(query, exclude_device_id)
                 
-                # For Phase 0: if no location data, treat all devices as within range
-                # This ensures alerts work even without location data
+                # Filter devices based on user preferences and proximity
                 devices = []
+                current_time = datetime.utcnow()
+                
                 for row in rows:
+                    # Parse user preferences
+                    user_alert_range = row['alert_range_km'] or 10.0  # Default 10km if not set
+                    preferences = row['preferences'] or {}
+                    dnd_settings = preferences.get('dnd', {}) if isinstance(preferences, dict) else {}
+                    
+                    # Check quiet hours with emergency override
+                    in_quiet_hours = False
+                    if dnd_settings.get('enabled'):
+                        quiet_start = dnd_settings.get('start')  # e.g. "22:00"
+                        quiet_end = dnd_settings.get('end')      # e.g. "07:00"
+                        device_timezone = preferences.get('timezone')
+                        
+                        in_quiet_hours = is_in_quiet_window(
+                            current_time, quiet_start, quiet_end, device_timezone
+                        )
+                        
+                        # Check emergency override
+                        if in_quiet_hours and should_override_quiet_hours(witness_count):
+                            in_quiet_hours = False  # Override quiet hours for high-witness events
+                            logger.info(f"Emergency override: {witness_count} witnesses bypasses quiet hours for device {row['device_id']}")
+                    
+                    # Skip if in quiet hours (unless overridden)
+                    if in_quiet_hours:
+                        logger.debug(f"Skipping device {row['device_id']} due to quiet hours")
+                        continue
+                    
+                    # Check distance against user's preferred range
                     if row['lat'] is not None and row['lon'] is not None:
                         # Calculate actual distance
                         distance = self._calculate_distance(lat, lon, row['lat'], row['lon'])
-                        if distance <= radius_km:
+                        
+                        # Respect user's alert range preference instead of hardcoded radius_km
+                        if distance <= user_alert_range:
                             devices.append({
                                 'device_id': row['device_id'],
                                 'push_token': row['push_token'],
                                 'platform': row['platform'],
                                 'distance_km': round(distance, 2),
                                 'device_lat': row['lat'],
-                                'device_lon': row['lon']
+                                'device_lon': row['lon'],
+                                'user_alert_range': user_alert_range,
+                                'quiet_hours_bypassed': in_quiet_hours == False and dnd_settings.get('enabled')
                             })
                     else:
-                        # No location data - include in 25km ring for Phase 0
-                        if radius_km >= 25.0:
+                        # No location data - include only if user's range >= 25km (fallback for no-location devices)
+                        if user_alert_range >= 25.0:
                             devices.append({
                                 'device_id': row['device_id'],
                                 'push_token': row['push_token'],
                                 'platform': row['platform'],
-                                'distance_km': 25.0  # Default distance
+                                'distance_km': 25.0,  # Default distance for no-location devices
+                                'user_alert_range': user_alert_range
                             })
                 
                 devices.sort(key=lambda d: d['distance_km'])
@@ -213,7 +250,9 @@ class ProximityAlertService:
             async with self.db_pool.acquire() as conn:
                 # Get all devices with location data AND recent activity (24h freshness)  
                 query = """
-                    SELECT device_id, push_token, platform, lat, lon
+                    SELECT 
+                        device_id, push_token, platform, lat, lon,
+                        alert_range_km, preferences, snooze_until
                     FROM devices 
                     WHERE is_active = true 
                       AND push_token IS NOT NULL
@@ -221,14 +260,43 @@ class ProximityAlertService:
                       AND (lat IS NOT NULL AND lon IS NOT NULL)
                       AND lat != 0.0 AND lon != 0.0
                       AND (last_seen IS NULL OR last_seen > NOW() - INTERVAL '24 hours')
+                      AND (snooze_until IS NULL OR snooze_until <= NOW())
                 """
                 
                 rows = await conn.fetch(query, exclude_device_id)
                 logger.info(f"FALLBACK: Found {len(rows)} total active devices with location data")
                 
-                # Filter by distance using haversine formula
+                # Filter by user preferences and distance
                 nearby_devices = []
+                current_time = datetime.utcnow()
+                
                 for row in rows:
+                    # Parse user preferences
+                    user_alert_range = row['alert_range_km'] or 10.0  # Default 10km if not set
+                    preferences = row['preferences'] or {}
+                    dnd_settings = preferences.get('dnd', {}) if isinstance(preferences, dict) else {}
+                    
+                    # Check quiet hours with emergency override
+                    in_quiet_hours = False
+                    if dnd_settings.get('enabled'):
+                        quiet_start = dnd_settings.get('start')  # e.g. "22:00"
+                        quiet_end = dnd_settings.get('end')      # e.g. "07:00"
+                        device_timezone = preferences.get('timezone')
+                        
+                        in_quiet_hours = is_in_quiet_window(
+                            current_time, quiet_start, quiet_end, device_timezone
+                        )
+                        
+                        # Check emergency override
+                        if in_quiet_hours and should_override_quiet_hours(witness_count):
+                            in_quiet_hours = False  # Override quiet hours for high-witness events
+                            logger.info(f"FALLBACK Emergency override: {witness_count} witnesses bypasses quiet hours for device {row['device_id']}")
+                    
+                    # Skip if in quiet hours (unless overridden)
+                    if in_quiet_hours:
+                        logger.debug(f"FALLBACK: Skipping device {row['device_id']} due to quiet hours")
+                        continue
+                    
                     device_lat = float(row['lat'])
                     device_lon = float(row['lon'])
                     
@@ -236,16 +304,18 @@ class ProximityAlertService:
                     distance_km = self._haversine_distance(lat, lon, device_lat, device_lon)
                     logger.debug(f"FALLBACK: Device {row['device_id']} at ({device_lat}, {device_lon}) is {distance_km:.2f}km away")
                     
-                    if distance_km <= radius_km:
+                    # Respect user's alert range preference instead of hardcoded radius_km
+                    if distance_km <= user_alert_range:
                         nearby_devices.append({
                             'device_id': row['device_id'],
                             'push_token': row['push_token'],
                             'platform': row['platform'],
                             'distance_km': round(distance_km, 2),
                             'device_lat': device_lat,
-                            'device_lon': device_lon
+                            'device_lon': device_lon,
+                            'user_alert_range': user_alert_range
                         })
-                        logger.info(f"FALLBACK: Device {row['device_id']} INCLUDED (distance: {distance_km:.2f}km)")
+                        logger.info(f"FALLBACK: Device {row['device_id']} INCLUDED (distance: {distance_km:.2f}km, user range: {user_alert_range}km)")
                 
                 logger.warning(f"FALLBACK RESULT: Found {len(nearby_devices)} devices within {radius_km}km")
                 return nearby_devices

@@ -85,6 +85,8 @@ class DeviceUpdateRequest(BaseModel):
     os_version: Optional[str] = None
     timezone: Optional[str] = None
     locale: Optional[str] = None
+    # Alert preferences
+    alert_range_km: Optional[float] = Field(None, ge=1.0, le=100.0, description="Alert range in kilometers")
     # DND / Snooze
     snooze_until: Optional[str] = Field(None, description="Global snooze until ISO timestamp (UTC). Null to clear.")
     dnd_enabled: Optional[bool] = None
@@ -444,7 +446,7 @@ async def update_device(
                 scalar_fields = [
                     'device_name','push_token','push_enabled','alert_notifications',
                     'chat_notifications','system_notifications','app_version','os_version',
-                    'timezone','locale','push_provider'
+                    'timezone','locale','push_provider','alert_range_km'
                 ]
                 for field in scalar_fields:
                     if field in update_fields and update_fields[field] is not None:

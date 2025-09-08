@@ -51,14 +51,42 @@ export function formatDistance({ distanceKm, useImperial = false, locale = 'en' 
   }
 }
 
+// Language-to-units mapping (matches mobile app)
+const LANGUAGE_TO_IMPERIAL: Record<string, boolean> = {
+  'en': true,   // English - primarily US/UK
+  'es': false,  // Spanish - metric
+  'de': false,  // German - metric  
+  'fr': false,  // French - metric
+  'it': false,  // Italian - metric
+  'pt': false,  // Portuguese - metric
+  'ru': false,  // Russian - metric
+  'zh': false,  // Chinese - metric
+  'ja': false,  // Japanese - metric
+  'ko': false,  // Korean - metric
+  'ar': false,  // Arabic - metric
+  'hi': false,  // Hindi - metric
+  'tr': false,  // Turkish - metric
+  'nl': false,  // Dutch - metric
+  'sv': false,  // Swedish - metric
+  'da': false,  // Danish - metric
+  'no': false,  // Norwegian - metric
+  'fi': false,  // Finnish - metric
+  'pl': false,  // Polish - metric
+  'cs': false,  // Czech - metric
+  'el': false,  // Greek - metric
+  'he': false,  // Hebrew - metric
+}
+
 export function getUnitPreference(): boolean {
-  // Check if user is in US/imperial countries based on browser locale
-  const locale = typeof window !== 'undefined' ? navigator.language : 'en-US'
-  const imperialCountries = ['US', 'LR', 'MM'] // United States, Liberia, Myanmar
+  if (typeof window === 'undefined') return false // SSR fallback to metric
   
-  // Extract country code from locale (e.g., 'en-US' -> 'US')
-  const countryCode = locale.split('-')[1]
+  // Get browser language (e.g., 'en-US' -> 'en')
+  const browserLang = window.navigator.language.split('-')[0].toLowerCase()
   
-  // Default to imperial for US users, metric for others
-  return imperialCountries.includes(countryCode)
+  // Use language-based preference, fall back to metric
+  return LANGUAGE_TO_IMPERIAL[browserLang] ?? false
+}
+
+export function getUnitPreferenceForLanguage(languageCode: string): boolean {
+  return LANGUAGE_TO_IMPERIAL[languageCode.toLowerCase()] ?? false
 }

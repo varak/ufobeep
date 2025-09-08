@@ -2,6 +2,7 @@
 
 import { getShortAlertUrl } from '@/utils/slug'
 import { formatDistance, getUnitPreference } from '@/utils/units'
+import { UnitConversion } from '@/utils/unitConversion'
 
 interface Alert {
   id: string
@@ -165,11 +166,10 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
               })()}
               {alert.distance_km !== undefined && alert.distance_km > 0 && (
                 <span className="text-text-tertiary text-xs font-normal ml-2">
-                  {formatDistance({ 
-                    distanceKm: alert.distance_km, 
-                    useImperial: getUnitPreference(),
-                    locale: typeof window !== 'undefined' ? navigator.language : 'en'
-                  })}
+                  {UnitConversion.formatDistanceFromKm(
+                    alert.distance_km,
+                    UnitConversion.getAutoUnits()
+                  )}
                 </span>
               )}
             </span>
