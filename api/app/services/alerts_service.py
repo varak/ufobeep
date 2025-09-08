@@ -147,12 +147,43 @@ class AlertsService:
     
     def _extract_location(self, sensor_data, enrichment_data) -> Optional[AlertLocation]:
         """Extract location from sensor/enrichment data - unified logic"""
-        # Try enrichment data first (has processed location name)
+        # IMPORTANT: Use sensor data first for accurate GPS coordinates
+        # This fixes the 12.1km distance issue where geocoded city center was used instead of actual location
+        if sensor_data:
+            sensor = self._parse_json(sensor_data)
+            if sensor:
+                lat, lng = self._extract_coords_from_sensor(sensor)
+                
+                # Get location name from enrichment if available
+                location_name = "Unknown Location"
+                if enrichment_data:
+                    enrichment = self._parse_json(enrichment_data)
+                    if enrichment and "geocoding" in enrichment:
+                        geocoding = enrichment["geocoding"]
+                        if geocoding:
+                            location_name = geocoding.get("location_name") or geocoding.get("formatted_address", "Unknown Location")
+                
+                # Otherwise try to get from sensor data
+                if location_name == "Unknown Location":
+                    if sensor.get("location", {}).get("name"):
+                        location_name = sensor["location"]["name"]
+                    elif sensor.get("location_name"):
+                        location_name = sensor["location_name"]
+                
+                if self._valid_coords(lat, lng):
+                    return AlertLocation(
+                        latitude=lat,
+                        longitude=lng,
+                        name=location_name,
+                        accuracy=sensor.get("location", {}).get("accuracy", 50.0)
+                    )
+        
+        # Fall back to enrichment data if no sensor data (for MUFON imports)
         if enrichment_data:
             enrichment = self._parse_json(enrichment_data)
             if enrichment and "geocoding" in enrichment:
                 geocoding = enrichment["geocoding"]
-                if geocoding:  # Check if geocoding is not None
+                if geocoding:
                     lat = geocoding.get("latitude")
                     lng = geocoding.get("longitude")
                     location_name = geocoding.get("location_name") or geocoding.get("formatted_address", "Unknown Location")
@@ -163,25 +194,6 @@ class AlertsService:
                             name=location_name,
                             accuracy=50.0
                         )
-        
-        # Fall back to sensor data
-        if sensor_data:
-            sensor = self._parse_json(sensor_data)
-            if sensor:
-                lat, lng = self._extract_coords_from_sensor(sensor)
-                # Extract location name from sensor data
-                location_name = "Unknown Location"
-                if sensor.get("location", {}).get("name"):
-                    location_name = sensor["location"]["name"]
-                elif sensor.get("location_name"):
-                    location_name = sensor["location_name"]
-                
-                if self._valid_coords(lat, lng):
-                    return AlertLocation(
-                        latitude=lat,
-                        longitude=lng,
-                        name=location_name
-                    )
         
         return None
     
