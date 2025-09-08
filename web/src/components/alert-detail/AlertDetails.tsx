@@ -153,7 +153,7 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
                 
                 // Remove duplicate state/country suffixes
                 if (locationName.includes(',')) {
-                  const parts = locationName.split(',').map(p => p.trim())
+                  const parts = locationName.split(',').map((p: string) => p.trim())
                   // Remove duplicate consecutive parts (e.g., "Nevada, Nevada" -> "Nevada")
                   const uniqueParts = parts.filter((part, index) => {
                     return index === 0 || part !== parts[index - 1]
