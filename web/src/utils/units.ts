@@ -11,23 +11,23 @@ export function formatDistance({ distanceKm, useImperial = false }: DistanceForm
     if (miles < 0.1) {
       // Show in feet for very short distances
       const feet = Math.round(distanceKm * 3280.84)
-      return `${feet}ft away`
+      return `${feet} ft away`
     } else if (miles < 1) {
       // Show in feet for distances under 1 mile
       const feet = Math.round(miles * 5280)
-      return `${feet}ft away`
+      return `${feet} ft away`
     } else {
       // Show in miles, no decimal
-      return `${Math.round(miles)}mi away`
+      return `${Math.round(miles)} mi away`
     }
   } else {
     // Metric system
     if (distanceKm < 1) {
       const meters = Math.round(distanceKm * 1000)
-      return `${meters}m away`
+      return `${meters} m away`
     } else {
       // Show in km, no decimal
-      return `${Math.round(distanceKm)}km away`
+      return `${Math.round(distanceKm)} km away`
     }
   }
 }
