@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 part 'user_preferences.g.dart';
 
+const Object _undefinedValue = Object();
+
 enum LocationPrivacy {
   exact,     // Use exact coordinates
   jittered,  // Apply 100-300m jitter (default)
@@ -120,8 +122,8 @@ class UserPreferences {
     int? quietHoursStart,
     int? quietHoursEnd,
     bool? allowEmergencyOverride,
-    DateTime? dndUntil,
-    DateTime? lastUpdated,
+    Object? dndUntil = _undefinedValue,
+    Object? lastUpdated = _undefinedValue,
   }) {
     return UserPreferences(
       displayName: displayName ?? this.displayName,
@@ -144,8 +146,8 @@ class UserPreferences {
       quietHoursStart: quietHoursStart ?? this.quietHoursStart,
       quietHoursEnd: quietHoursEnd ?? this.quietHoursEnd,
       allowEmergencyOverride: allowEmergencyOverride ?? this.allowEmergencyOverride,
-      dndUntil: dndUntil ?? this.dndUntil,
-      lastUpdated: lastUpdated ?? this.lastUpdated,
+      dndUntil: dndUntil == _undefinedValue ? this.dndUntil : dndUntil as DateTime?,
+      lastUpdated: lastUpdated == _undefinedValue ? this.lastUpdated : lastUpdated as DateTime?,
     );
   }
 

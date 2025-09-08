@@ -81,24 +81,27 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
   /// Sync critical user preferences (DND, snooze_until) to backend
   Future<void> _syncToBackend(UserPreferences prefs) async {
     try {
+      print('🔄 Starting DND sync to backend...');
+      
       final beepService = BeepService();
       final deviceId = await beepService.getOrCreateDeviceId();
+      
+      print('📱 Device ID for sync: $deviceId');
       
       // Prepare API request with snooze_until field
       final Map<String, dynamic> updateData = {
         'snooze_until': prefs.dndUntil?.toUtc().toIso8601String(), // null to disable DND
       };
       
-      // Send to backend device update API
-      await ApiClient.dio.put('/devices/$deviceId', data: updateData);
+      print('📡 Sending PUT /devices/$deviceId with data: $updateData');
       
-      if (AppEnvironment.enableLogging) {
-        print('✅ Synced DND to backend: snooze_until=${updateData['snooze_until']}');
-      }
+      // Send to backend device update API
+      final response = await ApiClient.dio.put('/devices/$deviceId', data: updateData);
+      
+      print('✅ DND sync successful: ${response.statusCode} ${response.data}');
     } catch (e) {
-      if (AppEnvironment.enableLogging) {
-        print('⚠️ Failed to sync preferences to backend: $e');
-      }
+      print('❌ Failed to sync DND to backend: $e');
+      print('❌ Error type: ${e.runtimeType}');
       // Don't throw - local preferences should still work
     }
   }
