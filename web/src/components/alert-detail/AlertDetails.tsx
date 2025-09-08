@@ -163,17 +163,17 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
                 
                 return locationName
               })()}
+              {alert.distance_km !== undefined && alert.distance_km > 0 && (
+                <span className="text-text-tertiary text-xs font-normal ml-2">
+                  {formatDistance({ 
+                    distanceKm: alert.distance_km, 
+                    useImperial: getUnitPreference(),
+                    locale: typeof window !== 'undefined' ? navigator.language : 'en'
+                  })}
+                </span>
+              )}
             </span>
           </div>
-          {alert.distance_km !== undefined && alert.distance_km > 0 && (
-            <div className="text-text-secondary text-xs mt-1">
-              {formatDistance({ 
-                distanceKm: alert.distance_km, 
-                useImperial: getUnitPreference(),
-                locale: typeof window !== 'undefined' ? navigator.language : 'en'
-              })}
-            </div>
-          )}
         </div>
       </div>
       

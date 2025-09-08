@@ -295,18 +295,16 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                   
                   return locationName
                 })()}
+                {alert.distance_km !== undefined && alert.distance_km > 0 && (
+                  <span className="text-text-tertiary text-xs font-normal ml-1">
+                    {formatDistance({ 
+                      distanceKm: alert.distance_km, 
+                      useImperial: getUnitPreference(),
+                      locale: typeof window !== 'undefined' ? navigator.language : 'en'
+                    })}
+                  </span>
+                )}
               </p>
-              
-              {/* Distance display underneath location for compact view */}
-              {alert.distance_km !== undefined && alert.distance_km > 0 && (
-                <p className="text-text-tertiary text-xs">
-                  {formatDistance({ 
-                    distanceKm: alert.distance_km, 
-                    useImperial: getUnitPreference(),
-                    locale: typeof window !== 'undefined' ? navigator.language : 'en'
-                  })}
-                </p>
-              )}
               
               {/* Small thumbnail preview for compact cards */}
               {alert.media_files && alert.media_files.length > 0 && (
@@ -382,18 +380,16 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                   
                   return locationName
                 })()}
+                {alert.distance_km !== undefined && alert.distance_km > 0 && (
+                  <span className="text-text-tertiary text-xs font-normal ml-2">
+                    {formatDistance({ 
+                      distanceKm: alert.distance_km, 
+                      useImperial: getUnitPreference(),
+                      locale: typeof window !== 'undefined' ? navigator.language : 'en'
+                    })}
+                  </span>
+                )}
               </div>
-              
-              {/* Distance display underneath location */}
-              {alert.distance_km !== undefined && alert.distance_km > 0 && (
-                <div className="text-text-tertiary text-xs mb-2">
-                  {formatDistance({ 
-                    distanceKm: alert.distance_km, 
-                    useImperial: getUnitPreference(),
-                    locale: typeof window !== 'undefined' ? navigator.language : 'en'
-                  })}
-                </div>
-              )}
               
               {/* Verification badge */}
               {alert.is_verified && (
