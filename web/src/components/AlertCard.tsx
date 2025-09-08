@@ -287,7 +287,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                   if (locationName && locationName.includes(',')) {
                     const parts = locationName.split(',').map((p: string) => p.trim())
                     // Remove duplicate consecutive parts (e.g., "Nevada, Nevada" -> "Nevada")
-                    const uniqueParts = parts.filter((part, index) => {
+                    const uniqueParts = parts.filter((part: string, index: number) => {
                       return index === 0 || part !== parts[index - 1]
                     })
                     locationName = uniqueParts.join(', ')
@@ -374,7 +374,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                   if (locationName && locationName.includes(',')) {
                     const parts = locationName.split(',').map((p: string) => p.trim())
                     // Remove duplicate consecutive parts (e.g., "Nevada, Nevada" -> "Nevada")
-                    const uniqueParts = parts.filter((part, index) => {
+                    const uniqueParts = parts.filter((part: string, index: number) => {
                       return index === 0 || part !== parts[index - 1]
                     })
                     locationName = uniqueParts.join(', ')
