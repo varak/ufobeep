@@ -177,6 +177,8 @@ class _NotificationManagementScreenState
       final updated = currentPrefs.copyWith(dndUntil: null);
       await prefsProvider.updatePreferences(updated);
       if (!mounted) return;
+      // Force UI refresh by triggering setState
+      setState(() {});
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('DND disabled - notifications restored'),
