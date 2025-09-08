@@ -151,7 +151,7 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
               {alert.location.latitude.toFixed(4)}, {alert.location.longitude.toFixed(4)}
             </div>
             {alert.distance_km !== undefined && alert.distance_km > 0 && (
-              <div className="text-brand-primary text-xs mt-1">
+              <div className="text-text-tertiary text-xs mt-1">
                 {formatDistance({ 
                   distanceKm: alert.distance_km, 
                   useImperial: getUnitPreference(),
@@ -170,7 +170,7 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <span className="text-text-tertiary text-sm font-medium">Distance:</span>
-              <span className="text-brand-primary text-sm">
+              <span className="text-text-tertiary text-sm">
                 {formatDistance({ 
                   distanceKm: alert.distance_km, 
                   useImperial: getUnitPreference(),
