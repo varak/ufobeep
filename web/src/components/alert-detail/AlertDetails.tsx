@@ -155,7 +155,7 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
                 {formatDistance({ 
                   distanceKm: alert.distance_km, 
                   useImperial: getUnitPreference() 
-                }).replace('away', 'away from you')}
+                })}
               </div>
             )}
           </div>
@@ -173,7 +173,7 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
                 {formatDistance({ 
                   distanceKm: alert.distance_km, 
                   useImperial: getUnitPreference() 
-                }).replace('away', 'away from you')}
+                })}
               </span>
             </div>
           </div>

@@ -283,7 +283,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                     {formatDistance({ 
                       distanceKm: alert.distance_km, 
                       useImperial: getUnitPreference() 
-                    }).replace('away', 'away from you')}
+                    })}
                   </span>
                 )}
               </p>
@@ -353,7 +353,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                     {formatDistance({ 
                       distanceKm: alert.distance_km, 
                       useImperial: getUnitPreference() 
-                    }).replace('away', 'away from you')}
+                    })}
                   </span>
                 )}
               </div>
