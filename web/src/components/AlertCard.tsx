@@ -108,17 +108,10 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
     return null
   }
 
-  // Calculate actual comment count - don't add description as comment for MUFON
+  // Calculate actual comment count - only use API count, don't add description
   const getActualCommentCount = () => {
-    const baseCount = alert.comment_count || 0
-    // For MUFON alerts, use exact comment count (don't add description as comment)
-    if (alert.reporter_username === 'MUFON') {
-      return baseCount
-    }
-    // If there's a description, add 1 for the initial description comment (ID 0)
-    const description = getPreviewDescription()
-    const hasDescription = description ? description.trim().length > 0 : false
-    return hasDescription ? baseCount + 1 : baseCount
+    // Always use the exact API comment count - descriptions are not comments
+    return alert.comment_count || 0
   }
 
   // Get primary media file (or first if no primary)
