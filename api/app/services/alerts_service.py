@@ -52,7 +52,8 @@ class AlertsService:
             rows = await conn.fetch("""
                 SELECT s.id::text, s.title, s.description, s.category, s.alert_level, 
                        s.witness_count, s.created_at, s.reporter_id, s.sensor_data, s.media_info, s.enrichment_data,
-                       u.username as reporter_username, s.source, (s.enrichment_data->>'occurred_at')::timestamp as occurred_at, s.external_url,
+                       u.username as reporter_username, s.source, 
+                       COALESCE(s.occurred_at, s.created_at) as occurred_at, s.external_url,
                        COALESCE(c.comment_count, 0) as comment_count
                 FROM sightings s
                 LEFT JOIN users u ON s.reporter_id = u.id::text
@@ -62,13 +63,16 @@ class AlertsService:
                     GROUP BY sighting_id
                 ) c ON s.id = c.sighting_id
                 WHERE s.is_public = true 
-                ORDER BY s.occurred_at DESC 
+                ORDER BY COALESCE(s.occurred_at, s.created_at) DESC 
                 LIMIT $1 OFFSET $2
             """, limit, offset)
             
             alerts = []
             for row in rows:
                 location = self._extract_location(row["sensor_data"], row["enrichment_data"])
+                
+                # Debug logging for location extraction
+                print(f"DEBUG: Alert {row['id'][:8]}... source={row['source']}, location={location}")
                 
                 # Allow MUFON alerts without location data
                 if location or row["source"] == "mufon":
@@ -306,7 +310,8 @@ class AlertsService:
                           device_id: str = None, username: str = None,
                           source: str = None, source_id: str = None, 
                           external_url: str = None, latitude: float = None, 
-                          longitude: float = None, occurred_at: str = None) -> str:
+                          longitude: float = None, occurred_at: str = None,
+                          external_id: str = None) -> str:
         """Create new alert/sighting"""
         async with self.db_pool.acquire() as conn:
             # Get existing user by username
@@ -332,24 +337,65 @@ class AlertsService:
                 except Exception as e:
                     print(f"Warning: Failed to parse occurred_at '{occurred_at}': {e}")
 
-            alert_id = await conn.fetchval("""
-                INSERT INTO sightings 
-                (title, description, category, witness_count, is_public, tags, 
-                 media_info, sensor_data, enrichment_data, alert_level, status, reporter_id,
-                 source, source_id, external_url, lat, lon, occurred_at)
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
-                RETURNING id
-            """, title, description, category, witness_count, is_public,
-                tags or [], json.dumps(media_info or {}), 
-                json.dumps(sensor_data or {}), json.dumps(enrichment_data or {}),
-                alert_level, "created", reporter_id, source, source_id, external_url, latitude, longitude, occurred_at_timestamp)
+            # Check for existing record by external_id for MUFON/NUFORC imports
+            if external_id and source in ["mufon", "nuforc"]:
+                existing_alert = await conn.fetchval("""
+                    SELECT id FROM sightings WHERE external_id = $1
+                """, external_id)
+                
+                if existing_alert:
+                    # Update existing record
+                    print(f"Updating existing {source} record with external_id: {external_id}")
+                    await conn.execute("""
+                        UPDATE sightings SET
+                            title = $1, description = $2, category = $3, witness_count = $4,
+                            is_public = $5, tags = $6, media_info = $7, sensor_data = $8,
+                            enrichment_data = $9, alert_level = $10, status = $11, reporter_id = $12,
+                            source = $13, external_url = $14, public_latitude = $15, public_longitude = $16,
+                            occurred_at = $17, updated_at = NOW()
+                        WHERE external_id = $18
+                    """, title, description, category, witness_count, is_public,
+                        tags or [], json.dumps(media_info or {}), 
+                        json.dumps(sensor_data or {}), json.dumps(enrichment_data or {}),
+                        alert_level, "verified", reporter_id, source, external_url, latitude, longitude,
+                        occurred_at_timestamp, external_id)
+                    alert_id = str(existing_alert)
+                else:
+                    # Insert new record with external_id
+                    print(f"Creating new {source} record with external_id: {external_id}")
+                    alert_id = await conn.fetchval("""
+                        INSERT INTO sightings 
+                        (title, description, category, witness_count, is_public, tags, 
+                         media_info, sensor_data, enrichment_data, alert_level, status, reporter_id,
+                         source, external_url, public_latitude, public_longitude, occurred_at, external_id)
+                        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
+                        RETURNING id
+                    """, title, description, category, witness_count, is_public,
+                        tags or [], json.dumps(media_info or {}), 
+                        json.dumps(sensor_data or {}), json.dumps(enrichment_data or {}),
+                        alert_level, "verified", reporter_id, source, external_url, latitude, longitude, 
+                        occurred_at_timestamp, external_id)
+            else:
+                # Regular UFOBeep alert without external_id
+                alert_id = await conn.fetchval("""
+                    INSERT INTO sightings 
+                    (title, description, category, witness_count, is_public, tags, 
+                     media_info, sensor_data, enrichment_data, alert_level, status, reporter_id,
+                     source, external_url, public_latitude, public_longitude, occurred_at)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
+                    RETURNING id
+                """, title, description, category, witness_count, is_public,
+                    tags or [], json.dumps(media_info or {}), 
+                    json.dumps(sensor_data or {}), json.dumps(enrichment_data or {}),
+                    alert_level, "created", reporter_id, source, external_url, latitude, longitude, occurred_at_timestamp)
             
             return str(alert_id)
     
     async def create_beep(self, device_id: str, location: Dict = None, 
                          description: str = None, username: str = None,
                          title: str = None, source: str = None, 
-                         enrichment_data: Dict = None, occurred_at: str = None) -> Tuple[str, Dict]:
+                         enrichment_data: Dict = None, occurred_at: str = None,
+                         external_id: str = None) -> Tuple[str, Dict]:
         """Create beep with location privacy - single create_alert call"""
         
         # Handle location and jittering
@@ -405,7 +451,8 @@ class AlertsService:
             source=source,
             latitude=lat if location else None,
             longitude=lng if location else None,
-            occurred_at=occurred_at
+            occurred_at=occurred_at,
+            external_id=external_id
         )
         
         # Auto-follow the alert for the creator so they get notifications

@@ -170,7 +170,8 @@ async def create_alert(request: dict, idempotency_key: Optional[str] = Header(No
             title=request.get('title'),
             source=request.get('source'),
             enrichment_data=request.get('enrichment_data'),
-            occurred_at=request.get('occurred_at')
+            occurred_at=request.get('occurred_at'),
+            external_id=request.get('external_id')
         )
         
         # Send proximity alerts (critical for notifying nearby devices)
