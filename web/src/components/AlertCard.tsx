@@ -500,6 +500,36 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
         </div>
       </Link>
 
+      {/* Share URL display */}
+      <div className="px-4 pb-3 border-t border-dark-border/50 bg-dark-background/30">
+        <div className="flex items-center justify-between py-2">
+          <div className="flex items-center gap-2 min-w-0 flex-1">
+            <svg className="w-4 h-4 text-text-tertiary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.102m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+            <span className="text-text-tertiary text-xs font-mono truncate">
+              ufobeep.com{getShortAlertUrl(alert.id)}
+            </span>
+          </div>
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              const shareUrl = `${window.location.origin}${getShortAlertUrl(alert.id)}`
+              navigator.clipboard.writeText(shareUrl).then(() => {
+                // Could add toast notification here
+              }).catch(console.error)
+            }}
+            className="ml-2 p-1.5 text-text-tertiary hover:text-brand-primary hover:bg-brand-primary/10 rounded transition-all flex-shrink-0"
+            title="Copy short link"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
       {/* Share button */}
       <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
         <div className="relative">

@@ -1,5 +1,7 @@
 'use client'
 
+import { getShortAlertUrl } from '@/utils/slug'
+
 interface Alert {
   id: string
   title: string
@@ -150,34 +152,32 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
         </div>
       )}
 
-      {/* Share link for MUFON reports */}
-      {alert.reporter_username === 'MUFON' && (
-        <div className="mt-4 pt-4 border-t border-dark-border">
-          <div className="flex items-center gap-3">
-            <span className="text-text-tertiary">🔗</span>
-            <div className="flex-1">
-              <div className="flex items-center gap-2">
-                <span className="text-text-tertiary text-sm font-medium">Share Link:</span>
-                <code className="text-brand-primary text-sm bg-dark-bg px-2 py-1 rounded">
-                  ufobeep.com/alert/{alert.id.substring(0, 4)}
-                </code>
-                <button
-                  onClick={() => {
-                    navigator.clipboard.writeText(`https://ufobeep.com/alert/${alert.id.substring(0, 4)}`)
-                    // TODO: Show toast notification
-                  }}
-                  className="text-text-secondary hover:text-brand-primary transition-colors p-1"
-                  title="Copy link"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                  </svg>
-                </button>
-              </div>
+      {/* Share link for all alerts */}
+      <div className="mt-4 pt-4 border-t border-dark-border">
+        <div className="flex items-center gap-3">
+          <span className="text-text-tertiary">🔗</span>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <span className="text-text-tertiary text-sm font-medium">Share Link:</span>
+              <code className="text-brand-primary text-sm bg-dark-bg px-2 py-1 rounded">
+                ufobeep.com{getShortAlertUrl(alert.id)}
+              </code>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(`https://ufobeep.com${getShortAlertUrl(alert.id)}`)
+                  // TODO: Show toast notification
+                }}
+                className="text-text-secondary hover:text-brand-primary transition-colors p-1"
+                title="Copy short link"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+              </button>
             </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   )
 }
