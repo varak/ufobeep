@@ -36,6 +36,7 @@ interface Alert {
   witness_count: number
   total_confirmations: number
   reporter_username?: string | null
+  source?: string | null
   is_verified?: boolean
   distance?: number
   comment_count?: number
