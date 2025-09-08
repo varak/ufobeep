@@ -14,8 +14,17 @@ export function generateSlug(title: string, location: string, date: string, id?:
 
   const datePart = new Date(date || Date.now()).toISOString().split('T')[0]
 
-  // Add short ID hash for uniqueness while keeping URL clean
-  const idPart = id ? id.substring(0, 4) : ''
+  // Add ID for uniqueness - use full ID if it's numeric (MUFON case), otherwise use first 4 chars
+  let idPart = ''
+  if (id) {
+    // If the ID is purely numeric (MUFON case ID), use it in full
+    if (/^[0-9]+$/.test(id)) {
+      idPart = id
+    } else {
+      // Otherwise use first 4 characters for standard UFOBeep IDs
+      idPart = id.substring(0, 4)
+    }
+  }
 
   return `${titlePart}-${locationPart}-${datePart}-${idPart}`
     .replace(/--+/g, '-')
@@ -30,10 +39,12 @@ export interface SluggableAlertLike {
   reporter_username?: string | null
   description?: string | null
   source?: string | null
+  external_url?: string | null
 }
 
 export function getAlertSlug(alert: SluggableAlertLike) {
   let locName = alert.location?.name
+  let uniqueId = alert.id
   
   // Handle MUFON alerts specially
   const isMufon = alert.reporter_username === 'MUFON' || alert.source === 'mufon'
@@ -45,6 +56,25 @@ export function getAlertSlug(alert: SluggableAlertLike) {
       locName = locationMatch[1].trim()
       // Clean up location (remove country suffix for shorter slug)
       locName = locName.replace(/, US$/, '').replace(/, United States$/, '')
+    }
+    
+    // For MUFON alerts, try to extract case ID from external sources
+    // Check if we have external_url that might contain case ID
+    if (alert.external_url) {
+      const caseIdMatch = alert.external_url.match(/case[^0-9]*([0-9]+)/i)
+      if (caseIdMatch) {
+        uniqueId = caseIdMatch[1] // Use just the numeric case ID
+      }
+    }
+    
+    // Fallback: extract from any external_id field if passed through
+    // (This would need to be added to interface calls, but providing fallback)
+    const externalId = (alert as any).external_id
+    if (!caseIdMatch && externalId && typeof externalId === 'string') {
+      const idMatch = externalId.match(/mufon_([0-9]+)/)
+      if (idMatch) {
+        uniqueId = idMatch[1] // Use just the numeric case ID
+      }
     }
   }
   
@@ -64,7 +94,7 @@ export function getAlertSlug(alert: SluggableAlertLike) {
     title = 'mufon-' + (alert.title?.toLowerCase().replace('mufon ', '') || 'report')
   }
   
-  return generateSlug(title, locName, alert.created_at, alert.id)
+  return generateSlug(title, locName, alert.created_at, uniqueId)
 }
 
 export function getShortAlertUrl(alertId: string): string {
