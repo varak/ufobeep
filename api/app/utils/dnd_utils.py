@@ -4,7 +4,10 @@ DND/Quiet Hours utility functions with cross-midnight handling
 from datetime import datetime, time
 from typing import Optional
 import pytz
-import sentry_sdk
+try:
+    import sentry_sdk
+except ImportError:
+    sentry_sdk = None
 
 def is_in_quiet_window(
     now: datetime,
@@ -41,10 +44,11 @@ def is_in_quiet_window(
             except:
                 # Fallback to UTC if timezone is invalid
                 local_now = now
-                sentry_sdk.add_breadcrumb(
-                    message=f"Invalid timezone: {timezone_str}",
-                    level="warning"
-                )
+                if sentry_sdk:
+                    sentry_sdk.add_breadcrumb(
+                        message=f"Invalid timezone: {timezone_str}",
+                        level="warning"
+                    )
         else:
             local_now = now
             
@@ -59,15 +63,16 @@ def is_in_quiet_window(
             return start_time <= current_time <= end_time
             
     except (ValueError, TypeError) as e:
-        sentry_sdk.add_breadcrumb(
-            message=f"DND time parsing error: {e}",
-            level="error",
-            data={
-                "quiet_start": quiet_start,
-                "quiet_end": quiet_end,
-                "timezone": timezone_str
-            }
-        )
+        if sentry_sdk:
+            sentry_sdk.add_breadcrumb(
+                message=f"DND time parsing error: {e}",
+                level="error",
+                data={
+                    "quiet_start": quiet_start,
+                    "quiet_end": quiet_end,
+                    "timezone": timezone_str
+                }
+            )
         # Fail safe - don't filter if we can't parse
         return False
 
