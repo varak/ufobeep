@@ -57,7 +57,8 @@ class MapScreen extends ConsumerWidget {
             : null,
       ),
       body: alertsAsync.when(
-        data: (alerts) {
+        data: (alertsData) {
+          final alerts = alertsData.alerts;
           return Column(
             children: [
               // Map takes full screen
