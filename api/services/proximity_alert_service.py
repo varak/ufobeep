@@ -31,60 +31,70 @@ class ProximityAlertService:
         Send proximity alerts to nearby devices based on distance rings and witness escalation
         
         Args:
-            lat: Latitude of the sighting
-            lon: Longitude of the sighting  
+            lat: Latitude of the sighting (from sensor_data - used for logging only)
+            lon: Longitude of the sighting (from sensor_data - used for logging only)
             sighting_id: ID of the sighting to alert about
             beep_device_id: Device ID that created the beep (excluded from alerts)
         """
         try:
             start_time = datetime.utcnow()
             
+            # Get device coordinates for consistent proximity calculations
+            # This fixes the 12.1km coordinate mismatch issue
+            device_coords = await self._get_device_coordinates(beep_device_id)
+            if not device_coords:
+                logger.warning(f"No device coordinates found for {beep_device_id}, using sensor_data coordinates")
+                device_lat, device_lon = lat, lon
+            else:
+                device_lat, device_lon = device_coords['lat'], device_coords['lon']
+                logger.info(f"Using device coordinates ({device_lat:.6f}, {device_lon:.6f}) instead of sensor_data coordinates ({lat:.6f}, {lon:.6f})")
+            
             # Start with 1 witness (the original reporter who just submitted this sighting)
             # Then add any additional witness confirmations from the area
-            additional_witnesses = await self._count_recent_witnesses_nearby(lat, lon)
+            additional_witnesses = await self._count_recent_witnesses_nearby(device_lat, device_lon)
             witness_count = 1 + additional_witnesses  # Original reporter + confirmations
             logger.info(f"Total witnesses for sighting {sighting_id}: {witness_count} (1 original + {additional_witnesses} confirmations)")
             
             # Determine alert escalation level based on witness count
             alert_escalation = self._determine_alert_escalation(witness_count)
             
-            # Get devices within each distance ring
-            devices_1km = await self._get_devices_within_radius(lat, lon, 1.0, beep_device_id, witness_count)
-            devices_5km = await self._get_devices_within_radius(lat, lon, 5.0, beep_device_id, witness_count)
-            devices_10km = await self._get_devices_within_radius(lat, lon, 10.0, beep_device_id, witness_count)
-            devices_25km = await self._get_devices_within_radius(lat, lon, 25.0, beep_device_id, witness_count)
+            # Get devices within each distance ring using device coordinates (expanded for weather visibility)
+            devices_5km = await self._get_devices_within_radius(device_lat, device_lon, 5.0, beep_device_id, witness_count)
+            devices_15km = await self._get_devices_within_radius(device_lat, device_lon, 15.0, beep_device_id, witness_count)
+            devices_40km = await self._get_devices_within_radius(device_lat, device_lon, 40.0, beep_device_id, witness_count)
+            devices_100km = await self._get_devices_within_radius(device_lat, device_lon, 100.0, beep_device_id, witness_count)
             
             # Remove duplicates (inner rings included in outer rings)
-            devices_5km_only = [d for d in devices_5km if d not in devices_1km]
-            devices_10km_only = [d for d in devices_10km if d not in devices_5km and d not in devices_1km]
-            devices_25km_only = [d for d in devices_25km if d not in devices_10km and d not in devices_5km and d not in devices_1km]
+            devices_15km_only = [d for d in devices_15km if d not in devices_5km]
+            devices_40km_only = [d for d in devices_40km if d not in devices_15km and d not in devices_5km]
+            devices_100km_only = [d for d in devices_100km if d not in devices_40km and d not in devices_15km and d not in devices_5km]
             
             # Send alerts with priority levels (distance + witness escalation)
             tasks = []
             
-            if devices_1km:
-                # 1km always gets highest priority, escalated by witness count
+            if devices_5km:
+                # 5km: Close range - highest priority, escalated by witness count
                 level = alert_escalation if alert_escalation == "emergency" else "emergency"
-                title, body = self._get_alert_message(1.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_1km, sighting_id, level, title, body, witness_count, lat, lon, "UFO Sighting", beep_device_id))
-                
-            if devices_5km_only:
-                # 5km gets urgent unless escalated
-                level = "emergency" if alert_escalation == "emergency" else "urgent"
                 title, body = self._get_alert_message(5.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_5km_only, sighting_id, level, title, body, witness_count, lat, lon, "UFO Sighting", beep_device_id))
+                tasks.append(self._send_alert_batch(devices_5km, sighting_id, level, title, body, witness_count, device_lat, device_lon, "UFO Sighting", beep_device_id))
                 
-            if devices_10km_only:
-                # 10km gets normal unless escalated
+            if devices_15km_only:
+                # 15km: Local visibility - urgent unless escalated
+                level = "emergency" if alert_escalation == "emergency" else "urgent"
+                title, body = self._get_alert_message(15.0, witness_count, level)
+                tasks.append(self._send_alert_batch(devices_15km_only, sighting_id, level, title, body, witness_count, device_lat, device_lon, "UFO Sighting", beep_device_id))
+                
+            if devices_40km_only:
+                # 40km: Regional visibility - normal unless escalated
                 level = alert_escalation if alert_escalation in ["urgent", "emergency"] else "normal"
-                title, body = self._get_alert_message(10.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_10km_only, sighting_id, level, title, body, witness_count, lat, lon, "UFO Sighting", beep_device_id))
+                title, body = self._get_alert_message(40.0, witness_count, level)
+                tasks.append(self._send_alert_batch(devices_40km_only, sighting_id, level, title, body, witness_count, device_lat, device_lon, "UFO Sighting", beep_device_id))
                 
-            if devices_25km_only:
-                # 25km gets normal unless emergency escalation
+            if devices_100km_only:
+                # 100km: Horizon visibility - normal unless emergency escalation
                 level = "emergency" if alert_escalation == "emergency" else "normal"
-                title, body = self._get_alert_message(25.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_25km_only, sighting_id, level, title, body, witness_count, lat, lon, "UFO Sighting", beep_device_id))
+                title, body = self._get_alert_message(100.0, witness_count, level)
+                tasks.append(self._send_alert_batch(devices_100km_only, sighting_id, level, title, body, witness_count, device_lat, device_lon, "UFO Sighting", beep_device_id))
             
             # Execute all alert batches concurrently
             if tasks:
@@ -96,24 +106,24 @@ class ProximityAlertService:
                 elapsed_ms = (datetime.utcnow() - start_time).total_seconds() * 1000
                 
                 logger.info(f"Proximity alerts sent: {total_sent} devices in {elapsed_ms:.1f}ms")
-                logger.info(f"Alert breakdown - 1km: {len(devices_1km)}, 5km: {len(devices_5km_only)}, 10km: {len(devices_10km_only)}, 25km: {len(devices_25km_only)}")
+                logger.info(f"Alert breakdown - 5km: {len(devices_5km)}, 15km: {len(devices_15km_only)}, 40km: {len(devices_40km_only)}, 100km: {len(devices_100km_only)}")
                 
                 return {
                     "total_alerts_sent": total_sent,
-                    "devices_1km": len(devices_1km),
-                    "devices_5km": len(devices_5km_only), 
-                    "devices_10km": len(devices_10km_only),
-                    "devices_25km": len(devices_25km_only),
+                    "devices_5km": len(devices_5km),
+                    "devices_15km": len(devices_15km_only), 
+                    "devices_40km": len(devices_40km_only),
+                    "devices_100km": len(devices_100km_only),
                     "delivery_time_ms": elapsed_ms
                 }
             else:
-                logger.info("No devices found within 25km for proximity alerts")
+                logger.info("No devices found within 100km for proximity alerts")
                 return {
                     "total_alerts_sent": 0,
-                    "devices_1km": 0,
                     "devices_5km": 0,
-                    "devices_10km": 0, 
-                    "devices_25km": 0,
+                    "devices_15km": 0,
+                    "devices_40km": 0, 
+                    "devices_100km": 0,
                     "delivery_time_ms": 0
                 }
                 
@@ -137,6 +147,7 @@ class ProximityAlertService:
                     # If too many recent sightings, reduce alert frequency (unless emergency override)
                     if recent_sightings >= rate_limit_threshold:
                         # Check if this is an emergency override scenario (high witness count)
+                        # Use the same coordinate system as proximity calculations
                         emergency_witnesses = await conn.fetchval("""
                             SELECT COUNT(*) FROM sightings 
                             WHERE created_at > NOW() - INTERVAL '5 minutes'
@@ -146,7 +157,7 @@ class ProximityAlertService:
                                     CAST(sensor_data->>'latitude' AS FLOAT)
                                 ), 4326),
                                 ST_SetSRID(ST_MakePoint($1, $2), 4326),
-                                1000  -- 1km radius
+                                5000  -- 5km radius (expanded from 1km)
                             )
                         """, lon, lat)
                         
@@ -496,6 +507,21 @@ class ProximityAlertService:
             body = f"{witness_desc} - Something reported {location_desc}"
         
         return title, body
+    
+    async def _get_device_coordinates(self, device_id: str):
+        """Get device coordinates from the devices table"""
+        try:
+            async with self.db_pool.acquire() as conn:
+                result = await conn.fetchrow("""
+                    SELECT lat, lon FROM devices 
+                    WHERE device_id = $1 AND lat IS NOT NULL AND lon IS NOT NULL
+                """, device_id)
+                if result:
+                    return {'lat': result['lat'], 'lon': result['lon']}
+                return None
+        except Exception as e:
+            logger.error(f"Error getting device coordinates for {device_id}: {e}")
+            return None
 
 # Global instance
 proximity_alert_service = None
