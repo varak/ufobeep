@@ -7,6 +7,8 @@ import 'dart:convert';
 import '../models/user_preferences.dart';
 import '../config/environment.dart';
 import '../config/locale_config.dart';
+import '../services/api_client.dart';
+import '../services/beep_service.dart';
 
 // SharedPreferences provider
 final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
@@ -63,12 +65,41 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
       final prefsJson = jsonEncode(updatedPrefs.toJson());
       await _prefs.setString(_prefsKey, prefsJson);
       state = updatedPrefs;
+      
+      // Sync critical preferences (DND/snooze) to backend
+      await _syncToBackend(updatedPrefs);
+      
       return true;
     } catch (e) {
       if (AppEnvironment.enableLogging) {
         print('Error saving user preferences: $e');
       }
       return false;
+    }
+  }
+
+  /// Sync critical user preferences (DND, snooze_until) to backend
+  Future<void> _syncToBackend(UserPreferences prefs) async {
+    try {
+      final beepService = BeepService();
+      final deviceId = await beepService.getOrCreateDeviceId();
+      
+      // Prepare API request with snooze_until field
+      final Map<String, dynamic> updateData = {
+        'snooze_until': prefs.dndUntil?.toUtc().toIso8601String(), // null to disable DND
+      };
+      
+      // Send to backend device update API
+      await ApiClient.dio.put('/devices/$deviceId', data: updateData);
+      
+      if (AppEnvironment.enableLogging) {
+        print('✅ Synced DND to backend: snooze_until=${updateData['snooze_until']}');
+      }
+    } catch (e) {
+      if (AppEnvironment.enableLogging) {
+        print('⚠️ Failed to sync preferences to backend: $e');
+      }
+      // Don't throw - local preferences should still work
     }
   }
 
