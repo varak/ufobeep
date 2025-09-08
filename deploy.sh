@@ -158,12 +158,15 @@ if [ "$DEPLOY_APK" = true ]; then
     mkdir -p "$HOME"
     if [ "$SKIP_CLEAN" = false ]; then
         echo "Cleaning build cache..."
+        # Kill gradle daemon first to prevent lockups
+        pkill -f gradle-daemon 2>/dev/null || true
+        sleep 2
         flutter clean
         # Only clean gradle cache in clean mode to prevent Git slowdown
         echo "Cleaning Gradle artifacts..."
-        rm -rf .gradle-cache* .home 2>/dev/null || true
-        chmod -R u+w .gradle-cache* .home 2>/dev/null || true
-        rm -rf .gradle-cache* .home 2>/dev/null || true
+        timeout 30 rm -rf .gradle-cache* .home 2>/dev/null || true
+        timeout 30 chmod -R u+w .gradle-cache* .home 2>/dev/null || true
+        timeout 30 rm -rf .gradle-cache* .home 2>/dev/null || true
     else
         echo "Skipping clean build (using --fast mode)..."
         echo "Preserving Gradle cache for faster builds..."
