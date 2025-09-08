@@ -186,6 +186,7 @@ async def import_mufon_sightings(
     
     finally:
         # Don't close shared pool
+        pass
     
     return MufonImportResponse(
         imported=imported,
@@ -275,6 +276,7 @@ async def get_recent_mufon_sightings(
     
     finally:
         # Don't close shared pool
+        pass
 
 @router.post("/process/{sighting_id}")
 async def process_mufon_to_ufobeep(
