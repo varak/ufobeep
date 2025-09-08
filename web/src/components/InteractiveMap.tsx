@@ -17,6 +17,10 @@ interface Sighting {
   created_at: string
   witness_count: number
   alert_level: string
+  reporter_username?: string
+  description?: string
+  source?: string
+  external_url?: string
 }
 
 interface InteractiveMapProps {
