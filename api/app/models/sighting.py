@@ -274,10 +274,23 @@ class Sighting(Base):
     plane_match_data = Column(JSON, nullable=True)
     enrichment_metadata = Column(JSON, default=dict, nullable=False)
     
+    # Source tracking fields for MUFON/NUFORC integration
+    source = Column(String(20), nullable=True)  # 'mufon', 'nuforc', or NULL for UFOBeep
+    external_id = Column(String(50), nullable=True)  # MUFON case ID or NUFORC report ID
+    tier = Column(Integer, nullable=True)  # Quality tier (1=highest, 4=lowest for NUFORC)
+    date_posted = Column(DateTime, nullable=True)  # Original report date from source
+    shape = Column(String(50), nullable=True)  # UFO shape classification
+    duration = Column(String(255), nullable=True)  # Duration of sighting
+    external_url = Column(String(500), nullable=True)  # Link to original report
+    
+    # PostGIS location field for geographic queries (temporarily disabled until geoalchemy2 is properly installed)
+    # location = Column(Geometry('POINT', srid=4326), nullable=True)  # PostGIS geometry
+    
     # Timestamps
     submitted_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     processed_at = Column(DateTime, nullable=True)
     verified_at = Column(DateTime, nullable=True)
+    occurred_at = Column(DateTime, nullable=True)  # When the sighting actually occurred
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False, index=True)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
     

@@ -389,7 +389,7 @@ async def list_user_devices(user_id: Optional[str] = Depends(get_current_user_id
 
 
 @router.put("/{device_id}", response_model=DeviceDetailResponse)
-    async def update_device(
+async def update_device(
     device_id: str,
     request: DeviceUpdateRequest,
     user_id: Optional[str] = Depends(get_current_user_id)

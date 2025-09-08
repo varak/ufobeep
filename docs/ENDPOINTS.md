@@ -1,4 +1,4 @@
-# API ENDPOINTS (MP16 Implementation Status)
+# API ENDPOINTS (Enhanced with NUFORC Integration)
 
 ## Authentication
 - `POST /users/auth/firebase` - Firebase authentication
@@ -10,12 +10,21 @@
 - `GET /media/{id}` - Retrieve media file
 - `POST /media/{id}/presign` - Get presigned upload URL
 
-## Alerts & Sightings
+## Alerts & Sightings (Enhanced)
 - `POST /alerts` - Create new sighting alert (supports locationless MUFON alerts)
-- `GET /alerts` - List alerts with pagination and total count (includes MUFON source alerts)
-  - Query params: `limit` (default: 20), `offset` (default: 0)
-  - Response: `{ success: true, data: { alerts: [...], total: 612, page: 1, limit: 20 } }`
-- `GET /alerts/{id}` - Get specific alert details
+- `GET /alerts` - List alerts with advanced filtering and geographic search
+  - **Basic pagination**: `limit` (default: 20), `offset` (default: 0)
+  - **Source filtering**: `source=UFOBeep|MUFON|NUFORC` (multiple sources: `source=MUFON,NUFORC`)
+  - **Geographic search**: `near=Phoenix&radius=50` (radius in km, supports city names/coordinates)
+  - **Shape filtering**: `shape=disc|triangle|light|sphere` etc.
+  - **Tier filtering**: `tier=1|2|3|4` (NUFORC quality rating)
+  - **Date filtering**: `date_from=2024-01-01&date_to=2024-12-31`
+  - **Full-text search**: `q=bright%20lights` (searches descriptions)
+  - Response: `{ success: true, data: { alerts: [...], total: 175000, page: 1, limit: 20, sources: {...}, filters: {...} } }`
+- `GET /alerts/{id}` - Get specific alert details with smart ID routing
+  - **5-char alphanumeric** (ABC12) → UFOBeep alerts
+  - **Numeric only** → MUFON cases or NUFORC reports (auto-detected)
+  - **Prefixed IDs** → M123456 (MUFON), N987654 (NUFORC) - optional format
 - `POST /alerts/{id}/media` - Attach media to alert
 - `POST /alerts/{id}/witnesses` - Confirm witness sighting (FIXED: type safety issues resolved)
 
@@ -25,6 +34,48 @@ MUFON-sourced alerts (`source: "mufon"`) have special handling:
 - UI widgets are automatically hidden (witness, map, time modal)
 - Comment system disabled by default
 - Enriched with UFO classification data
+
+### NUFORC Integration (New)
+NUFORC-sourced alerts (`source: "nuforc"`) provide comprehensive historical data:
+- **170,000+ reports** with sequential IDs (1, 2, 3...)
+- **Quality tiers** (1=highest quality, 4=lowest quality)
+- **Shape classifications** (disc, triangle, light, sphere, etc.)
+- **Duration data** extracted from witness reports
+- **Original report URLs** linking back to nuforc.org
+- **Historical coverage** dating back decades
+
+## Geographic Search & Filtering (New)
+- `GET /cities` - Get aggregated city data with sighting counts
+  - Response: `{ success: true, data: [{ city: "Phoenix", state: "AZ", country: "US", count: 1247 },...] }`
+- `GET /shapes` - Get shape classifications with counts  
+  - Response: `{ success: true, data: [{ shape: "disc", count: 15432 }, { shape: "triangle", count: 8765 },...] }`
+- `GET /recent` - Recent activity across all sources
+  - Query params: `limit=50`, `hours=24` (recent within X hours)
+  - Response: Latest sightings with source attribution and geographic data
+
+## Advanced Search Examples
+```bash
+# UFOs near Phoenix within 50km
+GET /alerts?near=Phoenix&radius=50
+
+# NUFORC disc sightings from 2024
+GET /alerts?source=NUFORC&shape=disc&date_from=2024-01-01
+
+# Tier 1 (high quality) NUFORC reports
+GET /alerts?source=NUFORC&tier=1
+
+# Search descriptions for "bright lights"
+GET /alerts?q=bright%20lights
+
+# Multiple sources, recent sightings
+GET /alerts?source=MUFON,NUFORC&date_from=2024-09-01
+
+# Geographic coordinates search
+GET /alerts?near=40.7128,-74.0060&radius=100
+
+# Combined filters
+GET /alerts?source=NUFORC&shape=triangle&tier=1,2&near=Las%20Vegas&radius=200&limit=100
+```
 
 ## Comments System
 - `GET /alerts/{id}/comments` - Get alert comments

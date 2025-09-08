@@ -46,8 +46,8 @@ export function getAlertSlug(alert: SluggableAlertLike) {
 }
 
 export function getShortAlertUrl(alertId: string): string {
-  // Return short 4-character URL for sharing
-  return `/alert/${alertId.substring(0, 4)}`
+  // Return short 4-character URL for sharing (beep branding)
+  return `/beep/${alertId.substring(0, 4)}`
 }
 
 export function extractIdFromSlug(slug: string): string | null {

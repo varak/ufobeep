@@ -1,8 +1,68 @@
-# UFOBeep Sprint Task List - Pre-Play Store Release
+# UFOBeep Development Roadmap - Complete Platform Enhancement
 
 **Created**: September 1, 2025  
-**Status**: Planning Phase  
-**Goal**: Address all critical issues before Play Store submission
+**Updated**: September 8, 2025  
+**Status**: Quality-First Development (Play Store when ready)  
+**Goal**: Build world-class UFO research platform with 175,000+ searchable reports
+
+## 🗺️ **DEVELOPMENT ROADMAP**
+
+### **Phase 1: Foundation & Database Enhancement** (Weeks 1-2)
+*Reference: [NUFORC_INTEGRATION_PLAN.md](NUFORC_INTEGRATION_PLAN.md) Phase 1*
+- [ ] Enable PostGIS extension on production database
+- [ ] Extend `beeps` table with new columns (source, external_id, tier, shape, duration, etc.)
+- [ ] Create spatial indexes and populate location geometry from existing lat/lng
+- [ ] Test backward compatibility with existing UFOBeep functionality
+- [ ] **Outcome**: Database foundation ready for 175,000+ reports
+
+### **Phase 2: Critical Bug Fixes & User Features** (Weeks 3-4)  
+*Parallel with current Sprint C tasks*
+- [ ] Fix multi-media upload bug (gallery multi-select issue)
+- [ ] Fix share-to-beep feature and test external app integration
+- [ ] Implement DND/quiet hours, units, language settings
+- [ ] Add readable short URL generation (no confusing characters)
+- [ ] Complete share cards with OG tags
+- [ ] **Outcome**: Core user experience polished and reliable
+
+### **Phase 3: Data Import & Integration** (Weeks 5-6)
+*Reference: [NUFORC_INTEGRATION_PLAN.md](NUFORC_INTEGRATION_PLAN.md) Phase 2*
+- [ ] Create `nuforc.sh` script for systematic NUFORC data collection
+- [ ] Import 170,000+ historical NUFORC reports with quality tiers
+- [ ] Enhance existing `mufon.sh` to populate new database fields
+- [ ] Set up nightly automation for both import scripts
+- [ ] **Outcome**: Comprehensive UFO database with all major sources
+
+### **Phase 4: Advanced Search & API** (Weeks 7-8)
+*Reference: [NUFORC_INTEGRATION_PLAN.md](NUFORC_INTEGRATION_PLAN.md) Phase 3 + [ENDPOINTS.md](ENDPOINTS.md)*
+- [ ] Implement geographic radius search ("UFOs near Phoenix")
+- [ ] Add smart ID routing for MUFON/NUFORC/UFOBeep alerts
+- [ ] Create `/cities`, `/shapes`, `/recent` endpoints
+- [ ] Build PostGIS spatial query functions
+- [ ] **Outcome**: Powerful search across 175,000+ reports
+
+### **Phase 5: Advanced Mapping & Translation** (Weeks 9-10)
+*Reference: [NUFORC_INTEGRATION_PLAN.md](NUFORC_INTEGRATION_PLAN.md) Phase 4*
+- [ ] Replace basic mapping with Mapbox GL JS
+- [ ] Implement vector tiles for efficient rendering of 175K+ points
+- [ ] Add marker clustering, color coding, and interactive features
+- [ ] Create mobile-optimized responsive map interface
+- [ ] Install and configure LibreTranslate on production server
+- [ ] Build real-time translation API (no caching needed - on-the-fly)
+- [ ] Add "Translate" buttons to mobile alert modals with instant translation
+- [ ] Integrate translation functionality into Next.js web pages
+- [ ] Add language detection and auto-translation for web visitors
+- [ ] **Outcome**: Map visualization rivaling NUFORC.org + real-time translation to all 21 supported languages
+
+### **Phase 6: Polish & Launch Preparation** (Weeks 11-12)
+*Final integration and testing*
+- [ ] Comprehensive testing across all data sources
+- [ ] Performance optimization for large datasets
+- [ ] SEO and discoverability improvements
+- [ ] Documentation for third-party API users
+- [ ] Play Store preparation when platform is complete
+- [ ] **Outcome**: World-class UFO research platform ready for public
+
+---
 
 ## 🔴 **CRITICAL BUGS TO FIX**
 
@@ -156,7 +216,35 @@
 - **Configure**: Deployment automation
 - **Acceptance**: Push to main → APK auto-builds
 
-### 15. **NSFW Content Detection** [API + Flutter] ⭐ NEW
+### 15. **Readable Short URL Generation** [API] ⭐ NEW
+- **Issue**: Current 5-char IDs may include confusing characters (1, l, 0, O)
+- **Fix**: Update ID generation to exclude visually similar characters
+- **Implementation**:
+  - Remove confusing characters from ID character set: `1`, `l`, `I`, `0`, `O`
+  - Use clear character set: `ABCDEFGHIJKMNPQRSTUVWXYZ23456789`
+  - Ensures URLs like `ufobeep.com/ABC23` instead of `ufobeep.com/1L0O1`
+  - Apply to new alerts only (preserve existing IDs for backward compatibility)
+- **Files**: ID generation service in API
+- **Acceptance**: New alert IDs contain only clearly readable characters
+
+### 16. **LibreTranslate Integration** [API + Flutter + Web + DevOps] ⭐ NEW
+- **Feature**: Real-time translation of all UFO reports to user's preferred language across all platforms
+- **Use Case**: User sees NUFORC/MUFON reports (originally in English) translated to Spanish/Russian/Chinese/etc.
+- **Implementation**:
+  - **Production Setup**: Install LibreTranslate on UFOBeep production server
+  - **API Endpoint**: `POST /translate` with source text and target language (no caching needed)
+  - **Mobile Integration**: "Translate" button on alert details modal in Flutter app
+  - **Web Integration**: "Translate" button on web alert pages and listing views
+  - **Auto-Translation**: Detect user's preferred language and auto-translate on load (both mobile and web)
+  - **Language Support**: All 21 languages supported by UFOBeep app (ES, RU, ZH, JA, FR, DE, PT, IT, AR, KO, TH, VI, NL, SV, DA, NO, FI, PL, CS, HU, RO)
+  - **Performance**: On-the-fly translation - LibreTranslate is fast enough for real-time use
+  - **Web UX**: JavaScript integration with loading states and error handling
+- **Files**: API translation endpoint, Flutter translation service, Next.js web integration, LibreTranslate deployment
+- **Acceptance**: 
+  - **Mobile**: User sets language to Spanish → clicks "Translate" on English NUFORC report → sees Spanish translation instantly
+  - **Web**: User visits ufobeep.com/alerts/12345 → clicks "Translate to Russian" → page content translates in real-time
+
+### 17. **NSFW Content Detection** [API + Flutter] ⭐ NEW
 - **Feature**: Automatic detection and filtering of inappropriate uploaded content
 - **Implementation**:
   - Server-side image analysis using ML model (TensorFlow/PyTorch)
@@ -167,7 +255,7 @@
 - **Files**: API content moderation endpoints, upload pipeline
 - **Acceptance**: Upload inappropriate image → gets flagged → doesn't appear in public alerts
 
-### 16. **Play Store Preparation** [Flutter]
+### 18. **Play Store Preparation** [Flutter]
 - **Fix**: All critical bugs above
 - **Update**: App metadata and descriptions
 - **Generate**: Release signing keys
@@ -185,34 +273,72 @@
 3. DND/quiet hours implementation
 4. Units setting functionality
 5. Language setting with i18n
+6. Readable short URL generation (improves share links)
 
 **Week 3 - Polish & Sharing**:
-6. UI consistency audit
-7. Language-specific share platforms
-8. Share cards with OG tags
+7. UI consistency audit
+8. Language-specific share platforms
+9. Share cards with OG tags
 
 **Week 4 - Operations**:
-9. Map improvements & clustering
-10. Field diagnostic screen
-11. Sentry integration
+10. Map improvements & clustering
+11. Field diagnostic screen
+12. Sentry integration
 
 **Week 5 - Release Prep**:
-12. CI/CD pipeline
-13. Play Store preparation
-14. Multi-language store listings
+13. CI/CD pipeline
+14. Play Store preparation
+15. Multi-language store listings
 
-## 🎯 **Success Metrics**
+## 🎯 **Final Success Metrics**
 
-- [ ] Zero crash rate for 48 hours
-- [ ] All settings actually work
-- [ ] Share feature works in all languages
-- [ ] Map handles 500+ alerts smoothly
-- [ ] Successful test on 10+ different devices
-- [ ] Store listing ready in 5+ languages
+- [ ] **Database**: 175,000+ reports searchable across UFOBeep/MUFON/NUFORC sources
+- [ ] **Performance**: <2s response for geographic radius searches, map handles 175K+ points
+- [ ] **Search**: "UFOs near Las Vegas" returns relevant results within 50km radius
+- [ ] **Quality**: Zero crash rate for 48 hours, all settings functional
+- [ ] **Mobile**: Share feature works perfectly, multi-media upload reliable
+- [ ] **API**: Geographic search, smart ID routing, comprehensive filtering working
+- [ ] **Launch Ready**: Store listing, documentation, and platform complete
 
-## 📝 **Notes**
+---
 
+## 📋 **CURRENT STATUS & NEXT STEPS**
+
+### **🏁 Current Phase: Foundation & Database Enhancement (Phase 1)**
+**Started**: September 8, 2025  
+**Target Completion**: End of Week 2
+
+### **✅ Completed**
+- [x] Created comprehensive development roadmap 
+- [x] Enhanced API documentation with NUFORC integration
+- [x] Added readable short URL generation to task list
+- [x] Established quality-first development approach
+
+### **🔄 In Progress**
+- [ ] **NEXT**: Enable PostGIS extension on production database
+- [ ] **NEXT**: Extend `beeps` table with new columns for NUFORC/MUFON data
+
+### **📍 Pick Up Here After Restart**
+1. **Database Foundation**: Begin Phase 1 tasks - PostGIS setup and schema extension
+2. **Reference Documents**: [NUFORC_INTEGRATION_PLAN.md](NUFORC_INTEGRATION_PLAN.md) Phase 1
+3. **Test Approach**: All changes must maintain backward compatibility
+4. **Success Check**: Existing UFOBeep alert creation still works after database changes
+
+### **🔄 Update This Section**
+*Update this status section as you complete each phase/task to maintain roadmap clarity*
+
+## 📚 **Reference Documentation**
+- **Main Roadmap**: This document (SPRINT_TASK_LIST.md)
+- **Technical Plan**: [NUFORC_INTEGRATION_PLAN.md](NUFORC_INTEGRATION_PLAN.md)
+- **API Specifications**: [ENDPOINTS.md](ENDPOINTS.md)  
+- **Current Architecture**: [MASTER_PLAN_v16.md](MASTER_PLAN_v16.md)
+- **Deployment**: [DEPLOYMENT.md](DEPLOYMENT.md), [QUICKSTART.md](QUICKSTART.md)
+
+## 📝 **Development Notes**
 - Each task indicates [Flutter], [API], [Web], or [DevOps] to show where changes are needed
+- Database changes must be non-breaking and backward compatible
+- Geographic search will leverage PostGIS for optimal performance
+- NUFORC integration builds on proven MUFON import patterns
 - Language-specific sharing is crucial for viral growth in different regions
 - Consider regional UFO communities and their preferred platforms
 - Some platforms (WeChat, VK) may need special SDK integrations
