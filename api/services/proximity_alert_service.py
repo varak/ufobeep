@@ -49,10 +49,10 @@ class ProximityAlertService:
             alert_escalation = self._determine_alert_escalation(witness_count)
             
             # Get devices within each distance ring
-            devices_1km = await self._get_devices_within_radius(lat, lon, 1.0, beep_device_id)
-            devices_5km = await self._get_devices_within_radius(lat, lon, 5.0, beep_device_id)
-            devices_10km = await self._get_devices_within_radius(lat, lon, 10.0, beep_device_id)
-            devices_25km = await self._get_devices_within_radius(lat, lon, 25.0, beep_device_id)
+            devices_1km = await self._get_devices_within_radius(lat, lon, 1.0, beep_device_id, witness_count)
+            devices_5km = await self._get_devices_within_radius(lat, lon, 5.0, beep_device_id, witness_count)
+            devices_10km = await self._get_devices_within_radius(lat, lon, 10.0, beep_device_id, witness_count)
+            devices_25km = await self._get_devices_within_radius(lat, lon, 25.0, beep_device_id, witness_count)
             
             # Remove duplicates (inner rings included in outer rings)
             devices_5km_only = [d for d in devices_5km if d not in devices_1km]
@@ -121,7 +121,7 @@ class ProximityAlertService:
             logger.error(f"Error sending proximity alerts: {e}")
             return {"error": str(e), "total_alerts_sent": 0}
     
-    async def _get_devices_within_radius(self, lat: float, lon: float, radius_km: float, exclude_device_id: str) -> List[dict]:
+    async def _get_devices_within_radius(self, lat: float, lon: float, radius_km: float, exclude_device_id: str, witness_count: int = 1) -> List[dict]:
         """Get devices within radius using simple distance calculation"""
         try:
             
@@ -240,9 +240,9 @@ class ProximityAlertService:
             logger.error(f"Error getting devices within {radius_km}km: {e}")
             logger.warning(f"PostGIS not available, falling back to haversine calculation for {radius_km}km radius")
             # Fallback to basic distance calculation if PostGIS not available
-            return await self._get_devices_within_radius_fallback(lat, lon, radius_km, exclude_device_id)
+            return await self._get_devices_within_radius_fallback(lat, lon, radius_km, exclude_device_id, witness_count)
     
-    async def _get_devices_within_radius_fallback(self, lat: float, lon: float, radius_km: float, exclude_device_id: str) -> List[dict]:
+    async def _get_devices_within_radius_fallback(self, lat: float, lon: float, radius_km: float, exclude_device_id: str, witness_count: int = 1) -> List[dict]:
         """Fallback method using haversine distance calculation"""
         try:
             logger.info(f"FALLBACK: Searching for devices within {radius_km}km of ({lat}, {lon}), excluding {exclude_device_id}")
