@@ -18,6 +18,52 @@ import '../models/user_preferences.dart';
 import '../providers/user_preferences_provider.dart';
 import '../routing/app_router.dart';
 
+// Top-level background handler for notification actions
+@pragma('vm:entry-point')
+void notificationTapBackground(NotificationResponse response) async {
+  print('📱 Background notification action: ${response.actionId} for payload: ${response.payload}');
+  
+  final payload = response.payload;
+  if (payload == null) return;
+  
+  // Parse the payload to get sighting ID
+  final parts = payload.split('|');
+  if (parts.isEmpty) return;
+  
+  final sightingId = parts[0];
+  final action = response.actionId;
+  
+  print('Processing background notification action: $action for sighting: $sightingId');
+  
+  // Handle snooze action in background
+  if (action == 'dismiss_snooze') {
+    try {
+      // Enable 1-hour DND using SharedPreferences directly
+      final prefs = await SharedPreferences.getInstance();
+      final prefsJson = prefs.getString('user_preferences');
+      
+      Map<String, dynamic> prefsMap;
+      if (prefsJson != null) {
+        prefsMap = Map<String, dynamic>.from(jsonDecode(prefsJson) as Map);
+      } else {
+        prefsMap = {};
+      }
+      
+      // Set DND until 1 hour from now
+      final dndUntil = DateTime.now().add(Duration(hours: 1));
+      prefsMap['dndUntil'] = dndUntil.toIso8601String();
+      
+      // Save updated preferences
+      final updatedPrefsJson = jsonEncode(prefsMap);
+      await prefs.setString('user_preferences', updatedPrefsJson);
+      
+      print('📱 Background: DND enabled until ${dndUntil.toString().substring(11, 16)}');
+    } catch (e) {
+      print('❌ Background: Failed to enable DND: $e');
+    }
+  }
+}
+
 class PushNotificationService {
   static const String _permissionKey = 'push_permission_granted';
   static const String _tokenKey = 'fcm_token';
@@ -663,39 +709,60 @@ class PushNotificationService {
     await _localNotifications.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: _onNotificationTapped,
+      onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
     );
+    
+    // Create notification channel for rich alerts with action support
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+      'ufobeep_rich_alerts',
+      'UFO Alert Actions',
+      description: 'Rich UFO sighting notifications with quick actions',
+      importance: Importance.high,
+      enableVibration: true,
+      playSound: false,
+    );
+    
+    await _localNotifications
+        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
     
     print('✅ Local notifications initialized for rich notification support');
   }
   
   void _onNotificationTapped(NotificationResponse response) {
-    print('📱 Notification tapped: ${response.actionId} for payload: ${response.payload}');
+    print('📱 Foreground notification tapped: ${response.actionId} for payload: ${response.payload}');
     
     final payload = response.payload;
-    if (payload == null) return;
+    if (payload == null) {
+      print('❌ No payload in notification response');
+      return;
+    }
     
     // Parse the payload to get sighting ID
     final parts = payload.split('|');
-    if (parts.isEmpty) return;
+    if (parts.isEmpty) {
+      print('❌ Empty payload parts');
+      return;
+    }
     
     final sightingId = parts[0];
     final action = response.actionId;
     
-    print('Processing notification action: $action for sighting: $sightingId');
+    print('✅ Processing foreground notification action: $action for sighting: $sightingId');
     
     // Handle different action buttons
     switch (action) {
-      case 'see_it_too':
-        _handleSeeItTooAction(sightingId);
-        break;
       case 'dismiss_snooze':
-        _handleDismissAndSnoozeAction(sightingId);
+        print('🔔 Snooze button tapped - calling _handleSnoozeAction');
+        _handleSnoozeAction(sightingId);
         break;
       case 'dismiss':
+        print('🔔 Dismiss button tapped');
         _handleDismissAction(sightingId);
         break;
       default:
         // Default tap action - navigate to alert
+        print('🔔 Default notification tap - navigating to alert');
         navigateToAlert(sightingId);
         break;
     }
@@ -783,15 +850,10 @@ class PushNotificationService {
       enableVibration: true,
       playSound: false, // We handle sounds separately
       actions: [
-        const AndroidNotificationAction(
-          'see_it_too',
-          'I see it too',
-          showsUserInterface: false,
-        ),
-        const AndroidNotificationAction(
+        AndroidNotificationAction(
           'dismiss_snooze',
-          'Snooze',
-          showsUserInterface: false,
+          'Snooze 1h',
+          contextual: true,
         ),
       ],
     );
@@ -959,37 +1021,25 @@ class PushNotificationService {
   }
   
   
-  void _handleDismissAndSnoozeAction(String sightingId) async {
-    print('📱 User dismissed and snoozed alerts for 1 hour: $sightingId');
+  void _handleSnoozeAction(String sightingId) async {
+    print('📱 SNOOZE ACTION: User snoozed alerts for 1 hour: $sightingId');
     
     try {
-      // Get the sighting details for API recording
-      final deviceId = await _deviceService.getDeviceId();
-      
-      // Get location for dismissal record (less critical, use fallback)
-      final position = await permissionService.getCurrentLocation();
-      final latitude = position?.latitude?.toDouble() ?? 0.0;
-      final longitude = position?.longitude?.toDouble() ?? 0.0;
-      
-      // Call API to record the dismissal with flat data
-      await ApiClient.dio.post('/alerts/$sightingId/witnesses', data: {
-        'device_id': deviceId,
-        'witness_type': 'dismissed',
-        'confirmed': false,
-        'quick_action': true,
-        'still_visible': false,
-        'latitude': latitude,
-        'longitude': longitude,
-        'altitude': position?.altitude?.toDouble(),
-        'accuracy': position?.accuracy?.toDouble(),
-      });
-      
-      // Enable 1-hour DND using same pattern as profile screen
+      // Enable 1-hour DND using the UserPreferences system
       await _enableDndFor1Hour();
       
-      print('✅ Dismissed and enabled DND for 1 hour');
+      print('✅ SNOOZE SUCCESS: Enabled DND for 1 hour via snooze');
+      
+      // Also try to sync with backend to ensure consistent state
+      try {
+        final container = ProviderScope.containerOf(rootNavigatorKey.currentContext!);
+        await container.read(userPreferencesProvider.notifier).syncToBackend();
+        print('✅ SNOOZE SYNC: Backend sync completed');
+      } catch (syncError) {
+        print('⚠️ SNOOZE SYNC: Backend sync failed but local DND is active: $syncError');
+      }
     } catch (e) {
-      print('❌ Failed to dismiss and snooze: $e');
+      print('❌ SNOOZE ERROR: Failed to enable DND: $e');
     }
   }
   
@@ -1000,10 +1050,14 @@ class PushNotificationService {
 
   /// Enable DND for 1 hour using same pattern as profile screen
   Future<void> _enableDndFor1Hour() async {
+    print('🔧 ENABLE_DND: Starting DND setup...');
+    
     try {
       // Get user preferences from SharedPreferences
       final prefs = await SharedPreferences.getInstance();
       final prefsJson = prefs.getString('user_preferences');
+      
+      print('🔧 ENABLE_DND: Retrieved prefs JSON: ${prefsJson?.substring(0, 100) ?? 'null'}...');
       
       if (prefsJson != null) {
         final prefsMap = jsonDecode(prefsJson) as Map<String, dynamic>;
@@ -1013,13 +1067,15 @@ class PushNotificationService {
         final dndUntil = DateTime.now().add(Duration(hours: 1));
         final updatedPrefs = currentPrefs.copyWith(dndUntil: dndUntil);
         
+        print('🔧 ENABLE_DND: DND until: $dndUntil');
+        
         // Save updated preferences
         final updatedPrefsJson = jsonEncode(updatedPrefs.toJson());
         await prefs.setString('user_preferences', updatedPrefsJson);
         
-        print('📱 DND enabled until ${dndUntil.toString().substring(11, 16)}');
+        print('📱 ENABLE_DND: DND enabled until ${dndUntil.toString().substring(11, 16)}');
       } else {
-        print('⚠️ No user preferences found, creating default with DND');
+        print('⚠️ ENABLE_DND: No user preferences found, creating default with DND');
         
         // Create default preferences with DND enabled
         final dndUntil = DateTime.now().add(Duration(hours: 1));
@@ -1028,10 +1084,11 @@ class PushNotificationService {
         final prefsJson = jsonEncode(defaultPrefs.toJson());
         await prefs.setString('user_preferences', prefsJson);
         
-        print('📱 Created default preferences with DND enabled until ${dndUntil.toString().substring(11, 16)}');
+        print('📱 ENABLE_DND: Created default preferences with DND enabled until ${dndUntil.toString().substring(11, 16)}');
       }
-    } catch (e) {
-      print('❌ Failed to enable DND: $e');
+    } catch (e, stackTrace) {
+      print('❌ ENABLE_DND: Failed to enable DND: $e');
+      print('❌ ENABLE_DND: Stack trace: $stackTrace');
     }
   }
 
