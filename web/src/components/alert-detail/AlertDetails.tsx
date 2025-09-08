@@ -19,6 +19,7 @@ interface Alert {
     mufon_case_id?: string
     [key: string]: any
   }
+  distance_km?: number
 }
 
 interface AlertDetailsProps {
@@ -138,7 +139,7 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
 
       {/* Location - hidden for MUFON alerts */}
       {alert.reporter_username !== 'MUFON' && (
-        <div className="flex items-start gap-3">
+        <div className="flex items-start gap-3 mb-4">
           <span className="text-text-tertiary mt-0.5">📍</span>
           <div className="flex-1">
             <div className="flex items-center gap-2">
@@ -147,6 +148,32 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
             </div>
             <div className="text-text-secondary text-xs mt-1">
               {alert.location.latitude.toFixed(4)}, {alert.location.longitude.toFixed(4)}
+            </div>
+            {alert.distance_km !== undefined && alert.distance_km > 0 && (
+              <div className="text-brand-primary text-xs mt-1">
+                {alert.distance_km < 1 
+                  ? `${Math.round(alert.distance_km * 1000)}m away from you`
+                  : `${alert.distance_km.toFixed(1)}km away from you`
+                }
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      
+      {/* Distance for MUFON alerts */}
+      {alert.reporter_username === 'MUFON' && alert.distance_km !== undefined && alert.distance_km > 0 && (
+        <div className="flex items-start gap-3 mb-4">
+          <span className="text-text-tertiary mt-0.5">📏</span>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <span className="text-text-tertiary text-sm font-medium">Distance:</span>
+              <span className="text-brand-primary text-sm">
+                {alert.distance_km < 1 
+                  ? `${Math.round(alert.distance_km * 1000)}m away from you`
+                  : `${alert.distance_km.toFixed(1)}km away from you`
+                }
+              </span>
             </div>
           </div>
         </div>

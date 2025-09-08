@@ -8,6 +8,7 @@ import AlertDetails from './alert-detail/AlertDetails'
 import EnrichmentData from './alert-detail/EnrichmentData'
 import AlertComments from './AlertComments'
 import { getAlertSlug } from '@/utils/slug'
+import { useGeolocation } from '@/utils/geolocation'
 
 interface Alert {
   id: string
@@ -35,6 +36,7 @@ interface Alert {
   reporter_username?: string
   enrichment?: any
   photo_analysis?: any
+  distance_km?: number
 }
 
 export default function AlertDetailClient({ params }: { params: { id: string; slug?: string[] } }) {
@@ -46,6 +48,7 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
   const [error, setError] = useState<string | null>(null)
   const [translated, setTranslated] = useState<string | null>(null)
   const [translating, setTranslating] = useState(false)
+  const { position: userLocation, loading: locationLoading, error: locationError } = useGeolocation()
   const userLang = useMemo(() => {
     if (typeof window === 'undefined') return 'en'
     return (navigator.language || 'en').split('-')[0]
@@ -71,7 +74,14 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
         const maxSearchPages = 10
 
         for (let page = 0; page < maxSearchPages; page++) {
-          const response = await fetch(`/api/alerts?limit=${limit}&offset=${currentOffset}&verified_only=false`)
+          let url = `/api/alerts?limit=${limit}&offset=${currentOffset}&verified_only=false`
+          
+          // Add user location to request if available
+          if (userLocation) {
+            url += `&latitude=${userLocation.latitude}&longitude=${userLocation.longitude}`
+          }
+          
+          const response = await fetch(url)
           if (!response.ok) break
           const data = await response.json()
           const alerts: Alert[] = data?.data?.alerts || []
@@ -94,7 +104,7 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
       }
     }
     fetchAlert()
-  }, [params.id])
+  }, [params.id, userLocation])
 
   // Scroll to top when alert detail page loads (unless opening a specific image)
   useEffect(() => {

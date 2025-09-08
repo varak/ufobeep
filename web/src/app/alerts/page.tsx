@@ -4,6 +4,7 @@ import { useEffect, useState, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import AlertCard from '../../components/AlertCard'
+import { useGeolocation } from '../../utils/geolocation'
 
 interface Alert {
   id: string
@@ -32,6 +33,7 @@ interface Alert {
   reporter_username?: string | null
   is_verified?: boolean
   distance?: number
+  distance_km?: number
   comment_count?: number
 }
 
@@ -43,6 +45,7 @@ function AlertsPageContent() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const alertsPerPage = 9
+  const { position: userLocation, loading: locationLoading, error: locationError } = useGeolocation()
   
   // Get URL parameters
   const currentPage = parseInt(searchParams.get('page') || '1', 10)
@@ -83,9 +86,9 @@ function AlertsPageContent() {
   }
 
   useEffect(() => {
-    // Fetch alerts for current page when page or filters change
+    // Fetch alerts for current page when page, filters, or location change
     fetchAlertsPage(currentPage)
-  }, [currentPage, showPhotosOnly, showBeepsOnly])
+  }, [currentPage, showPhotosOnly, showBeepsOnly, userLocation])
 
   useEffect(() => {
     // Handle anchor scrolling after alerts are loaded
@@ -107,7 +110,14 @@ function AlertsPageContent() {
     setLoading(true)
     try {
       const offset = (page - 1) * alertsPerPage
-      const response = await fetch(`/api/alerts?limit=${alertsPerPage}&offset=${offset}&verified_only=false`)
+      let url = `/api/alerts?limit=${alertsPerPage}&offset=${offset}&verified_only=false`
+      
+      // Add user location to request if available
+      if (userLocation) {
+        url += `&latitude=${userLocation.latitude}&longitude=${userLocation.longitude}`
+      }
+      
+      const response = await fetch(url)
       const data = await response.json()
       
       if (data.success && data.data?.alerts) {

@@ -59,9 +59,11 @@ export function getAlertSlug(alert: SluggableAlertLike) {
     }
     
     // For MUFON alerts, try to extract case ID from external sources
+    let caseIdMatch: RegExpMatchArray | null = null
+    
     // Check if we have external_url that might contain case ID
     if (alert.external_url) {
-      const caseIdMatch = alert.external_url.match(/case[^0-9]*([0-9]+)/i)
+      caseIdMatch = alert.external_url.match(/case[^0-9]*([0-9]+)/i)
       if (caseIdMatch) {
         uniqueId = caseIdMatch[1] // Use just the numeric case ID
       }

@@ -40,6 +40,7 @@ interface Alert {
   external_url?: string | null
   is_verified?: boolean
   distance?: number
+  distance_km?: number
   comment_count?: number
   enrichment?: {
     short_description?: string
@@ -361,11 +362,11 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
               <div className="text-text-tertiary text-xs">
                 {formatDate(alert.created_at)}
               </div>
-              {alert.distance !== undefined && alert.distance > 0 && (
+              {alert.distance_km !== undefined && alert.distance_km > 0 && (
                 <div className="text-xs text-text-secondary mt-1 px-2 py-0.5 bg-dark-background rounded">
-                  {alert.distance < 1 
-                    ? `${Math.round(alert.distance * 1000)}m away`
-                    : `${alert.distance.toFixed(1)}km away`
+                  {alert.distance_km < 1 
+                    ? `${Math.round(alert.distance_km * 1000)}m away`
+                    : `${alert.distance_km.toFixed(1)}km away`
                   }
                 </div>
               )}
