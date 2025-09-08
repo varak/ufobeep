@@ -89,15 +89,8 @@ async def import_mufon_sightings(
     
     # Get database connection
     try:
-        db_pool = await asyncpg.create_pool(
-            host="localhost",
-            port=5432,
-            user="ufobeep_user",
-            password="ufopostpass",
-            database="ufobeep_db",
-            min_size=1,
-            max_size=5
-        )
+        from app.services.database_service import get_database_pool
+        db_pool = await get_database_pool()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database connection failed: {str(e)}")
     
@@ -192,7 +185,7 @@ async def import_mufon_sightings(
                     print(error_msg)
     
     finally:
-        await db_pool.close()
+        # Don't close shared pool
     
     return MufonImportResponse(
         imported=imported,
@@ -210,15 +203,8 @@ async def get_recent_mufon_sightings(
     
     # Get database connection
     try:
-        db_pool = await asyncpg.create_pool(
-            host="localhost",
-            port=5432,
-            user="ufobeep_user",
-            password="ufopostpass",
-            database="ufobeep_db",
-            min_size=1,
-            max_size=5
-        )
+        from app.services.database_service import get_database_pool
+        db_pool = await get_database_pool()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database connection failed: {str(e)}")
     
@@ -288,7 +274,7 @@ async def get_recent_mufon_sightings(
             }
     
     finally:
-        await db_pool.close()
+        # Don't close shared pool
 
 @router.post("/process/{sighting_id}")
 async def process_mufon_to_ufobeep(

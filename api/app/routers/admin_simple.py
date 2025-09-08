@@ -11,11 +11,8 @@ security = HTTPBasic()
 
 # Simple database connection - same pattern as alerts.router
 async def get_db():
-    return await asyncpg.create_pool(
-        host="localhost", port=5432, user="ufobeep_user", 
-        password="ufopostpass", database="ufobeep_db",
-        min_size=1, max_size=10
-    )
+    from app.services.database_service import get_database_pool
+    return await get_database_pool()
 
 def verify_admin(credentials: HTTPBasicCredentials = Depends(security)):
     is_correct_username = secrets.compare_digest(credentials.username, "admin")

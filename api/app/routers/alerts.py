@@ -32,14 +32,11 @@ class WitnessConfirmation(BaseModel):
 # In-memory store for idempotency keys (in production would use Redis)
 idempotency_store = {}
 
-# Shared utilities
+# Shared utilities  
 async def get_db():
-    """Get database connection pool"""
-    return await asyncpg.create_pool(
-        host="localhost", port=5432, user="ufobeep_user", 
-        password="ufopostpass", database="ufobeep_db",
-        min_size=1, max_size=10
-    )
+    """Get database connection pool from shared service"""
+    from app.services.database_service import get_database_pool
+    return await get_database_pool()
 
 def format_alert_response(alert, user_lat=None, user_lon=None):
     """Format alert data for API response with optional distance calculation"""
