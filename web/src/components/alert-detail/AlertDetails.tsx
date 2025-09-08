@@ -154,7 +154,8 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
               <div className="text-brand-primary text-xs mt-1">
                 {formatDistance({ 
                   distanceKm: alert.distance_km, 
-                  useImperial: getUnitPreference() 
+                  useImperial: getUnitPreference(),
+                  locale: typeof window !== 'undefined' ? navigator.language : 'en'
                 })}
               </div>
             )}
@@ -172,7 +173,8 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
               <span className="text-brand-primary text-sm">
                 {formatDistance({ 
                   distanceKm: alert.distance_km, 
-                  useImperial: getUnitPreference() 
+                  useImperial: getUnitPreference(),
+                  locale: typeof window !== 'undefined' ? navigator.language : 'en'
                 })}
               </span>
             </div>

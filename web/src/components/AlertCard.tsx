@@ -282,7 +282,8 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                   <span className="text-text-tertiary text-xs font-normal ml-1">
                     {formatDistance({ 
                       distanceKm: alert.distance_km, 
-                      useImperial: getUnitPreference() 
+                      useImperial: getUnitPreference(),
+                      locale: typeof window !== 'undefined' ? navigator.language : 'en'
                     })}
                   </span>
                 )}
@@ -352,7 +353,8 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                   <span className="text-text-tertiary text-xs font-normal ml-2">
                     {formatDistance({ 
                       distanceKm: alert.distance_km, 
-                      useImperial: getUnitPreference() 
+                      useImperial: getUnitPreference(),
+                      locale: typeof window !== 'undefined' ? navigator.language : 'en'
                     })}
                   </span>
                 )}
