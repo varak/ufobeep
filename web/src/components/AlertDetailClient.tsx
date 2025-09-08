@@ -110,7 +110,10 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
       id: alert.id,
       title: alert.title,
       created_at: alert.created_at,
-      location: { name: alert.location?.name, latitude: alert.location?.latitude, longitude: alert.location?.longitude }
+      location: alert.location,
+      reporter_username: alert.reporter_username,
+      description: alert.description,
+      source: alert.source
     })
     const currentSlug = Array.isArray(params.slug) && params.slug.length > 0 ? params.slug[0] : ''
     if (expectedSlug && expectedSlug !== currentSlug) {

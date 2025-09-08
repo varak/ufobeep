@@ -68,7 +68,15 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
 
   // Helper function to get detail URL with optional image parameter
   const getDetailUrl = (imageIndex?: number) => {
-    const slug = getAlertSlug(alert)
+    const slug = getAlertSlug({
+      id: alert.id,
+      title: alert.title,
+      created_at: alert.created_at,
+      location: alert.location,
+      reporter_username: alert.reporter_username,
+      description: alert.description,
+      source: alert.source
+    })
     const baseUrl = `/alerts/${slug}`
     return imageIndex !== undefined ? `${baseUrl}?openImage=${imageIndex}` : baseUrl
   }
@@ -232,9 +240,12 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
   if (compact) {
     const slug = getAlertSlug({
       id: alert.id,
-      title: alert.title || undefined,
+      title: alert.title,
       created_at: alert.created_at,
-      location: { name: alert.location?.name, latitude: alert.location?.latitude, longitude: alert.location?.longitude }
+      location: alert.location,
+      reporter_username: alert.reporter_username,
+      description: alert.description,
+      source: alert.source
     })
     return (
       <Link href={`/alerts/${slug}`}>
@@ -302,7 +313,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
 
   return (
     <div className="bg-dark-surface border border-dark-border rounded-xl hover:border-brand-primary transition-all duration-300 hover:shadow-lg group relative">
-      <Link href={`/alerts/${getAlertSlug({ id: alert.id, title: alert.title || undefined, created_at: alert.created_at, location: { name: alert.location?.name, latitude: alert.location?.latitude, longitude: alert.location?.longitude } })}`} className="block">
+      <Link href={`/alerts/${getAlertSlug({ id: alert.id, title: alert.title, created_at: alert.created_at, location: alert.location, reporter_username: alert.reporter_username, description: alert.description, source: alert.source })}`} className="block">
         <div className="p-4">
           {/* Header row */}
           <div className="flex items-start gap-3 mb-3">

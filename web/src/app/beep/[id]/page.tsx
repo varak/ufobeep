@@ -19,11 +19,10 @@ export default async function ShortBeepRedirect({ params }: { params: PageParams
     id: alert.id,
     title: alert.title,
     created_at: alert.created_at,
-    location: { 
-      name: alert.location?.name, 
-      latitude: alert.location?.latitude, 
-      longitude: alert.location?.longitude 
-    }
+    location: alert.location,
+    reporter_username: alert.reporter_username,
+    description: alert.description,
+    source: alert.source
   })
 
   // Redirect to the full slug URL

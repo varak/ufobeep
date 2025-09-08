@@ -56,11 +56,10 @@ export default async function Page({ params, searchParams }: {
     id: alert.id,
     title: alert.title,
     created_at: alert.created_at,
-    location: { 
-      name: alert.location?.name, 
-      latitude: alert.location?.latitude, 
-      longitude: alert.location?.longitude 
-    }
+    location: alert.location,
+    reporter_username: alert.reporter_username,
+    description: alert.description,
+    source: alert.source
   })
 
   // If the slug doesn't match exactly, we could redirect, but for now just render

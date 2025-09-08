@@ -280,7 +280,7 @@ export default function InteractiveMap({
                   })}
                 </div>
                 <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #eee;">
-                  <a href="/alerts/${getAlertSlug({ id: nearby.id, title: nearby.title, created_at: nearby.created_at, location: { name: nearby.location?.name } })}" style="background: #ff6b35; color: white; text-decoration: none; font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: 8px; display: inline-block;">
+                  <a href="/alerts/${getAlertSlug({ id: nearby.id, title: nearby.title, created_at: nearby.created_at, location: nearby.location, reporter_username: nearby.reporter_username, description: nearby.description, source: nearby.source })}" style="background: #ff6b35; color: white; text-decoration: none; font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: 8px; display: inline-block;">
                     View Details →
                   </a>
                 </div>

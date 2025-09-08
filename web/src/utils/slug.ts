@@ -27,10 +27,26 @@ export interface SluggableAlertLike {
   title?: string | null
   created_at: string
   location: { name?: string; latitude?: number; longitude?: number }
+  reporter_username?: string | null
+  description?: string | null
+  source?: string | null
 }
 
 export function getAlertSlug(alert: SluggableAlertLike) {
   let locName = alert.location?.name
+  
+  // Handle MUFON alerts specially
+  const isMufon = alert.reporter_username === 'MUFON' || alert.source === 'mufon'
+  
+  if (isMufon) {
+    // Extract location from MUFON description if available
+    const locationMatch = alert.description?.match(/📍 Location: ([^\n]+)/)
+    if (locationMatch) {
+      locName = locationMatch[1].trim()
+      // Clean up location (remove country suffix for shorter slug)
+      locName = locName.replace(/, US$/, '').replace(/, United States$/, '')
+    }
+  }
   
   // Skip empty, null, or placeholder location names
   if (!locName || locName === 'Unknown Location' || locName.trim() === '') {
@@ -42,7 +58,13 @@ export function getAlertSlug(alert: SluggableAlertLike) {
     }
   }
   
-  return generateSlug(alert.title || 'UFO Sighting', locName, alert.created_at, alert.id)
+  // Add source prefix for differentiation
+  let title = alert.title || 'UFO Sighting'
+  if (isMufon) {
+    title = 'mufon-' + (alert.title?.toLowerCase().replace('mufon ', '') || 'report')
+  }
+  
+  return generateSlug(title, locName, alert.created_at, alert.id)
 }
 
 export function getShortAlertUrl(alertId: string): string {
