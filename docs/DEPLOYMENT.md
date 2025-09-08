@@ -17,6 +17,52 @@
 
 Both API and Web are managed by systemd on production:
 
+## 🚨 Critical Issues & Solutions
+
+### Database Connection Pool Exhaustion (September 8, 2025)
+
+**Issue**: API returned 500 errors after only 5-10 requests due to PostgreSQL connection limit exceeded.
+
+**Root Cause**: Multiple API routers were creating independent database connection pools:
+- Main API: 1 pool (min=2, max=20)
+- alerts.py: Created own pool (min=1, max=10) 
+- admin_simple.py: Created own pool (min=1, max=10)
+- mufon.py: Created 2 own pools (min=1, max=5 each)
+
+Total: 4+ pools competing for PostgreSQL's 100 connection limit.
+
+**Fix Applied**: Updated all routers to use shared database service:
+```python
+# Before (WRONG):
+async def get_db():
+    return await asyncpg.create_pool(
+        host="localhost", port=5432, user="ufobeep_user", 
+        password="ufopostpass", database="ufobeep_db",
+        min_size=1, max_size=10
+    )
+
+# After (CORRECT):
+async def get_db():
+    from app.services.database_service import get_database_pool
+    return await get_database_pool()
+```
+
+**Files Fixed**: 
+- `api/app/routers/alerts.py`
+- `api/app/routers/admin_simple.py` 
+- `api/app/routers/mufon.py` (2 instances)
+
+**Prevention Rules**:
+1. **Never create new database pools in routers**
+2. **Always use `app.services.database_service.get_database_pool()`**
+3. **Never call `pool.close()` on shared pools**
+4. **Code review must check for `asyncpg.create_pool()` usage**
+
+**Monitoring**: Watch for these error patterns:
+```
+asyncpg.exceptions.TooManyConnectionsError: remaining connection slots are reserved for roles with the SUPERUSER attribute
+```
+
 ### API Service
 - **Service**: `ufobeep-api.service`
 - **Port**: 8000

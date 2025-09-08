@@ -244,13 +244,19 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
                        firstFile.path.toLowerCase().endsWith('.mov') || 
                        firstFile.path.toLowerCase().endsWith('.avi');
         
-        router.go('/beep/compose', extra: {
-          'mediaFile': firstFile,
-          'isVideo': isVideo,
+        final shareData = {
+          'mediaFiles': [{
+            'mediaFile': firstFile,
+            'isVideo': isVideo,
+            'photoMetadata': <String, dynamic>{},
+            'platformFile': null, // Will be handled gracefully in compose screen
+          }],
           'sensorData': sensorData,
-          'photoMetadata': <String, dynamic>{},
           'description': '',
-        });
+        };
+        
+        print('🎯 MAIN: Share intent (authenticated) - navigating with data: $shareData');
+        router.go('/beep/compose', extra: shareData);
         
         PendingShareQueue().clear();
       } else {
@@ -263,10 +269,13 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
                        firstFile.path.toLowerCase().endsWith('.avi');
         
         _queuedShareData = {
-          'mediaFile': firstFile,
-          'isVideo': isVideo,
+          'mediaFiles': [{
+            'mediaFile': firstFile,
+            'isVideo': isVideo,
+            'photoMetadata': <String, dynamic>{},
+            'platformFile': null,
+          }],
           'sensorData': sensorData,
-          'photoMetadata': <String, dynamic>{},
           'description': '',
         };
         // Don't clear the queue yet - will clear when processed
@@ -372,14 +381,15 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
   void _processQueuedShareData() {
     if (_queuedShareData == null) return;
     
-    print('Main: Processing queued share data after authentication');
+    print('🎯 MAIN: Processing queued share data after authentication');
     final router = ref.read(appRouterProvider);
     final shareData = _queuedShareData!;
     _queuedShareData = null; // Clear the queue
     
+    print('🎯 MAIN: Share intent (queued) - navigating with data: $shareData');
     // Navigate to beep composer with the queued share data
     router.go('/beep/compose', extra: shareData);
-    print('Main: Navigated to beep composer with queued share data');
+    print('🎯 MAIN: Navigated to beep composer with queued share data');
   }
 
   @override

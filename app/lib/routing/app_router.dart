@@ -206,12 +206,17 @@ GoRouter appRouter(AppRouterRef ref) {
                 builder: (context, state) {
                   final extra = state.extra as Map<String, dynamic>?;
                   
-                  debugPrint('Router: Extra data keys: ${extra?.keys}');
+                  debugPrint('🎯 ROUTER: BeepCompose - Extra data keys: ${extra?.keys}');
+                  debugPrint('🎯 ROUTER: BeepCompose - Extra data: $extra');
                   
                   // Support both single and multi-file formats
                   final mediaFile = extra?['mediaFile'] ?? extra?['imageFile']; // Legacy single file
                   final mediaFiles = extra?['mediaFiles'] as List<Map<String, dynamic>>?; // New multi-file format
                   final isVideo = extra?['isVideo'] ?? false;
+                  
+                  debugPrint('🎯 ROUTER: BeepCompose - MediaFile: $mediaFile');
+                  debugPrint('🎯 ROUTER: BeepCompose - MediaFiles: ${mediaFiles?.length} files');
+                  debugPrint('🎯 ROUTER: BeepCompose - IsVideo: $isVideo');
                   
                   // Check if we have either single or multi-file data
                   if (mediaFile == null && (mediaFiles == null || mediaFiles.isEmpty)) {

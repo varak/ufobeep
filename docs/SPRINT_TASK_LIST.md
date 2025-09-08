@@ -313,6 +313,8 @@
 - [x] Enhanced API documentation with NUFORC integration
 - [x] Added readable short URL generation to task list
 - [x] Established quality-first development approach
+- [x] **CRITICAL**: Fixed database connection pool leak causing API failures after 5-10 requests
+- [x] Updated documentation with prevention guidelines ([DATABASE_POOL_GUIDELINES.md](DATABASE_POOL_GUIDELINES.md))
 
 ### **🔄 In Progress**
 - [ ] **NEXT**: Enable PostGIS extension on production database
