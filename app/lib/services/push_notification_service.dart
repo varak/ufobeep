@@ -1030,14 +1030,8 @@ class PushNotificationService {
       
       print('✅ SNOOZE SUCCESS: Enabled DND for 1 hour via snooze');
       
-      // Also try to sync with backend to ensure consistent state
-      try {
-        final container = ProviderScope.containerOf(rootNavigatorKey.currentContext!);
-        await container.read(userPreferencesProvider.notifier).syncToBackend();
-        print('✅ SNOOZE SYNC: Backend sync completed');
-      } catch (syncError) {
-        print('⚠️ SNOOZE SYNC: Backend sync failed but local DND is active: $syncError');
-      }
+      // TODO: Add backend sync once the public API is available
+      // The local DND setting will be synced when user opens the app next
     } catch (e) {
       print('❌ SNOOZE ERROR: Failed to enable DND: $e');
     }
