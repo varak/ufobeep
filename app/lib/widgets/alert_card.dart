@@ -61,7 +61,7 @@ class AlertCard extends ConsumerWidget {
         _buildUfoIcon(),
         const SizedBox(width: 12),
         Expanded(
-          child: _buildTitleAndMetadata(context, l10n),
+          child: _buildTitleAndMetadata(context, l10n, units),
         ),
         _buildTimestampAndDistance(context, units),
       ],
@@ -82,7 +82,7 @@ class AlertCard extends ConsumerWidget {
     );
   }
 
-  Widget _buildTitleAndMetadata(BuildContext context, AppLocalizations l10n) {
+  Widget _buildTitleAndMetadata(BuildContext context, AppLocalizations l10n, String units) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -98,12 +98,28 @@ class AlertCard extends ConsumerWidget {
         ),
         if (_getLocationName(alert).isNotEmpty) ...[
           const SizedBox(height: 4),
-          Text(
-            _getLocationName(alert),
-            style: const TextStyle(
-              color: AppColors.textSecondary,
-              fontSize: 15,
-            ),
+          Row(
+            children: [
+              Flexible(
+                child: Text(
+                  _getLocationName(alert),
+                  style: const TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              if (alert.distance != null && alert.distance! > 0 && showDistance) ...[
+                const SizedBox(width: 8),
+                Text(
+                  UnitConversion.formatDistance(alert.distance! * 1000, units),
+                  style: const TextStyle(
+                    color: AppColors.textTertiary,
+                    fontSize: 13,
+                  ),
+                ),
+              ],
+            ],
           ),
         ],
         const SizedBox(height: 4),
@@ -171,10 +187,6 @@ class AlertCard extends ConsumerWidget {
             fontSize: 12,
           ),
         ),
-        if (alert.distance != null && alert.distance! > 0 && showDistance && alert.source != 'mufon') ...[
-          const SizedBox(height: 4),
-          _buildDistanceBadge(units),
-        ],
       ],
     );
   }
@@ -695,7 +707,7 @@ class CompactAlertCard extends ConsumerWidget {
                     const SizedBox(height: 2),
                     Row(
                       children: [
-                        if (alert.distance != null && alert.distance! > 0 && alert.source != 'mufon') ...[
+                        if (alert.distance != null && alert.distance! > 0) ...[
                           Text(
                             UnitConversion.formatDistance(alert.distance! * 1000, units),
                             style: const TextStyle(
@@ -711,14 +723,15 @@ class CompactAlertCard extends ConsumerWidget {
                             ),
                           ),
                         ],
-                        if (alert.source != 'mufon')
-                          Text(
-                            _formatDateTime(context, alert.createdAt),
-                            style: const TextStyle(
-                              color: AppColors.textTertiary,
-                              fontSize: 12,
-                            ),
+                        Text(
+                          alert.source == 'mufon'
+                              ? _getMufonReportDate(context, alert)
+                              : _formatDateTime(context, alert.createdAt),
+                          style: const TextStyle(
+                            color: AppColors.textTertiary,
+                            fontSize: 12,
                           ),
+                        ),
                         if (alert.isVerified && alert.source != 'mufon') ...[
                           const SizedBox(width: 4),
                           const Icon(
@@ -759,5 +772,24 @@ class CompactAlertCard extends ConsumerWidget {
     } else {
       return l10n.timeJustNow;
     }
+  }
+
+  String _getMufonReportDate(BuildContext context, Alert alert) {
+    final enrichment = alert.enrichment;
+    if (enrichment != null) {
+      if (enrichment.containsKey('database_when')) {
+        final reportDate = enrichment['database_when']?.toString();
+        if (reportDate != null && reportDate.isNotEmpty) {
+          return reportDate;
+        }
+      }
+      if (enrichment.containsKey('mufon_case_number')) {
+        final caseNumber = enrichment['mufon_case_number']?.toString();
+        if (caseNumber != null && caseNumber.isNotEmpty) {
+          return 'Case #$caseNumber';
+        }
+      }
+    }
+    return _formatDateTime(context, alert.createdAt);
   }
 }
