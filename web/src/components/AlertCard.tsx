@@ -276,10 +276,10 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                 })()}
               </div>
               {/* Location with distance */}
-              <p className="text-text-secondary text-xs line-clamp-1">
+              <p className="text-text-primary text-sm font-medium line-clamp-1">
                 {formatLocation(alert.location)}
                 {alert.distance_km !== undefined && alert.distance_km > 0 && (
-                  <span className="text-brand-primary ml-1">
+                  <span className="text-text-tertiary text-xs font-normal ml-1">
                     {formatDistance({ 
                       distanceKm: alert.distance_km, 
                       useImperial: getUnitPreference() 
@@ -343,13 +343,13 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
               </h3>
               
               {/* Location with distance - right under title for all alerts */}
-              <div className="text-text-secondary text-xs mb-2">
+              <div className="text-text-primary text-sm font-medium mb-2">
                 {alert.reporter_username === 'MUFON' 
                   ? (alert.enrichment?.location_raw || alert.location?.name || formatLocation(alert.location))
                   : formatLocation(alert.location)
                 }
                 {alert.distance_km !== undefined && alert.distance_km > 0 && (
-                  <span className="text-brand-primary ml-2">
+                  <span className="text-text-tertiary text-xs font-normal ml-2">
                     {formatDistance({ 
                       distanceKm: alert.distance_km, 
                       useImperial: getUnitPreference() 
