@@ -311,7 +311,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            'ufobeep.com/alert/${alert.id.substring(0, 4)}',
+                            'ufobeep.com/beep/${alert.id.substring(0, 4)}',
                             style: const TextStyle(
                               color: AppColors.textSecondary,
                               fontSize: 13,
@@ -321,7 +321,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                         ),
                         IconButton(
                           onPressed: () {
-                            Clipboard.setData(ClipboardData(text: 'ufobeep.com/alert/${alert.id.substring(0, 4)}'));
+                            Clipboard.setData(ClipboardData(text: 'ufobeep.com/beep/${alert.id.substring(0, 4)}'));
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(AppLocalizations.of(context).linkCopied),
