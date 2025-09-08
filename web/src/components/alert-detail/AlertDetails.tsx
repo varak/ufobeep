@@ -139,36 +139,43 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
       )}
 
       {/* Location for all alerts */}
-      {(
-        <div className="flex items-start gap-3 mb-4">
-          <span className="text-text-tertiary mt-0.5">📍</span>
-          <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <span className="text-text-tertiary text-sm font-medium">Location:</span>
-              <span className="text-text-primary text-sm">
-                {alert.reporter_username === 'MUFON' 
-                  ? (alert.enrichment?.location_raw || alert.location?.name || `${alert.location?.latitude?.toFixed(2) || 0}, ${alert.location?.longitude?.toFixed(2) || 0}`)
-                  : alert.location.name
+      <div className="flex items-start gap-3 mb-4">
+        <span className="text-text-tertiary mt-0.5">📍</span>
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <span className="text-text-tertiary text-sm font-medium">Location:</span>
+            <span className="text-text-primary text-sm">
+              {(() => {
+                // Clean up location name to avoid duplication
+                let locationName = alert.reporter_username === 'MUFON' 
+                  ? (alert.enrichment?.location_raw || alert.location?.name || 'Unknown Location')
+                  : (alert.location?.name || 'Unknown Location')
+                
+                // Remove duplicate state/country suffixes
+                if (locationName.includes(',')) {
+                  const parts = locationName.split(',').map(p => p.trim())
+                  // Remove duplicate consecutive parts (e.g., "Nevada, Nevada" -> "Nevada")
+                  const uniqueParts = parts.filter((part, index) => {
+                    return index === 0 || part !== parts[index - 1]
+                  })
+                  locationName = uniqueParts.join(', ')
                 }
-              </span>
-            </div>
-            {alert.distance_km !== undefined && alert.distance_km > 0 && (
-              <div className="text-text-secondary text-xs mt-1">
-                {formatDistance({ 
-                  distanceKm: alert.distance_km, 
-                  useImperial: getUnitPreference(),
-                  locale: typeof window !== 'undefined' ? navigator.language : 'en'
-                })}
-              </div>
-            )}
-            {alert.location && (
-              <div className="text-text-secondary text-xs mt-1">
-                {alert.location.latitude.toFixed(4)}, {alert.location.longitude.toFixed(4)}
-              </div>
-            )}
+                
+                return locationName
+              })()}
+            </span>
           </div>
+          {alert.distance_km !== undefined && alert.distance_km > 0 && (
+            <div className="text-text-secondary text-xs mt-1">
+              {formatDistance({ 
+                distanceKm: alert.distance_km, 
+                useImperial: getUnitPreference(),
+                locale: typeof window !== 'undefined' ? navigator.language : 'en'
+              })}
+            </div>
+          )}
         </div>
-      )}
+      </div>
       
 
       {/* Share link for all alerts */}
