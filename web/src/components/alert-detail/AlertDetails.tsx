@@ -87,6 +87,16 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
                   </span>
                 )}
               </div>
+              {/* Distance for MUFON alerts */}
+              {alert.distance_km !== undefined && alert.distance_km > 0 && (
+                <div className="text-text-secondary text-xs mt-2">
+                  {formatDistance({ 
+                    distanceKm: alert.distance_km, 
+                    useImperial: getUnitPreference(),
+                    locale: typeof window !== 'undefined' ? navigator.language : 'en'
+                  })}
+                </div>
+              )}
             </div>
           )}
           <div 
@@ -147,11 +157,8 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
               <span className="text-text-tertiary text-sm font-medium">Location:</span>
               <span className="text-text-primary text-sm">{alert.location.name}</span>
             </div>
-            <div className="text-text-secondary text-xs mt-1">
-              {alert.location.latitude.toFixed(4)}, {alert.location.longitude.toFixed(4)}
-            </div>
             {alert.distance_km !== undefined && alert.distance_km > 0 && (
-              <div className="text-text-tertiary text-xs mt-1">
+              <div className="text-text-secondary text-xs mt-1">
                 {formatDistance({ 
                   distanceKm: alert.distance_km, 
                   useImperial: getUnitPreference(),
@@ -159,28 +166,13 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
                 })}
               </div>
             )}
-          </div>
-        </div>
-      )}
-      
-      {/* Distance for MUFON alerts */}
-      {alert.reporter_username === 'MUFON' && alert.distance_km !== undefined && alert.distance_km > 0 && (
-        <div className="flex items-start gap-3 mb-4">
-          <span className="text-text-tertiary mt-0.5">📏</span>
-          <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <span className="text-text-tertiary text-sm font-medium">Distance:</span>
-              <span className="text-text-tertiary text-sm">
-                {formatDistance({ 
-                  distanceKm: alert.distance_km, 
-                  useImperial: getUnitPreference(),
-                  locale: typeof window !== 'undefined' ? navigator.language : 'en'
-                })}
-              </span>
+            <div className="text-text-secondary text-xs mt-1">
+              {alert.location.latitude.toFixed(4)}, {alert.location.longitude.toFixed(4)}
             </div>
           </div>
         </div>
       )}
+      
 
       {/* Share link for all alerts */}
       <div className="mt-4 pt-4 border-t border-dark-border">
