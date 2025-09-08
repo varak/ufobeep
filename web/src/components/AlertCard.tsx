@@ -8,6 +8,7 @@ import MediaGalleryModal from './MediaGalleryModal'
 import { AlertTitleUtils } from '@/utils/alert-title-utils'
 import { convertToProxyUrl, convertMediaFilesUrls } from '@/utils/media-url-utils'
 import { getAlertSlug, getShortAlertUrl } from '@/utils/slug'
+import { formatDistance, getUnitPreference } from '@/utils/units'
 
 interface Alert {
   id: string
@@ -274,9 +275,17 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                   return <span className="text-xs text-text-tertiary">👁️</span>
                 })()}
               </div>
-              {/* Location */}
+              {/* Location with distance */}
               <p className="text-text-secondary text-xs line-clamp-1">
                 {formatLocation(alert.location)}
+                {alert.distance_km !== undefined && alert.distance_km > 0 && (
+                  <span className="text-brand-primary ml-1">
+                    {formatDistance({ 
+                      distanceKm: alert.distance_km, 
+                      useImperial: getUnitPreference() 
+                    }).replace('away', 'away from you')}
+                  </span>
+                )}
               </p>
               
               {/* Small thumbnail preview for compact cards */}
@@ -333,12 +342,20 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                 {alert.title || 'UFO Sighting'}
               </h3>
               
-              {/* Location - right under title for all alerts */}
+              {/* Location with distance - right under title for all alerts */}
               <div className="text-text-secondary text-xs mb-2">
                 {alert.reporter_username === 'MUFON' 
                   ? (alert.enrichment?.location_raw || alert.location?.name || formatLocation(alert.location))
                   : formatLocation(alert.location)
                 }
+                {alert.distance_km !== undefined && alert.distance_km > 0 && (
+                  <span className="text-brand-primary ml-2">
+                    {formatDistance({ 
+                      distanceKm: alert.distance_km, 
+                      useImperial: getUnitPreference() 
+                    }).replace('away', 'away from you')}
+                  </span>
+                )}
               </div>
               
               {/* Verification badge */}
@@ -362,14 +379,6 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
               <div className="text-text-tertiary text-xs">
                 {formatDate(alert.created_at)}
               </div>
-              {alert.distance_km !== undefined && alert.distance_km > 0 && (
-                <div className="text-xs text-text-secondary mt-1 px-2 py-0.5 bg-dark-background rounded">
-                  {alert.distance_km < 1 
-                    ? `${Math.round(alert.distance_km * 1000)}m away`
-                    : `${alert.distance_km.toFixed(1)}km away`
-                  }
-                </div>
-              )}
             </div>
           </div>
 

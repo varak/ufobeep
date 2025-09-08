@@ -1,6 +1,7 @@
 'use client'
 
 import { getShortAlertUrl } from '@/utils/slug'
+import { formatDistance, getUnitPreference } from '@/utils/units'
 
 interface Alert {
   id: string
@@ -151,10 +152,10 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
             </div>
             {alert.distance_km !== undefined && alert.distance_km > 0 && (
               <div className="text-brand-primary text-xs mt-1">
-                {alert.distance_km < 1 
-                  ? `${Math.round(alert.distance_km * 1000)}m away from you`
-                  : `${alert.distance_km.toFixed(1)}km away from you`
-                }
+                {formatDistance({ 
+                  distanceKm: alert.distance_km, 
+                  useImperial: getUnitPreference() 
+                }).replace('away', 'away from you')}
               </div>
             )}
           </div>
@@ -169,10 +170,10 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
             <div className="flex items-center gap-2">
               <span className="text-text-tertiary text-sm font-medium">Distance:</span>
               <span className="text-brand-primary text-sm">
-                {alert.distance_km < 1 
-                  ? `${Math.round(alert.distance_km * 1000)}m away from you`
-                  : `${alert.distance_km.toFixed(1)}km away from you`
-                }
+                {formatDistance({ 
+                  distanceKm: alert.distance_km, 
+                  useImperial: getUnitPreference() 
+                }).replace('away', 'away from you')}
               </span>
             </div>
           </div>

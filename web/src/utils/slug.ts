@@ -54,7 +54,7 @@ export function getAlertSlug(alert: SluggableAlertLike) {
     const locationMatch = alert.description?.match(/📍 Location: ([^\n]+)/)
     if (locationMatch) {
       locName = locationMatch[1].trim()
-      // Clean up location (remove country suffix for shorter slug)
+      // Keep state info but remove country suffix for shorter slug
       locName = locName.replace(/, US$/, '').replace(/, United States$/, '')
     }
     
@@ -77,6 +77,13 @@ export function getAlertSlug(alert: SluggableAlertLike) {
       if (idMatch) {
         uniqueId = idMatch[1] // Use just the numeric case ID
       }
+    }
+  } else {
+    // For UFOBeep alerts, enhance location with state info if available
+    if (alert.location?.name) {
+      locName = alert.location.name
+      // Remove country suffix but keep state
+      locName = locName.replace(/, US$/, '').replace(/, United States$/, '')
     }
   }
   
