@@ -12,6 +12,8 @@ interface Alert {
   description: string
   category: string
   created_at: string
+  occurred_at?: string
+  source?: string
   location: {
     latitude: number
     longitude: number

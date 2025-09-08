@@ -16,6 +16,7 @@ interface Alert {
   description: string | null
   category: string
   created_at: string
+  occurred_at?: string
   location: {
     latitude: number
     longitude: number
@@ -211,6 +212,14 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
     }
   }
 
+  // Get the appropriate date to display (occurred_at for MUFON, created_at for others)
+  const getDisplayDate = () => {
+    if (alert.source === 'mufon' && alert.occurred_at) {
+      return alert.occurred_at
+    }
+    return alert.created_at
+  }
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     if (compact) {
@@ -260,7 +269,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
             <div className="flex-1">
               <div className="flex items-center justify-between mb-1">
                 <span className="text-text-tertiary text-xs">
-                  {formatDate(alert.created_at)}
+                  {formatDate(getDisplayDate())}
                 </span>
 {(() => {
                   const hasMedia = alert.media_files?.length > 0
@@ -410,7 +419,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                 </div>
               )}
               <div className="text-text-tertiary text-xs">
-                {formatDate(alert.created_at)}
+                {formatDate(getDisplayDate())}
               </div>
             </div>
           </div>
