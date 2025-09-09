@@ -184,11 +184,11 @@ export async function findAlertBySlug(slug: string): Promise<any | null> {
 
     for (let page = 0; page < maxSearchPages; page++) {
       const baseUrl = process.env.NEXT_PUBLIC_SITE_BASE_URL || 'https://ufobeep.com'
-      const res = await fetch(`${baseUrl}/api/alerts?limit=${limit}&offset=${currentOffset}&verified_only=false`, { cache: 'no-store' })
+      const res = await fetch(`${baseUrl}/api/beep?limit=${limit}&offset=${currentOffset}&verified_only=false`, { cache: 'no-store' })
       if (!res.ok) break
       
       const data = await res.json()
-      const alerts = data?.data?.alerts || []
+      const alerts = data?.data?.beeps || data?.data?.alerts || []
       
       const foundAlert = alerts.find((alert: any) => alert.id?.startsWith(idHash))
       if (foundAlert) return foundAlert
