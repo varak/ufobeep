@@ -49,7 +49,7 @@ function AlertsPageContent() {
   const searchParams = useSearchParams()
   const params = useParams()
   const locale = (params?.locale as string) || 'en'
-  const { t } = useTranslation('alerts')
+  const { t } = useTranslation('beeps')
   const [alerts, setAlerts] = useState<Alert[]>([])
   const [totalAlerts, setTotalAlerts] = useState<number>(0)
   const [loading, setLoading] = useState(true)
@@ -203,7 +203,7 @@ function AlertsPageContent() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center">
             <div className="text-6xl mb-6">🛸</div>
-            <p className="text-text-secondary">Loading recent alerts...</p>
+            <p className="text-text-secondary">{t('loadingBeeps')}</p>
           </div>
         </div>
 
@@ -320,7 +320,7 @@ function AlertsPageContent() {
             href="/" 
             className="text-brand-primary hover:text-brand-primary-light transition-colors mb-4 inline-block"
           >
-            ← Back to Home
+{t('backToHome')}
           </Link>
           
           <div className="text-6xl mb-6">🛸</div>
@@ -555,7 +555,7 @@ export default function AlertsPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center">
             <div className="text-6xl mb-6">🛸</div>
-            <p className="text-text-secondary">Loading recent alerts...</p>
+            <p className="text-text-secondary">{t('loadingBeeps')}</p>
           </div>
         </div>
       </main>
