@@ -90,7 +90,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
       source: alert.source,
       external_url: alert.external_url
     }, locale, { slugs: t('slugs', { returnObjects: true }) })
-    const baseUrl = `/beep/${slug}`
+    const baseUrl = `/beep/${locale}/${slug}`
     return imageIndex !== undefined ? `${baseUrl}?openImage=${imageIndex}` : baseUrl
   }
 
@@ -354,7 +354,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
   }
 
   return (
-    <div className="bg-dark-surface border border-dark-border rounded-xl hover:border-brand-primary transition-all duration-300 hover:shadow-lg group relative">
+    <div id={`alert-${alert.id}`} className="bg-dark-surface border border-dark-border rounded-xl hover:border-brand-primary transition-all duration-300 hover:shadow-lg group relative">
       <Link href={`/beep/${locale}/${getAlertSlug({ id: alert.id, title: alert.title, created_at: alert.created_at, location: alert.location, reporter_username: alert.reporter_username, description: alert.description, source: alert.source, external_url: alert.external_url }, locale, { slugs: t('slugs', { returnObjects: true }) })}`} className="block">
         <div className="p-4">
           {/* Header row */}

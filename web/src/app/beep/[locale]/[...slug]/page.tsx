@@ -247,7 +247,7 @@ export default function AlertDetailPage() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <a 
-            href={`/beep/${locale}`}
+            href={`/beep/${locale}#alert-${alert.id}`}
             className="text-brand-primary hover:text-brand-primary-light transition-colors mb-4 inline-block"
           >
             {t('backToBeeps')}
