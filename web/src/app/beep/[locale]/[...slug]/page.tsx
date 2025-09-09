@@ -54,24 +54,24 @@ export default function AlertDetailPage() {
         let targetAlert = null
         
         while (!found && offset < 500) { // Search up to 500 alerts
-          const res = await fetch(`/api/alerts?limit=${limit}&offset=${offset}&verified_only=false`)
+          const res = await fetch(`/api/beep?limit=${limit}&offset=${offset}&verified_only=false`)
           if (!res.ok) break
           
           const data = await res.json()
-          if (data.success && data.data?.alerts) {
-            // Find alert whose ID generates the same clean short ID
-            const matchingAlert = data.data.alerts.find((a: any) => 
-              generateCleanShortIdFromAlert(a.id) === shortId
+          if (data.success && data.data?.beeps) {
+            // Find beep whose ID generates the same clean short ID
+            const matchingBeep = data.data.beeps.find((b: any) => 
+              generateCleanShortIdFromAlert(b.id) === shortId
             )
             
-            if (matchingAlert) {
-              targetAlert = matchingAlert
+            if (matchingBeep) {
+              targetAlert = matchingBeep
               found = true
               break
             }
             
-            // If we got fewer alerts than the limit, we've reached the end
-            if (data.data.alerts.length < limit) break
+            // If we got fewer beeps than the limit, we've reached the end
+            if (data.data.beeps.length < limit) break
             offset += limit
           } else {
             break

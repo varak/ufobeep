@@ -120,7 +120,7 @@ function AlertsPageContent() {
     setLoading(true)
     try {
       const offset = (page - 1) * alertsPerPage
-      let url = `/api/alerts?limit=${alertsPerPage}&offset=${offset}&verified_only=false`
+      let url = `/api/beep?limit=${alertsPerPage}&offset=${offset}&verified_only=false`
       
       // Add user location to request if available
       if (userLocation) {
@@ -130,14 +130,14 @@ function AlertsPageContent() {
       const response = await fetch(url)
       const data = await response.json()
       
-      if (data.success && data.data?.alerts) {
-        // Filter out invalid coordinates (0,0 or null/undefined) except for MUFON alerts
-        const validAlerts = data.data.alerts.filter((alert: Alert) => 
-          alert.location.latitude !== 0 || alert.location.longitude !== 0 || alert.reporter_username === 'MUFON' || alert.reporter_username === 'MUFON_Database'
+      if (data.success && data.data?.beeps) {
+        // Filter out invalid coordinates (0,0 or null/undefined) except for MUFON beeps
+        const validBeeps = data.data.beeps.filter((beep: Alert) => 
+          beep.location.latitude !== 0 || beep.location.longitude !== 0 || beep.reporter_username === 'MUFON' || beep.reporter_username === 'MUFON_Database'
         )
         
-        // For server-side pagination, we set the alerts directly
-        setAlerts(validAlerts)
+        // For server-side pagination, we set the beeps directly
+        setAlerts(validBeeps)
         
         // Store total count from API response
         if (data.data.total !== undefined) {
