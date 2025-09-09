@@ -1,36 +1,27 @@
 'use client'
 
-import { notFound } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useParams, useSearchParams, useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { generateCleanShortIdFromAlert, getAlertSlug } from '@/utils/slug'
 import { useClientTranslations } from '@/hooks/useClientTranslations'
-import AlertHero from '@/components/alert-detail/AlertHero'
-import AlertDetails from '@/components/alert-detail/AlertDetails'
-import EnrichmentData from '@/components/alert-detail/EnrichmentData'
-import AlertComments from '@/components/AlertComments'
-
-interface PageParams {
-  locale: string
-  slug: string[]
-}
 
 interface Alert {
   id: string
   title: string
   description: string
   location: {
-    name: string
     latitude: number
     longitude: number
+    name: string
   }
   created_at: string
-  alert_level: string
-  witness_count: number
-  total_confirmations: number
-  source?: string
   reporter_username?: string
+  source?: string
   enrichment?: {
+    classification?: {
+      type: string
+      confidence?: number
+    }
     geocoding?: {
       latitude: number
       longitude: number
@@ -39,16 +30,9 @@ interface Alert {
     }
     location_raw?: string
     mufon_case_id?: string
-    classification?: {
-      type: string
-      keywords?: string[]
-      confidence?: number
-    }
-    occurred_at?: string
-    external_url?: string
     [key: string]: any
   }
-  media_files: Array<{
+  media_files?: Array<{
     id?: string
     type: string
     url: string
@@ -104,7 +88,7 @@ function getEnrichedLocation(alert: Alert, t: any): string {
   
   // Parse location from description for MUFON reports
   if (alert.description && alert.description.includes('📍 Location:')) {
-    const locationMatch = alert.description.match(/📍 Location: ([^\n]+)/)
+    const locationMatch = alert.description.match(/📍 Location: ([^\\n]+)/)
     if (locationMatch && locationMatch[1].trim()) {
       return locationMatch[1].trim()
     }
@@ -118,36 +102,27 @@ function getEnrichedLocation(alert: Alert, t: any): string {
   return t('unknownLocation')
 }
 
-export default function AlertDetailPage() {
+export default function ShortUrlRedirect() {
   const params = useParams()
-  const searchParams = useSearchParams()
   const router = useRouter()
-  const [alert, setAlert] = useState<Alert | null>(null)
   const [loading, setLoading] = useState(true)
-  const locale = (params?.locale as string) || 'en'
+  const shortId = params?.shortId as string
+  
+  // Detect user's preferred language
+  const userLang = typeof window !== 'undefined' 
+    ? (navigator.language || 'en').split('-')[0] 
+    : 'en'
+  const locale = ['en', 'es', 'fr', 'de', 'it', 'pt', 'ru', 'ja', 'ko', 'zh'].includes(userLang) 
+    ? userLang 
+    : 'en'
+    
   const { t } = useClientTranslations('beep-detail', locale)
-  
-  // Get openImage parameter for direct image linking
-  const openImageParam = searchParams.get('openImage')
-  const openImageIndex = openImageParam ? parseInt(openImageParam, 10) : undefined
-  
+
   useEffect(() => {
-    async function fetchAlert() {
+    async function findAndRedirect() {
+      if (!shortId) return
+
       try {
-        const slug = params?.slug as string[]
-        if (!slug) return
-        
-        const fullSlug = slug.join('/')
-        // Extract the short ID - either the last part after splitting on '-', or the whole slug if it's just the short ID
-        let shortId
-        if (fullSlug.includes('-')) {
-          const slugParts = fullSlug.split('-')
-          shortId = slugParts[slugParts.length - 1]
-        } else {
-          // If there are no dashes, this is likely just the short ID
-          shortId = fullSlug
-        }
-        
         // Search through alerts to find one that generates the same short ID
         let found = false
         let offset = 0
@@ -194,79 +169,36 @@ export default function AlertDetailPage() {
             },
             media_files: targetAlert.media_files || []
           }
-          setAlert(enhancedAlert)
+
+          // Generate proper slug and redirect
+          const properSlug = getAlertSlug(enhancedAlert, locale, t)
+          const redirectUrl = `/beep/${locale}/${properSlug}`
+          
+          // Preserve any query parameters
+          const urlParams = new URLSearchParams(window.location.search)
+          const queryString = urlParams.toString()
+          const finalUrl = queryString ? `${redirectUrl}?${queryString}` : redirectUrl
+          
+          router.replace(finalUrl)
+        } else {
+          // Alert not found, redirect to main beep page
+          router.replace(`/beep/${locale}`)
         }
       } catch (error) {
-        console.error('Error fetching alert:', error)
-        setAlert(null)
-      } finally {
-        setLoading(false)
+        console.error('Error finding alert:', error)
+        router.replace(`/beep/${locale}`)
       }
     }
     
-    fetchAlert()
-  }, [params, t])
+    findAndRedirect()
+  }, [shortId, router, locale, t])
 
-  // Client-side redirect to canonical slug URL once we have the alert
-  useEffect(() => {
-    if (!alert) return
-    
-    const currentSlug = params?.slug as string[]
-    if (!currentSlug) return
-    
-    const fullSlug = currentSlug.join('/')
-    
-    // Generate expected slug
-    const expectedSlug = getAlertSlug(alert, locale, t)
-    
-    // If current slug doesn't match expected slug, redirect
-    if (expectedSlug && expectedSlug !== fullSlug) {
-      const qs = searchParams?.toString()
-      const url = `/beep/${locale}/${expectedSlug}${qs ? `?${qs}` : ''}`
-      router.replace(url)
-    }
-  }, [alert, params?.slug, router, searchParams, locale, t])
-  
-  if (loading) {
-    return (
-      <main className="min-h-screen py-8 px-4 md:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="text-6xl mb-6">🛸</div>
-          <p className="text-text-secondary">{t('loadingDetails')}</p>
-        </div>
-      </main>
-    )
-  }
-
-  if (!alert) {
-    notFound()
-  }
-
+  // Show loading state
   return (
     <main className="min-h-screen py-8 px-4 md:px-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
-          <a 
-            href={`/beep/${locale}`}
-            className="text-brand-primary hover:text-brand-primary-light transition-colors mb-4 inline-block"
-          >
-            {t('backToBeeps')}
-          </a>
-        </div>
-        
-        {/* Hero Section with Media Gallery */}
-        <AlertHero alert={alert} openImageIndex={openImageIndex} />
-        
-        {/* Details Section */}
-        <AlertDetails alert={alert} locale={locale} />
-        
-        {/* Enrichment Data (if available) */}
-        {alert.enrichment && Object.keys(alert.enrichment).length > 0 && (
-          <EnrichmentData alert={alert} />
-        )}
-
-        {/* Comments Section for all reports */}
-        <AlertComments alertId={alert.id} />
+      <div className="max-w-4xl mx-auto text-center">
+        <div className="text-6xl mb-6">🛸</div>
+        <p className="text-text-secondary">Redirecting to full alert details...</p>
       </div>
     </main>
   )
