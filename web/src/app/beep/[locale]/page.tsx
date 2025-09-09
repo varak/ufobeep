@@ -555,7 +555,7 @@ export default function AlertsPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center">
             <div className="text-6xl mb-6">🛸</div>
-            <p className="text-text-secondary">{t('loadingBeeps')}</p>
+            <p className="text-text-secondary">Loading recent beeps...</p>
           </div>
         </div>
       </main>
