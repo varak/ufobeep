@@ -40,7 +40,7 @@ export function useClientTranslations(namespace: string, locale: string = 'en') 
     loadTranslations()
   }, [namespace, locale])
 
-  const t = (key: string, options?: { returnObjects?: boolean }) => {
+  const t = (key: string, options?: { returnObjects?: boolean }): any => {
     // If translations are still loading, return a loading placeholder instead of the key
     if (loading) {
       return '...' 
