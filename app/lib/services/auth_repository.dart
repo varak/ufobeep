@@ -71,8 +71,9 @@ class AuthRepository with ChangeNotifier {
         await fetchMe();
         debugPrint('[Bootstrap] Session restored successfully - user: ${_currentUser?.username}');
       } catch (e) {
-        debugPrint('[Bootstrap] /me validation failed: $e - clearing tokens');
-        await clearSession();
+        debugPrint('[Bootstrap] /me validation failed: $e - continuing with tokens intact');
+        // DO NOT clear tokens on fetchMe failure - tokens are still valid
+        // User profile will be fetched later when network/API is available
       }
       
     } catch (e) {

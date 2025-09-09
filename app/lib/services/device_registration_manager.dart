@@ -89,7 +89,9 @@ class DeviceRegistrationManager {
       if (position == null) {
         debugPrint('❌ DeviceRegistrationManager: FAILED - Cannot get device location');
         debugPrint('📱 DeviceRegistrationManager: Registration requires location for proximity alerts');
-        throw Exception('Device registration failed: Location unavailable for proximity alerts');
+        // Don't throw - just log and skip registration
+        debugPrint('📱 DeviceRegistrationManager: Skipping device registration due to location requirement');
+        return;
       }
 
       debugPrint('✅ DeviceRegistrationManager: Got location: ${position.latitude}, ${position.longitude}');
@@ -126,8 +128,6 @@ class DeviceRegistrationManager {
         debugPrint('📱 DeviceRegistrationManager: ├── 401 UNAUTHORIZED - JWT token may be invalid/expired');
       } else if (e.toString().contains('403') || e.toString().contains('Forbidden')) {
         debugPrint('📱 DeviceRegistrationManager: ├── 403 FORBIDDEN - insufficient permissions');
-      } else if (e.toString().contains('Location unavailable')) {
-        debugPrint('📱 DeviceRegistrationManager: ├── LOCATION ERROR - Cannot register without GPS/location access');
       }
     }
   }

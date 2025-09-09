@@ -158,23 +158,46 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
     _apiClient.setAuthToken(access);
     log('[AuthService] ApiClient auth token set');
     
-    // Try to fetch current user, but don't fail if it doesn't work
-    log('[AuthService] Fetching user profile...');
-    try {
-      await AuthRepository().fetchMe();
-      log('[AuthService] User profile fetched successfully');
-    } catch (e) {
-      log('[AuthService] WARNING: fetchMe failed: $e - continuing with fallback auth state');
-    }
-
-    // ALWAYS emit authenticated state after successful token storage - don't wait for user data
+    // IMMEDIATELY emit authenticated state after successful token storage
     await _emit(AuthState.authenticated(userId: 'authenticated-user', username: 'user'));
-    debugPrint('[AuthService] ✅ FORCED authenticated state emission after Google login');
+    debugPrint('[AuthService] ✅ IMMEDIATE authenticated state emission after login');
+
+    // Fetch user profile in background - don't block authentication
+    log('[AuthService] Starting background user profile fetch...');
+    _fetchUserProfileInBackground();
   }
 
   /// Initialize the AuthService - call this early in app startup
   Future<void> initialize() async {
     await _checkStoredAuth();
+  }
+
+  /// Fetch user profile in background with retry logic
+  void _fetchUserProfileInBackground() {
+    // Fire and forget - don't block authentication flow
+    Future.microtask(() async {
+      int attempts = 0;
+      const maxAttempts = 3;
+      
+      while (attempts < maxAttempts) {
+        try {
+          await AuthRepository().fetchMe();
+          log('[AuthService] ✅ Background profile fetch successful');
+          return;
+        } catch (e) {
+          attempts++;
+          log('[AuthService] Background profile fetch attempt $attempts/$maxAttempts failed: $e');
+          
+          if (attempts < maxAttempts) {
+            // Exponential backoff: 2s, 4s, 8s
+            final delay = Duration(seconds: 2 * attempts);
+            await Future.delayed(delay);
+          }
+        }
+      }
+      
+      log('[AuthService] Background profile fetch failed after $maxAttempts attempts - user remains authenticated with placeholder data');
+    });
   }
   
   /// Emit new auth state (ChatGPT's recommendation)
