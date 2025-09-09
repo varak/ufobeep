@@ -16,6 +16,9 @@ interface Alert {
     longitude: number
     name: string
   }
+  alert_level?: string
+  witness_count?: number
+  total_confirmations?: number
   enrichment?: {
     report_date?: string
     sighting_datetime?: string
