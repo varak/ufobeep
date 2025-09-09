@@ -27,16 +27,10 @@ export function generateSlug(title: string, location: string, date: string, id?:
 
   const datePart = new Date(date || Date.now()).toISOString().split('T')[0]
 
-  // Add ID for uniqueness - use full ID if it's numeric (MUFON case), otherwise use first 4 chars
+  // Add clean short ID for uniqueness (uses safe characters, no o0i1l)
   let idPart = ''
   if (id) {
-    // If the ID is purely numeric (MUFON case ID), use it in full
-    if (/^[0-9]+$/.test(id)) {
-      idPart = id
-    } else {
-      // Otherwise use first 4 characters for standard UFOBeep IDs
-      idPart = id.substring(0, 4)
-    }
+    idPart = generateCleanShortId(id)
   }
 
   return `${titlePart}-${locationPart}-${datePart}-${idPart}`
