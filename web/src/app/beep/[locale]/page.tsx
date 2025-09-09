@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams, useParams } from 'next/navigation'
-import { useTranslation } from 'next-i18next'
+import { useClientTranslations } from '../../../hooks/useClientTranslations'
 import AlertCard from '../../../components/AlertCard'
 import { useGeolocation } from '../../../utils/geolocation'
 
@@ -49,7 +49,7 @@ function AlertsPageContent() {
   const searchParams = useSearchParams()
   const params = useParams()
   const locale = (params?.locale as string) || 'en'
-  const { t } = useTranslation('beeps')
+  const { t, loading: translationsLoading } = useClientTranslations('beeps', locale)
   const [alerts, setAlerts] = useState<Alert[]>([])
   const [totalAlerts, setTotalAlerts] = useState<number>(0)
   const [loading, setLoading] = useState(true)

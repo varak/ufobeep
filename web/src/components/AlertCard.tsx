@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useTranslation } from 'next-i18next'
+import { useClientTranslations } from '../hooks/useClientTranslations'
 import ImageWithLoading from './ImageWithLoading'
 import MediaGalleryModal from './MediaGalleryModal'
 import { AlertTitleUtils } from '@/utils/alert-title-utils'
@@ -69,11 +69,11 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
   const alertData = alertWithFixedUrls
   
   const router = useRouter()
-  const { t } = useTranslation('beeps')
   
   // Extract locale from current path
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : ''
   const locale = currentPath.match(/\/beep\/([a-z]{2})\//)?.[1] || 'en'
+  const { t } = useClientTranslations('beeps', locale)
   const [showShareMenu, setShowShareMenu] = useState(false)
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
