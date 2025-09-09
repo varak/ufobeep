@@ -43,8 +43,9 @@ export default function AlertDetailPage() {
         if (!slug) return
         
         const fullSlug = slug.join('/')
-        // Extract the first part which should be the short ID
-        const shortId = fullSlug.split('-')[0]
+        // Extract the last part which should be the short ID
+        const slugParts = fullSlug.split('-')
+        const shortId = slugParts[slugParts.length - 1]
         
         // Search through alerts to find one that generates the same short ID
         let found = false
