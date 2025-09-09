@@ -18,7 +18,7 @@ interface Alert {
   id: string
   title: string
   description: string
-  location?: {
+  location: {
     name: string
     latitude: number
     longitude: number
@@ -168,7 +168,8 @@ export default function AlertDetailPage() {
             ...targetAlert,
             title: getClassifiedTitle(targetAlert, t),
             location: {
-              ...targetAlert.location,
+              latitude: targetAlert.location?.latitude || 0,
+              longitude: targetAlert.location?.longitude || 0,
               name: getEnrichedLocation(targetAlert, t)
             }
           }
