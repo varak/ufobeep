@@ -48,7 +48,11 @@ function AlertsPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const params = useParams()
-  const locale = (params?.locale as string) || 'en'
+  const localeParam = (params?.locale as string) || 'en'
+  
+  // If it's 4 characters, it's a short ID, not a locale
+  const isShortId = localeParam.length === 4
+  const locale = isShortId ? 'en' : localeParam // Default to English for short URLs
   const { t, loading: translationsLoading } = useClientTranslations('beeps', locale)
   const [alerts, setAlerts] = useState<Alert[]>([])
   const [totalAlerts, setTotalAlerts] = useState<number>(0)
@@ -56,6 +60,16 @@ function AlertsPageContent() {
   const [error, setError] = useState<string | null>(null)
   const alertsPerPage = 9
   const { position: userLocation, loading: locationLoading, error: locationError } = useGeolocation()
+  
+  // Handle short URL redirect  
+  useEffect(() => {
+    if (isShortId) {
+      // Redirect to the detail page with the short ID
+      const queryString = searchParams.toString()
+      const url = `/beep/${locale}/${localeParam}${queryString ? `?${queryString}` : ''}`
+      router.replace(url)
+    }
+  }, [isShortId, localeParam, locale, router, searchParams])
   
   // Get URL parameters
   const currentPage = parseInt(searchParams.get('page') || '1', 10)
