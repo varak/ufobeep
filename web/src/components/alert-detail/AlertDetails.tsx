@@ -3,6 +3,7 @@
 import { getShortAlertUrl } from '@/utils/slug'
 import { formatDistance, getUnitPreference } from '@/utils/units'
 import { UnitConversion } from '@/utils/unitConversion'
+import { useClientTranslations } from '@/hooks/useClientTranslations'
 
 interface Alert {
   id: string
@@ -26,9 +27,15 @@ interface Alert {
 
 interface AlertDetailsProps {
   alert: Alert
+  locale?: string
 }
 
-export default function AlertDetails({ alert }: AlertDetailsProps) {
+export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps) {
+  const { t } = useClientTranslations('beep-detail', locale)
+  
+  // Check if this is a UFOBeep report (not MUFON/NUFORC)
+  const isUfoBeepReport = !alert.reporter_username || 
+    (alert.reporter_username !== 'MUFON' && alert.reporter_username !== 'NUFORC')
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString('en-US', {
       weekday: 'long',
@@ -144,7 +151,7 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
         <span className="text-text-tertiary mt-0.5">📍</span>
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <span className="text-text-tertiary text-sm font-medium">Location:</span>
+            <span className="text-text-tertiary text-sm font-medium">{t('location')}:</span>
             <span className="text-text-primary text-sm">
               {(() => {
                 // Clean up location name to avoid duplication
@@ -178,6 +185,23 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
       </div>
       
 
+      {/* UFOBeep-specific metadata (witnesses, confirmations, alert level) */}
+      {isUfoBeepReport && (alert.witness_count !== undefined || alert.total_confirmations !== undefined || alert.alert_level) && (
+        <div className="mt-4 pt-4 border-t border-dark-border">
+          <div className="flex items-center gap-4 text-sm text-text-tertiary">
+            {alert.alert_level && (
+              <span>🔍 {t('ufobeep.alertLevel')}: {alert.alert_level}</span>
+            )}
+            {alert.witness_count !== undefined && (
+              <span>👥 {t('ufobeep.witnesses')}: {alert.witness_count || 0}</span>
+            )}
+            {alert.total_confirmations !== undefined && (
+              <span>✅ {t('ufobeep.confirmations')}: {alert.total_confirmations || 0}</span>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Share link for all alerts */}
       <div className="mt-4 pt-4 border-t border-dark-border">
         <div className="flex items-center gap-3">
@@ -197,7 +221,7 @@ export default function AlertDetails({ alert }: AlertDetailsProps) {
                 title="Copy short link"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                 </svg>
               </button>
             </div>

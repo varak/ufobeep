@@ -1,0 +1,90 @@
+{
+  "backToBeeps": "← Back to Beeps",
+  "loadingDetails": "Loading beep details...",
+  "details": "Details",
+  "location": "Location",
+  "unknownLocation": "Unknown Location",
+  "time": {
+    "ago": "ago",
+    "minutes": "m",
+    "hours": "h", 
+    "days": "d",
+    "justNow": "just now"
+  },
+  "distance": {
+    "away": "away",
+    "km": "km",
+    "miles": "miles",
+    "nearby": "nearby"
+  },
+  "ufobeep": {
+    "witnesses": "Witnesses",
+    "confirmations": "Confirmations",
+    "alertLevel": "Alert Level",
+    "reportType": "UFOBeep Report"
+  },
+  "mufon": {
+    "attribution": "MUFON Database Report",
+    "caseNumber": "Case #",
+    "classifications": {
+      "sphere": "Sphere",
+      "light": "Light",
+      "disk": "Disk", 
+      "triangle": "Triangle",
+      "cigar": "Cigar",
+      "oval": "Oval",
+      "cylinder": "Cylinder",
+      "rectangle": "Rectangle",
+      "diamond": "Diamond",
+      "fireball": "Fireball",
+      "flash": "Flash",
+      "formation": "Formation",
+      "changing": "Changing",
+      "chevron": "Chevron",
+      "cone": "Cone",
+      "cross": "Cross",
+      "egg": "Egg",
+      "other": "Object",
+      "unknown": "Unknown Object"
+    },
+    "titleFormat": "MUFON {classification} Report"
+  },
+  "nuforc": {
+    "attribution": "NUFORC Database Report",
+    "caseNumber": "Case #", 
+    "classifications": {
+      "sphere": "Sphere",
+      "light": "Light",
+      "disk": "Disk",
+      "triangle": "Triangle", 
+      "cigar": "Cigar",
+      "oval": "Oval",
+      "cylinder": "Cylinder",
+      "rectangle": "Rectangle",
+      "diamond": "Diamond",
+      "fireball": "Fireball",
+      "flash": "Flash", 
+      "formation": "Formation",
+      "changing": "Changing",
+      "chevron": "Chevron",
+      "cone": "Cone",
+      "cross": "Cross",
+      "egg": "Egg",
+      "other": "Object", 
+      "unknown": "Unknown Object"
+    },
+    "titleFormat": "NUFORC {classification} Report"
+  },
+  "media": {
+    "imageNotFound": "Image not found",
+    "playVideo": "Play Video",
+    "viewImage": "View Image",
+    "mediaCount": "{count} images",
+    "mediaCountSingle": "1 image",
+    "moreImages": "+{count} more"
+  },
+  "errors": {
+    "notFound": "Beep not found",
+    "loadError": "Failed to load beep details"
+  }
+}

@@ -2,8 +2,12 @@
 
 import { notFound } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useSearchParams } from 'next/navigation'
 import { generateCleanShortIdFromAlert } from '@/utils/slug'
+import { useClientTranslations } from '@/hooks/useClientTranslations'
+import AlertHero from '@/components/alert-detail/AlertHero'
+import AlertDetails from '@/components/alert-detail/AlertDetails'
+import EnrichmentData from '@/components/alert-detail/EnrichmentData'
 
 interface PageParams {
   locale: string
@@ -23,23 +27,100 @@ interface Alert {
   alert_level: string
   witness_count: number
   total_confirmations: number
+  source?: string
+  reporter_username?: string
+  enrichment?: {
+    geocoding?: {
+      latitude: number
+      longitude: number
+      location: string
+      display_name: string
+    }
+    location_raw?: string
+    mufon_case_id?: string
+    classification?: {
+      type: string
+      keywords?: string[]
+      confidence?: number
+    }
+    occurred_at?: string
+    external_url?: string
+    [key: string]: any
+  }
   media_files?: Array<{
-    id: string
+    id?: string
     type: string
     url: string
+    thumbnail_url: string
+    web_url?: string
+    preview_url?: string
+    filename?: string
   }>
+  distance_km?: number
+}
+
+function getClassifiedTitle(alert: Alert, t: any): string {
+  // For MUFON reports, use classification-based title
+  if (alert.reporter_username === 'MUFON' && alert.enrichment?.classification?.type) {
+    const classificationType = alert.enrichment.classification.type.toLowerCase()
+    const classificationName = t(`mufon.classifications.${classificationType}`, classificationType)
+    return t('mufon.titleFormat', { classification: classificationName })
+  }
+  
+  // For NUFORC reports (future)
+  if (alert.reporter_username === 'NUFORC' && alert.enrichment?.classification?.type) {
+    const classificationType = alert.enrichment.classification.type.toLowerCase()
+    const classificationName = t(`nuforc.classifications.${classificationType}`, classificationType)
+    return t('nuforc.titleFormat', { classification: classificationName })
+  }
+  
+  // For UFOBeep reports, use original title
+  return alert.title || t('ufobeep.reportType')
+}
+
+function getEnrichedLocation(alert: Alert, t: any): string {
+  // Try enrichment geocoding first
+  if (alert.enrichment?.geocoding?.location) {
+    return alert.enrichment.geocoding.location
+  }
+  
+  // Try raw location from enrichment
+  if (alert.enrichment?.location_raw) {
+    return alert.enrichment.location_raw
+  }
+  
+  // Parse location from description for MUFON reports
+  if (alert.description && alert.description.includes('📍 Location:')) {
+    const locationMatch = alert.description.match(/📍 Location: ([^\n]+)/)
+    if (locationMatch && locationMatch[1].trim()) {
+      return locationMatch[1].trim()
+    }
+  }
+  
+  // Fall back to basic location name
+  if (alert.location?.name && alert.location.name !== 'Unknown Location') {
+    return alert.location.name
+  }
+  
+  return t('unknownLocation')
 }
 
 export default function AlertDetailPage() {
   const params = useParams()
+  const searchParams = useSearchParams()
   const [alert, setAlert] = useState<Alert | null>(null)
   const [loading, setLoading] = useState(true)
+  const locale = (params?.locale as string) || 'en'
+  const { t } = useClientTranslations('beep-detail', locale)
+  
+  // Get openImage parameter for direct image linking
+  const openImageParam = searchParams.get('openImage')
+  const openImageIndex = openImageParam ? parseInt(openImageParam, 10) : undefined
   
   useEffect(() => {
     async function fetchAlert() {
       try {
         const slug = params?.slug as string[]
-        const locale = params?.locale as string
         if (!slug) return
         
         const fullSlug = slug.join('/')
@@ -81,7 +162,18 @@ export default function AlertDetailPage() {
           }
         }
         
-        setAlert(targetAlert)
+        if (targetAlert) {
+          // Enhance the alert with classified title and enriched location
+          const enhancedAlert = {
+            ...targetAlert,
+            title: getClassifiedTitle(targetAlert, t),
+            location: {
+              ...targetAlert.location,
+              name: getEnrichedLocation(targetAlert, t)
+            }
+          }
+          setAlert(enhancedAlert)
+        }
       } catch (error) {
         console.error('Error fetching alert:', error)
         setAlert(null)
@@ -91,14 +183,14 @@ export default function AlertDetailPage() {
     }
     
     fetchAlert()
-  }, [params])
+  }, [params, t])
   
   if (loading) {
     return (
       <main className="min-h-screen py-8 px-4 md:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <div className="text-6xl mb-6">🛸</div>
-          <p className="text-text-secondary">Loading beep details...</p>
+          <p className="text-text-secondary">{t('loadingDetails')}</p>
         </div>
       </main>
     )
@@ -113,59 +205,23 @@ export default function AlertDetailPage() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <a 
-            href={`/beep/${params?.locale || 'en'}`}
+            href={`/beep/${locale}`}
             className="text-brand-primary hover:text-brand-primary-light transition-colors mb-4 inline-block"
           >
-            ← Back to Beeps
+            {t('backToBeeps')}
           </a>
         </div>
         
-        <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
-          <h1 className="text-3xl font-bold text-text-primary mb-4">
-            {alert.title}
-          </h1>
-          
-          <div className="text-text-secondary mb-4">
-            {alert.location?.name && (
-              <div className="mb-2">📍 {alert.location.name}</div>
-            )}
-            <div>📅 {new Date(alert.created_at).toLocaleString()}</div>
-          </div>
-          
-          {alert.description && (
-            <div className="text-text-primary mb-6">
-              <p className="whitespace-pre-wrap">{alert.description}</p>
-            </div>
-          )}
-          
-          {alert.media_files && alert.media_files.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              {alert.media_files.map((media: any) => (
-                <div key={media.id} className="bg-dark-background rounded-lg p-2">
-                  {media.type === 'image' ? (
-                    <img 
-                      src={media.url} 
-                      alt="Alert media"
-                      className="w-full h-auto rounded"
-                    />
-                  ) : media.type === 'video' ? (
-                    <video 
-                      src={media.url} 
-                      controls
-                      className="w-full h-auto rounded"
-                    />
-                  ) : null}
-                </div>
-              ))}
-            </div>
-          )}
-          
-          <div className="flex items-center gap-4 text-sm text-text-tertiary">
-            <span>🔍 Alert Level: {alert.alert_level}</span>
-            <span>👥 Witnesses: {alert.witness_count || 0}</span>
-            <span>✅ Confirmations: {alert.total_confirmations || 0}</span>
-          </div>
-        </div>
+        {/* Hero Section with Media Gallery */}
+        <AlertHero alert={alert} openImageIndex={openImageIndex} />
+        
+        {/* Details Section */}
+        <AlertDetails alert={alert} locale={locale} />
+        
+        {/* Enrichment Data (if available) */}
+        {alert.enrichment && Object.keys(alert.enrichment).length > 0 && (
+          <EnrichmentData alert={alert} />
+        )}
       </div>
     </main>
   )
