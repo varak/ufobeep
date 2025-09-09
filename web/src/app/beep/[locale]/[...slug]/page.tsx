@@ -1,29 +1,105 @@
+'use client'
+
 import { notFound } from 'next/navigation'
-import { useTranslation } from 'next-i18next'
+import { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
 
 interface PageParams {
   locale: string
   slug: string[]
 }
 
-async function getAlertBySlug(slug: string) {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_BASE_URL || 'https://ufobeep.com'
-    const res = await fetch(`${baseUrl}/api/alerts/${slug}`, { cache: 'no-store' })
-    if (!res.ok) return null
-    
-    const data = await res.json()
-    return data.success ? data.data : null
-  } catch (error) {
-    console.error('Error fetching alert:', error)
-    return null
+interface Alert {
+  id: string
+  title: string
+  description: string
+  location?: {
+    name: string
+    latitude: number
+    longitude: number
   }
+  created_at: string
+  alert_level: string
+  witness_count: number
+  total_confirmations: number
+  media_files?: Array<{
+    id: string
+    type: string
+    url: string
+  }>
 }
 
-export default async function AlertDetailPage({ params }: { params: PageParams }) {
-  const fullSlug = params.slug.join('/')
-  const alert = await getAlertBySlug(fullSlug)
+export default function AlertDetailPage() {
+  const params = useParams() as PageParams
+  const [alert, setAlert] = useState<Alert | null>(null)
+  const [loading, setLoading] = useState(true)
   
+  useEffect(() => {
+    async function fetchAlert() {
+      try {
+        const fullSlug = params.slug.join('/')
+        // Extract the first part which should be the short ID
+        const shortId = fullSlug.split('-')[0]
+        
+        // We need to search through alerts to find one with matching ID prefix
+        // Fetch a large batch of alerts to find the matching one
+        let found = false
+        let offset = 0
+        const limit = 100
+        let targetAlert = null
+        
+        while (!found && offset < 1000) { // Search up to 1000 alerts
+          const res = await fetch(`/api/alerts?limit=${limit}&offset=${offset}&verified_only=false`)
+          if (!res.ok) break
+          
+          const data = await res.json()
+          if (data.success && data.data?.alerts) {
+            // Find alert with ID that starts with the short ID
+            const matchingAlert = data.data.alerts.find((a: any) => 
+              a.id?.startsWith(shortId)
+            )
+            
+            if (matchingAlert) {
+              targetAlert = matchingAlert
+              found = true
+              break
+            }
+            
+            // If we got fewer alerts than the limit, we've reached the end
+            if (data.data.alerts.length < limit) break
+            offset += limit
+          } else {
+            break
+          }
+        }
+        
+        if (targetAlert) {
+          setAlert(targetAlert)
+        } else {
+          setAlert(null)
+        }
+      } catch (error) {
+        console.error('Error fetching alert:', error)
+        setAlert(null)
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    fetchAlert()
+  }, [params.slug])
+  
+  if (loading) {
+    return (
+      <main className="min-h-screen py-8 px-4 md:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="text-6xl mb-6">🛸</div>
+          <p className="text-text-secondary">Loading beep details...</p>
+        </div>
+      </main>
+    )
+  }
+
   if (!alert) {
     notFound()
   }
@@ -36,7 +112,7 @@ export default async function AlertDetailPage({ params }: { params: PageParams }
             href={`/beep/${params.locale}`}
             className="text-brand-primary hover:text-brand-primary-light transition-colors mb-4 inline-block"
           >
-            ← Back to Alerts
+            ← Back to Beeps
           </a>
         </div>
         
