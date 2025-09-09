@@ -58,9 +58,12 @@ export default function AlertDetailPage() {
           if (!res.ok) break
           
           const data = await res.json()
-          if (data.success && data.data?.beeps) {
+          if (data.success && (data.data?.beeps || data.data?.alerts)) {
+            // Support both beeps and alerts for backend compatibility
+            const beepsList = data.data?.beeps || data.data?.alerts || []
+            
             // Find beep whose ID generates the same clean short ID
-            const matchingBeep = data.data.beeps.find((b: any) => 
+            const matchingBeep = beepsList.find((b: any) => 
               generateCleanShortIdFromAlert(b.id) === shortId
             )
             
@@ -71,7 +74,7 @@ export default function AlertDetailPage() {
             }
             
             // If we got fewer beeps than the limit, we've reached the end
-            if (data.data.beeps.length < limit) break
+            if (beepsList.length < limit) break
             offset += limit
           } else {
             break
