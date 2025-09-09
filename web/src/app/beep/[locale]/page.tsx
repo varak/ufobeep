@@ -130,9 +130,12 @@ function AlertsPageContent() {
       const response = await fetch(url)
       const data = await response.json()
       
-      if (data.success && data.data?.beeps) {
+      if (data.success && (data.data?.beeps || data.data?.alerts)) {
+        // Support both beeps and alerts for backend compatibility
+        const beepsList = data.data?.beeps || data.data?.alerts || []
+        
         // Filter out invalid coordinates (0,0 or null/undefined) except for MUFON beeps
-        const validBeeps = data.data.beeps.filter((beep: Alert) => 
+        const validBeeps = beepsList.filter((beep: Alert) => 
           beep.location.latitude !== 0 || beep.location.longitude !== 0 || beep.reporter_username === 'MUFON' || beep.reporter_username === 'MUFON_Database'
         )
         
