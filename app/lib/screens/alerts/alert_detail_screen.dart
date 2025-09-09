@@ -136,7 +136,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   Future<void> _checkFollowStatus() async {
     try {
       final response = await ApiClient.dio.get(
-        '/alerts/${widget.alertId}/follow',
+        '/beep/${widget.alertId}/follow',
         queryParameters: _currentUserDeviceId != null ? {'device_id': _currentUserDeviceId} : null,
       );
       if (mounted) {
@@ -160,7 +160,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     try {
       if (_isFollowing) {
         await ApiClient.dio.delete(
-          '/alerts/${widget.alertId}/follow',
+          '/beep/${widget.alertId}/follow',
           data: _currentUserDeviceId != null ? {'device_id': _currentUserDeviceId} : null,
         );
         setState(() {
@@ -176,7 +176,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         }
       } else {
         await ApiClient.dio.post(
-          '/alerts/${widget.alertId}/follow',
+          '/beep/${widget.alertId}/follow',
           data: _currentUserDeviceId != null ? {'device_id': _currentUserDeviceId} : null,
         );
         setState(() {

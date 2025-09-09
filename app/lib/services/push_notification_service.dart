@@ -926,7 +926,7 @@ class PushNotificationService {
       print('[SEEIT] Sending payload: ${jsonEncode(witnessData)}');
 
       final resp = await ApiClient.dio.post(
-        '/alerts/$sightingId/witnesses',
+        '/beep/$sightingId/witnesses',
         data: witnessData,
         options: Options(responseType: ResponseType.json),
       );
@@ -964,7 +964,7 @@ class PushNotificationService {
       // Check for existing comments AFTER confirmation to get the updated state
       bool commentsExisted = false;
       try {
-        final commentsResp = await ApiClient.dio.get('/alerts/$sightingId/comments?limit=5');
+        final commentsResp = await ApiClient.dio.get('/beep/$sightingId/comments?limit=5');
         final commentsData = commentsResp.data;
         if (commentsData is Map && commentsData['items'] is List) {
           final comments = commentsData['items'] as List;

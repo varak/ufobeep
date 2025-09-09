@@ -42,7 +42,7 @@ class AlertHistoryWidget extends ConsumerWidget {
       final deviceId = await deviceService.getDeviceId();
       
       final apiClient = ApiClient.instance;
-      final response = await apiClient.getJson('/users/alerts/$deviceId?per_page=10');
+      final response = await apiClient.getJson('/users/beep/$deviceId?per_page=10');
       
       if (response['success'] == true || response.containsKey('alerts')) {
         return response;

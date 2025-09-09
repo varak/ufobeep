@@ -81,7 +81,7 @@ class _NotificationManagementScreenState
         try {
           final deviceId = await BeepService().getOrCreateDeviceId();
           print('📱 Device ID: $deviceId');
-          final resp2 = await ApiClient.dio.get('/alerts/following', queryParameters: {
+          final resp2 = await ApiClient.dio.get('/beep/following', queryParameters: {
             'device_id': deviceId,
           });
           print('📡 Device fallback response: ${resp2.data}');
@@ -113,7 +113,7 @@ class _NotificationManagementScreenState
 
   Future<void> _unfollow(String sightingId, String title) async {
     try {
-      await ApiClient.dio.delete('/alerts/$sightingId/follow');
+      await ApiClient.dio.delete('/beep/$sightingId/follow');
       
       // Remove from local list
       setState(() {

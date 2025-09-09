@@ -12,7 +12,7 @@ class CommentsService {
   /// Get comments for a sighting/alert
   Future<List<Comment>> getComments(String sightingId, {int limit = 30}) async {
     try {
-      final response = await ApiClient.dio.get('/alerts/$sightingId/comments?limit=$limit');
+      final response = await ApiClient.dio.get('/beep/$sightingId/comments?limit=$limit');
       
       if (response.statusCode == 200) {
         final items = response.data['items'] as List;
@@ -49,7 +49,7 @@ class CommentsService {
       ApiClient.setBearer(accessToken);
       print('🔑 Bearer token set for comments request');
       
-      final response = await ApiClient.dio.post('/alerts/$sightingId/comments', data: {
+      final response = await ApiClient.dio.post('/beep/$sightingId/comments', data: {
         'body': body,
         'media_url': mediaUrl,
         'device_id': deviceId, // Include device ID for proper exclusion
@@ -95,7 +95,7 @@ class CommentsService {
       ApiClient.setBearer(accessToken);
       print('🔑 Bearer token set for follow request');
       
-      final response = await ApiClient.dio.post('/alerts/$sightingId/follow');
+      final response = await ApiClient.dio.post('/beep/$sightingId/follow');
       
       print('👀 Follow response status: ${response.statusCode}');
       print('👀 Follow response data: ${response.data}');
