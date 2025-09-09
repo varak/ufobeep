@@ -1,11 +1,24 @@
-export function generateSlug(title: string, location: string, date: string, id?: string) {
-  const titlePart = (title || 'ufo-sighting')
+export function generateSlug(title: string, location: string, date: string, id?: string, locale: string = 'en', translations?: any) {
+  // Get translated fallback terms
+  const getTranslatedTerm = (key: string, fallback: string) => {
+    if (translations?.slugs?.[key]) {
+      return translations.slugs[key]
+    }
+    return fallback
+  }
+
+  const ufoTerm = getTranslatedTerm('ufo', 'ufo')
+  const sightingTerm = getTranslatedTerm('sighting', 'sighting')
+  
+  const titlePart = (title || `${ufoTerm}-${sightingTerm}`)
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, '')
     .replace(/\s+/g, '-')
     .substring(0, 30)
 
-  const locationPart = (location || 'unknown')
+  const unknownTerm = getTranslatedTerm('unknown', 'unknown')
+  
+  const locationPart = (location || unknownTerm)
     .split(',')[0]
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, '')
@@ -42,7 +55,7 @@ export interface SluggableAlertLike {
   external_url?: string | null
 }
 
-export function getAlertSlug(alert: SluggableAlertLike) {
+export function getAlertSlug(alert: SluggableAlertLike, locale: string = 'en', translations?: any) {
   let locName = alert.location?.name
   let uniqueId = alert.id
   
@@ -97,13 +110,23 @@ export function getAlertSlug(alert: SluggableAlertLike) {
     }
   }
   
+  // Get translated fallback terms
+  const getTranslatedTerm = (key: string, fallback: string) => {
+    if (translations?.slugs?.[key]) {
+      return translations.slugs[key]
+    }
+    return fallback
+  }
+
   // Add source prefix for differentiation
-  let title = alert.title || 'UFO Sighting'
+  let title = alert.title || `${getTranslatedTerm('ufo', 'UFO')} ${getTranslatedTerm('sighting', 'Sighting')}`
   if (isMufon) {
-    title = 'mufon-' + (alert.title?.toLowerCase().replace('mufon ', '') || 'report')
+    const mufonTerm = getTranslatedTerm('mufon', 'mufon')
+    const reportTerm = getTranslatedTerm('report', 'report')
+    title = `${mufonTerm}-` + (alert.title?.toLowerCase().replace('mufon ', '') || reportTerm)
   }
   
-  return generateSlug(title, locName, alert.created_at, uniqueId)
+  return generateSlug(title, locName, alert.created_at, uniqueId, locale, translations)
 }
 
 // Characters safe for short IDs (excludes o, 0, i, 1, l for clarity)
