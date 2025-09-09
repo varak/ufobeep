@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'dart:io';
 import 'dart:convert';
 
@@ -46,7 +47,12 @@ void main() async {
   );
   
   final stopwatch = Stopwatch()..start();
-  print('🚀 UFOBeep starting...');
+  
+  // Get and display build info
+  final packageInfo = await PackageInfo.fromPlatform();
+  final buildNumber = packageInfo.buildNumber;
+  final version = packageInfo.version;
+  print('🚀 UFOBeep starting... v$version build #$buildNumber');
   
   // Initialize environment first (needed by other services)
   await AppEnvironment.initialize();

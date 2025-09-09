@@ -7,6 +7,7 @@
 - Do not mention yourself in commit messages or add yourself as a committer
 - Consult with the user in case of unexpected errors
 - Do not forget to stage files you added, deleted, or modified in the IMPLEMENT phase
+- **ALWAYS increment build number in app/pubspec.yaml (version: x.x.x+N) before building APK**
 
 ## Development Quick Start Context
 
