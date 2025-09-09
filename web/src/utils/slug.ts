@@ -106,9 +106,40 @@ export function getAlertSlug(alert: SluggableAlertLike) {
   return generateSlug(title, locName, alert.created_at, uniqueId)
 }
 
+// Characters safe for short IDs (excludes o, 0, i, 1, l for clarity)
+const SAFE_CHARS = '23456789abcdefghjkmnpqrstuvwxyz'
+
+function generateCleanShortId(input: string): string {
+  // Generate a 4-character clean ID from input string
+  let hash = 0
+  for (let i = 0; i < input.length; i++) {
+    const char = input.charCodeAt(i)
+    hash = ((hash << 5) - hash) + char
+    hash = hash & hash // Convert to 32-bit integer
+  }
+  
+  // Convert hash to base-29 using safe characters
+  let shortId = ''
+  const absHash = Math.abs(hash)
+  let num = absHash
+  
+  for (let i = 0; i < 4; i++) {
+    shortId = SAFE_CHARS[num % SAFE_CHARS.length] + shortId
+    num = Math.floor(num / SAFE_CHARS.length)
+  }
+  
+  return shortId
+}
+
 export function getShortAlertUrl(alertId: string): string {
-  // Return short 4-character URL for sharing (beep branding)
-  return `/beep/${alertId.substring(0, 4)}`
+  // Generate clean 4-character URL for sharing (beep branding)
+  const cleanShortId = generateCleanShortId(alertId)
+  return `/beep/${cleanShortId}`
+}
+
+export function generateCleanShortIdFromAlert(alertId: string): string {
+  // Export the clean short ID generator for external use
+  return generateCleanShortId(alertId)
 }
 
 export function extractIdFromSlug(slug: string): string | null {
@@ -116,8 +147,8 @@ export function extractIdFromSlug(slug: string): string | null {
   const parts = slug.split('-')
   const lastPart = parts[parts.length - 1]
   
-  // Check if the last part looks like an ID (4 chars, alphanumeric)
-  if (lastPart && lastPart.length === 4 && /^[a-z0-9]+$/.test(lastPart)) {
+  // Check if the last part looks like a clean short ID (4 chars, safe chars only)
+  if (lastPart && lastPart.length === 4 && /^[23456789abcdefghjkmnpqrstuvwxyz]+$/.test(lastPart)) {
     return lastPart
   }
   

@@ -3,6 +3,7 @@
 import { notFound } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
+import { generateCleanShortIdFromAlert } from '@/utils/slug'
 
 interface PageParams {
   locale: string
@@ -45,22 +46,21 @@ export default function AlertDetailPage() {
         // Extract the first part which should be the short ID
         const shortId = fullSlug.split('-')[0]
         
-        // We need to search through alerts to find one with matching ID prefix
-        // Fetch a large batch of alerts to find the matching one
+        // Search through alerts to find one that generates the same short ID
         let found = false
         let offset = 0
         const limit = 100
         let targetAlert = null
         
-        while (!found && offset < 1000) { // Search up to 1000 alerts
+        while (!found && offset < 500) { // Search up to 500 alerts
           const res = await fetch(`/api/alerts?limit=${limit}&offset=${offset}&verified_only=false`)
           if (!res.ok) break
           
           const data = await res.json()
           if (data.success && data.data?.alerts) {
-            // Find alert with ID that starts with the short ID
+            // Find alert whose ID generates the same clean short ID
             const matchingAlert = data.data.alerts.find((a: any) => 
-              a.id?.startsWith(shortId)
+              generateCleanShortIdFromAlert(a.id) === shortId
             )
             
             if (matchingAlert) {
@@ -77,11 +77,7 @@ export default function AlertDetailPage() {
           }
         }
         
-        if (targetAlert) {
-          setAlert(targetAlert)
-        } else {
-          setAlert(null)
-        }
+        setAlert(targetAlert)
       } catch (error) {
         console.error('Error fetching alert:', error)
         setAlert(null)
