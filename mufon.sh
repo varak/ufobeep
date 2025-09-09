@@ -270,19 +270,20 @@ def reverse_geocode(location_text: str) -> Optional[Dict[str, any]]:
     
     text = location_text.strip()
     
-    # Clean up MUFON location format like "Schenectady, NY, US" 
+    # Clean up MUFON location format like "Acolita, CA, US" 
     cleaned_location = re.sub(r',?\s*(US|USA)$', '', text, flags=re.IGNORECASE).strip()
     
-    # If it already looks like "City, ST", use it directly
-    if re.match(r'^[A-Za-z\s]+,\s*[A-Z]{2}$', cleaned_location):
+    # Enhanced regex to handle city names with special characters, numbers, etc.
+    # Examples: "Las Vegas, NV", "St. Louis, MO", "New York City, NY", "Acolita, CA"
+    if re.match(r'^[A-Za-z0-9\s\.\-\']+,\s*[A-Z]{2}$', cleaned_location):
         search_location = cleaned_location
     else:
-        # Extract location patterns from descriptions
+        # Extract location patterns from descriptions - enhanced patterns
         location_patterns = [
-            r"in\s+([A-Za-z\s]+),\s*([A-Z]{2})\b",  # "in City, ST"
-            r"near\s+([A-Za-z\s]+),\s*([A-Z]{2})\b",  # "near City, ST"
-            r"from\s+([A-Za-z\s]+),\s*([A-Z]{2})\b",  # "from City, ST"
-            r"([A-Za-z\s]+),\s*([A-Z]{2})\b",          # "City, ST"
+            r"in\s+([A-Za-z0-9\s\.\-\']+),\s*([A-Z]{2})\b",  # "in City, ST"
+            r"near\s+([A-Za-z0-9\s\.\-\']+),\s*([A-Z]{2})\b",  # "near City, ST"
+            r"from\s+([A-Za-z0-9\s\.\-\']+),\s*([A-Z]{2})\b",  # "from City, ST"
+            r"([A-Za-z0-9\s\.\-\']+),\s*([A-Z]{2})\b",          # "City, ST"
         ]
         
         search_location = None
@@ -295,9 +296,11 @@ def reverse_geocode(location_text: str) -> Optional[Dict[str, any]]:
                     search_location = f"{city}, {state}"
                     break
         
-        # If no structured location found, don't geocode
-        if not search_location:
-            return None
+        # If no structured location found but we have text, try cleaning and using as-is
+        if not search_location and len(cleaned_location) > 5:
+            # For locations like "Acolita" or other single-word places, try with generic search
+            search_location = cleaned_location
+            log(f"🔍 Using fallback location search for: '{search_location}'")
     
     try:
         # Use Nominatim for geocoding
@@ -892,23 +895,27 @@ def extract_and_import_mufon(date_str):
                             "external_id": f"mufon_{real_case_id}",  # Populate external_id field
                             "tier": 2,  # MUFON cases are tier 2 (investigated reports, high quality)
                             "date_posted": date_posted_iso,  # Populate date_posted field
-                            "occurred_at": occurred_at_iso  # Include the parsed occurrence timestamp
+                            "occurred_at": occurred_at_iso,  # Include the parsed occurrence timestamp
+                            "report_url": f"https://mufon.com/case/{real_case_id}",  # Direct MUFON case URL
+                            "shape": classification['type'] if classification['confidence'] > 0.3 else None,  # UFO shape
+                            "duration": None  # Duration not available in MUFON data currently
                         }
                         
-                        # Add location - use geocoded data if available, otherwise use clean location name with default coords
+                        # Add location - use geocoded data if available, otherwise keep original location text
                         if geo_data:
                             alert_data["location"] = {
                                 "latitude": geo_data["latitude"],
                                 "longitude": geo_data["longitude"],
                                 "name": geo_data["location"]
                             }
-                        else:
-                            # Fallback to location name with default coordinates if geocoding failed
+                        elif location and location.strip():
+                            # Keep the original location text exactly as provided - no coordinates
+                            log(f"⚠️ No coordinates for case #{real_case_id}, keeping original location: '{location}'")
                             alert_data["location"] = {
-                                "latitude": 39.7392,  # Default Denver coords
-                                "longitude": -104.9903,
-                                "name": location if location and location.strip() else "Location Unknown"
+                                "name": location.strip()
+                                # No latitude/longitude - proximity alerts will be skipped but data is saved
                             }
+                        # If no location at all, don't include location field
                         
                         # Store all enrichment data (classification, geocoding, etc.) 
                         enrichment_data = {

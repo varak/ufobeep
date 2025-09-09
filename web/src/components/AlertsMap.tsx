@@ -112,7 +112,7 @@ export default function AlertsMap({
               ` : ''}
               <div class="text-xs text-gray-400 mt-1">${new Date(alert.created_at).toLocaleDateString()}</div>
               <div class="mt-2">
-                <a class="text-blue-600 underline" href="/alerts/${getAlertSlug({ id: alert.id, title: alert.title, created_at: alert.created_at, location: alert.location, reporter_username: alert.username, description: alert.description, source: alert.source })}">View details →</a>
+                <a class="text-blue-600 underline" href="/beep/${getAlertSlug({ id: alert.id, title: alert.title, created_at: alert.created_at, location: alert.location, reporter_username: alert.username, description: alert.description, source: alert.source })}">View details →</a>
               </div>
             </div>
           `
@@ -218,7 +218,7 @@ export default function AlertsMap({
                 ` : ''}
                 <div class="text-xs text-gray-400 mt-1">${new Date(alert.created_at).toLocaleDateString()}</div>
                 <div class="mt-2">
-                  <a class="text-blue-600 underline" href="/alerts/${getAlertSlug({ id: alert.id, title: alert.title, created_at: alert.created_at, location: alert.location, reporter_username: alert.username, description: alert.description, source: alert.source })}">View details →</a>
+                  <a class="text-blue-600 underline" href="/beep/${getAlertSlug({ id: alert.id, title: alert.title, created_at: alert.created_at, location: alert.location, reporter_username: alert.username, description: alert.description, source: alert.source })}">View details →</a>
                 </div>
               </div>
             `
@@ -264,7 +264,7 @@ export default function AlertsMap({
               ` : ''}
               <div class="text-xs text-gray-400 mt-1">${new Date(alert.created_at).toLocaleDateString()}</div>
               <div class="mt-2">
-                <a class="text-blue-600 underline" href="/alerts/${getAlertSlug({ id: alert.id, title: alert.title, created_at: alert.created_at, location: alert.location, reporter_username: alert.username, description: alert.description, source: alert.source })}">View details →</a>
+                <a class="text-blue-600 underline" href="/beep/${getAlertSlug({ id: alert.id, title: alert.title, created_at: alert.created_at, location: alert.location, reporter_username: alert.username, description: alert.description, source: alert.source })}">View details →</a>
               </div>
             </div>
           `

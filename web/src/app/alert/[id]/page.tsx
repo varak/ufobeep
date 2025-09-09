@@ -11,7 +11,7 @@ export default async function ShortAlertRedirect({ params }: { params: PageParam
   
   if (!alert) {
     // If not found, redirect to main alerts page
-    redirect('/alerts')
+    redirect('/beep')
   }
 
   // Generate the full slug and redirect to the proper SEO-friendly URL
@@ -26,7 +26,7 @@ export default async function ShortAlertRedirect({ params }: { params: PageParam
   })
 
   // Redirect to the full slug URL
-  redirect(`/alerts/${fullSlug}`)
+  redirect(`/beep/${fullSlug}`)
 }
 
 async function findAlertByIdHash(idHash: string): Promise<any | null> {

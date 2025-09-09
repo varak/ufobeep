@@ -199,7 +199,7 @@ export default function ShareToBeepPromo() {
                 Download UFOBeep
               </a>
               <a
-                href="/alerts"
+                href="/beep"
                 className="border border-brand-primary text-brand-primary px-8 py-3 rounded-lg font-semibold hover:bg-brand-primary hover:text-text-inverse transition-all duration-300 hover:scale-105 transform"
               >
                 See Recent Alerts

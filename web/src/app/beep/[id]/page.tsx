@@ -13,7 +13,7 @@ export default async function ShortBeepRedirect({ params }: { params: PageParams
   if (!alert) {
     // If not found, redirect to main alerts page with language detection
     const userLocale = detectUserLocale()
-    const alertsUrl = userLocale === 'en' ? '/alerts' : `/${userLocale}/alerts`
+    const alertsUrl = userLocale === 'en' ? '/beep' : `/${userLocale}/beep`
     redirect(alertsUrl)
   }
 
@@ -30,7 +30,7 @@ export default async function ShortBeepRedirect({ params }: { params: PageParams
 
   // Auto-detect user's preferred language and redirect accordingly
   const userLocale = detectUserLocale()
-  const alertUrl = userLocale === 'en' ? `/alerts/${fullSlug}` : `/${userLocale}/alerts/${fullSlug}`
+  const alertUrl = userLocale === 'en' ? `/beep/${fullSlug}` : `/${userLocale}/beep/${fullSlug}`
   
   redirect(alertUrl)
 }

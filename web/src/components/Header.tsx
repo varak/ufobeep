@@ -41,7 +41,7 @@ export default function Header() {
 
           {/* Center: Nav (desktop) */}
           <nav className="hidden md:flex items-center gap-1">
-            <NavLink href="/alerts" label="Alerts" />
+            <NavLink href="/beep" label="Beep" />
             <NavLink href="/map" label="Map" />
             <NavLink href="/download" label="Download" />
           </nav>
@@ -85,7 +85,7 @@ export default function Header() {
         {open && (
           <div className="md:hidden pb-3">
             <div className="flex flex-col gap-1">
-              <NavLink href="/alerts" label="Alerts" />
+              <NavLink href="/beep" label="Beep" />
               <NavLink href="/map" label="Map" />
               <NavLink href="/download" label="Download" />
               <div className="px-1 py-2">

@@ -111,7 +111,7 @@ export default function MiniMap({ className = '', alerts = [], loading = false }
               <div className="text-xs text-text-secondary">Showing</div>
             </div>
           </div>
-          <Link href="/alerts" className="text-sm text-brand-primary hover:text-brand-primary-light transition-colors">
+          <Link href="/beep" className="text-sm text-brand-primary hover:text-brand-primary-light transition-colors">
             View All →
           </Link>
         </div>

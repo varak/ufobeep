@@ -50,21 +50,21 @@ export async function GET() {
   
   <!-- Sample Alert Pages (examples for demonstration) -->
   <url>
-    <loc>${baseUrl}/alerts/1</loc>
+    <loc>${baseUrl}/beep/1</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>${baseUrl}/alerts/2</loc>
+    <loc>${baseUrl}/beep/2</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>${baseUrl}/alerts/3</loc>
+    <loc>${baseUrl}/beep/3</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

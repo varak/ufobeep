@@ -116,7 +116,7 @@ export default function SubscriptionsPage() {
               </p>
             </div>
             <Link
-              href="/alerts"
+              href="/beep"
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
             >
               Browse Alerts
@@ -162,7 +162,7 @@ export default function SubscriptionsPage() {
                 You&apos;re not following any alerts for comment notifications.
               </p>
               <Link
-                href="/alerts"
+                href="/beep"
                 className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -182,7 +182,7 @@ export default function SubscriptionsPage() {
                     <div className="flex-1">
                       <div className="flex items-center space-x-3 mb-3">
                         <Link
-                          href={`/alerts/${subscription.alert_id}`}
+                          href={`/beep/${subscription.alert_id}`}
                           className="text-xl font-semibold text-blue-400 hover:text-blue-300 transition-colors"
                         >
                           {subscription.alert_title}
@@ -230,7 +230,7 @@ export default function SubscriptionsPage() {
                     
                     <div className="flex items-center space-x-2 ml-4">
                       <Link
-                        href={`/alerts/${subscription.alert_id}`}
+                        href={`/beep/${subscription.alert_id}`}
                         className="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 rounded transition-colors"
                       >
                         View Alert

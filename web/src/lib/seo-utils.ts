@@ -131,7 +131,7 @@ export function generateAlertArticleStructuredData(alert: {
         url: `${SEO_CONSTANTS.BASE_URL}/images/logo.png`,
       },
     },
-    mainEntityOfPage: `${SEO_CONSTANTS.BASE_URL}/alerts/${alert.id}`,
+    mainEntityOfPage: `${SEO_CONSTANTS.BASE_URL}/beep/${alert.id}`,
     about: {
       '@type': 'Event',
       name: `UFO Sighting ${alert.id}`,

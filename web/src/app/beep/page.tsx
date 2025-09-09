@@ -83,7 +83,7 @@ function AlertsPageContent() {
     }
     
     const queryString = newParams.toString()
-    const newUrl = queryString ? `/alerts?${queryString}` : '/alerts'
+    const newUrl = queryString ? `/beep?${queryString}` : '/beep'
     router.replace(newUrl)
   }
 
@@ -497,7 +497,7 @@ function AlertsPageContent() {
               <h3 className="font-semibold text-text-primary mb-4">Navigate</h3>
               <ul className="space-y-2 text-sm">
                 <li><Link href="/" className="text-text-secondary hover:text-brand-primary transition-colors">Home</Link></li>
-                <li><Link href="/alerts" className="text-text-secondary hover:text-brand-primary transition-colors">Recent Alerts</Link></li>
+                <li><Link href="/beep" className="text-text-secondary hover:text-brand-primary transition-colors">Recent Alerts</Link></li>
                 <li><Link href="/app" className="text-text-secondary hover:text-brand-primary transition-colors">Download App</Link></li>
               </ul>
             </div>

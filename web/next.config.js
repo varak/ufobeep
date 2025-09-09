@@ -73,16 +73,16 @@ const nextConfig = {
         destination: '/api/admin/:path*',
         permanent: false,
       },
-      // SEO-friendly /beep URLs redirect to /alerts (main listing)
+      // Redirect old /alerts URLs to new SEO-friendly /beep URLs
       {
-        source: '/beep',
-        destination: '/alerts',
-        permanent: false, // Use 302 for now, can change to 301 later
+        source: '/alerts',
+        destination: '/beep',
+        permanent: false,
       },
-      // Multi-language /beep URLs
+      // Multi-language alerts redirect to beep
       {
-        source: '/:locale(es|de|fr|pt|ru|ja|zh|it|ar|ko|tr|hi|pl|cs|nl|sv|da|no|fi|el|he)/beep',
-        destination: '/:locale/alerts',
+        source: '/:locale(es|de|fr|pt|ru|ja|zh|it|ar|ko|tr|hi|pl|cs|nl|sv|da|no|fi|el|he)/alerts',
+        destination: '/:locale/beep',
         permanent: false,
       },
     ];

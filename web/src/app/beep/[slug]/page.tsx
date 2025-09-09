@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: PageParams }): Prom
   if (!alert) {
     return {
       title: 'Alert Not Found',
-      alternates: { canonical: `/alerts/${params.slug}` },
+      alternates: { canonical: `/beep/${params.slug}` },
     }
   }
 
@@ -26,9 +26,9 @@ export async function generateMetadata({ params }: { params: PageParams }): Prom
   return {
     title: `${title} - UFOBeep`,
     description,
-    alternates: { canonical: `/alerts/${params.slug}` },
+    alternates: { canonical: `/beep/${params.slug}` },
     openGraph: { 
-      url: `${env.siteUrl}/alerts/${params.slug}`,
+      url: `${env.siteUrl}/beep/${params.slug}`,
       title,
       description,
       type: 'article',

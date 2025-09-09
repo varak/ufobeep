@@ -18,9 +18,9 @@ export const apiConfig = {
     updateProfile: '/users/profile',
     
     // Unified alerts endpoints (replaces sightings)
-    alerts: '/alerts',
-    createAlert: '/alerts',
-    alertDetail: '/alerts',
+    alerts: '/beep',
+    createAlert: '/beep',
+    alertDetail: '/beep',
     uploadRequest: '/upload/request',
     
     // Matrix endpoints

@@ -19,7 +19,7 @@ export default function NotFound() {
           </Link>
           <div>
             <Link 
-              href="/alerts"
+              href="/beep"
               className="text-brand-primary hover:text-brand-primary-light transition-colors text-sm"
             >
               View Recent Alerts

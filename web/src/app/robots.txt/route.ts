@@ -9,7 +9,7 @@ Allow: /app
 Allow: /privacy
 Allow: /terms
 Allow: /safety
-Allow: /alerts/*
+Allow: /beep/*
 
 # Disallow sensitive areas (when they exist)
 Disallow: /admin/

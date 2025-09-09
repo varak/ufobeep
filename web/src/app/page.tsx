@@ -25,9 +25,9 @@ export default function Home() {
                 📱 Download App
               </button>
             </Link>
-            <Link href="/alerts">
+            <Link href="/beep">
               <button className="border border-brand-primary text-brand-primary px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary hover:text-text-inverse transition-all duration-300 hover:scale-105 transform">
-                📋 View All Alerts
+                📋 View All Beeps
               </button>
             </Link>
             <a href="#global-network">
@@ -225,7 +225,7 @@ export default function Home() {
               <ul className="space-y-2 text-sm text-text-secondary">
                 <li><Link href="/app" className="hover:text-brand-primary transition-colors">Download</Link></li>
                 <li><Link href="#features" className="hover:text-brand-primary transition-colors">Features</Link></li>
-                <li><a href="/alerts" className="hover:text-brand-primary transition-colors">Recent Alerts</a></li>
+                <li><a href="/beep" className="hover:text-brand-primary transition-colors">Recent Alerts</a></li>
               </ul>
             </div>
             <div>

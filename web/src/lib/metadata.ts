@@ -69,7 +69,7 @@ export function generateLocalizedMetadata({
   
   // Add alert ID to path if it's an alert detail page
   if (page === 'alertDetail' && params?.id) {
-    pagePath = `/alerts/${params.id}`;
+    pagePath = `/beep/${params.id}`;
   }
   
   const canonicalUrl = customCanonical || `${baseUrl}${localizedPath}${pagePath}`;
@@ -250,7 +250,7 @@ export function generateStructuredData({
     publisher: organization,
     potentialAction: {
       '@type': 'SearchAction',
-      target: `${baseUrl}/alerts?q={search_term_string}`,
+      target: `${baseUrl}/beep?q={search_term_string}`,
       'query-input': 'required name=search_term_string',
     },
   };

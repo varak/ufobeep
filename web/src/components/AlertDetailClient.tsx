@@ -128,7 +128,7 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
     const currentSlug = Array.isArray(params.slug) && params.slug.length > 0 ? params.slug[0] : ''
     if (expectedSlug && expectedSlug !== currentSlug) {
       const qs = search?.toString()
-      const url = `/alerts/${alert.id}/${expectedSlug}${qs ? `?${qs}` : ''}`
+      const url = `/beep/${alert.id}/${expectedSlug}${qs ? `?${qs}` : ''}`
       router.replace(url)
     }
   }, [alert, params.slug, router, search])
@@ -170,7 +170,7 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
             <div className="text-6xl mb-6">⚠️</div>
             <h1 className="text-2xl font-bold text-text-primary mb-4">Alert Not Found</h1>
             <p className="text-text-secondary mb-8">{error || 'The requested UFO sighting alert could not be found.'}</p>
-            <Link href="/alerts">
+            <Link href="/beep">
               <button className="bg-brand-primary text-text-inverse px-6 py-3 rounded-lg hover:bg-brand-primary-dark transition-colors">
                 ← Back to All Alerts
               </button>
@@ -184,7 +184,7 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
   return (
     <main className="min-h-screen py-8 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
-        <Link href={`/alerts#alert-${alert.id}`} className="text-brand-primary hover:text-brand-primary-light transition-colors mb-6 inline-block">
+        <Link href={`/beep#alert-${alert.id}`} className="text-brand-primary hover:text-brand-primary-light transition-colors mb-6 inline-block">
           ← Back to All Alerts
         </Link>
 

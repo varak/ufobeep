@@ -73,7 +73,7 @@ export default function RecentAlertsSidebar({ alerts = [], loading = false }: Re
         </div>
       )}
       
-      <Link href="/alerts">
+      <Link href="/beep">
         <button className="w-full mt-4 p-3 border border-brand-primary text-brand-primary rounded-lg hover:bg-brand-primary hover:text-text-inverse transition-colors font-medium">
           View All Reports →
         </button>
