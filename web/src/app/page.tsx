@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import AppDownloadCTA from '@/components/AppDownloadCTA'
 import GlobalSightingNetwork from '@/components/GlobalSightingNetwork'
