@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import AppDownloadCTA from '@/components/AppDownloadCTA'
 import GlobalSightingNetwork from '@/components/GlobalSightingNetwork'
-import ShareToBeepPromo from '@/components/ShareToBeepPromo'
 
 export default function Home() {
   return (
@@ -154,10 +153,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Share-to-Beep Promotion */}
-      <div id="share-to-beep">
-        <ShareToBeepPromo />
-      </div>
+      {/* Share-to-Beep Feature Info */}
+      <section id="share-to-beep" className="py-20 px-6 md:px-24 bg-dark-surface">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-text-primary">
+            Share-to-Beep: Mobile Feature
+          </h2>
+          <p className="text-lg text-text-secondary mb-8 max-w-3xl mx-auto">
+            Got a great photo or video on your phone? Share it directly to UFOBeep from any app! 
+            This premium mobile feature makes reporting sightings incredibly easy.
+          </p>
+          <div className="flex justify-center items-center gap-2 text-brand-primary mb-8">
+            <span className="text-2xl">✨</span>
+            <span className="font-semibold">Record natively → Share to beep → Instant alert</span>
+            <span className="text-2xl">✨</span>
+          </div>
+          <Link href="/app">
+            <button className="bg-brand-primary text-text-inverse px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary-dark transition-all duration-300 shadow-glow hover:shadow-xl hover:scale-105 transform">
+              📱 Download to Try Share-to-Beep
+            </button>
+          </Link>
+        </div>
+      </section>
 
       {/* Community Section */}
       <section className="py-20 px-6 md:px-24">
