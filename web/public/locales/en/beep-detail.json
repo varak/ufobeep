@@ -26,6 +26,7 @@
   "mufon": {
     "attribution": "MUFON Database Report",
     "caseNumber": "Case #",
+    "genericTitle": "MUFON Sighting Report",
     "classifications": {
       "sphere": "Sphere",
       "light": "Light",
@@ -51,7 +52,8 @@
   },
   "nuforc": {
     "attribution": "NUFORC Database Report",
-    "caseNumber": "Case #", 
+    "caseNumber": "Case #",
+    "genericTitle": "NUFORC Sighting Report", 
     "classifications": {
       "sphere": "Sphere",
       "light": "Light",

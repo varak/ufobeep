@@ -8,6 +8,7 @@ import { useClientTranslations } from '@/hooks/useClientTranslations'
 import AlertHero from '@/components/alert-detail/AlertHero'
 import AlertDetails from '@/components/alert-detail/AlertDetails'
 import EnrichmentData from '@/components/alert-detail/EnrichmentData'
+import AlertComments from '@/components/AlertComments'
 
 interface PageParams {
   locale: string
@@ -60,18 +61,30 @@ interface Alert {
 }
 
 function getClassifiedTitle(alert: Alert, t: any): string {
-  // For MUFON reports, use classification-based title
-  if (alert.reporter_username === 'MUFON' && alert.enrichment?.classification?.type) {
+  // For MUFON reports, use classification-based title only if confidence is high enough
+  if (alert.reporter_username === 'MUFON' && 
+      alert.enrichment?.classification?.type && 
+      (alert.enrichment?.classification?.confidence || 0) >= 0.75) {
     const classificationType = alert.enrichment.classification.type.toLowerCase()
     const classificationName = t(`mufon.classifications.${classificationType}`, classificationType)
     return t('mufon.titleFormat', { classification: classificationName })
   }
   
   // For NUFORC reports (future)
-  if (alert.reporter_username === 'NUFORC' && alert.enrichment?.classification?.type) {
+  if (alert.reporter_username === 'NUFORC' && 
+      alert.enrichment?.classification?.type &&
+      (alert.enrichment?.classification?.confidence || 0) >= 0.75) {
     const classificationType = alert.enrichment.classification.type.toLowerCase()
     const classificationName = t(`nuforc.classifications.${classificationType}`, classificationType)
     return t('nuforc.titleFormat', { classification: classificationName })
+  }
+  
+  // For MUFON/NUFORC without high confidence classification, use generic title
+  if (alert.reporter_username === 'MUFON') {
+    return t('mufon.genericTitle', 'MUFON Sighting Report')
+  }
+  if (alert.reporter_username === 'NUFORC') {
+    return t('nuforc.genericTitle', 'NUFORC Sighting Report')
   }
   
   // For UFOBeep reports, use original title
@@ -224,6 +237,9 @@ export default function AlertDetailPage() {
         {alert.enrichment && Object.keys(alert.enrichment).length > 0 && (
           <EnrichmentData alert={alert} />
         )}
+
+        {/* Comments Section for all reports */}
+        <AlertComments alertId={alert.id} />
       </div>
     </main>
   )
