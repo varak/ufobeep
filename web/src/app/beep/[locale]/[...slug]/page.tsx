@@ -2,8 +2,8 @@
 
 import { notFound } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useParams, useSearchParams } from 'next/navigation'
-import { generateCleanShortIdFromAlert } from '@/utils/slug'
+import { useParams, useSearchParams, useRouter } from 'next/navigation'
+import { generateCleanShortIdFromAlert, getAlertSlug } from '@/utils/slug'
 import { useClientTranslations } from '@/hooks/useClientTranslations'
 import AlertHero from '@/components/alert-detail/AlertHero'
 import AlertDetails from '@/components/alert-detail/AlertDetails'
@@ -121,6 +121,7 @@ function getEnrichedLocation(alert: Alert, t: any): string {
 export default function AlertDetailPage() {
   const params = useParams()
   const searchParams = useSearchParams()
+  const router = useRouter()
   const [alert, setAlert] = useState<Alert | null>(null)
   const [loading, setLoading] = useState(true)
   const locale = (params?.locale as string) || 'en'
@@ -199,6 +200,26 @@ export default function AlertDetailPage() {
     
     fetchAlert()
   }, [params, t])
+
+  // Client-side redirect to canonical slug URL once we have the alert
+  useEffect(() => {
+    if (!alert) return
+    
+    const currentSlug = params?.slug as string[]
+    if (!currentSlug) return
+    
+    const fullSlug = currentSlug.join('/')
+    
+    // Generate expected slug
+    const expectedSlug = getAlertSlug(alert, locale, t)
+    
+    // If current slug doesn't match expected slug, redirect
+    if (expectedSlug && expectedSlug !== fullSlug) {
+      const qs = searchParams?.toString()
+      const url = `/beep/${locale}/${expectedSlug}${qs ? `?${qs}` : ''}`
+      router.replace(url)
+    }
+  }, [alert, params?.slug, router, searchParams, locale, t])
   
   if (loading) {
     return (
