@@ -8,8 +8,8 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const queryString = searchParams.toString()
     
-    // Backend still uses /alerts endpoint
-    const apiUrl = `${API_BASE_URL}/alerts${queryString ? `?${queryString}` : ''}`
+    // Use new unified /beep endpoint
+    const apiUrl = `${API_BASE_URL}/beep${queryString ? `?${queryString}` : ''}`
     
     const response = await fetch(apiUrl, {
       method: 'GET',
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
     
     const data = await response.json()
     
-    // Transform response to use "beep" terminology
+    // Backend now returns alerts in data.alerts, transform to beeps for frontend
     if (data.data && data.data.alerts) {
       data.data.beeps = data.data.alerts
       delete data.data.alerts
@@ -48,8 +48,8 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     
-    // Backend still uses /alerts endpoint
-    const apiUrl = `${API_BASE_URL}/alerts`
+    // Use new unified /beep endpoint
+    const apiUrl = `${API_BASE_URL}/beep`
     
     const response = await fetch(apiUrl, {
       method: 'POST',
