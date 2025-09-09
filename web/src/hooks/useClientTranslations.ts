@@ -41,6 +41,11 @@ export function useClientTranslations(namespace: string, locale: string = 'en') 
   }, [namespace, locale])
 
   const t = (key: string, options?: { returnObjects?: boolean }) => {
+    // If translations are still loading, return a loading placeholder instead of the key
+    if (loading) {
+      return '...' 
+    }
+    
     const keys = key.split('.')
     let value = translations
     
@@ -48,7 +53,15 @@ export function useClientTranslations(namespace: string, locale: string = 'en') 
       if (value && typeof value === 'object' && k in value) {
         value = value[k]
       } else {
-        return key // Return the key if translation not found
+        // Return appropriate fallback based on key
+        const fallbacks: Record<string, string> = {
+          'title': 'Recent UFO Beeps',
+          'subtitle': 'Live UFOBeep community reports & MUFON database sightings', 
+          'description': 'This feed combines real-time UFOBeep "beeps" from our mobile app users with historical reports from the MUFON database.',
+          'loadingBeeps': 'Loading recent beeps...',
+          'backToHome': '← Back to Home'
+        }
+        return fallbacks[key] || key
       }
     }
     
