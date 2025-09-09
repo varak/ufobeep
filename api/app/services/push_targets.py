@@ -39,7 +39,7 @@ WHERE d.user_id = ANY($1)
   AND d.push_enabled = TRUE
   AND d.push_token IS NOT NULL
   AND d.token_status = 'valid'
-  AND d.device_id != $2
+  AND ($2 IS NULL OR d.device_id != $2)
 """
 
 

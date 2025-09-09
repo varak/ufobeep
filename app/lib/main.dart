@@ -56,6 +56,9 @@ void main() async {
   
   // Ensure notification permissions are requested early
   await Notifications.ensureNotificationPermission();
+  
+  // Initialize notification channels
+  await Notifications.initializeChannels();
 
   // Run critical initialization in parallel (Firebase MUST be first)
   final results = await Future.wait([

@@ -166,7 +166,7 @@ class AlertFanoutWorker:
         notification_title, notification_body = self._create_notification_content(sighting)
         
         # Send push notifications
-        results = await push_service.send_sighting_alert(
+        results = await push_service.send_sighting_beep(
             sighting_id=sighting.sighting_id,
             title=notification_title,
             body=notification_body,

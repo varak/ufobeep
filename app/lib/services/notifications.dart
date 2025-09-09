@@ -1,15 +1,40 @@
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'sound_service.dart';
 
 class Notifications {
-  static const String channelId = 'ufobeep_alerts';
+  static const String channelId = 'ufobeep_beeps';
+  static final FlutterLocalNotificationsPlugin _notifications = FlutterLocalNotificationsPlugin();
 
   static Future<void> ensureNotificationPermission() async {
     final status = await Permission.notification.status;
     if (!status.isGranted) {
       await Permission.notification.request();
     }
+  }
+
+  static Future<void> initializeChannels() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+    
+    await _notifications.initialize(initializationSettings);
+    
+    // Create high-priority beep notification channel
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+      channelId,
+      'UFO Beep Alerts',
+      description: 'High priority notifications for nearby UFO sightings',
+      importance: Importance.high,
+      enableVibration: true,
+      playSound: true,
+    );
+    
+    await _notifications.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
   }
 
   static Future<void> handleForegroundBeep() async {

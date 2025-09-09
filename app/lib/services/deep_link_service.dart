@@ -127,14 +127,14 @@ class DeepLinkService {
       } else {
         print('⚠️ Unsupported deep link scheme: $scheme');
         print('   Falling back to alerts screen...');
-        _router!.go('/alerts');
+        _router!.go('/beep');
       }
     } catch (e) {
       print('❌ Error handling deep link: $e');
       print('   Stack trace: ${StackTrace.current}');
       // Fallback to alerts screen with better error handling
       try {
-        _router!.go('/alerts');
+        _router!.go('/beep');
       } catch (routerError) {
         print('❌ Even fallback navigation failed: $routerError');
       }
@@ -186,7 +186,7 @@ class DeepLinkService {
       case 'alerts':
         if (pathSegments.length > 1) {
           final sightingId = pathSegments[1];
-          _router!.go('/alerts/$sightingId');
+          _router!.go('/beep/$sightingId');
         } else {
           _router!.go('/');
         }
@@ -224,14 +224,14 @@ class DeepLinkService {
       switch (pathSegments[1]) {
         case 'chat':
           // Navigate to sighting detail with chat tab
-          _router!.go('/alerts/$sightingId?tab=chat');
+          _router!.go('/beep/$sightingId?tab=chat');
           break;
         case 'compass':
           // Navigate to compass pointing to sighting
           _router!.go('/compass?target_sighting=$sightingId');
           break;
         default:
-          _router!.go('/alerts/$sightingId');
+          _router!.go('/beep/$sightingId');
       }
     } else {
       // Navigate to sighting detail
@@ -360,14 +360,14 @@ class DeepLinkService {
         print('   OOB Code: ${queryParams['oobCode']}');
         
         // Convert to our standard auth success flow
-        _router!.go('/alerts');
+        _router!.go('/beep');
         return;
       }
       
       // Check if it contains our custom token parameter
       if (queryParams.containsKey('token')) {
         print('   Custom token found: ${queryParams['token']}');
-        _router!.go('/alerts');
+        _router!.go('/beep');
         return;
       }
       
@@ -401,7 +401,7 @@ class DeepLinkService {
         case 'sighting_alert':
           final String? sightingId = data['sighting_id'];
           if (sightingId != null) {
-            _router!.go('/alerts/$sightingId');
+            _router!.go('/beep/$sightingId');
           } else {
             _router!.go('/');
           }
@@ -410,7 +410,7 @@ class DeepLinkService {
         case 'chat_message':
           final String? sightingId = data['sighting_id'];
           if (sightingId != null) {
-            _router!.go('/alerts/$sightingId?tab=chat');
+            _router!.go('/beep/$sightingId?tab=chat');
           } else {
             _router!.go('/');
           }

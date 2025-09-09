@@ -16,6 +16,7 @@ import 'device_service.dart';
 import 'api_client.dart';
 import 'auth_repository.dart';
 import 'storage.dart';
+import 'device_registration_manager.dart';
 import '../config/environment.dart';
 import '../models/user_preferences.dart';
 import '../features/auth/auth_gate.dart';
@@ -165,6 +166,10 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
     // Fetch user profile in background - don't block authentication
     log('[AuthService] Starting background user profile fetch...');
     _fetchUserProfileInBackground();
+    
+    // Trigger device registration now that we have auth token
+    log('[AuthService] Triggering device registration after successful login...');
+    DeviceRegistrationManager().nudge();
   }
 
   /// Initialize the AuthService - call this early in app startup

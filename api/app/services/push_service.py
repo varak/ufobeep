@@ -36,7 +36,7 @@ logger = logging.getLogger(__name__)
 
 class NotificationType(str, Enum):
     """Push notification types"""
-    ALERT = "alert"
+    BEEP = "beep"
     CHAT = "chat" 
     SYSTEM = "system"
 
@@ -184,7 +184,7 @@ class PushNotificationService:
         
         filtered = []
         preference_key_map = {
-            NotificationType.ALERT: "alert_notifications",
+            NotificationType.BEEP: "beep_notifications",
             NotificationType.CHAT: "chat_notifications", 
             NotificationType.SYSTEM: "system_notifications"
         }
@@ -232,7 +232,7 @@ class PushNotificationService:
                     token=target.push_token,
                     android=messaging.AndroidConfig(
                         notification=messaging.AndroidNotification(
-                            channel_id="ufobeep_alerts",
+                            channel_id="ufobeep_beeps",
                             sound=payload.sound or "default"
                         ),
                         collapse_key=collapse_key,
@@ -322,7 +322,7 @@ class PushNotificationService:
             
         return results
         
-    async def send_sighting_alert(
+    async def send_sighting_beep(
         self,
         sighting_id: str,
         title: str,
@@ -331,12 +331,12 @@ class PushNotificationService:
         distance_km: float,
         additional_data: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
-        """Send UFO sighting alert notification"""
+        """Send UFO sighting beep notification"""
         # Apply DND/snooze/mute filters before sending
         targets = await self._apply_quiet_hours_and_mutes(sighting_id, targets)
 
         data = {
-            "type": "sighting_alert",
+            "type": "sighting_beep",
             "sighting_id": sighting_id,
             "distance_km": str(distance_km),
             "deep_link": f"ufobeep://sighting/{sighting_id}",
@@ -355,7 +355,7 @@ class PushNotificationService:
         return await self.send_notification(
             targets=targets,
             payload=payload,
-            notification_type=NotificationType.ALERT,
+            notification_type=NotificationType.BEEP,
             collapse_key=f"sighting_{sighting_id}"
         )
         
@@ -365,9 +365,9 @@ class PushNotificationService:
         commenter_username: str,
         comment_body: str,
         targets: List[PushTarget],
-        alert_title: Optional[str] = None
+        beep_title: Optional[str] = None
     ) -> Dict[str, Any]:
-        """Send comment notification to followers of an alert"""
+        """Send comment notification to followers of a beep"""
         # Apply DND/snooze/mute filters before sending
         targets = await self._apply_quiet_hours_and_mutes(sighting_id, targets)
 
@@ -376,13 +376,13 @@ class PushNotificationService:
         
         # Create notification title
         title = f"💬 {commenter_username} commented"
-        if alert_title:
-            title += f" on {alert_title[:30]}..."
+        if beep_title:
+            title += f" on {beep_title[:30]}..."
         
         data = {
             "type": "comment_notification",
             "sighting_id": sighting_id,
-            "deep_link": f"ufobeep://alert/{sighting_id}/comments",
+            "deep_link": f"ufobeep://beep/{sighting_id}/comments",
             "click_action": "OPEN_COMMENTS"
         }
         
@@ -396,7 +396,7 @@ class PushNotificationService:
         return await self.send_notification(
             targets=targets,
             payload=payload,
-            notification_type=NotificationType.ALERT,  # Comments are alerts too
+            notification_type=NotificationType.BEEP,  # Comments are alerts too
             collapse_key=f"comments_{sighting_id}"
         )
 
@@ -543,7 +543,7 @@ async def send_to_token(token: str, data: dict, title="UFOBeep", body="New sight
             token=token,
             android=messaging.AndroidConfig(
                 notification=messaging.AndroidNotification(
-                    channel_id="ufobeep_alerts",
+                    channel_id="ufobeep_beeps",
                     sound="default"
                 ),
                 data={k: str(v) for k, v in data.items()}

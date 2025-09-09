@@ -522,15 +522,15 @@ class PushNotificationService {
     try {
       final context = rootNavigatorKey.currentContext;
       if (context != null && context.mounted) {
-        context.go('/alert/$alertId');
-        print('Navigated to alert detail: $alertId');
+        context.go('/beep/$alertId');
+        print('Navigated to beep detail: $alertId');
       } else {
         print('Cannot navigate: no valid context available');
         // Store for later navigation when app becomes active
-        _pendingNavigation = '/alert/$alertId';
+        _pendingNavigation = '/beep/$alertId';
       }
     } catch (e) {
-      print('Error navigating to alert $alertId: $e');
+      print('Error navigating to beep $alertId: $e');
     }
   }
 
@@ -543,7 +543,7 @@ class PushNotificationService {
         // Check if we're already on the comments screen
         try {
           final currentLocation = GoRouter.of(context).routeInformationProvider.value.uri.toString();
-          final targetRoute = '/alert/$alertId/comments';
+          final targetRoute = '/beep/$alertId/comments';
           
           if (currentLocation.contains(targetRoute)) {
             print('🔄 Already on comments screen for $alertId - skipping navigation');
@@ -556,12 +556,12 @@ class PushNotificationService {
         } catch (routeError) {
           // Fallback: attempt navigation anyway
           print('⚠️ Could not check current route, navigating anyway: $routeError');
-          final route = '/alert/$alertId/comments';
+          final route = '/beep/$alertId/comments';
           context.go(route);
         }
       } else {
         print('❌ Cannot navigate: no valid context available');
-        _pendingNavigation = '/alert/$alertId/comments';
+        _pendingNavigation = '/beep/$alertId/comments';
         print('📝 Set pending navigation: $_pendingNavigation');
       }
     } catch (e) {
@@ -573,11 +573,11 @@ class PushNotificationService {
     try {
       final context = rootNavigatorKey.currentContext;
       if (context != null && context.mounted) {
-        context.go('/alert/$chatId/chat');
+        context.go('/beep/$chatId/chat');
         print('Navigated to chat: $chatId');
       } else {
         print('Cannot navigate: no valid context available');
-        _pendingNavigation = '/alert/$chatId/chat';
+        _pendingNavigation = '/beep/$chatId/chat';
       }
     } catch (e) {
       print('Error navigating to chat $chatId: $e');
