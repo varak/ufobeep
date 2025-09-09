@@ -523,5 +523,58 @@ class PushNotificationService:
         return filtered
 
 
+# Compatibility functions for legacy imports
+async def send_to_token(token: str, data: dict, title="UFOBeep", body="New sighting nearby"):
+    """Legacy compatibility function - send push notification to a specific FCM token"""
+    try:
+        messaging_client = get_messaging()
+    except Exception as e:
+        logger.error(f"Failed to get Firebase messaging client: {e}")
+        return None
+        
+    try:
+        # Create Firebase message
+        message = messaging.Message(
+            notification=messaging.Notification(
+                title=title,
+                body=body
+            ),
+            data={k: str(v) for k, v in data.items()},
+            token=token,
+            android=messaging.AndroidConfig(
+                notification=messaging.AndroidNotification(
+                    channel_id="ufobeep_alerts",
+                    sound="default"
+                ),
+                data={k: str(v) for k, v in data.items()}
+            )
+        )
+        
+        # Send message - use asyncio.to_thread with timeout
+        response = await asyncio.wait_for(
+            asyncio.to_thread(messaging.send, message),
+            timeout=8.0
+        )
+        logger.info(f"Successfully sent message: {response}")
+        return response
+        
+    except asyncio.TimeoutError:
+        logger.error(f"FCM timeout after 8s for token")
+        return None
+    except Exception as e:
+        logger.error(f"Failed to send FCM message: {e}")
+        return None
+
+
+def send_to_token_sync(token: str, data: dict, title="UFOBeep", body="New sighting nearby"):
+    """Synchronous version for legacy compatibility"""
+    import asyncio
+    try:
+        return asyncio.run(send_to_token(token, data, title, body))
+    except Exception as e:
+        logger.error(f"Failed to send FCM message sync: {e}")
+        return None
+
+
 # Global service instance
 push_service = PushNotificationService()
