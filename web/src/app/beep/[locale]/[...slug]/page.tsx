@@ -47,7 +47,7 @@ interface Alert {
     external_url?: string
     [key: string]: any
   }
-  media_files?: Array<{
+  media_files: Array<{
     id?: string
     type: string
     url: string
@@ -171,7 +171,8 @@ export default function AlertDetailPage() {
               latitude: targetAlert.location?.latitude || 0,
               longitude: targetAlert.location?.longitude || 0,
               name: getEnrichedLocation(targetAlert, t)
-            }
+            },
+            media_files: targetAlert.media_files || []
           }
           setAlert(enhancedAlert)
         }
