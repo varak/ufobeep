@@ -161,7 +161,7 @@ class ApiClient {
   Future<api.CreateSightingResponse> submitSighting(api.SightingSubmission submission) async {
     try {
       final response = await ApiClient.dio.post(
-        '/alerts',
+        '/beep',
         data: submission.toJson(),
       );
 
@@ -219,7 +219,7 @@ class ApiClient {
       }
 
       final response = await ApiClient.dio.get(
-        '/alerts',
+        '/beep',
         queryParameters: queryParams,
       );
 
@@ -419,7 +419,7 @@ class ApiClient {
       }
 
       final response = await ApiClient.dio.get(
-        '/alerts',
+        '/beep',
         queryParameters: queryParams,
       );
 
@@ -438,7 +438,7 @@ class ApiClient {
 
   Future<Map<String, dynamic>> getAlertDetails(String alertId) async {
     try {
-      final response = await ApiClient.dio.get('/alerts/$alertId');
+      final response = await ApiClient.dio.get('/beep/$alertId');
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -477,7 +477,7 @@ class ApiClient {
       }
 
       final response = await ApiClient.dio.get(
-        '/alerts/nearby',
+        '/beep/nearby',
         queryParameters: queryParams,
       );
 
@@ -496,7 +496,7 @@ class ApiClient {
 
   Future<Map<String, dynamic>> triggerAlertProcessing() async {
     try {
-      final response = await ApiClient.dio.post('/alerts/trigger');
+      final response = await ApiClient.dio.post('/beep/trigger');
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -513,7 +513,7 @@ class ApiClient {
 
   Future<Map<String, dynamic>> getAlertsStats() async {
     try {
-      final response = await ApiClient.dio.get('/alerts/stats');
+      final response = await ApiClient.dio.get('/beep/stats');
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -531,7 +531,7 @@ class ApiClient {
   // Witness aggregation endpoints for Task 7
   Future<Map<String, dynamic>> getWitnessAggregation(String alertId) async {
     try {
-      final response = await ApiClient.dio.get('/alerts/$alertId/aggregation');
+      final response = await ApiClient.dio.get('/beep/$alertId/aggregation');
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -548,7 +548,7 @@ class ApiClient {
 
   Future<Map<String, dynamic>> getAlertWitnesses(String alertId) async {
     try {
-      final response = await ApiClient.dio.get('/alerts/$alertId/witnesses');
+      final response = await ApiClient.dio.get('/beep/$alertId/witnesses');
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -565,7 +565,7 @@ class ApiClient {
 
   Future<Map<String, dynamic>> escalateAlert(String alertId) async {
     try {
-      final response = await ApiClient.dio.post('/alerts/$alertId/escalate');
+      final response = await ApiClient.dio.post('/beep/$alertId/escalate');
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -637,7 +637,7 @@ class ApiClient {
       };
 
       final response = await ApiClient.dio.post(
-        '/alerts/$sightingId/witnesses',
+        '/beep/$sightingId/witnesses',
         data: request,
       );
 
@@ -659,7 +659,7 @@ class ApiClient {
     required String deviceId,
   }) async {
     try {
-      final response = await ApiClient.dio.get('/alerts/$sightingId/witnesses/$deviceId');
+      final response = await ApiClient.dio.get('/beep/$sightingId/witnesses/$deviceId');
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -677,7 +677,7 @@ class ApiClient {
   // Anonymous beep endpoints for Phase 0/1 - Quick alerts
   Future<Map<String, dynamic>> sendAnonymousBeep(Map<String, dynamic> alertData) async {
     try {
-      final response = await ApiClient.dio.post('/alerts', data: alertData);
+      final response = await ApiClient.dio.post('/beep', data: alertData);
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;
@@ -999,7 +999,7 @@ extension ApiClientExtension on ApiClient {
       }
       
       debugPrint('Creating sighting first to get ID...');
-      final sightingResponse = await ApiClient.dio.post('/alerts', data: sightingData);
+      final sightingResponse = await ApiClient.dio.post('/beep', data: sightingData);
       
       // Extract sighting ID from response
       String sightingId;
@@ -1196,7 +1196,7 @@ extension ApiClientExtension on ApiClient {
     try {
       debugPrint('Updating sighting $sightingId with media files: $fileNames');
       
-      final response = await ApiClient.dio.patch('/alerts/$sightingId/media', data: {
+      final response = await ApiClient.dio.patch('/beep/$sightingId/media', data: {
         'media_files': fileNames,
       });
       
@@ -1295,7 +1295,7 @@ extension ApiClientExtension on ApiClient {
       formData.fields.add(const MapEntry('source', 'mobile_app'));
       debugPrint('Form data created successfully');
       
-      final uploadUrl = '/alerts/$sightingId/media';
+      final uploadUrl = '/beep/$sightingId/media';
       debugPrint('Upload URL: $uploadUrl');
       debugPrint('Making POST request...');
 
@@ -1335,7 +1335,7 @@ extension ApiClientExtension on ApiClient {
       debugPrint('Got device ID for alerts: $deviceId');
       
       final response = await ApiClient.dio.post(
-        '/alerts/send/$sightingId',
+        '/beep/send/$sightingId',
         data: {
           'device_id': deviceId,
           'location': {
