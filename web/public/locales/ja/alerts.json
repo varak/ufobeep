@@ -1,0 +1,11 @@
+{
+  "beepOnly": "ビープのみ",
+  "imageOnly": "画像のみ",
+  "videoOnly": "動画のみ",
+  "witnessReportOnly": "目撃者の報告のみ",
+  "reportOnly": "レポートのみ",
+  "witnesses": "目撃者",
+  "witness": "目撃者",
+  "comments": "コメント",
+  "comment": "コメント"
+}

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslation } from 'next-i18next'
 import ImageWithLoading from './ImageWithLoading'
 import MediaGalleryModal from './MediaGalleryModal'
 import { AlertTitleUtils } from '@/utils/alert-title-utils'
@@ -68,6 +69,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
   const alertData = alertWithFixedUrls
   
   const router = useRouter()
+  const { t } = useTranslation('alerts')
   const [showShareMenu, setShowShareMenu] = useState(false)
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
@@ -275,6 +277,8 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                     return <span className="text-xs text-text-tertiary">{isVideo ? 'video only' : 'image only'}</span>
                   }
                   if (hasMedia) return <span className="text-xs text-text-tertiary">📸</span>
+                  // For MUFON reports, don't show eye icon since "witness report only" is in title
+                  if (alert.reporter_username === 'MUFON') return null
                   return <span className="text-xs text-text-tertiary">👁️</span>
                 })()}
               </div>
@@ -360,6 +364,10 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
             <div className="flex-1 min-w-0">
               <h3 className="text-text-primary text-sm font-semibold line-clamp-2 leading-tight mb-1">
                 {alert.title || 'UFO Sighting'}
+                {/* Add witness report only indicator to title for MUFON reports without media */}
+                {alert.reporter_username === 'MUFON' && (!alert.media_files || alert.media_files.length === 0) && getPreviewDescription()?.trim() && (
+                  <span className="text-text-tertiary font-normal ml-1">({t('witnessReportOnly')})</span>
+                )}
               </h3>
               
               {/* Location with distance - right under title for all alerts */}
@@ -446,14 +454,16 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                     </div>
                   )}
 
-                  {/* Content type indicator - only for non-media content */}
-                  <div className="px-2 py-1 bg-dark-background/30 rounded text-xs text-text-tertiary">
-                    {getPreviewDescription()?.trim() ? (
-                      <span className="flex items-center gap-1">👁️ Report Only</span>
-                    ) : (
-                      <span className="flex items-center gap-1">📡 Beep only</span>
-                    )}
-                  </div>
+                  {/* Content type indicator - only for non-media content, skip for MUFON since info is in title */}
+                  {alert.reporter_username !== 'MUFON' && (
+                    <div className="px-2 py-1 bg-dark-background/30 rounded text-xs text-text-tertiary">
+                      {getPreviewDescription()?.trim() ? (
+                        <span className="flex items-center gap-1">👁️ Report Only</span>
+                      ) : (
+                        <span className="flex items-center gap-1">📡 Beep only</span>
+                      )}
+                    </div>
+                  )}
                 </div>
                 
                 {/* Witness count - hidden for MUFON alerts */}

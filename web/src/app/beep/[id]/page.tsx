@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
 import { findAlertBySlug, getAlertSlug } from '@/utils/slug'
 
 interface PageParams {
@@ -10,8 +11,10 @@ export default async function ShortBeepRedirect({ params }: { params: PageParams
   const alert = await findAlertByIdHash(params.id)
   
   if (!alert) {
-    // If not found, redirect to main alerts page
-    redirect('/alerts')
+    // If not found, redirect to main alerts page with language detection
+    const userLocale = detectUserLocale()
+    const alertsUrl = userLocale === 'en' ? '/alerts' : `/${userLocale}/alerts`
+    redirect(alertsUrl)
   }
 
   // Generate the full slug and redirect to the proper SEO-friendly URL
@@ -25,8 +28,35 @@ export default async function ShortBeepRedirect({ params }: { params: PageParams
     source: alert.source
   })
 
-  // Redirect to the full slug URL
-  redirect(`/alerts/${fullSlug}`)
+  // Auto-detect user's preferred language and redirect accordingly
+  const userLocale = detectUserLocale()
+  const alertUrl = userLocale === 'en' ? `/alerts/${fullSlug}` : `/${userLocale}/alerts/${fullSlug}`
+  
+  redirect(alertUrl)
+}
+
+function detectUserLocale(): string {
+  const headersList = headers()
+  const acceptLanguage = headersList.get('accept-language') || ''
+  
+  // Supported languages from our config
+  const supportedLocales = ['es', 'de', 'fr', 'pt', 'ru', 'ja', 'zh', 'it', 'ar', 'ko', 'tr', 'hi', 'pl', 'cs', 'nl', 'sv', 'da', 'no', 'fi', 'el', 'he']
+  
+  // Parse Accept-Language header (e.g., "es-ES,es;q=0.9,en;q=0.8")
+  const browserLanguages = acceptLanguage
+    .split(',')
+    .map(lang => lang.split(';')[0].split('-')[0].trim().toLowerCase())
+    .filter(lang => lang.length === 2)
+  
+  // Find first supported language
+  for (const browserLang of browserLanguages) {
+    if (supportedLocales.includes(browserLang)) {
+      return browserLang
+    }
+  }
+  
+  // Default to English
+  return 'en'
 }
 
 async function findAlertByIdHash(idHash: string): Promise<any | null> {

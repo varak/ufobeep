@@ -1,0 +1,11 @@
+{
+  "beepOnly": "beep only",
+  "imageOnly": "image only",
+  "videoOnly": "video only",
+  "witnessReportOnly": "witness report only",
+  "reportOnly": "Report Only",
+  "witnesses": "witnesses",
+  "witness": "witness",
+  "comments": "comments",
+  "comment": "comment"
+}

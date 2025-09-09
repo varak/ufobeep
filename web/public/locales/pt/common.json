@@ -1,0 +1,16 @@
+{
+  "appName": "OVNIBeep",
+  "ok": "ESTÁ BEM",
+  "cancel": "Cancelar",
+  "close": "Fechar",
+  "save": "Gravar",
+  "delete": "Apagar",
+  "edit": "Editar",
+  "yes": "Sim",
+  "no": "Não",
+  "back": "Voltar",
+  "next": "Próxima",
+  "loading": "Carregando..",
+  "error": "Algo correu mal.",
+  "tryAgain": "Repetir"
+}

@@ -38,9 +38,9 @@ export async function getStaticI18nProps(
   };
 }
 
-// Generate static paths for all supported locales
+// Generate static paths for all supported locales (matches mobile app)
 export function getI18nPaths(paths: Array<{ params: Record<string, string> }> = [{ params: {} }]) {
-  const supportedLocales = ['en', 'es', 'de'];
+  const supportedLocales = ['en', 'es', 'de', 'fr', 'pt', 'ru', 'ja', 'zh', 'it', 'ar', 'ko', 'tr', 'hi', 'pl', 'cs', 'nl', 'sv', 'da', 'no', 'fi', 'el', 'he'];
   
   return {
     paths: supportedLocales.flatMap((locale) =>

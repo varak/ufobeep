@@ -1,0 +1,16 @@
+{
+  "appName": "UFOBeep",
+  "ok": "OK",
+  "cancel": "Annulla",
+  "close": "Chiudi",
+  "save": "Salva",
+  "delete": "Cancella",
+  "edit": "Modifica",
+  "yes": "Sì",
+  "no": "No",
+  "back": "Indietro",
+  "next": "Il prossimo",
+  "loading": "Caricamento..",
+  "error": "Qualcosa è andato storto.",
+  "tryAgain": "Retry"
+}

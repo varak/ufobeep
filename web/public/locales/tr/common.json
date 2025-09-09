@@ -1,0 +1,16 @@
+{
+  "appName": "UFOBeep",
+  "ok": "TAMAM TAMAM",
+  "cancel": "Cancel",
+  "close": "Close",
+  "save": "Kaydet",
+  "delete": "Delete",
+  "edit": "Edit",
+  "yes": "Evet",
+  "no": "Hayır hayır hayır",
+  "back": "Geri dön",
+  "next": "Sonraki",
+  "loading": "Yükleniyor..",
+  "error": "Bir şey yanlış gitti.",
+  "tryAgain": "Retry"
+}

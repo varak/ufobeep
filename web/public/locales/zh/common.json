@@ -1,0 +1,16 @@
+{
+  "appName": "打开",
+  "ok": "还好",
+  "cancel": "取消",
+  "close": "关闭",
+  "save": "保存",
+  "delete": "删除",
+  "edit": "编辑",
+  "yes": "对",
+  "no": "没有",
+  "back": "回来",
+  "next": "下一个",
+  "loading": "正在装入..",
+  "error": "出了点问题.",
+  "tryAgain": "重试"
+}

@@ -1,0 +1,16 @@
+{
+  "appName": "UFOBeep",
+  "ok": "OK",
+  "cancel": "Annullér",
+  "close": "Luk",
+  "save": "Gem",
+  "delete": "Slet",
+  "edit": "Redigér",
+  "yes": "Ja",
+  "no": "Nej",
+  "back": "Tilbage",
+  "next": "Næste",
+  "loading": "Indlæser..",
+  "error": "Noget gik galt.",
+  "tryAgain": "Prøv igen"
+}

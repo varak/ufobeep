@@ -1,0 +1,11 @@
+{
+  "beepOnly": "только сигнал",
+  "imageOnly": "только изображение",
+  "videoOnly": "только видео",
+  "witnessReportOnly": "только отчет свидетеля",
+  "reportOnly": "Только Отчет",
+  "witnesses": "свидетели",
+  "witness": "свидетель",
+  "comments": "комментарии",
+  "comment": "комментарий"
+}

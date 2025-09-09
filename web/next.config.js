@@ -64,13 +64,25 @@ const nextConfig = {
     ];
   },
 
-  // Redirects for admin interface
+  // Redirects for admin interface and SEO-friendly URLs
   async redirects() {
     return [
       {
         source: '/admin/:path*',
         // api.ufobeep.com is deprecated; route admin under main domain
         destination: '/api/admin/:path*',
+        permanent: false,
+      },
+      // SEO-friendly /beep URLs redirect to /alerts (main listing)
+      {
+        source: '/beep',
+        destination: '/alerts',
+        permanent: false, // Use 302 for now, can change to 301 later
+      },
+      // Multi-language /beep URLs
+      {
+        source: '/:locale(es|de|fr|pt|ru|ja|zh|it|ar|ko|tr|hi|pl|cs|nl|sv|da|no|fi|el|he)/beep',
+        destination: '/:locale/alerts',
         permanent: false,
       },
     ];

@@ -1,0 +1,16 @@
+{
+  "appName": "UFOBeep",
+  "ok": "حسناً",
+  "cancel": "إلغاء",
+  "close": "اقترب",
+  "save": "أنقذ",
+  "delete": "تحذف",
+  "edit": "Edit",
+  "yes": "نعم",
+  "no": "لا",
+  "back": "العودة",
+  "next": "التالي",
+  "loading": "التعبئة..",
+  "error": "حدث شيء خاطئ.",
+  "tryAgain": "Retry"
+}
