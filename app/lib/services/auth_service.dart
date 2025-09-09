@@ -167,20 +167,9 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       log('[AuthService] WARNING: fetchMe failed: $e - continuing with fallback auth state');
     }
 
-    // Always emit authenticated state after token storage (don't depend on fetchMe success)
-    final user = AuthRepository().currentUser;
-    if (user != null && user.id.isNotEmpty) {
-      await _emit(AuthState.authenticated(
-        userId: user.id,
-        username: user.username ?? 'user',
-        email: user.email,
-      ));
-      debugPrint('[AuthService] ✅ Emitted authenticated state for ${user.username ?? user.id}');
-    } else {
-      // Fallback: emit authenticated state with token info
-      await _emit(AuthState.authenticated(userId: 'authenticated-user', username: 'user'));
-      debugPrint('[AuthService] ✅ Emitted fallback authenticated state (tokens stored)');
-    }
+    // ALWAYS emit authenticated state after successful token storage - don't wait for user data
+    await _emit(AuthState.authenticated(userId: 'authenticated-user', username: 'user'));
+    debugPrint('[AuthService] ✅ FORCED authenticated state emission after Google login');
   }
 
   /// Initialize the AuthService - call this early in app startup
