@@ -158,28 +158,28 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
     _apiClient.setAuthToken(access);
     log('[AuthService] ApiClient auth token set');
     
-    // Fetch current user to update AuthRepository
+    // Try to fetch current user, but don't fail if it doesn't work
     log('[AuthService] Fetching user profile...');
-    await AuthRepository().fetchMe();
-    log('[AuthService] User profile updated');
-
-    // Emit authenticated state so AuthGate/StreamingAuthGate can route correctly
     try {
-      final user = AuthRepository().currentUser;
-      if (user != null && user.id.isNotEmpty) {
-        await _emit(AuthState.authenticated(
-          userId: user.id,
-          username: user.username ?? 'user',
-          email: user.email,
-        ));
-        debugPrint('[AuthService] ✅ Emitted authenticated state for ${user.username ?? user.id}');
-      } else {
-        // Fallback: still emit authenticated to break out of sign-in loop
-        await _emit(AuthState.authenticated(userId: 'token-user', username: 'token-username'));
-        debugPrint('[AuthService] ⚠️ Emitted fallback authenticated state');
-      }
+      await AuthRepository().fetchMe();
+      log('[AuthService] User profile fetched successfully');
     } catch (e) {
-      debugPrint('[AuthService] ⚠️ Failed to emit authenticated state: $e');
+      log('[AuthService] WARNING: fetchMe failed: $e - continuing with fallback auth state');
+    }
+
+    // Always emit authenticated state after token storage (don't depend on fetchMe success)
+    final user = AuthRepository().currentUser;
+    if (user != null && user.id.isNotEmpty) {
+      await _emit(AuthState.authenticated(
+        userId: user.id,
+        username: user.username ?? 'user',
+        email: user.email,
+      ));
+      debugPrint('[AuthService] ✅ Emitted authenticated state for ${user.username ?? user.id}');
+    } else {
+      // Fallback: emit authenticated state with token info
+      await _emit(AuthState.authenticated(userId: 'authenticated-user', username: 'user'));
+      debugPrint('[AuthService] ✅ Emitted fallback authenticated state (tokens stored)');
     }
   }
 

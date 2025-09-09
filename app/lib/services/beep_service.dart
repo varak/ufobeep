@@ -233,7 +233,7 @@ class BeepService {
       
       // Send the beep - ApiClient.dio already has auth headers via AuthInterceptor
       final response = await _dio.post(
-        '/alerts',
+        '/beep',
         data: payload,
       );
       
