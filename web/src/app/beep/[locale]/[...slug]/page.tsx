@@ -30,14 +30,18 @@ interface Alert {
 }
 
 export default function AlertDetailPage() {
-  const params = useParams() as PageParams
+  const params = useParams()
   const [alert, setAlert] = useState<Alert | null>(null)
   const [loading, setLoading] = useState(true)
   
   useEffect(() => {
     async function fetchAlert() {
       try {
-        const fullSlug = params.slug.join('/')
+        const slug = params?.slug as string[]
+        const locale = params?.locale as string
+        if (!slug) return
+        
+        const fullSlug = slug.join('/')
         // Extract the first part which should be the short ID
         const shortId = fullSlug.split('-')[0]
         
@@ -87,7 +91,7 @@ export default function AlertDetailPage() {
     }
     
     fetchAlert()
-  }, [params.slug])
+  }, [params])
   
   if (loading) {
     return (
@@ -109,7 +113,7 @@ export default function AlertDetailPage() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <a 
-            href={`/beep/${params.locale}`}
+            href={`/beep/${params?.locale || 'en'}`}
             className="text-brand-primary hover:text-brand-primary-light transition-colors mb-4 inline-block"
           >
             ← Back to Beeps
