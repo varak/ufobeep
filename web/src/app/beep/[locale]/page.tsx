@@ -47,8 +47,8 @@ interface PageParams {
 function AlertsPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const params = useParams() as PageParams
-  const locale = params?.locale || 'en'
+  const params = useParams()
+  const locale = (params?.locale as string) || 'en'
   const { t } = useTranslation('alerts')
   const [alerts, setAlerts] = useState<Alert[]>([])
   const [totalAlerts, setTotalAlerts] = useState<number>(0)
