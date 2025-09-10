@@ -123,7 +123,7 @@ export function getAlertSlug(alert: SluggableAlertLike, locale: string = 'en', t
   return generateSlug(title, locName, alert.created_at, uniqueId, locale, translations)
 }
 
-// Characters safe for short IDs (excludes o, 0, i, 1, l for clarity)
+// Characters safe for short IDs (excludes O,I,L,0,1,o,l,i for clarity)
 const SAFE_CHARS = '23456789abcdefghjkmnpqrstuvwxyz'
 
 function generateCleanShortId(input: string): string {

@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from 'next/server'
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   
-  // Handle short URLs: /abc4 or /abc4/es
-  const shortMatch = pathname.match(/^\/([a-z0-9]{4})$/)
-  const shortWithLangMatch = pathname.match(/^\/([a-z0-9]{4})\/([a-z]{2})$/)
+  // Handle short URLs: /abc4 or /abc4/es (using safe chars: no o,0,i,1,l)
+  const shortMatch = pathname.match(/^\/([23456789abcdefghjkmnpqrstuvwxyz]{4})$/)
+  const shortWithLangMatch = pathname.match(/^\/([23456789abcdefghjkmnpqrstuvwxyz]{4})\/([a-z]{2})$/)
   
   if (shortMatch || shortWithLangMatch) {
     const shortId = shortMatch ? shortMatch[1] : shortWithLangMatch![1]
