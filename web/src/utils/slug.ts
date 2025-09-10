@@ -141,8 +141,12 @@ export function getShortAlertUrl(alert: any, locale: string = 'en'): string {
     shortId = generateCleanShortId(alertId)
   }
   
-  // Return language-specific URL with locale prefix
-  return `/${locale}/${shortId}`  // All languages: /en/b4uux, /es/b4uux, /ru/b4uux
+  // Return language-specific URL with optional locale suffix
+  if (locale === 'en') {
+    return `/${shortId}`  // Default English: just /b4uux
+  } else {
+    return `/${shortId}/${locale}`  // Other languages: /b4uux/es
+  }
 }
 
 export function generateCleanShortIdFromAlert(alertId: string): string {
