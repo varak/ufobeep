@@ -1,6 +1,6 @@
 # MASTER_PLAN_v16 — Community & Media (Implementation Status)
 
-**Current Status: Sprint B Completed + Critical Bug Fixes**
+**Current Status: Sprint B Completed + URL Architecture Overhaul**
 
 Goals: Multi-media per alert, Comments, Auto-follow + pushes, Share cards, Share→Compose reliability, Sleep/DND.
 
@@ -9,10 +9,15 @@ Guardrails: keep `/alerts`, `/media/uploads`; proximity & device location must s
 ## 🎯 **Current Sprint Progress**
 - ✅ **Sprint A**: Multi-Media Alerts - COMPLETED
 - ✅ **Sprint B**: Comments + Follows + Push - COMPLETED  
+- ✅ **URL Architecture**: Smart Short URLs + Multilingual Support - COMPLETED
 - 🔄 **Sprint C**: Share Cards + Share→Compose + Sleep/DND - IN PROGRESS
 - ⏳ **Sprint D**: Map & Ops - PENDING
 
-## 🚨 **Critical Fixes Completed (August 2025)**
+## 🚨 **Critical Fixes Completed (August-September 2025)**
+- ✅ **URL Architecture Overhaul**: New short URL system with automatic language detection
+- ✅ **Dual Endpoint Support**: Both `/beep` and `/alerts` APIs for client compatibility
+- ✅ **Multilingual Routing**: 22 language support with smart browser detection
+- ✅ **SEO Optimization**: Canonical URLs with descriptive slugs
 - ✅ **Witness Confirmation Bug**: Fixed "string is not subtype of int at index" crash
 - ✅ **Type Safety**: Added comprehensive defensive JSON parsing
 - ✅ **UI Consistency**: Updated button styling across all screens
@@ -47,7 +52,7 @@ class UploadQueue {
 Future<int> createAlert({required String message, required double lat, required double lon,
   required List<Map<String,dynamic>> firstMedia,}) async {
   final body={"message":message,"lat":lat,"lon":lon,if(firstMedia.isNotEmpty)"media":firstMedia};
-  final res=await dio.post("/alerts",data=body); return res.data["id"] as int;
+  final res=await dio.post("/alerts",data:body); return res.data["id"] as int;
 }
 Future<void> appendMedia(int alertId, List<Map<String,dynamic>> media) async {
   await dio.post("/alerts/$alertId/media",data:{"media":media});
@@ -67,9 +72,34 @@ Future<void> appendMedia(int alertId, List<Map<String,dynamic>> media) async {
 - FCM integration delivering real-time alerts
 - "I see it too" button working reliably with type-safe API responses
 
+## URL Architecture Overhaul ✅ COMPLETED
+
+**New Smart URL System**:
+- **Short URLs**: `/ehf3` auto-detects user language
+- **Language-specific**: `/ehf3/es` for explicit Spanish
+- **Canonical URLs**: `/beep/es/enhanced-sighting-description-ehf3`
+- **22 Languages**: es, de, fr, pt, ru, ja, zh, it, ar, ko, tr, hi, pl, cs, nl, sv, da, no, fi, el, he
+
+**Dual API Support**:
+- **Primary**: `/beep` endpoints for new web frontend
+- **Legacy**: `/alerts` endpoints for mobile app compatibility
+- **Frontend transformation**: `data.alerts` → `data.beeps` for web consistency
+
+**SEO & Performance**:
+- Automatic language detection from browser headers
+- Descriptive slugs for better search ranking
+- Canonical URL redirects prevent duplicate content
+- Middleware-based routing for optimal performance
+
 ## Sprint C — Share Cards + Share→Compose + Sleep/DND
-[web] OG tags; `/og/alerts/{id}.png` image (starter provided).
+[web] OG tags; `/og/beep/{id}.png` image (updated for new URL structure).
 [app] singleTask + onNewIntent + persisted pending share.
+
+**Updated Implementation Notes**:
+- Share URLs now use short format: `ufobeep.com/ehf3`
+- Language-aware sharing: shared URL detects recipient's language
+- OG image generation supports new `/beep/{locale}/{slug}` structure
+- Mobile deep links handle both short and canonical URL formats
 
 ## Sprint D — Map & Ops
 Map clustering; Sentry; CI; Field Diagnostic screen.

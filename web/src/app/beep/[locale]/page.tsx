@@ -53,11 +53,11 @@ export default function BeepLocalePage({ params }: BeepPageProps) {
     const fetchAlerts = async () => {
       setLoading(true)
       try {
-        const response = await fetch('/api/alerts?limit=50')
+        const response = await fetch('/api/beep?limit=50')
         const data = await response.json()
         
-        if (data.success && data.data?.alerts) {
-          setAlerts(data.data.alerts)
+        if (data.success && data.data?.beeps) {
+          setAlerts(data.data.beeps)
         }
       } catch (error) {
         console.error('Failed to fetch alerts:', error)
