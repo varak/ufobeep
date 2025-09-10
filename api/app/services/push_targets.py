@@ -9,7 +9,7 @@ import asyncpg
 ALL_TOKENS_SQL_FOR_USERS = """
 SELECT DISTINCT d.push_token
 FROM devices d
-WHERE d.user_id = ANY($1)
+WHERE d.user_id = ANY($1::uuid[])
   AND d.is_active = TRUE
   AND d.push_enabled = TRUE
   AND d.push_token IS NOT NULL
@@ -34,12 +34,12 @@ async def tokens_for_users(pool: asyncpg.Pool, user_ids: Iterable[str]) -> List[
 TOKENS_FOR_USERS_EXCLUDE_DEVICE_SQL = """
 SELECT DISTINCT d.push_token
 FROM devices d
-WHERE d.user_id = ANY($1)
+WHERE d.user_id = ANY($1::uuid[])
   AND d.is_active = TRUE
   AND d.push_enabled = TRUE
   AND d.push_token IS NOT NULL
   AND d.token_status = 'valid'
-  AND ($2 IS NULL OR d.device_id != $2)
+  AND ($2::text IS NULL OR d.device_id != $2::text)
 """
 
 
