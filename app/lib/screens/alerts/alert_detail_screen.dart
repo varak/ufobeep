@@ -314,9 +314,9 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                           child: Builder(
                             builder: (context) {
                               final locale = Localizations.localeOf(context).languageCode;
-                              final shareUrl = getShortAlertUrl(alert.id, locale: locale);
+                              final shareUrl = getShortAlertUrl(alert.shortUrl, locale: locale);
                               final shareLink = 'ufobeep.com${shareUrl}';
-                              debugPrint('🔗 SHORT URL DEBUG: alertId=${alert.id}, shareUrl=${shareUrl}, shareLink=${shareLink}');
+                              debugPrint('🔗 SHORT URL DEBUG: alertId=${alert.id}, shortUrl=${alert.shortUrl}, shareUrl=${shareUrl}, shareLink=${shareLink}');
                               return Text(
                                 shareLink,
                                 style: const TextStyle(
@@ -331,9 +331,9 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                         IconButton(
                           onPressed: () {
                             final locale = Localizations.localeOf(context).languageCode;
-                            final shareUrl = getShortAlertUrl(alert.id, locale: locale);
+                            final shareUrl = getShortAlertUrl(alert.shortUrl, locale: locale);
                             final shareLink = 'ufobeep.com${shareUrl}';
-                            debugPrint('🔗 COPY SHORT URL DEBUG: alertId=${alert.id}, shareUrl=${shareUrl}, shareLink=${shareLink}');
+                            debugPrint('🔗 COPY SHORT URL DEBUG: alertId=${alert.id}, shortUrl=${alert.shortUrl}, shareUrl=${shareUrl}, shareLink=${shareLink}');
                             Clipboard.setData(ClipboardData(text: shareLink));
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(

@@ -40,7 +40,7 @@ def generate_short_url(sighting_id: str) -> Optional[str]:
         
         if result.returncode == 0:
             short_id = result.stdout.strip()
-            if len(short_id) == 4:  # Expected length
+            if len(short_id) == 5:  # Expected length (updated to 5 chars)
                 logger.debug(f"Generated short URL '{short_id}' for sighting {sighting_id}")
                 return short_id
             else:
@@ -60,7 +60,7 @@ def generate_short_url(sighting_id: str) -> Optional[str]:
 def test_short_url_generation():
     """Test function to verify short URL generation works"""
     test_id = "40e8a05f-d697-460b-9b10-e8093be7391e"
-    expected = "4rnb"
+    expected = "z4rnb"  # Updated to 5-character expected result
     
     result = generate_short_url(test_id)
     if result == expected:

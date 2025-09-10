@@ -17,7 +17,8 @@
 const SAFE_CHARS = '23456789abcdefghjkmnpqrstuvwxyz';
 
 /**
- * Generate a 4-character clean short ID from input string.
+ * Generate a 5-character clean short ID from input string.
+ * Updated to 5 chars for 120k NUFORC import without collisions (29^5 = 20.5M combinations)
  * This is the CANONICAL implementation - DO NOT CHANGE
  */
 function getShortHash(input) {
@@ -31,11 +32,11 @@ function getShortHash(input) {
     hash = hash & hash; // Convert to 32-bit integer (working web version)
   }
   
-  // Convert hash to base-29 using safe characters
+  // Convert hash to base-29 using safe characters  
   let shortId = '';
   let num = Math.abs(hash);
   
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 5; i++) {  // Updated from 4 to 5 characters
     shortId = SAFE_CHARS[num % SAFE_CHARS.length] + shortId;
     num = Math.floor(num / SAFE_CHARS.length);
   }
