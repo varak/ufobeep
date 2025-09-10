@@ -55,7 +55,7 @@ export default function SubscriptionsPage() {
 
   const unfollow = async (alertId: string) => {
     try {
-      const response = await fetch(`/api/alerts/${alertId}/follow`, {
+      const response = await fetch(`/api/beep/${alertId}/follow`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

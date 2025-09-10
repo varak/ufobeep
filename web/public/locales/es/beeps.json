@@ -40,6 +40,25 @@
     "sighting": "avistamiento", 
     "report": "reporte",
     "mufon": "mufon",
-    "unknown": "desconocido"
+    "nuforc": "nuforc",
+    "unknown": "desconocido",
+    "sphere": "esfera",
+    "light": "luz",
+    "disk": "disco", 
+    "triangle": "triangulo",
+    "cigar": "cigarro",
+    "oval": "oval",
+    "cylinder": "cilindro",
+    "rectangle": "rectangulo",
+    "diamond": "diamante",
+    "fireball": "bola-fuego",
+    "flash": "destello",
+    "formation": "formacion",
+    "changing": "cambiante",
+    "chevron": "chevron",
+    "cone": "cono",
+    "cross": "cruz",
+    "egg": "huevo",
+    "object": "objeto"
   }
 }

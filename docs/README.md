@@ -1,7 +1,7 @@
 # UFOBeep Documentation
 
-**Last Updated**: September 1, 2025  
-**Status**: Pre-Play Store Release Sprint
+**Last Updated**: September 10, 2025  
+**Status**: Production Ready with 22-Language Support
 
 ## 📋 Active Development
 - **[SPRINT_TASK_LIST.md](SPRINT_TASK_LIST.md)** - 5-week sprint plan for Play Store release
@@ -14,8 +14,9 @@
 ## 🚀 Quick References
 - **[QUICKSTART.md](QUICKSTART.md)** - Development environment setup
 - **[DEPLOYMENT.md](DEPLOYMENT.md)** - Deploy scripts and procedures
-- **[ENDPOINTS.md](ENDPOINTS.md)** - API endpoint documentation
-- **[MUFON_DATA.md](MUFON_DATA.md)** - MUFON data pipeline documentation
+- **[ENDPOINTS.md](ENDPOINTS.md)** - API endpoint documentation with dual `/beep` and `/alerts` support
+- **[URL_ARCHITECTURE.md](URL_ARCHITECTURE.md)** - Smart short URLs with 22-language support
+- **[TRANSLATION_SYSTEM.md](TRANSLATION_SYSTEM.md)** - Multi-language translation system
 
 ## 📖 Master Plans
 - **[MASTER_PLAN_v16.md](MASTER_PLAN_v16.md)** - Current implementation status
@@ -45,13 +46,38 @@ archive/
     └── production-setup-guide.md
 ```
 
+## 🎯 Recent Achievements 
+1. ✅ **Language-Specific URLs** - 22 languages with SEO-friendly slugs
+2. ✅ **Smart Short URLs** - `/ehf3` auto-detects language, redirects to `/beep/es/ovni-avistamiento-ehf3`
+3. ✅ **Dual API Support** - Both `/beep` and `/alerts` endpoints for compatibility
+4. ✅ **Translation System** - Automated generation of all language files
+5. ✅ **Web Interface** - Fixed beeps display and infinite loading issues
+
 ## 🎯 Current Focus
-1. **Multi-media upload bug** - Critical fix needed
-2. **Language-specific sharing** - Regional social platforms
-3. **Settings implementation** - DND, units, languages
-4. **Play Store readiness** - 5 weeks to launch
+1. **LibreTranslate Integration** - Automated translation on production
+2. **Real-time Translation** - Dynamic translation of alert details
+3. **Play Store Launch** - Multi-language app store listings
+
+## 🌐 Multi-Language URLs
+- **English**: https://ufobeep.com/beep/en
+- **Spanish**: https://ufobeep.com/beep/es  
+- **German**: https://ufobeep.com/beep/de
+- **French**: https://ufobeep.com/beep/fr
+- **Smart Short URLs**: https://ufobeep.com/ehf3 (auto-detects language)
+
+## 🔧 Quick Commands
+```bash
+# Generate all translations (22 languages)
+./translate.sh
+
+# Deploy to production  
+./deploy.sh
+
+# Deploy APK to devices
+./deploy.sh moto tablet pixel
+```
 
 ## 📞 Support
-- GitHub Issues: [github.com/varak/ufobeep/issues](https://github.com/varak/ufobeep/issues)
-- Production: ufobeep.com
-- API: ufobeep.com/api
+- **Production**: https://ufobeep.com
+- **API**: https://ufobeep.com/api  
+- **GitHub**: [github.com/varak/ufobeep](https://github.com/varak/ufobeep)

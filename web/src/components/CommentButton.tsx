@@ -139,7 +139,7 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
     
     try {
       const token = getAuthToken()
-      const response = await fetch(`/api/alerts/${alertId}/comments`, {
+      const response = await fetch(`/api/beep/${alertId}/comments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

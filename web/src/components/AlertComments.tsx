@@ -36,7 +36,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await fetch(`/api/alerts/${alertId}/comments`)
+        const response = await fetch(`/api/beep/${alertId}/comments`)
         
         if (!response.ok) {
           throw new Error('Failed to fetch comments')
@@ -177,7 +177,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
     
     try {
       const token = getAuthToken()
-      const response = await fetch(`/api/alerts/${alertId}/comments`, {
+      const response = await fetch(`/api/beep/${alertId}/comments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -195,7 +195,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
         setMessageType('success')
         
         // Refresh comments
-        const fetchCommentsResponse = await fetch(`/api/alerts/${alertId}/comments`)
+        const fetchCommentsResponse = await fetch(`/api/beep/${alertId}/comments`)
         if (fetchCommentsResponse.ok) {
           const data = await fetchCommentsResponse.json()
           const sortedComments = (data.items || []).sort((a: Comment, b: Comment) => 

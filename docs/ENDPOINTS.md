@@ -19,23 +19,19 @@ UFOBeep now supports both traditional long URLs and smart short URLs with automa
 
 ### Backend API Endpoints
 
-The API now maintains **dual endpoint compatibility** for different clients:
+The API uses unified `/beep` endpoints for all sighting operations:
 
-#### Unified Beep Endpoints (Primary)
+#### Beep Endpoints
 - `GET /beep` - List sightings with advanced filtering
 - `POST /beep` - Create new sighting  
 - `GET /beep/{id}` - Get specific sighting details
 - `POST /beep/{id}/media` - Attach media to sighting
 - `POST /beep/{id}/witnesses` - Confirm witness sighting
+- `GET /beep/{id}/comments` - Get sighting comments
+- `POST /beep/{id}/comments` - Add comment to sighting
+- `POST /beep/{id}/follow` - Follow sighting for updates
 
-#### Legacy Alert Endpoints (Mobile App Compatibility)
-- `GET /alerts` - List alerts (same functionality as `/beep`)
-- `POST /alerts` - Create new alert
-- `GET /alerts/{id}` - Get specific alert details  
-- `POST /alerts/{id}/media` - Attach media to alert
-- `POST /alerts/{id}/witnesses` - Confirm witness sighting
-
-**Note**: Both endpoint families return identical data structures. Frontend transforms `data.alerts` to `data.beeps` for consistency.
+**Note**: All responses use consistent data structures with `data.beeps` containing the sighting list.
 
 ## Authentication
 - `POST /users/auth/firebase` - Firebase authentication
@@ -50,10 +46,10 @@ The API now maintains **dual endpoint compatibility** for different clients:
 ## Sightings & Alerts (Enhanced with NUFORC/MUFON Integration)
 
 ### Core Endpoints
-Both `/beep` and `/alerts` endpoints support identical functionality:
+The `/beep` endpoints provide comprehensive functionality:
 
 **Listing Sightings**
-- `GET /beep` or `GET /alerts` - List sightings with advanced filtering and geographic search
+- `GET /beep` - List sightings with advanced filtering and geographic search
   - **Basic pagination**: `limit` (default: 20), `offset` (default: 0)
   - **Source filtering**: `source=UFOBeep|MUFON|NUFORC` (multiple sources: `source=MUFON,NUFORC`)
   - **Geographic search**: `near=Phoenix&radius=50` (radius in km, supports city names/coordinates)
@@ -64,15 +60,15 @@ Both `/beep` and `/alerts` endpoints support identical functionality:
   - Response: `{ success: true, data: { alerts: [...], total: 175000, page: 1, limit: 20, sources: {...}, filters: {...} } }`
 
 **Individual Sightings**
-- `GET /beep/{id}` or `GET /alerts/{id}` - Get specific sighting details with smart ID routing
+- `GET /beep/{id}` - Get specific sighting details with smart ID routing
   - **5-char alphanumeric** (ABC12) → UFOBeep sightings
   - **Numeric only** → MUFON cases or NUFORC reports (auto-detected)
   - **Prefixed IDs** → M123456 (MUFON), N987654 (NUFORC) - optional format
 
 **Creating & Updating Sightings**
-- `POST /beep` or `POST /alerts` - Create new sighting (supports locationless MUFON alerts)
-- `POST /beep/{id}/media` or `POST /alerts/{id}/media` - Attach media to sighting
-- `POST /beep/{id}/witnesses` or `POST /alerts/{id}/witnesses` - Confirm witness sighting (FIXED: type safety issues resolved)
+- `POST /beep` - Create new sighting (supports locationless MUFON alerts)
+- `POST /beep/{id}/media` - Attach media to sighting
+- `POST /beep/{id}/witnesses` - Confirm witness sighting (FIXED: type safety issues resolved)
 
 ### MUFON Integration
 MUFON-sourced alerts (`source: "mufon"`) have special handling:
@@ -101,9 +97,8 @@ NUFORC-sourced alerts (`source: "nuforc"`) provide comprehensive historical data
 
 ## Advanced Search Examples
 ```bash
-# UFOs near Phoenix within 50km (using either endpoint family)
+# UFOs near Phoenix within 50km
 GET /beep?near=Phoenix&radius=50
-GET /alerts?near=Phoenix&radius=50
 
 # NUFORC disc sightings from 2024
 GET /beep?source=NUFORC&shape=disc&date_from=2024-01-01
@@ -125,11 +120,11 @@ GET /beep?source=NUFORC&shape=triangle&tier=1,2&near=Las%20Vegas&radius=200&limi
 ```
 
 ## Comments System
-- `GET /beep/{id}/comments` or `GET /alerts/{id}/comments` - Get sighting comments
-- `POST /beep/{id}/comments` or `POST /alerts/{id}/comments` - Add comment to sighting
+- `GET /beep/{id}/comments` - Get sighting comments
+- `POST /beep/{id}/comments` - Add comment to sighting
 
 ## Social Features
-- `POST /beep/{id}/follow` or `POST /alerts/{id}/follow` - Follow sighting for updates
+- `POST /beep/{id}/follow` - Follow sighting for updates
 - `POST /devices/register` - Register device for push notifications
 
 ## User Preferences
@@ -148,19 +143,19 @@ GET /beep?source=NUFORC&shape=triangle&tier=1,2&near=Las%20Vegas&radius=200&limi
 The Next.js web app uses a compatibility layer:
 - Frontend calls: `/api/beep`
 - Backend maps to: `/beep` endpoints
-- Response transformation: `data.alerts` → `data.beeps`
+- Response format: `data.beeps`
 
 ### Mobile Application  
 The Flutter mobile app uses:
-- Direct calls to: `/alerts` endpoints
-- Native response format: `data.alerts`
+- Direct calls to: `/beep` endpoints
+- Response format: `data.beeps`
 
 ## Recent Fixes (September 2025)
 - ✅ **URL Structure Overhaul**: New short URL system with language detection
-- ✅ **Dual Endpoint Support**: Both `/beep` and `/alerts` endpoints for client compatibility
+- ✅ **Unified Endpoint Support**: Standardized `/beep` endpoints for all clients
 - ✅ **Language-Aware Routing**: Automatic browser language detection and URL rewriting
 - ✅ **Middleware Implementation**: Smart URL routing with canonical redirects
-- ✅ **Alerts API Pagination**: Added total count to alerts endpoint for "Showing X-Y of Z" frontend display
+- ✅ **Beeps API Pagination**: Added total count to beeps endpoint for "Showing X-Y of Z" frontend display
 - ✅ **Location Null Handling**: Fixed 500 errors when alerts have no location data (MUFON imports)
 - ✅ **Comments Auto-Refresh**: Fixed with frame-safe CommentsRefreshNotifier using postFrameCallback
 - ✅ **Auto-Follow Reliability**: Added retry logic with exponential backoff for following sightings
@@ -175,6 +170,6 @@ The Flutter mobile app uses:
 - All POSTs require `Authorization: Bearer <token>`
 - `Idempotency-Key` header recommended for media/sighting POSTs
 - API responses use consistent JSON structure with defensive type checking
-- Both `/beep` and `/alerts` endpoint families are functionally identical
+- All clients use unified `/beep` endpoint family
 - Frontend transformation ensures consistent `beeps` naming in web application
 - Short URLs automatically redirect to localized canonical URLs
