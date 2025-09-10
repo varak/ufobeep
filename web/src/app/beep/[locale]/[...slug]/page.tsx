@@ -183,18 +183,7 @@ export default function AlertDetailPage() {
         }
         
         if (targetAlert) {
-          // Enhance the alert with classified title and enriched location
-          const enhancedAlert = {
-            ...targetAlert,
-            title: getClassifiedTitle(targetAlert, t),
-            location: {
-              latitude: targetAlert.location?.latitude || 0,
-              longitude: targetAlert.location?.longitude || 0,
-              name: getEnrichedLocation(targetAlert, t)
-            },
-            media_files: targetAlert.media_files || []
-          }
-          setAlert(enhancedAlert)
+          setAlert(targetAlert)
         }
       } catch (error) {
         console.error('Error fetching alert:', error)
@@ -205,9 +194,9 @@ export default function AlertDetailPage() {
     }
     
     fetchAlert()
-  }, [params, t])
+  }, [params])
 
-  // Client-side redirect to canonical slug URL once we have the alert
+  // Client-side redirect to canonical slug URL once we have the alert  
   useEffect(() => {
     if (!alert) return
     
@@ -216,8 +205,19 @@ export default function AlertDetailPage() {
     
     const fullSlug = currentSlug.join('/')
     
+    // Create enhanced alert for slug generation without causing re-renders
+    const tempEnhancedAlert = {
+      ...alert,
+      title: getClassifiedTitle(alert, t),
+      location: {
+        latitude: alert.location?.latitude || 0,
+        longitude: alert.location?.longitude || 0,
+        name: getEnrichedLocation(alert, t)
+      }
+    }
+    
     // Generate expected slug
-    const expectedSlug = getAlertSlug(alert, locale, t)
+    const expectedSlug = getAlertSlug(tempEnhancedAlert, locale, t)
     
     // If current slug doesn't match expected slug, redirect
     if (expectedSlug && expectedSlug !== fullSlug) {
@@ -225,7 +225,7 @@ export default function AlertDetailPage() {
       const url = `/beep/${locale}/${expectedSlug}${qs ? `?${qs}` : ''}`
       router.replace(url)
     }
-  }, [alert, params?.slug, router, searchParams, locale, t])
+  }, [alert, params?.slug, router, searchParams, locale])
   
   if (loading) {
     return (
@@ -242,12 +242,24 @@ export default function AlertDetailPage() {
     notFound()
   }
 
+  // Enhance the alert with classified title and enriched location for display
+  const enhancedAlert = {
+    ...alert,
+    title: getClassifiedTitle(alert, t),
+    location: {
+      latitude: alert.location?.latitude || 0,
+      longitude: alert.location?.longitude || 0,
+      name: getEnrichedLocation(alert, t)
+    },
+    media_files: alert.media_files || []
+  }
+
   return (
     <main className="min-h-screen py-8 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <a 
-            href={`/beep/${locale}#alert-${alert.id}`}
+            href={`/beep/${locale}#alert-${enhancedAlert.id}`}
             className="text-brand-primary hover:text-brand-primary-light transition-colors mb-4 inline-block"
           >
             {t('backToBeeps')}
@@ -255,18 +267,18 @@ export default function AlertDetailPage() {
         </div>
         
         {/* Hero Section with Media Gallery */}
-        <AlertHero alert={alert} openImageIndex={openImageIndex} />
+        <AlertHero alert={enhancedAlert} openImageIndex={openImageIndex} />
         
         {/* Details Section */}
-        <AlertDetails alert={alert} locale={locale} />
+        <AlertDetails alert={enhancedAlert} locale={locale} />
         
         {/* Enrichment Data (if available) */}
-        {alert.enrichment && Object.keys(alert.enrichment).length > 0 && (
-          <EnrichmentData alert={alert} />
+        {enhancedAlert.enrichment && Object.keys(enhancedAlert.enrichment).length > 0 && (
+          <EnrichmentData alert={enhancedAlert} />
         )}
 
         {/* Comments Section for all reports */}
-        <AlertComments alertId={alert.id} />
+        <AlertComments alertId={enhancedAlert.id} />
       </div>
     </main>
   )
