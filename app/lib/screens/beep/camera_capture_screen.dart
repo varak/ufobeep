@@ -15,18 +15,22 @@ import '../../services/photo_metadata_service.dart';
 import '../../services/sound_service.dart';
 import '../../services/permission_service.dart';
 import '../../models/sensor_data.dart';
+import '../../models/camera_result.dart';
 
 class CameraCaptureScreen extends StatefulWidget {
   final String? description;
   final String? attachToSightingId;
   final bool returnToComposition;
   
-  const CameraCaptureScreen({
+  CameraCaptureScreen({
     super.key, 
     this.description,
     this.attachToSightingId,
     this.returnToComposition = false,
-  });
+  }) {
+    debugPrint('📸📸📸 PRODUCTION CAMERA CAPTURE SCREEN CONSTRUCTED 📸📸📸');
+    debugPrint('📸 Parameters: description="$description", attachTo="$attachToSightingId", returnTo=$returnToComposition');
+  }
 
   @override
   State<CameraCaptureScreen> createState() => _CameraCaptureScreenState();
@@ -234,24 +238,39 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       }
 
       // Navigate appropriately based on mode
-      if (mounted) {
-        if (widget.returnToComposition) {
-          // Return data to composition screen
-          context.pop({
-            'mediaFile': savedFile,
-            'photoMetadata': photoMetadata,
-          });
-        } else {
-          // Navigate directly to compose screen - no approval!
-          context.go('/beep/compose', extra: {
-            'mediaFile': savedFile,
-            'isVideo': false,
-            'sensorData': sensorData,
-            'photoMetadata': photoMetadata, // Pass comprehensive metadata for storage
-            'description': widget.description, // Pass description from previous screen
-            'attachToSightingId': widget.attachToSightingId, // Pass alert ID for existing alert media
-          });
-        }
+      if (!mounted) {
+        debugPrint('📸 CAMERA: Widget not mounted, skipping return');
+        return;
+      }
+      
+      final result = CameraCaptureResult(
+        path: savedFile.path,
+        isVideo: false,
+        sensorData: sensorData != null ? {
+          'latitude': sensorData.latitude,
+          'longitude': sensorData.longitude,
+          'accuracy': sensorData.accuracy,
+          'altitude': sensorData.altitude,
+          'azimuthDeg': sensorData.azimuthDeg,
+          'utc': sensorData.utc.toIso8601String(),
+        } : null,
+        photoMetadata: photoMetadata,
+        description: widget.description,
+        attachToSightingId: widget.attachToSightingId,
+      );
+      
+      debugPrint('📸 CAMERA -> pop result: ${result.path}');
+      debugPrint('📸 CAMERA: Result details - isVideo: ${result.isVideo}, hasMetadata: ${result.photoMetadata != null}, hasSensorData: ${result.sensorData != null}');
+      
+      if (widget.returnToComposition) {
+        // Return data to composition screen (legacy behavior)
+        context.pop({
+          'mediaFile': savedFile,
+          'photoMetadata': photoMetadata,
+        });
+      } else {
+        // Return typed result to beep screen
+        Navigator.of(context).pop(result);
       }
     } catch (e) {
       setState(() {
@@ -367,8 +386,9 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
             'photoMetadata': {}, // Videos don't have EXIF data
           });
         } else {
-          // Navigate to composition screen with video
-          context.go('/beep/compose', extra: {
+          // Return video data to the calling screen
+          debugPrint('🎥 CAMERA: Returning video to caller');
+          Navigator.of(context).pop({
             'mediaFile': savedFile,
             'isVideo': true,
             'sensorData': sensorData,
@@ -411,7 +431,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
               ),
               const SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () => context.go('/beep'),
+                onPressed: () => Navigator.of(context).pop(),
                 child: const Text('Go Back'),
               ),
             ],
@@ -462,7 +482,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
                   child: Row(
                     children: [
                       IconButton(
-                        onPressed: () => context.go('/beep'),
+                        onPressed: () => Navigator.of(context).pop(),
                         icon: const Icon(
                           Icons.arrow_back,
                           color: Colors.white,

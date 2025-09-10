@@ -471,7 +471,7 @@ class PhotoMetadataService {
       // Preserve existing EXIF and add GPS
       final existingExif = image.exif;
       for (final entry in gpsExif.entries) {
-        existingExif['GPS ${entry.key}'] = entry.value;
+        existingExif[entry.key] = entry.value;
       }
 
       // Re-encode image with GPS EXIF

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -30,8 +31,8 @@ import '../screens/auth/firebase_email_auth_screen.dart';
 import '../screens/auth/sign_in_screen.dart';
 import '../screens/splash/splash_screen.dart';
 import '../screens/notifications/notification_management_screen.dart';
-import '../screens/camera_diag_screen.dart';
 import '../models/shared_media_data.dart';
+import '../models/sensor_data.dart';
 import '../l10n/app_localizations.dart';
 
 part 'app_router.g.dart';
@@ -153,20 +154,24 @@ GoRouter appRouter(AppRouterRef ref) {
     },
     routes: [
       // ✅ CAMERA ROUTES AT ROOT LEVEL (outside any ShellRoute to prevent redirect issues)
-      // Debug-only diagnostic screen
-      if (!kReleaseMode)
-        GoRoute(
-          path: '/diag/camera',
-          name: 'diag-camera',
-          parentNavigatorKey: _rootNavigatorKey,
-          pageBuilder: (context, state) => _NoTransitionPage(const CameraDiagScreen()),
-        ),
+      // Debug-only diagnostic screen - TEMPORARILY DISABLED FOR DEBUGGING
+      // if (!kReleaseMode)
+      //   GoRoute(
+      //     path: '/diag/camera',
+      //     name: 'diag-camera',
+      //     parentNavigatorKey: _rootNavigatorKey,
+      //     pageBuilder: (context, state) {
+      //     },
+      //   ),
       // Production camera capture screen - KEEP AT ROOT FOREVER
       GoRoute(
         path: '/beep/camera',
         name: 'beep-camera',
         parentNavigatorKey: _rootNavigatorKey,
-        pageBuilder: (context, state) => _NoTransitionPage(const CameraCaptureScreen()),
+        pageBuilder: (context, state) {
+          debugPrint('🚦 ROUTER: /beep/camera pageBuilder called - creating PRODUCTION CameraCaptureScreen');
+          return _NoTransitionPage(CameraCaptureScreen());
+        },
       ),
       
       // Splash Screen (handles its own navigation after initialization)
@@ -261,9 +266,26 @@ GoRouter appRouter(AppRouterRef ref) {
             builder: (context, state) {
               final attachTo = state.uri.queryParameters['attachTo'];
               final autoGallery = state.uri.queryParameters['autoGallery'] == 'true';
+              
+              // Handle camera return data
+              final extra = state.extra as Map<String, dynamic>?;
+              File? mediaFile;
+              SensorData? sensorData;
+              Map<String, dynamic>? photoMetadata;
+              
+              if (extra != null && extra.containsKey('mediaFile')) {
+                debugPrint('📸 BEEP ROUTE: Received camera return data - ${extra.keys}');
+                mediaFile = extra['mediaFile'] as File?;
+                sensorData = extra['sensorData'] as SensorData?;
+                photoMetadata = extra['photoMetadata'] as Map<String, dynamic>?;
+              }
+              
               return BeepScreen(
                 attachToSightingId: attachTo,
                 autoOpenGallery: autoGallery,
+                initialMediaFile: mediaFile,
+                initialSensorData: sensorData,
+                initialPhotoMetadata: photoMetadata,
               );
             },
             routes: [
@@ -287,56 +309,7 @@ GoRouter appRouter(AppRouterRef ref) {
                   debugPrint('🎯 ROUTER: BeepCompose - MediaFiles: ${mediaFiles?.length} files');
                   debugPrint('🎯 ROUTER: BeepCompose - IsVideo: $isVideo');
                   
-                  // Check if we have either single or multi-file data
-                  if (mediaFile == null && (mediaFiles == null || mediaFiles.isEmpty)) {
-                    debugPrint('ERROR: No media file(s) in extra data for beep composition');
-                    return Scaffold(
-                      backgroundColor: AppColors.darkBackground,
-                      appBar: AppBar(
-                        title: const Text('Composition Error'),
-                        backgroundColor: AppColors.darkSurface,
-                        leading: IconButton(
-                          icon: const Icon(Icons.arrow_back),
-                          onPressed: () => context.go('/beep'),
-                        ),
-                      ),
-                      body: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.error_outline,
-                              color: AppColors.semanticError,
-                              size: 64,
-                            ),
-                            const SizedBox(height: 16),
-                            const Text(
-                              'No media file provided',
-                              style: TextStyle(
-                                color: AppColors.textPrimary,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            const Text(
-                              'The shared media could not be found or processed.',
-                              style: TextStyle(
-                                color: AppColors.textSecondary,
-                                fontSize: 14,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 24),
-                            ElevatedButton(
-                              onPressed: () => context.go('/beep'),
-                              child: const Text('Back to Beep'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }
+                  // Allow BeepCompositionScreen to handle empty media files gracefully
                   
                   if (mediaFiles != null && mediaFiles.isNotEmpty) {
                     debugPrint('Found ${mediaFiles.length} media files');

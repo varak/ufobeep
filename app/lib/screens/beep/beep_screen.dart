@@ -22,6 +22,7 @@ import '../../widgets/dev_menu_button.dart';
 import '../../services/ui_feedback.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../models/sensor_data.dart';
+import '../../models/camera_result.dart';
 import '../../models/sighting_submission.dart' as local;
 import '../../models/user_preferences.dart';
 import '../../providers/app_state.dart';
@@ -31,11 +32,17 @@ import '../../widgets/glass_card.dart';
 class BeepScreen extends ConsumerStatefulWidget {
   final String? attachToSightingId;
   final bool autoOpenGallery;
+  final File? initialMediaFile;
+  final SensorData? initialSensorData;
+  final Map<String, dynamic>? initialPhotoMetadata;
   
   const BeepScreen({
     super.key, 
     this.attachToSightingId,
     this.autoOpenGallery = false,
+    this.initialMediaFile,
+    this.initialSensorData,
+    this.initialPhotoMetadata,
   });
 
   @override
@@ -52,6 +59,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   String? _errorMessage;
   bool _isBeeping = false;
   final TextEditingController _descriptionController = TextEditingController();
+  List<File> _capturedMedia = [];
   
 
   @override
@@ -59,8 +67,14 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     super.initState();
     _checkSensorAvailability();
     
+    // Handle initial media file from camera
+    if (widget.initialMediaFile != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _handleInitialMediaFile();
+      });
+    }
     // Auto-open gallery if requested (for adding media to existing alerts)
-    if (widget.autoOpenGallery) {
+    else if (widget.autoOpenGallery) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _pickFromGallery();
       });
@@ -87,16 +101,72 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     }
   }
 
+  Future<void> _handleInitialMediaFile() async {
+    if (widget.initialMediaFile == null) return;
+    
+    try {
+      debugPrint('📸 BEEP: Processing initial media file from camera');
+      
+      // Create a sighting submission with the camera data
+      final submission = local.SightingSubmission(
+        title: 'UFO Sighting',
+        description: '', // User will add description later
+        category: 'ufo_sighting',
+        imageFile: widget.initialMediaFile,
+        imagePath: widget.initialMediaFile!.path,
+        sensorData: widget.initialSensorData,
+        createdAt: DateTime.now(),
+      );
+      
+      setState(() {
+        _currentSubmission = submission;
+      });
+      
+      debugPrint('📸 BEEP: Created submission with camera photo - ${widget.initialMediaFile!.path}');
+    } catch (e) {
+      debugPrint('❌ BEEP: Failed to process initial media file: $e');
+      setState(() {
+        _errorMessage = 'Failed to load captured photo';
+      });
+    }
+  }
+
   Future<void> _capturePhoto() async {
     // Avoid double taps racing navigation
     if (Navigator.of(context).userGestureInProgress) return;
     
-    // Navigate to camera screen using absolute path (now at root level)
+    // Navigate to camera screen and await the result
     final description = _descriptionController.text.trim();
     debugPrint('🎯 CAMERA BUTTON: Navigating to /beep/camera with description: $description');
-    context.push('/beep/camera', extra: {
+    
+    final result = await context.push<CameraCaptureResult>('/beep/camera', extra: {
       'description': description,
     });
+    
+    debugPrint('📸 BEEP <- result: $result');
+    
+    if (!mounted) {
+      debugPrint('📸 BEEP: Widget not mounted after camera return');
+      return;
+    }
+    
+    // Handle the returned photo data
+    if (result != null) {
+      debugPrint('📸 BEEP: Received photo from camera: ${result.path}');
+      debugPrint('📸 BEEP: Result details - isVideo: ${result.isVideo}, hasMetadata: ${result.photoMetadata != null}, hasSensorData: ${result.sensorData != null}');
+      
+      final mediaFile = File(result.path);
+      
+      // Add to captured media list
+      setState(() {
+        _capturedMedia.add(mediaFile);
+        _errorMessage = null;
+      });
+      
+      debugPrint('✅ BEEP: Photo added to media list. Total: ${_capturedMedia.length}');
+    } else {
+      debugPrint('❌ BEEP: No photo returned from camera (result is null - user canceled or handoff failed)');
+    }
   }
 
   Future<void> _pickFromGallery() async {
@@ -254,19 +324,14 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
         return;
       }
 
-      final description = _descriptionController.text.trim();
+      // Add selected files to captured media list instead of navigating
+      final List<File> newMediaFiles = mediaFiles.map((m) => m['mediaFile'] as File).toList();
       
-      debugPrint('Navigating to composition screen with ${mediaFiles.length} files');
+      setState(() {
+        _capturedMedia.addAll(newMediaFiles);
+      });
       
-      // Always route to composition screen - handles both single and multiple files
-      if (mounted) {
-        context.go('/beep/compose', extra: {
-          'mediaFiles': mediaFiles, // Pass all files as array
-          'sensorData': currentSensorData,
-          'description': description,
-          'attachToSightingId': widget.attachToSightingId, // Pass through for existing alerts
-        });
-      }
+      debugPrint('✅ BEEP: Added ${newMediaFiles.length} files from gallery. Total: ${_capturedMedia.length}');
 
     } catch (e, stackTrace) {
       debugPrint('Critical error in _pickFromGallery: $e');
@@ -284,7 +349,6 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   Future<void> _sendQuickBeep() async {
     if (_isBeeping) return;
     
-    
     setState(() {
       _isBeeping = true;
       _errorMessage = null;
@@ -293,15 +357,29 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     // Play sound feedback
     await SoundService.I.play(AlertSound.tap, haptic: true);
     
-    // BeepService now handles location permission directly - no need for complex checks
-    // Don't show "Getting location..." as an error - it's just status
-    
     try {
-      // Get description from text field if provided, otherwise null
       final description = _descriptionController.text.trim();
+      
+      // If we have captured media, navigate to compose screen for full submission
+      if (_capturedMedia.isNotEmpty) {
+        debugPrint('📸 BEEP: Sending beep with ${_capturedMedia.length} media files');
+        
+        final mediaFiles = _capturedMedia.map((file) => {
+          'mediaFile': file,
+          'isVideo': false,
+          'photoMetadata': {},
+        }).toList();
+        
+        context.go('/beep/compose', extra: {
+          'mediaFiles': mediaFiles,
+          'description': description,
+          'attachToSightingId': widget.attachToSightingId,
+        });
+        return;
+      }
+      
+      // Send text-only beep if no media
       final beepDescription = description.isEmpty ? null : description;
-          
-      // Send anonymous beep with description
       final beepResult = await beepService.sendBeep(
         description: beepDescription,
       );
@@ -310,13 +388,10 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       final deviceId = await beepService.getOrCreateDeviceId();
       ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
       
-      // Clear the text field if description was used
-      if (description.isNotEmpty) {
-        _descriptionController.clear();
-      }
-      
-      // Clear any error message on success
+      // Clear the text field and media
+      _descriptionController.clear();
       setState(() {
+        _capturedMedia.clear();
         _errorMessage = null;
       });
       
@@ -330,7 +405,6 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
           ),
         );
         
-        // Navigate to the sighting detail screen
         Future.delayed(const Duration(milliseconds: 500), () {
           if (mounted) {
             context.go('/alert/${beepResult['sighting_id']}');
@@ -439,6 +513,119 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                 ),
                 
                 const SizedBox(height: 24),
+
+                // Media thumbnails
+                if (_capturedMedia.isNotEmpty) ...[
+                  GlassCard(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.photo_library,
+                              color: AppColors.brandPrimary,
+                              size: 16,
+                            ),
+                            SizedBox(width: 6),
+                            Text(
+                              '${_capturedMedia.length} photo${_capturedMedia.length == 1 ? '' : 's'}',
+                              style: TextStyle(
+                                color: AppColors.brandPrimary,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Spacer(),
+                            IconButton(
+                              padding: EdgeInsets.all(4),
+                              constraints: BoxConstraints(minWidth: 24, minHeight: 24),
+                              onPressed: () {
+                                setState(() {
+                                  _capturedMedia.clear();
+                                });
+                              },
+                              icon: Icon(
+                                Icons.clear_all,
+                                color: Colors.white.withOpacity(0.7),
+                                size: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 8),
+                        Container(
+                          height: 80,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: _capturedMedia.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: EdgeInsets.only(right: 8),
+                                width: 80,
+                                height: 80,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: Colors.white.withOpacity(0.3),
+                                  ),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(7),
+                                  child: Stack(
+                                    children: [
+                                      Image.file(
+                                        _capturedMedia[index],
+                                        fit: BoxFit.cover,
+                                        width: 80,
+                                        height: 80,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Container(
+                                            color: Colors.white.withOpacity(0.1),
+                                            child: Icon(
+                                              Icons.broken_image,
+                                              color: Colors.white.withOpacity(0.5),
+                                              size: 20,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      Positioned(
+                                        top: 2,
+                                        right: 2,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _capturedMedia.removeAt(index);
+                                            });
+                                          },
+                                          child: Container(
+                                            width: 20,
+                                            height: 20,
+                                            decoration: BoxDecoration(
+                                              color: Colors.black.withOpacity(0.6),
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                            child: Icon(
+                                              Icons.close,
+                                              color: Colors.white,
+                                              size: 12,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ],
 
                 // Error message in glass card
                 if (_errorMessage != null) ...[

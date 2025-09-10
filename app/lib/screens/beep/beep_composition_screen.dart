@@ -51,7 +51,7 @@ class BeepCompositionScreen extends ConsumerStatefulWidget {
     this.sensorData,
     this.description,
     this.attachToSightingId,
-  }) : assert(mediaFile != null || mediaFiles != null, 'Either mediaFile or mediaFiles must be provided');
+  });
 
   @override
   ConsumerState<BeepCompositionScreen> createState() => _BeepCompositionScreenState();
@@ -85,6 +85,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   @override
   void initState() {
     super.initState();
+    debugPrint('🚀 BEEP SCREEN INIT: _isSubmitting=$_isSubmitting');
     
     // Store sensor data in state immediately to preserve it during rebuilds
     _sensorData = widget.sensorData;
@@ -178,10 +179,16 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   }
 
   Future<void> _submitBeep() async {
+    debugPrint('🚀 BEEP SUBMIT: Starting submission process...');
+    debugPrint('🚀 BEEP SUBMIT: Media files count: ${_mediaFiles.length}');
+    debugPrint('🚀 BEEP SUBMIT: Is submitting already: $_isSubmitting');
     
-    if (_isSubmitting) return;
+    if (_isSubmitting) {
+      debugPrint('⚠️ BEEP SUBMIT: Already submitting, aborting');
+      return;
+    }
     
-
+    debugPrint('🚀 BEEP SUBMIT: Setting isSubmitting to true');
     setState(() {
       _isSubmitting = true;
       _errorMessage = null;
@@ -303,7 +310,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       
       // Now upload all media files, then trigger alerts
       try {
-        debugPrint('Uploading ${_mediaFiles.length} files to sighting...');
+        debugPrint('🚀 BEEP SUBMIT: Uploading ${_mediaFiles.length} files to sighting...');
+        debugPrint('🚀 BEEP SUBMIT: Sighting ID: $sightingId');
         
         int uploadedCount = 0;
         int photoCount = 0;
@@ -316,7 +324,9 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
           final bool isVideo = fileData['isVideo'] ?? false;
           
           try {
-            debugPrint('Uploading file ${i + 1}/${_mediaFiles.length}: ${mediaFile.path}');
+            debugPrint('🚀 BEEP SUBMIT: Uploading file ${i + 1}/${_mediaFiles.length}: ${mediaFile.path}');
+            debugPrint('🚀 BEEP SUBMIT: File exists: ${await mediaFile.exists()}');
+            debugPrint('🚀 BEEP SUBMIT: File size: ${await mediaFile.length()} bytes');
             
             // TODO: Add NSFW filter hook here
             // final isContentSafe = await ContentModerationService.validateMedia(mediaFile);
@@ -325,10 +335,12 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
             //   continue; // Skip this file
             // }
             
+            debugPrint('🚀 BEEP SUBMIT: Calling uploadMediaToSighting...');
             await ApiClient.instance.uploadMediaToSighting(
               sightingId,
               mediaFile,
             );
+            debugPrint('🚀 BEEP SUBMIT: Upload successful for file ${i + 1}');
             
             uploadedCount++;
             if (isVideo) {
@@ -337,14 +349,16 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
               photoCount++;
             }
             
-            debugPrint('Successfully uploaded file ${i + 1}/${_mediaFiles.length}');
+            debugPrint('🚀 BEEP SUBMIT: Successfully uploaded file ${i + 1}/${_mediaFiles.length}');
           } catch (e) {
-            debugPrint('Failed to upload file ${mediaFile.path}: $e');
+            debugPrint('❌ BEEP SUBMIT: Failed to upload file ${mediaFile.path}: $e');
+            debugPrint('❌ BEEP SUBMIT: Error type: ${e.runtimeType}');
+            debugPrint('❌ BEEP SUBMIT: Error details: ${e.toString()}');
             // Continue with other files - don't fail entire submission
           }
         }
         
-        debugPrint('Upload completed: $uploadedCount/${_mediaFiles.length} files uploaded');
+        debugPrint('🚀 BEEP SUBMIT: Upload completed: $uploadedCount/${_mediaFiles.length} files uploaded');
         
         // Create auto-comment for existing sightings
         if (widget.attachToSightingId != null && uploadedCount > 0) {
@@ -402,7 +416,9 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
           debugPrint('Proximity alerts sent successfully!');
         }
       } catch (e) {
-        debugPrint('CRITICAL: Media upload or alert trigger failed: $e');
+        debugPrint('❌ BEEP SUBMIT: CRITICAL: Media upload or alert trigger failed: $e');
+        debugPrint('❌ BEEP SUBMIT: Error type: ${e.runtimeType}');
+        debugPrint('❌ BEEP SUBMIT: Error details: ${e.toString()}');
         setState(() {
           _isSubmitting = false;
           _errorMessage = AppLocalizations.of(context).beepFailed;
@@ -445,9 +461,13 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         );
 
         // Navigate to the specific alert that was just created
+        debugPrint('🚀 BEEP SUBMIT: Scheduling navigation to /alert/$sightingId');
         Future.delayed(const Duration(milliseconds: 1000), () {
           if (context.mounted) {
+            debugPrint('🚀 BEEP SUBMIT: Navigating to /alert/$sightingId');
             context.go('/alert/$sightingId');
+          } else {
+            debugPrint('❌ BEEP SUBMIT: Context not mounted, skipping navigation');
           }
         });
       }
@@ -469,10 +489,14 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         );
       }
     } finally {
+      debugPrint('🚀 BEEP SUBMIT: Finally block - setting isSubmitting to false');
       if (mounted) {
         setState(() {
           _isSubmitting = false;
         });
+        debugPrint('🚀 BEEP SUBMIT: isSubmitting set to false, state updated');
+      } else {
+        debugPrint('❌ BEEP SUBMIT: Widget not mounted, skipping state update');
       }
     }
   }
@@ -1019,9 +1043,15 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                 onTapDown: _isSubmitting ? null : (_) async {
                   await UiFeedback.click(); // immediate feedback
                 },
-                child: OutlinedButton(
-                  onPressed: !_isSubmitting ? _submitBeep : null,
-                style: OutlinedButton.styleFrom(
+                child: Builder(
+                  builder: (context) {
+                    debugPrint('🚀 BUTTON BUILD: _isSubmitting=$_isSubmitting, enabled=${!_isSubmitting}');
+                    return OutlinedButton(
+                      onPressed: !_isSubmitting ? () {
+                        debugPrint('🚀 BUTTON PRESSED: _isSubmitting=$_isSubmitting, mediaFiles=${_mediaFiles.length}');
+                        _submitBeep();
+                      } : null,
+                      style: OutlinedButton.styleFrom(
                   foregroundColor: !_isSubmitting 
                       ? AppColors.brandPrimary 
                       : AppColors.textSecondary,
@@ -1067,6 +1097,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                               : l10n.submitBeep),
                         ],
                       ),
+                );
+                  },
                 ),
               ),
             ),
