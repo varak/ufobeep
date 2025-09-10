@@ -106,7 +106,7 @@ export default function ShortUrlRedirect() {
   const params = useParams()
   const router = useRouter()
   const [loading, setLoading] = useState(true)
-  const shortId = params?.shortId as string
+  const shortId = params?.id as string
   
   // Detect user's preferred language
   const userLang = typeof window !== 'undefined' 
