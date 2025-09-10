@@ -26,13 +26,6 @@ export async function GET(request: NextRequest) {
     }
     
     const data = await response.json()
-    
-    // Backend now returns alerts in data.alerts, transform to beeps for frontend
-    if (data.data && data.data.alerts) {
-      data.data.beeps = data.data.alerts
-      delete data.data.alerts
-    }
-    
     return NextResponse.json(data)
   } catch (error) {
     console.error('Error fetching beeps:', error)
