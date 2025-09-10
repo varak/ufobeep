@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const API_BASE_URL = 'https://ufobeep.com/api'
+const API_BASE_URL = 'http://localhost:8000'
 
 // GET /api/beep - Fetch beeps (list/search)
 export async function GET(request: NextRequest) {
