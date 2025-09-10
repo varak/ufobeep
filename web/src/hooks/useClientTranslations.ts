@@ -115,7 +115,7 @@ export function useClientTranslations(namespace: string, locale: string = 'en') 
     if (typeof value === 'string' && replacementsOrFallback && typeof replacementsOrFallback === 'object' && !('returnObjects' in replacementsOrFallback)) {
       let result = value
       Object.entries(replacementsOrFallback).forEach(([placeholder, replacement]) => {
-        result = result.replace(new RegExp(`\\{${placeholder}\\}`, 'g'), replacement)
+        result = result.replace(new RegExp(`\\{${placeholder}\\}`, 'g'), String(replacement))
       })
       return result
     }
