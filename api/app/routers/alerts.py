@@ -39,7 +39,7 @@ async def get_db():
     return await get_database_pool()
 
 def format_alert_response(alert, user_lat=None, user_lon=None):
-    """Format alert data for API response with optional distance calculation"""
+    """Format alert data for API response with optional distance calculation and short URL"""
     
     # Calculate distance if user location and alert location are provided
     distance_km = 0.0
@@ -64,6 +64,10 @@ def format_alert_response(alert, user_lat=None, user_lon=None):
         y = math.sin(dlon) * math.cos(lat2)
         x = math.cos(lat1) * math.sin(lat2) - math.sin(lat1) * math.cos(lat2) * math.cos(dlon)
         bearing_deg = (math.degrees(math.atan2(y, x)) + 360) % 360
+    
+    # Generate short URL using shared Node.js module
+    from app.utils.short_url_utils import generate_short_url
+    short_url = generate_short_url(str(alert.id))
     
     response = {
         "id": alert.id,
@@ -98,7 +102,8 @@ def format_alert_response(alert, user_lat=None, user_lon=None):
         "comment_count": getattr(alert, 'comment_count', 0),
         "source": getattr(alert, 'source', None),
         "occurred_at": alert.occurred_at.isoformat() if alert.occurred_at else None,
-        "external_url": getattr(alert, 'external_url', None)
+        "external_url": getattr(alert, 'external_url', None),
+        "short_url": short_url
     }
     
     # Add MUFON-specific UI widget hiding for frontend

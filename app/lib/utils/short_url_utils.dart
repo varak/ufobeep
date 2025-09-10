@@ -1,36 +1,38 @@
-import 'dart:io';
-
 /// Wrapper for shared short URL generation
-/// Uses the canonical implementation from shared/get_short_hash.js
-/// Calls the single source of truth Node.js module
+/// Uses the exact same algorithm as shared/get_short_hash.js
+/// CRITICAL: This implementation must match JavaScript exactly for consistency
+
+const String _safeChars = '23456789abcdefghjkmnpqrstuvwxyz';
 
 /// Generate a 4-character clean short ID from an input string.
-/// Calls the shared/get_short_hash.js module to ensure consistency.
-Future<String> generateCleanShortId(String input) async {
-  if (input.isEmpty) throw ArgumentError('Input cannot be empty');
+/// This is a faithful Dart port of the canonical shared/get_short_hash.js implementation.
+/// CRITICAL: The algorithm must never change to maintain URL consistency.
+String generateCleanShortId(String input) {
+  if (input.isEmpty) return '';
   
-  // Call the shared Node.js module
-  final result = await Process.run('node', ['shared/get_short_hash.js', input]);
-  
-  if (result.exitCode == 0) {
-    return result.stdout.toString().trim();
-  } else {
-    throw Exception('Error calling shared hash function: ${result.stderr}');
+  // Generate hash using the exact shared algorithm
+  // CRITICAL: Use 32-bit signed integer math exactly like JavaScript
+  int hash = 0;
+  for (int i = 0; i < input.length; i++) {
+    final char = input.codeUnitAt(i);
+    hash = ((hash << 5) - hash) + char;
+    
+    // CRITICAL: Convert to 32-bit signed integer like JavaScript
+    // JavaScript: hash = hash & hash (32-bit conversion)
+    // Dart equivalent: Force to signed 32-bit range
+    hash = (hash << 32) >> 32; // Force 32-bit signed integer
   }
-}
-
-/// Synchronous version for compatibility - not recommended
-String generateCleanShortIdSync(String input) {
-  if (input.isEmpty) throw ArgumentError('Input cannot be empty');
   
-  // Call the shared Node.js module synchronously
-  final result = Process.runSync('node', ['shared/get_short_hash.js', input]);
+  // Convert hash to base-29 using safe characters
+  String shortId = '';
+  int num = hash.abs();
   
-  if (result.exitCode == 0) {
-    return result.stdout.toString().trim();
-  } else {
-    throw Exception('Error calling shared hash function: ${result.stderr}');
+  for (int i = 0; i < 4; i++) {
+    shortId = _safeChars[num % _safeChars.length] + shortId;
+    num = num ~/ _safeChars.length;
   }
+  
+  return shortId;
 }
 
 /// Get short alert URL for sharing with language support

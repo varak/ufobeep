@@ -436,9 +436,13 @@ app.include_router(photo_analysis.router)
 app.include_router(mufon.router)
 app.include_router(copescan.router, prefix="/copescan", tags=["copescan"])
 
-# Include beep router for unified beep/sighting endpoints (replaces alerts)
+# Include beep router for unified beep/sighting endpoints
 from app.routers import beep
 app.include_router(beep.router)
+
+# Include alerts router for API consistency (same functionality as beep)
+from app.routers import alerts
+app.include_router(alerts.router)
 
 # Include engagement tracking router
 from app.routers import beep_engagement
