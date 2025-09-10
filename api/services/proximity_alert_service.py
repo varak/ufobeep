@@ -383,7 +383,11 @@ class ProximityAlertService:
             
         try:
             # Get user IDs for the target devices
-            user_ids = await self._get_user_ids_for_devices([d['device_id'] for d in devices])
+            device_ids = [d['device_id'] for d in devices]
+            user_ids = await self._get_user_ids_for_devices(device_ids)
+            logger.info(f"Device-to-user mapping: {len(device_ids)} devices -> {len(user_ids)} users")
+            logger.info(f"Target device IDs: {device_ids}")
+            logger.info(f"Target user IDs: {user_ids}")
             if not user_ids:
                 logger.warning("No user IDs found for target devices")
                 return 0
