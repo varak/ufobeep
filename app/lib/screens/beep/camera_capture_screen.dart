@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:camera/camera.dart';
@@ -52,53 +53,30 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
 
   Future<void> _initializeCamera() async {
     try {
-      debugPrint('📸 CAMERA: Starting camera initialization...');
+      // Fast camera initialization - no timeouts
+      final camStatus = await Permission.camera.request();
       
-      // 1) Permission phase with timeout
-      debugPrint('📸 CAMERA: Requesting camera permission…');
-      final camStatus = await Permission.camera.request().timeout(
-        const Duration(seconds: 10),
-        onTimeout: () => throw TimeoutException('Permission request timed out'),
-      );
-      debugPrint('📸 CAMERA: Permission result: $camStatus');
-
       if (!await Permission.camera.isGranted) {
-        debugPrint('📸 CAMERA: Camera permission NOT granted → aborting.');
         setState(() {
-          _errorMessage = 'Camera permission NOT granted → aborting.';
+          _errorMessage = 'Camera permission required';
         });
         return;
       }
 
-      // 2) availableCameras() with timeout
-      debugPrint('📸 CAMERA: Calling availableCameras()…');
-      _cameras = await availableCameras().timeout(
-        const Duration(seconds: 8),
-        onTimeout: () => throw TimeoutException('availableCameras() timed out'),
-      );
-      debugPrint('📸 CAMERA: availableCameras() returned ${_cameras?.length ?? 0} camera(s).');
+      _cameras = await availableCameras();
       if (_cameras == null || _cameras!.isEmpty) {
-        debugPrint('📸 CAMERA: No cameras found on device → aborting.');
         setState(() {
-          _errorMessage = 'No cameras found on device → aborting.';
+          _errorMessage = 'No cameras available';
         });
         return;
       }
 
-      // 3) Controller initialize with timeout
-      debugPrint('📸 CAMERA: Creating CameraController…');
       _controller = CameraController(_cameras!.first, ResolutionPreset.max, enableAudio: false);
-      debugPrint('📸 CAMERA: Initializing controller…');
-      await _controller!.initialize().timeout(
-        const Duration(seconds: 10),
-        onTimeout: () => throw TimeoutException('controller.initialize() timed out'),
-      );
+      await _controller!.initialize();
 
       _isInitialized = true;
       if (mounted) setState(() {});
-      debugPrint('📸 CAMERA: Camera initialized successfully ✅');
-    } catch (e, st) {
-      debugPrint('📸 CAMERA: DIAG ERROR: $e\n$st');
+    } catch (e) {
       setState(() {
         _errorMessage = 'Camera initialization failed: $e';
       });
