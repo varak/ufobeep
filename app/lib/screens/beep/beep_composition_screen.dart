@@ -477,7 +477,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       }
 
       // Set device ID as current user so navigation button is hidden
-      final deviceId = await beepService.getOrCreateDeviceId();
+      final deviceId = await BeepService().getOrCreateDeviceId();
       ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
       
       // Show success message
@@ -506,6 +506,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       debugPrint('Beep submission error: $e');
       
       setState(() {
+        _isSubmitting = false;
         _errorMessage = e.toString();
       });
 
