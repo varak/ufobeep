@@ -596,7 +596,7 @@ async def get_beep_by_short_url(short_url: str):
                     alert_level, witness_count, total_confirmations, source, 
                     reporter_username, enrichment, external_id, external_url,
                     short_url, media_urls, media_count
-                FROM alerts 
+                FROM sightings 
                 WHERE short_url = $1
             """
             row = await conn.fetchrow(query, short_url)
