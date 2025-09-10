@@ -12,7 +12,7 @@ String generateCleanShortId(String input) {
   for (int i = 0; i < input.length; i++) {
     final char = input.codeUnitAt(i);
     hash = ((hash << 5) - hash) + char;
-    hash = hash & 0xFFFFFFFF; // Convert to 32-bit integer
+    hash = hash & hash; // Convert to 32-bit integer
   }
   
   // Convert hash to base-29 using safe characters

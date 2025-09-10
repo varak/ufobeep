@@ -132,7 +132,7 @@ function generateCleanShortId(input: string): string {
   for (let i = 0; i < input.length; i++) {
     const char = input.charCodeAt(i)
     hash = ((hash << 5) - hash) + char
-    hash = hash & 0xFFFFFFFF // Convert to 32-bit integer
+    hash = hash & hash // Convert to 32-bit integer
   }
   
   // Convert hash to base-29 using safe characters
