@@ -18,6 +18,7 @@ import '../../services/sound_service.dart';
 import '../../services/permission_service.dart';
 import '../../services/api_client.dart';
 import '../../services/comments_service.dart';
+import '../../widgets/dev_menu_button.dart';
 import '../../services/ui_feedback.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../models/sensor_data.dart';
@@ -369,6 +370,9 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
           ),
           backgroundColor: Colors.transparent,
           elevation: 0,
+          actions: const [
+            DevMenuButton(),
+          ],
           centerTitle: true,
         ),
         body: SafeArea(

@@ -29,6 +29,7 @@ import '../screens/auth/firebase_email_auth_screen.dart';
 import '../screens/auth/sign_in_screen.dart';
 import '../screens/splash/splash_screen.dart';
 import '../screens/notifications/notification_management_screen.dart';
+import '../screens/camera_diag_screen.dart';
 import '../models/shared_media_data.dart';
 import '../l10n/app_localizations.dart';
 
@@ -116,6 +117,13 @@ GoRouter appRouter(AppRouterRef ref) {
       );
     },
     routes: [
+      // Camera Diagnostic Screen (debug only)
+      GoRoute(
+        path: '/diag/camera',
+        name: 'camera-diag',
+        builder: (context, state) => const CameraDiagScreen(),
+      ),
+      
       // Splash Screen (handles its own navigation after initialization)
       GoRoute(
         path: '/splash',
