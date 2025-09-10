@@ -148,17 +148,29 @@ export default function AlertDetailPage() {
           shortId = fullSlug
         }
         
-        // Fast lookup by searching for the short_url in the beep list
+        // Progressive search - start with 20 recent beeps, then expand if needed
         let targetAlert = null
         
         try {
-          // Try a limited search first - check recent beeps
-          const res = await fetch(`/api/beep?limit=100&verified_only=false`)
-          if (res.ok) {
-            const data = await res.json()
-            if (data.success && (data.data?.beeps || data.data?.alerts)) {
-              const beepsList = data.data?.beeps || data.data?.alerts || []
-              targetAlert = beepsList.find((b: any) => b.short_url === shortId)
+          // Start with just 20 recent beeps for speed
+          const quickRes = await fetch(`/api/beep?limit=20&verified_only=false`)
+          if (quickRes.ok) {
+            const quickData = await quickRes.json()
+            if (quickData.success && (quickData.data?.beeps || quickData.data?.alerts)) {
+              const quickBeeps = quickData.data?.beeps || quickData.data?.alerts || []
+              targetAlert = quickBeeps.find((b: any) => b.short_url === shortId)
+            }
+          }
+          
+          // If not found in recent 20, expand search
+          if (!targetAlert) {
+            const expandedRes = await fetch(`/api/beep?limit=100&verified_only=false`)
+            if (expandedRes.ok) {
+              const expandedData = await expandedRes.json()
+              if (expandedData.success && (expandedData.data?.beeps || expandedData.data?.alerts)) {
+                const expandedBeeps = expandedData.data?.beeps || expandedData.data?.alerts || []
+                targetAlert = expandedBeeps.find((b: any) => b.short_url === shortId)
+              }
             }
           }
         } catch (error) {
