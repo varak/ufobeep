@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
@@ -1307,10 +1308,13 @@ extension ApiClientExtension on ApiClient {
       debugPrint('Creating multipart file...');
       final filename = _safeExtractFilename(file.path);
       
-      formData.files.add(MapEntry(
-        'files',
-        await MultipartFile.fromFile(file.path, filename: filename),
-      ));
+      // Add 5-second timeout for file reading to prevent infinite hang
+      final multipartFile = await MultipartFile.fromFile(file.path, filename: filename)
+          .timeout(const Duration(seconds: 5), onTimeout: () {
+            throw TimeoutException('File reading timeout after 5 seconds', const Duration(seconds: 5));
+          });
+      
+      formData.files.add(MapEntry('files', multipartFile));
       
       // Add form fields
       formData.fields.add(const MapEntry('source', 'mobile_app'));
