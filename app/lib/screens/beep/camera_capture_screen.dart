@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:camera/camera.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as path;
 import 'package:gal/gal.dart';
 
@@ -52,18 +53,20 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
     try {
       debugPrint('📸 CAMERA: Starting camera initialization...');
       
-      // Check camera permission first
-      final hasPermission = await _permissionService.requestCameraForCapture();
-      if (!hasPermission) {
+      // Use the exact same approach as the working diagnostic
+      final camStatus = await Permission.camera.request();
+      debugPrint('📸 CAMERA: Permission result: $camStatus');
+
+      if (!await Permission.camera.isGranted) {
         setState(() {
-          _errorMessage = 'Camera permission is required. Please grant permission in settings and try again.';
+          _errorMessage = 'Camera permission NOT granted → aborting.';
         });
         return;
       }
       
       debugPrint('📸 CAMERA: Camera permission granted');
       
-      // Get available cameras
+      // Get available cameras (same as diagnostic)
       _cameras = await availableCameras();
       
       debugPrint('📸 CAMERA: Found ${_cameras?.length ?? 0} cameras');
@@ -83,12 +86,11 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
 
       debugPrint('📸 CAMERA: Selected camera: ${camera.name} (${camera.lensDirection})');
 
-      // Create controller with maximum resolution
+      // Create controller exactly like the diagnostic (no audio, max resolution)
       _controller = CameraController(
         camera,
-        ResolutionPreset.max,  // Use maximum resolution available
-        enableAudio: _isVideoMode, // Enable audio for video mode
-        imageFormatGroup: _isVideoMode ? null : ImageFormatGroup.jpeg,
+        ResolutionPreset.max,
+        enableAudio: false, // Same as diagnostic
       );
 
       debugPrint('📸 CAMERA: Controller created, initializing...');
