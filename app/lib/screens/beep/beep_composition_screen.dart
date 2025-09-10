@@ -208,281 +208,34 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     }
   }
 
+  // 🔥 ChatGPT's Bulletproof Logger
+  void _log(String msg) => debugPrint('⏺️ [BeepSubmit] $msg');
+
+  // 🔥 ChatGPT's Bulletproof Submit Function with 20-second timeout
   Future<void> _submitBeep() async {
-    debugPrint('🚀 BEEP SUBMIT: Starting submission process...');
-    debugPrint('🚀 BEEP SUBMIT: Media files count: ${_mediaFiles.length}');
-    debugPrint('🚀 BEEP SUBMIT: Is submitting already: $_isSubmitting');
+    _log('Starting submission...');
     
     if (_isSubmitting) {
-      debugPrint('⚠️ BEEP SUBMIT: Already submitting, aborting');
+      _log('Already submitting, skipping');
       return;
     }
     
-    debugPrint('🚀 BEEP SUBMIT: Setting isSubmitting to true');
+    // Single state update point
+    _log('Setting isSubmitting = true');
     setState(() {
       _isSubmitting = true;
       _errorMessage = null;
     });
-
-    // Validate location data BEFORE creating sighting (only for NEW sightings)
-    if (widget.attachToSightingId == null && 
-        (_sensorData?.latitude == null || _sensorData?.longitude == null)) {
-      setState(() {
-        _isSubmitting = false;
-        _errorMessage = AppLocalizations.of(context).errorNoLocation;
-      });
-      await SoundService.I.play(AlertSound.gpsFail, haptic: true);
-      return; // Don't create sighting without location
-    }
-
-    // Play sound feedback when sending
-    await SoundService.I.play(AlertSound.tap, haptic: true);
-
+    
     try {
-      // Get description - optional
-      final description = _descriptionController.text.trim();
+      // 20-second timeout to kill infinite hangs
+      await Future.any([
+        _actualSubmitLogic(),
+        Future.delayed(Duration(seconds: 20), () => throw TimeoutException('Submission timeout', Duration(seconds: 20))),
+      ]);
       
-      // Use actual description or null if empty
-      final finalTitle = 'UFO Sighting';
-      final finalDescription = description.isEmpty ? null : description;
-
-      // All beeps are UFO sightings - no classification
-      const category = api.SightingCategory.ufo;
-      final List<String> tags = [];
-
-      String sightingId;
+      _log('SUCCESS: Submission completed');
       
-      if (widget.attachToSightingId != null) {
-        // Adding to existing sighting
-        sightingId = widget.attachToSightingId!;
-        debugPrint('Adding media to existing sighting: $sightingId');
-      } else {
-        // Create new sighting (existing logic)
-        debugPrint('Submitting sighting with sensor data: ${_sensorData != null}');
-        debugPrint('Creating sighting via sendBeep with media pending...');
-        
-        // Check for valid GPS coordinates (REQUIRED for new alerts)
-        double? validLat = _sensorData?.latitude;
-        double? validLon = _sensorData?.longitude;
-        
-        // If sensor GPS is missing or invalid, try to extract from photo EXIF as fallback
-        if (validLat == null || validLon == null || (validLat == 0.0 && validLon == 0.0)) {
-          debugPrint('⚠️ Sensor GPS invalid, attempting to extract from photo EXIF...');
-          
-          // Try to extract GPS from any attached photos
-          for (final fileData in _mediaFiles) {
-            final File mediaFile = fileData['mediaFile'];
-            final bool isVideo = fileData['isVideo'] ?? false;
-            
-            if (!isVideo) { // Only photos have EXIF GPS data
-              try {
-                final photoMetadata = await PhotoMetadataService.extractComprehensiveMetadata(mediaFile);
-                final locationData = photoMetadata['location'];
-                
-                if (locationData != null && 
-                    locationData['latitude'] != null && 
-                    locationData['longitude'] != null &&
-                    locationData['latitude'] != 0.0 &&
-                    locationData['longitude'] != 0.0) {
-                  
-                  validLat = locationData['latitude'];
-                  validLon = locationData['longitude'];
-                  debugPrint('✅ Extracted GPS from photo: lat=$validLat, lon=$validLon');
-                  
-                  // Update sensor data with extracted coordinates
-                  _sensorData = SensorData(
-                    utc: _sensorData?.utc ?? DateTime.now(),
-                    latitude: validLat!,
-                    longitude: validLon!,
-                    accuracy: 10.0, // Lower accuracy since from photo
-                    altitude: locationData['altitude'] ?? _sensorData?.altitude ?? 0.0,
-                    azimuthDeg: _sensorData?.azimuthDeg ?? 0.0,
-                    pitchDeg: _sensorData?.pitchDeg ?? 0.0,
-                    rollDeg: _sensorData?.rollDeg ?? 0.0,
-                    hfovDeg: _sensorData?.hfovDeg ?? 60.0,
-                  );
-                  break; // Found valid GPS, stop searching
-                }
-              } catch (e) {
-                debugPrint('Failed to extract GPS from photo: $e');
-              }
-            }
-          }
-        }
-        
-        // Final validation - only fail if we absolutely have no GPS data
-        if (validLat == null || validLon == null || (validLat == 0.0 && validLon == 0.0)) {
-          debugPrint('❌ No valid GPS coordinates found in sensor data or photo EXIF');
-          setState(() {
-            _isSubmitting = false;
-            _errorMessage = 'GPS location required. Please enable GPS or take photos with location enabled.';
-          });
-          return;
-        }
-        
-        debugPrint('📍 Final GPS coordinates: lat=$validLat, lon=$validLon');
-        
-        final beepResult = await BeepService().sendBeep(
-          description: finalDescription,
-          latitude: validLat,
-          longitude: validLon,
-          heading: _sensorData?.azimuthDeg,
-          hasMedia: true, // This will defer alerts until media upload completes
-        );
-        
-        final sightingIdFromResponse = beepResult['sighting_id']?.toString();
-        if (sightingIdFromResponse == null) {
-          throw Exception('Failed to get sighting ID from API response');
-        }
-        sightingId = sightingIdFromResponse;
-        debugPrint('Sighting created with ID: $sightingId (alerts deferred)');
-      }
-      
-      // Now upload all media files, then trigger alerts
-      try {
-        debugPrint('🚀 BEEP SUBMIT: Uploading ${_mediaFiles.length} files to sighting...');
-        debugPrint('🚀 BEEP SUBMIT: Sighting ID: $sightingId');
-        
-        int uploadedCount = 0;
-        int photoCount = 0;
-        int videoCount = 0;
-        
-        // Upload all files sequentially
-        for (int i = 0; i < _mediaFiles.length; i++) {
-          final fileData = _mediaFiles[i];
-          final File mediaFile = fileData['mediaFile'];
-          final bool isVideo = fileData['isVideo'] ?? false;
-          
-          try {
-            debugPrint('🚀 BEEP SUBMIT: Uploading file ${i + 1}/${_mediaFiles.length}: ${mediaFile.path}');
-            debugPrint('🚀 BEEP SUBMIT: File exists: ${await mediaFile.exists()}');
-            debugPrint('🚀 BEEP SUBMIT: File size: ${await mediaFile.length()} bytes');
-            
-            // TODO: Add NSFW filter hook here
-            // final isContentSafe = await ContentModerationService.validateMedia(mediaFile);
-            // if (!isContentSafe) {
-            //   debugPrint('Content blocked by moderation filter');
-            //   continue; // Skip this file
-            // }
-            
-            debugPrint('🚀 BEEP SUBMIT: Calling uploadMediaToSighting...');
-            await ApiClient.instance.uploadMediaToSighting(
-              sightingId,
-              mediaFile,
-            );
-            debugPrint('🚀 BEEP SUBMIT: Upload successful for file ${i + 1}');
-            
-            uploadedCount++;
-            if (isVideo) {
-              videoCount++;
-            } else {
-              photoCount++;
-            }
-            
-            debugPrint('🚀 BEEP SUBMIT: Successfully uploaded file ${i + 1}/${_mediaFiles.length}');
-          } catch (e) {
-            debugPrint('❌ BEEP SUBMIT: Failed to upload file ${mediaFile.path}: $e');
-            debugPrint('❌ BEEP SUBMIT: Error type: ${e.runtimeType}');
-            debugPrint('❌ BEEP SUBMIT: Error details: ${e.toString()}');
-            // Continue with other files - don't fail entire submission
-          }
-        }
-        
-        debugPrint('🚀 BEEP SUBMIT: Upload completed: $uploadedCount/${_mediaFiles.length} files uploaded');
-        
-        // Create auto-comment for existing sightings
-        if (widget.attachToSightingId != null && uploadedCount > 0) {
-          try {
-            final commentsService = CommentsService();
-            String commentText = 'Added ';
-            
-            if (photoCount > 0 && videoCount > 0) {
-              commentText += '$photoCount ${photoCount == 1 ? 'photo' : 'photos'} and $videoCount ${videoCount == 1 ? 'video' : 'videos'}';
-            } else if (photoCount > 0) {
-              commentText += '$photoCount more ${photoCount == 1 ? 'photo' : 'photos'}';
-            } else {
-              commentText += '$videoCount more ${videoCount == 1 ? 'video' : 'videos'}';
-            }
-            
-            await commentsService.postComment(sightingId, commentText);
-            debugPrint('Created auto-comment for added media: $commentText');
-          } catch (e) {
-            debugPrint('Failed to create auto-comment: $e');
-            // Don't fail the whole upload for comment failure
-          }
-        }
-        
-        // Check if any files failed to upload
-        if (uploadedCount == 0) {
-          throw Exception('No files could be uploaded');
-        } else if (uploadedCount < _mediaFiles.length) {
-          // Some files failed - show warning but continue
-          debugPrint('Warning: ${_mediaFiles.length - uploadedCount} files failed to upload');
-        }
-        
-        // Trigger alerts only for new sightings
-        if (widget.attachToSightingId == null) {
-          debugPrint('Triggering proximity alerts...');
-          // Get coordinates from the sensor data for alert triggering
-          final validLat = _sensorData?.latitude == 0.0 ? null : _sensorData?.latitude;
-          final validLon = _sensorData?.longitude == 0.0 ? null : _sensorData?.longitude;
-          
-          // Get reliable coordinates for proximity alerts using LocationService
-          final alertCoordinates = await LocationService.I.getReliableCoordinates(
-            preferredLat: validLat,
-            preferredLon: validLon,
-            timeout: const Duration(seconds: 5),
-          );
-          
-          if (alertCoordinates != null) {
-            await ApiClient.instance.triggerAlertsForSighting(
-              sightingId, 
-              alertCoordinates['lat']!, 
-              alertCoordinates['lon']!
-            );
-          } else {
-            debugPrint('❌ No valid coordinates available - proximity alerts skipped');
-          }
-          debugPrint('Proximity alerts sent successfully!');
-        }
-      } catch (e) {
-        debugPrint('❌ BEEP SUBMIT: CRITICAL: Media upload or alert trigger failed: $e');
-        debugPrint('❌ BEEP SUBMIT: Error type: ${e.runtimeType}');
-        debugPrint('❌ BEEP SUBMIT: Error details: ${e.toString()}');
-        // ✅ SET ERROR MESSAGE ONLY - let finally handle _isSubmitting
-        if (mounted) {
-          setState(() {
-            _errorMessage = AppLocalizations.of(context).beepFailed;
-          });
-        }
-        await SoundService.I.play(AlertSound.gpsFail, haptic: true);
-        return; // Stop the process, show error to user
-      }
-
-      // Submit photo metadata if available (for astronomical identification)
-      // Note: Video files may not have EXIF data, but we'll try if metadata is present
-      if (widget.photoMetadata != null) {
-        try {
-          debugPrint('Submitting comprehensive ${widget.isVideo ?? false ? 'video' : 'photo'} metadata for analysis...');
-          final metadataSubmitted = await ApiClient.instance.submitPhotoMetadata(
-            sightingId, 
-            widget.photoMetadata!
-          );
-          if (metadataSubmitted) {
-            debugPrint('${widget.isVideo ?? false ? 'Video' : 'Photo'} metadata submitted successfully for external service analysis');
-          } else {
-            debugPrint('Warning: ${widget.isVideo ?? false ? 'Video' : 'Photo'} metadata submission failed');
-          }
-        } catch (e) {
-          debugPrint('Error submitting ${widget.isVideo ?? false ? 'video' : 'photo'} metadata: $e');
-        }
-      }
-
-      // Set device ID as current user so navigation button is hidden
-      final deviceId = await BeepService().getOrCreateDeviceId();
-      ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
-      
-      // Show success message
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -491,27 +244,17 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
             duration: const Duration(seconds: 3),
           ),
         );
-
-        // Navigate to the specific alert that was just created
-        debugPrint('🚀 BEEP SUBMIT: Scheduling navigation to /alert/$sightingId');
-        Future.delayed(const Duration(milliseconds: 1000), () {
-          if (context.mounted) {
-            debugPrint('🚀 BEEP SUBMIT: Navigating to /alert/$sightingId');
-            context.go('/alert/$sightingId');
-          } else {
-            debugPrint('❌ BEEP SUBMIT: Context not mounted, skipping navigation');
-          }
+      }
+      
+    } catch (e) {
+      _log('ERROR: $e');
+      
+      if (mounted) {
+        setState(() {
+          _errorMessage = e.toString();
         });
       }
-
-    } catch (e) {
-      debugPrint('Beep submission error: $e');
       
-      setState(() {
-        _isSubmitting = false;
-        _errorMessage = e.toString();
-      });
-
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -522,15 +265,244 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         );
       }
     } finally {
-      debugPrint('🚀 BEEP SUBMIT: Finally block - setting isSubmitting to false');
+      // SINGLE point of _isSubmitting management
+      _log('FINALLY: Setting isSubmitting = false');
       if (mounted) {
         setState(() {
           _isSubmitting = false;
         });
-        debugPrint('🚀 BEEP SUBMIT: isSubmitting set to false, state updated');
-      } else {
-        debugPrint('❌ BEEP SUBMIT: Widget not mounted, skipping state update');
       }
+    }
+  }
+  
+  // The actual submission logic separated for timeout handling
+  Future<void> _actualSubmitLogic() async {
+    _log('Starting actual submit logic');
+    
+    // Validate location data BEFORE creating sighting (only for NEW sightings)
+    if (widget.attachToSightingId == null && 
+        (_sensorData?.latitude == null || _sensorData?.longitude == null)) {
+      throw Exception(AppLocalizations.of(context).errorNoLocation);
+    }
+
+    // Play sound feedback when sending
+    await SoundService.I.play(AlertSound.tap, haptic: true);
+
+    // Get description - optional
+    final description = _descriptionController.text.trim();
+    final finalDescription = description.isEmpty ? null : description;
+
+    String sightingId;
+    
+    if (widget.attachToSightingId != null) {
+      // Adding to existing sighting
+      sightingId = widget.attachToSightingId!;
+      _log('Adding media to existing sighting: $sightingId');
+    } else {
+      // Create new sighting (existing logic)
+      _log('Creating new sighting with media pending...');
+      
+      // Check for valid GPS coordinates (REQUIRED for new alerts)
+      double? validLat = _sensorData?.latitude;
+      double? validLon = _sensorData?.longitude;
+      
+      // If sensor GPS is missing or invalid, try to extract from photo EXIF as fallback
+      if (validLat == null || validLon == null || (validLat == 0.0 && validLon == 0.0)) {
+        _log('Sensor GPS invalid, attempting to extract from photo EXIF...');
+        
+        // Try to extract GPS from any attached photos
+        for (final fileData in _mediaFiles) {
+          final File mediaFile = fileData['mediaFile'];
+          final bool isVideo = fileData['isVideo'] ?? false;
+          
+          if (!isVideo) { // Only photos have EXIF GPS data
+            try {
+              final photoMetadata = await PhotoMetadataService.extractComprehensiveMetadata(mediaFile);
+              final locationData = photoMetadata['location'];
+              
+              if (locationData != null && 
+                  locationData['latitude'] != null && 
+                  locationData['longitude'] != null &&
+                  locationData['latitude'] != 0.0 &&
+                  locationData['longitude'] != 0.0) {
+                
+                validLat = locationData['latitude'];
+                validLon = locationData['longitude'];
+                _log('Extracted GPS from photo: lat=$validLat, lon=$validLon');
+                
+                // Update sensor data with extracted coordinates
+                _sensorData = SensorData(
+                  utc: _sensorData?.utc ?? DateTime.now(),
+                  latitude: validLat!,
+                  longitude: validLon!,
+                  accuracy: 10.0, // Lower accuracy since from photo
+                  altitude: locationData['altitude'] ?? _sensorData?.altitude ?? 0.0,
+                  azimuthDeg: _sensorData?.azimuthDeg ?? 0.0,
+                  pitchDeg: _sensorData?.pitchDeg ?? 0.0,
+                  rollDeg: _sensorData?.rollDeg ?? 0.0,
+                  hfovDeg: _sensorData?.hfovDeg ?? 60.0,
+                );
+                break; // Found valid GPS, stop searching
+              }
+            } catch (e) {
+              _log('Failed to extract GPS from photo: $e');
+            }
+          }
+        }
+      }
+      
+      // Final validation - only fail if we absolutely have no GPS data
+      if (validLat == null || validLon == null || (validLat == 0.0 && validLon == 0.0)) {
+        throw Exception('GPS location required. Please enable GPS or take photos with location enabled.');
+      }
+      
+      _log('Final GPS coordinates: lat=$validLat, lon=$validLon');
+      
+      final beepResult = await BeepService().sendBeep(
+        description: finalDescription,
+        latitude: validLat,
+        longitude: validLon,
+        heading: _sensorData?.azimuthDeg,
+        hasMedia: true, // This will defer alerts until media upload completes
+      );
+      
+      final sightingIdFromResponse = beepResult['sighting_id']?.toString();
+      if (sightingIdFromResponse == null) {
+        throw Exception('Failed to get sighting ID from API response');
+      }
+      sightingId = sightingIdFromResponse;
+      _log('Sighting created with ID: $sightingId (alerts deferred)');
+    }
+    
+    // Now upload all media files, then trigger alerts
+    _log('Uploading ${_mediaFiles.length} files to sighting...');
+    
+    int uploadedCount = 0;
+    int photoCount = 0;
+    int videoCount = 0;
+    
+    // Upload all files sequentially
+    for (int i = 0; i < _mediaFiles.length; i++) {
+      final fileData = _mediaFiles[i];
+      final File mediaFile = fileData['mediaFile'];
+      final bool isVideo = fileData['isVideo'] ?? false;
+      
+      try {
+        _log('Uploading file ${i + 1}/${_mediaFiles.length}: ${mediaFile.path}');
+        _log('File exists: ${await mediaFile.exists()}');
+        _log('File size: ${await mediaFile.length()} bytes');
+        
+        _log('Calling uploadMediaToSighting...');
+        await ApiClient.instance.uploadMediaToSighting(
+          sightingId,
+          mediaFile,
+        );
+        _log('Upload successful for file ${i + 1}');
+        
+        uploadedCount++;
+        if (isVideo) {
+          videoCount++;
+        } else {
+          photoCount++;
+        }
+        
+      } catch (e) {
+        _log('Failed to upload file ${mediaFile.path}: $e');
+        // Continue with other files - don't fail entire submission
+      }
+    }
+    
+    _log('Upload completed: $uploadedCount/${_mediaFiles.length} files uploaded');
+    
+    // Create auto-comment for existing sightings
+    if (widget.attachToSightingId != null && uploadedCount > 0) {
+      try {
+        final commentsService = CommentsService();
+        String commentText = 'Added ';
+        
+        if (photoCount > 0 && videoCount > 0) {
+          commentText += '$photoCount ${photoCount == 1 ? 'photo' : 'photos'} and $videoCount ${videoCount == 1 ? 'video' : 'videos'}';
+        } else if (photoCount > 0) {
+          commentText += '$photoCount more ${photoCount == 1 ? 'photo' : 'photos'}';
+        } else {
+          commentText += '$videoCount more ${videoCount == 1 ? 'video' : 'videos'}';
+        }
+        
+        await commentsService.postComment(sightingId, commentText);
+        _log('Created auto-comment for added media: $commentText');
+      } catch (e) {
+        _log('Failed to create auto-comment: $e');
+        // Don't fail the whole upload for comment failure
+      }
+    }
+    
+    // Check if any files failed to upload
+    if (uploadedCount == 0) {
+      throw Exception('No files could be uploaded');
+    } else if (uploadedCount < _mediaFiles.length) {
+      // Some files failed - show warning but continue
+      _log('Warning: ${_mediaFiles.length - uploadedCount} files failed to upload');
+    }
+    
+    // Trigger alerts only for new sightings
+    if (widget.attachToSightingId == null) {
+      _log('Triggering proximity alerts...');
+      // Get coordinates from the sensor data for alert triggering
+      final validLat = _sensorData?.latitude == 0.0 ? null : _sensorData?.latitude;
+      final validLon = _sensorData?.longitude == 0.0 ? null : _sensorData?.longitude;
+      
+      // Get reliable coordinates for proximity alerts using LocationService
+      final alertCoordinates = await LocationService.I.getReliableCoordinates(
+        preferredLat: validLat,
+        preferredLon: validLon,
+        timeout: const Duration(seconds: 5),
+      );
+      
+      if (alertCoordinates != null) {
+        await ApiClient.instance.triggerAlertsForSighting(
+          sightingId, 
+          alertCoordinates['lat']!, 
+          alertCoordinates['lon']!
+        );
+      } else {
+        _log('No valid coordinates available - proximity alerts skipped');
+      }
+      _log('Proximity alerts sent successfully!');
+    }
+
+    // Submit photo metadata if available (for astronomical identification)
+    if (widget.photoMetadata != null) {
+      try {
+        _log('Submitting comprehensive metadata for analysis...');
+        final metadataSubmitted = await ApiClient.instance.submitPhotoMetadata(
+          sightingId, 
+          widget.photoMetadata!
+        );
+        if (metadataSubmitted) {
+          _log('Metadata submitted successfully for external service analysis');
+        } else {
+          _log('Warning: Metadata submission failed');
+        }
+      } catch (e) {
+        _log('Error submitting metadata: $e');
+      }
+    }
+
+    // Set device ID as current user so navigation button is hidden
+    final deviceId = await BeepService().getOrCreateDeviceId();
+    ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
+    
+    // Navigate to the specific alert that was just created
+    if (context.mounted) {
+      _log('Scheduling navigation to /alert/$sightingId');
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        if (context.mounted) {
+          _log('Navigating to /alert/$sightingId');
+          context.go('/alert/$sightingId');
+        } else {
+          _log('Context not mounted, skipping navigation');
+        }
+      });
     }
   }
 
