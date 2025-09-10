@@ -216,20 +216,13 @@ GoRouter appRouter(AppRouterRef ref) {
               );
             },
             routes: [
-              // Custom Camera (no approval modal)
+              // Custom Camera (use working diagnostic as camera)
               GoRoute(
                 path: 'camera',
                 name: 'beep-camera',
                 builder: (context, state) {
-                  final extra = state.extra as Map<String, dynamic>?;
-                  final description = extra?['description'] as String?;
-                  final attachToSightingId = extra?['attachToSightingId'] as String?;
-                  final returnToComposition = extra?['returnToComposition'] as bool? ?? false;
-                  return CameraCaptureScreen(
-                    description: description,
-                    attachToSightingId: attachToSightingId,
-                    returnToComposition: returnToComposition,
-                  );
+                  // Just use the working diagnostic screen for now
+                  return const CameraDiagScreen();
                 },
               ),
               // Beep Composition
