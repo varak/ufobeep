@@ -23,10 +23,22 @@ export function LanguageSwitcher({
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
-  // Determine current locale from pathname prefix (e.g., /es/...)
+  // Determine current locale from pathname 
   const path = pathname || '/'
   const segs = path.split('/').filter(Boolean)
-  const currentLocale = segs.length && Object.keys(supportedLocales).includes(segs[0]) ? segs[0] : 'en'
+  let currentLocale = 'en'
+  
+  if (path.startsWith('/beep/') && segs.length >= 2) {
+    // New beep URL structure: /beep/[locale]/...
+    if (Object.keys(supportedLocales).includes(segs[1])) {
+      currentLocale = segs[1]
+    }
+  } else {
+    // Traditional locale prefix: /es/... or /...
+    if (segs.length && Object.keys(supportedLocales).includes(segs[0])) {
+      currentLocale = segs[0]
+    }
+  }
   const supportedLocaleCodes = Object.keys(supportedLocales);
   
   // Close dropdown when clicking outside
@@ -64,18 +76,37 @@ export function LanguageSwitcher({
       localStorage.setItem('preferred-language', locale)
       document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000; SameSite=Lax`
     }
-    // Build localized path. Assuming defaultLocale is 'en' without prefix.
-    const defaultLocale = 'en'
+    
     const qs = searchParams?.toString()
     let targetPath = pathname || '/'
-    // Strip any existing locale prefix
-    const parts = targetPath.split('/').filter(Boolean)
-    if (parts.length && supportedLocaleCodes.includes(parts[0])) {
-      parts.shift()
-      targetPath = '/' + parts.join('/')
+    
+    // Handle the new beep URL structure: /beep/[locale]/... 
+    if (targetPath.startsWith('/beep/')) {
+      const parts = targetPath.split('/').filter(Boolean) // ['beep', 'locale', ...]
+      if (parts.length >= 2 && supportedLocaleCodes.includes(parts[1])) {
+        // Replace existing locale: /beep/en/... -> /beep/es/...
+        parts[1] = locale
+        targetPath = '/' + parts.join('/')
+      } else if (parts.length === 1) {
+        // Add locale to bare /beep -> /beep/es
+        targetPath = `/beep/${locale}`
+      } else {
+        // Fallback: add locale after /beep/
+        targetPath = `/beep/${locale}`
+      }
+    } else {
+      // Handle other paths with traditional locale prefix
+      const parts = targetPath.split('/').filter(Boolean)
+      // Strip any existing locale prefix
+      if (parts.length && supportedLocaleCodes.includes(parts[0])) {
+        parts.shift()
+        targetPath = '/' + parts.join('/')
+      }
+      // Apply locale prefix for non-English
+      targetPath = locale === 'en' ? targetPath : `/${locale}${targetPath}`
     }
-    const localized = locale === defaultLocale ? targetPath : `/${locale}${targetPath}`
-    router.push(qs ? `${localized}?${qs}` : localized)
+    
+    router.push(qs ? `${targetPath}?${qs}` : targetPath)
   }
   
   if (variant === 'buttons') {
