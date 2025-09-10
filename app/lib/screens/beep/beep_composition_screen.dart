@@ -449,10 +449,12 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         debugPrint('❌ BEEP SUBMIT: CRITICAL: Media upload or alert trigger failed: $e');
         debugPrint('❌ BEEP SUBMIT: Error type: ${e.runtimeType}');
         debugPrint('❌ BEEP SUBMIT: Error details: ${e.toString()}');
-        setState(() {
-          _isSubmitting = false;
-          _errorMessage = AppLocalizations.of(context).beepFailed;
-        });
+        // ✅ SET ERROR MESSAGE ONLY - let finally handle _isSubmitting
+        if (mounted) {
+          setState(() {
+            _errorMessage = AppLocalizations.of(context).beepFailed;
+          });
+        }
         await SoundService.I.play(AlertSound.gpsFail, haptic: true);
         return; // Stop the process, show error to user
       }
