@@ -29,6 +29,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   bool _showAdminAccess = false;
   int _adminTapCount = 0;
   String _appVersion = '0.1.0';
+  String _buildNumber = '';
 
   @override
   void initState() {
@@ -40,9 +41,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   
   Future<void> _loadAppVersion() async {
     final version = await AppEnvironment.getAppVersion();
+    final buildNumber = await AppEnvironment.getBuildNumber();
     if (mounted) {
       setState(() {
         _appVersion = version;
+        _buildNumber = buildNumber;
       });
     }
   }
@@ -198,7 +201,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           GestureDetector(
             onTap: _handleAdminTap,
             child: Text(
-              'v$_appVersion',
+              'v$_appVersion${_buildNumber.isNotEmpty ? ' (Build $_buildNumber)' : ''}',
               style: const TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 14,

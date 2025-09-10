@@ -102,6 +102,15 @@ class AppEnvironment {
     }
   }
   
+  static Future<String> getBuildNumber() async {
+    try {
+      final packageInfo = await PackageInfo.fromPlatform();
+      return packageInfo.buildNumber;
+    } catch (e) {
+      return '';
+    }
+  }
+  
   static String get appVersion => _packageInfo?.version ?? '0.1.0';
   
   static PackageInfo? _packageInfo;
