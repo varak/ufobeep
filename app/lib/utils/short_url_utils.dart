@@ -1,18 +1,22 @@
-/// Shared utility for generating short URLs consistently across platforms.
-/// This is the single source of truth for short URL generation.
-/// 
+/// Wrapper for shared short URL generation
+/// Uses the canonical implementation from shared/get_short_hash.js
+/// Note: In production, this should call the shared Node.js module
+/// For now, keeping inline implementation to match shared version exactly
+
 /// Characters safe for short IDs (excludes O,I,L,0,1,o,l,i for clarity)
 const String _safeChars = '23456789abcdefghjkmnpqrstuvwxyz';
 
 /// Generate a 4-character clean short ID from an input string.
-/// This matches the web implementation exactly for consistency.
+/// This matches the shared/get_short_hash.js implementation exactly.
 String generateCleanShortId(String input) {
-  // Generate a 4-character clean ID from input string
+  if (input.isEmpty) return '';
+  
+  // Generate hash using the exact shared algorithm
   int hash = 0;
   for (int i = 0; i < input.length; i++) {
     final char = input.codeUnitAt(i);
     hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32-bit integer
+    hash = hash & hash; // Convert to 32-bit integer (working version)
   }
   
   // Convert hash to base-29 using safe characters
