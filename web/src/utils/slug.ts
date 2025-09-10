@@ -124,7 +124,7 @@ export function getAlertSlug(alert: SluggableAlertLike, locale: string = 'en', t
 }
 
 // Import shared short hash function
-const { getShortHash } = require('../../shared/get_short_hash.js')
+const { getShortHash } = require('../../../shared/get_short_hash.js')
 
 function generateCleanShortId(input: string): string {
   return getShortHash(input)
