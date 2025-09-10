@@ -111,6 +111,20 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   Future<void> _pickFromGallery() async {
     if (_isCapturing) return;
     
+    // Check photo gallery permission first
+    final hasPermission = await permissionService.requestPhotosForGallery();
+    if (!hasPermission) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Photo library permission is required to select media'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+      return;
+    }
+    
     setState(() {
       _isCapturing = true;
       _errorMessage = null;

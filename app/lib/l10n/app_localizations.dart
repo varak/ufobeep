@@ -1589,6 +1589,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error updating follow status'**
   String get alertFollowError;
+
+  /// No description provided for @notificationChannelAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'UFOBeep Alerts'**
+  String get notificationChannelAlerts;
+
+  /// No description provided for @notificationChannelAlertsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications for UFO beeps and proximity alerts'**
+  String get notificationChannelAlertsDesc;
+
+  /// No description provided for @notificationSightingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'UFO Sighting'**
+  String get notificationSightingTitle;
+
+  /// No description provided for @notificationSightingUrgent.
+  ///
+  /// In en, this message translates to:
+  /// **'⚠️ URGENT UFO Sighting'**
+  String get notificationSightingUrgent;
+
+  /// No description provided for @notificationSightingEmergency.
+  ///
+  /// In en, this message translates to:
+  /// **'🚨 EMERGENCY UFO Sighting'**
+  String get notificationSightingEmergency;
+
+  /// No description provided for @notificationSightingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{witnessText} near {locationName}'**
+  String notificationSightingBody(String witnessText, String locationName);
+
+  /// No description provided for @notificationCommentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'💬 {username} commented'**
+  String notificationCommentTitle(String username);
+
+  /// No description provided for @notificationWitnessText.
+  ///
+  /// In en, this message translates to:
+  /// **'New sighting'**
+  String get notificationWitnessText;
+
+  /// No description provided for @notificationWitnessTextMultiple.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} witnesses'**
+  String notificationWitnessTextMultiple(int count);
+
+  /// No description provided for @notificationActionSnooze.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze 1h'**
+  String get notificationActionSnooze;
+
+  /// No description provided for @notificationActionDismiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get notificationActionDismiss;
+
+  /// No description provided for @notificationDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'{distance} away'**
+  String notificationDistance(String distance);
 }
 
 class _AppLocalizationsDelegate

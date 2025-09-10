@@ -791,4 +791,49 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get alertFollowError => 'Error updating follow status';
+
+  @override
+  String get notificationChannelAlerts => 'UFOBeep Alerts';
+
+  @override
+  String get notificationChannelAlertsDesc =>
+      'Notifications for UFO beeps and proximity alerts';
+
+  @override
+  String get notificationSightingTitle => 'UFO Sighting';
+
+  @override
+  String get notificationSightingUrgent => '⚠️ URGENT UFO Sighting';
+
+  @override
+  String get notificationSightingEmergency => '🚨 EMERGENCY UFO Sighting';
+
+  @override
+  String notificationSightingBody(String witnessText, String locationName) {
+    return '$witnessText near $locationName';
+  }
+
+  @override
+  String notificationCommentTitle(String username) {
+    return '💬 $username commented';
+  }
+
+  @override
+  String get notificationWitnessText => 'New sighting';
+
+  @override
+  String notificationWitnessTextMultiple(int count) {
+    return '$count witnesses';
+  }
+
+  @override
+  String get notificationActionSnooze => 'Snooze 1h';
+
+  @override
+  String get notificationActionDismiss => 'Dismiss';
+
+  @override
+  String notificationDistance(String distance) {
+    return '$distance away';
+  }
 }

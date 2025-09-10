@@ -1,4 +1,19 @@
 {
+  "ar": [
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
+  ],
+
   "cs": [
     "directionDistanceTitle",
     "mufonCaseTitle",
@@ -6,7 +21,19 @@
     "satellitePassExplanation",
     "followingAlert",
     "unfollowedAlert",
-    "alertFollowError"
+    "alertFollowError",
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
   ],
 
   "da": [
@@ -16,7 +43,34 @@
     "satellitePassExplanation",
     "followingAlert",
     "unfollowedAlert",
-    "alertFollowError"
+    "alertFollowError",
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
+  ],
+
+  "de": [
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
   ],
 
   "el": [
@@ -26,7 +80,34 @@
     "satellitePassExplanation",
     "followingAlert",
     "unfollowedAlert",
-    "alertFollowError"
+    "alertFollowError",
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
+  ],
+
+  "es": [
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
   ],
 
   "fi": [
@@ -36,7 +117,34 @@
     "satellitePassExplanation",
     "followingAlert",
     "unfollowedAlert",
-    "alertFollowError"
+    "alertFollowError",
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
+  ],
+
+  "fr": [
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
   ],
 
   "he": [
@@ -46,7 +154,19 @@
     "satellitePassExplanation",
     "followingAlert",
     "unfollowedAlert",
-    "alertFollowError"
+    "alertFollowError",
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
   ],
 
   "hi": [
@@ -56,7 +176,49 @@
     "satellitePassExplanation",
     "followingAlert",
     "unfollowedAlert",
-    "alertFollowError"
+    "alertFollowError",
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
+  ],
+
+  "it": [
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
+  ],
+
+  "ja": [
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
   ],
 
   "ko": [
@@ -66,7 +228,19 @@
     "satellitePassExplanation",
     "followingAlert",
     "unfollowedAlert",
-    "alertFollowError"
+    "alertFollowError",
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
   ],
 
   "nl": [
@@ -76,7 +250,19 @@
     "satellitePassExplanation",
     "followingAlert",
     "unfollowedAlert",
-    "alertFollowError"
+    "alertFollowError",
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
   ],
 
   "no": [
@@ -86,7 +272,19 @@
     "satellitePassExplanation",
     "followingAlert",
     "unfollowedAlert",
-    "alertFollowError"
+    "alertFollowError",
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
   ],
 
   "pl": [
@@ -96,7 +294,49 @@
     "satellitePassExplanation",
     "followingAlert",
     "unfollowedAlert",
-    "alertFollowError"
+    "alertFollowError",
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
+  ],
+
+  "pt": [
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
+  ],
+
+  "ru": [
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
   ],
 
   "sv": [
@@ -106,6 +346,48 @@
     "satellitePassExplanation",
     "followingAlert",
     "unfollowedAlert",
-    "alertFollowError"
+    "alertFollowError",
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
+  ],
+
+  "tr": [
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
+  ],
+
+  "zh": [
+    "notificationChannelAlerts",
+    "notificationChannelAlertsDesc",
+    "notificationSightingTitle",
+    "notificationSightingUrgent",
+    "notificationSightingEmergency",
+    "notificationSightingBody",
+    "notificationCommentTitle",
+    "notificationWitnessText",
+    "notificationWitnessTextMultiple",
+    "notificationActionSnooze",
+    "notificationActionDismiss",
+    "notificationDistance"
   ]
 }
