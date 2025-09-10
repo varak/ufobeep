@@ -10,6 +10,7 @@ import '../config/environment.dart';
 import '../models/api_models.dart' as api;
 import '../models/sensor_data.dart';
 import '../models/sighting_submission.dart' as local;
+import '../utils/type_safe_json.dart';
 import 'beep_service.dart';
 import 'auth_interceptor.dart';
 
@@ -68,22 +69,42 @@ class ApiClient {
 
   bool get isAuthenticated => _authToken != null;
 
-  // Helper method to handle API responses
+  // Helper method to handle API responses with type safety
   T _handleResponse<T>(Response response, T Function(Map<String, dynamic>) fromJson) {
     if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
-      final data = response.data;
-      if (data is Map<String, dynamic>) {
-        if (data['success'] == true) {
-          return fromJson(data);
+      try {
+        // Use type-safe parsing to prevent index casting errors
+        final safeData = TypeSafeJson.asMap(response.data, context: "api_response");
+        
+        if (TypeSafeJson.isConvertedList(safeData)) {
+          TypeSafeJson.logTypeMismatch("Map", response.data, "api_response");
+          throw ApiClientException('API returned unexpected List instead of object', statusCode: response.statusCode);
+        }
+        
+        final success = safeData.safeBool('success', defaultValue: false);
+        if (success == true) {
+          return fromJson(safeData);
         } else {
+          final message = safeData.safeString('message') ?? 'API request failed';
           throw ApiClientException(
-            data['message'] ?? 'API request failed',
+            message,
             statusCode: response.statusCode,
-            details: data,
+            details: safeData,
           );
         }
+      } catch (e) {
+        if (e is ApiClientException) {
+          rethrow;
+        }
+        // Catch any type casting errors and provide better context
+        debugPrint('🔴 API Response parsing error: $e');
+        debugPrint('🔴 Response data type: ${response.data.runtimeType}');
+        debugPrint('🔴 Response data: ${response.data}');
+        throw ApiClientException(
+          'Failed to parse API response: ${e.toString()}',
+          statusCode: response.statusCode,
+        );
       }
-      throw ApiClientException('Invalid response format', statusCode: response.statusCode);
     } else {
       throw ApiClientException(
         'HTTP ${response.statusCode}: ${response.statusMessage}',

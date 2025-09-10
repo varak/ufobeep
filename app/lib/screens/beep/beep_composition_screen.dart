@@ -87,8 +87,10 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     super.initState();
     debugPrint('🚀 BEEP SCREEN INIT: _isSubmitting=$_isSubmitting');
     
-    // Store sensor data in state immediately to preserve it during rebuilds
-    _sensorData = widget.sensorData;
+    // Wrap initialization in try-catch to prevent crashes
+    try {
+      // Store sensor data in state immediately to preserve it during rebuilds
+      _sensorData = widget.sensorData;
     
     // Normalize media files format - handle both legacy single-file and new multi-file
     if (widget.mediaFiles != null) {
@@ -127,6 +129,16 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     
     // Add listener for real-time validation
     _descriptionController.addListener(_onFormFieldChanged);
+    } catch (e, stackTrace) {
+      debugPrint('❌ BEEP COMPOSITION INIT ERROR: $e');
+      debugPrint('❌ Stack trace: $stackTrace');
+      // Set error state but don't crash the app
+      if (mounted) {
+        setState(() {
+          _errorMessage = 'Initialization failed: ${e.toString()}';
+        });
+      }
+    }
   }
   
 
@@ -143,17 +155,26 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       final sensorService = SensorService();
       final collectedData = await sensorService.captureSensorData();
       
-      setState(() {
-        _sensorData = collectedData;
-      });
+      if (mounted) {
+        setState(() {
+          _sensorData = collectedData;
+        });
+      }
       
       if (collectedData.latitude != null && collectedData.longitude != null) {
         debugPrint('BeepComposition: ✅ Fallback location collected - GPS: ${collectedData.latitude}, ${collectedData.longitude}');
       } else {
         debugPrint('BeepComposition: ⚠️ Fallback sensor data collected but no GPS coordinates available');
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       debugPrint('BeepComposition: ❌ Error during fallback location collection: $e');
+      debugPrint('BeepComposition: ❌ Stack trace: $stackTrace');
+      // Don't crash the app, just log the error
+      if (mounted) {
+        setState(() {
+          _errorMessage = 'Location collection failed: ${e.toString()}';
+        });
+      }
     }
   }
 
@@ -164,17 +185,26 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       final sensorService = SensorService();
       final collectedData = await sensorService.captureSensorData();
       
-      setState(() {
-        _sensorData = collectedData;
-      });
+      if (mounted) {
+        setState(() {
+          _sensorData = collectedData;
+        });
+      }
       
       if (collectedData.latitude != null && collectedData.longitude != null) {
         debugPrint('BeepComposition: ✅ Proactive location collected - GPS: ${collectedData.latitude}, ${collectedData.longitude}');
       } else {
         debugPrint('BeepComposition: ⚠️ Proactive sensor data collected but no GPS coordinates available');
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       debugPrint('BeepComposition: ❌ Error during proactive location collection: $e');
+      debugPrint('BeepComposition: ❌ Stack trace: $stackTrace');
+      // Don't crash the app for location errors
+      if (mounted) {
+        setState(() {
+          _errorMessage = 'Location collection failed: ${e.toString()}';
+        });
+      }
     }
   }
 

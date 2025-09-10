@@ -6,27 +6,7 @@ import '../../services/permission_service.dart';
 import '../../services/api_client.dart';
 import '../../services/beep_service.dart';
 import '../../services/sound_service.dart';
-
-// Helper function to safely convert dynamic values to Map for bracket access
-Map<String, dynamic> _asJsonMap(dynamic v) {
-  if (v == null) return {};
-  if (v is Map<String, dynamic>) return v;
-  if (v is Map) return v.map((k, val) => MapEntry(k.toString(), val));
-  if (v is List) {
-    // Turn list into a map with numeric keys, so any ['x'] access will visibly fail early.
-    return {
-      "_type": "List",
-      "length": v.length,
-      "0": v.isNotEmpty ? v[0] : null,
-    };
-  }
-  if (v is String && v.trim().startsWith('{')) {
-    try { 
-      return Map<String, dynamic>.from(jsonDecode(v)); 
-    } catch (_) {}
-  }
-  return {"_type": v.runtimeType.toString(), "value": v.toString()};
-}
+import '../../utils/type_safe_json.dart';
 
 class AlertWitnessSection extends StatefulWidget {
   const AlertWitnessSection({
@@ -97,16 +77,17 @@ class _AlertWitnessSectionState extends State<AlertWitnessSection> {
       );
 
       if (mounted) {
-        // SAFE ACCESS: Use defensive helper to prevent List-as-Map errors
-        final resultMap = _asJsonMap(result);
-        final dataMap = _asJsonMap(resultMap['data']);
+        // BULLETPROOF PARSING: Use new type-safe utilities to prevent crashes
+        final resultMap = TypeSafeJson.asMap(result, context: "witness_confirmation_result");
+        final dataMap = TypeSafeJson.asMap(resultMap['data'], context: "witness_confirmation_data");
         
         // Check if result was a List instead of expected Map
-        if (resultMap["_type"] == "List") {
+        if (TypeSafeJson.isConvertedList(resultMap)) {
+          TypeSafeJson.logTypeMismatch("Map", result, "witness_confirmation_result");
           throw StateError("Witness API returned a List in result; expected JSON object");
         }
         
-        final newWitnessCount = dataMap['witness_count'] as int? ?? _witnessCount + 1;
+        final newWitnessCount = dataMap.safeInt('witness_count', defaultValue: _witnessCount + 1);
         setState(() {
           _hasConfirmed = true;
           _witnessCount = newWitnessCount;
@@ -128,9 +109,9 @@ class _AlertWitnessSectionState extends State<AlertWitnessSection> {
         await SoundService.I.play(AlertSound.tap);
 
         // If escalation was triggered, play appropriate sound
-        final escalationTriggered = dataMap['escalation_triggered'] as bool? ?? false;
+        final escalationTriggered = dataMap.safeBool('escalation_triggered', defaultValue: false);
         if (escalationTriggered == true) {
-          final witnessCount = dataMap['witness_count'] as int? ?? 0;
+          final witnessCount = dataMap.safeInt('witness_count', defaultValue: 0);
           if (witnessCount >= 10) {
             await SoundService.I.play(AlertSound.emergency, haptic: true);
           } else if (witnessCount >= 3) {
