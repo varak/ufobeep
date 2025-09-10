@@ -420,7 +420,7 @@ class ProximityAlertService:
                             alert_data["bearing"] = str(round(bearing, 1))
                     
                     # Send to individual device using Firebase service
-                    response = send_to_token(device['push_token'], alert_data, title=title, body=body)
+                    response = await send_to_token(device['push_token'], alert_data, title=title, body=body)
                     
                     if response:
                         success_count += 1
