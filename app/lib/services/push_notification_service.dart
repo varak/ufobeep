@@ -238,7 +238,8 @@ class PushNotificationService {
   void _setupMessageHandlers() {
     // Handle messages when app is in foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Received foreground message: ${message.messageId}');
+      print('🔔 FOREGROUND FCM: Received message ${message.messageId}');
+      print('🔔 FOREGROUND FCM: App is in foreground - must manually show notification');
       _handleMessage(message, isBackground: false);
     });
 
@@ -894,15 +895,19 @@ class PushNotificationService {
     );
     
     // Show the rich notification
-    await _localNotifications.show(
-      sightingId.hashCode, // Use sighting ID hash as notification ID
-      '$urgencyIndicator UFO Sighting',
-      '$witnessText near $locationName$distanceText',
-      notificationDetails,
-      payload: '$sightingId|$witnessCount|$distance|$locationName',
-    );
-    
-    print('📱 Rich notification shown for sighting $sightingId with ${witnessCount} witnesses');
+    try {
+      await _localNotifications.show(
+        sightingId.hashCode, // Use sighting ID hash as notification ID
+        '$urgencyIndicator UFO Sighting',
+        '$witnessText near $locationName$distanceText',
+        notificationDetails,
+        payload: '$sightingId|$witnessCount|$distance|$locationName',
+      );
+      
+      print('🔔 RICH NOTIF DEBUG: ✅ Successfully showed local notification for sighting $sightingId');
+    } catch (e) {
+      print('🔔 RICH NOTIF DEBUG: ❌ ERROR showing local notification: $e');
+    }
   }
   
   void _handleSeeItTooAction(String sightingIdRaw) async {
