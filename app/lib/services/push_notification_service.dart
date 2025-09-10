@@ -252,10 +252,11 @@ class PushNotificationService {
   }
 
   void _handleMessage(RemoteMessage message, {required bool isBackground}) {
-    print('Push notification received:');
-    print('Title: ${message.notification?.title}');
-    print('Body: ${message.notification?.body}');
-    print('Data: ${message.data}');
+    print('🔔 FCM DEBUG: Push notification received (background: $isBackground)');
+    print('🔔 FCM DEBUG: Title: ${message.notification?.title}');
+    print('🔔 FCM DEBUG: Body: ${message.notification?.body}');
+    print('🔔 FCM DEBUG: Data: ${message.data}');
+    print('🔔 FCM DEBUG: Message ID: ${message.messageId}');
 
     // Handle different notification types
     final notificationType = message.data['type'] ?? 'general';
@@ -316,7 +317,7 @@ class PushNotificationService {
   }
 
   void _handleSightingAlert(RemoteMessage message) async {
-    print('Handling sighting alert notification');
+    print('🔔 SIGHTING DEBUG: Handling sighting alert notification');
     final sightingId = message.data['sighting_id'];
     final witnessCountStr = message.data['witness_count'] ?? '1';
     final witnessCount = int.tryParse(witnessCountStr) ?? 1;
@@ -827,6 +828,7 @@ class PushNotificationService {
   }
 
   Future<void> _showRichNotification(String sightingId, int witnessCount, String? distance, String locationName) async {
+    print('🔔 RICH NOTIF DEBUG: Showing rich notification for sighting $sightingId with $witnessCount witnesses');
     // Format distance for display
     String distanceText = '';
     if (distance != null) {
