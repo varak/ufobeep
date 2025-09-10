@@ -148,38 +148,19 @@ export default function AlertDetailPage() {
           shortId = fullSlug
         }
         
-        // Search through alerts to find one that generates the same short ID
-        let found = false
-        let offset = 0
-        const limit = 100
+        // Fast lookup using the direct short URL endpoint
         let targetAlert = null
         
-        while (!found && offset < 500) { // Search up to 500 alerts
-          const res = await fetch(`/api/beep?limit=${limit}&offset=${offset}&verified_only=false`)
-          if (!res.ok) break
-          
-          const data = await res.json()
-          if (data.success && (data.data?.beeps || data.data?.alerts)) {
-            // Support both beeps and alerts for backend compatibility
-            const beepsList = data.data?.beeps || data.data?.alerts || []
-            
-            // Find beep whose short_url matches the requested shortId
-            const matchingBeep = beepsList.find((b: any) => 
-              b.short_url === shortId
-            )
-            
-            if (matchingBeep) {
-              targetAlert = matchingBeep
-              found = true
-              break
+        try {
+          const res = await fetch(`/api/beep/short/${shortId}`)
+          if (res.ok) {
+            const data = await res.json()
+            if (data.success && data.data) {
+              targetAlert = data.data
             }
-            
-            // If we got fewer beeps than the limit, we've reached the end
-            if (beepsList.length < limit) break
-            offset += limit
-          } else {
-            break
           }
+        } catch (error) {
+          console.error('Error fetching by short URL:', error)
         }
         
         if (targetAlert) {

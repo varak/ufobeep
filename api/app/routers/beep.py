@@ -581,3 +581,40 @@ async def send_alert_beep(alert_id: str, request: dict):
     except Exception as e:
         print(f"Error sending alert beep: {e}")
         raise HTTPException(status_code=500, detail=f"Error sending alert beep: {str(e)}")
+
+@router.get("/short/{short_url}")
+async def get_beep_by_short_url(short_url: str):
+    """Get a beep by its short URL for fast lookups"""
+    try:
+        pool = await get_db()
+        
+        # Direct database lookup by short_url
+        async with pool.acquire() as conn:
+            query = """
+                SELECT 
+                    id, title, description, location, created_at, updated_at, 
+                    alert_level, witness_count, total_confirmations, source, 
+                    reporter_username, enrichment, external_id, external_url,
+                    short_url, media_urls, media_count
+                FROM alerts 
+                WHERE short_url = $1
+            """
+            row = await conn.fetchrow(query, short_url)
+            
+            if not row:
+                raise HTTPException(status_code=404, detail="Beep not found")
+                
+            # Format the response using existing format function
+            alert_dict = dict(row)
+            formatted_alert = format_alert_response(type('obj', (object,), alert_dict)())
+            
+            return {
+                "success": True,
+                "data": formatted_alert
+            }
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching beep by short URL: {e}")
+        raise HTTPException(status_code=500, detail=f"Error fetching beep: {str(e)}")
