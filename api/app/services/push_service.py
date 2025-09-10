@@ -380,7 +380,7 @@ class PushNotificationService:
             title += f" on {beep_title[:30]}..."
         
         data = {
-            "type": "comment_notification",
+            "type": "comment",
             "sighting_id": sighting_id,
             "deep_link": f"ufobeep://beep/{sighting_id}/comments",
             "click_action": "OPEN_COMMENTS"

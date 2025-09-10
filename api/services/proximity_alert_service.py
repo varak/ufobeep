@@ -3,7 +3,7 @@ import pygeohash
 from datetime import datetime
 from typing import List, Tuple
 import logging
-from .push_service import send_to_token
+from app.services.push_service import send_to_token
 
 from app.routers.admin import rate_limit_enabled, rate_limit_threshold
 from app.utils.dnd_utils import is_in_quiet_window, is_dnd_active, should_override_quiet_hours
