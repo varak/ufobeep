@@ -310,18 +310,32 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                         ),
                         const SizedBox(width: 8),
                         Expanded(
-                          child: Text(
-                            'ufobeep.com/beep/${alert.id.substring(0, 4)}',
-                            style: const TextStyle(
-                              color: AppColors.textSecondary,
-                              fontSize: 13,
-                              fontFamily: 'monospace',
-                            ),
+                          child: Builder(
+                            builder: (context) {
+                              final locale = Localizations.localeOf(context).languageCode;
+                              final shortId = alert.id.substring(0, 4);
+                              final shareLink = locale == 'en' 
+                                ? 'ufobeep.com/$shortId'
+                                : 'ufobeep.com/$shortId/$locale';
+                              return Text(
+                                shareLink,
+                                style: const TextStyle(
+                                  color: AppColors.textSecondary,
+                                  fontSize: 13,
+                                  fontFamily: 'monospace',
+                                ),
+                              );
+                            },
                           ),
                         ),
                         IconButton(
                           onPressed: () {
-                            Clipboard.setData(ClipboardData(text: 'ufobeep.com/beep/${alert.id.substring(0, 4)}'));
+                            final locale = Localizations.localeOf(context).languageCode;
+                            final shortId = alert.id.substring(0, 4);
+                            final shareLink = locale == 'en' 
+                              ? 'ufobeep.com/$shortId'
+                              : 'ufobeep.com/$shortId/$locale';
+                            Clipboard.setData(ClipboardData(text: shareLink));
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(AppLocalizations.of(context).linkCopied),

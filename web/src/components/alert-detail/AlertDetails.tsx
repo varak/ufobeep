@@ -213,11 +213,11 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
             <div className="flex items-center gap-2">
               <span className="text-text-tertiary text-sm font-medium">Share Link:</span>
               <code className="text-brand-primary text-sm bg-dark-bg px-2 py-1 rounded">
-                ufobeep.com{getShortAlertUrl(alert.id)}
+                ufobeep.com{getShortAlertUrl(alert.id, locale)}
               </code>
               <button
                 onClick={() => {
-                  navigator.clipboard.writeText(`https://ufobeep.com${getShortAlertUrl(alert.id)}`)
+                  navigator.clipboard.writeText(`https://ufobeep.com${getShortAlertUrl(alert.id, locale)}`)
                   // TODO: Show toast notification
                 }}
                 className="text-text-secondary hover:text-brand-primary transition-colors p-1"

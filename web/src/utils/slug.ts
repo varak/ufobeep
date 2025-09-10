@@ -148,10 +148,16 @@ function generateCleanShortId(input: string): string {
   return shortId
 }
 
-export function getShortAlertUrl(alertId: string): string {
-  // Generate clean 4-character URL for sharing (beep branding)
+export function getShortAlertUrl(alertId: string, locale: string = 'en'): string {
+  // Generate clean 4-character URL for sharing with language support
   const cleanShortId = generateCleanShortId(alertId)
-  return `/beep/${cleanShortId}`
+  
+  // Return language-specific URL
+  if (locale === 'en') {
+    return `/${cleanShortId}`  // Default English: just /ehf3
+  } else {
+    return `/${cleanShortId}/${locale}`  // Other languages: /ehf3/es
+  }
 }
 
 export function generateCleanShortIdFromAlert(alertId: string): string {

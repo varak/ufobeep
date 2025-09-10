@@ -101,10 +101,6 @@ class AlertDetailsSection extends StatelessWidget {
                 _buildDistanceRow(context),
             ],
             
-            // Share link for MUFON reports (integrated into details box)
-            const Divider(color: AppColors.darkBorder, thickness: 1),
-            const SizedBox(height: 8),
-            _buildShareDetailRow(context, alert),
           ],
           
           // UFOBeep-specific metadata (non-MUFON)
@@ -143,10 +139,6 @@ class AlertDetailsSection extends StatelessWidget {
                 _buildDistanceRow(context),
             ],
             
-            // Share link for normal reports (integrated into details box)
-            const Divider(color: AppColors.darkBorder, thickness: 1),
-            const SizedBox(height: 8),
-            _buildShareDetailRow(context, alert),
           ],
           // UFO type classification removed for MUFON reports
         ],
@@ -355,87 +347,6 @@ class AlertDetailsSection extends StatelessWidget {
     return AppLocalizations.of(context).locationUnknown;
   }
 
-  Widget _buildShareDetailRow(BuildContext context, Alert alert) {
-    final shortLink = 'ufobeep.com/alert/${alert.id.substring(0, 4)}';
-    
-    return InkWell(
-      onTap: () {
-        Clipboard.setData(ClipboardData(text: shortLink));
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context).linkCopied),
-            duration: const Duration(seconds: 2),
-            backgroundColor: AppColors.brandPrimary,
-          ),
-        );
-      },
-      borderRadius: BorderRadius.circular(8),
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 12),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Icon(
-              Icons.link,
-              size: 20,
-              color: AppColors.brandPrimary,
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${AppLocalizations.of(context).shareLink}:',
-                        style: const TextStyle(
-                          color: AppColors.textTertiary,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        shortLink,
-                        style: const TextStyle(
-                          color: AppColors.textPrimary,
-                          fontSize: 16,
-                          fontFamily: 'monospace',
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              onPressed: () {
-                Clipboard.setData(ClipboardData(text: shortLink));
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(AppLocalizations.of(context).linkCopied),
-                    duration: const Duration(seconds: 2),
-                    backgroundColor: AppColors.brandPrimary,
-                  ),
-                );
-              },
-              icon: const Icon(
-                Icons.copy,
-                size: 18,
-                color: AppColors.brandPrimary,
-              ),
-              style: IconButton.styleFrom(
-                minimumSize: const Size(32, 32),
-                padding: const EdgeInsets.all(4),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
 
   String _classificationLabel(AppLocalizations l10n) {
