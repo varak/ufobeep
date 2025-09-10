@@ -3,7 +3,7 @@ import pygeohash
 from datetime import datetime
 from typing import List, Tuple
 import logging
-from app.services.notify import notify_users_excluding_device
+from app.services.push_service import send_to_token
 
 from app.routers.admin import rate_limit_enabled, rate_limit_threshold
 from app.utils.dnd_utils import is_in_quiet_window, is_dnd_active, should_override_quiet_hours
@@ -377,52 +377,71 @@ class ProximityAlertService:
         return self._haversine_distance(lat1, lon1, lat2, lon2)
     
     async def _send_alert_batch(self, devices: List[dict], sighting_id: str, alert_level: str, title: str, body: str, witness_count: int = 1, sighting_lat: float = None, sighting_lon: float = None, location_name: str = None, submitter_device_id: str = None) -> int:
-        """Send alerts to a batch of devices using unified notification system with device exclusion"""
+        """Send alerts to a batch of devices with individualized bearing calculations"""
         if not devices:
             return 0
             
         try:
-            # Get user IDs for the target devices
-            device_ids = [d['device_id'] for d in devices]
-            user_ids = await self._get_user_ids_for_devices(device_ids)
-            logger.info(f"Device-to-user mapping: {len(device_ids)} devices -> {len(user_ids)} users")
-            logger.info(f"Target device IDs: {device_ids}")
-            logger.info(f"Target user IDs: {user_ids}")
-            if not user_ids:
-                logger.warning("No user IDs found for target devices")
-                return 0
+            # Send individualized alerts with device-specific bearing and distance
+            success_count = 0
             
-            # Prepare alert data with sighting location for compass navigation
-            alert_data = {
-                "type": "sighting_alert",
-                "sighting_id": sighting_id,
-                "alert_level": alert_level,
-                "witness_count": str(witness_count),
-                "timestamp": datetime.utcnow().isoformat(),
-                "action": "open_compass",  # Phase 1 Task 6: Open compass directly
-                "submitter_device_id": submitter_device_id,  # For self-notification filtering
-                "refresh_alerts": "true"  # Trigger alerts tab refresh in receiving apps
-            }
+            logger.info(f"TEMP DEBUG: Sending to {len(devices)} devices with old approach")
             
-            # Add location data for compass navigation if available
-            if sighting_lat is not None and sighting_lon is not None:
-                alert_data.update({
-                    "latitude": str(sighting_lat),
-                    "longitude": str(sighting_lon),
-                    "location_name": location_name or "UFO Sighting"
-                })
+            for device in devices:
+                try:
+                    # Skip self-notification
+                    if device['device_id'] == submitter_device_id:
+                        logger.info(f"TEMP DEBUG: Skipping self-notification for device {device['device_id']}")
+                        continue
+                        
+                    # Prepare alert data with sighting location for compass navigation
+                    alert_data = {
+                        "type": "sighting_alert",
+                        "sighting_id": sighting_id,
+                        "alert_level": alert_level,
+                        "witness_count": str(witness_count),
+                        "timestamp": datetime.utcnow().isoformat(),
+                        "action": "open_compass",  # Phase 1 Task 6: Open compass directly
+                        "submitter_device_id": submitter_device_id,  # For self-notification filtering
+                        "refresh_alerts": "true"  # Trigger alerts tab refresh in receiving apps
+                    }
+                    
+                    # Add location data for compass navigation if available
+                    if sighting_lat is not None and sighting_lon is not None:
+                        alert_data.update({
+                            "latitude": str(sighting_lat),
+                            "longitude": str(sighting_lon),
+                            "location_name": location_name or "UFO Sighting"
+                        })
+                        
+                        # Add device-specific distance
+                        if 'distance_km' in device:
+                            alert_data["distance"] = str(device['distance_km'])
+                        
+                        # Calculate bearing from device to sighting if we have device location
+                        if 'device_lat' in device and 'device_lon' in device and device['device_lat'] is not None and device['device_lon'] is not None:
+                            bearing = self._calculate_bearing(
+                                device['device_lat'], device['device_lon'],
+                                sighting_lat, sighting_lon
+                            )
+                            alert_data["bearing"] = str(round(bearing, 1))
+                    
+                    logger.info(f"TEMP DEBUG: Sending to device {device['device_id']} with token {device['push_token'][:20]}...")
+                    
+                    # Send to individual device using Firebase service
+                    response = await send_to_token(device['push_token'], alert_data, title=title, body=body)
+                    
+                    if response:
+                        success_count += 1
+                        logger.info(f"TEMP DEBUG: Successfully sent to device {device['device_id']}")
+                    else:
+                        logger.warning(f"TEMP DEBUG: Failed to send to device {device['device_id']}")
+                        
+                except Exception as e:
+                    logger.error(f"Error sending alert to device {device.get('device_id', 'unknown')}: {e}")
+                    continue
             
-            # Use unified notification system with device exclusion
-            success_count = await notify_users_excluding_device(
-                self.db_pool,
-                user_ids,
-                exclude_device_id=submitter_device_id,
-                title=title,
-                body=body,
-                data=alert_data
-            )
-            
-            logger.info(f"Alert batch {alert_level}: {success_count} notifications sent via unified system")
+            logger.info(f"Alert batch {alert_level}: {success_count}/{len(devices)} sent successfully via old approach")
             return success_count
             
         except Exception as e:
