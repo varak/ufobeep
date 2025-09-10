@@ -148,15 +148,17 @@ export default function AlertDetailPage() {
           shortId = fullSlug
         }
         
-        // Fast lookup using the direct short URL endpoint
+        // Fast lookup by searching for the short_url in the beep list
         let targetAlert = null
         
         try {
-          const res = await fetch(`/api/beep/short/${shortId}`)
+          // Try a limited search first - check recent beeps
+          const res = await fetch(`/api/beep?limit=100&verified_only=false`)
           if (res.ok) {
             const data = await res.json()
-            if (data.success && data.data) {
-              targetAlert = data.data
+            if (data.success && (data.data?.beeps || data.data?.alerts)) {
+              const beepsList = data.data?.beeps || data.data?.alerts || []
+              targetAlert = beepsList.find((b: any) => b.short_url === shortId)
             }
           }
         } catch (error) {
