@@ -324,13 +324,15 @@ class PushNotificationService {
     final distance = message.data['distance'];
     final locationName = message.data['location_name'] ?? 'Unknown Location';
     
-    // Check if this device submitted the beep - if so, don't auto-navigate
+    // The server already handles device exclusion during proximity alert sending,
+    // so we should not receive notifications for our own beeps.
+    // If we somehow receive one, it's likely a server-side issue - log it but process anyway
     final currentDeviceId = await _deviceService.getDeviceId();
     final isOwnBeep = submitterDeviceId != null && submitterDeviceId == currentDeviceId;
     
     if (isOwnBeep) {
-      print('🚫 SKIPPING OWN BEEP: device $currentDeviceId submitted sighting $sightingId');
-      return; // Don't process self-notifications
+      print('⚠️ RECEIVED OWN BEEP NOTIFICATION: device $currentDeviceId submitted sighting $sightingId (server exclusion failed)');
+      // Continue processing instead of returning - this ensures notifications work regardless of exclusion bugs
     }
     
     print('📱 PROCESSING ALERT: sighting $sightingId from device $submitterDeviceId (current: $currentDeviceId)');
