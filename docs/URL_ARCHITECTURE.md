@@ -114,15 +114,44 @@ export const config = {
 
 ## Technical Implementation
 
-### Short ID Generation
+### Short ID Generation - Single Source of Truth
 
-**Algorithm**: Generate 4-character alphanumeric ID from alert ID
-```typescript
-function generateCleanShortIdFromAlert(alertId: string): string {
-  // Implementation in /web/src/utils/slug.ts
-  // Converts alert ID to consistent 4-char alphanumeric
+**⚠️ CRITICAL**: All platforms now use the shared canonical implementation at `shared/get_short_hash.js`
+
+**Algorithm**: Generate 4-character alphanumeric ID from alert ID using safe characters
+```javascript
+// CANONICAL IMPLEMENTATION: shared/get_short_hash.js
+function getShortHash(input) {
+  if (!input) return '';
+  
+  // Generate hash using working web algorithm
+  let hash = 0;
+  for (let i = 0; i < input.length; i++) {
+    const char = input.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // CRITICAL: Working web version algorithm
+  }
+  
+  // Convert to base-29 using safe characters (no O,I,L,0,1,o,l,i)
+  const SAFE_CHARS = '23456789abcdefghjkmnpqrstuvwxyz';
+  let shortId = '';
+  let num = Math.abs(hash);
+  
+  for (let i = 0; i < 4; i++) {
+    shortId = SAFE_CHARS[num % SAFE_CHARS.length] + shortId;
+    num = Math.floor(num / SAFE_CHARS.length);
+  }
+  
+  return shortId;
 }
 ```
+
+**Platform Integration**:
+- **Web**: `const { getShortHash } = require('../../../shared/get_short_hash.js')`
+- **Mobile App**: Dart implementation matches shared algorithm exactly
+- **mufon.sh**: `SHORT_ID=$(node shared/get_short_hash.js "$SIGHTING_ID")`
+- **API**: Can call shared module for consistency
+- **CLI**: `node shared/get_short_hash.js "UFO-2024-12345"` → `js4m`
 
 ### Slug Generation
 
@@ -209,7 +238,8 @@ POST /alerts/{id}/media # Attach media
 1. **Phase 1**: Dual endpoint support (✅ Complete)
 2. **Phase 2**: Short URL rollout (✅ Complete)  
 3. **Phase 3**: SEO optimization (✅ Complete)
-4. **Phase 4**: Analytics and monitoring (🔄 In Progress)
+4. **Phase 4**: Single source of truth refactoring (✅ Complete - September 10, 2025)
+5. **Phase 5**: Analytics and monitoring (🔄 In Progress)
 
 ## Monitoring & Analytics
 
@@ -231,6 +261,17 @@ POST /alerts/{id}/media # Attach media
 ```bash
 NEXT_PUBLIC_API_URL=https://ufobeep.com/api
 ```
+
+### Single Source of Truth Module
+**Location**: `shared/get_short_hash.js`
+**Purpose**: Canonical short URL hash generation across all platforms
+**Usage**: CLI-compatible, require()-able, documented
+
+**Critical Rules**:
+- ⚠️ **NEVER modify the algorithm** - changes break URL consistency
+- Use `hash & hash` (working web version), NOT `hash & 0xFFFFFFFF`
+- Maintains same safe character set: `'23456789abcdefghjkmnpqrstuvwxyz'`
+- All platforms must call this implementation for consistency
 
 ### Runtime Configuration
 - Supported languages list in middleware
