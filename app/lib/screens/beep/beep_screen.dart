@@ -131,13 +131,23 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     });
 
     try {
+      debugPrint('📱 GALLERY: Starting file picker...');
+      
       // Use the cleaner file_picker approach instead of photo_manager
       final FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.media, // This handles both images and videos
         allowMultiple: true,  // Enable multi-file selection
         withData: false, // Don't load file data into memory
         withReadStream: false,
+      ).timeout(
+        const Duration(seconds: 30),
+        onTimeout: () {
+          debugPrint('📱 GALLERY: Timeout waiting for file picker');
+          throw Exception('File picker timeout - please try again');
+        },
       );
+      
+      debugPrint('📱 GALLERY: File picker completed');
 
       if (result == null || result.files.isEmpty) {
         setState(() {

@@ -48,8 +48,17 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
 
   Future<void> _initializeCamera() async {
     try {
-      // Get available cameras
-      _cameras = await availableCameras();
+      debugPrint('📸 CAMERA: Starting camera initialization...');
+      
+      // Get available cameras with timeout
+      _cameras = await availableCameras().timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          throw Exception('Timeout getting available cameras');
+        },
+      );
+      
+      debugPrint('📸 CAMERA: Found ${_cameras?.length ?? 0} cameras');
       
       if (_cameras == null || _cameras!.isEmpty) {
         setState(() {
@@ -64,6 +73,8 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
         orElse: () => _cameras!.first,
       );
 
+      debugPrint('📸 CAMERA: Selected camera: ${camera.name} (${camera.lensDirection})');
+
       // Create controller with maximum resolution
       _controller = CameraController(
         camera,
@@ -72,8 +83,15 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
         imageFormatGroup: _isVideoMode ? null : ImageFormatGroup.jpeg,
       );
 
-      // Initialize controller
-      await _controller!.initialize();
+      debugPrint('📸 CAMERA: Controller created, initializing...');
+
+      // Initialize controller with timeout
+      await _controller!.initialize().timeout(
+        const Duration(seconds: 15),
+        onTimeout: () {
+          throw Exception('Timeout initializing camera controller');
+        },
+      );
 
       if (!mounted) return;
 
@@ -86,6 +104,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
         _isInitialized = true;
       });
     } catch (e) {
+      debugPrint('📸 CAMERA: ERROR: $e');
       setState(() {
         _errorMessage = 'Failed to initialize camera: $e';
       });
