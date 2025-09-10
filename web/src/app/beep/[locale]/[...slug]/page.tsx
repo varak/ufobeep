@@ -3,7 +3,7 @@
 import { notFound } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useParams, useSearchParams, useRouter } from 'next/navigation'
-import { generateCleanShortIdFromAlert, getAlertSlug } from '@/utils/slug'
+import { getAlertSlug } from '@/utils/slug'
 import { useClientTranslations } from '@/hooks/useClientTranslations'
 import AlertHero from '@/components/alert-detail/AlertHero'
 import AlertDetails from '@/components/alert-detail/AlertDetails'
@@ -163,9 +163,9 @@ export default function AlertDetailPage() {
             // Support both beeps and alerts for backend compatibility
             const beepsList = data.data?.beeps || data.data?.alerts || []
             
-            // Find beep whose ID generates the same clean short ID
+            // Find beep whose short_url matches the requested shortId
             const matchingBeep = beepsList.find((b: any) => 
-              generateCleanShortIdFromAlert(b.id) === shortId
+              b.short_url === shortId
             )
             
             if (matchingBeep) {

@@ -145,7 +145,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
     e.preventDefault()
     e.stopPropagation()
     
-    const alertUrl = `${window.location.origin}${getShortAlertUrl(alert.id, locale)}`
+    const alertUrl = `${window.location.origin}${getShortAlertUrl(alert, locale)}`
     const shareText = `UFO Sighting Alert: ${alert.description || 'Anomaly reported'} - ${formatLocation(alert.location)}`
     
     switch (type) {
@@ -566,14 +566,14 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.102m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
             </svg>
             <span className="text-text-tertiary text-xs font-mono truncate">
-              ufobeep.com{getShortAlertUrl(alert.id, locale)}
+              ufobeep.com{getShortAlertUrl(alert, locale)}
             </span>
           </div>
           <button
             onClick={(e) => {
               e.preventDefault()
               e.stopPropagation()
-              const shareUrl = `${window.location.origin}${getShortAlertUrl(alert.id, locale)}`
+              const shareUrl = `${window.location.origin}${getShortAlertUrl(alert, locale)}`
               navigator.clipboard.writeText(shareUrl).then(() => {
                 // Could add toast notification here
               }).catch(console.error)

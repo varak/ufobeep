@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from 'next/server'
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   
-  // Handle short URLs: /abc4 or /abc4/es (using safe chars: no o,0,i,1,l)
-  const shortMatch = pathname.match(/^\/([23456789abcdefghjkmnpqrstuvwxyz]{4})$/)
-  const shortWithLangMatch = pathname.match(/^\/([23456789abcdefghjkmnpqrstuvwxyz]{4})\/([a-z]{2})$/)
+  // Handle short URLs: /abc23 or /abc23/es (using safe chars: no o,0,i,1,l)
+  const shortMatch = pathname.match(/^\/([23456789abcdefghjkmnpqrstuvwxyz]{5})$/)
+  const shortWithLangMatch = pathname.match(/^\/([23456789abcdefghjkmnpqrstuvwxyz]{5})\/([a-z]{2})$/)
   
   if (shortMatch || shortWithLangMatch) {
     const shortId = shortMatch ? shortMatch[1] : shortWithLangMatch![1]
@@ -32,7 +32,7 @@ export function middleware(request: NextRequest) {
       }
     }
     
-    // Redirect to localized long URL (existing structure)
+    // Redirect to localized URL using the short ID
     const redirectUrl = new URL(`/beep/${userLocale}/${shortId}`, request.url)
     return NextResponse.redirect(redirectUrl)
   }

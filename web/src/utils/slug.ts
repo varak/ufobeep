@@ -130,16 +130,19 @@ function generateCleanShortId(input: string): string {
   return getShortHash(input)
 }
 
-export function getShortAlertUrl(alertId: string, locale: string = 'en'): string {
-  // Generate clean 4-character URL for sharing with language support
-  const cleanShortId = generateCleanShortId(alertId)
-  
-  // Return language-specific URL
-  if (locale === 'en') {
-    return `/${cleanShortId}`  // Default English: just /ehf3
+export function getShortAlertUrl(alert: any, locale: string = 'en'): string {
+  // Use API-provided short_url if available, fallback to generating from ID
+  let shortId: string
+  if (alert.short_url) {
+    shortId = alert.short_url
   } else {
-    return `/${cleanShortId}/${locale}`  // Other languages: /ehf3/es
+    // Fallback for backwards compatibility
+    const alertId = typeof alert === 'string' ? alert : alert.id
+    shortId = generateCleanShortId(alertId)
   }
+  
+  // Return language-specific URL with locale prefix
+  return `/${locale}/${shortId}`  // All languages: /en/b4uux, /es/b4uux, /ru/b4uux
 }
 
 export function generateCleanShortIdFromAlert(alertId: string): string {
@@ -148,12 +151,12 @@ export function generateCleanShortIdFromAlert(alertId: string): string {
 }
 
 export function extractIdFromSlug(slug: string): string | null {
-  // Extract the last 4-character part of the slug as the ID hash
+  // Extract the last 5-character part of the slug as the ID hash
   const parts = slug.split('-')
   const lastPart = parts[parts.length - 1]
   
-  // Check if the last part looks like a clean short ID (4 chars, safe chars only)
-  if (lastPart && lastPart.length === 4 && /^[23456789abcdefghjkmnpqrstuvwxyz]+$/.test(lastPart)) {
+  // Check if the last part looks like a clean short ID (5 chars, safe chars only)
+  if (lastPart && lastPart.length === 5 && /^[23456789abcdefghjkmnpqrstuvwxyz]+$/.test(lastPart)) {
     return lastPart
   }
   

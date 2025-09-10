@@ -8,10 +8,6 @@ String getShortAlertUrl(String? shortUrl, {String locale = 'en'}) {
     return '/'; // Fallback to home if no short URL available
   }
   
-  // Return language-specific URL using API-provided short URL
-  if (locale == 'en') {
-    return '/$shortUrl';  // Default English: just /4rnb
-  } else {
-    return '/$shortUrl/$locale';  // Other languages: /4rnb/es
-  }
+  // Return language-specific URL with locale prefix
+  return '/$locale/$shortUrl';  // All languages: /en/b4uux, /es/b4uux, /ru/b4uux
 }
