@@ -38,6 +38,7 @@ class Alert {
     this.totalConfirmations = 0,
     this.canConfirmWitness = true,
     this.commentCount = 0,
+    this.shortUrl,
   });
 
   final String id;
@@ -70,6 +71,7 @@ class Alert {
   final int totalConfirmations;
   final bool canConfirmWitness;
   final int commentCount;
+  final String? shortUrl;
 
   // Computed properties
   bool get isVerified => status == 'verified';
@@ -145,6 +147,7 @@ class Alert {
     int? totalConfirmations,
     bool? canConfirmWitness,
     int? commentCount,
+    String? shortUrl,
   }) {
     return Alert(
       id: id ?? this.id,
@@ -177,6 +180,7 @@ class Alert {
       totalConfirmations: totalConfirmations ?? this.totalConfirmations,
       canConfirmWitness: canConfirmWitness ?? this.canConfirmWitness,
       commentCount: commentCount ?? this.commentCount,
+      shortUrl: shortUrl ?? this.shortUrl,
     );
   }
 
@@ -283,6 +287,7 @@ class Alert {
         totalConfirmations: json['total_confirmations'] as int? ?? 0,
         canConfirmWitness: json['can_confirm_witness'] as bool? ?? true,
         commentCount: json['comment_count'] as int? ?? 0,
+        shortUrl: json['short_url'] as String?,
       );
     } catch (e) {
       print('Error parsing alert JSON for ${json['id']}: $e');
@@ -324,6 +329,7 @@ class Alert {
       'total_confirmations': totalConfirmations,
       'can_confirm_witness': canConfirmWitness,
       'comment_count': commentCount,
+      if (shortUrl != null) 'short_url': shortUrl,
     };
   }
 }
