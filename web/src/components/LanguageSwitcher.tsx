@@ -28,16 +28,9 @@ export function LanguageSwitcher({
   const segs = path.split('/').filter(Boolean)
   let currentLocale = 'en'
   
-  if (path.startsWith('/beep/') && segs.length >= 2) {
-    // New beep URL structure: /beep/[locale]/...
-    if (Object.keys(supportedLocales).includes(segs[1])) {
-      currentLocale = segs[1]
-    }
-  } else {
-    // Traditional locale prefix: /es/... or /...
-    if (segs.length && Object.keys(supportedLocales).includes(segs[0])) {
-      currentLocale = segs[0]
-    }
+  // Check for locale-first structure: /es/beep/... or /es/...
+  if (segs.length && Object.keys(supportedLocales).includes(segs[0])) {
+    currentLocale = segs[0]
   }
   const supportedLocaleCodes = Object.keys(supportedLocales);
   
@@ -80,19 +73,15 @@ export function LanguageSwitcher({
     const qs = searchParams?.toString()
     let targetPath = pathname || '/'
     
-    // Handle the new beep URL structure: /beep/[locale]/... 
+    // Handle beep URLs with proper locale-first structure: /[locale]/beep/...
     if (targetPath.startsWith('/beep/')) {
-      const parts = targetPath.split('/').filter(Boolean) // ['beep', 'locale', ...]
-      if (parts.length >= 2 && supportedLocaleCodes.includes(parts[1])) {
-        // Replace existing locale: /beep/en/... -> /beep/es/...
-        parts[1] = locale
-        targetPath = '/' + parts.join('/')
-      } else if (parts.length === 1) {
-        // Add locale to bare /beep -> /beep/es
-        targetPath = `/beep/${locale}`
+      const parts = targetPath.split('/').filter(Boolean) // ['beep', ...]
+      // Strip /beep and rebuild with locale first
+      const beepPath = parts.slice(1).join('/') // everything after 'beep'
+      if (locale === 'en') {
+        targetPath = beepPath ? `/beep/${beepPath}` : '/beep'
       } else {
-        // Fallback: add locale after /beep/
-        targetPath = `/beep/${locale}`
+        targetPath = beepPath ? `/${locale}/beep/${beepPath}` : `/${locale}/beep`
       }
     } else {
       // Handle other paths with traditional locale prefix

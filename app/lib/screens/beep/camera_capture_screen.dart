@@ -47,8 +47,14 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
   @override
   void initState() {
     super.initState();
-    // Use microtask like the working diagnostic
-    Future.microtask(_initializeCamera);
+    // Use post-frame callback for reliable initialization after route transition
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        // Small delay to ensure route transition is complete
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+        _initializeCamera();
+      }
+    });
   }
 
   Future<void> _initializeCamera() async {

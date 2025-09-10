@@ -12,27 +12,33 @@ class CameraDiagScreen extends StatefulWidget {
 
   static const routeName = '/diag/camera';
 
+  // quick constructor log
+  static void ctorLog() => debugPrint('🧩 CameraDiagScreen constructed');
+
   @override
-  State<CameraDiagScreen> createState() => _CameraDiagScreenState();
+  State<CameraDiagScreen> createState() {
+    ctorLog();
+    return _CameraDiagScreenState();
+  }
 }
 
 class _CameraDiagScreenState extends State<CameraDiagScreen> with WidgetsBindingObserver {
+  final _instanceId = UniqueKey();
   String status = 'Booting…';
   CameraController? _controller;
   List<CameraDescription> _cameras = const [];
   bool _initialized = false;
+  bool _started = false;
   bool _disposed = false;
   File? _logFile;
 
   Future<void> logLine(String msg) async {
     final ts = DateTime.now().toIso8601String();
-    dev.log('[CAM-DIAG] $ts $msg');
+    final line = '[CAM-DIAG ${_instanceId.hashCode}] $ts $msg';
+    dev.log(line);
     try {
-      if (_logFile == null) {
-        final dir = await getApplicationDocumentsDirectory();
-        _logFile = File('${dir.path}/camera_diag.log');
-      }
-      await _logFile!.writeAsString('$ts $msg\n', mode: FileMode.append, flush: true);
+      _logFile ??= File('${(await getApplicationDocumentsDirectory()).path}/camera_diag.log');
+      await _logFile!.writeAsString('$line\n', mode: FileMode.append, flush: true);
     } catch (_) {}
     if (mounted) setState(() => status = msg);
   }
@@ -41,8 +47,18 @@ class _CameraDiagScreenState extends State<CameraDiagScreen> with WidgetsBinding
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    // Prove initState is reached and run diag after the first frame.
-    Future.microtask(_runDiag);
+    // 🔑 Use post-frame so we run AFTER route transition/hero animations settle.
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted && !_started) {
+        _started = true;
+        await logLine('initState/postFrame reached; starting _runDiag… '
+            '(route=${ModalRoute.of(context)?.settings.name ?? "?"} '
+            'isCurrent=${ModalRoute.of(context)?.isCurrent})');
+        // tiny delay helps if there's still an ongoing transition in nested navs
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+        unawaited(_runDiag());
+      }
+    });
   }
 
   @override
@@ -127,33 +143,42 @@ class _CameraDiagScreenState extends State<CameraDiagScreen> with WidgetsBinding
 
   @override
   Widget build(BuildContext context) {
-    final body = (!_initialized || _controller == null)
-        ? Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const CircularProgressIndicator(),
-                const SizedBox(height: 16),
-                Text(status, textAlign: TextAlign.center),
-              ],
-            ),
-          )
-        : CameraPreview(_controller!);
-
-    return Scaffold(
-      appBar: AppBar(title: const Text('Camera Diagnostic')),
-      body: body,
-      bottomNavigationBar: _logHelpBar(),
+    // 🚫 Disable hero effects for platform view safety
+    return HeroMode(
+      enabled: false,
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Camera Diagnostic')),
+        body: (!_initialized || _controller == null)
+            ? Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const CircularProgressIndicator(),
+                    const SizedBox(height: 16),
+                    Text(status, textAlign: TextAlign.center),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Route: ${ModalRoute.of(context)?.settings.name ?? "?"} '
+                      'isCurrent=${ModalRoute.of(context)?.isCurrent}',
+                      style: Theme.of(context).textTheme.bodySmall,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              )
+            : CameraPreview(_controller!),
+        bottomNavigationBar: _logHelpBar(context),
+      ),
     );
   }
 
-  Widget _logHelpBar() => Material(
+  Widget _logHelpBar(BuildContext context) => Material(
         color: Theme.of(context).colorScheme.surfaceVariant,
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Text(
-            'Tip: run `adb logcat | grep -iE "flutter|camera|CAM-DIAG"`\n'
-            'Pull file log with: adb shell run-as <your.package.id> cat files/camera_diag.log',
+            'adb logcat | grep -iE "flutter|camera|CAM-DIAG"\n'
+            'adb shell run-as <your.package.id> cat files/camera_diag.log',
             style: Theme.of(context).textTheme.bodySmall,
           ),
         ),

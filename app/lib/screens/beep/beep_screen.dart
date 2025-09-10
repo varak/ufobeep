@@ -88,8 +88,12 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   }
 
   Future<void> _capturePhoto() async {
-    // Navigate to camera screen using push (same as working dev menu)
+    // Avoid double taps racing navigation
+    if (Navigator.of(context).userGestureInProgress) return;
+    
+    // Navigate to camera screen using absolute path (now at root level)
     final description = _descriptionController.text.trim();
+    debugPrint('🎯 CAMERA BUTTON: Navigating to /beep/camera with description: $description');
     context.push('/beep/camera', extra: {
       'description': description,
     });

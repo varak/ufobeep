@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -36,9 +37,37 @@ import '../l10n/app_localizations.dart';
 part 'app_router.g.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 // Global access to router for navigation from services
 GlobalKey<NavigatorState> get rootNavigatorKey => _rootNavigatorKey;
+
+// Route logger to track navigation events
+class _RouteLogger extends NavigatorObserver {
+  void _log(String s) => debugPrint('🧭 [NAV] $s');
+
+  @override
+  void didPush(Route route, Route? previousRoute) =>
+      _log('push -> ${route.settings.name ?? route.settings.arguments ?? route}');
+  @override
+  void didPop(Route route, Route? previousRoute) =>
+      _log('pop  <- ${route.settings.name ?? route.settings.arguments ?? route}');
+  @override
+  void didRemove(Route route, Route? previousRoute) =>
+      _log('remove  ${route.settings.name ?? route}');
+  @override
+  void didReplace({Route? newRoute, Route? oldRoute}) =>
+      _log('replace ${oldRoute?.settings.name} -> ${newRoute?.settings.name}');
+}
+
+// No transition page to avoid platform view races
+class _NoTransitionPage extends CustomTransitionPage<void> {
+  _NoTransitionPage(Widget child)
+      : super(
+          child: child,
+          transitionsBuilder: (c, a, s, child) => child, // no animation
+        );
+}
 
 @riverpod
 GoRouter appRouter(AppRouterRef ref) {
@@ -46,10 +75,16 @@ GoRouter appRouter(AppRouterRef ref) {
     navigatorKey: _rootNavigatorKey,
     debugLogDiagnostics: true,
     initialLocation: '/splash',
-    // Redirect function to normalize HTTPS magic links to internal routes (ChatGPT's Phase 2)
+    observers: [_RouteLogger()],
+    // 🔭 Global redirect tracer with camera route bypass
     redirect: (context, state) {
       final location = state.uri.toString();
-      debugPrint('🔄 GoRouter redirect check: $location');
+      debugPrint('🔄 [GLOBAL REDIRECT] ${state.matchedLocation}  uri=${state.uri}');
+      
+      // Hard bypass for camera routes to prevent redirect loops
+      if (state.matchedLocation == '/beep/camera' || state.matchedLocation == '/diag/camera') {
+        return null;
+      }
       
       // Handle HTTPS magic links by converting to internal route
       if (location.startsWith('https://ufobeep.com/api/auth/magic/complete/new')) {
@@ -117,11 +152,21 @@ GoRouter appRouter(AppRouterRef ref) {
       );
     },
     routes: [
-      // Camera Diagnostic Screen (debug only)
+      // ✅ CAMERA ROUTES AT ROOT LEVEL (outside any ShellRoute to prevent redirect issues)
+      // Debug-only diagnostic screen
+      if (!kReleaseMode)
+        GoRoute(
+          path: '/diag/camera',
+          name: 'diag-camera',
+          parentNavigatorKey: _rootNavigatorKey,
+          pageBuilder: (context, state) => _NoTransitionPage(const CameraDiagScreen()),
+        ),
+      // Production camera capture screen - KEEP AT ROOT FOREVER
       GoRoute(
-        path: '/diag/camera',
-        name: 'camera-diag',
-        builder: (context, state) => const CameraDiagScreen(),
+        path: '/beep/camera',
+        name: 'beep-camera',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => _NoTransitionPage(const CameraCaptureScreen()),
       ),
       
       // Splash Screen (handles its own navigation after initialization)
@@ -203,10 +248,16 @@ GoRouter appRouter(AppRouterRef ref) {
             ],
           ),
 
-          // Beep (Capture/Upload)
+          // Beep (Capture/Upload) - WITH REDIRECT TRACING
           GoRoute(
             path: '/beep',
             name: 'beep',
+            redirect: (context, state) {
+              debugPrint('🔄 [/beep REDIRECT] ${state.matchedLocation} uri=${state.uri} '
+                        'fullPath=${state.fullPath}');
+              // If you previously returned the SAME location conditionally, that's a loop.
+              return null; // No redirect needed
+            },
             builder: (context, state) {
               final attachTo = state.uri.queryParameters['attachTo'];
               final autoGallery = state.uri.queryParameters['autoGallery'] == 'true';
@@ -216,15 +267,7 @@ GoRouter appRouter(AppRouterRef ref) {
               );
             },
             routes: [
-              // Custom Camera (use working diagnostic as camera)
-              GoRoute(
-                path: 'camera',
-                name: 'beep-camera',
-                builder: (context, state) {
-                  // Just use the working diagnostic screen for now - ignore any extra params
-                  return const CameraDiagScreen();
-                },
-              ),
+              // ❌ CAMERA ROUTE REMOVED - NOW AT ROOT LEVEL
               // Beep Composition
               GoRoute(
                 path: 'compose',
