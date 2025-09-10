@@ -46,7 +46,8 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
   @override
   void initState() {
     super.initState();
-    _initializeCamera();
+    // Use microtask like the working diagnostic
+    Future.microtask(_initializeCamera);
   }
 
   Future<void> _initializeCamera() async {
