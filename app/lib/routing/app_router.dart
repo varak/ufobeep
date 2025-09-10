@@ -221,7 +221,7 @@ GoRouter appRouter(AppRouterRef ref) {
                 path: 'camera',
                 name: 'beep-camera',
                 builder: (context, state) {
-                  // Just use the working diagnostic screen for now
+                  // Just use the working diagnostic screen for now - ignore any extra params
                   return const CameraDiagScreen();
                 },
               ),

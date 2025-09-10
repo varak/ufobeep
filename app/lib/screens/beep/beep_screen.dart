@@ -88,9 +88,9 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   }
 
   Future<void> _capturePhoto() async {
-    // Navigate to camera screen immediately - let camera screen handle permissions
+    // Navigate to camera screen using push (same as working dev menu)
     final description = _descriptionController.text.trim();
-    context.go('/beep/camera', extra: {
+    context.push('/beep/camera', extra: {
       'description': description,
     });
   }
