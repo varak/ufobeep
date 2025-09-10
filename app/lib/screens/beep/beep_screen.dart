@@ -87,21 +87,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   }
 
   Future<void> _capturePhoto() async {
-    // Check camera permission first
-    final hasPermission = await permissionService.requestCameraForCapture();
-    if (!hasPermission) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Camera permission is required to take photos'),
-            duration: Duration(seconds: 3),
-          ),
-        );
-      }
-      return;
-    }
-    
-    // Navigate to custom camera screen that skips approval
+    // Navigate to camera screen immediately - let camera screen handle permissions
     final description = _descriptionController.text.trim();
     context.go('/beep/camera', extra: {
       'description': description,

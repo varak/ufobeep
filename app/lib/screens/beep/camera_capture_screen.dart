@@ -11,6 +11,7 @@ import '../../theme/app_theme.dart';
 import '../../services/sensor_service.dart';
 import '../../services/photo_metadata_service.dart';
 import '../../services/sound_service.dart';
+import '../../services/permission_service.dart';
 import '../../models/sensor_data.dart';
 
 class CameraCaptureScreen extends StatefulWidget {
@@ -33,6 +34,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
   CameraController? _controller;
   List<CameraDescription>? _cameras;
   final SensorService _sensorService = SensorService();
+  final PermissionService _permissionService = PermissionService();
   
   bool _isInitialized = false;
   bool _isCapturing = false;
@@ -50,13 +52,19 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
     try {
       debugPrint('📸 CAMERA: Starting camera initialization...');
       
-      // Get available cameras with timeout
-      _cameras = await availableCameras().timeout(
-        const Duration(seconds: 10),
-        onTimeout: () {
-          throw Exception('Timeout getting available cameras');
-        },
-      );
+      // Check camera permission first
+      final hasPermission = await _permissionService.requestCameraForCapture();
+      if (!hasPermission) {
+        setState(() {
+          _errorMessage = 'Camera permission is required. Please grant permission in settings and try again.';
+        });
+        return;
+      }
+      
+      debugPrint('📸 CAMERA: Camera permission granted');
+      
+      // Get available cameras
+      _cameras = await availableCameras();
       
       debugPrint('📸 CAMERA: Found ${_cameras?.length ?? 0} cameras');
       
@@ -85,13 +93,8 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
 
       debugPrint('📸 CAMERA: Controller created, initializing...');
 
-      // Initialize controller with timeout
-      await _controller!.initialize().timeout(
-        const Duration(seconds: 15),
-        onTimeout: () {
-          throw Exception('Timeout initializing camera controller');
-        },
-      );
+      // Initialize controller
+      await _controller!.initialize();
 
       if (!mounted) return;
 
@@ -103,8 +106,9 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       setState(() {
         _isInitialized = true;
       });
-    } catch (e) {
+    } catch (e, stackTrace) {
       debugPrint('📸 CAMERA: ERROR: $e');
+      debugPrint('📸 CAMERA: Stack trace: $stackTrace');
       setState(() {
         _errorMessage = 'Failed to initialize camera: $e';
       });

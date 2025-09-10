@@ -5,7 +5,7 @@ description: "UFOBeep - Real-time sighting alert system"
 publish_to: 'none'
 
 # App version and build number
-version: 1.0.0-beta.8+14
+version: 1.0.0-beta.8+15
 
 environment:
   sdk: ^3.8.1
