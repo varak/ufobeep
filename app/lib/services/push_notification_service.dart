@@ -16,6 +16,7 @@ import 'sound_service.dart';
 import 'beep_service.dart';
 import 'permission_service.dart';
 import 'api_client.dart';
+import 'notification_bootstrap.dart';
 import '../models/user_preferences.dart';
 import '../providers/user_preferences_provider.dart';
 import '../routing/app_router.dart';
@@ -108,8 +109,9 @@ class PushNotificationService {
   }
 
   Future<void> initialize() async {
-    // Initialize local notifications for rich notifications
-    await _initializeLocalNotifications();
+    // Initialize notification system with unified bootstrap
+    await NotificationBootstrap.initialize();
+    print('🔔 PUSH: Bootstrap initialization completed');
     
     // Request permission for push notifications
     final permission = await requestPermission();
@@ -240,6 +242,10 @@ class PushNotificationService {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('🔔 FOREGROUND FCM: Received message ${message.messageId}');
       print('🔔 FOREGROUND FCM: App is in foreground - must manually show notification');
+      
+      // For foreground notifications, show via bootstrap service first
+      _showForegroundNotification(message);
+      
       _handleMessage(message, isBackground: false);
     });
 
@@ -826,6 +832,23 @@ class PushNotificationService {
     );
     
     print('📱 Comment notification shown for sighting $sightingId');
+  }
+
+  Future<void> _showForegroundNotification(RemoteMessage message) async {
+    final title = message.notification?.title ?? 'UFOBeep Alert';
+    final body = message.notification?.body ?? 'New notification';
+    
+    try {
+      await NotificationBootstrap.showLocalNotification(
+        title: title,
+        body: body,
+        data: message.data,
+      );
+      print('🔔 FOREGROUND: Shown via bootstrap service');
+    } catch (e) {
+      print('🔔 FOREGROUND ERROR: Failed to show via bootstrap: $e');
+      // Fallback to legacy rich notification if needed
+    }
   }
 
   Future<void> _showRichNotification(String sightingId, int witnessCount, String? distance, String locationName) async {

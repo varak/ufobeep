@@ -394,5 +394,54 @@
   "satellitePassExplanation": "Visible satellite passes during the sighting timeframe. Many UFO reports are actually satellites or space debris.",
   "followingAlert": "Following alert - you'll get comment notifications",
   "unfollowedAlert": "Unfollowed alert - no more comment notifications",
-  "alertFollowError": "Error updating follow status"
+  "alertFollowError": "Error updating follow status",
+  
+  "notificationChannelAlerts": "UFOBeep Alerts",
+  "notificationChannelAlertsDesc": "Notifications for UFO beeps and proximity alerts",
+  "notificationSightingTitle": "UFO Sighting",
+  "notificationSightingUrgent": "⚠️ URGENT UFO Sighting",
+  "notificationSightingEmergency": "🚨 EMERGENCY UFO Sighting",
+  "notificationSightingBody": "{witnessText} near {locationName}",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "💬 {username} commented",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "New sighting",
+  "notificationWitnessTextMultiple": "{count} witnesses",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "Snooze 1h",
+  "notificationActionDismiss": "Dismiss",
+  "notificationDistance": "{distance} away",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  }
 }
