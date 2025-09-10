@@ -7,6 +7,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'device_service.dart';
 import 'device_registration_manager.dart';
 import '../providers/alerts_provider.dart';
@@ -141,6 +143,21 @@ class PushNotificationService {
 
   Future<bool> requestPermission() async {
     final prefs = await SharedPreferences.getInstance();
+    
+    // For Android 13+, we need to request POST_NOTIFICATIONS permission explicitly
+    if (Platform.isAndroid) {
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      if (androidInfo.version.sdkInt >= 33) {
+        // Android 13+ requires explicit POST_NOTIFICATIONS permission
+        final status = await Permission.notification.request();
+        if (status != PermissionStatus.granted) {
+          print('Android 13+ POST_NOTIFICATIONS permission denied: $status');
+          await prefs.setBool(_permissionKey, false);
+          return false;
+        }
+        print('Android 13+ POST_NOTIFICATIONS permission granted');
+      }
+    }
     
     // Always check actual system permission status, don't rely only on cache
     try {

@@ -278,6 +278,18 @@ class PermissionService {
     return granted;
   }
   
+  /// Request notification permission (for push notifications)
+  Future<bool> requestNotificationPermissionForPush() async {
+    print('Requesting notification permission for push alerts...');
+    final granted = await requestPermission(Permission.notification);
+    if (granted) {
+      print('Notification permission granted for push alerts');
+    } else {
+      print('Notification permission denied for push alerts');
+    }
+    return granted;
+  }
+  
   /// Ensure location is ready for beep submission - insistent permission flow
   /// Returns true if location is ready, false if user permanently denied
   Future<bool> ensureLocationReadyForBeep() async {
