@@ -41,9 +41,9 @@ export default function Header() {
 
           {/* Center: Nav (desktop) */}
           <nav className="hidden md:flex items-center gap-1">
-            <NavLink href="/beep" label="Beep" />
+            <NavLink href="/beep" label="Recent Beeps" />
             <NavLink href="/map" label="Map" />
-            <NavLink href="/download" label="Download" />
+            <NavLink href="/download" label="Download App" />
           </nav>
 
           {/* Right: Language + Account */}
@@ -85,9 +85,9 @@ export default function Header() {
         {open && (
           <div className="md:hidden pb-3">
             <div className="flex flex-col gap-1">
-              <NavLink href="/beep" label="Beep" />
+              <NavLink href="/beep" label="Recent Beeps" />
               <NavLink href="/map" label="Map" />
-              <NavLink href="/download" label="Download" />
+              <NavLink href="/download" label="Download App" />
               <div className="px-1 py-2">
                 <Link href="/languages" className="text-sm text-text-secondary hover:text-text-primary">
                   🌐 Languages
