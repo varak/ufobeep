@@ -9,7 +9,7 @@ from app.services.notify import notify_users_excluding_device
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/alerts", tags=["comments"])
+router = APIRouter(prefix="/beep", tags=["comments"])
 
 class CommentIn(BaseModel):
     body: str
