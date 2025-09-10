@@ -54,66 +54,53 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
     try {
       debugPrint('📸 CAMERA: Starting camera initialization...');
       
-      // Use the exact same approach as the working diagnostic
-      final camStatus = await Permission.camera.request();
+      // 1) Permission phase with timeout
+      debugPrint('📸 CAMERA: Requesting camera permission…');
+      final camStatus = await Permission.camera.request().timeout(
+        const Duration(seconds: 10),
+        onTimeout: () => throw TimeoutException('Permission request timed out'),
+      );
       debugPrint('📸 CAMERA: Permission result: $camStatus');
 
       if (!await Permission.camera.isGranted) {
+        debugPrint('📸 CAMERA: Camera permission NOT granted → aborting.');
         setState(() {
           _errorMessage = 'Camera permission NOT granted → aborting.';
         });
         return;
       }
-      
-      debugPrint('📸 CAMERA: Camera permission granted');
-      
-      // Get available cameras (same as diagnostic)
-      _cameras = await availableCameras();
-      
-      debugPrint('📸 CAMERA: Found ${_cameras?.length ?? 0} cameras');
-      
+
+      // 2) availableCameras() with timeout
+      debugPrint('📸 CAMERA: Calling availableCameras()…');
+      _cameras = await availableCameras().timeout(
+        const Duration(seconds: 8),
+        onTimeout: () => throw TimeoutException('availableCameras() timed out'),
+      );
+      debugPrint('📸 CAMERA: availableCameras() returned ${_cameras?.length ?? 0} camera(s).');
       if (_cameras == null || _cameras!.isEmpty) {
+        debugPrint('📸 CAMERA: No cameras found on device → aborting.');
         setState(() {
-          _errorMessage = 'No cameras available';
+          _errorMessage = 'No cameras found on device → aborting.';
         });
         return;
       }
 
-      // Use back camera if available, otherwise use first camera
-      final camera = _cameras!.firstWhere(
-        (cam) => cam.lensDirection == CameraLensDirection.back,
-        orElse: () => _cameras!.first,
+      // 3) Controller initialize with timeout
+      debugPrint('📸 CAMERA: Creating CameraController…');
+      _controller = CameraController(_cameras!.first, ResolutionPreset.max, enableAudio: false);
+      debugPrint('📸 CAMERA: Initializing controller…');
+      await _controller!.initialize().timeout(
+        const Duration(seconds: 10),
+        onTimeout: () => throw TimeoutException('controller.initialize() timed out'),
       );
 
-      debugPrint('📸 CAMERA: Selected camera: ${camera.name} (${camera.lensDirection})');
-
-      // Create controller exactly like the diagnostic (no audio, max resolution)
-      _controller = CameraController(
-        camera,
-        ResolutionPreset.max,
-        enableAudio: false, // Same as diagnostic
-      );
-
-      debugPrint('📸 CAMERA: Controller created, initializing...');
-
-      // Initialize controller
-      await _controller!.initialize();
-
-      if (!mounted) return;
-
-      // Log the actual resolution we're using
-      final size = _controller!.value.previewSize;
-      debugPrint('📸 CAMERA: Initialized with resolution: ${size?.width}x${size?.height}');
-      debugPrint('📸 CAMERA: Using camera: ${camera.name} (${camera.lensDirection})');
-
+      _isInitialized = true;
+      if (mounted) setState(() {});
+      debugPrint('📸 CAMERA: Camera initialized successfully ✅');
+    } catch (e, st) {
+      debugPrint('📸 CAMERA: DIAG ERROR: $e\n$st');
       setState(() {
-        _isInitialized = true;
-      });
-    } catch (e, stackTrace) {
-      debugPrint('📸 CAMERA: ERROR: $e');
-      debugPrint('📸 CAMERA: Stack trace: $stackTrace');
-      setState(() {
-        _errorMessage = 'Failed to initialize camera: $e';
+        _errorMessage = 'Camera initialization failed: $e';
       });
     }
   }
