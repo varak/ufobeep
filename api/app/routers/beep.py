@@ -264,6 +264,34 @@ async def get_alerts(
         print(f"Error getting alerts: {e}")
         raise HTTPException(status_code=500, detail=f"Error getting alerts: {str(e)}")
 
+@router.get("/by-short-url/{short_url}")
+async def get_alert_by_short_url(
+    short_url: str,
+    latitude: Optional[float] = None,
+    longitude: Optional[float] = None
+):
+    """Get specific alert by short URL - efficient endpoint to avoid fetching 1000 beeps"""
+    try:
+        db_pool = await get_db()
+        alerts_service = AlertsService(db_pool)
+        alert = await alerts_service.get_alert_by_short_url(short_url)
+        
+        if not alert:
+            raise HTTPException(status_code=404, detail="Alert not found")
+        
+        return {
+            "success": True,
+            "data": {
+                "alert": format_alert_response(alert, latitude, longitude)
+            }
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error getting alert by short URL: {e}")
+        raise HTTPException(status_code=500, detail=f"Error getting alert by short URL: {str(e)}")
+
 @router.get("/{alert_id}")
 async def get_alert_details(
     alert_id: str,

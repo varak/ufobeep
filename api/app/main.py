@@ -251,6 +251,12 @@ async def lifespan(app: FastAPI):
                 WHERE push_token IS NOT NULL
             """)
             
+            # Add index for short_url lookups for efficient beep/by-short-url endpoint
+            await conn.execute("""
+                CREATE INDEX IF NOT EXISTS idx_sightings_short_url ON sightings(short_url)
+                WHERE short_url IS NOT NULL
+            """)
+            
             # Create magic link tables
             await conn.execute("""
                 CREATE TABLE IF NOT EXISTS magic_links (

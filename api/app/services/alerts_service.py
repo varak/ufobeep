@@ -148,6 +148,55 @@ class AlertsService:
                 external_url=row["external_url"]
             )
     
+    async def get_alert_by_short_url(self, short_url: str) -> Optional[Alert]:
+        """Get single alert by short_url for efficient direct access"""
+        async with self.db_pool.acquire() as conn:
+            row = await conn.fetchrow("""
+                SELECT s.id::text, s.title, s.description, s.category, s.alert_level,
+                       s.witness_count, s.created_at, s.reporter_id, s.sensor_data, s.media_info, s.enrichment_data,
+                       u.username as reporter_username, s.source, s.occurred_at, s.external_url,
+                       COALESCE(c.comment_count, 0) as comment_count, s.short_url
+                FROM sightings s
+                LEFT JOIN users u ON s.reporter_id = u.id::text
+                LEFT JOIN (
+                    SELECT sighting_id, COUNT(*) as comment_count 
+                    FROM comments 
+                    GROUP BY sighting_id
+                ) c ON s.id = c.sighting_id
+                WHERE s.short_url = $1 AND s.is_public = true
+            """, short_url)
+            
+            if not row:
+                return None
+                
+            location = self._extract_location(row["sensor_data"], row["enrichment_data"])
+            
+            # Allow MUFON alerts without location data
+            if not location and row["source"] == "mufon":
+                location = AlertLocation(latitude=0.0, longitude=0.0, name="")
+            elif not location:
+                return None
+                
+            return Alert(
+                id=row["id"],
+                title=row["title"],
+                description=row["description"],
+                category=row["category"] or "ufo",
+                location=location,
+                witness_count=row["witness_count"] or 1,
+                alert_level=row["alert_level"] or "low",
+                created_at=row["created_at"],
+                reporter_id=row["reporter_id"],
+                reporter_username=row["reporter_username"],
+                media_files=self._process_media(row["media_info"], row["id"]),
+                enrichment=self._process_enrichment(row["enrichment_data"]),
+                comment_count=row["comment_count"],
+                source=row["source"],
+                occurred_at=row["occurred_at"],
+                external_url=row["external_url"],
+                short_url=row["short_url"]
+            )
+    
     def _extract_location(self, sensor_data, enrichment_data) -> Optional[AlertLocation]:
         """Extract location from sensor/enrichment data - unified logic"""
         # IMPORTANT: Use sensor data first for accurate GPS coordinates
