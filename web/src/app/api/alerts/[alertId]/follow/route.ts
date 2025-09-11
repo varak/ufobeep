@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+import { apiConfig } from '@/config/api'
 
 // GET /api/alerts/[alertId]/follow - Check follow status
 export async function GET(
@@ -11,7 +10,7 @@ export async function GET(
     const { alertId } = params
     const authHeader = request.headers.get('authorization')
     
-    const apiUrl = `${API_BASE_URL}/beep/${alertId}/follow`
+    const apiUrl = `${apiConfig.fullUrl}/beep/${alertId}/follow`
     
     const response = await fetch(apiUrl, {
       method: 'GET',
@@ -48,7 +47,7 @@ export async function POST(
     const { alertId } = params
     const authHeader = request.headers.get('authorization')
     
-    const apiUrl = `${API_BASE_URL}/beep/${alertId}/follow`
+    const apiUrl = `${apiConfig.fullUrl}/beep/${alertId}/follow`
     
     const response = await fetch(apiUrl, {
       method: 'POST',
@@ -85,7 +84,7 @@ export async function DELETE(
     const { alertId } = params
     const authHeader = request.headers.get('authorization')
     
-    const apiUrl = `${API_BASE_URL}/beep/${alertId}/follow`
+    const apiUrl = `${apiConfig.fullUrl}/beep/${alertId}/follow`
     
     const response = await fetch(apiUrl, {
       method: 'DELETE',

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-
-const API_BASE_URL = 'http://localhost:8000'
+import { apiConfig } from '@/config/api'
 
 // GET /api/beep/[shortUrl] - Fetch single beep by short URL
 export async function GET(request: NextRequest, { params }: { params: { shortUrl: string } }) {
@@ -8,7 +7,7 @@ export async function GET(request: NextRequest, { params }: { params: { shortUrl
     const { shortUrl } = params
     
     // Use backend endpoint to get single beep by short_url
-    const apiUrl = `${API_BASE_URL}/beep/by-short-url/${shortUrl}`
+    const apiUrl = `${apiConfig.fullUrl}/beep/by-short-url/${shortUrl}`
     
     const response = await fetch(apiUrl, {
       method: 'GET',

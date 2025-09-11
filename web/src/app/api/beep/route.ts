@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-
-const API_BASE_URL = 'http://localhost:8000'
+import { apiConfig } from '@/config/api'
 
 // GET /api/beep - Fetch beeps (list/search)
 export async function GET(request: NextRequest) {
@@ -49,7 +48,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     
     // Use new unified /beep endpoint
-    const apiUrl = `${API_BASE_URL}/beep`
+    const apiUrl = `${apiConfig.fullUrl}/beep`
     
     const response = await fetch(apiUrl, {
       method: 'POST',

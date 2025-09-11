@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+import { apiConfig } from '@/config/api'
 
 // GET /api/alerts/[alertId]/comments - Fetch comments for an alert
 export async function GET(
@@ -10,7 +9,7 @@ export async function GET(
   try {
     const { alertId } = params
     
-    const apiUrl = `${API_BASE_URL}/beep/${alertId}/comments`
+    const apiUrl = `${apiConfig.fullUrl}/beep/${alertId}/comments`
     
     const response = await fetch(apiUrl, {
       method: 'GET',
@@ -47,7 +46,7 @@ export async function POST(
     const body = await request.json()
     const authHeader = request.headers.get('authorization')
     
-    const apiUrl = `${API_BASE_URL}/beep/${alertId}/comments`
+    const apiUrl = `${apiConfig.fullUrl}/beep/${alertId}/comments`
     
     const response = await fetch(apiUrl, {
       method: 'POST',
