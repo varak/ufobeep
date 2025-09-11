@@ -221,6 +221,7 @@
   "alertsFilterHelp": "Prøv at justere dine filtre for at se flere resultater",
   "verified": "Verificeret",
   "beepOnly": "kun bip",
+  "reportOnly": "kun rapport",
   "videoOnly": "kun video",
   "imageOnly": "kun billede",
   "timeJustNow": "Lige nu",
@@ -473,5 +474,9 @@
   },
   "unknown": "ukendt",
   "report": "rapport",
-  "mufon": "mofon"
+  "mufon": "mofon",
+  "recentUfoBeepsTitle": "Nylig UFO Bipper",
+  "recentUfoBeepsSubtitle": "Live UFOBeep community reports & MUFON database observationer",
+  "recentUfoBeepsDescription": "Dette feed kombinerer real- time UFOBeep \"bipper\" fra vores mobile app-brugere med historiske rapporter fra MUFON databasen.",
+  "loadingBeeps": "Indlæser nylige bip..."
 }

@@ -100,6 +100,7 @@
   "keywords": "UFO, UAP,OVNI, étrangers, visionnages,skywatch, alertes,radar,compass",
   "noAlertsFound": "Aucune alerte correspondante",
   "verified": "Vérifié",
+  "reportOnly": "rapport unique",
   "videoOnly": "vidéo seulement",
   "imageOnly": "image seulement",
   "timeJustNow": "Juste maintenant",
@@ -202,5 +203,8 @@
   "notificationDistance": "{distance} loin",
   "unknown": "inconnu",
   "report": "rapport",
-  "mufon": "mufon"
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "OVNI récents Abeilles",
+  "recentUfoBeepsDescription": "Ce flux combine en temps réel UFOBeep \"beeps\" de nos utilisateurs d'applications mobiles avec des rapports historiques de la base de données MUFON.",
+  "loadingBeeps": "Chargement de bips récents..."
 }

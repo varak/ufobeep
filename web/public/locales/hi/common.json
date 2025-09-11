@@ -100,6 +100,7 @@
   "keywords": "यूएफओ, यूएपी, ओवीएनआई, एलियंस, दर्शन, स्काईवॉच, एलर्ट्स, रडार,कम्पास",
   "noAlertsFound": "कोई मेलिंग अलर्ट नहीं",
   "verified": "सत्यापित",
+  "reportOnly": "केवल रिपोर्ट करें",
   "videoOnly": "केवल वीडियो",
   "imageOnly": "केवल छवि",
   "timeJustNow": "अभी",
@@ -202,5 +203,8 @@
   "notificationDistance": "{distance} दूर",
   "unknown": "अज्ञात",
   "report": "रिपोर्ट",
-  "mufon": "mufon"
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "यूएफओ बीप",
+  "recentUfoBeepsDescription": "यह फ़ीड हमारे मोबाइल ऐप उपयोगकर्ताओं से वास्तविक समय के UFOBeep \"beeps\" को जोड़ती है जिसमें MUFON डेटाबेस से ऐतिहासिक रिपोर्ट होती है।.",
+  "loadingBeeps": "हाल ही में बीप लोड हो रहा है..."
 }

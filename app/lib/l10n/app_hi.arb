@@ -221,6 +221,7 @@
   "alertsFilterHelp": "अधिक परिणाम देखने के लिए अपने फिल्टर को समायोजित करने की कोशिश करें",
   "verified": "सत्यापित",
   "beepOnly": "केवल बीप",
+  "reportOnly": "केवल रिपोर्ट करें",
   "videoOnly": "केवल वीडियो",
   "imageOnly": "केवल छवि",
   "timeJustNow": "अभी",
@@ -473,5 +474,9 @@
   },
   "unknown": "अज्ञात",
   "report": "रिपोर्ट",
-  "mufon": "mufon"
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "यूएफओ बीप",
+  "recentUfoBeepsSubtitle": "लाइव UFOBeep सामुदायिक रिपोर्ट और MUFON डेटाबेस दर्शन",
+  "recentUfoBeepsDescription": "यह फ़ीड हमारे मोबाइल ऐप उपयोगकर्ताओं से वास्तविक समय के UFOBeep \"beeps\" को जोड़ती है जिसमें MUFON डेटाबेस से ऐतिहासिक रिपोर्ट होती है।.",
+  "loadingBeeps": "हाल ही में बीप लोड हो रहा है..."
 }

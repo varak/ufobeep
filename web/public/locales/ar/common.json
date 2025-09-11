@@ -100,6 +100,7 @@
   "keywords": "UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass",
   "noAlertsFound": "لا تنبيهات مطابقة",
   "verified": "مصدق عليه",
+  "reportOnly": "التقرير فقط",
   "videoOnly": "الفيديو فقط",
   "imageOnly": "الصورة فقط",
   "timeJustNow": "الآن",
@@ -202,5 +203,8 @@
   "notificationDistance": "ابتعد",
   "unknown": "مجهول",
   "report": "التقرير",
-  "mufon": "mufon"
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "Recent UFO Beeps",
+  "recentUfoBeepsDescription": "هذا التغذّي يُجمّعُ في الوقت الحقيقي يُدعى (يوفو بيب) من مستعملي تطبيقاتنا المتنقلة مع تقارير تاريخية من قاعدة بيانات (مافون).",
+  "loadingBeeps": "وضع البيب الأخيرة..."
 }

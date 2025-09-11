@@ -221,6 +221,7 @@
   "alertsFilterHelp": "필터를 조정하여 더 많은 결과를 볼 수 있습니다",
   "verified": "인증 및 인증",
   "beepOnly": "뚱 베어",
+  "reportOnly": "견적 요청",
   "videoOnly": "비디오 만",
   "imageOnly": "이미지 만",
   "timeJustNow": "지금 시작",
@@ -473,5 +474,9 @@
   },
   "unknown": "이름 *",
   "report": "이름 *",
-  "mufon": "사이트맵"
+  "mufon": "사이트맵",
+  "recentUfoBeepsTitle": "최근 UFO 뚱 베어",
+  "recentUfoBeepsSubtitle": "라이브 UFOBeep 커뮤니티 보고서 & MUFON 데이터베이스 광경",
+  "recentUfoBeepsDescription": "이 피드는 실시간 UFOBeep \"beeps\"를 결합하여 모바일 앱 사용자는 MUFON 데이터베이스의 과거 보고서를 보여줍니다.",
+  "loadingBeeps": "최근 beeps을로드 ..."
 }

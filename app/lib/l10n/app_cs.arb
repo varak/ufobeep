@@ -221,6 +221,7 @@
   "alertsFilterHelp": "Zkuste nastavit filtry, abyste viděli další výsledky",
   "verified": "Ověřeno",
   "beepOnly": "pouze pípnutí",
+  "reportOnly": "pouze hlášení",
   "videoOnly": "pouze video",
   "imageOnly": "pouze obrázek",
   "timeJustNow": "Právě teď",
@@ -473,5 +474,9 @@
   },
   "unknown": "neznámý",
   "report": "zpráva",
-  "mufon": "mufon"
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "Nedávné UFO Brouci",
+  "recentUfoBeepsSubtitle": "Živé zprávy komunity UFOBeep a pozorování databáze MUFON",
+  "recentUfoBeepsDescription": "Toto krmivo kombinuje aktuální UFOBeep \"pípání\" od našich uživatelů mobilních aplikací s historickými zprávami z databáze MUFON.",
+  "loadingBeeps": "Načítám poslední pípnutí..."
 }

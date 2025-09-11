@@ -263,6 +263,7 @@ class UFOClassifier:
         
         return {"type": "unknown", "confidence": 0.0, "keywords": []}
 
+
 def reverse_geocode(location_text: str) -> Optional[Dict[str, any]]:
     """Extract location from text and get coordinates using Nominatim"""
     if not location_text or len(location_text.strip()) < 3:
@@ -798,6 +799,66 @@ def extract_and_import_mufon(date_str):
                         classification = classifier.classify(long_description, short_description)
                         log(f"🔍 UFO Classification: {classification['type']} (confidence: {classification['confidence']:.2f})")
                         
+                        # Generate alert ID before using it
+                        import uuid
+                        alert_id = str(uuid.uuid4())
+                        
+                        # Parse report_date to ISO timestamp for date_posted
+                        date_posted_iso = None
+                        if report_date:
+                            try:
+                                # Parse MUFON date format (YYYY-MM-DD) to ISO
+                                parsed_date = datetime.strptime(report_date, "%Y-%m-%d")
+                                date_posted_iso = parsed_date.replace(tzinfo=timezone.utc).isoformat()
+                                log(f"📅 Parsed report_date: {report_date} -> {date_posted_iso}")
+                            except Exception as e:
+                                log(f"⚠️ Failed to parse report_date '{report_date}': {e}")
+                        
+                        # Store sighting_datetime - create ISO for API, keep raw for display
+                        occurred_at_iso = None
+                        mufon_datetime_display = None
+                        if sighting_datetime:
+                            # Keep raw MUFON format with <br> for display
+                            mufon_datetime_display = sighting_datetime.replace('\n', '<br>').strip()
+                            # Convert to basic ISO format for API (use date + 00:00:00Z)
+                            occurred_at_iso = date_posted_iso or datetime.now(timezone.utc).isoformat()
+                            log(f"🕐 MUFON datetime for display: '{mufon_datetime_display}', ISO for API: '{occurred_at_iso}'")
+                        
+                        # Generate SEO-friendly slug using shared generator
+                        alert_data_for_slug = {
+                            "id": alert_id,
+                            "title": f"MUFON {classification['type'].title()} Report" if classification['confidence'] >= 0.3 else "MUFON Report",
+                            "created_at": occurred_at_iso or date_posted_iso or datetime.now(timezone.utc).isoformat(),
+                            "location": {"name": location},
+                            "source": "mufon",
+                            "short_url": None,  # Will be generated
+                            "shape": classification['type'] if classification['confidence'] >= 0.3 else None
+                        }
+                        
+                        # Generate SEO slug for multiple languages
+                        import subprocess
+                        import json
+                        
+                        slug_data_json = json.dumps(alert_data_for_slug)
+                        
+                        try:
+                            # Generate English slug
+                            result = subprocess.run(
+                                ["node", "/home/mike/D/ufobeep/shared/generate_slug.js", slug_data_json, "en"],
+                                capture_output=True,
+                                text=True,
+                                timeout=10
+                            )
+                            if result.returncode == 0:
+                                english_slug = result.stdout.strip()
+                                log(f"🔗 Generated English slug: {english_slug}")
+                            else:
+                                log(f"⚠️ Slug generation failed: {result.stderr}")
+                                english_slug = None
+                        except Exception as e:
+                            log(f"⚠️ Slug generation error: {e}")
+                            english_slug = None
+                        
                         # Extract location and geocode
                         geo_data = None
                         try:
@@ -815,10 +876,7 @@ def extract_and_import_mufon(date_str):
                             log(f"⚠️ Geocoding error: {e}")
                         
                         # CREATE ALERT in production
-                        import uuid
-                        alert_id = str(uuid.uuid4())
-                        
-                        log(f"📤 Creating alert for MUFON Case #{real_case_id}...")
+                        log(f"📤 Creating alert for MUFON Case #{real_case_id}... (ID: {alert_id})")
                         
                         # Prepare alert data with correct API structure
                         # Title: Add "MUFON Report" for proper attribution
@@ -833,60 +891,9 @@ def extract_and_import_mufon(date_str):
                         if clean_description:
                             clean_description += f"\n\n📍 Location: {location}"
                         
-                        # Parse sighting_datetime to ISO timestamp for occurred_at
-                        occurred_at_iso = None
-                        if sighting_datetime:
-                            try:
-                                # MUFON format: "2025-09-07\n6:48AM"
-                                # Clean up the datetime string
-                                clean_datetime = sighting_datetime.replace('\n', ' ').strip()
-                                
-                                # Parse MUFON datetime formats using regex for flexibility
-                                
-                                # Use regex to extract date and time components
-                                match = re.match(r"(\d{4}-\d{2}-\d{2})\s+(\d{1,2}):?(\d{0,2})\s*(AM|PM)", clean_datetime)
-                                if match:
-                                    date_part = match.group(1)
-                                    hour = int(match.group(2))
-                                    minute = int(match.group(3)) if match.group(3) else 0
-                                    ampm = match.group(4)
-                                    
-                                    # Convert to 24-hour format
-                                    if ampm == 'PM' and hour != 12:
-                                        hour += 12
-                                    elif ampm == 'AM' and hour == 12:
-                                        hour = 0
-                                    
-                                    # Create datetime object
-                                    parsed_dt = datetime.strptime(f"{date_part} {hour:02d}:{minute:02d}", "%Y-%m-%d %H:%M")
-                                else:
-                                    # Fallback to just date if time parsing fails
-                                    try:
-                                        parsed_dt = datetime.strptime(clean_datetime.split()[0], "%Y-%m-%d")
-                                    except ValueError:
-                                        # Ultimate fallback
-                                        parsed_dt = datetime.now()
-                                
-                                # Convert to UTC ISO format
-                                occurred_at_iso = parsed_dt.replace(tzinfo=timezone.utc).isoformat()
-                                log(f"🕐 Parsed sighting_datetime '{sighting_datetime}' -> '{occurred_at_iso}'")
-                            except Exception as e:
-                                log(f"⚠️ Failed to parse sighting_datetime '{sighting_datetime}': {e}")
-                                occurred_at_iso = None
-
-                        # Parse report_date to ISO timestamp for date_posted
-                        date_posted_iso = None
-                        if report_date:
-                            try:
-                                # MUFON report_date format: "2025-09-07" 
-                                parsed_report_date = datetime.strptime(report_date, "%Y-%m-%d")
-                                date_posted_iso = parsed_report_date.replace(tzinfo=timezone.utc).isoformat()
-                                log(f"📅 Parsed report_date '{report_date}' -> '{date_posted_iso}'")
-                            except Exception as e:
-                                log(f"⚠️ Failed to parse report_date '{report_date}': {e}")
-                                date_posted_iso = None
 
                         alert_data = {
+                            "id": alert_id,  # Pass the pre-generated ID
                             "device_id": f"mufon_import_{real_case_id}",
                             "title": title,
                             "description": clean_description,  # Use clean description without metadata
@@ -923,7 +930,7 @@ def extract_and_import_mufon(date_str):
                             "geocoding": geo_data,
                             # MUFON-specific fields (matching UI expectations)
                             "mufon_case_number": real_case_id,  # UI expects mufon_case_number
-                            "reported_when": sighting_datetime,  # UI expects reported_when for sighting date
+                            "reported_when": mufon_datetime_display or sighting_datetime,  # UI expects reported_when for sighting date
                             "database_when": report_date,        # UI expects database_when for report date
                             # Legacy fields (keep for compatibility)
                             "mufon_case_id": real_case_id,
@@ -936,6 +943,9 @@ def extract_and_import_mufon(date_str):
                             "external_id": f"mufon_{real_case_id}",
                             "external_url": f"https://mufon.com/case/{real_case_id}",
                             "has_media": len(media_files) > 0,
+                            # SEO slug data
+                            "seo_slug_en": english_slug,  # Store generated slug for SEO
+                            "shape": classification['type'] if classification['confidence'] >= 0.3 else None,
                             # Hide widgets for MUFON alerts
                             "hide_witness_widget": True,
                             "hide_location_widget": True

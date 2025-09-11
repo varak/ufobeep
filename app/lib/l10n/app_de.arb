@@ -221,6 +221,7 @@
   "alertsFilterHelp": "Versuchen Sie, Ihre Filter anzupassen, um mehr Ergebnisse zu sehen",
   "verified": "Verifiziert",
   "beepOnly": "nur noch",
+  "reportOnly": "nur",
   "videoOnly": "nur",
   "imageOnly": "nur",
   "timeJustNow": "Jetzt",
@@ -473,5 +474,9 @@
   },
   "unknown": "unbekannt",
   "report": "bericht",
-  "mufon": "melonen"
+  "mufon": "melonen",
+  "recentUfoBeepsTitle": "Neuer UFO Schafe",
+  "recentUfoBeepsSubtitle": "Live UFOBeep Community Berichte & MUFON Datenbank Sehenswürdigkeiten",
+  "recentUfoBeepsDescription": "Dieser Feed kombiniert Echtzeit-UFOBeep \"beeps\" von unseren mobilen App-Nutzern mit historischen Berichten aus der MUFON-Datenbank.",
+  "loadingBeeps": "Die letzten..."
 }

@@ -221,6 +221,7 @@
   "alertsFilterHelp": "Yritä säätää suodattimia nähdäksesi lisää tuloksia",
   "verified": "Varmennettu",
   "beepOnly": "vain piip",
+  "reportOnly": "raportoi vain",
   "videoOnly": "ainoastaan video",
   "imageOnly": "vain kuva",
   "timeJustNow": "Juuri nyt",
@@ -473,5 +474,9 @@
   },
   "unknown": "tuntematon",
   "report": "raportti",
-  "mufon": "mufoni"
+  "mufon": "mufoni",
+  "recentUfoBeepsTitle": "Uusin UFO Piipit",
+  "recentUfoBeepsSubtitle": "Live UFOBeepin yhteisön raportit ja MUFON-tietokannan havainnot",
+  "recentUfoBeepsDescription": "Tässä syötteessä yhdistyvät reaaliaikaiset UFOBeep \"piipit\" mobiilisovelluskäyttäjiltämme ja historiaraportit MUFON-tietokannasta.",
+  "loadingBeeps": "Ladataan viimeaikaisia äänimerkkejä..."
 }

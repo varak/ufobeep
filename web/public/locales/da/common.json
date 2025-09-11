@@ -100,6 +100,7 @@
   "keywords": "UFO, UAP, OVNI, udlændinge, observationer, skywatch, advarsler, radar, kompas",
   "noAlertsFound": "Ingen matchende indberetninger",
   "verified": "Verificeret",
+  "reportOnly": "kun rapport",
   "videoOnly": "kun video",
   "imageOnly": "kun billede",
   "timeJustNow": "Lige nu",
@@ -202,5 +203,8 @@
   "notificationDistance": "{afstand} væk",
   "unknown": "ukendt",
   "report": "rapport",
-  "mufon": "mofon"
+  "mufon": "mofon",
+  "recentUfoBeepsTitle": "Nylig UFO Bipper",
+  "recentUfoBeepsDescription": "Dette feed kombinerer real- time UFOBeep \"bipper\" fra vores mobile app-brugere med historiske rapporter fra MUFON databasen.",
+  "loadingBeeps": "Indlæser nylige bip..."
 }

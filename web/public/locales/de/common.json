@@ -100,6 +100,7 @@
   "keywords": "UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass",
   "noAlertsFound": "Keine passenden Alarme",
   "verified": "Verifiziert",
+  "reportOnly": "nur",
   "videoOnly": "nur",
   "imageOnly": "nur",
   "timeJustNow": "Jetzt",
@@ -202,5 +203,8 @@
   "notificationDistance": "{entfernung} weg",
   "unknown": "unbekannt",
   "report": "bericht",
-  "mufon": "melonen"
+  "mufon": "melonen",
+  "recentUfoBeepsTitle": "Neuer UFO Schafe",
+  "recentUfoBeepsDescription": "Dieser Feed kombiniert Echtzeit-UFOBeep \"beeps\" von unseren mobilen App-Nutzern mit historischen Berichten aus der MUFON-Datenbank.",
+  "loadingBeeps": "Die letzten..."
 }

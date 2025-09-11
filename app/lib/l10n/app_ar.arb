@@ -221,6 +221,7 @@
   "alertsFilterHelp": "حاول تعديل مرشحيك لرؤية المزيد من النتائج",
   "verified": "مصدق عليه",
   "beepOnly": "البيرة فقط",
+  "reportOnly": "التقرير فقط",
   "videoOnly": "الفيديو فقط",
   "imageOnly": "الصورة فقط",
   "timeJustNow": "الآن",
@@ -473,5 +474,9 @@
   },
   "unknown": "مجهول",
   "report": "التقرير",
-  "mufon": "mufon"
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "Recent UFO Beeps",
+  "recentUfoBeepsSubtitle": "Live UFOBeep community reports ' MUFON database sightings",
+  "recentUfoBeepsDescription": "هذا التغذّي يُجمّعُ في الوقت الحقيقي يُدعى (يوفو بيب) من مستعملي تطبيقاتنا المتنقلة مع تقارير تاريخية من قاعدة بيانات (مافون).",
+  "loadingBeeps": "وضع البيب الأخيرة..."
 }

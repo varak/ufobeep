@@ -221,6 +221,7 @@
   "alertsFilterHelp": "Intente ajustar sus filtros para ver más resultados",
   "verified": "Verificado",
   "beepOnly": "# beep only #",
+  "reportOnly": "informe únicamente",
   "videoOnly": "video sólo",
   "imageOnly": "imagen sólo",
   "timeJustNow": "Ahora",
@@ -473,5 +474,9 @@
   },
   "unknown": "desconocida",
   "report": "informe",
-  "mufon": "mufon"
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "OVNI reciente Beeps",
+  "recentUfoBeepsSubtitle": "Live UFOBeep Community reports & MUFON database sightings",
+  "recentUfoBeepsDescription": "Este feed combina \"beeps\" en tiempo real de UFOBeep de nuestros usuarios de aplicaciones móviles con informes históricos de la base de datos MUFON.",
+  "loadingBeeps": "Cargando recientes pitidos..."
 }

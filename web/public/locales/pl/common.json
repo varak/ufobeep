@@ -100,6 +100,7 @@
   "keywords": "UFO, UAP, OVNI, kosmici, obserwacje, zegarki, alarmy, radar, kompas",
   "noAlertsFound": "Brak odpowiadających wpisów",
   "verified": "Zweryfikowane",
+  "reportOnly": "tylko raport",
   "videoOnly": "tylko wideo",
   "imageOnly": "tylko obraz",
   "timeJustNow": "Przed chwilą",
@@ -202,5 +203,8 @@
   "notificationDistance": "{odległość} daleko",
   "unknown": "nieznany",
   "report": "raport",
-  "mufon": "mufon"
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "Najnowsze UFO Dźwięki",
+  "recentUfoBeepsDescription": "Ten kanał łączy w sobie w czasie rzeczywistym \"beepy\" UFOBeep od naszych użytkowników aplikacji mobilnych z raportami historycznymi z bazy danych MUFON.",
+  "loadingBeeps": "Wczytywanie ostatnich sygnałów..."
 }

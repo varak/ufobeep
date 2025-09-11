@@ -100,6 +100,7 @@
   "keywords": "OVNI,UAP,OVNI,aliens,estrelas,sightings,skywatch,alerts,radar,compass",
   "noAlertsFound": "Sem alertas correspondentes",
   "verified": "Verificado",
+  "reportOnly": "apenas relatório",
   "videoOnly": "somente vídeo",
   "imageOnly": "somente imagem",
   "timeJustNow": "Agora mesmo",
@@ -202,5 +203,8 @@
   "notificationDistance": "{distância}",
   "unknown": "desconhecido",
   "report": "relatório",
-  "mufon": "mufon"
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "OVNI recente Abelhas",
+  "recentUfoBeepsDescription": "Este feed combina \"beeps\" UFOBeep em tempo real de nossos usuários de aplicativos móveis com relatórios históricos do banco de dados MUFON.",
+  "loadingBeeps": "Carregando beeps recentes..."
 }

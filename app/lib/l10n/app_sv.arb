@@ -221,6 +221,7 @@
   "alertsFilterHelp": "Försök att justera dina filter för att se fler resultat",
   "verified": "Verifierad",
   "beepOnly": "beep endast",
+  "reportOnly": "rapport endast",
   "videoOnly": "video endast",
   "imageOnly": "bild endast",
   "timeJustNow": "Just nu",
@@ -473,5 +474,9 @@
   },
   "unknown": "okänd",
   "report": "rapportrapport",
-  "mufon": "mufon"
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "Nyligen UFO Beeps",
+  "recentUfoBeepsSubtitle": "Live UFOBeep samhällsrapporter & MUFON databasobservationer",
+  "recentUfoBeepsDescription": "Detta foder kombinerar realtids UFOBeep \"pips\" från våra mobilappanvändare med historiska rapporter från MUFON-databasen.",
+  "loadingBeeps": "Loading new beeps..."
 }

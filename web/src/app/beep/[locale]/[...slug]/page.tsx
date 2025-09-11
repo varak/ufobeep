@@ -182,6 +182,11 @@ export default function AlertDetailPage() {
     fetchAlert()
   }, [params])
 
+  // Scroll to top when page loads
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [])
+
   // Client-side redirect to canonical slug URL once we have the alert  
   useEffect(() => {
     if (!alert) return

@@ -100,6 +100,7 @@
   "keywords": "UFO、UAP、OVNI、aliens、视觉、天空表、警报、雷达、辅助设备",
   "noAlertsFound": "没有匹配的提示",
   "verified": "已验证",
+  "reportOnly": "只报告",
   "videoOnly": "只有视频",
   "imageOnly": "仅图像",
   "timeJustNow": "刚才",
@@ -202,5 +203,8 @@
   "notificationDistance": "远离",
   "unknown": "不详",
   "report": "报告",
-  "mufon": "木冯"
+  "mufon": "木冯",
+  "recentUfoBeepsTitle": "近期的UFO 黄蜂",
+  "recentUfoBeepsDescription": "此饲料结合了我们移动应用用户的实时UFOBEP\"哔哩哔哩\"与MUFON数据库的历史报告.",
+  "loadingBeeps": "正在装入最近的蜂鸣..."
 }

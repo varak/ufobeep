@@ -193,3 +193,21 @@ ALWAYS keep docs updated when making changes:
 - If file is locked/modified, wait and try again - don't skip!
 - do not delete shit from the database without using a tool to make sure you dont orphan data
 - NEVER USE GIT STASH - it will lose changes! Always commit production changes first, then pull.
+
+# Translation System - CRITICAL RULES
+**NEVER HARDCODE TRANSLATIONS IN ANY FILE**
+- ONLY use ARB files as single source of truth for all translations
+- NEVER edit JSON translation files directly - they are auto-generated
+- NEVER add hardcoded strings to components - always use ARB keys
+- When translations are missing/broken: ADD to English ARB, then regenerate
+
+**Translation Workflow:**
+1. Add/fix keys in `/app/lib/l10n/app_en.arb` (English master)
+2. Run `node scripts/generate-all-translations.js` to generate all languages
+3. Run `npm run sync-translations` in web/ to sync to website
+4. Never skip step 2 - placeholder translations like "# key #" need proper generation
+
+**Common Issues:**
+- Spanish showing "# beep only #" = placeholder needs translation generation
+- Missing shape translations = missing ARB keys, need generation
+- Hardcoded fallbacks = DELETE and use ARB keys only

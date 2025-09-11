@@ -100,6 +100,7 @@
   "keywords": "UFO, UAP, OVNI, aliens, παρατηρήσεις, Skywatch, alerts, Radar, compass",
   "noAlertsFound": "Καμία αντίστοιχη καταχώριση",
   "verified": "Επαληθευμένο",
+  "reportOnly": "μόνο αναφορά",
   "videoOnly": "μόνο βίντεο",
   "imageOnly": "μόνο εικόνα",
   "timeJustNow": "Μόλις τώρα",
@@ -202,5 +203,8 @@
   "notificationDistance": "{απόσταση} μακριά",
   "unknown": "άγνωστο",
   "report": "έκθεση",
-  "mufon": "μουφόν"
+  "mufon": "μουφόν",
+  "recentUfoBeepsTitle": "Πρόσφατο UFO Μπιζέλια",
+  "recentUfoBeepsDescription": "Αυτή η τροφοδοσία συνδυάζει σε πραγματικό χρόνο UFOBeep-beeps\" από τους χρήστες εφαρμογών κινητής τηλεφωνίας μας με ιστορικές αναφορές από τη βάση δεδομένων MUFON.",
+  "loadingBeeps": "Φόρτωση πρόσφατων μπιπ..."
 }

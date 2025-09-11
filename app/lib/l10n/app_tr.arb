@@ -221,6 +221,7 @@
   "alertsFilterHelp": "Daha fazla sonuç görmek için filtrelerinizi ayarlamaya çalışın",
   "verified": "Onaylandı",
   "beepOnly": "beep sadece",
+  "reportOnly": "sadece rapor raporu sadece rapor",
   "videoOnly": "video sadece video",
   "imageOnly": "sadece görüntü sadece görüntü",
   "timeJustNow": "Sadece şimdi",
@@ -473,5 +474,9 @@
   },
   "unknown": "bilinmeyen",
   "report": "rapor",
-  "mufon": "mufon"
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "Recent UFO Arılar",
+  "recentUfoBeepsSubtitle": "Canlı UFOBeep topluluğu raporları ve MUFON veritabanı görüşleri",
+  "recentUfoBeepsDescription": "Bu besleme, MUFON veritabanından tarihi raporlarla mobil uygulama kullanıcılarımızdan gerçek zamanlı UFOBeep \"beeps\" birleştirir.",
+  "loadingBeeps": "Yükleniyor son beeps..."
 }

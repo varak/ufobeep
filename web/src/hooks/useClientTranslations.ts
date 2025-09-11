@@ -73,15 +73,8 @@ export function useClientTranslations(namespace: string, locale: string = 'en') 
         if (value && typeof value === 'object' && k in value) {
           value = value[k]
         } else {
-          // Return appropriate fallback based on key
-          const fallbacks: Record<string, string> = {
-            'title': 'Recent UFO Beeps',
-            'subtitle': 'Live UFOBeep community reports & MUFON database sightings', 
-            'description': 'This feed combines real-time UFOBeep "beeps" from our mobile app users with historical reports from the MUFON database.',
-            'loadingBeeps': 'Loading recent beeps...',
-            'backToHome': '← Back to Home'
-          }
-          return fallbacks[key] || key
+          // Return key if not found - translations should come from ARB files only
+          return key
         }
       }
       
@@ -99,15 +92,8 @@ export function useClientTranslations(namespace: string, locale: string = 'en') 
       if (value && typeof value === 'object' && k in value) {
         value = value[k]
       } else {
-        // Return appropriate fallback based on key
-        const fallbacks: Record<string, string> = {
-          'title': 'Recent UFO Beeps',
-          'subtitle': 'Live UFOBeep community reports & MUFON database sightings', 
-          'description': 'This feed combines real-time UFOBeep "beeps" from our mobile app users with historical reports from the MUFON database.',
-          'loadingBeeps': 'Loading recent beeps...',
-          'backToHome': '← Back to Home'
-        }
-        return fallbacks[key] || key
+        // Return key if not found - translations should come from ARB files only
+        return key
       }
     }
     

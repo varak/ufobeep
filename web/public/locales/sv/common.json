@@ -100,6 +100,7 @@
   "keywords": "UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass",
   "noAlertsFound": "Inga matchande varningar",
   "verified": "Verifierad",
+  "reportOnly": "rapport endast",
   "videoOnly": "video endast",
   "imageOnly": "bild endast",
   "timeJustNow": "Just nu",
@@ -202,5 +203,8 @@
   "notificationDistance": "avstånd bort",
   "unknown": "okänd",
   "report": "rapportrapport",
-  "mufon": "mufon"
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "Nyligen UFO Beeps",
+  "recentUfoBeepsDescription": "Detta foder kombinerar realtids UFOBeep \"pips\" från våra mobilappanvändare med historiska rapporter från MUFON-databasen.",
+  "loadingBeeps": "Loading new beeps..."
 }

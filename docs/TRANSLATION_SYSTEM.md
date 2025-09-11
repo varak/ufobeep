@@ -1,11 +1,19 @@
 # UFOBeep Translation System
 
-**Last Updated**: September 10, 2025  
+**Last Updated**: September 11, 2025  
 **Status**: ✅ Production Ready with 22 Language Support
+
+## Recent Critical Updates (Sept 11, 2025)
+
+### 🔥 Major Fixes Implemented
+1. **Fixed 404 Errors**: Beep clicks now use existing `short_url` instead of generating conflicting IDs
+2. **Fixed Language Switcher**: Corrected URL pattern from `/[locale]/beep` to `/beep/[locale]`  
+3. **ARB as Single Source**: Mobile app ARB files now serve as single source of truth for all translations
+4. **Naming Consistency**: Renamed `beeps.json` → `beep.json` across all languages for consistency
 
 ## Overview
 
-UFOBeep implements a comprehensive translation system supporting 22 languages across both web and mobile platforms, with **language-specific SEO-friendly URLs** for optimal international reach.
+UFOBeep implements a comprehensive translation system supporting 22 languages across both web and mobile platforms, with **language-specific SEO-friendly URLs** and **ARB files as the single source of truth**.
 
 ## 🌍 Supported Languages
 
@@ -36,262 +44,254 @@ UFOBeep implements a comprehensive translation system supporting 22 languages ac
 
 ## 🏗️ System Architecture
 
-### Translation Sources
+### Single Source of Truth: ARB Files
 ```
-📂 Translation Sources
-├── 🌐 Web Frontend
-│   ├── web/public/locales/en/*.json (Master)
-│   ├── web/public/locales/{lang}/*.json (Generated)
-│   └── Translation files:
-│       ├── beeps.json (Main beep interface)
-│       ├── beep-detail.json (Alert details)
-│       ├── common.json (Shared terms)
-│       ├── navigation.json (Menu/nav)
-│       └── meta.json (SEO metadata)
-└── 📱 Mobile App
-    ├── app/lib/l10n/app_en.arb (Master)
-    ├── app/lib/l10n/app_{lang}.arb (Generated)
-    └── app/lib/l10n/app_localizations*.dart (Flutter)
+📂 Translation Architecture (NEW)
+├── 🎯 Single Source of Truth
+│   └── app/lib/l10n/app_en.arb (Master English ARB)
+├── 📱 Mobile App
+│   ├── app/lib/l10n/app_{lang}.arb (Generated from master)
+│   └── app/lib/l10n/app_localizations*.dart (Flutter)
+└── 🌐 Web Frontend  
+    ├── web/public/locales/{lang}/beep.json (Generated from ARB)
+    ├── web/public/locales/{lang}/common.json
+    ├── web/public/locales/{lang}/alerts.json
+    └── web/src/translations/static-translations.json (Build-time)
 ```
 
-### URL Slug Translation
-Language-specific classification terms are automatically translated for SEO-friendly URLs:
+### Key Changes from Previous Architecture
+- **ARB Files are Master**: All translations now derive from mobile app ARB files
+- **Unified Translation Pipeline**: Single generation process for both web and mobile
+- **Consistent Naming**: `beep.json` (not `beeps.json`) for namespace consistency
+- **Static Generation**: Web translations compiled at build-time for Edge Runtime compatibility
 
-```json
-{
-  "slugs": {
-    "ufo": "ovni",           // Spanish
-    "sighting": "avistamiento",
-    "sphere": "esfera",
-    "triangle": "triangulo",
-    "disk": "disco",
-    "light": "luz",
-    "fireball": "bola-fuego"
-    // ... 20+ classification terms
-  }
+## 🔧 How It Works
+
+### 1. Translation Generation Pipeline
+```javascript
+// New unified generation process
+1. Read app/lib/l10n/app_en.arb (master source)
+2. Read web/public/locales/en/*.json (web-specific terms)
+3. Merge translations with ARB as priority
+4. Generate translations via LibreTranslate
+5. Output to both ARB and JSON formats
+6. Compile static translations for Edge Runtime
+```
+
+### 2. URL Slug Generation with `short_url` Priority
+```javascript
+// Fixed slug generation logic
+function getAlertSlug(alert, locale, translations, shortId) {
+  // Priority order:
+  // 1. Provided shortId parameter
+  // 2. alert.short_url from database
+  // 3. Generated from alert.id
+  
+  const id = shortId || alert.short_url || generateShortHash(alert.id)
+  
+  // Generate language-specific slug
+  const ufoTerm = translations.slugs.ufo // "ovni" for Spanish
+  const sightingTerm = translations.slugs.sighting // "avistamiento" for Spanish
+  
+  return `${ufoTerm}-${sightingTerm}-${location}-${date}-${id}`
 }
+```
+
+### 3. Component Translation Loading
+```javascript
+// Fixed namespace: 'beep' not 'beeps'
+const { t } = useClientTranslations('beep', locale)
+
+// Fetches from: /locales/es/beep.json
+// Not from: /locales/es/beeps.json (old, incorrect)
+```
+
+## 📝 File Structure Updates
+
+### Naming Convention (IMPORTANT)
+- **URL Path**: `/beep/[locale]` (singular)
+- **Translation Namespace**: `'beep'` (singular)  
+- **Translation File**: `beep.json` (singular)
+- ❌ **NOT**: `beeps.json` or `'beeps'` namespace
+
+### Web Translation Files
+```
+web/public/locales/{lang}/
+├── beep.json         # Main beep interface (was beeps.json)
+├── alerts.json       # Alert-related translations
+├── common.json       # Common UI terms
+├── navigation.json   # Navigation elements
+├── meta.json        # SEO metadata
+├── errors.json      # Error messages
+└── forms.json       # Form fields
+```
+
+### Mobile ARB Files (Master Source)
+```
+app/lib/l10n/
+├── app_en.arb       # Master English source
+├── app_es.arb       # Spanish (generated)
+├── app_de.arb       # German (generated)
+└── ... (22 total languages)
 ```
 
 ## 🚀 Quick Start
 
 ### Generate All Translations
 ```bash
-# Run the master translation generator
-./translate.sh
-
-# Or manually:
+# Use the unified generation script
+cd /home/mike/D/ufobeep
 node scripts/generate-all-translations.js
-cd app && flutter gen-l10n
+
+# This will:
+# 1. Read ARB files as source
+# 2. Generate web JSON files
+# 3. Create static translation bundle
+# 4. Update Flutter localizations
 ```
 
-### Setup LibreTranslate (Production)
+### Deploy Changes
 ```bash
-# On production server
-./scripts/setup-libretranslate.sh
-
-# Set environment variables
-export LIBRETRANSLATE_URL=http://localhost:5000
-export LIBRETRANSLATE_API_KEY=your_api_key
-```
-
-## 🔧 How It Works
-
-### 1. Master Source Management
-- **English is the source of truth** - all translations derive from English files
-- No manual translation files - everything is generated consistently
-- Single command regenerates all 22 languages
-
-### 2. URL Generation Process
-```javascript
-// Input: English sighting data
-{
-  id: "293609d1...",
-  title: "Sphere Sighting", 
-  location: "Phoenix, Arizona"
-}
-
-// Output: Language-specific URLs
-en: /beep/en/sphere-sighting-phoenix-2025-09-10-ehf3
-es: /beep/es/esfera-avistamiento-phoenix-2025-09-10-ehf3
-de: /beep/de/sphäre-sichtung-phoenix-2025-09-10-ehf3
-```
-
-### 3. Translation Pipeline
-1. **Load English sources** (web JSON + app ARB files)
-2. **Connect to LibreTranslate** for automatic translation  
-3. **Generate web locale files** with optimized URL slugs
-4. **Generate Flutter ARB files** for mobile app
-5. **Create config files** for both platforms
-6. **Generate Flutter localizations** with `flutter gen-l10n`
-
-## 📝 File Structure
-
-### Web Locales (`web/public/locales/{lang}/`)
-```json
-// beeps.json - Main interface
-{
-  "title": "Recent UFO Beeps",
-  "loadingBeeps": "Loading recent beeps...",
-  "slugs": {
-    "ufo": "ufo",
-    "sighting": "sighting",
-    "sphere": "sphere",
-    "triangle": "triangle"
-  }
-}
-
-// beep-detail.json - Alert details  
-{
-  "witnesses": "Witnesses",
-  "confirmations": "Confirmations",
-  "mufon": {
-    "classifications": {
-      "sphere": "Sphere",
-      "triangle": "Triangle"
-    }
-  }
-}
-```
-
-### Mobile App Locales (`app/lib/l10n/`)
-```json
-// app_en.arb - Flutter ARB format
-{
-  "@@locale": "en",
-  "alertsTitle": "Nearby Alerts",
-  "viewAlert": "View alert",
-  "reportedBy": "Reported by {username}",
-  "@reportedBy": {
-    "placeholders": {
-      "username": {"type": "String"}
-    }
-  }
-}
-```
-
-## 🎯 SEO Benefits
-
-### Language-Specific URLs
-- **Better Search Rankings**: `/beep/es/ovni-esfera-madrid-ehf3` ranks better in Spanish searches
-- **User Experience**: URLs make sense to native speakers
-- **Social Sharing**: More appealing when shared on social media
-
-### Classification Coverage
-Translated terms for all MUFON/NUFORC classifications:
-- **Shapes**: sphere → esfera, triangle → triangulo, disk → disco
-- **Phenomena**: fireball → bola-fuego, flash → destello
-- **Descriptors**: formation → formacion, changing → cambiante
-
-## ⚡ Performance
-
-### Caching Strategy
-- **Translation Cache**: Avoids re-translating identical terms
-- **Rate Limiting**: Prevents overwhelming LibreTranslate
-- **Batch Processing**: Efficient multi-language generation
-
-### Production Deployment
-```bash
-# Build and deploy all languages
-./translate.sh
-cd web && npm run build
+# Deploy web with new translations
 ./deploy.sh web
 
-# Mobile app includes all languages automatically
-flutter build apk --release
+# Deploy mobile app
+cd app && flutter build apk
+./deploy.sh apk
 ```
 
-## 🛠️ Development
+## 🐛 Recent Fixes
 
-### Adding New Translation Keys
+### 1. 404 Error Fix (AlertCard Component)
+```javascript
+// BEFORE (broken):
+const slug = getAlertSlug({
+  id: alert.id,
+  // ... other fields
+}, locale, translations)
+// Generated new ID each time, causing mismatches
 
-1. **Add to English source files**:
-```json
-// web/public/locales/en/beeps.json
-{
-  "newFeature": "New Feature Title",
-  "slugs": {
-    "newClassification": "new-classification"  
-  }
-}
+// AFTER (fixed):
+const slug = getAlertSlug({
+  id: alert.id,
+  short_url: alert.short_url, // Added this field
+  // ... other fields  
+}, locale, translations, alert.short_url) // Pass short_url as parameter
+// Uses existing short_url, preventing 404s
 ```
 
-2. **Regenerate all languages**:
-```bash
-./translate.sh
+### 2. Language Switcher URL Pattern Fix
+```javascript
+// BEFORE (broken):
+href={lang.code === 'en' ? '/beep' : `/${lang.code}/beep`}
+// Generated: /es/beep (incorrect)
+
+// AFTER (fixed):  
+href={`/beep/${lang.code}`}
+// Generates: /beep/es (correct)
 ```
 
-3. **Deploy**:
-```bash
-git add . && git commit -m "Add new translation keys"
-./deploy.sh
-```
+### 3. Translation Namespace Fix
+```javascript
+// BEFORE (inconsistent):
+const { t } = useClientTranslations('beeps', locale)
+// Looking for beeps.json
 
-### Testing Translations
-```bash
-# Test specific language
-node scripts/generate-all-translations.js es
-
-# Test URL generation  
-curl https://ufobeep.com/beep/es/ovni-esfera-madrid-ehf3
-
-# Test mobile app
-cd app && flutter test
+// AFTER (consistent):
+const { t } = useClientTranslations('beep', locale)  
+// Looking for beep.json
 ```
 
 ## 🔍 Troubleshooting
 
-### LibreTranslate Issues
+### Common Issues and Solutions
+
+#### Translations Not Loading
 ```bash
-# Check service status
-curl http://localhost:5000/languages
+# Check if beep.json exists (not beeps.json)
+ls web/public/locales/es/beep.json
 
-# Restart service
-sudo systemctl restart libretranslate
-
-# Check logs
-sudo journalctl -u libretranslate -f
+# If missing, regenerate
+node scripts/generate-all-translations.js
 ```
 
-### Missing Translations
+#### 404 Errors on Beep Links
 ```bash
-# Force regenerate all files
-rm -rf web/public/locales/*/
-rm -rf app/lib/l10n/app_*.arb
-./translate.sh
+# Verify short_url is being passed
+grep -r "getAlertSlug" web/src/components/
+
+# Check SluggableAlertLike interface includes short_url
+grep "SluggableAlertLike" web/src/utils/slug.ts
 ```
 
-### URL Generation Problems
+#### Language Switcher Wrong URLs
 ```bash
-# Check slug generation
-node -e "console.log(require('./web/src/utils/slug.js').getAlertSlug(...))"
+# Check SimpleLangLinks component
+grep "buildLangUrl" web/src/components/SimpleLangLinks.tsx
 
-# Test middleware routing
-curl -I https://ufobeep.com/ehf3/es
+# Verify it uses /beep/[locale] pattern
+```
+
+### Testing Translations
+```bash
+# Test Spanish translation loading
+curl https://ufobeep.com/beep/es
+# Should show "Beeps UFO Recientes" as title
+
+# Test German  
+curl https://ufobeep.com/beep/de
+# Should show German translations
+
+# Check translation file exists
+curl https://ufobeep.com/locales/es/beep.json
 ```
 
 ## 📊 Current Status
 
-### Implementation Status
-- ✅ **22 Language Support**: All major languages covered
-- ✅ **SEO-Friendly URLs**: Language-specific classification terms
-- ✅ **Consistent Generation**: Single source, all platforms
-- ✅ **Production Ready**: LibreTranslate integration working
-- ✅ **Mobile Integration**: Flutter i18n fully implemented
+### ✅ Completed (Sept 11, 2025)
+- **Single Source ARB System**: Mobile ARB files drive all translations
+- **404 Fix**: AlertCard uses existing short_url consistently
+- **URL Pattern Fix**: Language switcher uses `/beep/[locale]` correctly
+- **Namespace Consistency**: All files/code use singular 'beep'
+- **22 Language Support**: All languages fully translated
+- **Edge Runtime Compatible**: Static translations for Vercel Edge
 
-### Analytics Impact
-- 🎯 **International Reach**: URLs discoverable in all languages
-- 📈 **SEO Performance**: Localized content improves rankings
-- 👥 **User Engagement**: Native language experience increases usage
+### 🔄 In Progress
+- **Documentation Updates**: Updating all docs to reflect new architecture
+- **Testing**: Verifying all language pages load translations correctly
 
 ## 🚀 Future Enhancements
 
-### Planned Features
-- **Real-time Translation**: Translate user comments/descriptions
-- **Regional Customization**: Localized date/time formats
-- **Voice Recognition**: Multi-language voice beep reports
-- **Cultural Adaptations**: Region-specific UFO terminology
+### Immediate Priorities
+- [ ] Add translation caching to reduce API calls
+- [ ] Implement translation fallback chain (requested → English → key)
+- [ ] Add translation completeness monitoring
+- [ ] Create translation update webhook for real-time updates
 
-### Technical Improvements
-- **Translation Quality**: Human review workflow
-- **Performance**: CDN caching for locale files
-- **Automation**: CI/CD integration for continuous translation updates
+### Long-term Goals
+- [ ] AI-powered context-aware translations
+- [ ] User-submitted translation corrections
+- [ ] Regional dialect support (Mexican Spanish vs Spain Spanish)
+- [ ] Voice interface multi-language support
+
+## 📝 Developer Notes
+
+### Adding New Translation Keys
+1. **Always add to English ARB first**: `app/lib/l10n/app_en.arb`
+2. **Run generation script**: `node scripts/generate-all-translations.js`
+3. **Test locally**: Check `/beep/es` shows new translations
+4. **Deploy**: Use `./deploy.sh web` for web changes
+
+### Critical Files to Remember
+- `web/src/utils/slug.ts` - Contains slug generation logic
+- `web/src/components/AlertCard.tsx` - Uses translations for UI
+- `web/src/hooks/useClientTranslations.ts` - Loads translation files
+- `scripts/generate-all-translations.js` - Master generation script
+- `app/lib/l10n/app_en.arb` - Single source of truth
+
+### Never Do This
+- ❌ Don't create `beeps.json` files (use `beep.json`)
+- ❌ Don't hardcode translations in components
+- ❌ Don't use fallbacks that hide missing translations
+- ❌ Don't edit non-English files directly (always generate)
+- ❌ Don't use different slug generation methods in different places

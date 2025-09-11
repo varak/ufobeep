@@ -221,6 +221,7 @@
   "alertsFilterHelp": "נסה להתאים את המסננים שלך כדי לראות תוצאות נוספות",
   "verified": "מאומת",
   "beepOnly": "להיות רק",
+  "reportOnly": "דיווח רק",
   "videoOnly": "וידאו רק",
   "imageOnly": "תמונה רק",
   "timeJustNow": "רק עכשיו",
@@ -473,5 +474,9 @@
   },
   "unknown": "לא ידוע",
   "report": "דיווח",
-  "mufon": "עבריין"
+  "mufon": "עבריין",
+  "recentUfoBeepsTitle": "העב\"ם האחרון הדבורים",
+  "recentUfoBeepsSubtitle": "Live UFOBeep Community Reports & MUFON",
+  "recentUfoBeepsDescription": "הזנה זו משלבת בזמן אמת עב\"מBeep \"בייפים\" ממשתמשי האפליקציה הניידים שלנו עם דוחות היסטוריים ממסד הנתונים MUFON.",
+  "loadingBeeps": "עקבו אחרי beeps..."
 }

@@ -221,6 +221,7 @@
   "alertsFilterHelp": "Probeer uw filters aan te passen om meer resultaten te zien",
   "verified": "Geverifieerd",
   "beepOnly": "alleen piepen",
+  "reportOnly": "alleen rapporteren",
   "videoOnly": "alleen video",
   "imageOnly": "alleen afbeelding",
   "timeJustNow": "Net",
@@ -473,5 +474,9 @@
   },
   "unknown": "onbekend",
   "report": "rapport",
-  "mufon": "mufon"
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "Recente UFO Pieps",
+  "recentUfoBeepsSubtitle": "Live UFObeep community reports & MUFON database waarnemingen",
+  "recentUfoBeepsDescription": "Deze feed combineert real-time UFObeep \"pieps\" van onze mobiele app gebruikers met historische rapporten uit de MUFON database.",
+  "loadingBeeps": "Laden van recente piepers..."
 }

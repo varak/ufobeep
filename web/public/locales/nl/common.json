@@ -100,6 +100,7 @@
   "keywords": "UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass",
   "noAlertsFound": "Geen overeenkomstige waarschuwingen",
   "verified": "Geverifieerd",
+  "reportOnly": "alleen rapporteren",
   "videoOnly": "alleen video",
   "imageOnly": "alleen afbeelding",
   "timeJustNow": "Net",
@@ -202,5 +203,8 @@
   "notificationDistance": "{afstand} afstand",
   "unknown": "onbekend",
   "report": "rapport",
-  "mufon": "mufon"
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "Recente UFO Pieps",
+  "recentUfoBeepsDescription": "Deze feed combineert real-time UFObeep \"pieps\" van onze mobiele app gebruikers met historische rapporten uit de MUFON database.",
+  "loadingBeeps": "Laden van recente piepers..."
 }

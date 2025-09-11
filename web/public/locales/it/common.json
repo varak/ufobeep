@@ -100,6 +100,7 @@
   "keywords": "UFO, UAP, OVNI,aliens,sightings,skywatch,alerts,radar,compass",
   "noAlertsFound": "Nessun avviso di corrispondenza",
   "verified": "Verificato",
+  "reportOnly": "rapporto solo",
   "videoOnly": "video solo",
   "imageOnly": "immagine solo",
   "timeJustNow": "Adesso",
@@ -202,5 +203,8 @@
   "notificationDistance": "traduzione:",
   "unknown": "sconosciuto",
   "report": "relazione",
-  "mufon": "oh"
+  "mufon": "oh",
+  "recentUfoBeepsTitle": "Recenti UFO Beeps",
+  "recentUfoBeepsDescription": "Questo feed combina in tempo reale UFOBeep \"beeps\" dai nostri utenti di app mobile con rapporti storici dal database MUFON.",
+  "loadingBeeps": "Caricamento recenti beeps..."
 }

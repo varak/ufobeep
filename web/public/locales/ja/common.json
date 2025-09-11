@@ -100,6 +100,7 @@
   "keywords": "UFO、UAP、OVNI、aliens、視線、skywatch、alerts、レーダー、compass",
   "noAlertsFound": "マッチングアラートなし",
   "verified": "プロフィール",
+  "reportOnly": "レポートのみ",
   "videoOnly": "ビデオのみ",
   "imageOnly": "画像のみ",
   "timeJustNow": "今すぐ登録",
@@ -202,5 +203,8 @@
   "notificationDistance": "{distance} から",
   "unknown": "インフォメーション",
   "report": "レポート",
-  "mufon": "ミュフォン"
+  "mufon": "ミュフォン",
+  "recentUfoBeepsTitle": "最近のUFO ベップス",
+  "recentUfoBeepsDescription": "このフィードは、MUFONデータベースからの履歴レポートを使用して、モバイルアプリユーザーからリアルタイムのUFOBeep \"beeps\"を組み合わせています.",
+  "loadingBeeps": "最近のビープ..."
 }

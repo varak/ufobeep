@@ -278,7 +278,11 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                   const hasMedia = alert.media_files?.length > 0
                   const hasDescription = getPreviewDescription()?.trim()
                   
-                  if (!hasMedia && !hasDescription) return <span className="text-xs text-text-tertiary">beep only</span>
+                  if (!hasMedia && !hasDescription) {
+                    const staticTranslations = t('slugs', { returnObjects: true }) || {}
+                    const beepOnlyText = staticTranslations.beepOnly || 'beep only'
+                    return <span className="text-xs text-text-tertiary">{beepOnlyText}</span>
+                  }
                   if (hasMedia && !hasDescription) {
                     const isVideo = alert.media_files[0].type === 'video'
                     return <span className="text-xs text-text-tertiary">{isVideo ? 'video only' : 'image only'}</span>
@@ -370,11 +374,33 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
             {/* Title and metadata */}
             <div className="flex-1 min-w-0">
               <h3 className="text-text-primary text-sm font-semibold line-clamp-2 leading-tight mb-1">
-                {alert.title || 'UFO Sighting'}
-                {/* Add witness report only indicator to title for MUFON reports without media */}
-                {alert.reporter_username === 'MUFON' && (!alert.media_files || alert.media_files.length === 0) && getPreviewDescription()?.trim() && (
-                  <span className="text-text-tertiary font-normal ml-1">({t('witnessReportOnly')})</span>
-                )}
+                {(() => {
+                  // Get translations from static translations (generated from ARB files)
+                  const staticTranslations = t('slugs', { returnObjects: true }) || {}
+                  const ufoSightingText = staticTranslations.ufoSighting || alert.title || 'UFO Sighting'
+                  const beepOnlyText = staticTranslations.beepOnly || 'Beep only'
+                  const reportOnlyText = staticTranslations.reportOnly || 'Report Only'
+                  
+                  // Determine content type indicator
+                  const hasMedia = alert.media_files?.length > 0
+                  const hasDescription = getPreviewDescription()?.trim()
+                  let typeIndicator = ''
+                  
+                  if (!hasMedia && !hasDescription) {
+                    typeIndicator = ` • 📡 ${beepOnlyText}`
+                  } else if (hasDescription && !hasMedia) {
+                    typeIndicator = ` • 👁️ ${reportOnlyText}`
+                  }
+                  
+                  return (
+                    <>
+                      {ufoSightingText}
+                      {typeIndicator && (
+                        <span className="text-text-tertiary font-normal text-xs ml-1">{typeIndicator}</span>
+                      )}
+                    </>
+                  )
+                })()}
               </h3>
               
               {/* Location with distance - right under title for all alerts */}
@@ -461,16 +487,7 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
                     </div>
                   )}
 
-                  {/* Content type indicator - only for non-media content, skip for MUFON since info is in title */}
-                  {alert.reporter_username !== 'MUFON' && (
-                    <div className="px-2 py-1 bg-dark-background/30 rounded text-xs text-text-tertiary">
-                      {getPreviewDescription()?.trim() ? (
-                        <span className="flex items-center gap-1">👁️ Report Only</span>
-                      ) : (
-                        <span className="flex items-center gap-1">📡 Beep only</span>
-                      )}
-                    </div>
-                  )}
+                  {/* Content type now shown in title - no longer needed here */}
                 </div>
                 
                 {/* Witness count - hidden for MUFON alerts */}

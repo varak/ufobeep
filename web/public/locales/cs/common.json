@@ -100,6 +100,7 @@
   "keywords": "UFO, UAP, OVNI, mimozemšťané, pozorování, Skywatch, upozornění, radar, kompas",
   "noAlertsFound": "Žádné odpovídající záznamy",
   "verified": "Ověřeno",
+  "reportOnly": "pouze hlášení",
   "videoOnly": "pouze video",
   "imageOnly": "pouze obrázek",
   "timeJustNow": "Právě teď",
@@ -202,5 +203,8 @@
   "notificationDistance": "{distance} away",
   "unknown": "neznámý",
   "report": "zpráva",
-  "mufon": "mufon"
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "Nedávné UFO Brouci",
+  "recentUfoBeepsDescription": "Toto krmivo kombinuje aktuální UFOBeep \"pípání\" od našich uživatelů mobilních aplikací s historickými zprávami z databáze MUFON.",
+  "loadingBeeps": "Načítám poslední pípnutí..."
 }

@@ -25,6 +25,8 @@ const SLUG_KEYS = [
   'unknown',
   'report', 
   'mufon',
+  'beepOnly',
+  'reportOnly',
   // All UFO shape terms from MUFON
   'shapeTriangle',
   'shapeDisc', 

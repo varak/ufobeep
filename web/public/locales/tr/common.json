@@ -100,6 +100,7 @@
   "keywords": "UFO,UAP,OVNI,aliens,görenler,skywatch,alerts,radar,compass",
   "noAlertsFound": "Eşleşen uyarılar yok",
   "verified": "Onaylandı",
+  "reportOnly": "sadece rapor raporu sadece rapor",
   "videoOnly": "video sadece video",
   "imageOnly": "sadece görüntü sadece görüntü",
   "timeJustNow": "Sadece şimdi",
@@ -202,5 +203,8 @@
   "notificationDistance": "uzaklığı:",
   "unknown": "bilinmeyen",
   "report": "rapor",
-  "mufon": "mufon"
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "Recent UFO Arılar",
+  "recentUfoBeepsDescription": "Bu besleme, MUFON veritabanından tarihi raporlarla mobil uygulama kullanıcılarımızdan gerçek zamanlı UFOBeep \"beeps\" birleştirir.",
+  "loadingBeeps": "Yükleniyor son beeps..."
 }

@@ -54,70 +54,21 @@ export interface SluggableAlertLike {
 }
 
 export function getAlertSlug(alert: SluggableAlertLike, locale: string = 'en', translations?: any, shortId?: string) {
-  let locName = alert.location?.name
-  // Priority: 1) Provided shortId, 2) alert.short_url, 3) generate from alert.id
-  let uniqueId = shortId || (alert as any).short_url || alert.id
+  // Use the shared slug generator for consistency
+  const { generateAlertSlug } = require('../../../shared/generate_slug.js')
   
-  // Handle MUFON alerts specially
-  const isMufon = alert.reporter_username === 'MUFON' || alert.source === 'mufon'
-  
-  if (isMufon) {
-    // Extract location from MUFON description if available
-    const locationMatch = alert.description?.match(/📍 Location: ([^\n]+)/)
-    if (locationMatch) {
-      locName = locationMatch[1].trim()
-      // Keep state info but remove country suffix for shorter slug
-      locName = locName.replace(/, US$/, '').replace(/, United States$/, '')
-    }
-    
-    // For MUFON alerts, try to extract case ID from external sources
-    let caseIdMatch: RegExpMatchArray | null = null
-    
-    // Check if we have external_url that might contain case ID
-    if (alert.external_url) {
-      caseIdMatch = alert.external_url.match(/case[^0-9]*([0-9]+)/i)
-      if (caseIdMatch) {
-        uniqueId = caseIdMatch[1] // Use just the numeric case ID
-      }
-    }
-    
-    // Fallback: extract from any external_id field if passed through
-    // (This would need to be added to interface calls, but providing fallback)
-    const externalId = (alert as any).external_id
-    if (!caseIdMatch && externalId && typeof externalId === 'string') {
-      const idMatch = externalId.match(/mufon_([0-9]+)/)
-      if (idMatch) {
-        uniqueId = idMatch[1] // Use just the numeric case ID
-      }
-    }
-  } else {
-    // For UFOBeep alerts, enhance location with state info if available
-    if (alert.location?.name) {
-      locName = alert.location.name
-      // Remove country suffix but keep state
-      locName = locName.replace(/, US$/, '').replace(/, United States$/, '')
-    }
+  // Convert the web alert object to the format expected by shared generator
+  const alertData = {
+    id: alert.id,
+    title: alert.title || '',
+    created_at: alert.created_at,
+    location: alert.location,
+    source: alert.source || (alert.reporter_username === 'MUFON' ? 'mufon' : 'ufobeep'),
+    short_url: (alert as any).short_url,
+    shape: (alert as any).shape // Include shape data if available
   }
   
-  // Skip empty, null, or placeholder location names
-  if (!locName || locName === 'Unknown Location' || locName.trim() === '') {
-    // Fallback to coordinates if available
-    if (typeof alert.location?.latitude === 'number' && typeof alert.location?.longitude === 'number') {
-      locName = `${alert.location.latitude.toFixed(4)}, ${alert.location.longitude.toFixed(4)}`
-    } else {
-      locName = 'unknown'
-    }
-  }
-  
-  // Always use translated terms for consistent slugs, ignore alert.title
-  let title = translations?.slugs?.ufoSighting || ''
-  if (isMufon) {
-    const mufonTerm = translations?.slugs?.mufon || ''
-    const reportTerm = translations?.slugs?.report || ''
-    title = `${mufonTerm}-` + (alert.title?.toLowerCase().replace('mufon ', '') || reportTerm)
-  }
-  
-  return generateSlug(title, locName, alert.created_at, uniqueId, locale, translations)
+  return generateAlertSlug(alertData, locale, shortId)
 }
 
 // Import shared short hash function
