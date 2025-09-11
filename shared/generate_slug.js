@@ -10,12 +10,26 @@
  * - Web: const { generateAlertSlug } = require('../../shared/generate_slug.js')
  */
 
-const fs = require('fs');
-const path = require('path');
+// Universal imports - work in both Node.js and browser
 const { getShortHash } = require('./get_short_hash.js');
 
-// Load ARB files for translations
+// Detect environment
+const isBrowser = typeof window !== 'undefined';
+
+// Node.js-only imports
+let fs, path;
+if (!isBrowser) {
+  fs = require('fs');
+  path = require('path');
+}
+
+// Load ARB files for translations (Node.js only)
 function loadArbTranslations(locale = 'en') {
+  if (isBrowser) {
+    // Browser: return empty translations (web should fetch via API)
+    return {};
+  }
+  
   const arbPath = path.join(__dirname, `../app/lib/l10n/app_${locale}.arb`);
   
   if (!fs.existsSync(arbPath)) {

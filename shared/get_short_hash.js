@@ -45,7 +45,7 @@ function getShortHash(input) {
 }
 
 // CLI usage: node get_short_hash.js "UFO-2024-12345"
-if (require.main === module) {
+if (typeof require !== 'undefined' && require.main === module) {
   const input = process.argv[2];
   if (!input) {
     console.error('Usage: node get_short_hash.js <input_string>');
@@ -54,5 +54,12 @@ if (require.main === module) {
   console.log(getShortHash(input));
 }
 
-// Export for module usage
-module.exports = { getShortHash, SAFE_CHARS };
+// Universal export for module usage (Node.js and browser)
+if (typeof module !== 'undefined' && module.exports) {
+  // Node.js
+  module.exports = { getShortHash, SAFE_CHARS };
+} else if (typeof window !== 'undefined') {
+  // Browser
+  window.getShortHash = getShortHash;
+  window.SAFE_CHARS = SAFE_CHARS;
+}
