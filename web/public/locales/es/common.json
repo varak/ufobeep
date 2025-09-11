@@ -52,7 +52,7 @@
   "send": "Enviar",
   "commentPosted": "Comentario publicado",
   "autoFollowEnabled": "Ahora estás siguiendo esta alerta.",
-  "noCommentsYet": "Todavía no hay comentarios. ¡Sé el primero!",
+  "noCommentsYet": "Todavía no hay comentarios. ¡Sé el primero en comentar!",
   "newCommentNotification": "Nuevo comentario sobre un avistamiento que sigue.",
   "mapTitle": "Mapa en vivo",
   "compassTitle": "Compass",
@@ -201,5 +201,11 @@
   "viewAllBeeps": "📋 View All Beeps",
   "sightingsMap": "Mapa de Avistamientos",
   "globalSightingNetwork": "Global Sighting Network",
-  "howItWorks": "Cómo funciona UFOBeep"
+  "howItWorks": "Cómo funciona UFOBeep",
+  "shareYourThoughts": "Comparte tus pensamientos sobre este avistamiento...",
+  "postComment": "Public Comment",
+  "loggedInAs": "Logged en",
+  "logout": "Cerrar sesión",
+  "notFollowing": "No seguir",
+  "follow": "Seguir"
 }

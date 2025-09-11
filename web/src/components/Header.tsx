@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
+import { useClientTranslations } from '@/hooks/useClientTranslations'
 
 function NavLink({ href, label }: { href: string; label: string }) {
   const pathname = usePathname()
@@ -26,6 +27,7 @@ function NavLink({ href, label }: { href: string; label: string }) {
 export default function Header() {
   const { isAuthenticated, user, logout } = useAuth()
   const [open, setOpen] = useState(false)
+  const { t } = useClientTranslations('common')
 
   return (
     <header className="sticky top-0 z-40 border-b border-dark-border bg-dark-background/85 backdrop-blur supports-[backdrop-filter]:bg-dark-background/60">
@@ -41,9 +43,9 @@ export default function Header() {
 
           {/* Center: Nav (desktop) */}
           <nav className="hidden md:flex items-center gap-1">
-            <NavLink href="/beep" label="Recent Beeps" />
-            <NavLink href="/map" label="Map" />
-            <NavLink href="/download" label="Download App" />
+            <NavLink href="/beep" label={t('navRecentBeeps', 'Recent Beeps')} />
+            <NavLink href="/map" label={t('navMap', 'Map')} />
+            <NavLink href="/download" label={t('navDownloadApp', 'Download App')} />
           </nav>
 
           {/* Right: Language + Account */}
@@ -56,7 +58,7 @@ export default function Header() {
                   className="text-xs text-text-tertiary hover:text-text-secondary"
                   onClick={logout}
                 >
-                  Logout
+                  {t('logout', 'Logout')}
                 </button>
               </div>
             ) : (
@@ -64,7 +66,7 @@ export default function Header() {
                 href="/auth"
                 className="px-3 py-2 rounded-md text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-dark-surface-elevated"
               >
-                Sign in
+                {t('signIn', 'Sign in')}
               </Link>
             )}
           </div>
@@ -83,9 +85,9 @@ export default function Header() {
         {open && (
           <div className="md:hidden pb-3">
             <div className="flex flex-col gap-1">
-              <NavLink href="/beep" label="Recent Beeps" />
-              <NavLink href="/map" label="Map" />
-              <NavLink href="/download" label="Download App" />
+              <NavLink href="/beep" label={t('navRecentBeeps', 'Recent Beeps')} />
+              <NavLink href="/map" label={t('navMap', 'Map')} />
+              <NavLink href="/download" label={t('navDownloadApp', 'Download App')} />
               <div className="px-1 py-2">
                 <LanguageSwitcher variant="buttons" />
               </div>
@@ -95,14 +97,14 @@ export default function Header() {
                     className="text-xs text-text-tertiary hover:text-text-secondary"
                     onClick={logout}
                   >
-                    Logout
+                    {t('logout', 'Logout')}
                   </button>
                 ) : (
                   <Link
                     href="/auth"
                     className="text-sm text-text-secondary hover:text-text-primary"
                   >
-                    Sign in
+                    {t('signIn', 'Sign in')}
                   </Link>
                 )}
               </div>

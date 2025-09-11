@@ -1,92 +1,94 @@
 {
-  "backToBeeps": "← Back to Beeps",
-  "loadingDetails": "Loading beep details...",
-  "details": "Details",
-  "location": "Location",
-  "unknownLocation": "Unknown Location",
-  "time": {
-    "ago": "ago",
-    "minutes": "m",
-    "hours": "h",
-    "days": "d",
-    "justNow": "just now"
+  "errors": {
+    "generic": "Something went wrong.",
+    "nolocation": "Location unavailable. Try again outside with clear sky view.",
+    "nocamera": "Camera unavailable on this device.",
+    "uploadfailed": "Upload failed. Please try again.",
+    "permissiondenied": "Permission denied.",
+    "invalidusername": "That username isn’t available.",
+    "notfound": "Beep not found",
+    "loaderror": "Failed to load beep details"
   },
+  "media": {
+    "processing": "Processing media…",
+    "itemsprocessed": "Analysis: {count} media file(s) processed",
+    "imagenotfound": "Image not found",
+    "playvideo": "Play Video",
+    "viewimage": "View Image",
+    "count": "{count} images",
+    "countsingle": "1 image",
+    "moreimages": "+{count} more"
+  },
+  "locationPermissionTitle": "Location access needed",
+  "locationPermissionBody": "We use your location to send and receive nearby alerts.",
   "distance": {
     "away": "away",
+    "label": "Distance",
     "km": "km",
     "miles": "miles",
     "nearby": "nearby"
   },
+  "time": {
+    "justnow": "just now",
+    "daysago": "{count}d ago",
+    "hoursago": "{count}h ago",
+    "minutesago": "{count}m ago",
+    "label": "Time",
+    "ago": "ago",
+    "minutes": "m",
+    "hours": "h",
+    "days": "d"
+  },
+  "detailsTitle": "Details",
+  "mufon": {
+    "classifications": {
+      "sphere": "Sphere",
+      "light": "Light",
+      "disk": "Disk",
+      "triangle": "Triangle",
+      "cigar": "Cigar",
+      "oval": "Oval",
+      "cylinder": "Cylinder",
+      "rectangle": "Rectangle",
+      "diamond": "Diamond",
+      "fireball": "Fireball",
+      "flash": "Flash",
+      "formation": "Formation",
+      "changing": "Changing",
+      "chevron": "Chevron",
+      "cone": "Cone",
+      "cross": "Cross",
+      "egg": "Egg",
+      "other": "Object",
+      "unknown": "Unknown Object"
+    },
+    "case": "MUFON Case",
+    "casedetailstitle": "MUFON Case #{caseNumber} Details",
+    "databaseentrydate": "Date Entered into MUFON Database",
+    "casetitle": "MUFON Case #{caseNumber}",
+    "": "mufon",
+    "attribution": "MUFON Database Report",
+    "casenumber": "Case #",
+    "generictitle": "MUFON Sighting Report",
+    "titleformat": "MUFON {classification} Report"
+  },
+  "locationLabel": "Location",
+  "unknownLocation": "Unknown Location",
+  "locationUnknown": "Location Unknown",
+  "backToBeeps": "← Back to Beeps",
+  "loadingDetails": "Loading beep details...",
+  "details": "Details",
+  "location": "Location",
   "ufobeep": {
     "witnesses": "Witnesses",
     "confirmations": "Confirmations",
-    "alertLevel": "Alert Level",
-    "reportType": "UFOBeep Report"
-  },
-  "mufon": {
-    "attribution": "MUFON Database Report",
-    "caseNumber": "Case #",
-    "genericTitle": "MUFON Sighting Report",
-    "classifications": {
-      "sphere": "Sphere",
-      "light": "Light",
-      "disk": "Disk",
-      "triangle": "Triangle",
-      "cigar": "Cigar",
-      "oval": "Oval",
-      "cylinder": "Cylinder",
-      "rectangle": "Rectangle",
-      "diamond": "Diamond",
-      "fireball": "Fireball",
-      "flash": "Flash",
-      "formation": "Formation",
-      "changing": "Changing",
-      "chevron": "Chevron",
-      "cone": "Cone",
-      "cross": "Cross",
-      "egg": "Egg",
-      "other": "Object",
-      "unknown": "Unknown Object"
-    },
-    "titleFormat": "MUFON {classification} Report"
+    "alertlevel": "Alert Level",
+    "reporttype": "UFOBeep Report"
   },
   "nuforc": {
+    "classifications": {},
     "attribution": "NUFORC Database Report",
-    "caseNumber": "Case #",
-    "genericTitle": "NUFORC Sighting Report",
-    "classifications": {
-      "sphere": "Sphere",
-      "light": "Light",
-      "disk": "Disk",
-      "triangle": "Triangle",
-      "cigar": "Cigar",
-      "oval": "Oval",
-      "cylinder": "Cylinder",
-      "rectangle": "Rectangle",
-      "diamond": "Diamond",
-      "fireball": "Fireball",
-      "flash": "Flash",
-      "formation": "Formation",
-      "changing": "Changing",
-      "chevron": "Chevron",
-      "cone": "Cone",
-      "cross": "Cross",
-      "egg": "Egg",
-      "other": "Object",
-      "unknown": "Unknown Object"
-    },
-    "titleFormat": "NUFORC {classification} Report"
-  },
-  "media": {
-    "imageNotFound": "Image not found",
-    "playVideo": "Play Video",
-    "viewImage": "View Image",
-    "mediaCount": "{count} images",
-    "mediaCountSingle": "1 image",
-    "moreImages": "+{count} more"
-  },
-  "errors": {
-    "notFound": "Beep not found",
-    "loadError": "Failed to load beep details"
+    "casenumber": "Case #",
+    "generictitle": "NUFORC Sighting Report"
   }
 }
