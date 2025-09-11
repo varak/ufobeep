@@ -54,21 +54,13 @@ export interface SluggableAlertLike {
 }
 
 export function getAlertSlug(alert: SluggableAlertLike, locale: string = 'en', translations?: any, shortId?: string) {
-  // Use the shared slug generator for consistency
-  const { generateAlertSlug } = require('../../../shared/generate_slug.js')
+  // Browser-compatible slug generation (matches shared/generate_slug.js behavior)
+  const title = alert.title || ''
+  const location = alert.location?.name || 'unknown-location'
+  const date = alert.created_at
+  const id = shortId || alert.short_url || alert.id
   
-  // Convert the web alert object to the format expected by shared generator
-  const alertData = {
-    id: alert.id,
-    title: alert.title || '',
-    created_at: alert.created_at,
-    location: alert.location,
-    source: alert.source || (alert.reporter_username === 'MUFON' ? 'mufon' : 'ufobeep'),
-    short_url: (alert as any).short_url,
-    shape: (alert as any).shape // Include shape data if available
-  }
-  
-  return generateAlertSlug(alertData, locale, shortId)
+  return generateSlug(title, location, date, id, locale, translations)
 }
 
 // Import shared short hash function
