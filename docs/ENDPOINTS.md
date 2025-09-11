@@ -25,6 +25,7 @@ The API uses unified `/beep` endpoints for all sighting operations:
 - `GET /beep` - List sightings with advanced filtering
 - `POST /beep` - Create new sighting  
 - `GET /beep/{id}` - Get specific sighting details
+- `GET /beep/by-short-url/{short_id}` - Get sighting by short URL (5-char alphanumeric)
 - `POST /beep/{id}/media` - Attach media to sighting
 - `POST /beep/{id}/witnesses` - Confirm witness sighting
 - `GET /beep/{id}/comments` - Get sighting comments
