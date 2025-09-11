@@ -43,9 +43,9 @@ export default function Header() {
 
           {/* Center: Nav (desktop) */}
           <nav className="hidden md:flex items-center gap-1">
-            <NavLink href="/beep" label={t('navRecentBeeps') || 'Recent Beeps'} />
-            <NavLink href="/map" label={t('navMap') || 'Map'} />
-            <NavLink href="/download" label={t('navDownloadApp') || 'Download App'} />
+            <NavLink href="/beep" label={t('navRecentBeeps')} />
+            <NavLink href="/map" label={t('navMap')} />
+            <NavLink href="/download" label={t('navDownloadApp')} />
           </nav>
 
           {/* Right: Language + Account */}
@@ -66,7 +66,7 @@ export default function Header() {
                 href="/auth"
                 className="px-3 py-2 rounded-md text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-dark-surface-elevated"
               >
-                {t('signIn', 'Sign in')}
+                {t('signIn')}
               </Link>
             )}
           </div>
@@ -85,9 +85,9 @@ export default function Header() {
         {open && (
           <div className="md:hidden pb-3">
             <div className="flex flex-col gap-1">
-              <NavLink href="/beep" label={t('navRecentBeeps', 'Recent Beeps')} />
-              <NavLink href="/map" label={t('navMap', 'Map')} />
-              <NavLink href="/download" label={t('navDownloadApp', 'Download App')} />
+              <NavLink href="/beep" label={t('navRecentBeeps')} />
+              <NavLink href="/map" label={t('navMap')} />
+              <NavLink href="/download" label={t('navDownloadApp')} />
               <div className="px-1 py-2">
                 <LanguageSwitcher variant="buttons" />
               </div>
@@ -97,14 +97,14 @@ export default function Header() {
                     className="text-xs text-text-tertiary hover:text-text-secondary"
                     onClick={logout}
                   >
-                    {t('logout', 'Logout')}
+                    {t('logout')}
                   </button>
                 ) : (
                   <Link
                     href="/auth"
                     className="text-sm text-text-secondary hover:text-text-primary"
                   >
-                    {t('signIn', 'Sign in')}
+                    {t('signIn')}
                   </Link>
                 )}
               </div>

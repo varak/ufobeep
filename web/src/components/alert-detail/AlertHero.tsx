@@ -81,7 +81,7 @@ export default function AlertHero({ alert, openImageIndex }: AlertHeroProps) {
             {!hasMedia && hasDescription && (
               <div className="inline-flex items-center gap-2 bg-brand-primary/10 text-brand-primary px-3 py-1 rounded-full text-sm font-medium border border-brand-primary/20">
                 <span>👁️</span>
-                <span>witness report only</span>
+                <span>{t('reportOnly', 'Report only')}</span>
               </div>
             )}
             {/* Remove redundant media count badge - thumbnails already show how many */}
