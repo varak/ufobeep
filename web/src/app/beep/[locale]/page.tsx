@@ -93,10 +93,10 @@ export default function BeepLocalePage({ params }: BeepPageProps) {
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-bold text-text-primary mb-2">
-            {t('title', 'Recent Beeps')}
+            {t('recentUfoBeepsTitle', 'Recent Beeps')}
           </h1>
           <p className="text-text-secondary mb-8">
-            {t('subtitle', 'Live UFO sighting reports from our global community')}
+            {t('recentUfoBeepsSubtitle', 'Live UFO sighting reports from our global community')}
           </p>
           
           {loading ? (
@@ -117,7 +117,7 @@ export default function BeepLocalePage({ params }: BeepPageProps) {
               ) : (
                 <div className="text-center py-12">
                   <div className="text-lg text-text-secondary">
-                    No beeps available at the moment.
+                    {t('noBeepsAvailable', 'No beeps available at the moment.')}
                   </div>
                 </div>
               )}

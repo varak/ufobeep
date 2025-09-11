@@ -208,6 +208,7 @@
   "recentUfoBeepsSubtitle": "Live UFOBeep community reports & MUFON database sightings",
   "recentUfoBeepsDescription": "This feed combines real-time UFOBeep \"beeps\" from our mobile app users with historical reports from the MUFON database.",
   "loadingBeeps": "Loading recent beeps...",
+  "noBeepsAvailable": "No beeps available at the moment.",
   "heroTagline": "Get alerts when to go outside and look up",
   "heroDescription": "Never miss another UFO sighting. Get real-time alerts when someone near you sees something weird in the sky. Point your phone and find exactly where to look.",
   "downloadApp": "📱 Download App",

@@ -479,6 +479,7 @@
   "recentUfoBeepsSubtitle": "Live UFOBeep Community reports & MUFON database sightings",
   "recentUfoBeepsDescription": "Este feed combina \"beeps\" en tiempo real de UFOBeep de nuestros usuarios de aplicaciones móviles con informes históricos de la base de datos MUFON.",
   "loadingBeeps": "Cargando recientes pitidos...",
+  "noBeepsAvailable": "No hay pitidos disponibles en este momento.",
   "heroTagline": "Obtener alertas cuando salir y mirar hacia arriba",
   "heroDescription": "Nunca pierdas otro avistamiento de OVNI. Obtenga alertas en tiempo real cuando alguien cercano ve algo raro en el cielo. Apunte el teléfono y encuentre exactamente dónde buscar.",
   "downloadApp": "📱 Descargar App",
