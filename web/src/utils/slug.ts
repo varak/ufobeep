@@ -7,10 +7,7 @@ export function generateSlug(title: string, location: string, date: string, id?:
     return fallback
   }
 
-  // Use the full ufoSighting translation instead of splitting into parts
-  const ufoSightingTerm = getTranslatedTerm('ufoSighting', 'UFO Sighting')
-  
-  const titlePart = (title || ufoSightingTerm)
+  const titlePart = (title || '')
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, '')
     .replace(/\s+/g, '-')
@@ -119,8 +116,8 @@ export function getAlertSlug(alert: SluggableAlertLike, locale: string = 'en', t
     return fallback
   }
 
-  // Add source prefix for differentiation
-  let title = alert.title || `${getTranslatedTerm('ufo', 'UFO')} ${getTranslatedTerm('sighting', 'Sighting')}`
+  // Always use translated term for consistent slugs, ignore alert.title
+  let title = getTranslatedTerm('ufoSighting', 'UFO Sighting')
   if (isMufon) {
     const mufonTerm = getTranslatedTerm('mufon', 'mufon')
     const reportTerm = getTranslatedTerm('report', 'report')
