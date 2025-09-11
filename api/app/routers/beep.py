@@ -65,9 +65,8 @@ def format_alert_response(alert, user_lat=None, user_lon=None):
         x = math.cos(lat1) * math.sin(lat2) - math.sin(lat1) * math.cos(lat2) * math.cos(dlon)
         bearing_deg = (math.degrees(math.atan2(y, x)) + 360) % 360
     
-    # Generate short URL using shared Node.js module
-    from app.utils.short_url_utils import generate_short_url
-    short_url = generate_short_url(str(alert.id))
+    # Use stored short_url from database (much faster than generating)
+    short_url = alert.short_url or ""
     
     response = {
         "id": alert.id,
@@ -582,39 +581,3 @@ async def send_alert_beep(alert_id: str, request: dict):
         print(f"Error sending alert beep: {e}")
         raise HTTPException(status_code=500, detail=f"Error sending alert beep: {str(e)}")
 
-@router.get("/short/{short_url}")
-async def get_beep_by_short_url(short_url: str):
-    """Get a beep by its short URL for fast lookups"""
-    try:
-        pool = await get_db()
-        
-        # Direct database lookup by short_url
-        async with pool.acquire() as conn:
-            query = """
-                SELECT 
-                    id, title, description, location, created_at, updated_at, 
-                    alert_level, witness_count, total_confirmations, source, 
-                    reporter_username, enrichment, external_id, external_url,
-                    short_url, media_urls, media_count
-                FROM sightings 
-                WHERE short_url = $1
-            """
-            row = await conn.fetchrow(query, short_url)
-            
-            if not row:
-                raise HTTPException(status_code=404, detail="Beep not found")
-                
-            # Format the response using existing format function
-            alert_dict = dict(row)
-            formatted_alert = format_alert_response(type('obj', (object,), alert_dict)())
-            
-            return {
-                "success": True,
-                "data": formatted_alert
-            }
-            
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Error fetching beep by short URL: {e}")
-        raise HTTPException(status_code=500, detail=f"Error fetching beep: {str(e)}")

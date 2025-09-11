@@ -148,27 +148,36 @@ export default function AlertDetailPage() {
           shortId = fullSlug
         }
         
-        // Direct lookup using the dedicated short URL endpoint
+        // Search for beep by short URL in all beeps
         let targetAlert = null
         
         try {
           console.log('DEBUG: Looking for shortId:', shortId)
           
-          // Use the dedicated short URL endpoint for direct lookup
-          const shortUrlRes = await fetch(`/api/beep/short/${shortId}`)
-          if (shortUrlRes.ok) {
-            const shortUrlData = await shortUrlRes.json()
-            console.log('DEBUG: Short URL response success:', shortUrlData.success)
-            console.log('DEBUG: Short URL response data:', shortUrlData.data)
-            if (shortUrlData.success && shortUrlData.data) {
-              targetAlert = shortUrlData.data
-              console.log('DEBUG: Found target via short URL endpoint:', targetAlert.id)
+          // Get all beeps and search for the matching short_url  
+          const res = await fetch(`/api/beep?limit=1000&verified_only=false`)
+          if (res.ok) {
+            const data = await res.json()
+            console.log('DEBUG: API response success:', data.success)
+            if (data.success && (data.data?.beeps || data.data?.alerts)) {
+              const beeps = data.data?.beeps || data.data?.alerts || []
+              console.log('DEBUG: Found', beeps.length, 'total beeps')
+              console.log('DEBUG: Looking for short_url:', shortId)
+              console.log('DEBUG: Sample short_urls:', beeps.slice(0, 5).map(b => b.short_url))
+              
+              targetAlert = beeps.find((b: any) => b.short_url === shortId)
+              if (targetAlert) {
+                console.log('DEBUG: Found matching beep:', targetAlert.id, 'with short_url:', targetAlert.short_url)
+              } else {
+                console.log('DEBUG: No beep found with short_url:', shortId)
+                console.log('DEBUG: All short_urls:', beeps.map(b => b.short_url))
+              }
             }
           } else {
-            console.log('DEBUG: Short URL endpoint failed:', shortUrlRes.status, shortUrlRes.statusText)
+            console.log('DEBUG: API request failed:', res.status, res.statusText)
           }
         } catch (error) {
-          console.error('Error fetching by short URL:', error)
+          console.error('Error fetching beeps:', error)
         }
         
         if (targetAlert) {
