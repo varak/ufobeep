@@ -302,11 +302,17 @@ async def get_alert_details(
     latitude: Optional[float] = None,
     longitude: Optional[float] = None
 ):
-    """Get specific alert details - clean endpoint using service layer with distance calculation"""
+    """Get specific alert details - supports both UUID and short URL automatically"""
     try:
         db_pool = await get_db()
         alerts_service = AlertsService(db_pool)
-        alert = await alerts_service.get_alert_by_id(alert_id)
+        
+        # Try to get by UUID first
+        try:
+            alert = await alerts_service.get_alert_by_id(alert_id)
+        except:
+            # If UUID parsing fails, try as short URL
+            alert = await alerts_service.get_alert_by_short_url(alert_id)
         
         if not alert:
             raise HTTPException(status_code=404, detail="Alert not found")

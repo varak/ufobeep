@@ -36,7 +36,7 @@ export async function middleware(request: NextRequest) {
     
     try {
       // Fetch alert data directly in middleware to generate proper slug
-      const apiUrl = `https://ufobeep.com/api/beep/by-short-url/${shortId}`
+      const apiUrl = `https://ufobeep.com/api/beep/${shortId}`
       const response = await fetch(apiUrl)
       
       if (response.ok) {

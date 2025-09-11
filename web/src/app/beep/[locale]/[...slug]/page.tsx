@@ -156,8 +156,8 @@ export default function AlertDetailPage() {
         let targetAlert = null
         
         try {
-          // Call backend API directly (nginx proxies /api/* to backend)
-          const res = await fetch(`/api/beep/by-short-url/${shortId}`)
+          // Call backend API directly - supports both UUID and short URL automatically
+          const res = await fetch(`/api/beep/${shortId}`)
           if (res.ok) {
             const data = await res.json()
             if (data.success && data.data?.alert) {
