@@ -8,7 +8,7 @@
   "beepFailed": "ビープを送ることができません.",
   "alertDetailTitle": "観光スポット詳細",
   "alertsFilterHelp": "フィルターを調整して、より多くの結果を見る",
-  "beepOnly": "ビープのみ",
+  "beepOnly": "レポートのみ",
   "alertRange": "アラート範囲",
   "ufoTypeSphere": "スフィア",
   "ufoTypeTriangle": "トライアングル",
@@ -56,8 +56,5 @@
   "shapeFormation": "フォーム",
   "shapeUnknown": "インフォメーション",
   "alertFollowError": "エラー更新 ステータスをフォローする",
-  "ufobeepWitnesses": "ウィッチネス",
-  "ufobeepConfirmations": "確認事項",
-  "ufobeepAlertLevel": "アラートレベル",
-  "ufobeepReportType": "UFOBeepレポート"
+  "alertLevel": "アラートレベル"
 }

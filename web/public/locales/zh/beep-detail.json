@@ -1,92 +1,94 @@
 {
-  "backToBeeps": "TODO_TRANSLATE___BACK_TO_BEEPS",
-  "loadingDetails": "TODO_TRANSLATE_LOADING_BEEP_DETAILS___",
-  "details": "TODO_TRANSLATE_DETAILS",
-  "location": "TODO_TRANSLATE_LOCATION",
-  "unknownLocation": "TODO_TRANSLATE_UNKNOWN_LOCATION",
-  "time": {
-    "ago": "TODO_TRANSLATE_AGO",
-    "minutes": "TODO_TRANSLATE_M",
-    "hours": "TODO_TRANSLATE_H",
-    "days": "TODO_TRANSLATE_D",
-    "justNow": "TODO_TRANSLATE_JUST_NOW"
-  },
-  "distance": {
-    "away": "TODO_TRANSLATE_AWAY",
-    "km": "TODO_TRANSLATE_KM",
-    "miles": "TODO_TRANSLATE_MILES",
-    "nearby": "TODO_TRANSLATE_NEARBY"
-  },
-  "ufobeep": {
-    "witnesses": "TODO_TRANSLATE_WITNESSES",
-    "confirmations": "TODO_TRANSLATE_CONFIRMATIONS",
-    "alertLevel": "TODO_TRANSLATE_ALERT_LEVEL",
-    "reportType": "TODO_TRANSLATE_UFOBEEP_REPORT"
-  },
-  "mufon": {
-    "attribution": "TODO_TRANSLATE_MUFON_DATABASE_REPORT",
-    "caseNumber": "TODO_TRANSLATE_CASE__",
-    "genericTitle": "TODO_TRANSLATE_MUFON_SIGHTING_REPORT",
-    "classifications": {
-      "sphere": "TODO_TRANSLATE_SPHERE",
-      "light": "TODO_TRANSLATE_LIGHT",
-      "disk": "TODO_TRANSLATE_DISK",
-      "triangle": "TODO_TRANSLATE_TRIANGLE",
-      "cigar": "TODO_TRANSLATE_CIGAR",
-      "oval": "TODO_TRANSLATE_OVAL",
-      "cylinder": "TODO_TRANSLATE_CYLINDER",
-      "rectangle": "TODO_TRANSLATE_RECTANGLE",
-      "diamond": "TODO_TRANSLATE_DIAMOND",
-      "fireball": "TODO_TRANSLATE_FIREBALL",
-      "flash": "TODO_TRANSLATE_FLASH",
-      "formation": "TODO_TRANSLATE_FORMATION",
-      "changing": "TODO_TRANSLATE_CHANGING",
-      "chevron": "TODO_TRANSLATE_CHEVRON",
-      "cone": "TODO_TRANSLATE_CONE",
-      "cross": "TODO_TRANSLATE_CROSS",
-      "egg": "TODO_TRANSLATE_EGG",
-      "other": "TODO_TRANSLATE_OBJECT",
-      "unknown": "TODO_TRANSLATE_UNKNOWN_OBJECT"
-    },
-    "titleFormat": "TODO_TRANSLATE_MUFON__CLASSIFICATION__REPORT"
-  },
-  "nuforc": {
-    "attribution": "TODO_TRANSLATE_NUFORC_DATABASE_REPORT",
-    "caseNumber": "TODO_TRANSLATE_CASE__",
-    "genericTitle": "TODO_TRANSLATE_NUFORC_SIGHTING_REPORT",
-    "classifications": {
-      "sphere": "TODO_TRANSLATE_SPHERE",
-      "light": "TODO_TRANSLATE_LIGHT",
-      "disk": "TODO_TRANSLATE_DISK",
-      "triangle": "TODO_TRANSLATE_TRIANGLE",
-      "cigar": "TODO_TRANSLATE_CIGAR",
-      "oval": "TODO_TRANSLATE_OVAL",
-      "cylinder": "TODO_TRANSLATE_CYLINDER",
-      "rectangle": "TODO_TRANSLATE_RECTANGLE",
-      "diamond": "TODO_TRANSLATE_DIAMOND",
-      "fireball": "TODO_TRANSLATE_FIREBALL",
-      "flash": "TODO_TRANSLATE_FLASH",
-      "formation": "TODO_TRANSLATE_FORMATION",
-      "changing": "TODO_TRANSLATE_CHANGING",
-      "chevron": "TODO_TRANSLATE_CHEVRON",
-      "cone": "TODO_TRANSLATE_CONE",
-      "cross": "TODO_TRANSLATE_CROSS",
-      "egg": "TODO_TRANSLATE_EGG",
-      "other": "TODO_TRANSLATE_OBJECT",
-      "unknown": "TODO_TRANSLATE_UNKNOWN_OBJECT"
-    },
-    "titleFormat": "TODO_TRANSLATE_NUFORC__CLASSIFICATION__REPORT"
+  "errors": {
+    "generic": "出了点问题.",
+    "nolocation": "没有位置 。 再用清空的天眼试试看.",
+    "nocamera": "此设备没有摄像头 .",
+    "uploadfailed": "上传失败 。 请再试一次.",
+    "permissiondenied": "拒绝许可.",
+    "invalidusername": "这个用户名不可用 .",
+    "notfound": "未找到哔声",
+    "loaderror": "装入哔声细节失败"
   },
   "media": {
-    "imageNotFound": "TODO_TRANSLATE_IMAGE_NOT_FOUND",
-    "playVideo": "TODO_TRANSLATE_PLAY_VIDEO",
-    "viewImage": "TODO_TRANSLATE_VIEW_IMAGE",
-    "mediaCount": "TODO_TRANSLATE__COUNT__IMAGES",
-    "mediaCountSingle": "TODO_TRANSLATE_1_IMAGE",
-    "moreImages": "TODO_TRANSLATE___COUNT__MORE"
+    "processing": "正在处理媒体..",
+    "itemsprocessed": "分析: {计算} 已处理的媒体文件",
+    "imagenotfound": "未找到图像",
+    "playvideo": "播放视频",
+    "viewimage": "查看图像",
+    "count": "{计数} 图像",
+    "countsingle": "1 张图像",
+    "moreimages": "再来点"
   },
-  "errors": {
-    "notFound": "TODO_TRANSLATE_BEEP_NOT_FOUND",
-    "loadError": "TODO_TRANSLATE_FAILED_TO_LOAD_BEEP_DETAILS"
+  "locationPermissionTitle": "需要访问的地点",
+  "locationPermissionBody": "我们用你的位置发送和接收附近的警报.",
+  "distance": {
+    "away": "离开",
+    "label": "距离",
+    "km": "公里",
+    "miles": "英里数",
+    "nearby": "附近"
+  },
+  "time": {
+    "justnow": "刚才",
+    "daysago": "{数}之前",
+    "hoursago": "{\\fn黑体\\fs22\\bord1\\shad0\\3ahbe\\4ah00\\fscx67\\fscy66\\2chffffff\\3ch808080}你刚才说",
+    "minutesago": "{\\fn黑体\\fs22\\bord1\\shad0\\3ahbe\\4ah00\\fscx67\\fscy66\\2chffffff\\3ch808080}时间轴:",
+    "label": "时间 :",
+    "ago": "刚才",
+    "minutes": "m",
+    "hours": "h",
+    "days": "d"
+  },
+  "detailsTitle": "细节",
+  "mufon": {
+    "classifications": {
+      "sphere": "球体",
+      "light": "光线",
+      "disk": "磁盘",
+      "triangle": "三角形",
+      "cigar": "雪茄",
+      "oval": "奥巴马",
+      "cylinder": "圆柱",
+      "rectangle": "矩形",
+      "diamond": "钻石",
+      "fireball": "火球",
+      "flash": "闪光",
+      "formation": "组建",
+      "changing": "变化",
+      "chevron": "雪佛龙",
+      "cone": "锥形",
+      "cross": "交叉",
+      "egg": "鸡蛋",
+      "other": "对象",
+      "unknown": "未知对象"
+    },
+    "case": "毛里求斯 大小写",
+    "casedetailstitle": "毛里求斯 案件编号}细节",
+    "databaseentrydate": "输入 MUFON 的日期 数据库",
+    "casetitle": "毛里求斯 案件数量",
+    "": "木冯",
+    "attribution": "毛里求斯 数据库报告",
+    "casenumber": "案例#",
+    "generictitle": "MUFON 观察报告",
+    "titleformat": "MUFON {分类} 报告"
+  },
+  "locationLabel": "地点 :",
+  "unknownLocation": "未知位置",
+  "locationUnknown": "位置未知",
+  "backToBeeps": "回到蜂窝",
+  "loadingDetails": "正在装入哔声细节...",
+  "details": "细节",
+  "location": "地点",
+  "ufobeep": {
+    "witnesses": "证人",
+    "confirmations": "确认",
+    "alertlevel": "警报级别",
+    "reporttype": "UFOUBUP 报告"
+  },
+  "nuforc": {
+    "classifications": {},
+    "attribution": "努福尔茨 数据库报告",
+    "casenumber": "案例#",
+    "generictitle": "努福尔茨 观察报告"
   }
 }

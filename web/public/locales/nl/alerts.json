@@ -8,7 +8,7 @@
   "beepFailed": "Kon Beep niet sturen.",
   "alertDetailTitle": "Waarnemingsdetails",
   "alertsFilterHelp": "Probeer uw filters aan te passen om meer resultaten te zien",
-  "beepOnly": "alleen piepen",
+  "beepOnly": "Alleen rapporteren",
   "alertRange": "Waarschuwingsbereik",
   "ufoTypeSphere": "Bol",
   "ufoTypeTriangle": "Driehoek",
@@ -56,8 +56,5 @@
   "shapeFormation": "vorming",
   "shapeUnknown": "onbekend",
   "alertFollowError": "Fout bij bijwerken van volgstatus",
-  "ufobeepWitnesses": "Getuigen",
-  "ufobeepConfirmations": "Bevestigingen",
-  "ufobeepAlertLevel": "Waarschuwingsniveau",
-  "ufobeepReportType": "UFObeep-rapport"
+  "alertLevel": "Waarschuwingsniveau"
 }

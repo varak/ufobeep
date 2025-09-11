@@ -1,92 +1,94 @@
 {
-  "backToBeeps": "TODO_TRANSLATE___BACK_TO_BEEPS",
-  "loadingDetails": "TODO_TRANSLATE_LOADING_BEEP_DETAILS___",
-  "details": "TODO_TRANSLATE_DETAILS",
-  "location": "TODO_TRANSLATE_LOCATION",
-  "unknownLocation": "TODO_TRANSLATE_UNKNOWN_LOCATION",
-  "time": {
-    "ago": "TODO_TRANSLATE_AGO",
-    "minutes": "TODO_TRANSLATE_M",
-    "hours": "TODO_TRANSLATE_H",
-    "days": "TODO_TRANSLATE_D",
-    "justNow": "TODO_TRANSLATE_JUST_NOW"
-  },
-  "distance": {
-    "away": "TODO_TRANSLATE_AWAY",
-    "km": "TODO_TRANSLATE_KM",
-    "miles": "TODO_TRANSLATE_MILES",
-    "nearby": "TODO_TRANSLATE_NEARBY"
-  },
-  "ufobeep": {
-    "witnesses": "TODO_TRANSLATE_WITNESSES",
-    "confirmations": "TODO_TRANSLATE_CONFIRMATIONS",
-    "alertLevel": "TODO_TRANSLATE_ALERT_LEVEL",
-    "reportType": "TODO_TRANSLATE_UFOBEEP_REPORT"
-  },
-  "mufon": {
-    "attribution": "TODO_TRANSLATE_MUFON_DATABASE_REPORT",
-    "caseNumber": "TODO_TRANSLATE_CASE__",
-    "genericTitle": "TODO_TRANSLATE_MUFON_SIGHTING_REPORT",
-    "classifications": {
-      "sphere": "TODO_TRANSLATE_SPHERE",
-      "light": "TODO_TRANSLATE_LIGHT",
-      "disk": "TODO_TRANSLATE_DISK",
-      "triangle": "TODO_TRANSLATE_TRIANGLE",
-      "cigar": "TODO_TRANSLATE_CIGAR",
-      "oval": "TODO_TRANSLATE_OVAL",
-      "cylinder": "TODO_TRANSLATE_CYLINDER",
-      "rectangle": "TODO_TRANSLATE_RECTANGLE",
-      "diamond": "TODO_TRANSLATE_DIAMOND",
-      "fireball": "TODO_TRANSLATE_FIREBALL",
-      "flash": "TODO_TRANSLATE_FLASH",
-      "formation": "TODO_TRANSLATE_FORMATION",
-      "changing": "TODO_TRANSLATE_CHANGING",
-      "chevron": "TODO_TRANSLATE_CHEVRON",
-      "cone": "TODO_TRANSLATE_CONE",
-      "cross": "TODO_TRANSLATE_CROSS",
-      "egg": "TODO_TRANSLATE_EGG",
-      "other": "TODO_TRANSLATE_OBJECT",
-      "unknown": "TODO_TRANSLATE_UNKNOWN_OBJECT"
-    },
-    "titleFormat": "TODO_TRANSLATE_MUFON__CLASSIFICATION__REPORT"
-  },
-  "nuforc": {
-    "attribution": "TODO_TRANSLATE_NUFORC_DATABASE_REPORT",
-    "caseNumber": "TODO_TRANSLATE_CASE__",
-    "genericTitle": "TODO_TRANSLATE_NUFORC_SIGHTING_REPORT",
-    "classifications": {
-      "sphere": "TODO_TRANSLATE_SPHERE",
-      "light": "TODO_TRANSLATE_LIGHT",
-      "disk": "TODO_TRANSLATE_DISK",
-      "triangle": "TODO_TRANSLATE_TRIANGLE",
-      "cigar": "TODO_TRANSLATE_CIGAR",
-      "oval": "TODO_TRANSLATE_OVAL",
-      "cylinder": "TODO_TRANSLATE_CYLINDER",
-      "rectangle": "TODO_TRANSLATE_RECTANGLE",
-      "diamond": "TODO_TRANSLATE_DIAMOND",
-      "fireball": "TODO_TRANSLATE_FIREBALL",
-      "flash": "TODO_TRANSLATE_FLASH",
-      "formation": "TODO_TRANSLATE_FORMATION",
-      "changing": "TODO_TRANSLATE_CHANGING",
-      "chevron": "TODO_TRANSLATE_CHEVRON",
-      "cone": "TODO_TRANSLATE_CONE",
-      "cross": "TODO_TRANSLATE_CROSS",
-      "egg": "TODO_TRANSLATE_EGG",
-      "other": "TODO_TRANSLATE_OBJECT",
-      "unknown": "TODO_TRANSLATE_UNKNOWN_OBJECT"
-    },
-    "titleFormat": "TODO_TRANSLATE_NUFORC__CLASSIFICATION__REPORT"
+  "errors": {
+    "generic": "Er ging iets mis.",
+    "nolocation": "Locatie is niet beschikbaar. Probeer het nog eens buiten met helder uitzicht op de hemel.",
+    "nocamera": "Camera niet beschikbaar op dit apparaat.",
+    "uploadfailed": "Uploaden mislukt. Probeer het nog eens.",
+    "permissiondenied": "Toestemming geweigerd.",
+    "invalidusername": "Die gebruikersnaam is niet beschikbaar.",
+    "notfound": "Piep niet gevonden",
+    "loaderror": "Kon piepgegevens niet laden"
   },
   "media": {
-    "imageNotFound": "TODO_TRANSLATE_IMAGE_NOT_FOUND",
-    "playVideo": "TODO_TRANSLATE_PLAY_VIDEO",
-    "viewImage": "TODO_TRANSLATE_VIEW_IMAGE",
-    "mediaCount": "TODO_TRANSLATE__COUNT__IMAGES",
-    "mediaCountSingle": "TODO_TRANSLATE_1_IMAGE",
-    "moreImages": "TODO_TRANSLATE___COUNT__MORE"
+    "processing": "Media verwerken..",
+    "itemsprocessed": "Analyse: {count} mediabestand(s) verwerkt",
+    "imagenotfound": "Afbeelding niet gevonden",
+    "playvideo": "Video afspelen",
+    "viewimage": "Afbeelding bekijken",
+    "count": "{telling} afbeeldingen",
+    "countsingle": "1 afbeelding",
+    "moreimages": "+{telling} meer"
   },
-  "errors": {
-    "notFound": "TODO_TRANSLATE_BEEP_NOT_FOUND",
-    "loadError": "TODO_TRANSLATE_FAILED_TO_LOAD_BEEP_DETAILS"
+  "locationPermissionTitle": "Toegang tot de locatie vereist",
+  "locationPermissionBody": "Wij gebruiken uw locatie om waarschuwingen in de buurt te versturen en te ontvangen.",
+  "distance": {
+    "away": "weg",
+    "label": "Afstand",
+    "km": "km",
+    "miles": "mijl",
+    "nearby": "dichtbij"
+  },
+  "time": {
+    "justnow": "net",
+    "daysago": "{telling} geleden",
+    "hoursago": "{telling}h geleden",
+    "minutesago": "{telling}m geleden",
+    "label": "Tijd:",
+    "ago": "geleden",
+    "minutes": "m",
+    "hours": "h",
+    "days": "d"
+  },
+  "detailsTitle": "Gegevens",
+  "mufon": {
+    "classifications": {
+      "sphere": "Bol",
+      "light": "Licht",
+      "disk": "Schijf",
+      "triangle": "Driehoek",
+      "cigar": "Sigaren",
+      "oval": "Oval",
+      "cylinder": "Cilinder",
+      "rectangle": "Rechthoek",
+      "diamond": "Diamant",
+      "fireball": "Vuurbal",
+      "flash": "Flits",
+      "formation": "Vorming",
+      "changing": "Veranderen",
+      "chevron": "Chevron",
+      "cone": "Cone",
+      "cross": "Kruis",
+      "egg": "Eieren",
+      "other": "Object",
+      "unknown": "Onbekend object"
+    },
+    "case": "MUFON Zaak",
+    "casedetailstitle": "MUFON Zaak #{gevalnummer} Details",
+    "databaseentrydate": "Datum ingevoerd in MUFON Database",
+    "casetitle": "MUFON Zaak #{gevalnummer}",
+    "": "mufon",
+    "attribution": "MUFON Databaserapport",
+    "casenumber": "Zaak #",
+    "generictitle": "MUFON-waarnemingsrapport",
+    "titleformat": "MUFON {classificatie} Verslag"
+  },
+  "locationLabel": "Locatie:",
+  "unknownLocation": "Onbekende locatie",
+  "locationUnknown": "Locatie onbekend",
+  "backToBeeps": "← Terug naar Beeps",
+  "loadingDetails": "Bezig met laden van piepgegevens...",
+  "details": "Gegevens",
+  "location": "Locatie",
+  "ufobeep": {
+    "witnesses": "Getuigen",
+    "confirmations": "Bevestigingen",
+    "alertlevel": "Waarschuwingsniveau",
+    "reporttype": "UFObeep-rapport"
+  },
+  "nuforc": {
+    "classifications": {},
+    "attribution": "NUFORC Databaserapport",
+    "casenumber": "Zaak #",
+    "generictitle": "NUFORC Waarnemingsrapport"
   }
 }

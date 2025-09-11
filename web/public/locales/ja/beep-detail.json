@@ -1,92 +1,94 @@
 {
-  "backToBeeps": "TODO_TRANSLATE___BACK_TO_BEEPS",
-  "loadingDetails": "TODO_TRANSLATE_LOADING_BEEP_DETAILS___",
-  "details": "TODO_TRANSLATE_DETAILS",
-  "location": "TODO_TRANSLATE_LOCATION",
-  "unknownLocation": "TODO_TRANSLATE_UNKNOWN_LOCATION",
-  "time": {
-    "ago": "TODO_TRANSLATE_AGO",
-    "minutes": "TODO_TRANSLATE_M",
-    "hours": "TODO_TRANSLATE_H",
-    "days": "TODO_TRANSLATE_D",
-    "justNow": "TODO_TRANSLATE_JUST_NOW"
-  },
-  "distance": {
-    "away": "TODO_TRANSLATE_AWAY",
-    "km": "TODO_TRANSLATE_KM",
-    "miles": "TODO_TRANSLATE_MILES",
-    "nearby": "TODO_TRANSLATE_NEARBY"
-  },
-  "ufobeep": {
-    "witnesses": "TODO_TRANSLATE_WITNESSES",
-    "confirmations": "TODO_TRANSLATE_CONFIRMATIONS",
-    "alertLevel": "TODO_TRANSLATE_ALERT_LEVEL",
-    "reportType": "TODO_TRANSLATE_UFOBEEP_REPORT"
-  },
-  "mufon": {
-    "attribution": "TODO_TRANSLATE_MUFON_DATABASE_REPORT",
-    "caseNumber": "TODO_TRANSLATE_CASE__",
-    "genericTitle": "TODO_TRANSLATE_MUFON_SIGHTING_REPORT",
-    "classifications": {
-      "sphere": "TODO_TRANSLATE_SPHERE",
-      "light": "TODO_TRANSLATE_LIGHT",
-      "disk": "TODO_TRANSLATE_DISK",
-      "triangle": "TODO_TRANSLATE_TRIANGLE",
-      "cigar": "TODO_TRANSLATE_CIGAR",
-      "oval": "TODO_TRANSLATE_OVAL",
-      "cylinder": "TODO_TRANSLATE_CYLINDER",
-      "rectangle": "TODO_TRANSLATE_RECTANGLE",
-      "diamond": "TODO_TRANSLATE_DIAMOND",
-      "fireball": "TODO_TRANSLATE_FIREBALL",
-      "flash": "TODO_TRANSLATE_FLASH",
-      "formation": "TODO_TRANSLATE_FORMATION",
-      "changing": "TODO_TRANSLATE_CHANGING",
-      "chevron": "TODO_TRANSLATE_CHEVRON",
-      "cone": "TODO_TRANSLATE_CONE",
-      "cross": "TODO_TRANSLATE_CROSS",
-      "egg": "TODO_TRANSLATE_EGG",
-      "other": "TODO_TRANSLATE_OBJECT",
-      "unknown": "TODO_TRANSLATE_UNKNOWN_OBJECT"
-    },
-    "titleFormat": "TODO_TRANSLATE_MUFON__CLASSIFICATION__REPORT"
-  },
-  "nuforc": {
-    "attribution": "TODO_TRANSLATE_NUFORC_DATABASE_REPORT",
-    "caseNumber": "TODO_TRANSLATE_CASE__",
-    "genericTitle": "TODO_TRANSLATE_NUFORC_SIGHTING_REPORT",
-    "classifications": {
-      "sphere": "TODO_TRANSLATE_SPHERE",
-      "light": "TODO_TRANSLATE_LIGHT",
-      "disk": "TODO_TRANSLATE_DISK",
-      "triangle": "TODO_TRANSLATE_TRIANGLE",
-      "cigar": "TODO_TRANSLATE_CIGAR",
-      "oval": "TODO_TRANSLATE_OVAL",
-      "cylinder": "TODO_TRANSLATE_CYLINDER",
-      "rectangle": "TODO_TRANSLATE_RECTANGLE",
-      "diamond": "TODO_TRANSLATE_DIAMOND",
-      "fireball": "TODO_TRANSLATE_FIREBALL",
-      "flash": "TODO_TRANSLATE_FLASH",
-      "formation": "TODO_TRANSLATE_FORMATION",
-      "changing": "TODO_TRANSLATE_CHANGING",
-      "chevron": "TODO_TRANSLATE_CHEVRON",
-      "cone": "TODO_TRANSLATE_CONE",
-      "cross": "TODO_TRANSLATE_CROSS",
-      "egg": "TODO_TRANSLATE_EGG",
-      "other": "TODO_TRANSLATE_OBJECT",
-      "unknown": "TODO_TRANSLATE_UNKNOWN_OBJECT"
-    },
-    "titleFormat": "TODO_TRANSLATE_NUFORC__CLASSIFICATION__REPORT"
+  "errors": {
+    "generic": "何かが間違っていた.",
+    "nolocation": "利用できない場所 空を眺めながらもう一度お試しください.",
+    "nocamera": "このデバイスでカメラが利用できなくなった.",
+    "uploadfailed": "アップロードが失敗しました。 お問い合わせ.",
+    "permissiondenied": "許可が拒否されました.",
+    "invalidusername": "ユーザー名は利用できません.",
+    "notfound": "ビープが見つかりません",
+    "loaderror": "ビープの詳細を読み込む失敗"
   },
   "media": {
-    "imageNotFound": "TODO_TRANSLATE_IMAGE_NOT_FOUND",
-    "playVideo": "TODO_TRANSLATE_PLAY_VIDEO",
-    "viewImage": "TODO_TRANSLATE_VIEW_IMAGE",
-    "mediaCount": "TODO_TRANSLATE__COUNT__IMAGES",
-    "mediaCountSingle": "TODO_TRANSLATE_1_IMAGE",
-    "moreImages": "TODO_TRANSLATE___COUNT__MORE"
+    "processing": "加工媒体..",
+    "itemsprocessed": "解析: {count} 処理されたメディアファイル",
+    "imagenotfound": "画像が見つかりません",
+    "playvideo": "再生ビデオ",
+    "viewimage": "画像を見る",
+    "count": "{count} 画像",
+    "countsingle": "1 画像",
+    "moreimages": "+{count} 以上"
   },
-  "errors": {
-    "notFound": "TODO_TRANSLATE_BEEP_NOT_FOUND",
-    "loadError": "TODO_TRANSLATE_FAILED_TO_LOAD_BEEP_DETAILS"
+  "locationPermissionTitle": "必要な場所へのアクセス",
+  "locationPermissionBody": "近隣のアラートを送受信する場所を使用します.",
+  "distance": {
+    "away": "ふりがな",
+    "label": "アクセス",
+    "km": "マイル",
+    "miles": "マイル",
+    "nearby": "周辺エリア"
+  },
+  "time": {
+    "justnow": "ただ今",
+    "daysago": "{count}d 前に",
+    "hoursago": "{count}h 前に",
+    "minutesago": "{count}m 前に",
+    "label": "時間:",
+    "ago": "最近の投稿",
+    "minutes": "m",
+    "hours": "h",
+    "days": "d"
+  },
+  "detailsTitle": "ニュース",
+  "mufon": {
+    "classifications": {
+      "sphere": "スフィア",
+      "light": "ライトライト",
+      "disk": "ディスク",
+      "triangle": "トライアングル",
+      "cigar": "シガー",
+      "oval": "オーバル",
+      "cylinder": "シリンダー",
+      "rectangle": "長方形",
+      "diamond": "ダイヤモンド",
+      "fireball": "ファイアーボール",
+      "flash": "フラッシュ",
+      "formation": "フォーム",
+      "changing": "変更について",
+      "chevron": "シブロン",
+      "cone": "コーン",
+      "cross": "ログイン",
+      "egg": "ツイート",
+      "other": "オブジェクト",
+      "unknown": "未知のオブジェクト"
+    },
+    "case": "MUFONについて 導入事例",
+    "casedetailstitle": "MUFONについて ケース #{caseNumber} 詳細",
+    "databaseentrydate": "MUFON に入力された日付 データベース",
+    "casetitle": "MUFONについて ケース #{caseNumber}",
+    "": "ミュフォン",
+    "attribution": "MUFONについて データベースレポート",
+    "casenumber": "ケース #",
+    "generictitle": "MUFONサイティングレポート",
+    "titleformat": "MUFON {分類} レポート"
+  },
+  "locationLabel": "所在地:",
+  "unknownLocation": "未知の場所",
+  "locationUnknown": "所在地 不明",
+  "backToBeeps": "← ビープに戻る",
+  "loadingDetails": "ビープの詳細を読み込む...",
+  "details": "ニュース",
+  "location": "アクセス",
+  "ufobeep": {
+    "witnesses": "ウィッチネス",
+    "confirmations": "確認事項",
+    "alertlevel": "アラートレベル",
+    "reporttype": "UFOBeepレポート"
+  },
+  "nuforc": {
+    "classifications": {},
+    "attribution": "ログイン データベースレポート",
+    "casenumber": "ケース #",
+    "generictitle": "ログイン 観光レポート"
   }
 }

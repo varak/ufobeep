@@ -1,10 +1,1 @@
-{
-  "errorGeneric": "Er ging iets mis.",
-  "errorNoLocation": "Locatie is niet beschikbaar. Probeer het nog eens buiten met helder uitzicht op de hemel.",
-  "errorNoCamera": "Camera niet beschikbaar op dit apparaat.",
-  "errorUploadFailed": "Uploaden mislukt. Probeer het nog eens.",
-  "errorPermissionDenied": "Toestemming geweigerd.",
-  "errorInvalidUsername": "Die gebruikersnaam is niet beschikbaar.",
-  "errorNotFound": "Piep niet gevonden",
-  "errorLoadError": "Kon piepgegevens niet laden"
-}
+{}

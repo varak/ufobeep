@@ -8,7 +8,7 @@
   "beepFailed": "发送哔声失败 .",
   "alertDetailTitle": "查看细节",
   "alertsFilterHelp": "尝试调整过滤器以查看更多结果",
-  "beepOnly": "只有哔声",
+  "beepOnly": "仅报告",
   "alertRange": "警报范围",
   "ufoTypeSphere": "球体",
   "ufoTypeTriangle": "三角形",
@@ -56,8 +56,5 @@
   "shapeFormation": "编队",
   "shapeUnknown": "不详",
   "alertFollowError": "更新跟随状态出错",
-  "ufobeepWitnesses": "证人",
-  "ufobeepConfirmations": "确认",
-  "ufobeepAlertLevel": "警报级别",
-  "ufobeepReportType": "UFOUBUP 报告"
+  "alertLevel": "警报级别"
 }

@@ -1,10 +1,1 @@
-{
-  "errorGeneric": "حدث شيء خاطئ.",
-  "errorNoLocation": "المكان غير متاح حاول مرة أخرى في الخارج مع منظر السماء الواضح.",
-  "errorNoCamera": "الكاميرا غير متاحة على هذا الجهاز.",
-  "errorUploadFailed": "لقد فشلت الحمولة أرجوك حاول مرة أخرى.",
-  "errorPermissionDenied": "رفض الإذن.",
-  "errorInvalidUsername": "وهذا الاسم المستخدم غير متاح.",
-  "errorNotFound": "بيب لم يعثر عليه",
-  "errorLoadError": "فشل في تحميل تفاصيل الصافرة"
-}
+{}

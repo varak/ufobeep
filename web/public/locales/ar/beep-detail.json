@@ -1,92 +1,94 @@
 {
-  "backToBeeps": "TODO_TRANSLATE___BACK_TO_BEEPS",
-  "loadingDetails": "TODO_TRANSLATE_LOADING_BEEP_DETAILS___",
-  "details": "TODO_TRANSLATE_DETAILS",
-  "location": "TODO_TRANSLATE_LOCATION",
-  "unknownLocation": "TODO_TRANSLATE_UNKNOWN_LOCATION",
-  "time": {
-    "ago": "TODO_TRANSLATE_AGO",
-    "minutes": "TODO_TRANSLATE_M",
-    "hours": "TODO_TRANSLATE_H",
-    "days": "TODO_TRANSLATE_D",
-    "justNow": "TODO_TRANSLATE_JUST_NOW"
-  },
-  "distance": {
-    "away": "TODO_TRANSLATE_AWAY",
-    "km": "TODO_TRANSLATE_KM",
-    "miles": "TODO_TRANSLATE_MILES",
-    "nearby": "TODO_TRANSLATE_NEARBY"
-  },
-  "ufobeep": {
-    "witnesses": "TODO_TRANSLATE_WITNESSES",
-    "confirmations": "TODO_TRANSLATE_CONFIRMATIONS",
-    "alertLevel": "TODO_TRANSLATE_ALERT_LEVEL",
-    "reportType": "TODO_TRANSLATE_UFOBEEP_REPORT"
-  },
-  "mufon": {
-    "attribution": "TODO_TRANSLATE_MUFON_DATABASE_REPORT",
-    "caseNumber": "TODO_TRANSLATE_CASE__",
-    "genericTitle": "TODO_TRANSLATE_MUFON_SIGHTING_REPORT",
-    "classifications": {
-      "sphere": "TODO_TRANSLATE_SPHERE",
-      "light": "TODO_TRANSLATE_LIGHT",
-      "disk": "TODO_TRANSLATE_DISK",
-      "triangle": "TODO_TRANSLATE_TRIANGLE",
-      "cigar": "TODO_TRANSLATE_CIGAR",
-      "oval": "TODO_TRANSLATE_OVAL",
-      "cylinder": "TODO_TRANSLATE_CYLINDER",
-      "rectangle": "TODO_TRANSLATE_RECTANGLE",
-      "diamond": "TODO_TRANSLATE_DIAMOND",
-      "fireball": "TODO_TRANSLATE_FIREBALL",
-      "flash": "TODO_TRANSLATE_FLASH",
-      "formation": "TODO_TRANSLATE_FORMATION",
-      "changing": "TODO_TRANSLATE_CHANGING",
-      "chevron": "TODO_TRANSLATE_CHEVRON",
-      "cone": "TODO_TRANSLATE_CONE",
-      "cross": "TODO_TRANSLATE_CROSS",
-      "egg": "TODO_TRANSLATE_EGG",
-      "other": "TODO_TRANSLATE_OBJECT",
-      "unknown": "TODO_TRANSLATE_UNKNOWN_OBJECT"
-    },
-    "titleFormat": "TODO_TRANSLATE_MUFON__CLASSIFICATION__REPORT"
-  },
-  "nuforc": {
-    "attribution": "TODO_TRANSLATE_NUFORC_DATABASE_REPORT",
-    "caseNumber": "TODO_TRANSLATE_CASE__",
-    "genericTitle": "TODO_TRANSLATE_NUFORC_SIGHTING_REPORT",
-    "classifications": {
-      "sphere": "TODO_TRANSLATE_SPHERE",
-      "light": "TODO_TRANSLATE_LIGHT",
-      "disk": "TODO_TRANSLATE_DISK",
-      "triangle": "TODO_TRANSLATE_TRIANGLE",
-      "cigar": "TODO_TRANSLATE_CIGAR",
-      "oval": "TODO_TRANSLATE_OVAL",
-      "cylinder": "TODO_TRANSLATE_CYLINDER",
-      "rectangle": "TODO_TRANSLATE_RECTANGLE",
-      "diamond": "TODO_TRANSLATE_DIAMOND",
-      "fireball": "TODO_TRANSLATE_FIREBALL",
-      "flash": "TODO_TRANSLATE_FLASH",
-      "formation": "TODO_TRANSLATE_FORMATION",
-      "changing": "TODO_TRANSLATE_CHANGING",
-      "chevron": "TODO_TRANSLATE_CHEVRON",
-      "cone": "TODO_TRANSLATE_CONE",
-      "cross": "TODO_TRANSLATE_CROSS",
-      "egg": "TODO_TRANSLATE_EGG",
-      "other": "TODO_TRANSLATE_OBJECT",
-      "unknown": "TODO_TRANSLATE_UNKNOWN_OBJECT"
-    },
-    "titleFormat": "TODO_TRANSLATE_NUFORC__CLASSIFICATION__REPORT"
+  "errors": {
+    "generic": "حدث شيء خاطئ.",
+    "nolocation": "المكان غير متاح حاول مرة أخرى في الخارج مع منظر السماء الواضح.",
+    "nocamera": "الكاميرا غير متاحة على هذا الجهاز.",
+    "uploadfailed": "لقد فشلت الحمولة أرجوك حاول مرة أخرى.",
+    "permissiondenied": "رفض الإذن.",
+    "invalidusername": "وهذا الاسم المستخدم غير متاح.",
+    "notfound": "بيب لم يعثر عليه",
+    "loaderror": "فشل في تحميل تفاصيل الصافرة"
   },
   "media": {
-    "imageNotFound": "TODO_TRANSLATE_IMAGE_NOT_FOUND",
-    "playVideo": "TODO_TRANSLATE_PLAY_VIDEO",
-    "viewImage": "TODO_TRANSLATE_VIEW_IMAGE",
-    "mediaCount": "TODO_TRANSLATE__COUNT__IMAGES",
-    "mediaCountSingle": "TODO_TRANSLATE_1_IMAGE",
-    "moreImages": "TODO_TRANSLATE___COUNT__MORE"
+    "processing": "وسائل الإعلام",
+    "itemsprocessed": "Analysis: {count} media file(s) processed",
+    "imagenotfound": "لم يعثر على صورة",
+    "playvideo": "العب فيديو",
+    "viewimage": "الصورة البصرية",
+    "count": "{الصور }",
+    "countsingle": "صورة واحدة",
+    "moreimages": "أكثر"
   },
-  "errors": {
-    "notFound": "TODO_TRANSLATE_BEEP_NOT_FOUND",
-    "loadError": "TODO_TRANSLATE_FAILED_TO_LOAD_BEEP_DETAILS"
+  "locationPermissionTitle": "الحاجة إلى الوصول إلى الموقع",
+  "locationPermissionBody": "نستخدم موقعك لإرسال وإستلام إنذارات قريبة.",
+  "distance": {
+    "away": "بعيدا",
+    "label": "المسافة",
+    "km": "km",
+    "miles": "الأميال",
+    "nearby": "قريب"
+  },
+  "time": {
+    "justnow": "الآن",
+    "daysago": "قبل",
+    "hoursago": "منذ",
+    "minutesago": "منذ",
+    "label": "الوقت:",
+    "ago": "منذ",
+    "minutes": "m",
+    "hours": "h",
+    "days": "d"
+  },
+  "detailsTitle": "التفاصيل",
+  "mufon": {
+    "classifications": {
+      "sphere": "نصف الكرة",
+      "light": "الضوء",
+      "disk": "Disk",
+      "triangle": "المثلث",
+      "cigar": "سيجار",
+      "oval": "Oval",
+      "cylinder": "Cylinder",
+      "rectangle": "Rectangle",
+      "diamond": "الماس",
+      "fireball": "كرة نارية",
+      "flash": "فلاش",
+      "formation": "الاستمارة",
+      "changing": "التغير",
+      "chevron": "Chevron",
+      "cone": "Cone",
+      "cross": "الصليب",
+      "egg": "البيض",
+      "other": "اعتراض",
+      "unknown": "غير معروف"
+    },
+    "case": "MUFON القضية",
+    "casedetailstitle": "MUFON Case #{caseNumber} details",
+    "databaseentrydate": "تاريخ دخوله قاعدة البيانات",
+    "casetitle": "MUFON القضية",
+    "": "mufon",
+    "attribution": "MUFON تقرير قاعدة البيانات",
+    "casenumber": "القضية",
+    "generictitle": "تقرير المصارعة",
+    "titleformat": "MUFON {classification} التقرير"
+  },
+  "locationLabel": "الموقع:",
+  "unknownLocation": "مكان مجهول",
+  "locationUnknown": "الموقع غير معروف",
+  "backToBeeps": "♪ العودة إلى بيبس ♪",
+  "loadingDetails": "تفاصيل الصافرة.",
+  "details": "التفاصيل",
+  "location": "الموقع",
+  "ufobeep": {
+    "witnesses": "الشهود",
+    "confirmations": "التأكيدات",
+    "alertlevel": "مستوى الإنذار",
+    "reporttype": "التقرير الأول"
+  },
+  "nuforc": {
+    "classifications": {},
+    "attribution": "NUFORC تقرير قاعدة البيانات",
+    "casenumber": "القضية",
+    "generictitle": "NUFORC Sighting Report"
   }
 }

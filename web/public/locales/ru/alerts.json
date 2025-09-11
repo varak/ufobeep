@@ -8,7 +8,7 @@
   "beepFailed": "Не удалось отправить Бип.",
   "alertDetailTitle": "Прицельные детали",
   "alertsFilterHelp": "Попробуйте настроить фильтры, чтобы увидеть больше результатов",
-  "beepOnly": "только гудок",
+  "beepOnly": "Только отчет",
   "alertRange": "Диапазон тревоги",
   "ufoTypeSphere": "Сфера",
   "ufoTypeTriangle": "Треугольник",
@@ -56,8 +56,5 @@
   "shapeFormation": "формирование",
   "shapeUnknown": "неизвестный",
   "alertFollowError": "Обновление ошибок Следуйте за статусом",
-  "ufobeepWitnesses": "Свидетели",
-  "ufobeepConfirmations": "Подтверждения",
-  "ufobeepAlertLevel": "Уровень оповещения",
-  "ufobeepReportType": "Об этом сообщает UFOBeep"
+  "alertLevel": "Уровень оповещения"
 }
