@@ -1,8 +1,1 @@
-{
-  "errorGeneric": "Algo salió mal.",
-  "errorNoLocation": "Ubicación no disponible. Pruebe de nuevo afuera con vista clara al cielo.",
-  "errorNoCamera": "Cámara no disponible en este dispositivo.",
-  "errorUploadFailed": "La carga falló. Por favor, inténtalo de nuevo.",
-  "errorPermissionDenied": "Permiso negado.",
-  "errorInvalidUsername": "Ese nombre de usuario no está disponible."
-}
+{}

@@ -55,5 +55,9 @@
   "shapeFireball": "πυρόμπαλα",
   "shapeFormation": "σχηματισμός",
   "shapeUnknown": "άγνωστο",
-  "alertFollowError": "Σφάλμα ενημέρωσης της κατάστασης"
+  "alertFollowError": "Σφάλμα ενημέρωσης της κατάστασης",
+  "ufobeepWitnesses": "Μάρτυρες",
+  "ufobeepConfirmations": "Επιβεβαίωση",
+  "ufobeepAlertLevel": "Επίπεδο συναγερμού",
+  "ufobeepReportType": "Αναφορά UFOBeep"
 }

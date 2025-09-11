@@ -55,5 +55,9 @@
   "shapeFireball": "풋볼",
   "shapeFormation": "주요연혁",
   "shapeUnknown": "이름 *",
-  "alertFollowError": "에러 updating 따라 상태"
+  "alertFollowError": "에러 updating 따라 상태",
+  "ufobeepWitnesses": "뚱 베어",
+  "ufobeepConfirmations": "이름 *",
+  "ufobeepAlertLevel": "출력 레벨",
+  "ufobeepReportType": "UFOBeep 보고서"
 }

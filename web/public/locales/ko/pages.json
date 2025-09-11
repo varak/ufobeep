@@ -1,5 +1,6 @@
 {
   "welcomeTitle": "UFOBeep에 오신 것을 환영합니다",
   "settings": "지원하다",
-  "settingsTitle": "지원하다"
+  "settingsTitle": "지원하다",
+  "pageOf": "페이지 {current 페이지} 의 {totalPages} ({totalCount} 총 금액)"
 }

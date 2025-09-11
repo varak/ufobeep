@@ -55,5 +55,9 @@
   "shapeFireball": "vuurbal",
   "shapeFormation": "vorming",
   "shapeUnknown": "onbekend",
-  "alertFollowError": "Fout bij bijwerken van volgstatus"
+  "alertFollowError": "Fout bij bijwerken van volgstatus",
+  "ufobeepWitnesses": "Getuigen",
+  "ufobeepConfirmations": "Bevestigingen",
+  "ufobeepAlertLevel": "Waarschuwingsniveau",
+  "ufobeepReportType": "UFObeep-rapport"
 }

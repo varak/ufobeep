@@ -1,5 +1,6 @@
 {
   "welcomeTitle": "UFOBeep में आपका स्वागत है",
   "settings": "सेटिंग",
-  "settingsTitle": "सेटिंग"
+  "settingsTitle": "सेटिंग",
+  "pageOf": "पृष्ठ {current {totalPages} ({totalCount} कुल beeps)"
 }

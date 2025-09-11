@@ -4,5 +4,7 @@
   "errorNoCamera": "Kamera bu cihazda mevcut değil.",
   "errorUploadFailed": "Yükleme başarısız oldu. Lütfen tekrar deneyin.",
   "errorPermissionDenied": "İzin inkar etti.",
-  "errorInvalidUsername": "Bu kullanıcı mevcut değildir."
+  "errorInvalidUsername": "Bu kullanıcı mevcut değildir.",
+  "errorNotFound": "Arıp bulunamadı",
+  "errorLoadError": "Beep detaylarını yüklemek için başarısız oldu"
 }

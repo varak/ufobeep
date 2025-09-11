@@ -1,5 +1,6 @@
 {
   "welcomeTitle": "UFOBeepへようこそ",
   "settings": "コンテンツ",
-  "settingsTitle": "コンテンツ"
+  "settingsTitle": "コンテンツ",
+  "pageOf": "ページの先頭へ {totalPages} ({totalCount} 総ビープ) のページ}"
 }

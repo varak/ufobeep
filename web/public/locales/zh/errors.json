@@ -4,5 +4,7 @@
   "errorNoCamera": "此设备没有摄像头 .",
   "errorUploadFailed": "上传失败 。 请再试一次.",
   "errorPermissionDenied": "拒绝许可.",
-  "errorInvalidUsername": "这个用户名不可用 ."
+  "errorInvalidUsername": "这个用户名不可用 .",
+  "errorNotFound": "未找到哔声",
+  "errorLoadError": "装入哔声细节失败"
 }

@@ -55,5 +55,9 @@
   "shapeFireball": "サッカー",
   "shapeFormation": "フォーム",
   "shapeUnknown": "インフォメーション",
-  "alertFollowError": "エラー更新 ステータスをフォローする"
+  "alertFollowError": "エラー更新 ステータスをフォローする",
+  "ufobeepWitnesses": "ウィッチネス",
+  "ufobeepConfirmations": "確認事項",
+  "ufobeepAlertLevel": "アラートレベル",
+  "ufobeepReportType": "UFOBeepレポート"
 }

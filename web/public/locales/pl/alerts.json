@@ -55,5 +55,9 @@
   "shapeFireball": "fireball",
   "shapeFormation": "powstawanie",
   "shapeUnknown": "nieznany",
-  "alertFollowError": "Błąd podczas aktualizacji statusu folderu"
+  "alertFollowError": "Błąd podczas aktualizacji statusu folderu",
+  "ufobeepWitnesses": "Świadkowie",
+  "ufobeepConfirmations": "Potwierdzenia",
+  "ufobeepAlertLevel": "Poziom alarmowy",
+  "ufobeepReportType": "Raport UFOBeep"
 }

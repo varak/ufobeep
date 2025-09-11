@@ -1,5 +1,6 @@
 {
   "welcomeTitle": "Tervetuloa UFO- piippiin",
   "settings": "Asetukset",
-  "settingsTitle": "Asetukset"
+  "settingsTitle": "Asetukset",
+  "pageOf": "Sivu {nykyinen Sivu} of {totalPages} ({totalCount} total beeps)"
 }

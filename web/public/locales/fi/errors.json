@@ -4,5 +4,7 @@
   "errorNoCamera": "Tällä laitteella ei ole kameraa.",
   "errorUploadFailed": "Lähetys epäonnistui. Yritä uudestaan.",
   "errorPermissionDenied": "Lupa evätty.",
-  "errorInvalidUsername": "Tämä käyttäjätunnus ei ole saatavilla."
+  "errorInvalidUsername": "Tämä käyttäjätunnus ei ole saatavilla.",
+  "errorNotFound": "Piip ei löytynyt",
+  "errorLoadError": "Piippauksen yksityiskohtia ei voitu ladata"
 }

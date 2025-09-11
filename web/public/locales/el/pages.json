@@ -1,5 +1,6 @@
 {
   "welcomeTitle": "Καλώς ήρθατε στο UFOBeep",
   "settings": "Settings",
-  "settingsTitle": "Settings"
+  "settingsTitle": "Settings",
+  "pageOf": "Σελίδα {τρέχων Σελίδα} του {σύνολο σελίδων}"
 }

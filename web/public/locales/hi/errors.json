@@ -4,5 +4,7 @@
   "errorNoCamera": "इस उपकरण पर कैमरा अनुपलब्ध है।.",
   "errorUploadFailed": "अपलोड विफल रहा। फिर से प्रयास करें।.",
   "errorPermissionDenied": "अनुमति से इनकार कर दिया।.",
-  "errorInvalidUsername": "यह उपयोगकर्ता नाम उपलब्ध नहीं है।."
+  "errorInvalidUsername": "यह उपयोगकर्ता नाम उपलब्ध नहीं है।.",
+  "errorNotFound": "बीप नहीं मिला",
+  "errorLoadError": "बीप विवरण लोड करने में विफल"
 }

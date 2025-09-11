@@ -1,8 +1,1 @@
-{
-  "errorGeneric": "Qualcosa è andato storto.",
-  "errorNoLocation": "Posizione non disponibile. Riprova fuori con vista cielo chiaro.",
-  "errorNoCamera": "Macchina fotografica non disponibile su questo dispositivo.",
-  "errorUploadFailed": "Il carico e' fallito. Per favore riprovate.",
-  "errorPermissionDenied": "Permesso negato.",
-  "errorInvalidUsername": "Questo nome utente non è disponibile."
-}
+{}

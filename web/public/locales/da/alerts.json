@@ -55,5 +55,9 @@
   "shapeFireball": "ildkugle",
   "shapeFormation": "formation",
   "shapeUnknown": "ukendt",
-  "alertFollowError": "Fejl under opdatering af følg status"
+  "alertFollowError": "Fejl under opdatering af følg status",
+  "ufobeepWitnesses": "Vidner",
+  "ufobeepConfirmations": "Bekræfter",
+  "ufobeepAlertLevel": "Alarmniveau",
+  "ufobeepReportType": "UFOBeep-rapport"
 }

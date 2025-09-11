@@ -4,5 +4,7 @@
   "errorNoCamera": "Camera niet beschikbaar op dit apparaat.",
   "errorUploadFailed": "Uploaden mislukt. Probeer het nog eens.",
   "errorPermissionDenied": "Toestemming geweigerd.",
-  "errorInvalidUsername": "Die gebruikersnaam is niet beschikbaar."
+  "errorInvalidUsername": "Die gebruikersnaam is niet beschikbaar.",
+  "errorNotFound": "Piep niet gevonden",
+  "errorLoadError": "Kon piepgegevens niet laden"
 }

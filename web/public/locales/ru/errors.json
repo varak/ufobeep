@@ -4,5 +4,7 @@
   "errorNoCamera": "Камера недоступна на этом устройстве.",
   "errorUploadFailed": "Загрузить не удалось. Пожалуйста, попробуйте еще раз.",
   "errorPermissionDenied": "Разрешение отказано.",
-  "errorInvalidUsername": "Это имя пользователя недоступно."
+  "errorInvalidUsername": "Это имя пользователя недоступно.",
+  "errorNotFound": "Бип не найден",
+  "errorLoadError": "Не удалось загрузить детали звукового сигнала"
 }

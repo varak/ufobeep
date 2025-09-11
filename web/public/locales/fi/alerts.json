@@ -55,5 +55,9 @@
   "shapeFireball": "tulipallo",
   "shapeFormation": "muodostuminen",
   "shapeUnknown": "tuntematon",
-  "alertFollowError": "Virhe seurauksen tilan päivittämisessä"
+  "alertFollowError": "Virhe seurauksen tilan päivittämisessä",
+  "ufobeepWitnesses": "Todistajat",
+  "ufobeepConfirmations": "Vahvistukset",
+  "ufobeepAlertLevel": "Varoitustaso",
+  "ufobeepReportType": "UFOBeepin raportti"
 }

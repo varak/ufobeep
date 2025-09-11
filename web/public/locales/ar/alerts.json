@@ -55,5 +55,9 @@
   "shapeFireball": "إطلاق النار",
   "shapeFormation": "التشكيل",
   "shapeUnknown": "مجهول",
-  "alertFollowError": "استكمال الأخطاء"
+  "alertFollowError": "استكمال الأخطاء",
+  "ufobeepWitnesses": "الشهود",
+  "ufobeepConfirmations": "التأكيدات",
+  "ufobeepAlertLevel": "مستوى الإنذار",
+  "ufobeepReportType": "التقرير الأول"
 }

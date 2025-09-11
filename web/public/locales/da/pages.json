@@ -1,5 +1,6 @@
 {
   "welcomeTitle": "Velkommen til UFOBeep",
   "settings": "Indstillinger",
-  "settingsTitle": "Indstillinger"
+  "settingsTitle": "Indstillinger",
+  "pageOf": "Side {nuværende Side} af {totalsider} ({totaltal} totalt bip)"
 }

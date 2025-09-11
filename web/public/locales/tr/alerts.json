@@ -55,5 +55,9 @@
   "shapeFireball": "fireball",
   "shapeFormation": "formasyon",
   "shapeUnknown": "bilinmeyen",
-  "alertFollowError": "Hata Güncellemesi"
+  "alertFollowError": "Hata Güncellemesi",
+  "ufobeepWitnesses": "Tanık Şahitler",
+  "ufobeepConfirmations": "Onaylamalar",
+  "ufobeepAlertLevel": "Uyarı Düzeyi",
+  "ufobeepReportType": "UFOBeep Report"
 }

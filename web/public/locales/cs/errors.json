@@ -4,5 +4,7 @@
   "errorNoCamera": "Kamera není na tomto zařízení k dispozici.",
   "errorUploadFailed": "Nahrávání selhalo. Prosím, zkuste to znovu.",
   "errorPermissionDenied": "Povolení zamítnuto.",
-  "errorInvalidUsername": "To uživatelské jméno není k dispozici."
+  "errorInvalidUsername": "To uživatelské jméno není k dispozici.",
+  "errorNotFound": "Píp nenalezen",
+  "errorLoadError": "Nepodařilo se načíst detaily pípnutí"
 }

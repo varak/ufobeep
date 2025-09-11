@@ -4,5 +4,7 @@
   "errorNoCamera": "Kamera otillgänglig på denna enhet.",
   "errorUploadFailed": "Uppladdning misslyckades. Försök igen.",
   "errorPermissionDenied": "Tillstånd förnekas.",
-  "errorInvalidUsername": "Det användarnamnet är inte tillgängligt."
+  "errorInvalidUsername": "Det användarnamnet är inte tillgängligt.",
+  "errorNotFound": "Beep hittades inte",
+  "errorLoadError": "Misslyckades med att ladda beep detaljer"
 }

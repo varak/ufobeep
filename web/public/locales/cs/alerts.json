@@ -55,5 +55,9 @@
   "shapeFireball": "ohnivá koule",
   "shapeFormation": "tvorba",
   "shapeUnknown": "neznámý",
-  "alertFollowError": "Chyba při aktualizaci stavu sledování"
+  "alertFollowError": "Chyba při aktualizaci stavu sledování",
+  "ufobeepWitnesses": "Svědci",
+  "ufobeepConfirmations": "Potvrzení",
+  "ufobeepAlertLevel": "Úroveň upozornění",
+  "ufobeepReportType": "Zpráva UFOBeep"
 }

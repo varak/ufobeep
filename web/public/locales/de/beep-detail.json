@@ -1,92 +1,94 @@
 {
-  "backToBeeps": "TODO_TRANSLATE___BACK_TO_BEEPS",
-  "loadingDetails": "TODO_TRANSLATE_LOADING_BEEP_DETAILS___",
-  "details": "TODO_TRANSLATE_DETAILS",
-  "location": "TODO_TRANSLATE_LOCATION",
-  "unknownLocation": "TODO_TRANSLATE_UNKNOWN_LOCATION",
-  "time": {
-    "ago": "TODO_TRANSLATE_AGO",
-    "minutes": "TODO_TRANSLATE_M",
-    "hours": "TODO_TRANSLATE_H",
-    "days": "TODO_TRANSLATE_D",
-    "justNow": "TODO_TRANSLATE_JUST_NOW"
-  },
-  "distance": {
-    "away": "TODO_TRANSLATE_AWAY",
-    "km": "TODO_TRANSLATE_KM",
-    "miles": "TODO_TRANSLATE_MILES",
-    "nearby": "TODO_TRANSLATE_NEARBY"
-  },
-  "ufobeep": {
-    "witnesses": "TODO_TRANSLATE_WITNESSES",
-    "confirmations": "TODO_TRANSLATE_CONFIRMATIONS",
-    "alertLevel": "TODO_TRANSLATE_ALERT_LEVEL",
-    "reportType": "TODO_TRANSLATE_UFOBEEP_REPORT"
-  },
-  "mufon": {
-    "attribution": "TODO_TRANSLATE_MUFON_DATABASE_REPORT",
-    "caseNumber": "TODO_TRANSLATE_CASE__",
-    "genericTitle": "TODO_TRANSLATE_MUFON_SIGHTING_REPORT",
-    "classifications": {
-      "sphere": "TODO_TRANSLATE_SPHERE",
-      "light": "TODO_TRANSLATE_LIGHT",
-      "disk": "TODO_TRANSLATE_DISK",
-      "triangle": "TODO_TRANSLATE_TRIANGLE",
-      "cigar": "TODO_TRANSLATE_CIGAR",
-      "oval": "TODO_TRANSLATE_OVAL",
-      "cylinder": "TODO_TRANSLATE_CYLINDER",
-      "rectangle": "TODO_TRANSLATE_RECTANGLE",
-      "diamond": "TODO_TRANSLATE_DIAMOND",
-      "fireball": "TODO_TRANSLATE_FIREBALL",
-      "flash": "TODO_TRANSLATE_FLASH",
-      "formation": "TODO_TRANSLATE_FORMATION",
-      "changing": "TODO_TRANSLATE_CHANGING",
-      "chevron": "TODO_TRANSLATE_CHEVRON",
-      "cone": "TODO_TRANSLATE_CONE",
-      "cross": "TODO_TRANSLATE_CROSS",
-      "egg": "TODO_TRANSLATE_EGG",
-      "other": "TODO_TRANSLATE_OBJECT",
-      "unknown": "TODO_TRANSLATE_UNKNOWN_OBJECT"
-    },
-    "titleFormat": "TODO_TRANSLATE_MUFON__CLASSIFICATION__REPORT"
-  },
-  "nuforc": {
-    "attribution": "TODO_TRANSLATE_NUFORC_DATABASE_REPORT",
-    "caseNumber": "TODO_TRANSLATE_CASE__",
-    "genericTitle": "TODO_TRANSLATE_NUFORC_SIGHTING_REPORT",
-    "classifications": {
-      "sphere": "TODO_TRANSLATE_SPHERE",
-      "light": "TODO_TRANSLATE_LIGHT",
-      "disk": "TODO_TRANSLATE_DISK",
-      "triangle": "TODO_TRANSLATE_TRIANGLE",
-      "cigar": "TODO_TRANSLATE_CIGAR",
-      "oval": "TODO_TRANSLATE_OVAL",
-      "cylinder": "TODO_TRANSLATE_CYLINDER",
-      "rectangle": "TODO_TRANSLATE_RECTANGLE",
-      "diamond": "TODO_TRANSLATE_DIAMOND",
-      "fireball": "TODO_TRANSLATE_FIREBALL",
-      "flash": "TODO_TRANSLATE_FLASH",
-      "formation": "TODO_TRANSLATE_FORMATION",
-      "changing": "TODO_TRANSLATE_CHANGING",
-      "chevron": "TODO_TRANSLATE_CHEVRON",
-      "cone": "TODO_TRANSLATE_CONE",
-      "cross": "TODO_TRANSLATE_CROSS",
-      "egg": "TODO_TRANSLATE_EGG",
-      "other": "TODO_TRANSLATE_OBJECT",
-      "unknown": "TODO_TRANSLATE_UNKNOWN_OBJECT"
-    },
-    "titleFormat": "TODO_TRANSLATE_NUFORC__CLASSIFICATION__REPORT"
+  "errors": {
+    "generic": "Etwas ging schief.",
+    "nolocation": "Standort nicht verfügbar. Versuchen Sie wieder draußen mit klarem Himmelblick.",
+    "nocamera": "Kamera auf diesem Gerät nicht verfügbar.",
+    "uploadfailed": "Hochladen versagt. Bitte versuchen Sie es noch mal.",
+    "permissiondenied": "Erlaubnis verweigert.",
+    "invalidusername": "Dieser Benutzername ist nicht verfügbar.",
+    "notfound": "Beep nicht gefunden",
+    "loaderror": "Versäumt, um Details zu laden"
   },
   "media": {
-    "imageNotFound": "TODO_TRANSLATE_IMAGE_NOT_FOUND",
-    "playVideo": "TODO_TRANSLATE_PLAY_VIDEO",
-    "viewImage": "TODO_TRANSLATE_VIEW_IMAGE",
-    "mediaCount": "TODO_TRANSLATE__COUNT__IMAGES",
-    "mediaCountSingle": "TODO_TRANSLATE_1_IMAGE",
-    "moreImages": "TODO_TRANSLATE___COUNT__MORE"
+    "processing": "Medien bearbeiten..",
+    "itemsprocessed": "Analyse: {count} Mediendatei(en) verarbeitet",
+    "imagenotfound": "Bild nicht gefunden",
+    "playvideo": "Video spielen",
+    "viewimage": "Bild anzeigen",
+    "count": "{count} bilder",
+    "countsingle": "1 bild",
+    "moreimages": "+{count} mehr"
   },
-  "errors": {
-    "notFound": "TODO_TRANSLATE_BEEP_NOT_FOUND",
-    "loadError": "TODO_TRANSLATE_FAILED_TO_LOAD_BEEP_DETAILS"
+  "locationPermissionTitle": "Standortzugang erforderlich",
+  "locationPermissionBody": "Wir nutzen Ihren Standort, um Alarme in der Nähe zu senden und zu empfangen.",
+  "distance": {
+    "away": "weg",
+    "label": "Entfernung",
+    "km": "km",
+    "miles": "meilen",
+    "nearby": "in der nähe"
+  },
+  "time": {
+    "justnow": "jetzt",
+    "daysago": "vorher",
+    "hoursago": "vorher",
+    "minutesago": "vorher",
+    "label": "Zeit",
+    "ago": "vorwärts",
+    "minutes": "m",
+    "hours": "h",
+    "days": "d"
+  },
+  "detailsTitle": "Details",
+  "mufon": {
+    "classifications": {
+      "sphere": "Sphäre",
+      "light": "Licht",
+      "disk": "Festplattenspeicher",
+      "triangle": "Dreieck",
+      "cigar": "Zigarren",
+      "oval": "Oval",
+      "cylinder": "Zylinder",
+      "rectangle": "Rechteck",
+      "diamond": "Diamant",
+      "fireball": "Feuerball",
+      "flash": "Flash",
+      "formation": "Bildung",
+      "changing": "Ändern",
+      "chevron": "Chevron",
+      "cone": "Cone",
+      "cross": "Kreuz",
+      "egg": "Eier",
+      "other": "Gegenstand",
+      "unknown": "Unbekanntes Objekt"
+    },
+    "case": "MUFON Rechtssache",
+    "casedetailstitle": "MUFON Fall #{caseNumber} Details",
+    "databaseentrydate": "Eingetragen in MUFON Datenbank",
+    "casetitle": "MUFON Rechtssache",
+    "": "melonen",
+    "attribution": "MUFON Datenbankbericht",
+    "casenumber": "Fall",
+    "generictitle": "MUFON Sighting Report",
+    "titleformat": "MUFON {Klassifikation} Bericht"
+  },
+  "locationLabel": "Standort",
+  "unknownLocation": "Unbekannte Lage",
+  "locationUnknown": "Ort Unbekannt",
+  "backToBeeps": "Passwort vergessen",
+  "loadingDetails": "Beep Details laden...",
+  "details": "Details",
+  "location": "Standort",
+  "ufobeep": {
+    "witnesses": "Zeugen",
+    "confirmations": "Bestätigungen",
+    "alertlevel": "Alarmstufe",
+    "reporttype": "UFOBeep Report"
+  },
+  "nuforc": {
+    "classifications": {},
+    "attribution": "NUFORC Datenbankbericht",
+    "casenumber": "Fall",
+    "generictitle": "NUFORC Sichtbericht"
   }
 }

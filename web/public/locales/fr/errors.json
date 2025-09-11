@@ -1,8 +1,1 @@
-{
-  "errorGeneric": "Quelque chose s'est mal passé.",
-  "errorNoLocation": "Emplacement non disponible. Essayez de nouveau dehors avec une vue dégagée du ciel.",
-  "errorNoCamera": "Caméra non disponible sur cet appareil.",
-  "errorUploadFailed": "Le chargement a échoué. Veuillez réessayer.",
-  "errorPermissionDenied": "Autorisation refusée.",
-  "errorInvalidUsername": "Ce nom d'utilisateur n'est pas disponible."
-}
+{}

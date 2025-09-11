@@ -55,5 +55,9 @@
   "shapeFireball": "כדור אש",
   "shapeFormation": "היווצרות",
   "shapeUnknown": "לא ידוע",
-  "alertFollowError": "עדכון מצב"
+  "alertFollowError": "עדכון מצב",
+  "ufobeepWitnesses": "עדים",
+  "ufobeepConfirmations": "אישורים",
+  "ufobeepAlertLevel": "רמת התראה",
+  "ufobeepReportType": "דוח UFOBeep"
 }

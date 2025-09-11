@@ -55,5 +55,9 @@
   "shapeFireball": "fireball",
   "shapeFormation": "bildandet",
   "shapeUnknown": "okänd",
-  "alertFollowError": "Feluppdatering följer status"
+  "alertFollowError": "Feluppdatering följer status",
+  "ufobeepWitnesses": "Vittnen",
+  "ufobeepConfirmations": "Bekräftelser",
+  "ufobeepAlertLevel": "Alert Level",
+  "ufobeepReportType": "UFOBeep-rapport"
 }

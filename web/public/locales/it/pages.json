@@ -1,5 +1,6 @@
 {
   "welcomeTitle": "Benvenuti a UFOBeep",
   "settings": "Impostazioni impostazioni",
-  "settingsTitle": "Impostazioni impostazioni"
+  "settingsTitle": "Impostazioni impostazioni",
+  "pageOf": "Articolo Page} di {totalPages} ({totalCount} total beeps)"
 }

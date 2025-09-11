@@ -1,5 +1,6 @@
 {
   "welcomeTitle": "Добро пожаловать в UFOBeep",
   "settings": "Настройки",
-  "settingsTitle": "Настройки"
+  "settingsTitle": "Настройки",
+  "pageOf": "Страница {текущая} Страница {totalPages} ({totalCount} полные звуковые сигналы)"
 }

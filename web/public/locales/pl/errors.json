@@ -4,5 +4,7 @@
   "errorNoCamera": "Kamera niedostępna na tym urządzeniu.",
   "errorUploadFailed": "Wysyłanie nie powiodło się. Proszę spróbować jeszcze raz.",
   "errorPermissionDenied": "Odmawiam.",
-  "errorInvalidUsername": "Ta nazwa użytkownika nie jest dostępna."
+  "errorInvalidUsername": "Ta nazwa użytkownika nie jest dostępna.",
+  "errorNotFound": "Beep nie znaleziono",
+  "errorLoadError": "Nie udało się wczytać szczegółów sygnału"
 }

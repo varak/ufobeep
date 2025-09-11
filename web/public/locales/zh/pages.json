@@ -1,5 +1,6 @@
 {
   "welcomeTitle": "欢迎来到UFOBEP",
   "settings": "设置",
-  "settingsTitle": "设置"
+  "settingsTitle": "设置",
+  "pageOf": "页面 {当前 页面} {totalPages} ({totalCount} 总哔声)"
 }

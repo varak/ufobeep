@@ -55,5 +55,9 @@
   "shapeFireball": "огненный шар",
   "shapeFormation": "формирование",
   "shapeUnknown": "неизвестный",
-  "alertFollowError": "Обновление ошибок Следуйте за статусом"
+  "alertFollowError": "Обновление ошибок Следуйте за статусом",
+  "ufobeepWitnesses": "Свидетели",
+  "ufobeepConfirmations": "Подтверждения",
+  "ufobeepAlertLevel": "Уровень оповещения",
+  "ufobeepReportType": "Об этом сообщает UFOBeep"
 }

@@ -4,5 +4,7 @@
   "errorNoCamera": "המצלמה אינה זמינה במכשיר זה.",
   "errorUploadFailed": "ההעלאה נכשלה. אנא נסה שוב.",
   "errorPermissionDenied": "הכחשה.",
-  "errorInvalidUsername": "שם משתמש זה אינו זמין."
+  "errorInvalidUsername": "שם משתמש זה אינו זמין.",
+  "errorNotFound": "לא נמצא",
+  "errorLoadError": "נכשל לטעון פרטים"
 }

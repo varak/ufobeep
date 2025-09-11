@@ -55,5 +55,9 @@
   "shapeFireball": "火球",
   "shapeFormation": "编队",
   "shapeUnknown": "不详",
-  "alertFollowError": "更新跟随状态出错"
+  "alertFollowError": "更新跟随状态出错",
+  "ufobeepWitnesses": "证人",
+  "ufobeepConfirmations": "确认",
+  "ufobeepAlertLevel": "警报级别",
+  "ufobeepReportType": "UFOUBUP 报告"
 }

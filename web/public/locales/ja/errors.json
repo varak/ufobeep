@@ -4,5 +4,7 @@
   "errorNoCamera": "このデバイスでカメラが利用できなくなった.",
   "errorUploadFailed": "アップロードが失敗しました。 お問い合わせ.",
   "errorPermissionDenied": "許可が拒否されました.",
-  "errorInvalidUsername": "ユーザー名は利用できません."
+  "errorInvalidUsername": "ユーザー名は利用できません.",
+  "errorNotFound": "ビープが見つかりません",
+  "errorLoadError": "ビープの詳細を読み込む失敗"
 }
