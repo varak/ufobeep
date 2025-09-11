@@ -1,0 +1,4 @@
+api/venv/.*
+.*BEGIN.*PRIVATE.*KEY.*
+.*AccessKeyId.*EXAMPLE.*
+.*AWSAccountId.*
