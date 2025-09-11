@@ -34,6 +34,7 @@ class Alert:
     source: Optional[str] = None
     occurred_at: Optional[datetime] = None
     external_url: Optional[str] = None
+    short_url: Optional[str] = None
 
 class AlertsService:
     def __init__(self, db_pool):
@@ -54,7 +55,7 @@ class AlertsService:
                        s.witness_count, s.created_at, s.reporter_id, s.sensor_data, s.media_info, s.enrichment_data,
                        u.username as reporter_username, s.source, 
                        COALESCE(s.occurred_at, s.created_at) as occurred_at, s.external_url,
-                       COALESCE(c.comment_count, 0) as comment_count
+                       COALESCE(c.comment_count, 0) as comment_count, s.short_url
                 FROM sightings s
                 LEFT JOIN users u ON s.reporter_id = u.id::text
                 LEFT JOIN (
@@ -92,7 +93,8 @@ class AlertsService:
                         comment_count=row["comment_count"],
                         source=row["source"],
                         occurred_at=row["occurred_at"],
-                        external_url=row["external_url"]
+                        external_url=row["external_url"],
+                        short_url=row["short_url"]
                     ))
             
             return alerts

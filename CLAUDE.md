@@ -191,3 +191,4 @@ ALWAYS keep docs updated when making changes:
 - NEVER skip updating docs to "save time" or for any reason
 - Documentation is as important as the code itself
 - If file is locked/modified, wait and try again - don't skip!
+- do not delete shit from the database without using a tool to make sure you dont orphan data
