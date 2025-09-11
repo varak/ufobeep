@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { getAlertSlug } from '@/utils/slug'
+import { useClientTranslations } from '@/hooks/useClientTranslations'
 
 // Google Maps types declared globally in AuthContext
 
@@ -38,6 +39,7 @@ export default function InteractiveMap({
   height = "300px",
   showFullscreenButton = true 
 }: InteractiveMapProps) {
+  const { t } = useClientTranslations('common')
   const mapRef = useRef<HTMLDivElement>(null)
   const [map, setMap] = useState<any>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
@@ -285,7 +287,7 @@ export default function InteractiveMap({
                 </div>
                 <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #eee;">
                   <a href="/beep/${getAlertSlug({ id: nearby.id, title: nearby.title, created_at: nearby.created_at, location: nearby.location, reporter_username: nearby.reporter_username, description: nearby.description, source: nearby.source })}" style="background: #ff6b35; color: white; text-decoration: none; font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: 8px; display: inline-block;">
-                    View Details →
+                    {t('viewDetails')} →
                   </a>
                 </div>
               </div>

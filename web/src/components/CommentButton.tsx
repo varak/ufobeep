@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
+import { useClientTranslations } from '@/hooks/useClientTranslations'
 
 interface CommentButtonProps {
   alertId: string
@@ -10,6 +11,7 @@ interface CommentButtonProps {
 
 export default function CommentButton({ alertId, onCommentAdded }: CommentButtonProps) {
   const { user, isAuthenticated, login, getAuthToken, logout, renderGoogleButton, renderAppleButton, googleInitialized } = useAuth()
+  const { t } = useClientTranslations('common')
   const [showLoginForm, setShowLoginForm] = useState(false)
   const [showCommentForm, setShowCommentForm] = useState(false)
   const [email, setEmail] = useState('')
@@ -214,7 +216,7 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
           onClick={handleCommentClick}
           className="w-full border-2 border-brand-primary hover:border-brand-primary/90 hover:bg-brand-primary/10 text-brand-primary py-3 px-4 rounded-lg font-medium transition-colors bg-transparent"
         >
-          Login to Comment
+          {t('loginToComment')}
         </button>
       )}
 
@@ -225,7 +227,7 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
               id="comment"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder="Share your thoughts about this sighting..."
+              placeholder={t('shareYourThoughts')}
               required
               rows={4}
               className="w-full bg-dark-background border border-dark-border rounded-lg px-4 py-3 text-text-primary placeholder-text-tertiary focus:outline-none focus:border-brand-primary resize-vertical"
@@ -237,7 +239,7 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
               disabled={isSubmitting || !comment.trim()}
               className="flex-1 bg-brand-primary hover:bg-brand-primary/90 disabled:bg-brand-primary/50 text-white py-3 px-4 rounded-lg font-medium transition-colors"
             >
-              {isSubmitting ? 'Posting...' : 'Post Comment'}
+              {isSubmitting ? t('posting') : t('postComment')}
             </button>
           </div>
         </form>
@@ -306,7 +308,7 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
               id="comment"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder="Share your thoughts about this sighting..."
+              placeholder={t('shareYourThoughts')}
               required
               rows={4}
               className="w-full bg-dark-background border border-dark-border rounded-lg px-4 py-3 text-text-primary placeholder-text-tertiary focus:outline-none focus:border-brand-primary resize-vertical"
@@ -318,7 +320,7 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
               disabled={isSubmitting || !comment.trim()}
               className="flex-1 bg-brand-primary hover:bg-brand-primary/90 disabled:bg-brand-primary/50 text-white py-3 px-4 rounded-lg font-medium transition-colors"
             >
-              {isSubmitting ? 'Posting...' : 'Post Comment'}
+              {isSubmitting ? t('posting') : t('postComment')}
             </button>
             <button
               type="button"
@@ -335,7 +337,7 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
         <div className="mt-4 pt-4 border-t border-dark-border space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-text-secondary text-sm">
-              Logged in as <span className="text-brand-primary">{user?.username}</span>
+              {t('loggedInAs')} <span className="text-brand-primary">{user?.username}</span>
             </span>
             <button
               onClick={() => {
@@ -350,7 +352,7 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
           
           <div className="flex items-center justify-between">
             <span className="text-text-tertiary text-sm">
-              {isFollowing ? '🔔 Following for notifications' : '🔕 Not following'}
+              {isFollowing ? '🔔 ' + t('followingForNotifications') : '🔕 ' + t('notFollowing')}
             </span>
             <button
               onClick={handleFollowToggle}
@@ -361,7 +363,7 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
                   : 'text-blue-400 hover:text-blue-300 bg-blue-900/20 hover:bg-blue-900/30'
               } disabled:opacity-50`}
             >
-              {followLoading ? '...' : (isFollowing ? 'Unfollow' : 'Follow')}
+              {followLoading ? '...' : (isFollowing ? t('unfollow') : t('follow'))}
             </button>
           </div>
         </div>

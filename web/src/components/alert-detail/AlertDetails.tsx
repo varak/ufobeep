@@ -118,7 +118,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
             {alert.enrichment.sighting_datetime && (
               <div className="mb-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-text-tertiary text-sm font-medium">Event Time:</span>
+                  <span className="text-text-tertiary text-sm font-medium">{t('eventTime')}</span>
                   <span className="text-text-primary text-sm">{alert.enrichment.sighting_datetime}</span>
                 </div>
               </div>
@@ -127,7 +127,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
             {alert.enrichment.report_date && (
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-text-tertiary text-sm font-medium">Reported:</span>
+                  <span className="text-text-tertiary text-sm font-medium">{t('reportedTime')}</span>
                   <span className="text-text-secondary text-sm">{alert.enrichment.report_date}</span>
                 </div>
               </div>

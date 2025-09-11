@@ -114,7 +114,7 @@ export default function AlertHero({ alert, openImageIndex }: AlertHeroProps) {
                     if (parent && !parent.querySelector('.image-error')) {
                       const errorDiv = document.createElement('div');
                       errorDiv.className = 'image-error w-full h-full flex items-center justify-center bg-dark-background text-text-tertiary text-xs';
-                      errorDiv.innerHTML = '<div><div class="text-2xl mb-1">🖼️</div><div>Image not found</div></div>';
+                      errorDiv.innerHTML = `<div><div class="text-2xl mb-1">🖼️</div><div>${t('imageNotFound')}</div></div>`;
                       parent.appendChild(errorDiv);
                     }
                   }}

@@ -257,7 +257,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
 
       {loading && (
         <div className="text-center py-8">
-          <div className="animate-pulse text-text-secondary">Loading comments...</div>
+          <div className="animate-pulse text-text-secondary">{t('loadingComments')}</div>
         </div>
       )}
 
@@ -329,7 +329,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
               onClick={handleCommentClick}
               className="w-full border-2 border-brand-primary hover:border-brand-primary/90 hover:bg-brand-primary/10 text-brand-primary py-3 px-4 rounded-lg font-medium transition-colors bg-transparent"
             >
-              Login to Comment
+              {t('loginToComment')}
             </button>
           )}
 
@@ -352,7 +352,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
                   disabled={isSubmitting || !comment.trim()}
                   className="flex-1 bg-brand-primary hover:bg-brand-primary/90 disabled:bg-brand-primary/50 text-white py-3 px-4 rounded-lg font-medium transition-colors"
                 >
-                  {isSubmitting ? 'Posting...' : t('postComment')}
+                  {isSubmitting ? t('posting') : t('postComment')}
                 </button>
               </div>
             </form>
@@ -433,7 +433,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
               
               <div className="flex items-center justify-between">
                 <span className="text-text-tertiary text-sm">
-                  {isFollowing ? '🔔 Following for notifications' : '🔕 ' + t('notFollowing')}
+                  {isFollowing ? '🔔 ' + t('followingForNotifications') : '🔕 ' + t('notFollowing')}
                 </span>
                 <button
                   onClick={handleFollowToggle}
@@ -444,7 +444,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
                       : 'text-blue-400 hover:text-blue-300 bg-blue-900/20 hover:bg-blue-900/30'
                   } disabled:opacity-50`}
                 >
-                  {followLoading ? '...' : (isFollowing ? 'Unfollow' : t('follow'))}
+                  {followLoading ? '...' : (isFollowing ? t('unfollow') : t('follow'))}
                 </button>
               </div>
             </div>
