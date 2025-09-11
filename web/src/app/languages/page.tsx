@@ -39,7 +39,7 @@ export default function LanguagesPage() {
         {languages.map((lang) => (
           <a
             key={lang.code}
-            href={lang.code === 'en' ? '/beep' : `/${lang.code}/beep`}
+            href={`/beep/${lang.code}`}
             className="block p-4 border border-dark-border rounded-lg hover:bg-dark-surface-elevated transition-colors"
           >
             <div className="flex items-center gap-3">

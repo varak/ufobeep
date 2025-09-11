@@ -33,6 +33,12 @@ export default function SimpleLangLinks({ className = '', showAllLink = true }: 
     const segments = pathname.split('/').filter(Boolean)
     const langCodes = POPULAR_LANGUAGES.map(l => l.code)
     
+    // Handle /beep/[locale] pattern
+    if (segments.length >= 2 && segments[0] === 'beep' && langCodes.includes(segments[1])) {
+      return '/beep'
+    }
+    
+    // Handle traditional /[locale]/path pattern
     if (segments.length > 0 && langCodes.includes(segments[0])) {
       return '/' + segments.slice(1).join('/')
     }
@@ -44,6 +50,12 @@ export default function SimpleLangLinks({ className = '', showAllLink = true }: 
     const segments = pathname.split('/').filter(Boolean)
     const langCodes = POPULAR_LANGUAGES.map(l => l.code)
     
+    // Handle /beep/[locale] pattern
+    if (segments.length >= 2 && segments[0] === 'beep' && langCodes.includes(segments[1])) {
+      return segments[1]
+    }
+    
+    // Handle traditional /[locale]/path pattern
     if (segments.length > 0 && langCodes.includes(segments[0])) {
       return segments[0]
     }
@@ -54,6 +66,12 @@ export default function SimpleLangLinks({ className = '', showAllLink = true }: 
   const currentLang = getCurrentLang()
   
   const buildLangUrl = (langCode: string) => {
+    // Handle beep URLs specially
+    if (currentPath.startsWith('/beep') || pathname.startsWith('/beep')) {
+      return `/beep/${langCode}`
+    }
+    
+    // Handle other URLs with traditional locale prefix
     if (langCode === 'en') {
       return currentPath
     }

@@ -50,6 +50,7 @@ export interface SluggableAlertLike {
   description?: string | null
   source?: string | null
   external_url?: string | null
+  short_url?: string
 }
 
 export function getAlertSlug(alert: SluggableAlertLike, locale: string = 'en', translations?: any, shortId?: string) {
