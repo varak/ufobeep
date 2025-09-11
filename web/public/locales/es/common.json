@@ -205,6 +205,7 @@
   "report": "informe",
   "mufon": "mufon",
   "recentUfoBeepsTitle": "OVNI reciente Beeps",
+  "recentUfoBeepsSubtitle": "Informes de la comunidad UFOBeep en vivo y avistamientos de la base de datos MUFON",
   "recentUfoBeepsDescription": "Este feed combina \"beeps\" en tiempo real de UFOBeep de nuestros usuarios de aplicaciones móviles con informes históricos de la base de datos MUFON.",
   "loadingBeeps": "Cargando recientes pitidos..."
 }
