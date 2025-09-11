@@ -167,6 +167,7 @@
   "pushTitleComment": "Nieuwe opmerking",
   "pushBodyComment": "Iemand zei iets over een waarneming die je volgt.",
   "pushTitleWitness": "Getuigenbevestiging",
+  "temperature": "Temperatuur",
   "pushBodyWitness": "Een gebruiker bevestigde dat ze hetzelfde object zien.",
   "weather": "Weer",
   "cloudCover": "Cloud cover: {percentage}%",
@@ -493,7 +494,7 @@
   "sightingsMap": "Kaart van de waarneming",
   "globalSightingNetwork": "Wereldwijd waarnemingsnetwerk",
   "howItWorks": "Hoe werkt UFObeep",
-  "backToBeeps": "← Terug naar Beeps",
+  "backToBeeps": "Terug naar Beeps",
   "loadingDetails": "Bezig met laden van piepgegevens...",
   "details": "Gegevens",
   "location": "Locatie",
@@ -553,5 +554,13 @@
   "navDownloadApp": "App downloaden",
   "alertLevel": "Waarschuwingsniveau",
   "witnesses": "Getuigen",
-  "confirmations": "Bevestigingen"
+  "confirmations": "Bevestigingen",
+  "reporterLabel": "Gerapporteerd door gebruiker",
+  "coordinatesLabel": "Coördinaten",
+  "eventTime": "Gebeurtenistijd",
+  "reportedTime": "Gerapporteerde tijd",
+  "mufonDatabaseReport": "MUFON Databaserapport",
+  "copyShortLinkTitle": "Verwijzing naar klembord kopiëren",
+  "imageNotFound": "Afbeelding niet gevonden",
+  "ufoSightingAlt": "UFO-waarneming"
 }

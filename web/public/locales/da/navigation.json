@@ -5,5 +5,6 @@
   "tabMap": "Kort",
   "tabSettings": "Indstillinger",
   "mufonDatabaseEntryDate": "Dato for optagelse i MUFON Database",
-  "databaseEntry": "Databaseindgang"
+  "databaseEntry": "Databaseindgang",
+  "mufonDatabaseReport": "MUFON Databaserapport"
 }

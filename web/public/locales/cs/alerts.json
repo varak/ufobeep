@@ -8,7 +8,6 @@
   "beepFailed": "Nepodařilo se mi poslat Beepa.",
   "alertDetailTitle": "Detaily pozorování",
   "alertsFilterHelp": "Zkuste nastavit filtry, abyste viděli další výsledky",
-  "beepOnly": "pouze pípnutí",
   "alertRange": "Rozsah upozornění",
   "ufoTypeSphere": "Koule",
   "ufoTypeTriangle": "Trojúhelník",
@@ -58,6 +57,5 @@
   "alertFollowError": "Chyba při aktualizaci stavu sledování",
   "ufobeepWitnesses": "Svědci",
   "ufobeepConfirmations": "Potvrzení",
-  "ufobeepAlertLevel": "Úroveň upozornění",
-  "ufobeepReportType": "Zpráva UFOBeep"
+  "ufobeepAlertLevel": "Úroveň upozornění"
 }

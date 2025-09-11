@@ -4,5 +4,7 @@
   "tabChat": "チャット",
   "tabMap": "サイトマップ",
   "tabSettings": "コンテンツ",
-  "databaseEntry": "データベースのエントリ"
+  "mufonDatabaseEntryDate": "MUFON に入力された日付 データベース",
+  "databaseEntry": "データベースのエントリ",
+  "mufonDatabaseReport": "MUFONについて データベースレポート"
 }

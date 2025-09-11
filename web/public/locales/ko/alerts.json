@@ -8,7 +8,6 @@
   "beepFailed": "Beep을 보낼 실패.",
   "alertDetailTitle": "연락처",
   "alertsFilterHelp": "필터를 조정하여 더 많은 결과를 볼 수 있습니다",
-  "beepOnly": "뚱 베어",
   "alertRange": "Alert 범위",
   "ufoTypeSphere": "사이트 맵",
   "ufoTypeTriangle": "연락처",
@@ -58,6 +57,5 @@
   "alertFollowError": "에러 updating 따라 상태",
   "ufobeepWitnesses": "뚱 베어",
   "ufobeepConfirmations": "이름 *",
-  "ufobeepAlertLevel": "출력 레벨",
-  "ufobeepReportType": "UFOBeep 보고서"
+  "ufobeepAlertLevel": "출력 레벨"
 }

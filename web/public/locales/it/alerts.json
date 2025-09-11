@@ -8,7 +8,6 @@
   "beepFailed": "Non ho mandato Beep.",
   "alertDetailTitle": "Dettagli di tenuta",
   "alertsFilterHelp": "Prova a regolare i filtri per visualizzare più risultati",
-  "beepOnly": "Relazione",
   "alertRange": "Gamma di allarme",
   "ufoTypeSphere": "Sfera",
   "ufoTypeTriangle": "Triangolo",
@@ -56,5 +55,7 @@
   "shapeFormation": "formazione",
   "shapeUnknown": "sconosciuto",
   "alertFollowError": "Aggiornamento degli errori",
-  "alertLevel": "Livello di allarme"
+  "ufobeepWitnesses": "Testimoni",
+  "ufobeepConfirmations": "Conferma",
+  "ufobeepAlertLevel": "Livello di allarme"
 }

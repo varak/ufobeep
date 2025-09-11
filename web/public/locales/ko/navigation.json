@@ -5,5 +5,6 @@
   "tabMap": "지도보기",
   "tabSettings": "지원하다",
   "mufonDatabaseEntryDate": "날짜 입력 MUFON 관련 기사",
-  "databaseEntry": "데이터베이스"
+  "databaseEntry": "데이터베이스",
+  "mufonDatabaseReport": "사이트맵 Database 보고"
 }

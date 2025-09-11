@@ -408,11 +408,17 @@ async def upload_alert_media(
                     shutil.copyfileobj(file.file, buffer)
                 
                 # Process media file (generate thumbnails, web versions, etc.)
+                import time
+                start_processing = time.time()
+                logger.info(f"Starting media processing for {file.filename} (size: {file_path.stat().st_size} bytes)")
+                
                 try:
                     processed_urls = media_processor.process_media_file(file_path, alert_id)
-                    print(f"Media processing complete for {file.filename}: {processed_urls}")
+                    processing_time = time.time() - start_processing
+                    logger.info(f"Media processing complete for {file.filename} in {processing_time:.2f}s: {processed_urls}")
                 except Exception as e:
-                    print(f"Media processing failed for {file.filename}: {e}")
+                    processing_time = time.time() - start_processing
+                    logger.error(f"Media processing failed for {file.filename} after {processing_time:.2f}s: {e}")
                     # Fallback to basic URLs if processing fails
                     processed_urls = {
                         'original': f'https://ufobeep.com/api/media/{alert_id}/{unique_filename}',

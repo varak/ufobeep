@@ -4,5 +4,7 @@
   "tabChat": "Чат",
   "tabMap": "Карта",
   "tabSettings": "Настройки",
-  "databaseEntry": "Вход в базу данных"
+  "mufonDatabaseEntryDate": "Дата вхождения в MUFON База данных",
+  "databaseEntry": "Вход в базу данных",
+  "mufonDatabaseReport": "МУФОН Отчет о базе данных"
 }

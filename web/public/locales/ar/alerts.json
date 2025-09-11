@@ -8,7 +8,6 @@
   "beepFailed": "فشل في إرسال بيب.",
   "alertDetailTitle": "تفاصيل النظر",
   "alertsFilterHelp": "حاول تعديل مرشحيك لرؤية المزيد من النتائج",
-  "beepOnly": "التقرير فقط",
   "alertRange": "إنذار رانج",
   "ufoTypeSphere": "نصف الكرة",
   "ufoTypeTriangle": "المثلث",
@@ -56,5 +55,7 @@
   "shapeFormation": "التشكيل",
   "shapeUnknown": "مجهول",
   "alertFollowError": "استكمال الأخطاء",
-  "alertLevel": "مستوى الإنذار"
+  "ufobeepWitnesses": "الشهود",
+  "ufobeepConfirmations": "التأكيدات",
+  "ufobeepAlertLevel": "مستوى الإنذار"
 }

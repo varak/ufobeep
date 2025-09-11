@@ -1327,6 +1327,13 @@ extension ApiClientExtension on ApiClient {
       final response = await ApiClient.dio.post(
         uploadUrl,
         data: formData,
+        options: Options(
+          sendTimeout: const Duration(minutes: 5), // 5 minutes for large files
+          receiveTimeout: const Duration(minutes: 3), // 3 minutes for processing
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        ),
       );
 
       debugPrint('Response status: ${response.statusCode}');

@@ -167,6 +167,7 @@
   "pushTitleComment": "Nowy komentarz",
   "pushBodyComment": "Ktoś skomentował twoją obserwację.",
   "pushTitleWitness": "Potwierdzenie świadków",
+  "temperature": "Temperatura",
   "pushBodyWitness": "Użytkownik potwierdził, że widzi ten sam obiekt.",
   "weather": "Pogoda",
   "cloudCover": "Chmura: {procent}%",
@@ -493,7 +494,7 @@
   "sightingsMap": "Mapa przeglądów",
   "globalSightingNetwork": "Globalna sieć widokowa",
   "howItWorks": "Jak działa UFOBeep",
-  "backToBeeps": "← Powrót do dźwięków",
+  "backToBeeps": "Powrót do pików",
   "loadingDetails": "Wczytywanie szczegółów...",
   "details": "Szczegóły",
   "location": "Lokalizacja",
@@ -553,5 +554,13 @@
   "navDownloadApp": "Pobierz aplikację",
   "alertLevel": "Poziom alarmowy",
   "witnesses": "Świadkowie",
-  "confirmations": "Potwierdzenia"
+  "confirmations": "Potwierdzenia",
+  "reporterLabel": "Zgłoszone przez użytkownika",
+  "coordinatesLabel": "Współrzędne",
+  "eventTime": "Czas zdarzenia",
+  "reportedTime": "Zgłoszony czas",
+  "mufonDatabaseReport": "MUFON Sprawozdanie z bazy danych",
+  "copyShortLinkTitle": "Kopiuj link do schowka",
+  "imageNotFound": "Nie znaleziono obrazka",
+  "ufoSightingAlt": "Obserwacje UFO"
 }

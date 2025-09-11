@@ -8,7 +8,6 @@
   "beepFailed": "Misslyckades med att skicka Beep.",
   "alertDetailTitle": "Sighting detaljer",
   "alertsFilterHelp": "Försök att justera dina filter för att se fler resultat",
-  "beepOnly": "beep endast",
   "alertRange": "Alert Range",
   "ufoTypeSphere": "Sfären",
   "ufoTypeTriangle": "Triangeln",
@@ -58,6 +57,5 @@
   "alertFollowError": "Feluppdatering följer status",
   "ufobeepWitnesses": "Vittnen",
   "ufobeepConfirmations": "Bekräftelser",
-  "ufobeepAlertLevel": "Alert Level",
-  "ufobeepReportType": "UFOBeep-rapport"
+  "ufobeepAlertLevel": "Alert Level"
 }

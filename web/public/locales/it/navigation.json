@@ -4,5 +4,7 @@
   "tabChat": "Chat",
   "tabMap": "Mappa",
   "tabSettings": "Impostazioni impostazioni",
-  "databaseEntry": "Entrata del database"
+  "mufonDatabaseEntryDate": "Data inserita in MUFON Database",
+  "databaseEntry": "Entrata del database",
+  "mufonDatabaseReport": "MUFON Rapporto Database"
 }

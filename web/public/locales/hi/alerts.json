@@ -8,7 +8,6 @@
   "beepFailed": "बीप भेजने में विफल रहा।.",
   "alertDetailTitle": "Sighting Details",
   "alertsFilterHelp": "अधिक परिणाम देखने के लिए अपने फिल्टर को समायोजित करने की कोशिश करें",
-  "beepOnly": "केवल बीप",
   "alertRange": "चेतावनी रेंज",
   "ufoTypeSphere": "क्षेत्र",
   "ufoTypeTriangle": "त्रिभुज",
@@ -58,6 +57,5 @@
   "alertFollowError": "स्थिति का पालन करने में त्रुटि",
   "ufobeepWitnesses": "गवाही",
   "ufobeepConfirmations": "पुष्टिकरण",
-  "ufobeepAlertLevel": "चेतावनी स्तर",
-  "ufobeepReportType": "UFOBeep Report"
+  "ufobeepAlertLevel": "चेतावनी स्तर"
 }

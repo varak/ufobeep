@@ -167,6 +167,7 @@
   "pushTitleComment": "Новый комментарий",
   "pushBodyComment": "Кто-то прокомментировал ваше наблюдение.",
   "pushTitleWitness": "Подтверждение свидетеля",
+  "temperature": "Температура",
   "pushBodyWitness": "Пользователь подтвердил, что видит один и тот же объект.",
   "weather": "Погода",
   "cloudCover": "Облако: {%}%",
@@ -493,7 +494,7 @@
   "sightingsMap": " ️ Карта достопримечательностей",
   "globalSightingNetwork": "Глобальная сеть наблюдения",
   "howItWorks": "Как работает UFOBeep",
-  "backToBeeps": "Обсуждение Back to Beeps",
+  "backToBeeps": "Вернуться в Beeps",
   "loadingDetails": "Загрузка звуковых деталей...",
   "details": "Подробности",
   "location": "Расположение",
@@ -553,5 +554,13 @@
   "navDownloadApp": "Скачать приложение",
   "alertLevel": "Уровень оповещения",
   "witnesses": "Свидетели",
-  "confirmations": "Подтверждения"
+  "confirmations": "Подтверждения",
+  "reporterLabel": "Сообщение пользователя",
+  "coordinatesLabel": "Координация",
+  "eventTime": "Время события",
+  "reportedTime": "Сообщенное время",
+  "mufonDatabaseReport": "МУФОН Отчет о базе данных",
+  "copyShortLinkTitle": "Скопировать ссылку на clipboard",
+  "imageNotFound": "Изображение не найдено",
+  "ufoSightingAlt": "Наблюдение НЛО"
 }

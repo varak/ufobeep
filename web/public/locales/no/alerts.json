@@ -8,7 +8,6 @@
   "beepFailed": "Failed to send Beep.",
   "alertDetailTitle": "Sighting Details",
   "alertsFilterHelp": "Try adjusting your filters to see more results",
-  "beepOnly": "beep only",
   "alertRange": "Alert Range",
   "ufoTypeSphere": "Sphere",
   "ufoTypeTriangle": "Triangle",
@@ -58,6 +57,5 @@
   "alertFollowError": "Error updating follow status",
   "ufobeepWitnesses": "Witnesses",
   "ufobeepConfirmations": "Confirmations",
-  "ufobeepAlertLevel": "Alert Level",
-  "ufobeepReportType": "UFOBeep Report"
+  "ufobeepAlertLevel": "Alert Level"
 }

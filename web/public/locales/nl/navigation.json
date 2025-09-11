@@ -4,5 +4,7 @@
   "tabChat": "Gesprek",
   "tabMap": "Kaart",
   "tabSettings": "Instellingen",
-  "databaseEntry": "Databaseinvoer"
+  "mufonDatabaseEntryDate": "Datum ingevoerd in MUFON Database",
+  "databaseEntry": "Databaseinvoer",
+  "mufonDatabaseReport": "MUFON Databaserapport"
 }

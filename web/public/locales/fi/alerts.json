@@ -8,7 +8,6 @@
   "beepFailed": "Lähetys epäonnistui.",
   "alertDetailTitle": "Näytön yksityiskohdat",
   "alertsFilterHelp": "Yritä säätää suodattimia nähdäksesi lisää tuloksia",
-  "beepOnly": "vain piip",
   "alertRange": "Varoitusalue",
   "ufoTypeSphere": "Pallo",
   "ufoTypeTriangle": "Kolmio",
@@ -58,6 +57,5 @@
   "alertFollowError": "Virhe seurauksen tilan päivittämisessä",
   "ufobeepWitnesses": "Todistajat",
   "ufobeepConfirmations": "Vahvistukset",
-  "ufobeepAlertLevel": "Varoitustaso",
-  "ufobeepReportType": "UFOBeepin raportti"
+  "ufobeepAlertLevel": "Varoitustaso"
 }

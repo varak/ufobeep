@@ -5,5 +5,6 @@
   "tabMap": "Kartta",
   "tabSettings": "Asetukset",
   "mufonDatabaseEntryDate": "Päivämäärä Tietokanta",
-  "databaseEntry": "Tietokannan tietue"
+  "databaseEntry": "Tietokannan tietue",
+  "mufonDatabaseReport": "MUFON Tietokantaraportti"
 }

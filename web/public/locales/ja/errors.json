@@ -1,1 +1,10 @@
-{}
+{
+  "errorGeneric": "何かが間違っていた.",
+  "errorNoLocation": "利用できない場所 空を眺めながらもう一度お試しください.",
+  "errorNoCamera": "このデバイスでカメラが利用できなくなった.",
+  "errorUploadFailed": "アップロードが失敗しました。 お問い合わせ.",
+  "errorPermissionDenied": "許可が拒否されました.",
+  "errorInvalidUsername": "ユーザー名は利用できません.",
+  "errorNotFound": "ビープが見つかりません",
+  "errorLoadError": "ビープの詳細を読み込む失敗"
+}

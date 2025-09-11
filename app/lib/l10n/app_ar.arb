@@ -167,6 +167,7 @@
   "pushTitleComment": "تعليق جديد",
   "pushBodyComment": "شخص ما علّقَ على a مشاهد أنت تَتْبعُ.",
   "pushTitleWitness": "تأكيد الشهود",
+  "temperature": "درجة الحرارة",
   "pushBodyWitness": "المستعمل أكد أنهم يرون نفس الجسم.",
   "weather": "الطقس",
   "cloudCover": "{نسبة مئوية}",
@@ -493,7 +494,7 @@
   "sightingsMap": "  Sightings Map",
   "globalSightingNetwork": "Global Sighting Network",
   "howItWorks": "كَمْ يَعمَلُ",
-  "backToBeeps": "♪ العودة إلى بيبس ♪",
+  "backToBeeps": "العودة إلى بيبس",
   "loadingDetails": "تفاصيل الصافرة.",
   "details": "التفاصيل",
   "location": "الموقع",
@@ -553,5 +554,13 @@
   "navDownloadApp": "الحمولة",
   "alertLevel": "مستوى الإنذار",
   "witnesses": "الشهود",
-  "confirmations": "التأكيدات"
+  "confirmations": "التأكيدات",
+  "reporterLabel": "أبلغ عنه المستخدم",
+  "coordinatesLabel": "التنسيق",
+  "eventTime": "وقت الحدث",
+  "reportedTime": "الوقت المبلغ عنه",
+  "mufonDatabaseReport": "MUFON تقرير قاعدة البيانات",
+  "copyShortLinkTitle": "وصلة نسخ إلى لوح مشبك",
+  "imageNotFound": "لم يعثر على صورة",
+  "ufoSightingAlt": "مشاهده"
 }

@@ -8,7 +8,6 @@
   "beepFailed": "Kunne ikke sende Beep.",
   "alertDetailTitle": "Observationsdetaljer",
   "alertsFilterHelp": "Prøv at justere dine filtre for at se flere resultater",
-  "beepOnly": "kun bip",
   "alertRange": "Advarselsområde",
   "ufoTypeSphere": "Sphere Formand",
   "ufoTypeTriangle": "Trekant",
@@ -58,6 +57,5 @@
   "alertFollowError": "Fejl under opdatering af følg status",
   "ufobeepWitnesses": "Vidner",
   "ufobeepConfirmations": "Bekræfter",
-  "ufobeepAlertLevel": "Alarmniveau",
-  "ufobeepReportType": "UFOBeep-rapport"
+  "ufobeepAlertLevel": "Alarmniveau"
 }

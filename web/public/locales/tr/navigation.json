@@ -5,5 +5,6 @@
   "tabMap": "Map",
   "tabSettings": "Ayarlar",
   "mufonDatabaseEntryDate": "Tarih MUFON'a girdi Veritabanı Veritabanı",
-  "databaseEntry": "Veritabanı"
+  "databaseEntry": "Veritabanı",
+  "mufonDatabaseReport": "MUFON Veritabanı Raporu"
 }

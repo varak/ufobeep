@@ -5,5 +5,6 @@
   "tabMap": "Map",
   "tabSettings": "Settings",
   "mufonDatabaseEntryDate": "Date Entered into MUFON Database",
-  "databaseEntry": "Database Entry"
+  "databaseEntry": "Database Entry",
+  "mufonDatabaseReport": "MUFON Database Report"
 }

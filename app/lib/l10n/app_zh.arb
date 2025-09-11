@@ -167,6 +167,7 @@
   "pushTitleComment": "新评论",
   "pushBodyComment": "有人评论你跟踪的一幕.",
   "pushTitleWitness": "证人确认",
+  "temperature": "温度",
   "pushBodyWitness": "一个用户确认他们看到了同一个对象.",
   "weather": "天气",
   "cloudCover": "云盖: {%}",
@@ -553,5 +554,13 @@
   "navDownloadApp": "下载 App",
   "alertLevel": "警报级别",
   "witnesses": "证人",
-  "confirmations": "确认"
+  "confirmations": "确认",
+  "reporterLabel": "用户报告",
+  "coordinatesLabel": "坐标",
+  "eventTime": "活动时间",
+  "reportedTime": "报告时间",
+  "mufonDatabaseReport": "毛里求斯 数据库报告",
+  "copyShortLinkTitle": "复制链接到剪贴板",
+  "imageNotFound": "未找到图像",
+  "ufoSightingAlt": "不明飞行物目击"
 }

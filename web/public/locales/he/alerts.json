@@ -8,7 +8,6 @@
   "beepFailed": "נכשל לשלוח את Beep.",
   "alertDetailTitle": "פרטים",
   "alertsFilterHelp": "נסה להתאים את המסננים שלך כדי לראות תוצאות נוספות",
-  "beepOnly": "להיות רק",
   "alertRange": "המונחים",
   "ufoTypeSphere": "Sphere",
   "ufoTypeTriangle": "משולש",
@@ -58,6 +57,5 @@
   "alertFollowError": "עדכון מצב",
   "ufobeepWitnesses": "עדים",
   "ufobeepConfirmations": "אישורים",
-  "ufobeepAlertLevel": "רמת התראה",
-  "ufobeepReportType": "דוח UFOBeep"
+  "ufobeepAlertLevel": "רמת התראה"
 }

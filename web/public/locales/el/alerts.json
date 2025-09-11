@@ -8,7 +8,6 @@
   "beepFailed": "Αποτυχία αποστολής του Μπιπ.",
   "alertDetailTitle": "Ορατότητα λεπτομερειών",
   "alertsFilterHelp": "Δοκιμάστε να ρυθμίσετε τα φίλτρα σας για να δείτε περισσότερα αποτελέσματα",
-  "beepOnly": "μόνο μπιπ",
   "alertRange": "Εύρος ειδοποίησης",
   "ufoTypeSphere": "Σφαίρα",
   "ufoTypeTriangle": "Τρίγωνο",
@@ -58,6 +57,5 @@
   "alertFollowError": "Σφάλμα ενημέρωσης της κατάστασης",
   "ufobeepWitnesses": "Μάρτυρες",
   "ufobeepConfirmations": "Επιβεβαίωση",
-  "ufobeepAlertLevel": "Επίπεδο συναγερμού",
-  "ufobeepReportType": "Αναφορά UFOBeep"
+  "ufobeepAlertLevel": "Επίπεδο συναγερμού"
 }

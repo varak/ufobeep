@@ -5,5 +5,6 @@
   "tabMap": "Mapa",
   "tabSettings": "Nastavení",
   "mufonDatabaseEntryDate": "Datum zařazení do MUFON Databáze",
-  "databaseEntry": "Záznam databáze"
+  "databaseEntry": "Záznam databáze",
+  "mufonDatabaseReport": "MUFON Databázová zpráva"
 }

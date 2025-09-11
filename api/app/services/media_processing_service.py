@@ -4,10 +4,13 @@ Handles images and videos with proper web optimization
 """
 import os
 import subprocess
+import signal
 from pathlib import Path
 from PIL import Image, ImageOps
 from typing import Dict, List, Tuple, Optional
 import logging
+import time
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeoutError
 
 logger = logging.getLogger(__name__)
 
@@ -29,34 +32,42 @@ class MediaProcessingService:
         
     def process_media_file(self, file_path: Path, alert_id: str) -> Dict[str, str]:
         """
-        Process uploaded media file and generate all variants
+        Process uploaded media file and generate all variants with timeout protection
         Returns dict with URLs for all generated versions
         """
+        start_time = time.time()
+        logger.info(f"Starting media processing for {file_path.name}")
+        
         try:
             file_extension = file_path.suffix.lower()
             
-            if file_extension in ['.jpg', '.jpeg', '.png', '.webp']:
-                return self._process_image(file_path, alert_id)
-            elif file_extension in ['.mp4', '.mov', '.avi']:
-                return self._process_video(file_path, alert_id)
-            else:
-                # Unknown file type, just return original
-                return {
-                    'original': f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}',
-                    'thumbnail': f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}',
-                    'web': f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}',
-                    'preview': f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}'
-                }
+            # Use ThreadPoolExecutor with timeout to prevent hanging
+            with ThreadPoolExecutor(max_workers=1) as executor:
+                if file_extension in ['.jpg', '.jpeg', '.png', '.webp']:
+                    future = executor.submit(self._process_image, file_path, alert_id)
+                elif file_extension in ['.mp4', '.mov', '.avi']:
+                    future = executor.submit(self._process_video, file_path, alert_id)
+                else:
+                    # Unknown file type, just return original
+                    return self._get_original_urls(file_path, alert_id)
+                
+                try:
+                    # 60 second timeout for media processing
+                    result = future.result(timeout=60)
+                    processing_time = time.time() - start_time
+                    logger.info(f"Media processing completed for {file_path.name} in {processing_time:.2f}s")
+                    return result
+                    
+                except FutureTimeoutError:
+                    logger.error(f"Media processing timeout for {file_path.name} after 60s")
+                    future.cancel()
+                    return self._get_original_urls(file_path, alert_id)
                 
         except Exception as e:
-            logger.error(f"Error processing media {file_path}: {e}")
+            processing_time = time.time() - start_time
+            logger.error(f"Error processing media {file_path} after {processing_time:.2f}s: {e}")
             # Return original on error
-            return {
-                'original': f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}',
-                'thumbnail': f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}',
-                'web': f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}',
-                'preview': f'https://ufobeep.com/api/media/{alert_id}/{file_path.name}'
-            }
+            return self._get_original_urls(file_path, alert_id)
     
     def _process_image(self, file_path: Path, alert_id: str) -> Dict[str, str]:
         """Process image file - generate thumbnail, web, and preview versions"""

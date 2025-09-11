@@ -5,5 +5,6 @@
   "tabMap": "Χάρτης",
   "tabSettings": "Settings",
   "mufonDatabaseEntryDate": "Ημερομηνία εισόδου στο MUFON Βάση δεδομένων",
-  "databaseEntry": "Είσοδος βάσης δεδομένων"
+  "databaseEntry": "Είσοδος βάσης δεδομένων",
+  "mufonDatabaseReport": "ΜΟΥΦΟΝ Έκθεση βάσης δεδομένων"
 }

@@ -1,1 +1,10 @@
-{}
+{
+  "errorGeneric": "Algo correu mal.",
+  "errorNoLocation": "Localização não disponível. Tente novamente fora com visão clara do céu.",
+  "errorNoCamera": "Câmera indisponível neste dispositivo.",
+  "errorUploadFailed": "O envio falhou. Por favor, tente de novo.",
+  "errorPermissionDenied": "Permissão negada.",
+  "errorInvalidUsername": "Esse nome de usuário não está disponível.",
+  "errorNotFound": "Beep não encontrado",
+  "errorLoadError": "Falha ao carregar os detalhes do bip"
+}

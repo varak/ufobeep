@@ -4,5 +4,7 @@
   "tabChat": "Chat",
   "tabMap": "خريطة",
   "tabSettings": "التركيبات",
-  "databaseEntry": "دخول قاعدة البيانات"
+  "mufonDatabaseEntryDate": "تاريخ دخوله قاعدة البيانات",
+  "databaseEntry": "دخول قاعدة البيانات",
+  "mufonDatabaseReport": "MUFON تقرير قاعدة البيانات"
 }

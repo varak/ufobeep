@@ -167,6 +167,7 @@
   "pushTitleComment": "新規コメント",
   "pushBodyComment": "誰かがフォローする目撃にコメントしました.",
   "pushTitleWitness": "ウィットネスの確認",
+  "temperature": "温度",
   "pushBodyWitness": "同じオブジェクトが確認されたユーザ.",
   "weather": "ふりがな",
   "cloudCover": "クラウドカバー:{percent}%",
@@ -493,7 +494,7 @@
   "sightingsMap": "サイトマップ",
   "globalSightingNetwork": "グローバルサイトネットワーク",
   "howItWorks": "UFOBeepの仕組み",
-  "backToBeeps": "← ビープに戻る",
+  "backToBeeps": "ビープスに戻る",
   "loadingDetails": "ビープの詳細を読み込む...",
   "details": "ニュース",
   "location": "アクセス",
@@ -553,5 +554,13 @@
   "navDownloadApp": "アプリのダウンロード",
   "alertLevel": "アラートレベル",
   "witnesses": "ウィッチネス",
-  "confirmations": "確認事項"
+  "confirmations": "確認事項",
+  "reporterLabel": "ユーザーによる報告",
+  "coordinatesLabel": "コーディネート",
+  "eventTime": "イベント情報",
+  "reportedTime": "報告時間",
+  "mufonDatabaseReport": "MUFONについて データベースレポート",
+  "copyShortLinkTitle": "クリップボードへのリンクをコピーする",
+  "imageNotFound": "画像が見つかりません",
+  "ufoSightingAlt": "UFO目撃"
 }

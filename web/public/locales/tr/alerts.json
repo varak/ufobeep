@@ -8,7 +8,6 @@
   "beepFailed": "Beep göndermeye başarısız oldu.",
   "alertDetailTitle": "Sighting Details",
   "alertsFilterHelp": "Daha fazla sonuç görmek için filtrelerinizi ayarlamaya çalışın",
-  "beepOnly": "beep sadece",
   "alertRange": "Alert Range",
   "ufoTypeSphere": "Sphere",
   "ufoTypeTriangle": "Üçgen",
@@ -58,6 +57,5 @@
   "alertFollowError": "Hata Güncellemesi",
   "ufobeepWitnesses": "Tanık Şahitler",
   "ufobeepConfirmations": "Onaylamalar",
-  "ufobeepAlertLevel": "Uyarı Düzeyi",
-  "ufobeepReportType": "UFOBeep Report"
+  "ufobeepAlertLevel": "Uyarı Düzeyi"
 }

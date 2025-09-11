@@ -8,7 +8,6 @@
   "beepFailed": "Nie udało się wysłać Beepa.",
   "alertDetailTitle": "Podglądanie szczegółów",
   "alertsFilterHelp": "Spróbuj dostosować filtry, aby zobaczyć więcej wyników",
-  "beepOnly": "Tylko sprawozdanie",
   "alertRange": "Zakres alarmów",
   "ufoTypeSphere": "Kula",
   "ufoTypeTriangle": "Trójkąt",
@@ -56,5 +55,7 @@
   "shapeFormation": "powstawanie",
   "shapeUnknown": "nieznany",
   "alertFollowError": "Błąd podczas aktualizacji statusu folderu",
-  "alertLevel": "Poziom alarmowy"
+  "ufobeepWitnesses": "Świadkowie",
+  "ufobeepConfirmations": "Potwierdzenia",
+  "ufobeepAlertLevel": "Poziom alarmowy"
 }
