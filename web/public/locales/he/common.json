@@ -205,6 +205,14 @@
   "report": "דיווח",
   "mufon": "עבריין",
   "recentUfoBeepsTitle": "העב\"ם האחרון הדבורים",
+  "recentUfoBeepsSubtitle": "Live UFOBeep Community Reports & MUFON",
   "recentUfoBeepsDescription": "הזנה זו משלבת בזמן אמת עב\"מBeep \"בייפים\" ממשתמשי האפליקציה הניידים שלנו עם דוחות היסטוריים ממסד הנתונים MUFON.",
-  "loadingBeeps": "עקבו אחרי beeps..."
+  "loadingBeeps": "עקבו אחרי beeps...",
+  "heroTagline": "קבלו התראות כשאתם יוצאים החוצה ומתבוננים",
+  "heroDescription": "לעולם אל תחמיצו מראה עב\"מים נוסף. קבל התראות בזמן אמת כאשר מישהו לידך רואה משהו מוזר בשמים. מצא את הטלפון שלך ולמצוא בדיוק איפה להסתכל.",
+  "downloadApp": "להורדה App",
+  "viewAllBeeps": "צפו בכל הדבורים",
+  "sightingsMap": "🗺️ Sightings Map",
+  "globalSightingNetwork": "רשת Sighting",
+  "howItWorks": "כיצד עובד עב\"מ"
 }

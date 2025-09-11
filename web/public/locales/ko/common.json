@@ -205,6 +205,14 @@
   "report": "이름 *",
   "mufon": "사이트맵",
   "recentUfoBeepsTitle": "최근 UFO 뚱 베어",
+  "recentUfoBeepsSubtitle": "라이브 UFOBeep 커뮤니티 보고서 & MUFON 데이터베이스 광경",
   "recentUfoBeepsDescription": "이 피드는 실시간 UFOBeep \"beeps\"를 결합하여 모바일 앱 사용자는 MUFON 데이터베이스의 과거 보고서를 보여줍니다.",
-  "loadingBeeps": "최근 beeps을로드 ..."
+  "loadingBeeps": "최근 beeps을로드 ...",
+  "heroTagline": "외부로 이동할 때 경고를 얻고 봐",
+  "heroDescription": "다른 UFO 보행을 놓치지 마십시오. 누군가가 하늘에서 이상한 것을 볼 때 실시간 경고를 가져옵니다. 휴대폰을 끄고 정확히 어디에서 볼 수 있습니다.",
+  "downloadApp": "앱 다운로드",
+  "viewAllBeeps": " All 모두 Beeps",
+  "sightingsMap": "Sightings 지도",
+  "globalSightingNetwork": "글로벌 Sighting Network",
+  "howItWorks": "UFOBeep 작동 방법"
 }

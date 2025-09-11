@@ -205,6 +205,14 @@
   "report": "レポート",
   "mufon": "ミュフォン",
   "recentUfoBeepsTitle": "最近のUFO ベップス",
+  "recentUfoBeepsSubtitle": "ライブ UFOBeep コミュニティレポート & MUFON データベースの可視化",
   "recentUfoBeepsDescription": "このフィードは、MUFONデータベースからの履歴レポートを使用して、モバイルアプリユーザーからリアルタイムのUFOBeep \"beeps\"を組み合わせています.",
-  "loadingBeeps": "最近のビープ..."
+  "loadingBeeps": "最近のビープ...",
+  "heroTagline": "外部に行くときにアラートを取得し、調べる",
+  "heroDescription": "UFOを見逃さない。 近くの人が空に奇妙な何かを見たときにリアルタイムのアラートを取得します。 携帯電話をポイントし、どこを見ても正確に見つけてください.",
+  "downloadApp": "◀ アプリのダウンロード",
+  "viewAllBeeps": "すべてのビープを見る",
+  "sightingsMap": "サイトマップ",
+  "globalSightingNetwork": "グローバルサイトネットワーク",
+  "howItWorks": "UFOBeepの仕組み"
 }

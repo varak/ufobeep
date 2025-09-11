@@ -48,9 +48,7 @@ export default function Header() {
 
           {/* Right: Language + Account */}
           <div className="hidden md:flex items-center gap-3">
-            <Link href="/languages" className="text-sm text-text-secondary hover:text-text-primary">
-              🌐 Languages
-            </Link>
+            <LanguageSwitcher variant="minimal" />
             {isAuthenticated ? (
               <div className="flex items-center gap-2">
                 <span className="text-sm text-text-secondary">{user?.username}</span>
@@ -89,9 +87,7 @@ export default function Header() {
               <NavLink href="/map" label="Map" />
               <NavLink href="/download" label="Download App" />
               <div className="px-1 py-2">
-                <Link href="/languages" className="text-sm text-text-secondary hover:text-text-primary">
-                  🌐 Languages
-                </Link>
+                <LanguageSwitcher variant="buttons" />
               </div>
               <div className="flex items-center justify-between px-1 py-2">
                 {isAuthenticated ? (

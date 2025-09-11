@@ -1,5 +1,3 @@
-const { i18n } = require('./next-i18next.config');
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Experimental features
@@ -24,8 +22,7 @@ const nextConfig = {
     ],
   },
   
-  // Internationalization
-  i18n,
+  // Note: Using custom App Router translation system instead of next-i18next
   
   // Headers for security and performance
   async headers() {

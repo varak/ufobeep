@@ -205,6 +205,14 @@
   "report": "relazione",
   "mufon": "oh",
   "recentUfoBeepsTitle": "Recenti UFO Beeps",
+  "recentUfoBeepsSubtitle": "Live UFOBeep report della comunità & MUFON",
   "recentUfoBeepsDescription": "Questo feed combina in tempo reale UFOBeep \"beeps\" dai nostri utenti di app mobile con rapporti storici dal database MUFON.",
-  "loadingBeeps": "Caricamento recenti beeps..."
+  "loadingBeeps": "Caricamento recenti beeps...",
+  "heroTagline": "Ricevi avvisi quando uscire e guardare in alto",
+  "heroDescription": "Non perdere mai un altro avvistamento UFO. Ricevi avvisi in tempo reale quando qualcuno vicino a te vede qualcosa di strano nel cielo. Punta il telefono e trova esattamente dove guardare.",
+  "downloadApp": "📱 Scarica App",
+  "viewAllBeeps": "📋 Vedi tutte le pecore",
+  "sightingsMap": "🗺️ Sightings mappa",
+  "globalSightingNetwork": "Rete di visione globale",
+  "howItWorks": "Come funziona UFOBeep"
 }

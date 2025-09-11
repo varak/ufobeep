@@ -1,5 +1,5 @@
 {
-  "@@locale": "en",
+  "@@locale": "nl",
   "appName": "UFOBEEP",
   "ok": "OK",
   "cancel": "Annuleren",
@@ -478,5 +478,12 @@
   "recentUfoBeepsTitle": "Recente UFO Pieps",
   "recentUfoBeepsSubtitle": "Live UFObeep community reports & MUFON database waarnemingen",
   "recentUfoBeepsDescription": "Deze feed combineert real-time UFObeep \"pieps\" van onze mobiele app gebruikers met historische rapporten uit de MUFON database.",
-  "loadingBeeps": "Laden van recente piepers..."
+  "loadingBeeps": "Laden van recente piepers...",
+  "heroTagline": "Ontvang waarschuwingen wanneer naar buiten te gaan en op te zoeken",
+  "heroDescription": "Mis nooit meer een UFO waarneming. Ontvang real-time waarschuwingen als iemand bij je in de buurt iets raars ziet in de lucht. Richt je telefoon en vind precies waar je moet zoeken.",
+  "downloadApp": "Download App",
+  "viewAllBeeps": "Bekijk alle piepers",
+  "sightingsMap": "Kaart van de waarneming",
+  "globalSightingNetwork": "Wereldwijd waarnemingsnetwerk",
+  "howItWorks": "Hoe werkt UFObeep"
 }

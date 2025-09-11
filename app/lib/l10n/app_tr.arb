@@ -1,5 +1,5 @@
 {
-  "@@locale": "en",
+  "@@locale": "tr",
   "appName": "UFOBeep",
   "ok": "TAMAM TAMAM",
   "cancel": "Cancel",
@@ -478,5 +478,12 @@
   "recentUfoBeepsTitle": "Recent UFO Arılar",
   "recentUfoBeepsSubtitle": "Canlı UFOBeep topluluğu raporları ve MUFON veritabanı görüşleri",
   "recentUfoBeepsDescription": "Bu besleme, MUFON veritabanından tarihi raporlarla mobil uygulama kullanıcılarımızdan gerçek zamanlı UFOBeep \"beeps\" birleştirir.",
-  "loadingBeeps": "Yükleniyor son beeps..."
+  "loadingBeeps": "Yükleniyor son beeps...",
+  "heroTagline": "Dışarı çıkmak ve yukarı bakmak için uyarılar alın",
+  "heroDescription": "Asla başka bir UFO görüşünü kaçırmayın. Yakınınızdaki biri gökyüzünde garip bir şey gördüğünde gerçek zamanlı uyarılar alın. Telefonunuzu işaret edin ve tam olarak nereye bakacağınızı bulun.",
+  "downloadApp": "  Download App",
+  "viewAllBeeps": "  View All Beeps",
+  "sightingsMap": "  Sightings Map",
+  "globalSightingNetwork": "Global Sighting Network",
+  "howItWorks": "UFOBeep Nasıl Çalışıyor"
 }

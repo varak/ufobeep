@@ -16,6 +16,9 @@
 - **NEVER override user warnings about not clobbering changes**
 - **NEVER take git actions that could lose uncommitted work**
 - **When encountering merge conflicts: STOP and ask user how to proceed**
+- **NEVER manually add translations to specific language files (es/, de/, fr/, etc.) - ONLY add to English ARB file then run generation script**
+- **NEVER edit individual language JSON files directly - this breaks translation consistency across all 22 languages**
+- **ALWAYS add new translation keys to app/lib/l10n/app_en.arb ONLY, then run node scripts/generate-all-translations.js**
 
 ## Development Quick Start Context
 

@@ -205,6 +205,14 @@
   "report": "zpráva",
   "mufon": "mufon",
   "recentUfoBeepsTitle": "Nedávné UFO Brouci",
+  "recentUfoBeepsSubtitle": "Živé zprávy komunity UFOBeep a pozorování databáze MUFON",
   "recentUfoBeepsDescription": "Toto krmivo kombinuje aktuální UFOBeep \"pípání\" od našich uživatelů mobilních aplikací s historickými zprávami z databáze MUFON.",
-  "loadingBeeps": "Načítám poslední pípnutí..."
+  "loadingBeeps": "Načítám poslední pípnutí...",
+  "heroTagline": "Získejte upozornění, kdy jít ven a podívat se nahoru",
+  "heroDescription": "Nikdy si nenechte ujít další pozorování UFO. Získejte reálné-čas upozornění, když někdo blízko vás vidí něco divného na obloze. Namiřte telefon a najděte přesně, kde hledat.",
+  "downloadApp": "Name",
+  "viewAllBeeps": "Zobrazit všechny pípy",
+  "sightingsMap": "Name",
+  "globalSightingNetwork": "Globální síť pozorování",
+  "howItWorks": "Jak funguje UFOBeep"
 }

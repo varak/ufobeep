@@ -1,5 +1,5 @@
 {
-  "@@locale": "en",
+  "@@locale": "hi",
   "appName": "यूएफओबीप",
   "ok": "ठीक",
   "cancel": "रद्द करना",
@@ -478,5 +478,12 @@
   "recentUfoBeepsTitle": "यूएफओ बीप",
   "recentUfoBeepsSubtitle": "लाइव UFOBeep सामुदायिक रिपोर्ट और MUFON डेटाबेस दर्शन",
   "recentUfoBeepsDescription": "यह फ़ीड हमारे मोबाइल ऐप उपयोगकर्ताओं से वास्तविक समय के UFOBeep \"beeps\" को जोड़ती है जिसमें MUFON डेटाबेस से ऐतिहासिक रिपोर्ट होती है।.",
-  "loadingBeeps": "हाल ही में बीप लोड हो रहा है..."
+  "loadingBeeps": "हाल ही में बीप लोड हो रहा है...",
+  "heroTagline": "बाहर जाने और देखने के लिए अलर्ट प्राप्त करें",
+  "heroDescription": "कभी किसी अन्य यूएफओ दर्शन को याद न करें। जब आपके पास कोई व्यक्ति आकाश में कुछ अजीब चीज़ देखता है तो वास्तविक समय अलर्ट प्राप्त करें। अपने फोन को इंगित करें और ठीक उसी तरह खोजें जहां देखने के लिए।.",
+  "downloadApp": "App डाउनलोड",
+  "viewAllBeeps": "All Beeps",
+  "sightingsMap": "Sightings Map",
+  "globalSightingNetwork": "वैश्विक दृष्टि नेटवर्क",
+  "howItWorks": "कैसे UFOBeep वर्क्स"
 }

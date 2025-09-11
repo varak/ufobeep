@@ -205,6 +205,14 @@
   "report": "raportti",
   "mufon": "mufoni",
   "recentUfoBeepsTitle": "Uusin UFO Piipit",
+  "recentUfoBeepsSubtitle": "Live UFOBeepin yhteisön raportit ja MUFON-tietokannan havainnot",
   "recentUfoBeepsDescription": "Tässä syötteessä yhdistyvät reaaliaikaiset UFOBeep \"piipit\" mobiilisovelluskäyttäjiltämme ja historiaraportit MUFON-tietokannasta.",
-  "loadingBeeps": "Ladataan viimeaikaisia äänimerkkejä..."
+  "loadingBeeps": "Ladataan viimeaikaisia äänimerkkejä...",
+  "heroTagline": "Hanki hälytykset, milloin mennä ulos ja katsoa ylös",
+  "heroDescription": "Älä koskaan jätä UFO-havaintoa väliin. Hanki reaaliaikainen hälytys, kun joku lähelläsi näkee jotain outoa taivaalla. Osoita puhelimeen ja etsi tarkalleen mistä etsiä.",
+  "downloadApp": "Lataa sovellus",
+  "viewAllBeeps": "Näytä kaikki äänimerkit",
+  "sightingsMap": "Näyttökartta",
+  "globalSightingNetwork": "Global Sighting Network",
+  "howItWorks": "Miten UFO- piip toimii"
 }

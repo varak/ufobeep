@@ -205,6 +205,14 @@
   "report": "relatório",
   "mufon": "mufon",
   "recentUfoBeepsTitle": "OVNI recente Abelhas",
+  "recentUfoBeepsSubtitle": "Relatórios da comunidade ao vivo do UFOBeep e avistamentos do banco de dados MUFON",
   "recentUfoBeepsDescription": "Este feed combina \"beeps\" UFOBeep em tempo real de nossos usuários de aplicativos móveis com relatórios históricos do banco de dados MUFON.",
-  "loadingBeeps": "Carregando beeps recentes..."
+  "loadingBeeps": "Carregando beeps recentes...",
+  "heroTagline": "Obter alertas quando sair e olhar para cima",
+  "heroDescription": "Nunca percas outro OVNI. Receber alertas em tempo real quando alguém perto de ti vir algo estranho no céu. Aponte o telefone e encontre exatamente onde procurar.",
+  "downloadApp": "Aplicação de Download",
+  "viewAllBeeps": "Ver todos os Beeps",
+  "sightingsMap": "Mapa de Imagens",
+  "globalSightingNetwork": "Rede de observação global",
+  "howItWorks": "Como funciona o OVNIBeep"
 }

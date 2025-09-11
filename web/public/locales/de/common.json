@@ -205,6 +205,14 @@
   "report": "bericht",
   "mufon": "melonen",
   "recentUfoBeepsTitle": "Neuer UFO Schafe",
+  "recentUfoBeepsSubtitle": "Live UFOBeep Community Berichte & MUFON Datenbank Sehenswürdigkeiten",
   "recentUfoBeepsDescription": "Dieser Feed kombiniert Echtzeit-UFOBeep \"beeps\" von unseren mobilen App-Nutzern mit historischen Berichten aus der MUFON-Datenbank.",
-  "loadingBeeps": "Die letzten..."
+  "loadingBeeps": "Die letzten...",
+  "heroTagline": "Erhalten Sie Alarme, wenn Sie nach draußen gehen und nach oben schauen",
+  "heroDescription": "Verpassen Sie nie eine andere UFO-Sicht. Erhalten Sie Echtzeit-Benachrichtigungen, wenn jemand in der Nähe sieht etwas seltsam am Himmel. Zeigen Sie Ihr Telefon und finden Sie genau, wo Sie suchen.",
+  "downloadApp": "📱 App herunterladen",
+  "viewAllBeeps": "Alle Beeps anzeigen",
+  "sightingsMap": "🗺️ Sehenswürdigkeiten Karte",
+  "globalSightingNetwork": "Global Sighting Network",
+  "howItWorks": "Wie UFOBeep funktioniert"
 }

@@ -1,5 +1,5 @@
 {
-  "@@locale": "en",
+  "@@locale": "pl",
   "appName": "UFOBeep",
   "ok": "OK",
   "cancel": "Anuluj",
@@ -478,5 +478,12 @@
   "recentUfoBeepsTitle": "Najnowsze UFO Dźwięki",
   "recentUfoBeepsSubtitle": "Żywe raporty społeczności UFOBeep i obserwacje bazy danych MUFON",
   "recentUfoBeepsDescription": "Ten kanał łączy w sobie w czasie rzeczywistym \"beepy\" UFOBeep od naszych użytkowników aplikacji mobilnych z raportami historycznymi z bazy danych MUFON.",
-  "loadingBeeps": "Wczytywanie ostatnich sygnałów..."
+  "loadingBeeps": "Wczytywanie ostatnich sygnałów...",
+  "heroTagline": "Pobierz ostrzeżenia, kiedy wyjść na zewnątrz i spojrzeć w górę",
+  "heroDescription": "Nigdy nie przegap kolejnego widoku UFO. Zawiadom o czasie rzeczywistym, gdy ktoś w pobliżu zobaczy coś dziwnego na niebie. Wyceluj w telefon i znajdź dokładnie gdzie szukać.",
+  "downloadApp": "Pobierz aplikację",
+  "viewAllBeeps": "Name",
+  "sightingsMap": "Mapa przeglądów",
+  "globalSightingNetwork": "Globalna sieć widokowa",
+  "howItWorks": "Jak działa UFOBeep"
 }

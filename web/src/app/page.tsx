@@ -1,10 +1,34 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useClientTranslations } from '@/hooks/useClientTranslations'
 import AppDownloadCTA from '@/components/AppDownloadCTA'
 import GlobalSightingNetwork from '@/components/GlobalSightingNetwork'
 
 export default function Home() {
+  const pathname = usePathname()
+  
+  // Detect locale from browser settings with fallback
+  const getBrowserLocale = () => {
+    if (typeof window === 'undefined') return 'en'
+    
+    // Check localStorage preference first
+    const storedLocale = localStorage.getItem('preferred-language')
+    if (storedLocale) {
+      const validLocales = ['en', 'es', 'de', 'fr', 'pt', 'ru', 'ja', 'zh', 'it', 'ar', 'ko', 'tr', 'hi', 'pl', 'cs', 'nl', 'sv', 'da', 'no', 'fi', 'el', 'he']
+      if (validLocales.includes(storedLocale)) return storedLocale
+    }
+    
+    // Detect from browser
+    const browserLang = navigator.language.split('-')[0].toLowerCase()
+    const validLocales = ['en', 'es', 'de', 'fr', 'pt', 'ru', 'ja', 'zh', 'it', 'ar', 'ko', 'tr', 'hi', 'pl', 'cs', 'nl', 'sv', 'da', 'no', 'fi', 'el', 'he']
+    return validLocales.includes(browserLang) ? browserLang : 'en'
+  }
+  
+  const locale = getBrowserLocale()
+  const { t } = useClientTranslations('common', locale)
+  
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
@@ -15,26 +39,25 @@ export default function Home() {
             UFOBeep
           </h1>
           <p className="text-xl md:text-2xl text-text-secondary mb-4">
-            Get alerts when to go outside and look up
+            {t('heroTagline')}
           </p>
           <p className="text-lg text-text-tertiary mb-12 max-w-2xl mx-auto">
-            Never miss another UFO sighting. Get real-time alerts when someone near you 
-            sees something weird in the sky. Point your phone and find exactly where to look.
+            {t('heroDescription')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mb-16">
             <Link href="/download">
               <button className="bg-brand-primary text-text-inverse px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary-dark transition-all duration-300 shadow-glow hover:shadow-xl hover:scale-105 transform">
-                📱 Download App
+                {t('downloadApp')}
               </button>
             </Link>
             <Link href="/beep">
               <button className="border border-brand-primary text-brand-primary px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary hover:text-text-inverse transition-all duration-300 hover:scale-105 transform">
-                📋 View All Beeps
+                {t('viewAllBeeps')}
               </button>
             </Link>
             <a href="#global-network">
               <button className="border border-brand-primary text-brand-primary px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary hover:text-text-inverse transition-all duration-300 hover:scale-105 transform">
-                🗺️ Sightings Map
+                {t('sightingsMap')}
               </button>
             </a>
           </div>
@@ -42,11 +65,11 @@ export default function Home() {
           {/* Content navigation links */}
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 text-sm">
             <a href="#global-network" className="text-brand-primary hover:text-brand-primary-light transition-colors font-medium">
-              Global Sighting Network
+              {t('globalSightingNetwork')}
             </a>
             <span className="text-text-tertiary hidden sm:inline">|</span>
             <a href="#how-it-works" className="text-brand-primary hover:text-brand-primary-light transition-colors font-medium">
-              How UFOBeep Works
+              {t('howItWorks')}
             </a>
             <span className="text-text-tertiary hidden sm:inline">|</span>
             <a href="#share-to-beep" className="text-brand-primary hover:text-brand-primary-light transition-colors font-medium">

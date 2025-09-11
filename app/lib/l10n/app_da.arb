@@ -1,5 +1,5 @@
 {
-  "@@locale": "en",
+  "@@locale": "da",
   "appName": "UFOBeep",
   "ok": "OK",
   "cancel": "Annullér",
@@ -478,5 +478,12 @@
   "recentUfoBeepsTitle": "Nylig UFO Bipper",
   "recentUfoBeepsSubtitle": "Live UFOBeep community reports & MUFON database observationer",
   "recentUfoBeepsDescription": "Dette feed kombinerer real- time UFOBeep \"bipper\" fra vores mobile app-brugere med historiske rapporter fra MUFON databasen.",
-  "loadingBeeps": "Indlæser nylige bip..."
+  "loadingBeeps": "Indlæser nylige bip...",
+  "heroTagline": "Få advarsler når du skal gå udenfor og se op",
+  "heroDescription": "Gå aldrig glip af endnu en UFO observation. Få realtidsadvarsler når nogen nær dig ser noget underligt på himlen. Ret din telefon og find præcis hvor du skal kigge.",
+  "downloadApp": "Download App",
+  "viewAllBeeps": "Vis alle bip",
+  "sightingsMap": "Observationskort",
+  "globalSightingNetwork": "Global Sighting- netværk",
+  "howItWorks": "Hvordan UFOBeep virker"
 }

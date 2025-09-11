@@ -205,7 +205,14 @@
   "report": "informe",
   "mufon": "mufon",
   "recentUfoBeepsTitle": "OVNI reciente Beeps",
-  "recentUfoBeepsSubtitle": "Informes de la comunidad UFOBeep en vivo y avistamientos de la base de datos MUFON",
+  "recentUfoBeepsSubtitle": "Live UFOBeep Community reports & MUFON database sightings",
   "recentUfoBeepsDescription": "Este feed combina \"beeps\" en tiempo real de UFOBeep de nuestros usuarios de aplicaciones móviles con informes históricos de la base de datos MUFON.",
-  "loadingBeeps": "Cargando recientes pitidos..."
+  "loadingBeeps": "Cargando recientes pitidos...",
+  "heroTagline": "Obtener alertas cuando salir y mirar hacia arriba",
+  "heroDescription": "Nunca pierdas otro avistamiento de OVNI. Obtenga alertas en tiempo real cuando alguien cercano ve algo raro en el cielo. Apunte el teléfono y encuentre exactamente dónde buscar.",
+  "downloadApp": "📱 Descargar App",
+  "viewAllBeeps": "📋 View All Beeps",
+  "sightingsMap": "Mapa de Avistamientos",
+  "globalSightingNetwork": "Global Sighting Network",
+  "howItWorks": "Cómo funciona UFOBeep"
 }

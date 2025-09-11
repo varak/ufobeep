@@ -124,7 +124,30 @@ export default function AlertDetailPage() {
   const router = useRouter()
   const [alert, setAlert] = useState<Alert | null>(null)
   const [loading, setLoading] = useState(true)
-  const locale = (params?.locale as string) || 'en'
+  // Detect locale with priority: localStorage → URL → browser → 'en'
+  const getEffectiveLocale = () => {
+    if (typeof window === 'undefined') {
+      return (params?.locale as string) || 'en'
+    }
+    
+    // Check localStorage preference first
+    const storedLocale = localStorage.getItem('preferred-language')
+    if (storedLocale) {
+      const validLocales = ['en', 'es', 'de', 'fr', 'pt', 'ru', 'ja', 'zh', 'it', 'ar', 'ko', 'tr', 'hi', 'pl', 'cs', 'nl', 'sv', 'da', 'no', 'fi', 'el', 'he']
+      if (validLocales.includes(storedLocale)) return storedLocale
+    }
+    
+    // Fall back to URL locale
+    const urlLocale = (params?.locale as string)
+    if (urlLocale) return urlLocale
+    
+    // Final fallback to browser detection
+    const browserLang = navigator.language.split('-')[0].toLowerCase()
+    const validLocales = ['en', 'es', 'de', 'fr', 'pt', 'ru', 'ja', 'zh', 'it', 'ar', 'ko', 'tr', 'hi', 'pl', 'cs', 'nl', 'sv', 'da', 'no', 'fi', 'el', 'he']
+    return validLocales.includes(browserLang) ? browserLang : 'en'
+  }
+  
+  const locale = getEffectiveLocale()
   const { t } = useClientTranslations('beep-detail', locale)
   
   // Get openImage parameter for direct image linking

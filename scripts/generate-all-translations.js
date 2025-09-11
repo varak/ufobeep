@@ -1,9 +1,32 @@
 #!/usr/bin/env node
 
 /**
- * Comprehensive translation generator for both web and mobile app
- * Generates all language files consistently from English sources
- * Usage: node scripts/generate-all-translations.js
+ * UFOBeep Translation Generator
+ * ============================
+ * 
+ * Generates consistent translations for both web and mobile app from English ARB source.
+ * 
+ * USAGE:
+ *   node scripts/generate-all-translations.js [options]
+ * 
+ * OPTIONS:
+ *   --english-only     Generate only English templates (fast, no translation)
+ *   --language=es      Generate specific language only (e.g., --language=es)
+ *   --no-translate     Generate all languages with English fallbacks (fast)
+ *   --help            Show this help message
+ * 
+ * EXAMPLES:
+ *   node scripts/generate-all-translations.js --english-only
+ *   node scripts/generate-all-translations.js --language=es
+ *   node scripts/generate-all-translations.js --no-translate
+ *   node scripts/generate-all-translations.js  # Full translation (slow)
+ * 
+ * HOW IT WORKS:
+ *   1. Reads English ARB file as single source of truth
+ *   2. Organizes keys by namespace (common.json, navigation.json, etc.)
+ *   3. Generates web JSON files and app ARB files
+ *   4. Uses LibreTranslate for auto-translation (optional)
+ *   5. Falls back to English if translation fails
  */
 
 const fs = require('fs');
@@ -42,17 +65,85 @@ const APP_LOCALES_DIR = path.join(__dirname, '../app/lib/l10n');
 // LibreTranslate settings
 const LIBRETRANSLATE_URL = process.env.LIBRETRANSLATE_URL || 'http://localhost:5000';
 
+// Command line options
+const args = process.argv.slice(2);
+const options = {
+  englishOnly: args.includes('--english-only'),
+  noTranslate: args.includes('--no-translate'),
+  help: args.includes('--help'),
+  language: args.find(arg => arg.startsWith('--language='))?.split('=')[1],
+  timeout: parseInt(args.find(arg => arg.startsWith('--timeout='))?.split('=')[1]) || 30000
+};
+
+if (options.help) {
+  console.log(`
+UFOBeep Translation Generator
+============================
+
+USAGE:
+  node scripts/generate-all-translations.js [options]
+
+OPTIONS:
+  --english-only       Generate only English templates (fast, no translation)
+  --language=CODE      Generate specific language only (e.g., --language=es)
+  --no-translate       Generate all languages with English fallbacks (fast)
+  --timeout=MS         Translation timeout in milliseconds (default: 30000)
+  --help               Show this help message
+
+EXAMPLES:
+  node scripts/generate-all-translations.js --english-only
+  node scripts/generate-all-translations.js --language=es
+  node scripts/generate-all-translations.js --no-translate
+  node scripts/generate-all-translations.js --timeout=10000
+
+WORKFLOW:
+  1. Add new translation keys to app/lib/l10n/app_en.arb ONLY
+  2. Run this script to generate all language files
+  3. Review generated translations (especially new ones)
+  4. Deploy updated files to production
+
+KEY RULES:
+  - NEVER edit individual language files manually
+  - ONLY edit the English ARB file (app_en.arb)
+  - This script maintains consistency across all 22 languages
+  - Use --no-translate for fast updates without translation
+`);
+  process.exit(0);
+}
+
 class TranslationGenerator {
   constructor() {
     this.englishWebFiles = {};
     this.englishAppTerms = {};
     this.cache = new Map(); // Translation cache
+    this.translateEnabled = false; // Will be set during init
   }
 
   async init() {
     console.log('📚 Loading English source files...');
     await this.loadEnglishSources();
     console.log('✅ English sources loaded\n');
+    
+    // Check LibreTranslate availability
+    if (!options.noTranslate && !options.englishOnly) {
+      try {
+        const response = await fetch(`${LIBRETRANSLATE_URL}/languages`, { 
+          signal: AbortSignal.timeout(5000) 
+        });
+        if (response.ok) {
+          this.translateEnabled = true;
+          console.log('✅ LibreTranslate connected - translations enabled\n');
+        } else {
+          this.translateEnabled = false;
+          console.log('⚠️  LibreTranslate not available - copying English values\n');
+        }
+      } catch (error) {
+        console.log('⚠️  LibreTranslate not available - copying English values\n');
+        this.translateEnabled = false;
+      }
+    } else {
+      console.log('⚡ Fast mode - copying English values to all languages\n');
+    }
   }
 
   async loadEnglishSources() {
@@ -82,13 +173,16 @@ class TranslationGenerator {
     for (const [key, value] of Object.entries(arbContent)) {
       if (key.startsWith('@') || key === '@@locale') continue; // Skip metadata
       
-      if (key.includes('tab') || key.includes('nav') || key.includes('menu')) {
+      // Handle recentUfoBeeps* keys specially - keep them together in common
+      if (key.startsWith('recentUfoBeeps')) {
+        organized['common.json'][key] = value;
+      } else if (key.includes('tab') || key.includes('nav') || key.includes('menu')) {
         organized['navigation.json'][key] = value;
       } else if (key.includes('alert') || key.includes('beep') || key.includes('ufoType') || key.includes('shape')) {
         organized['alerts.json'][key] = value;
       } else if (key.includes('error') || key.includes('failed') || key.includes('invalid')) {
         organized['errors.json'][key] = value;
-      } else if (key.includes('title') || key.includes('desc') || key.includes('meta')) {
+      } else if (key.includes('title') || key.includes('subtitle') || key.includes('desc') || key.includes('meta')) {
         organized['meta.json'][key] = value;
       } else if (key.includes('form') || key.includes('input') || key.includes('submit') || key.includes('username')) {
         organized['forms.json'][key] = value;
@@ -104,7 +198,9 @@ class TranslationGenerator {
   }
 
   async translateText(text, targetLang) {
-    if (!text || text.length < 2) return text;
+    if (!text || text.length < 2 || options.noTranslate || !this.translateEnabled) {
+      return text; // Return English text
+    }
     
     const cacheKey = `${text}:${targetLang}`;
     if (this.cache.has(cacheKey)) {
@@ -112,6 +208,9 @@ class TranslationGenerator {
     }
 
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), options.timeout);
+
       const response = await fetch(`${LIBRETRANSLATE_URL}/translate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -120,8 +219,15 @@ class TranslationGenerator {
           source: 'en', 
           target: targetLang,
           format: 'text'
-        })
+        }),
+        signal: controller.signal
       });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        return text; // Return English on HTTP error
+      }
 
       const data = await response.json();
       const translated = data.translatedText || text;
@@ -129,8 +235,7 @@ class TranslationGenerator {
       this.cache.set(cacheKey, translated);
       return translated;
     } catch (error) {
-      console.warn(`⚠️  Translation failed: ${text.substring(0, 30)}...`);
-      return text;
+      return text; // Return English on any error
     }
   }
 
@@ -150,9 +255,13 @@ class TranslationGenerator {
     if (obj && typeof obj === 'object') {
       const result = {};
       for (const [key, value] of Object.entries(obj)) {
-        // Skip metadata fields
+        // Skip metadata fields but fix locale
         if (key.startsWith('@') || key === '@@locale') {
-          result[key] = value;
+          if (key === '@@locale') {
+            result[key] = targetLang;
+          } else {
+            result[key] = value;
+          }
         } else {
           result[key] = await this.translateObject(value, targetLang, depth + 1);
         }
@@ -203,10 +312,7 @@ class TranslationGenerator {
     if (targetLang === 'en') {
       translatedContent = this.englishAppTerms;
     } else {
-      translatedContent = { 
-        "@@locale": targetLang,
-        ...await this.translateObject(this.englishAppTerms, targetLang)
-      };
+      translatedContent = await this.translateObject(this.englishAppTerms, targetLang);
     }
     
     fs.writeFileSync(outputPath, JSON.stringify(translatedContent, null, 2) + '\n');
@@ -222,24 +328,48 @@ class TranslationGenerator {
   }
 
   async generateAllLanguages() {
-    console.log(`🚀 Generating translations for ${Object.keys(LANGUAGES).length} languages...\n`);
+    const targetLanguages = options.language 
+      ? [options.language]
+      : options.englishOnly 
+        ? ['en'] 
+        : Object.keys(LANGUAGES);
+
+    console.log(`🚀 Generating translations for ${targetLanguages.length} language(s)...\n`);
     
-    for (const langCode of Object.keys(LANGUAGES)) {
+    const results = { success: 0, failed: 0, skipped: 0 };
+    
+    for (const langCode of targetLanguages) {
+      if (!LANGUAGES[langCode]) {
+        console.error(`❌ Unknown language code: ${langCode}`);
+        results.failed++;
+        continue;
+      }
+      
       console.log(`📝 Processing ${langCode} (${LANGUAGES[langCode].name})`);
       
       try {
         await this.generateWebLocales(langCode);
         await this.generateAppLocales(langCode);
         console.log(`✅ Completed ${langCode}\n`);
+        results.success++;
       } catch (error) {
         console.error(`❌ Failed to generate ${langCode}:`, error.message);
+        console.error('Stack:', error.stack);
+        results.failed++;
       }
       
-      // Rate limiting
-      if (langCode !== 'en') {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+      // Rate limiting for translation requests
+      if (langCode !== 'en' && this.translateEnabled && !options.noTranslate) {
+        await new Promise(resolve => setTimeout(resolve, 2000));
       }
     }
+    
+    console.log(`\n📊 Generation Results:`);
+    console.log(`   ✅ Success: ${results.success}`);
+    console.log(`   ❌ Failed: ${results.failed}`);
+    console.log(`   ⏭️  Skipped: ${results.skipped}`);
+    
+    return results;
   }
 
   generateConfigFiles() {

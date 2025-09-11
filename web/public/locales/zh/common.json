@@ -205,6 +205,14 @@
   "report": "报告",
   "mufon": "木冯",
   "recentUfoBeepsTitle": "近期的UFO 黄蜂",
+  "recentUfoBeepsSubtitle": "现场UFOBEP社区报告和MUFON数据库目击",
   "recentUfoBeepsDescription": "此饲料结合了我们移动应用用户的实时UFOBEP\"哔哩哔哩\"与MUFON数据库的历史报告.",
-  "loadingBeeps": "正在装入最近的蜂鸣..."
+  "loadingBeeps": "正在装入最近的蜂鸣...",
+  "heroTagline": "什么时候到外面看看",
+  "heroDescription": "永远不要错过另一个UFO的目击。 当有人在天上看到奇怪的东西时,即刻发出警报. 把电话对准,找到可以找的地方.",
+  "downloadApp": "QQ 下载 App",
+  "viewAllBeeps": "QQ 查看全部蜂窝",
+  "sightingsMap": "图像",
+  "globalSightingNetwork": "全球观察网",
+  "howItWorks": "如何UFOBEP工作"
 }

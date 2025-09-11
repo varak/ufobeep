@@ -205,6 +205,14 @@
   "report": "rapport",
   "mufon": "mufon",
   "recentUfoBeepsTitle": "OVNI récents Abeilles",
+  "recentUfoBeepsSubtitle": "Rapports communautaires UFOBeep en direct et observations de la base de données MUFON",
   "recentUfoBeepsDescription": "Ce flux combine en temps réel UFOBeep \"beeps\" de nos utilisateurs d'applications mobiles avec des rapports historiques de la base de données MUFON.",
-  "loadingBeeps": "Chargement de bips récents..."
+  "loadingBeeps": "Chargement de bips récents...",
+  "heroTagline": "Obtenir des alertes quand aller dehors et regarder vers le haut",
+  "heroDescription": "Ne manquez jamais une autre OVNI. Obtenez des alertes en temps réel quand quelqu'un près de vous voit quelque chose de bizarre dans le ciel. Pointez votre téléphone et trouvez exactement où chercher.",
+  "downloadApp": "Télécharger l'application",
+  "viewAllBeeps": "Voir toutes les abeilles",
+  "sightingsMap": "Carte des visites",
+  "globalSightingNetwork": "Réseau mondial de surveillance",
+  "howItWorks": "Comment UFOBeep fonctionne"
 }
