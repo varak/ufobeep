@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import MediaGalleryModal from '../MediaGalleryModal'
+import { useClientTranslations } from '@/hooks/useClientTranslations'
 
 interface Alert {
   id: string
@@ -31,6 +32,7 @@ export default function AlertHero({ alert, openImageIndex }: AlertHeroProps) {
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
   const router = useRouter()
+  const { t } = useClientTranslations('common')
   const hasMedia = alert.media_files && alert.media_files.length > 0
   const hasDescription = alert.description?.trim()
 
@@ -73,7 +75,7 @@ export default function AlertHero({ alert, openImageIndex }: AlertHeroProps) {
             {!hasMedia && !hasDescription && (
               <div className="inline-flex items-center gap-2 bg-text-tertiary/10 text-text-tertiary px-3 py-1 rounded-full text-sm font-medium border border-text-tertiary/20">
                 <span>📡</span>
-                <span>beep only</span>
+                <span>{t('beepOnly')}</span>
               </div>
             )}
             {!hasMedia && hasDescription && (

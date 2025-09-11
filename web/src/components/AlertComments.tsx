@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
+import { useClientTranslations } from '@/hooks/useClientTranslations'
 
 interface Comment {
   id: number
@@ -18,6 +19,7 @@ interface AlertCommentsProps {
 
 export default function AlertComments({ alertId }: AlertCommentsProps) {
   const { user, isAuthenticated, login, getAuthToken, logout, renderGoogleButton, renderAppleButton, googleInitialized } = useAuth()
+  const { t } = useClientTranslations('common')
   const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -250,7 +252,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
         <svg className="w-5 h-5 text-brand-primary" fill="currentColor" viewBox="0 0 20 20">
           <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
         </svg>
-        Comments {comments.length > 0 && `(${comments.length})`}
+        {t('commentsTitle')} {comments.length > 0 && `(${comments.length})`}
       </h3>
 
       {loading && (
@@ -305,7 +307,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
 
       {!loading && comments.length === 0 && (
         <div className="text-center py-6 mb-6 text-text-tertiary text-sm">
-          No comments yet. Be the first to comment!
+          {t('noCommentsYet')}
         </div>
       )}
 
@@ -338,7 +340,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
                   id="comment"
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  placeholder="Share your thoughts about this sighting..."
+                  placeholder={t('shareYourThoughts')}
                   required
                   rows={4}
                   className="w-full bg-dark-background border border-dark-border rounded-lg px-4 py-3 text-text-primary placeholder-text-tertiary focus:outline-none focus:border-brand-primary resize-vertical"
@@ -350,7 +352,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
                   disabled={isSubmitting || !comment.trim()}
                   className="flex-1 bg-brand-primary hover:bg-brand-primary/90 disabled:bg-brand-primary/50 text-white py-3 px-4 rounded-lg font-medium transition-colors"
                 >
-                  {isSubmitting ? 'Posting...' : 'Post Comment'}
+                  {isSubmitting ? 'Posting...' : t('postComment')}
                 </button>
               </div>
             </form>

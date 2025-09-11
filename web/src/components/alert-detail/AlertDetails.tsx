@@ -79,7 +79,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
       {alert.reporter_username !== 'MUFON' && (
         <div className="flex items-center gap-2 mb-4">
           <span className="text-brand-primary">ℹ️</span>
-          <h2 className="text-lg font-semibold text-brand-primary">Details</h2>
+          <h2 className="text-lg font-semibold text-brand-primary">{t('detailsTitle')}</h2>
         </div>
       )}
 
@@ -139,7 +139,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
           <span className="text-text-tertiary mt-0.5">⏰</span>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <span className="text-text-tertiary text-sm font-medium">Time:</span>
+              <span className="text-text-tertiary text-sm font-medium">{t('timeLabel')}:</span>
               <span className="text-text-primary text-sm">{formatFullDate(alert.created_at)}</span>
             </div>
             <div className="text-text-secondary text-xs mt-1">
@@ -211,7 +211,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
           <span className="text-text-tertiary">🔗</span>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <span className="text-text-tertiary text-sm font-medium">Share Link:</span>
+              <span className="text-text-tertiary text-sm font-medium">{t('shareLink')}:</span>
               <code className="text-brand-primary text-sm bg-dark-bg px-2 py-1 rounded">
                 ufobeep.com{getShortAlertUrl(alert, locale)}
               </code>

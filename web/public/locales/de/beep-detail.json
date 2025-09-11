@@ -75,15 +75,15 @@
   "locationLabel": "Standort",
   "unknownLocation": "Unbekannte Lage",
   "locationUnknown": "Ort Unbekannt",
-  "backToBeeps": "← Zurück zu Beeps",
+  "backToBeeps": "Passwort vergessen",
   "loadingDetails": "Beep Details laden...",
   "details": "Details",
   "location": "Standort",
   "ufobeep": {
     "witnesses": "Zeugen",
     "confirmations": "Bestätigungen",
-    "alertLevel": "Alarmstufe",
-    "reportType": "UFOBeep Meldung"
+    "alertlevel": "Alarmstufe",
+    "reporttype": "UFOBeep Report"
   },
   "nuforc": {
     "classifications": {},

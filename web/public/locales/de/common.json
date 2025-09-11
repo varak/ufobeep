@@ -52,7 +52,7 @@
   "send": "Bitte",
   "commentPosted": "Kommentare gepostet",
   "autoFollowEnabled": "Sie folgen nun dieser Warnung.",
-  "noCommentsYet": "Noch keine Kommentare. Sei der Erste!",
+  "noCommentsYet": "Noch keine Kommentare. Sei der erste Kommentar!",
   "newCommentNotification": "Neuer Kommentar zu einem Anblick folgen Sie.",
   "mapTitle": "Live Map",
   "compassTitle": "Kompass",
@@ -201,5 +201,11 @@
   "viewAllBeeps": "Alle Beeps anzeigen",
   "sightingsMap": "🗺️ Sehenswürdigkeiten Karte",
   "globalSightingNetwork": "Global Sighting Network",
-  "howItWorks": "Wie UFOBeep funktioniert"
+  "howItWorks": "Wie UFOBeep funktioniert",
+  "shareYourThoughts": "Teilen Sie Ihre Gedanken über dieses Sehen...",
+  "postComment": "Post-Kommando",
+  "loggedInAs": "Eingeloggt als",
+  "logout": "Anmeldung",
+  "notFollowing": "Nicht folgen",
+  "follow": "Folgen"
 }

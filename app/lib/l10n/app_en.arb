@@ -541,5 +541,17 @@
   "mediaCountSingle": "1 image",
   "mediaMoreImages": "+{count} more",
   "errorNotFound": "Beep not found",
-  "errorLoadError": "Failed to load beep details"
+  "errorLoadError": "Failed to load beep details",
+  "timeLabel": "Time",
+  "detailsTitle": "Details",
+  "shareLink": "Share Link",
+  "commentsTitle": "Comments",
+  "noCommentsYet": "No comments yet. Be the first to comment!",
+  "shareYourThoughts": "Share your thoughts about this sighting...",
+  "postComment": "Post Comment",
+  "loggedInAs": "Logged in as",
+  "logout": "Logout",
+  "notFollowing": "Not following",
+  "follow": "Follow",
+  "beepOnly": "beep only"
 }

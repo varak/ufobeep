@@ -133,7 +133,7 @@
   "send": "Bitte",
   "commentPosted": "Kommentare gepostet",
   "autoFollowEnabled": "Sie folgen nun dieser Warnung.",
-  "noCommentsYet": "Noch keine Kommentare. Sei der Erste!",
+  "noCommentsYet": "Noch keine Kommentare. Sei der erste Kommentar!",
   "newCommentNotification": "Neuer Kommentar zu einem Anblick folgen Sie.",
   "mapTitle": "Live Map",
   "compassTitle": "Kompass",
@@ -541,5 +541,11 @@
   "mediaCountSingle": "1 bild",
   "mediaMoreImages": "+{count} mehr",
   "errorNotFound": "Beep nicht gefunden",
-  "errorLoadError": "Versäumt, um Details zu laden"
+  "errorLoadError": "Versäumt, um Details zu laden",
+  "shareYourThoughts": "Teilen Sie Ihre Gedanken über dieses Sehen...",
+  "postComment": "Post-Kommando",
+  "loggedInAs": "Eingeloggt als",
+  "logout": "Anmeldung",
+  "notFollowing": "Nicht folgen",
+  "follow": "Folgen"
 }
