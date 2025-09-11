@@ -58,9 +58,10 @@ interface Alert {
 interface AlertCardProps {
   alert: Alert
   compact?: boolean
+  locale?: string
 }
 
-export default function AlertCard({ alert, compact = false }: AlertCardProps) {
+export default function AlertCard({ alert, compact = false, locale = 'en' }: AlertCardProps) {
   // Convert all media URLs to use main domain proxy for compatibility
   const alertWithFixedUrls = {
     ...alert,
