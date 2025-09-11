@@ -235,9 +235,10 @@ class TranslationGenerator {
         } else {
           organized['beep-detail.json'][key] = value;
         }
-      } else if (key.startsWith('recentUfoBeeps')) {
+      } else if (key.startsWith('recentUfoBeeps') || key.startsWith('nav')) {
+        // Navigation keys should go to common.json, not navigation.json
         organized['common.json'][key] = value;
-      } else if (key.includes('tab') || key.includes('nav') || key.includes('menu')) {
+      } else if (key.includes('tab') || key.includes('menu')) {
         organized['navigation.json'][key] = value;
       } else if (key.includes('alert') || key.includes('beep') || key.includes('ufoType') || key.includes('shape')) {
         organized['alerts.json'][key] = value;

@@ -547,5 +547,8 @@
   "loggedInAs": "Logged in as",
   "logout": "Logout",
   "notFollowing": "Not following",
-  "follow": "Follow"
+  "follow": "Follow",
+  "navRecentBeeps": "Recent Beeps",
+  "navMap": "Map",
+  "navDownloadApp": "Download App"
 }

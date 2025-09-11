@@ -220,8 +220,8 @@
   "noAlertsFound": "Keine passenden Alarme",
   "alertsFilterHelp": "Versuchen Sie, Ihre Filter anzupassen, um mehr Ergebnisse zu sehen",
   "verified": "Verifiziert",
-  "beepOnly": "nur noch",
-  "reportOnly": "nur",
+  "beepOnly": "Nur noch",
+  "reportOnly": "Nur",
   "videoOnly": "nur",
   "imageOnly": "nur",
   "timeJustNow": "jetzt",
@@ -547,5 +547,8 @@
   "loggedInAs": "Eingeloggt als",
   "logout": "Anmeldung",
   "notFollowing": "Nicht folgen",
-  "follow": "Folgen"
+  "follow": "Folgen",
+  "navRecentBeeps": "Letzter Beitrag",
+  "navMap": "Landkarte",
+  "navDownloadApp": "App herunterladen"
 }
