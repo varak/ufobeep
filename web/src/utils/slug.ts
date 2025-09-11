@@ -1,10 +1,10 @@
 export function generateSlug(title: string, location: string, date: string, id?: string, locale: string = 'en', translations?: any) {
-  // Get translated fallback terms
-  const getTranslatedTerm = (key: string, fallback: string) => {
+  // Get translated terms from translations object
+  const getTranslatedTerm = (key: string) => {
     if (translations?.slugs?.[key]) {
       return translations.slugs[key]
     }
-    return fallback
+    return ''
   }
 
   const titlePart = (title || '')
@@ -13,7 +13,7 @@ export function generateSlug(title: string, location: string, date: string, id?:
     .replace(/\s+/g, '-')
     .substring(0, 30)
 
-  const unknownTerm = getTranslatedTerm('unknown', 'unknown')
+  const unknownTerm = getTranslatedTerm('unknown')
   
   const locationPart = (location || unknownTerm)
     .split(',')[0]
@@ -108,19 +108,11 @@ export function getAlertSlug(alert: SluggableAlertLike, locale: string = 'en', t
     }
   }
   
-  // Get translated fallback terms
-  const getTranslatedTerm = (key: string, fallback: string) => {
-    if (translations?.slugs?.[key]) {
-      return translations.slugs[key]
-    }
-    return fallback
-  }
-
-  // Always use translated term for consistent slugs, ignore alert.title
-  let title = getTranslatedTerm('ufoSighting', 'UFO Sighting')
+  // Always use translated terms for consistent slugs, ignore alert.title
+  let title = translations?.slugs?.ufoSighting || ''
   if (isMufon) {
-    const mufonTerm = getTranslatedTerm('mufon', 'mufon')
-    const reportTerm = getTranslatedTerm('report', 'report')
+    const mufonTerm = translations?.slugs?.mufon || ''
+    const reportTerm = translations?.slugs?.report || ''
     title = `${mufonTerm}-` + (alert.title?.toLowerCase().replace('mufon ', '') || reportTerm)
   }
   
