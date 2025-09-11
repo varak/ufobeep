@@ -842,4 +842,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String notificationDistance(String distance) {
     return '$distance away';
   }
+
+  @override
+  String get unknown => 'unknown';
+
+  @override
+  String get report => 'report';
+
+  @override
+  String get mufon => 'mufon';
 }

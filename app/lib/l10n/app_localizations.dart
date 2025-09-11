@@ -1667,6 +1667,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{distance} away'**
   String notificationDistance(String distance);
+
+  /// No description provided for @unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'unknown'**
+  String get unknown;
+
+  /// No description provided for @report.
+  ///
+  /// In en, this message translates to:
+  /// **'report'**
+  String get report;
+
+  /// No description provided for @mufon.
+  ///
+  /// In en, this message translates to:
+  /// **'mufon'**
+  String get mufon;
 }
 
 class _AppLocalizationsDelegate

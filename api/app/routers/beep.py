@@ -307,11 +307,17 @@ async def get_alert_details(
         db_pool = await get_db()
         alerts_service = AlertsService(db_pool)
         
-        # Try to get by UUID first
+        # Try to get by UUID first, then fallback to short URL
+        import uuid
+        alert = None
+        
+        # Check if it looks like a UUID
         try:
+            uuid.UUID(alert_id)
+            # Valid UUID format, try to get by ID
             alert = await alerts_service.get_alert_by_id(alert_id)
-        except:
-            # If UUID parsing fails, try as short URL
+        except ValueError:
+            # Not a valid UUID, treat as short URL
             alert = await alerts_service.get_alert_by_short_url(alert_id)
         
         if not alert:

@@ -12,7 +12,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "cs": [
@@ -35,7 +38,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "da": [
@@ -58,7 +64,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "de": [
@@ -74,7 +83,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "el": [
@@ -97,7 +109,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "es": [
@@ -113,7 +128,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "fi": [
@@ -136,7 +154,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "fr": [
@@ -152,7 +173,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "he": [
@@ -175,7 +199,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "hi": [
@@ -198,7 +225,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "it": [
@@ -214,7 +244,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "ja": [
@@ -230,7 +263,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "ko": [
@@ -253,7 +289,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "nl": [
@@ -276,7 +315,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "no": [
@@ -299,7 +341,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "pl": [
@@ -322,7 +367,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "pt": [
@@ -338,7 +386,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "ru": [
@@ -354,7 +405,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "sv": [
@@ -377,7 +431,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "tr": [
@@ -393,7 +450,10 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ],
 
   "zh": [
@@ -409,6 +469,9 @@
     "notificationWitnessTextMultiple",
     "notificationActionSnooze",
     "notificationActionDismiss",
-    "notificationDistance"
+    "notificationDistance",
+    "unknown",
+    "report",
+    "mufon"
   ]
 }
