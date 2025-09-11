@@ -156,33 +156,16 @@ export default function AlertDetailPage() {
         let targetAlert = null
         
         try {
-          console.log('DEBUG: Looking for shortId:', shortId)
-          
-          // Get all beeps and search for the matching short_url  
-          const res = await fetch(`/api/beep?limit=1000&verified_only=false`)
+          // Use efficient endpoint to fetch single beep by short URL
+          const res = await fetch(`/api/beep/${shortId}`)
           if (res.ok) {
             const data = await res.json()
-            console.log('DEBUG: API response success:', data.success)
-            if (data.success && (data.data?.beeps || data.data?.alerts)) {
-              // Handle both beeps and alerts for compatibility
-              const beeps = data.data?.beeps || data.data?.alerts || []
-              console.log('DEBUG: Found', beeps.length, 'total beeps')
-              console.log('DEBUG: Looking for short_url:', shortId)
-              console.log('DEBUG: Sample short_urls:', beeps.slice(0, 5).map((b: any) => b.short_url))
-              
-              targetAlert = beeps.find((b: any) => b.short_url === shortId)
-              if (targetAlert) {
-                console.log('DEBUG: Found matching beep:', targetAlert.id, 'with short_url:', targetAlert.short_url)
-              } else {
-                console.log('DEBUG: No beep found with short_url:', shortId)
-                console.log('DEBUG: All short_urls:', beeps.map((b: any) => b.short_url))
-              }
+            if (data.success && data.data?.beep) {
+              targetAlert = data.data.beep
             }
-          } else {
-            console.log('DEBUG: API request failed:', res.status, res.statusText)
           }
         } catch (error) {
-          console.error('Error fetching beeps:', error)
+          console.error('Error fetching beep by short URL:', error)
         }
         
         if (targetAlert) {
