@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import EmailNotifySignup from '../../components/EmailNotifySignup'
-import { trackEvent } from '../../components/GoogleAnalytics'
+import EmailNotifySignup from '@/components/EmailNotifySignup'
+import { trackEvent } from '@/components/GoogleAnalytics'
 
 export default function AppPage() {
   return (

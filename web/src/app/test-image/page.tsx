@@ -1,6 +1,6 @@
 'use client'
 
-import ImageWithLoading from '../../components/ImageWithLoading'
+import ImageWithLoading from '@/components/ImageWithLoading'
 
 export default function TestImagePage() {
   return (
