@@ -378,26 +378,25 @@ class AlertsService:
                 else:
                     # Insert new record with external_id
                     print(f"Creating new {source} record with external_id: {external_id}")
+                    # Generate short URL using the single source of truth
+                    from ..utils.short_url_utils import generate_short_url
+                    short_url = generate_short_url(external_id)
+                    
                     alert_id = await conn.fetchval("""
                         INSERT INTO sightings 
                         (title, description, category, witness_count, is_public, tags, 
                          media_info, sensor_data, enrichment_data, alert_level, status, reporter_id,
-                         source, external_url, public_latitude, public_longitude, occurred_at, external_id)
-                        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
+                         source, external_url, public_latitude, public_longitude, occurred_at, external_id, short_url)
+                        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
                         RETURNING id
                     """, title, description, category, witness_count, is_public,
                         tags or [], json.dumps(media_info or {}), 
                         json.dumps(sensor_data or {}), json.dumps(enrichment_data or {}),
                         alert_level, "verified", reporter_id, source, external_url, latitude, longitude, 
-                        occurred_at_timestamp, external_id)
-                    
-                    # Generate short URL using the single source of truth
-                    from ..utils.short_url_utils import generate_short_url
-                    short_url = generate_short_url(external_id)
-                    if short_url:
-                        await conn.execute("UPDATE sightings SET short_url = $1 WHERE id = $2", short_url, alert_id)
+                        occurred_at_timestamp, external_id, short_url)
             else:
                 # Regular UFOBeep alert without external_id
+                # Generate short URL using the single source of truth (need ID first)
                 alert_id = await conn.fetchval("""
                     INSERT INTO sightings 
                     (title, description, category, witness_count, is_public, tags, 
