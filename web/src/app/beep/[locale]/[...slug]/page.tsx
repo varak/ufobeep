@@ -167,7 +167,7 @@ export default function AlertDetailPage() {
               const beeps = data.data?.beeps || data.data?.alerts || []
               console.log('DEBUG: Found', beeps.length, 'total beeps')
               console.log('DEBUG: Looking for short_url:', shortId)
-              console.log('DEBUG: Sample short_urls:', beeps.slice(0, 5).map(b => b.short_url))
+              console.log('DEBUG: Sample short_urls:', beeps.slice(0, 5).map((b: any) => b.short_url))
               
               targetAlert = beeps.find((b: any) => b.short_url === shortId)
               if (targetAlert) {
