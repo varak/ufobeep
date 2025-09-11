@@ -338,7 +338,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
                       title: alert.title || t('ufoSightingAlt'),
                       url: `https://ufobeep.com${getShortAlertUrl(alert, locale)}`
                     })
-                  } else {
+                  } else if (typeof navigator !== 'undefined' && navigator.clipboard) {
                     navigator.clipboard.writeText(`https://ufobeep.com${getShortAlertUrl(alert, locale)}`)
                   }
                 }}
