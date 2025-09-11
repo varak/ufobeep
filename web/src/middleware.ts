@@ -41,8 +41,8 @@ export async function middleware(request: NextRequest) {
       
       if (response.ok) {
         const data = await response.json()
-        if (data.success && data.data?.alert) {
-          const alert = data.data.alert
+        if (data.success && data.data) {
+          const alert = data.data
           
           // Get translations for the target language
           const translations = getSlugTranslations(userLocale)
