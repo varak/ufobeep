@@ -107,7 +107,7 @@ class AlertsService:
                 SELECT s.id::text, s.title, s.description, s.category, s.alert_level,
                        s.witness_count, s.created_at, s.reporter_id, s.sensor_data, s.media_info, s.enrichment_data,
                        u.username as reporter_username, s.source, s.occurred_at, s.external_url,
-                       COALESCE(c.comment_count, 0) as comment_count
+                       COALESCE(c.comment_count, 0) as comment_count, s.short_url
                 FROM sightings s
                 LEFT JOIN users u ON s.reporter_id = u.id::text
                 LEFT JOIN (
@@ -145,7 +145,8 @@ class AlertsService:
                 comment_count=row["comment_count"],
                 source=row["source"],
                 occurred_at=row["occurred_at"],
-                external_url=row["external_url"]
+                external_url=row["external_url"],
+                short_url=row["short_url"]
             )
     
     async def get_alert_by_short_url(self, short_url: str) -> Optional[Alert]:
