@@ -45,7 +45,8 @@ function getShortHash(input) {
 }
 
 // CLI usage: node get_short_hash.js "UFO-2024-12345"
-if (typeof require !== 'undefined' && require.main === module) {
+// Only run CLI code in Node.js environment with process available
+if (typeof process !== 'undefined' && typeof require !== 'undefined' && require.main === module) {
   const input = process.argv[2];
   if (!input) {
     console.error('Usage: node get_short_hash.js <input_string>');

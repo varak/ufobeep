@@ -16,17 +16,21 @@ const { getShortHash } = require('./get_short_hash.js');
 // Detect environment
 const isBrowser = typeof window !== 'undefined';
 
-// Node.js-only imports
+// Node.js-only imports - guard against Edge Runtime
 let fs, path;
-if (!isBrowser) {
-  fs = require('fs');
-  path = require('path');
+if (!isBrowser && typeof process !== 'undefined') {
+  try {
+    fs = require('fs');
+    path = require('path');
+  } catch (e) {
+    // Ignore import errors in Edge Runtime or other restricted environments
+  }
 }
 
 // Load ARB files for translations (Node.js only)
 function loadArbTranslations(locale = 'en') {
-  if (isBrowser) {
-    // Browser: return empty translations (web should fetch via API)
+  if (isBrowser || !fs || !path) {
+    // Browser or Edge Runtime: return empty translations (web should fetch via API)
     return {};
   }
   
@@ -173,7 +177,8 @@ function generateAlertSlug(alert, locale = 'en', shortId = null) {
 }
 
 // CLI usage: node generate_slug.js '{"alert":"data"}' es
-if (require.main === module) {
+// Only run CLI code in Node.js environment with process available
+if (typeof process !== 'undefined' && typeof require !== 'undefined' && require.main === module) {
   const alertJson = process.argv[2];
   const locale = process.argv[3] || 'en';
   
