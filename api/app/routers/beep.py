@@ -199,6 +199,9 @@ async def create_alert(request: dict, idempotency_key: Optional[str] = Header(No
         
         # Don't close the pool - it's shared across the service
         
+        # Get the created alert to include short_url in response
+        alert = await alerts_service.get_alert_by_id(alert_id)
+        
         # Format response like original /beep/anonymous for compatibility
         total_alerted = alert_result.get("total_alerts_sent", 0)
         if total_alerted == 0:
@@ -215,7 +218,8 @@ async def create_alert(request: dict, idempotency_key: Optional[str] = Header(No
             "location_jittered": True,
             "proximity_alerts": alert_result,
             "success": True,
-            "data": {"jittered_location": jittered_location}
+            "data": {"jittered_location": jittered_location},
+            "short_url": alert.short_url if alert else ""
         }
         
         # Cache result for idempotency
