@@ -26,6 +26,13 @@ export async function GET(request: NextRequest) {
     }
     
     const data = await response.json()
+    
+    // Transform response for frontend compatibility: alerts -> beeps
+    if (data.success && data.data?.alerts) {
+      data.data.beeps = data.data.alerts
+      delete data.data.alerts
+    }
+    
     return NextResponse.json(data)
   } catch (error) {
     console.error('Error fetching beeps:', error)
@@ -60,6 +67,13 @@ export async function POST(request: NextRequest) {
     }
     
     const data = await response.json()
+    
+    // Transform response for frontend compatibility: alerts -> beeps
+    if (data.success && data.data?.alerts) {
+      data.data.beeps = data.data.alerts
+      delete data.data.alerts
+    }
+    
     return NextResponse.json(data)
   } catch (error) {
     console.error('Error creating beep:', error)
