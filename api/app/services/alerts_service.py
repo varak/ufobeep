@@ -316,22 +316,6 @@ class AlertsService:
         
         return str(user_id)
 
-    def _get_short_hash(self, input_str: str) -> str:
-        """Generate short URL hash (same algorithm as shared Node.js version)"""
-        if not input_str:
-            return ''
-        SAFE_CHARS = '23456789abcdefghjkmnpqrstuvwxyz'
-        hash_val = 0
-        for char in input_str:
-            hash_val = ((hash_val << 5) - hash_val) + ord(char)
-            hash_val = hash_val & 0xFFFFFFFF  # Keep as 32-bit
-        
-        short_id = ''
-        num = abs(hash_val)
-        for i in range(5):
-            short_id = SAFE_CHARS[num % len(SAFE_CHARS)] + short_id
-            num = num // len(SAFE_CHARS)
-        return short_id
 
     async def create_alert(self, title: str = None, description: str = None, 
                           category: str = "ufo", witness_count: int = 1,
@@ -398,35 +382,33 @@ class AlertsService:
                         INSERT INTO sightings 
                         (title, description, category, witness_count, is_public, tags, 
                          media_info, sensor_data, enrichment_data, alert_level, status, reporter_id,
-                         source, external_url, public_latitude, public_longitude, occurred_at, external_id, short_url)
-                        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
+                         source, external_url, public_latitude, public_longitude, occurred_at, external_id)
+                        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
                         RETURNING id
                     """, title, description, category, witness_count, is_public,
                         tags or [], json.dumps(media_info or {}), 
                         json.dumps(sensor_data or {}), json.dumps(enrichment_data or {}),
                         alert_level, "verified", reporter_id, source, external_url, latitude, longitude, 
-                        occurred_at_timestamp, external_id, self._get_short_hash(external_id or str(uuid.uuid4())))
+                        occurred_at_timestamp, external_id)
+                    
+                    # Update with short URL using PostgreSQL function 
+                    await conn.execute("UPDATE sightings SET short_url = generate_short_url($1) WHERE id = $2", external_id, alert_id)
             else:
                 # Regular UFOBeep alert without external_id
-                # Generate temporary ID for short URL generation
-                temp_id = str(uuid.uuid4())
-                short_url = self._get_short_hash(temp_id)
-                
                 alert_id = await conn.fetchval("""
                     INSERT INTO sightings 
                     (title, description, category, witness_count, is_public, tags, 
                      media_info, sensor_data, enrichment_data, alert_level, status, reporter_id,
-                     source, external_url, public_latitude, public_longitude, occurred_at, short_url)
-                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
+                     source, external_url, public_latitude, public_longitude, occurred_at)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
                     RETURNING id
                 """, title, description, category, witness_count, is_public,
                     tags or [], json.dumps(media_info or {}), 
                     json.dumps(sensor_data or {}), json.dumps(enrichment_data or {}),
-                    alert_level, "created", reporter_id, source, external_url, latitude, longitude, occurred_at_timestamp, short_url)
+                    alert_level, "created", reporter_id, source, external_url, latitude, longitude, occurred_at_timestamp)
                 
-                # Update with actual ID-based short URL
-                actual_short_url = self._get_short_hash(str(alert_id))
-                await conn.execute("UPDATE sightings SET short_url = $1 WHERE id = $2", actual_short_url, alert_id)
+                # Update with ID-based short URL using PostgreSQL function
+                await conn.execute("UPDATE sightings SET short_url = generate_short_url(id::TEXT) WHERE id = $1", alert_id)
             
             return str(alert_id)
     
