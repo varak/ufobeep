@@ -73,16 +73,23 @@ export function LanguageSwitcher({
     const qs = searchParams?.toString()
     let targetPath = pathname || '/'
     
-    // Handle beep URLs with proper locale-first structure: /[locale]/beep/...
+    // Handle beep URLs with proper /beep/[locale] structure
     if (targetPath.startsWith('/beep/')) {
       const parts = targetPath.split('/').filter(Boolean) // ['beep', ...]
-      // Strip /beep and rebuild with locale first
-      const beepPath = parts.slice(1).join('/') // everything after 'beep'
-      if (locale === 'en') {
-        targetPath = beepPath ? `/beep/${beepPath}` : '/beep'
-      } else {
-        targetPath = beepPath ? `/${locale}/beep/${beepPath}` : `/${locale}/beep`
+      // Extract beep path after locale (if any)
+      let beepPath = ''
+      if (parts.length > 1) {
+        // Check if second part is a locale
+        if (supportedLocaleCodes.includes(parts[1])) {
+          // Current path is /beep/[locale]/... - extract everything after locale
+          beepPath = parts.slice(2).join('/')
+        } else {
+          // Current path is /beep/something-else - preserve it
+          beepPath = parts.slice(1).join('/')
+        }
       }
+      // Build new path as /beep/[locale]/...
+      targetPath = beepPath ? `/beep/${locale}/${beepPath}` : `/beep/${locale}`
     } else {
       // Handle other paths with traditional locale prefix
       const parts = targetPath.split('/').filter(Boolean)

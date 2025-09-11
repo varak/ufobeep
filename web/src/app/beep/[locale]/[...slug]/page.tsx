@@ -135,7 +135,11 @@ export default function AlertDetailPage() {
     async function fetchAlert() {
       try {
         const slug = params?.slug as string[]
-        if (!slug) return
+        if (!slug || slug.length === 0) {
+          // No slug provided - this should be handled by /beep/[locale]/page.tsx
+          // But if we get here, redirect to the locale listing page
+          return
+        }
         
         const fullSlug = slug.join('/')
         // Extract the short ID - either the last part after splitting on '-', or the whole slug if it's just the short ID
