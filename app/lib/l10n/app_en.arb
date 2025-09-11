@@ -554,7 +554,7 @@
   "alertLevel": "Alert Level",
   "witnesses": "Witnesses",
   "confirmations": "Confirmations",
-  "reporterLabel": "Reported by",
+  "reporterLabel": "Reported by user",
   "coordinatesLabel": "Coordinates",
   "eventTime": "Event time",
   "reportedTime": "Reported time",

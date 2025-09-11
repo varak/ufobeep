@@ -123,38 +123,6 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
         </div>
       )}
 
-      {/* Coordinates display - show precise lat/lng like mobile app */}
-      {alert.location && (alert.location.latitude !== 0 || alert.location.longitude !== 0) && (
-        <div className="flex items-start gap-3 mb-4">
-          <span className="text-text-tertiary mt-0.5">🧭</span>
-          <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <span className="text-text-tertiary text-sm font-medium">{t('coordinatesLabel')}:</span>
-              <code className="text-text-primary text-sm bg-dark-bg px-2 py-1 rounded">
-                {alert.location.latitude.toFixed(4)}, {alert.location.longitude.toFixed(4)}
-              </code>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Distance display - if available */}
-      {alert.distance_km !== undefined && alert.distance_km > 0 && (
-        <div className="flex items-start gap-3 mb-4">
-          <span className="text-text-tertiary mt-0.5">📏</span>
-          <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <span className="text-text-tertiary text-sm font-medium">{t('distanceLabel')}:</span>
-              <span className="text-text-primary text-sm">
-                {UnitConversion.formatDistanceFromKm(
-                  alert.distance_km,
-                  UnitConversion.getAutoUnits()
-                )}
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Share link - moved from bottom to details section */}
       <div className="flex items-start gap-3 mb-6">
@@ -271,12 +239,95 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
                 }
                 
                 return locationName
-              })()}
+              })()} 
+              {alert.distance_km !== undefined && alert.distance_km > 0 && (
+                <span className="text-text-tertiary text-xs font-normal ml-2">
+                  ({UnitConversion.formatDistanceFromKm(
+                    alert.distance_km,
+                    UnitConversion.getAutoUnits()
+                  )} {t('distanceAway')})
+                </span>
+              )}
             </span>
+            
+            {/* Coordinates display under location */}
+            {alert.location && (alert.location.latitude !== 0 || alert.location.longitude !== 0) && (
+              <div className="text-text-secondary text-xs mt-1 font-mono">
+                🧭 {alert.location.latitude.toFixed(4)}, {alert.location.longitude.toFixed(4)}
+              </div>
+            )}
           </div>
         </div>
       </div>
       
+      {/* Environmental Analysis Sections */}
+      {alert.enrichment && (
+        <>
+          {/* Weather Conditions */}
+          {alert.enrichment.weather && (
+            <div className="flex items-start gap-3 mb-4">
+              <span className="text-text-tertiary mt-0.5">🌤️</span>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-text-tertiary text-sm font-medium">{t('weatherConditionsTitle')}</span>
+                </div>
+                <div className="text-text-secondary text-sm">
+                  {alert.enrichment.weather.description && (
+                    <div>{alert.enrichment.weather.description}</div>
+                  )}
+                  {alert.enrichment.weather.cloud_cover !== undefined && (
+                    <div>{t('cloudCover', { percent: alert.enrichment.weather.cloud_cover })}</div>
+                  )}
+                  {alert.enrichment.weather.wind_speed && (
+                    <div>{t('wind', { speed: alert.enrichment.weather.wind_speed, unit: alert.enrichment.weather.wind_unit || 'mph' })}</div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {/* Aircraft Tracking */}
+          {(alert.enrichment.aircraft || alert.enrichment.nearby_aircraft) && (
+            <div className="flex items-start gap-3 mb-4">
+              <span className="text-text-tertiary mt-0.5">✈️</span>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-text-tertiary text-sm font-medium">{t('aircraftTrackingTitle')}</span>
+                </div>
+                <div className="text-text-secondary text-sm">
+                  {alert.enrichment.nearby_aircraft ? (
+                    <div>{alert.enrichment.nearby_aircraft.length} {t('nearbyAircraft')}</div>
+                  ) : (
+                    <div>{t('noAircraft')}</div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {/* Satellite Passes */}
+          {alert.enrichment.satellite_passes && (
+            <div className="flex items-start gap-3 mb-4">
+              <span className="text-text-tertiary mt-0.5">🛰️</span>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-text-tertiary text-sm font-medium">{t('satellitePassesTitle')}</span>
+                </div>
+                <div className="text-text-secondary text-sm">
+                  {alert.enrichment.satellite_passes.length > 0 ? (
+                    <div>
+                      <div>{alert.enrichment.satellite_passes.length} visible passes during timeframe</div>
+                      <div className="text-xs mt-1 text-text-tertiary">{t('satellitePassExplanation')}</div>
+                    </div>
+                  ) : (
+                    <div>{t('noSatellitePasses')}</div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </>
+      )}
 
       {/* UFOBeep-specific metadata (witnesses, confirmations, alert level) */}
       {isUfoBeepReport && (alert.witness_count !== undefined || alert.total_confirmations !== undefined || alert.alert_level) && (

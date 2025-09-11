@@ -278,7 +278,7 @@
   "alertLevel": "Alarmstufe",
   "witnesses": "Zeugen",
   "confirmations": "Bestätigungen",
-  "reporterLabel": "Bericht",
+  "reporterLabel": "Vom Benutzer gemeldet",
   "coordinatesLabel": "Koordinaten",
   "eventTime": "Veranstaltungszeit",
   "reportedTime": "Gemeldete Zeit",
