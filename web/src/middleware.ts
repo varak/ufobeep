@@ -42,9 +42,29 @@ export async function middleware(request: NextRequest) {
       if (response.ok) {
         const data = await response.json()
         if (data.success && data.data) {
-          // Skip slug generation in middleware - redirect to beep detail page
-          // The page component will generate the proper long slug with full translations
-          const redirectUrl = new URL(`/beep/${shortId}/${userLocale}`, request.url)
+          const alert = data.data
+          
+          // Generate the full slug URL
+          const title = (alert.title || 'ufo-sighting')
+            .toLowerCase()
+            .replace(/[^a-z0-9\s]/g, '')
+            .replace(/\s+/g, '-')
+            .substring(0, 30)
+          
+          const location = (alert.location?.name || 'unknown')
+            .split(',')[0]
+            .toLowerCase()
+            .replace(/[^a-z0-9\s]/g, '')
+            .replace(/\s+/g, '-')
+            .substring(0, 20)
+          
+          const date = new Date(alert.created_at || Date.now()).toISOString().split('T')[0]
+          
+          const longSlug = `${title}-${location}-${date}-${shortId}`
+            .replace(/--+/g, '-')
+            .replace(/^-|-$/g, '')
+          
+          const redirectUrl = new URL(`/beep/${userLocale}/${longSlug}`, request.url)
           return NextResponse.redirect(redirectUrl)
         }
       }
