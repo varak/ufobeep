@@ -391,8 +391,11 @@ class AlertsService:
                         alert_level, "verified", reporter_id, source, external_url, latitude, longitude, 
                         occurred_at_timestamp, external_id)
                     
-                    # Update with short URL using PostgreSQL function 
-                    await conn.execute("UPDATE sightings SET short_url = generate_short_url($1) WHERE id = $2", external_id, alert_id)
+                    # Generate short URL using the single source of truth
+                    from ..utils.short_url_utils import generate_short_url
+                    short_url = generate_short_url(external_id)
+                    if short_url:
+                        await conn.execute("UPDATE sightings SET short_url = $1 WHERE id = $2", short_url, alert_id)
             else:
                 # Regular UFOBeep alert without external_id
                 alert_id = await conn.fetchval("""
@@ -407,8 +410,11 @@ class AlertsService:
                     json.dumps(sensor_data or {}), json.dumps(enrichment_data or {}),
                     alert_level, "created", reporter_id, source, external_url, latitude, longitude, occurred_at_timestamp)
                 
-                # Update with ID-based short URL using PostgreSQL function
-                await conn.execute("UPDATE sightings SET short_url = generate_short_url(id::TEXT) WHERE id = $1", alert_id)
+                # Generate short URL using the single source of truth
+                from ..utils.short_url_utils import generate_short_url
+                short_url = generate_short_url(str(alert_id))
+                if short_url:
+                    await conn.execute("UPDATE sightings SET short_url = $1 WHERE id = $2", short_url, alert_id)
             
             return str(alert_id)
     
