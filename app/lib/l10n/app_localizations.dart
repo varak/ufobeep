@@ -453,7 +453,7 @@ abstract class AppLocalizations {
   /// No description provided for @beepSentWithUrl.
   ///
   /// In en, this message translates to:
-  /// **'Alert sent! Share at ufobeep.com/{shortUrl}'**
+  /// **'Beep sent successfully'**
   String beepSentWithUrl(String shortUrl);
 
   /// No description provided for @uploadingMedia.
