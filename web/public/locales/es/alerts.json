@@ -8,7 +8,6 @@
   "beepFailed": "Failed to send Beep.",
   "alertDetailTitle": "Detalles de visión",
   "alertsFilterHelp": "Intente ajustar sus filtros para ver más resultados",
-  "beepOnly": "Report Only",
   "alertRange": "Distancia de alerta",
   "ufoTypeSphere": "Sphere",
   "ufoTypeTriangle": "Triángulo",
@@ -58,7 +57,5 @@
   "alertFollowError": "Actualización de errores",
   "ufobeepWitnesses": "Testigos",
   "ufobeepConfirmations": "Confirmaciones",
-  "ufobeepAlertLevel": "Nivel de alerta",
-  "ufobeepReportType": "UFOBeep Report",
-  "alertLevel": "Nivel de alerta"
+  "ufobeepAlertLevel": "Nivel de alerta"
 }

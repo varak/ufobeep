@@ -110,6 +110,77 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
         </div>
       )}
 
+      {/* Reporter section - only for UFOBeep reports with reporter_username */}
+      {isUfoBeepReport && alert.reporter_username && (
+        <div className="flex items-start gap-3 mb-4">
+          <span className="text-text-tertiary mt-0.5">👤</span>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <span className="text-text-tertiary text-sm font-medium">{t('reporterLabel')}:</span>
+              <span className="text-text-primary text-sm">{alert.reporter_username}</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Coordinates display - show precise lat/lng like mobile app */}
+      {alert.location && (alert.location.latitude !== 0 || alert.location.longitude !== 0) && (
+        <div className="flex items-start gap-3 mb-4">
+          <span className="text-text-tertiary mt-0.5">🧭</span>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <span className="text-text-tertiary text-sm font-medium">{t('coordinatesLabel')}:</span>
+              <code className="text-text-primary text-sm bg-dark-bg px-2 py-1 rounded">
+                {alert.location.latitude.toFixed(4)}, {alert.location.longitude.toFixed(4)}
+              </code>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Distance display - if available */}
+      {alert.distance_km !== undefined && alert.distance_km > 0 && (
+        <div className="flex items-start gap-3 mb-4">
+          <span className="text-text-tertiary mt-0.5">📏</span>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <span className="text-text-tertiary text-sm font-medium">{t('distanceLabel')}:</span>
+              <span className="text-text-primary text-sm">
+                {UnitConversion.formatDistanceFromKm(
+                  alert.distance_km,
+                  UnitConversion.getAutoUnits()
+                )}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Share link - moved from bottom to details section */}
+      <div className="flex items-start gap-3 mb-6">
+        <span className="text-text-tertiary mt-0.5">🔗</span>
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <span className="text-text-tertiary text-sm font-medium">{t('shareLink')}:</span>
+            <code className="text-brand-primary text-sm bg-dark-bg px-2 py-1 rounded">
+              ufobeep.com{getShortAlertUrl(alert, locale)}
+            </code>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(`https://ufobeep.com${getShortAlertUrl(alert, locale)}`)
+                // TODO: Show toast notification
+              }}
+              className="text-text-secondary hover:text-brand-primary transition-colors p-1"
+              title={t('copyShortLinkTitle')}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Description - Main description now contains full text */}
       {alert.description && (
         <div className="mb-6">
@@ -201,14 +272,6 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
                 
                 return locationName
               })()}
-              {alert.distance_km !== undefined && alert.distance_km > 0 && (
-                <span className="text-text-tertiary text-xs font-normal ml-2">
-                  {UnitConversion.formatDistanceFromKm(
-                    alert.distance_km,
-                    UnitConversion.getAutoUnits()
-                  )}
-                </span>
-              )}
             </span>
           </div>
         </div>
@@ -232,32 +295,6 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
         </div>
       )}
 
-      {/* Share link for all alerts */}
-      <div className="mt-4 pt-4 border-t border-dark-border">
-        <div className="flex items-center gap-3">
-          <span className="text-text-tertiary">🔗</span>
-          <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <span className="text-text-tertiary text-sm font-medium">{t('shareLink')}:</span>
-              <code className="text-brand-primary text-sm bg-dark-bg px-2 py-1 rounded">
-                ufobeep.com{getShortAlertUrl(alert, locale)}
-              </code>
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(`https://ufobeep.com${getShortAlertUrl(alert, locale)}`)
-                  // TODO: Show toast notification
-                }}
-                className="text-text-secondary hover:text-brand-primary transition-colors p-1"
-                title={t('copyShortLinkTitle')}
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }

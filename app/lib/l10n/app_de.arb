@@ -553,5 +553,13 @@
   "navDownloadApp": "App herunterladen",
   "alertLevel": "Alarmstufe",
   "witnesses": "Zeugen",
-  "confirmations": "Bestätigungen"
+  "confirmations": "Bestätigungen",
+  "reporterLabel": "Bericht",
+  "coordinatesLabel": "Koordinaten",
+  "eventTime": "Veranstaltungszeit",
+  "reportedTime": "Gemeldete Zeit",
+  "mufonDatabaseReport": "MUFON Datenbankbericht",
+  "copyShortLinkTitle": "Kopieren Sie Link zur Zwischenablage",
+  "imageNotFound": "Bild nicht gefunden",
+  "ufoSightingAlt": "UFO Sehenswürdigkeiten"
 }

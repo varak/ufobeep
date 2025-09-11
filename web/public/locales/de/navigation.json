@@ -5,5 +5,6 @@
   "tabMap": "Landkarte",
   "tabSettings": "Einstellungen",
   "mufonDatabaseEntryDate": "Eingetragen in MUFON Datenbank",
-  "databaseEntry": "Datenbankeintrag"
+  "databaseEntry": "Datenbankeintrag",
+  "mufonDatabaseReport": "MUFON Datenbankbericht"
 }

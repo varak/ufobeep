@@ -493,7 +493,7 @@
   "sightingsMap": "Carte des visites",
   "globalSightingNetwork": "Réseau mondial de surveillance",
   "howItWorks": "Comment UFOBeep fonctionne",
-  "backToBeeps": "← Retour aux Beeps",
+  "backToBeeps": "Retour aux Beeps",
   "loadingDetails": "Chargement des détails du bip...",
   "details": "Détails",
   "location": "Lieu",
@@ -553,5 +553,13 @@
   "navDownloadApp": "Télécharger l'application",
   "alertLevel": "Niveau d'alerte",
   "witnesses": "Témoins",
-  "confirmations": "Confirmations"
+  "confirmations": "Confirmations",
+  "reporterLabel": "Rapporté par",
+  "coordinatesLabel": "Coordonnées",
+  "eventTime": "Heure de l'événement",
+  "reportedTime": "Heure indiquée",
+  "mufonDatabaseReport": "MUFON Rapport de base de données",
+  "copyShortLinkTitle": "Copier le lien vers le presse-papiers",
+  "imageNotFound": "Image introuvable",
+  "ufoSightingAlt": "OVNI"
 }
