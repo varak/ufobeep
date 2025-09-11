@@ -1,5 +1,5 @@
 {
-  "@@locale": "da",
+  "@@locale": "en",
   "appName": "UFOBeep",
   "ok": "OK",
   "cancel": "Annullér",
@@ -37,8 +37,24 @@
   "alertsTitle": "I nærheden",
   "noAlerts": "Ingen advarsler i nærheden endnu.",
   "pullToRefresh": "Træk for at opdatere",
-  "alertDistance": "_ _ PH _ 0 _ _ væk",
-  "alertDirection": "Leje _ _ PH _ 0 _ _ °",
+  "alertDistance": "{afstand} væk",
+  "@alertDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2 mi"
+      }
+    }
+  },
+  "alertDirection": "Leje {leje} °",
+  "@alertDirection": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "137"
+      }
+    }
+  },
   "viewAlert": "Vis alarm",
   "viewOnMap": "Vis på kort",
   "iSeeItToo": "Jeg ser det også",
@@ -52,6 +68,14 @@
   "descriptionHint": "Beskriv, hvad du ser på himlen..",
   "submitBeep": "Send Beep",
   "beepSent": "Beep sendt",
+  "beepSentWithUrl": "Beep sendt med succes",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
   "uploadingMedia": "Uploader medier..",
   "includeLocation": "Inkludér placering",
   "includeTimestamp": "Inkludér tidsstempel",
@@ -65,10 +89,42 @@
   "microphonePermissionBody": "Grant mikrofon adgang til videooptagelse med lyd.",
   "openSettings": "Åbn indstillinger",
   "alertDetailTitle": "Observationsdetaljer",
-  "reportedBy": "Indberettet af _ _ PH _ 0 _ _",
-  "reportedAt": "Indberettet _ _ PH _ 0 _ _",
-  "distanceAway": "_ _ PH _ 0 _ _ væk",
-  "bearingToObject": "Leje til objekt: _ _ PH _ 0 _ _ °",
+  "reportedBy": "Indberettet af {brugernavn}",
+  "@reportedBy": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "reportedAt": "Indberettet {tid Ago}",
+  "@reportedAt": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "5m ago"
+      }
+    }
+  },
+  "distanceAway": "{afstand} væk",
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.4 km"
+      }
+    }
+  },
+  "bearingToObject": "Bly til objekt: {bear} °",
+  "@bearingToObject": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "92"
+      }
+    }
+  },
   "openCompass": "Åbn kompas",
   "openAR": "Åbne AR-overlay",
   "openChat": "Åbn chat",
@@ -87,18 +143,54 @@
   "compassPilotMode": "Pilottilstand",
   "compassStandardDescription": "Overskrift og navigation",
   "compassPilotDescription": "Avanceret navigation med ETA og vektoring",
-  "pointingTo": "Skriver til _ _ PH _ 0 _ _",
+  "pointingTo": "Angiver til {retning}",
+  "@pointingTo": {
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "SE"
+      }
+    }
+  },
   "calibratingCompass": "Kalibrerende kompas..",
   "openAROverlay": "Åbne AR-overlay",
   "pushTitleAlertNearby": "UFO alarm nær dig",
-  "pushBodyAlertNearby": "En ny observation blev rapporteret _ _ PH _ 0 _ _ væk.",
+  "pushBodyAlertNearby": "En ny observation blev rapporteret {distance} væk.",
+  "@pushBodyAlertNearby": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "0.8 mi"
+      }
+    }
+  },
   "pushTitleComment": "Ny kommentar",
   "pushBodyComment": "Nogen kommenterede en observation du følger.",
   "pushTitleWitness": "Vidnebekræftelse",
   "pushBodyWitness": "En bruger bekræftede, at de ser det samme objekt.",
   "weather": "Vejret",
-  "cloudCover": "Skydække: _ _ PH _ 0 _ _%",
-  "wind": "Vind: _ _ PH _ 0 _ _ _ _ PH _ 1 _ _",
+  "cloudCover": "Skydække: {procent}%",
+  "@cloudCover": {
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "63"
+      }
+    }
+  },
+  "wind": "Vind: {hastighed} {enhed}",
+  "@wind": {
+    "placeholders": {
+      "speed": {
+        "type": "num",
+        "example": "12.4"
+      },
+      "unit": {
+        "type": "String",
+        "example": "mph"
+      }
+    }
+  },
   "nearbyAircraft": "Luftfartøjer i nærheden",
   "noAircraft": "Ingen fly i nærheden",
   "loadingContext": "Indlæser miljøsammenhæng..",
@@ -132,9 +224,33 @@
   "videoOnly": "kun video",
   "imageOnly": "kun billede",
   "timeJustNow": "Lige nu",
-  "timeDaysAgo": "- For nylig",
-  "timeHoursAgo": "- For længe siden",
-  "timeMinutesAgo": "_ _ PH _ 0 _ m siden",
+  "timeDaysAgo": "{tæller} d siden",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "timeHoursAgo": "{tæller} h siden",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "timeMinutesAgo": "{tæller} m siden",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
   "loadMoreAlerts": "Indlæs flere rapporter",
   "toggleMufonTooltip": "Slå MUFON-observationer til og fra",
   "showMufonData": "Vis MUFON data",
@@ -144,8 +260,20 @@
   "filteredSuffix": "filtreret",
   "detailsTitle": "Detaljer",
   "mufonCase": "MUFON Sag",
+  "mufonCaseDetailsTitle": "MUFON Sag # {Sagsnummer} Detaljer",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
   "sightingDate": "Observationsdato",
+  "mufonDatabaseEntryDate": "Dato for optagelse i MUFON Database",
   "databaseEntry": "Databaseindgang",
+  "shareLink": "Del link",
+  "linkCopied": "Link til udklipsholder",
   "locationLabel": "Sted",
   "distanceLabel": "Afstand",
   "timeLabel": "Tid",
@@ -153,121 +281,7 @@
   "unknownLocation": "Ukendt placering",
   "locationUnknown": "Sted ukendt",
   "witnessesLabel": "Vidner",
-  "witnessesCountMessage": "_ _ PH _ 0 _ _ folk bekræftede denne observation",
-  "photoAnalysisTitle": "Fotoanalyse",
-  "mediaItemsProcessed": "Analyse: _ _ PH _ 0 _ _ mediefiler behandlet",
-  "addMoreMedia": "Tilføj mere",
-  "addMedia": "Tilføj medie",
-  "retakePhoto": "Genoptag foto",
-  "retakeVideo": "Genoptag video",
-  "@alertDistance": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "1.2 mi"
-      }
-    }
-  },
-  "@alertDirection": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "137"
-      }
-    }
-  },
-  "@reportedBy": {
-    "placeholders": {
-      "username": {
-        "type": "String",
-        "example": "stargazer01"
-      }
-    }
-  },
-  "@reportedAt": {
-    "placeholders": {
-      "timeAgo": {
-        "type": "String",
-        "example": "5m ago"
-      }
-    }
-  },
-  "@distanceAway": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "2.4 km"
-      }
-    }
-  },
-  "@bearingToObject": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "92"
-      }
-    }
-  },
-  "@pointingTo": {
-    "placeholders": {
-      "direction": {
-        "type": "String",
-        "example": "SE"
-      }
-    }
-  },
-  "@pushBodyAlertNearby": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "0.8 mi"
-      }
-    }
-  },
-  "@cloudCover": {
-    "placeholders": {
-      "percent": {
-        "type": "int",
-        "example": "63"
-      }
-    }
-  },
-  "@wind": {
-    "placeholders": {
-      "speed": {
-        "type": "num",
-        "example": "12.4"
-      },
-      "unit": {
-        "type": "String",
-        "example": "mph"
-      }
-    }
-  },
-  "@timeDaysAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "@timeHoursAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "5"
-      }
-    }
-  },
-  "@timeMinutesAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "12"
-      }
-    }
-  },
+  "witnessesCountMessage": "{tæller} folk bekræftede denne observation",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -276,6 +290,8 @@
       }
     }
   },
+  "photoAnalysisTitle": "Fotoanalyse",
+  "mediaItemsProcessed": "Analyse: {count} mediefiler behandlet",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -284,6 +300,10 @@
       }
     }
   },
+  "addMoreMedia": "Tilføj mere",
+  "addMedia": "Tilføj medie",
+  "retakePhoto": "Genoptag foto",
+  "retakeVideo": "Genoptag video",
   "camera": "Kamera",
   "gallery": "Galleri",
   "basicSettings": "Grundlæggende indstillinger",
@@ -304,23 +324,16 @@
   "webAdminInterface": "Web Admin- grænseflade",
   "adminBetaNotice": "Beta bygger kun. Adminér værktøjer til test nærhed advarsler, skubbe meddelelser, og system diagnostik.",
   "whatDoYouSee": "Hvad ser du?",
+  "ufo": "UFO",
+  "sighting": "Sigtning",
   "ufoSighting": "UFO Sigtning",
-  "actionsTitle": "Handlinger",
-  "addPhotosAndVideos": "Tilføj billeder og videoer",
-  "howToReportToMufon": "Sådan rapporterer du til MUFON",
-  "reportToMufon": "Rapport til MUFON",
-  "whyReportToMufon": "Hvorfor rapportere til MUFON?",
-  "openMufonReport": "Åbne MUFON Rapport",
-  "confirmedWitness": "Du bekræftede denne observation",
-  "witnessesHaveConfirmed": "_ _ PH _ 0 _ _ folk har bekræftet denne observation",
-  "@witnessesHaveConfirmed": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
+  "envAnalysisTitle": "Miljøanalyse",
+  "envAnalysisPending": "Analyse verserende",
+  "envAnalysisPendingDesc": "Miljødata vil foreligge, når behandlingen påbegyndes.",
+  "unknownAircraft": "Ukendt luftfartøj",
+  "moreAircraft": "flere fly",
+  "premiumImageryTitle": "Premium Satellit Imagery",
+  "premiumImagerySubtitle": "Højopløsnings-kommercielle billeder",
   "sightingTypeLabel": "Type",
   "ufoTypeSphere": "Sphere Formand",
   "ufoTypeTriangle": "Trekant",
@@ -332,17 +345,6 @@
   "ufoTypeRectangle": "Rektangel",
   "ufoTypeFormation": "Dannelse",
   "ufoTypeUnknown": "Ukendt",
-  "mufonCaseDetailsTitle": "MUFON Sag # _ _ PH _ 0 _ _ Detaljer",
-  "mufonDatabaseEntryDate": "Dato for optagelse i MUFON Database",
-  "shareLink": "Del link",
-  "linkCopied": "Link til udklipsholder",
-  "envAnalysisTitle": "Miljøanalyse",
-  "envAnalysisPending": "Analyse verserende",
-  "envAnalysisPendingDesc": "Miljødata vil foreligge, når behandlingen påbegyndes.",
-  "unknownAircraft": "Ukendt luftfartøj",
-  "moreAircraft": "flere fly",
-  "premiumImageryTitle": "Premium Satellit Imagery",
-  "premiumImagerySubtitle": "Højopløsnings-kommercielle billeder",
   "ufoTypeBoomerang": "BoomerangCity in Germany",
   "ufoTypeDiamond": "Diamant",
   "ufoTypeOval": "Oval",
@@ -355,6 +357,45 @@
   "ufoTypeSaturn": "Saturn",
   "ufoTypeStarLike": "Star- like",
   "ufoTypeBlimp": "Blimp",
+  "shapeTriangle": "trekant",
+  "shapeDisc": "skive",
+  "shapeDisk": "disk",
+  "shapeSphere": "kugle",
+  "shapeCigar": "cigar",
+  "shapeLight": "lys",
+  "shapeBoomerang": "boomerang",
+  "shapeDiamond": "diamant",
+  "shapeRectangle": "rektangel",
+  "shapeOval": "oval",
+  "shapeCone": "kegle",
+  "shapeCross": "kors",
+  "shapeCylinder": "cylinder",
+  "shapeDumbbell": "håndvægt",
+  "shapeTeardrop": "teardrop",
+  "shapeTicTac": "tic- tac",
+  "shapeBullet": "kugle",
+  "shapeSaturn": "mættet",
+  "shapeStarlike": "starlike",
+  "shapeBlimp": "blimp",
+  "shapeFireball": "ildkugle",
+  "shapeFormation": "formation",
+  "shapeUnknown": "ukendt",
+  "actionsTitle": "Handlinger",
+  "addPhotosAndVideos": "Tilføj billeder og videoer",
+  "howToReportToMufon": "Sådan rapporterer du til MUFON",
+  "reportToMufon": "Rapport til MUFON",
+  "whyReportToMufon": "Hvorfor rapportere til MUFON?",
+  "openMufonReport": "Åbne MUFON Rapport",
+  "confirmedWitness": "Du bekræftede denne observation",
+  "witnessesHaveConfirmed": "{tæller} folk har bekræftet denne observation",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "aircraftTrackingTitle": "Flysporing",
   "weatherConditionsTitle": "Vejrforhold",
   "noSatellitePasses": "Ingen synlige satellitpas fundet",
@@ -367,12 +408,70 @@
   "premiumAccessCreators": "Advarselsskabere",
   "premiumAccessWitnesses": "Bekræftede vidner inden for sigtbarhed",
   "comingSoon": "Kommer snart",
-  "@mufonCaseDetailsTitle": {
+  "directionDistanceTitle": "Kørselsretning og afstand",
+  "mufonCaseTitle": "MUFON Case # {Case Number}",
+  "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
         "type": "String",
         "example": "12345"
       }
     }
-  }
+  },
+  "satellitePassesTitle": "Satellitpas",
+  "satellitePassExplanation": "Synlig satellit passerer under observation tidsramme. Mange UFO rapporter er faktisk satellitter eller rumaffald.",
+  "followingAlert": "Efter alarm - du får kommentarmeddelelser",
+  "unfollowedAlert": "Ufulgt alarm - ikke flere kommentarmeddelelser",
+  "alertFollowError": "Fejl under opdatering af følg status",
+  "notificationChannelAlerts": "UFOBeep Alerts",
+  "notificationChannelAlertsDesc": "Anmeldelser for UFO bipper og nærhed advarsler",
+  "notificationSightingTitle": "UFO Sigtning",
+  "notificationSightingUrgent": "UFO Sigtning",
+  "notificationSightingEmergency": "UFO OM NØDVENDIGT Sigtning",
+  "notificationSightingBody": "{ScriessText} nær {placering Navn}",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "{brugernavn} kommenterede",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "Ny observation",
+  "notificationWitnessTextMultiple": "vidner",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "Snooze 1h",
+  "notificationActionDismiss": "Frafald",
+  "notificationDistance": "{afstand} væk",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  },
+  "unknown": "ukendt",
+  "report": "rapport",
+  "mufon": "mofon"
 }

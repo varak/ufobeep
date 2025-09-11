@@ -1,165 +1,43 @@
 {
-  "@@locale": "no",
+  "@@locale": "en",
   "appName": "UFOBeep",
   "ok": "OK",
-  "cancel": "Avbryt",
-  "close": "Lukk",
-  "save": "Lagre",
-  "delete": "Slett",
-  "edit": "Rediger",
-  "retry": "Prøv på nytt",
-  "yes": "Ja",
-  "no": "Nei",
-  "back": "Tilbake",
-  "next": "Neste",
-  "done": "Ferdig",
-  "loading": "Laster inn..",
-  "processing": "Behandler..",
-  "errorGeneric": "Noe gikk galt.",
-  "networkError": "Nettverksfeil. Sjekk tilkoblingen.",
-  "permissionsRequired": "Tillatelser som kreves",
-  "learnMore": "Les mer",
-  "welcomeTitle": "Velkommen til UFOBeep",
-  "welcomeSubtitle": "UFO-varsler i sanntid i nærheten av deg",
-  "signIn": "Logg inn",
-  "signOut": "Logg ut",
-  "continueAsGuest": "Fortsett som gjest",
-  "enterUsername": "Skriv inn et brukernavn",
-  "username": "Brukernavn",
-  "usernameUpdated": "Brukernavn oppdatert",
-  "profile": "Profil",
-  "settings": "Innstillinger",
-  "tabAlerts": "Varsler",
-  "tabBeep": "Pip",
+  "cancel": "Cancel",
+  "close": "Close",
+  "save": "Save",
+  "delete": "Delete",
+  "edit": "Edit",
+  "retry": "Retry",
+  "yes": "Yes",
+  "no": "No",
+  "back": "Back",
+  "next": "Next",
+  "done": "Done",
+  "loading": "Loading…",
+  "processing": "Processing…",
+  "errorGeneric": "Something went wrong.",
+  "networkError": "Network error. Check your connection.",
+  "permissionsRequired": "Permissions required",
+  "learnMore": "Learn more",
+  "welcomeTitle": "Welcome to UFOBeep",
+  "welcomeSubtitle": "Real-time UFO alerts near you",
+  "signIn": "Sign in",
+  "signOut": "Sign out",
+  "continueAsGuest": "Continue as guest",
+  "enterUsername": "Enter a username",
+  "username": "Username",
+  "usernameUpdated": "Username updated",
+  "profile": "Profile",
+  "settings": "Settings",
+  "tabAlerts": "Alerts",
+  "tabBeep": "Beep",
   "tabChat": "Chat",
-  "tabMap": "Kart",
-  "tabSettings": "Innstillinger",
-  "alertsTitle": "Nærliggende varslinger",
-  "noAlerts": "Ingen varsler i nærheten ennå.",
-  "pullToRefresh": "Dra for å oppdatere",
-  "alertDistance": "{distance}____ away",
-  "alertDirection": "Belegg {bearing}°",
-  "viewAlert": "Vis varsling",
-  "viewOnMap": "Vis på kart",
-  "iSeeItToo": "Jeg ser det også",
-  "confirmWitnessed": "Bekreft at du bevitnet dette synet?",
-  "witnessConfirmed": "Takk — din bekreftelse ble lagt ut.",
-  "createBeepTitle": "Send et pip",
-  "beepExplain": "Ta det du ser og varsle i nærheten.",
-  "capturePhoto": "Opptaksfoto",
-  "captureVideo": "Opptaksvideo",
-  "pickFromGallery": "Velg fra galleri",
-  "descriptionHint": "Beskriv hva du ser på himmelen..",
-  "submitBeep": "Send pip",
-  "beepSent": "Pip sendt",
-  "uploadingMedia": "Laster opp medier..",
-  "includeLocation": "Inkluder plassering",
-  "includeTimestamp": "Inkluder tidsstempel",
-  "beepFailed": "Klarte ikke å sende pip.",
-  "mediaProcessing": "Behandler medier..",
-  "cameraPermissionTitle": "Kameratilgang nødvendig",
-  "cameraPermissionBody": "Tilgang til kamera til å fange UFO bilder og videoer.",
-  "locationPermissionTitle": "Beliggenhet nødvendig",
-  "locationPermissionBody": "Vi bruker din beliggenhet til å sende og motta nærliggende varsler.",
-  "microphonePermissionTitle": "Mikrofon tilgang nødvendig",
-  "microphonePermissionBody": "Gi mikrofon tilgang til videoopptak med lyd.",
-  "openSettings": "Åpne innstillinger",
-  "alertDetailTitle": "Se detaljer",
-  "reportedBy": "Rapportert av {username}_",
-  "reportedAt": "Rapportert {timeAgo}_",
-  "distanceAway": "{distance}____ away",
-  "bearingToObject": "Legg til objekt: {bearing}°",
-  "openCompass": "Åpen kompass",
-  "openAR": "Åpne AR overlegg",
-  "openChat": "Åpne chat",
-  "commentsTitle": "Kommentarer",
-  "addComment": "Legg til en kommentar..",
-  "send": "Send",
-  "commentPosted": "Kommentar lagt ut",
-  "autoFollowEnabled": "Nå følger du denne advarselen.",
-  "noCommentsYet": "Ingen kommentarer ennå. Bli den første!",
-  "newCommentNotification": "Ny kommentar til en seing du følger.",
-  "mapTitle": "Live Map",
-  "compassTitle": "Kompass",
-  "compassSettings": "Kompassinnstillinger",
-  "compassMode": "Kompassmodus",
-  "compassStandardMode": "Standardmodus",
-  "compassPilotMode": "Pilotmodus",
-  "compassStandardDescription": "Grunnleggende overskrift og navigasjon",
-  "compassPilotDescription": "Avansert navigering med ETA og vektorering",
-  "pointingTo": "Viser til {direction}_",
-  "calibratingCompass": "Kalibrerende kompass..",
-  "openAROverlay": "Åpne AR overlegg",
-  "pushTitleAlertNearby": "UFO-varsel nær deg",
-  "pushBodyAlertNearby": "En ny observasjon ble rapportert {distance}_______________________________________________________________.",
-  "pushTitleComment": "Ny kommentar",
-  "pushBodyComment": "Noen kommenterte en observasjon du følger.",
-  "pushTitleWitness": "Vitnebekreftelse",
-  "pushBodyWitness": "En bruker bekrefter at de ser det samme objektet.",
-  "weather": "Vær",
-  "cloudCover": "Skydekke: {percent}_%",
-  "wind": "Vind: {speed}_{unit}",
-  "nearbyAircraft": "Nærliggende fly",
-  "noAircraft": "Ingen fly i nærheten",
-  "loadingContext": "Laster inn miljøkontekst..",
-  "settingsTitle": "Innstillinger",
-  "notifications": "Varsler",
-  "enablePushNotifications": "Få meldinger for fremtidige kommentarer",
-  "quietHours": "Stille timer",
-  "quietHoursDesc": "Stille varsler mellom utvalgte timer.",
-  "dndMode": "Ikke forstyrr",
-  "dndUntil": "Ikke forstyrre før",
-  "language": "Språk",
-  "chooseLanguage": "Velg språk",
-  "units": "Enheter",
-  "unitsImperial": "Imperial (mi, mph)",
-  "unitsMetric": "Metrisk (km, km/t)",
-  "privacyPolicy": "Personvernerklæring",
-  "termsOfUse": "Vilkår for bruk",
-  "errorNoLocation": "Sted ikke tilgjengelig. Prøv igjen utenfor med klar himmelutsikt.",
-  "errorNoCamera": "Kamera tilgjengelig på denne enheten.",
-  "errorUploadFailed": "Opplasting mislyktes. Prøv igjen.",
-  "errorPermissionDenied": "Tilgang nektet.",
-  "errorInvalidUsername": "Dette brukernavnet er ikke tilgjengelig.",
-  "nothingToShow": "Ingenting å vise ennå.",
-  "storeShortDesc": "UFO varsler nær deg. Fange, bekrefte og chat i sanntid.",
-  "storeLongDesc": "UFOBeep sender varsler i sanntid når noen oppdager en UFO i nærheten. Ta bilder og videoer, bekrefte severdigheter med trykk, se retning og avstand og chat med andre skywatchere.",
-  "keywords": "UFO,UAP,OVNI,aliens, severdigheter, skywatch,alerter, radar,compass",
-  "noAlertsFound": "Ingen matchende varsler",
-  "alertsFilterHelp": "Prøv å justere filtrene dine for å se flere resultater",
-  "verified": "Bekreftet",
-  "beepOnly": "bare bip",
-  "videoOnly": "kun video",
-  "imageOnly": "bare bilde",
-  "timeJustNow": "Akkurat nå",
-  "timeDaysAgo": "_PH_0_d siden",
-  "timeHoursAgo": "__PH_0_h ago",
-  "timeMinutesAgo": "_PH_0_m ago",
-  "loadMoreAlerts": "Last inn flere varsler",
-  "toggleMufonTooltip": "Bytt MUFON-syn",
-  "showMufonData": "Vis MUFON-data",
-  "hideMufonData": "Skjul MUFON-data",
-  "showingUfoBeepOnly": "Viser kun UFOBeep-rapporter",
-  "showingAllReports": "Viser alle rapporter inkludert MUFON-databasen",
-  "filteredSuffix": "filtrert",
-  "detailsTitle": "Detaljer",
-  "mufonCase": "MUFON Case",
-  "sightingDate": "Sighting Dato",
-  "databaseEntry": "Databaseoppføring",
-  "locationLabel": "Beliggenhet",
-  "distanceLabel": "Avstand",
-  "timeLabel": "Tid",
-  "reportedByLabel": "Rapportert av",
-  "unknownLocation": "Ukjend plassering",
-  "locationUnknown": "Plassering ukjent",
-  "witnessesLabel": "Vitner",
-  "witnessesCountMessage": "{count}_-folk bekreftet denne observasjonen",
-  "photoAnalysisTitle": "Fotoanalyse",
-  "mediaItemsProcessed": "Analyse: {count} mediefil(er) behandlet",
-  "addMoreMedia": "Legg til mer",
-  "addMedia": "Legg til medier",
-  "retakePhoto": "Retake Photo",
-  "retakeVideo": "Retake Video",
+  "tabMap": "Map",
+  "tabSettings": "Settings",
+  "alertsTitle": "Nearby Alerts",
+  "noAlerts": "No alerts nearby yet.",
+  "pullToRefresh": "Pull to refresh",
+  "alertDistance": "{distance} away",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -168,6 +46,7 @@
       }
     }
   },
+  "alertDirection": "Bearing {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -176,6 +55,41 @@
       }
     }
   },
+  "viewAlert": "View alert",
+  "viewOnMap": "View on map",
+  "iSeeItToo": "I see it too",
+  "confirmWitnessed": "Confirm you witnessed this sighting?",
+  "witnessConfirmed": "Thanks — your confirmation was posted.",
+  "createBeepTitle": "Send a Beep",
+  "beepExplain": "Capture what you see and alert nearby watchers.",
+  "capturePhoto": "Capture photo",
+  "captureVideo": "Capture video",
+  "pickFromGallery": "Choose from gallery",
+  "descriptionHint": "Describe what you're seeing in the sky…",
+  "submitBeep": "Send Beep",
+  "beepSent": "Beep sent",
+  "beepSentWithUrl": "Beep sent successfully",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadingMedia": "Uploading media…",
+  "includeLocation": "Include location",
+  "includeTimestamp": "Include timestamp",
+  "beepFailed": "Failed to send Beep.",
+  "mediaProcessing": "Processing media…",
+  "cameraPermissionTitle": "Camera access needed",
+  "cameraPermissionBody": "Grant camera access to capture UFO photos and videos.",
+  "locationPermissionTitle": "Location access needed",
+  "locationPermissionBody": "We use your location to send and receive nearby alerts.",
+  "microphonePermissionTitle": "Microphone access needed",
+  "microphonePermissionBody": "Grant microphone access for video capture with audio.",
+  "openSettings": "Open settings",
+  "alertDetailTitle": "Sighting Details",
+  "reportedBy": "Reported by {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -184,6 +98,7 @@
       }
     }
   },
+  "reportedAt": "Reported {timeAgo}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -192,6 +107,7 @@
       }
     }
   },
+  "distanceAway": "{distance} away",
   "@distanceAway": {
     "placeholders": {
       "distance": {
@@ -200,6 +116,7 @@
       }
     }
   },
+  "bearingToObject": "Bearing to object: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -208,6 +125,25 @@
       }
     }
   },
+  "openCompass": "Open compass",
+  "openAR": "Open AR overlay",
+  "openChat": "Open chat",
+  "commentsTitle": "Comments",
+  "addComment": "Add a comment…",
+  "send": "Send",
+  "commentPosted": "Comment posted",
+  "autoFollowEnabled": "You’re now following this alert.",
+  "noCommentsYet": "No comments yet. Be the first!",
+  "newCommentNotification": "New comment on a sighting you follow.",
+  "mapTitle": "Live Map",
+  "compassTitle": "Compass",
+  "compassSettings": "Compass Settings",
+  "compassMode": "Compass Mode",
+  "compassStandardMode": "Standard Mode",
+  "compassPilotMode": "Pilot Mode",
+  "compassStandardDescription": "Basic heading and navigation",
+  "compassPilotDescription": "Advanced navigation with ETA and vectoring",
+  "pointingTo": "Pointing to {direction}",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -216,6 +152,10 @@
       }
     }
   },
+  "calibratingCompass": "Calibrating compass…",
+  "openAROverlay": "Open AR overlay",
+  "pushTitleAlertNearby": "UFO alert near you",
+  "pushBodyAlertNearby": "A new sighting was reported {distance} away.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -224,6 +164,12 @@
       }
     }
   },
+  "pushTitleComment": "New comment",
+  "pushBodyComment": "Someone commented on a sighting you follow.",
+  "pushTitleWitness": "Witness confirmation",
+  "pushBodyWitness": "A user confirmed they see the same object.",
+  "weather": "Weather",
+  "cloudCover": "Cloud cover: {percent}%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -232,6 +178,7 @@
       }
     }
   },
+  "wind": "Wind: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -244,6 +191,40 @@
       }
     }
   },
+  "nearbyAircraft": "Nearby aircraft",
+  "noAircraft": "No aircraft nearby",
+  "loadingContext": "Loading environmental context…",
+  "settingsTitle": "Settings",
+  "notifications": "Notifications",
+  "enablePushNotifications": "Get notifications for future comments",
+  "quietHours": "Quiet hours",
+  "quietHoursDesc": "Silence alerts between selected hours.",
+  "dndMode": "Do Not Disturb",
+  "dndUntil": "Do not disturb until",
+  "language": "Language",
+  "chooseLanguage": "Choose language",
+  "units": "Units",
+  "unitsImperial": "Imperial (mi, mph)",
+  "unitsMetric": "Metric (km, km/h)",
+  "privacyPolicy": "Privacy Policy",
+  "termsOfUse": "Terms of Use",
+  "errorNoLocation": "Location unavailable. Try again outside with clear sky view.",
+  "errorNoCamera": "Camera unavailable on this device.",
+  "errorUploadFailed": "Upload failed. Please try again.",
+  "errorPermissionDenied": "Permission denied.",
+  "errorInvalidUsername": "That username isn’t available.",
+  "nothingToShow": "Nothing to show yet.",
+  "storeShortDesc": "Instant UFO alerts near you. Capture, confirm, and chat in real time.",
+  "storeLongDesc": "UFOBeep sends real-time alerts when someone spots a UFO nearby. Capture photos and videos, confirm sightings with a tap, view direction & distance, and chat with fellow skywatchers.",
+  "keywords": "UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass",
+  "noAlertsFound": "No matching alerts",
+  "alertsFilterHelp": "Try adjusting your filters to see more results",
+  "verified": "Verified",
+  "beepOnly": "beep only",
+  "videoOnly": "video only",
+  "imageOnly": "image only",
+  "timeJustNow": "Just now",
+  "timeDaysAgo": "{count}d ago",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -252,6 +233,7 @@
       }
     }
   },
+  "timeHoursAgo": "{count}h ago",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -260,6 +242,7 @@
       }
     }
   },
+  "timeMinutesAgo": "{count}m ago",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -268,6 +251,37 @@
       }
     }
   },
+  "loadMoreAlerts": "Load More Alerts",
+  "toggleMufonTooltip": "Toggle MUFON sightings",
+  "showMufonData": "Show MUFON data",
+  "hideMufonData": "Hide MUFON data",
+  "showingUfoBeepOnly": "Showing only UFOBeep reports",
+  "showingAllReports": "Showing all reports including MUFON database",
+  "filteredSuffix": "filtered",
+  "detailsTitle": "Details",
+  "mufonCase": "MUFON Case",
+  "mufonCaseDetailsTitle": "MUFON Case #{caseNumber} Details",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
+  "sightingDate": "Sighting Date",
+  "mufonDatabaseEntryDate": "Date Entered into MUFON Database",
+  "databaseEntry": "Database Entry",
+  "shareLink": "Share Link",
+  "linkCopied": "Link copied to clipboard",
+  "locationLabel": "Location",
+  "distanceLabel": "Distance",
+  "timeLabel": "Time",
+  "reportedByLabel": "Reported by",
+  "unknownLocation": "Unknown Location",
+  "locationUnknown": "Location Unknown",
+  "witnessesLabel": "Witnesses",
+  "witnessesCountMessage": "{count} people confirmed this sighting",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -276,6 +290,8 @@
       }
     }
   },
+  "photoAnalysisTitle": "Photo Analysis",
+  "mediaItemsProcessed": "Analysis: {count} media file(s) processed",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -284,35 +300,94 @@
       }
     }
   },
-  "camera": "Kamera",
-  "gallery": "Galleri",
-  "basicSettings": "Basisinnstillinger",
-  "appSettings": "Appinnstillinger",
-  "alertRange": "Varselområde",
-  "manageNotificationsDesc": "Administrer abonnementer og innstillinger",
-  "permissionsTitle": "Tillatelser",
-  "permissionLocation": "Beliggenhet",
-  "permissionCamera": "Kamera",
-  "permissionNotifications": "Varsler",
-  "permissionPhotos": "Bilder",
-  "permissionGranted": "Forutsetning",
-  "permissionNotGranted": "Ikke gitt",
+  "addMoreMedia": "Add More",
+  "addMedia": "Add Media",
+  "retakePhoto": "Retake Photo",
+  "retakeVideo": "Retake Video",
+  "camera": "Camera",
+  "gallery": "Gallery",
+  "basicSettings": "Basic Settings",
+  "appSettings": "App Settings",
+  "alertRange": "Alert Range",
+  "manageNotificationsDesc": "Manage subscriptions & settings",
+  "permissionsTitle": "Permissions",
+  "permissionLocation": "Location",
+  "permissionCamera": "Camera",
+  "permissionNotifications": "Notifications",
+  "permissionPhotos": "Photos",
+  "permissionGranted": "Granted",
+  "permissionNotGranted": "Not granted",
   "permissionGrant": "Grant",
-  "generateUsername": "Opprett nytt brukernavn",
-  "adminTools": "Admin verktøy",
-  "openAdminPanel": "Åpne Admin-panelet",
-  "webAdminInterface": "Web Admin-grensesnitt",
-  "adminBetaNotice": "Beta bygger bare. Administrasjonsverktøy for å teste nærhetsvarsler, pressevarsler og systemdiagnostikk.",
-  "whatDoYouSee": "Hva ser du?",
+  "generateUsername": "Generate new username",
+  "adminTools": "Admin Tools",
+  "openAdminPanel": "Open Admin Panel",
+  "webAdminInterface": "Web Admin Interface",
+  "adminBetaNotice": "Beta builds only. Admin tools for testing proximity alerts, push notifications, and system diagnostics.",
+  "whatDoYouSee": "What do you see?",
+  "ufo": "UFO",
+  "sighting": "Sighting",
   "ufoSighting": "UFO Sighting",
-  "actionsTitle": "Handlinger",
-  "addPhotosAndVideos": "Legg til bilder og videoer",
-  "howToReportToMufon": "Hvordan rapportere til MUFON",
-  "reportToMufon": "Rapporter til MUFON",
-  "whyReportToMufon": "Hvorfor rapportere til MUFON?",
-  "openMufonReport": "Åpne MUFON Rapport",
-  "confirmedWitness": "Du bekreftet dette synet",
-  "witnessesHaveConfirmed": "{count}_ personer har bekreftet denne observasjonen",
+  "envAnalysisTitle": "Environmental Analysis",
+  "envAnalysisPending": "Analysis Pending",
+  "envAnalysisPendingDesc": "Environmental data will be available once processing begins.",
+  "unknownAircraft": "Unknown Aircraft",
+  "moreAircraft": "more aircraft",
+  "premiumImageryTitle": "Premium Satellite Imagery",
+  "premiumImagerySubtitle": "High-resolution commercial imagery",
+  "sightingTypeLabel": "Type",
+  "ufoTypeSphere": "Sphere",
+  "ufoTypeTriangle": "Triangle",
+  "ufoTypeDisk": "Disk",
+  "ufoTypeLight": "Light",
+  "ufoTypeFireball": "Fireball",
+  "ufoTypeCylinder": "Cylinder",
+  "ufoTypeCigar": "Cigar",
+  "ufoTypeRectangle": "Rectangle",
+  "ufoTypeFormation": "Formation",
+  "ufoTypeUnknown": "Unknown",
+  "ufoTypeBoomerang": "Boomerang",
+  "ufoTypeDiamond": "Diamond",
+  "ufoTypeOval": "Oval",
+  "ufoTypeCone": "Cone",
+  "ufoTypeCross": "Cross",
+  "ufoTypeDumbbell": "Dumbbell",
+  "ufoTypeTeardrop": "Teardrop",
+  "ufoTypeTicTac": "Tic Tac",
+  "ufoTypeBullet": "Bullet",
+  "ufoTypeSaturn": "Saturn",
+  "ufoTypeStarLike": "Star-like",
+  "ufoTypeBlimp": "Blimp",
+  "shapeTriangle": "triangle",
+  "shapeDisc": "disc",
+  "shapeDisk": "disk",
+  "shapeSphere": "sphere",
+  "shapeCigar": "cigar",
+  "shapeLight": "light",
+  "shapeBoomerang": "boomerang",
+  "shapeDiamond": "diamond",
+  "shapeRectangle": "rectangle",
+  "shapeOval": "oval",
+  "shapeCone": "cone",
+  "shapeCross": "cross",
+  "shapeCylinder": "cylinder",
+  "shapeDumbbell": "dumbbell",
+  "shapeTeardrop": "teardrop",
+  "shapeTicTac": "tic-tac",
+  "shapeBullet": "bullet",
+  "shapeSaturn": "saturn",
+  "shapeStarlike": "starlike",
+  "shapeBlimp": "blimp",
+  "shapeFireball": "fireball",
+  "shapeFormation": "formation",
+  "shapeUnknown": "unknown",
+  "actionsTitle": "Actions",
+  "addPhotosAndVideos": "Add Photos & Videos",
+  "howToReportToMufon": "How to Report to MUFON",
+  "reportToMufon": "Report to MUFON",
+  "whyReportToMufon": "Why Report to MUFON?",
+  "openMufonReport": "Open MUFON Report",
+  "confirmedWitness": "You confirmed this sighting",
+  "witnessesHaveConfirmed": "{count} people have confirmed this sighting",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -321,58 +396,82 @@
       }
     }
   },
-  "sightingTypeLabel": "Type",
-  "ufoTypeSphere": "Skulen",
-  "ufoTypeTriangle": "Trekant",
-  "ufoTypeDisk": "Disk",
-  "ufoTypeLight": "Lys",
-  "ufoTypeFireball": "Fireball",
-  "ufoTypeCylinder": "Sylinder",
-  "ufoTypeCigar": "Cigar",
-  "ufoTypeRectangle": "Rektangel",
-  "ufoTypeFormation": "Formasjon",
-  "ufoTypeUnknown": "Ukjend",
-  "mufonCaseDetailsTitle": "MUFON Case #{caseNumber} detaljer",
-  "mufonDatabaseEntryDate": "Datoen gikk inn i MUFON Database",
-  "shareLink": "Share Link",
-  "linkCopied": "Koble til utklippstavle",
-  "envAnalysisTitle": "Miljøanalyse",
-  "envAnalysisPending": "Analyse avventer",
-  "envAnalysisPendingDesc": "Miljødata vil være tilgjengelige når behandlingen starter.",
-  "unknownAircraft": "Ukjent fly",
-  "moreAircraft": "mer fly",
-  "premiumImageryTitle": "Premium Satellitt Imagery",
-  "premiumImagerySubtitle": "Høyoppløselige kommersielle bilder",
-  "ufoTypeBoomerang": "Boomerang",
-  "ufoTypeDiamond": "Diamant",
-  "ufoTypeOval": "Oval",
-  "ufoTypeCone": "Cone",
-  "ufoTypeCross": "Kors",
-  "ufoTypeDumbbell": "Dumbbell",
-  "ufoTypeTeardrop": "Teardrop",
-  "ufoTypeTicTac": "Tic Tac",
-  "ufoTypeBullet": "Bullet",
-  "ufoTypeSaturn": "Saturn",
-  "ufoTypeStarLike": "Stjernelignende",
-  "ufoTypeBlimp": "Blimp",
-  "aircraftTrackingTitle": "Flysporing",
-  "weatherConditionsTitle": "Værforhold",
-  "noSatellitePasses": "Ingen synlige satellittpass funnet",
-  "contentAnalysisTitle": "Innholdsanalyse",
-  "contentSafe": "Innhold er trygt",
-  "contentFlagged": "Innhold flagget for gjennomgang",
-  "confidenceLabel": "Tillit",
-  "methodLabel": "Metode",
-  "premiumImageryAccessOnly": "Premium satellittbilder er kun tilgjengelig for:",
-  "premiumAccessCreators": "Varselskapere",
-  "premiumAccessWitnesses": "Bekreftede vitner innen synlighetsområdet",
-  "comingSoon": "Kommer snart",
-  "@mufonCaseDetailsTitle": {
+  "aircraftTrackingTitle": "Aircraft Tracking",
+  "weatherConditionsTitle": "Weather Conditions",
+  "noSatellitePasses": "No visible satellite passes found",
+  "contentAnalysisTitle": "Content Analysis",
+  "contentSafe": "Content is safe",
+  "contentFlagged": "Content flagged for review",
+  "confidenceLabel": "Confidence",
+  "methodLabel": "Method",
+  "premiumImageryAccessOnly": "Premium satellite imagery is only available to:",
+  "premiumAccessCreators": "Alert creators",
+  "premiumAccessWitnesses": "Confirmed witnesses within visibility range",
+  "comingSoon": "Coming Soon",
+  "directionDistanceTitle": "Direction & Distance",
+  "mufonCaseTitle": "MUFON Case #{caseNumber}",
+  "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
         "type": "String",
         "example": "12345"
       }
     }
-  }
+  },
+  "satellitePassesTitle": "Satellite Passes",
+  "satellitePassExplanation": "Visible satellite passes during the sighting timeframe. Many UFO reports are actually satellites or space debris.",
+  "followingAlert": "Following alert - you'll get comment notifications",
+  "unfollowedAlert": "Unfollowed alert - no more comment notifications",
+  "alertFollowError": "Error updating follow status",
+  "notificationChannelAlerts": "UFOBeep Alerts",
+  "notificationChannelAlertsDesc": "Notifications for UFO beeps and proximity alerts",
+  "notificationSightingTitle": "UFO Sighting",
+  "notificationSightingUrgent": "⚠️ URGENT UFO Sighting",
+  "notificationSightingEmergency": "🚨 EMERGENCY UFO Sighting",
+  "notificationSightingBody": "{witnessText} near {locationName}",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "💬 {username} commented",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "New sighting",
+  "notificationWitnessTextMultiple": "{count} witnesses",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "Snooze 1h",
+  "notificationActionDismiss": "Dismiss",
+  "notificationDistance": "{distance} away",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  },
+  "unknown": "unknown",
+  "report": "report",
+  "mufon": "mufon"
 }

@@ -1,4 +1,9 @@
 {
-  "profile": "Προφίλ",
-  "settings": "Settings"
+  "tabAlerts": "Καταχωρίσεις",
+  "tabBeep": "Μπιπ",
+  "tabChat": "Συζήτηση",
+  "tabMap": "Χάρτης",
+  "tabSettings": "Settings",
+  "mufonDatabaseEntryDate": "Ημερομηνία εισόδου στο MUFON Βάση δεδομένων",
+  "databaseEntry": "Είσοδος βάσης δεδομένων"
 }

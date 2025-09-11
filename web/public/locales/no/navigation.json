@@ -1,4 +1,9 @@
 {
-  "profile": "Profil",
-  "settings": "Innstillinger"
+  "tabAlerts": "Alerts",
+  "tabBeep": "Beep",
+  "tabChat": "Chat",
+  "tabMap": "Map",
+  "tabSettings": "Settings",
+  "mufonDatabaseEntryDate": "Date Entered into MUFON Database",
+  "databaseEntry": "Database Entry"
 }

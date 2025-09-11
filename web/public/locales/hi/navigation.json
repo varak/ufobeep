@@ -1,4 +1,9 @@
 {
-  "profile": "प्रोफ़ाइल",
-  "settings": "सेटिंग"
+  "tabAlerts": "चेतावनी",
+  "tabBeep": "बीप",
+  "tabChat": "चैट",
+  "tabMap": "नक्शा",
+  "tabSettings": "सेटिंग",
+  "mufonDatabaseEntryDate": "तारीख MUFON में प्रवेश किया डेटाबेस",
+  "databaseEntry": "डेटाबेस प्रविष्टि"
 }

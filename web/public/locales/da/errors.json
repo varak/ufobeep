@@ -1,0 +1,8 @@
+{
+  "errorGeneric": "Noget gik galt.",
+  "errorNoLocation": "Placering utilgængelig. Prøv igen udenfor med klar himmel udsigt.",
+  "errorNoCamera": "Kameraet er ikke tilgængeligt på denne enhed.",
+  "errorUploadFailed": "Upload mislykkedes. Prøv igen.",
+  "errorPermissionDenied": "Tilladelse nægtet.",
+  "errorInvalidUsername": "Det brugernavn er ikke tilgængeligt."
+}

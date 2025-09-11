@@ -1,70 +1,101 @@
-const supportedLocales = {
-  en: {
-    code: 'en',
-    name: 'English',
-    nativeName: 'English',
-    flag: '🇺🇸',
-    rtl: false,
+// Auto-generated locale configuration
+export const supportedLocales = {
+  "en": {
+    "name": "English",
+    "rtl": false
   },
-  es: {
-    code: 'es',
-    name: 'Spanish',
-    nativeName: 'Español',
-    flag: '🇪🇸',
-    rtl: false,
+  "es": {
+    "name": "Spanish",
+    "rtl": false
   },
-  de: {
-    code: 'de',
-    name: 'German',
-    nativeName: 'Deutsch',
-    flag: '🇩🇪',
-    rtl: false,
+  "de": {
+    "name": "German",
+    "rtl": false
   },
-};
-
-const defaultLocale = 'en';
-
-function getLocaleInfo(locale) {
-  return supportedLocales[locale] || supportedLocales[defaultLocale];
-}
-
-function getSupportedLocaleCodes() {
-  return Object.keys(supportedLocales);
-}
-
-function isValidLocale(locale) {
-  return locale in supportedLocales;
-}
-
-function getLocaleDisplayName(locale) {
-  const info = getLocaleInfo(locale);
-  return `${info.flag} ${info.nativeName}`;
-}
-
-function getBrowserLocale() {
-  if (typeof window === 'undefined') {
-    return defaultLocale;
+  "fr": {
+    "name": "French",
+    "rtl": false
+  },
+  "pt": {
+    "name": "Portuguese",
+    "rtl": false
+  },
+  "it": {
+    "name": "Italian",
+    "rtl": false
+  },
+  "ru": {
+    "name": "Russian",
+    "rtl": false
+  },
+  "ja": {
+    "name": "Japanese",
+    "rtl": false
+  },
+  "zh": {
+    "name": "Chinese",
+    "rtl": false
+  },
+  "ar": {
+    "name": "Arabic",
+    "rtl": true
+  },
+  "nl": {
+    "name": "Dutch",
+    "rtl": false
+  },
+  "pl": {
+    "name": "Polish",
+    "rtl": false
+  },
+  "cs": {
+    "name": "Czech",
+    "rtl": false
+  },
+  "tr": {
+    "name": "Turkish",
+    "rtl": false
+  },
+  "ko": {
+    "name": "Korean",
+    "rtl": false
+  },
+  "hi": {
+    "name": "Hindi",
+    "rtl": false
+  },
+  "sv": {
+    "name": "Swedish",
+    "rtl": false
+  },
+  "da": {
+    "name": "Danish",
+    "rtl": false
+  },
+  "no": {
+    "name": "Norwegian",
+    "rtl": false
+  },
+  "fi": {
+    "name": "Finnish",
+    "rtl": false
+  },
+  "el": {
+    "name": "Greek",
+    "rtl": false
+  },
+  "he": {
+    "name": "Hebrew",
+    "rtl": true
   }
-
-  const browserLocale = navigator.language.split('-')[0];
-  return isValidLocale(browserLocale) ? browserLocale : defaultLocale;
-}
-
-function getNextjsLocaleConfig() {
-  return {
-    locales: getSupportedLocaleCodes(),
-    defaultLocale,
-    localeDetection: true,
-  };
-}
-
-module.exports = {
-  supportedLocales,
-  defaultLocale,
-  getLocaleInfo,
-  getSupportedLocaleCodes,
-  isValidLocale,
-  getLocaleDisplayName,
-  getBrowserLocale,
-  getNextjsLocaleConfig,
 };
+export const defaultLocale = 'en';
+export const fallbackLocale = 'en';
+
+export function getLocaleDisplayName(locale) {
+  return supportedLocales[locale]?.name || locale;
+}
+
+export function isRTLLocale(locale) {
+  return supportedLocales[locale]?.rtl || false;
+}

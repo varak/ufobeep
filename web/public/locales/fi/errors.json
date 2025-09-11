@@ -1,0 +1,8 @@
+{
+  "errorGeneric": "Jokin meni pieleen.",
+  "errorNoLocation": "Sijaintia ei ole saatavilla. Yritä uudelleen ulkona selkeä taivas.",
+  "errorNoCamera": "Tällä laitteella ei ole kameraa.",
+  "errorUploadFailed": "Lähetys epäonnistui. Yritä uudestaan.",
+  "errorPermissionDenied": "Lupa evätty.",
+  "errorInvalidUsername": "Tämä käyttäjätunnus ei ole saatavilla."
+}

@@ -1,0 +1,8 @@
+{
+  "errorGeneric": "משהו השתבש.",
+  "errorNoLocation": "מיקום לא זמין נסה שוב בחוץ עם נוף השמיים ברור.",
+  "errorNoCamera": "המצלמה אינה זמינה במכשיר זה.",
+  "errorUploadFailed": "ההעלאה נכשלה. אנא נסה שוב.",
+  "errorPermissionDenied": "הכחשה.",
+  "errorInvalidUsername": "שם משתמש זה אינו זמין."
+}

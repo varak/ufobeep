@@ -1,4 +1,9 @@
 {
-  "profile": "פרופיל",
-  "settings": "הגדרות"
+  "tabAlerts": "התראות",
+  "tabBeep": "Beep",
+  "tabChat": "צ'אט Chat",
+  "tabMap": "מפה",
+  "tabSettings": "הגדרות",
+  "mufonDatabaseEntryDate": "תאריך כניסה ל MUFON מסד נתונים",
+  "databaseEntry": "מסד נתונים כניסה"
 }

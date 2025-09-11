@@ -1,0 +1,8 @@
+{
+  "errorGeneric": "Något gick fel.",
+  "errorNoLocation": "Plats otillgänglig. Försök igen utanför med klar himmelvy.",
+  "errorNoCamera": "Kamera otillgänglig på denna enhet.",
+  "errorUploadFailed": "Uppladdning misslyckades. Försök igen.",
+  "errorPermissionDenied": "Tillstånd förnekas.",
+  "errorInvalidUsername": "Det användarnamnet är inte tillgängligt."
+}

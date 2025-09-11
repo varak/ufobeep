@@ -1,5 +1,5 @@
 {
-  "@@locale": "el",
+  "@@locale": "en",
   "appName": "ΑΤΙΑ μπιπ",
   "ok": "ΕΝΤΆΞΕΙ",
   "cancel": "Ακύρωση",
@@ -37,8 +37,24 @@
   "alertsTitle": "Κοντινές ειδοποιήσεις",
   "noAlerts": "Δεν υπάρχουν ειδοποιήσεις ακόμα κοντά.",
   "pullToRefresh": "Τραβήξτε για ανανέωση",
-  "alertDistance": "__PH_0_ μακριά",
-  "alertDirection": "Διόπτευση __PH_0_°",
+  "alertDistance": "{απόσταση} μακριά",
+  "@alertDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2 mi"
+      }
+    }
+  },
+  "alertDirection": "Διόπτευση {ουσία}°",
+  "@alertDirection": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "137"
+      }
+    }
+  },
   "viewAlert": "Προβολή συναγερμού",
   "viewOnMap": "Προβολή στο χάρτη",
   "iSeeItToo": "Το βλέπω κι εγώ",
@@ -52,6 +68,14 @@
   "descriptionHint": "Περιγράψτε τι βλέπετε στον ουρανό..",
   "submitBeep": "Αποστολή μπιπ",
   "beepSent": "Αποστολή μπιπ",
+  "beepSentWithUrl": "Το μπιπ στάλθηκε επιτυχώς",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
   "uploadingMedia": "Αποστολή μέσων ενημέρωσης..",
   "includeLocation": "Συμπερίληψη τοποθεσίας",
   "includeTimestamp": "Συμπερίληψη χρονοσφραγίδας",
@@ -65,10 +89,42 @@
   "microphonePermissionBody": "Επιχορήγηση πρόσβασης μικροφώνου για λήψη βίντεο με ήχο.",
   "openSettings": "Άνοιγμα ρυθμίσεων",
   "alertDetailTitle": "Ορατότητα λεπτομερειών",
-  "reportedBy": "Αναφέρθηκε από __PH_0_",
-  "reportedAt": "Αναφέρθηκε __PH_0_",
-  "distanceAway": "__PH_0_ μακριά",
-  "bearingToObject": "Διόπτευση προς ένσταση: __PH_0_°",
+  "reportedBy": "Αναφέρθηκε από {όνομα χρήστη}",
+  "@reportedBy": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "reportedAt": "Αναφέρθηκε {ώρα} Πριν}",
+  "@reportedAt": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "5m ago"
+      }
+    }
+  },
+  "distanceAway": "{απόσταση} μακριά",
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.4 km"
+      }
+    }
+  },
+  "bearingToObject": "Διόπτευση προς αντικείμενο: {ουσία}°",
+  "@bearingToObject": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "92"
+      }
+    }
+  },
   "openCompass": "Ανοικτή πυξίδα",
   "openAR": "Άνοιγμα επικάλυψης AR",
   "openChat": "Άνοιγμα συνομιλίας",
@@ -87,18 +143,54 @@
   "compassPilotMode": "Πιλοτική λειτουργία",
   "compassStandardDescription": "Βασική κλάση και πλοήγηση",
   "compassPilotDescription": "Προηγμένη πλοήγηση με ETA και διανυσματική",
-  "pointingTo": "Επισημαίνοντας στο {direction}",
+  "pointingTo": "Σημείο προς {κατεύθυνση}",
+  "@pointingTo": {
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "SE"
+      }
+    }
+  },
   "calibratingCompass": "Βαθμονόμηση πυξίδας..",
   "openAROverlay": "Άνοιγμα επικάλυψης AR",
   "pushTitleAlertNearby": "Συναγερμός UFO κοντά σας",
-  "pushBodyAlertNearby": "Μια νέα παρατήρηση αναφέρθηκε __PH_0_ μακριά.",
+  "pushBodyAlertNearby": "Μια νέα παρατήρηση αναφέρθηκε μακριά.",
+  "@pushBodyAlertNearby": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "0.8 mi"
+      }
+    }
+  },
   "pushTitleComment": "Νέο σχόλιο",
   "pushBodyComment": "Κάποιος σχολίασε ότι σε είδε να ακολουθείς.",
   "pushTitleWitness": "Επιβεβαίωση μάρτυρα",
   "pushBodyWitness": "Ένας χρήστης επιβεβαίωσε ότι βλέπουν το ίδιο αντικείμενο.",
   "weather": "Καιρός",
-  "cloudCover": "Σύννεφο: __PH_0_%",
-  "wind": "Άνεμος: {speed}_PH_1_",
+  "cloudCover": "Κάλυψη νεφών: {%}%",
+  "@cloudCover": {
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "63"
+      }
+    }
+  },
+  "wind": "Άνεμος: {ταχύτητα} {μονάδα}",
+  "@wind": {
+    "placeholders": {
+      "speed": {
+        "type": "num",
+        "example": "12.4"
+      },
+      "unit": {
+        "type": "String",
+        "example": "mph"
+      }
+    }
+  },
   "nearbyAircraft": "Κοντινά αεροσκάφη",
   "noAircraft": "Κανένα αεροσκάφος κοντά",
   "loadingContext": "Φόρτωση περιβαλλοντικού πλαισίου..",
@@ -132,9 +224,33 @@
   "videoOnly": "μόνο βίντεο",
   "imageOnly": "μόνο εικόνα",
   "timeJustNow": "Μόλις τώρα",
-  "timeDaysAgo": "_PH_0_D πριν",
-  "timeHoursAgo": "__PH_0_h πριν",
-  "timeMinutesAgo": "_PH_0_m πριν",
+  "timeDaysAgo": "{καταμέτρηση} d πριν",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "timeHoursAgo": "{αριθμός} h πριν",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "timeMinutesAgo": "{αριθμός} m πριν",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
   "loadMoreAlerts": "Φόρτωση περισσότερων ειδοποιήσεων",
   "toggleMufonTooltip": "Εναλλαγή προβολών MUFON",
   "showMufonData": "Εμφάνιση δεδομένων MUFON",
@@ -144,8 +260,20 @@
   "filteredSuffix": "φιλτράρεται",
   "detailsTitle": "Λεπτομέρειες",
   "mufonCase": "ΜΟΥΦΟΝ Υπόθεση",
+  "mufonCaseDetailsTitle": "ΜΟΥΦΟΝ Υπόθεση #{ caseNumber} Λεπτομέρειες",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
   "sightingDate": "Ημερομηνία παρατήρησης",
+  "mufonDatabaseEntryDate": "Ημερομηνία εισόδου στο MUFON Βάση δεδομένων",
   "databaseEntry": "Είσοδος βάσης δεδομένων",
+  "shareLink": "Κοινοποίηση δεσμού",
+  "linkCopied": "Δεσμός αντιγραφόμενο στο πρόχειρο",
   "locationLabel": "Τοποθεσία",
   "distanceLabel": "Απόσταση",
   "timeLabel": "Χρόνος",
@@ -153,121 +281,7 @@
   "unknownLocation": "Άγνωστη τοποθεσία",
   "locationUnknown": "Άγνωστη τοποθεσία",
   "witnessesLabel": "Μάρτυρες",
-  "witnessesCountMessage": "__PH_0_ οι άνθρωποι επιβεβαίωσαν αυτή την παρατήρηση",
-  "photoAnalysisTitle": "Ανάλυση φωτογραφιών",
-  "mediaItemsProcessed": "Ανάλυση: __PH_0_ Επεξεργασία αρχείου(ων) πολυμέσων",
-  "addMoreMedia": "Προσθήκη περισσότερων",
-  "addMedia": "Προσθήκη μέσου",
-  "retakePhoto": "Επανάληψη φωτογραφίας",
-  "retakeVideo": "Επανάληψη βίντεο",
-  "@alertDistance": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "1.2 mi"
-      }
-    }
-  },
-  "@alertDirection": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "137"
-      }
-    }
-  },
-  "@reportedBy": {
-    "placeholders": {
-      "username": {
-        "type": "String",
-        "example": "stargazer01"
-      }
-    }
-  },
-  "@reportedAt": {
-    "placeholders": {
-      "timeAgo": {
-        "type": "String",
-        "example": "5m ago"
-      }
-    }
-  },
-  "@distanceAway": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "2.4 km"
-      }
-    }
-  },
-  "@bearingToObject": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "92"
-      }
-    }
-  },
-  "@pointingTo": {
-    "placeholders": {
-      "direction": {
-        "type": "String",
-        "example": "SE"
-      }
-    }
-  },
-  "@pushBodyAlertNearby": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "0.8 mi"
-      }
-    }
-  },
-  "@cloudCover": {
-    "placeholders": {
-      "percent": {
-        "type": "int",
-        "example": "63"
-      }
-    }
-  },
-  "@wind": {
-    "placeholders": {
-      "speed": {
-        "type": "num",
-        "example": "12.4"
-      },
-      "unit": {
-        "type": "String",
-        "example": "mph"
-      }
-    }
-  },
-  "@timeDaysAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "@timeHoursAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "5"
-      }
-    }
-  },
-  "@timeMinutesAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "12"
-      }
-    }
-  },
+  "witnessesCountMessage": "{αριθμός} οι άνθρωποι επιβεβαίωσαν αυτή την παρατήρηση",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -276,6 +290,8 @@
       }
     }
   },
+  "photoAnalysisTitle": "Ανάλυση φωτογραφιών",
+  "mediaItemsProcessed": "Ανάλυση: {αριθμός} επεξεργασμένο αρχείο( α) μέσων",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -284,6 +300,10 @@
       }
     }
   },
+  "addMoreMedia": "Προσθήκη περισσότερων",
+  "addMedia": "Προσθήκη μέσου",
+  "retakePhoto": "Επανάληψη φωτογραφίας",
+  "retakeVideo": "Επανάληψη βίντεο",
   "camera": "Κάμερα",
   "gallery": "Γκαλερί",
   "basicSettings": "Βασικές ρυθμίσεις",
@@ -304,23 +324,16 @@
   "webAdminInterface": "Διεπαφή διαχειριστή ιστού",
   "adminBetaNotice": "Η Βήτα χτίζει μόνο. Εργαλεία διαχείρισης για τη δοκιμή ειδοποιήσεων εγγύτητας, ειδοποιήσεις ώθησης και διαγνωστικά συστημάτων.",
   "whatDoYouSee": "Τι βλέπεις?",
+  "ufo": "ΑΤΙΑ",
+  "sighting": "Ορατότητα",
   "ufoSighting": "ΑΤΙΑ Ορατότητα",
-  "actionsTitle": "Δράσεις",
-  "addPhotosAndVideos": "Προσθήκη φωτογραφιών & βίντεο",
-  "howToReportToMufon": "Πώς να αναφέρετε στο MUFON",
-  "reportToMufon": "Αναφορά στο MUFON",
-  "whyReportToMufon": "Γιατί αναφέρεσαι στο MUFON?",
-  "openMufonReport": "Άνοιγμα MUFON Έκθεση",
-  "confirmedWitness": "Επιβεβαίωσες αυτή την παρατήρηση",
-  "witnessesHaveConfirmed": "__PH_0_ οι άνθρωποι έχουν επιβεβαιώσει αυτή την παρατήρηση",
-  "@witnessesHaveConfirmed": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
+  "envAnalysisTitle": "Περιβαλλοντική ανάλυση",
+  "envAnalysisPending": "Εν αναμονή ανάλυσης",
+  "envAnalysisPendingDesc": "Τα περιβαλλοντικά δεδομένα θα είναι διαθέσιμα μόλις αρχίσει η επεξεργασία.",
+  "unknownAircraft": "Άγνωστο αεροσκάφος",
+  "moreAircraft": "περισσότερα αεροσκάφη",
+  "premiumImageryTitle": "Premium δορυφόρος Εικόνα",
+  "premiumImagerySubtitle": "Εμπορικές εικόνες υψηλής ανάλυσης",
   "sightingTypeLabel": "Τύπος",
   "ufoTypeSphere": "Σφαίρα",
   "ufoTypeTriangle": "Τρίγωνο",
@@ -332,17 +345,6 @@
   "ufoTypeRectangle": "Ορθογώνιο",
   "ufoTypeFormation": "Σχηματισμός",
   "ufoTypeUnknown": "Άγνωστο",
-  "mufonCaseDetailsTitle": "ΜΟΥΦΟΝ Υπόθεση #__PH_0_ Λεπτομέρειες",
-  "mufonDatabaseEntryDate": "Ημερομηνία εισόδου στο MUFON Βάση δεδομένων",
-  "shareLink": "Κοινοποίηση δεσμού",
-  "linkCopied": "Δεσμός αντιγραφόμενο στο πρόχειρο",
-  "envAnalysisTitle": "Περιβαλλοντική ανάλυση",
-  "envAnalysisPending": "Εν αναμονή ανάλυσης",
-  "envAnalysisPendingDesc": "Τα περιβαλλοντικά δεδομένα θα είναι διαθέσιμα μόλις αρχίσει η επεξεργασία.",
-  "unknownAircraft": "Άγνωστο αεροσκάφος",
-  "moreAircraft": "περισσότερα αεροσκάφη",
-  "premiumImageryTitle": "Premium δορυφόρος Εικόνα",
-  "premiumImagerySubtitle": "Εμπορικές εικόνες υψηλής ανάλυσης",
   "ufoTypeBoomerang": "Μπούμερανγκ",
   "ufoTypeDiamond": "Διαμάντι",
   "ufoTypeOval": "Οβάλ",
@@ -355,6 +357,45 @@
   "ufoTypeSaturn": "Κρόνος",
   "ufoTypeStarLike": "Αστρική",
   "ufoTypeBlimp": "Μπλίμπ",
+  "shapeTriangle": "τρίγωνο",
+  "shapeDisc": "δίσκος",
+  "shapeDisk": "δίσκος",
+  "shapeSphere": "σφαίρα",
+  "shapeCigar": "πούρα",
+  "shapeLight": "φως",
+  "shapeBoomerang": "βουμεράνγκ",
+  "shapeDiamond": "διαμάντι",
+  "shapeRectangle": "ορθογώνιο",
+  "shapeOval": "οβάλ",
+  "shapeCone": "κώνος",
+  "shapeCross": "σταυρός",
+  "shapeCylinder": "κύλινδρος",
+  "shapeDumbbell": "αλουμινόχαρτο",
+  "shapeTeardrop": "δάκρυο",
+  "shapeTicTac": "τικ-τακ",
+  "shapeBullet": "σφαίρα",
+  "shapeSaturn": "saturn",
+  "shapeStarlike": "αστεροειδής",
+  "shapeBlimp": "blimp",
+  "shapeFireball": "πυρόμπαλα",
+  "shapeFormation": "σχηματισμός",
+  "shapeUnknown": "άγνωστο",
+  "actionsTitle": "Δράσεις",
+  "addPhotosAndVideos": "Προσθήκη φωτογραφιών & βίντεο",
+  "howToReportToMufon": "Πώς να αναφέρετε στο MUFON",
+  "reportToMufon": "Αναφορά στο MUFON",
+  "whyReportToMufon": "Γιατί αναφέρεσαι στο MUFON?",
+  "openMufonReport": "Άνοιγμα MUFON Έκθεση",
+  "confirmedWitness": "Επιβεβαίωσες αυτή την παρατήρηση",
+  "witnessesHaveConfirmed": "{αριθμός} άνθρωποι έχουν επιβεβαιώσει αυτή την παρατήρηση",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "aircraftTrackingTitle": "Παρακολούθηση αεροσκαφών",
   "weatherConditionsTitle": "Καιρικές συνθήκες",
   "noSatellitePasses": "Δε βρέθηκαν ορατά δορυφορικά περάσματα",
@@ -367,12 +408,70 @@
   "premiumAccessCreators": "Προειδοποίηση δημιουργών",
   "premiumAccessWitnesses": "Επιβεβαιωμένοι μάρτυρες εντός εμβέλειας ορατότητας",
   "comingSoon": "Έρχομαι Σύντομα",
-  "@mufonCaseDetailsTitle": {
+  "directionDistanceTitle": "& Απόσταση κατεύθυνσης",
+  "mufonCaseTitle": "ΜΟΥΦΟΝ Υπόθεση #{ ΥπόθεσηNumber}",
+  "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
         "type": "String",
         "example": "12345"
       }
     }
-  }
+  },
+  "satellitePassesTitle": "Δορυφορικά περάσματα",
+  "satellitePassExplanation": "Ορατός δορυφόρος περνάει κατά τη διάρκεια του χρονικού πλαισίου παρατήρησης. Πολλές αναφορές για UFO είναι στην πραγματικότητα δορυφόροι ή διαστημικά συντρίμμια.",
+  "followingAlert": "Μετά την ειδοποίηση - θα λάβετε ειδοποιήσεις σχολίων",
+  "unfollowedAlert": "Μη ακολουθούμενη ειδοποίηση - όχι άλλες ειδοποιήσεις σχολίων",
+  "alertFollowError": "Σφάλμα ενημέρωσης της κατάστασης",
+  "notificationChannelAlerts": "Συναγερμοί UFOBeep",
+  "notificationChannelAlertsDesc": "Ειδοποιήσεις για UFO μπιπ και ειδοποιήσεις εγγύτητας",
+  "notificationSightingTitle": "ΑΤΙΑ Ορατότητα",
+  "notificationSightingUrgent": "⚠️ ΑΣΤΥΝΟΜΙΑ Ορατότητα",
+  "notificationSightingEmergency": "🚨 ΑΤΙΑ ΑΝΑΓΚΗΣ Ορατότητα",
+  "notificationSightingBody": "{Αυτόπτης μάρτυραςText} κοντά {τόπος} Όνομα}",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "💬 {όνομα χρήστη} σχολίασε",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "Νέα παρατήρηση",
+  "notificationWitnessTextMultiple": "{αριθμός} μαρτύρων",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "Σνούζ 1 ώρα",
+  "notificationActionDismiss": "Ελεύθεροι",
+  "notificationDistance": "{απόσταση} μακριά",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  },
+  "unknown": "άγνωστο",
+  "report": "έκθεση",
+  "mufon": "μουφόν"
 }

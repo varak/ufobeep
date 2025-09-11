@@ -1,5 +1,5 @@
 {
-  "@@locale": "fi",
+  "@@locale": "en",
   "appName": "UFO- piippi",
   "ok": "SELVÄ",
   "cancel": "Peruuta",
@@ -37,8 +37,24 @@
   "alertsTitle": "Lähellä olevat hälytykset",
   "noAlerts": "Lähellä ei ole vielä hälytystä.",
   "pullToRefresh": "Vedä virkistääksesi",
-  "alertDistance": "_PH_0_ pois",
-  "alertDirection": "Suunta _PH_0_°",
+  "alertDistance": "{etäisyys} pois",
+  "@alertDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2 mi"
+      }
+    }
+  },
+  "alertDirection": "Suuntima {kantava}°",
+  "@alertDirection": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "137"
+      }
+    }
+  },
   "viewAlert": "Näytä hälytys",
   "viewOnMap": "Näytä kartalta",
   "iSeeItToo": "Minäkin näen sen",
@@ -52,6 +68,14 @@
   "descriptionHint": "Kuvaile, mitä näet taivaalla",
   "submitBeep": "Lähetä viesti",
   "beepSent": "Lähetetty",
+  "beepSentWithUrl": "Piip lähetetty onnistuneesti",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
   "uploadingMedia": "Lähetetään mediaa..",
   "includeLocation": "Sisällytä sijainti",
   "includeTimestamp": "Sisällytä aikaleima",
@@ -65,10 +89,42 @@
   "microphonePermissionBody": "Antakaa mikrofonin pääsy videon kaappaamiseen audiolla.",
   "openSettings": "Avaa asetukset",
   "alertDetailTitle": "Näytön yksityiskohdat",
-  "reportedBy": "Raportoinut {username}",
-  "reportedAt": "Raportoitu {timeAgo}",
-  "distanceAway": "_PH_0_ pois",
-  "bearingToObject": "Kohteen suunta: _PH_0_°",
+  "reportedBy": "Raportoinut {käyttäjätunnus}",
+  "@reportedBy": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "reportedAt": "Raportoitu (aika) Ago",
+  "@reportedAt": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "5m ago"
+      }
+    }
+  },
+  "distanceAway": "{etäisyys} pois",
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.4 km"
+      }
+    }
+  },
+  "bearingToObject": "Suunta kohteeseen: {kantava}°",
+  "@bearingToObject": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "92"
+      }
+    }
+  },
   "openCompass": "Avoin kompassi",
   "openAR": "Avaa AR-overlay",
   "openChat": "Avaa keskustelu",
@@ -87,18 +143,54 @@
   "compassPilotMode": "Pilottitila",
   "compassStandardDescription": "Perusotsikko ja navigointi",
   "compassPilotDescription": "Edistynyt navigointi ETA:n ja vektoroinnin avulla",
-  "pointingTo": "Osoitetaan _PH_0__",
+  "pointingTo": "Osoitetaan {suunta}",
+  "@pointingTo": {
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "SE"
+      }
+    }
+  },
   "calibratingCompass": "Kalibroidaan kompassia..",
   "openAROverlay": "Avaa AR-overlay",
   "pushTitleAlertNearby": "UFO hälytys lähelläsi",
-  "pushBodyAlertNearby": "Uusi havainto raportoitiin __PH_0_ pois.",
+  "pushBodyAlertNearby": "Uusi havainto ilmoitettiin {etäisyys} poissa.",
+  "@pushBodyAlertNearby": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "0.8 mi"
+      }
+    }
+  },
   "pushTitleComment": "Uusi kommentti",
   "pushBodyComment": "Joku kommentoi havaintoasi.",
   "pushTitleWitness": "Todistajan vahvistus",
   "pushBodyWitness": "Käyttäjä vahvisti nähneensä saman esineen.",
   "weather": "Sää",
-  "cloudCover": "Pilvipeite: _PH_0_%",
-  "wind": "Tuuli: {speed}{unit}",
+  "cloudCover": "Pilvipeite: {prosenttia}%",
+  "@cloudCover": {
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "63"
+      }
+    }
+  },
+  "wind": "Tuuli: {nopeus} {yksikkö}",
+  "@wind": {
+    "placeholders": {
+      "speed": {
+        "type": "num",
+        "example": "12.4"
+      },
+      "unit": {
+        "type": "String",
+        "example": "mph"
+      }
+    }
+  },
   "nearbyAircraft": "Lähellä lentokonetta",
   "noAircraft": "Ei lentokoneita lähistöllä",
   "loadingContext": "Ladataan ympäristöolosuhteita..",
@@ -132,9 +224,33 @@
   "videoOnly": "ainoastaan video",
   "imageOnly": "vain kuva",
   "timeJustNow": "Juuri nyt",
-  "timeDaysAgo": "_PH_0_d sitten",
-  "timeHoursAgo": "_PH_0_h sitten",
-  "timeMinutesAgo": "_PH_0_m sitten",
+  "timeDaysAgo": "{laske}d",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "timeHoursAgo": "{laske}h sitten",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "timeMinutesAgo": "{laskenta}m sitten",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
   "loadMoreAlerts": "Lataa lisää hälytyksiä",
   "toggleMufonTooltip": "Vaihda MUFON- havaintoja",
   "showMufonData": "Näytä MUFON- tiedot",
@@ -144,8 +260,20 @@
   "filteredSuffix": "suodatettu",
   "detailsTitle": "Yksityiskohdat",
   "mufonCase": "MUFON Asia",
+  "mufonCaseDetailsTitle": "MUFON Asia #{tapausnumero} Yksityiskohdat",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
   "sightingDate": "Näkymispäivä",
+  "mufonDatabaseEntryDate": "Päivämäärä Tietokanta",
   "databaseEntry": "Tietokannan tietue",
+  "shareLink": "Jaa linkki",
+  "linkCopied": "Linkki kopioitu leikepöydälle",
   "locationLabel": "Sijainti",
   "distanceLabel": "Etäisyys",
   "timeLabel": "Aika",
@@ -153,121 +281,7 @@
   "unknownLocation": "Tuntematon sijainti",
   "locationUnknown": "Sijainti tuntematon",
   "witnessesLabel": "Todistajat",
-  "witnessesCountMessage": "_PH_0_ ihmiset vahvistivat tämän havainnon",
-  "photoAnalysisTitle": "Valokuva-analyysi",
-  "mediaItemsProcessed": "Analyysi: {count} mediatiedosto [s] käsitelty",
-  "addMoreMedia": "Lisää lisää",
-  "addMedia": "Lisää media",
-  "retakePhoto": "Uusi kuva",
-  "retakeVideo": "Palauta video",
-  "@alertDistance": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "1.2 mi"
-      }
-    }
-  },
-  "@alertDirection": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "137"
-      }
-    }
-  },
-  "@reportedBy": {
-    "placeholders": {
-      "username": {
-        "type": "String",
-        "example": "stargazer01"
-      }
-    }
-  },
-  "@reportedAt": {
-    "placeholders": {
-      "timeAgo": {
-        "type": "String",
-        "example": "5m ago"
-      }
-    }
-  },
-  "@distanceAway": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "2.4 km"
-      }
-    }
-  },
-  "@bearingToObject": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "92"
-      }
-    }
-  },
-  "@pointingTo": {
-    "placeholders": {
-      "direction": {
-        "type": "String",
-        "example": "SE"
-      }
-    }
-  },
-  "@pushBodyAlertNearby": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "0.8 mi"
-      }
-    }
-  },
-  "@cloudCover": {
-    "placeholders": {
-      "percent": {
-        "type": "int",
-        "example": "63"
-      }
-    }
-  },
-  "@wind": {
-    "placeholders": {
-      "speed": {
-        "type": "num",
-        "example": "12.4"
-      },
-      "unit": {
-        "type": "String",
-        "example": "mph"
-      }
-    }
-  },
-  "@timeDaysAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "@timeHoursAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "5"
-      }
-    }
-  },
-  "@timeMinutesAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "12"
-      }
-    }
-  },
+  "witnessesCountMessage": "ihmiset vahvistivat tämän",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -276,6 +290,8 @@
       }
     }
   },
+  "photoAnalysisTitle": "Valokuva-analyysi",
+  "mediaItemsProcessed": "Analyysi: {count} mediatiedosto [s] käsitelty",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -284,6 +300,10 @@
       }
     }
   },
+  "addMoreMedia": "Lisää lisää",
+  "addMedia": "Lisää media",
+  "retakePhoto": "Uusi kuva",
+  "retakeVideo": "Palauta video",
   "camera": "Kamera",
   "gallery": "Galleria",
   "basicSettings": "Perusasetukset",
@@ -304,23 +324,16 @@
   "webAdminInterface": "Web Admin- käyttöliittymä",
   "adminBetaNotice": "Beta rakentaa vain. Hallitse työkaluja, joilla testataan lähikuulutuksia, työntöilmoituksia ja järjestelmän diagnostiikkaa.",
   "whatDoYouSee": "Mitä näet?",
+  "ufo": "UFO",
+  "sighting": "Näkyminen",
   "ufoSighting": "UFO Näkyminen",
-  "actionsTitle": "Toimet",
-  "addPhotosAndVideos": "Lisää kuvia ja videoita",
-  "howToReportToMufon": "Miten raportoida MUFON",
-  "reportToMufon": "Raportoi MUFONille",
-  "whyReportToMufon": "Miksi ilmoittautua Mufoniin?",
-  "openMufonReport": "Avaa MUFON Kertomus",
-  "confirmedWitness": "Varmistit tämän",
-  "witnessesHaveConfirmed": "_PH_0_ ihmiset ovat vahvistaneet tämän havainnon",
-  "@witnessesHaveConfirmed": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
+  "envAnalysisTitle": "Ympäristöanalyysi",
+  "envAnalysisPending": "Analyysi kesken",
+  "envAnalysisPendingDesc": "Ympäristötiedot ovat saatavilla käsittelyn aloittamisen jälkeen.",
+  "unknownAircraft": "Tuntematon ilma-alus",
+  "moreAircraft": "enemmän ilma-aluksia",
+  "premiumImageryTitle": "Premium-satelliitti Kuvasto",
+  "premiumImagerySubtitle": "Korkearesoluutioiset kaupalliset kuvat",
   "sightingTypeLabel": "Tyyppi",
   "ufoTypeSphere": "Pallo",
   "ufoTypeTriangle": "Kolmio",
@@ -332,17 +345,6 @@
   "ufoTypeRectangle": "Suorakulmio",
   "ufoTypeFormation": "Muotoilu",
   "ufoTypeUnknown": "Tuntematon",
-  "mufonCaseDetailsTitle": "MUFON Asian #__PH_0_ Yksityiskohdat",
-  "mufonDatabaseEntryDate": "Päivämäärä Tietokanta",
-  "shareLink": "Jaa linkki",
-  "linkCopied": "Linkki kopioitu leikepöydälle",
-  "envAnalysisTitle": "Ympäristöanalyysi",
-  "envAnalysisPending": "Analyysi kesken",
-  "envAnalysisPendingDesc": "Ympäristötiedot ovat saatavilla käsittelyn aloittamisen jälkeen.",
-  "unknownAircraft": "Tuntematon ilma-alus",
-  "moreAircraft": "enemmän ilma-aluksia",
-  "premiumImageryTitle": "Premium-satelliitti Kuvasto",
-  "premiumImagerySubtitle": "Korkearesoluutioiset kaupalliset kuvat",
   "ufoTypeBoomerang": "Boomerang",
   "ufoTypeDiamond": "Timantti",
   "ufoTypeOval": "Oval",
@@ -355,6 +357,45 @@
   "ufoTypeSaturn": "Saturnus",
   "ufoTypeStarLike": "Tähtimäinen",
   "ufoTypeBlimp": "Blimp",
+  "shapeTriangle": "kolmio",
+  "shapeDisc": "levy",
+  "shapeDisk": "levy",
+  "shapeSphere": "pallo",
+  "shapeCigar": "sikari",
+  "shapeLight": "kevyt",
+  "shapeBoomerang": "bumerang",
+  "shapeDiamond": "timantti",
+  "shapeRectangle": "suorakulmio",
+  "shapeOval": "soikea",
+  "shapeCone": "kartio",
+  "shapeCross": "risti",
+  "shapeCylinder": "sylinteri",
+  "shapeDumbbell": "käsipaino",
+  "shapeTeardrop": "kyynel",
+  "shapeTicTac": "tic-tac",
+  "shapeBullet": "luoti",
+  "shapeSaturn": "saturnus",
+  "shapeStarlike": "tähtimäinen",
+  "shapeBlimp": "ilmalaiva",
+  "shapeFireball": "tulipallo",
+  "shapeFormation": "muodostuminen",
+  "shapeUnknown": "tuntematon",
+  "actionsTitle": "Toimet",
+  "addPhotosAndVideos": "Lisää kuvia ja videoita",
+  "howToReportToMufon": "Miten raportoida MUFON",
+  "reportToMufon": "Raportoi MUFONille",
+  "whyReportToMufon": "Miksi ilmoittautua Mufoniin?",
+  "openMufonReport": "Avaa MUFON Kertomus",
+  "confirmedWitness": "Varmistit tämän",
+  "witnessesHaveConfirmed": "ihmiset ovat vahvistaneet tämän",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "aircraftTrackingTitle": "Ilma-alusten seuranta",
   "weatherConditionsTitle": "Sääolosuhteet",
   "noSatellitePasses": "Ei näkyviä satelliitteja ei löytynyt",
@@ -367,12 +408,70 @@
   "premiumAccessCreators": "Varoituksen luojat",
   "premiumAccessWitnesses": "Vahvistetut todistajat näkyvyysalueella",
   "comingSoon": "Tulossa pian",
-  "@mufonCaseDetailsTitle": {
+  "directionDistanceTitle": "Suunta ja etäisyys",
+  "mufonCaseTitle": "MUFON Asia # (tapausnumero)",
+  "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
         "type": "String",
         "example": "12345"
       }
     }
-  }
+  },
+  "satellitePassesTitle": "Satelliittipassit",
+  "satellitePassExplanation": "Näkyvä satelliitti kulkee aikana havainnointi aikavälillä. Monet UFO-raportit ovat satelliitteja tai avaruusromua.",
+  "followingAlert": "Varoituksen jälkeen - saat kommentti-ilmoitukset",
+  "unfollowedAlert": "Seuraamaton hälytys - ei enää kommentti-ilmoituksia",
+  "alertFollowError": "Virhe seurauksen tilan päivittämisessä",
+  "notificationChannelAlerts": "UFOBeepin hälytykset",
+  "notificationChannelAlertsDesc": "UFO-ääni- ja läheisyyshälytyksiä koskevat ilmoitukset",
+  "notificationSightingTitle": "UFO Näkyminen",
+  "notificationSightingUrgent": "KIIREELLINEN UFO Näkyminen",
+  "notificationSightingEmergency": "HÄTÄUFO Näkyminen",
+  "notificationSightingBody": "{Todistajateksti} lähellä {sijainti Nimi}",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "💬 {username} commented",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "Uusi havainto",
+  "notificationWitnessTextMultiple": "todistajat",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "Torkut 1h",
+  "notificationActionDismiss": "Poistu",
+  "notificationDistance": "{etäisyys} pois",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  },
+  "unknown": "tuntematon",
+  "report": "raportti",
+  "mufon": "mufoni"
 }

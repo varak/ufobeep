@@ -1,5 +1,5 @@
 {
-  "@@locale": "he",
+  "@@locale": "en",
   "appName": "עב\"ם",
   "ok": "בסדר",
   "cancel": "ביטול",
@@ -37,8 +37,24 @@
   "alertsTitle": "התראות בקרבת מקום",
   "noAlerts": "עדיין לא אזהרות.",
   "pullToRefresh": "למשוך כדי לרענן",
-  "alertDistance": "PH_0_______התרחק",
-  "alertDirection": "המונחים: PH_0_ °",
+  "alertDistance": "משם",
+  "@alertDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2 mi"
+      }
+    }
+  },
+  "alertDirection": "המונחים:",
+  "@alertDirection": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "137"
+      }
+    }
+  },
   "viewAlert": "View alert",
   "viewOnMap": "צפייה במפה",
   "iSeeItToo": "אני רואה את זה גם",
@@ -52,6 +68,14 @@
   "descriptionHint": "תאר מה אתה רואה בשמים..",
   "submitBeep": "שלח Beep",
   "beepSent": "Beep",
+  "beepSentWithUrl": "Beep שלח בהצלחה",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
   "uploadingMedia": "העלאת אמצעי התקשורת..",
   "includeLocation": "כולל מיקום",
   "includeTimestamp": "עקבו אחרי Timestamp",
@@ -65,10 +89,42 @@
   "microphonePermissionBody": "גישה מיקרופון עבור וידאו לכידת עם אודיו.",
   "openSettings": "הגדרות פתוחות",
   "alertDetailTitle": "פרטים",
-  "reportedBy": "תגית: PH_0___",
-  "reportedAt": "תגית: PH_0____",
-  "distanceAway": "PH_0_______התרחק",
-  "bearingToObject": "להתווכח: PH_0__ °",
+  "reportedBy": "פורסם על ידי [username]",
+  "@reportedBy": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "reportedAt": "דו\"ח Ago",
+  "@reportedAt": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "5m ago"
+      }
+    }
+  },
+  "distanceAway": "משם",
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.4 km"
+      }
+    }
+  },
+  "bearingToObject": "המונחים: {ס}",
+  "@bearingToObject": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "92"
+      }
+    }
+  },
   "openCompass": "המצפן הפתוח",
   "openAR": "פתח את AR Overlay",
   "openChat": "צ'אט פתוח",
@@ -87,18 +143,54 @@
   "compassPilotMode": "מצב טייס",
   "compassStandardDescription": "כותרות בסיסיות וניווט",
   "compassPilotDescription": "ניווט מתקדם עם ETA וקטורינג",
-  "pointingTo": "המונחים: PH_0____",
+  "pointingTo": "המונחים:",
+  "@pointingTo": {
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "SE"
+      }
+    }
+  },
   "calibratingCompass": "מצפן קצר..",
   "openAROverlay": "פתח את AR Overlay",
   "pushTitleAlertNearby": "אזהרות עב\"מ קרוב אליך",
-  "pushBodyAlertNearby": "תצפית חדשה דווחה -_PH_0____.",
+  "pushBodyAlertNearby": "מראית עין חדשה דווחה מרחוק.",
+  "@pushBodyAlertNearby": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "0.8 mi"
+      }
+    }
+  },
   "pushTitleComment": "תגובה חדשה",
   "pushBodyComment": "מישהו אמר על מראה שאתה עוקב.",
   "pushTitleWitness": "אישור עדים",
   "pushBodyWitness": "משתמש אישר שהוא רואה את אותו האובייקט.",
   "weather": "מזג אוויר",
-  "cloudCover": "כיסוי ענן: PH_0__%",
-  "wind": "רוח:_PH_0_____________________________________________________________________________________",
+  "cloudCover": "כיסוי ענן:%",
+  "@cloudCover": {
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "63"
+      }
+    }
+  },
+  "wind": "רוח: [מהירות]",
+  "@wind": {
+    "placeholders": {
+      "speed": {
+        "type": "num",
+        "example": "12.4"
+      },
+      "unit": {
+        "type": "String",
+        "example": "mph"
+      }
+    }
+  },
   "nearbyAircraft": "מטוסים בקרבת מקום",
   "noAircraft": "אין מטוס בקרבת מקום",
   "loadingContext": "קשר סביבתי..",
@@ -132,9 +224,33 @@
   "videoOnly": "וידאו רק",
   "imageOnly": "תמונה רק",
   "timeJustNow": "רק עכשיו",
-  "timeDaysAgo": "PH_0____D_ ago",
-  "timeHoursAgo": "PH_0_h ago",
-  "timeMinutesAgo": "PH_0__m ago",
+  "timeDaysAgo": "לפני הספירה",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "timeHoursAgo": "לפני הספירה",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "timeMinutesAgo": "לפני הספירה",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
   "loadMoreAlerts": "עוד התראות",
   "toggleMufonTooltip": "משקפי MUFON",
   "showMufonData": "מידע על MUFON",
@@ -144,8 +260,20 @@
   "filteredSuffix": "סינון",
   "detailsTitle": "פרטים",
   "mufonCase": "MUFON מקרה",
+  "mufonCaseDetailsTitle": "MUFON המונחים:",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
   "sightingDate": "תאריך יציאה",
+  "mufonDatabaseEntryDate": "תאריך כניסה ל MUFON מסד נתונים",
   "databaseEntry": "מסד נתונים כניסה",
+  "shareLink": "קישור",
+  "linkCopied": "קישור להורדה",
   "locationLabel": "מיקום Location",
   "distanceLabel": "מרחק",
   "timeLabel": "הזמן",
@@ -153,121 +281,7 @@
   "unknownLocation": "מיקום לא ידוע",
   "locationUnknown": "מיקום לא ידוע",
   "witnessesLabel": "עדים",
-  "witnessesCountMessage": "_PH_0___ אנשים אישרו את המראה הזה",
-  "photoAnalysisTitle": "Photo Analysis",
-  "mediaItemsProcessed": "ניתוח:_PH_0____קובץ מדיה(s) מעובד",
-  "addMoreMedia": "הוסף עוד",
-  "addMedia": "הוסף",
-  "retakePhoto": "Retake Photo",
-  "retakeVideo": "Retake וידאו",
-  "@alertDistance": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "1.2 mi"
-      }
-    }
-  },
-  "@alertDirection": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "137"
-      }
-    }
-  },
-  "@reportedBy": {
-    "placeholders": {
-      "username": {
-        "type": "String",
-        "example": "stargazer01"
-      }
-    }
-  },
-  "@reportedAt": {
-    "placeholders": {
-      "timeAgo": {
-        "type": "String",
-        "example": "5m ago"
-      }
-    }
-  },
-  "@distanceAway": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "2.4 km"
-      }
-    }
-  },
-  "@bearingToObject": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "92"
-      }
-    }
-  },
-  "@pointingTo": {
-    "placeholders": {
-      "direction": {
-        "type": "String",
-        "example": "SE"
-      }
-    }
-  },
-  "@pushBodyAlertNearby": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "0.8 mi"
-      }
-    }
-  },
-  "@cloudCover": {
-    "placeholders": {
-      "percent": {
-        "type": "int",
-        "example": "63"
-      }
-    }
-  },
-  "@wind": {
-    "placeholders": {
-      "speed": {
-        "type": "num",
-        "example": "12.4"
-      },
-      "unit": {
-        "type": "String",
-        "example": "mph"
-      }
-    }
-  },
-  "@timeDaysAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "@timeHoursAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "5"
-      }
-    }
-  },
-  "@timeMinutesAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "12"
-      }
-    }
-  },
+  "witnessesCountMessage": "אנשים אישרו את המראה הזה",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -276,6 +290,8 @@
       }
     }
   },
+  "photoAnalysisTitle": "Photo Analysis",
+  "mediaItemsProcessed": "ניתוח: קובץ מדיה (s) מעובד",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -284,6 +300,10 @@
       }
     }
   },
+  "addMoreMedia": "הוסף עוד",
+  "addMedia": "הוסף",
+  "retakePhoto": "Retake Photo",
+  "retakeVideo": "Retake וידאו",
   "camera": "מצלמה",
   "gallery": "גלריה",
   "basicSettings": "הגדרות בסיסיות",
@@ -304,23 +324,16 @@
   "webAdminInterface": "Web Admin Interface",
   "adminBetaNotice": "Beta בונה רק כלי Admin לבדיקת התראות קרבה, לדחוף הודעות, ואבחון מערכת.",
   "whatDoYouSee": "מה אתה רואה?",
+  "ufo": "עב\"ם",
+  "sighting": "עקבו",
   "ufoSighting": "עב\"ם עקבו",
-  "actionsTitle": "פעולות",
-  "addPhotosAndVideos": "הוסף תמונות וסרטונים",
-  "howToReportToMufon": "כיצד לדווח על MUFON",
-  "reportToMufon": "דיווח על MUFON",
-  "whyReportToMufon": "למה לדווח על MUFON?",
-  "openMufonReport": "פתוח MUFON דיווח",
-  "confirmedWitness": "אישרת את המראה הזה",
-  "witnessesHaveConfirmed": "_PH_0__ אנשים אישרו את המראה הזה",
-  "@witnessesHaveConfirmed": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
+  "envAnalysisTitle": "ניתוח סביבתי",
+  "envAnalysisPending": "ניתוח Pending",
+  "envAnalysisPendingDesc": "נתונים סביבתיים יהיו זמינים לאחר תחילת העיבוד.",
+  "unknownAircraft": "מטוסים לא ידועים",
+  "moreAircraft": "יותר מטוסים",
+  "premiumImageryTitle": "Premium Satellite צילום",
+  "premiumImagerySubtitle": "תמונות מסחריות ברזולוציה גבוהה",
   "sightingTypeLabel": "סוג",
   "ufoTypeSphere": "Sphere",
   "ufoTypeTriangle": "משולש",
@@ -332,17 +345,6 @@
   "ufoTypeRectangle": "Rectangle",
   "ufoTypeFormation": "המונחים",
   "ufoTypeUnknown": "לא ידוע",
-  "mufonCaseDetailsTitle": "MUFON מקרה #{caseNumber}_פרטים",
-  "mufonDatabaseEntryDate": "תאריך כניסה ל MUFON מסד נתונים",
-  "shareLink": "קישור",
-  "linkCopied": "קישור להורדה",
-  "envAnalysisTitle": "ניתוח סביבתי",
-  "envAnalysisPending": "ניתוח Pending",
-  "envAnalysisPendingDesc": "נתונים סביבתיים יהיו זמינים לאחר תחילת העיבוד.",
-  "unknownAircraft": "מטוסים לא ידועים",
-  "moreAircraft": "יותר מטוסים",
-  "premiumImageryTitle": "Premium Satellite צילום",
-  "premiumImagerySubtitle": "תמונות מסחריות ברזולוציה גבוהה",
   "ufoTypeBoomerang": "בומרנג",
   "ufoTypeDiamond": "יהלומים",
   "ufoTypeOval": "Oval",
@@ -355,6 +357,45 @@
   "ufoTypeSaturn": "שבתאי",
   "ufoTypeStarLike": "כוכבים",
   "ufoTypeBlimp": "Blimp",
+  "shapeTriangle": "משולש",
+  "shapeDisc": "דיסק",
+  "shapeDisk": "דיסק",
+  "shapeSphere": "מרחב",
+  "shapeCigar": "סיגר",
+  "shapeLight": "אור בהיר",
+  "shapeBoomerang": "בומרנג",
+  "shapeDiamond": "יהלומים",
+  "shapeRectangle": "מלבן",
+  "shapeOval": "oval",
+  "shapeCone": "cone",
+  "shapeCross": "צלב חוצה",
+  "shapeCylinder": "cylinder",
+  "shapeDumbbell": "פעמון מטומטם",
+  "shapeTeardrop": "מדמיע",
+  "shapeTicTac": "טיק-tac",
+  "shapeBullet": "קליע",
+  "shapeSaturn": "שוב",
+  "shapeStarlike": "כוכבים",
+  "shapeBlimp": "blimp",
+  "shapeFireball": "כדור אש",
+  "shapeFormation": "היווצרות",
+  "shapeUnknown": "לא ידוע",
+  "actionsTitle": "פעולות",
+  "addPhotosAndVideos": "הוסף תמונות וסרטונים",
+  "howToReportToMufon": "כיצד לדווח על MUFON",
+  "reportToMufon": "דיווח על MUFON",
+  "whyReportToMufon": "למה לדווח על MUFON?",
+  "openMufonReport": "פתוח MUFON דיווח",
+  "confirmedWitness": "אישרת את המראה הזה",
+  "witnessesHaveConfirmed": "אנשים אישרו את המראה הזה",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "aircraftTrackingTitle": "מעקב מטוסים",
   "weatherConditionsTitle": "תנאי מזג אוויר",
   "noSatellitePasses": "אין מעבר ללוויינים גלויים",
@@ -367,12 +408,70 @@
   "premiumAccessCreators": "יוצרי התראה",
   "premiumAccessWitnesses": "עדים בולטים בטווח הנראות",
   "comingSoon": "בקרוב",
-  "@mufonCaseDetailsTitle": {
+  "directionDistanceTitle": "המונחים & Distance",
+  "mufonCaseTitle": "MUFON המונחים:",
+  "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
         "type": "String",
         "example": "12345"
       }
     }
-  }
+  },
+  "satellitePassesTitle": "מעברי לווין",
+  "satellitePassExplanation": "לווין בולט עובר במהלך מסגרת זמן הראייה. דיווחים עב\"מים רבים הם למעשה לווינים או פסולת חלל.",
+  "followingAlert": "לאחר התראה - תקבל הודעות תגובה",
+  "unfollowedAlert": "הודעות לא עוקבות - לא עוד הערות",
+  "alertFollowError": "עדכון מצב",
+  "notificationChannelAlerts": "אזהרות עב\"מ",
+  "notificationChannelAlertsDesc": "תגיות: UFO beeps and Near alerts",
+  "notificationSightingTitle": "עב\"ם עקבו",
+  "notificationSightingUrgent": "המונחים: URG עקבו",
+  "notificationSightingEmergency": "תגית: EMERGCY UFO עקבו",
+  "notificationSightingBody": "קרוב ל-[[1948]] שם",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "המונחים: 💬",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "מראה חדש",
+  "notificationWitnessTextMultiple": "עדים",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "סנוזה 1h",
+  "notificationActionDismiss": "משמעת",
+  "notificationDistance": "משם",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  },
+  "unknown": "לא ידוע",
+  "report": "דיווח",
+  "mufon": "עבריין"
 }

@@ -1,4 +1,9 @@
 {
-  "profile": "Profiili",
-  "settings": "Asetukset"
+  "tabAlerts": "Kuulutukset",
+  "tabBeep": "Piip",
+  "tabChat": "Keskustelu",
+  "tabMap": "Kartta",
+  "tabSettings": "Asetukset",
+  "mufonDatabaseEntryDate": "Päivämäärä Tietokanta",
+  "databaseEntry": "Tietokannan tietue"
 }

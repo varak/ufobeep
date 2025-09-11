@@ -1,5 +1,5 @@
 {
-  "@@locale": "hi",
+  "@@locale": "en",
   "appName": "यूएफओबीप",
   "ok": "ठीक",
   "cancel": "रद्द करना",
@@ -37,8 +37,24 @@
   "alertsTitle": "निकट अलर्ट",
   "noAlerts": "अभी तक कोई अलर्ट नहीं है।.",
   "pullToRefresh": "ताज़ा करने के लिए खींचें",
-  "alertDistance": "0 _ 0 _ 0",
+  "alertDistance": "{distance} दूर",
+  "@alertDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2 mi"
+      }
+    }
+  },
   "alertDirection": "असर {bearing}°",
+  "@alertDirection": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "137"
+      }
+    }
+  },
   "viewAlert": "चेतावनी देखें",
   "viewOnMap": "मानचित्र पर देखें",
   "iSeeItToo": "मैं इसे भी देखता हूँ",
@@ -52,6 +68,14 @@
   "descriptionHint": "क्या आप आकाश में देख रहे हैं",
   "submitBeep": "बीप",
   "beepSent": "बीप भेजा",
+  "beepSentWithUrl": "बीप सफलतापूर्वक भेजा गया",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
   "uploadingMedia": "मीडिया अपलोड करना",
   "includeLocation": "स्थान शामिल करें",
   "includeTimestamp": "टाइमस्टैम्प शामिल करें",
@@ -65,10 +89,42 @@
   "microphonePermissionBody": "ऑडियो के साथ वीडियो कैप्चर के लिए माइक्रोफोन एक्सेस प्रदान करें।.",
   "openSettings": "ओपन सेटिंग्स",
   "alertDetailTitle": "Sighting Details",
-  "reportedBy": "द्वारा रिपोर्ट किया गया {username}",
-  "reportedAt": "रिपोर्ट {timeAgo}",
-  "distanceAway": "0 _ 0 _ 0",
-  "bearingToObject": "वस्तु पर असर: 0 _ 0 _ 0",
+  "reportedBy": "द्वारा रिपोर्ट {username}",
+  "@reportedBy": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "reportedAt": "रिपोर्ट Ago",
+  "@reportedAt": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "5m ago"
+      }
+    }
+  },
+  "distanceAway": "{distance} दूर",
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.4 km"
+      }
+    }
+  },
+  "bearingToObject": "वस्तु पर असर: {bearing}°",
+  "@bearingToObject": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "92"
+      }
+    }
+  },
   "openCompass": "ओपन कम्पास",
   "openAR": "ओपन एआर ओवरले",
   "openChat": "ओपन चैट",
@@ -87,18 +143,54 @@
   "compassPilotMode": "पायलट मोड",
   "compassStandardDescription": "बुनियादी शीर्षक और नेविगेशन",
   "compassPilotDescription": "ETA और वेक्टर के साथ उन्नत नेविगेशन",
-  "pointingTo": "Pointing to {direction}",
+  "pointingTo": "{direction} को इंगित करना",
+  "@pointingTo": {
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "SE"
+      }
+    }
+  },
   "calibratingCompass": "Calibrating compass ..",
   "openAROverlay": "ओपन एआर ओवरले",
   "pushTitleAlertNearby": "आपके पास यूएफओ अलर्ट",
-  "pushBodyAlertNearby": "एक नए दर्शन की सूचना {distance}_____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________.",
+  "pushBodyAlertNearby": "एक नए दर्शन की सूचना {distance} दूर थी।.",
+  "@pushBodyAlertNearby": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "0.8 mi"
+      }
+    }
+  },
   "pushTitleComment": "नई टिप्पणी",
   "pushBodyComment": "किसी ने आप का पालन करते हुए देखा।.",
   "pushTitleWitness": "गवाह पुष्टि",
   "pushBodyWitness": "एक उपयोगकर्ता ने पुष्टि की कि वे उसी वस्तु को देखते हैं।.",
   "weather": "मौसम",
-  "cloudCover": "क्लाउड कवर: 0",
+  "cloudCover": "क्लाउड कवर: {percent}%",
+  "@cloudCover": {
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "63"
+      }
+    }
+  },
   "wind": "पवन: {speed} {unit}",
+  "@wind": {
+    "placeholders": {
+      "speed": {
+        "type": "num",
+        "example": "12.4"
+      },
+      "unit": {
+        "type": "String",
+        "example": "mph"
+      }
+    }
+  },
   "nearbyAircraft": "निकटवर्ती विमान",
   "noAircraft": "पास में कोई विमान नहीं",
   "loadingContext": "पर्यावरण संदर्भ लोड हो रहा है ..",
@@ -132,9 +224,33 @@
   "videoOnly": "केवल वीडियो",
   "imageOnly": "केवल छवि",
   "timeJustNow": "अभी",
-  "timeDaysAgo": "To make a ph_0_d",
-  "timeHoursAgo": "H_0_h__h___h____h___h___h___h____h_____h___h___h____h_________h________________________________________________________________________________________________________________________________________________________",
-  "timeMinutesAgo": "^PH_0_m पहले",
+  "timeDaysAgo": "{count}d पहले",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "timeHoursAgo": "{count}h पहले",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "timeMinutesAgo": "{count}",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
   "loadMoreAlerts": "लोड अधिक अलर्ट",
   "toggleMufonTooltip": "टॉगल MUFON sighting",
   "showMufonData": "MUFON डेटा दिखाएं",
@@ -144,8 +260,20 @@
   "filteredSuffix": "फ़िल्टर",
   "detailsTitle": "विवरण",
   "mufonCase": "MUFON मामला",
+  "mufonCaseDetailsTitle": "MUFON Case #{caseNumber} Details",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
   "sightingDate": "दर्शन तिथि",
+  "mufonDatabaseEntryDate": "तारीख MUFON में प्रवेश किया डेटाबेस",
   "databaseEntry": "डेटाबेस प्रविष्टि",
+  "shareLink": "शेयर लिंक",
+  "linkCopied": "लिंक क्लिपबोर्ड पर कॉपी",
   "locationLabel": "स्थान",
   "distanceLabel": "दूरी",
   "timeLabel": "समय",
@@ -153,121 +281,7 @@
   "unknownLocation": "अज्ञात स्थान",
   "locationUnknown": "अज्ञात",
   "witnessesLabel": "गवाही",
-  "witnessesCountMessage": "{count}________________________________________________________________________________________________________________________________________",
-  "photoAnalysisTitle": "फोटो विश्लेषण",
-  "mediaItemsProcessed": "विश्लेषण: {count} मीडिया फ़ाइल (s) संसाधित",
-  "addMoreMedia": "अधिक जानिए",
-  "addMedia": "मीडिया जोड़ें",
-  "retakePhoto": "फोटो",
-  "retakeVideo": "वीडियो",
-  "@alertDistance": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "1.2 mi"
-      }
-    }
-  },
-  "@alertDirection": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "137"
-      }
-    }
-  },
-  "@reportedBy": {
-    "placeholders": {
-      "username": {
-        "type": "String",
-        "example": "stargazer01"
-      }
-    }
-  },
-  "@reportedAt": {
-    "placeholders": {
-      "timeAgo": {
-        "type": "String",
-        "example": "5m ago"
-      }
-    }
-  },
-  "@distanceAway": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "2.4 km"
-      }
-    }
-  },
-  "@bearingToObject": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "92"
-      }
-    }
-  },
-  "@pointingTo": {
-    "placeholders": {
-      "direction": {
-        "type": "String",
-        "example": "SE"
-      }
-    }
-  },
-  "@pushBodyAlertNearby": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "0.8 mi"
-      }
-    }
-  },
-  "@cloudCover": {
-    "placeholders": {
-      "percent": {
-        "type": "int",
-        "example": "63"
-      }
-    }
-  },
-  "@wind": {
-    "placeholders": {
-      "speed": {
-        "type": "num",
-        "example": "12.4"
-      },
-      "unit": {
-        "type": "String",
-        "example": "mph"
-      }
-    }
-  },
-  "@timeDaysAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "@timeHoursAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "5"
-      }
-    }
-  },
-  "@timeMinutesAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "12"
-      }
-    }
-  },
+  "witnessesCountMessage": "{count} लोगों ने इस दर्शन की पुष्टि की",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -276,6 +290,8 @@
       }
     }
   },
+  "photoAnalysisTitle": "फोटो विश्लेषण",
+  "mediaItemsProcessed": "विश्लेषण: {count} मीडिया फ़ाइल (s) संसाधित",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -284,6 +300,10 @@
       }
     }
   },
+  "addMoreMedia": "अधिक जानिए",
+  "addMedia": "मीडिया जोड़ें",
+  "retakePhoto": "फोटो",
+  "retakeVideo": "वीडियो",
   "camera": "कैमरा",
   "gallery": "गैलरी",
   "basicSettings": "मूल सेटिंग",
@@ -304,23 +324,16 @@
   "webAdminInterface": "वेब व्यवस्थापक इंटरफ़ेस",
   "adminBetaNotice": "बीटा केवल बनाता है। निकटता अलर्ट, पुश नोटिफिकेशन और सिस्टम निदान के परीक्षण के लिए व्यवस्थापक उपकरण।.",
   "whatDoYouSee": "आप क्या देखते हैं?",
+  "ufo": "यूएफओ",
+  "sighting": "दृष्टि",
   "ufoSighting": "यूएफओ दृष्टि",
-  "actionsTitle": "कार्य",
-  "addPhotosAndVideos": "फ़ोटो और वीडियो जोड़ें",
-  "howToReportToMufon": "कैसे रिपोर्ट करने के लिए MUFON",
-  "reportToMufon": "MUFON की रिपोर्ट",
-  "whyReportToMufon": "क्यों रिपोर्ट करने के लिए MUFON?",
-  "openMufonReport": "ओपन MUFON रिपोर्ट",
-  "confirmedWitness": "आपने इस दर्शन की पुष्टि की",
-  "witnessesHaveConfirmed": "{count}__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
-  "@witnessesHaveConfirmed": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
+  "envAnalysisTitle": "पर्यावरणीय विश्लेषण",
+  "envAnalysisPending": "विश्लेषण लंबित",
+  "envAnalysisPendingDesc": "प्रक्रिया शुरू होने के बाद पर्यावरण डेटा उपलब्ध होगा।.",
+  "unknownAircraft": "अज्ञात विमान",
+  "moreAircraft": "विमान",
+  "premiumImageryTitle": "प्रीमियम सैटेलाइट इमेजरी",
+  "premiumImagerySubtitle": "उच्च संकल्प वाणिज्यिक imagery",
   "sightingTypeLabel": "प्रकार",
   "ufoTypeSphere": "क्षेत्र",
   "ufoTypeTriangle": "त्रिभुज",
@@ -332,17 +345,6 @@
   "ufoTypeRectangle": "आयत",
   "ufoTypeFormation": "गठन",
   "ufoTypeUnknown": "अज्ञात",
-  "mufonCaseDetailsTitle": "MUFON केस #{caseNumber}_ Details",
-  "mufonDatabaseEntryDate": "तारीख MUFON में प्रवेश किया डेटाबेस",
-  "shareLink": "शेयर लिंक",
-  "linkCopied": "लिंक क्लिपबोर्ड पर कॉपी",
-  "envAnalysisTitle": "पर्यावरणीय विश्लेषण",
-  "envAnalysisPending": "विश्लेषण लंबित",
-  "envAnalysisPendingDesc": "प्रक्रिया शुरू होने के बाद पर्यावरण डेटा उपलब्ध होगा।.",
-  "unknownAircraft": "अज्ञात विमान",
-  "moreAircraft": "विमान",
-  "premiumImageryTitle": "प्रीमियम सैटेलाइट इमेजरी",
-  "premiumImagerySubtitle": "उच्च संकल्प वाणिज्यिक imagery",
   "ufoTypeBoomerang": "बुमेरांग",
   "ufoTypeDiamond": "हीरा",
   "ufoTypeOval": "ओवल",
@@ -355,6 +357,45 @@
   "ufoTypeSaturn": "शनि",
   "ufoTypeStarLike": "स्टार लाइक",
   "ufoTypeBlimp": "ब्लींप",
+  "shapeTriangle": "त्रिभुज",
+  "shapeDisc": "डिस्क",
+  "shapeDisk": "डिस्क",
+  "shapeSphere": "क्षेत्र",
+  "shapeCigar": "सिगार",
+  "shapeLight": "प्रकाश",
+  "shapeBoomerang": "बूमरंग",
+  "shapeDiamond": "हीरा",
+  "shapeRectangle": "आयत",
+  "shapeOval": "अंडाकार",
+  "shapeCone": "शंकु",
+  "shapeCross": "पार",
+  "shapeCylinder": "सिलेंडर",
+  "shapeDumbbell": "डम्बल",
+  "shapeTeardrop": "टट्टू",
+  "shapeTicTac": "टिक टीएसी",
+  "shapeBullet": "बुलेट",
+  "shapeSaturn": "शनि",
+  "shapeStarlike": "स्टारलाइक",
+  "shapeBlimp": "ब्लींप",
+  "shapeFireball": "फायरबॉल",
+  "shapeFormation": "संरचना",
+  "shapeUnknown": "अज्ञात",
+  "actionsTitle": "कार्य",
+  "addPhotosAndVideos": "फ़ोटो और वीडियो जोड़ें",
+  "howToReportToMufon": "कैसे रिपोर्ट करने के लिए MUFON",
+  "reportToMufon": "MUFON की रिपोर्ट",
+  "whyReportToMufon": "क्यों रिपोर्ट करने के लिए MUFON?",
+  "openMufonReport": "ओपन MUFON रिपोर्ट",
+  "confirmedWitness": "आपने इस दर्शन की पुष्टि की",
+  "witnessesHaveConfirmed": "{count} लोगों ने इस दर्शन की पुष्टि की है",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "aircraftTrackingTitle": "विमान ट्रैकिंग",
   "weatherConditionsTitle": "मौसम की स्थिति",
   "noSatellitePasses": "कोई दृश्य उपग्रह नहीं मिला",
@@ -367,12 +408,70 @@
   "premiumAccessCreators": "चेतावनी निर्माता",
   "premiumAccessWitnesses": "दृश्यता रेंज के भीतर गवाहों की पुष्टि की",
   "comingSoon": "सोन",
-  "@mufonCaseDetailsTitle": {
+  "directionDistanceTitle": "दिशा और दूरी",
+  "mufonCaseTitle": "MUFON केस #{caseNumber}",
+  "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
         "type": "String",
         "example": "12345"
       }
     }
-  }
+  },
+  "satellitePassesTitle": "सैटेलाइट पास",
+  "satellitePassExplanation": "दर्शनीय समय सीमा के दौरान दर्शनीय उपग्रह गुजरता है। कई यूएफओ रिपोर्ट वास्तव में उपग्रह या अंतरिक्ष मलबे हैं।.",
+  "followingAlert": "चेतावनी के बाद - आपको टिप्पणी नोटिफिकेशन मिलेगी",
+  "unfollowedAlert": "अनफॉल्ड अलर्ट - कोई टिप्पणी नोटिफिकेशन नहीं",
+  "alertFollowError": "स्थिति का पालन करने में त्रुटि",
+  "notificationChannelAlerts": "यूएफओबीप अलर्ट",
+  "notificationChannelAlertsDesc": "यूएफओ बीप और निकटता अलर्ट के लिए अधिसूचनाएं",
+  "notificationSightingTitle": "यूएफओ दृष्टि",
+  "notificationSightingUrgent": "UFO दृष्टि",
+  "notificationSightingEmergency": "EMERGENCY UFO दृष्टि",
+  "notificationSightingBody": "{लोकेशन} के पास नाम",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "the name of a commented by a comment",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "नया दर्शन",
+  "notificationWitnessTextMultiple": "{count} गवाह",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "Snooze 1h",
+  "notificationActionDismiss": "Dismis",
+  "notificationDistance": "{distance} दूर",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  },
+  "unknown": "अज्ञात",
+  "report": "रिपोर्ट",
+  "mufon": "mufon"
 }
