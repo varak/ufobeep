@@ -158,7 +158,7 @@ export default function AlertDetailPage() {
         try {
           // Call backend API directly - supports both UUID and short URL automatically
           console.log('Fetching beep with shortId:', shortId)
-          const res = await fetch(`/api/beep/${shortId}`)
+          const res = await fetch(`https://ufobeep.com/api/beep/${shortId}`)
           console.log('Response status:', res.status)
           if (res.ok) {
             const data = await res.json()
