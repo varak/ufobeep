@@ -157,7 +157,6 @@ class EnvironmentConfig {
       console.log('=== UFOBeep Web Environment Configuration ===');
       console.log('Environment:', this._environment);
       console.log('API Base URL:', this.apiBaseUrl);
-      console.log('Matrix Base URL:', this.matrixBaseUrl);
       console.log('App URL:', this.appUrl);
       console.log('Site URL:', this.siteUrl);
       console.log('Default Locale:', this.defaultLocale);
