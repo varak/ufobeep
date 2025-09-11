@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getAlertSlug } from './utils/slug'
+import { getSlugTranslations } from './utils/translations'
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   
   // Handle short URLs: /abc23 or /abc23/es (using safe chars: no o,0,i,1,l)
@@ -32,7 +34,34 @@ export function middleware(request: NextRequest) {
       }
     }
     
-    // Redirect to localized URL using the short ID
+    try {
+      // Fetch alert data directly in middleware to generate proper slug
+      const apiUrl = `https://ufobeep.com/api/beep/by-short-url/${shortId}`
+      const response = await fetch(apiUrl)
+      
+      if (response.ok) {
+        const data = await response.json()
+        if (data.success && data.data?.alert) {
+          const alert = data.data.alert
+          
+          // Get translations for the target language
+          const translations = getSlugTranslations(userLocale)
+          
+          // Use the proper getAlertSlug function with translations
+          const longSlug = getAlertSlug(alert, userLocale, translations)
+          
+          if (longSlug) {
+            // Redirect directly to long slug URL
+            const redirectUrl = new URL(`/beep/${userLocale}/${longSlug}`, request.url)
+            return NextResponse.redirect(redirectUrl)
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching alert in middleware:', error)
+    }
+    
+    // Fallback: redirect to short slug if API fails
     const redirectUrl = new URL(`/beep/${shortId}/${userLocale}`, request.url)
     return NextResponse.redirect(redirectUrl)
   }
