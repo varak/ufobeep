@@ -119,6 +119,7 @@ export default function BeepLocalePage({ params }: BeepPageProps) {
                   <AlertCard 
                     key={alert.id} 
                     alert={alert}
+                    locale={urlLocale}
                   />
                 ))
               ) : (

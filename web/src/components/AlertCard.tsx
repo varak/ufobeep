@@ -375,11 +375,10 @@ export default function AlertCard({ alert, compact = false }: AlertCardProps) {
             <div className="flex-1 min-w-0">
               <h3 className="text-text-primary text-sm font-semibold line-clamp-2 leading-tight mb-1">
                 {(() => {
-                  // Get translations from static translations (generated from ARB files)
-                  const staticTranslations = t('slugs', { returnObjects: true }) || {}
-                  const ufoSightingText = staticTranslations.ufoSighting || alert.title || 'UFO Sighting'
-                  const beepOnlyText = staticTranslations.beepOnly || 'Beep only'
-                  const reportOnlyText = staticTranslations.reportOnly || 'Report Only'
+                  // Get translations directly from translation function
+                  const ufoSightingText = t('ufoSighting') || alert.title || 'UFO Sighting'
+                  const beepOnlyText = t('beepOnly') || 'Beep only'  
+                  const reportOnlyText = t('reportOnly') || 'Report Only'
                   
                   // Determine content type indicator
                   const hasMedia = alert.media_files?.length > 0
