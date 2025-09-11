@@ -72,9 +72,7 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
   
   const router = useRouter()
   
-  // Extract locale from current path
-  const currentPath = typeof window !== 'undefined' ? window.location.pathname : ''
-  const locale = currentPath.match(/\/beep\/([a-z]{2})\//)?.[1] || 'en'
+  // Use locale prop passed from parent component
   const { t } = useClientTranslations('beep', locale)
   const [showShareMenu, setShowShareMenu] = useState(false)
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
