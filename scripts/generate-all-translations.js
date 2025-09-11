@@ -174,72 +174,16 @@ class TranslationGenerator {
     for (const [key, value] of Object.entries(arbContent)) {
       if (key.startsWith('@') || key === '@@locale') continue; // Skip metadata
       
-      // Handle beep-detail keys first - create proper nested structure
-      if (key.startsWith('backToBeeps') || key.startsWith('loadingDetails') || key.startsWith('details') || 
-          key.startsWith('location') || key.startsWith('unknownLocation') || key.startsWith('time') || 
-          key.startsWith('distance') || key.startsWith('ufobeep') || key.startsWith('mufon') || 
-          key.startsWith('nuforc') || key.startsWith('media') || key.startsWith('error')) {
-        
-        if (!organized['beep-detail.json']) organized['beep-detail.json'] = {};
-        
-        if (key.startsWith('ufobeep')) {
-          if (!organized['beep-detail.json'].ufobeep) organized['beep-detail.json'].ufobeep = {};
-          const subKey = key.replace('ufobeep', '').toLowerCase();
-          organized['beep-detail.json'].ufobeep[subKey] = value;
-        } else if (key.startsWith('mufon')) {
-          if (!organized['beep-detail.json'].mufon) organized['beep-detail.json'].mufon = {};
-          if (!organized['beep-detail.json'].mufon.classifications) organized['beep-detail.json'].mufon.classifications = {};
-          
-          if (key.includes('Sphere') || key.includes('Light') || key.includes('Disk') || key.includes('Triangle') || 
-              key.includes('Cigar') || key.includes('Oval') || key.includes('Cylinder') || key.includes('Rectangle') ||
-              key.includes('Diamond') || key.includes('Fireball') || key.includes('Flash') || key.includes('Formation') ||
-              key.includes('Changing') || key.includes('Chevron') || key.includes('Cone') || key.includes('Cross') ||
-              key.includes('Egg') || key.includes('Other') || key.includes('Unknown')) {
-            const classKey = key.replace('mufon', '').toLowerCase();
-            organized['beep-detail.json'].mufon.classifications[classKey] = value;
-          } else {
-            const subKey = key.replace('mufon', '').toLowerCase();
-            organized['beep-detail.json'].mufon[subKey] = value;
-          }
-        } else if (key.startsWith('nuforc')) {
-          if (!organized['beep-detail.json'].nuforc) organized['beep-detail.json'].nuforc = {};
-          if (!organized['beep-detail.json'].nuforc.classifications) organized['beep-detail.json'].nuforc.classifications = {};
-          
-          if (key.includes('Sphere') || key.includes('Light') || key.includes('Disk') || key.includes('Triangle') || 
-              key.includes('Cigar') || key.includes('Oval') || key.includes('Cylinder') || key.includes('Rectangle') ||
-              key.includes('Diamond') || key.includes('Fireball') || key.includes('Flash') || key.includes('Formation') ||
-              key.includes('Changing') || key.includes('Chevron') || key.includes('Cone') || key.includes('Cross') ||
-              key.includes('Egg') || key.includes('Other') || key.includes('Unknown')) {
-            const classKey = key.replace('nuforc', '').toLowerCase();
-            organized['beep-detail.json'].nuforc.classifications[classKey] = value;
-          } else {
-            const subKey = key.replace('nuforc', '').toLowerCase();
-            organized['beep-detail.json'].nuforc[subKey] = value;
-          }
-        } else if (key.startsWith('media')) {
-          if (!organized['beep-detail.json'].media) organized['beep-detail.json'].media = {};
-          const subKey = key.replace('media', '').toLowerCase();
-          organized['beep-detail.json'].media[subKey] = value;
-        } else if (key.startsWith('time')) {
-          if (!organized['beep-detail.json'].time) organized['beep-detail.json'].time = {};
-          const subKey = key.replace('time', '').toLowerCase();
-          organized['beep-detail.json'].time[subKey] = value;
-        } else if (key.startsWith('distance')) {
-          if (!organized['beep-detail.json'].distance) organized['beep-detail.json'].distance = {};
-          const subKey = key.replace('distance', '').toLowerCase();
-          organized['beep-detail.json'].distance[subKey] = value;
-        } else if (key.startsWith('error')) {
-          if (!organized['beep-detail.json'].errors) organized['beep-detail.json'].errors = {};
-          const subKey = key.replace('error', '').toLowerCase();
-          organized['beep-detail.json'].errors[subKey] = value;
-        } else {
-          organized['beep-detail.json'][key] = value;
-        }
-      } else if (key.startsWith('recentUfoBeeps') || key.startsWith('nav')) {
+      // All component-used keys go to common.json to prevent namespace mismatches
+      // Components use useClientTranslations('common', locale) consistently
+      if (key.startsWith('recentUfoBeeps') || key.startsWith('nav')) {
         // Navigation keys should go to common.json, not navigation.json
         organized['common.json'][key] = value;
       } else if (key.includes('tab') || key.includes('menu')) {
         organized['navigation.json'][key] = value;
+      } else if (key === 'ufobeepReportType' || key === 'beepOnly' || key === 'alertLevel' || key === 'backToBeeps') {
+        // Critical component keys must go to common.json where components look for them
+        organized['common.json'][key] = value;
       } else if (key.includes('alert') || key.includes('beep') || key.includes('ufoType') || key.includes('shape')) {
         organized['alerts.json'][key] = value;
       } else if (key.includes('error') || key.includes('failed') || key.includes('invalid')) {

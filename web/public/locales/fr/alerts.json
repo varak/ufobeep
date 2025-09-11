@@ -56,5 +56,9 @@
   "shapeFormation": "formation",
   "shapeUnknown": "inconnu",
   "alertFollowError": "Erreur de mise à jour suivre l'état",
+  "ufobeepWitnesses": "Témoins",
+  "ufobeepConfirmations": "Confirmations",
+  "ufobeepAlertLevel": "Niveau d'alerte",
+  "ufobeepReportType": "Rapport UFOBeep",
   "alertLevel": "Niveau d'alerte"
 }

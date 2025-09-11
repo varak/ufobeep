@@ -8,7 +8,6 @@
   "beepFailed": "Versäumt, Beep zu schicken.",
   "alertDetailTitle": "Details zum Angebot",
   "alertsFilterHelp": "Versuchen Sie, Ihre Filter anzupassen, um mehr Ergebnisse zu sehen",
-  "beepOnly": "Nur",
   "alertRange": "Alarmbereich",
   "ufoTypeSphere": "Sphäre",
   "ufoTypeTriangle": "Dreieck",
@@ -56,5 +55,7 @@
   "shapeFormation": "bildung",
   "shapeUnknown": "unbekannt",
   "alertFollowError": "Fehler bei der Aktualisierung",
-  "alertLevel": "Alarmstufe"
+  "ufobeepWitnesses": "Zeugen",
+  "ufobeepConfirmations": "Bestätigungen",
+  "ufobeepAlertLevel": "Alarmstufe"
 }
