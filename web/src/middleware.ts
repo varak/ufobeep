@@ -5,6 +5,29 @@ import { getSlugTranslations } from './utils/translations'
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   
+  // Handle /beep redirect to user's language
+  if (pathname === '/beep') {
+    // Detect user's preferred language from browser
+    const acceptLanguage = request.headers.get('accept-language') || ''
+    const supportedLocales = ['es', 'de', 'fr', 'pt', 'ru', 'ja', 'zh', 'it', 'ar', 'ko', 'tr', 'hi', 'pl', 'cs', 'nl', 'sv', 'da', 'no', 'fi', 'el', 'he']
+    let userLocale = 'en'
+    
+    const browserLanguages = acceptLanguage
+      .split(',')
+      .map(lang => lang.split(';')[0].split('-')[0].trim().toLowerCase())
+      .filter(lang => lang.length === 2)
+    
+    for (const browserLang of browserLanguages) {
+      if (supportedLocales.includes(browserLang)) {
+        userLocale = browserLang
+        break
+      }
+    }
+    
+    const redirectUrl = new URL(`/beep/${userLocale}`, request.url)
+    return NextResponse.redirect(redirectUrl)
+  }
+  
   // Handle short URLs: /abc23 or /abc23/es (using safe chars: no o,0,i,1,l)
   const shortMatch = pathname.match(/^\/([23456789abcdefghjkmnpqrstuvwxyz]{5})$/)
   const shortWithLangMatch = pathname.match(/^\/([23456789abcdefghjkmnpqrstuvwxyz]{5})\/([a-z]{2})$/)
