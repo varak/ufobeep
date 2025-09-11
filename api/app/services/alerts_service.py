@@ -8,6 +8,7 @@ import math
 from datetime import datetime, timezone
 from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass
+from ..utils.short_url_utils import generate_short_url
 
 @dataclass
 class AlertLocation:
@@ -379,8 +380,10 @@ class AlertsService:
                     # Insert new record with external_id
                     print(f"Creating new {source} record with external_id: {external_id}")
                     # Generate short URL using the single source of truth
-                    from ..utils.short_url_utils import generate_short_url
                     short_url = generate_short_url(external_id)
+                    if not short_url:
+                        raise Exception(f"Failed to generate short URL for external_id: {external_id}")
+                    print(f"Generated short URL: {short_url} for external_id: {external_id}")
                     
                     alert_id = await conn.fetchval("""
                         INSERT INTO sightings 
@@ -410,8 +413,10 @@ class AlertsService:
                     alert_level, "created", reporter_id, source, external_url, latitude, longitude, occurred_at_timestamp)
                 
                 # Generate short URL using the single source of truth
-                from ..utils.short_url_utils import generate_short_url
                 short_url = generate_short_url(str(alert_id))
+                if not short_url:
+                    raise Exception(f"Failed to generate short URL for alert_id: {alert_id}")
+                print(f"Generated short URL: {short_url} for alert_id: {alert_id}")
                 await conn.execute("UPDATE sightings SET short_url = $1 WHERE id = $2", short_url, alert_id)
             
             return str(alert_id)
