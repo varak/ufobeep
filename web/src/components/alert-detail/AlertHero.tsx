@@ -68,7 +68,7 @@ export default function AlertHero({ alert, openImageIndex }: AlertHeroProps) {
           {/* Title and metadata */}
           <div className="flex-1">
             <h1 className="text-2xl font-bold text-text-primary mb-2">
-              {alert.title || 'UFO Sighting Report'}
+              {alert.title || t('ufobeepReportType')}
             </h1>
             
             {/* Content type indicator - only show "witness report" when no media to explain lack */}

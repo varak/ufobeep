@@ -418,7 +418,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
             <div className="mt-4 pt-4 border-t border-dark-border space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-text-secondary text-sm">
-                  Logged in as <span className="text-brand-primary">{user?.username}</span>
+                  {t('loggedInAs')} <span className="text-brand-primary">{user?.username}</span>
                 </span>
                 <button
                   onClick={() => {
@@ -433,7 +433,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
               
               <div className="flex items-center justify-between">
                 <span className="text-text-tertiary text-sm">
-                  {isFollowing ? '🔔 Following for notifications' : '🔕 Not following'}
+                  {isFollowing ? '🔔 Following for notifications' : '🔕 ' + t('notFollowing')}
                 </span>
                 <button
                   onClick={handleFollowToggle}
@@ -444,7 +444,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
                       : 'text-blue-400 hover:text-blue-300 bg-blue-900/20 hover:bg-blue-900/30'
                   } disabled:opacity-50`}
                 >
-                  {followLoading ? '...' : (isFollowing ? 'Unfollow' : 'Follow')}
+                  {followLoading ? '...' : (isFollowing ? 'Unfollow' : t('follow'))}
                 </button>
               </div>
             </div>
