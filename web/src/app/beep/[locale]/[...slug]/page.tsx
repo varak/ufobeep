@@ -175,7 +175,7 @@ export default function AlertDetailPage() {
                 console.log('DEBUG: Found matching beep:', targetAlert.id, 'with short_url:', targetAlert.short_url)
               } else {
                 console.log('DEBUG: No beep found with short_url:', shortId)
-                console.log('DEBUG: All short_urls:', beeps.map(b => b.short_url))
+                console.log('DEBUG: All short_urls:', beeps.map((b: any) => b.short_url))
               }
             }
           } else {
