@@ -39,7 +39,7 @@ interface BeepPageProps {
 export default function BeepLocalePage({ params }: BeepPageProps) {
   // This route handles /beep/[locale] for language-specific beep listings
   const { locale } = params
-  const { t } = useClientTranslations('beep', locale)
+  const { t } = useClientTranslations('beeps', locale)
   const [alerts, setAlerts] = useState<Alert[]>([])
   const [loading, setLoading] = useState(true)
   
