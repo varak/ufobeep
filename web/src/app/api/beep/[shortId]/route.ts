@@ -10,7 +10,11 @@ export async function GET(
     const { shortId } = params
     
     // Use the by-short-url endpoint that already exists on the backend
-    const apiUrl = `${apiConfig.fullUrl}/beep/by-short-url/${shortId}`
+    // In production, need to call the actual backend API, not the frontend proxy
+    const baseUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://ufobeep.com/api' 
+      : 'http://localhost:8000'
+    const apiUrl = `${baseUrl}/beep/by-short-url/${shortId}`
     
     const response = await fetch(apiUrl, {
       method: 'GET',
