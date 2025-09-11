@@ -395,13 +395,19 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
         _errorMessage = null;
       });
       
-      // Show success and navigate to sighting detail
+      // Show success with short URL and navigate to sighting detail
       if (mounted) {
+        final shortUrl = beepResult['short_url'] as String?;
+        final l10n = AppLocalizations.of(context);
+        final successMessage = shortUrl != null && shortUrl.isNotEmpty 
+            ? l10n.beepSentWithUrl(shortUrl)
+            : l10n.beepSent;
+            
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Alert sent successfully!'),
+            content: Text(successMessage),
             backgroundColor: AppColors.semanticSuccess,
-            duration: const Duration(seconds: 2),
+            duration: const Duration(seconds: 3),
           ),
         );
         

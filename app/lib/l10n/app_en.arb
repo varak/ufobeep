@@ -68,6 +68,14 @@
   "descriptionHint": "Describe what you're seeing in the sky…",
   "submitBeep": "Send Beep",
   "beepSent": "Beep sent",
+  "beepSentWithUrl": "Alert sent! Share at ufobeep.com/{shortUrl}",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
   "uploadingMedia": "Uploading media…",
   "includeLocation": "Include location",
   "includeTimestamp": "Include timestamp",

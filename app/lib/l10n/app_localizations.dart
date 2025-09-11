@@ -450,6 +450,12 @@ abstract class AppLocalizations {
   /// **'Beep sent'**
   String get beepSent;
 
+  /// No description provided for @beepSentWithUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert sent! Share at ufobeep.com/{shortUrl}'**
+  String beepSentWithUrl(String shortUrl);
+
   /// No description provided for @uploadingMedia.
   ///
   /// In en, this message translates to:

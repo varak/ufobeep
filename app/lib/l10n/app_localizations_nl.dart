@@ -171,6 +171,11 @@ class AppLocalizationsNl extends AppLocalizations {
   String get beepSent => 'Piep verzonden';
 
   @override
+  String beepSentWithUrl(String shortUrl) {
+    return 'Alert sent! Share at ufobeep.com/$shortUrl';
+  }
+
+  @override
   String get uploadingMedia => 'Media uploaden..';
 
   @override

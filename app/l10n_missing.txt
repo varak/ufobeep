@@ -1,5 +1,6 @@
 {
   "ar": [
+    "beepSentWithUrl",
     "notificationChannelAlerts",
     "notificationChannelAlertsDesc",
     "notificationSightingTitle",
@@ -15,6 +16,7 @@
   ],
 
   "cs": [
+    "beepSentWithUrl",
     "directionDistanceTitle",
     "mufonCaseTitle",
     "satellitePassesTitle",
@@ -37,6 +39,7 @@
   ],
 
   "da": [
+    "beepSentWithUrl",
     "directionDistanceTitle",
     "mufonCaseTitle",
     "satellitePassesTitle",
@@ -59,6 +62,7 @@
   ],
 
   "de": [
+    "beepSentWithUrl",
     "notificationChannelAlerts",
     "notificationChannelAlertsDesc",
     "notificationSightingTitle",
@@ -74,6 +78,7 @@
   ],
 
   "el": [
+    "beepSentWithUrl",
     "directionDistanceTitle",
     "mufonCaseTitle",
     "satellitePassesTitle",
@@ -96,6 +101,7 @@
   ],
 
   "es": [
+    "beepSentWithUrl",
     "notificationChannelAlerts",
     "notificationChannelAlertsDesc",
     "notificationSightingTitle",
@@ -111,6 +117,7 @@
   ],
 
   "fi": [
+    "beepSentWithUrl",
     "directionDistanceTitle",
     "mufonCaseTitle",
     "satellitePassesTitle",
@@ -133,6 +140,7 @@
   ],
 
   "fr": [
+    "beepSentWithUrl",
     "notificationChannelAlerts",
     "notificationChannelAlertsDesc",
     "notificationSightingTitle",
@@ -148,6 +156,7 @@
   ],
 
   "he": [
+    "beepSentWithUrl",
     "directionDistanceTitle",
     "mufonCaseTitle",
     "satellitePassesTitle",
@@ -170,6 +179,7 @@
   ],
 
   "hi": [
+    "beepSentWithUrl",
     "directionDistanceTitle",
     "mufonCaseTitle",
     "satellitePassesTitle",
@@ -192,6 +202,7 @@
   ],
 
   "it": [
+    "beepSentWithUrl",
     "notificationChannelAlerts",
     "notificationChannelAlertsDesc",
     "notificationSightingTitle",
@@ -207,6 +218,7 @@
   ],
 
   "ja": [
+    "beepSentWithUrl",
     "notificationChannelAlerts",
     "notificationChannelAlertsDesc",
     "notificationSightingTitle",
@@ -222,6 +234,7 @@
   ],
 
   "ko": [
+    "beepSentWithUrl",
     "directionDistanceTitle",
     "mufonCaseTitle",
     "satellitePassesTitle",
@@ -244,6 +257,7 @@
   ],
 
   "nl": [
+    "beepSentWithUrl",
     "directionDistanceTitle",
     "mufonCaseTitle",
     "satellitePassesTitle",
@@ -266,6 +280,7 @@
   ],
 
   "no": [
+    "beepSentWithUrl",
     "directionDistanceTitle",
     "mufonCaseTitle",
     "satellitePassesTitle",
@@ -288,6 +303,7 @@
   ],
 
   "pl": [
+    "beepSentWithUrl",
     "directionDistanceTitle",
     "mufonCaseTitle",
     "satellitePassesTitle",
@@ -310,6 +326,7 @@
   ],
 
   "pt": [
+    "beepSentWithUrl",
     "notificationChannelAlerts",
     "notificationChannelAlertsDesc",
     "notificationSightingTitle",
@@ -325,6 +342,7 @@
   ],
 
   "ru": [
+    "beepSentWithUrl",
     "notificationChannelAlerts",
     "notificationChannelAlertsDesc",
     "notificationSightingTitle",
@@ -340,6 +358,7 @@
   ],
 
   "sv": [
+    "beepSentWithUrl",
     "directionDistanceTitle",
     "mufonCaseTitle",
     "satellitePassesTitle",
@@ -362,6 +381,7 @@
   ],
 
   "tr": [
+    "beepSentWithUrl",
     "notificationChannelAlerts",
     "notificationChannelAlertsDesc",
     "notificationSightingTitle",
@@ -377,6 +397,7 @@
   ],
 
   "zh": [
+    "beepSentWithUrl",
     "notificationChannelAlerts",
     "notificationChannelAlertsDesc",
     "notificationSightingTitle",

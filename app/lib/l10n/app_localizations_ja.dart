@@ -169,6 +169,11 @@ class AppLocalizationsJa extends AppLocalizations {
   String get beepSent => 'フィードバック';
 
   @override
+  String beepSentWithUrl(String shortUrl) {
+    return 'Alert sent! Share at ufobeep.com/$shortUrl';
+  }
+
+  @override
   String get uploadingMedia => 'メディアのアップロード..';
 
   @override

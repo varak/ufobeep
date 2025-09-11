@@ -171,6 +171,11 @@ class AppLocalizationsCs extends AppLocalizations {
   String get beepSent => 'Píp odeslán';
 
   @override
+  String beepSentWithUrl(String shortUrl) {
+    return 'Alert sent! Share at ufobeep.com/$shortUrl';
+  }
+
+  @override
   String get uploadingMedia => 'Nahrávání médií..';
 
   @override
