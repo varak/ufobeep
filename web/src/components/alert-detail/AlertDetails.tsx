@@ -124,30 +124,6 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
       )}
 
 
-      {/* Share link - moved from bottom to details section */}
-      <div className="flex items-start gap-3 mb-6">
-        <span className="text-text-tertiary mt-0.5">🔗</span>
-        <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <span className="text-text-tertiary text-sm font-medium">{t('shareLink')}:</span>
-            <code className="text-brand-primary text-sm bg-dark-bg px-2 py-1 rounded">
-              ufobeep.com{getShortAlertUrl(alert, locale)}
-            </code>
-            <button
-              onClick={() => {
-                navigator.clipboard.writeText(`https://ufobeep.com${getShortAlertUrl(alert, locale)}`)
-                // TODO: Show toast notification
-              }}
-              className="text-text-secondary hover:text-brand-primary transition-colors p-1"
-              title={t('copyShortLinkTitle')}
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
 
       {/* Description - Main description now contains full text */}
       {alert.description && (
@@ -249,13 +225,6 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
                 </span>
               )}
             </span>
-            
-            {/* Coordinates display under location */}
-            {alert.location && (alert.location.latitude !== 0 || alert.location.longitude !== 0) && (
-              <div className="text-text-secondary text-xs mt-1 font-mono">
-                🧭 {alert.location.latitude.toFixed(4)}, {alert.location.longitude.toFixed(4)}
-              </div>
-            )}
           </div>
         </div>
       </div>
@@ -269,11 +238,17 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
               <span className="text-text-tertiary mt-0.5">🌤️</span>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-text-tertiary text-sm font-medium">{t('weatherConditionsTitle')}</span>
+                  <span className="text-text-tertiary text-sm font-medium">{t('weather')}</span>
                 </div>
                 <div className="text-text-secondary text-sm">
-                  {alert.enrichment.weather.description && (
-                    <div>{alert.enrichment.weather.description}</div>
+                  {alert.enrichment.weather.weather_description && (
+                    <div>{alert.enrichment.weather.weather_description}</div>
+                  )}
+                  {alert.enrichment.weather.temperature_c !== undefined && (
+                    <div>{t('temperature')}: {UnitConversion.formatTemperature(
+                      alert.enrichment.weather.temperature_c, 
+                      UnitConversion.getAutoUnits()
+                    )}</div>
                   )}
                   {alert.enrichment.weather.cloud_cover !== undefined && (
                     <div>{t('cloudCover', { percent: alert.enrichment.weather.cloud_cover })}</div>
@@ -345,6 +320,39 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
           </div>
         </div>
       )}
+
+      {/* Share link at bottom */}
+      <div className="mt-6 pt-4 border-t border-dark-border">
+        <div className="flex items-center gap-3">
+          <span className="text-text-tertiary">🔗</span>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <span className="text-text-tertiary text-sm font-medium">{t('shareLink')}:</span>
+              <code className="text-brand-primary text-sm bg-dark-bg px-2 py-1 rounded">
+                ufobeep.com{getShortAlertUrl(alert, locale)}
+              </code>
+              <button
+                onClick={() => {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: alert.title || t('ufoSightingAlt'),
+                      url: `https://ufobeep.com${getShortAlertUrl(alert, locale)}`
+                    })
+                  } else {
+                    navigator.clipboard.writeText(`https://ufobeep.com${getShortAlertUrl(alert, locale)}`)
+                  }
+                }}
+                className="text-text-secondary hover:text-brand-primary transition-colors p-1"
+                title={navigator.share ? 'Share' : t('copyShortLinkTitle')}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </div>
   )
