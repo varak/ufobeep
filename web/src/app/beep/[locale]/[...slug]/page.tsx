@@ -157,12 +157,19 @@ export default function AlertDetailPage() {
         
         try {
           // Call backend API directly - supports both UUID and short URL automatically
+          console.log('Fetching beep with shortId:', shortId)
           const res = await fetch(`/api/beep/${shortId}`)
+          console.log('Response status:', res.status)
           if (res.ok) {
             const data = await res.json()
+            console.log('Response data:', data)
             if (data.success && data.data?.alert) {
               targetAlert = data.data.alert
+            } else {
+              console.log('No alert found in response data')
             }
+          } else {
+            console.log('API response not ok:', await res.text())
           }
         } catch (error) {
           console.error('Error fetching beep by short URL:', error)
