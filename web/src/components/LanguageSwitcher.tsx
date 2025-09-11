@@ -47,9 +47,18 @@ export function LanguageSwitcher({
 }: LanguageSwitcherProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  
+  // Get search params safely for SSR
+  let searchParams: URLSearchParams | null = null;
+  try {
+    // This will be null during SSR/prerendering
+    searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+  } catch (error) {
+    // Handle any errors gracefully
+    searchParams = null;
+  }
   
   // Determine current locale from pathname 
   const path = pathname || '/'
@@ -98,7 +107,7 @@ export function LanguageSwitcher({
       document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000; SameSite=Lax`
     }
     
-    const qs = searchParams?.toString()
+    const qs = searchParams?.toString() || ''
     let targetPath = pathname || '/'
     
     // Handle beep URLs with proper /beep/[locale] structure
