@@ -9,6 +9,14 @@
 - Do not forget to stage files you added, deleted, or modified in the IMPLEMENT phase
 - **ALWAYS increment build number in app/pubspec.yaml (version: x.x.x+N) before building APK**
 
+## ABSOLUTE PROHIBITIONS - NEVER DO THESE
+- **NEVER use git reset --hard, git reset, git stash, or ANY destructive git commands without explicit user approval**
+- **NEVER attempt to resolve merge conflicts automatically - ALWAYS ask user first**
+- **NEVER make destructive changes to production systems without explicit approval**
+- **NEVER override user warnings about not clobbering changes**
+- **NEVER take git actions that could lose uncommitted work**
+- **When encountering merge conflicts: STOP and ask user how to proceed**
+
 ## Development Quick Start Context
 
 **PROJECT**: UFOBeep - Flutter mobile app + Next.js web + FastAPI backend for UFO/anomaly sighting reports
