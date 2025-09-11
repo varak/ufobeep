@@ -42,19 +42,10 @@ export async function middleware(request: NextRequest) {
       if (response.ok) {
         const data = await response.json()
         if (data.success && data.data) {
-          const alert = data.data
-          
-          // Get translations for the target language
-          const translations = getSlugTranslations(userLocale)
-          
-          // Use the proper getAlertSlug function with the known shortId and translations
-          const longSlug = getAlertSlug(alert, userLocale, translations, shortId)
-          
-          if (longSlug) {
-            // Redirect directly to long slug URL
-            const redirectUrl = new URL(`/beep/${userLocale}/${longSlug}`, request.url)
-            return NextResponse.redirect(redirectUrl)
-          }
+          // Skip slug generation in middleware - redirect to beep detail page
+          // The page component will generate the proper long slug with full translations
+          const redirectUrl = new URL(`/beep/${shortId}/${userLocale}`, request.url)
+          return NextResponse.redirect(redirectUrl)
         }
       }
     } catch (error) {
