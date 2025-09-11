@@ -41,6 +41,10 @@ export default function BeepLocalePage({ params }: BeepPageProps) {
   const { locale: urlLocale } = params
   const [alerts, setAlerts] = useState<Alert[]>([])
   const [loading, setLoading] = useState(true)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [totalCount, setTotalCount] = useState(0)
+  const beepsPerPage = 20
   
   // Valid locales - should match your supported languages
   const validLocales = ['en', 'es', 'de', 'fr', 'pt', 'ru', 'ja', 'zh', 'it', 'ar', 'ko', 'tr', 'hi', 'pl', 'cs', 'nl', 'sv', 'da', 'no', 'fi', 'el', 'he']
@@ -72,11 +76,14 @@ export default function BeepLocalePage({ params }: BeepPageProps) {
     const fetchAlerts = async () => {
       setLoading(true)
       try {
-        const response = await fetch('/api/beep?limit=50')
+        const offset = (currentPage - 1) * beepsPerPage
+        const response = await fetch(`/api/beep?limit=${beepsPerPage}&offset=${offset}`)
         const data = await response.json()
         
         if (data.success && data.data?.alerts) {
           setAlerts(data.data.alerts)
+          setTotalCount(data.data.total || data.data.alerts.length)
+          setTotalPages(Math.ceil((data.data.total || data.data.alerts.length) / beepsPerPage))
         }
       } catch (error) {
         console.error('Failed to fetch alerts:', error)
@@ -86,7 +93,7 @@ export default function BeepLocalePage({ params }: BeepPageProps) {
     }
 
     fetchAlerts()
-  }, [])
+  }, [currentPage, beepsPerPage])
   
   return (
     <div className="min-h-screen bg-dark-background text-text-primary">
@@ -121,6 +128,42 @@ export default function BeepLocalePage({ params }: BeepPageProps) {
                   </div>
                 </div>
               )}
+            </div>
+          )}
+          
+          {/* Pagination Controls */}
+          {!loading && alerts.length > 0 && totalPages > 1 && (
+            <div className="flex justify-center items-center gap-4 mt-8 py-6">
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                disabled={currentPage === 1}
+                className={`px-4 py-2 rounded-lg font-medium ${
+                  currentPage === 1 
+                    ? 'bg-gray-600 text-gray-400 cursor-not-allowed' 
+                    : 'bg-primary-600 hover:bg-primary-700 text-white'
+                }`}
+              >
+                ← {t('previousPage', 'Previous')}
+              </button>
+              
+              <span className="text-text-secondary">
+                {t('pageOf', 'Page {currentPage} of {totalPages} ({totalCount} total beeps)')
+                  .replace('{currentPage}', currentPage.toString())
+                  .replace('{totalPages}', totalPages.toString())
+                  .replace('{totalCount}', totalCount.toString())}
+              </span>
+              
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                disabled={currentPage === totalPages}
+                className={`px-4 py-2 rounded-lg font-medium ${
+                  currentPage === totalPages 
+                    ? 'bg-gray-600 text-gray-400 cursor-not-allowed' 
+                    : 'bg-primary-600 hover:bg-primary-700 text-white'
+                }`}
+              >
+                {t('nextPage', 'Next')} →
+              </button>
             </div>
           )}
         </div>
