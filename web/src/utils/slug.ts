@@ -7,10 +7,10 @@ export function generateSlug(title: string, location: string, date: string, id?:
     return fallback
   }
 
-  const ufoTerm = getTranslatedTerm('ufo', 'ufo')
-  const sightingTerm = getTranslatedTerm('sighting', 'sighting')
+  // Use the full ufoSighting translation instead of splitting into parts
+  const ufoSightingTerm = getTranslatedTerm('ufoSighting', 'UFO Sighting')
   
-  const titlePart = (title || `${ufoTerm}-${sightingTerm}`)
+  const titlePart = (title || ufoSightingTerm)
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, '')
     .replace(/\s+/g, '-')

@@ -29,6 +29,7 @@ export function getTranslatedTerm(key: string, locale: string, fallback?: string
 export function getSlugTranslations(locale: string) {
   return {
     slugs: {
+      ufoSighting: getTranslatedTerm('ufoSighting', locale, 'UFO Sighting'),
       ufo: getTranslatedTerm('ufoSighting', locale, 'UFO Sighting'),
       sighting: '',  // Already included in ufoSighting
       unknown: getTranslatedTerm('unknown', locale, 'unknown'),
