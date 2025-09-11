@@ -2,7 +2,6 @@ import { env } from './environment';
 
 export const apiConfig = {
   baseUrl: env.apiBaseUrl,
-  version: env.apiVersion,
   fullUrl: env.apiFullUrl,
   timeout: 30000,
   
@@ -23,9 +22,6 @@ export const apiConfig = {
     alertDetail: '/beep',
     uploadRequest: '/upload/request',
     
-    // Matrix endpoints
-    matrixToken: '/matrix/token',
-    matrixRoom: '/matrix/room',
   },
   
   // Request headers
@@ -42,28 +38,6 @@ export const apiConfig = {
   },
 };
 
-export const matrixConfig = {
-  baseUrl: env.matrixBaseUrl,
-  serverName: env.matrixServerName,
-  
-  // Matrix client configuration
-  client: {
-    baseUrl: env.matrixBaseUrl,
-    accessToken: '', // Will be set dynamically
-    userId: '', // Will be set dynamically
-  },
-  
-  // Default room settings
-  room: {
-    visibility: 'public',
-    preset: 'public_chat',
-    powerLevelContentOverride: {
-      users_default: 0,
-      events_default: 0,
-      state_default: 50,
-    },
-  },
-};
 
 // Helper function to build API URLs
 export function buildApiUrl(endpoint: string, params?: Record<string, string | number>): string {
@@ -80,10 +54,6 @@ export function buildApiUrl(endpoint: string, params?: Record<string, string | n
   return url;
 }
 
-// Helper function to build Matrix URLs
-export function buildMatrixUrl(endpoint: string): string {
-  return `${matrixConfig.baseUrl}${endpoint}`;
-}
 
 // API error handling
 export interface ApiError {
@@ -126,18 +96,7 @@ export interface PaginatedResponse<T = any> {
 
 // Configuration validation
 export function validateApiConfig(): boolean {
-  const requiredEnvVars = [
-    'NEXT_PUBLIC_API_BASE_URL',
-    'NEXT_PUBLIC_MATRIX_BASE_URL',
-  ];
-  
-  const missing = requiredEnvVars.filter(envVar => !process.env[envVar]);
-  
-  if (missing.length > 0) {
-    console.error('Missing required environment variables:', missing);
-    return false;
-  }
-  
+  // No required environment variables for basic operation
   return true;
 }
 
@@ -146,7 +105,5 @@ if (env.isDevelopment) {
   console.log('API Configuration:', {
     baseUrl: apiConfig.baseUrl,
     fullUrl: apiConfig.fullUrl,
-    matrixBaseUrl: matrixConfig.baseUrl,
-    matrixServerName: matrixConfig.serverName,
   });
 }

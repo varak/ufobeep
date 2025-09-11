@@ -78,42 +78,10 @@ class EnvironmentConfig {
     }
   }
 
-  get apiVersion(): string {
-    return process.env.NEXT_PUBLIC_API_VERSION || 'v1';
-  }
-
   get apiFullUrl(): string {
-    return `${this.apiBaseUrl}/${this.apiVersion}`;
+    return this.apiBaseUrl;
   }
 
-  // Matrix Configuration
-  get matrixBaseUrl(): string {
-    const url = process.env.NEXT_PUBLIC_MATRIX_BASE_URL;
-    if (url) return url;
-
-    switch (this._environment) {
-      case Environment.STAGING:
-        return 'https://matrix-staging.ufobeep.com';
-      case Environment.PRODUCTION:
-        return 'https://matrix.ufobeep.com';
-      default:
-        return 'http://localhost:8008';
-    }
-  }
-
-  get matrixServerName(): string {
-    const serverName = process.env.NEXT_PUBLIC_MATRIX_SERVER_NAME;
-    if (serverName) return serverName;
-
-    switch (this._environment) {
-      case Environment.STAGING:
-        return 'staging.ufobeep.com';
-      case Environment.PRODUCTION:
-        return 'ufobeep.com';
-      default:
-        return 'localhost';
-    }
-  }
 
   // App Configuration
   get appName(): string {

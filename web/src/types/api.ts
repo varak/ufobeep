@@ -219,7 +219,6 @@ export interface PaginatedResponse<T = any> extends APIResponse {
 // API Client types
 export interface APIClientConfig {
   baseURL: string
-  apiVersion: string
   timeout?: number
   headers?: Record<string, string>
 }

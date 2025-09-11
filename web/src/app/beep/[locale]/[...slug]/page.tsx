@@ -156,7 +156,7 @@ export default function AlertDetailPage() {
         let targetAlert = null
         
         try {
-          // Use efficient endpoint to fetch single beep by short URL
+          // Use backend API directly to fetch single beep by short URL
           const res = await fetch(`/api/beep/${shortId}`)
           if (res.ok) {
             const data = await res.json()
