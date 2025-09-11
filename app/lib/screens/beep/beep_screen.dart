@@ -399,9 +399,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       if (mounted) {
         final shortUrl = beepResult['short_url'] as String?;
         final l10n = AppLocalizations.of(context);
-        final successMessage = shortUrl != null && shortUrl.isNotEmpty 
-            ? l10n.beepSentWithUrl(shortUrl)
-            : l10n.beepSent;
+        final successMessage = l10n.beepSent;
             
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

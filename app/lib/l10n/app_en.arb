@@ -68,7 +68,7 @@
   "descriptionHint": "Describe what you're seeing in the sky…",
   "submitBeep": "Send Beep",
   "beepSent": "Beep sent",
-  "beepSentWithUrl": "Alert sent! Share at ufobeep.com/{shortUrl}",
+  "beepSentWithUrl": "Beep sent successfully",
   "@beepSentWithUrl": {
     "placeholders": {
       "shortUrl": {
