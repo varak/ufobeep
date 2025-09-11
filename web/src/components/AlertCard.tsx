@@ -73,7 +73,7 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
   const router = useRouter()
   
   // Use locale prop passed from parent component
-  const { t } = useClientTranslations('beep', locale)
+  const { t } = useClientTranslations('common', locale)
   const [showShareMenu, setShowShareMenu] = useState(false)
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
