@@ -47,8 +47,8 @@ export async function middleware(request: NextRequest) {
           // Get translations for the target language
           const translations = getSlugTranslations(userLocale)
           
-          // Use the proper getAlertSlug function with translations
-          const longSlug = getAlertSlug(alert, userLocale, translations)
+          // Use the proper getAlertSlug function with the known shortId and translations
+          const longSlug = getAlertSlug(alert, userLocale, translations, shortId)
           
           if (longSlug) {
             // Redirect directly to long slug URL

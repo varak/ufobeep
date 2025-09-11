@@ -30,7 +30,13 @@ export function generateSlug(title: string, location: string, date: string, id?:
   // Add clean short ID for uniqueness (uses safe characters, no o0i1l)
   let idPart = ''
   if (id) {
-    idPart = generateCleanShortId(id)
+    // If ID is already a 5-character short URL, use it directly
+    if (typeof id === 'string' && id.length === 5 && /^[23456789abcdefghjkmnpqrstuvwxyz]+$/.test(id)) {
+      idPart = id
+    } else {
+      // Otherwise generate a new clean short ID
+      idPart = generateCleanShortId(id)
+    }
   }
 
   return `${titlePart}-${locationPart}-${datePart}-${idPart}`
@@ -49,9 +55,10 @@ export interface SluggableAlertLike {
   external_url?: string | null
 }
 
-export function getAlertSlug(alert: SluggableAlertLike, locale: string = 'en', translations?: any) {
+export function getAlertSlug(alert: SluggableAlertLike, locale: string = 'en', translations?: any, shortId?: string) {
   let locName = alert.location?.name
-  let uniqueId = alert.id
+  // Priority: 1) Provided shortId, 2) alert.short_url, 3) generate from alert.id
+  let uniqueId = shortId || (alert as any).short_url || alert.id
   
   // Handle MUFON alerts specially
   const isMufon = alert.reporter_username === 'MUFON' || alert.source === 'mufon'

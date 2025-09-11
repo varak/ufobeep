@@ -4,13 +4,19 @@
 
 UFOBeep now supports both traditional long URLs and smart short URLs with automatic language detection:
 
-### Short URL System
+### Smart Short URL System with Multi-Language Support
 - **Format**: `/{short_id}` or `/{short_id}/{lang}`
+- **Intelligent Middleware**: 
+  - Auto-detects browser language (Accept-Language header)
+  - Fetches alert data directly from backend API
+  - Generates localized long slugs using actual ARB translation files
+  - Single redirect to proper SEO-friendly URL
 - **Examples**: 
-  - `/ehf3` → Auto-detects language from browser, redirects to `/beep/es/ehf3` 
-  - `/ehf3/fr` → Explicit French, redirects to `/beep/fr/ehf3`
-- **Supported Languages**: es, de, fr, pt, ru, ja, zh, it, ar, ko, tr, hi, pl, cs, nl, sv, da, no, fi, el, he
-- **Middleware**: Handles automatic language detection and URL rewriting
+  - `/ehf3` → English browser: `/beep/en/ufo-sighting-las-vegas-nevada-2025-09-11-ehf3`
+  - `/ehf3` → Spanish browser: `/beep/es/ovni-avistamiento-las-vegas-nevada-2025-09-11-ehf3`
+  - `/ehf3/fr` → Explicit French: `/beep/fr/observation-ovni-las-vegas-nevada-2025-09-11-ehf3`
+- **Supported Languages**: All 22 languages from mobile app ARB files
+- **Translation Source**: Uses `app/lib/l10n/app_{locale}.arb` as single source of truth
 
 ### Traditional URLs
 - **Localized Detail Pages**: `/beep/{locale}/{slug}` 
@@ -151,11 +157,29 @@ The Flutter mobile app uses:
 - Direct calls to: `/beep` endpoints
 - Response format: `data.beeps`
 
+## Middleware Architecture
+
+### Short URL Processing Pipeline
+UFOBeep uses advanced Next.js middleware for intelligent URL handling:
+
+1. **Request Interception**: `/arnm6` → Middleware captures short URL pattern
+2. **Language Detection**: Analyzes `Accept-Language` header for user preference  
+3. **Data Fetching**: Direct API call to `/beep/by-short-url/arnm6` backend
+4. **Translation Loading**: Reads `app/lib/l10n/app_{locale}.arb` files for localized terms
+5. **Slug Generation**: Creates SEO-friendly slug: `ovni-avistamiento-las-vegas-nevada-2025-09-11-arnm6`
+6. **Single Redirect**: `301` redirect to `/beep/es/ovni-avistamiento-las-vegas-nevada-2025-09-11-arnm6`
+
+### Benefits
+- **Performance**: Single server-side redirect (no client-side loading states)
+- **SEO**: Proper localized URLs with translated keywords
+- **Accuracy**: Uses actual mobile app translations as single source of truth
+- **Scalability**: Supports all 22 languages automatically
+
 ## Recent Fixes (September 2025)
-- ✅ **URL Structure Overhaul**: New short URL system with language detection
-- ✅ **Unified Endpoint Support**: Standardized `/beep` endpoints for all clients
-- ✅ **Language-Aware Routing**: Automatic browser language detection and URL rewriting
-- ✅ **Middleware Implementation**: Smart URL routing with canonical redirects
+- ✅ **Smart Middleware System**: Intelligent short URL processing with language detection
+- ✅ **ARB Translation Integration**: Uses mobile app translation files as single source
+- ✅ **Simplified Flow**: Reduced from 5 steps to 2 steps for better performance
+- ✅ **Multi-Language Slugs**: Generates proper localized URLs (UFO Sighting → OVNI Avistamiento)
 - ✅ **Beeps API Pagination**: Added total count to beeps endpoint for "Showing X-Y of Z" frontend display
 - ✅ **Location Null Handling**: Fixed 500 errors when alerts have no location data (MUFON imports)
 - ✅ **Comments Auto-Refresh**: Fixed with frame-safe CommentsRefreshNotifier using postFrameCallback
