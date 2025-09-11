@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     const queryString = searchParams.toString()
     
     // Use new unified /beep endpoint
-    const apiUrl = `${API_BASE_URL}/beep${queryString ? `?${queryString}` : ''}`
+    const apiUrl = `${apiConfig.fullUrl}/beep${queryString ? `?${queryString}` : ''}`
     
     const response = await fetch(apiUrl, {
       method: 'GET',
