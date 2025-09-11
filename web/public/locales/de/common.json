@@ -208,5 +208,8 @@
   "loggedInAs": "Eingeloggt als",
   "logout": "Anmeldung",
   "notFollowing": "Nicht folgen",
-  "follow": "Folgen"
+  "follow": "Folgen",
+  "navRecentBeeps": "Neueste Pieptöne",
+  "navMap": "Karte",
+  "navDownloadApp": "App herunterladen"
 }
