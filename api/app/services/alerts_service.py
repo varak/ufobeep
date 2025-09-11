@@ -353,6 +353,13 @@ class AlertsService:
                 except Exception as e:
                     print(f"Warning: Failed to parse occurred_at '{occurred_at}': {e}")
 
+            # SINGLE SOURCE OF TRUTH: Generate short_url BEFORE any branching
+            temp_id = external_id or str(uuid.uuid4())
+            short_url = generate_short_url(temp_id)
+            if not short_url:
+                raise Exception(f"Failed to generate short URL for temp_id: {temp_id}")
+            print(f"Generated short URL: {short_url} for temp_id: {temp_id}")
+
             # Check for existing record by external_id for MUFON/NUFORC imports
             if external_id and source in ["mufon", "nuforc"]:
                 existing_alert = await conn.fetchval("""
@@ -379,45 +386,21 @@ class AlertsService:
                 else:
                     # Insert new record with external_id
                     print(f"Creating new {source} record with external_id: {external_id}")
-                    # Generate short URL using the single source of truth
-                    short_url = generate_short_url(external_id)
-                    if not short_url:
-                        raise Exception(f"Failed to generate short URL for external_id: {external_id}")
-                    print(f"Generated short URL: {short_url} for external_id: {external_id}")
-                    
-                    alert_id = await conn.fetchval("""
-                        INSERT INTO sightings 
-                        (title, description, category, witness_count, is_public, tags, 
-                         media_info, sensor_data, enrichment_data, alert_level, status, reporter_id,
-                         source, external_url, public_latitude, public_longitude, occurred_at, external_id, short_url)
-                        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
-                        RETURNING id
-                    """, title, description, category, witness_count, is_public,
-                        tags or [], json.dumps(media_info or {}), 
-                        json.dumps(sensor_data or {}), json.dumps(enrichment_data or {}),
-                        alert_level, "verified", reporter_id, source, external_url, latitude, longitude, 
-                        occurred_at_timestamp, external_id, short_url)
             else:
                 # Regular UFOBeep alert without external_id
-                # Generate short URL using the single source of truth (need ID first)
+                print(f"Creating UFOBeep alert with pre-generated short_url: {short_url}")
                 alert_id = await conn.fetchval("""
                     INSERT INTO sightings 
                     (title, description, category, witness_count, is_public, tags, 
                      media_info, sensor_data, enrichment_data, alert_level, status, reporter_id,
-                     source, external_url, public_latitude, public_longitude, occurred_at)
-                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
+                     source, external_url, public_latitude, public_longitude, occurred_at, short_url)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
                     RETURNING id
                 """, title, description, category, witness_count, is_public,
                     tags or [], json.dumps(media_info or {}), 
                     json.dumps(sensor_data or {}), json.dumps(enrichment_data or {}),
-                    alert_level, "created", reporter_id, source, external_url, latitude, longitude, occurred_at_timestamp)
-                
-                # Generate short URL using the single source of truth
-                short_url = generate_short_url(str(alert_id))
-                if not short_url:
-                    raise Exception(f"Failed to generate short URL for alert_id: {alert_id}")
-                print(f"Generated short URL: {short_url} for alert_id: {alert_id}")
-                await conn.execute("UPDATE sightings SET short_url = $1 WHERE id = $2", short_url, alert_id)
+                    alert_level, "created", reporter_id, source, external_url, latitude, longitude, 
+                    occurred_at_timestamp, short_url)
             
             return str(alert_id)
     
