@@ -1320,7 +1320,7 @@ extension ApiClientExtension on ApiClient {
       formData.fields.add(const MapEntry('source', 'mobile_app'));
       debugPrint('Form data created successfully');
       
-      final uploadUrl = '/beep/$sightingId/media';
+      final uploadUrl = '/api/alerts/$sightingId/media';
       debugPrint('Upload URL: $uploadUrl');
       debugPrint('Making POST request...');
 
@@ -1328,8 +1328,8 @@ extension ApiClientExtension on ApiClient {
         uploadUrl,
         data: formData,
         options: Options(
-          sendTimeout: const Duration(minutes: 5), // 5 minutes for large files
-          receiveTimeout: const Duration(minutes: 3), // 3 minutes for processing
+          sendTimeout: const Duration(seconds: 120), // 2 minutes - match mufon.sh
+          receiveTimeout: const Duration(seconds: 120), // 2 minutes for processing
           headers: {
             'Content-Type': 'multipart/form-data',
           },
