@@ -451,5 +451,8 @@
         "example": "1.2km"
       }
     }
-  }
+  },
+  "unknown": "unknown",
+  "report": "report",
+  "mufon": "mufon"
 }
