@@ -15,11 +15,12 @@ interface Comment {
 
 interface AlertCommentsProps {
   alertId: string
+  locale?: string
 }
 
-export default function AlertComments({ alertId }: AlertCommentsProps) {
+export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsProps) {
   const { user, isAuthenticated, login, getAuthToken, logout, renderGoogleButton, renderAppleButton, googleInitialized } = useAuth()
-  const { t } = useClientTranslations('common')
+  const { t } = useClientTranslations('common', locale)
   const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)

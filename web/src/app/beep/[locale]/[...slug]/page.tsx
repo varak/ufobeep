@@ -292,7 +292,7 @@ export default function AlertDetailPage() {
         )}
 
         {/* Comments Section for all reports */}
-        <AlertComments alertId={enhancedAlert.id} />
+        <AlertComments alertId={enhancedAlert.id} locale={locale} />
       </div>
     </main>
   )
