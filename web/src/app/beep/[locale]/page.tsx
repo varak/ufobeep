@@ -70,7 +70,7 @@ export default function BeepLocalePage({ params }: BeepPageProps) {
   }
   
   const locale = getEffectiveLocale()
-  const { t } = useClientTranslations('beep', locale)
+  const { t } = useClientTranslations('common', locale)
 
   useEffect(() => {
     const fetchAlerts = async () => {

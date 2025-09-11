@@ -43,9 +43,9 @@ export default function Header() {
 
           {/* Center: Nav (desktop) */}
           <nav className="hidden md:flex items-center gap-1">
-            <NavLink href="/beep" label={t('navRecentBeeps', 'Recent Beeps')} />
-            <NavLink href="/map" label={t('navMap', 'Map')} />
-            <NavLink href="/download" label={t('navDownloadApp', 'Download App')} />
+            <NavLink href="/beep" label={t('navRecentBeeps') || 'Recent Beeps'} />
+            <NavLink href="/map" label={t('navMap') || 'Map'} />
+            <NavLink href="/download" label={t('navDownloadApp') || 'Download App'} />
           </nav>
 
           {/* Right: Language + Account */}
