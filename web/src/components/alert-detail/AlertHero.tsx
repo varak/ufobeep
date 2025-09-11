@@ -104,7 +104,7 @@ export default function AlertHero({ alert, openImageIndex }: AlertHeroProps) {
               >
                 <img 
                   src={media.web_url || media.thumbnail_url || media.url}
-                  alt={`${alert.title || 'UFO Sighting'} - ${index + 1}`}
+                  alt={`${alert.title || t('ufoSightingAlt')} - ${index + 1}`}
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     // Show placeholder for broken images

@@ -286,5 +286,17 @@
   "posting": "Veröffentlichen...",
   "followingForNotifications": "Folgen für Benachrichtigungen",
   "unfollow": "Entfolgen",
-  "viewDetails": "Details anzeigen"
+  "viewDetails": "Details anzeigen",
+  "mufonDatabaseReport": "MUFON Datenbank-Bericht",
+  "ufoSightingAlt": "UFO-Sichtung",
+  "commentAttachment": "Kommentar Anhang",
+  "enterEmailForMagicLink": "E-Mail eingeben für Magic Link",
+  "emailPlaceholder": "ihre.email@beispiel.com",
+  "sendingEllipsis": "Senden...",
+  "sendMagicLink": "Magic Link senden",
+  "or": "oder",
+  "cancel": "Abbrechen",
+  "copyShortLinkTitle": "Kurzen Link kopieren",
+  "failedToUpdateNotifications": "Fehler beim Aktualisieren der Benachrichtigungseinstellungen",
+  "successfullyLoggedIn": "Erfolgreich angemeldet!"
 }

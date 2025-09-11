@@ -66,7 +66,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
       checkFollowStatus()
       // Close login form if user just authenticated
       setShowLoginForm(false)
-      setMessage('Successfully logged in!')
+      setMessage(t('successfullyLoggedIn', 'Successfully logged in!'))
       setMessageType('success')
     }
   }, [isAuthenticated, alertId])
@@ -111,11 +111,11 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
         setMessage(data.message)
         setMessageType('success')
       } else {
-        setMessage('Failed to update notification settings')
+        setMessage(t('failedToUpdateNotifications', 'Failed to update notification settings'))
         setMessageType('error')
       }
     } catch (error) {
-      setMessage('Network error. Please try again.')
+      setMessage(t('networkError'))
       setMessageType('error')
     }
     setFollowLoading(false)
@@ -193,7 +193,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
       if (response.ok) {
         setComment('')
         setShowCommentForm(false)
-        setMessage('Comment posted successfully!')
+        setMessage(t('commentPosted'))
         setMessageType('success')
         
         // Refresh comments
@@ -211,7 +211,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
         setMessageType('error')
       }
     } catch (error) {
-      setMessage('Network error. Please try again.')
+      setMessage(t('networkError'))
       setMessageType('error')
     }
     
@@ -288,7 +288,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
                     <div className="mt-2">
                       <img 
                         src={comment.media_url} 
-                        alt="Comment attachment" 
+                        alt={t('commentAttachment')} 
                         className="max-w-xs rounded-lg border border-dark-border"
                       />
                     </div>
@@ -374,7 +374,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
                   <div className="w-full border-t border-dark-border"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-dark-surface text-text-tertiary">or</span>
+                  <span className="px-2 bg-dark-surface text-text-tertiary">{t('or')}</span>
                 </div>
               </div>
               
@@ -382,14 +382,14 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-text-primary mb-2">
-                    Enter your email to receive a magic link
+                    {t('enterEmailForMagicLink')}
                   </label>
                   <input
                     type="email"
                     id="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your.email@example.com"
+                    placeholder={t('emailPlaceholder')}
                     required
                     className="w-full bg-dark-background border border-dark-border rounded-lg px-4 py-3 text-text-primary placeholder-text-tertiary focus:outline-none focus:border-brand-primary"
                   />
@@ -400,14 +400,14 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
                     disabled={isSubmitting}
                     className="flex-1 bg-brand-primary hover:bg-brand-primary/90 disabled:bg-brand-primary/50 text-white py-3 px-4 rounded-lg font-medium transition-colors"
                   >
-                    {isSubmitting ? 'Sending...' : 'Send Magic Link'}
+                    {isSubmitting ? t('sendingEllipsis') : t('sendMagicLink')}
                   </button>
                   <button
                     type="button"
                     onClick={handleCancel}
                     className="px-4 py-3 text-text-secondary hover:text-text-primary transition-colors"
                   >
-                    Cancel
+                    {t('cancel')}
                   </button>
                 </div>
               </form>
@@ -427,7 +427,7 @@ export default function AlertComments({ alertId }: AlertCommentsProps) {
                   }}
                   className="text-text-tertiary hover:text-text-secondary text-sm"
                 >
-                  Logout
+                  {t('logout')}
                 </button>
               </div>
               

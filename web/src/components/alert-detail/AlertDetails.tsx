@@ -91,7 +91,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
             <div className="mb-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
               <div className="flex items-center gap-2">
                 <span className="text-blue-400">🛸</span>
-                <span className="text-blue-300 font-medium">MUFON Database Report</span>
+                <span className="text-blue-300 font-medium">{t('mufonDatabaseReport')}</span>
                 {alert.enrichment?.mufon_case_id && (
                   <span className="text-text-tertiary text-sm">
                     Case #{alert.enrichment.mufon_case_id}
@@ -221,7 +221,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
                   // TODO: Show toast notification
                 }}
                 className="text-text-secondary hover:text-brand-primary transition-colors p-1"
-                title="Copy short link"
+                title={t('copyShortLinkTitle')}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
