@@ -26,13 +26,14 @@ interface Alert {
 interface AlertHeroProps {
   alert: Alert
   openImageIndex?: number
+  locale?: string
 }
 
-export default function AlertHero({ alert, openImageIndex }: AlertHeroProps) {
+export default function AlertHero({ alert, openImageIndex, locale = 'en' }: AlertHeroProps) {
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
   const router = useRouter()
-  const { t } = useClientTranslations('common')
+  const { t } = useClientTranslations('common', locale)
   const hasMedia = alert.media_files && alert.media_files.length > 0
   const hasDescription = alert.description?.trim()
 

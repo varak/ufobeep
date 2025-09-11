@@ -40,7 +40,34 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
   const isUfoBeepReport = !alert.reporter_username || 
     (alert.reporter_username !== 'MUFON' && alert.reporter_username !== 'NUFORC')
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('en-US', {
+    // Map locale to proper browser locale format
+    const localeMap: Record<string, string> = {
+      'en': 'en-US',
+      'es': 'es-ES', 
+      'de': 'de-DE',
+      'fr': 'fr-FR',
+      'pt': 'pt-PT',
+      'ru': 'ru-RU',
+      'ja': 'ja-JP',
+      'zh': 'zh-CN',
+      'it': 'it-IT',
+      'ar': 'ar-SA',
+      'ko': 'ko-KR',
+      'tr': 'tr-TR',
+      'hi': 'hi-IN',
+      'pl': 'pl-PL',
+      'cs': 'cs-CZ',
+      'nl': 'nl-NL',
+      'sv': 'sv-SE',
+      'da': 'da-DK',
+      'no': 'nb-NO',
+      'fi': 'fi-FI',
+      'el': 'el-GR',
+      'he': 'he-IL'
+    }
+    
+    const browserLocale = localeMap[locale] || 'en-US'
+    return new Date(dateString).toLocaleString(browserLocale, {
       weekday: 'long',
       year: 'numeric',
       month: 'long',

@@ -281,7 +281,7 @@ export default function AlertDetailPage() {
         </div>
         
         {/* Hero Section with Media Gallery */}
-        <AlertHero alert={enhancedAlert} openImageIndex={openImageIndex} />
+        <AlertHero alert={enhancedAlert} openImageIndex={openImageIndex} locale={locale} />
         
         {/* Details Section */}
         <AlertDetails alert={enhancedAlert} locale={locale} />
