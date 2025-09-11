@@ -1,5 +1,5 @@
 {
-  "@@locale": "tr",
+  "@@locale": "en",
   "appName": "UFOBeep",
   "ok": "TAMAM TAMAM",
   "cancel": "Cancel",
@@ -37,8 +37,24 @@
   "alertsTitle": "Nearby Alerts",
   "noAlerts": "Henüz yakınlarda uyarı yok.",
   "pullToRefresh": "Yeniden yenilemek için",
-  "alertDistance": "{distance} away",
-  "alertDirection": "Page {bearing}°",
+  "alertDistance": "uzaklığı:",
+  "@alertDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2 mi"
+      }
+    }
+  },
+  "alertDirection": "{t}",
+  "@alertDirection": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "137"
+      }
+    }
+  },
   "viewAlert": "View uyarı",
   "viewOnMap": "Haritada görüntüle",
   "iSeeItToo": "Onu da görüyorum",
@@ -52,6 +68,14 @@
   "descriptionHint": "Gökyüzünde ne gördüğünü açıklayın..",
   "submitBeep": "Gönder",
   "beepSent": "Beep sent",
+  "beepSentWithUrl": "Beep başarıyla gönderildi",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
   "uploadingMedia": "Medyayı yüklemek..",
   "includeLocation": "Site Ekle",
   "includeTimestamp": "Zamanları ekleyin",
@@ -66,9 +90,41 @@
   "openSettings": "Açık ayarlar",
   "alertDetailTitle": "Sighting Details",
   "reportedBy": "{username}",
-  "reportedAt": "Reported {timeAgo}",
-  "distanceAway": "{distance} away",
-  "bearingToObject": "Nesneye bakın: {bearing}°",
+  "@reportedBy": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "reportedAt": "Raporlanmış {time Ago}",
+  "@reportedAt": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "5m ago"
+      }
+    }
+  },
+  "distanceAway": "uzaklığı:",
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.4 km"
+      }
+    }
+  },
+  "bearingToObject": "Nesneye göre: {bearing}°",
+  "@bearingToObject": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "92"
+      }
+    }
+  },
   "openCompass": "Open compass",
   "openAR": "Open AR overlay",
   "openChat": "Açık sohbet",
@@ -87,18 +143,54 @@
   "compassPilotMode": "Pilot Mod",
   "compassStandardDescription": "Temel başlık ve navigasyon",
   "compassPilotDescription": "ETA ve vektöring ile Gelişmiş navigasyon",
-  "pointingTo": "{direction}",
+  "pointingTo": "{y_>",
+  "@pointingTo": {
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "SE"
+      }
+    }
+  },
   "calibratingCompass": "Kalibrating compass..",
   "openAROverlay": "Open AR overlay",
   "pushTitleAlertNearby": "UFO Uyarısı yakınınızda",
-  "pushBodyAlertNearby": "Yeni bir görüşe göre {distance} away.",
+  "pushBodyAlertNearby": "Yeni bir görüş bildirdi { mesafe} uzakta.",
+  "@pushBodyAlertNearby": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "0.8 mi"
+      }
+    }
+  },
   "pushTitleComment": "Yeni Yorum",
   "pushBodyComment": "Birisi takip ettiğiniz bir görüş üzerine yorum yaptı.",
   "pushTitleWitness": "Tanık Onay",
   "pushBodyWitness": "Bir kullanıcı aynı nesneyi gördüklerini doğruladı.",
   "weather": "Hava",
-  "cloudCover": "Cloud cover: {percent}%%",
-  "wind": "Rüzgar: {speed} {unit}",
+  "cloudCover": "Cloud cover: {percent}%",
+  "@cloudCover": {
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "63"
+      }
+    }
+  },
+  "wind": "Rüzgar: { speed} {unit}",
+  "@wind": {
+    "placeholders": {
+      "speed": {
+        "type": "num",
+        "example": "12.4"
+      },
+      "unit": {
+        "type": "String",
+        "example": "mph"
+      }
+    }
+  },
   "nearbyAircraft": "Nearby uçakları",
   "noAircraft": "Yakınlarda hiç uçak yok",
   "loadingContext": "Çevre bağlamı yükleniyor..",
@@ -133,8 +225,32 @@
   "imageOnly": "sadece görüntü sadece görüntü",
   "timeJustNow": "Sadece şimdi",
   "timeDaysAgo": "{count}d ago",
-  "timeHoursAgo": "{count}h önce",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "timeHoursAgo": "{count}h ago",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
   "timeMinutesAgo": "{count}m ago",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
   "loadMoreAlerts": "Load More Alerts",
   "toggleMufonTooltip": "Toggle MUFON görüşüyor",
   "showMufonData": "Show MUFON data",
@@ -144,8 +260,20 @@
   "filteredSuffix": "filtrelenmiş filtre",
   "detailsTitle": "Detaylar",
   "mufonCase": "MUFON Vaka Örneği",
+  "mufonCaseDetailsTitle": "MUFON Vaka #{caseNumber} Detay",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
   "sightingDate": "Sighting Date",
+  "mufonDatabaseEntryDate": "Tarih MUFON'a girdi Veritabanı Veritabanı",
   "databaseEntry": "Veritabanı",
+  "shareLink": "Share Link Link",
+  "linkCopied": "Link kopyalandı",
   "locationLabel": "Konum Location",
   "distanceLabel": "Mesafe",
   "timeLabel": "Zaman Zamanı",
@@ -153,121 +281,7 @@
   "unknownLocation": "Bilinmeyen Konum",
   "locationUnknown": "Konum Bilinmeyen",
   "witnessesLabel": "Tanık Şahitler",
-  "witnessesCountMessage": "{count} insanlar bu manzarayı doğruladı",
-  "photoAnalysisTitle": "Photo Analysis",
-  "mediaItemsProcessed": "Analiz: {count} medya dosyası (s) işlendi",
-  "addMoreMedia": "Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add",
-  "addMedia": "Media Add Media",
-  "retakePhoto": "Retake Photo",
-  "retakeVideo": "Retake Video",
-  "@alertDistance": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "1.2 mi"
-      }
-    }
-  },
-  "@alertDirection": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "137"
-      }
-    }
-  },
-  "@reportedBy": {
-    "placeholders": {
-      "username": {
-        "type": "String",
-        "example": "stargazer01"
-      }
-    }
-  },
-  "@reportedAt": {
-    "placeholders": {
-      "timeAgo": {
-        "type": "String",
-        "example": "5m ago"
-      }
-    }
-  },
-  "@distanceAway": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "2.4 km"
-      }
-    }
-  },
-  "@bearingToObject": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "92"
-      }
-    }
-  },
-  "@pointingTo": {
-    "placeholders": {
-      "direction": {
-        "type": "String",
-        "example": "SE"
-      }
-    }
-  },
-  "@pushBodyAlertNearby": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "0.8 mi"
-      }
-    }
-  },
-  "@cloudCover": {
-    "placeholders": {
-      "percent": {
-        "type": "int",
-        "example": "63"
-      }
-    }
-  },
-  "@wind": {
-    "placeholders": {
-      "speed": {
-        "type": "num",
-        "example": "12.4"
-      },
-      "unit": {
-        "type": "String",
-        "example": "mph"
-      }
-    }
-  },
-  "@timeDaysAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "@timeHoursAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "5"
-      }
-    }
-  },
-  "@timeMinutesAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "12"
-      }
-    }
-  },
+  "witnessesCountMessage": "{say} insanlar bu görüşü doğruluyor",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -276,6 +290,8 @@
       }
     }
   },
+  "photoAnalysisTitle": "Photo Analysis",
+  "mediaItemsProcessed": "Analiz: {count} medya dosyası (s) işlendi",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -284,6 +300,10 @@
       }
     }
   },
+  "addMoreMedia": "Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add",
+  "addMedia": "Media Add Media",
+  "retakePhoto": "Retake Photo",
+  "retakeVideo": "Retake Video",
   "camera": "Kamera",
   "gallery": "Gallery",
   "basicSettings": "Temel Ayarlar",
@@ -304,23 +324,16 @@
   "webAdminInterface": "Web Admin Interface",
   "adminBetaNotice": "Beta sadece inşa eder. Yakın uyarıları test etmek için yönetici araçları, bildirimleri zorlama ve sistem tanıları.",
   "whatDoYouSee": "Ne görüyorsunuz?",
+  "ufo": "UFO",
+  "sighting": "Sighting",
   "ufoSighting": "UFO UFO Sighting",
-  "actionsTitle": "Eylemler",
-  "addPhotosAndVideos": "Fotoğraflar ve Videolar ekleyin",
-  "howToReportToMufon": "MUFON'a Nasıl Rapor Verilir",
-  "reportToMufon": "MUFON'a Rapor",
-  "whyReportToMufon": "Neden MUFON'a Rapor?",
-  "openMufonReport": "Açık MUFON Rapor",
-  "confirmedWitness": "Bu manzarayı doğruladın",
-  "witnessesHaveConfirmed": "{count} insanlar bu manzarayı doğruladı",
-  "@witnessesHaveConfirmed": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
+  "envAnalysisTitle": "Çevresel Analiz",
+  "envAnalysisPending": "Analiz Pending",
+  "envAnalysisPendingDesc": "Çevre verileri bir kez işleme başlar.",
+  "unknownAircraft": "Bilinmeyen Uçaklar",
+  "moreAircraft": "daha fazla uçak",
+  "premiumImageryTitle": "Premium Uydu Imagery",
+  "premiumImagerySubtitle": "Yüksek çözünürlüklü ticari imajry",
   "sightingTypeLabel": "Tipi",
   "ufoTypeSphere": "Sphere",
   "ufoTypeTriangle": "Üçgen",
@@ -332,17 +345,6 @@
   "ufoTypeRectangle": "Rect",
   "ufoTypeFormation": "Formasyon",
   "ufoTypeUnknown": "Bilinmeyen",
-  "mufonCaseDetailsTitle": "MUFON Case #{caseNumber} Details",
-  "mufonDatabaseEntryDate": "Tarih MUFON'a girdi Veritabanı Veritabanı",
-  "shareLink": "Share Link Link",
-  "linkCopied": "Link kopyalandı",
-  "envAnalysisTitle": "Çevresel Analiz",
-  "envAnalysisPending": "Analiz Pending",
-  "envAnalysisPendingDesc": "Çevre verileri bir kez işleme başlar.",
-  "unknownAircraft": "Bilinmeyen Uçaklar",
-  "moreAircraft": "daha fazla uçak",
-  "premiumImageryTitle": "Premium Uydu Imagery",
-  "premiumImagerySubtitle": "Yüksek çözünürlüklü ticari imajry",
   "ufoTypeBoomerang": "Boomerang",
   "ufoTypeDiamond": "Elmas",
   "ufoTypeOval": "Oval",
@@ -355,6 +357,45 @@
   "ufoTypeSaturn": "Satürn",
   "ufoTypeStarLike": "Star-like",
   "ufoTypeBlimp": "Blimp",
+  "shapeTriangle": "üçgen",
+  "shapeDisc": "disk",
+  "shapeDisk": "disk",
+  "shapeSphere": "alanı",
+  "shapeCigar": "puro",
+  "shapeLight": "ışık ışığı",
+  "shapeBoomerang": "boomerang",
+  "shapeDiamond": "elmas",
+  "shapeRectangle": "yeniden dik",
+  "shapeOval": "oval",
+  "shapeCone": "cone",
+  "shapeCross": "haç",
+  "shapeCylinder": "silindir",
+  "shapeDumbbell": "aptal",
+  "shapeTeardrop": "çığ",
+  "shapeTicTac": "tic-tac",
+  "shapeBullet": "kurşun mermi",
+  "shapeSaturn": "saturn",
+  "shapeStarlike": "starlike",
+  "shapeBlimp": "blimp",
+  "shapeFireball": "fireball",
+  "shapeFormation": "formasyon",
+  "shapeUnknown": "bilinmeyen",
+  "actionsTitle": "Eylemler",
+  "addPhotosAndVideos": "Fotoğraflar ve Videolar ekleyin",
+  "howToReportToMufon": "MUFON'a Nasıl Rapor Verilir",
+  "reportToMufon": "MUFON'a Rapor",
+  "whyReportToMufon": "Neden MUFON'a Rapor?",
+  "openMufonReport": "Açık MUFON Rapor",
+  "confirmedWitness": "Bu manzarayı doğruladın",
+  "witnessesHaveConfirmed": "{say} insanlar bu görüşü doğruladı",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "aircraftTrackingTitle": "Uçak Takipi",
   "weatherConditionsTitle": "Hava Koşulları",
   "noSatellitePasses": "Görünür bir uydu geçişi bulunamadı",
@@ -367,21 +408,8 @@
   "premiumAccessCreators": "Uyarı yaratıcıları",
   "premiumAccessWitnesses": "Görünürlük aralığındaki tanıkları onaylayın",
   "comingSoon": "Yakında Geliyor",
-  "@mufonCaseDetailsTitle": {
-    "placeholders": {
-      "caseNumber": {
-        "type": "String",
-        "example": "12345"
-      }
-    }
-  },
   "directionDistanceTitle": "Yön & Uzaktan",
   "mufonCaseTitle": "MUFON Vaka #{caseNumber}",
-  "satellitePassesTitle": "Uydu Passes",
-  "satellitePassExplanation": "Visible uydu, zaman çerçevesi sırasında geçer. Birçok UFO raporu aslında uydular veya uzay enkazıdır.",
-  "followingAlert": "Uyarıyı takiben - bildirimleri alacaksınız",
-  "unfollowedAlert": "Takip edilemez uyarı - daha fazla yorum bildirim",
-  "alertFollowError": "Hata Güncellemesi",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -389,5 +417,61 @@
         "example": "12345"
       }
     }
-  }
+  },
+  "satellitePassesTitle": "Uydu Passes",
+  "satellitePassExplanation": "Visible uydu, zaman çerçevesi sırasında geçer. Birçok UFO raporu aslında uydular veya uzay enkazıdır.",
+  "followingAlert": "Uyarıyı takiben - bildirimleri alacaksınız",
+  "unfollowedAlert": "Takip edilemez uyarı - daha fazla yorum bildirim",
+  "alertFollowError": "Hata Güncellemesi",
+  "notificationChannelAlerts": "UFOBeep Uyarıları",
+  "notificationChannelAlertsDesc": "UFO arıları ve yakın uyarıları için bildirimler",
+  "notificationSightingTitle": "UFO UFO Sighting",
+  "notificationSightingUrgent": "UR URGENT UFO Sighting",
+  "notificationSightingEmergency": "EMER EMERGENCY UFO Sighting",
+  "notificationSightingBody": "{witnessText} yakın Ad}",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "{ {username}",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "Yeni görüş",
+  "notificationWitnessTextMultiple": "{count} tanıklar",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "Snooze 1",
+  "notificationActionDismiss": "Başarısızlık",
+  "notificationDistance": "uzaklığı:",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  },
+  "unknown": "bilinmeyen",
+  "report": "rapor",
+  "mufon": "mufon"
 }

@@ -1,4 +1,9 @@
 {
-  "profile": "Профиль",
-  "settings": "Настройки"
+  "tabAlerts": "Оповещения",
+  "tabBeep": "Бип",
+  "tabChat": "Чат",
+  "tabMap": "Карта",
+  "tabSettings": "Настройки",
+  "mufonDatabaseEntryDate": "Дата вхождения в MUFON База данных",
+  "databaseEntry": "Вход в базу данных"
 }

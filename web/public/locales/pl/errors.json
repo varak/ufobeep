@@ -1,0 +1,8 @@
+{
+  "errorGeneric": "Coś poszło nie tak.",
+  "errorNoLocation": "Lokalizacja niedostępna. Spróbuj ponownie na zewnątrz z czystym widokiem na niebo.",
+  "errorNoCamera": "Kamera niedostępna na tym urządzeniu.",
+  "errorUploadFailed": "Wysyłanie nie powiodło się. Proszę spróbować jeszcze raz.",
+  "errorPermissionDenied": "Odmawiam.",
+  "errorInvalidUsername": "Ta nazwa użytkownika nie jest dostępna."
+}

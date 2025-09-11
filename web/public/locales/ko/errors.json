@@ -1,0 +1,8 @@
+{
+  "errorGeneric": "뭔가 잘못되었습니다.",
+  "errorNoLocation": "자주 묻는 질문 맑은 하늘 전망과 함께 다시 시도하십시오.",
+  "errorNoCamera": "이 장치에서 사용할 수없는 카메라.",
+  "errorUploadFailed": "업로드 실패. 다시 시도하십시오.",
+  "errorPermissionDenied": "권한이 없습니다.",
+  "errorInvalidUsername": "그 사용자 이름은 사용할 수 없습니다."
+}

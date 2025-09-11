@@ -325,7 +325,7 @@
   "adminBetaNotice": "Beta builds only. Admin tools for testing proximity alerts, push notifications, and system diagnostics.",
   "whatDoYouSee": "What do you see?",
   "ufo": "UFO",
-  "sighting": "Sighting", 
+  "sighting": "Sighting",
   "ufoSighting": "UFO Sighting",
   "envAnalysisTitle": "Environmental Analysis",
   "envAnalysisPending": "Analysis Pending",
@@ -357,7 +357,6 @@
   "ufoTypeSaturn": "Saturn",
   "ufoTypeStarLike": "Star-like",
   "ufoTypeBlimp": "Blimp",
-  
   "shapeTriangle": "triangle",
   "shapeDisc": "disc",
   "shapeDisk": "disk",
@@ -381,7 +380,6 @@
   "shapeFireball": "fireball",
   "shapeFormation": "formation",
   "shapeUnknown": "unknown",
-  
   "actionsTitle": "Actions",
   "addPhotosAndVideos": "Add Photos & Videos",
   "howToReportToMufon": "How to Report to MUFON",
@@ -398,7 +396,6 @@
       }
     }
   },
-  
   "aircraftTrackingTitle": "Aircraft Tracking",
   "weatherConditionsTitle": "Weather Conditions",
   "noSatellitePasses": "No visible satellite passes found",
@@ -411,10 +408,7 @@
   "premiumAccessCreators": "Alert creators",
   "premiumAccessWitnesses": "Confirmed witnesses within visibility range",
   "comingSoon": "Coming Soon",
-  
   "directionDistanceTitle": "Direction & Distance",
-  "ufoSighting": "UFO Sighting",
-  "beepOnly": "beep only",
   "mufonCaseTitle": "MUFON Case #{caseNumber}",
   "@mufonCaseTitle": {
     "placeholders": {
@@ -429,7 +423,6 @@
   "followingAlert": "Following alert - you'll get comment notifications",
   "unfollowedAlert": "Unfollowed alert - no more comment notifications",
   "alertFollowError": "Error updating follow status",
-  
   "notificationChannelAlerts": "UFOBeep Alerts",
   "notificationChannelAlertsDesc": "Notifications for UFO beeps and proximity alerts",
   "notificationSightingTitle": "UFO Sighting",

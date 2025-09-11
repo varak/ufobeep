@@ -1,4 +1,9 @@
 {
-  "profile": "Profile",
-  "settings": "التركيبات"
+  "tabAlerts": "إنذار",
+  "tabBeep": "Beep",
+  "tabChat": "Chat",
+  "tabMap": "خريطة",
+  "tabSettings": "التركيبات",
+  "mufonDatabaseEntryDate": "تاريخ دخوله قاعدة البيانات",
+  "databaseEntry": "دخول قاعدة البيانات"
 }

@@ -20,9 +20,35 @@ const LOCALES = [
 // Keys we need for slug generation
 const SLUG_KEYS = [
   'ufoSighting',
+  'ufo',
+  'sighting',
   'unknown',
   'report', 
-  'mufon'
+  'mufon',
+  // All UFO shape terms from MUFON
+  'shapeTriangle',
+  'shapeDisc', 
+  'shapeDisk',
+  'shapeSphere',
+  'shapeCigar',
+  'shapeLight',
+  'shapeBoomerang',
+  'shapeDiamond',
+  'shapeRectangle',
+  'shapeOval',
+  'shapeCone',
+  'shapeCross',
+  'shapeCylinder',
+  'shapeDumbbell',
+  'shapeTeardrop',
+  'shapeTicTac',
+  'shapeBullet',
+  'shapeSaturn',
+  'shapeStarlike',
+  'shapeBlimp',
+  'shapeFireball',
+  'shapeFormation',
+  'shapeUnknown'
 ];
 
 function loadArbFile(locale) {
@@ -49,15 +75,12 @@ function generateStaticTranslations() {
     const arbData = loadArbFile(locale);
     const slugTranslations = {};
     
-    // Extract only the keys we need for slugs
+    // Extract only the keys we need for slugs - NO FALLBACKS
     for (const key of SLUG_KEYS) {
       if (arbData[key]) {
         slugTranslations[key] = arbData[key];
-      } else {
-        // Fallback to English if missing
-        const englishArb = loadArbFile('en');
-        slugTranslations[key] = englishArb[key] || key;
       }
+      // Skip missing keys - no fallbacks allowed
     }
     
     translations[locale] = slugTranslations;

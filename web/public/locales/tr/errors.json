@@ -1,0 +1,8 @@
+{
+  "errorGeneric": "Bir şey yanlış gitti.",
+  "errorNoLocation": "Konum mevcut değil. Açık gökyüzü görünümü ile tekrar dışarı deneyin.",
+  "errorNoCamera": "Kamera bu cihazda mevcut değil.",
+  "errorUploadFailed": "Yükleme başarısız oldu. Lütfen tekrar deneyin.",
+  "errorPermissionDenied": "İzin inkar etti.",
+  "errorInvalidUsername": "Bu kullanıcı mevcut değildir."
+}

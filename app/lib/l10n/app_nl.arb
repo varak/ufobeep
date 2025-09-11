@@ -1,5 +1,5 @@
 {
-  "@@locale": "nl",
+  "@@locale": "en",
   "appName": "UFOBEEP",
   "ok": "OK",
   "cancel": "Annuleren",
@@ -37,8 +37,24 @@
   "alertsTitle": "Waarschuwingen nabijgelegen",
   "noAlerts": "Nog geen waarschuwingen in de buurt.",
   "pullToRefresh": "Trek om te vernieuwen",
-  "alertDistance": "{distance}_ weg",
-  "alertDirection": "Koers {bearing}_°",
+  "alertDistance": "{afstand} afstand",
+  "@alertDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2 mi"
+      }
+    }
+  },
+  "alertDirection": "Lager {lager}°",
+  "@alertDirection": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "137"
+      }
+    }
+  },
   "viewAlert": "Alert weergeven",
   "viewOnMap": "Bekijk op kaart",
   "iSeeItToo": "Ik zie het ook",
@@ -52,6 +68,14 @@
   "descriptionHint": "Beschrijf wat je ziet in de lucht..",
   "submitBeep": "Beep sturen",
   "beepSent": "Piep verzonden",
+  "beepSentWithUrl": "Beep succesvol verzonden",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
   "uploadingMedia": "Media uploaden..",
   "includeLocation": "Plaats",
   "includeTimestamp": "Tijdstempel invoegen",
@@ -65,10 +89,42 @@
   "microphonePermissionBody": "Geef microfoon toegang voor video-opname met audio.",
   "openSettings": "Instellingen openen",
   "alertDetailTitle": "Waarnemingsdetails",
-  "reportedBy": "Gerapporteerd door {username}",
-  "reportedAt": "Gerapporteerd {timeAgo}",
-  "distanceAway": "{distance}_ weg",
-  "bearingToObject": "Richting tot object: {bearing}_°",
+  "reportedBy": "Gerapporteerd door {gebruikersnaam}",
+  "@reportedBy": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "reportedAt": "Gerapporteerde tijd Ago}",
+  "@reportedAt": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "5m ago"
+      }
+    }
+  },
+  "distanceAway": "{afstand} afstand",
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.4 km"
+      }
+    }
+  },
+  "bearingToObject": "Koers naar object: {lager}°",
+  "@bearingToObject": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "92"
+      }
+    }
+  },
   "openCompass": "Open kompas",
   "openAR": "Open AR-overlay",
   "openChat": "Gesprek openen",
@@ -87,18 +143,54 @@
   "compassPilotMode": "Pilootmodus",
   "compassStandardDescription": "Basisrichting en navigatie",
   "compassPilotDescription": "Geavanceerde navigatie met ETA en vectoring",
-  "pointingTo": "Richting {direction}_",
+  "pointingTo": "Verwijzing naar {richting}",
+  "@pointingTo": {
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "SE"
+      }
+    }
+  },
   "calibratingCompass": "Kalibreren kompas..",
   "openAROverlay": "Open AR-overlay",
   "pushTitleAlertNearby": "UFO-alarm nabij u",
-  "pushBodyAlertNearby": "Er werd een nieuwe waarneming gemeld.",
+  "pushBodyAlertNearby": "Een nieuwe waarneming werd gemeld op afstand.",
+  "@pushBodyAlertNearby": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "0.8 mi"
+      }
+    }
+  },
   "pushTitleComment": "Nieuwe opmerking",
   "pushBodyComment": "Iemand zei iets over een waarneming die je volgt.",
   "pushTitleWitness": "Getuigenbevestiging",
   "pushBodyWitness": "Een gebruiker bevestigde dat ze hetzelfde object zien.",
   "weather": "Weer",
-  "cloudCover": "Cloud cover: {percent}_%",
+  "cloudCover": "Cloud cover: {percentage}%",
+  "@cloudCover": {
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "63"
+      }
+    }
+  },
   "wind": "Wind: {speed} {unit}",
+  "@wind": {
+    "placeholders": {
+      "speed": {
+        "type": "num",
+        "example": "12.4"
+      },
+      "unit": {
+        "type": "String",
+        "example": "mph"
+      }
+    }
+  },
   "nearbyAircraft": "Luchtvaartuigen in de buurt",
   "noAircraft": "Geen vliegtuig in de buurt",
   "loadingContext": "Milieucontext wordt geladen..",
@@ -132,9 +224,33 @@
   "videoOnly": "alleen video",
   "imageOnly": "alleen afbeelding",
   "timeJustNow": "Net",
-  "timeDaysAgo": "{count}d geleden",
-  "timeHoursAgo": "{count}h geleden",
-  "timeMinutesAgo": "__PH_0_m geleden",
+  "timeDaysAgo": "{telling} geleden",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "timeHoursAgo": "{telling}h geleden",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "timeMinutesAgo": "{telling}m geleden",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
   "loadMoreAlerts": "Meer waarschuwingen laden",
   "toggleMufonTooltip": "MUFON waarnemingen aan/uit",
   "showMufonData": "MUFON-gegevens tonen",
@@ -144,8 +260,20 @@
   "filteredSuffix": "gefilterd",
   "detailsTitle": "Gegevens",
   "mufonCase": "MUFON Zaak",
+  "mufonCaseDetailsTitle": "MUFON Zaak #{gevalnummer} Details",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
   "sightingDate": "Datum van waarneming",
+  "mufonDatabaseEntryDate": "Datum ingevoerd in MUFON Database",
   "databaseEntry": "Databaseinvoer",
+  "shareLink": "Link delen",
+  "linkCopied": "Koppeling naar klembord",
   "locationLabel": "Locatie",
   "distanceLabel": "Afstand",
   "timeLabel": "Tijd",
@@ -153,121 +281,7 @@
   "unknownLocation": "Onbekende locatie",
   "locationUnknown": "Locatie onbekend",
   "witnessesLabel": "Getuigen",
-  "witnessesCountMessage": "Mensen hebben deze waarneming bevestigd",
-  "photoAnalysisTitle": "Fotoanalyse",
-  "mediaItemsProcessed": "Analyse: {count} mediabestand(s) verwerkt",
-  "addMoreMedia": "Meer toevoegen",
-  "addMedia": "Media toevoegen",
-  "retakePhoto": "Foto hernemen",
-  "retakeVideo": "Video opnieuw opnemen",
-  "@alertDistance": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "1.2 mi"
-      }
-    }
-  },
-  "@alertDirection": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "137"
-      }
-    }
-  },
-  "@reportedBy": {
-    "placeholders": {
-      "username": {
-        "type": "String",
-        "example": "stargazer01"
-      }
-    }
-  },
-  "@reportedAt": {
-    "placeholders": {
-      "timeAgo": {
-        "type": "String",
-        "example": "5m ago"
-      }
-    }
-  },
-  "@distanceAway": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "2.4 km"
-      }
-    }
-  },
-  "@bearingToObject": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "92"
-      }
-    }
-  },
-  "@pointingTo": {
-    "placeholders": {
-      "direction": {
-        "type": "String",
-        "example": "SE"
-      }
-    }
-  },
-  "@pushBodyAlertNearby": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "0.8 mi"
-      }
-    }
-  },
-  "@cloudCover": {
-    "placeholders": {
-      "percent": {
-        "type": "int",
-        "example": "63"
-      }
-    }
-  },
-  "@wind": {
-    "placeholders": {
-      "speed": {
-        "type": "num",
-        "example": "12.4"
-      },
-      "unit": {
-        "type": "String",
-        "example": "mph"
-      }
-    }
-  },
-  "@timeDaysAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "@timeHoursAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "5"
-      }
-    }
-  },
-  "@timeMinutesAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "12"
-      }
-    }
-  },
+  "witnessesCountMessage": "mensen bevestigden deze waarneming",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -276,6 +290,8 @@
       }
     }
   },
+  "photoAnalysisTitle": "Fotoanalyse",
+  "mediaItemsProcessed": "Analyse: {count} mediabestand(s) verwerkt",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -284,6 +300,10 @@
       }
     }
   },
+  "addMoreMedia": "Meer toevoegen",
+  "addMedia": "Media toevoegen",
+  "retakePhoto": "Foto hernemen",
+  "retakeVideo": "Video opnieuw opnemen",
   "camera": "Camera",
   "gallery": "Galerij",
   "basicSettings": "Basisinstellingen",
@@ -304,23 +324,16 @@
   "webAdminInterface": "Webbeheerderinterface",
   "adminBetaNotice": "Beta bouwt alleen. Admin tools voor het testen van nabijheid waarschuwingen, push meldingen, en systeemdiagnostiek.",
   "whatDoYouSee": "Wat zie je?",
+  "ufo": "UFO",
+  "sighting": "Waarneming",
   "ufoSighting": "UFO Waarneming",
-  "actionsTitle": "Acties",
-  "addPhotosAndVideos": "Foto's en video's toevoegen",
-  "howToReportToMufon": "Hoe rapporteren aan MUFON",
-  "reportToMufon": "Verslag aan MUFON",
-  "whyReportToMufon": "Waarom verslag uitbrengen aan MUFON?",
-  "openMufonReport": "MUFON openen Verslag",
-  "confirmedWitness": "Je hebt deze waarneming bevestigd",
-  "witnessesHaveConfirmed": "Mensen hebben deze waarneming bevestigd",
-  "@witnessesHaveConfirmed": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
+  "envAnalysisTitle": "Milieuanalyse",
+  "envAnalysisPending": "Analyse in afwachting",
+  "envAnalysisPendingDesc": "Milieugegevens zullen beschikbaar zijn zodra de verwerking begint.",
+  "unknownAircraft": "Onbekend vliegtuig",
+  "moreAircraft": "meer vliegtuigen",
+  "premiumImageryTitle": "Premium satelliet Afbeelding",
+  "premiumImagerySubtitle": "Handelsbeelden met hoge resolutie",
   "sightingTypeLabel": "Type",
   "ufoTypeSphere": "Bol",
   "ufoTypeTriangle": "Driehoek",
@@ -332,17 +345,6 @@
   "ufoTypeRectangle": "Rechthoek",
   "ufoTypeFormation": "Vorming",
   "ufoTypeUnknown": "Onbekend",
-  "mufonCaseDetailsTitle": "MUFON Zaak #{caseNumber}_ Details",
-  "mufonDatabaseEntryDate": "Datum ingevoerd in MUFON Database",
-  "shareLink": "Link delen",
-  "linkCopied": "Koppeling naar klembord",
-  "envAnalysisTitle": "Milieuanalyse",
-  "envAnalysisPending": "Analyse in afwachting",
-  "envAnalysisPendingDesc": "Milieugegevens zullen beschikbaar zijn zodra de verwerking begint.",
-  "unknownAircraft": "Onbekend vliegtuig",
-  "moreAircraft": "meer vliegtuigen",
-  "premiumImageryTitle": "Premium satelliet Afbeelding",
-  "premiumImagerySubtitle": "Handelsbeelden met hoge resolutie",
   "ufoTypeBoomerang": "Boomerang",
   "ufoTypeDiamond": "Diamant",
   "ufoTypeOval": "Oval",
@@ -355,6 +357,45 @@
   "ufoTypeSaturn": "Saturnus",
   "ufoTypeStarLike": "Sterrenachtig",
   "ufoTypeBlimp": "Blimp",
+  "shapeTriangle": "driehoek",
+  "shapeDisc": "schijf",
+  "shapeDisk": "schijf",
+  "shapeSphere": "bol",
+  "shapeCigar": "sigaren",
+  "shapeLight": "licht",
+  "shapeBoomerang": "boemerang",
+  "shapeDiamond": "diamant",
+  "shapeRectangle": "rechthoek",
+  "shapeOval": "ovaal",
+  "shapeCone": "kegel",
+  "shapeCross": "kruis",
+  "shapeCylinder": "cilinder",
+  "shapeDumbbell": "halter",
+  "shapeTeardrop": "traanwortel",
+  "shapeTicTac": "tic-tac",
+  "shapeBullet": "kogel",
+  "shapeSaturn": "saturnus",
+  "shapeStarlike": "sterachtig",
+  "shapeBlimp": "zeppelin",
+  "shapeFireball": "vuurbal",
+  "shapeFormation": "vorming",
+  "shapeUnknown": "onbekend",
+  "actionsTitle": "Acties",
+  "addPhotosAndVideos": "Foto's en video's toevoegen",
+  "howToReportToMufon": "Hoe rapporteren aan MUFON",
+  "reportToMufon": "Verslag aan MUFON",
+  "whyReportToMufon": "Waarom verslag uitbrengen aan MUFON?",
+  "openMufonReport": "MUFON openen Verslag",
+  "confirmedWitness": "Je hebt deze waarneming bevestigd",
+  "witnessesHaveConfirmed": "mensen hebben deze waarneming bevestigd",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "aircraftTrackingTitle": "Tracking van luchtvaartuigen",
   "weatherConditionsTitle": "Weersomstandigheden",
   "noSatellitePasses": "Geen zichtbare satellietpassen gevonden",
@@ -367,12 +408,70 @@
   "premiumAccessCreators": "Waarschuwingsmakers",
   "premiumAccessWitnesses": "Bevestigde getuigen binnen zichtbereik",
   "comingSoon": "Binnenkort",
-  "@mufonCaseDetailsTitle": {
+  "directionDistanceTitle": "Richting en afstand",
+  "mufonCaseTitle": "MUFON Zaak #{gevalnummer}",
+  "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
         "type": "String",
         "example": "12345"
       }
     }
-  }
+  },
+  "satellitePassesTitle": "Satellietpassen",
+  "satellitePassExplanation": "Zichtbare satelliet passeert tijdens de waarneming. Veel UFO rapporten zijn eigenlijk satellieten of ruimte puin.",
+  "followingAlert": "Na waarschuwing - je krijgt commentaar meldingen",
+  "unfollowedAlert": "Ongevolgd alarm - geen commentaarmeldingen meer",
+  "alertFollowError": "Fout bij bijwerken van volgstatus",
+  "notificationChannelAlerts": "UFOBEEP-waarschuwingen",
+  "notificationChannelAlertsDesc": "Kennisgevingen voor UFO-pieps en nabijheidswaarschuwingen",
+  "notificationSightingTitle": "UFO Waarneming",
+  "notificationSightingUrgent": "UFO Waarneming",
+  "notificationSightingEmergency": "UFO Waarneming",
+  "notificationSightingBody": "{getuigentekst} dichtbij {locatie} Naam}",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "💬 {username} commented",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "Nieuwe waarneming",
+  "notificationWitnessTextMultiple": "getuigen",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "Snooze 1h",
+  "notificationActionDismiss": "Ingetrokken",
+  "notificationDistance": "{afstand} afstand",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  },
+  "unknown": "onbekend",
+  "report": "rapport",
+  "mufon": "mufon"
 }

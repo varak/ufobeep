@@ -1,5 +1,5 @@
 {
-  "@@locale": "ru",
+  "@@locale": "en",
   "appName": "НЛО Бип",
   "ok": "ХОРОШО",
   "cancel": "Отменить",
@@ -37,8 +37,24 @@
   "alertsTitle": "Близкие оповещения",
   "noAlerts": "Никаких предупреждений поблизости пока нет.",
   "pullToRefresh": "Потянуть освежиться",
-  "alertDistance": "{distance} вдали",
-  "alertDirection": "Подшипник {bearing}°",
+  "alertDistance": "расстояние",
+  "@alertDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2 mi"
+      }
+    }
+  },
+  "alertDirection": "Подшипник",
+  "@alertDirection": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "137"
+      }
+    }
+  },
   "viewAlert": "Внимание",
   "viewOnMap": "Посмотреть на карте",
   "iSeeItToo": "Я тоже это вижу",
@@ -52,6 +68,14 @@
   "descriptionHint": "Опишите, что вы видите в небе..",
   "submitBeep": "Отправить Бип",
   "beepSent": "Пип отправлен",
+  "beepSentWithUrl": "Пип успешно отправлен",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
   "uploadingMedia": "Загрузка медиа..",
   "includeLocation": "Включает местоположение",
   "includeTimestamp": "Включая временную метку",
@@ -66,9 +90,41 @@
   "openSettings": "Открытые настройки",
   "alertDetailTitle": "Прицельные детали",
   "reportedBy": "Об этом сообщает {username}",
-  "reportedAt": "Об этом сообщает {timeAgo}",
-  "distanceAway": "{distance} вдали",
-  "bearingToObject": "Возражать против: {bearing}",
+  "@reportedBy": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "reportedAt": "Сообщено {время} Аго",
+  "@reportedAt": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "5m ago"
+      }
+    }
+  },
+  "distanceAway": "расстояние",
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.4 km"
+      }
+    }
+  },
+  "bearingToObject": "Подчинение возражению: {bearing}°",
+  "@bearingToObject": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "92"
+      }
+    }
+  },
   "openCompass": "Открытый компас",
   "openAR": "Оверлей Open AR",
   "openChat": "Открытый чат",
@@ -87,18 +143,54 @@
   "compassPilotMode": "Пилотный режим",
   "compassStandardDescription": "Основной заголовок и навигация",
   "compassPilotDescription": "Продвинутая навигация с ETA и вектором",
-  "pointingTo": "Указывает на {direction}",
+  "pointingTo": "Указывая на {направление}",
+  "@pointingTo": {
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "SE"
+      }
+    }
+  },
   "calibratingCompass": "Калибровка компаса..",
   "openAROverlay": "Оверлей Open AR",
   "pushTitleAlertNearby": "НЛО рядом с вами",
-  "pushBodyAlertNearby": "Об этом сообщает {distance}.",
+  "pushBodyAlertNearby": "Сообщалось о новом наблюдении на расстоянии.",
+  "@pushBodyAlertNearby": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "0.8 mi"
+      }
+    }
+  },
   "pushTitleComment": "Новый комментарий",
   "pushBodyComment": "Кто-то прокомментировал ваше наблюдение.",
   "pushTitleWitness": "Подтверждение свидетеля",
   "pushBodyWitness": "Пользователь подтвердил, что видит один и тот же объект.",
   "weather": "Погода",
-  "cloudCover": "Облачное покрытие: {percent}%",
-  "wind": "Ветер: {speed}{unit}",
+  "cloudCover": "Облако: {%}%",
+  "@cloudCover": {
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "63"
+      }
+    }
+  },
+  "wind": "Ветер: {скорость} {единица}",
+  "@wind": {
+    "placeholders": {
+      "speed": {
+        "type": "num",
+        "example": "12.4"
+      },
+      "unit": {
+        "type": "String",
+        "example": "mph"
+      }
+    }
+  },
   "nearbyAircraft": "Близлежащий самолет",
   "noAircraft": "Самолеты поблизости",
   "loadingContext": "Загрузка экологического контекста..",
@@ -132,9 +224,33 @@
   "videoOnly": "только видео",
   "imageOnly": "только изображение",
   "timeJustNow": "Только сейчас",
-  "timeDaysAgo": "PH_0_d назад",
-  "timeHoursAgo": "{count}h ago",
-  "timeMinutesAgo": "{count}m ago",
+  "timeDaysAgo": "{счет}d ago",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "timeHoursAgo": "счет давно",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "timeMinutesAgo": "{счет}m ago",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
   "loadMoreAlerts": "Загрузите больше предупреждений",
   "toggleMufonTooltip": "Наблюдения MUFON",
   "showMufonData": "Показать данные MUFON",
@@ -144,8 +260,20 @@
   "filteredSuffix": "фильтрованный",
   "detailsTitle": "Подробности",
   "mufonCase": "МУФОН Дело",
+  "mufonCaseDetailsTitle": "МУФОН Случай #{caseNumber} Подробности",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
   "sightingDate": "Дата наблюдения",
+  "mufonDatabaseEntryDate": "Дата вхождения в MUFON База данных",
   "databaseEntry": "Вход в базу данных",
+  "shareLink": "Share Link",
+  "linkCopied": "Link скопирован в буфер обмена",
   "locationLabel": "Расположение",
   "distanceLabel": "Расстояние",
   "timeLabel": "Время",
@@ -153,121 +281,7 @@
   "unknownLocation": "Неизвестное местоположение",
   "locationUnknown": "Местонахождение неизвестно",
   "witnessesLabel": "Свидетели",
-  "witnessesCountMessage": "{count} люди подтвердили это наблюдение",
-  "photoAnalysisTitle": "Анализ фотографий",
-  "mediaItemsProcessed": "Анализ: {count} медиафайл(ы), обработанный",
-  "addMoreMedia": "Добавить больше",
-  "addMedia": "Добавить медиа",
-  "retakePhoto": "Восстановить фото",
-  "retakeVideo": "Восстановить видео",
-  "@alertDistance": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "1.2 mi"
-      }
-    }
-  },
-  "@alertDirection": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "137"
-      }
-    }
-  },
-  "@reportedBy": {
-    "placeholders": {
-      "username": {
-        "type": "String",
-        "example": "stargazer01"
-      }
-    }
-  },
-  "@reportedAt": {
-    "placeholders": {
-      "timeAgo": {
-        "type": "String",
-        "example": "5m ago"
-      }
-    }
-  },
-  "@distanceAway": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "2.4 km"
-      }
-    }
-  },
-  "@bearingToObject": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "92"
-      }
-    }
-  },
-  "@pointingTo": {
-    "placeholders": {
-      "direction": {
-        "type": "String",
-        "example": "SE"
-      }
-    }
-  },
-  "@pushBodyAlertNearby": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "0.8 mi"
-      }
-    }
-  },
-  "@cloudCover": {
-    "placeholders": {
-      "percent": {
-        "type": "int",
-        "example": "63"
-      }
-    }
-  },
-  "@wind": {
-    "placeholders": {
-      "speed": {
-        "type": "num",
-        "example": "12.4"
-      },
-      "unit": {
-        "type": "String",
-        "example": "mph"
-      }
-    }
-  },
-  "@timeDaysAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "@timeHoursAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "5"
-      }
-    }
-  },
-  "@timeMinutesAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "12"
-      }
-    }
-  },
+  "witnessesCountMessage": "люди подтвердили это наблюдение",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -276,6 +290,8 @@
       }
     }
   },
+  "photoAnalysisTitle": "Анализ фотографий",
+  "mediaItemsProcessed": "Анализ: {count} медиафайл(ы) обработан",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -284,6 +300,10 @@
       }
     }
   },
+  "addMoreMedia": "Добавить больше",
+  "addMedia": "Добавить медиа",
+  "retakePhoto": "Восстановить фото",
+  "retakeVideo": "Восстановить видео",
   "camera": "Камера",
   "gallery": "Галерея",
   "basicSettings": "Основные настройки",
@@ -304,23 +324,16 @@
   "webAdminInterface": "Веб-интерфейс администратора",
   "adminBetaNotice": "Бета строит только Инструменты администратора для тестирования предупреждений о близости, push-уведомлений и системной диагностики.",
   "whatDoYouSee": "Что ты видишь?",
+  "ufo": "НЛО",
+  "sighting": "Прицел",
   "ufoSighting": "НЛО прицел",
-  "actionsTitle": "Меры",
-  "addPhotosAndVideos": "Добавить фото и видео",
-  "howToReportToMufon": "Как сообщить в MUFON",
-  "reportToMufon": "Сообщить MUFON",
-  "whyReportToMufon": "Зачем отчитываться перед MUFON?",
-  "openMufonReport": "Открыть MUFON Доклад",
-  "confirmedWitness": "Вы подтвердили это наблюдение",
-  "witnessesHaveConfirmed": "{count} люди подтвердили это наблюдение",
-  "@witnessesHaveConfirmed": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
+  "envAnalysisTitle": "Экологический анализ",
+  "envAnalysisPending": "Анализ в ожидании",
+  "envAnalysisPendingDesc": "Экологические данные будут доступны после начала обработки.",
+  "unknownAircraft": "Неизвестный самолет",
+  "moreAircraft": "больше самолетов",
+  "premiumImageryTitle": "Премиальный спутник Изображения",
+  "premiumImagerySubtitle": "Коммерческие изображения высокого разрешения",
   "sightingTypeLabel": "Тип",
   "ufoTypeSphere": "Сфера",
   "ufoTypeTriangle": "Треугольник",
@@ -332,17 +345,6 @@
   "ufoTypeRectangle": "Прямоугольник",
   "ufoTypeFormation": "Формирование",
   "ufoTypeUnknown": "Неизвестный",
-  "mufonCaseDetailsTitle": "МУФОН Случай #{caseNumber} Подробности",
-  "mufonDatabaseEntryDate": "Дата вхождения в MUFON База данных",
-  "shareLink": "Share Link",
-  "linkCopied": "Link скопирован в буфер обмена",
-  "envAnalysisTitle": "Экологический анализ",
-  "envAnalysisPending": "Анализ в ожидании",
-  "envAnalysisPendingDesc": "Экологические данные будут доступны после начала обработки.",
-  "unknownAircraft": "Неизвестный самолет",
-  "moreAircraft": "больше самолетов",
-  "premiumImageryTitle": "Премиальный спутник Изображения",
-  "premiumImagerySubtitle": "Коммерческие изображения высокого разрешения",
   "ufoTypeBoomerang": "Бумеранг",
   "ufoTypeDiamond": "Алмаз",
   "ufoTypeOval": "Оваль",
@@ -355,6 +357,45 @@
   "ufoTypeSaturn": "Сатурн",
   "ufoTypeStarLike": "Звездообразный",
   "ufoTypeBlimp": "Блеск",
+  "shapeTriangle": "треугольник",
+  "shapeDisc": "диск",
+  "shapeDisk": "диск",
+  "shapeSphere": "область",
+  "shapeCigar": "сигара",
+  "shapeLight": "свет",
+  "shapeBoomerang": "бумеранг",
+  "shapeDiamond": "алмаз",
+  "shapeRectangle": "прямоугольник",
+  "shapeOval": "овальный",
+  "shapeCone": "конус",
+  "shapeCross": "крест",
+  "shapeCylinder": "цилиндр",
+  "shapeDumbbell": "гантель",
+  "shapeTeardrop": "капля слез",
+  "shapeTicTac": "тик-так",
+  "shapeBullet": "пуля",
+  "shapeSaturn": "поворот",
+  "shapeStarlike": "звездообразный",
+  "shapeBlimp": "ремень",
+  "shapeFireball": "огненный шар",
+  "shapeFormation": "формирование",
+  "shapeUnknown": "неизвестный",
+  "actionsTitle": "Меры",
+  "addPhotosAndVideos": "Добавить фото и видео",
+  "howToReportToMufon": "Как сообщить в MUFON",
+  "reportToMufon": "Сообщить MUFON",
+  "whyReportToMufon": "Зачем отчитываться перед MUFON?",
+  "openMufonReport": "Открыть MUFON Доклад",
+  "confirmedWitness": "Вы подтвердили это наблюдение",
+  "witnessesHaveConfirmed": "люди подтвердили это наблюдение",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "aircraftTrackingTitle": "Отслеживание самолетов",
   "weatherConditionsTitle": "Погодные условия",
   "noSatellitePasses": "Никаких видимых спутниковых проходов обнаружено не было",
@@ -367,21 +408,8 @@
   "premiumAccessCreators": "Создатели предупреждений",
   "premiumAccessWitnesses": "Подтвержденные свидетели в пределах видимости",
   "comingSoon": "Скоро придет",
-  "@mufonCaseDetailsTitle": {
-    "placeholders": {
-      "caseNumber": {
-        "type": "String",
-        "example": "12345"
-      }
-    }
-  },
   "directionDistanceTitle": "Направление и расстояние",
-  "mufonCaseTitle": "МУФОН Дело #{caseNumber}",
-  "satellitePassesTitle": "Спутниковые проходы",
-  "satellitePassExplanation": "Видимый спутник проходит во время наблюдения. Многие сообщения об НЛО на самом деле являются спутниками или космическим мусором.",
-  "followingAlert": "После предупреждения - вы получите уведомления о комментариях",
-  "unfollowedAlert": "Unfollowed alert - больше никаких комментариев",
-  "alertFollowError": "Обновление ошибок Следуйте за статусом",
+  "mufonCaseTitle": "МУФОН Случай #{caseNumber}",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -389,5 +417,61 @@
         "example": "12345"
       }
     }
-  }
+  },
+  "satellitePassesTitle": "Спутниковые проходы",
+  "satellitePassExplanation": "Видимый спутник проходит во время наблюдения. Многие сообщения об НЛО на самом деле являются спутниками или космическим мусором.",
+  "followingAlert": "После предупреждения - вы получите уведомления о комментариях",
+  "unfollowedAlert": "Unfollowed alert - больше никаких комментариев",
+  "alertFollowError": "Обновление ошибок Следуйте за статусом",
+  "notificationChannelAlerts": "Предупреждения UFOBeep",
+  "notificationChannelAlertsDesc": "Уведомления о сигналах НЛО и предупреждениях о близости",
+  "notificationSightingTitle": "НЛО прицел",
+  "notificationSightingUrgent": "Срочный НЛО прицел",
+  "notificationSightingEmergency": "Чрезвычайный НЛО прицел",
+  "notificationSightingBody": "[свидетель] рядом с местом Имя",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "↓ {имя пользователя} прокомментировал",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "Новый взгляд",
+  "notificationWitnessTextMultiple": "свидетели",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "Снюз 1ч",
+  "notificationActionDismiss": "Увольнение",
+  "notificationDistance": "расстояние",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  },
+  "unknown": "неизвестный",
+  "report": "доклад",
+  "mufon": "мафия"
 }

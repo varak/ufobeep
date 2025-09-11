@@ -1,4 +1,9 @@
 {
-  "profile": "プロフィール",
-  "settings": "コンテンツ"
+  "tabAlerts": "アラート",
+  "tabBeep": "ビープ",
+  "tabChat": "チャット",
+  "tabMap": "サイトマップ",
+  "tabSettings": "コンテンツ",
+  "mufonDatabaseEntryDate": "MUFON に入力された日付 データベース",
+  "databaseEntry": "データベースのエントリ"
 }

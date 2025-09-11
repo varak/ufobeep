@@ -1,5 +1,5 @@
 {
-  "@@locale": "ar",
+  "@@locale": "en",
   "appName": "UFOBeep",
   "ok": "حسناً",
   "cancel": "إلغاء",
@@ -37,8 +37,24 @@
   "alertsTitle": "تنبيهات قريبة",
   "noAlerts": "لا تنبيهات قريبة بعد.",
   "pullToRefresh": "سحب لتنعش",
-  "alertDistance": "_",
-  "alertDirection": "-",
+  "alertDistance": "ابتعد",
+  "@alertDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2 mi"
+      }
+    }
+  },
+  "alertDirection": "{bearing}°",
+  "@alertDirection": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "137"
+      }
+    }
+  },
   "viewAlert": "تحذير",
   "viewOnMap": "مشاهدة على الخريطة",
   "iSeeItToo": "أراه أيضاً",
@@ -52,6 +68,14 @@
   "descriptionHint": "صف ما تراه في السماء",
   "submitBeep": "إرسال Beep",
   "beepSent": "Beep sent",
+  "beepSentWithUrl": "Beep أرسل بنجاح",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
   "uploadingMedia": "تحميل وسائل الإعلام..",
   "includeLocation": "يشمل الموقع",
   "includeTimestamp": "Include timestamp",
@@ -65,10 +89,42 @@
   "microphonePermissionBody": "الحصول على الميكروفون للحصول على الفيديو بالصوت.",
   "openSettings": "الأطر المفتوحة",
   "alertDetailTitle": "تفاصيل النظر",
-  "reportedBy": "Reported by_PH_0",
-  "reportedAt": "Reported __PH_0_",
-  "distanceAway": "_",
-  "bearingToObject": "وإذ يعترض على ما يلي: _",
+  "reportedBy": "Reported by {username}",
+  "@reportedBy": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "reportedAt": "Reported {time Ago}",
+  "@reportedAt": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "5m ago"
+      }
+    }
+  },
+  "distanceAway": "ابتعد",
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.4 km"
+      }
+    }
+  },
+  "bearingToObject": "اعتراض: {bearing}°",
+  "@bearingToObject": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "92"
+      }
+    }
+  },
   "openCompass": "البوصلة المفتوحة",
   "openAR": "فتح النفقة",
   "openChat": "محادثة مفتوحة",
@@ -87,18 +143,54 @@
   "compassPilotMode": "Pilot Mode",
   "compassStandardDescription": "العنوان الأساسي والملاحة",
   "compassPilotDescription": "الملاحة المتقدمة مع اتفاق التجارة الحرة والمبادرة",
-  "pointingTo": "نشير إلى",
+  "pointingTo": "Pointing to {direction}",
+  "@pointingTo": {
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "SE"
+      }
+    }
+  },
   "calibratingCompass": "البوصلة المعايرة..",
   "openAROverlay": "فتح النفقة",
   "pushTitleAlertNearby": "إنذار يو إف أو بالقرب منك",
-  "pushBodyAlertNearby": "A new sighting was reported __PH_0_ away.",
+  "pushBodyAlertNearby": "A new sighting was reported {distance} away.",
+  "@pushBodyAlertNearby": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "0.8 mi"
+      }
+    }
+  },
   "pushTitleComment": "تعليق جديد",
   "pushBodyComment": "شخص ما علّقَ على a مشاهد أنت تَتْبعُ.",
   "pushTitleWitness": "تأكيد الشهود",
   "pushBodyWitness": "المستعمل أكد أنهم يرون نفس الجسم.",
   "weather": "الطقس",
-  "cloudCover": "غطاء السحاب: _",
-  "wind": "الفائز: __PH_0 ________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "cloudCover": "{نسبة مئوية}",
+  "@cloudCover": {
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "63"
+      }
+    }
+  },
+  "wind": "Wind: {speed} {unit}",
+  "@wind": {
+    "placeholders": {
+      "speed": {
+        "type": "num",
+        "example": "12.4"
+      },
+      "unit": {
+        "type": "String",
+        "example": "mph"
+      }
+    }
+  },
   "nearbyAircraft": "طائرات قريبة",
   "noAircraft": "لا توجد طائرات قريبة",
   "loadingContext": "وضع السياق البيئي",
@@ -133,8 +225,32 @@
   "imageOnly": "الصورة فقط",
   "timeJustNow": "الآن",
   "timeDaysAgo": "قبل",
-  "timeHoursAgo": "قبل",
-  "timeMinutesAgo": "قبل",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "timeHoursAgo": "منذ",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "timeMinutesAgo": "منذ",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
   "loadMoreAlerts": "عدد أكبر من التحذيرات",
   "toggleMufonTooltip": "مشاهدات (مافون)",
   "showMufonData": "بيانات البرنامج",
@@ -144,8 +260,20 @@
   "filteredSuffix": "ممتلئة",
   "detailsTitle": "التفاصيل",
   "mufonCase": "MUFON القضية",
+  "mufonCaseDetailsTitle": "MUFON Case #{caseNumber} details",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
   "sightingDate": "المصارعة",
+  "mufonDatabaseEntryDate": "تاريخ دخوله قاعدة البيانات",
   "databaseEntry": "دخول قاعدة البيانات",
+  "shareLink": "Share Link",
+  "linkCopied": "(لينك) تم نسخه من لوح المشبك",
   "locationLabel": "الموقع",
   "distanceLabel": "المسافة",
   "timeLabel": "الوقت",
@@ -153,121 +281,7 @@
   "unknownLocation": "مكان مجهول",
   "locationUnknown": "الموقع غير معروف",
   "witnessesLabel": "الشهود",
-  "witnessesCountMessage": "الناس أكدوا هذا",
-  "photoAnalysisTitle": "تحليل الصور",
-  "mediaItemsProcessed": "Analysis: {count}_media file(s) processed",
-  "addMoreMedia": "أكثر",
-  "addMedia": "وسائط الإعلام",
-  "retakePhoto": "Retake Photo",
-  "retakeVideo": "Retake Video",
-  "@alertDistance": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "1.2 mi"
-      }
-    }
-  },
-  "@alertDirection": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "137"
-      }
-    }
-  },
-  "@reportedBy": {
-    "placeholders": {
-      "username": {
-        "type": "String",
-        "example": "stargazer01"
-      }
-    }
-  },
-  "@reportedAt": {
-    "placeholders": {
-      "timeAgo": {
-        "type": "String",
-        "example": "5m ago"
-      }
-    }
-  },
-  "@distanceAway": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "2.4 km"
-      }
-    }
-  },
-  "@bearingToObject": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "92"
-      }
-    }
-  },
-  "@pointingTo": {
-    "placeholders": {
-      "direction": {
-        "type": "String",
-        "example": "SE"
-      }
-    }
-  },
-  "@pushBodyAlertNearby": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "0.8 mi"
-      }
-    }
-  },
-  "@cloudCover": {
-    "placeholders": {
-      "percent": {
-        "type": "int",
-        "example": "63"
-      }
-    }
-  },
-  "@wind": {
-    "placeholders": {
-      "speed": {
-        "type": "num",
-        "example": "12.4"
-      },
-      "unit": {
-        "type": "String",
-        "example": "mph"
-      }
-    }
-  },
-  "@timeDaysAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "@timeHoursAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "5"
-      }
-    }
-  },
-  "@timeMinutesAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "12"
-      }
-    }
-  },
+  "witnessesCountMessage": "الناس أكدوا هذا المشاهد",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -276,6 +290,8 @@
       }
     }
   },
+  "photoAnalysisTitle": "تحليل الصور",
+  "mediaItemsProcessed": "Analysis: {count} media file(s) processed",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -284,6 +300,10 @@
       }
     }
   },
+  "addMoreMedia": "أكثر",
+  "addMedia": "وسائط الإعلام",
+  "retakePhoto": "Retake Photo",
+  "retakeVideo": "Retake Video",
   "camera": "آلة تصوير",
   "gallery": "Gallery",
   "basicSettings": "الأساسيات",
@@ -304,23 +324,16 @@
   "webAdminInterface": "Web Admin Interface",
   "adminBetaNotice": "بيتا يبني فقط أداتين لاختبار تنبيهات القرب والإخطارات بالدفع و تشخيص النظام.",
   "whatDoYouSee": "ماذا ترى؟?",
+  "ufo": "UFO",
+  "sighting": "البصر",
   "ufoSighting": "UFO البصر",
-  "actionsTitle": "الإجراءات",
-  "addPhotosAndVideos": "أضف الصور الفوتوغرافية",
-  "howToReportToMufon": "How to Report to MUFON",
-  "reportToMufon": "Report to MUFON",
-  "whyReportToMufon": "لماذا نبلغ (مافون)؟?",
-  "openMufonReport": "مفتوح التقرير",
-  "confirmedWitness": "لقد أكدت هذا المشهد",
-  "witnessesHaveConfirmed": "الناس أكدوا هذا",
-  "@witnessesHaveConfirmed": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
+  "envAnalysisTitle": "Environmental Analysis",
+  "envAnalysisPending": "تحليل",
+  "envAnalysisPendingDesc": "وستكون البيانات البيئية متاحة بمجرد بدء التجهيز.",
+  "unknownAircraft": "طائرة مجهولة",
+  "moreAircraft": "طائرات أخرى",
+  "premiumImageryTitle": "ساتل بريميوم التصوير",
+  "premiumImagerySubtitle": "الصور التجارية العالية الاستبانة",
   "sightingTypeLabel": "النوع",
   "ufoTypeSphere": "نصف الكرة",
   "ufoTypeTriangle": "المثلث",
@@ -332,17 +345,6 @@
   "ufoTypeRectangle": "Rectangle",
   "ufoTypeFormation": "الاستمارة",
   "ufoTypeUnknown": "غير معروف",
-  "mufonCaseDetailsTitle": "MUFON القضية",
-  "mufonDatabaseEntryDate": "تاريخ دخوله قاعدة البيانات",
-  "shareLink": "Share Link",
-  "linkCopied": "(لينك) تم نسخه من لوح المشبك",
-  "envAnalysisTitle": "Environmental Analysis",
-  "envAnalysisPending": "تحليل",
-  "envAnalysisPendingDesc": "وستكون البيانات البيئية متاحة بمجرد بدء التجهيز.",
-  "unknownAircraft": "طائرة مجهولة",
-  "moreAircraft": "طائرات أخرى",
-  "premiumImageryTitle": "ساتل بريميوم التصوير",
-  "premiumImagerySubtitle": "الصور التجارية العالية الاستبانة",
   "ufoTypeBoomerang": "Pomerang",
   "ufoTypeDiamond": "الماس",
   "ufoTypeOval": "Oval",
@@ -355,6 +357,45 @@
   "ufoTypeSaturn": "زحل",
   "ufoTypeStarLike": "مثل النجوم",
   "ufoTypeBlimp": "Blimp",
+  "shapeTriangle": "مثلث",
+  "shapeDisc": "(ج)",
+  "shapeDisk": "قرص",
+  "shapeSphere": "المجال",
+  "shapeCigar": "السيجار",
+  "shapeLight": "الضوء",
+  "shapeBoomerang": "boomerang",
+  "shapeDiamond": "الماس",
+  "shapeRectangle": "التراجع",
+  "shapeOval": "oval",
+  "shapeCone": "cone",
+  "shapeCross": "الصليب",
+  "shapeCylinder": "الأسطوانة",
+  "shapeDumbbell": "غبي",
+  "shapeTeardrop": "الدموع",
+  "shapeTicTac": "tic-tac",
+  "shapeBullet": "رصاصة",
+  "shapeSaturn": "العودة",
+  "shapeStarlike": "النجمة",
+  "shapeBlimp": "blimp",
+  "shapeFireball": "إطلاق النار",
+  "shapeFormation": "التشكيل",
+  "shapeUnknown": "مجهول",
+  "actionsTitle": "الإجراءات",
+  "addPhotosAndVideos": "أضف الصور الفوتوغرافية",
+  "howToReportToMufon": "How to Report to MUFON",
+  "reportToMufon": "Report to MUFON",
+  "whyReportToMufon": "لماذا نبلغ (مافون)؟?",
+  "openMufonReport": "مفتوح التقرير",
+  "confirmedWitness": "لقد أكدت هذا المشهد",
+  "witnessesHaveConfirmed": "الناس أكدوا هذا المشهد",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "aircraftTrackingTitle": "تعقب الطائرات",
   "weatherConditionsTitle": "أحوال الطقس",
   "noSatellitePasses": "No visible satellite passes found",
@@ -367,21 +408,8 @@
   "premiumAccessCreators": "مبدئي إنذار",
   "premiumAccessWitnesses": "الشهود المؤكدون في نطاق الرؤية",
   "comingSoon": "قادم قريبا",
-  "@mufonCaseDetailsTitle": {
-    "placeholders": {
-      "caseNumber": {
-        "type": "String",
-        "example": "12345"
-      }
-    }
-  },
   "directionDistanceTitle": "Direction ' Distance",
   "mufonCaseTitle": "MUFON القضية",
-  "satellitePassesTitle": "تصاريح ساتلية",
-  "satellitePassExplanation": "قمر صناعي مرئي يمر خلال الإطار الزمني وكثير من تقارير المدار الثابت بالنسبة للأرض هي في الواقع سواتل أو حطام فضائي.",
-  "followingAlert": "بعد تنبيه - سوف تحصل على إشعارات التعليق",
-  "unfollowedAlert": "إنذار غير متوفر - لا مزيد من إخطارات التعليق",
-  "alertFollowError": "استكمال الأخطاء",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -389,5 +417,61 @@
         "example": "12345"
       }
     }
-  }
+  },
+  "satellitePassesTitle": "تصاريح ساتلية",
+  "satellitePassExplanation": "قمر صناعي مرئي يمر خلال الإطار الزمني وكثير من تقارير المدار الثابت بالنسبة للأرض هي في الواقع سواتل أو حطام فضائي.",
+  "followingAlert": "بعد تنبيه - سوف تحصل على إشعارات التعليق",
+  "unfollowedAlert": "إنذار غير متوفر - لا مزيد من إخطارات التعليق",
+  "alertFollowError": "استكمال الأخطاء",
+  "notificationChannelAlerts": "UFOBeep Alerts",
+  "notificationChannelAlertsDesc": "الإخطارات المتعلقة بأجهزة الإنذار بالأشعة فوق البنفسجية",
+  "notificationSightingTitle": "UFO البصر",
+  "notificationSightingUrgent": "  URGENT UFO البصر",
+  "notificationSightingEmergency": "  EMERGENCY UFO البصر",
+  "notificationSightingBody": "{witnessText} قرب موقع الاسم",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "💬 {username} commented",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "مشاهدة جديدة",
+  "notificationWitnessTextMultiple": "الشهود",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "Snooze 1h",
+  "notificationActionDismiss": "الانصراف",
+  "notificationDistance": "ابتعد",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  },
+  "unknown": "مجهول",
+  "report": "التقرير",
+  "mufon": "mufon"
 }

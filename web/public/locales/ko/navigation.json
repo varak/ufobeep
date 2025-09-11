@@ -1,4 +1,9 @@
 {
-  "profile": "제품정보",
-  "settings": "지원하다"
+  "tabAlerts": "지원하다",
+  "tabBeep": "뚱 베어",
+  "tabChat": "이름 *",
+  "tabMap": "지도보기",
+  "tabSettings": "지원하다",
+  "mufonDatabaseEntryDate": "날짜 입력 MUFON 관련 기사",
+  "databaseEntry": "데이터베이스"
 }

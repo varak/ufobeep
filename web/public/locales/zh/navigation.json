@@ -1,4 +1,9 @@
 {
-  "profile": "简介",
-  "settings": "设置"
+  "tabAlerts": "警报",
+  "tabBeep": "哔",
+  "tabChat": "聊天",
+  "tabMap": "地图",
+  "tabSettings": "设置",
+  "mufonDatabaseEntryDate": "输入 MUFON 的日期 数据库",
+  "databaseEntry": "数据库条目"
 }

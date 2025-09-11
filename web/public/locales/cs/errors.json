@@ -1,0 +1,8 @@
+{
+  "errorGeneric": "Něco se pokazilo.",
+  "errorNoLocation": "Místo není k dispozici. Zkuste to znovu venku s jasným výhledem na oblohu.",
+  "errorNoCamera": "Kamera není na tomto zařízení k dispozici.",
+  "errorUploadFailed": "Nahrávání selhalo. Prosím, zkuste to znovu.",
+  "errorPermissionDenied": "Povolení zamítnuto.",
+  "errorInvalidUsername": "To uživatelské jméno není k dispozici."
+}

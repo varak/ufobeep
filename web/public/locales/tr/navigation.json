@@ -1,4 +1,9 @@
 {
-  "profile": "Profil Profili",
-  "settings": "Ayarlar"
+  "tabAlerts": "Uyarılar",
+  "tabBeep": "Beep",
+  "tabChat": "Chat",
+  "tabMap": "Map",
+  "tabSettings": "Ayarlar",
+  "mufonDatabaseEntryDate": "Tarih MUFON'a girdi Veritabanı Veritabanı",
+  "databaseEntry": "Veritabanı"
 }

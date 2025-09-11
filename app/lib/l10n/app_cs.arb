@@ -1,5 +1,5 @@
 {
-  "@@locale": "cs",
+  "@@locale": "en",
   "appName": "UFOBEep",
   "ok": "DOBŘE",
   "cancel": "Zrušit",
@@ -37,8 +37,24 @@
   "alertsTitle": "Blízké výstrahy",
   "noAlerts": "Zatím žádné varování.",
   "pullToRefresh": "Zatáhněte za obnovení",
-  "alertDistance": "_ _ PH _ 0 _ _ pryč",
-  "alertDirection": "Ložisko _ _ PH _ 0 _ _ °",
+  "alertDistance": "{distance} away",
+  "@alertDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2 mi"
+      }
+    }
+  },
+  "alertDirection": "Ložisko",
+  "@alertDirection": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "137"
+      }
+    }
+  },
   "viewAlert": "Zobrazit upozornění",
   "viewOnMap": "Zobrazit na mapě",
   "iSeeItToo": "Taky to vidím",
@@ -52,6 +68,14 @@
   "descriptionHint": "Popište, co vidíte na obloze..",
   "submitBeep": "Poslat Beep",
   "beepSent": "Píp odeslán",
+  "beepSentWithUrl": "Píp odeslaný úspěšně",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
   "uploadingMedia": "Nahrávání médií..",
   "includeLocation": "Zahrnout umístění",
   "includeTimestamp": "Zahrnout časové razítko",
@@ -65,10 +89,42 @@
   "microphonePermissionBody": "Grant mikrofon přístup pro záznam videa s audio.",
   "openSettings": "Otevřít nastavení",
   "alertDetailTitle": "Detaily pozorování",
-  "reportedBy": "Nahlášeno _ _ PH _ 0 _ _",
-  "reportedAt": "Hlášený _ _ PH _ 0 _ _",
-  "distanceAway": "_ _ PH _ 0 _ _ pryč",
-  "bearingToObject": "Nošení námitky: _ _ PH _ 0 _ _ °",
+  "reportedBy": "Nahlášeno {username}",
+  "@reportedBy": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "reportedAt": "Hlášený čas {Ago",
+  "@reportedAt": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "5m ago"
+      }
+    }
+  },
+  "distanceAway": "{distance} away",
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.4 km"
+      }
+    }
+  },
+  "bearingToObject": "Ložisko objektu: {ložisko} °",
+  "@bearingToObject": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "92"
+      }
+    }
+  },
   "openCompass": "Otevřený kompas",
   "openAR": "Otevřené překrytí AR",
   "openChat": "Otevřít chat",
@@ -87,18 +143,54 @@
   "compassPilotMode": "Režim pilota",
   "compassStandardDescription": "Základní název a navigace",
   "compassPilotDescription": "Pokročilá navigace s ETA a vektorováním",
-  "pointingTo": "Ukazuji na _ _ PH _ 0 _ _",
+  "pointingTo": "Ukazuji na {směr}",
+  "@pointingTo": {
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "SE"
+      }
+    }
+  },
   "calibratingCompass": "Kalibrační kompas..",
   "openAROverlay": "Otevřené překrytí AR",
   "pushTitleAlertNearby": "Pozor UFO blízko vás",
-  "pushBodyAlertNearby": "Bylo hlášeno nové pozorování _ _ PH _ 0 _ _ away.",
+  "pushBodyAlertNearby": "Bylo nahlášeno nové pozorování.",
+  "@pushBodyAlertNearby": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "0.8 mi"
+      }
+    }
+  },
   "pushTitleComment": "Nový komentář",
   "pushBodyComment": "Někdo komentoval pozorování, které sledujete.",
   "pushTitleWitness": "Potvrzení svědka",
   "pushBodyWitness": "Uživatel potvrdil, že vidí stejný objekt.",
   "weather": "Počasí",
-  "cloudCover": "Cloud cover: _ _ PH _ 0 _ _%",
-  "wind": "Vítr: _ _ PH _ 0 _ _ _ _ PH _ 1 _ _",
+  "cloudCover": "Cloud cover: {%}%",
+  "@cloudCover": {
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "63"
+      }
+    }
+  },
+  "wind": "Vítr: {speed} {jednotka}",
+  "@wind": {
+    "placeholders": {
+      "speed": {
+        "type": "num",
+        "example": "12.4"
+      },
+      "unit": {
+        "type": "String",
+        "example": "mph"
+      }
+    }
+  },
   "nearbyAircraft": "Nedaleko letadla",
   "noAircraft": "Žádné letadlo poblíž",
   "loadingContext": "Nahrávám kontext prostředí..",
@@ -132,9 +224,33 @@
   "videoOnly": "pouze video",
   "imageOnly": "pouze obrázek",
   "timeJustNow": "Právě teď",
-  "timeDaysAgo": "Před",
-  "timeHoursAgo": "_ _ PH _ 0 _ _ h před",
-  "timeMinutesAgo": "Před tím",
+  "timeDaysAgo": "{count} d před",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "timeHoursAgo": "{count} h před",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "timeMinutesAgo": "{count} m před",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
   "loadMoreAlerts": "Načíst více upozornění",
   "toggleMufonTooltip": "Zapnout pozorování mufonu",
   "showMufonData": "Zobrazit data MUFON",
@@ -144,8 +260,20 @@
   "filteredSuffix": "filtrované",
   "detailsTitle": "Podrobnosti",
   "mufonCase": "MUFON Případ",
+  "mufonCaseDetailsTitle": "MUFON Případ # {caseNumber} Podrobnosti",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
   "sightingDate": "Datum pozorování",
+  "mufonDatabaseEntryDate": "Datum zařazení do MUFON Databáze",
   "databaseEntry": "Záznam databáze",
+  "shareLink": "Sdílet odkaz",
+  "linkCopied": "Odkaz zkopírován do schránky",
   "locationLabel": "Umístění",
   "distanceLabel": "Vzdálenost",
   "timeLabel": "Čas",
@@ -153,121 +281,7 @@
   "unknownLocation": "Neznámé umístění",
   "locationUnknown": "Umístění není známo",
   "witnessesLabel": "Svědci",
-  "witnessesCountMessage": "_ _ PH _ 0 _ _ lidé potvrdili toto pozorování",
-  "photoAnalysisTitle": "Analýza fotografií",
-  "mediaItemsProcessed": "Analýza: _ _ PH _ 0 _ _ media soubor (y) zpracován",
-  "addMoreMedia": "Přidat více",
-  "addMedia": "Přidat média",
-  "retakePhoto": "Fotografie znovu",
-  "retakeVideo": "Retake video",
-  "@alertDistance": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "1.2 mi"
-      }
-    }
-  },
-  "@alertDirection": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "137"
-      }
-    }
-  },
-  "@reportedBy": {
-    "placeholders": {
-      "username": {
-        "type": "String",
-        "example": "stargazer01"
-      }
-    }
-  },
-  "@reportedAt": {
-    "placeholders": {
-      "timeAgo": {
-        "type": "String",
-        "example": "5m ago"
-      }
-    }
-  },
-  "@distanceAway": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "2.4 km"
-      }
-    }
-  },
-  "@bearingToObject": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "92"
-      }
-    }
-  },
-  "@pointingTo": {
-    "placeholders": {
-      "direction": {
-        "type": "String",
-        "example": "SE"
-      }
-    }
-  },
-  "@pushBodyAlertNearby": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "0.8 mi"
-      }
-    }
-  },
-  "@cloudCover": {
-    "placeholders": {
-      "percent": {
-        "type": "int",
-        "example": "63"
-      }
-    }
-  },
-  "@wind": {
-    "placeholders": {
-      "speed": {
-        "type": "num",
-        "example": "12.4"
-      },
-      "unit": {
-        "type": "String",
-        "example": "mph"
-      }
-    }
-  },
-  "@timeDaysAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "@timeHoursAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "5"
-      }
-    }
-  },
-  "@timeMinutesAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "12"
-      }
-    }
-  },
+  "witnessesCountMessage": "lidé potvrdili toto pozorování",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -276,6 +290,8 @@
       }
     }
   },
+  "photoAnalysisTitle": "Analýza fotografií",
+  "mediaItemsProcessed": "Analýza: {count} media soubor (y) zpracován",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -284,6 +300,10 @@
       }
     }
   },
+  "addMoreMedia": "Přidat více",
+  "addMedia": "Přidat média",
+  "retakePhoto": "Fotografie znovu",
+  "retakeVideo": "Retake video",
   "camera": "Kamera",
   "gallery": "Galerie",
   "basicSettings": "Základní nastavení",
@@ -304,23 +324,16 @@
   "webAdminInterface": "Web Admin rozhraní",
   "adminBetaNotice": "Beta jen staví. Administrátorské nástroje pro testování upozornění na blízkost, tlačení oznámení a systémové diagnostiky.",
   "whatDoYouSee": "Co vidíš?",
+  "ufo": "UFO",
+  "sighting": "Vidění",
   "ufoSighting": "UFO Vidění",
-  "actionsTitle": "Akce",
-  "addPhotosAndVideos": "Přidat fotografie a videa",
-  "howToReportToMufon": "Jak podat zprávu MUFON",
-  "reportToMufon": "Zpráva pro MUFON",
-  "whyReportToMufon": "Proč se hlásit na MUFON?",
-  "openMufonReport": "Open MUFON Zpráva",
-  "confirmedWitness": "Potvrdil jste toto pozorování",
-  "witnessesHaveConfirmed": "Lidé potvrdili toto pozorování",
-  "@witnessesHaveConfirmed": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
+  "envAnalysisTitle": "Environmentální analýza",
+  "envAnalysisPending": "Probíhá analýza",
+  "envAnalysisPendingDesc": "Údaje o životním prostředí budou k dispozici, jakmile začne zpracování.",
+  "unknownAircraft": "Neznámé letadlo",
+  "moreAircraft": "více letadel",
+  "premiumImageryTitle": "Premium Satellite Imagery",
+  "premiumImagerySubtitle": "Obchodní obrázky s vysokým rozlišením",
   "sightingTypeLabel": "Typ",
   "ufoTypeSphere": "Koule",
   "ufoTypeTriangle": "Trojúhelník",
@@ -332,17 +345,6 @@
   "ufoTypeRectangle": "Obdélník",
   "ufoTypeFormation": "Formace",
   "ufoTypeUnknown": "Neznámé",
-  "mufonCaseDetailsTitle": "MUFON Případ # _ _ PH _ 0 _ _ Podrobnosti",
-  "mufonDatabaseEntryDate": "Datum zařazení do MUFON Databáze",
-  "shareLink": "Sdílet odkaz",
-  "linkCopied": "Odkaz zkopírován do schránky",
-  "envAnalysisTitle": "Environmentální analýza",
-  "envAnalysisPending": "Probíhá analýza",
-  "envAnalysisPendingDesc": "Údaje o životním prostředí budou k dispozici, jakmile začne zpracování.",
-  "unknownAircraft": "Neznámé letadlo",
-  "moreAircraft": "více letadel",
-  "premiumImageryTitle": "Premium Satellite Imagery",
-  "premiumImagerySubtitle": "Obchodní obrázky s vysokým rozlišením",
   "ufoTypeBoomerang": "Bumerang",
   "ufoTypeDiamond": "Diamond",
   "ufoTypeOval": "Oval",
@@ -355,6 +357,45 @@
   "ufoTypeSaturn": "Saturn",
   "ufoTypeStarLike": "Star- like",
   "ufoTypeBlimp": "Balón",
+  "shapeTriangle": "trojúhelník",
+  "shapeDisc": "disk",
+  "shapeDisk": "disk",
+  "shapeSphere": "koule",
+  "shapeCigar": "doutník",
+  "shapeLight": "světlo",
+  "shapeBoomerang": "bumerang",
+  "shapeDiamond": "diamant",
+  "shapeRectangle": "obdélník",
+  "shapeOval": "ovál",
+  "shapeCone": "kužel",
+  "shapeCross": "kříž",
+  "shapeCylinder": "válec",
+  "shapeDumbbell": "dumbbell",
+  "shapeTeardrop": "slzy",
+  "shapeTicTac": "tick- tac",
+  "shapeBullet": "kulka",
+  "shapeSaturn": "saturn",
+  "shapeStarlike": "hvězdičky",
+  "shapeBlimp": "vzducholoď",
+  "shapeFireball": "ohnivá koule",
+  "shapeFormation": "tvorba",
+  "shapeUnknown": "neznámý",
+  "actionsTitle": "Akce",
+  "addPhotosAndVideos": "Přidat fotografie a videa",
+  "howToReportToMufon": "Jak podat zprávu MUFON",
+  "reportToMufon": "Zpráva pro MUFON",
+  "whyReportToMufon": "Proč se hlásit na MUFON?",
+  "openMufonReport": "Open MUFON Zpráva",
+  "confirmedWitness": "Potvrdil jste toto pozorování",
+  "witnessesHaveConfirmed": "lidé potvrdili toto pozorování",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "aircraftTrackingTitle": "Sledování letadel",
   "weatherConditionsTitle": "Podmínky počasí",
   "noSatellitePasses": "Žádné viditelné satelitní propustky nalezeny",
@@ -367,12 +408,70 @@
   "premiumAccessCreators": "Tvůrci výstrahy",
   "premiumAccessWitnesses": "Potvrzení svědci v dosahu viditelnosti",
   "comingSoon": "Už brzy",
-  "@mufonCaseDetailsTitle": {
+  "directionDistanceTitle": "Směr a vzdálenost",
+  "mufonCaseTitle": "MUFON Případ # {caseNumber}",
+  "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
         "type": "String",
         "example": "12345"
       }
     }
-  }
+  },
+  "satellitePassesTitle": "Satelitní průkazy",
+  "satellitePassExplanation": "Viditelné satelitní propustky během časového rámce pozorování. Mnoho hlášení UFO jsou ve skutečnosti satelity nebo vesmírné trosky.",
+  "followingAlert": "Po upozornění - obdržíte oznámení o komentářích",
+  "unfollowedAlert": "Nesledovaná výstraha - žádné další oznámení komentářů",
+  "alertFollowError": "Chyba při aktualizaci stavu sledování",
+  "notificationChannelAlerts": "UFOBEep upozornění",
+  "notificationChannelAlertsDesc": "Oznámení o pípnutí UFO a upozornění na blízkost",
+  "notificationSightingTitle": "UFO Vidění",
+  "notificationSightingUrgent": "Name Vidění",
+  "notificationSightingEmergency": "POSLEDNÍ UFO Vidění",
+  "notificationSightingBody": "{witnesText} v blízkosti {umístění Název}",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "{username} komentoval",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "Nové pozorování",
+  "notificationWitnessTextMultiple": "svědci",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "Snooze 1h",
+  "notificationActionDismiss": "Rozpustit",
+  "notificationDistance": "{distance} away",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  },
+  "unknown": "neznámý",
+  "report": "zpráva",
+  "mufon": "mufon"
 }

@@ -1,0 +1,8 @@
+{
+  "errorGeneric": "Etwas ging schief.",
+  "errorNoLocation": "Standort nicht verfügbar. Versuchen Sie wieder draußen mit klarem Himmelblick.",
+  "errorNoCamera": "Kamera auf diesem Gerät nicht verfügbar.",
+  "errorUploadFailed": "Hochladen versagt. Bitte versuchen Sie es noch mal.",
+  "errorPermissionDenied": "Erlaubnis verweigert.",
+  "errorInvalidUsername": "Dieser Benutzername ist nicht verfügbar."
+}

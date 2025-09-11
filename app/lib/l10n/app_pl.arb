@@ -1,5 +1,5 @@
 {
-  "@@locale": "pl",
+  "@@locale": "en",
   "appName": "UFOBeep",
   "ok": "OK",
   "cancel": "Anuluj",
@@ -37,8 +37,24 @@
   "alertsTitle": "Wpisy w pobliżu",
   "noAlerts": "Żadnych alarmów w pobliżu.",
   "pullToRefresh": "Pociągnij, aby odświeżyć",
-  "alertDistance": "_ _ PH _ 0 _ _ _ daleko",
-  "alertDirection": "Położenie _ _ PH _ 0 _ _ °",
+  "alertDistance": "{odległość} daleko",
+  "@alertDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2 mi"
+      }
+    }
+  },
+  "alertDirection": "Łożysko {łożysko} °",
+  "@alertDirection": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "137"
+      }
+    }
+  },
   "viewAlert": "Pokaż wpis",
   "viewOnMap": "Zobacz na mapie",
   "iSeeItToo": "Ja też to widzę",
@@ -52,6 +68,14 @@
   "descriptionHint": "Opisz to, co widzisz na niebie..",
   "submitBeep": "Wyślij Beep",
   "beepSent": "Beep wysłany",
+  "beepSentWithUrl": "Beep wysłany pomyślnie",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
   "uploadingMedia": "Wysyłanie mediów..",
   "includeLocation": "Dołącz lokalizację",
   "includeTimestamp": "Dołącz znacznik czasu",
@@ -65,10 +89,42 @@
   "microphonePermissionBody": "Dostęp do mikrofonu Granta do nagrywania wideo z audio.",
   "openSettings": "Otwórz ustawienia",
   "alertDetailTitle": "Podglądanie szczegółów",
-  "reportedBy": "Zgłoszony przez _ _ PH _ 0 _ _",
-  "reportedAt": "Zgłoszone _ _ PH _ 0 _ _",
-  "distanceAway": "_ _ PH _ 0 _ _ _ daleko",
-  "bearingToObject": "Nakładanie na obiekt: _ _ PH _ 0 _ _ °",
+  "reportedBy": "Zgłoszony przez {nazwa użytkownika}",
+  "@reportedBy": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "reportedAt": "Zgłoszone {czas Ago",
+  "@reportedAt": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "5m ago"
+      }
+    }
+  },
+  "distanceAway": "{odległość} daleko",
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.4 km"
+      }
+    }
+  },
+  "bearingToObject": "Nakładanie na obiekt: {naniesienie} °",
+  "@bearingToObject": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "92"
+      }
+    }
+  },
   "openCompass": "Otworzyć kompas",
   "openAR": "Otworzyć nakładkę AR",
   "openChat": "Otwórz czat",
@@ -87,18 +143,54 @@
   "compassPilotMode": "Tryb pilota",
   "compassStandardDescription": "Nagłówek i nawigacja",
   "compassPilotDescription": "Zaawansowana nawigacja z ETA i wektoring",
-  "pointingTo": "Wskazanie _ _ PH _ 0 _ _",
+  "pointingTo": "Wskazanie na {kierunek}",
+  "@pointingTo": {
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "SE"
+      }
+    }
+  },
   "calibratingCompass": "Kalibracyjny kompas..",
   "openAROverlay": "Otworzyć nakładkę AR",
   "pushTitleAlertNearby": "Alarm UFO w pobliżu ciebie",
-  "pushBodyAlertNearby": "Zgłoszono nowe spostrzeżenie _ _ PH _ 0 _ _.",
+  "pushBodyAlertNearby": "Zgłaszano nowe obserwacje.",
+  "@pushBodyAlertNearby": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "0.8 mi"
+      }
+    }
+  },
   "pushTitleComment": "Nowy komentarz",
   "pushBodyComment": "Ktoś skomentował twoją obserwację.",
   "pushTitleWitness": "Potwierdzenie świadków",
   "pushBodyWitness": "Użytkownik potwierdził, że widzi ten sam obiekt.",
   "weather": "Pogoda",
-  "cloudCover": "Pokrywa chmurowa: _ _ PH _ 0 _ _%",
-  "wind": "Wiatr: _ _ PH _ 0 _ _ _ _ PH _ 1 _ _",
+  "cloudCover": "Chmura: {procent}%",
+  "@cloudCover": {
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "63"
+      }
+    }
+  },
+  "wind": "Wiatr: {prędkość} {jednostka}",
+  "@wind": {
+    "placeholders": {
+      "speed": {
+        "type": "num",
+        "example": "12.4"
+      },
+      "unit": {
+        "type": "String",
+        "example": "mph"
+      }
+    }
+  },
   "nearbyAircraft": "Pobliskie statki powietrzne",
   "noAircraft": "Brak samolotów w pobliżu",
   "loadingContext": "Wczytywanie kontekstu środowiskowego..",
@@ -132,9 +224,33 @@
   "videoOnly": "tylko wideo",
   "imageOnly": "tylko obraz",
   "timeJustNow": "Przed chwilą",
-  "timeDaysAgo": "_ _ PH _ 0 _ _ d temu",
-  "timeHoursAgo": "_ _ PH _ 0 _ _ _ h temu",
-  "timeMinutesAgo": "_ _ PH _ 0 _ _ m temu",
+  "timeDaysAgo": "{liczyć} d ago",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "timeHoursAgo": "{licz} h ago",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "timeMinutesAgo": "{count} me ago",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
   "loadMoreAlerts": "Wczytaj więcej alarmów",
   "toggleMufonTooltip": "Włączenie / wyłączenie obserwacji MUFON",
   "showMufonData": "Pokaż dane MUFON",
@@ -144,8 +260,20 @@
   "filteredSuffix": "filtrowane",
   "detailsTitle": "Szczegóły",
   "mufonCase": "MUFON Przypadek",
+  "mufonCaseDetailsTitle": "MUFON Sprawa # {numer sprawy} Szczegóły",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
   "sightingDate": "Data obserwacji",
+  "mufonDatabaseEntryDate": "Data wejścia do MUFON Baza danych",
   "databaseEntry": "Wpis do bazy danych",
+  "shareLink": "Udostępnianie odnośnika",
+  "linkCopied": "Link skopiowany do schowka",
   "locationLabel": "Lokalizacja",
   "distanceLabel": "Odległość",
   "timeLabel": "Czas",
@@ -153,121 +281,7 @@
   "unknownLocation": "Nieznana lokalizacja",
   "locationUnknown": "Lokalizacja nieznana",
   "witnessesLabel": "Świadkowie",
-  "witnessesCountMessage": "Ludzie potwierdzili to rozpoznanie",
-  "photoAnalysisTitle": "Analiza zdjęć",
-  "mediaItemsProcessed": "Analiza: _ _ PH _ 0 _ _ plik (-y) multimedialny (-e) przetworzony (-e)",
-  "addMoreMedia": "Dodaj więcej",
-  "addMedia": "Dodaj media",
-  "retakePhoto": "Retake Photo",
-  "retakeVideo": "Zapisz wideo",
-  "@alertDistance": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "1.2 mi"
-      }
-    }
-  },
-  "@alertDirection": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "137"
-      }
-    }
-  },
-  "@reportedBy": {
-    "placeholders": {
-      "username": {
-        "type": "String",
-        "example": "stargazer01"
-      }
-    }
-  },
-  "@reportedAt": {
-    "placeholders": {
-      "timeAgo": {
-        "type": "String",
-        "example": "5m ago"
-      }
-    }
-  },
-  "@distanceAway": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "2.4 km"
-      }
-    }
-  },
-  "@bearingToObject": {
-    "placeholders": {
-      "bearing": {
-        "type": "int",
-        "example": "92"
-      }
-    }
-  },
-  "@pointingTo": {
-    "placeholders": {
-      "direction": {
-        "type": "String",
-        "example": "SE"
-      }
-    }
-  },
-  "@pushBodyAlertNearby": {
-    "placeholders": {
-      "distance": {
-        "type": "String",
-        "example": "0.8 mi"
-      }
-    }
-  },
-  "@cloudCover": {
-    "placeholders": {
-      "percent": {
-        "type": "int",
-        "example": "63"
-      }
-    }
-  },
-  "@wind": {
-    "placeholders": {
-      "speed": {
-        "type": "num",
-        "example": "12.4"
-      },
-      "unit": {
-        "type": "String",
-        "example": "mph"
-      }
-    }
-  },
-  "@timeDaysAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "@timeHoursAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "5"
-      }
-    }
-  },
-  "@timeMinutesAgo": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "12"
-      }
-    }
-  },
+  "witnessesCountMessage": "/ ludzie potwierdzili / to spostrzeżenie",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -276,6 +290,8 @@
       }
     }
   },
+  "photoAnalysisTitle": "Analiza zdjęć",
+  "mediaItemsProcessed": "Analiza: przetwarzany (-e) plik (-y) mediów {count}",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -284,6 +300,10 @@
       }
     }
   },
+  "addMoreMedia": "Dodaj więcej",
+  "addMedia": "Dodaj media",
+  "retakePhoto": "Retake Photo",
+  "retakeVideo": "Zapisz wideo",
   "camera": "Kamera",
   "gallery": "Galeria",
   "basicSettings": "Ustawienia podstawowe",
@@ -304,23 +324,16 @@
   "webAdminInterface": "Interfejs administratora sieci Web",
   "adminBetaNotice": "Beta tylko buduje. Admin narzędzia do testowania alarmów zbliżeniowych, powiadomień push i diagnostyki systemu.",
   "whatDoYouSee": "Co widzisz?",
+  "ufo": "UFO",
+  "sighting": "Zwiedzanie",
   "ufoSighting": "UFO Zwiedzanie",
-  "actionsTitle": "Działania",
-  "addPhotosAndVideos": "Dodaj zdjęcia i filmy",
-  "howToReportToMufon": "Jak zgłosić się do MUFON",
-  "reportToMufon": "Sprawozdanie dla MUFON",
-  "whyReportToMufon": "Po co zgłaszać się do MUFON?",
-  "openMufonReport": "Otwórz MUFON Sprawozdanie",
-  "confirmedWitness": "Potwierdziłeś to",
-  "witnessesHaveConfirmed": "Ludzie potwierdzili to rozpoznanie",
-  "@witnessesHaveConfirmed": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
+  "envAnalysisTitle": "Analiza środowiskowa",
+  "envAnalysisPending": "Analiza oczekująca",
+  "envAnalysisPendingDesc": "Dane środowiskowe będą dostępne po rozpoczęciu przetwarzania.",
+  "unknownAircraft": "Nieznane statki powietrzne",
+  "moreAircraft": "więcej statków powietrznych",
+  "premiumImageryTitle": "Premium Satellite Wyobraźnia",
+  "premiumImagerySubtitle": "Obrazy komercyjne wysokiej rozdzielczości",
   "sightingTypeLabel": "Rodzaj",
   "ufoTypeSphere": "Kula",
   "ufoTypeTriangle": "Trójkąt",
@@ -332,17 +345,6 @@
   "ufoTypeRectangle": "Prostokąt",
   "ufoTypeFormation": "Formacja",
   "ufoTypeUnknown": "Nieznany",
-  "mufonCaseDetailsTitle": "MUFON Przypadek # _ _ PH _ 0 _ _ Szczegóły",
-  "mufonDatabaseEntryDate": "Data wejścia do MUFON Baza danych",
-  "shareLink": "Udostępnianie odnośnika",
-  "linkCopied": "Link skopiowany do schowka",
-  "envAnalysisTitle": "Analiza środowiskowa",
-  "envAnalysisPending": "Analiza oczekująca",
-  "envAnalysisPendingDesc": "Dane środowiskowe będą dostępne po rozpoczęciu przetwarzania.",
-  "unknownAircraft": "Nieznane statki powietrzne",
-  "moreAircraft": "więcej statków powietrznych",
-  "premiumImageryTitle": "Premium Satellite Wyobraźnia",
-  "premiumImagerySubtitle": "Obrazy komercyjne wysokiej rozdzielczości",
   "ufoTypeBoomerang": "Bumerang",
   "ufoTypeDiamond": "Diament",
   "ufoTypeOval": "Oval",
@@ -355,6 +357,45 @@
   "ufoTypeSaturn": "Saturn Przewodniczący",
   "ufoTypeStarLike": "Star- like",
   "ufoTypeBlimp": "Sterownik",
+  "shapeTriangle": "trójkąt",
+  "shapeDisc": "dysk",
+  "shapeDisk": "dysk",
+  "shapeSphere": "sfera",
+  "shapeCigar": "cygaro",
+  "shapeLight": "światło",
+  "shapeBoomerang": "bumerang",
+  "shapeDiamond": "diament",
+  "shapeRectangle": "prostokąt",
+  "shapeOval": "owalne",
+  "shapeCone": "stożek",
+  "shapeCross": "krzyż",
+  "shapeCylinder": "cylinder",
+  "shapeDumbbell": "hantle",
+  "shapeTeardrop": "łzawienie",
+  "shapeTicTac": "tic- tac",
+  "shapeBullet": "kula",
+  "shapeSaturn": "saturn",
+  "shapeStarlike": "gwiezdne",
+  "shapeBlimp": "sterowiec",
+  "shapeFireball": "fireball",
+  "shapeFormation": "powstawanie",
+  "shapeUnknown": "nieznany",
+  "actionsTitle": "Działania",
+  "addPhotosAndVideos": "Dodaj zdjęcia i filmy",
+  "howToReportToMufon": "Jak zgłosić się do MUFON",
+  "reportToMufon": "Sprawozdanie dla MUFON",
+  "whyReportToMufon": "Po co zgłaszać się do MUFON?",
+  "openMufonReport": "Otwórz MUFON Sprawozdanie",
+  "confirmedWitness": "Potwierdziłeś to",
+  "witnessesHaveConfirmed": "/ ludzie potwierdzili / to spostrzeżenie",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "aircraftTrackingTitle": "Śledzenie statków powietrznych",
   "weatherConditionsTitle": "Warunki pogodowe",
   "noSatellitePasses": "Brak widocznych przejść satelitarnych",
@@ -367,12 +408,70 @@
   "premiumAccessCreators": "Twórcy ostrzeżeń",
   "premiumAccessWitnesses": "Potwierdzeni świadkowie w zasięgu widoczności",
   "comingSoon": "Wkrótce",
-  "@mufonCaseDetailsTitle": {
+  "directionDistanceTitle": "Kierunek i odległość",
+  "mufonCaseTitle": "MUFON Sprawa # {numer sprawy}",
+  "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
         "type": "String",
         "example": "12345"
       }
     }
-  }
+  },
+  "satellitePassesTitle": "Pasy satelitarne",
+  "satellitePassExplanation": "Widoczne przejścia satelitarne w czasie obserwacji. Wiele raportów UFO to satelity lub kosmiczne szczątki.",
+  "followingAlert": "Po ostrzeżeniu - otrzymasz powiadomienia o komentarzach",
+  "unfollowedAlert": "Nieśledzony wpis - brak powiadomień o komentarzach",
+  "alertFollowError": "Błąd podczas aktualizacji statusu folderu",
+  "notificationChannelAlerts": "Alerty UFOBeep",
+  "notificationChannelAlertsDesc": "Powiadomienia o dźwiękach UFO i alarmach zbliżeniowych",
+  "notificationSightingTitle": "UFO Zwiedzanie",
+  "notificationSightingUrgent": "NAPRAWDĘ UFO Zwiedzanie",
+  "notificationSightingEmergency": "ANALIZJA UFO Zwiedzanie",
+  "notificationSightingBody": "{świadek Tekst} w pobliżu {lokalizacja Nazwa}",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "nazwa użytkownika: komentarz",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "Nowy widok",
+  "notificationWitnessTextMultiple": "świadkowie",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "Snooze 1h",
+  "notificationActionDismiss": "Rozejść się",
+  "notificationDistance": "{odległość} daleko",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  },
+  "unknown": "nieznany",
+  "report": "raport",
+  "mufon": "mufon"
 }

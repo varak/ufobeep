@@ -56,22 +56,51 @@ class TranslationGenerator {
   }
 
   async loadEnglishSources() {
-    // Load web locale files
-    const webEnDir = path.join(WEB_LOCALES_DIR, 'en');
-    if (fs.existsSync(webEnDir)) {
-      const files = fs.readdirSync(webEnDir).filter(f => f.endsWith('.json'));
-      for (const file of files) {
-        const content = JSON.parse(fs.readFileSync(path.join(webEnDir, file), 'utf8'));
-        this.englishWebFiles[file] = content;
-      }
-    }
-
-    // Load app locale file  
+    // Load app ARB file as single source of truth
     const appEnFile = path.join(APP_LOCALES_DIR, 'app_en.arb');
     if (fs.existsSync(appEnFile)) {
       const content = JSON.parse(fs.readFileSync(appEnFile, 'utf8'));
       this.englishAppTerms = content;
+      
+      // Generate web locale files from ARB content - organize by namespace
+      this.englishWebFiles = this.organizeArbByNamespace(content);
     }
+  }
+
+  organizeArbByNamespace(arbContent) {
+    const organized = {
+      'common.json': {},
+      'navigation.json': {},
+      'alerts.json': {},
+      'pages.json': {},
+      'forms.json': {},
+      'errors.json': {},
+      'meta.json': {}
+    };
+
+    // Organize ARB terms by namespace based on key patterns
+    for (const [key, value] of Object.entries(arbContent)) {
+      if (key.startsWith('@') || key === '@@locale') continue; // Skip metadata
+      
+      if (key.includes('tab') || key.includes('nav') || key.includes('menu')) {
+        organized['navigation.json'][key] = value;
+      } else if (key.includes('alert') || key.includes('beep') || key.includes('ufoType') || key.includes('shape')) {
+        organized['alerts.json'][key] = value;
+      } else if (key.includes('error') || key.includes('failed') || key.includes('invalid')) {
+        organized['errors.json'][key] = value;
+      } else if (key.includes('title') || key.includes('desc') || key.includes('meta')) {
+        organized['meta.json'][key] = value;
+      } else if (key.includes('form') || key.includes('input') || key.includes('submit') || key.includes('username')) {
+        organized['forms.json'][key] = value;
+      } else if (key.includes('page') || key.includes('welcome') || key.includes('setting')) {
+        organized['pages.json'][key] = value;
+      } else {
+        // Default to common for basic terms
+        organized['common.json'][key] = value;
+      }
+    }
+
+    return organized;
   }
 
   async translateText(text, targetLang) {
