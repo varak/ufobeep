@@ -63,8 +63,31 @@ export function getAlertSlug(alert: SluggableAlertLike, locale: string = 'en', t
   return generateSlug(title, location, date, id, locale, translations)
 }
 
-// Import shared short hash function
-const { getShortHash } = require('../../../shared/get_short_hash.js')
+// Browser-compatible short hash implementation (extracted from shared module)
+const SAFE_CHARS = '23456789abcdefghjkmnpqrstuvwxyz';
+
+function getShortHash(input: string): string {
+  if (!input) return '';
+  
+  // Generate hash using the canonical algorithm from shared module
+  let hash = 0;
+  for (let i = 0; i < input.length; i++) {
+    const char = input.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+  
+  // Convert hash to base-29 using safe characters  
+  let shortId = '';
+  let num = Math.abs(hash);
+  
+  for (let i = 0; i < 5; i++) {
+    shortId = SAFE_CHARS[num % SAFE_CHARS.length] + shortId;
+    num = Math.floor(num / SAFE_CHARS.length);
+  }
+  
+  return shortId;
+}
 
 function generateCleanShortId(input: string): string {
   return getShortHash(input)
