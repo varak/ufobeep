@@ -33,7 +33,7 @@
     "daysago": "vorher",
     "hoursago": "vorher",
     "minutesago": "vorher",
-    "label": "Zeit",
+    "label": "Zeit:",
     "ago": "vorwärts",
     "minutes": "m",
     "hours": "h",
@@ -72,7 +72,7 @@
     "generictitle": "MUFON Sighting Report",
     "titleformat": "MUFON {Klassifikation} Bericht"
   },
-  "locationLabel": "Standort",
+  "locationLabel": "Standort:",
   "unknownLocation": "Unbekannte Lage",
   "locationUnknown": "Ort Unbekannt",
   "backToBeeps": "Passwort vergessen",

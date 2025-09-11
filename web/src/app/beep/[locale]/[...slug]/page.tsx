@@ -76,19 +76,19 @@ function getClassifiedTitle(alert: Alert, t: any): string {
       (alert.enrichment?.classification?.confidence || 0) >= 0.75) {
     const classificationType = alert.enrichment.classification.type.toLowerCase()
     const classificationName = t(`nuforc.classifications.${classificationType}`, classificationType)
-    return t('nuforc.titleFormat', { classification: classificationName })
+    return t('nuforcTitleFormat', { classification: classificationName })
   }
   
   // For MUFON/NUFORC without high confidence classification, use generic title
   if (alert.reporter_username === 'MUFON') {
-    return t('mufon.genericTitle', 'MUFON Sighting Report')
+    return t('mufonGenericTitle')
   }
   if (alert.reporter_username === 'NUFORC') {
-    return t('nuforc.genericTitle', 'NUFORC Sighting Report')
+    return t('nuforcGenericTitle')
   }
   
   // For UFOBeep reports, use original title
-  return alert.title || t('ufobeep.reportType')
+  return alert.title || t('ufobeepReportType')
 }
 
 function getEnrichedLocation(alert: Alert, t: any): string {
@@ -148,7 +148,7 @@ export default function AlertDetailPage() {
   }
   
   const locale = getEffectiveLocale()
-  const { t } = useClientTranslations('beep-detail', locale)
+  const { t } = useClientTranslations('common', locale)
   
   // Get openImage parameter for direct image linking
   const openImageParam = searchParams.get('openImage')

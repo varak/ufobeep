@@ -8,7 +8,7 @@
   "beepFailed": "Il n'a pas envoyé de beep.",
   "alertDetailTitle": "Détails de la vue",
   "alertsFilterHelp": "Essayez d'ajuster vos filtres pour voir plus de résultats",
-  "beepOnly": "bip seulement",
+  "beepOnly": "Rapport seulement",
   "alertRange": "Gamme d'alerte",
   "ufoTypeSphere": "Sphère",
   "ufoTypeTriangle": "Triangle",
@@ -55,5 +55,6 @@
   "shapeFireball": "boule de feu",
   "shapeFormation": "formation",
   "shapeUnknown": "inconnu",
-  "alertFollowError": "Erreur de mise à jour suivre l'état"
+  "alertFollowError": "Erreur de mise à jour suivre l'état",
+  "alertLevel": "Niveau d'alerte"
 }

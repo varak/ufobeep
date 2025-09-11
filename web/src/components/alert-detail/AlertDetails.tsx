@@ -79,7 +79,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
       {alert.reporter_username !== 'MUFON' && (
         <div className="flex items-center gap-2 mb-4">
           <span className="text-brand-primary">ℹ️</span>
-          <h2 className="text-lg font-semibold text-brand-primary">{t('detailsTitle', 'Details')}</h2>
+          <h2 className="text-lg font-semibold text-brand-primary">{t('detailsTitle')}</h2>
         </div>
       )}
 
@@ -139,7 +139,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
           <span className="text-text-tertiary mt-0.5">⏰</span>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <span className="text-text-tertiary text-sm font-medium">{t('timeLabel', 'Time')}:</span>
+              <span className="text-text-tertiary text-sm font-medium">{t('timeLabel')}:</span>
               <span className="text-text-primary text-sm">{formatFullDate(alert.created_at)}</span>
             </div>
             <div className="text-text-secondary text-xs mt-1">
@@ -154,7 +154,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
         <span className="text-text-tertiary mt-0.5">📍</span>
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <span className="text-text-tertiary text-sm font-medium">{t('locationLabel', 'Location')}:</span>
+            <span className="text-text-tertiary text-sm font-medium">{t('locationLabel')}:</span>
             <span className="text-text-primary text-sm">
               {(() => {
                 // Clean up location name to avoid duplication
@@ -193,13 +193,13 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
         <div className="mt-4 pt-4 border-t border-dark-border">
           <div className="flex items-center gap-4 text-sm text-text-tertiary">
             {alert.alert_level && (
-              <span>🔍 {t('ufobeepAlertLevel', 'Alert Level')}: {alert.alert_level}</span>
+              <span>🔍 {t('alertLevel')}: {alert.alert_level}</span>
             )}
             {alert.witness_count !== undefined && (
-              <span>👥 {t('ufobeepWitnesses', 'Witnesses')}: {alert.witness_count || 0}</span>
+              <span>👥 {t('witnesses')}: {alert.witness_count || 0}</span>
             )}
             {alert.total_confirmations !== undefined && (
-              <span>✅ {t('ufobeepConfirmations', 'Confirmations')}: {alert.total_confirmations || 0}</span>
+              <span>✅ {t('confirmations')}: {alert.total_confirmations || 0}</span>
             )}
           </div>
         </div>
@@ -211,7 +211,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
           <span className="text-text-tertiary">🔗</span>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <span className="text-text-tertiary text-sm font-medium">{t('shareLink', 'Share Link')}:</span>
+              <span className="text-text-tertiary text-sm font-medium">{t('shareLink')}:</span>
               <code className="text-brand-primary text-sm bg-dark-bg px-2 py-1 rounded">
                 ufobeep.com{getShortAlertUrl(alert, locale)}
               </code>

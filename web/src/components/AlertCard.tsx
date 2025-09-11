@@ -375,9 +375,9 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
               <h3 className="text-text-primary text-sm font-semibold line-clamp-2 leading-tight mb-1">
                 {(() => {
                   // Get translations directly from translation function
-                  const ufoSightingText = t('ufoSighting') || alert.title || 'UFO Sighting'
-                  const beepOnlyText = t('beepOnly') || 'Beep only'  
-                  const reportOnlyText = t('reportOnly') || 'Report Only'
+                  const ufoSightingText = t('ufoSighting') || alert.title || t('ufoSighting')
+                  const beepOnlyText = t('beepOnly')  
+                  const reportOnlyText = t('reportOnly')
                   
                   // Determine content type indicator
                   const hasMedia = alert.media_files?.length > 0

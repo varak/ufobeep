@@ -33,7 +33,7 @@
     "daysago": "{count}d ago",
     "hoursago": "{count}h ago",
     "minutesago": "{count}m ago",
-    "label": "Time",
+    "label": "Time:",
     "ago": "ago",
     "minutes": "m",
     "hours": "h",
@@ -72,7 +72,7 @@
     "generictitle": "MUFON Sighting Report",
     "titleformat": "MUFON {classification} Report"
   },
-  "locationLabel": "Location",
+  "locationLabel": "Location:",
   "unknownLocation": "Unknown Location",
   "locationUnknown": "Location Unknown",
   "backToBeeps": "← Back to Beeps",

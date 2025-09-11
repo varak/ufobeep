@@ -220,7 +220,7 @@
   "noAlertsFound": "Keine passenden Alarme",
   "alertsFilterHelp": "Versuchen Sie, Ihre Filter anzupassen, um mehr Ergebnisse zu sehen",
   "verified": "Verifiziert",
-  "beepOnly": "Nur noch",
+  "beepOnly": "Nur",
   "reportOnly": "Nur",
   "videoOnly": "nur",
   "imageOnly": "nur",
@@ -275,9 +275,9 @@
   "databaseEntry": "Datenbankeintrag",
   "shareLink": "Link teilen",
   "linkCopied": "Link kopiert zu Clipboard",
-  "locationLabel": "Standort",
+  "locationLabel": "Standort:",
   "distanceLabel": "Entfernung",
-  "timeLabel": "Zeit",
+  "timeLabel": "Zeit:",
   "reportedByLabel": "Bericht",
   "unknownLocation": "Unbekannte Lage",
   "locationUnknown": "Ort Unbekannt",
@@ -550,5 +550,8 @@
   "follow": "Folgen",
   "navRecentBeeps": "Letzter Beitrag",
   "navMap": "Landkarte",
-  "navDownloadApp": "App herunterladen"
+  "navDownloadApp": "App herunterladen",
+  "alertLevel": "Alarmstufe",
+  "witnesses": "Zeugen",
+  "confirmations": "Bestätigungen"
 }

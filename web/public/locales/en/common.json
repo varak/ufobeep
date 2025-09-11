@@ -96,7 +96,7 @@
   "keywords": "UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass",
   "noAlertsFound": "No matching alerts",
   "verified": "Verified",
-  "reportOnly": "Report only",
+  "reportOnly": "Report Only",
   "videoOnly": "video only",
   "imageOnly": "image only",
   "loadMoreAlerts": "Load More Alerts",
@@ -210,5 +210,7 @@
   "follow": "Follow",
   "navRecentBeeps": "Recent Beeps",
   "navMap": "Map",
-  "navDownloadApp": "Download App"
+  "navDownloadApp": "Download App",
+  "witnesses": "Witnesses",
+  "confirmations": "Confirmations"
 }

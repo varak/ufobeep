@@ -220,8 +220,8 @@
   "noAlertsFound": "No matching alerts",
   "alertsFilterHelp": "Try adjusting your filters to see more results",
   "verified": "Verified",
-  "beepOnly": "Beep only",
-  "reportOnly": "Report only",
+  "beepOnly": "Report Only",
+  "reportOnly": "Report Only",
   "videoOnly": "video only",
   "imageOnly": "image only",
   "timeJustNow": "just now",
@@ -275,9 +275,9 @@
   "databaseEntry": "Database Entry",
   "shareLink": "Share Link",
   "linkCopied": "Link copied to clipboard",
-  "locationLabel": "Location",
+  "locationLabel": "Location:",
   "distanceLabel": "Distance",
-  "timeLabel": "Time",
+  "timeLabel": "Time:",
   "reportedByLabel": "Reported by",
   "unknownLocation": "Unknown Location",
   "locationUnknown": "Location Unknown",
@@ -550,5 +550,8 @@
   "follow": "Follow",
   "navRecentBeeps": "Recent Beeps",
   "navMap": "Map",
-  "navDownloadApp": "Download App"
+  "navDownloadApp": "Download App",
+  "alertLevel": "Alert Level",
+  "witnesses": "Witnesses",
+  "confirmations": "Confirmations"
 }
