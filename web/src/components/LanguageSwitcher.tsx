@@ -2,8 +2,37 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useTranslation } from 'next-i18next';
 import { supportedLocales, getLocaleDisplayName } from '@/config/locales';
+
+// Simple translation function for language switcher
+const translations = {
+  en: { language: 'Language' },
+  es: { language: 'Idioma' },
+  de: { language: 'Sprache' },
+  fr: { language: 'Langue' },
+  pt: { language: 'Idioma' },
+  ru: { language: 'Язык' },
+  ja: { language: '言語' },
+  zh: { language: '语言' },
+  it: { language: 'Lingua' },
+  ar: { language: 'لغة' },
+  ko: { language: '언어' },
+  tr: { language: 'Dil' },
+  hi: { language: 'भाषा' },
+  pl: { language: 'Język' },
+  cs: { language: 'Jazyk' },
+  nl: { language: 'Taal' },
+  sv: { language: 'Språk' },
+  da: { language: 'Sprog' },
+  no: { language: 'Språk' },
+  fi: { language: 'Kieli' },
+  el: { language: 'Γλώσσα' },
+  he: { language: 'שפה' },
+};
+
+function getTranslation(key: string, locale: string): string {
+  return translations[locale as keyof typeof translations]?.[key as keyof typeof translations.en] || translations.en[key as keyof typeof translations.en] || key;
+}
 
 interface LanguageSwitcherProps {
   className?: string;
@@ -19,7 +48,6 @@ export function LanguageSwitcher({
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const { t, i18n } = useTranslation('navigation');
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
@@ -107,10 +135,10 @@ export function LanguageSwitcher({
   
   if (variant === 'buttons') {
     return (
-      <div className={`flex gap-1 ${className}`} role="group" aria-label={t('language')}>
+      <div className={`flex gap-1 ${className}`} role="group" aria-label={getTranslation('language', currentLocale)}>
         {showLabel && (
           <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">
-            {t('language')}:
+            {getTranslation('language', currentLocale)}:
           </span>
         )}
         {supportedLocaleCodes.map((locale) => (
@@ -125,7 +153,7 @@ export function LanguageSwitcher({
               }
             `}
             aria-pressed={currentLocale === locale}
-            aria-label={`${t('language')}: ${getLocaleDisplayName(locale)}`}
+            aria-label={`${getTranslation('language', currentLocale)}: ${getLocaleDisplayName(locale)}`}
           >
             {supportedLocales[locale].flag}
           </button>
@@ -139,7 +167,7 @@ export function LanguageSwitcher({
       <div className={`flex items-center gap-2 ${className}`}>
         {showLabel && (
           <span className="text-sm text-gray-600 dark:text-gray-400">
-            {t('language')}:
+            {getTranslation('language', currentLocale)}:
           </span>
         )}
         <select
@@ -150,7 +178,7 @@ export function LanguageSwitcher({
             text-gray-700 dark:text-gray-300
             focus:ring-2 focus:ring-blue-500 rounded
           "
-          aria-label={t('language')}
+          aria-label={getTranslation('language', currentLocale)}
         >
           {supportedLocaleCodes.map((locale) => (
             <option key={locale} value={locale}>
@@ -167,7 +195,7 @@ export function LanguageSwitcher({
     <div className={`relative ${className}`} ref={dropdownRef}>
       {showLabel && (
         <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">
-          {t('language')}:
+          {getTranslation('language', currentLocale)}:
         </span>
       )}
       
@@ -189,7 +217,7 @@ export function LanguageSwitcher({
         "
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        aria-label={`${t('language')}: ${getLocaleDisplayName(currentLocale)}`}
+        aria-label={`${getTranslation('language', currentLocale)}: ${getLocaleDisplayName(currentLocale)}`}
       >
         <span className="flex items-center gap-2">
           <span>{supportedLocales[currentLocale].flag}</span>
@@ -218,7 +246,7 @@ export function LanguageSwitcher({
             ring-1 ring-black ring-opacity-5
           "
           role="listbox"
-          aria-label={t('language')}
+          aria-label={getTranslation('language', currentLocale)}
         >
           {supportedLocaleCodes.map((locale) => (
             <button
