@@ -167,6 +167,7 @@
   "pushTitleComment": "Neuer Kommentar",
   "pushBodyComment": "Jemand kam zu einem Anblick, den Sie folgen.",
   "pushTitleWitness": "Bestätigung der Zeugen",
+  "temperature": "Temperatur",
   "pushBodyWitness": "Ein Benutzer bestätigt, dass sie das gleiche Objekt sehen.",
   "weather": "Wetter",
   "cloudCover": "Cloud Cover: {prozent}%",
