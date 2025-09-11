@@ -410,7 +410,8 @@ class AlertsService:
                 raise Exception(f"Failed to generate short URL for temp_id: {temp_id}")
             print(f"Generated short URL: {short_url} for temp_id: {temp_id}")
 
-            # Check for existing record by external_id for MUFON/NUFORC imports
+            # Check for existing record by external_id for MUFON/NUFORC imports  
+            existing_alert = None
             if external_id and source in ["mufon", "nuforc"]:
                 existing_alert = await conn.fetchval("""
                     SELECT id FROM sightings WHERE external_id = $1
@@ -433,24 +434,47 @@ class AlertsService:
                         alert_level, "verified", reporter_id, source, external_url, latitude, longitude,
                         occurred_at_timestamp, external_id)
                     alert_id = str(existing_alert)
-                else:
-                    # Insert new record with external_id
-                    print(f"Creating new {source} record with external_id: {external_id}")
-            else:
-                # Regular UFOBeep alert without external_id
-                print(f"Creating UFOBeep alert with pre-generated short_url: {short_url}")
-                alert_id = await conn.fetchval("""
-                    INSERT INTO sightings 
-                    (title, description, category, witness_count, is_public, tags, 
-                     media_info, sensor_data, enrichment_data, alert_level, status, reporter_id,
-                     source, external_url, public_latitude, public_longitude, occurred_at, short_url)
-                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
-                    RETURNING id
-                """, title, description, category, witness_count, is_public,
-                    tags or [], json.dumps(media_info or {}), 
-                    json.dumps(sensor_data or {}), json.dumps(enrichment_data or {}),
-                    alert_level, "created", reporter_id, source, external_url, latitude, longitude, 
-                    occurred_at_timestamp, short_url)
+
+            # Unified INSERT logic for both new MUFON and regular alerts
+            if not existing_alert:
+                insert_source = source or "ufobeep"
+                insert_status = "verified" if source in ["mufon", "nuforc"] else "created"
+                action_desc = f"Creating new {insert_source} record" + (f" with external_id: {external_id}" if external_id else " with pre-generated short_url")
+                print(action_desc)
+                
+                # Build fields dict dynamically - much more maintainable than positional params
+                fields = {
+                    'title': title,
+                    'description': description,
+                    'category': category,
+                    'witness_count': witness_count,
+                    'is_public': is_public,
+                    'tags': tags or [],
+                    'media_info': json.dumps(media_info or {}),
+                    'sensor_data': json.dumps(sensor_data or {}),
+                    'enrichment_data': json.dumps(enrichment_data or {}),
+                    'alert_level': alert_level,
+                    'status': insert_status,
+                    'reporter_id': reporter_id,
+                    'source': insert_source,
+                    'external_url': external_url,
+                    'public_latitude': latitude,
+                    'public_longitude': longitude,
+                    'occurred_at': occurred_at_timestamp,
+                    'short_url': short_url,
+                    'external_id': external_id
+                }
+                
+                # Remove None values to avoid database constraints
+                fields = {k: v for k, v in fields.items() if v is not None}
+                
+                # Generate dynamic query - no more parameter counting hell
+                columns = ', '.join(fields.keys())
+                placeholders = ', '.join(f'${i+1}' for i in range(len(fields)))
+                values = list(fields.values())
+                
+                query = f"INSERT INTO sightings ({columns}) VALUES ({placeholders}) RETURNING id"
+                alert_id = await conn.fetchval(query, *values)
             
             return str(alert_id)
     
