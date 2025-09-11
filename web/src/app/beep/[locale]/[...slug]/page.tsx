@@ -152,24 +152,40 @@ export default function AlertDetailPage() {
         let targetAlert = null
         
         try {
+          console.log('DEBUG: Looking for shortId:', shortId)
+          
           // Start with just 20 recent beeps for speed
           const quickRes = await fetch(`/api/beep?limit=20&verified_only=false`)
           if (quickRes.ok) {
             const quickData = await quickRes.json()
+            console.log('DEBUG: Quick search response success:', quickData.success)
             if (quickData.success && (quickData.data?.beeps || quickData.data?.alerts)) {
               const quickBeeps = quickData.data?.beeps || quickData.data?.alerts || []
+              console.log('DEBUG: Found', quickBeeps.length, 'beeps in quick search')
+              console.log('DEBUG: First 3 beep short_urls:', quickBeeps.slice(0, 3).map((b: any) => ({ id: b.id, short_url: b.short_url })))
               targetAlert = quickBeeps.find((b: any) => b.short_url === shortId)
+              if (targetAlert) {
+                console.log('DEBUG: Found target in quick search:', targetAlert.id)
+              }
             }
           }
           
           // If not found in recent 20, expand search
           if (!targetAlert) {
+            console.log('DEBUG: Not found in quick search, expanding...')
             const expandedRes = await fetch(`/api/beep?limit=100&verified_only=false`)
             if (expandedRes.ok) {
               const expandedData = await expandedRes.json()
               if (expandedData.success && (expandedData.data?.beeps || expandedData.data?.alerts)) {
                 const expandedBeeps = expandedData.data?.beeps || expandedData.data?.alerts || []
+                console.log('DEBUG: Found', expandedBeeps.length, 'beeps in expanded search')
+                console.log('DEBUG: All short_urls:', expandedBeeps.map((b: any) => b.short_url))
                 targetAlert = expandedBeeps.find((b: any) => b.short_url === shortId)
+                if (targetAlert) {
+                  console.log('DEBUG: Found target in expanded search:', targetAlert.id)
+                } else {
+                  console.log('DEBUG: Target NOT found in expanded search')
+                }
               }
             }
           }
