@@ -412,8 +412,7 @@ class AlertsService:
                 # Generate short URL using the single source of truth
                 from ..utils.short_url_utils import generate_short_url
                 short_url = generate_short_url(str(alert_id))
-                if short_url:
-                    await conn.execute("UPDATE sightings SET short_url = $1 WHERE id = $2", short_url, alert_id)
+                await conn.execute("UPDATE sightings SET short_url = $1 WHERE id = $2", short_url, alert_id)
             
             return str(alert_id)
     
