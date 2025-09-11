@@ -33,7 +33,7 @@ export function middleware(request: NextRequest) {
     }
     
     // Redirect to localized URL using the short ID
-    const redirectUrl = new URL(`/beep/${userLocale}/${shortId}`, request.url)
+    const redirectUrl = new URL(`/beep/${shortId}/${userLocale}`, request.url)
     return NextResponse.redirect(redirectUrl)
   }
   

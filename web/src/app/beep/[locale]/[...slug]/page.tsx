@@ -164,6 +164,7 @@ export default function AlertDetailPage() {
             const data = await res.json()
             console.log('DEBUG: API response success:', data.success)
             if (data.success && (data.data?.beeps || data.data?.alerts)) {
+              // Handle both beeps and alerts for compatibility
               const beeps = data.data?.beeps || data.data?.alerts || []
               console.log('DEBUG: Found', beeps.length, 'total beeps')
               console.log('DEBUG: Looking for short_url:', shortId)
