@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
-import LanguageSwitcher from './LanguageSwitcher'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 function NavLink({ href, label }: { href: string; label: string }) {
   const pathname = usePathname()

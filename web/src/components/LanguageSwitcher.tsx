@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useTranslation } from 'next-i18next';
-import { supportedLocales, getLocaleDisplayName } from '../config/locales';
+import { supportedLocales, getLocaleDisplayName } from '@/config/locales';
 
 interface LanguageSwitcherProps {
   className?: string;
