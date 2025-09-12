@@ -86,7 +86,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   @override
   void initState() {
     super.initState();
-    debugPrint('🚀 BEEP SCREEN INIT: _isSubmitting=$_isSubmitting');
+    debugPrint('🚀🚀 BEEP SCREEN INIT: _isSubmitting=$_isSubmitting - This should only happen ONCE!');
+    debugPrint('🚀🚀 INIT: mediaFiles=${widget.mediaFiles?.length}, mediaFile=${widget.mediaFile?.path}');
     
     // Wrap initialization in try-catch to prevent crashes
     try {
@@ -546,14 +547,15 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     if (context.mounted) {
       wd.mark("scheduling navigation after success");
       _log('Scheduling navigation to /beep/$sightingId after success message');
+      
+      // Set current user to ensure auth state is correct before navigation
+      final appState = ref.read(appStateProvider.notifier);
+      appState.setCurrentUser(ref.read(appStateProvider).currentUserId);
+      
       // Wait 2 seconds to show success state, then navigate to full beep
       Future.delayed(const Duration(milliseconds: 2000), () async {
         if (context.mounted) {
-          wd.mark("setting device ID before navigation");
-          // Set device ID as current user so navigation button is hidden
-          final deviceId = await BeepService().getOrCreateDeviceId();
-          ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
-          
+          debugPrint('🚀🚀 NAVIGATING TO BEEP DETAIL - Widget will be disposed');
           _log('Navigating to /beep/$sightingId');
           context.go('/beep/$sightingId');
         } else {
