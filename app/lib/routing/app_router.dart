@@ -245,6 +245,7 @@ GoRouter appRouter(AppRouterRef ref) {
               // Handle camera return data and share intent data
               final extra = state.extra as Map<String, dynamic>?;
               File? mediaFile;
+              List<File>? sharedMediaFiles;
               SensorData? sensorData;
               Map<String, dynamic>? photoMetadata;
               
@@ -258,17 +259,22 @@ GoRouter appRouter(AppRouterRef ref) {
                   photoMetadata = extra['photoMetadata'] as Map<String, dynamic>?;
                 }
                 
-                // Share intent data (multiple files) - extract first file
+                // Share intent data (multiple files) - extract ALL files
                 if (extra.containsKey('mediaFiles')) {
                   final mediaFiles = extra['mediaFiles'] as List?;
                   if (mediaFiles != null && mediaFiles.isNotEmpty) {
-                    final firstFile = mediaFiles[0] as Map<String, dynamic>?;
-                    if (firstFile != null && firstFile.containsKey('mediaFile')) {
-                      mediaFile = firstFile['mediaFile'] as File?;
-                      sensorData = extra['sensorData'] as SensorData?;
-                      photoMetadata = firstFile['photoMetadata'] as Map<String, dynamic>?;
-                      debugPrint('📸 BEEP ROUTE: Extracted shared media: ${mediaFile?.path}');
+                    sharedMediaFiles = [];
+                    for (final fileData in mediaFiles) {
+                      final fileMap = fileData as Map<String, dynamic>?;
+                      if (fileMap != null && fileMap.containsKey('mediaFile')) {
+                        final file = fileMap['mediaFile'] as File?;
+                        if (file != null) {
+                          sharedMediaFiles.add(file);
+                        }
+                      }
                     }
+                    sensorData = extra['sensorData'] as SensorData?;
+                    debugPrint('📸 BEEP ROUTE: Extracted ${sharedMediaFiles.length} shared media files');
                   }
                 }
               }
@@ -277,6 +283,7 @@ GoRouter appRouter(AppRouterRef ref) {
                 attachToSightingId: attachTo,
                 autoOpenGallery: autoGallery,
                 initialMediaFile: mediaFile,
+                initialMediaFiles: sharedMediaFiles,
                 initialSensorData: sensorData,
                 initialPhotoMetadata: photoMetadata,
               );

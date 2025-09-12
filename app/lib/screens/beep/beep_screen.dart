@@ -82,6 +82,12 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
         _handleInitialMediaFile();
       });
     }
+    // Handle multiple shared files from share intent
+    else if (widget.initialMediaFiles != null && widget.initialMediaFiles!.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _handleSharedMediaFiles();
+      });
+    }
     // Auto-open gallery if requested (for adding media to existing alerts)
     else if (widget.autoOpenGallery) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -137,6 +143,25 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       debugPrint('❌ BEEP: Failed to process initial media file: $e');
       setState(() {
         _errorMessage = 'Failed to load captured photo';
+      });
+    }
+  }
+
+  Future<void> _handleSharedMediaFiles() async {
+    if (widget.initialMediaFiles == null || widget.initialMediaFiles!.isEmpty) return;
+    
+    try {
+      debugPrint('📸 BEEP: Processing ${widget.initialMediaFiles!.length} shared media files');
+      
+      setState(() {
+        _capturedMedia.addAll(widget.initialMediaFiles!);
+      });
+      
+      debugPrint('✅ BEEP: Added ${widget.initialMediaFiles!.length} shared files to media list');
+    } catch (e) {
+      debugPrint('❌ BEEP: Failed to process shared media files: $e');
+      setState(() {
+        _errorMessage = 'Failed to load shared photos';
       });
     }
   }
