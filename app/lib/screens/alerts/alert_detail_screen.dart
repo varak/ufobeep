@@ -101,8 +101,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         });
       }
     } catch (e) {
-      print('Error checking witness status: $e');
-      // Silently fail for now - witness endpoints may not exist for beeps
+      print('❌ ERROR checking witness status: $e');
+      print('🔍 WITNESS API CALL FAILED - /beep/${widget.alertId}/witnesses/$deviceId endpoint may not exist');
       if (mounted) {
         setState(() {
           _isWitnessConfirmed = false;
@@ -151,8 +151,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         });
       }
     } catch (e) {
-      print('Error checking follow status: $e');
-      // Silently fail - follow endpoints may not exist for beeps
+      print('❌ ERROR checking follow status: $e');
+      print('🔍 FOLLOW API CALL FAILED - /beep/${widget.alertId}/follow endpoint may not exist');
       if (mounted) {
         setState(() {
           _isFollowing = false;
