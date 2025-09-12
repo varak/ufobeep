@@ -35,6 +35,7 @@ class BeepScreen extends ConsumerStatefulWidget {
   final String? attachToSightingId;
   final bool autoOpenGallery;
   final File? initialMediaFile;
+  final List<File>? initialMediaFiles; // Support multiple files from share intent
   final SensorData? initialSensorData;
   final Map<String, dynamic>? initialPhotoMetadata;
   
