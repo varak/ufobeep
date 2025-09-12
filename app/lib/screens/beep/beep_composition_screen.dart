@@ -24,6 +24,7 @@ import '../../widgets/video_player_widget.dart';
 import '../../widgets/multi_file_preview.dart';
 import '../../widgets/glass_card.dart';
 import '../../l10n/app_localizations.dart';
+import '../../debug/stuck_watchdog.dart';
 
 class BeepCompositionScreen extends ConsumerStatefulWidget {
   // Legacy single-file parameters (for backward compatibility)
@@ -277,17 +278,23 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   
   // The actual submission logic separated for timeout handling
   Future<void> _actualSubmitLogic() async {
-    _log('Starting actual submit logic');
+    final wd = StuckWatchdog();
+    try {
+      wd.mark("onPressed handler entered");
+      _log('Starting actual submit logic');
     
+    wd.mark("validating location data");
     // Validate location data BEFORE creating sighting (only for NEW sightings)
     if (widget.attachToSightingId == null && 
         (_sensorData?.latitude == null || _sensorData?.longitude == null)) {
       throw Exception(AppLocalizations.of(context)!.errorNoLocation);
     }
 
+    wd.mark("playing sound feedback");
     // Play sound feedback when sending
     await SoundService.I.play(AlertSound.tap, haptic: true);
 
+    wd.mark("getting form description");
     // Get description - optional
     final description = _descriptionController.text.trim();
     final finalDescription = description.isEmpty ? null : description;
@@ -302,12 +309,14 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       // Create new sighting (existing logic)
       _log('Creating new sighting with media pending...');
       
+      wd.mark("checking GPS coordinates");
       // Check for valid GPS coordinates (REQUIRED for new alerts)
       double? validLat = _sensorData?.latitude;
       double? validLon = _sensorData?.longitude;
       
       // If sensor GPS is missing or invalid, try to extract from photo EXIF as fallback
       if (validLat == null || validLon == null || (validLat == 0.0 && validLon == 0.0)) {
+        wd.mark("extracting GPS from photo EXIF");
         _log('Sensor GPS invalid, attempting to extract from photo EXIF...');
         
         // Try to extract GPS from any attached photos
@@ -317,6 +326,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
           
           if (!isVideo) { // Only photos have EXIF GPS data
             try {
+              wd.mark("extracting metadata from ${mediaFile.path}");
               final photoMetadata = await PhotoMetadataService.extractComprehensiveMetadata(mediaFile);
               final locationData = photoMetadata['location'];
               
@@ -358,6 +368,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       
       _log('Final GPS coordinates: lat=$validLat, lon=$validLon');
       
+      wd.mark("sending beep to API");
       final beepResult = await BeepService().sendBeep(
         description: finalDescription,
         latitude: validLat,
@@ -374,6 +385,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       _log('Sighting created with ID: $sightingId (alerts deferred)');
     }
     
+    wd.mark("starting media upload phase");
     // Now upload all media files, then trigger alerts
     _log('Uploading ${_mediaFiles.length} files to sighting...');
     
@@ -388,15 +400,20 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       final bool isVideo = fileData['isVideo'] ?? false;
       
       try {
+        wd.mark("processing file ${i + 1}/${_mediaFiles.length}");
         _log('Uploading file ${i + 1}/${_mediaFiles.length}: ${mediaFile.path}');
         _log('File exists: ${await mediaFile.exists()}');
+        
+        wd.mark("checking file length for ${mediaFile.path}");
         _log('File size: ${await mediaFile.length()} bytes');
         
+        wd.mark("calling uploadMediaToSighting API");
         _log('Calling uploadMediaToSighting...');
         await ApiClient.instance.uploadMediaToSighting(
           sightingId,
           mediaFile,
         );
+        wd.mark("upload completed for file ${i + 1}");
         _log('Upload successful for file ${i + 1}');
         
         uploadedCount++;
@@ -412,10 +429,12 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       }
     }
     
+    wd.mark("all uploads completed");
     _log('Upload completed: $uploadedCount/${_mediaFiles.length} files uploaded');
     
     // Create auto-comment for existing sightings
     if (widget.attachToSightingId != null && uploadedCount > 0) {
+      wd.mark("creating auto-comment");
       try {
         final commentsService = CommentsService();
         String commentText = 'Added ';
@@ -446,6 +465,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     
     // Trigger alerts only for new sightings
     if (widget.attachToSightingId == null) {
+      wd.mark("triggering proximity alerts");
       _log('Triggering proximity alerts...');
       // Get coordinates from the sensor data for alert triggering
       final validLat = _sensorData?.latitude == 0.0 ? null : _sensorData?.latitude;
@@ -470,6 +490,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       _log('Proximity alerts sent successfully!');
     }
 
+    wd.mark("submitting photo metadata");
     // Submit photo metadata if available (for astronomical identification)
     if (widget.photoMetadata != null) {
       try {
@@ -488,12 +509,14 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       }
     }
 
+    wd.mark("setting device ID and preparing navigation");
     // Set device ID as current user so navigation button is hidden
     final deviceId = await BeepService().getOrCreateDeviceId();
     ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
     
     // Navigate to the specific beep that was just created
     if (context.mounted) {
+      wd.mark("scheduling navigation");
       _log('Scheduling navigation to /beep/$sightingId');
       Future.delayed(const Duration(milliseconds: 1000), () {
         if (context.mounted) {
@@ -503,6 +526,10 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
           _log('Context not mounted, skipping navigation');
         }
       });
+    }
+    wd.mark("submission completed successfully");
+    } finally {
+      wd.dispose();
     }
   }
 
