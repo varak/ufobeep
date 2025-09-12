@@ -111,9 +111,6 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     // Warm up native UI feedback
     UiFeedback.init();
     
-    // Proactively collect location data with timeout for faster GPS lock
-    _collectLocationDataWithTimeout();
-    
     // Prepopulate description if provided
     if (widget.description != null && widget.description!.isNotEmpty) {
       _descriptionController.text = widget.description!;
@@ -123,9 +120,9 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     if (_sensorData != null) {
       debugPrint('BeepComposition: GPS coordinates: lat=${_sensorData!.latitude}, lng=${_sensorData!.longitude}');
     } else {
-      // Fallback: collect location data if not provided (e.g., from share intent)
-      debugPrint('BeepComposition: No sensor data provided, attempting to collect location as fallback');
-      _collectFallbackLocationData();
+      // Start location collection in background without blocking UI
+      debugPrint('BeepComposition: No sensor data provided, starting background location collection');
+      _startBackgroundLocationCollection();
     }
     
     // Add listener for real-time validation
@@ -177,6 +174,15 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         });
       }
     }
+  }
+
+  /// Start location collection in background without blocking UI initialization
+  void _startBackgroundLocationCollection() {
+    // Run GPS collection asynchronously without blocking UI
+    _collectFallbackLocationData().catchError((e) {
+      // Handle gracefully - GPS can be collected during submission if needed
+      debugPrint('BeepComposition: Background location collection failed: $e');
+    });
   }
 
   /// Proactively collect location data with timeout for faster GPS lock
