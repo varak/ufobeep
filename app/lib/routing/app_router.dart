@@ -258,7 +258,7 @@ GoRouter appRouter(AppRouterRef ref) {
                   photoMetadata = extra['photoMetadata'] as Map<String, dynamic>?;
                 }
                 
-                // Share intent data (multiple files) - take first file for compatibility
+                // Share intent data (multiple files) - extract first file
                 if (extra.containsKey('mediaFiles')) {
                   final mediaFiles = extra['mediaFiles'] as List?;
                   if (mediaFiles != null && mediaFiles.isNotEmpty) {
@@ -266,7 +266,8 @@ GoRouter appRouter(AppRouterRef ref) {
                     if (firstFile != null && firstFile.containsKey('mediaFile')) {
                       mediaFile = firstFile['mediaFile'] as File?;
                       sensorData = extra['sensorData'] as SensorData?;
-                      debugPrint('📸 BEEP ROUTE: Using shared media file from share intent');
+                      photoMetadata = firstFile['photoMetadata'] as Map<String, dynamic>?;
+                      debugPrint('📸 BEEP ROUTE: Extracted shared media: ${mediaFile?.path}');
                     }
                   }
                 }
