@@ -77,50 +77,29 @@ export default function Home() {
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
-              <div className="text-2xl mb-2">💬</div>
-              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Comments System</h3>
+              <div className="text-2xl mb-2">📸</div>
+              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Media Upload Complete</h3>
               <p className="text-xs text-text-secondary">
-                Real-time comments with auto-refresh and smart navigation
-              </p>
-            </div>
-            <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
-              <div className="text-2xl mb-2">🔧</div>
-              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Authentication Fix</h3>
-              <p className="text-xs text-text-secondary">
-                Users now stay logged in across app restarts
-              </p>
-            </div>
-            <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
-              <div className="text-2xl mb-2">🌐</div>
-              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Website Redesign</h3>
-              <p className="text-xs text-text-secondary">
-                Mobile-first alert cards with media and comment counts
-              </p>
-            </div>
-            <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
-              <div className="text-2xl mb-2">📱</div>
-              <h3 className="text-sm font-semibold mb-2 text-brand-primary">UI Polish</h3>
-              <p className="text-xs text-text-secondary">
-                Consistent colors, better spacing, improved navigation
+                Single-press photo/video upload with progress indicators and seamless UX
               </p>
             </div>
             <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
               <div className="text-2xl mb-2">🛸</div>
-              <h3 className="text-sm font-semibold mb-2 text-brand-primary">UFO Favicon</h3>
+              <h3 className="text-sm font-semibold mb-2 text-brand-primary">MUFON Integration</h3>
               <p className="text-xs text-text-secondary">
-                Brand consistency between mobile app and website
+                Professional UFO reports from MUFON database with media and enrichment data
               </p>
             </div>
             <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
-              <div className="text-2xl mb-2">🔗</div>
-              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Share Improvements</h3>
+              <div className="text-2xl mb-2">⚡</div>
+              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Performance Optimized</h3>
               <p className="text-xs text-text-secondary">
-                Fixed copying links and clicking images for full size
+                Faster map loading, optimized imports, and streamlined user flows
               </p>
             </div>
           </div>
           <p className="text-sm text-brand-primary font-medium">
-            Beta v1.0.0-beta.7 now available with all improvements!
+            Build 100 now available with complete media upload feature!
           </p>
         </div>
       </section>
@@ -194,10 +173,18 @@ export default function Home() {
             Join the Community
           </h2>
           <p className="text-lg text-text-secondary mb-12">
-            Connect with observers worldwide through real-time comments, 
-            share experiences, and help verify sightings through community discussion.
+            Connect with observers worldwide through real-time comments, professional MUFON reports, 
+            and community verification. Access both user submissions and verified MUFON database cases.
           </p>
-          <div className="grid sm:grid-cols-2 gap-6 mb-12">
+          <div className="grid sm:grid-cols-3 gap-6 mb-12">
+            <div className="bg-dark-surface p-6 rounded-lg border border-dark-border hover:border-brand-primary transition-colors group">
+              <div className="text-3xl mb-4 group-hover:scale-110 transition-transform">🛸</div>
+              <h3 className="text-lg font-semibold mb-2 text-brand-primary">MUFON Database</h3>
+              <p className="text-text-secondary">
+                Professional UFO reports from MUFON's verified database with detailed 
+                case studies, witness accounts, and investigation findings.
+              </p>
+            </div>
             <div className="bg-dark-surface p-6 rounded-lg border border-dark-border hover:border-brand-primary transition-colors group">
               <div className="text-3xl mb-4 group-hover:scale-110 transition-transform">💬</div>
               <h3 className="text-lg font-semibold mb-2 text-brand-primary">Real-time Comments</h3>
