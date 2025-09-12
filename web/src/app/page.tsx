@@ -181,7 +181,7 @@ export default function Home() {
               <div className="text-3xl mb-4 group-hover:scale-110 transition-transform">🛸</div>
               <h3 className="text-lg font-semibold mb-2 text-brand-primary">MUFON Database</h3>
               <p className="text-text-secondary">
-                Professional UFO reports from MUFON's verified database with detailed 
+                Professional UFO reports from MUFON&apos;s verified database with detailed 
                 case studies, witness accounts, and investigation findings.
               </p>
             </div>
