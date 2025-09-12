@@ -102,7 +102,12 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       }
     } catch (e) {
       print('Error checking witness status: $e');
-      // Assume not confirmed if error
+      // Silently fail for now - witness endpoints may not exist for beeps
+      if (mounted) {
+        setState(() {
+          _isWitnessConfirmed = false;
+        });
+      }
     }
   }
   
@@ -147,7 +152,12 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       }
     } catch (e) {
       print('Error checking follow status: $e');
-      // Assume not following if error
+      // Silently fail - follow endpoints may not exist for beeps
+      if (mounted) {
+        setState(() {
+          _isFollowing = false;
+        });
+      }
     }
   }
   
