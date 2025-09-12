@@ -1,4 +1,4 @@
-export function generateSlug(title: string, location: string, date: string, id?: string, locale: string = 'en', translations?: any) {
+export function generateSlug(title: string, location: string, date: string, id?: string, locale: string = 'en', translations?: any, source?: string, shape?: string) {
   // Get translated terms from translations object
   const getTranslatedTerm = (key: string) => {
     if (translations?.slugs?.[key]) {
@@ -7,11 +7,33 @@ export function generateSlug(title: string, location: string, date: string, id?:
     return ''
   }
 
-  const titlePart = (title || '')
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, '')
-    .replace(/\s+/g, '-')
-    .substring(0, 30)
+  // Get translated terms  
+  const mufonTerm = getTranslatedTerm('mufon') || 'mufon'
+  const ufoTerm = getTranslatedTerm('ufo') || 'ufo' 
+  const sightingTerm = getTranslatedTerm('sighting') || 'sighting'
+  const reportTerm = getTranslatedTerm('report') || 'report'
+
+  // Build title part based on source and classification (match shared generator)
+  const isMufon = source === 'mufon'
+  let titlePart = ''
+  
+  if (isMufon) {
+    // MUFON: "mufon-sphere-ufo-sighting" or "mufon-ufo-sighting"
+    if (shape && shape !== 'unknown') {
+      const shapeTranslation = getTranslatedTerm(shape) || shape.toLowerCase()
+      titlePart = `${mufonTerm}-${shapeTranslation}-${ufoTerm}-${sightingTerm}`
+    } else {
+      titlePart = `${mufonTerm}-${ufoTerm}-${sightingTerm}`
+    }
+  } else {
+    // Regular: "sphere-ufo-sighting" or "ufo-sighting"
+    if (shape && shape !== 'unknown') {
+      const shapeTranslation = getTranslatedTerm(shape) || shape.toLowerCase()
+      titlePart = `${shapeTranslation}-${ufoTerm}-${sightingTerm}`
+    } else {
+      titlePart = `${ufoTerm}-${sightingTerm}`
+    }
+  }
 
   const unknownTerm = getTranslatedTerm('unknown')
   
@@ -59,8 +81,35 @@ export function getAlertSlug(alert: SluggableAlertLike, locale: string = 'en', t
   const location = alert.location?.name || 'unknown-location'
   const date = alert.created_at
   const id = shortId || alert.short_url || alert.id
+  const source = alert.source || ''
   
-  return generateSlug(title, location, date, id, locale, translations)
+  // Extract shape from enrichment data or title
+  let shape = ''
+  if (source === 'mufon' && title) {
+    // Extract shape from MUFON title: "MUFON Light Report" -> "light"
+    const titleLower = title.toLowerCase()
+    if (titleLower.includes('triangle')) shape = 'triangle'
+    else if (titleLower.includes('disc')) shape = 'disc'
+    else if (titleLower.includes('sphere')) shape = 'sphere'
+    else if (titleLower.includes('cigar')) shape = 'cigar'
+    else if (titleLower.includes('light')) shape = 'light'
+    else if (titleLower.includes('boomerang')) shape = 'boomerang'
+    else if (titleLower.includes('diamond')) shape = 'diamond'
+    else if (titleLower.includes('rectangle')) shape = 'rectangle'
+    else if (titleLower.includes('oval')) shape = 'oval'
+    else if (titleLower.includes('cone')) shape = 'cone'
+    else if (titleLower.includes('cross')) shape = 'cross'
+    else if (titleLower.includes('cylinder')) shape = 'cylinder'
+    else if (titleLower.includes('dumbbell')) shape = 'dumbbell'
+    else if (titleLower.includes('teardrop')) shape = 'teardrop'
+    else if (titleLower.includes('tic-tac')) shape = 'tic-tac'
+    else if (titleLower.includes('bullet')) shape = 'bullet'
+    else if (titleLower.includes('saturn')) shape = 'saturn'
+    else if (titleLower.includes('starlike')) shape = 'starlike'
+    else if (titleLower.includes('blimp')) shape = 'blimp'
+  }
+  
+  return generateSlug(title, location, date, id, locale, translations, source, shape)
 }
 
 // Browser-compatible short hash implementation (extracted from shared module)
