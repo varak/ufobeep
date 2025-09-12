@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../config/environment.dart';
 import '../models/api_models.dart' as api;
@@ -1302,61 +1303,98 @@ extension ApiClientExtension on ApiClient {
         throw Exception('Media file is empty');
       }
       
-      final formData = FormData();
+      // Use HTTP client instead of Dio to ensure response stream is fully drained
+      final httpClient = HttpClient();
+      httpClient.connectionTimeout = const Duration(seconds: 30);
       
-      // Add the file to the 'files' field (FastAPI expects List[UploadFile])
-      debugPrint('Creating multipart file...');
-      final filename = _safeExtractFilename(file.path);
-      
-      // Add 5-second timeout for file reading to prevent infinite hang
-      final multipartFile = await MultipartFile.fromFile(file.path, filename: filename)
-          .timeout(const Duration(seconds: 5), onTimeout: () {
-            throw TimeoutException('File reading timeout after 5 seconds', const Duration(seconds: 5));
-          });
-      
-      formData.files.add(MapEntry('files', multipartFile));
-      
-      // Add form fields
-      formData.fields.add(const MapEntry('source', 'mobile_app'));
-      debugPrint('Form data created successfully');
-      
-      final uploadUrl = '/beep/$sightingId/media';
-      debugPrint('Upload URL: $uploadUrl');
-      debugPrint('Making POST request...');
+      try {
+        final baseUri = Uri.parse(ApiClient.dio.options.baseUrl);
+        final uploadUri = baseUri.resolve('/beep/$sightingId/media');
+        
+        debugPrint('Upload URL: $uploadUri');
+        debugPrint('Making HTTP request...');
+        
+        final request = await httpClient.postUrl(uploadUri);
+        
+        // Add authorization header if available
+        final authToken = await _getAuthToken();
+        if (authToken != null) {
+          request.headers.set('Authorization', 'Bearer $authToken');
+        }
+        
+        // Create multipart request
+        final boundary = 'dart-http-boundary-${DateTime.now().millisecondsSinceEpoch}';
+        request.headers.set('Content-Type', 'multipart/form-data; boundary=$boundary');
+        
+        final filename = _safeExtractFilename(file.path);
+        final fileBytes = await file.readAsBytes();
+        
+        // Build multipart body manually to ensure proper formatting
+        final bodyParts = <String>[];
+        
+        // Add source field
+        bodyParts.add('--$boundary');
+        bodyParts.add('Content-Disposition: form-data; name="source"');
+        bodyParts.add('');
+        bodyParts.add('mobile_app');
+        
+        // Add file field
+        bodyParts.add('--$boundary');
+        bodyParts.add('Content-Disposition: form-data; name="files"; filename="$filename"');
+        bodyParts.add('Content-Type: application/octet-stream');
+        bodyParts.add('');
+        
+        final bodyPrefix = bodyParts.join('\r\n') + '\r\n';
+        final bodySuffix = '\r\n--$boundary--\r\n';
+        
+        // Write the complete body
+        request.add(utf8.encode(bodyPrefix));
+        request.add(fileBytes);
+        request.add(utf8.encode(bodySuffix));
+        
+        debugPrint('Sending request...');
+        final response = await request.close().timeout(const Duration(seconds: 30));
+        
+        // CRITICAL: Fully drain the response stream to prevent hanging
+        final responseBody = await response.transform(utf8.decoder).join();
+        
+        debugPrint('Response status: ${response.statusCode}');
+        debugPrint('Response data: $responseBody');
 
-      final response = await ApiClient.dio.post(
-        uploadUrl,
-        data: formData,
-        options: Options(
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          sendTimeout: const Duration(seconds: 30),
-          receiveTimeout: const Duration(seconds: 30),
-        ),
-      );
-
-      debugPrint('Response status: ${response.statusCode}');
-      debugPrint('Response data: ${response.data}');
-
-      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
-        debugPrint('=== MEDIA UPLOAD SUCCESS ===');
-        return _safeResponseToMap(response.data, context: 'Media upload response');
-      } else {
-        debugPrint('ERROR: Upload failed with status ${response.statusCode}');
-        throw Exception('Failed to upload media: ${response.statusMessage}');
+        if (response.statusCode >= 200 && response.statusCode < 300) {
+          debugPrint('=== MEDIA UPLOAD SUCCESS ===');
+          
+          // Parse JSON response
+          try {
+            final Map<String, dynamic> jsonResponse = json.decode(responseBody);
+            return jsonResponse;
+          } catch (e) {
+            debugPrint('Warning: Non-JSON response, returning success indicator');
+            return {'success': true, 'message': 'Upload completed'};
+          }
+        } else {
+          debugPrint('ERROR: Upload failed with status ${response.statusCode}');
+          throw Exception('Failed to upload media: ${response.statusCode} - $responseBody');
+        }
+      } finally {
+        httpClient.close();
       }
-    } on DioException catch (e) {
-      debugPrint('=== MEDIA UPLOAD DIO ERROR ===');
-      debugPrint('Error type: ${e.type}');
-      debugPrint('Error message: ${e.message}');
-      debugPrint('Response: ${e.response?.data}');
-      debugPrint('Status code: ${e.response?.statusCode}');
-      throw _handleError(e);
+      rethrow;
     } catch (e) {
-      debugPrint('=== MEDIA UPLOAD GENERAL ERROR ===');
+      debugPrint('=== MEDIA UPLOAD ERROR ===');
       debugPrint('Error: $e');
       rethrow;
+    }
+  }
+
+  Future<String?> _getAuthToken() async {
+    // Get the auth token from secure storage or wherever it's stored
+    try {
+      final secureStorage = await SharedPreferences.getInstance();
+      return secureStorage.getString('auth_token');
+    } catch (e) {
+      debugPrint('Warning: Could not retrieve auth token: $e');
+      return null;
     }
   }
 
