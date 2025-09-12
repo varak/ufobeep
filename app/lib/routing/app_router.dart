@@ -230,10 +230,10 @@ GoRouter appRouter(AppRouterRef ref) {
 
           // Beep (Capture/Upload) - WITH REDIRECT TRACING
           GoRoute(
-            path: '/beep',
+            path: '/beepscreen',
             name: 'beep',
             redirect: (context, state) {
-              debugPrint('🔄 [/beep REDIRECT] ${state.matchedLocation} uri=${state.uri} '
+              debugPrint('🔄 [/beepscreen REDIRECT] ${state.matchedLocation} uri=${state.uri} '
                         'fullPath=${state.fullPath}');
               // If you previously returned the SAME location conditionally, that's a loop.
               return null; // No redirect needed
@@ -344,7 +344,7 @@ GoRouter appRouter(AppRouterRef ref) {
                             ),
                             const SizedBox(height: 24),
                             ElevatedButton(
-                              onPressed: () => context.go('/beep'),
+                              onPressed: () => context.go('/beepscreen'),
                               child: const Text('Try Again'),
                             ),
                           ],
@@ -553,7 +553,7 @@ class MainBottomNavBar extends StatelessWidget {
     int currentIndex = 0;
     if (currentLocation == '/' || currentLocation.startsWith('/alerts') || currentLocation.startsWith('/alert/')) {
       currentIndex = 0;
-    } else if (currentLocation.startsWith('/beep')) {
+    } else if (currentLocation.startsWith('/beepscreen') || currentLocation.startsWith('/beep/')) {
       currentIndex = 1;
     } else if (currentLocation.startsWith('/profile')) {
       currentIndex = 2;
@@ -570,7 +570,7 @@ class MainBottomNavBar extends StatelessWidget {
             context.go('/alerts');
             break;
           case 1:
-            context.go('/beep');
+            context.go('/beepscreen');
             break;
           case 2:
             context.go('/profile');

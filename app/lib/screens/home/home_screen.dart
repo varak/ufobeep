@@ -386,7 +386,7 @@ class _EmptyAlertsView extends StatelessWidget {
             
             if (!hasFilters)
               OutlinedButton.icon(
-                onPressed: () => context.go('/beep'),
+                onPressed: () => context.go('/beepscreen'),
                 icon: const Icon(Icons.camera_alt),
                 label: const Text('Report Sighting - Send a Beep!'),
                 style: OutlinedButton.styleFrom(
