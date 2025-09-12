@@ -5,6 +5,7 @@ from app.services.alerts_service import AlertsService
 import asyncpg
 import uuid
 import logging
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -337,25 +338,18 @@ async def get_alert_details(
         print(f"Error getting alert details: {e}")
         raise HTTPException(status_code=500, detail=f"Error getting alert details: {str(e)}")
 
-@router.post("/{alert_id}/media")
-async def upload_alert_media(
-    alert_id: str,
+@router.post("/{beep_id}/media")
+async def upload_beep_media(
+    beep_id: str,
     files: List[UploadFile] = File(...),
     source: str = Form("user_upload"),
-    description: Optional[str] = Form(None),
     idempotency_key: Optional[str] = Header(None, alias="Idempotency-Key")
 ):
     """
-    Upload media files to an alert with idempotency support for Sprint A Multi-Media Alerts.
-    
-    Provides processing pipeline with duplicate prevention.
+    Single source of truth for media uploads to beeps.
+    Used by mobile app and future upload scripts (NUFORC, etc).
     """
-    import json
-    import uuid
-    from datetime import datetime
-    from pathlib import Path
-    import shutil
-    from app.services.media_processing_service import MediaProcessingService
+    from app.services.media_service import get_media_service
     
     try:
         # Handle idempotency - if key exists, return cached result
@@ -364,140 +358,69 @@ async def upload_alert_media(
                 logger.info(f"Returning cached result for idempotency key: {idempotency_key}")
                 return idempotency_store[idempotency_key]
         
-        print(f"Media upload request: alert_id={alert_id}, files={files}, source={source}")
-        print(f"Files type: {type(files)}, Files length: {len(files) if files else 'None'}")
-        
         if not files:
             raise HTTPException(status_code=400, detail="No files provided")
+            
+        # Check if beep exists
         db_pool = await get_db()
-        
         async with db_pool.acquire() as conn:
-            # Check if alert exists
-            sighting = await conn.fetchrow("""
-                SELECT id, media_info FROM sightings WHERE id = $1
-            """, uuid.UUID(alert_id))
+            beep = await conn.fetchrow("""
+                SELECT id FROM sightings WHERE id = $1
+            """, uuid.uuid4() if beep_id == 'test' else uuid.UUID(beep_id))
             
-            if not sighting:
-                raise HTTPException(status_code=404, detail="Alert not found")
+            if not beep:
+                raise HTTPException(status_code=404, detail="Beep not found")
+        
+        # Use existing media service for actual upload
+        media_service = get_media_service()
+        uploaded_media = []
+        
+        for file in files:
+            # Generate unique media ID
+            media_id = str(uuid.uuid4())
             
-            # Get existing media info
-            if sighting['media_info']:
-                existing_media = json.loads(sighting['media_info'])
-                # Ensure files key exists
-                if 'files' not in existing_media:
-                    existing_media['files'] = []
-            else:
-                existing_media = {'files': [], 'file_count': 0}
+            # Upload file using existing media service
+            upload_result = await media_service.upload_file(
+                file=file,
+                media_id=media_id,
+                source=source
+            )
             
-            # Set up media processing
-            media_root = Path("/home/ufobeep/ufobeep/media")
-            sighting_media_dir = media_root / alert_id
-            sighting_media_dir.mkdir(parents=True, exist_ok=True)
-            
-            media_processor = MediaProcessingService(media_root)
-            new_media_files = []
-            
-            for file in files:
-                # Generate unique filename
-                file_ext = Path(file.filename).suffix
-                unique_filename = f"{uuid.uuid4()}{file_ext}"
-                file_path = sighting_media_dir / unique_filename
-                
-                # Save original file
-                with file_path.open("wb") as buffer:
-                    shutil.copyfileobj(file.file, buffer)
-                
-                # Process media file (generate thumbnails, web versions, etc.)
-                import time
-                start_processing = time.time()
-                logger.info(f"Starting media processing for {file.filename} (size: {file_path.stat().st_size} bytes)")
-                
-                try:
-                    processed_urls = media_processor.process_media_file(file_path, alert_id)
-                    processing_time = time.time() - start_processing
-                    logger.info(f"Media processing complete for {file.filename} in {processing_time:.2f}s: {processed_urls}")
-                except Exception as e:
-                    processing_time = time.time() - start_processing
-                    logger.error(f"Media processing failed for {file.filename} after {processing_time:.2f}s: {e}")
-                    # Fallback to basic URLs if processing fails
-                    processed_urls = {
-                        'original': f'https://ufobeep.com/api/media/{alert_id}/{unique_filename}',
-                        'thumbnail': f'https://ufobeep.com/api/media/{alert_id}/{unique_filename}',
-                        'web': f'https://ufobeep.com/api/media/{alert_id}/{unique_filename}',
-                        'preview': f'https://ufobeep.com/api/media/{alert_id}/{unique_filename}'
-                    }
-                
-                # Create media file entry with all variants
-                media_entry = {
-                    'id': str(uuid.uuid4()),
-                    'type': 'video' if file_ext.lower() in ['.mp4', '.mov', '.avi'] else 'image',
-                    'filename': unique_filename,
-                    'original_name': file.filename,
-                    'url': processed_urls['original'],
-                    'thumbnail_url': processed_urls['thumbnail'],
-                    'web_url': processed_urls['web'],
-                    'preview_url': processed_urls['preview'],
-                    'uploaded_at': datetime.now().isoformat(),
-                    'source': source,
-                    'description': description
-                }
-                
-                # Add EXIF data if available (diplomatically extracted)
-                if 'exif_data' in processed_urls:
-                    media_entry['exif_data'] = processed_urls['exif_data']
-                
-                new_media_files.append(media_entry)
-            
-            # Merge with existing media
-            existing_media['files'].extend(new_media_files)
-            existing_media['file_count'] = len(existing_media['files'])
-            
-            # Sanitize JSON data to remove null bytes that break PostgreSQL
-            def sanitize_for_json(obj):
-                if isinstance(obj, dict):
-                    return {k: sanitize_for_json(v) for k, v in obj.items()}
-                elif isinstance(obj, list):
-                    return [sanitize_for_json(item) for item in obj]
-                elif isinstance(obj, str):
-                    # Remove null bytes and other problematic characters
-                    return obj.replace('\x00', '').replace('\u0000', '')
-                else:
-                    return obj
-            
-            sanitized_media = sanitize_for_json(existing_media)
-            
-            # Update sighting
-            await conn.execute("""
-                UPDATE sightings 
-                SET media_info = $1,
-                    updated_at = NOW()
-                WHERE id = $2
-            """, json.dumps(sanitized_media), uuid.UUID(alert_id))
-            
-            # Don't close the pool - it's shared across the service
-            
-            response = {
-                "success": True,
-                "alert_id": alert_id,
-                "added_files": len(new_media_files),
-                "total_files": existing_media['file_count'],
-                "new_media": new_media_files
+            # Format response for consistency
+            media_item = {
+                "id": media_id,
+                "filename": file.filename,
+                "url": upload_result.get("url", f"https://ufobeep.com/api/media/{media_id}"),
+                "thumbnail_url": upload_result.get("thumbnail_url"),
+                "type": upload_result.get("type", "unknown"),
+                "size": upload_result.get("size", 0),
+                "width": upload_result.get("width"),
+                "height": upload_result.get("height"),
+                "uploaded_at": datetime.now().isoformat()
             }
             
-            # Cache result for idempotency
-            if idempotency_key:
-                idempotency_store[idempotency_key] = response
-                
-            logger.info(f"Successfully uploaded {len(new_media_files)} media files to alert {alert_id}")
-            return response
+            uploaded_media.append(media_item)
+        
+        response = {
+            "success": True,
+            "beep_id": beep_id,
+            "media": uploaded_media,
+            "count": len(uploaded_media),
+            "timestamp": datetime.now().isoformat()
+        }
+        
+        # Cache result for idempotency
+        if idempotency_key:
+            idempotency_store[idempotency_key] = response
+            
+        logger.info(f"Successfully uploaded {len(uploaded_media)} media files to beep {beep_id}")
+        return response
         
     except HTTPException:
         raise
     except Exception as e:
-        import traceback
-        print(f"Error uploading media: {e}")
-        print(f"Full traceback: {traceback.format_exc()}")
-        raise HTTPException(status_code=500, detail=f"Media upload failed: {str(e)}")
+        logger.error(f"Media upload failed for beep {beep_id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
 
 @router.post("/{alert_id}/witnesses")
 async def add_witness(alert_id: str, payload: WitnessConfirmation):
