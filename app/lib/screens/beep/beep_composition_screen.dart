@@ -999,11 +999,18 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       return const SizedBox.shrink();
     }
     
-    return MultiFilePreview(
-      mediaFiles: _mediaFiles,
-      onRemove: _removeMediaFile,
-      onReorder: _reorderMediaFiles,
-      allowEdit: true,
+    // Temporarily disable MultiFilePreview to isolate hanging issue
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.darkSurface,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.darkBorder),
+      ),
+      child: Text(
+        '${_mediaFiles.length} media files selected (preview disabled for debugging)',
+        style: const TextStyle(color: AppColors.textSecondary),
+      ),
     );
   }
   
