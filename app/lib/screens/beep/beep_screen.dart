@@ -370,7 +370,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
           'photoMetadata': {},
         }).toList();
         
-        context.go('/beep/compose', extra: {
+        context.go('/beepscreen/compose', extra: {
           'mediaFiles': mediaFiles,
           'description': description,
           'attachToSightingId': widget.attachToSightingId,
