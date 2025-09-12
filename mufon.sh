@@ -21,6 +21,17 @@ fi
 
 DATE_INPUT="$1"
 
+# Create log file with timestamp
+LOG_FILE="logs/mufon_import_$(date +%Y%m%d_%H%M%S).log"
+mkdir -p logs
+
+# Function to log to both console and file
+log_both() {
+    local message="$1"
+    echo "$message"
+    echo "$message" >> "$LOG_FILE"
+}
+
 # Helper: resolve tokens like 'today'/'yesterday' to YYYY-MM-DD
 resolve_date_token() {
     local token="$1"
@@ -718,7 +729,7 @@ def extract_and_import_mufon(date_str):
                                         # Extract text from popup
                                         try:
                                             safe_browser_operation(
-                                                lambda: popup.wait_for_selector("pre", timeout=5000),
+                                                lambda: popup.wait_for_selector("pre", timeout=15000),
                                                 "Wait for pre element"
                                             )
                                             popup_text = safe_browser_operation(
@@ -772,7 +783,7 @@ def extract_and_import_mufon(date_str):
                                             if page.url != before_url:
                                                 try:
                                                     safe_browser_operation(
-                                                        lambda: page.wait_for_selector("pre", timeout=5000),
+                                                        lambda: page.wait_for_selector("pre", timeout=15000),
                                                         "Wait for pre (fallback)"
                                                     )
                                                     result = safe_browser_operation(
@@ -1019,7 +1030,7 @@ def extract_and_import_mufon(date_str):
                                         
                                         files = {'files': (media['filename'], media_response.content, 'application/octet-stream')}
                                         data = {'source': 'mufon_import'}
-                                        upload_response = requests.post(f"https://ufobeep.com/api/beep/{alert_id}/media", files=files, data=data, timeout=120)
+                                        upload_response = requests.post(f"https://ufobeep.com/api/beep/{alert_id}/media", files=files, data=data, timeout=300)
                                         
                                         if upload_response.status_code == 200:
                                             uploaded_count += 1
