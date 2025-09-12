@@ -214,65 +214,84 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
 
   // 🔥 ChatGPT's Bulletproof Submit Function with 20-second timeout
   Future<void> _submitBeep() async {
-    _log('Starting submission...');
-    
-    if (_isSubmitting) {
-      _log('Already submitting, skipping');
-      return;
-    }
-    
-    // Single state update point
-    _log('Setting isSubmitting = true');
-    setState(() {
+    final wd = StuckWatchdog();
+    try {
+      wd.mark("_submitBeep method entry");
+      _log('Starting submission...');
+      
+      wd.mark("checking if already submitting");
+      if (_isSubmitting) {
+        _log('Already submitting, skipping');
+        wd.mark("already submitting - early return");
+        return;
+      }
+      
+      wd.mark("setting submission state to true");
+      // Skip setState during submission to avoid UI thread hang
+      _log('Setting isSubmitting = true (no setState to avoid hang)');
       _isSubmitting = true;
       _errorMessage = null;
-    });
-    
-    try {
-      // 20-second timeout to kill infinite hangs
-      await Future.any([
-        _actualSubmitLogic(),
-        Future.delayed(Duration(seconds: 20), () => throw TimeoutException('Submission timeout', Duration(seconds: 20))),
-      ]);
       
-      _log('SUCCESS: Submission completed');
-      
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Beep sent successfully!'),
-            backgroundColor: AppColors.brandPrimary,
-            duration: const Duration(seconds: 3),
-          ),
-        );
-      }
-      
-    } catch (e) {
-      _log('ERROR: $e');
-      
-      if (mounted) {
-        setState(() {
-          _errorMessage = e.toString();
-        });
-      }
-      
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to send beep: ${e.toString()}'),
-            backgroundColor: AppColors.semanticError,
-            duration: const Duration(seconds: 4),
-          ),
-        );
+      wd.mark("state updated - about to call Future.any with timeout");
+      try {
+        // 20-second timeout to kill infinite hangs
+        wd.mark("entering Future.any with _actualSubmitLogic and 20s timeout");
+        await Future.any([
+          _actualSubmitLogic(),
+          Future.delayed(Duration(seconds: 20), () {
+            wd.mark("timeout reached - throwing TimeoutException");
+            throw TimeoutException('Submission timeout', Duration(seconds: 20));
+          }),
+        ]);
+        
+        wd.mark("Future.any completed successfully");
+        _log('SUCCESS: Submission completed');
+        
+        wd.mark("showing success snackbar");
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Beep sent successfully!'),
+              backgroundColor: AppColors.brandPrimary,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        }
+        
+      } catch (e) {
+        wd.mark("caught error in submission: ${e.runtimeType} - $e");
+        _log('ERROR: $e');
+        
+        wd.mark("updating error state");
+        if (mounted) {
+          setState(() {
+            _errorMessage = e.toString();
+          });
+        }
+        
+        wd.mark("showing error snackbar");
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to send beep: ${e.toString()}'),
+              backgroundColor: AppColors.semanticError,
+              duration: const Duration(seconds: 4),
+            ),
+          );
+        }
+      } finally {
+        // SINGLE point of _isSubmitting management
+        wd.mark("in finally block - setting isSubmitting to false");
+        _log('FINALLY: Setting isSubmitting = false');
+        if (mounted) {
+          setState(() {
+            _isSubmitting = false;
+          });
+        }
+        wd.mark("finally block completed - submission state reset");
       }
     } finally {
-      // SINGLE point of _isSubmitting management
-      _log('FINALLY: Setting isSubmitting = false');
-      if (mounted) {
-        setState(() {
-          _isSubmitting = false;
-        });
-      }
+      wd.dispose();
     }
   }
   
