@@ -591,7 +591,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   void _retakeMedia() async {
     // Add haptic feedback
     await SoundService.I.play(AlertSound.tap, haptic: true);
-    context.go('/beep');
+    context.pop(); // Go back instead of creating new navigation
   }
 
   void _addMoreMedia() async {
@@ -947,12 +947,12 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Media section (photo or video)
-                    _buildMediaSection(),
-                    const SizedBox(height: 24),
-                    
                     // Form field - make it more prominent
                     _buildDescriptionInput(),
+                    const SizedBox(height: 24),
+                    
+                    // Media section (photo or video) - below description
+                    _buildMediaSection(),
                     const SizedBox(height: 24),
                     
                     // Error message
