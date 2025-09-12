@@ -44,6 +44,7 @@ class BeepScreen extends ConsumerStatefulWidget {
     this.attachToSightingId,
     this.autoOpenGallery = false,
     this.initialMediaFile,
+    this.initialMediaFiles,
     this.initialSensorData,
     this.initialPhotoMetadata,
   });
@@ -128,6 +129,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       
       setState(() {
         _currentSubmission = submission;
+        _capturedMedia.add(widget.initialMediaFile!); // Add to captured media for UI display
       });
       
       debugPrint('📸 BEEP: Created submission with camera photo - ${widget.initialMediaFile!.path}');
