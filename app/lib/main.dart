@@ -275,7 +275,7 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
         };
         
         print('🎯 MAIN: Share intent (authenticated) - navigating with data: $shareData');
-        router.go('/beep/compose', extra: shareData);
+        router.go('/beepscreen', extra: shareData);
         
         PendingShareQueue().clear();
       } else {
