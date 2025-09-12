@@ -257,10 +257,11 @@ GoRouter appRouter(AppRouterRef ref) {
                   mediaFile = extra['mediaFile'] as File?;
                   sensorData = extra['sensorData'] as SensorData?;
                   photoMetadata = extra['photoMetadata'] as Map<String, dynamic>?;
+                  debugPrint('📸 BEEP ROUTE: Camera return data - single file');
                 }
                 
-                // Share intent data (multiple files) - extract ALL files
-                if (extra.containsKey('mediaFiles')) {
+                // Share intent data (multiple files) - extract ALL files, don't set single mediaFile
+                else if (extra.containsKey('mediaFiles')) {
                   final mediaFiles = extra['mediaFiles'] as List?;
                   if (mediaFiles != null && mediaFiles.isNotEmpty) {
                     sharedMediaFiles = [];
