@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useClientTranslations } from '@/hooks/useClientTranslations'
 import AppDownloadCTA from '@/components/AppDownloadCTA'
-import GlobalSightingNetwork from '@/components/GlobalSightingNetwork'
 
 export default function Home() {
   const pathname = usePathname()
@@ -55,19 +54,10 @@ export default function Home() {
                 {t('viewAllBeeps')}
               </button>
             </Link>
-            <a href="#global-network">
-              <button className="border border-brand-primary text-brand-primary px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary hover:text-text-inverse transition-all duration-300 hover:scale-105 transform">
-                {t('sightingsMap')}
-              </button>
-            </a>
           </div>
           
           {/* Content navigation links */}
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 text-sm">
-            <a href="#global-network" className="text-brand-primary hover:text-brand-primary-light transition-colors font-medium">
-              {t('globalSightingNetwork')}
-            </a>
-            <span className="text-text-tertiary hidden sm:inline">|</span>
             <a href="#how-it-works" className="text-brand-primary hover:text-brand-primary-light transition-colors font-medium">
               {t('howItWorks')}
             </a>
@@ -135,10 +125,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Live Map Section */}
-      <div id="global-network">
-        <GlobalSightingNetwork />
-      </div>
 
       {/* Features Section */}
       <section id="how-it-works" className="py-20 px-6 md:px-24 bg-dark-surface">
