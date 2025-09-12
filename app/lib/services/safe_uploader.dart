@@ -48,20 +48,14 @@ class SafeUploader {
     // Open a stream directly from the content resolver or file
     final stream = xfile.openRead();
 
-    final part = length != null
-        ? http.MultipartFile(
-            fieldName,
-            stream,
-            length,
-            filename: xfile.name,
-            contentType: mediaType,
-          )
-        : http.MultipartFile.fromStream(
-            fieldName,
-            stream,
-            filename: xfile.name,
-            contentType: mediaType,
-          );
+    // Create MultipartFile - use 0 length if unknown (enables chunked transfer)
+    final part = http.MultipartFile(
+      fieldName,
+      stream,
+      length ?? 0, // 0 enables chunked transfer encoding
+      filename: xfile.name,
+      contentType: mediaType,
+    );
     req.files.add(part);
 
     // Send + drain
