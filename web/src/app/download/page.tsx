@@ -5,9 +5,9 @@ import { useState } from 'react';
 export default function DownloadPage() {
   const [showInstructions, setShowInstructions] = useState(false);
   
-  const latestVersion = "v0.9.0 Beta";
-  const releaseDate = "August 21, 2025";
-  const apkSize = "69 MB";
+  const latestVersion = "v1.0.0-beta.8+100";
+  const releaseDate = "September 12, 2025";
+  const apkSize = "76 MB";
   
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -49,21 +49,21 @@ export default function DownloadPage() {
             🚀 What&apos;s New
           </h2>
           <ul className="space-y-2 text-gray-300">
-            <li>✅ <strong>MAJOR FIX:</strong> Tablet photo uploads now work flawlessly</li>
-            <li>✅ <strong>Performance Boost:</strong> App startup optimized from 23s to 3-5s</li>
-            <li>✅ <strong>BlackSky Integration:</strong> Satellite imagery enrichment with clickable info modals</li>
-            <li>✅ <strong>Proximity Alerts Fixed:</strong> Push notification delivery system restored</li>
-            <li>✅ <strong>Sensor Improvements:</strong> Smart fallbacks for tablets without magnetometer</li>
-            <li>✅ <strong>Permission Flow:</strong> Smooth permission handling without 25% hanging</li>
-            <li>✅ <strong>Future-Proof:</strong> Fixed &ldquo;future not complete&rdquo; sensor errors</li>
-            <li>✅ <strong>Release Build:</strong> Production-optimized build for better performance</li>
+            <li>✅ <strong>Media Upload Complete:</strong> Single-press photo/video upload with progress indicators</li>
+            <li>✅ <strong>22 Languages:</strong> Full multilingual support with automatic translation</li>
+            <li>✅ <strong>MUFON Integration:</strong> Professional UFO reports from verified database</li>
+            <li>✅ <strong>Performance Optimized:</strong> Faster loading, streamlined user flows</li>
+            <li>✅ <strong>Real-time Alerts:</strong> Instant notifications when UFOs spotted nearby</li>
+            <li>✅ <strong>Compass Navigation:</strong> Point phone to find exact UFO location</li>
+            <li>✅ <strong>Community Comments:</strong> Discuss sightings with other witnesses</li>
+            <li>✅ <strong>Satellite Imagery:</strong> BlackSky and SkyFi integration for verification</li>
           </ul>
         </div>
 
         {/* Download Button */}
         <div className="text-center mb-8">
           <a
-            href="/downloads/ufobeep-latest.apk"
+            href="/downloads/ufobeep-alpha.apk"
             className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg text-xl transition-all transform hover:scale-105"
             download
           >
@@ -126,7 +126,7 @@ export default function DownloadPage() {
                 </h3>
                 <ol className="list-decimal list-inside space-y-1 text-gray-400">
                   <li>Open your <strong>Downloads</strong> folder</li>
-                  <li>Tap on <strong>ufobeep-latest.apk</strong></li>
+                  <li>Tap on <strong>ufobeep-alpha.apk</strong></li>
                   <li>Tap <strong>&quot;Install&quot;</strong> when prompted</li>
                   <li>Wait for installation to complete</li>
                   <li>Tap <strong>&quot;Open&quot;</strong> to launch UFOBeep!</li>
