@@ -1331,6 +1331,8 @@ extension ApiClientExtension on ApiClient {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
+          sendTimeout: const Duration(seconds: 30),
+          receiveTimeout: const Duration(seconds: 30),
         ),
       );
 
