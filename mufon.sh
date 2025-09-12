@@ -962,7 +962,7 @@ def extract_and_import_mufon(date_str):
                         alert_id = None
                         try:
                             response = requests.post(
-                                "https://ufobeep.com/api/alerts", 
+                                "https://ufobeep.com/api/beep", 
                                 json=alert_data,
                                 timeout=30
                             )
@@ -1015,7 +1015,7 @@ def extract_and_import_mufon(date_str):
                                         
                                         files = {'files': (media['filename'], media_response.content, 'application/octet-stream')}
                                         data = {'source': 'mufon_import'}
-                                        upload_response = requests.post(f"https://ufobeep.com/api/alerts/{alert_id}/media", files=files, data=data, timeout=120)
+                                        upload_response = requests.post(f"https://ufobeep.com/api/beep/{alert_id}/media", files=files, data=data, timeout=120)
                                         
                                         if upload_response.status_code == 200:
                                             uploaded_count += 1
