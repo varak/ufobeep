@@ -609,7 +609,11 @@ class AlertsService:
             )
             
             # Run enrichment
+            enrichment_start = datetime.utcnow()
+            logger.info(f"📡 API ENRICHMENT TRIGGER: Starting enrichment for sighting {alert_id}")
             results = await enrichment_orchestrator.enrich_sighting(context)
+            enrichment_time = int((datetime.utcnow() - enrichment_start).total_seconds() * 1000)
+            logger.info(f"📡 API ENRICHMENT COMPLETE: Sighting {alert_id} enrichment finished ({enrichment_time}ms)")
             
             # Save enrichment results to database - MERGE with existing enrichment data
             new_enrichment_data = {}

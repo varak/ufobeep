@@ -59,20 +59,35 @@ async def enrich_sighting(sighting_id: str) -> bool:
         from app.models.sighting import Sighting
         from app.database import get_db_session
         
-        logger.info(f"Starting enrichment for sighting {sighting_id}")
+        worker_start_time = datetime.utcnow()
+        logger.info(f"🚀 WORKER ENRICHMENT START: Processing sighting {sighting_id}")
         
         # Initialize processors if not already done
         if not enrichment_orchestrator.processors:
+            logger.info(f"🔧 WORKER ENRICHMENT: Initializing enrichment processors...")
             initialize_enrichment_processors()
+            logger.info(f"🔧 WORKER ENRICHMENT: {len(enrichment_orchestrator.processors)} processors initialized")
+        else:
+            logger.info(f"🔧 WORKER ENRICHMENT: Using {len(enrichment_orchestrator.processors)} existing processors")
         
         # Get sighting from database
+        db_start = datetime.utcnow()
+        logger.info(f"📊 WORKER ENRICHMENT: Fetching sighting {sighting_id} from database...")
+        
         async with get_db_session() as db:
             sighting = await db.get(Sighting, UUID(sighting_id))
+            db_time = int((datetime.utcnow() - db_start).total_seconds() * 1000)
+            
             if not sighting:
-                logger.error(f"Sighting {sighting_id} not found")
+                logger.error(f"❌ WORKER ENRICHMENT: Sighting {sighting_id} not found in database ({db_time}ms)")
                 return False
             
+            logger.info(f"✅ WORKER ENRICHMENT: Sighting {sighting_id} loaded from database ({db_time}ms)")
+            
             # Create enrichment context
+            context_start = datetime.utcnow()
+            logger.info(f"🎯 WORKER ENRICHMENT: Creating enrichment context for sighting {sighting_id}")
+            
             context = EnrichmentContext(
                 sighting_id=sighting_id,
                 latitude=sighting.exact_latitude,
@@ -87,8 +102,17 @@ async def enrich_sighting(sighting_id: str) -> bool:
                 description=sighting.description or ""
             )
             
+            context_time = int((datetime.utcnow() - context_start).total_seconds() * 1000)
+            logger.info(f"✅ WORKER ENRICHMENT: Context created ({context_time}ms)")
+            
             # Run enrichment pipeline
+            pipeline_start = datetime.utcnow()
+            logger.info(f"🔄 WORKER ENRICHMENT: Starting enrichment pipeline for sighting {sighting_id}")
+            
             enrichment_results = await enrichment_orchestrator.enrich_sighting(context)
+            
+            pipeline_time = int((datetime.utcnow() - pipeline_start).total_seconds() * 1000)
+            logger.info(f"✅ WORKER ENRICHMENT: Pipeline completed ({pipeline_time}ms)")
             
             # Update sighting with enrichment data
             success_count = 0
@@ -132,17 +156,22 @@ async def enrich_sighting(sighting_id: str) -> bool:
             
             await db.commit()
             
-            logger.info(f"Enrichment completed for sighting {sighting_id}: "
-                       f"{success_count}/{total_count} processors succeeded")
+            total_worker_time = int((datetime.utcnow() - worker_start_time).total_seconds() * 1000)
+            logger.info(f"🎉 WORKER ENRICHMENT FINISHED: Sighting {sighting_id} - {success_count}/{total_count} processors succeeded - Total worker time: {total_worker_time}ms")
             
             # Trigger alert fanout for nearby users
             if success_count > 0:
+                logger.info(f"🚨 WORKER ENRICHMENT: Triggering alert fanout for sighting {sighting_id}")
                 await trigger_alert_fanout(sighting_id, sighting)
+                logger.info(f"✅ WORKER ENRICHMENT: Alert fanout completed for sighting {sighting_id}")
+            else:
+                logger.warning(f"⚠️  WORKER ENRICHMENT: No successful processors for sighting {sighting_id} - skipping alert fanout")
             
             return success_count > 0
             
     except Exception as e:
-        logger.error(f"Error enriching sighting {sighting_id}: {e}")
+        total_worker_time = int((datetime.utcnow() - worker_start_time).total_seconds() * 1000) if 'worker_start_time' in locals() else 0
+        logger.error(f"💥 WORKER ENRICHMENT ERROR: Failed to enrich sighting {sighting_id} after {total_worker_time}ms: {e}")
         return False
 
 

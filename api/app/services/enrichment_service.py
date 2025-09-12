@@ -1680,38 +1680,54 @@ class EnrichmentOrchestrator:
     
     async def enrich_sighting(self, context: EnrichmentContext) -> Dict[str, EnrichmentResult]:
         """Run all available enrichment processors for a sighting"""
+        enrichment_start_time = datetime.utcnow()
         results = {}
         
-        logger.info(f"Starting enrichment for sighting {context.sighting_id}")
+        logger.info(f"🔄 ENRICHMENT START: sighting {context.sighting_id} - {len(self.processors)} processors registered")
         
         # Filter to available processors
+        logger.info(f"📋 ENRICHMENT STEP 1: Checking processor availability for sighting {context.sighting_id}")
         available_processors = []
         for processor in self.processors:
+            availability_start = datetime.utcnow()
             try:
-                if await processor.is_available():
+                logger.info(f"   ⏳ Checking {processor.name} availability (timeout: {processor.timeout_seconds}s)...")
+                is_available = await processor.is_available()
+                availability_time = int((datetime.utcnow() - availability_start).total_seconds() * 1000)
+                
+                if is_available:
                     available_processors.append(processor)
+                    logger.info(f"   ✅ {processor.name} available ({availability_time}ms)")
                 else:
-                    logger.warning(f"Processor {processor.name} is not available, skipping")
+                    logger.warning(f"   ❌ {processor.name} not available ({availability_time}ms) - skipping")
                     results[processor.name] = EnrichmentResult(
                         processor_name=processor.name,
                         success=False,
                         error="Processor not available"
                     )
             except Exception as e:
-                logger.error(f"Error checking availability of {processor.name}: {e}")
+                availability_time = int((datetime.utcnow() - availability_start).total_seconds() * 1000)
+                logger.error(f"   💥 Error checking availability of {processor.name} ({availability_time}ms): {e}")
                 results[processor.name] = EnrichmentResult(
                     processor_name=processor.name,
                     success=False,
                     error=f"Availability check failed: {e}"
                 )
         
+        logger.info(f"📊 ENRICHMENT STEP 2: {len(available_processors)} processors available, processing in batches of {self.max_concurrent_processors}")
+        
         # Process in batches to respect concurrency limits
+        batch_number = 1
         for i in range(0, len(available_processors), self.max_concurrent_processors):
             batch = available_processors[i:i + self.max_concurrent_processors]
+            batch_start_time = datetime.utcnow()
+            
+            logger.info(f"🎯 ENRICHMENT BATCH {batch_number}: Starting {len(batch)} processors: {[p.name for p in batch]}")
             
             # Run batch concurrently
             batch_tasks = []
             for processor in batch:
+                logger.info(f"   🚀 Starting {processor.name} processor...")
                 task = asyncio.create_task(
                     self._run_processor_with_timeout(processor, context)
                 )
@@ -1719,24 +1735,42 @@ class EnrichmentOrchestrator:
             
             # Wait for batch to complete
             for processor_name, task in batch_tasks:
+                processor_start = datetime.utcnow()
                 try:
+                    logger.info(f"   ⏰ Waiting for {processor_name} to complete...")
                     result = await task
+                    processor_time = int((datetime.utcnow() - processor_start).total_seconds() * 1000)
+                    
                     results[processor_name] = result
+                    if result.success:
+                        logger.info(f"   ✅ {processor_name} completed successfully ({processor_time}ms)")
+                    else:
+                        logger.warning(f"   ⚠️  {processor_name} failed ({processor_time}ms): {result.error}")
+                        
                 except asyncio.TimeoutError:
+                    processor_time = int((datetime.utcnow() - processor_start).total_seconds() * 1000)
+                    logger.error(f"   ⏰ {processor_name} TIMEOUT after {processor_time}ms")
                     results[processor_name] = EnrichmentResult(
                         processor_name=processor_name,
                         success=False,
                         error="Processing timeout"
                     )
                 except Exception as e:
+                    processor_time = int((datetime.utcnow() - processor_start).total_seconds() * 1000)
+                    logger.error(f"   💥 {processor_name} EXCEPTION ({processor_time}ms): {e}")
                     results[processor_name] = EnrichmentResult(
                         processor_name=processor_name,
                         success=False,
                         error=str(e)
                     )
+            
+            batch_time = int((datetime.utcnow() - batch_start_time).total_seconds() * 1000)
+            logger.info(f"✅ ENRICHMENT BATCH {batch_number}: Completed in {batch_time}ms")
+            batch_number += 1
         
-        logger.info(f"Completed enrichment for sighting {context.sighting_id}: "
-                   f"{sum(1 for r in results.values() if r.success)}/{len(results)} succeeded")
+        total_enrichment_time = int((datetime.utcnow() - enrichment_start_time).total_seconds() * 1000)
+        success_count = sum(1 for r in results.values() if r.success)
+        logger.info(f"🎉 ENRICHMENT COMPLETE: sighting {context.sighting_id} - {success_count}/{len(results)} succeeded - Total time: {total_enrichment_time}ms")
         
         return results
     
@@ -1746,16 +1780,26 @@ class EnrichmentOrchestrator:
         context: EnrichmentContext
     ) -> EnrichmentResult:
         """Run a processor with timeout handling"""
+        processor_start_time = datetime.utcnow()
+        logger.info(f"      🎯 {processor.name}: Starting processor with {processor.timeout_seconds}s timeout")
+        
         try:
-            return await asyncio.wait_for(
+            result = await asyncio.wait_for(
                 processor.process(context),
                 timeout=processor.timeout_seconds
             )
+            
+            processing_time = int((datetime.utcnow() - processor_start_time).total_seconds() * 1000)
+            logger.info(f"      🎯 {processor.name}: Processor completed normally ({processing_time}ms)")
+            return result
+            
         except asyncio.TimeoutError:
-            logger.warning(f"Processor {processor.name} timed out after {processor.timeout_seconds}s")
+            processing_time = int((datetime.utcnow() - processor_start_time).total_seconds() * 1000)
+            logger.error(f"      ⏰ {processor.name}: TIMEOUT after {processing_time}ms (limit: {processor.timeout_seconds}s)")
             raise
         except Exception as e:
-            logger.error(f"Processor {processor.name} failed: {e}")
+            processing_time = int((datetime.utcnow() - processor_start_time).total_seconds() * 1000)
+            logger.error(f"      💥 {processor.name}: EXCEPTION after {processing_time}ms: {e}")
             return EnrichmentResult(
                 processor_name=processor.name,
                 success=False,
