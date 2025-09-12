@@ -120,9 +120,13 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     if (_sensorData != null) {
       debugPrint('BeepComposition: GPS coordinates: lat=${_sensorData!.latitude}, lng=${_sensorData!.longitude}');
     } else {
-      // Start location collection in background without blocking UI
-      debugPrint('BeepComposition: No sensor data provided, starting background location collection');
-      _startBackgroundLocationCollection();
+      debugPrint('BeepComposition: No sensor data provided, starting non-blocking GPS collection');
+      // Start GPS collection WITHOUT awaiting - let it run in background
+      _collectFallbackLocationData().then((value) {
+        debugPrint('BeepComposition: Background GPS collection completed successfully');
+      }).catchError((e) {
+        debugPrint('BeepComposition: Background GPS collection failed: $e');
+      });
     }
     
     // Add listener for real-time validation
@@ -176,13 +180,12 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     }
   }
 
-  /// Start location collection in background without blocking UI initialization
-  void _startBackgroundLocationCollection() {
-    // Run GPS collection asynchronously without blocking UI
-    _collectFallbackLocationData().catchError((e) {
-      // Handle gracefully - GPS can be collected during submission if needed
-      debugPrint('BeepComposition: Background location collection failed: $e');
-    });
+  /// Start location collection on-demand during submission only
+  void _startLocationCollectionIfNeeded() {
+    // This will be called during submission if GPS is still null
+    if (_sensorData == null) {
+      debugPrint('BeepComposition: Starting GPS collection on-demand during submission');
+    }
   }
 
   /// Proactively collect location data with timeout for faster GPS lock
@@ -265,6 +268,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
             ),
           );
         }
+        
+        // Don't navigate immediately - let user see success state first
         
       } catch (e) {
         wd.mark("caught error in submission: ${e.runtimeType} - $e");
@@ -541,19 +546,9 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     final deviceId = await BeepService().getOrCreateDeviceId();
     ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
     
-    // Navigate to the specific beep that was just created
-    if (context.mounted) {
-      wd.mark("scheduling navigation");
-      _log('Scheduling navigation to /beep/$sightingId');
-      Future.delayed(const Duration(milliseconds: 1000), () {
-        if (context.mounted) {
-          _log('Navigating to /beep/$sightingId');
-          context.go('/beep/$sightingId');
-        } else {
-          _log('Context not mounted, skipping navigation');
-        }
-      });
-    }
+    // SUCCESS: Stay on composition screen to show success state
+    // User can manually navigate if they want to see the beep detail
+    _log('Beep created successfully with ID: $sightingId');
     wd.mark("submission completed successfully");
     } finally {
       wd.dispose();
