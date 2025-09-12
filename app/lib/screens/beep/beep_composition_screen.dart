@@ -1091,18 +1091,12 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
             SizedBox(
               width: double.infinity,
               height: 56,
-              child: GestureDetector(
-                onTapDown: _isSubmitting ? null : (_) async {
-                  await UiFeedback.click(); // immediate feedback
-                },
-                child: Builder(
-                  builder: (context) {
-                    debugPrint('🚀 BUTTON BUILD: _isSubmitting=$_isSubmitting, enabled=${!_isSubmitting}');
-                    return OutlinedButton(
-                      onPressed: !_isSubmitting ? () {
-                        debugPrint('🚀 BUTTON PRESSED: _isSubmitting=$_isSubmitting, mediaFiles=${_mediaFiles.length}');
-                        _submitBeep();
-                      } : null,
+              child: OutlinedButton(
+                onPressed: !_isSubmitting ? () async {
+                  await UiFeedback.click();
+                  debugPrint('🚀 BUTTON PRESSED: _isSubmitting=$_isSubmitting, mediaFiles=${_mediaFiles.length}');
+                  _submitBeep();
+                } : null,
                       style: OutlinedButton.styleFrom(
                   foregroundColor: !_isSubmitting 
                       ? AppColors.brandPrimary 
@@ -1149,10 +1143,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                               : l10n.submitBeep),
                         ],
                       ),
-                );
-                  },
                 ),
-              ),
             ),
             
             const SizedBox(height: 12),
