@@ -494,6 +494,66 @@ async def upload_beep_media(
         logger.error(f"Media upload failed for beep {beep_id}: {e}")
         raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
 
+@router.patch("/{beep_id}/media")
+async def update_beep_media(beep_id: str, request: dict):
+    """
+    Update beep with media file names - called after individual file uploads.
+    Matches the frontend expectation for PATCH /beep/{sighting_id}/media.
+    """
+    import json
+    import uuid
+    
+    try:
+        media_files = request.get('media_files', [])
+        print(f"Updating beep {beep_id} with media files: {media_files}")
+        
+        if not media_files:
+            raise HTTPException(status_code=400, detail="No media_files provided")
+        
+        db_pool = await get_db()
+        
+        async with db_pool.acquire() as conn:
+            # Check if beep exists
+            sighting = await conn.fetchrow("""
+                SELECT id, media_info FROM sightings WHERE id = $1
+            """, uuid.UUID(beep_id))
+            
+            if not sighting:
+                raise HTTPException(status_code=404, detail="Beep not found")
+            
+            # Get existing media info
+            if sighting['media_info']:
+                existing_media = json.loads(sighting['media_info'])
+                if 'files' not in existing_media:
+                    existing_media['files'] = []
+            else:
+                existing_media = {'files': [], 'file_count': 0}
+            
+            # Update media files list (this is what the frontend expects)
+            existing_media['media_files'] = media_files
+            existing_media['file_count'] = len(media_files)
+            
+            # Update sighting
+            await conn.execute("""
+                UPDATE sightings 
+                SET media_info = $1,
+                    updated_at = NOW()
+                WHERE id = $2
+            """, json.dumps(existing_media), uuid.UUID(beep_id))
+        
+        return {
+            "success": True,
+            "beep_id": beep_id,
+            "media_files": media_files,
+            "message": "Media files updated successfully"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating beep media: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to update media: {str(e)}")
+
 @router.post("/{alert_id}/witnesses")
 async def add_witness(alert_id: str, payload: WitnessConfirmation):
     """Add witness confirmation to alert - RESTful endpoint"""
