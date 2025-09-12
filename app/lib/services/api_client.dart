@@ -15,6 +15,8 @@ import '../models/sighting_submission.dart' as local;
 import '../utils/type_safe_json.dart';
 import 'beep_service.dart';
 import 'auth_interceptor.dart';
+import 'safe_uploader.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ApiClientException implements Exception {
   final String message;
@@ -1283,108 +1285,92 @@ extension ApiClientExtension on ApiClient {
     }
   }
 
-  Future<Map<String, dynamic>> uploadMediaToSighting(String sightingId, File file) async {
+  // FIXED: Use XFile directly to avoid content:// URI hanging issues
+  Future<Map<String, dynamic>> uploadMediaToSightingXFile(String sightingId, XFile xfile) async {
+    final t0 = DateTime.now();
     try {
       debugPrint('=== MEDIA UPLOAD DEBUG START ===');
+      debugPrint('start $t0');
       debugPrint('Sighting ID: $sightingId');
-      debugPrint('File path: ${file.path}');
-      debugPrint('File exists: ${await file.exists()}');
+      debugPrint('File path: ${xfile.path}');
+      debugPrint('isContent=${xfile.path.startsWith("content://")} name=${xfile.name} mime=${xfile.mimeType}');
       
-      if (!await file.exists()) {
-        debugPrint('ERROR: File does not exist at path: ${file.path}');
-        throw Exception('Media file not found at path: ${file.path}');
+      debugPrint('before length');
+      
+      // CRITICAL FIX: Wrap xfile.length() with timeout to prevent hanging on content:// URIs
+      int fileSize;
+      try {
+        fileSize = await xfile.length().timeout(
+          Duration(seconds: 5), 
+          onTimeout: () {
+            debugPrint('WARNING: xfile.length() timed out, using chunked upload');
+            return -1; // Signal for chunked upload
+          }
+        );
+      } catch (e) {
+        debugPrint('ERROR: xfile.length() failed: $e, using chunked upload');
+        fileSize = -1; // Signal for chunked upload
       }
       
-      final fileSize = await file.length();
-      debugPrint('File size: $fileSize bytes');
+      debugPrint('after length ($fileSize bytes)');
       
       if (fileSize == 0) {
         debugPrint('ERROR: File is empty');
         throw Exception('Media file is empty');
       }
       
-      // Use HTTP client instead of Dio to ensure response stream is fully drained
-      final httpClient = HttpClient();
-      httpClient.connectionTimeout = const Duration(seconds: 30);
+      // Use SafeUploader to handle content:// URIs properly
+      debugPrint('before SafeUploader creation');
+      final baseUri = Uri.parse(ApiClient.dio.options.baseUrl);
+      final uploadUri = baseUri.resolve('/beep/$sightingId/media');
       
-      try {
-        final baseUri = Uri.parse(ApiClient.dio.options.baseUrl);
-        final uploadUri = baseUri.resolve('/beep/$sightingId/media');
-        
-        debugPrint('Upload URL: $uploadUri');
-        debugPrint('Making HTTP request...');
-        
-        final request = await httpClient.postUrl(uploadUri);
-        
-        // Add authorization header if available
-        final authToken = await _getAuthToken();
-        if (authToken != null) {
-          request.headers.set('Authorization', 'Bearer $authToken');
-        }
-        
-        // Create multipart request
-        final boundary = 'dart-http-boundary-${DateTime.now().millisecondsSinceEpoch}';
-        request.headers.set('Content-Type', 'multipart/form-data; boundary=$boundary');
-        
-        final filename = _safeExtractFilename(file.path);
-        final fileBytes = await file.readAsBytes();
-        
-        // Build multipart body manually to ensure proper formatting
-        final bodyParts = <String>[];
-        
-        // Add source field
-        bodyParts.add('--$boundary');
-        bodyParts.add('Content-Disposition: form-data; name="source"');
-        bodyParts.add('');
-        bodyParts.add('mobile_app');
-        
-        // Add file field
-        bodyParts.add('--$boundary');
-        bodyParts.add('Content-Disposition: form-data; name="files"; filename="$filename"');
-        bodyParts.add('Content-Type: application/octet-stream');
-        bodyParts.add('');
-        
-        final bodyPrefix = bodyParts.join('\r\n') + '\r\n';
-        final bodySuffix = '\r\n--$boundary--\r\n';
-        
-        // Write the complete body
-        request.add(utf8.encode(bodyPrefix));
-        request.add(fileBytes);
-        request.add(utf8.encode(bodySuffix));
-        
-        debugPrint('Sending request...');
-        final response = await request.close().timeout(const Duration(seconds: 30));
-        
-        // CRITICAL: Fully drain the response stream to prevent hanging
-        final responseBody = await response.transform(utf8.decoder).join();
-        
-        debugPrint('Response status: ${response.statusCode}');
-        debugPrint('Response data: $responseBody');
-
-        if (response.statusCode >= 200 && response.statusCode < 300) {
-          debugPrint('=== MEDIA UPLOAD SUCCESS ===');
-          
-          // Parse JSON response
-          try {
-            final Map<String, dynamic> jsonResponse = json.decode(responseBody);
-            return jsonResponse;
-          } catch (e) {
-            debugPrint('Warning: Non-JSON response, returning success indicator');
-            return {'success': true, 'message': 'Upload completed'};
-          }
-        } else {
-          debugPrint('ERROR: Upload failed with status ${response.statusCode}');
-          throw Exception('Failed to upload media: ${response.statusCode} - $responseBody');
-        }
-      } finally {
-        httpClient.close();
+      final uploader = SafeUploader(uploadUri);
+      
+      // Get auth headers
+      final authHeaders = <String, String>{};
+      final authToken = await _getAuthToken();
+      if (authToken != null) {
+        authHeaders['Authorization'] = 'Bearer $authToken';
       }
-      rethrow;
+      
+      debugPrint('before upload');
+      final resp = await uploader.uploadXFile(
+        xfile: xfile,
+        headers: authHeaders,
+        fields: {'source': 'mobile_app'},
+        fieldName: 'files',
+      );
+      
+      debugPrint('after upload status=${resp.statusCode} dt=${DateTime.now().difference(t0)}');
+      
+      if (resp.statusCode >= 200 && resp.statusCode < 300) {
+        debugPrint('=== MEDIA UPLOAD SUCCESS ===');
+        debugPrint('Response body: ${resp.body}');
+        
+        // Parse JSON response
+        try {
+          final Map<String, dynamic> jsonResponse = json.decode(resp.body);
+          return jsonResponse;
+        } catch (e) {
+          debugPrint('Warning: Non-JSON response, returning success indicator');
+          return {'success': true, 'message': 'Upload completed'};
+        }
+      } else {
+        debugPrint('ERROR: Upload failed with status ${resp.statusCode}');
+        throw Exception('Failed to upload media: ${resp.statusCode} - ${resp.body}');
+      }
     } catch (e) {
       debugPrint('=== MEDIA UPLOAD ERROR ===');
-      debugPrint('Error: $e');
+      debugPrint('Error: $e dt=${DateTime.now().difference(t0)}');
       rethrow;
     }
+  }
+
+  // Compatibility wrapper for existing File-based calls
+  Future<Map<String, dynamic>> uploadMediaToSighting(String sightingId, File file) async {
+    debugPrint('COMPATIBILITY: Converting File to XFile for: ${file.path}');
+    final xfile = XFile(file.path);
+    return uploadMediaToSightingXFile(sightingId, xfile);
   }
 
   Future<String?> _getAuthToken() async {
