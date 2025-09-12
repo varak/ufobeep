@@ -347,7 +347,11 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   
 
   Future<void> _sendQuickBeep() async {
-    if (_isBeeping) return;
+    debugPrint('🔴 _sendQuickBeep CALLED: _isBeeping=$_isBeeping');
+    if (_isBeeping) {
+      debugPrint('🔴 BLOCKED: _isBeeping is true, returning early');
+      return;
+    }
     
     setState(() {
       _isBeeping = true;
@@ -724,6 +728,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                 // Send Beep button
                 GlassCard(
                   onTap: _isBeeping ? null : () async {
+                    debugPrint('🔴 BUTTON TAP: _isBeeping=$_isBeeping, _capturedMedia=${_capturedMedia.length}');
                     await UiFeedback.click();
                     _sendQuickBeep();
                   },
