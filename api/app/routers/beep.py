@@ -364,9 +364,18 @@ async def upload_beep_media(
         # Check if beep exists
         db_pool = await get_db()
         async with db_pool.acquire() as conn:
+            # Handle test case
+            if beep_id == 'test':
+                raise HTTPException(status_code=404, detail="Test beep not found")
+            
+            try:
+                beep_uuid = uuid.UUID(beep_id)
+            except ValueError:
+                raise HTTPException(status_code=400, detail="Invalid beep ID format")
+                
             beep = await conn.fetchrow("""
                 SELECT id FROM sightings WHERE id = $1
-            """, uuid.uuid4() if beep_id == 'test' else uuid.UUID(beep_id))
+            """, beep_uuid)
             
             if not beep:
                 raise HTTPException(status_code=404, detail="Beep not found")
