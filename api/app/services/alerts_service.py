@@ -217,7 +217,7 @@ class AlertsService:
                     if enrichment and "geocoding" in enrichment:
                         geocoding = enrichment["geocoding"]
                         if geocoding:
-                            location_name = geocoding.get("location_name") or geocoding.get("formatted_address", "Unknown Location")
+                            location_name = geocoding.get("location_name") or geocoding.get("location") or geocoding.get("formatted_address") or geocoding.get("display_name", "Unknown Location")
                 
                 # Otherwise try to get from sensor data
                 if location_name == "Unknown Location":
@@ -242,7 +242,7 @@ class AlertsService:
                 if geocoding:
                     lat = geocoding.get("latitude")
                     lng = geocoding.get("longitude")
-                    location_name = geocoding.get("location_name") or geocoding.get("formatted_address", "Unknown Location")
+                    location_name = geocoding.get("location_name") or geocoding.get("location") or geocoding.get("formatted_address") or geocoding.get("display_name", "Unknown Location")
                     if self._valid_coords(lat, lng):
                         return AlertLocation(
                             latitude=float(lat),
