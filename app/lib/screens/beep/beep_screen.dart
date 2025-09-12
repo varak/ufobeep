@@ -327,9 +327,8 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       // Add selected files to captured media list instead of navigating
       final List<File> newMediaFiles = mediaFiles.map((m) => m['mediaFile'] as File).toList();
       
-      setState(() {
-        _capturedMedia.addAll(newMediaFiles);
-      });
+      // FIXED: Don't trigger setState rebuild since navigation happens immediately
+      _capturedMedia.addAll(newMediaFiles);
       
       debugPrint('✅ BEEP: Added ${newMediaFiles.length} files from gallery. Total: ${_capturedMedia.length}');
 
