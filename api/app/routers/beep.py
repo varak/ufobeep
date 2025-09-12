@@ -343,13 +343,20 @@ async def upload_beep_media(
     beep_id: str,
     files: List[UploadFile] = File(...),
     source: str = Form("user_upload"),
+    description: Optional[str] = Form(None),
     idempotency_key: Optional[str] = Header(None, alias="Idempotency-Key")
 ):
     """
     Single source of truth for media uploads to beeps.
     Used by mobile app and future upload scripts (NUFORC, etc).
+    Uses same proven implementation as alerts endpoint.
     """
-    from app.services.media_service import get_media_service
+    import json
+    import uuid
+    from datetime import datetime
+    from pathlib import Path
+    import shutil
+    from app.services.media_processing_service import MediaProcessingService
     
     try:
         # Handle idempotency - if key exists, return cached result
@@ -358,72 +365,128 @@ async def upload_beep_media(
                 logger.info(f"Returning cached result for idempotency key: {idempotency_key}")
                 return idempotency_store[idempotency_key]
         
+        print(f"Media upload request: beep_id={beep_id}, files={files}, source={source}")
+        print(f"Files type: {type(files)}, Files length: {len(files) if files else 'None'}")
+        
         if not files:
             raise HTTPException(status_code=400, detail="No files provided")
-            
-        # Check if beep exists
         db_pool = await get_db()
+        
         async with db_pool.acquire() as conn:
-            # Handle test case
-            if beep_id == 'test':
-                raise HTTPException(status_code=404, detail="Test beep not found")
+            # Check if beep exists
+            sighting = await conn.fetchrow("""
+                SELECT id, media_info FROM sightings WHERE id = $1
+            """, uuid.UUID(beep_id))
             
-            try:
-                beep_uuid = uuid.UUID(beep_id)
-            except ValueError:
-                raise HTTPException(status_code=400, detail="Invalid beep ID format")
-                
-            beep = await conn.fetchrow("""
-                SELECT id FROM sightings WHERE id = $1
-            """, beep_uuid)
-            
-            if not beep:
+            if not sighting:
                 raise HTTPException(status_code=404, detail="Beep not found")
-        
-        # Use existing media service for actual upload
-        media_service = get_media_service()
-        uploaded_media = []
-        
-        for file in files:
-            # Generate unique media ID
-            media_id = str(uuid.uuid4())
             
-            # Upload file using existing media service
-            upload_result = await media_service.upload_file(
-                file=file,
-                media_id=media_id,
-                source=source
-            )
+            # Get existing media info
+            if sighting['media_info']:
+                existing_media = json.loads(sighting['media_info'])
+                # Ensure files key exists
+                if 'files' not in existing_media:
+                    existing_media['files'] = []
+            else:
+                existing_media = {'files': [], 'file_count': 0}
             
-            # Format response for consistency
-            media_item = {
-                "id": media_id,
-                "filename": file.filename,
-                "url": upload_result.get("url", f"https://ufobeep.com/api/media/{media_id}"),
-                "thumbnail_url": upload_result.get("thumbnail_url"),
-                "type": upload_result.get("type", "unknown"),
-                "size": upload_result.get("size", 0),
-                "width": upload_result.get("width"),
-                "height": upload_result.get("height"),
-                "uploaded_at": datetime.now().isoformat()
+            # Set up media processing
+            media_root = Path("/home/ufobeep/ufobeep/media")
+            sighting_media_dir = media_root / beep_id
+            sighting_media_dir.mkdir(parents=True, exist_ok=True)
+            
+            media_processor = MediaProcessingService(media_root)
+            new_media_files = []
+            
+            for file in files:
+                # Generate unique filename
+                file_ext = Path(file.filename).suffix
+                unique_filename = f"{uuid.uuid4()}{file_ext}"
+                file_path = sighting_media_dir / unique_filename
+                
+                # Save original file
+                with file_path.open("wb") as buffer:
+                    shutil.copyfileobj(file.file, buffer)
+                
+                # Process media file (generate thumbnails, web versions, etc.)
+                try:
+                    processed_urls = media_processor.process_media_file(file_path, beep_id)
+                    print(f"Media processing complete for {file.filename}: {processed_urls}")
+                except Exception as e:
+                    print(f"Media processing failed for {file.filename}: {e}")
+                    # Fallback to basic URLs if processing fails
+                    processed_urls = {
+                        'original': f'https://ufobeep.com/api/media/{beep_id}/{unique_filename}',
+                        'thumbnail': f'https://ufobeep.com/api/media/{beep_id}/{unique_filename}',
+                        'web': f'https://ufobeep.com/api/media/{beep_id}/{unique_filename}',
+                        'preview': f'https://ufobeep.com/api/media/{beep_id}/{unique_filename}'
+                    }
+                
+                # Create media file entry with all variants
+                media_entry = {
+                    'id': str(uuid.uuid4()),
+                    'type': 'video' if file_ext.lower() in ['.mp4', '.mov', '.avi'] else 'image',
+                    'filename': unique_filename,
+                    'original_name': file.filename,
+                    'url': processed_urls['original'],
+                    'thumbnail_url': processed_urls['thumbnail'],
+                    'web_url': processed_urls['web'],
+                    'preview_url': processed_urls['preview'],
+                    'uploaded_at': datetime.now().isoformat(),
+                    'source': source,
+                    'description': description
+                }
+                
+                # Add EXIF data if available (diplomatically extracted)
+                if 'exif_data' in processed_urls:
+                    media_entry['exif_data'] = processed_urls['exif_data']
+                
+                new_media_files.append(media_entry)
+            
+            # Merge with existing media
+            existing_media['files'].extend(new_media_files)
+            existing_media['file_count'] = len(existing_media['files'])
+            
+            # Sanitize JSON data to remove null bytes that break PostgreSQL
+            def sanitize_for_json(obj):
+                if isinstance(obj, dict):
+                    return {k: sanitize_for_json(v) for k, v in obj.items()}
+                elif isinstance(obj, list):
+                    return [sanitize_for_json(item) for item in obj]
+                elif isinstance(obj, str):
+                    # Remove null bytes and other problematic characters
+                    return obj.replace('\x00', '').replace('\u0000', '')
+                else:
+                    return obj
+            
+            sanitized_media = sanitize_for_json(existing_media)
+            
+            # Update sighting
+            await conn.execute("""
+                UPDATE sightings 
+                SET media_info = $1,
+                    updated_at = NOW()
+                WHERE id = $2
+            """, json.dumps(sanitized_media), uuid.UUID(beep_id))
+            
+            # Don't close the pool - it's shared across the service
+            
+            response = {
+                "success": True,
+                "beep_id": beep_id,
+                "added_files": len(new_media_files),
+                "total_files": existing_media['file_count'],
+                "new_media": new_media_files,
+                "count": len(new_media_files),
+                "timestamp": datetime.now().isoformat()
             }
             
-            uploaded_media.append(media_item)
-        
-        response = {
-            "success": True,
-            "beep_id": beep_id,
-            "media": uploaded_media,
-            "count": len(uploaded_media),
-            "timestamp": datetime.now().isoformat()
-        }
-        
-        # Cache result for idempotency
-        if idempotency_key:
-            idempotency_store[idempotency_key] = response
-            
-        logger.info(f"Successfully uploaded {len(uploaded_media)} media files to beep {beep_id}")
-        return response
+            # Cache result for idempotency
+            if idempotency_key:
+                idempotency_store[idempotency_key] = response
+                
+            logger.info(f"Successfully uploaded {len(new_media_files)} media files to beep {beep_id}")
+            return response
         
     except HTTPException:
         raise
