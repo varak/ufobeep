@@ -203,7 +203,25 @@ class AlertsService:
     
     def _extract_location(self, sensor_data, enrichment_data) -> Optional[AlertLocation]:
         """Extract location from sensor/enrichment data - unified logic"""
-        # IMPORTANT: Use sensor data first for accurate GPS coordinates
+        
+        # For MUFON records: Use enrichment data (no sensor data available)
+        if enrichment_data:
+            enrichment = self._parse_json(enrichment_data)
+            if enrichment and "geocoding" in enrichment:
+                geocoding = enrichment["geocoding"]
+                if geocoding:
+                    lat = geocoding.get("latitude")
+                    lng = geocoding.get("longitude")
+                    location_name = geocoding.get("location_name") or geocoding.get("location") or geocoding.get("formatted_address") or geocoding.get("display_name") or ""
+                    if self._valid_coords(lat, lng):
+                        return AlertLocation(
+                            latitude=float(lat),
+                            longitude=float(lng),
+                            name=location_name,
+                            accuracy=50.0  # Default for MUFON
+                        )
+        
+        # For regular beeps: Use sensor data first for accurate GPS coordinates
         # This fixes the 12.1km distance issue where geocoded city center was used instead of actual location
         if sensor_data:
             sensor = self._parse_json(sensor_data)
@@ -217,10 +235,10 @@ class AlertsService:
                     if enrichment and "geocoding" in enrichment:
                         geocoding = enrichment["geocoding"]
                         if geocoding:
-                            location_name = geocoding.get("location_name") or geocoding.get("location") or geocoding.get("formatted_address") or geocoding.get("display_name", "Unknown Location")
+                            location_name = geocoding.get("location_name") or geocoding.get("location") or geocoding.get("formatted_address") or geocoding.get("display_name") or ""
                 
                 # Otherwise try to get from sensor data
-                if location_name == "Unknown Location":
+                if not location_name:
                     if sensor.get("location", {}).get("name"):
                         location_name = sensor["location"]["name"]
                     elif sensor.get("location_name"):
