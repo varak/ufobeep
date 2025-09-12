@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import EmailNotifySignup from '@/components/EmailNotifySignup';
 
 export default function DownloadPage() {
   const [showInstructions, setShowInstructions] = useState(false);
@@ -174,6 +175,18 @@ export default function DownloadPage() {
           </div>
         </div>
 
+
+        {/* Email Signup */}
+        <div className="bg-gray-800 rounded-lg p-6 mb-8">
+          <h2 className="text-2xl font-semibold mb-4 text-green-400 text-center">
+            📧 Get Notified When We Launch
+          </h2>
+          <p className="text-gray-300 text-center mb-6">
+            Want to know when UFOBeep hits the App Store and Google Play? 
+            Join our notification list for launch updates!
+          </p>
+          <EmailNotifySignup />
+        </div>
 
         {/* Footer */}
         <div className="text-center text-gray-400 text-sm">
