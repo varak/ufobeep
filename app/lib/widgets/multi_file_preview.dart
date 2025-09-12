@@ -182,19 +182,13 @@ class MultiFilePreview extends StatelessWidget {
         ),
       );
     } else {
-      // Show image thumbnail for images
-      return Image.file(
-        mediaFile,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          return const Center(
-            child: Icon(
-              Icons.broken_image,
-              color: AppColors.textTertiary,
-              size: 24,
-            ),
-          );
-        },
+      // Show placeholder for images to avoid sync I/O hang
+      return const Center(
+        child: Icon(
+          Icons.image,
+          color: AppColors.brandPrimary,
+          size: 24,
+        ),
       );
     }
   }
@@ -214,20 +208,8 @@ class MultiFilePreview extends StatelessWidget {
     // Add number if we have multiple files of same type
     // This will be handled by parent widget context if needed
     
-    // Get file size
-    String fileSize = '';
-    try {
-      final int bytes = mediaFile.lengthSync();
-      if (bytes < 1024) {
-        fileSize = '$bytes B';
-      } else if (bytes < 1024 * 1024) {
-        fileSize = '${(bytes / 1024).toStringAsFixed(1)} KB';
-      } else {
-        fileSize = '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
-      }
-    } catch (e) {
-      fileSize = 'Unknown size';
-    }
+    // Skip file size to avoid sync I/O hang
+    String fileSize = 'File size';
 
     return Container(
       padding: const EdgeInsets.all(12),
