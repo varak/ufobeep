@@ -242,17 +242,34 @@ GoRouter appRouter(AppRouterRef ref) {
               final attachTo = state.uri.queryParameters['attachTo'];
               final autoGallery = state.uri.queryParameters['autoGallery'] == 'true';
               
-              // Handle camera return data
+              // Handle camera return data and share intent data
               final extra = state.extra as Map<String, dynamic>?;
               File? mediaFile;
               SensorData? sensorData;
               Map<String, dynamic>? photoMetadata;
               
-              if (extra != null && extra.containsKey('mediaFile')) {
-                debugPrint('📸 BEEP ROUTE: Received camera return data - ${extra.keys}');
-                mediaFile = extra['mediaFile'] as File?;
-                sensorData = extra['sensorData'] as SensorData?;
-                photoMetadata = extra['photoMetadata'] as Map<String, dynamic>?;
+              if (extra != null) {
+                debugPrint('📸 BEEP ROUTE: Received extra data - ${extra.keys}');
+                
+                // Camera return data (single file)
+                if (extra.containsKey('mediaFile')) {
+                  mediaFile = extra['mediaFile'] as File?;
+                  sensorData = extra['sensorData'] as SensorData?;
+                  photoMetadata = extra['photoMetadata'] as Map<String, dynamic>?;
+                }
+                
+                // Share intent data (multiple files) - take first file for compatibility
+                if (extra.containsKey('mediaFiles')) {
+                  final mediaFiles = extra['mediaFiles'] as List?;
+                  if (mediaFiles != null && mediaFiles.isNotEmpty) {
+                    final firstFile = mediaFiles[0] as Map<String, dynamic>?;
+                    if (firstFile != null && firstFile.containsKey('mediaFile')) {
+                      mediaFile = firstFile['mediaFile'] as File?;
+                      sensorData = extra['sensorData'] as SensorData?;
+                      debugPrint('📸 BEEP ROUTE: Using shared media file from share intent');
+                    }
+                  }
+                }
               }
               
               return BeepScreen(
