@@ -58,15 +58,20 @@ function formatLocation(location) {
   
   // If location is a string, clean it up
   if (typeof location === 'string') {
-    return location
+    // Extract city and state from "Bensalem, PA" format
+    const cleanLocation = location
       .replace(/, US$/, '')
-      .replace(/, United States$/, '')
-      .split(',')[0]
-      .toLowerCase()
-      .replace(/[^a-z0-9\s]/g, '')
-      .replace(/\s+/g, '-')
-      .substring(0, 20)
-      .trim();
+      .replace(/, United States$/, '');
+    
+    const locationParts = cleanLocation.split(',').map(p => p.trim());
+    const city = locationParts[0]?.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '-') || '';
+    const state = locationParts[1]?.toLowerCase().replace(/[^a-z0-9]/g, '') || '';
+    
+    if (city) {
+      const locationSlug = state ? `${city}-${state}` : city;
+      return locationSlug.substring(0, 25); // Slightly longer for city-state
+    }
+    return '';
   }
   
   return 'unknown';

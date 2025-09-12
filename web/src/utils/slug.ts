@@ -37,12 +37,18 @@ export function generateSlug(title: string, location: string, date: string, id?:
 
   const unknownTerm = getTranslatedTerm('unknown')
   
-  const locationPart = (location || unknownTerm)
-    .split(',')[0]
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, '')
-    .replace(/\s+/g, '-')
-    .substring(0, 20)
+  // Extract city and state from "Bensalem, PA" format
+  let locationPart = ''
+  if (location && location !== unknownTerm) {
+    const locationParts = location.split(',').map(p => p.trim())
+    const city = locationParts[0]?.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '-') || ''
+    const state = locationParts[1]?.toLowerCase().replace(/[^a-z0-9]/g, '') || ''
+    
+    if (city) {
+      locationPart = state ? `${city}-${state}` : city
+      locationPart = locationPart.substring(0, 25) // Slightly longer for city-state
+    }
+  }
 
   const datePart = new Date(date || Date.now()).toISOString().split('T')[0]
 

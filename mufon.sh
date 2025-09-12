@@ -805,7 +805,7 @@ def extract_and_import_mufon(date_str):
                                         # Extract text from popup
                                         try:
                                             safe_browser_operation(
-                                                lambda: popup.wait_for_selector("pre", timeout=15000),
+                                                lambda: popup.wait_for_selector("pre", timeout=30000),
                                                 "Wait for pre element"
                                             )
                                             popup_text = safe_browser_operation(
