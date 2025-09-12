@@ -228,31 +228,6 @@ GoRouter appRouter(AppRouterRef ref) {
             ],
           ),
 
-          // Beep Detail (for notifications)
-          GoRoute(
-            path: '/beep/:id',
-            name: 'beep-detail',
-            builder: (context, state) {
-              final beepId = state.pathParameters['id']!;
-              return AlertDetailScreen(alertId: beepId);
-            },
-            routes: [
-              // Comments for specific beep
-              GoRoute(
-                path: 'comments',
-                name: 'beep-comments',
-                builder: (context, state) {
-                  final beepId = state.pathParameters['id']!;
-                  final beepTitle = state.uri.queryParameters['title'] ?? AppLocalizations.of(context)?.alertDetailTitle ?? 'Alert Details';
-                  return CommentsScreen(
-                    sightingId: beepId,
-                    alertTitle: beepTitle,
-                  );
-                },
-              ),
-            ],
-          ),
-
           // Beep (Capture/Upload) - WITH REDIRECT TRACING
           GoRoute(
             path: '/beep',
@@ -405,6 +380,30 @@ GoRouter appRouter(AppRouterRef ref) {
             ],
           ),
 
+          // Beep Detail (for notifications) - MOVED after /beep to fix route matching
+          GoRoute(
+            path: '/beep/:id',
+            name: 'beep-detail',
+            builder: (context, state) {
+              final beepId = state.pathParameters['id']!;
+              return AlertDetailScreen(alertId: beepId);
+            },
+            routes: [
+              // Comments for specific beep
+              GoRoute(
+                path: 'comments',
+                name: 'beep-comments',
+                builder: (context, state) {
+                  final beepId = state.pathParameters['id']!;
+                  final beepTitle = state.uri.queryParameters['title'] ?? AppLocalizations.of(context)?.alertDetailTitle ?? 'Alert Details';
+                  return CommentsScreen(
+                    sightingId: beepId,
+                    alertTitle: beepTitle,
+                  );
+                },
+              ),
+            ],
+          ),
 
           // Alerts (clean list without map)
           GoRoute(

@@ -89,17 +89,6 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   }
 
   Future<void> _checkWitnessStatus(String deviceId) async {
-    // Skip witness status check for beep composition screen
-    if (widget.alertId == 'compose') {
-      print('🔍 BEEP COMPOSE: Skipping witness status check for composition screen');
-      if (mounted) {
-        setState(() {
-          _isWitnessConfirmed = false;
-        });
-      }
-      return;
-    }
-    
     try {
       final result = await ApiClient.instance.getWitnessStatus(
         sightingId: widget.alertId,
@@ -113,7 +102,6 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       }
     } catch (e) {
       print('❌ ERROR checking witness status: $e');
-      print('🔍 WITNESS API CALL FAILED - /beep/${widget.alertId}/witnesses/$deviceId endpoint may not exist');
       if (mounted) {
         setState(() {
           _isWitnessConfirmed = false;
@@ -151,17 +139,6 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   }
 
   Future<void> _checkFollowStatus() async {
-    // Skip follow status check for beep composition screen
-    if (widget.alertId == 'compose') {
-      print('🔍 BEEP COMPOSE: Skipping follow status check for composition screen');
-      if (mounted) {
-        setState(() {
-          _isFollowing = false;
-        });
-      }
-      return;
-    }
-    
     try {
       final response = await ApiClient.dio.get(
         '/beep/${widget.alertId}/follow',
@@ -174,7 +151,6 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       }
     } catch (e) {
       print('❌ ERROR checking follow status: $e');
-      print('🔍 FOLLOW API CALL FAILED - /beep/${widget.alertId}/follow endpoint may not exist');
       if (mounted) {
         setState(() {
           _isFollowing = false;
