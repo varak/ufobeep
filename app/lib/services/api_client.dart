@@ -1320,7 +1320,7 @@ extension ApiClientExtension on ApiClient {
       formData.fields.add(const MapEntry('source', 'mobile_app'));
       debugPrint('Form data created successfully');
       
-      final uploadUrl = '/beep/$sightingId/media';
+      final uploadUrl = '/alerts/$sightingId/media';
       debugPrint('Upload URL: $uploadUrl');
       debugPrint('Making POST request...');
 

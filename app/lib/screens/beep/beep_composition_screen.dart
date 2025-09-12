@@ -492,13 +492,13 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     final deviceId = await BeepService().getOrCreateDeviceId();
     ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
     
-    // Navigate to the specific alert that was just created
+    // Navigate to the specific beep that was just created
     if (context.mounted) {
-      _log('Scheduling navigation to /alert/$sightingId');
+      _log('Scheduling navigation to /beep/$sightingId');
       Future.delayed(const Duration(milliseconds: 1000), () {
         if (context.mounted) {
-          _log('Navigating to /alert/$sightingId');
-          context.go('/alert/$sightingId');
+          _log('Navigating to /beep/$sightingId');
+          context.go('/beep/$sightingId');
         } else {
           _log('Context not mounted, skipping navigation');
         }
