@@ -18,6 +18,8 @@ import '../../services/sound_service.dart';
 import '../../services/permission_service.dart';
 import '../../services/api_client.dart';
 import '../../services/comments_service.dart';
+import '../../services/location_service.dart';
+import '../../debug/stuck_watchdog.dart';
 import '../../widgets/dev_menu_button.dart';
 import '../../services/ui_feedback.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -58,6 +60,9 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   bool _sensorsAvailable = false;
   String? _errorMessage;
   bool _isBeeping = false;
+  bool _isNavigating = false;
+  int _currentUploadIndex = -1; // Track which file is currently uploading
+  Set<int> _completedUploads = {}; // Track completed uploads
   final TextEditingController _descriptionController = TextEditingController();
   List<File> _capturedMedia = [];
   
@@ -65,6 +70,8 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   @override
   void initState() {
     super.initState();
+    debugPrint('🏗️ BEEP SCREEN CONSTRUCTOR: Creating new BeepScreen instance');
+    debugPrint('🏗️ Initial media count: ${widget.initialMediaFile != null ? 1 : 0}');
     _checkSensorAvailability();
     
     // Handle initial media file from camera
@@ -347,14 +354,15 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   
 
   Future<void> _sendQuickBeep() async {
-    debugPrint('🔴 _sendQuickBeep CALLED: _isBeeping=$_isBeeping');
-    if (_isBeeping) {
-      debugPrint('🔴 BLOCKED: _isBeeping is true, returning early');
+    debugPrint('🔴 _sendQuickBeep CALLED: _isBeeping=$_isBeeping, _isNavigating=$_isNavigating');
+    if (_isBeeping || _isNavigating) {
+      debugPrint('🔴 BLOCKED: _isBeeping=$_isBeeping or _isNavigating=$_isNavigating');
       return;
     }
     
     setState(() {
       _isBeeping = true;
+      _isNavigating = true;
       _errorMessage = null;
     });
     
@@ -364,27 +372,22 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     try {
       final description = _descriptionController.text.trim();
       
-      // If we have captured media, navigate to compose screen for full submission
+      // If we have captured media, submit directly without navigation
       if (_capturedMedia.isNotEmpty) {
-        debugPrint('📸 BEEP: Sending beep with ${_capturedMedia.length} media files');
-        
-        final mediaFiles = _capturedMedia.map((file) => {
-          'mediaFile': file,
-          'isVideo': false,
-          'photoMetadata': {},
-        }).toList();
+        debugPrint('📸 BEEP: Submitting beep with ${_capturedMedia.length} media files directly');
         
         try {
-          debugPrint('🚀 NAVIGATION: About to navigate to compose screen');
-          context.go('/beepscreen/compose', extra: {
-            'mediaFiles': mediaFiles,
-            'description': description,
-            'attachToSightingId': widget.attachToSightingId,
-          });
-          debugPrint('🚀 NAVIGATION: Navigation call completed');
-        } catch (e, stackTrace) {
-          debugPrint('❌ NAVIGATION ERROR: $e');
-          debugPrint('❌ Stack trace: $stackTrace');
+          await _submitBeepWithMedia(description);
+        } catch (e) {
+          debugPrint('❌ Media beep submission failed: $e');
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Failed to send beep: $e'),
+                backgroundColor: AppColors.semanticError,
+              ),
+            );
+          }
         }
         return;
       }
@@ -440,8 +443,365 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       if (mounted) {
         setState(() {
           _isBeeping = false;
+          _isNavigating = false;
+          _currentUploadIndex = -1;
+          _completedUploads.clear();
         });
       }
+    }
+  }
+
+  /// Submit beep with media files directly (copied from BeepCompositionScreen._actualSubmitLogic)
+  Future<void> _submitBeepWithMedia(String description) async {
+    final wd = StuckWatchdog();
+    try {
+      wd.mark("_submitBeepWithMedia method entry");
+      debugPrint('🔴 BEEP: Starting media beep submission with ${_capturedMedia.length} files');
+      
+      wd.mark("collecting GPS data");
+      // Collect GPS data
+      SensorData? sensorData;
+      try {
+        sensorData = await _sensorService.captureSensorData();
+        debugPrint('🔴 BEEP: GPS collected - lat=${sensorData.latitude}, lon=${sensorData.longitude}');
+      } catch (e) {
+        debugPrint('🔴 BEEP: GPS collection failed: $e');
+        throw Exception('GPS location required. Please enable GPS or take photos with location enabled.');
+      }
+      
+      wd.mark("validating GPS coordinates");
+      // Validate GPS coordinates
+      double? validLat = sensorData.latitude;
+      double? validLon = sensorData.longitude;
+      
+      // If sensor GPS is missing or invalid, try to extract from photo EXIF as fallback
+      if (validLat == null || validLon == null || (validLat == 0.0 && validLon == 0.0)) {
+        wd.mark("extracting GPS from photo EXIF");
+        debugPrint('🔴 BEEP: Sensor GPS invalid, attempting to extract from photo EXIF...');
+        
+        // Try to extract GPS from any attached photos
+        for (final mediaFile in _capturedMedia) {
+          try {
+            wd.mark("extracting metadata from ${mediaFile.path}");
+            final photoMetadata = await PhotoMetadataService.extractComprehensiveMetadata(mediaFile);
+            final locationData = photoMetadata['location'];
+            
+            if (locationData != null && 
+                locationData['latitude'] != null && 
+                locationData['longitude'] != null &&
+                locationData['latitude'] != 0.0 &&
+                locationData['longitude'] != 0.0) {
+              
+              validLat = locationData['latitude'];
+              validLon = locationData['longitude'];
+              debugPrint('🔴 BEEP: Extracted GPS from photo: lat=$validLat, lon=$validLon');
+              
+              // Update sensor data with extracted coordinates
+              sensorData = SensorData(
+                utc: sensorData?.utc ?? DateTime.now(),
+                latitude: validLat!,
+                longitude: validLon!,
+                accuracy: 10.0, // Lower accuracy since from photo
+                altitude: locationData['altitude'] ?? sensorData?.altitude ?? 0.0,
+                azimuthDeg: sensorData?.azimuthDeg ?? 0.0,
+                pitchDeg: sensorData?.pitchDeg ?? 0.0,
+                rollDeg: sensorData?.rollDeg ?? 0.0,
+                hfovDeg: sensorData?.hfovDeg ?? 60.0,
+              );
+              break; // Found valid GPS, stop searching
+            }
+          } catch (e) {
+            debugPrint('🔴 BEEP: Failed to extract GPS from photo: $e');
+          }
+        }
+      }
+      
+      // Final validation - only fail if we absolutely have no GPS data
+      if (validLat == null || validLon == null || (validLat == 0.0 && validLon == 0.0)) {
+        throw Exception('GPS location required. Please enable GPS or take photos with location enabled.');
+      }
+      
+      debugPrint('🔴 BEEP: Final GPS coordinates: lat=$validLat, lon=$validLon');
+      
+      wd.mark("sending beep to API");
+      // Create new sighting with media
+      final beepResult = await BeepService().sendBeep(
+        description: description.isEmpty ? null : description,
+        latitude: validLat,
+        longitude: validLon,
+        heading: sensorData?.azimuthDeg,
+        hasMedia: true, // This will defer alerts until media upload completes
+      );
+      
+      final sightingIdFromResponse = beepResult['sighting_id']?.toString();
+      if (sightingIdFromResponse == null) {
+        throw Exception('Failed to get sighting ID from API response');
+      }
+      final sightingId = sightingIdFromResponse;
+      debugPrint('🔴 BEEP: Sighting created with ID: $sightingId (alerts deferred)');
+    
+      wd.mark("starting media upload phase");
+      // Now upload all media files, then trigger alerts
+      debugPrint('🔴 BEEP: Uploading ${_capturedMedia.length} files to sighting...');
+      
+      int uploadedCount = 0;
+      
+      // Upload all files sequentially with progress tracking
+      for (int i = 0; i < _capturedMedia.length; i++) {
+        final mediaFile = _capturedMedia[i];
+        
+        // Update UI to show current upload
+        if (mounted) {
+          setState(() {
+            _currentUploadIndex = i;
+          });
+        }
+        
+        try {
+          wd.mark("processing file ${i + 1}/${_capturedMedia.length}");
+          debugPrint('🔴 BEEP: Uploading file ${i + 1}/${_capturedMedia.length}: ${mediaFile.path}');
+          debugPrint('🔴 BEEP: File exists: ${await mediaFile.exists()}');
+          
+          wd.mark("checking file length for ${mediaFile.path}");
+          debugPrint('🔴 BEEP: File size: ${await mediaFile.length()} bytes');
+          
+          wd.mark("calling uploadMediaToSighting API");
+          debugPrint('🔴 BEEP: Calling uploadMediaToSighting...');
+          await ApiClient.instance.uploadMediaToSighting(
+            sightingId,
+            mediaFile,
+          );
+          wd.mark("upload completed for file ${i + 1}");
+          debugPrint('🔴 BEEP: Upload successful for file ${i + 1}');
+          
+          uploadedCount++;
+          
+          // Mark as completed and update UI
+          if (mounted) {
+            setState(() {
+              _completedUploads.add(i);
+            });
+          }
+          
+        } catch (e) {
+          debugPrint('🔴 BEEP: Failed to upload file ${mediaFile.path}: $e');
+          // Continue with other files - don't fail entire submission
+        }
+      }
+      
+      wd.mark("all uploads completed");
+      debugPrint('🔴 BEEP: Upload completed: $uploadedCount/${_capturedMedia.length} files uploaded');
+      
+      // Check if any files failed to upload
+      if (uploadedCount == 0) {
+        throw Exception('No files could be uploaded');
+      } else if (uploadedCount < _capturedMedia.length) {
+        // Some files failed - show warning but continue
+        debugPrint('🔴 BEEP: Warning: ${_capturedMedia.length - uploadedCount} files failed to upload');
+      }
+      
+      wd.mark("triggering proximity alerts");
+      debugPrint('🔴 BEEP: Triggering proximity alerts...');
+      // Get coordinates from the sensor data for alert triggering
+      final alertValidLat = sensorData?.latitude == 0.0 ? null : sensorData?.latitude;
+      final alertValidLon = sensorData?.longitude == 0.0 ? null : sensorData?.longitude;
+      
+      // Get reliable coordinates for proximity alerts using LocationService
+      final alertCoordinates = await LocationService.I.getReliableCoordinates(
+        preferredLat: alertValidLat,
+        preferredLon: alertValidLon,
+        timeout: const Duration(seconds: 5),
+      );
+      
+      if (alertCoordinates != null) {
+        await ApiClient.instance.triggerAlertsForSighting(
+          sightingId, 
+          alertCoordinates['lat']!, 
+          alertCoordinates['lon']!
+        );
+        debugPrint('🔴 BEEP: Proximity alerts sent successfully!');
+      } else {
+        debugPrint('🔴 BEEP: No valid coordinates available - proximity alerts skipped');
+      }
+
+      // SUCCESS: Show success and navigate to sighting detail
+      debugPrint('🔴 BEEP: Media beep created successfully with ID: $sightingId');
+      
+      // Set the device ID as current user so navigation button is hidden
+      final deviceId = await beepService.getOrCreateDeviceId();
+      ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
+      
+      // Clear the text field and media
+      _descriptionController.clear();
+      setState(() {
+        _capturedMedia.clear();
+        _errorMessage = null;
+      });
+      
+      // Show success message
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.beepSent),
+            backgroundColor: AppColors.semanticSuccess,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+        
+        // Navigate to sighting detail after brief delay
+        Future.delayed(const Duration(milliseconds: 500), () {
+          if (mounted) {
+            context.go('/alert/$sightingId');
+          }
+        });
+      }
+      
+      wd.mark("submission completed successfully");
+    } catch (e) {
+      debugPrint('🔴 BEEP: Media submission error: $e');
+      rethrow; // Re-throw to be caught by caller
+    } finally {
+      wd.dispose();
+    }
+  }
+
+  /// Show dialog to add more media (camera or gallery)
+  void _addMoreMedia() async {
+    // Add haptic feedback
+    await SoundService.I.play(AlertSound.tap, haptic: true);
+    
+    // Show dialog to choose between camera or gallery
+    final choice = await showDialog<String>(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.7),
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: AppColors.darkSurface.withOpacity(0.95),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: AppColors.brandPrimary.withOpacity(0.3),
+                width: 1,
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Add Media',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                
+                // Camera and Gallery buttons
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => Navigator.of(context).pop('camera'),
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: AppColors.brandPrimary.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: AppColors.brandPrimary.withOpacity(0.3),
+                              width: 1,
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.camera_alt,
+                                color: AppColors.brandPrimary,
+                                size: 32,
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Camera',
+                                style: const TextStyle(
+                                  color: AppColors.brandPrimary,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => Navigator.of(context).pop('gallery'),
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: AppColors.brandPrimary.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: AppColors.brandPrimary.withOpacity(0.3),
+                              width: 1,
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.photo_library,
+                                color: AppColors.brandPrimary,
+                                size: 32,
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Gallery',
+                                style: const TextStyle(
+                                  color: AppColors.brandPrimary,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                
+                const SizedBox(height: 16),
+                
+                // Cancel button
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.7),
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    if (choice == null) return;
+
+    if (choice == 'camera') {
+      await _capturePhoto();
+    } else if (choice == 'gallery') {
+      await _pickFromGallery();
     }
   }
   
@@ -535,45 +895,11 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.photo_library,
-                              color: AppColors.brandPrimary,
-                              size: 16,
-                            ),
-                            SizedBox(width: 6),
-                            Text(
-                              '${_capturedMedia.length} photo${_capturedMedia.length == 1 ? '' : 's'}',
-                              style: TextStyle(
-                                color: AppColors.brandPrimary,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Spacer(),
-                            IconButton(
-                              padding: EdgeInsets.all(4),
-                              constraints: BoxConstraints(minWidth: 24, minHeight: 24),
-                              onPressed: () {
-                                setState(() {
-                                  _capturedMedia.clear();
-                                });
-                              },
-                              icon: Icon(
-                                Icons.clear_all,
-                                color: Colors.white.withOpacity(0.7),
-                                size: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8),
                         Container(
                           height: 80,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: _capturedMedia.length,
+                            itemCount: _isBeeping ? _capturedMedia.length : _capturedMedia.length,
                             itemBuilder: (context, index) {
                               return Container(
                                 margin: EdgeInsets.only(right: 8),
@@ -589,27 +915,40 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                                   borderRadius: BorderRadius.circular(7),
                                   child: Stack(
                                     children: [
-                                      Image.file(
-                                        _capturedMedia[index],
-                                        fit: BoxFit.cover,
-                                        width: 80,
-                                        height: 80,
-                                        errorBuilder: (context, error, stackTrace) {
-                                          return Container(
-                                            color: Colors.white.withOpacity(0.1),
-                                            child: Icon(
-                                              Icons.broken_image,
-                                              color: Colors.white.withOpacity(0.5),
-                                              size: 20,
-                                            ),
-                                          );
-                                        },
-                                      ),
+                                      _isBeeping 
+                                        ? Container(
+                                            color: _completedUploads.contains(index) 
+                                              ? Colors.green.withOpacity(0.3)  // Completed: green tint
+                                              : (index == _currentUploadIndex 
+                                                ? Colors.blue.withOpacity(0.3)  // Uploading: blue tint
+                                                : Colors.black.withOpacity(0.8)), // Waiting: black
+                                            child: index == _currentUploadIndex 
+                                              ? Icon(Icons.upload, color: Colors.white70, size: 20)
+                                              : (_completedUploads.contains(index) 
+                                                ? Icon(Icons.check, color: Colors.white70, size: 20)
+                                                : null),
+                                          )
+                                        : Image.file(
+                                            _capturedMedia[index],
+                                            fit: BoxFit.cover,
+                                            width: 80,
+                                            height: 80,
+                                            errorBuilder: (context, error, stackTrace) {
+                                              return Container(
+                                                color: Colors.white.withOpacity(0.1),
+                                                child: Icon(
+                                                  Icons.broken_image,
+                                                  color: Colors.white.withOpacity(0.5),
+                                                  size: 20,
+                                                ),
+                                              );
+                                            },
+                                          ),
                                       Positioned(
                                         top: 2,
                                         right: 2,
                                         child: GestureDetector(
-                                          onTap: () {
+                                          onTap: _isBeeping ? null : () {
                                             setState(() {
                                               _capturedMedia.removeAt(index);
                                             });
@@ -664,7 +1003,9 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                   const SizedBox(height: 16),
                 ],
 
-                // Action buttons in glass cards
+                // Action buttons removed - Camera/Gallery now always visible below
+                
+                // Always show Camera/Gallery buttons (whether media present or not)
                 Row(
                   children: [
                     Expanded(

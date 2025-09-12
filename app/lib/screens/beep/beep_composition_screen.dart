@@ -86,6 +86,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   @override
   void initState() {
     super.initState();
+    debugPrint('🏗️ BEEP COMPOSITION CONSTRUCTOR: Creating new BeepCompositionScreen instance');
     debugPrint('🚀🚀 BEEP SCREEN INIT: _isSubmitting=$_isSubmitting - This should only happen ONCE!');
     debugPrint('🚀🚀 INIT: mediaFiles=${widget.mediaFiles?.length}, mediaFile=${widget.mediaFile?.path}');
     
