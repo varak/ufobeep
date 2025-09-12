@@ -370,11 +370,18 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
           'photoMetadata': {},
         }).toList();
         
-        context.go('/beepscreen/compose', extra: {
-          'mediaFiles': mediaFiles,
-          'description': description,
-          'attachToSightingId': widget.attachToSightingId,
-        });
+        try {
+          debugPrint('🚀 NAVIGATION: About to navigate to compose screen');
+          context.go('/beepscreen/compose', extra: {
+            'mediaFiles': mediaFiles,
+            'description': description,
+            'attachToSightingId': widget.attachToSightingId,
+          });
+          debugPrint('🚀 NAVIGATION: Navigation call completed');
+        } catch (e, stackTrace) {
+          debugPrint('❌ NAVIGATION ERROR: $e');
+          debugPrint('❌ Stack trace: $stackTrace');
+        }
         return;
       }
       
