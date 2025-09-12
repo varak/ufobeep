@@ -400,12 +400,16 @@ def extract_and_import_mufon(date_str):
                         lambda: page.goto("https://mufon.z2systems.com/np/clients/mufon/neonPage.jsp?pageId=19&", timeout=30000),
                         "Initial page load"
                     )
-                    random_delay(2, 4)
+                    # OPTIMIZED: Longer initial wait to avoid first-time failure
+                    random_delay(4, 6)
                     
                     safe_browser_operation(
-                        lambda: page.wait_for_load_state('networkidle', timeout=15000),
+                        lambda: page.wait_for_load_state('networkidle', timeout=20000),
                         "Wait for page load"
                     )
+                    
+                    # Additional settling time for MUFON's slow loading
+                    time.sleep(2)
                     
                     # Check if we got redirected to login (cookies expired) or if page looks wrong
                     current_url = page.url
@@ -496,8 +500,8 @@ def extract_and_import_mufon(date_str):
                     
                     log("✅ Authentication successful - ready to search")
                 
-                # Try authentication with retries
-                retry_with_backoff(authenticate, max_retries=3, initial_delay=5)
+                # Try authentication with retries (reduced delay since first attempt is now optimized)
+                retry_with_backoff(authenticate, max_retries=3, initial_delay=2)
                 
                 # Get iframe and set date fields
                 def setup_search():
