@@ -143,7 +143,7 @@
   "compassPilotMode": "पायलट मोड",
   "compassStandardDescription": "बुनियादी शीर्षक और नेविगेशन",
   "compassPilotDescription": "ETA और वेक्टर के साथ उन्नत नेविगेशन",
-  "pointingTo": "{direction} को इंगित करना",
+  "pointingTo": "को इंगित करना",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -170,7 +170,7 @@
   "temperature": "तापमान",
   "pushBodyWitness": "एक उपयोगकर्ता ने पुष्टि की कि वे उसी वस्तु को देखते हैं।.",
   "weather": "मौसम",
-  "cloudCover": "क्लाउड कवर: {percent}%",
+  "cloudCover": "क्लाउड कवर: %",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "पवन: {speed} {unit}",
+  "wind": "पवन:",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -226,7 +226,7 @@
   "videoOnly": "केवल वीडियो",
   "imageOnly": "केवल छवि",
   "timeJustNow": "अभी",
-  "timeDaysAgo": "{count}d पहले",
+  "timeDaysAgo": "d पहले",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +235,7 @@
       }
     }
   },
-  "timeHoursAgo": "{count}h पहले",
+  "timeHoursAgo": "h पहले",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +244,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{count}",
+  "timeMinutesAgo": "",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "फ़िल्टर",
   "detailsTitle": "विवरण",
   "mufonCase": "MUFON मामला",
-  "mufonCaseDetailsTitle": "MUFON Case #{caseNumber} Details",
+  "mufonCaseDetailsTitle": "MUFON Case # Details",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -283,7 +283,7 @@
   "unknownLocation": "अज्ञात स्थान",
   "locationUnknown": "अज्ञात",
   "witnessesLabel": "गवाही",
-  "witnessesCountMessage": "{count} लोगों ने इस दर्शन की पुष्टि की",
+  "witnessesCountMessage": "लोगों ने इस दर्शन की पुष्टि की",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "फोटो विश्लेषण",
-  "mediaItemsProcessed": "विश्लेषण: {count} मीडिया फ़ाइल (s) संसाधित",
+  "mediaItemsProcessed": "विश्लेषण:  मीडिया फ़ाइल (s) संसाधित",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -389,7 +389,7 @@
   "whyReportToMufon": "क्यों रिपोर्ट करने के लिए MUFON?",
   "openMufonReport": "ओपन MUFON रिपोर्ट",
   "confirmedWitness": "आपने इस दर्शन की पुष्टि की",
-  "witnessesHaveConfirmed": "{count} लोगों ने इस दर्शन की पुष्टि की है",
+  "witnessesHaveConfirmed": "लोगों ने इस दर्शन की पुष्टि की है",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -411,7 +411,7 @@
   "premiumAccessWitnesses": "दृश्यता रेंज के भीतर गवाहों की पुष्टि की",
   "comingSoon": "सोन",
   "directionDistanceTitle": "दिशा और दूरी",
-  "mufonCaseTitle": "MUFON केस #{caseNumber}",
+  "mufonCaseTitle": "MUFON केस #",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +430,7 @@
   "notificationSightingTitle": "यूएफओ दृष्टि",
   "notificationSightingUrgent": "UFO दृष्टि",
   "notificationSightingEmergency": "EMERGENCY UFO दृष्टि",
-  "notificationSightingBody": "{लोकेशन} के पास नाम",
+  "notificationSightingBody": "के पास नाम",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -453,7 +453,7 @@
     }
   },
   "notificationWitnessText": "नया दर्शन",
-  "notificationWitnessTextMultiple": "{count} गवाह",
+  "notificationWitnessTextMultiple": "गवाह",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -486,7 +486,7 @@
   "shareAlert": "शेयर अलर्ट",
   "previousPage": "पिछला",
   "nextPage": "अगला",
-  "pageOf": "पृष्ठ {current {totalPages} ({totalCount} कुल beeps)",
+  "pageOf": "पृष्ठ  ( कुल beeps)",
   "heroTagline": "बाहर जाने और देखने के लिए अलर्ट प्राप्त करें",
   "heroDescription": "कभी किसी अन्य यूएफओ दर्शन को याद न करें। जब आपके पास कोई व्यक्ति आकाश में कुछ अजीब चीज़ देखता है तो वास्तविक समय अलर्ट प्राप्त करें। अपने फोन को इंगित करें और ठीक उसी तरह खोजें जहां देखने के लिए।.",
   "downloadApp": "App डाउनलोड",
@@ -531,16 +531,16 @@
   "mufonEgg": "अंडा",
   "mufonOther": "वस्तु",
   "mufonUnknown": "अज्ञात वस्तु",
-  "mufonTitleFormat": "MUFON {classification} रिपोर्ट",
+  "mufonTitleFormat": "MUFON  रिपोर्ट",
   "nuforcAttribution": "NUFORC डेटाबेस रिपोर्ट",
   "nuforcCaseNumber": "केस #",
   "nuforcGenericTitle": "NUFORC Sighting Report",
   "mediaImageNotFound": "छवि नहीं मिली",
   "mediaPlayVideo": "वीडियो",
   "mediaViewImage": "छवि देखें",
-  "mediaCount": "{count} images",
+  "mediaCount": "images",
   "mediaCountSingle": "1 छवि",
-  "mediaMoreImages": "+{count} more",
+  "mediaMoreImages": "+ more",
   "errorNotFound": "बीप नहीं मिला",
   "errorLoadError": "बीप विवरण लोड करने में विफल",
   "shareYourThoughts": "इस विचार के बारे में अपने विचारों को साझा करें ...",

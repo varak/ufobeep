@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Cuscinetto {portante}°",
+  "alertDirection": "Cuscinetto °",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Modalità pilota",
   "compassStandardDescription": "Intestazione di base e navigazione",
   "compassPilotDescription": "Navigazione avanzata con ETA e vettori",
-  "pointingTo": "Punta a {direzione}",
+  "pointingTo": "Punta a",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "Calibrazione bussola..",
   "openAROverlay": "Sovrapposizione AR aperta",
   "pushTitleAlertNearby": "UFO alert vicino a te",
-  "pushBodyAlertNearby": "Un nuovo avvistamento è stato segnalato {distanza} lontano.",
+  "pushBodyAlertNearby": "Un nuovo avvistamento è stato segnalato  lontano.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "Temperatura",
   "pushBodyWitness": "Un utente ha confermato di vedere lo stesso oggetto.",
   "weather": "Tempo",
-  "cloudCover": "Copertura cloud: {percent}%",
+  "cloudCover": "Copertura cloud: %",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -244,7 +244,7 @@
       }
     }
   },
-  "timeMinutesAgo": "♪count}m fa",
+  "timeMinutesAgo": "m fa",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "filtrato",
   "detailsTitle": "Dettagli",
   "mufonCase": "MUFON Caso",
-  "mufonCaseDetailsTitle": "MUFON Caso #{caseNumber} Dettagli",
+  "mufonCaseDetailsTitle": "MUFON Caso # Dettagli",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "Analisi delle foto",
-  "mediaItemsProcessed": "Analisi: {count} media file(s) processati",
+  "mediaItemsProcessed": "Analisi:  media file(s) processati",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -430,7 +430,7 @@
   "notificationSightingTitle": "UFO Sighting",
   "notificationSightingUrgent": "⚠️ URGENT UFO Sighting",
   "notificationSightingEmergency": "🚨 EMERGENCENZA UFO Sighting",
-  "notificationSightingBody": "{witnessText} vicino a {location Nome",
+  "notificationSightingBody": "vicino a",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -486,7 +486,7 @@
   "shareAlert": "Condividi alert",
   "previousPage": "Precedente",
   "nextPage": "Il prossimo",
-  "pageOf": "Articolo Page} di {totalPages} ({totalCount} total beeps)",
+  "pageOf": "di  ( total beeps)",
   "heroTagline": "Ricevi avvisi quando uscire e guardare in alto",
   "heroDescription": "Non perdere mai un altro avvistamento UFO. Ricevi avvisi in tempo reale quando qualcuno vicino a te vede qualcosa di strano nel cielo. Punta il telefono e trova esattamente dove guardare.",
   "downloadApp": "📱 Scarica App",
@@ -531,16 +531,16 @@
   "mufonEgg": "Uova",
   "mufonOther": "Oggetto",
   "mufonUnknown": "Oggetto sconosciuto",
-  "mufonTitleFormat": "MUFON {classificazione} Relazione",
+  "mufonTitleFormat": "MUFON  Relazione",
   "nuforcAttribution": "NUFORC Rapporto Database",
   "nuforcCaseNumber": "Caso..",
   "nuforcGenericTitle": "NUFORC Rapporto di tenuta",
   "mediaImageNotFound": "Immagine non trovata",
   "mediaPlayVideo": "Giocare video",
   "mediaViewImage": "Visualizza immagine",
-  "mediaCount": "{count} immagini",
+  "mediaCount": "immagini",
   "mediaCountSingle": "1 immagine",
-  "mediaMoreImages": "+{count} more",
+  "mediaMoreImages": "+ more",
   "errorNotFound": "Beep non trovato",
   "errorLoadError": "Non caricare i dettagli del segnale acustico",
   "shareYourThoughts": "Condividi i tuoi pensieri su questo avvistamento...",

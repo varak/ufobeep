@@ -126,7 +126,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String alertDirection(int bearing) {
-    return 'Roulement $bearing°';
+    return 'Roulement °';
   }
 
   @override
@@ -172,7 +172,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String beepSentWithUrl(String shortUrl) {
-    return 'Beep sent successfully';
+    return 'Bip envoyé avec succès';
   }
 
   @override
@@ -219,22 +219,22 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'Rapporté par _PH_0__';
+    return 'Signalé par $username';
   }
 
   @override
-  String reportedAt(String timeAgo) {
-    return 'Rapporté $timeAgo';
+  String reportedAt(String timeAgo, Object time) {
+    return 'Signalé ';
   }
 
   @override
   String distanceAway(String distance) {
-    return '$distance loin';
+    return 'loin';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return 'Roulement à l\'objet: $bearing°';
+    return 'Roulement à l\'objet: °';
   }
 
   @override
@@ -262,7 +262,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get autoFollowEnabled => 'Vous suivez maintenant cette alerte.';
 
   @override
-  String get noCommentsYet => 'Pas encore de commentaires. Soyez le premier !';
+  String get noCommentsYet =>
+      'Pas encore de commentaires. Soyez le premier à commenter!';
 
   @override
   String get newCommentNotification =>
@@ -295,7 +296,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Pointage vers _PH_0__';
+    return 'Pointage vers';
   }
 
   @override
@@ -323,6 +324,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get pushTitleWitness => 'Confirmation du témoin';
 
   @override
+  String get temperature => 'Température';
+
+  @override
   String get pushBodyWitness =>
       'Un utilisateur a confirmé qu\'il voit le même objet.';
 
@@ -331,12 +335,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Couverture nuageuse & #160;: $percent%';
+    return 'Couverture nuageuse : %';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Vent: ${speed}_PH_1__';
+    return 'Vent:';
   }
 
   @override
@@ -435,7 +439,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get verified => 'Vérifié';
 
   @override
-  String get beepOnly => 'bip seulement';
+  String get beepOnly => 'Rapport seulement';
+
+  @override
+  String get reportOnly => 'Rapport seulement';
 
   @override
   String get videoOnly => 'vidéo seulement';
@@ -444,21 +451,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String get imageOnly => 'image seulement';
 
   @override
-  String get timeJustNow => 'Juste maintenant';
+  String get timeJustNow => 'juste maintenant';
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d il y a';
+    return 'd il y a';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'Il y a ${count}h';
+    return 'il y a un compte';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'Il y a ${count}m';
+    return 'il y a quelques mois';
   }
 
   @override
@@ -491,7 +498,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON Cas #__PH_0_ Détails';
+    return 'MUFON Case # Détails';
   }
 
   @override
@@ -511,13 +518,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get linkCopied => 'Lien copié dans le presse-papiers';
 
   @override
-  String get locationLabel => 'Lieu';
+  String get locationLabel => 'Lieu:';
 
   @override
   String get distanceLabel => 'Distance';
 
   @override
-  String get timeLabel => 'Heure';
+  String get timeLabel => 'Heure:';
 
   @override
   String get reportedByLabel => 'Rapporté par';
@@ -533,7 +540,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return 'Les gens ont confirmé cette observation';
+    return 'les gens ont confirmé cette observation';
   }
 
   @override
@@ -541,7 +548,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Analyse : fichier multimédia $count traité';
+    return 'Analyse : fichier multimédia  traité';
   }
 
   @override
@@ -617,6 +624,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get whatDoYouSee => 'Que voyez-vous ?';
+
+  @override
+  String get ufo => 'OVNI';
+
+  @override
+  String get sighting => 'Vue';
 
   @override
   String get ufoSighting => 'OVNI Vue';
@@ -713,6 +726,75 @@ class AppLocalizationsFr extends AppLocalizations {
   String get ufoTypeBlimp => 'Blimp';
 
   @override
+  String get shapeTriangle => 'triangle';
+
+  @override
+  String get shapeDisc => 'disque';
+
+  @override
+  String get shapeDisk => 'disque';
+
+  @override
+  String get shapeSphere => 'sphère';
+
+  @override
+  String get shapeCigar => 'cigare';
+
+  @override
+  String get shapeLight => 'lumière';
+
+  @override
+  String get shapeBoomerang => 'boomerang';
+
+  @override
+  String get shapeDiamond => 'diamant';
+
+  @override
+  String get shapeRectangle => 'rectangle';
+
+  @override
+  String get shapeOval => 'ovale';
+
+  @override
+  String get shapeCone => 'cône';
+
+  @override
+  String get shapeCross => 'croix';
+
+  @override
+  String get shapeCylinder => 'cylindre';
+
+  @override
+  String get shapeDumbbell => 'haltères';
+
+  @override
+  String get shapeTeardrop => 'goutte à la déchirure';
+
+  @override
+  String get shapeTicTac => 'tic-tac';
+
+  @override
+  String get shapeBullet => 'balle';
+
+  @override
+  String get shapeSaturn => 'saturne';
+
+  @override
+  String get shapeStarlike => 'comme une étoile';
+
+  @override
+  String get shapeBlimp => 'bleux';
+
+  @override
+  String get shapeFireball => 'boule de feu';
+
+  @override
+  String get shapeFormation => 'formation';
+
+  @override
+  String get shapeUnknown => 'inconnu';
+
+  @override
   String get actionsTitle => 'Actions';
 
   @override
@@ -735,7 +817,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return 'Les gens ont confirmé cette observation';
+    return 'les gens ont confirmé cette observation';
   }
 
   @override
@@ -782,7 +864,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Cas #$caseNumber';
+    return 'MUFON Cas #';
   }
 
   @override
@@ -804,56 +886,329 @@ class AppLocalizationsFr extends AppLocalizations {
   String get alertFollowError => 'Erreur de mise à jour suivre l\'état';
 
   @override
-  String get notificationChannelAlerts => 'UFOBeep Alerts';
+  String get notificationChannelAlerts => 'Alertes ovni-breep';
 
   @override
   String get notificationChannelAlertsDesc =>
-      'Notifications for UFO beeps and proximity alerts';
+      'Notifications pour les bips ovnis et alertes de proximité';
 
   @override
-  String get notificationSightingTitle => 'UFO Sighting';
+  String get notificationSightingTitle => 'OVNI Vue';
 
   @override
-  String get notificationSightingUrgent => '⚠️ URGENT UFO Sighting';
+  String get notificationSightingUrgent => 'URGENT UFO Vue';
 
   @override
-  String get notificationSightingEmergency => '🚨 EMERGENCY UFO Sighting';
+  String get notificationSightingEmergency => 'UFO D\'URGENCE Vue';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '$witnessText near $locationName';
+    return 'près de';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '💬 $username commented';
+    return 'commentaire de';
   }
 
   @override
-  String get notificationWitnessText => 'New sighting';
+  String get notificationWitnessText => 'Nouvelles observations';
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '$count witnesses';
+    return 'témoins';
   }
 
   @override
   String get notificationActionSnooze => 'Snooze 1h';
 
   @override
-  String get notificationActionDismiss => 'Dismiss';
+  String get notificationActionDismiss => 'Rejet';
 
   @override
   String notificationDistance(String distance) {
-    return '$distance away';
+    return '$distance loin';
   }
 
   @override
-  String get unknown => 'unknown';
+  String get unknown => 'inconnu';
 
   @override
-  String get report => 'report';
+  String get report => 'rapport';
 
   @override
   String get mufon => 'mufon';
+
+  @override
+  String get recentUfoBeepsTitle => 'OVNI récents Abeilles';
+
+  @override
+  String get recentUfoBeepsSubtitle =>
+      'Rapports communautaires UFOBeep en direct et observations de la base de données MUFON';
+
+  @override
+  String get recentUfoBeepsDescription =>
+      'Ce flux combine en temps réel UFOBeep \"beeps\" de nos utilisateurs d\'applications mobiles avec des rapports historiques de la base de données MUFON.';
+
+  @override
+  String get loadingBeeps => 'Chargement de bips récents...';
+
+  @override
+  String get noBeepsAvailable => 'Pas de bip pour le moment.';
+
+  @override
+  String get anomalyReported => 'Anomalie rapportée';
+
+  @override
+  String get copyShortLink => 'Copier le lien court';
+
+  @override
+  String get shareAlert => 'Partager l\'alerte';
+
+  @override
+  String get previousPage => 'Précédent';
+
+  @override
+  String get nextPage => 'Suivant';
+
+  @override
+  String pageOf(Object currentPage, Object totalCount, Object totalPages) {
+    return 'Page  de  ( total bips)';
+  }
+
+  @override
+  String get heroTagline =>
+      'Obtenir des alertes quand aller dehors et regarder vers le haut';
+
+  @override
+  String get heroDescription =>
+      'Ne manquez jamais une autre OVNI. Obtenez des alertes en temps réel quand quelqu\'un près de vous voit quelque chose de bizarre dans le ciel. Pointez votre téléphone et trouvez exactement où chercher.';
+
+  @override
+  String get downloadApp => 'Télécharger l\'application';
+
+  @override
+  String get viewAllBeeps => 'Voir toutes les abeilles';
+
+  @override
+  String get sightingsMap => 'Carte des visites';
+
+  @override
+  String get globalSightingNetwork => 'Réseau mondial de surveillance';
+
+  @override
+  String get howItWorks => 'Comment UFOBeep fonctionne';
+
+  @override
+  String get backToBeeps => 'Retour aux Beeps';
+
+  @override
+  String get loadingDetails => 'Chargement des détails du bip...';
+
+  @override
+  String get details => 'Détails';
+
+  @override
+  String get location => 'Lieu';
+
+  @override
+  String get timeAgo => 'il y a';
+
+  @override
+  String get timeMinutes => 'm';
+
+  @override
+  String get timeHours => 'h';
+
+  @override
+  String get timeDays => 'd';
+
+  @override
+  String get distanceKm => 'km';
+
+  @override
+  String get distanceMiles => 'miles';
+
+  @override
+  String get distanceNearby => 'à proximité';
+
+  @override
+  String get ufobeepWitnesses => 'Témoins';
+
+  @override
+  String get ufobeepConfirmations => 'Confirmations';
+
+  @override
+  String get ufobeepAlertLevel => 'Niveau d\'alerte';
+
+  @override
+  String get ufobeepReportType => 'Rapport UFOBeep';
+
+  @override
+  String get mufonAttribution => 'MUFON Rapport de base de données';
+
+  @override
+  String get mufonCaseNumber => 'Dossier #';
+
+  @override
+  String get mufonGenericTitle => 'Rapport de surveillance du MUFON';
+
+  @override
+  String get mufonSphere => 'Sphère';
+
+  @override
+  String get mufonLight => 'Lumière';
+
+  @override
+  String get mufonDisk => 'Disque';
+
+  @override
+  String get mufonTriangle => 'Triangle';
+
+  @override
+  String get mufonCigar => 'Cigares';
+
+  @override
+  String get mufonOval => 'Ovale';
+
+  @override
+  String get mufonCylinder => 'Cylindre';
+
+  @override
+  String get mufonRectangle => 'Rectangle';
+
+  @override
+  String get mufonDiamond => 'Diamant';
+
+  @override
+  String get mufonFireball => 'Boule de feu';
+
+  @override
+  String get mufonFlash => 'Flash';
+
+  @override
+  String get mufonFormation => 'Formation';
+
+  @override
+  String get mufonChanging => 'Changement';
+
+  @override
+  String get mufonChevron => 'Chevron';
+
+  @override
+  String get mufonCone => 'Cône';
+
+  @override
+  String get mufonCross => 'Croix';
+
+  @override
+  String get mufonEgg => 'Œuf';
+
+  @override
+  String get mufonOther => 'Objet';
+
+  @override
+  String get mufonUnknown => 'Objet inconnu';
+
+  @override
+  String mufonTitleFormat(Object classification) {
+    return 'MUFON  Rapport annuel';
+  }
+
+  @override
+  String get nuforcAttribution => 'NUFORC Rapport de base de données';
+
+  @override
+  String get nuforcCaseNumber => 'Dossier #';
+
+  @override
+  String get nuforcGenericTitle => 'NUFORC Rapport d\'observation';
+
+  @override
+  String get mediaImageNotFound => 'Image introuvable';
+
+  @override
+  String get mediaPlayVideo => 'Lire la vidéo';
+
+  @override
+  String get mediaViewImage => 'Afficher l\'image';
+
+  @override
+  String mediaCount(Object count) {
+    return 'images';
+  }
+
+  @override
+  String get mediaCountSingle => '1 image';
+
+  @override
+  String mediaMoreImages(Object count) {
+    return '+ plus';
+  }
+
+  @override
+  String get errorNotFound => 'Bip non trouvé';
+
+  @override
+  String get errorLoadError => 'Impossible de charger les détails du bip';
+
+  @override
+  String get shareYourThoughts => 'Partagez vos idées sur cette vue...';
+
+  @override
+  String get postComment => 'Commentaires';
+
+  @override
+  String get loggedInAs => 'Enclenchée comme';
+
+  @override
+  String get logout => 'Déconnexion';
+
+  @override
+  String get notFollowing => 'Ne pas suivre';
+
+  @override
+  String get follow => 'Suivre';
+
+  @override
+  String get navRecentBeeps => 'Abeilles récentes';
+
+  @override
+  String get navMap => 'Carte';
+
+  @override
+  String get navDownloadApp => 'Télécharger l\'application';
+
+  @override
+  String get alertLevel => 'Niveau d\'alerte';
+
+  @override
+  String get witnesses => 'Témoins';
+
+  @override
+  String get confirmations => 'Confirmations';
+
+  @override
+  String get reporterLabel => 'Signalé par l\'utilisateur';
+
+  @override
+  String get coordinatesLabel => 'Coordonnées';
+
+  @override
+  String get eventTime => 'Heure de l\'événement';
+
+  @override
+  String get reportedTime => 'Heure indiquée';
+
+  @override
+  String get mufonDatabaseReport => 'MUFON Rapport de base de données';
+
+  @override
+  String get copyShortLinkTitle => 'Copier le lien vers le presse-papiers';
+
+  @override
+  String get imageNotFound => 'Image introuvable';
+
+  @override
+  String get ufoSightingAlt => 'OVNI';
 }

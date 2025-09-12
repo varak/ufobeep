@@ -57,7 +57,7 @@ class NotificationBootstrap {
     
     if (context != null) {
       try {
-        final l10n = AppLocalizations.of(context);
+        final l10n = AppLocalizations.of(context)!;
         channelName = l10n?.notificationChannelAlerts ?? channelName;
         channelDescription = l10n?.notificationChannelAlertsDesc ?? channelDescription;
         print('🔔 BOOTSTRAP: Using localized channel strings');
@@ -131,7 +131,7 @@ class NotificationBootstrap {
       
       if (context != null) {
         try {
-          final l10n = AppLocalizations.of(context);
+          final l10n = AppLocalizations.of(context)!;
           channelName = l10n?.notificationChannelAlerts ?? channelName;
           channelDescription = l10n?.notificationChannelAlertsDesc ?? channelDescription;
         } catch (e) {

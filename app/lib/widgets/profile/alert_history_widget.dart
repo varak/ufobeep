@@ -330,7 +330,7 @@ class AlertHistoryWidget extends ConsumerWidget {
     final now = DateTime.now();
     final difference = now.difference(dateTime);
 
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     if (difference.inDays > 0) {
       return l10n.timeDaysAgo(difference.inDays);
     } else if (difference.inHours > 0) {

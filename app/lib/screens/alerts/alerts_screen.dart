@@ -39,7 +39,7 @@ class AlertsScreen extends ConsumerWidget {
   }
 
   PreferredSizeWidget _buildAppBar(BuildContext context, WidgetRef ref, AlertsFilter filter) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -47,7 +47,7 @@ class AlertsScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            l10n.alertsTitle,
+            l10n?.alertsTitle ?? 'Alerts',
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,
@@ -74,7 +74,7 @@ class AlertsScreen extends ConsumerWidget {
                 ? AppColors.brandPrimary 
                 : AppColors.textSecondary,
           ),
-          tooltip: l10n.toggleMufonTooltip,
+          tooltip: l10n?.toggleMufonTooltip ?? 'Toggle MUFON Data',
           itemBuilder: (context) => [
             PopupMenuItem<String>(
               value: 'toggle',
@@ -87,7 +87,7 @@ class AlertsScreen extends ConsumerWidget {
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    filter.showUfoBeepOnly == true ? l10n.showMufonData : l10n.hideMufonData,
+                    filter.showUfoBeepOnly == true ? l10n?.showMufonData ?? 'Show MUFON Data' : l10n?.hideMufonData ?? 'Hide MUFON Data',
                     style: const TextStyle(color: AppColors.textPrimary),
                   ),
                 ],
@@ -99,8 +99,8 @@ class AlertsScreen extends ConsumerWidget {
               enabled: false,
               child: Text(
                 filter.showUfoBeepOnly == true 
-                    ? l10n.showingUfoBeepOnly
-                    : l10n.showingAllReports,
+                    ? l10n?.showingUfoBeepOnly ?? 'Showing UFOBeep Only'
+                    : l10n?.showingAllReports ?? 'Showing All Reports',
                 style: const TextStyle(
                   color: AppColors.textTertiary,
                   fontSize: 12,
@@ -169,7 +169,7 @@ class AlertsScreen extends ConsumerWidget {
             const CircularProgressIndicator(color: AppColors.brandPrimary),
             const SizedBox(height: 16),
             Text(
-              AppLocalizations.of(context).loading,
+              AppLocalizations.of(context)?.loading ?? 'Loading...',
               style: const TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 16,
@@ -191,7 +191,7 @@ class AlertsScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                AppLocalizations.of(context).errorGeneric,
+                AppLocalizations.of(context)?.errorGeneric ?? 'An error occurred',
                 style: const TextStyle(
                   color: AppColors.textPrimary,
                   fontSize: 18,
@@ -212,7 +212,7 @@ class AlertsScreen extends ConsumerWidget {
                 onPressed: () {
                   ref.invalidate(alertsListProvider);
                 },
-                child: Text(AppLocalizations.of(context).retry),
+                child: Text(AppLocalizations.of(context)?.retry ?? 'Retry'),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.brandPrimary,
                   side: const BorderSide(color: AppColors.brandPrimary),
@@ -300,7 +300,7 @@ class AlertsScreen extends ConsumerWidget {
               if (preferences != null && visibleAlerts.length < alerts.length) ...[
                 const SizedBox(width: 8),
                 Text(
-                  '(${alerts.length - visibleAlerts.length} ${AppLocalizations.of(context).filteredSuffix})',
+                  '(${alerts.length - visibleAlerts.length} ${AppLocalizations.of(context)?.filteredSuffix ?? 'filtered'})',
                   style: const TextStyle(
                     color: AppColors.textTertiary,
                     fontSize: 12,
@@ -358,7 +358,7 @@ class AlertsScreen extends ConsumerWidget {
                 ref.read(alertsListProvider.notifier).loadMore();
               },
               icon: const Icon(Icons.expand_more),
-              label: Text(AppLocalizations.of(context).loadMoreAlerts),
+              label: Text(AppLocalizations.of(context)?.loadMoreAlerts ?? 'Load More Alerts'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.darkSurface,
                 foregroundColor: AppColors.brandPrimary,
@@ -410,7 +410,7 @@ class _EmptyAlertsView extends StatelessWidget {
             const SizedBox(height: 24),
             
             Text(
-              hasFilters ? AppLocalizations.of(context).noAlertsFound : AppLocalizations.of(context).noAlerts,
+              hasFilters ? AppLocalizations.of(context)?.noAlertsFound ?? 'No alerts found' : AppLocalizations.of(context)?.noAlerts ?? 'No alerts',
               style: const TextStyle(
                 color: AppColors.textPrimary,
                 fontSize: 20,
@@ -422,8 +422,8 @@ class _EmptyAlertsView extends StatelessWidget {
             
             Text(
               hasFilters
-                  ? AppLocalizations.of(context).alertsFilterHelp
-                  : AppLocalizations.of(context).noAlerts,
+                  ? AppLocalizations.of(context)?.alertsFilterHelp ?? 'Try adjusting your filters or check back later.'
+                  : AppLocalizations.of(context)?.noAlerts ?? 'No alerts',
               style: const TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 16,

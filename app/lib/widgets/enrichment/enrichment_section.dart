@@ -50,7 +50,7 @@ class EnrichmentSection extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  AppLocalizations.of(context).envAnalysisTitle,
+                  AppLocalizations.of(context)!.envAnalysisTitle,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w600,
@@ -114,7 +114,7 @@ class EnrichmentSection extends StatelessWidget {
             const SizedBox(height: 12),
             Builder(
               builder: (context) => Text(
-                AppLocalizations.of(context).envAnalysisPending,
+                AppLocalizations.of(context)!.envAnalysisPending,
                 style: const TextStyle(
                   color: AppColors.textPrimary,
                   fontSize: 16,
@@ -125,7 +125,7 @@ class EnrichmentSection extends StatelessWidget {
             const SizedBox(height: 8),
             Builder(
               builder: (context) => Text(
-                AppLocalizations.of(context).envAnalysisPendingDesc,
+                AppLocalizations.of(context)!.envAnalysisPendingDesc,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: AppColors.textSecondary,
@@ -150,7 +150,7 @@ class EnrichmentSection extends StatelessWidget {
             // Reuse pending title for loading to keep copy simple/consistent
             Builder(
               builder: (context) => Text(
-                AppLocalizations.of(context).envAnalysisPending,
+                AppLocalizations.of(context)!.envAnalysisPending,
                 style: const TextStyle(
                   color: AppColors.textPrimary,
                   fontSize: 16,
@@ -268,7 +268,7 @@ class EnrichmentSection extends StatelessWidget {
                 const SizedBox(width: 8),
                 Builder(
                   builder: (context) => Text(
-                    AppLocalizations.of(context).aircraftTrackingTitle,
+                    AppLocalizations.of(context)!.aircraftTrackingTitle,
                     style: const TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ),
@@ -306,7 +306,7 @@ class EnrichmentSection extends StatelessWidget {
                     children: [
                       Builder(
                         builder: (context) => Text(
-                          callsign.isEmpty ? AppLocalizations.of(context).unknownAircraft : callsign,
+                          callsign.isEmpty ? AppLocalizations.of(context)!.unknownAircraft : callsign,
                           style: const TextStyle(color: AppColors.textPrimary, fontSize: 14, fontWeight: FontWeight.w500),
                         ),
                       ),
@@ -321,7 +321,7 @@ class EnrichmentSection extends StatelessWidget {
               if (total > 3)
                 Builder(
                   builder: (context) => Text(
-                    '+${total - 3} ${AppLocalizations.of(context).moreAircraft}',
+                    '+${total - 3} ${AppLocalizations.of(context)!.moreAircraft}',
                     style: const TextStyle(color: AppColors.textTertiary, fontSize: 12),
                   ),
                 ),
@@ -388,7 +388,7 @@ class EnrichmentSection extends StatelessWidget {
                     children: [
                       Builder(
                         builder: (context) => Text(
-                          AppLocalizations.of(context).premiumImageryTitle,
+                          AppLocalizations.of(context)!.premiumImageryTitle,
                           style: const TextStyle(
                             color: AppColors.textSecondary,
                             fontSize: 16,
@@ -398,7 +398,7 @@ class EnrichmentSection extends StatelessWidget {
                       ),
                       Builder(
                         builder: (context) => Text(
-                          AppLocalizations.of(context).premiumImagerySubtitle,
+                          AppLocalizations.of(context)!.premiumImagerySubtitle,
                           style: const TextStyle(
                             color: AppColors.textTertiary,
                             fontSize: 12,
@@ -427,7 +427,7 @@ class EnrichmentSection extends StatelessWidget {
                 children: [
                   Builder(
                     builder: (context) => Text(
-                      AppLocalizations.of(context).premiumImageryAccessOnly,
+                      AppLocalizations.of(context)!.premiumImageryAccessOnly,
                     style: TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 14,
@@ -442,7 +442,7 @@ class EnrichmentSection extends StatelessWidget {
                       const SizedBox(width: 8),
                       Builder(
                         builder: (context) => Text(
-                          AppLocalizations.of(context).premiumAccessCreators,
+                          AppLocalizations.of(context)!.premiumAccessCreators,
                         style: TextStyle(
                           color: AppColors.textPrimary,
                           fontSize: 13,
@@ -458,7 +458,7 @@ class EnrichmentSection extends StatelessWidget {
                       const SizedBox(width: 8),
                       Builder(
                         builder: (context) => Text(
-                          AppLocalizations.of(context).premiumAccessWitnesses,
+                          AppLocalizations.of(context)!.premiumAccessWitnesses,
                         style: TextStyle(
                           color: AppColors.textPrimary,
                           fontSize: 13,
@@ -496,7 +496,7 @@ class EnrichmentSection extends StatelessWidget {
                         const SizedBox(height: 4),
                         Builder(
                           builder: (context) => Text(
-                            AppLocalizations.of(context).comingSoon,
+                            AppLocalizations.of(context)!.comingSoon,
                           style: TextStyle(
                             color: AppColors.textTertiary,
                             fontSize: 11,
@@ -529,7 +529,7 @@ class EnrichmentSection extends StatelessWidget {
                         const SizedBox(height: 4),
                         Builder(
                           builder: (context) => Text(
-                            AppLocalizations.of(context).comingSoon,
+                            AppLocalizations.of(context)!.comingSoon,
                           style: TextStyle(
                             color: AppColors.textTertiary,
                             fontSize: 11,
@@ -569,7 +569,7 @@ class WeatherCardFromJson extends ConsumerWidget {
                 Icon(Icons.wb_sunny, color: AppColors.brandPrimary, size: 20),
                 const SizedBox(width: 8),
                 Text(
-                  AppLocalizations.of(context).weatherConditionsTitle,
+                  AppLocalizations.of(context)!.weatherConditionsTitle,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w600,
@@ -911,7 +911,7 @@ class SatelliteCardFromJson extends StatelessWidget {
             if (allPasses.isEmpty)
               Builder(
                 builder: (context) => Text(
-                  AppLocalizations.of(context).noSatellitePasses,
+                  AppLocalizations.of(context)!.noSatellitePasses,
                   style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 14,
@@ -1032,7 +1032,7 @@ class ContentAnalysisCardFromJson extends StatelessWidget {
                 Icon(Icons.security, color: AppColors.brandPrimary, size: 20),
                 const SizedBox(width: 8),
                 Text(
-                  AppLocalizations.of(context).contentAnalysisTitle,
+                  AppLocalizations.of(context)!.contentAnalysisTitle,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w600,
@@ -1052,7 +1052,7 @@ class ContentAnalysisCardFromJson extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  isSafe ? AppLocalizations.of(context).contentSafe : AppLocalizations.of(context).contentFlagged,
+                  isSafe ? AppLocalizations.of(context)!.contentSafe : AppLocalizations.of(context)!.contentFlagged,
                   style: TextStyle(
                     color: isSafe ? AppColors.semanticSuccess : AppColors.semanticWarning,
                     fontSize: 14,
@@ -1068,7 +1068,7 @@ class ContentAnalysisCardFromJson extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  '${AppLocalizations.of(context).confidenceLabel}: ',
+                  '${AppLocalizations.of(context)!.confidenceLabel}: ',
                   style: TextStyle(
                     color: AppColors.textTertiary,
                     fontSize: 12,
@@ -1088,7 +1088,7 @@ class ContentAnalysisCardFromJson extends StatelessWidget {
             if (contentData['analysis_method'] != null) ...[
               const SizedBox(height: 8),
               Text(
-                '${AppLocalizations.of(context).methodLabel}: ${contentData['analysis_method']}',
+                '${AppLocalizations.of(context)!.methodLabel}: ${contentData['analysis_method']}',
                 style: TextStyle(
                   color: AppColors.textTertiary,
                   fontSize: 12,

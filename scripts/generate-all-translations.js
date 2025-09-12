@@ -214,6 +214,22 @@ class TranslationGenerator {
     }
 
     try {
+      // Extract ICU placeholders to preserve them during translation
+      const placeholders = [];
+      let textToTranslate = text;
+      
+      // Find all ICU placeholders like {distance}, {bearing}, {username}, etc.
+      const placeholderRegex = /\{[^}]+\}/g;
+      const matches = text.match(placeholderRegex);
+      
+      if (matches) {
+        matches.forEach((match, index) => {
+          const placeholder = `__PLACEHOLDER_${index}__`;
+          placeholders.push({ original: match, replacement: placeholder });
+          textToTranslate = textToTranslate.replace(match, placeholder);
+        });
+      }
+
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), options.timeout);
 
@@ -221,7 +237,7 @@ class TranslationGenerator {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          q: text,
+          q: textToTranslate,
           source: 'en', 
           target: targetLang,
           format: 'text'
@@ -236,13 +252,62 @@ class TranslationGenerator {
       }
 
       const data = await response.json();
-      const translated = data.translatedText || text;
+      let translated = data.translatedText || text;
+      
+      // Restore original placeholders in translated text
+      placeholders.forEach(({ original, replacement }) => {
+        translated = translated.replace(new RegExp(replacement, 'g'), original);
+      });
+      
+      // Additional ICU format validation and cleanup
+      translated = this.validateAndFixICUFormat(translated, text);
       
       this.cache.set(cacheKey, translated);
       return translated;
     } catch (error) {
       return text; // Return English on any error
     }
+  }
+
+  validateAndFixICUFormat(translated, original) {
+    // Extract placeholder names from original English text
+    const originalPlaceholders = (original.match(/\{([^}]+)\}/g) || [])
+      .map(match => match.slice(1, -1)); // Remove { and }
+    
+    // Known valid ICU placeholder names that should be preserved
+    const validPlaceholders = [
+      'distance', 'bearing', 'username', 'time', 'timeAgo', 'alertTitle', 
+      'description', 'count', 'percent', 'speed', 'unit', 'direction', 
+      'caseNumber', 'witnessText', 'locationName', 'shortUrl', 'currentPage',
+      'totalPages', 'totalCount', 'classification'
+    ];
+    
+    // Replace any translated placeholder names with English equivalents
+    let fixed = translated;
+    
+    // Find all placeholders in translated text
+    const translatedPlaceholders = translated.match(/\{([^}]+)\}/g) || [];
+    
+    translatedPlaceholders.forEach(placeholder => {
+      const placeholderName = placeholder.slice(1, -1);
+      
+      // If this placeholder name is not in our valid list and we have originals to map from
+      if (!validPlaceholders.includes(placeholderName) && originalPlaceholders.length > 0) {
+        // Try to map back to the correct English placeholder
+        // For now, just use the first original placeholder as fallback
+        const englishPlaceholder = `{${originalPlaceholders[0]}}`;
+        fixed = fixed.replace(placeholder, englishPlaceholder);
+      }
+    });
+    
+    // Remove any malformed or incomplete placeholders
+    fixed = fixed.replace(/\{[^}]*$/g, ''); // Remove unclosed braces at end
+    fixed = fixed.replace(/^[^{]*\}/g, ''); // Remove unmatched closing braces at start
+    
+    // Clean up extra spaces around placeholders
+    fixed = fixed.replace(/\s+\{/g, ' {').replace(/\}\s+/g, '} ');
+    
+    return fixed.trim();
   }
 
   async translateObject(obj, targetLang, depth = 0) {

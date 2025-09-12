@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Bär {Bearing}",
+  "alertDirection": "Bär",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "Grant mikrofonåtkomst för videoinspelning med ljud.",
   "openSettings": "Öppna inställningar",
   "alertDetailTitle": "Sighting detaljer",
-  "reportedBy": "Rapporterad av { användarnamn}",
+  "reportedBy": "Rapporterad av {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Rapporterad {tid Ago",
+  "reportedAt": "Rapporterad ",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Pilotläge",
   "compassStandardDescription": "Grundläggande rubrik och navigering",
   "compassPilotDescription": "Avancerad navigering med ETA och vektor",
-  "pointingTo": "Att peka på {riktning}",
+  "pointingTo": "Att peka på",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -170,7 +170,7 @@
   "temperature": "Temperatur",
   "pushBodyWitness": "En användare bekräftade att de ser samma objekt.",
   "weather": "Vädret",
-  "cloudCover": "Cloud cover: {procent}%",
+  "cloudCover": "Cloud cover: %",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Vind: {Speed} {enhet}",
+  "wind": "Vind:",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -226,7 +226,7 @@
   "videoOnly": "video endast",
   "imageOnly": "bild endast",
   "timeJustNow": "just nu",
-  "timeDaysAgo": "{räknat} för",
+  "timeDaysAgo": "för",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +235,7 @@
       }
     }
   },
-  "timeHoursAgo": "{räknat} för",
+  "timeHoursAgo": "för",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +244,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{räkna} för",
+  "timeMinutesAgo": "för",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "filtrerad",
   "detailsTitle": "Detaljer",
   "mufonCase": "Mufonen fall",
-  "mufonCaseDetailsTitle": "Mufonen Fall #{caseNumber} Detaljer",
+  "mufonCaseDetailsTitle": "Mufonen Fall # Detaljer",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "Fotoanalys",
-  "mediaItemsProcessed": "Analys: {count} media file(s) bearbetad",
+  "mediaItemsProcessed": "Analys:  media file(s) bearbetad",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -411,7 +411,7 @@
   "premiumAccessWitnesses": "Bekräftade vittnen inom synlighetsområdet",
   "comingSoon": "Kommer snart",
   "directionDistanceTitle": "Direction & Distance",
-  "mufonCaseTitle": "Mufonen Fall # {caseNumber}",
+  "mufonCaseTitle": "Mufonen Fall #",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +430,7 @@
   "notificationSightingTitle": "UFO Sighting",
   "notificationSightingUrgent": "URGENT UFO Sighting",
   "notificationSightingEmergency": "EMERGENCY UFO Sighting",
-  "notificationSightingBody": "{witnessText} nära Namn }",
+  "notificationSightingBody": "nära Namn }",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -486,7 +486,7 @@
   "shareAlert": "Dela alert",
   "previousPage": "Föregående",
   "nextPage": "Nästa",
-  "pageOf": "Sidan {nuvarande Page {totalPages} ({totalCount} totala pip)",
+  "pageOf": "Sidan  ( totala pip)",
   "heroTagline": "Få varningar när du ska gå ut och titta upp",
   "heroDescription": "Missa aldrig en annan UFO-observation. Få realtidsvarningar när någon nära dig ser något konstigt på himlen. Peka din telefon och hitta exakt var du ska titta.",
   "downloadApp": "Nedladdning App",
@@ -531,16 +531,16 @@
   "mufonEgg": "Ägg",
   "mufonOther": "Objekt",
   "mufonUnknown": "Okända objekt",
-  "mufonTitleFormat": "Mufon {klassificering} Rapport",
+  "mufonTitleFormat": "Mufon  Rapport",
   "nuforcAttribution": "NUFORC Databasrapport",
   "nuforcCaseNumber": "Fall #",
   "nuforcGenericTitle": "NUFORC Sighting Report",
   "mediaImageNotFound": "Bild som inte hittats",
   "mediaPlayVideo": "Spela Video",
   "mediaViewImage": "Visa bild",
-  "mediaCount": "{räkna} bilder",
+  "mediaCount": "bilder",
   "mediaCountSingle": "1 bild",
-  "mediaMoreImages": "+{count} mer",
+  "mediaMoreImages": "+ mer",
   "errorNotFound": "Beep hittades inte",
   "errorLoadError": "Misslyckades med att ladda beep detaljer",
   "shareYourThoughts": "Dela dina tankar om denna observation...",

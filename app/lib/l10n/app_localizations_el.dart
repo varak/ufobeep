@@ -122,12 +122,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '__PH_0_ μακριά';
+    return '$distance μακριά';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Διόπτευση __PH_0_°';
+    return 'Διόπτευση $bearing°';
   }
 
   @override
@@ -172,7 +172,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String beepSentWithUrl(String shortUrl) {
-    return 'Beep sent successfully';
+    return 'Το μπιπ στάλθηκε επιτυχώς';
   }
 
   @override
@@ -219,22 +219,22 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'Αναφέρθηκε από __PH_0_';
+    return 'Αναφέρθηκε από $username';
   }
 
   @override
-  String reportedAt(String timeAgo) {
-    return 'Αναφέρθηκε __PH_0_';
+  String reportedAt(String timeAgo, Object time) {
+    return 'Αναφέρθηκε  Πριν';
   }
 
   @override
   String distanceAway(String distance) {
-    return '__PH_0_ μακριά';
+    return 'μακριά';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return 'Διόπτευση προς ένσταση: __PH_0_°';
+    return 'Διόπτευση προς αντικείμενο: °';
   }
 
   @override
@@ -262,7 +262,8 @@ class AppLocalizationsEl extends AppLocalizations {
   String get autoFollowEnabled => 'Τώρα ακολουθείτε αυτή την προειδοποίηση.';
 
   @override
-  String get noCommentsYet => 'Κανένα σχόλιο ακόμα. Γίνε ο πρώτος!';
+  String get noCommentsYet =>
+      'Κανένα σχόλιο ακόμα. Να είσαι ο πρώτος που θα σχολιάσει!';
 
   @override
   String get newCommentNotification =>
@@ -295,7 +296,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Επισημαίνοντας στο $direction';
+    return 'Σημείο προς';
   }
 
   @override
@@ -309,7 +310,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'Μια νέα παρατήρηση αναφέρθηκε __PH_0_ μακριά.';
+    return 'Μια νέα παρατήρηση αναφέρθηκε μακριά.';
   }
 
   @override
@@ -322,6 +323,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get pushTitleWitness => 'Επιβεβαίωση μάρτυρα';
 
   @override
+  String get temperature => 'Θερμοκρασία';
+
+  @override
   String get pushBodyWitness =>
       'Ένας χρήστης επιβεβαίωσε ότι βλέπουν το ίδιο αντικείμενο.';
 
@@ -330,12 +334,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Σύννεφο: __PH_0_%';
+    return 'Κάλυψη νεφών: %';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Άνεμος: ${speed}_PH_1_';
+    return 'Άνεμος:';
   }
 
   @override
@@ -435,7 +439,10 @@ class AppLocalizationsEl extends AppLocalizations {
   String get verified => 'Επαληθευμένο';
 
   @override
-  String get beepOnly => 'μόνο μπιπ';
+  String get beepOnly => 'Μόνο αναφορά';
+
+  @override
+  String get reportOnly => 'Μόνο αναφορά';
 
   @override
   String get videoOnly => 'μόνο βίντεο';
@@ -444,21 +451,21 @@ class AppLocalizationsEl extends AppLocalizations {
   String get imageOnly => 'μόνο εικόνα';
 
   @override
-  String get timeJustNow => 'Μόλις τώρα';
+  String get timeJustNow => 'μόλις τώρα';
 
   @override
   String timeDaysAgo(int count) {
-    return '_PH_0_D πριν';
+    return 'd πριν';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '__PH_0_h πριν';
+    return 'h πριν';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '_PH_0_m πριν';
+    return 'm πριν';
   }
 
   @override
@@ -491,7 +498,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'ΜΟΥΦΟΝ Υπόθεση #__PH_0_ Λεπτομέρειες';
+    return 'ΜΟΥΦΟΝ Υπόθεση # Λεπτομέρειες';
   }
 
   @override
@@ -511,13 +518,13 @@ class AppLocalizationsEl extends AppLocalizations {
   String get linkCopied => 'Δεσμός αντιγραφόμενο στο πρόχειρο';
 
   @override
-  String get locationLabel => 'Τοποθεσία';
+  String get locationLabel => 'Τοποθεσία:';
 
   @override
   String get distanceLabel => 'Απόσταση';
 
   @override
-  String get timeLabel => 'Χρόνος';
+  String get timeLabel => 'Ώρα:';
 
   @override
   String get reportedByLabel => 'Αναφέρθηκε από';
@@ -533,7 +540,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return '__PH_0_ οι άνθρωποι επιβεβαίωσαν αυτή την παρατήρηση';
+    return 'οι άνθρωποι επιβεβαίωσαν αυτή την παρατήρηση';
   }
 
   @override
@@ -541,7 +548,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Ανάλυση: __PH_0_ Επεξεργασία αρχείου(ων) πολυμέσων';
+    return 'Ανάλυση:  επεξεργασμένο αρχείο( α) μέσων';
   }
 
   @override
@@ -616,6 +623,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get whatDoYouSee => 'Τι βλέπεις?';
+
+  @override
+  String get ufo => 'ΑΤΙΑ';
+
+  @override
+  String get sighting => 'Ορατότητα';
 
   @override
   String get ufoSighting => 'ΑΤΙΑ Ορατότητα';
@@ -712,6 +725,75 @@ class AppLocalizationsEl extends AppLocalizations {
   String get ufoTypeBlimp => 'Μπλίμπ';
 
   @override
+  String get shapeTriangle => 'τρίγωνο';
+
+  @override
+  String get shapeDisc => 'δίσκος';
+
+  @override
+  String get shapeDisk => 'δίσκος';
+
+  @override
+  String get shapeSphere => 'σφαίρα';
+
+  @override
+  String get shapeCigar => 'πούρα';
+
+  @override
+  String get shapeLight => 'φως';
+
+  @override
+  String get shapeBoomerang => 'βουμεράνγκ';
+
+  @override
+  String get shapeDiamond => 'διαμάντι';
+
+  @override
+  String get shapeRectangle => 'ορθογώνιο';
+
+  @override
+  String get shapeOval => 'οβάλ';
+
+  @override
+  String get shapeCone => 'κώνος';
+
+  @override
+  String get shapeCross => 'σταυρός';
+
+  @override
+  String get shapeCylinder => 'κύλινδρος';
+
+  @override
+  String get shapeDumbbell => 'αλουμινόχαρτο';
+
+  @override
+  String get shapeTeardrop => 'δάκρυο';
+
+  @override
+  String get shapeTicTac => 'τικ-τακ';
+
+  @override
+  String get shapeBullet => 'σφαίρα';
+
+  @override
+  String get shapeSaturn => 'saturn';
+
+  @override
+  String get shapeStarlike => 'αστεροειδής';
+
+  @override
+  String get shapeBlimp => 'blimp';
+
+  @override
+  String get shapeFireball => 'πυρόμπαλα';
+
+  @override
+  String get shapeFormation => 'σχηματισμός';
+
+  @override
+  String get shapeUnknown => 'άγνωστο';
+
+  @override
   String get actionsTitle => 'Δράσεις';
 
   @override
@@ -734,7 +816,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return '__PH_0_ οι άνθρωποι έχουν επιβεβαιώσει αυτή την παρατήρηση';
+    return 'άνθρωποι έχουν επιβεβαιώσει αυτή την παρατήρηση';
   }
 
   @override
@@ -777,82 +859,356 @@ class AppLocalizationsEl extends AppLocalizations {
   String get comingSoon => 'Έρχομαι Σύντομα';
 
   @override
-  String get directionDistanceTitle => 'Direction & Distance';
+  String get directionDistanceTitle => '& Απόσταση κατεύθυνσης';
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Case #$caseNumber';
+    return 'ΜΟΥΦΟΝ Υπόθεση #';
   }
 
   @override
-  String get satellitePassesTitle => 'Satellite Passes';
+  String get satellitePassesTitle => 'Δορυφορικά περάσματα';
 
   @override
   String get satellitePassExplanation =>
-      'Visible satellite passes during the sighting timeframe. Many UFO reports are actually satellites or space debris.';
+      'Ορατός δορυφόρος περνάει κατά τη διάρκεια του χρονικού πλαισίου παρατήρησης. Πολλές αναφορές για UFO είναι στην πραγματικότητα δορυφόροι ή διαστημικά συντρίμμια.';
 
   @override
   String get followingAlert =>
-      'Following alert - you\'ll get comment notifications';
+      'Μετά την ειδοποίηση - θα λάβετε ειδοποιήσεις σχολίων';
 
   @override
   String get unfollowedAlert =>
-      'Unfollowed alert - no more comment notifications';
+      'Μη ακολουθούμενη ειδοποίηση - όχι άλλες ειδοποιήσεις σχολίων';
 
   @override
-  String get alertFollowError => 'Error updating follow status';
+  String get alertFollowError => 'Σφάλμα ενημέρωσης της κατάστασης';
 
   @override
-  String get notificationChannelAlerts => 'UFOBeep Alerts';
+  String get notificationChannelAlerts => 'Συναγερμοί UFOBeep';
 
   @override
   String get notificationChannelAlertsDesc =>
-      'Notifications for UFO beeps and proximity alerts';
+      'Ειδοποιήσεις για UFO μπιπ και ειδοποιήσεις εγγύτητας';
 
   @override
-  String get notificationSightingTitle => 'UFO Sighting';
+  String get notificationSightingTitle => 'ΑΤΙΑ Ορατότητα';
 
   @override
-  String get notificationSightingUrgent => '⚠️ URGENT UFO Sighting';
+  String get notificationSightingUrgent => '⚠️ ΑΣΤΥΝΟΜΙΑ Ορατότητα';
 
   @override
-  String get notificationSightingEmergency => '🚨 EMERGENCY UFO Sighting';
+  String get notificationSightingEmergency => '🚨 ΑΤΙΑ ΑΝΑΓΚΗΣ Ορατότητα';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '$witnessText near $locationName';
+    return 'κοντά  Όνομα';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '💬 $username commented';
+    return '💬  σχολίασε';
   }
 
   @override
-  String get notificationWitnessText => 'New sighting';
+  String get notificationWitnessText => 'Νέα παρατήρηση';
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '$count witnesses';
+    return 'μαρτύρων';
   }
 
   @override
-  String get notificationActionSnooze => 'Snooze 1h';
+  String get notificationActionSnooze => 'Σνούζ 1 ώρα';
 
   @override
-  String get notificationActionDismiss => 'Dismiss';
+  String get notificationActionDismiss => 'Ελεύθεροι';
 
   @override
   String notificationDistance(String distance) {
-    return '$distance away';
+    return 'μακριά';
   }
 
   @override
-  String get unknown => 'unknown';
+  String get unknown => 'άγνωστο';
 
   @override
-  String get report => 'report';
+  String get report => 'έκθεση';
 
   @override
-  String get mufon => 'mufon';
+  String get mufon => 'μουφόν';
+
+  @override
+  String get recentUfoBeepsTitle => 'Πρόσφατο UFO Μπιζέλια';
+
+  @override
+  String get recentUfoBeepsSubtitle =>
+      'Ζωντανές αναφορές κοινότητας UFOBeep & θεάσεις βάσεων δεδομένων MUFON';
+
+  @override
+  String get recentUfoBeepsDescription =>
+      'Αυτή η τροφοδοσία συνδυάζει σε πραγματικό χρόνο UFOBeep-beeps\" από τους χρήστες εφαρμογών κινητής τηλεφωνίας μας με ιστορικές αναφορές από τη βάση δεδομένων MUFON.';
+
+  @override
+  String get loadingBeeps => 'Φόρτωση πρόσφατων μπιπ...';
+
+  @override
+  String get noBeepsAvailable => 'Δεν υπάρχουν διαθέσιμα μπιπ προς το παρόν.';
+
+  @override
+  String get anomalyReported => 'Ανωμαλία αναφερθεί';
+
+  @override
+  String get copyShortLink => 'Αντιγραφή σύντομου δεσμού';
+
+  @override
+  String get shareAlert => 'Κοινοποίηση ειδοποίησης';
+
+  @override
+  String get previousPage => 'Προηγούμενο';
+
+  @override
+  String get nextPage => 'Επόμενο';
+
+  @override
+  String pageOf(Object currentPage, Object totalCount, Object totalPages) {
+    return 'Σελίδα  του';
+  }
+
+  @override
+  String get heroTagline => 'Πάρε ειδοποιήσεις όταν βγεις έξω και κοίτα ψηλά';
+
+  @override
+  String get heroDescription =>
+      'Ποτέ μην χάσεις άλλο UFO. Πάρε ειδοποιήσεις σε πραγματικό χρόνο όταν κάποιος κοντά σου δει κάτι περίεργο στον ουρανό. Σημάδεψε το τηλέφωνό σου και βρες πού ακριβώς να ψάξεις.';
+
+  @override
+  String get downloadApp => '📱 Λήψη εφαρμογής';
+
+  @override
+  String get viewAllBeeps => '📋 Δείτε Όλους τους Μπιπς';
+
+  @override
+  String get sightingsMap => '🗺️ Χάρτης παρατήρησης';
+
+  @override
+  String get globalSightingNetwork => 'Παγκόσμιο δίκτυο παρατήρησης';
+
+  @override
+  String get howItWorks => 'Πώς λειτουργεί το UFOBeep';
+
+  @override
+  String get backToBeeps => 'Επιστροφή στους Μπιπς';
+
+  @override
+  String get loadingDetails => 'Φόρτωση λεπτομερειών ήχου...';
+
+  @override
+  String get details => 'Λεπτομέρειες';
+
+  @override
+  String get location => 'Τοποθεσία';
+
+  @override
+  String get timeAgo => 'πριν';
+
+  @override
+  String get timeMinutes => 'm';
+
+  @override
+  String get timeHours => 'h';
+
+  @override
+  String get timeDays => 'd';
+
+  @override
+  String get distanceKm => 'km';
+
+  @override
+  String get distanceMiles => 'μίλια';
+
+  @override
+  String get distanceNearby => 'κοντά';
+
+  @override
+  String get ufobeepWitnesses => 'Μάρτυρες';
+
+  @override
+  String get ufobeepConfirmations => 'Επιβεβαίωση';
+
+  @override
+  String get ufobeepAlertLevel => 'Επίπεδο συναγερμού';
+
+  @override
+  String get ufobeepReportType => 'Αναφορά UFOBeep';
+
+  @override
+  String get mufonAttribution => 'ΜΟΥΦΟΝ Έκθεση βάσης δεδομένων';
+
+  @override
+  String get mufonCaseNumber => 'Υπόθεση #';
+
+  @override
+  String get mufonGenericTitle => 'Έκθεση παρατήρησης MUFON';
+
+  @override
+  String get mufonSphere => 'Σφαίρα';
+
+  @override
+  String get mufonLight => 'Φως';
+
+  @override
+  String get mufonDisk => 'Δίσκος';
+
+  @override
+  String get mufonTriangle => 'Τρίγωνο';
+
+  @override
+  String get mufonCigar => 'Πούρα';
+
+  @override
+  String get mufonOval => 'Οβάλ';
+
+  @override
+  String get mufonCylinder => 'Κύλινδρος';
+
+  @override
+  String get mufonRectangle => 'Ορθογώνιο';
+
+  @override
+  String get mufonDiamond => 'Διαμάντι';
+
+  @override
+  String get mufonFireball => 'Πυρόμπαλα';
+
+  @override
+  String get mufonFlash => 'Φλας';
+
+  @override
+  String get mufonFormation => 'Σχηματισμός';
+
+  @override
+  String get mufonChanging => 'Αλλαγή';
+
+  @override
+  String get mufonChevron => 'Ακίδα';
+
+  @override
+  String get mufonCone => 'Κώνος';
+
+  @override
+  String get mufonCross => 'Σταυρός';
+
+  @override
+  String get mufonEgg => 'Αυγά';
+
+  @override
+  String get mufonOther => 'Αντικείμενο';
+
+  @override
+  String get mufonUnknown => 'Άγνωστο αντικείμενο';
+
+  @override
+  String mufonTitleFormat(Object classification) {
+    return 'MUFON  Έκθεση';
+  }
+
+  @override
+  String get nuforcAttribution => 'ΝΟΥΦΟΡΚ Έκθεση βάσης δεδομένων';
+
+  @override
+  String get nuforcCaseNumber => 'Υπόθεση #';
+
+  @override
+  String get nuforcGenericTitle => 'ΝΟΥΦΟΡΚ Έκθεση παρατήρησης';
+
+  @override
+  String get mediaImageNotFound => 'Η εικόνα δε βρέθηκε';
+
+  @override
+  String get mediaPlayVideo => 'Αναπαραγωγή βίντεο';
+
+  @override
+  String get mediaViewImage => 'Προβολή εικόνας';
+
+  @override
+  String mediaCount(Object count) {
+    return 'εικόνες';
+  }
+
+  @override
+  String get mediaCountSingle => '1 εικόνα';
+
+  @override
+  String mediaMoreImages(Object count) {
+    return '+  περισσότερα';
+  }
+
+  @override
+  String get errorNotFound => 'Το σήμα δεν βρέθηκε';
+
+  @override
+  String get errorLoadError =>
+      'Αποτυχία φόρτωσης λεπτομερειών ηχητικού σήματος';
+
+  @override
+  String get shareYourThoughts =>
+      'Μοιραστείτε τις σκέψεις σας για αυτή την εμφάνιση...';
+
+  @override
+  String get postComment => 'Σχόλιο Post';
+
+  @override
+  String get loggedInAs => 'Σύνδεση ως';
+
+  @override
+  String get logout => 'Αποσύνδεση';
+
+  @override
+  String get notFollowing => 'Δεν ακολουθεί';
+
+  @override
+  String get follow => 'Συνέχεια';
+
+  @override
+  String get navRecentBeeps => 'Πρόσφατες Beeps';
+
+  @override
+  String get navMap => 'Χάρτης';
+
+  @override
+  String get navDownloadApp => 'Λήψη εφαρμογής';
+
+  @override
+  String get alertLevel => 'Επίπεδο συναγερμού';
+
+  @override
+  String get witnesses => 'Μάρτυρες';
+
+  @override
+  String get confirmations => 'Επιβεβαίωση';
+
+  @override
+  String get reporterLabel => 'Αναφέρθηκε από το χρήστη';
+
+  @override
+  String get coordinatesLabel => 'Συντεταγμένες';
+
+  @override
+  String get eventTime => 'Ώρα συμβάντος';
+
+  @override
+  String get reportedTime => 'Χρόνος αναφοράς';
+
+  @override
+  String get mufonDatabaseReport => 'ΜΟΥΦΟΝ Έκθεση βάσης δεδομένων';
+
+  @override
+  String get copyShortLinkTitle => 'Αντιγραφή δεσμού στο πρόχειρο';
+
+  @override
+  String get imageNotFound => 'Η εικόνα δε βρέθηκε';
+
+  @override
+  String get ufoSightingAlt => 'Εθεάθη UFO';
 }

@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Reported {time Ago}",
+  "reportedAt": "Reported {time}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Pilot Mode",
   "compassStandardDescription": "العنوان الأساسي والملاحة",
   "compassPilotDescription": "الملاحة المتقدمة مع اتفاق التجارة الحرة والمبادرة",
-  "pointingTo": "Pointing to {direction}",
+  "pointingTo": "Pointing to",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -170,7 +170,7 @@
   "temperature": "درجة الحرارة",
   "pushBodyWitness": "المستعمل أكد أنهم يرون نفس الجسم.",
   "weather": "الطقس",
-  "cloudCover": "{نسبة مئوية}",
+  "cloudCover": "",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Wind: {speed} {unit}",
+  "wind": "Wind:",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "ممتلئة",
   "detailsTitle": "التفاصيل",
   "mufonCase": "MUFON القضية",
-  "mufonCaseDetailsTitle": "MUFON Case #{caseNumber} details",
+  "mufonCaseDetailsTitle": "MUFON Case # details",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "تحليل الصور",
-  "mediaItemsProcessed": "Analysis: {count} media file(s) processed",
+  "mediaItemsProcessed": "Analysis:  media file(s) processed",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -430,7 +430,7 @@
   "notificationSightingTitle": "UFO البصر",
   "notificationSightingUrgent": "  URGENT UFO البصر",
   "notificationSightingEmergency": "  EMERGENCY UFO البصر",
-  "notificationSightingBody": "{witnessText} قرب موقع الاسم",
+  "notificationSightingBody": "قرب موقع الاسم",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -486,7 +486,7 @@
   "shareAlert": "تحذير",
   "previousPage": "سابقا",
   "nextPage": "التالي",
-  "pageOf": "الصفحة Page} of {totalPages} ({totalCount} total beeps)",
+  "pageOf": "of  ( total beeps)",
   "heroTagline": "الحصول على تنبيهات عندما يذهب خارج وانظر إلى ما يصل",
   "heroDescription": "لا تفوتني رؤية أخرى الحصول على إنذارات في الوقت الحقيقي عندما شخص ما بالقرب منك يرى شيء غريب في السماء. اوجهي هاتفك وابحثي عن المكان المناسب.",
   "downloadApp": "  Download App",
@@ -531,14 +531,14 @@
   "mufonEgg": "البيض",
   "mufonOther": "اعتراض",
   "mufonUnknown": "غير معروف",
-  "mufonTitleFormat": "MUFON {classification} التقرير",
+  "mufonTitleFormat": "MUFON  التقرير",
   "nuforcAttribution": "NUFORC تقرير قاعدة البيانات",
   "nuforcCaseNumber": "القضية",
   "nuforcGenericTitle": "NUFORC Sighting Report",
   "mediaImageNotFound": "لم يعثر على صورة",
   "mediaPlayVideo": "العب فيديو",
   "mediaViewImage": "الصورة البصرية",
-  "mediaCount": "{الصور }",
+  "mediaCount": "",
   "mediaCountSingle": "صورة واحدة",
   "mediaMoreImages": "أكثر",
   "errorNotFound": "بيب لم يعثر عليه",

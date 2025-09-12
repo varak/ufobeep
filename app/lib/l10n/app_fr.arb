@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Roulement {portant}°",
+  "alertDirection": "Roulement °",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "Accorder un accès microphone pour la capture vidéo avec audio.",
   "openSettings": "Ouvrir les paramètres",
   "alertDetailTitle": "Détails de la vue",
-  "reportedBy": "Signalé par {nom d'utilisateur}",
+  "reportedBy": "Signalé par {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Signalé {heure C'est parti",
+  "reportedAt": "Signalé ",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Roulement à l'objet: {portant}°",
+  "bearingToObject": "Roulement à l'objet: °",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Mode pilote",
   "compassStandardDescription": "Intitulé de base et navigation",
   "compassPilotDescription": "Navigation avancée avec ETA et vectoring",
-  "pointingTo": "Pointage vers {direction}",
+  "pointingTo": "Pointage vers",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -170,7 +170,7 @@
   "temperature": "Température",
   "pushBodyWitness": "Un utilisateur a confirmé qu'il voit le même objet.",
   "weather": "Météo",
-  "cloudCover": "Couverture nuageuse : {%}%",
+  "cloudCover": "Couverture nuageuse : %",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Vent: {vitesse} {unité}",
+  "wind": "Vent:",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -226,7 +226,7 @@
   "videoOnly": "vidéo seulement",
   "imageOnly": "image seulement",
   "timeJustNow": "juste maintenant",
-  "timeDaysAgo": "{compte}d il y a",
+  "timeDaysAgo": "d il y a",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "filtré",
   "detailsTitle": "Détails",
   "mufonCase": "MUFON Affaire",
-  "mufonCaseDetailsTitle": "MUFON Case #{caseNumber} Détails",
+  "mufonCaseDetailsTitle": "MUFON Case # Détails",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "Analyse photo",
-  "mediaItemsProcessed": "Analyse : fichier multimédia {count} traité",
+  "mediaItemsProcessed": "Analyse : fichier multimédia  traité",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -411,7 +411,7 @@
   "premiumAccessWitnesses": "Témoins confirmés à portée de visibilité",
   "comingSoon": "Bientôt",
   "directionDistanceTitle": "Direction & Distance",
-  "mufonCaseTitle": "MUFON Cas #{numéro de cas}",
+  "mufonCaseTitle": "MUFON Cas #",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +430,7 @@
   "notificationSightingTitle": "OVNI Vue",
   "notificationSightingUrgent": "URGENT UFO Vue",
   "notificationSightingEmergency": "UFO D'URGENCE Vue",
-  "notificationSightingBody": "{texte du témoin} près de {emplacement Nom}",
+  "notificationSightingBody": "près de",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -443,7 +443,7 @@
       }
     }
   },
-  "notificationCommentTitle": "commentaire de {nom d'utilisateur}",
+  "notificationCommentTitle": "commentaire de",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -453,7 +453,7 @@
     }
   },
   "notificationWitnessText": "Nouvelles observations",
-  "notificationWitnessTextMultiple": "{comptent} témoins",
+  "notificationWitnessTextMultiple": "témoins",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -486,7 +486,7 @@
   "shareAlert": "Partager l'alerte",
   "previousPage": "Précédent",
   "nextPage": "Suivant",
-  "pageOf": "Page {current Page} de {totalPages} ({totalCoup} total bips)",
+  "pageOf": "Page  de  ( total bips)",
   "heroTagline": "Obtenir des alertes quand aller dehors et regarder vers le haut",
   "heroDescription": "Ne manquez jamais une autre OVNI. Obtenez des alertes en temps réel quand quelqu'un près de vous voit quelque chose de bizarre dans le ciel. Pointez votre téléphone et trouvez exactement où chercher.",
   "downloadApp": "Télécharger l'application",
@@ -531,16 +531,16 @@
   "mufonEgg": "Œuf",
   "mufonOther": "Objet",
   "mufonUnknown": "Objet inconnu",
-  "mufonTitleFormat": "MUFON {classification} Rapport annuel",
+  "mufonTitleFormat": "MUFON  Rapport annuel",
   "nuforcAttribution": "NUFORC Rapport de base de données",
   "nuforcCaseNumber": "Dossier #",
   "nuforcGenericTitle": "NUFORC Rapport d'observation",
   "mediaImageNotFound": "Image introuvable",
   "mediaPlayVideo": "Lire la vidéo",
   "mediaViewImage": "Afficher l'image",
-  "mediaCount": "{compter} images",
+  "mediaCount": "images",
   "mediaCountSingle": "1 image",
-  "mediaMoreImages": "+{compte} plus",
+  "mediaMoreImages": "+ plus",
   "errorNotFound": "Bip non trouvé",
   "errorLoadError": "Impossible de charger les détails du bip",
   "shareYourThoughts": "Partagez vos idées sur cette vue...",

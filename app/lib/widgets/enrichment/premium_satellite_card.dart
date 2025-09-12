@@ -39,7 +39,7 @@ class PremiumSatelliteCard extends StatelessWidget {
                     children: [
                       Builder(
                         builder: (context) => Text(
-                          AppLocalizations.of(context).premiumImageryTitle,
+                          AppLocalizations.of(context)!.premiumImageryTitle,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: AppColors.textPrimary,
                             fontWeight: FontWeight.w600,
@@ -48,7 +48,7 @@ class PremiumSatelliteCard extends StatelessWidget {
                       ),
                       Builder(
                         builder: (context) => Text(
-                          AppLocalizations.of(context).premiumImagerySubtitle,
+                          AppLocalizations.of(context)!.premiumImagerySubtitle,
                           style: const TextStyle(
                             color: AppColors.textTertiary,
                             fontSize: 12,

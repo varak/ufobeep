@@ -1328,8 +1328,6 @@ extension ApiClientExtension on ApiClient {
         uploadUrl,
         data: formData,
         options: Options(
-          sendTimeout: const Duration(seconds: 120), // 2 minutes - match mufon.sh
-          receiveTimeout: const Duration(seconds: 120), // 2 minutes for processing
           headers: {
             'Content-Type': 'multipart/form-data',
           },

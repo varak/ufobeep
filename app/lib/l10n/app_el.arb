@@ -37,7 +37,7 @@
   "alertsTitle": "Κοντινές ειδοποιήσεις",
   "noAlerts": "Δεν υπάρχουν ειδοποιήσεις ακόμα κοντά.",
   "pullToRefresh": "Τραβήξτε για ανανέωση",
-  "alertDistance": "{απόσταση} μακριά",
+  "alertDistance": "{distance} μακριά",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Διόπτευση {ουσία}°",
+  "alertDirection": "Διόπτευση {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "Επιχορήγηση πρόσβασης μικροφώνου για λήψη βίντεο με ήχο.",
   "openSettings": "Άνοιγμα ρυθμίσεων",
   "alertDetailTitle": "Ορατότητα λεπτομερειών",
-  "reportedBy": "Αναφέρθηκε από {όνομα χρήστη}",
+  "reportedBy": "Αναφέρθηκε από {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Αναφέρθηκε {ώρα} Πριν}",
+  "reportedAt": "Αναφέρθηκε  Πριν}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Διόπτευση προς αντικείμενο: {ουσία}°",
+  "bearingToObject": "Διόπτευση προς αντικείμενο: °",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Πιλοτική λειτουργία",
   "compassStandardDescription": "Βασική κλάση και πλοήγηση",
   "compassPilotDescription": "Προηγμένη πλοήγηση με ETA και διανυσματική",
-  "pointingTo": "Σημείο προς {κατεύθυνση}",
+  "pointingTo": "Σημείο προς",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -170,7 +170,7 @@
   "temperature": "Θερμοκρασία",
   "pushBodyWitness": "Ένας χρήστης επιβεβαίωσε ότι βλέπουν το ίδιο αντικείμενο.",
   "weather": "Καιρός",
-  "cloudCover": "Κάλυψη νεφών: {%}%",
+  "cloudCover": "Κάλυψη νεφών: %",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Άνεμος: {ταχύτητα} {μονάδα}",
+  "wind": "Άνεμος:",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -226,7 +226,7 @@
   "videoOnly": "μόνο βίντεο",
   "imageOnly": "μόνο εικόνα",
   "timeJustNow": "μόλις τώρα",
-  "timeDaysAgo": "{καταμέτρηση} d πριν",
+  "timeDaysAgo": "d πριν",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +235,7 @@
       }
     }
   },
-  "timeHoursAgo": "{αριθμός} h πριν",
+  "timeHoursAgo": "h πριν",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +244,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{αριθμός} m πριν",
+  "timeMinutesAgo": "m πριν",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "φιλτράρεται",
   "detailsTitle": "Λεπτομέρειες",
   "mufonCase": "ΜΟΥΦΟΝ Υπόθεση",
-  "mufonCaseDetailsTitle": "ΜΟΥΦΟΝ Υπόθεση #{ caseNumber} Λεπτομέρειες",
+  "mufonCaseDetailsTitle": "ΜΟΥΦΟΝ Υπόθεση # Λεπτομέρειες",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -283,7 +283,7 @@
   "unknownLocation": "Άγνωστη τοποθεσία",
   "locationUnknown": "Άγνωστη τοποθεσία",
   "witnessesLabel": "Μάρτυρες",
-  "witnessesCountMessage": "{αριθμός} οι άνθρωποι επιβεβαίωσαν αυτή την παρατήρηση",
+  "witnessesCountMessage": "οι άνθρωποι επιβεβαίωσαν αυτή την παρατήρηση",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "Ανάλυση φωτογραφιών",
-  "mediaItemsProcessed": "Ανάλυση: {αριθμός} επεξεργασμένο αρχείο( α) μέσων",
+  "mediaItemsProcessed": "Ανάλυση:  επεξεργασμένο αρχείο( α) μέσων",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -389,7 +389,7 @@
   "whyReportToMufon": "Γιατί αναφέρεσαι στο MUFON?",
   "openMufonReport": "Άνοιγμα MUFON Έκθεση",
   "confirmedWitness": "Επιβεβαίωσες αυτή την παρατήρηση",
-  "witnessesHaveConfirmed": "{αριθμός} άνθρωποι έχουν επιβεβαιώσει αυτή την παρατήρηση",
+  "witnessesHaveConfirmed": "άνθρωποι έχουν επιβεβαιώσει αυτή την παρατήρηση",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -411,7 +411,7 @@
   "premiumAccessWitnesses": "Επιβεβαιωμένοι μάρτυρες εντός εμβέλειας ορατότητας",
   "comingSoon": "Έρχομαι Σύντομα",
   "directionDistanceTitle": "& Απόσταση κατεύθυνσης",
-  "mufonCaseTitle": "ΜΟΥΦΟΝ Υπόθεση #{ ΥπόθεσηNumber}",
+  "mufonCaseTitle": "ΜΟΥΦΟΝ Υπόθεση #",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +430,7 @@
   "notificationSightingTitle": "ΑΤΙΑ Ορατότητα",
   "notificationSightingUrgent": "⚠️ ΑΣΤΥΝΟΜΙΑ Ορατότητα",
   "notificationSightingEmergency": "🚨 ΑΤΙΑ ΑΝΑΓΚΗΣ Ορατότητα",
-  "notificationSightingBody": "{Αυτόπτης μάρτυραςText} κοντά {τόπος} Όνομα}",
+  "notificationSightingBody": "κοντά  Όνομα}",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -443,7 +443,7 @@
       }
     }
   },
-  "notificationCommentTitle": "💬 {όνομα χρήστη} σχολίασε",
+  "notificationCommentTitle": "💬  σχολίασε",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -453,7 +453,7 @@
     }
   },
   "notificationWitnessText": "Νέα παρατήρηση",
-  "notificationWitnessTextMultiple": "{αριθμός} μαρτύρων",
+  "notificationWitnessTextMultiple": "μαρτύρων",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -464,7 +464,7 @@
   },
   "notificationActionSnooze": "Σνούζ 1 ώρα",
   "notificationActionDismiss": "Ελεύθεροι",
-  "notificationDistance": "{απόσταση} μακριά",
+  "notificationDistance": "μακριά",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -486,7 +486,7 @@
   "shareAlert": "Κοινοποίηση ειδοποίησης",
   "previousPage": "Προηγούμενο",
   "nextPage": "Επόμενο",
-  "pageOf": "Σελίδα {τρέχων Σελίδα} του {σύνολο σελίδων}",
+  "pageOf": "Σελίδα  του",
   "heroTagline": "Πάρε ειδοποιήσεις όταν βγεις έξω και κοίτα ψηλά",
   "heroDescription": "Ποτέ μην χάσεις άλλο UFO. Πάρε ειδοποιήσεις σε πραγματικό χρόνο όταν κάποιος κοντά σου δει κάτι περίεργο στον ουρανό. Σημάδεψε το τηλέφωνό σου και βρες πού ακριβώς να ψάξεις.",
   "downloadApp": "📱 Λήψη εφαρμογής",
@@ -531,16 +531,16 @@
   "mufonEgg": "Αυγά",
   "mufonOther": "Αντικείμενο",
   "mufonUnknown": "Άγνωστο αντικείμενο",
-  "mufonTitleFormat": "MUFON {ταξινόμηση} Έκθεση",
+  "mufonTitleFormat": "MUFON  Έκθεση",
   "nuforcAttribution": "ΝΟΥΦΟΡΚ Έκθεση βάσης δεδομένων",
   "nuforcCaseNumber": "Υπόθεση #",
   "nuforcGenericTitle": "ΝΟΥΦΟΡΚ Έκθεση παρατήρησης",
   "mediaImageNotFound": "Η εικόνα δε βρέθηκε",
   "mediaPlayVideo": "Αναπαραγωγή βίντεο",
   "mediaViewImage": "Προβολή εικόνας",
-  "mediaCount": "{αριθμός} εικόνες",
+  "mediaCount": "εικόνες",
   "mediaCountSingle": "1 εικόνα",
-  "mediaMoreImages": "+ {αριθμός} περισσότερα",
+  "mediaMoreImages": "+  περισσότερα",
   "errorNotFound": "Το σήμα δεν βρέθηκε",
   "errorLoadError": "Αποτυχία φόρτωσης λεπτομερειών ηχητικού σήματος",
   "shareYourThoughts": "Μοιραστείτε τις σκέψεις σας για αυτή την εμφάνιση...",

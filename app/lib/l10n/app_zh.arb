@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "轴承{包含}",
+  "alertDirection": "轴承{bearing}",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "已报告 {时间} 阿广",
+  "reportedAt": "已报告  阿广",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "向反对方显示 : {access}",
+  "bearingToObject": "向反对方显示 :",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "试点模式",
   "compassStandardDescription": "基本航向和导航",
   "compassPilotDescription": "带有ETA和矢量的高级导航",
-  "pointingTo": "指向 {方向}",
+  "pointingTo": "指向",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -170,7 +170,7 @@
   "temperature": "温度",
   "pushBodyWitness": "一个用户确认他们看到了同一个对象.",
   "weather": "天气",
-  "cloudCover": "云盖: {%}",
+  "cloudCover": "云盖:",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "风: {速度}{单位}",
+  "wind": "风:",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -226,7 +226,7 @@
   "videoOnly": "只有视频",
   "imageOnly": "仅图像",
   "timeJustNow": "刚才",
-  "timeDaysAgo": "{数}之前",
+  "timeDaysAgo": "之前",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +235,7 @@
       }
     }
   },
-  "timeHoursAgo": "{\\fn黑体\\fs22\\bord1\\shad0\\3ahbe\\4ah00\\fscx67\\fscy66\\2chffffff\\3ch808080}你刚才说",
+  "timeHoursAgo": "你刚才说",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +244,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{\\fn黑体\\fs22\\bord1\\shad0\\3ahbe\\4ah00\\fscx67\\fscy66\\2chffffff\\3ch808080}时间轴:",
+  "timeMinutesAgo": "时间轴:",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "过滤",
   "detailsTitle": "细节",
   "mufonCase": "毛里求斯 大小写",
-  "mufonCaseDetailsTitle": "毛里求斯 案件编号}细节",
+  "mufonCaseDetailsTitle": "细节",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "照片分析",
-  "mediaItemsProcessed": "分析: {计算} 已处理的媒体文件",
+  "mediaItemsProcessed": "分析:  已处理的媒体文件",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -430,7 +430,7 @@
   "notificationSightingTitle": "不明飞行物 观察",
   "notificationSightingUrgent": "紧急UFO 观察",
   "notificationSightingEmergency": "紧急UFO 观察",
-  "notificationSightingBody": "靠近 {位置} {证人文本} 名称]",
+  "notificationSightingBody": "靠近   名称]",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -443,7 +443,7 @@
       }
     }
   },
-  "notificationCommentTitle": "{用户名} 注释",
+  "notificationCommentTitle": "注释",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -453,7 +453,7 @@
     }
   },
   "notificationWitnessText": "新视觉",
-  "notificationWitnessTextMultiple": "{计数}证人",
+  "notificationWitnessTextMultiple": "证人",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -486,7 +486,7 @@
   "shareAlert": "共享提醒",
   "previousPage": "上一个",
   "nextPage": "下一个",
-  "pageOf": "页面 {当前 页面} {totalPages} ({totalCount} 总哔声)",
+  "pageOf": "页面   ( 总哔声)",
   "heroTagline": "什么时候到外面看看",
   "heroDescription": "永远不要错过另一个UFO的目击。 当有人在天上看到奇怪的东西时,即刻发出警报. 把电话对准,找到可以找的地方.",
   "downloadApp": "QQ 下载 App",
@@ -531,14 +531,14 @@
   "mufonEgg": "鸡蛋",
   "mufonOther": "对象",
   "mufonUnknown": "未知对象",
-  "mufonTitleFormat": "MUFON {分类} 报告",
+  "mufonTitleFormat": "MUFON  报告",
   "nuforcAttribution": "努福尔茨 数据库报告",
   "nuforcCaseNumber": "案例#",
   "nuforcGenericTitle": "努福尔茨 观察报告",
   "mediaImageNotFound": "未找到图像",
   "mediaPlayVideo": "播放视频",
   "mediaViewImage": "查看图像",
-  "mediaCount": "{计数} 图像",
+  "mediaCount": "图像",
   "mediaCountSingle": "1 张图像",
   "mediaMoreImages": "再来点",
   "errorNotFound": "未找到哔声",

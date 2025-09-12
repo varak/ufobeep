@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Reported {timeAgo}",
+  "reportedAt": "Reported",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Pilot Mode",
   "compassStandardDescription": "Basic heading and navigation",
   "compassPilotDescription": "Advanced navigation with ETA and vectoring",
-  "pointingTo": "Pointing to {direction}",
+  "pointingTo": "Pointing to",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -170,7 +170,7 @@
   "temperature": "Temperature",
   "pushBodyWitness": "A user confirmed they see the same object.",
   "weather": "Weather",
-  "cloudCover": "Cloud cover: {percent}%",
+  "cloudCover": "Cloud cover: %",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Wind: {speed} {unit}",
+  "wind": "Wind:",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -226,7 +226,7 @@
   "videoOnly": "video only",
   "imageOnly": "image only",
   "timeJustNow": "just now",
-  "timeDaysAgo": "{count}d ago",
+  "timeDaysAgo": "d ago",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +235,7 @@
       }
     }
   },
-  "timeHoursAgo": "{count}h ago",
+  "timeHoursAgo": "h ago",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +244,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{count}m ago",
+  "timeMinutesAgo": "m ago",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "filtered",
   "detailsTitle": "Details",
   "mufonCase": "MUFON Case",
-  "mufonCaseDetailsTitle": "MUFON Case #{caseNumber} Details",
+  "mufonCaseDetailsTitle": "MUFON Case # Details",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -283,7 +283,7 @@
   "unknownLocation": "Unknown Location",
   "locationUnknown": "Location Unknown",
   "witnessesLabel": "Witnesses",
-  "witnessesCountMessage": "{count} people confirmed this sighting",
+  "witnessesCountMessage": "people confirmed this sighting",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "Photo Analysis",
-  "mediaItemsProcessed": "Analysis: {count} media file(s) processed",
+  "mediaItemsProcessed": "Analysis:  media file(s) processed",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -389,7 +389,7 @@
   "whyReportToMufon": "Why Report to MUFON?",
   "openMufonReport": "Open MUFON Report",
   "confirmedWitness": "You confirmed this sighting",
-  "witnessesHaveConfirmed": "{count} people have confirmed this sighting",
+  "witnessesHaveConfirmed": "people have confirmed this sighting",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -411,7 +411,7 @@
   "premiumAccessWitnesses": "Confirmed witnesses within visibility range",
   "comingSoon": "Coming Soon",
   "directionDistanceTitle": "Direction & Distance",
-  "mufonCaseTitle": "MUFON Case #{caseNumber}",
+  "mufonCaseTitle": "MUFON Case #",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +430,7 @@
   "notificationSightingTitle": "UFO Sighting",
   "notificationSightingUrgent": "⚠️ URGENT UFO Sighting",
   "notificationSightingEmergency": "🚨 EMERGENCY UFO Sighting",
-  "notificationSightingBody": "{witnessText} near {locationName}",
+  "notificationSightingBody": "near",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -453,7 +453,7 @@
     }
   },
   "notificationWitnessText": "New sighting",
-  "notificationWitnessTextMultiple": "{count} witnesses",
+  "notificationWitnessTextMultiple": "witnesses",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -486,7 +486,7 @@
   "shareAlert": "Share alert",
   "previousPage": "Previous",
   "nextPage": "Next",
-  "pageOf": "Page {currentPage} of {totalPages} ({totalCount} total beeps)",
+  "pageOf": "Page  of  ( total beeps)",
   "heroTagline": "Get alerts when to go outside and look up",
   "heroDescription": "Never miss another UFO sighting. Get real-time alerts when someone near you sees something weird in the sky. Point your phone and find exactly where to look.",
   "downloadApp": "📱 Download App",
@@ -531,16 +531,16 @@
   "mufonEgg": "Egg",
   "mufonOther": "Object",
   "mufonUnknown": "Unknown Object",
-  "mufonTitleFormat": "MUFON {classification} Report",
+  "mufonTitleFormat": "MUFON  Report",
   "nuforcAttribution": "NUFORC Database Report",
   "nuforcCaseNumber": "Case #",
   "nuforcGenericTitle": "NUFORC Sighting Report",
   "mediaImageNotFound": "Image not found",
   "mediaPlayVideo": "Play Video",
   "mediaViewImage": "View Image",
-  "mediaCount": "{count} images",
+  "mediaCount": "images",
   "mediaCountSingle": "1 image",
-  "mediaMoreImages": "+{count} more",
+  "mediaMoreImages": "+ more",
   "errorNotFound": "Beep not found",
   "errorLoadError": "Failed to load beep details",
   "shareYourThoughts": "Share your thoughts about this sighting...",

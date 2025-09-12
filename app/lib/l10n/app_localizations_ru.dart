@@ -121,12 +121,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '$distance вдали';
+    return 'расстояние';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Подшипник $bearing°';
+    return 'Подшипник';
   }
 
   @override
@@ -171,7 +171,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String beepSentWithUrl(String shortUrl) {
-    return 'Beep sent successfully';
+    return 'Пип успешно отправлен';
   }
 
   @override
@@ -222,18 +222,18 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String reportedAt(String timeAgo) {
-    return 'Об этом сообщает $timeAgo';
+  String reportedAt(String timeAgo, Object time) {
+    return 'Сообщено  Аго';
   }
 
   @override
   String distanceAway(String distance) {
-    return '$distance вдали';
+    return 'уходить';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return 'Возражать против: $bearing';
+    return 'Подчинение возражению: $bearing°';
   }
 
   @override
@@ -261,7 +261,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get autoFollowEnabled => 'Теперь вы следуете этому предупреждению.';
 
   @override
-  String get noCommentsYet => 'Никаких комментариев. Будь первым!';
+  String get noCommentsYet =>
+      'Никаких комментариев. Будьте первым, кто комментирует!';
 
   @override
   String get newCommentNotification =>
@@ -294,7 +295,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Указывает на $direction';
+    return 'Указывая на';
   }
 
   @override
@@ -308,7 +309,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'Об этом сообщает $distance.';
+    return 'Сообщалось о новом наблюдении на расстоянии.';
   }
 
   @override
@@ -321,6 +322,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get pushTitleWitness => 'Подтверждение свидетеля';
 
   @override
+  String get temperature => 'Температура';
+
+  @override
   String get pushBodyWitness =>
       'Пользователь подтвердил, что видит один и тот же объект.';
 
@@ -329,12 +333,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Облачное покрытие: $percent%';
+    return 'Облако: %';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Ветер: $speed$unit';
+    return 'Ветер:';
   }
 
   @override
@@ -433,7 +437,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get verified => 'Проверенный';
 
   @override
-  String get beepOnly => 'только гудок';
+  String get beepOnly => 'Только отчет';
+
+  @override
+  String get reportOnly => 'Только отчет';
 
   @override
   String get videoOnly => 'только видео';
@@ -442,21 +449,21 @@ class AppLocalizationsRu extends AppLocalizations {
   String get imageOnly => 'только изображение';
 
   @override
-  String get timeJustNow => 'Только сейчас';
+  String get timeJustNow => 'только сейчас';
 
   @override
   String timeDaysAgo(int count) {
-    return 'PH_0_d назад';
+    return 'd ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return 'счет давно';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return 'm ago';
   }
 
   @override
@@ -489,7 +496,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'МУФОН Случай #$caseNumber Подробности';
+    return 'МУФОН Случай # Подробности';
   }
 
   @override
@@ -508,13 +515,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get linkCopied => 'Link скопирован в буфер обмена';
 
   @override
-  String get locationLabel => 'Расположение';
+  String get locationLabel => 'Местонахождение:';
 
   @override
   String get distanceLabel => 'Расстояние';
 
   @override
-  String get timeLabel => 'Время';
+  String get timeLabel => 'Время:';
 
   @override
   String get reportedByLabel => 'Докладчик';
@@ -530,7 +537,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return '$count люди подтвердили это наблюдение';
+    return 'люди подтвердили это наблюдение';
   }
 
   @override
@@ -538,7 +545,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Анализ: $count медиафайл(ы), обработанный';
+    return 'Анализ:  медиафайл(ы) обработан';
   }
 
   @override
@@ -613,6 +620,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get whatDoYouSee => 'Что ты видишь?';
+
+  @override
+  String get ufo => 'НЛО';
+
+  @override
+  String get sighting => 'Прицел';
 
   @override
   String get ufoSighting => 'НЛО прицел';
@@ -710,6 +723,75 @@ class AppLocalizationsRu extends AppLocalizations {
   String get ufoTypeBlimp => 'Блеск';
 
   @override
+  String get shapeTriangle => 'треугольник';
+
+  @override
+  String get shapeDisc => 'диск';
+
+  @override
+  String get shapeDisk => 'диск';
+
+  @override
+  String get shapeSphere => 'область';
+
+  @override
+  String get shapeCigar => 'сигара';
+
+  @override
+  String get shapeLight => 'свет';
+
+  @override
+  String get shapeBoomerang => 'бумеранг';
+
+  @override
+  String get shapeDiamond => 'алмаз';
+
+  @override
+  String get shapeRectangle => 'прямоугольник';
+
+  @override
+  String get shapeOval => 'овальный';
+
+  @override
+  String get shapeCone => 'конус';
+
+  @override
+  String get shapeCross => 'крест';
+
+  @override
+  String get shapeCylinder => 'цилиндр';
+
+  @override
+  String get shapeDumbbell => 'гантель';
+
+  @override
+  String get shapeTeardrop => 'капля слез';
+
+  @override
+  String get shapeTicTac => 'тик-так';
+
+  @override
+  String get shapeBullet => 'пуля';
+
+  @override
+  String get shapeSaturn => 'поворот';
+
+  @override
+  String get shapeStarlike => 'звездообразный';
+
+  @override
+  String get shapeBlimp => 'ремень';
+
+  @override
+  String get shapeFireball => 'огненный шар';
+
+  @override
+  String get shapeFormation => 'формирование';
+
+  @override
+  String get shapeUnknown => 'неизвестный';
+
+  @override
   String get actionsTitle => 'Меры';
 
   @override
@@ -732,7 +814,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return '$count люди подтвердили это наблюдение';
+    return 'люди подтвердили это наблюдение';
   }
 
   @override
@@ -779,7 +861,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'МУФОН Дело #$caseNumber';
+    return 'МУФОН Случай #';
   }
 
   @override
@@ -801,56 +883,331 @@ class AppLocalizationsRu extends AppLocalizations {
   String get alertFollowError => 'Обновление ошибок Следуйте за статусом';
 
   @override
-  String get notificationChannelAlerts => 'UFOBeep Alerts';
+  String get notificationChannelAlerts => 'Предупреждения UFOBeep';
 
   @override
   String get notificationChannelAlertsDesc =>
-      'Notifications for UFO beeps and proximity alerts';
+      'Уведомления о сигналах НЛО и предупреждениях о близости';
 
   @override
-  String get notificationSightingTitle => 'UFO Sighting';
+  String get notificationSightingTitle => 'НЛО прицел';
 
   @override
-  String get notificationSightingUrgent => '⚠️ URGENT UFO Sighting';
+  String get notificationSightingUrgent => 'Срочный НЛО прицел';
 
   @override
-  String get notificationSightingEmergency => '🚨 EMERGENCY UFO Sighting';
+  String get notificationSightingEmergency => 'Чрезвычайный НЛО прицел';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '$witnessText near $locationName';
+    return '[свидетель] рядом с местом Имя';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '💬 $username commented';
+    return '↓  прокомментировал';
   }
 
   @override
-  String get notificationWitnessText => 'New sighting';
+  String get notificationWitnessText => 'Новый взгляд';
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '$count witnesses';
+    return 'свидетели';
   }
 
   @override
-  String get notificationActionSnooze => 'Snooze 1h';
+  String get notificationActionSnooze => 'Снюз 1ч';
 
   @override
-  String get notificationActionDismiss => 'Dismiss';
+  String get notificationActionDismiss => 'Увольнение';
 
   @override
   String notificationDistance(String distance) {
-    return '$distance away';
+    return 'расстояние';
   }
 
   @override
-  String get unknown => 'unknown';
+  String get unknown => 'неизвестный';
 
   @override
-  String get report => 'report';
+  String get report => 'доклад';
 
   @override
-  String get mufon => 'mufon';
+  String get mufon => 'мафия';
+
+  @override
+  String get recentUfoBeepsTitle => 'Недавний НЛО Бипс';
+
+  @override
+  String get recentUfoBeepsSubtitle =>
+      'Отчеты сообщества UFOBeep и наблюдения базы данных MUFON';
+
+  @override
+  String get recentUfoBeepsDescription =>
+      'Эта лента сочетает в себе UFOBeep в реальном времени от пользователей нашего мобильного приложения с историческими отчетами из базы данных MUFON.';
+
+  @override
+  String get loadingBeeps => 'Загрузка недавних звуков...';
+
+  @override
+  String get noBeepsAvailable =>
+      'На данный момент никаких звуковых сигналов нет.';
+
+  @override
+  String get anomalyReported => 'Об аномалии сообщили';
+
+  @override
+  String get copyShortLink => 'Скопировать короткую ссылку';
+
+  @override
+  String get shareAlert => 'Поделиться предупреждением';
+
+  @override
+  String get previousPage => 'Предыдущий';
+
+  @override
+  String get nextPage => 'Следующий';
+
+  @override
+  String pageOf(Object currentPage, Object totalCount, Object totalPages) {
+    return 'Страница  Страница  ( полные звуковые сигналы)';
+  }
+
+  @override
+  String get heroTagline =>
+      'Получить оповещения, когда выходить на улицу и смотреть вверх';
+
+  @override
+  String get heroDescription =>
+      'Никогда не пропустите очередное наблюдение НЛО. Получайте оповещения в реальном времени, когда кто-то рядом с вами видит что-то странное в небе. Направьте телефон и найдите, где именно искать.';
+
+  @override
+  String get downloadApp => 'Скачать приложение';
+
+  @override
+  String get viewAllBeeps => 'Смотреть все клипы';
+
+  @override
+  String get sightingsMap => ' ️ Карта достопримечательностей';
+
+  @override
+  String get globalSightingNetwork => 'Глобальная сеть наблюдения';
+
+  @override
+  String get howItWorks => 'Как работает UFOBeep';
+
+  @override
+  String get backToBeeps => 'Вернуться в Beeps';
+
+  @override
+  String get loadingDetails => 'Загрузка звуковых деталей...';
+
+  @override
+  String get details => 'Подробности';
+
+  @override
+  String get location => 'Расположение';
+
+  @override
+  String get timeAgo => 'давно';
+
+  @override
+  String get timeMinutes => 'm';
+
+  @override
+  String get timeHours => 'h';
+
+  @override
+  String get timeDays => 'd';
+
+  @override
+  String get distanceKm => 'км';
+
+  @override
+  String get distanceMiles => 'миль';
+
+  @override
+  String get distanceNearby => 'поблизости';
+
+  @override
+  String get ufobeepWitnesses => 'Свидетели';
+
+  @override
+  String get ufobeepConfirmations => 'Подтверждения';
+
+  @override
+  String get ufobeepAlertLevel => 'Уровень оповещения';
+
+  @override
+  String get ufobeepReportType => 'Об этом сообщает UFOBeep';
+
+  @override
+  String get mufonAttribution => 'МУФОН Отчет о базе данных';
+
+  @override
+  String get mufonCaseNumber => 'Дело #';
+
+  @override
+  String get mufonGenericTitle => 'Обзорный отчет MUFON';
+
+  @override
+  String get mufonSphere => 'Сфера';
+
+  @override
+  String get mufonLight => 'Свет';
+
+  @override
+  String get mufonDisk => 'Диск';
+
+  @override
+  String get mufonTriangle => 'Треугольник';
+
+  @override
+  String get mufonCigar => 'Сигара';
+
+  @override
+  String get mufonOval => 'Оваль';
+
+  @override
+  String get mufonCylinder => 'Цилиндр';
+
+  @override
+  String get mufonRectangle => 'Прямоугольник';
+
+  @override
+  String get mufonDiamond => 'Алмаз';
+
+  @override
+  String get mufonFireball => 'Огненный шар';
+
+  @override
+  String get mufonFlash => 'Флэш';
+
+  @override
+  String get mufonFormation => 'Формирование';
+
+  @override
+  String get mufonChanging => 'Изменение';
+
+  @override
+  String get mufonChevron => 'Шеврон';
+
+  @override
+  String get mufonCone => 'Конус';
+
+  @override
+  String get mufonCross => 'Крест';
+
+  @override
+  String get mufonEgg => 'Яйцо';
+
+  @override
+  String get mufonOther => 'Объект';
+
+  @override
+  String get mufonUnknown => 'Неизвестный объект';
+
+  @override
+  String mufonTitleFormat(Object classification) {
+    return 'MUFON  Доклад';
+  }
+
+  @override
+  String get nuforcAttribution => 'НУФОРК Отчет о базе данных';
+
+  @override
+  String get nuforcCaseNumber => 'Дело #';
+
+  @override
+  String get nuforcGenericTitle => 'НУФОРК Обзорный доклад';
+
+  @override
+  String get mediaImageNotFound => 'Изображение не найдено';
+
+  @override
+  String get mediaPlayVideo => 'Играть видео';
+
+  @override
+  String get mediaViewImage => 'Просмотр изображения';
+
+  @override
+  String mediaCount(Object count) {
+    return 'изображения';
+  }
+
+  @override
+  String get mediaCountSingle => '1 изображение';
+
+  @override
+  String mediaMoreImages(Object count) {
+    return '+ больше';
+  }
+
+  @override
+  String get errorNotFound => 'Бип не найден';
+
+  @override
+  String get errorLoadError => 'Не удалось загрузить детали звукового сигнала';
+
+  @override
+  String get shareYourThoughts =>
+      'Поделитесь своими мыслями об этом зрелище...';
+
+  @override
+  String get postComment => 'Комментарий';
+
+  @override
+  String get loggedInAs => 'Зарегистрировано как';
+
+  @override
+  String get logout => 'Выход';
+
+  @override
+  String get notFollowing => 'Не следовать';
+
+  @override
+  String get follow => 'Следить';
+
+  @override
+  String get navRecentBeeps => 'Последние бипы';
+
+  @override
+  String get navMap => 'Карта';
+
+  @override
+  String get navDownloadApp => 'Скачать приложение';
+
+  @override
+  String get alertLevel => 'Уровень оповещения';
+
+  @override
+  String get witnesses => 'Свидетели';
+
+  @override
+  String get confirmations => 'Подтверждения';
+
+  @override
+  String get reporterLabel => 'Сообщение пользователя';
+
+  @override
+  String get coordinatesLabel => 'Координация';
+
+  @override
+  String get eventTime => 'Время события';
+
+  @override
+  String get reportedTime => 'Сообщенное время';
+
+  @override
+  String get mufonDatabaseReport => 'МУФОН Отчет о базе данных';
+
+  @override
+  String get copyShortLinkTitle => 'Скопировать ссылку на clipboard';
+
+  @override
+  String get imageNotFound => 'Изображение не найдено';
+
+  @override
+  String get ufoSightingAlt => 'Наблюдение НЛО';
 }

@@ -81,7 +81,7 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
             ],
           ),
           Text(
-            AppLocalizations.of(context).actionsTitle,
+            AppLocalizations.of(context)!.actionsTitle,
             style: const TextStyle(
               color: AppColors.brandPrimary,
               fontSize: 16,
@@ -108,7 +108,7 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
               child: OutlinedButton.icon(
                 onPressed: widget.onAddPhotos,
                 icon: const Icon(Icons.add_photo_alternate, size: 18),
-                label: Text(AppLocalizations.of(context).addPhotosAndVideos),
+                label: Text(AppLocalizations.of(context)!.addPhotosAndVideos),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.brandPrimary,
                   side: const BorderSide(color: AppColors.brandPrimary, width: 1.5),
@@ -132,7 +132,7 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
               child: OutlinedButton.icon(
                 onPressed: widget.onReportToMufon,
                 icon: const Icon(Icons.report_outlined, size: 18),
-                label: Text(AppLocalizations.of(context).howToReportToMufon),
+                label: Text(AppLocalizations.of(context)!.howToReportToMufon),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.brandPrimary,
                   side: const BorderSide(color: AppColors.brandPrimary, width: 1.5),
@@ -173,8 +173,8 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
                   )
                 : const Icon(Icons.visibility, size: 18),
             label: Text(_isConfirming 
-                ? AppLocalizations.of(context).processing 
-                : AppLocalizations.of(context).iSeeItToo),
+                ? AppLocalizations.of(context)!.processing 
+                : AppLocalizations.of(context)!.iSeeItToo),
             style: OutlinedButton.styleFrom(
               foregroundColor: AppColors.brandPrimary,
               side: const BorderSide(color: AppColors.brandPrimary, width: 1.5),
@@ -192,7 +192,7 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
         if (witnessCount > 1) ...[
           const SizedBox(height: 8),
           Text(
-            AppLocalizations.of(context).witnessesHaveConfirmed(witnessCount),
+            AppLocalizations.of(context)!.witnessesHaveConfirmed(witnessCount),
             style: const TextStyle(
               color: AppColors.textSecondary,
               fontSize: 14,
@@ -228,7 +228,7 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '✅ ${AppLocalizations.of(context).confirmedWitness}',
+                  '✅ ${AppLocalizations.of(context)!.confirmedWitness}',
                   style: const TextStyle(
                     color: AppColors.semanticSuccess,
                     fontSize: 14,
@@ -237,7 +237,7 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
                 ),
                 if (witnessCount > 1)
                   Text(
-                    AppLocalizations.of(context).witnessesHaveConfirmed(witnessCount),
+                    AppLocalizations.of(context)!.witnessesHaveConfirmed(witnessCount),
                     style: const TextStyle(
                       color: AppColors.semanticSuccess,
                       fontSize: 12,
@@ -314,7 +314,7 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
         // Show success feedback
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('✅ ${AppLocalizations.of(context).confirmedWitness} (${AppLocalizations.of(context).witnessesHaveConfirmed(newWitnessCount)})'),
+            content: Text('✅ ${AppLocalizations.of(context)!.confirmedWitness} (${AppLocalizations.of(context)!.witnessesHaveConfirmed(newWitnessCount)})'),
             backgroundColor: AppColors.semanticSuccess,
             duration: const Duration(seconds: 2),
           ),
@@ -359,18 +359,18 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.darkSurface,
         title: Text(
-          AppLocalizations.of(context).locationPermissionTitle,
+          AppLocalizations.of(context)!.locationPermissionTitle,
           style: const TextStyle(color: AppColors.textPrimary),
         ),
         content: Text(
-          AppLocalizations.of(context).locationPermissionBody,
+          AppLocalizations.of(context)!.locationPermissionBody,
           style: const TextStyle(color: AppColors.textSecondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
-              AppLocalizations.of(context).cancel,
+              AppLocalizations.of(context)!.cancel,
               style: const TextStyle(color: AppColors.textTertiary),
             ),
           ),
@@ -383,7 +383,7 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
               backgroundColor: AppColors.brandPrimary,
               foregroundColor: Colors.black,
             ),
-            child: Text(AppLocalizations.of(context).openSettings),
+            child: Text(AppLocalizations.of(context)!.openSettings),
           ),
         ],
       ),

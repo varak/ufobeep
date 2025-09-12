@@ -121,12 +121,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '$distance 멀리';
+    return '$distance';
   }
 
   @override
   String alertDirection(int bearing) {
-    return '베어링 $bearing°';
+    return '방위 $bearing°';
   }
 
   @override
@@ -170,7 +170,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String beepSentWithUrl(String shortUrl) {
-    return 'Beep sent successfully';
+    return 'Beep는 성공적으로 보냈습니다';
   }
 
   @override
@@ -214,22 +214,22 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return '$username에 의해 신고';
+    return '작성자: $username';
   }
 
   @override
-  String reportedAt(String timeAgo) {
-    return '$timeAgo를 보고';
+  String reportedAt(String timeAgo, Object time) {
+    return '로그인 ';
   }
 
   @override
   String distanceAway(String distance) {
-    return '$distance 멀리';
+    return '뚱 베어';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return '목표에 방위: ₢ 킹';
+    return '물체에 베어링 : $bearing °';
   }
 
   @override
@@ -257,7 +257,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get autoFollowEnabled => '이 경고를 따르십시오.';
 
   @override
-  String get noCommentsYet => '아직 댓글이 없습니다. 처음!';
+  String get noCommentsYet => '아직 댓글이 없습니다. 댓글을 첫번째로!';
 
   @override
   String get newCommentNotification => '당신을 따르는 광경에 새로운 의견.';
@@ -288,7 +288,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return '$direction에 포팅';
+    return '에 대한 지적';
   }
 
   @override
@@ -302,7 +302,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return '새로운 광경은 $distance를 나타냈습니다.';
+    return '새로운 광경은 를보고했다.';
   }
 
   @override
@@ -315,6 +315,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get pushTitleWitness => 'Witness 확인';
 
   @override
+  String get temperature => '제품 정보';
+
+  @override
   String get pushBodyWitness => '사용자가 동일한 객체를 확인합니다.';
 
   @override
@@ -322,12 +325,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return '구름 덮개: ₢ 킹';
+    return '클라우드 커버: %';
   }
 
   @override
   String wind(num speed, String unit) {
-    return '바람: $speed $unit';
+    return '바람:';
   }
 
   @override
@@ -420,7 +423,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get verified => '인증 및 인증';
 
   @override
-  String get beepOnly => '뚱 베어';
+  String get beepOnly => '계정 관리';
+
+  @override
+  String get reportOnly => '계정 관리';
 
   @override
   String get videoOnly => '비디오 만';
@@ -433,17 +439,17 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d 전';
+    return 'd 전';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h 전';
+    return 'h 전';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m 전';
+    return 'm 전';
   }
 
   @override
@@ -475,7 +481,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return '사이트맵 케이스 #$caseNumber 세부 사항';
+    return '사이트맵 사례 # 세부 정보';
   }
 
   @override
@@ -494,13 +500,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get linkCopied => '클립보드에 복사 링크';
 
   @override
-  String get locationLabel => '- 연혁';
+  String get locationLabel => '위치:';
 
   @override
   String get distanceLabel => '주요 특징';
 
   @override
-  String get timeLabel => '(주)';
+  String get timeLabel => '시간:';
 
   @override
   String get reportedByLabel => '관련 기사';
@@ -516,7 +522,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return '$count 사람들이 이 광경을 확인';
+    return '사람들은이 광경을 확인';
   }
 
   @override
@@ -524,7 +530,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return '분석: $count 미디어 파일 처리';
+    return 'Analysis:  미디어 파일 처리';
   }
 
   @override
@@ -598,6 +604,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get whatDoYouSee => '무엇을 볼까요?';
+
+  @override
+  String get ufo => '사이트맵';
+
+  @override
+  String get sighting => '뚱 베어';
 
   @override
   String get ufoSighting => '사이트맵 뚱 베어';
@@ -693,6 +705,75 @@ class AppLocalizationsKo extends AppLocalizations {
   String get ufoTypeBlimp => '뚱 베어';
 
   @override
+  String get shapeTriangle => '팟캐스트';
+
+  @override
+  String get shapeDisc => '·';
+
+  @override
+  String get shapeDisk => '기본 정보';
+
+  @override
+  String get shapeSphere => '강좌';
+
+  @override
+  String get shapeCigar => '시가';
+
+  @override
+  String get shapeLight => '제품 정보';
+
+  @override
+  String get shapeBoomerang => '채용정보';
+
+  @override
+  String get shapeDiamond => '다이아몬드';
+
+  @override
+  String get shapeRectangle => '연락처';
+
+  @override
+  String get shapeOval => '이름 *';
+
+  @override
+  String get shapeCone => '제품 정보';
+
+  @override
+  String get shapeCross => '기타';
+
+  @override
+  String get shapeCylinder => '자료실';
+
+  @override
+  String get shapeDumbbell => '뚱 베어';
+
+  @override
+  String get shapeTeardrop => '눈물방울';
+
+  @override
+  String get shapeTicTac => '사이트맵';
+
+  @override
+  String get shapeBullet => '주요특징';
+
+  @override
+  String get shapeSaturn => '인기있는';
+
+  @override
+  String get shapeStarlike => '이름 *';
+
+  @override
+  String get shapeBlimp => '뚱 베어';
+
+  @override
+  String get shapeFireball => '풋볼';
+
+  @override
+  String get shapeFormation => '주요연혁';
+
+  @override
+  String get shapeUnknown => '이름 *';
+
+  @override
   String get actionsTitle => '팟캐스트';
 
   @override
@@ -715,7 +796,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return '$count 사람들은 이 광경을 확인했습니다';
+    return '사람들은이 광경을 확인했습니다';
   }
 
   @override
@@ -755,82 +836,350 @@ class AppLocalizationsKo extends AppLocalizations {
   String get comingSoon => '현재 위치';
 
   @override
-  String get directionDistanceTitle => 'Direction & Distance';
+  String get directionDistanceTitle => '방향 & 거리';
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Case #$caseNumber';
+    return '사이트맵 케이스 #';
   }
 
   @override
-  String get satellitePassesTitle => 'Satellite Passes';
+  String get satellitePassesTitle => '위성 패스';
 
   @override
   String get satellitePassExplanation =>
-      'Visible satellite passes during the sighting timeframe. Many UFO reports are actually satellites or space debris.';
+      '눈에 띄는 위성은 광경 시간대에 통과합니다. 많은 UFO 보고서는 실제로 위성 또는 공간 파편입니다.';
 
   @override
-  String get followingAlert =>
-      'Following alert - you\'ll get comment notifications';
+  String get followingAlert => '경고 후 - 당신은 코멘트 알림을 얻을 것이다';
 
   @override
-  String get unfollowedAlert =>
-      'Unfollowed alert - no more comment notifications';
+  String get unfollowedAlert => '경고 없음 - 더 많은 의견 알림';
 
   @override
-  String get alertFollowError => 'Error updating follow status';
+  String get alertFollowError => '에러 updating 따라 상태';
 
   @override
-  String get notificationChannelAlerts => 'UFOBeep Alerts';
+  String get notificationChannelAlerts => 'UFOBeep 경고';
 
   @override
-  String get notificationChannelAlertsDesc =>
-      'Notifications for UFO beeps and proximity alerts';
+  String get notificationChannelAlertsDesc => 'UFO beeps 및 근접 경고에 대한 알림';
 
   @override
-  String get notificationSightingTitle => 'UFO Sighting';
+  String get notificationSightingTitle => '사이트맵 뚱 베어';
 
   @override
-  String get notificationSightingUrgent => '⚠️ URGENT UFO Sighting';
+  String get notificationSightingUrgent => '⚠️ 유벤트 UFO 뚱 베어';
 
   @override
-  String get notificationSightingEmergency => '🚨 EMERGENCY UFO Sighting';
+  String get notificationSightingEmergency => '∙ 에너지 UFO 뚱 베어';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '$witnessText near $locationName';
+    return '닫기 이름 *';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '💬 $username commented';
+    return '$username 댓글';
   }
 
   @override
-  String get notificationWitnessText => 'New sighting';
+  String get notificationWitnessText => '새로운 광경';
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '$count witnesses';
+    return '이름 *';
   }
 
   @override
-  String get notificationActionSnooze => 'Snooze 1h';
+  String get notificationActionSnooze => '스누즈 1시간';
 
   @override
-  String get notificationActionDismiss => 'Dismiss';
+  String get notificationActionDismiss => '뚱 베어';
 
   @override
   String notificationDistance(String distance) {
-    return '$distance away';
+    return '';
   }
 
   @override
-  String get unknown => 'unknown';
+  String get unknown => '이름 *';
 
   @override
-  String get report => 'report';
+  String get report => '이름 *';
 
   @override
-  String get mufon => 'mufon';
+  String get mufon => '사이트맵';
+
+  @override
+  String get recentUfoBeepsTitle => '최근 UFO 뚱 베어';
+
+  @override
+  String get recentUfoBeepsSubtitle => '라이브 UFOBeep 커뮤니티 보고서 & MUFON 데이터베이스 광경';
+
+  @override
+  String get recentUfoBeepsDescription =>
+      '이 피드는 실시간 UFOBeep \"beeps\"를 결합하여 모바일 앱 사용자는 MUFON 데이터베이스의 과거 보고서를 보여줍니다.';
+
+  @override
+  String get loadingBeeps => '최근 beeps을로드 ...';
+
+  @override
+  String get noBeepsAvailable => '순간에 사용할 수 없습니다.';
+
+  @override
+  String get anomalyReported => 'Anomaly 보고';
+
+  @override
+  String get copyShortLink => '짧은 링크 복사';
+
+  @override
+  String get shareAlert => '비밀번호';
+
+  @override
+  String get previousPage => '이름 *';
+
+  @override
+  String get nextPage => '이름 *';
+
+  @override
+  String pageOf(Object currentPage, Object totalCount, Object totalPages) {
+    return '페이지  의  ( 총 금액)';
+  }
+
+  @override
+  String get heroTagline => '외부로 이동할 때 경고를 얻고 봐';
+
+  @override
+  String get heroDescription =>
+      '다른 UFO 보행을 놓치지 마십시오. 누군가가 하늘에서 이상한 것을 볼 때 실시간 경고를 가져옵니다. 휴대폰을 끄고 정확히 어디에서 볼 수 있습니다.';
+
+  @override
+  String get downloadApp => '앱 다운로드';
+
+  @override
+  String get viewAllBeeps => ' All 모두 Beeps';
+
+  @override
+  String get sightingsMap => 'Sightings 지도';
+
+  @override
+  String get globalSightingNetwork => '글로벌 Sighting Network';
+
+  @override
+  String get howItWorks => 'UFOBeep 작동 방법';
+
+  @override
+  String get backToBeeps => 'Beeps로 돌아가기';
+
+  @override
+  String get loadingDetails => '로딩...';
+
+  @override
+  String get details => '제품 정보';
+
+  @override
+  String get location => '- 연혁';
+
+  @override
+  String get timeAgo => '...에서';
+
+  @override
+  String get timeMinutes => 'm';
+
+  @override
+  String get timeHours => 'h';
+
+  @override
+  String get timeDays => 'd';
+
+  @override
+  String get distanceKm => '24시간';
+
+  @override
+  String get distanceMiles => '여행 정보';
+
+  @override
+  String get distanceNearby => '이름 *';
+
+  @override
+  String get ufobeepWitnesses => '뚱 베어';
+
+  @override
+  String get ufobeepConfirmations => '이름 *';
+
+  @override
+  String get ufobeepAlertLevel => '출력 레벨';
+
+  @override
+  String get ufobeepReportType => 'UFOBeep 보고서';
+
+  @override
+  String get mufonAttribution => '사이트맵 Database 보고';
+
+  @override
+  String get mufonCaseNumber => '사례 #';
+
+  @override
+  String get mufonGenericTitle => 'MUFON Sighting 보고서';
+
+  @override
+  String get mufonSphere => '사이트 맵';
+
+  @override
+  String get mufonLight => '제품 정보';
+
+  @override
+  String get mufonDisk => '제품정보';
+
+  @override
+  String get mufonTriangle => '연락처';
+
+  @override
+  String get mufonCigar => '시가';
+
+  @override
+  String get mufonOval => '오벌';
+
+  @override
+  String get mufonCylinder => '자료실';
+
+  @override
+  String get mufonRectangle => '관련 상품';
+
+  @override
+  String get mufonDiamond => '담당자: Ms';
+
+  @override
+  String get mufonFireball => '불꽃놀이';
+
+  @override
+  String get mufonFlash => '이름 *';
+
+  @override
+  String get mufonFormation => '이름 *';
+
+  @override
+  String get mufonChanging => '관련 기사';
+
+  @override
+  String get mufonChevron => '체브론';
+
+  @override
+  String get mufonCone => '한국어';
+
+  @override
+  String get mufonCross => '기타';
+
+  @override
+  String get mufonEgg => '계란';
+
+  @override
+  String get mufonOther => '기타';
+
+  @override
+  String get mufonUnknown => 'Unknown 개체';
+
+  @override
+  String mufonTitleFormat(Object classification) {
+    return 'MUFON 예제 제품정보';
+  }
+
+  @override
+  String get nuforcAttribution => '사이트맵 Database 보고';
+
+  @override
+  String get nuforcCaseNumber => '사례 #';
+
+  @override
+  String get nuforcGenericTitle => '사이트맵 연락처';
+
+  @override
+  String get mediaImageNotFound => '찾을 수 없음';
+
+  @override
+  String get mediaPlayVideo => '재생 동영상';
+
+  @override
+  String get mediaViewImage => '이미지 보기';
+
+  @override
+  String mediaCount(Object count) {
+    return '이미지';
+  }
+
+  @override
+  String get mediaCountSingle => '1 이미지';
+
+  @override
+  String mediaMoreImages(Object count) {
+    return '+ 더보기';
+  }
+
+  @override
+  String get errorNotFound => '찾을 수 없음';
+
+  @override
+  String get errorLoadError => 'Beep 세부사항을 적재하는 실패';
+
+  @override
+  String get shareYourThoughts => '이 광경에 대한 생각을 공유 ...';
+
+  @override
+  String get postComment => '게시물 댓글';
+
+  @override
+  String get loggedInAs => '로그인';
+
+  @override
+  String get logout => '로그아웃';
+
+  @override
+  String get notFollowing => '이름 *';
+
+  @override
+  String get follow => '이름 *';
+
+  @override
+  String get navRecentBeeps => '최근 Beeps';
+
+  @override
+  String get navMap => '지도보기';
+
+  @override
+  String get navDownloadApp => '앱 다운로드';
+
+  @override
+  String get alertLevel => '출력 레벨';
+
+  @override
+  String get witnesses => '뚱 베어';
+
+  @override
+  String get confirmations => '이름 *';
+
+  @override
+  String get reporterLabel => '로그인';
+
+  @override
+  String get coordinatesLabel => '관련 기사';
+
+  @override
+  String get eventTime => '이벤트 시간';
+
+  @override
+  String get reportedTime => '접수시간';
+
+  @override
+  String get mufonDatabaseReport => '사이트맵 Database 보고';
+
+  @override
+  String get copyShortLinkTitle => '클립보드에 링크 복사';
+
+  @override
+  String get imageNotFound => '찾을 수 없음';
+
+  @override
+  String get ufoSightingAlt => 'UFO 광경';
 }

@@ -116,7 +116,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       if (mounted) {
         _commentController.clear();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).commentPosted), backgroundColor: AppColors.brandPrimary),
+          SnackBar(content: Text(AppLocalizations.of(context)!.commentPosted), backgroundColor: AppColors.brandPrimary),
         );
         // Refresh details to update comment count
         ref.invalidate(alertByIdProvider(widget.alertId));
@@ -124,7 +124,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).errorGeneric), backgroundColor: AppColors.semanticError),
+          SnackBar(content: Text(AppLocalizations.of(context)!.errorGeneric), backgroundColor: AppColors.semanticError),
         );
       }
     } finally {
@@ -241,7 +241,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () => ref.invalidate(alertByIdProvider(widget.alertId)),
-                        child: Text(AppLocalizations.of(context).retry),
+                        child: Text(AppLocalizations.of(context)!.retry),
                       ),
                     ],
                   ),
@@ -262,7 +262,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 builder: (ctx) {
                   final raw = AlertTitleUtils.getContextualTitleFromAlert(alert);
                   final l10n = AppLocalizations.of(ctx);
-                  final display = raw == 'UFO Sighting' ? l10n.ufoSighting : raw;
+                  final display = raw == 'UFO Sighting' ? l10n!.ufoSighting : raw;
                   return Text(display);
                 },
               ),
@@ -337,7 +337,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                             Clipboard.setData(ClipboardData(text: shareLink));
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(AppLocalizations.of(context).linkCopied),
+                                content: Text(AppLocalizations.of(context)!.linkCopied),
                                 duration: const Duration(seconds: 2),
                                 backgroundColor: AppColors.brandPrimary,
                               ),
@@ -450,7 +450,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () => ref.invalidate(alertByIdProvider(widget.alertId)),
-                child: Text(AppLocalizations.of(context).retry),
+                child: Text(AppLocalizations.of(context)!.retry),
               ),
             ],
           ),
@@ -618,14 +618,14 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              AppLocalizations.of(context).edit,
+              AppLocalizations.of(context)!.edit,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: AppColors.textPrimary,
               ),
             ),
             const SizedBox(height: 16),
             Text(
-              AppLocalizations.of(context).beepExplain,
+              AppLocalizations.of(context)!.beepExplain,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -652,7 +652,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          AppLocalizations.of(context).capturePhoto,
+                          AppLocalizations.of(context)!.capturePhoto,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -680,7 +680,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          AppLocalizations.of(context).pickFromGallery,
+                          AppLocalizations.of(context)!.pickFromGallery,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -697,7 +697,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text(
-                AppLocalizations.of(context).cancel,
+                AppLocalizations.of(context)!.cancel,
                 style: const TextStyle(color: AppColors.textSecondary),
               ),
             ),
@@ -717,7 +717,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             children: [
               const Icon(Icons.report_outlined, color: AppColors.brandPrimary),
               const SizedBox(width: 8),
-              Text(AppLocalizations.of(context).reportToMufon),
+              Text(AppLocalizations.of(context)!.reportToMufon),
             ],
           ),
           content: SingleChildScrollView(
@@ -745,7 +745,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 ),
                 SizedBox(height: 16),
                 Text(
-                  AppLocalizations.of(context).whyReportToMufon,
+                  AppLocalizations.of(context)!.whyReportToMufon,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
@@ -777,7 +777,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: Text(
-                AppLocalizations.of(context).cancel,
+                AppLocalizations.of(context)!.cancel,
                 style: const TextStyle(color: AppColors.textSecondary),
               ),
             ),
@@ -807,7 +807,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 }
               },
               icon: const Icon(Icons.open_in_browser),
-              label: Text(AppLocalizations.of(context).openMufonReport),
+              label: Text(AppLocalizations.of(context)!.openMufonReport),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.brandPrimary,
                 foregroundColor: Colors.black,
@@ -833,7 +833,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               const Icon(Icons.photo, color: AppColors.brandPrimary, size: 20),
               const SizedBox(width: 8),
               Text(
-                AppLocalizations.of(context).photoAnalysisTitle,
+                AppLocalizations.of(context)!.photoAnalysisTitle,
                 style: const TextStyle(
                   color: AppColors.brandPrimary,
                   fontSize: 16,
@@ -844,7 +844,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
           ),
           const SizedBox(height: 16),
           Text(
-            AppLocalizations.of(context).mediaItemsProcessed(alert.photoAnalysis!.length),
+            AppLocalizations.of(context)!.mediaItemsProcessed(alert.photoAnalysis!.length),
             style: const TextStyle(color: AppColors.textSecondary, fontSize: 14),
           ),
         ],
@@ -869,8 +869,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               children: [
                 Text(
                   _isFollowing 
-                    ? AppLocalizations.of(context).autoFollowEnabled 
-                    : AppLocalizations.of(context).notifications,
+                    ? AppLocalizations.of(context)!.autoFollowEnabled 
+                    : AppLocalizations.of(context)!.notifications,
                   style: const TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 16,
@@ -880,8 +880,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 const SizedBox(height: 2),
                 Text(
                   _isFollowing 
-                    ? AppLocalizations.of(context).newCommentNotification
-                    : AppLocalizations.of(context).enablePushNotifications,
+                    ? AppLocalizations.of(context)!.newCommentNotification
+                    : AppLocalizations.of(context)!.enablePushNotifications,
                   style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 14,
@@ -921,7 +921,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               const Icon(Icons.chat_bubble_outline, color: AppColors.brandPrimary, size: 20),
               const SizedBox(width: 8),
               Text(
-                AppLocalizations.of(context).commentsTitle,
+                AppLocalizations.of(context)!.commentsTitle,
                 style: const TextStyle(
                   color: AppColors.brandPrimary,
                   fontSize: 16,
@@ -1006,7 +1006,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             minLines: 1,
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              hintText: AppLocalizations.of(context).addComment,
+              hintText: AppLocalizations.of(context)!.addComment,
               hintStyle: const TextStyle(color: AppColors.textSecondary),
               filled: true,
               fillColor: Colors.white10,
@@ -1036,7 +1036,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                       child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.brandPrimary),
                     )
                   : const Icon(Icons.send, size: 16),
-              label: Text(AppLocalizations.of(context).send),
+              label: Text(AppLocalizations.of(context)!.send),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.darkSurface,
                 foregroundColor: AppColors.brandPrimary,
@@ -1116,18 +1116,18 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   }
   
   String _formatCommentTime(BuildContext context, DateTime dateTime) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final now = DateTime.now();
     final difference = now.difference(dateTime);
     
     if (difference.inDays > 0) {
-      return l10n.timeDaysAgo(difference.inDays);
+      return l10n!.timeDaysAgo(difference.inDays);
     } else if (difference.inHours > 0) {
-      return l10n.timeHoursAgo(difference.inHours);
+      return l10n!.timeHoursAgo(difference.inHours);
     } else if (difference.inMinutes > 0) {
-      return l10n.timeMinutesAgo(difference.inMinutes);
+      return l10n!.timeMinutesAgo(difference.inMinutes);
     } else {
-      return l10n.timeJustNow;
+      return l10n!.timeJustNow;
     }
   }
 

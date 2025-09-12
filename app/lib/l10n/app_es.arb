@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Rodamiento {bear}°",
+  "alertDirection": "Rodamiento °",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Rodamiento a objeto: {bear}°",
+  "bearingToObject": "Rodamiento a objeto: °",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Modo piloto",
   "compassStandardDescription": "Encabezamiento básico y navegación",
   "compassPilotDescription": "Navegación avanzada con ETA y vectorización",
-  "pointingTo": "Pointing to {direction}",
+  "pointingTo": "Pointing to",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "Calibrando la brújula..",
   "openAROverlay": "Open AR overlay",
   "pushTitleAlertNearby": "OVNI alerta cerca de usted",
-  "pushBodyAlertNearby": "Se informó de un nuevo avistamiento {distancia} de distancia.",
+  "pushBodyAlertNearby": "Se informó de un nuevo avistamiento  de distancia.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -226,7 +226,7 @@
   "videoOnly": "video sólo",
   "imageOnly": "imagen sólo",
   "timeJustNow": "ahora",
-  "timeDaysAgo": "{contador}d ago",
+  "timeDaysAgo": "d ago",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +235,7 @@
       }
     }
   },
-  "timeHoursAgo": "{count}h ago",
+  "timeHoursAgo": "h ago",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +244,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{contigo}m ago",
+  "timeMinutesAgo": "m ago",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "filtrado",
   "detailsTitle": "Detalles",
   "mufonCase": "MUFON Caso",
-  "mufonCaseDetailsTitle": "MUFON Caso #{caseNumber} Detalles",
+  "mufonCaseDetailsTitle": "MUFON Caso # Detalles",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "Análisis de fotos",
-  "mediaItemsProcessed": "Análisis: {cuenta} archivo de medios procesados",
+  "mediaItemsProcessed": "Análisis:  archivo de medios procesados",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -411,7 +411,7 @@
   "premiumAccessWitnesses": "Testigos confirmados dentro del rango de visibilidad",
   "comingSoon": "Pronto",
   "directionDistanceTitle": "Dirección \" Distancia",
-  "mufonCaseTitle": "MUFON Caso # {caseNumber}",
+  "mufonCaseTitle": "MUFON Caso #",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -486,7 +486,7 @@
   "shareAlert": "Alerta de participación",
   "previousPage": "Anterior",
   "nextPage": "Siguiente",
-  "pageOf": "Página {current Page} of {totalPages} ({totalCount} total beeps)",
+  "pageOf": "Página  of  ( total beeps)",
   "heroTagline": "Obtener alertas cuando salir y mirar hacia arriba",
   "heroDescription": "Nunca pierdas otro avistamiento de OVNI. Obtenga alertas en tiempo real cuando alguien cercano ve algo raro en el cielo. Apunte el teléfono y encuentre exactamente dónde buscar.",
   "downloadApp": "📱 Descargar App",
@@ -531,7 +531,7 @@
   "mufonEgg": "Egg",
   "mufonOther": "Objeto",
   "mufonUnknown": "Objeto desconocido",
-  "mufonTitleFormat": "MUFON {classification} Informe",
+  "mufonTitleFormat": "MUFON  Informe",
   "nuforcAttribution": "NUFORC Informe de base de datos",
   "nuforcCaseNumber": "Caso",
   "nuforcGenericTitle": "NUFORC Informe de control",
@@ -540,7 +540,7 @@
   "mediaViewImage": "Ver imagen",
   "mediaCount": "imágenes",
   "mediaCountSingle": "1 imagen",
-  "mediaMoreImages": "+{count} more",
+  "mediaMoreImages": "+ more",
   "errorNotFound": "Beep no encontrada",
   "errorLoadError": "Failed to load beep details",
   "shareYourThoughts": "Comparte tus pensamientos sobre este avistamiento...",

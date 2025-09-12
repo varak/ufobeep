@@ -41,8 +41,8 @@ class AlertDetailsSection extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 alert.source == 'mufon' && alert.enrichment?['mufon_case_number'] != null
-                    ? AppLocalizations.of(context).mufonCaseTitle(alert.enrichment!['mufon_case_number'])
-                    : AppLocalizations.of(context).detailsTitle,
+                    ? AppLocalizations.of(context)!.mufonCaseTitle(alert.enrichment!['mufon_case_number'])
+                    : AppLocalizations.of(context)!.detailsTitle,
                 style: const TextStyle(
                   color: AppColors.brandPrimary,
                   fontSize: 16,
@@ -74,7 +74,7 @@ class AlertDetailsSection extends StatelessWidget {
             if (alert.enrichment?['reported_when'] != null)
               _buildDetailRow(
                 Icons.event,
-                AppLocalizations.of(context).sightingDate,
+                AppLocalizations.of(context)!.sightingDate,
                 alert.enrichment!['reported_when'],
               ),
             
@@ -82,7 +82,7 @@ class AlertDetailsSection extends StatelessWidget {
             if (alert.enrichment?['database_when'] != null)
               _buildDetailRow(
                 Icons.storage,
-                AppLocalizations.of(context).mufonDatabaseEntryDate,
+                AppLocalizations.of(context)!.mufonDatabaseEntryDate,
                 alert.enrichment!['database_when'],
               ),
             
@@ -93,7 +93,7 @@ class AlertDetailsSection extends StatelessWidget {
                 alert.locationName != 'Unknown Location') ...[
               _buildDetailRow(
                 Icons.location_on,
-                AppLocalizations.of(context).locationLabel,
+                AppLocalizations.of(context)!.locationLabel,
                 alert.locationName!,
               ),
               // Always show distance if we have coordinates
@@ -108,7 +108,7 @@ class AlertDetailsSection extends StatelessWidget {
             // Time info
             _buildDetailRow(
               Icons.access_time,
-              AppLocalizations.of(context).timeLabel,
+              AppLocalizations.of(context)!.timeLabel,
               _formatDateTime(context, alert.createdAt),
               subtitle: _formatFullDateTime(alert.createdAt),
             ),
@@ -117,7 +117,7 @@ class AlertDetailsSection extends StatelessWidget {
             if (alert.reporterUsername != null) 
               _buildDetailRow(
                 Icons.person,
-                AppLocalizations.of(context).reportedByLabel,
+                AppLocalizations.of(context)!.reportedByLabel,
                 alert.reporterUsername!,
                 subtitle: null,
               ),
@@ -130,8 +130,8 @@ class AlertDetailsSection extends StatelessWidget {
             if (showLocation) ...[
               _buildDetailRow(
                 Icons.location_on,
-                AppLocalizations.of(context).locationLabel,
-                '${alert.locationName ?? AppLocalizations.of(context).unknownLocation}',
+                AppLocalizations.of(context)!.locationLabel,
+                '${alert.locationName ?? AppLocalizations.of(context)!.unknownLocation}',
                 subtitle: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
               ),
               // Always show dynamic distance calculation if we have coordinates
@@ -165,7 +165,7 @@ class AlertDetailsSection extends StatelessWidget {
 
         return _buildDetailRow(
           Icons.straighten,
-          AppLocalizations.of(context).distanceLabel,
+          AppLocalizations.of(context)!.distanceLabel,
           UnitConversion.formatDistance(distance * 1000, units),
         );
       },
@@ -200,7 +200,7 @@ class AlertDetailsSection extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '${AppLocalizations.of(context).witnessesLabel}: ',
+                      '${AppLocalizations.of(context)!.witnessesLabel}: ',
                       style: const TextStyle(
                         color: AppColors.textTertiary,
                         fontSize: 14,
@@ -238,7 +238,7 @@ class AlertDetailsSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  AppLocalizations.of(context).witnessesCountMessage(alert.witnessCount),
+                  AppLocalizations.of(context)!.witnessesCountMessage(alert.witnessCount),
                   style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 12,
@@ -304,7 +304,7 @@ class AlertDetailsSection extends StatelessWidget {
   }
 
   String _formatDateTime(BuildContext context, DateTime dateTime) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final now = DateTime.now();
     final localDateTime = dateTime.toLocal();
     final difference = now.difference(localDateTime);
@@ -344,7 +344,7 @@ class AlertDetailsSection extends StatelessWidget {
     }
     
     // For MUFON reports, never show lat/lng coordinates - just return unknown
-    return AppLocalizations.of(context).locationUnknown;
+    return AppLocalizations.of(context)!.locationUnknown;
   }
 
 

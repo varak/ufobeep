@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Hlášený čas {Ago",
+  "reportedAt": "Hlášený čas {time}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Ložisko objektu: {ložisko} °",
+  "bearingToObject": "Ložisko objektu:  °",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Režim pilota",
   "compassStandardDescription": "Základní název a navigace",
   "compassPilotDescription": "Pokročilá navigace s ETA a vektorováním",
-  "pointingTo": "Ukazuji na {směr}",
+  "pointingTo": "Ukazuji na",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -170,7 +170,7 @@
   "temperature": "Teplota",
   "pushBodyWitness": "Uživatel potvrdil, že vidí stejný objekt.",
   "weather": "Počasí",
-  "cloudCover": "Cloud cover: {%}%",
+  "cloudCover": "Cloud cover: %",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Vítr: {speed} {jednotka}",
+  "wind": "Vítr:",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -226,7 +226,7 @@
   "videoOnly": "pouze video",
   "imageOnly": "pouze obrázek",
   "timeJustNow": "právě teď",
-  "timeDaysAgo": "{count} d před",
+  "timeDaysAgo": "d před",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +235,7 @@
       }
     }
   },
-  "timeHoursAgo": "{count} h před",
+  "timeHoursAgo": "h před",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +244,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{count} m před",
+  "timeMinutesAgo": "m před",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "filtrované",
   "detailsTitle": "Podrobnosti",
   "mufonCase": "MUFON Případ",
-  "mufonCaseDetailsTitle": "MUFON Případ # {caseNumber} Podrobnosti",
+  "mufonCaseDetailsTitle": "MUFON Případ #  Podrobnosti",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "Analýza fotografií",
-  "mediaItemsProcessed": "Analýza: {count} media soubor (y) zpracován",
+  "mediaItemsProcessed": "Analýza:  media soubor (y) zpracován",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -411,7 +411,7 @@
   "premiumAccessWitnesses": "Potvrzení svědci v dosahu viditelnosti",
   "comingSoon": "Už brzy",
   "directionDistanceTitle": "Směr a vzdálenost",
-  "mufonCaseTitle": "MUFON Případ # {caseNumber}",
+  "mufonCaseTitle": "MUFON Případ #",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +430,7 @@
   "notificationSightingTitle": "UFO Vidění",
   "notificationSightingUrgent": "Name Vidění",
   "notificationSightingEmergency": "POSLEDNÍ UFO Vidění",
-  "notificationSightingBody": "{witnesText} v blízkosti {umístění Název}",
+  "notificationSightingBody": "v blízkosti",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -486,7 +486,7 @@
   "shareAlert": "Upozornění o sdílení",
   "previousPage": "Předchozí",
   "nextPage": "Další",
-  "pageOf": "Strana {aktuální Page} of {totalPages} ({totalCount} total pípnutí)",
+  "pageOf": "Strana  of  ( total pípnutí)",
   "heroTagline": "Získejte upozornění, kdy jít ven a podívat se nahoru",
   "heroDescription": "Nikdy si nenechte ujít další pozorování UFO. Získejte reálné-čas upozornění, když někdo blízko vás vidí něco divného na obloze. Namiřte telefon a najděte přesně, kde hledat.",
   "downloadApp": "Name",
@@ -531,16 +531,16 @@
   "mufonEgg": "Vejce",
   "mufonOther": "Předmět",
   "mufonUnknown": "Neznámý objekt",
-  "mufonTitleFormat": "MUFON {klasifikace} Zpráva",
+  "mufonTitleFormat": "MUFON  Zpráva",
   "nuforcAttribution": "NUFORC Databázová zpráva",
   "nuforcCaseNumber": "Případ #",
   "nuforcGenericTitle": "NUFORC Zpráva o pozorování",
   "mediaImageNotFound": "Obrázek nenalezen",
   "mediaPlayVideo": "Přehrát video",
   "mediaViewImage": "Zobrazit obrázek",
-  "mediaCount": "{počet} obrázky",
+  "mediaCount": "obrázky",
   "mediaCountSingle": "1 obrázek",
-  "mediaMoreImages": "+ {počet} více",
+  "mediaMoreImages": "+  více",
   "errorNotFound": "Píp nenalezen",
   "errorLoadError": "Nepodařilo se načíst detaily pípnutí",
   "shareYourThoughts": "Podělte se o své myšlenky o tomto pozorování...",

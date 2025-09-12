@@ -121,7 +121,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '0 _ 0 _ 0';
+    return '$distance दूर';
   }
 
   @override
@@ -171,7 +171,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String beepSentWithUrl(String shortUrl) {
-    return 'Beep sent successfully';
+    return 'बीप सफलतापूर्वक भेजा गया';
   }
 
   @override
@@ -218,22 +218,22 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'द्वारा रिपोर्ट किया गया $username';
+    return 'द्वारा रिपोर्ट $username';
   }
 
   @override
-  String reportedAt(String timeAgo) {
-    return 'रिपोर्ट $timeAgo';
+  String reportedAt(String timeAgo, Object time) {
+    return 'रिपोर्ट Ago';
   }
 
   @override
   String distanceAway(String distance) {
-    return '0 _ 0 _ 0';
+    return 'दूर';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return 'वस्तु पर असर: 0 _ 0 _ 0';
+    return 'वस्तु पर असर: $bearing°';
   }
 
   @override
@@ -261,7 +261,8 @@ class AppLocalizationsHi extends AppLocalizations {
   String get autoFollowEnabled => 'अब आप इस चेतावनी का पालन कर रहे हैं।.';
 
   @override
-  String get noCommentsYet => 'अभी तक कोई टिप्पणी नहीं। पहले हो!';
+  String get noCommentsYet =>
+      'अभी तक कोई टिप्पणी नहीं। टिप्पणी करने वाले पहले व्यक्ति बनें!';
 
   @override
   String get newCommentNotification => 'नई टिप्पणी आप का पालन करते हैं।.';
@@ -292,7 +293,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Pointing to $direction';
+    return 'को इंगित करना';
   }
 
   @override
@@ -306,7 +307,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'एक नए दर्शन की सूचना ${distance}_____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________.';
+    return 'एक नए दर्शन की सूचना $distance दूर थी।.';
   }
 
   @override
@@ -319,6 +320,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get pushTitleWitness => 'गवाह पुष्टि';
 
   @override
+  String get temperature => 'तापमान';
+
+  @override
   String get pushBodyWitness =>
       'एक उपयोगकर्ता ने पुष्टि की कि वे उसी वस्तु को देखते हैं।.';
 
@@ -327,12 +331,12 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'क्लाउड कवर: 0';
+    return 'क्लाउड कवर: %';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'पवन: $speed $unit';
+    return 'पवन:';
   }
 
   @override
@@ -429,7 +433,10 @@ class AppLocalizationsHi extends AppLocalizations {
   String get verified => 'सत्यापित';
 
   @override
-  String get beepOnly => 'केवल बीप';
+  String get beepOnly => 'केवल रिपोर्ट करें';
+
+  @override
+  String get reportOnly => 'केवल रिपोर्ट करें';
 
   @override
   String get videoOnly => 'केवल वीडियो';
@@ -442,17 +449,17 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return 'To make a ph_0_d';
+    return 'd पहले';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'H_0_h__h___h____h___h___h___h____h_____h___h___h____h_________h________________________________________________________________________________________________________________________________________________________';
+    return 'h पहले';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '^PH_0_m पहले';
+    return '';
   }
 
   @override
@@ -484,7 +491,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON केस #${caseNumber}_ Details';
+    return 'MUFON Case # Details';
   }
 
   @override
@@ -503,13 +510,13 @@ class AppLocalizationsHi extends AppLocalizations {
   String get linkCopied => 'लिंक क्लिपबोर्ड पर कॉपी';
 
   @override
-  String get locationLabel => 'स्थान';
+  String get locationLabel => 'स्थान:';
 
   @override
   String get distanceLabel => 'दूरी';
 
   @override
-  String get timeLabel => 'समय';
+  String get timeLabel => 'समय:';
 
   @override
   String get reportedByLabel => 'रिपोर्ट द्वारा';
@@ -525,7 +532,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return '${count}________________________________________________________________________________________________________________________________________';
+    return 'लोगों ने इस दर्शन की पुष्टि की';
   }
 
   @override
@@ -533,7 +540,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'विश्लेषण: $count मीडिया फ़ाइल (s) संसाधित';
+    return 'विश्लेषण:  मीडिया फ़ाइल (s) संसाधित';
   }
 
   @override
@@ -608,6 +615,12 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get whatDoYouSee => 'आप क्या देखते हैं?';
+
+  @override
+  String get ufo => 'यूएफओ';
+
+  @override
+  String get sighting => 'दृष्टि';
 
   @override
   String get ufoSighting => 'यूएफओ दृष्टि';
@@ -704,6 +717,75 @@ class AppLocalizationsHi extends AppLocalizations {
   String get ufoTypeBlimp => 'ब्लींप';
 
   @override
+  String get shapeTriangle => 'त्रिभुज';
+
+  @override
+  String get shapeDisc => 'डिस्क';
+
+  @override
+  String get shapeDisk => 'डिस्क';
+
+  @override
+  String get shapeSphere => 'क्षेत्र';
+
+  @override
+  String get shapeCigar => 'सिगार';
+
+  @override
+  String get shapeLight => 'प्रकाश';
+
+  @override
+  String get shapeBoomerang => 'बूमरंग';
+
+  @override
+  String get shapeDiamond => 'हीरा';
+
+  @override
+  String get shapeRectangle => 'आयत';
+
+  @override
+  String get shapeOval => 'अंडाकार';
+
+  @override
+  String get shapeCone => 'शंकु';
+
+  @override
+  String get shapeCross => 'पार';
+
+  @override
+  String get shapeCylinder => 'सिलेंडर';
+
+  @override
+  String get shapeDumbbell => 'डम्बल';
+
+  @override
+  String get shapeTeardrop => 'टट्टू';
+
+  @override
+  String get shapeTicTac => 'टिक टीएसी';
+
+  @override
+  String get shapeBullet => 'बुलेट';
+
+  @override
+  String get shapeSaturn => 'शनि';
+
+  @override
+  String get shapeStarlike => 'स्टारलाइक';
+
+  @override
+  String get shapeBlimp => 'ब्लींप';
+
+  @override
+  String get shapeFireball => 'फायरबॉल';
+
+  @override
+  String get shapeFormation => 'संरचना';
+
+  @override
+  String get shapeUnknown => 'अज्ञात';
+
+  @override
   String get actionsTitle => 'कार्य';
 
   @override
@@ -726,7 +808,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return '${count}__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return 'लोगों ने इस दर्शन की पुष्टि की है';
   }
 
   @override
@@ -768,82 +850,354 @@ class AppLocalizationsHi extends AppLocalizations {
   String get comingSoon => 'सोन';
 
   @override
-  String get directionDistanceTitle => 'Direction & Distance';
+  String get directionDistanceTitle => 'दिशा और दूरी';
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Case #$caseNumber';
+    return 'MUFON केस #';
   }
 
   @override
-  String get satellitePassesTitle => 'Satellite Passes';
+  String get satellitePassesTitle => 'सैटेलाइट पास';
 
   @override
   String get satellitePassExplanation =>
-      'Visible satellite passes during the sighting timeframe. Many UFO reports are actually satellites or space debris.';
+      'दर्शनीय समय सीमा के दौरान दर्शनीय उपग्रह गुजरता है। कई यूएफओ रिपोर्ट वास्तव में उपग्रह या अंतरिक्ष मलबे हैं।.';
 
   @override
   String get followingAlert =>
-      'Following alert - you\'ll get comment notifications';
+      'चेतावनी के बाद - आपको टिप्पणी नोटिफिकेशन मिलेगी';
 
   @override
-  String get unfollowedAlert =>
-      'Unfollowed alert - no more comment notifications';
+  String get unfollowedAlert => 'अनफॉल्ड अलर्ट - कोई टिप्पणी नोटिफिकेशन नहीं';
 
   @override
-  String get alertFollowError => 'Error updating follow status';
+  String get alertFollowError => 'स्थिति का पालन करने में त्रुटि';
 
   @override
-  String get notificationChannelAlerts => 'UFOBeep Alerts';
+  String get notificationChannelAlerts => 'यूएफओबीप अलर्ट';
 
   @override
   String get notificationChannelAlertsDesc =>
-      'Notifications for UFO beeps and proximity alerts';
+      'यूएफओ बीप और निकटता अलर्ट के लिए अधिसूचनाएं';
 
   @override
-  String get notificationSightingTitle => 'UFO Sighting';
+  String get notificationSightingTitle => 'यूएफओ दृष्टि';
 
   @override
-  String get notificationSightingUrgent => '⚠️ URGENT UFO Sighting';
+  String get notificationSightingUrgent => 'UFO दृष्टि';
 
   @override
-  String get notificationSightingEmergency => '🚨 EMERGENCY UFO Sighting';
+  String get notificationSightingEmergency => 'EMERGENCY UFO दृष्टि';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '$witnessText near $locationName';
+    return 'के पास नाम';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '💬 $username commented';
+    return 'the name of a commented by a comment';
   }
 
   @override
-  String get notificationWitnessText => 'New sighting';
+  String get notificationWitnessText => 'नया दर्शन';
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '$count witnesses';
+    return 'गवाह';
   }
 
   @override
   String get notificationActionSnooze => 'Snooze 1h';
 
   @override
-  String get notificationActionDismiss => 'Dismiss';
+  String get notificationActionDismiss => 'Dismis';
 
   @override
   String notificationDistance(String distance) {
-    return '$distance away';
+    return '$distance दूर';
   }
 
   @override
-  String get unknown => 'unknown';
+  String get unknown => 'अज्ञात';
 
   @override
-  String get report => 'report';
+  String get report => 'रिपोर्ट';
 
   @override
   String get mufon => 'mufon';
+
+  @override
+  String get recentUfoBeepsTitle => 'यूएफओ बीप';
+
+  @override
+  String get recentUfoBeepsSubtitle =>
+      'लाइव UFOBeep सामुदायिक रिपोर्ट और MUFON डेटाबेस दर्शन';
+
+  @override
+  String get recentUfoBeepsDescription =>
+      'यह फ़ीड हमारे मोबाइल ऐप उपयोगकर्ताओं से वास्तविक समय के UFOBeep \"beeps\" को जोड़ती है जिसमें MUFON डेटाबेस से ऐतिहासिक रिपोर्ट होती है।.';
+
+  @override
+  String get loadingBeeps => 'हाल ही में बीप लोड हो रहा है...';
+
+  @override
+  String get noBeepsAvailable => 'वर्तमान में उपलब्ध नहीं है।.';
+
+  @override
+  String get anomalyReported => 'Anomaly रिपोर्ट';
+
+  @override
+  String get copyShortLink => 'लघु लिंक कॉपी करें';
+
+  @override
+  String get shareAlert => 'शेयर अलर्ट';
+
+  @override
+  String get previousPage => 'पिछला';
+
+  @override
+  String get nextPage => 'अगला';
+
+  @override
+  String pageOf(Object currentPage, Object totalCount, Object totalPages) {
+    return 'पृष्ठ  ( कुल beeps)';
+  }
+
+  @override
+  String get heroTagline => 'बाहर जाने और देखने के लिए अलर्ट प्राप्त करें';
+
+  @override
+  String get heroDescription =>
+      'कभी किसी अन्य यूएफओ दर्शन को याद न करें। जब आपके पास कोई व्यक्ति आकाश में कुछ अजीब चीज़ देखता है तो वास्तविक समय अलर्ट प्राप्त करें। अपने फोन को इंगित करें और ठीक उसी तरह खोजें जहां देखने के लिए।.';
+
+  @override
+  String get downloadApp => 'App डाउनलोड';
+
+  @override
+  String get viewAllBeeps => 'All Beeps';
+
+  @override
+  String get sightingsMap => 'Sightings Map';
+
+  @override
+  String get globalSightingNetwork => 'वैश्विक दृष्टि नेटवर्क';
+
+  @override
+  String get howItWorks => 'कैसे UFOBeep वर्क्स';
+
+  @override
+  String get backToBeeps => 'बैक टू बीप';
+
+  @override
+  String get loadingDetails => 'बीप विवरण लोड हो रहा है...';
+
+  @override
+  String get details => 'विवरण';
+
+  @override
+  String get location => 'स्थान';
+
+  @override
+  String get timeAgo => 'पहले';
+
+  @override
+  String get timeMinutes => 'm';
+
+  @override
+  String get timeHours => 'h';
+
+  @override
+  String get timeDays => 'd';
+
+  @override
+  String get distanceKm => 'किमी';
+
+  @override
+  String get distanceMiles => 'मील';
+
+  @override
+  String get distanceNearby => 'पास';
+
+  @override
+  String get ufobeepWitnesses => 'गवाही';
+
+  @override
+  String get ufobeepConfirmations => 'पुष्टिकरण';
+
+  @override
+  String get ufobeepAlertLevel => 'चेतावनी स्तर';
+
+  @override
+  String get ufobeepReportType => 'UFOBeep Report';
+
+  @override
+  String get mufonAttribution => 'MUFON डेटाबेस रिपोर्ट';
+
+  @override
+  String get mufonCaseNumber => 'केस #';
+
+  @override
+  String get mufonGenericTitle => 'MUFON Sighting Report';
+
+  @override
+  String get mufonSphere => 'क्षेत्र';
+
+  @override
+  String get mufonLight => 'प्रकाश';
+
+  @override
+  String get mufonDisk => 'डिस्क';
+
+  @override
+  String get mufonTriangle => 'त्रिभुज';
+
+  @override
+  String get mufonCigar => 'सिगार';
+
+  @override
+  String get mufonOval => 'ओवल';
+
+  @override
+  String get mufonCylinder => 'सिलेंडर';
+
+  @override
+  String get mufonRectangle => 'आयत';
+
+  @override
+  String get mufonDiamond => 'हीरा';
+
+  @override
+  String get mufonFireball => 'फायरबॉल';
+
+  @override
+  String get mufonFlash => 'फ्लैश';
+
+  @override
+  String get mufonFormation => 'गठन';
+
+  @override
+  String get mufonChanging => 'बदलना';
+
+  @override
+  String get mufonChevron => 'शेवरॉन';
+
+  @override
+  String get mufonCone => 'शंकु';
+
+  @override
+  String get mufonCross => 'क्रॉस';
+
+  @override
+  String get mufonEgg => 'अंडा';
+
+  @override
+  String get mufonOther => 'वस्तु';
+
+  @override
+  String get mufonUnknown => 'अज्ञात वस्तु';
+
+  @override
+  String mufonTitleFormat(Object classification) {
+    return 'MUFON  रिपोर्ट';
+  }
+
+  @override
+  String get nuforcAttribution => 'NUFORC डेटाबेस रिपोर्ट';
+
+  @override
+  String get nuforcCaseNumber => 'केस #';
+
+  @override
+  String get nuforcGenericTitle => 'NUFORC Sighting Report';
+
+  @override
+  String get mediaImageNotFound => 'छवि नहीं मिली';
+
+  @override
+  String get mediaPlayVideo => 'वीडियो';
+
+  @override
+  String get mediaViewImage => 'छवि देखें';
+
+  @override
+  String mediaCount(Object count) {
+    return 'images';
+  }
+
+  @override
+  String get mediaCountSingle => '1 छवि';
+
+  @override
+  String mediaMoreImages(Object count) {
+    return '+ more';
+  }
+
+  @override
+  String get errorNotFound => 'बीप नहीं मिला';
+
+  @override
+  String get errorLoadError => 'बीप विवरण लोड करने में विफल';
+
+  @override
+  String get shareYourThoughts =>
+      'इस विचार के बारे में अपने विचारों को साझा करें ...';
+
+  @override
+  String get postComment => 'पोस्ट';
+
+  @override
+  String get loggedInAs => 'लॉग इन';
+
+  @override
+  String get logout => 'लॉग-इन';
+
+  @override
+  String get notFollowing => 'निम्नलिखित नहीं है';
+
+  @override
+  String get follow => 'पालन करना';
+
+  @override
+  String get navRecentBeeps => 'हाल ही में बीप';
+
+  @override
+  String get navMap => 'नक्शा';
+
+  @override
+  String get navDownloadApp => 'ऐप डाउनलोड करें';
+
+  @override
+  String get alertLevel => 'चेतावनी स्तर';
+
+  @override
+  String get witnesses => 'गवाही';
+
+  @override
+  String get confirmations => 'पुष्टिकरण';
+
+  @override
+  String get reporterLabel => 'उपयोगकर्ता द्वारा रिपोर्ट';
+
+  @override
+  String get coordinatesLabel => 'निर्देशांक';
+
+  @override
+  String get eventTime => 'घटना समय';
+
+  @override
+  String get reportedTime => 'रिपोर्ट समय';
+
+  @override
+  String get mufonDatabaseReport => 'MUFON डेटाबेस रिपोर्ट';
+
+  @override
+  String get copyShortLinkTitle => 'क्लिपबोर्ड के लिए लिंक कॉपी करें';
+
+  @override
+  String get imageNotFound => 'छवि नहीं मिली';
+
+  @override
+  String get ufoSightingAlt => 'यूएफओ दर्शन';
 }

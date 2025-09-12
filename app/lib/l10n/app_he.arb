@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "המונחים: {ס}",
+  "bearingToObject": "המונחים:",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {

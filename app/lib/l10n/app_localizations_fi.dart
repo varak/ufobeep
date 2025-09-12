@@ -121,12 +121,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '_PH_0_ pois';
+    return '$distance pois';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Suunta _PH_0_°';
+    return 'Suuntima °';
   }
 
   @override
@@ -170,7 +170,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String beepSentWithUrl(String shortUrl) {
-    return 'Beep sent successfully';
+    return 'Piip lähetetty onnistuneesti';
   }
 
   @override
@@ -221,18 +221,18 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String reportedAt(String timeAgo) {
-    return 'Raportoitu $timeAgo';
+  String reportedAt(String timeAgo, Object time) {
+    return 'Raportoitu (aika) Ago';
   }
 
   @override
   String distanceAway(String distance) {
-    return '_PH_0_ pois';
+    return 'pois';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return 'Kohteen suunta: _PH_0_°';
+    return 'Suunta kohteeseen: °';
   }
 
   @override
@@ -260,7 +260,8 @@ class AppLocalizationsFi extends AppLocalizations {
   String get autoFollowEnabled => 'Seuraat nyt tätä hälytystä.';
 
   @override
-  String get noCommentsYet => 'Ei vielä kommentteja. Ole ensimmäinen!';
+  String get noCommentsYet =>
+      'Ei vielä kommentteja. Ole ensimmäinen kommentoimaan!';
 
   @override
   String get newCommentNotification =>
@@ -293,7 +294,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Osoitetaan _PH_0__';
+    return 'Osoitetaan';
   }
 
   @override
@@ -307,7 +308,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'Uusi havainto raportoitiin __PH_0_ pois.';
+    return 'Uusi havainto ilmoitettiin  poissa.';
   }
 
   @override
@@ -320,6 +321,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get pushTitleWitness => 'Todistajan vahvistus';
 
   @override
+  String get temperature => 'Lämpötila';
+
+  @override
   String get pushBodyWitness => 'Käyttäjä vahvisti nähneensä saman esineen.';
 
   @override
@@ -327,12 +331,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Pilvipeite: _PH_0_%';
+    return 'Pilvipeite: %';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Tuuli: $speed$unit';
+    return 'Tuuli:';
   }
 
   @override
@@ -430,7 +434,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get verified => 'Varmennettu';
 
   @override
-  String get beepOnly => 'vain piip';
+  String get beepOnly => 'Raportoi vain';
+
+  @override
+  String get reportOnly => 'Raportoi vain';
 
   @override
   String get videoOnly => 'ainoastaan video';
@@ -439,21 +446,21 @@ class AppLocalizationsFi extends AppLocalizations {
   String get imageOnly => 'vain kuva';
 
   @override
-  String get timeJustNow => 'Juuri nyt';
+  String get timeJustNow => 'juuri nyt';
 
   @override
   String timeDaysAgo(int count) {
-    return '_PH_0_d sitten';
+    return 'd';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '_PH_0_h sitten';
+    return 'h sitten';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '_PH_0_m sitten';
+    return 'm sitten';
   }
 
   @override
@@ -486,7 +493,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON Asian #__PH_0_ Yksityiskohdat';
+    return 'MUFON Asia # Yksityiskohdat';
   }
 
   @override
@@ -505,13 +512,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get linkCopied => 'Linkki kopioitu leikepöydälle';
 
   @override
-  String get locationLabel => 'Sijainti';
+  String get locationLabel => 'Sijainti:';
 
   @override
   String get distanceLabel => 'Etäisyys';
 
   @override
-  String get timeLabel => 'Aika';
+  String get timeLabel => 'Aika:';
 
   @override
   String get reportedByLabel => 'Raportoinut';
@@ -527,7 +534,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return '_PH_0_ ihmiset vahvistivat tämän havainnon';
+    return 'ihmiset vahvistivat tämän';
   }
 
   @override
@@ -535,7 +542,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Analyysi: $count mediatiedosto [s] käsitelty';
+    return 'Analyysi:  mediatiedosto [s] käsitelty';
   }
 
   @override
@@ -610,6 +617,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get whatDoYouSee => 'Mitä näet?';
+
+  @override
+  String get ufo => 'UFO';
+
+  @override
+  String get sighting => 'Näkyminen';
 
   @override
   String get ufoSighting => 'UFO Näkyminen';
@@ -706,6 +719,75 @@ class AppLocalizationsFi extends AppLocalizations {
   String get ufoTypeBlimp => 'Blimp';
 
   @override
+  String get shapeTriangle => 'kolmio';
+
+  @override
+  String get shapeDisc => 'levy';
+
+  @override
+  String get shapeDisk => 'levy';
+
+  @override
+  String get shapeSphere => 'pallo';
+
+  @override
+  String get shapeCigar => 'sikari';
+
+  @override
+  String get shapeLight => 'kevyt';
+
+  @override
+  String get shapeBoomerang => 'bumerang';
+
+  @override
+  String get shapeDiamond => 'timantti';
+
+  @override
+  String get shapeRectangle => 'suorakulmio';
+
+  @override
+  String get shapeOval => 'soikea';
+
+  @override
+  String get shapeCone => 'kartio';
+
+  @override
+  String get shapeCross => 'risti';
+
+  @override
+  String get shapeCylinder => 'sylinteri';
+
+  @override
+  String get shapeDumbbell => 'käsipaino';
+
+  @override
+  String get shapeTeardrop => 'kyynel';
+
+  @override
+  String get shapeTicTac => 'tic-tac';
+
+  @override
+  String get shapeBullet => 'luoti';
+
+  @override
+  String get shapeSaturn => 'saturnus';
+
+  @override
+  String get shapeStarlike => 'tähtimäinen';
+
+  @override
+  String get shapeBlimp => 'ilmalaiva';
+
+  @override
+  String get shapeFireball => 'tulipallo';
+
+  @override
+  String get shapeFormation => 'muodostuminen';
+
+  @override
+  String get shapeUnknown => 'tuntematon';
+
+  @override
   String get actionsTitle => 'Toimet';
 
   @override
@@ -728,7 +810,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return '_PH_0_ ihmiset ovat vahvistaneet tämän havainnon';
+    return 'ihmiset ovat vahvistaneet tämän';
   }
 
   @override
@@ -770,50 +852,50 @@ class AppLocalizationsFi extends AppLocalizations {
   String get comingSoon => 'Tulossa pian';
 
   @override
-  String get directionDistanceTitle => 'Direction & Distance';
+  String get directionDistanceTitle => 'Suunta ja etäisyys';
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Case #$caseNumber';
+    return 'MUFON Asia # (tapausnumero)';
   }
 
   @override
-  String get satellitePassesTitle => 'Satellite Passes';
+  String get satellitePassesTitle => 'Satelliittipassit';
 
   @override
   String get satellitePassExplanation =>
-      'Visible satellite passes during the sighting timeframe. Many UFO reports are actually satellites or space debris.';
+      'Näkyvä satelliitti kulkee aikana havainnointi aikavälillä. Monet UFO-raportit ovat satelliitteja tai avaruusromua.';
 
   @override
   String get followingAlert =>
-      'Following alert - you\'ll get comment notifications';
+      'Varoituksen jälkeen - saat kommentti-ilmoitukset';
 
   @override
   String get unfollowedAlert =>
-      'Unfollowed alert - no more comment notifications';
+      'Seuraamaton hälytys - ei enää kommentti-ilmoituksia';
 
   @override
-  String get alertFollowError => 'Error updating follow status';
+  String get alertFollowError => 'Virhe seurauksen tilan päivittämisessä';
 
   @override
-  String get notificationChannelAlerts => 'UFOBeep Alerts';
+  String get notificationChannelAlerts => 'UFOBeepin hälytykset';
 
   @override
   String get notificationChannelAlertsDesc =>
-      'Notifications for UFO beeps and proximity alerts';
+      'UFO-ääni- ja läheisyyshälytyksiä koskevat ilmoitukset';
 
   @override
-  String get notificationSightingTitle => 'UFO Sighting';
+  String get notificationSightingTitle => 'UFO Näkyminen';
 
   @override
-  String get notificationSightingUrgent => '⚠️ URGENT UFO Sighting';
+  String get notificationSightingUrgent => 'KIIREELLINEN UFO Näkyminen';
 
   @override
-  String get notificationSightingEmergency => '🚨 EMERGENCY UFO Sighting';
+  String get notificationSightingEmergency => 'HÄTÄUFO Näkyminen';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '$witnessText near $locationName';
+    return 'lähellä';
   }
 
   @override
@@ -822,30 +904,303 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get notificationWitnessText => 'New sighting';
+  String get notificationWitnessText => 'Uusi havainto';
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '$count witnesses';
+    return 'todistajat';
   }
 
   @override
-  String get notificationActionSnooze => 'Snooze 1h';
+  String get notificationActionSnooze => 'Torkut 1h';
 
   @override
-  String get notificationActionDismiss => 'Dismiss';
+  String get notificationActionDismiss => 'Poistu';
 
   @override
   String notificationDistance(String distance) {
-    return '$distance away';
+    return 'pois';
   }
 
   @override
-  String get unknown => 'unknown';
+  String get unknown => 'tuntematon';
 
   @override
-  String get report => 'report';
+  String get report => 'raportti';
 
   @override
-  String get mufon => 'mufon';
+  String get mufon => 'mufoni';
+
+  @override
+  String get recentUfoBeepsTitle => 'Uusin UFO Piipit';
+
+  @override
+  String get recentUfoBeepsSubtitle =>
+      'Live UFOBeepin yhteisön raportit ja MUFON-tietokannan havainnot';
+
+  @override
+  String get recentUfoBeepsDescription =>
+      'Tässä syötteessä yhdistyvät reaaliaikaiset UFOBeep \"piipit\" mobiilisovelluskäyttäjiltämme ja historiaraportit MUFON-tietokannasta.';
+
+  @override
+  String get loadingBeeps => 'Ladataan viimeaikaisia äänimerkkejä...';
+
+  @override
+  String get noBeepsAvailable => 'Ei piippejä tällä hetkellä.';
+
+  @override
+  String get anomalyReported => 'Anomalia';
+
+  @override
+  String get copyShortLink => 'Kopioi lyhyt linkki';
+
+  @override
+  String get shareAlert => 'Jaa hälytys';
+
+  @override
+  String get previousPage => 'Edellinen';
+
+  @override
+  String get nextPage => 'Seuraava';
+
+  @override
+  String pageOf(Object currentPage, Object totalCount, Object totalPages) {
+    return 'Sivu  of  ( total beeps)';
+  }
+
+  @override
+  String get heroTagline =>
+      'Hanki hälytykset, milloin mennä ulos ja katsoa ylös';
+
+  @override
+  String get heroDescription =>
+      'Älä koskaan jätä UFO-havaintoa väliin. Hanki reaaliaikainen hälytys, kun joku lähelläsi näkee jotain outoa taivaalla. Osoita puhelimeen ja etsi tarkalleen mistä etsiä.';
+
+  @override
+  String get downloadApp => 'Lataa sovellus';
+
+  @override
+  String get viewAllBeeps => 'Näytä kaikki äänimerkit';
+
+  @override
+  String get sightingsMap => 'Näyttökartta';
+
+  @override
+  String get globalSightingNetwork => 'Global Sighting Network';
+
+  @override
+  String get howItWorks => 'Miten UFO- piip toimii';
+
+  @override
+  String get backToBeeps => 'Takaisin piipseihin';
+
+  @override
+  String get loadingDetails => 'Ladataan piippaustietoja...';
+
+  @override
+  String get details => 'Yksityiskohdat';
+
+  @override
+  String get location => 'Sijainti';
+
+  @override
+  String get timeAgo => 'sitten';
+
+  @override
+  String get timeMinutes => 'm';
+
+  @override
+  String get timeHours => 'h';
+
+  @override
+  String get timeDays => 'd';
+
+  @override
+  String get distanceKm => 'km';
+
+  @override
+  String get distanceMiles => 'mailia';
+
+  @override
+  String get distanceNearby => 'lähistöllä';
+
+  @override
+  String get ufobeepWitnesses => 'Todistajat';
+
+  @override
+  String get ufobeepConfirmations => 'Vahvistukset';
+
+  @override
+  String get ufobeepAlertLevel => 'Varoitustaso';
+
+  @override
+  String get ufobeepReportType => 'UFOBeepin raportti';
+
+  @override
+  String get mufonAttribution => 'MUFON Tietokantaraportti';
+
+  @override
+  String get mufonCaseNumber => 'Asia #';
+
+  @override
+  String get mufonGenericTitle => 'MUFON Sighting Report';
+
+  @override
+  String get mufonSphere => 'Pallo';
+
+  @override
+  String get mufonLight => 'Valo';
+
+  @override
+  String get mufonDisk => 'Levy';
+
+  @override
+  String get mufonTriangle => 'Kolmio';
+
+  @override
+  String get mufonCigar => 'Sikari';
+
+  @override
+  String get mufonOval => 'Oval';
+
+  @override
+  String get mufonCylinder => 'Sylinteri';
+
+  @override
+  String get mufonRectangle => 'Suorakulmio';
+
+  @override
+  String get mufonDiamond => 'Timantti';
+
+  @override
+  String get mufonFireball => 'Tulipallo';
+
+  @override
+  String get mufonFlash => 'Salama';
+
+  @override
+  String get mufonFormation => 'Muotoilu';
+
+  @override
+  String get mufonChanging => 'Muutos';
+
+  @override
+  String get mufonChevron => 'Merkki';
+
+  @override
+  String get mufonCone => 'Cone';
+
+  @override
+  String get mufonCross => 'Risti';
+
+  @override
+  String get mufonEgg => 'Munat';
+
+  @override
+  String get mufonOther => 'Kohde';
+
+  @override
+  String get mufonUnknown => 'Tuntematon objekti';
+
+  @override
+  String mufonTitleFormat(Object classification) {
+    return 'MUFON  Kertomus';
+  }
+
+  @override
+  String get nuforcAttribution => 'NUFORC Tietokantaraportti';
+
+  @override
+  String get nuforcCaseNumber => 'Asia #';
+
+  @override
+  String get nuforcGenericTitle => 'NUFORC Havaintoraportti';
+
+  @override
+  String get mediaImageNotFound => 'Kuvaa ei löytynyt';
+
+  @override
+  String get mediaPlayVideo => 'Toista video';
+
+  @override
+  String get mediaViewImage => 'Näytä kuva';
+
+  @override
+  String mediaCount(Object count) {
+    return 'kuvat';
+  }
+
+  @override
+  String get mediaCountSingle => '1 kuva';
+
+  @override
+  String mediaMoreImages(Object count) {
+    return '+  lisää';
+  }
+
+  @override
+  String get errorNotFound => 'Piip ei löytynyt';
+
+  @override
+  String get errorLoadError => 'Piippauksen yksityiskohtia ei voitu ladata';
+
+  @override
+  String get shareYourThoughts => 'Jaa ajatuksesi tästä havainnosta...';
+
+  @override
+  String get postComment => 'Post Comment';
+
+  @override
+  String get loggedInAs => 'Kirjautunut sisään';
+
+  @override
+  String get logout => 'Kirjaudu ulos';
+
+  @override
+  String get notFollowing => 'Ei seuraa';
+
+  @override
+  String get follow => 'Seuraa';
+
+  @override
+  String get navRecentBeeps => 'Äskettäiset viestit';
+
+  @override
+  String get navMap => 'Kartta';
+
+  @override
+  String get navDownloadApp => 'Lataa sovellus';
+
+  @override
+  String get alertLevel => 'Varoitustaso';
+
+  @override
+  String get witnesses => 'Todistajat';
+
+  @override
+  String get confirmations => 'Vahvistukset';
+
+  @override
+  String get reporterLabel => 'Käyttäjän ilmoittama';
+
+  @override
+  String get coordinatesLabel => 'Koordinaatit';
+
+  @override
+  String get eventTime => 'Tapahtuma-aika';
+
+  @override
+  String get reportedTime => 'Raportoitu aika';
+
+  @override
+  String get mufonDatabaseReport => 'MUFON Tietokantaraportti';
+
+  @override
+  String get copyShortLinkTitle => 'Kopioi linkki leikepöydälle';
+
+  @override
+  String get imageNotFound => 'Kuvaa ei löytynyt';
+
+  @override
+  String get ufoSightingAlt => 'UFO-havainto';
 }

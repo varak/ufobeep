@@ -37,7 +37,7 @@
   "alertsTitle": "I nærheden",
   "noAlerts": "Ingen advarsler i nærheden endnu.",
   "pullToRefresh": "Træk for at opdatere",
-  "alertDistance": "{afstand} væk",
+  "alertDistance": "{distance} væk",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Leje {leje} °",
+  "alertDirection": "Leje  °",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "Grant mikrofon adgang til videooptagelse med lyd.",
   "openSettings": "Åbn indstillinger",
   "alertDetailTitle": "Observationsdetaljer",
-  "reportedBy": "Indberettet af {brugernavn}",
+  "reportedBy": "Indberettet af",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Indberettet {tid Ago}",
+  "reportedAt": "Indberettet",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Bly til objekt: {bear} °",
+  "bearingToObject": "Bly til objekt:  °",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Pilottilstand",
   "compassStandardDescription": "Overskrift og navigation",
   "compassPilotDescription": "Avanceret navigation med ETA og vektoring",
-  "pointingTo": "Angiver til {retning}",
+  "pointingTo": "Angiver til",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -170,7 +170,7 @@
   "temperature": "Temperatur",
   "pushBodyWitness": "En bruger bekræftede, at de ser det samme objekt.",
   "weather": "Vejret",
-  "cloudCover": "Skydække: {procent}%",
+  "cloudCover": "Skydække: %",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Vind: {hastighed} {enhed}",
+  "wind": "Vind:",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -226,7 +226,7 @@
   "videoOnly": "kun video",
   "imageOnly": "kun billede",
   "timeJustNow": "lige nu",
-  "timeDaysAgo": "{tæller} d siden",
+  "timeDaysAgo": "d siden",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +235,7 @@
       }
     }
   },
-  "timeHoursAgo": "{tæller} h siden",
+  "timeHoursAgo": "h siden",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +244,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{tæller} m siden",
+  "timeMinutesAgo": "m siden",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "filtreret",
   "detailsTitle": "Detaljer",
   "mufonCase": "MUFON Sag",
-  "mufonCaseDetailsTitle": "MUFON Sag # {Sagsnummer} Detaljer",
+  "mufonCaseDetailsTitle": "MUFON Sag #  Detaljer",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -283,7 +283,7 @@
   "unknownLocation": "Ukendt placering",
   "locationUnknown": "Sted ukendt",
   "witnessesLabel": "Vidner",
-  "witnessesCountMessage": "{tæller} folk bekræftede denne observation",
+  "witnessesCountMessage": "folk bekræftede denne observation",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "Fotoanalyse",
-  "mediaItemsProcessed": "Analyse: {count} mediefiler behandlet",
+  "mediaItemsProcessed": "Analyse:  mediefiler behandlet",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -389,7 +389,7 @@
   "whyReportToMufon": "Hvorfor rapportere til MUFON?",
   "openMufonReport": "Åbne MUFON Rapport",
   "confirmedWitness": "Du bekræftede denne observation",
-  "witnessesHaveConfirmed": "{tæller} folk har bekræftet denne observation",
+  "witnessesHaveConfirmed": "folk har bekræftet denne observation",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -411,7 +411,7 @@
   "premiumAccessWitnesses": "Bekræftede vidner inden for sigtbarhed",
   "comingSoon": "Kommer snart",
   "directionDistanceTitle": "Kørselsretning og afstand",
-  "mufonCaseTitle": "MUFON Case # {Case Number}",
+  "mufonCaseTitle": "MUFON Case #",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +430,7 @@
   "notificationSightingTitle": "UFO Sigtning",
   "notificationSightingUrgent": "UFO Sigtning",
   "notificationSightingEmergency": "UFO OM NØDVENDIGT Sigtning",
-  "notificationSightingBody": "{ScriessText} nær {placering Navn}",
+  "notificationSightingBody": "nær",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -443,7 +443,7 @@
       }
     }
   },
-  "notificationCommentTitle": "{brugernavn} kommenterede",
+  "notificationCommentTitle": "kommenterede",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -464,7 +464,7 @@
   },
   "notificationActionSnooze": "Snooze 1h",
   "notificationActionDismiss": "Frafald",
-  "notificationDistance": "{afstand} væk",
+  "notificationDistance": "væk",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -486,7 +486,7 @@
   "shareAlert": "Del alarm",
   "previousPage": "Forrige",
   "nextPage": "Næste",
-  "pageOf": "Side {nuværende Side} af {totalsider} ({totaltal} totalt bip)",
+  "pageOf": "Side  af  ( totalt bip)",
   "heroTagline": "Få advarsler når du skal gå udenfor og se op",
   "heroDescription": "Gå aldrig glip af endnu en UFO observation. Få realtidsadvarsler når nogen nær dig ser noget underligt på himlen. Ret din telefon og find præcis hvor du skal kigge.",
   "downloadApp": "Download App",
@@ -531,16 +531,16 @@
   "mufonEgg": "Æg",
   "mufonOther": "Objekt",
   "mufonUnknown": "Ukendt objekt",
-  "mufonTitleFormat": "MUFON {klassifikation} Rapport",
+  "mufonTitleFormat": "MUFON  Rapport",
   "nuforcAttribution": "NUFORC Databaserapport",
   "nuforcCaseNumber": "Case #",
   "nuforcGenericTitle": "NUFORC Observationsrapport",
   "mediaImageNotFound": "Billede ikke fundet",
   "mediaPlayVideo": "Afspil video",
   "mediaViewImage": "Vis billede",
-  "mediaCount": "{tæller} billeder",
+  "mediaCount": "billeder",
   "mediaCountSingle": "1 billede",
-  "mediaMoreImages": "+ {tæller} mere",
+  "mediaMoreImages": "+  mere",
   "errorNotFound": "Bip ikke fundet",
   "errorLoadError": "Kunne ikke indlæse bip detaljer",
   "shareYourThoughts": "Del dine tanker om denne observation...",

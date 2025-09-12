@@ -121,12 +121,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return 'PH_0_______התרחק';
+    return 'משם';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'המונחים: PH_0_ °';
+    return 'המונחים:';
   }
 
   @override
@@ -170,7 +170,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String beepSentWithUrl(String shortUrl) {
-    return 'Beep sent successfully';
+    return 'Beep שלח בהצלחה';
   }
 
   @override
@@ -217,22 +217,22 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'תגית: PH_0___';
+    return 'פורסם על ידי [username]';
   }
 
   @override
-  String reportedAt(String timeAgo) {
-    return 'תגית: PH_0____';
+  String reportedAt(String timeAgo, Object time) {
+    return 'דו\"ח Ago';
   }
 
   @override
   String distanceAway(String distance) {
-    return 'PH_0_______התרחק';
+    return 'משם';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return 'להתווכח: PH_0__ °';
+    return 'המונחים:';
   }
 
   @override
@@ -260,7 +260,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get autoFollowEnabled => 'עכשיו אתה עוקב אחר האזהרה הזו.';
 
   @override
-  String get noCommentsYet => 'עדיין לא הערות. להיות הראשון!';
+  String get noCommentsYet => 'עדיין לא הערות. להיות הראשון להגיב!';
 
   @override
   String get newCommentNotification => 'תגובה חדשה על מראה שאתה עוקב.';
@@ -291,7 +291,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'המונחים: PH_0____';
+    return 'המונחים:';
   }
 
   @override
@@ -305,7 +305,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'תצפית חדשה דווחה -_PH_0____.';
+    return 'מראית עין חדשה דווחה מרחוק.';
   }
 
   @override
@@ -318,6 +318,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get pushTitleWitness => 'אישור עדים';
 
   @override
+  String get temperature => 'טמפרטורה';
+
+  @override
   String get pushBodyWitness => 'משתמש אישר שהוא רואה את אותו האובייקט.';
 
   @override
@@ -325,12 +328,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'כיסוי ענן: PH_0__%';
+    return 'כיסוי ענן:%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'רוח:_PH_0_____________________________________________________________________________________';
+    return 'רוח: [מהירות]';
   }
 
   @override
@@ -426,7 +429,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get verified => 'מאומת';
 
   @override
-  String get beepOnly => 'להיות רק';
+  String get beepOnly => 'דיווח רק';
+
+  @override
+  String get reportOnly => 'דיווח רק';
 
   @override
   String get videoOnly => 'וידאו רק';
@@ -439,17 +445,17 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return 'PH_0____D_ ago';
+    return 'לפני הספירה';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'PH_0_h ago';
+    return 'לפני הספירה';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'PH_0__m ago';
+    return 'לפני הספירה';
   }
 
   @override
@@ -481,7 +487,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON מקרה #${caseNumber}_פרטים';
+    return 'MUFON המונחים:';
   }
 
   @override
@@ -500,13 +506,13 @@ class AppLocalizationsHe extends AppLocalizations {
   String get linkCopied => 'קישור להורדה';
 
   @override
-  String get locationLabel => 'מיקום Location';
+  String get locationLabel => 'מיקום:';
 
   @override
   String get distanceLabel => 'מרחק';
 
   @override
-  String get timeLabel => 'הזמן';
+  String get timeLabel => 'זמן:';
 
   @override
   String get reportedByLabel => 'דיווח על';
@@ -522,7 +528,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return '_PH_0___ אנשים אישרו את המראה הזה';
+    return 'אנשים אישרו את המראה הזה';
   }
 
   @override
@@ -530,7 +536,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'ניתוח:_PH_0____קובץ מדיה(s) מעובד';
+    return 'ניתוח: קובץ מדיה (s) מעובד';
   }
 
   @override
@@ -605,6 +611,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get whatDoYouSee => 'מה אתה רואה?';
+
+  @override
+  String get ufo => 'עב\"ם';
+
+  @override
+  String get sighting => 'עקבו';
 
   @override
   String get ufoSighting => 'עב\"ם עקבו';
@@ -701,6 +713,75 @@ class AppLocalizationsHe extends AppLocalizations {
   String get ufoTypeBlimp => 'Blimp';
 
   @override
+  String get shapeTriangle => 'משולש';
+
+  @override
+  String get shapeDisc => 'דיסק';
+
+  @override
+  String get shapeDisk => 'דיסק';
+
+  @override
+  String get shapeSphere => 'מרחב';
+
+  @override
+  String get shapeCigar => 'סיגר';
+
+  @override
+  String get shapeLight => 'אור בהיר';
+
+  @override
+  String get shapeBoomerang => 'בומרנג';
+
+  @override
+  String get shapeDiamond => 'יהלומים';
+
+  @override
+  String get shapeRectangle => 'מלבן';
+
+  @override
+  String get shapeOval => 'oval';
+
+  @override
+  String get shapeCone => 'cone';
+
+  @override
+  String get shapeCross => 'צלב חוצה';
+
+  @override
+  String get shapeCylinder => 'cylinder';
+
+  @override
+  String get shapeDumbbell => 'פעמון מטומטם';
+
+  @override
+  String get shapeTeardrop => 'מדמיע';
+
+  @override
+  String get shapeTicTac => 'טיק-tac';
+
+  @override
+  String get shapeBullet => 'קליע';
+
+  @override
+  String get shapeSaturn => 'שוב';
+
+  @override
+  String get shapeStarlike => 'כוכבים';
+
+  @override
+  String get shapeBlimp => 'blimp';
+
+  @override
+  String get shapeFireball => 'כדור אש';
+
+  @override
+  String get shapeFormation => 'היווצרות';
+
+  @override
+  String get shapeUnknown => 'לא ידוע';
+
+  @override
   String get actionsTitle => 'פעולות';
 
   @override
@@ -723,7 +804,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return '_PH_0__ אנשים אישרו את המראה הזה';
+    return 'אנשים אישרו את המראה הזה';
   }
 
   @override
@@ -763,82 +844,351 @@ class AppLocalizationsHe extends AppLocalizations {
   String get comingSoon => 'בקרוב';
 
   @override
-  String get directionDistanceTitle => 'Direction & Distance';
+  String get directionDistanceTitle => 'המונחים & Distance';
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Case #$caseNumber';
+    return 'MUFON המונחים:';
   }
 
   @override
-  String get satellitePassesTitle => 'Satellite Passes';
+  String get satellitePassesTitle => 'מעברי לווין';
 
   @override
   String get satellitePassExplanation =>
-      'Visible satellite passes during the sighting timeframe. Many UFO reports are actually satellites or space debris.';
+      'לווין בולט עובר במהלך מסגרת זמן הראייה. דיווחים עב\"מים רבים הם למעשה לווינים או פסולת חלל.';
 
   @override
-  String get followingAlert =>
-      'Following alert - you\'ll get comment notifications';
+  String get followingAlert => 'לאחר התראה - תקבל הודעות תגובה';
 
   @override
-  String get unfollowedAlert =>
-      'Unfollowed alert - no more comment notifications';
+  String get unfollowedAlert => 'הודעות לא עוקבות - לא עוד הערות';
 
   @override
-  String get alertFollowError => 'Error updating follow status';
+  String get alertFollowError => 'עדכון מצב';
 
   @override
-  String get notificationChannelAlerts => 'UFOBeep Alerts';
+  String get notificationChannelAlerts => 'אזהרות עב\"מ';
 
   @override
   String get notificationChannelAlertsDesc =>
-      'Notifications for UFO beeps and proximity alerts';
+      'תגיות: UFO beeps and Near alerts';
 
   @override
-  String get notificationSightingTitle => 'UFO Sighting';
+  String get notificationSightingTitle => 'עב\"ם עקבו';
 
   @override
-  String get notificationSightingUrgent => '⚠️ URGENT UFO Sighting';
+  String get notificationSightingUrgent => 'המונחים: URG עקבו';
 
   @override
-  String get notificationSightingEmergency => '🚨 EMERGENCY UFO Sighting';
+  String get notificationSightingEmergency => 'תגית: EMERGCY UFO עקבו';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '$witnessText near $locationName';
+    return 'קרוב ל-[[1948]] שם';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '💬 $username commented';
+    return 'המונחים: 💬';
   }
 
   @override
-  String get notificationWitnessText => 'New sighting';
+  String get notificationWitnessText => 'מראה חדש';
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '$count witnesses';
+    return 'עדים';
   }
 
   @override
-  String get notificationActionSnooze => 'Snooze 1h';
+  String get notificationActionSnooze => 'סנוזה 1h';
 
   @override
-  String get notificationActionDismiss => 'Dismiss';
+  String get notificationActionDismiss => 'משמעת';
 
   @override
   String notificationDistance(String distance) {
-    return '$distance away';
+    return 'משם';
   }
 
   @override
-  String get unknown => 'unknown';
+  String get unknown => 'לא ידוע';
 
   @override
-  String get report => 'report';
+  String get report => 'דיווח';
 
   @override
-  String get mufon => 'mufon';
+  String get mufon => 'עבריין';
+
+  @override
+  String get recentUfoBeepsTitle => 'העב\"ם האחרון הדבורים';
+
+  @override
+  String get recentUfoBeepsSubtitle => 'Live UFOBeep Community Reports & MUFON';
+
+  @override
+  String get recentUfoBeepsDescription =>
+      'הזנה זו משלבת בזמן אמת עב\"מBeep \"בייפים\" ממשתמשי האפליקציה הניידים שלנו עם דוחות היסטוריים ממסד הנתונים MUFON.';
+
+  @override
+  String get loadingBeeps => 'עקבו אחרי beeps...';
+
+  @override
+  String get noBeepsAvailable => 'לא זמין כרגע.';
+
+  @override
+  String get anomalyReported => 'דיווח: Anomaly';
+
+  @override
+  String get copyShortLink => 'קישור קצר';
+
+  @override
+  String get shareAlert => 'המונחים:';
+
+  @override
+  String get previousPage => 'הקודם';
+
+  @override
+  String get nextPage => 'הבא';
+
+  @override
+  String pageOf(Object currentPage, Object totalCount, Object totalPages) {
+    return 'עמוד הבית > שם הסרטון: [totalPages]';
+  }
+
+  @override
+  String get heroTagline => 'קבלו התראות כשאתם יוצאים החוצה ומתבוננים';
+
+  @override
+  String get heroDescription =>
+      'לעולם אל תחמיצו מראה עב\"מים נוסף. קבל התראות בזמן אמת כאשר מישהו לידך רואה משהו מוזר בשמים. מצא את הטלפון שלך ולמצוא בדיוק איפה להסתכל.';
+
+  @override
+  String get downloadApp => 'להורדה App';
+
+  @override
+  String get viewAllBeeps => 'צפו בכל הדבורים';
+
+  @override
+  String get sightingsMap => '🗺️ Sightings Map';
+
+  @override
+  String get globalSightingNetwork => 'רשת Sighting';
+
+  @override
+  String get howItWorks => 'כיצד עובד עב\"מ';
+
+  @override
+  String get backToBeeps => 'Back to Beeps';
+
+  @override
+  String get loadingDetails => 'עקבו אחרי beepפרטים...';
+
+  @override
+  String get details => 'פרטים';
+
+  @override
+  String get location => 'מיקום Location';
+
+  @override
+  String get timeAgo => 'לפני';
+
+  @override
+  String get timeMinutes => 'm';
+
+  @override
+  String get timeHours => 'h';
+
+  @override
+  String get timeDays => 'd';
+
+  @override
+  String get distanceKm => 'קילומטרים ק\"מ';
+
+  @override
+  String get distanceMiles => 'קילומטרים';
+
+  @override
+  String get distanceNearby => 'בסביבה הקרובה';
+
+  @override
+  String get ufobeepWitnesses => 'עדים';
+
+  @override
+  String get ufobeepConfirmations => 'אישורים';
+
+  @override
+  String get ufobeepAlertLevel => 'רמת התראה';
+
+  @override
+  String get ufobeepReportType => 'דוח UFOBeep';
+
+  @override
+  String get mufonAttribution => 'MUFON דוח מסד נתונים';
+
+  @override
+  String get mufonCaseNumber => 'מקרה #';
+
+  @override
+  String get mufonGenericTitle => 'MUFON Sighting Report';
+
+  @override
+  String get mufonSphere => 'Sphere';
+
+  @override
+  String get mufonLight => 'אור';
+
+  @override
+  String get mufonDisk => 'דיסק';
+
+  @override
+  String get mufonTriangle => 'משולש';
+
+  @override
+  String get mufonCigar => 'סיגריה';
+
+  @override
+  String get mufonOval => 'Oval';
+
+  @override
+  String get mufonCylinder => 'Cylinder';
+
+  @override
+  String get mufonRectangle => 'Rectangle';
+
+  @override
+  String get mufonDiamond => 'יהלומים';
+
+  @override
+  String get mufonFireball => 'כדור האש';
+
+  @override
+  String get mufonFlash => 'פלאש';
+
+  @override
+  String get mufonFormation => 'המונחים';
+
+  @override
+  String get mufonChanging => 'שינוי';
+
+  @override
+  String get mufonChevron => 'Chevron';
+
+  @override
+  String get mufonCone => 'Cone';
+
+  @override
+  String get mufonCross => 'צלב';
+
+  @override
+  String get mufonEgg => 'ביצים';
+
+  @override
+  String get mufonOther => 'אובייקטים';
+
+  @override
+  String get mufonUnknown => 'אובייקטים לא ידועים';
+
+  @override
+  String mufonTitleFormat(Object classification) {
+    return 'המונחים: דיווח';
+  }
+
+  @override
+  String get nuforcAttribution => 'NUFORC דוח מסד נתונים';
+
+  @override
+  String get nuforcCaseNumber => 'מקרה #';
+
+  @override
+  String get nuforcGenericTitle => 'NUFORC דיווח Sighting';
+
+  @override
+  String get mediaImageNotFound => 'תמונה לא נמצאה';
+
+  @override
+  String get mediaPlayVideo => 'Play וידאו';
+
+  @override
+  String get mediaViewImage => 'View Image';
+
+  @override
+  String mediaCount(Object count) {
+    return 'תמונות';
+  }
+
+  @override
+  String get mediaCountSingle => 'תמונה 1';
+
+  @override
+  String mediaMoreImages(Object count) {
+    return 'תגית: more';
+  }
+
+  @override
+  String get errorNotFound => 'לא נמצא';
+
+  @override
+  String get errorLoadError => 'נכשל לטעון פרטים';
+
+  @override
+  String get shareYourThoughts => 'שתפו את המחשבות שלכם על המראה הזה...';
+
+  @override
+  String get postComment => 'תגובה';
+
+  @override
+  String get loggedInAs => 'התגבש כמו';
+
+  @override
+  String get logout => 'Logout';
+
+  @override
+  String get notFollowing => 'לא אחרי';
+
+  @override
+  String get follow => 'עקבו אחרי Follow';
+
+  @override
+  String get navRecentBeeps => 'הדבורים האחרונות';
+
+  @override
+  String get navMap => 'מפה';
+
+  @override
+  String get navDownloadApp => 'Download App';
+
+  @override
+  String get alertLevel => 'רמת התראה';
+
+  @override
+  String get witnesses => 'עדים';
+
+  @override
+  String get confirmations => 'אישורים';
+
+  @override
+  String get reporterLabel => 'דיווח על ידי User';
+
+  @override
+  String get coordinatesLabel => 'לתאם';
+
+  @override
+  String get eventTime => 'זמן אירוע';
+
+  @override
+  String get reportedTime => 'זמן דיווח';
+
+  @override
+  String get mufonDatabaseReport => 'MUFON דוח מסד נתונים';
+
+  @override
+  String get copyShortLinkTitle => 'קישור ל-Creboard';
+
+  @override
+  String get imageNotFound => 'תמונה לא נמצאה';
+
+  @override
+  String get ufoSightingAlt => 'עב\"מ';
 }

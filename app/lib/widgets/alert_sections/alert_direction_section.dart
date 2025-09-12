@@ -133,7 +133,7 @@ class AlertDirectionSection extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    AppLocalizations.of(context).distanceAway(UnitConversion.formatDistance(distance * 1000, 'metric')),
+                    AppLocalizations.of(context)!.distanceAway(UnitConversion.formatDistance(distance * 1000, 'metric')),
                     style: const TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 14,
@@ -151,7 +151,7 @@ class AlertDirectionSection extends StatelessWidget {
                   OutlinedButton.icon(
                     onPressed: () => onNavigate!(bearing, distance),
                     icon: const Icon(Icons.explore, size: 16),
-                    label: Text(AppLocalizations.of(context).openCompass),
+                    label: Text(AppLocalizations.of(context)!.openCompass),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.brandPrimary,
                       side: const BorderSide(color: AppColors.brandPrimary),
@@ -166,7 +166,7 @@ class AlertDirectionSection extends StatelessWidget {
                   OutlinedButton.icon(
                     onPressed: () => onShowMap!(userLocation, alert),
                     icon: const Icon(Icons.map, size: 16),
-                    label: Text(AppLocalizations.of(context).viewOnMap),
+                    label: Text(AppLocalizations.of(context)!.viewOnMap),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.brandPrimary,
                       side: const BorderSide(color: AppColors.brandPrimary),

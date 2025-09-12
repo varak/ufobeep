@@ -282,7 +282,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
     // Validate location data BEFORE creating sighting (only for NEW sightings)
     if (widget.attachToSightingId == null && 
         (_sensorData?.latitude == null || _sensorData?.longitude == null)) {
-      throw Exception(AppLocalizations.of(context).errorNoLocation);
+      throw Exception(AppLocalizations.of(context)!.errorNoLocation);
     }
 
     // Play sound feedback when sending
@@ -518,7 +518,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context).delete),
+            content: Text(AppLocalizations.of(context)!.delete),
             backgroundColor: AppColors.textSecondary,
             duration: Duration(seconds: 1),
           ),
@@ -573,7 +573,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  AppLocalizations.of(context).addMedia,
+                  AppLocalizations.of(context)!.addMedia,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -607,7 +607,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                AppLocalizations.of(context).capturePhoto,
+                                AppLocalizations.of(context)!.capturePhoto,
                                 style: const TextStyle(
                                   color: AppColors.brandPrimary,
                                   fontSize: 16,
@@ -642,7 +642,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                AppLocalizations.of(context).pickFromGallery,
+                                AppLocalizations.of(context)!.pickFromGallery,
                                 style: const TextStyle(
                                   color: AppColors.brandPrimary,
                                   fontSize: 16,
@@ -663,7 +663,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child: Text(
-                    AppLocalizations.of(context).cancel,
+                    AppLocalizations.of(context)!.cancel,
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.7),
                       fontSize: 16,
@@ -734,7 +734,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context).beepSent),
+            content: Text(AppLocalizations.of(context)!.beepSent),
             backgroundColor: AppColors.brandPrimary,
             duration: Duration(seconds: 2),
           ),
@@ -746,7 +746,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context).beepFailed),
+            content: Text(AppLocalizations.of(context)!.beepFailed),
             backgroundColor: AppColors.semanticError,
             duration: const Duration(seconds: 3),
           ),
@@ -873,7 +873,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            AppLocalizations.of(context).tabBeep,
+            AppLocalizations.of(context)!.tabBeep,
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w700,
@@ -972,7 +972,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            AppLocalizations.of(context).whatDoYouSee,
+            AppLocalizations.of(context)!.whatDoYouSee,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 32,
@@ -989,7 +989,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
               fontSize: 16,
             ),
             decoration: InputDecoration(
-              hintText: AppLocalizations.of(context).descriptionHint,
+              hintText: AppLocalizations.of(context)!.descriptionHint,
               hintStyle: TextStyle(
                 color: Colors.white.withOpacity(0.5),
               ),
@@ -1026,7 +1026,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
 
 
   Widget _buildBottomActions() {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -1098,7 +1098,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                               : Icons.send_rounded, size: 20),
                           const SizedBox(width: 8),
                           Text(widget.attachToSightingId != null 
-                              ? AppLocalizations.of(context).addMedia 
+                              ? AppLocalizations.of(context)!.addMedia 
                               : l10n.submitBeep),
                         ],
                       ),
@@ -1121,7 +1121,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                     _addMoreMedia();
                   },
                   icon: const Icon(Icons.add_photo_alternate, size: 18),
-                  label: Text(AppLocalizations.of(context).addMoreMedia),
+                  label: Text(AppLocalizations.of(context)!.addMoreMedia),
                   style: TextButton.styleFrom(
                     foregroundColor: AppColors.brandPrimary,
                     padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -1138,8 +1138,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                   icon: Icon(widget.isVideo ?? false ? Icons.videocam : Icons.camera_alt, size: 18),
                   label: Text(
                     widget.isVideo ?? false 
-                      ? AppLocalizations.of(context).retakeVideo 
-                      : AppLocalizations.of(context).retakePhoto
+                      ? AppLocalizations.of(context)!.retakeVideo 
+                      : AppLocalizations.of(context)!.retakePhoto
                   ),
                   style: TextButton.styleFrom(
                     foregroundColor: AppColors.textSecondary,

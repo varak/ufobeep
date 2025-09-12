@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Сообщено {время} Аго",
+  "reportedAt": "Сообщено  Аго",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Пилотный режим",
   "compassStandardDescription": "Основной заголовок и навигация",
   "compassPilotDescription": "Продвинутая навигация с ETA и вектором",
-  "pointingTo": "Указывая на {направление}",
+  "pointingTo": "Указывая на",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -170,7 +170,7 @@
   "temperature": "Температура",
   "pushBodyWitness": "Пользователь подтвердил, что видит один и тот же объект.",
   "weather": "Погода",
-  "cloudCover": "Облако: {%}%",
+  "cloudCover": "Облако: %",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Ветер: {скорость} {единица}",
+  "wind": "Ветер:",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -226,7 +226,7 @@
   "videoOnly": "только видео",
   "imageOnly": "только изображение",
   "timeJustNow": "только сейчас",
-  "timeDaysAgo": "{счет}d ago",
+  "timeDaysAgo": "d ago",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +244,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{счет}m ago",
+  "timeMinutesAgo": "m ago",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "фильтрованный",
   "detailsTitle": "Подробности",
   "mufonCase": "МУФОН Дело",
-  "mufonCaseDetailsTitle": "МУФОН Случай #{caseNumber} Подробности",
+  "mufonCaseDetailsTitle": "МУФОН Случай # Подробности",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "Анализ фотографий",
-  "mediaItemsProcessed": "Анализ: {count} медиафайл(ы) обработан",
+  "mediaItemsProcessed": "Анализ:  медиафайл(ы) обработан",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -411,7 +411,7 @@
   "premiumAccessWitnesses": "Подтвержденные свидетели в пределах видимости",
   "comingSoon": "Скоро придет",
   "directionDistanceTitle": "Направление и расстояние",
-  "mufonCaseTitle": "МУФОН Случай #{caseNumber}",
+  "mufonCaseTitle": "МУФОН Случай #",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -443,7 +443,7 @@
       }
     }
   },
-  "notificationCommentTitle": "↓ {имя пользователя} прокомментировал",
+  "notificationCommentTitle": "↓  прокомментировал",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -486,7 +486,7 @@
   "shareAlert": "Поделиться предупреждением",
   "previousPage": "Предыдущий",
   "nextPage": "Следующий",
-  "pageOf": "Страница {текущая} Страница {totalPages} ({totalCount} полные звуковые сигналы)",
+  "pageOf": "Страница  Страница  ( полные звуковые сигналы)",
   "heroTagline": "Получить оповещения, когда выходить на улицу и смотреть вверх",
   "heroDescription": "Никогда не пропустите очередное наблюдение НЛО. Получайте оповещения в реальном времени, когда кто-то рядом с вами видит что-то странное в небе. Направьте телефон и найдите, где именно искать.",
   "downloadApp": "Скачать приложение",
@@ -531,16 +531,16 @@
   "mufonEgg": "Яйцо",
   "mufonOther": "Объект",
   "mufonUnknown": "Неизвестный объект",
-  "mufonTitleFormat": "MUFON {классификация} Доклад",
+  "mufonTitleFormat": "MUFON  Доклад",
   "nuforcAttribution": "НУФОРК Отчет о базе данных",
   "nuforcCaseNumber": "Дело #",
   "nuforcGenericTitle": "НУФОРК Обзорный доклад",
   "mediaImageNotFound": "Изображение не найдено",
   "mediaPlayVideo": "Играть видео",
   "mediaViewImage": "Просмотр изображения",
-  "mediaCount": "{счет} изображения",
+  "mediaCount": "изображения",
   "mediaCountSingle": "1 изображение",
-  "mediaMoreImages": "+{счет} больше",
+  "mediaMoreImages": "+ больше",
   "errorNotFound": "Бип не найден",
   "errorLoadError": "Не удалось загрузить детали звукового сигнала",
   "shareYourThoughts": "Поделитесь своими мыслями об этом зрелище...",

@@ -87,8 +87,8 @@ abstract class AppLocalizations {
 
   final String localeName;
 
-  static AppLocalizations of(BuildContext context) {
-    return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
+  static AppLocalizations? of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
   static const LocalizationsDelegate<AppLocalizations> delegate =
@@ -544,12 +544,12 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Reported {timeAgo}'**
-  String reportedAt(String timeAgo);
+  String reportedAt(String timeAgo, Object time);
 
   /// No description provided for @distanceAway.
   ///
   /// In en, this message translates to:
-  /// **'{distance} away'**
+  /// **'away'**
   String distanceAway(String distance);
 
   /// No description provided for @bearingToObject.
@@ -609,7 +609,7 @@ abstract class AppLocalizations {
   /// No description provided for @noCommentsYet.
   ///
   /// In en, this message translates to:
-  /// **'No comments yet. Be the first!'**
+  /// **'No comments yet. Be the first to comment!'**
   String get noCommentsYet;
 
   /// No description provided for @newCommentNotification.
@@ -713,6 +713,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Witness confirmation'**
   String get pushTitleWitness;
+
+  /// No description provided for @temperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Temperature'**
+  String get temperature;
 
   /// No description provided for @pushBodyWitness.
   ///
@@ -915,8 +921,14 @@ abstract class AppLocalizations {
   /// No description provided for @beepOnly.
   ///
   /// In en, this message translates to:
-  /// **'beep only'**
+  /// **'Report Only'**
   String get beepOnly;
+
+  /// No description provided for @reportOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Only'**
+  String get reportOnly;
 
   /// No description provided for @videoOnly.
   ///
@@ -933,7 +945,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeJustNow.
   ///
   /// In en, this message translates to:
-  /// **'Just now'**
+  /// **'just now'**
   String get timeJustNow;
 
   /// No description provided for @timeDaysAgo.
@@ -1047,7 +1059,7 @@ abstract class AppLocalizations {
   /// No description provided for @locationLabel.
   ///
   /// In en, this message translates to:
-  /// **'Location'**
+  /// **'Location:'**
   String get locationLabel;
 
   /// No description provided for @distanceLabel.
@@ -1059,7 +1071,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeLabel.
   ///
   /// In en, this message translates to:
-  /// **'Time'**
+  /// **'Time:'**
   String get timeLabel;
 
   /// No description provided for @reportedByLabel.
@@ -1248,6 +1260,18 @@ abstract class AppLocalizations {
   /// **'What do you see?'**
   String get whatDoYouSee;
 
+  /// No description provided for @ufo.
+  ///
+  /// In en, this message translates to:
+  /// **'UFO'**
+  String get ufo;
+
+  /// No description provided for @sighting.
+  ///
+  /// In en, this message translates to:
+  /// **'Sighting'**
+  String get sighting;
+
   /// No description provided for @ufoSighting.
   ///
   /// In en, this message translates to:
@@ -1433,6 +1457,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Blimp'**
   String get ufoTypeBlimp;
+
+  /// No description provided for @shapeTriangle.
+  ///
+  /// In en, this message translates to:
+  /// **'triangle'**
+  String get shapeTriangle;
+
+  /// No description provided for @shapeDisc.
+  ///
+  /// In en, this message translates to:
+  /// **'disc'**
+  String get shapeDisc;
+
+  /// No description provided for @shapeDisk.
+  ///
+  /// In en, this message translates to:
+  /// **'disk'**
+  String get shapeDisk;
+
+  /// No description provided for @shapeSphere.
+  ///
+  /// In en, this message translates to:
+  /// **'sphere'**
+  String get shapeSphere;
+
+  /// No description provided for @shapeCigar.
+  ///
+  /// In en, this message translates to:
+  /// **'cigar'**
+  String get shapeCigar;
+
+  /// No description provided for @shapeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'light'**
+  String get shapeLight;
+
+  /// No description provided for @shapeBoomerang.
+  ///
+  /// In en, this message translates to:
+  /// **'boomerang'**
+  String get shapeBoomerang;
+
+  /// No description provided for @shapeDiamond.
+  ///
+  /// In en, this message translates to:
+  /// **'diamond'**
+  String get shapeDiamond;
+
+  /// No description provided for @shapeRectangle.
+  ///
+  /// In en, this message translates to:
+  /// **'rectangle'**
+  String get shapeRectangle;
+
+  /// No description provided for @shapeOval.
+  ///
+  /// In en, this message translates to:
+  /// **'oval'**
+  String get shapeOval;
+
+  /// No description provided for @shapeCone.
+  ///
+  /// In en, this message translates to:
+  /// **'cone'**
+  String get shapeCone;
+
+  /// No description provided for @shapeCross.
+  ///
+  /// In en, this message translates to:
+  /// **'cross'**
+  String get shapeCross;
+
+  /// No description provided for @shapeCylinder.
+  ///
+  /// In en, this message translates to:
+  /// **'cylinder'**
+  String get shapeCylinder;
+
+  /// No description provided for @shapeDumbbell.
+  ///
+  /// In en, this message translates to:
+  /// **'dumbbell'**
+  String get shapeDumbbell;
+
+  /// No description provided for @shapeTeardrop.
+  ///
+  /// In en, this message translates to:
+  /// **'teardrop'**
+  String get shapeTeardrop;
+
+  /// No description provided for @shapeTicTac.
+  ///
+  /// In en, this message translates to:
+  /// **'tic-tac'**
+  String get shapeTicTac;
+
+  /// No description provided for @shapeBullet.
+  ///
+  /// In en, this message translates to:
+  /// **'bullet'**
+  String get shapeBullet;
+
+  /// No description provided for @shapeSaturn.
+  ///
+  /// In en, this message translates to:
+  /// **'saturn'**
+  String get shapeSaturn;
+
+  /// No description provided for @shapeStarlike.
+  ///
+  /// In en, this message translates to:
+  /// **'starlike'**
+  String get shapeStarlike;
+
+  /// No description provided for @shapeBlimp.
+  ///
+  /// In en, this message translates to:
+  /// **'blimp'**
+  String get shapeBlimp;
+
+  /// No description provided for @shapeFireball.
+  ///
+  /// In en, this message translates to:
+  /// **'fireball'**
+  String get shapeFireball;
+
+  /// No description provided for @shapeFormation.
+  ///
+  /// In en, this message translates to:
+  /// **'formation'**
+  String get shapeFormation;
+
+  /// No description provided for @shapeUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'unknown'**
+  String get shapeUnknown;
 
   /// No description provided for @actionsTitle.
   ///
@@ -1685,6 +1847,528 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'mufon'**
   String get mufon;
+
+  /// No description provided for @recentUfoBeepsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent UFO Beeps'**
+  String get recentUfoBeepsTitle;
+
+  /// No description provided for @recentUfoBeepsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Live UFOBeep community reports & MUFON database sightings'**
+  String get recentUfoBeepsSubtitle;
+
+  /// No description provided for @recentUfoBeepsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This feed combines real-time UFOBeep \"beeps\" from our mobile app users with historical reports from the MUFON database.'**
+  String get recentUfoBeepsDescription;
+
+  /// No description provided for @loadingBeeps.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading recent beeps...'**
+  String get loadingBeeps;
+
+  /// No description provided for @noBeepsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No beeps available at the moment.'**
+  String get noBeepsAvailable;
+
+  /// No description provided for @anomalyReported.
+  ///
+  /// In en, this message translates to:
+  /// **'Anomaly reported'**
+  String get anomalyReported;
+
+  /// No description provided for @copyShortLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy short link'**
+  String get copyShortLink;
+
+  /// No description provided for @shareAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'Share alert'**
+  String get shareAlert;
+
+  /// No description provided for @previousPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get previousPage;
+
+  /// No description provided for @nextPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get nextPage;
+
+  /// No description provided for @pageOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {currentPage} of {totalPages} ({totalCount} total beeps)'**
+  String pageOf(Object currentPage, Object totalCount, Object totalPages);
+
+  /// No description provided for @heroTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Get alerts when to go outside and look up'**
+  String get heroTagline;
+
+  /// No description provided for @heroDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Never miss another UFO sighting. Get real-time alerts when someone near you sees something weird in the sky. Point your phone and find exactly where to look.'**
+  String get heroDescription;
+
+  /// No description provided for @downloadApp.
+  ///
+  /// In en, this message translates to:
+  /// **'📱 Download App'**
+  String get downloadApp;
+
+  /// No description provided for @viewAllBeeps.
+  ///
+  /// In en, this message translates to:
+  /// **'📋 View All Beeps'**
+  String get viewAllBeeps;
+
+  /// No description provided for @sightingsMap.
+  ///
+  /// In en, this message translates to:
+  /// **'🗺️ Sightings Map'**
+  String get sightingsMap;
+
+  /// No description provided for @globalSightingNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Global Sighting Network'**
+  String get globalSightingNetwork;
+
+  /// No description provided for @howItWorks.
+  ///
+  /// In en, this message translates to:
+  /// **'How UFOBeep Works'**
+  String get howItWorks;
+
+  /// No description provided for @backToBeeps.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Beeps'**
+  String get backToBeeps;
+
+  /// No description provided for @loadingDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading beep details...'**
+  String get loadingDetails;
+
+  /// No description provided for @details.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get details;
+
+  /// No description provided for @location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// No description provided for @timeAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'ago'**
+  String get timeAgo;
+
+  /// No description provided for @timeMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'m'**
+  String get timeMinutes;
+
+  /// No description provided for @timeHours.
+  ///
+  /// In en, this message translates to:
+  /// **'h'**
+  String get timeHours;
+
+  /// No description provided for @timeDays.
+  ///
+  /// In en, this message translates to:
+  /// **'d'**
+  String get timeDays;
+
+  /// No description provided for @distanceKm.
+  ///
+  /// In en, this message translates to:
+  /// **'km'**
+  String get distanceKm;
+
+  /// No description provided for @distanceMiles.
+  ///
+  /// In en, this message translates to:
+  /// **'miles'**
+  String get distanceMiles;
+
+  /// No description provided for @distanceNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'nearby'**
+  String get distanceNearby;
+
+  /// No description provided for @ufobeepWitnesses.
+  ///
+  /// In en, this message translates to:
+  /// **'Witnesses'**
+  String get ufobeepWitnesses;
+
+  /// No description provided for @ufobeepConfirmations.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmations'**
+  String get ufobeepConfirmations;
+
+  /// No description provided for @ufobeepAlertLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert Level'**
+  String get ufobeepAlertLevel;
+
+  /// No description provided for @ufobeepReportType.
+  ///
+  /// In en, this message translates to:
+  /// **'UFOBeep Report'**
+  String get ufobeepReportType;
+
+  /// No description provided for @mufonAttribution.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON Database Report'**
+  String get mufonAttribution;
+
+  /// No description provided for @mufonCaseNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Case #'**
+  String get mufonCaseNumber;
+
+  /// No description provided for @mufonGenericTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON Sighting Report'**
+  String get mufonGenericTitle;
+
+  /// No description provided for @mufonSphere.
+  ///
+  /// In en, this message translates to:
+  /// **'Sphere'**
+  String get mufonSphere;
+
+  /// No description provided for @mufonLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get mufonLight;
+
+  /// No description provided for @mufonDisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Disk'**
+  String get mufonDisk;
+
+  /// No description provided for @mufonTriangle.
+  ///
+  /// In en, this message translates to:
+  /// **'Triangle'**
+  String get mufonTriangle;
+
+  /// No description provided for @mufonCigar.
+  ///
+  /// In en, this message translates to:
+  /// **'Cigar'**
+  String get mufonCigar;
+
+  /// No description provided for @mufonOval.
+  ///
+  /// In en, this message translates to:
+  /// **'Oval'**
+  String get mufonOval;
+
+  /// No description provided for @mufonCylinder.
+  ///
+  /// In en, this message translates to:
+  /// **'Cylinder'**
+  String get mufonCylinder;
+
+  /// No description provided for @mufonRectangle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rectangle'**
+  String get mufonRectangle;
+
+  /// No description provided for @mufonDiamond.
+  ///
+  /// In en, this message translates to:
+  /// **'Diamond'**
+  String get mufonDiamond;
+
+  /// No description provided for @mufonFireball.
+  ///
+  /// In en, this message translates to:
+  /// **'Fireball'**
+  String get mufonFireball;
+
+  /// No description provided for @mufonFlash.
+  ///
+  /// In en, this message translates to:
+  /// **'Flash'**
+  String get mufonFlash;
+
+  /// No description provided for @mufonFormation.
+  ///
+  /// In en, this message translates to:
+  /// **'Formation'**
+  String get mufonFormation;
+
+  /// No description provided for @mufonChanging.
+  ///
+  /// In en, this message translates to:
+  /// **'Changing'**
+  String get mufonChanging;
+
+  /// No description provided for @mufonChevron.
+  ///
+  /// In en, this message translates to:
+  /// **'Chevron'**
+  String get mufonChevron;
+
+  /// No description provided for @mufonCone.
+  ///
+  /// In en, this message translates to:
+  /// **'Cone'**
+  String get mufonCone;
+
+  /// No description provided for @mufonCross.
+  ///
+  /// In en, this message translates to:
+  /// **'Cross'**
+  String get mufonCross;
+
+  /// No description provided for @mufonEgg.
+  ///
+  /// In en, this message translates to:
+  /// **'Egg'**
+  String get mufonEgg;
+
+  /// No description provided for @mufonOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Object'**
+  String get mufonOther;
+
+  /// No description provided for @mufonUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown Object'**
+  String get mufonUnknown;
+
+  /// No description provided for @mufonTitleFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON {classification} Report'**
+  String mufonTitleFormat(Object classification);
+
+  /// No description provided for @nuforcAttribution.
+  ///
+  /// In en, this message translates to:
+  /// **'NUFORC Database Report'**
+  String get nuforcAttribution;
+
+  /// No description provided for @nuforcCaseNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Case #'**
+  String get nuforcCaseNumber;
+
+  /// No description provided for @nuforcGenericTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'NUFORC Sighting Report'**
+  String get nuforcGenericTitle;
+
+  /// No description provided for @mediaImageNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Image not found'**
+  String get mediaImageNotFound;
+
+  /// No description provided for @mediaPlayVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Play Video'**
+  String get mediaPlayVideo;
+
+  /// No description provided for @mediaViewImage.
+  ///
+  /// In en, this message translates to:
+  /// **'View Image'**
+  String get mediaViewImage;
+
+  /// No description provided for @mediaCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} images'**
+  String mediaCount(Object count);
+
+  /// No description provided for @mediaCountSingle.
+  ///
+  /// In en, this message translates to:
+  /// **'1 image'**
+  String get mediaCountSingle;
+
+  /// No description provided for @mediaMoreImages.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} more'**
+  String mediaMoreImages(Object count);
+
+  /// No description provided for @errorNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Beep not found'**
+  String get errorNotFound;
+
+  /// No description provided for @errorLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load beep details'**
+  String get errorLoadError;
+
+  /// No description provided for @shareYourThoughts.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your thoughts about this sighting...'**
+  String get shareYourThoughts;
+
+  /// No description provided for @postComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Post Comment'**
+  String get postComment;
+
+  /// No description provided for @loggedInAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Logged in as'**
+  String get loggedInAs;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
+
+  /// No description provided for @notFollowing.
+  ///
+  /// In en, this message translates to:
+  /// **'Not following'**
+  String get notFollowing;
+
+  /// No description provided for @follow.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow'**
+  String get follow;
+
+  /// No description provided for @navRecentBeeps.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Beeps'**
+  String get navRecentBeeps;
+
+  /// No description provided for @navMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get navMap;
+
+  /// No description provided for @navDownloadApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Download App'**
+  String get navDownloadApp;
+
+  /// No description provided for @alertLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert Level'**
+  String get alertLevel;
+
+  /// No description provided for @witnesses.
+  ///
+  /// In en, this message translates to:
+  /// **'Witnesses'**
+  String get witnesses;
+
+  /// No description provided for @confirmations.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmations'**
+  String get confirmations;
+
+  /// No description provided for @reporterLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reported by user'**
+  String get reporterLabel;
+
+  /// No description provided for @coordinatesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Coordinates'**
+  String get coordinatesLabel;
+
+  /// No description provided for @eventTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Event time'**
+  String get eventTime;
+
+  /// No description provided for @reportedTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Reported time'**
+  String get reportedTime;
+
+  /// No description provided for @mufonDatabaseReport.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON Database Report'**
+  String get mufonDatabaseReport;
+
+  /// No description provided for @copyShortLinkTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy link to clipboard'**
+  String get copyShortLinkTitle;
+
+  /// No description provided for @imageNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Image not found'**
+  String get imageNotFound;
+
+  /// No description provided for @ufoSightingAlt.
+  ///
+  /// In en, this message translates to:
+  /// **'UFO sighting'**
+  String get ufoSightingAlt;
 }
 
 class _AppLocalizationsDelegate

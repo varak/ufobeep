@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "{t}",
+  "alertDirection": "",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Raporlanmış {time Ago}",
+  "reportedAt": "Raporlanmış {time}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Pilot Mod",
   "compassStandardDescription": "Temel başlık ve navigasyon",
   "compassPilotDescription": "ETA ve vektöring ile Gelişmiş navigasyon",
-  "pointingTo": "{y_>",
+  "pointingTo": "",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "Kalibrating compass..",
   "openAROverlay": "Open AR overlay",
   "pushTitleAlertNearby": "UFO Uyarısı yakınınızda",
-  "pushBodyAlertNearby": "Yeni bir görüş bildirdi { mesafe} uzakta.",
+  "pushBodyAlertNearby": "Yeni bir görüş bildirdi  uzakta.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "Sıcaklık",
   "pushBodyWitness": "Bir kullanıcı aynı nesneyi gördüklerini doğruladı.",
   "weather": "Hava",
-  "cloudCover": "Cloud cover: {percent}%",
+  "cloudCover": "Cloud cover: %",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Rüzgar: { speed} {unit}",
+  "wind": "Rüzgar:",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -226,7 +226,7 @@
   "videoOnly": "video sadece video",
   "imageOnly": "sadece görüntü sadece görüntü",
   "timeJustNow": "sadece şimdi",
-  "timeDaysAgo": "{count}d ago",
+  "timeDaysAgo": "d ago",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +235,7 @@
       }
     }
   },
-  "timeHoursAgo": "{count}h ago",
+  "timeHoursAgo": "h ago",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +244,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{count}m ago",
+  "timeMinutesAgo": "m ago",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "filtrelenmiş filtre",
   "detailsTitle": "Detaylar",
   "mufonCase": "MUFON Vaka Örneği",
-  "mufonCaseDetailsTitle": "MUFON Vaka #{caseNumber} Detay",
+  "mufonCaseDetailsTitle": "MUFON Vaka # Detay",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -283,7 +283,7 @@
   "unknownLocation": "Bilinmeyen Konum",
   "locationUnknown": "Konum Bilinmeyen",
   "witnessesLabel": "Tanık Şahitler",
-  "witnessesCountMessage": "{say} insanlar bu görüşü doğruluyor",
+  "witnessesCountMessage": "insanlar bu görüşü doğruluyor",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "Photo Analysis",
-  "mediaItemsProcessed": "Analiz: {count} medya dosyası (s) işlendi",
+  "mediaItemsProcessed": "Analiz:  medya dosyası (s) işlendi",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -389,7 +389,7 @@
   "whyReportToMufon": "Neden MUFON'a Rapor?",
   "openMufonReport": "Açık MUFON Rapor",
   "confirmedWitness": "Bu manzarayı doğruladın",
-  "witnessesHaveConfirmed": "{say} insanlar bu görüşü doğruladı",
+  "witnessesHaveConfirmed": "insanlar bu görüşü doğruladı",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -411,7 +411,7 @@
   "premiumAccessWitnesses": "Görünürlük aralığındaki tanıkları onaylayın",
   "comingSoon": "Yakında Geliyor",
   "directionDistanceTitle": "Yön & Uzaktan",
-  "mufonCaseTitle": "MUFON Vaka #{caseNumber}",
+  "mufonCaseTitle": "MUFON Vaka #",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +430,7 @@
   "notificationSightingTitle": "UFO UFO Sighting",
   "notificationSightingUrgent": "UR URGENT UFO Sighting",
   "notificationSightingEmergency": "EMER EMERGENCY UFO Sighting",
-  "notificationSightingBody": "{witnessText} yakın Ad}",
+  "notificationSightingBody": "yakın Ad}",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -443,7 +443,7 @@
       }
     }
   },
-  "notificationCommentTitle": "{ {username}",
+  "notificationCommentTitle": "",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -453,7 +453,7 @@
     }
   },
   "notificationWitnessText": "Yeni görüş",
-  "notificationWitnessTextMultiple": "{count} tanıklar",
+  "notificationWitnessTextMultiple": "tanıklar",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -486,7 +486,7 @@
   "shareAlert": "Paylaş",
   "previousPage": "Önceki",
   "nextPage": "Sonraki",
-  "pageOf": "Page {current Page} { totalPages} ({toplam Ülke} toplam beeps)",
+  "pageOf": "Page   ( toplam beeps)",
   "heroTagline": "Dışarı çıkmak ve yukarı bakmak için uyarılar alın",
   "heroDescription": "Asla başka bir UFO görüşünü kaçırmayın. Yakınınızdaki biri gökyüzünde garip bir şey gördüğünde gerçek zamanlı uyarılar alın. Telefonunuzu işaret edin ve tam olarak nereye bakacağınızı bulun.",
   "downloadApp": "  Download App",
@@ -531,14 +531,14 @@
   "mufonEgg": "Yumurta",
   "mufonOther": "Object",
   "mufonUnknown": "Bilinmeyen Object",
-  "mufonTitleFormat": "MUFON {classification} Rapor",
+  "mufonTitleFormat": "MUFON  Rapor",
   "nuforcAttribution": "NUFORC Veritabanı Raporu",
   "nuforcCaseNumber": "Vaka # #",
   "nuforcGenericTitle": "NUFORC Rapor",
   "mediaImageNotFound": "Resim bulunamadı",
   "mediaPlayVideo": "Play Video",
   "mediaViewImage": "View Image View Image",
-  "mediaCount": "{count} görüntüler",
+  "mediaCount": "görüntüler",
   "mediaCountSingle": "1 resim",
   "mediaMoreImages": "+",
   "errorNotFound": "Arıp bulunamadı",

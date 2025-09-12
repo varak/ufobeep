@@ -221,4 +221,4 @@ ALWAYS keep docs updated when making changes:
 **Common Issues:**
 - Spanish showing "# beep only #" = placeholder needs translation generation
 - Missing shape translations = missing ARB keys, need generation
-- Hardcoded fallbacks = DELETE and use ARB keys only
+- Hardcoded fallbacks = DELETE and use ARB keys onlyNEVER use English language fallbacks in translations - ALWAYS ensure each language has proper translations in its own language. Use non-null assertions (!) not nullable access (?) with fallbacks.

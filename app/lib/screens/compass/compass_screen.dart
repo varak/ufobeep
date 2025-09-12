@@ -116,7 +116,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
   }
 
   void _showModeSettings() {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -198,7 +198,7 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
   @override
   Widget build(BuildContext context) {
     final compassDataAsync = ref.watch(compassDataProvider);
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     
     return NightSkyBackground(
       child: Scaffold(

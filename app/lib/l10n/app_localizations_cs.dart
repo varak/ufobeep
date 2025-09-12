@@ -121,12 +121,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '_ _ PH _ 0 _ _ pryč';
+    return '$distance away';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Ložisko _ _ PH _ 0 _ _ °';
+    return 'Ložisko';
   }
 
   @override
@@ -172,7 +172,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String beepSentWithUrl(String shortUrl) {
-    return 'Beep sent successfully';
+    return 'Píp odeslaný úspěšně';
   }
 
   @override
@@ -219,22 +219,22 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'Nahlášeno _ _ PH _ 0 _ _';
+    return 'Nahlášeno $username';
   }
 
   @override
-  String reportedAt(String timeAgo) {
-    return 'Hlášený _ _ PH _ 0 _ _';
+  String reportedAt(String timeAgo, Object time) {
+    return 'Hlášený čas $time';
   }
 
   @override
   String distanceAway(String distance) {
-    return '_ _ PH _ 0 _ _ pryč';
+    return 'pryč';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return 'Nošení námitky: _ _ PH _ 0 _ _ °';
+    return 'Ložisko objektu:  °';
   }
 
   @override
@@ -262,7 +262,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get autoFollowEnabled => 'Nyní sledujete tento poplach.';
 
   @override
-  String get noCommentsYet => 'Zatím žádné komentáře. Buď první!';
+  String get noCommentsYet =>
+      'Zatím žádné komentáře. Buďte první, kdo to komentuje!';
 
   @override
   String get newCommentNotification =>
@@ -295,7 +296,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Ukazuji na _ _ PH _ 0 _ _';
+    return 'Ukazuji na';
   }
 
   @override
@@ -309,7 +310,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'Bylo hlášeno nové pozorování _ _ PH _ 0 _ _ away.';
+    return 'Bylo nahlášeno nové pozorování.';
   }
 
   @override
@@ -322,6 +323,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get pushTitleWitness => 'Potvrzení svědka';
 
   @override
+  String get temperature => 'Teplota';
+
+  @override
   String get pushBodyWitness => 'Uživatel potvrdil, že vidí stejný objekt.';
 
   @override
@@ -329,12 +333,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Cloud cover: _ _ PH _ 0 _ _%';
+    return 'Cloud cover: %';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Vítr: _ _ PH _ 0 _ _ _ _ PH _ 1 _ _';
+    return 'Vítr:';
   }
 
   @override
@@ -430,7 +434,10 @@ class AppLocalizationsCs extends AppLocalizations {
   String get verified => 'Ověřeno';
 
   @override
-  String get beepOnly => 'pouze pípnutí';
+  String get beepOnly => 'Pouze hlášení';
+
+  @override
+  String get reportOnly => 'Pouze hlášení';
 
   @override
   String get videoOnly => 'pouze video';
@@ -439,21 +446,21 @@ class AppLocalizationsCs extends AppLocalizations {
   String get imageOnly => 'pouze obrázek';
 
   @override
-  String get timeJustNow => 'Právě teď';
+  String get timeJustNow => 'právě teď';
 
   @override
   String timeDaysAgo(int count) {
-    return 'Před';
+    return 'd před';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '_ _ PH _ 0 _ _ h před';
+    return 'h před';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'Před tím';
+    return 'm před';
   }
 
   @override
@@ -485,7 +492,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON Případ # _ _ PH _ 0 _ _ Podrobnosti';
+    return 'MUFON Případ #  Podrobnosti';
   }
 
   @override
@@ -504,13 +511,13 @@ class AppLocalizationsCs extends AppLocalizations {
   String get linkCopied => 'Odkaz zkopírován do schránky';
 
   @override
-  String get locationLabel => 'Umístění';
+  String get locationLabel => 'Umístění:';
 
   @override
   String get distanceLabel => 'Vzdálenost';
 
   @override
-  String get timeLabel => 'Čas';
+  String get timeLabel => 'Čas:';
 
   @override
   String get reportedByLabel => 'Reported by';
@@ -526,7 +533,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return '_ _ PH _ 0 _ _ lidé potvrdili toto pozorování';
+    return 'lidé potvrdili toto pozorování';
   }
 
   @override
@@ -534,7 +541,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Analýza: _ _ PH _ 0 _ _ media soubor (y) zpracován';
+    return 'Analýza:  media soubor (y) zpracován';
   }
 
   @override
@@ -609,6 +616,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get whatDoYouSee => 'Co vidíš?';
+
+  @override
+  String get ufo => 'UFO';
+
+  @override
+  String get sighting => 'Vidění';
 
   @override
   String get ufoSighting => 'UFO Vidění';
@@ -705,6 +718,75 @@ class AppLocalizationsCs extends AppLocalizations {
   String get ufoTypeBlimp => 'Balón';
 
   @override
+  String get shapeTriangle => 'trojúhelník';
+
+  @override
+  String get shapeDisc => 'disk';
+
+  @override
+  String get shapeDisk => 'disk';
+
+  @override
+  String get shapeSphere => 'koule';
+
+  @override
+  String get shapeCigar => 'doutník';
+
+  @override
+  String get shapeLight => 'světlo';
+
+  @override
+  String get shapeBoomerang => 'bumerang';
+
+  @override
+  String get shapeDiamond => 'diamant';
+
+  @override
+  String get shapeRectangle => 'obdélník';
+
+  @override
+  String get shapeOval => 'ovál';
+
+  @override
+  String get shapeCone => 'kužel';
+
+  @override
+  String get shapeCross => 'kříž';
+
+  @override
+  String get shapeCylinder => 'válec';
+
+  @override
+  String get shapeDumbbell => 'dumbbell';
+
+  @override
+  String get shapeTeardrop => 'slzy';
+
+  @override
+  String get shapeTicTac => 'tick- tac';
+
+  @override
+  String get shapeBullet => 'kulka';
+
+  @override
+  String get shapeSaturn => 'saturn';
+
+  @override
+  String get shapeStarlike => 'hvězdičky';
+
+  @override
+  String get shapeBlimp => 'vzducholoď';
+
+  @override
+  String get shapeFireball => 'ohnivá koule';
+
+  @override
+  String get shapeFormation => 'tvorba';
+
+  @override
+  String get shapeUnknown => 'neznámý';
+
+  @override
   String get actionsTitle => 'Akce';
 
   @override
@@ -727,7 +809,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return 'Lidé potvrdili toto pozorování';
+    return 'lidé potvrdili toto pozorování';
   }
 
   @override
@@ -769,70 +851,70 @@ class AppLocalizationsCs extends AppLocalizations {
   String get comingSoon => 'Už brzy';
 
   @override
-  String get directionDistanceTitle => 'Direction & Distance';
+  String get directionDistanceTitle => 'Směr a vzdálenost';
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Case #$caseNumber';
+    return 'MUFON Případ #';
   }
 
   @override
-  String get satellitePassesTitle => 'Satellite Passes';
+  String get satellitePassesTitle => 'Satelitní průkazy';
 
   @override
   String get satellitePassExplanation =>
-      'Visible satellite passes during the sighting timeframe. Many UFO reports are actually satellites or space debris.';
+      'Viditelné satelitní propustky během časového rámce pozorování. Mnoho hlášení UFO jsou ve skutečnosti satelity nebo vesmírné trosky.';
 
   @override
   String get followingAlert =>
-      'Following alert - you\'ll get comment notifications';
+      'Po upozornění - obdržíte oznámení o komentářích';
 
   @override
   String get unfollowedAlert =>
-      'Unfollowed alert - no more comment notifications';
+      'Nesledovaná výstraha - žádné další oznámení komentářů';
 
   @override
-  String get alertFollowError => 'Error updating follow status';
+  String get alertFollowError => 'Chyba při aktualizaci stavu sledování';
 
   @override
-  String get notificationChannelAlerts => 'UFOBeep Alerts';
+  String get notificationChannelAlerts => 'UFOBEep upozornění';
 
   @override
   String get notificationChannelAlertsDesc =>
-      'Notifications for UFO beeps and proximity alerts';
+      'Oznámení o pípnutí UFO a upozornění na blízkost';
 
   @override
-  String get notificationSightingTitle => 'UFO Sighting';
+  String get notificationSightingTitle => 'UFO Vidění';
 
   @override
-  String get notificationSightingUrgent => '⚠️ URGENT UFO Sighting';
+  String get notificationSightingUrgent => 'Name Vidění';
 
   @override
-  String get notificationSightingEmergency => '🚨 EMERGENCY UFO Sighting';
+  String get notificationSightingEmergency => 'POSLEDNÍ UFO Vidění';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '$witnessText near $locationName';
+    return 'v blízkosti';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '💬 $username commented';
+    return '$username komentoval';
   }
 
   @override
-  String get notificationWitnessText => 'New sighting';
+  String get notificationWitnessText => 'Nové pozorování';
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '$count witnesses';
+    return 'svědci';
   }
 
   @override
   String get notificationActionSnooze => 'Snooze 1h';
 
   @override
-  String get notificationActionDismiss => 'Dismiss';
+  String get notificationActionDismiss => 'Rozpustit';
 
   @override
   String notificationDistance(String distance) {
@@ -840,11 +922,285 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get unknown => 'unknown';
+  String get unknown => 'neznámý';
 
   @override
-  String get report => 'report';
+  String get report => 'zpráva';
 
   @override
   String get mufon => 'mufon';
+
+  @override
+  String get recentUfoBeepsTitle => 'Nedávné UFO Brouci';
+
+  @override
+  String get recentUfoBeepsSubtitle =>
+      'Živé zprávy komunity UFOBeep a pozorování databáze MUFON';
+
+  @override
+  String get recentUfoBeepsDescription =>
+      'Toto krmivo kombinuje aktuální UFOBeep \"pípání\" od našich uživatelů mobilních aplikací s historickými zprávami z databáze MUFON.';
+
+  @override
+  String get loadingBeeps => 'Načítám poslední pípnutí...';
+
+  @override
+  String get noBeepsAvailable => 'Momentálně žádné pípání.';
+
+  @override
+  String get anomalyReported => 'Anomálie hlášena';
+
+  @override
+  String get copyShortLink => 'Kopírovat krátký odkaz';
+
+  @override
+  String get shareAlert => 'Upozornění o sdílení';
+
+  @override
+  String get previousPage => 'Předchozí';
+
+  @override
+  String get nextPage => 'Další';
+
+  @override
+  String pageOf(Object currentPage, Object totalCount, Object totalPages) {
+    return 'Strana  of  ( total pípnutí)';
+  }
+
+  @override
+  String get heroTagline =>
+      'Získejte upozornění, kdy jít ven a podívat se nahoru';
+
+  @override
+  String get heroDescription =>
+      'Nikdy si nenechte ujít další pozorování UFO. Získejte reálné-čas upozornění, když někdo blízko vás vidí něco divného na obloze. Namiřte telefon a najděte přesně, kde hledat.';
+
+  @override
+  String get downloadApp => 'Name';
+
+  @override
+  String get viewAllBeeps => 'Zobrazit všechny pípy';
+
+  @override
+  String get sightingsMap => 'Name';
+
+  @override
+  String get globalSightingNetwork => 'Globální síť pozorování';
+
+  @override
+  String get howItWorks => 'Jak funguje UFOBeep';
+
+  @override
+  String get backToBeeps => 'Zpět na Beeps';
+
+  @override
+  String get loadingDetails => 'Načítám detaily pípnutí...';
+
+  @override
+  String get details => 'Podrobnosti';
+
+  @override
+  String get location => 'Umístění';
+
+  @override
+  String get timeAgo => 'před';
+
+  @override
+  String get timeMinutes => 'm';
+
+  @override
+  String get timeHours => 'h';
+
+  @override
+  String get timeDays => 'd';
+
+  @override
+  String get distanceKm => 'km';
+
+  @override
+  String get distanceMiles => 'míle';
+
+  @override
+  String get distanceNearby => 'v blízkosti';
+
+  @override
+  String get ufobeepWitnesses => 'Svědci';
+
+  @override
+  String get ufobeepConfirmations => 'Potvrzení';
+
+  @override
+  String get ufobeepAlertLevel => 'Úroveň upozornění';
+
+  @override
+  String get ufobeepReportType => 'Zpráva UFOBeep';
+
+  @override
+  String get mufonAttribution => 'MUFON Databázová zpráva';
+
+  @override
+  String get mufonCaseNumber => 'Případ #';
+
+  @override
+  String get mufonGenericTitle => 'Zpráva o pozorování MUFON';
+
+  @override
+  String get mufonSphere => 'Koule';
+
+  @override
+  String get mufonLight => 'Světlo';
+
+  @override
+  String get mufonDisk => 'Disk';
+
+  @override
+  String get mufonTriangle => 'Trojúhelník';
+
+  @override
+  String get mufonCigar => 'Doutník';
+
+  @override
+  String get mufonOval => 'Oval';
+
+  @override
+  String get mufonCylinder => 'Válec';
+
+  @override
+  String get mufonRectangle => 'Obdélník';
+
+  @override
+  String get mufonDiamond => 'Diamond';
+
+  @override
+  String get mufonFireball => 'Fireball';
+
+  @override
+  String get mufonFlash => 'Flash';
+
+  @override
+  String get mufonFormation => 'Formace';
+
+  @override
+  String get mufonChanging => 'Změna';
+
+  @override
+  String get mufonChevron => 'Chevron';
+
+  @override
+  String get mufonCone => 'Kukuřice';
+
+  @override
+  String get mufonCross => 'Kříže';
+
+  @override
+  String get mufonEgg => 'Vejce';
+
+  @override
+  String get mufonOther => 'Předmět';
+
+  @override
+  String get mufonUnknown => 'Neznámý objekt';
+
+  @override
+  String mufonTitleFormat(Object classification) {
+    return 'MUFON  Zpráva';
+  }
+
+  @override
+  String get nuforcAttribution => 'NUFORC Databázová zpráva';
+
+  @override
+  String get nuforcCaseNumber => 'Případ #';
+
+  @override
+  String get nuforcGenericTitle => 'NUFORC Zpráva o pozorování';
+
+  @override
+  String get mediaImageNotFound => 'Obrázek nenalezen';
+
+  @override
+  String get mediaPlayVideo => 'Přehrát video';
+
+  @override
+  String get mediaViewImage => 'Zobrazit obrázek';
+
+  @override
+  String mediaCount(Object count) {
+    return 'obrázky';
+  }
+
+  @override
+  String get mediaCountSingle => '1 obrázek';
+
+  @override
+  String mediaMoreImages(Object count) {
+    return '+  více';
+  }
+
+  @override
+  String get errorNotFound => 'Píp nenalezen';
+
+  @override
+  String get errorLoadError => 'Nepodařilo se načíst detaily pípnutí';
+
+  @override
+  String get shareYourThoughts =>
+      'Podělte se o své myšlenky o tomto pozorování...';
+
+  @override
+  String get postComment => 'Comment';
+
+  @override
+  String get loggedInAs => 'Přihlášen jako';
+
+  @override
+  String get logout => 'Odhlášení';
+
+  @override
+  String get notFollowing => 'Nesleduji';
+
+  @override
+  String get follow => 'Následujte';
+
+  @override
+  String get navRecentBeeps => 'Nedávný Beeps';
+
+  @override
+  String get navMap => 'Mapa';
+
+  @override
+  String get navDownloadApp => 'Stáhnout aplikaci';
+
+  @override
+  String get alertLevel => 'Úroveň upozornění';
+
+  @override
+  String get witnesses => 'Svědci';
+
+  @override
+  String get confirmations => 'Potvrzení';
+
+  @override
+  String get reporterLabel => 'Oznámený uživatelem';
+
+  @override
+  String get coordinatesLabel => 'Souřadnice';
+
+  @override
+  String get eventTime => 'Doba události';
+
+  @override
+  String get reportedTime => 'Vykazovaný čas';
+
+  @override
+  String get mufonDatabaseReport => 'MUFON Databázová zpráva';
+
+  @override
+  String get copyShortLinkTitle => 'Kopírovat odkaz do schránky';
+
+  @override
+  String get imageNotFound => 'Obrázek nenalezen';
+
+  @override
+  String get ufoSightingAlt => 'Pozorování UFO';
 }

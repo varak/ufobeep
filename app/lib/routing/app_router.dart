@@ -216,7 +216,7 @@ GoRouter appRouter(AppRouterRef ref) {
                     name: 'alert-comments',
                     builder: (context, state) {
                       final alertId = state.pathParameters['id']!;
-                      final alertTitle = state.uri.queryParameters['title'] ?? AppLocalizations.of(context).alertDetailTitle;
+                      final alertTitle = state.uri.queryParameters['title'] ?? AppLocalizations.of(context)?.alertDetailTitle ?? 'Alert Details';
                       return CommentsScreen(
                         sightingId: alertId,
                         alertTitle: alertTitle,
@@ -243,7 +243,7 @@ GoRouter appRouter(AppRouterRef ref) {
                 name: 'beep-comments',
                 builder: (context, state) {
                   final beepId = state.pathParameters['id']!;
-                  final beepTitle = state.uri.queryParameters['title'] ?? AppLocalizations.of(context).alertDetailTitle;
+                  final beepTitle = state.uri.queryParameters['title'] ?? AppLocalizations.of(context)?.alertDetailTitle ?? 'Alert Details';
                   return CommentsScreen(
                     sightingId: beepId,
                     alertTitle: beepTitle,
@@ -560,7 +560,7 @@ class MainBottomNavBar extends StatelessWidget {
       currentIndex = 2;
     }
 
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       currentIndex: currentIndex,
@@ -581,15 +581,15 @@ class MainBottomNavBar extends StatelessWidget {
       items: [
         BottomNavigationBarItem(
           icon: const Icon(Icons.home),
-          label: l10n.tabAlerts,
+          label: l10n?.tabAlerts ?? 'Alerts',
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.add_a_photo),
-          label: l10n.tabBeep,
+          label: l10n?.tabBeep ?? 'Beep',
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.person),
-          label: l10n.profile,
+          label: l10n?.profile ?? 'Profile',
         ),
       ],
     );

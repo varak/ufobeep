@@ -37,7 +37,7 @@
   "alertsTitle": "근처 Alerts",
   "noAlerts": "아직 경고가 없습니다.",
   "pullToRefresh": "새로 고침",
-  "alertDistance": "{거리}",
+  "alertDistance": "{distance}",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "로그인 {time 이름 *",
+  "reportedAt": "로그인 ",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "파일 형식",
   "compassStandardDescription": "기본 제목 및 탐색",
   "compassPilotDescription": "ETA 및 벡터로 고급 항법",
-  "pointingTo": "{direction}에 대한 지적",
+  "pointingTo": "에 대한 지적",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "캘리브레이션",
   "openAROverlay": "AR 오버레이를 엽니다",
   "pushTitleAlertNearby": "당신 가까이에 UFO 경고",
-  "pushBodyAlertNearby": "새로운 광경은 {street}를보고했다.",
+  "pushBodyAlertNearby": "새로운 광경은 를보고했다.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "제품 정보",
   "pushBodyWitness": "사용자가 동일한 객체를 확인합니다.",
   "weather": "날씨 예보",
-  "cloudCover": "클라우드 커버: {percent}%",
+  "cloudCover": "클라우드 커버: %",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "바람: {speed} {unit}",
+  "wind": "바람:",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -226,7 +226,7 @@
   "videoOnly": "비디오 만",
   "imageOnly": "이미지 만",
   "timeJustNow": "지금 시작",
-  "timeDaysAgo": "{count}d 전",
+  "timeDaysAgo": "d 전",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +235,7 @@
       }
     }
   },
-  "timeHoursAgo": "{count}h 전",
+  "timeHoursAgo": "h 전",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +244,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{count}m 전",
+  "timeMinutesAgo": "m 전",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "필터링",
   "detailsTitle": "제품 정보",
   "mufonCase": "사이트맵 제품정보",
-  "mufonCaseDetailsTitle": "사이트맵 사례 #{caseNumber} 세부 정보",
+  "mufonCaseDetailsTitle": "사이트맵 사례 # 세부 정보",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -283,7 +283,7 @@
   "unknownLocation": "자주 묻는 질문",
   "locationUnknown": "위치 Unknown",
   "witnessesLabel": "뚱 베어",
-  "witnessesCountMessage": "{count} 사람들은이 광경을 확인",
+  "witnessesCountMessage": "사람들은이 광경을 확인",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "사진 분석",
-  "mediaItemsProcessed": "Analysis: {count} 미디어 파일 처리",
+  "mediaItemsProcessed": "Analysis:  미디어 파일 처리",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -389,7 +389,7 @@
   "whyReportToMufon": "왜 MUFON에 보고?",
   "openMufonReport": "MUFON 오픈 제품정보",
   "confirmedWitness": "이 광경을 확인",
-  "witnessesHaveConfirmed": "{count} 사람들은이 광경을 확인했습니다",
+  "witnessesHaveConfirmed": "사람들은이 광경을 확인했습니다",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -411,7 +411,7 @@
   "premiumAccessWitnesses": "가시 범위 내에서 확인된 증언",
   "comingSoon": "현재 위치",
   "directionDistanceTitle": "방향 & 거리",
-  "mufonCaseTitle": "사이트맵 케이스 #{caseNumber}",
+  "mufonCaseTitle": "사이트맵 케이스 #",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +430,7 @@
   "notificationSightingTitle": "사이트맵 뚱 베어",
   "notificationSightingUrgent": "⚠️ 유벤트 UFO 뚱 베어",
   "notificationSightingEmergency": "∙ 에너지 UFO 뚱 베어",
-  "notificationSightingBody": "{witnessText} 닫기 이름 *",
+  "notificationSightingBody": "닫기 이름 *",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -464,7 +464,7 @@
   },
   "notificationActionSnooze": "스누즈 1시간",
   "notificationActionDismiss": "뚱 베어",
-  "notificationDistance": "{거리}",
+  "notificationDistance": "",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -486,7 +486,7 @@
   "shareAlert": "비밀번호",
   "previousPage": "이름 *",
   "nextPage": "이름 *",
-  "pageOf": "페이지 {current 페이지} 의 {totalPages} ({totalCount} 총 금액)",
+  "pageOf": "페이지  의  ( 총 금액)",
   "heroTagline": "외부로 이동할 때 경고를 얻고 봐",
   "heroDescription": "다른 UFO 보행을 놓치지 마십시오. 누군가가 하늘에서 이상한 것을 볼 때 실시간 경고를 가져옵니다. 휴대폰을 끄고 정확히 어디에서 볼 수 있습니다.",
   "downloadApp": "앱 다운로드",
@@ -538,9 +538,9 @@
   "mediaImageNotFound": "찾을 수 없음",
   "mediaPlayVideo": "재생 동영상",
   "mediaViewImage": "이미지 보기",
-  "mediaCount": "{count} 이미지",
+  "mediaCount": "이미지",
   "mediaCountSingle": "1 이미지",
-  "mediaMoreImages": "+{count} 더보기",
+  "mediaMoreImages": "+ 더보기",
   "errorNotFound": "찾을 수 없음",
   "errorLoadError": "Beep 세부사항을 적재하는 실패",
   "shareYourThoughts": "이 광경에 대한 생각을 공유 ...",

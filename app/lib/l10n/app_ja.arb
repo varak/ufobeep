@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "レポート {time アゴ}",
+  "reportedAt": "レポート",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "パイロットモード",
   "compassStandardDescription": "基本的な見出しとナビゲーション",
   "compassPilotDescription": "ETAとベクターの高度なナビゲーション",
-  "pointingTo": "{direction} へのポインティング",
+  "pointingTo": "へのポインティング",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -170,7 +170,7 @@
   "temperature": "温度",
   "pushBodyWitness": "同じオブジェクトが確認されたユーザ.",
   "weather": "ふりがな",
-  "cloudCover": "クラウドカバー:{percent}%",
+  "cloudCover": "クラウドカバー:%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "風: {speed} {unit}",
+  "wind": "風:",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -226,7 +226,7 @@
   "videoOnly": "ビデオのみ",
   "imageOnly": "画像のみ",
   "timeJustNow": "ただ今",
-  "timeDaysAgo": "{count}d 前に",
+  "timeDaysAgo": "d 前に",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +235,7 @@
       }
     }
   },
-  "timeHoursAgo": "{count}h 前に",
+  "timeHoursAgo": "h 前に",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +244,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{count}m 前に",
+  "timeMinutesAgo": "m 前に",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "フィルター",
   "detailsTitle": "ニュース",
   "mufonCase": "MUFONについて 導入事例",
-  "mufonCaseDetailsTitle": "MUFONについて ケース #{caseNumber} 詳細",
+  "mufonCaseDetailsTitle": "MUFONについて ケース # 詳細",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -283,7 +283,7 @@
   "unknownLocation": "未知の場所",
   "locationUnknown": "所在地 不明",
   "witnessesLabel": "ウィッチネス",
-  "witnessesCountMessage": "{count} 人がこの視線を確認した",
+  "witnessesCountMessage": "人がこの視線を確認した",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "フォト分析",
-  "mediaItemsProcessed": "解析: {count} 処理されたメディアファイル",
+  "mediaItemsProcessed": "解析:  処理されたメディアファイル",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -389,7 +389,7 @@
   "whyReportToMufon": "なぜMUFONへの報告?",
   "openMufonReport": "MUFONを開く レポート",
   "confirmedWitness": "この視線を確認しました",
-  "witnessesHaveConfirmed": "{count} 人がこの視線を確認している",
+  "witnessesHaveConfirmed": "人がこの視線を確認している",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -411,7 +411,7 @@
   "premiumAccessWitnesses": "可視範囲内で確認された証人",
   "comingSoon": "近日公開",
   "directionDistanceTitle": "方向及び間隔",
-  "mufonCaseTitle": "MUFONについて ケース #{caseNumber}",
+  "mufonCaseTitle": "MUFONについて ケース #",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +430,7 @@
   "notificationSightingTitle": "ユーチューブ スタイリング",
   "notificationSightingUrgent": "⚠️ ユゲント UFO スタイリング",
   "notificationSightingEmergency": "恒例の緊急UFO スタイリング",
-  "notificationSightingBody": "{locationの近くの{witnessText} 名前}",
+  "notificationSightingBody": "名前}",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -453,7 +453,7 @@
     }
   },
   "notificationWitnessText": "新しい視線",
-  "notificationWitnessTextMultiple": "{count} 証人",
+  "notificationWitnessTextMultiple": "証人",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -486,7 +486,7 @@
   "shareAlert": "アラートを共有する",
   "previousPage": "新着情報",
   "nextPage": "次へ",
-  "pageOf": "ページの先頭へ {totalPages} ({totalCount} 総ビープ) のページ}",
+  "pageOf": "ページの先頭へ  ( 総ビープ) のページ}",
   "heroTagline": "外部に行くときにアラートを取得し、調べる",
   "heroDescription": "UFOを見逃さない。 近くの人が空に奇妙な何かを見たときにリアルタイムのアラートを取得します。 携帯電話をポイントし、どこを見ても正確に見つけてください.",
   "downloadApp": "◀ アプリのダウンロード",
@@ -531,16 +531,16 @@
   "mufonEgg": "ツイート",
   "mufonOther": "オブジェクト",
   "mufonUnknown": "未知のオブジェクト",
-  "mufonTitleFormat": "MUFON {分類} レポート",
+  "mufonTitleFormat": "MUFON  レポート",
   "nuforcAttribution": "ログイン データベースレポート",
   "nuforcCaseNumber": "ケース #",
   "nuforcGenericTitle": "ログイン 観光レポート",
   "mediaImageNotFound": "画像が見つかりません",
   "mediaPlayVideo": "再生ビデオ",
   "mediaViewImage": "画像を見る",
-  "mediaCount": "{count} 画像",
+  "mediaCount": "画像",
   "mediaCountSingle": "1 画像",
-  "mediaMoreImages": "+{count} 以上",
+  "mediaMoreImages": "+ 以上",
   "errorNotFound": "ビープが見つかりません",
   "errorLoadError": "ビープの詳細を読み込む失敗",
   "shareYourThoughts": "この視線についてのあなたの考えを共有する...",

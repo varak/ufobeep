@@ -37,7 +37,7 @@
   "alertsTitle": "Lähellä olevat hälytykset",
   "noAlerts": "Lähellä ei ole vielä hälytystä.",
   "pullToRefresh": "Vedä virkistääksesi",
-  "alertDistance": "{etäisyys} pois",
+  "alertDistance": "{distance} pois",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Suuntima {kantava}°",
+  "alertDirection": "Suuntima °",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "Antakaa mikrofonin pääsy videon kaappaamiseen audiolla.",
   "openSettings": "Avaa asetukset",
   "alertDetailTitle": "Näytön yksityiskohdat",
-  "reportedBy": "Raportoinut {käyttäjätunnus}",
+  "reportedBy": "Raportoinut {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Suunta kohteeseen: {kantava}°",
+  "bearingToObject": "Suunta kohteeseen: °",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Pilottitila",
   "compassStandardDescription": "Perusotsikko ja navigointi",
   "compassPilotDescription": "Edistynyt navigointi ETA:n ja vektoroinnin avulla",
-  "pointingTo": "Osoitetaan {suunta}",
+  "pointingTo": "Osoitetaan",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "Kalibroidaan kompassia..",
   "openAROverlay": "Avaa AR-overlay",
   "pushTitleAlertNearby": "UFO hälytys lähelläsi",
-  "pushBodyAlertNearby": "Uusi havainto ilmoitettiin {etäisyys} poissa.",
+  "pushBodyAlertNearby": "Uusi havainto ilmoitettiin  poissa.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "Lämpötila",
   "pushBodyWitness": "Käyttäjä vahvisti nähneensä saman esineen.",
   "weather": "Sää",
-  "cloudCover": "Pilvipeite: {prosenttia}%",
+  "cloudCover": "Pilvipeite: %",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Tuuli: {nopeus} {yksikkö}",
+  "wind": "Tuuli:",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -226,7 +226,7 @@
   "videoOnly": "ainoastaan video",
   "imageOnly": "vain kuva",
   "timeJustNow": "juuri nyt",
-  "timeDaysAgo": "{laske}d",
+  "timeDaysAgo": "d",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +235,7 @@
       }
     }
   },
-  "timeHoursAgo": "{laske}h sitten",
+  "timeHoursAgo": "h sitten",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +244,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{laskenta}m sitten",
+  "timeMinutesAgo": "m sitten",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "suodatettu",
   "detailsTitle": "Yksityiskohdat",
   "mufonCase": "MUFON Asia",
-  "mufonCaseDetailsTitle": "MUFON Asia #{tapausnumero} Yksityiskohdat",
+  "mufonCaseDetailsTitle": "MUFON Asia # Yksityiskohdat",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "Valokuva-analyysi",
-  "mediaItemsProcessed": "Analyysi: {count} mediatiedosto [s] käsitelty",
+  "mediaItemsProcessed": "Analyysi:  mediatiedosto [s] käsitelty",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -430,7 +430,7 @@
   "notificationSightingTitle": "UFO Näkyminen",
   "notificationSightingUrgent": "KIIREELLINEN UFO Näkyminen",
   "notificationSightingEmergency": "HÄTÄUFO Näkyminen",
-  "notificationSightingBody": "{Todistajateksti} lähellä {sijainti Nimi}",
+  "notificationSightingBody": "lähellä",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -464,7 +464,7 @@
   },
   "notificationActionSnooze": "Torkut 1h",
   "notificationActionDismiss": "Poistu",
-  "notificationDistance": "{etäisyys} pois",
+  "notificationDistance": "pois",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -486,7 +486,7 @@
   "shareAlert": "Jaa hälytys",
   "previousPage": "Edellinen",
   "nextPage": "Seuraava",
-  "pageOf": "Sivu {nykyinen Sivu} of {totalPages} ({totalCount} total beeps)",
+  "pageOf": "Sivu  of  ( total beeps)",
   "heroTagline": "Hanki hälytykset, milloin mennä ulos ja katsoa ylös",
   "heroDescription": "Älä koskaan jätä UFO-havaintoa väliin. Hanki reaaliaikainen hälytys, kun joku lähelläsi näkee jotain outoa taivaalla. Osoita puhelimeen ja etsi tarkalleen mistä etsiä.",
   "downloadApp": "Lataa sovellus",
@@ -531,16 +531,16 @@
   "mufonEgg": "Munat",
   "mufonOther": "Kohde",
   "mufonUnknown": "Tuntematon objekti",
-  "mufonTitleFormat": "MUFON {luokitus} Kertomus",
+  "mufonTitleFormat": "MUFON  Kertomus",
   "nuforcAttribution": "NUFORC Tietokantaraportti",
   "nuforcCaseNumber": "Asia #",
   "nuforcGenericTitle": "NUFORC Havaintoraportti",
   "mediaImageNotFound": "Kuvaa ei löytynyt",
   "mediaPlayVideo": "Toista video",
   "mediaViewImage": "Näytä kuva",
-  "mediaCount": "{laskenta} kuvat",
+  "mediaCount": "kuvat",
   "mediaCountSingle": "1 kuva",
-  "mediaMoreImages": "+ {laskenta} lisää",
+  "mediaMoreImages": "+  lisää",
   "errorNotFound": "Piip ei löytynyt",
   "errorLoadError": "Piippauksen yksityiskohtia ei voitu ladata",
   "shareYourThoughts": "Jaa ajatuksesi tästä havainnosta...",

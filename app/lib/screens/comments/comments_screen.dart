@@ -243,7 +243,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(AppLocalizations.of(context).commentsTitle, style: const TextStyle(fontSize: 16)),
+            Text(AppLocalizations.of(context)!.commentsTitle, style: const TextStyle(fontSize: 16)),
             Text(
               widget.alertTitle,
               style: const TextStyle(
@@ -276,7 +276,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
           // Comment composer
           CommentComposer(
             onSendComment: _sendComment,
-            placeholder: AppLocalizations.of(context).addComment,
+            placeholder: AppLocalizations.of(context)!.addComment,
           ),
         ],
       ),
@@ -303,7 +303,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
             ),
             const SizedBox(height: 16),
             Text(
-              AppLocalizations.of(context).errorGeneric,
+              AppLocalizations.of(context)!.errorGeneric,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
@@ -326,7 +326,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
                 backgroundColor: AppColors.brandPrimary,
                 foregroundColor: Colors.black,
               ),
-              child: Text(AppLocalizations.of(context).retry),
+              child: Text(AppLocalizations.of(context)!.retry),
             ),
           ],
         ),
@@ -345,7 +345,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
             ),
             SizedBox(height: 16),
             Text(
-              AppLocalizations.of(context).noCommentsYet,
+              AppLocalizations.of(context)!.noCommentsYet,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,

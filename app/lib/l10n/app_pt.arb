@@ -37,7 +37,7 @@
   "alertsTitle": "Alertas próximos",
   "noAlerts": "Ainda não há alertas por perto.",
   "pullToRefresh": "Puxar para atualizar",
-  "alertDistance": "{distância}",
+  "alertDistance": "{distance}",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Rolamento {rolamento}°",
+  "alertDirection": "Rolamento °",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "Conceda acesso ao microfone para captura de vídeo com áudio.",
   "openSettings": "Abrir configurações",
   "alertDetailTitle": "Detalhes da visão",
-  "reportedBy": "Reportado por {nome de utilizador}",
+  "reportedBy": "Reportado por {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Relatado {hora Ago}",
+  "reportedAt": "Relatado",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Rolamento para objeto: {rolamento}°",
+  "bearingToObject": "Rolamento para objeto: °",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Modo Pilot",
   "compassStandardDescription": "Cabeçalho básico e navegação",
   "compassPilotDescription": "Navegação avançada com ETA e vectorização",
-  "pointingTo": "Apontando para {direção}",
+  "pointingTo": "Apontando para",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -170,7 +170,7 @@
   "temperature": "Temperatura",
   "pushBodyWitness": "Um usuário confirmou que vê o mesmo objeto.",
   "weather": "Tempo",
-  "cloudCover": "Capa da nuvem: {%}",
+  "cloudCover": "Capa da nuvem:",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Vento: {velocidade} {unidade}",
+  "wind": "Vento:",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -226,7 +226,7 @@
   "videoOnly": "somente vídeo",
   "imageOnly": "somente imagem",
   "timeJustNow": "agora mesmo",
-  "timeDaysAgo": "{conta} há",
+  "timeDaysAgo": "há",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +235,7 @@
       }
     }
   },
-  "timeHoursAgo": "{conta}h há",
+  "timeHoursAgo": "h há",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +244,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{conta}m há",
+  "timeMinutesAgo": "m há",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "filtrado",
   "detailsTitle": "Detalhes",
   "mufonCase": "MUFON Processo",
-  "mufonCaseDetailsTitle": "MUFON Detalhes do Caso # {número do Caso}",
+  "mufonCaseDetailsTitle": "MUFON Detalhes do Caso #",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "Análise Fotográfica",
-  "mediaItemsProcessed": "Análise: {count} arquivo( s) de mídia processado( s)",
+  "mediaItemsProcessed": "Análise:  arquivo( s) de mídia processado( s)",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -411,7 +411,7 @@
   "premiumAccessWitnesses": "Testemunhas confirmadas dentro do intervalo de visibilidade",
   "comingSoon": "Em breve",
   "directionDistanceTitle": "Direcção & Distância",
-  "mufonCaseTitle": "MUFON Caso # {número do caso}",
+  "mufonCaseTitle": "MUFON Caso #",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +430,7 @@
   "notificationSightingTitle": "UFO Avistamento",
   "notificationSightingUrgent": "OVNI URGENTE Avistamento",
   "notificationSightingEmergency": "OVNI DE EMERGÊNCIA Avistamento",
-  "notificationSightingBody": "{testemunhoTexto} próximo {localização Nome}",
+  "notificationSightingBody": "próximo",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -443,7 +443,7 @@
       }
     }
   },
-  "notificationCommentTitle": "{nome de utilizador} comentado",
+  "notificationCommentTitle": "comentado",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -453,7 +453,7 @@
     }
   },
   "notificationWitnessText": "Novo avistamento",
-  "notificationWitnessTextMultiple": "{contagem} testemunhas",
+  "notificationWitnessTextMultiple": "testemunhas",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -464,7 +464,7 @@
   },
   "notificationActionSnooze": "Soneca 1h",
   "notificationActionDismiss": "Demitir",
-  "notificationDistance": "{distância}",
+  "notificationDistance": "",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -486,7 +486,7 @@
   "shareAlert": "Alerta de partilha",
   "previousPage": "Anterior",
   "nextPage": "Próxima",
-  "pageOf": "Página {corrente Página} de {totalPages} ({totalCount} total beeps)",
+  "pageOf": "Página  de  ( total beeps)",
   "heroTagline": "Obter alertas quando sair e olhar para cima",
   "heroDescription": "Nunca percas outro OVNI. Receber alertas em tempo real quando alguém perto de ti vir algo estranho no céu. Aponte o telefone e encontre exatamente onde procurar.",
   "downloadApp": "Aplicação de Download",
@@ -531,16 +531,16 @@
   "mufonEgg": "Ovos",
   "mufonOther": "Objecto",
   "mufonUnknown": "Objecto Desconhecido",
-  "mufonTitleFormat": "MUFON {classificação} Relatório",
+  "mufonTitleFormat": "MUFON  Relatório",
   "nuforcAttribution": "NUFORC Relatório da Base de Dados",
   "nuforcCaseNumber": "Caso #",
   "nuforcGenericTitle": "NUFORC Relatório de Avistamento",
   "mediaImageNotFound": "Imagem não encontrada",
   "mediaPlayVideo": "Reproduzir vídeo",
   "mediaViewImage": "Ver imagem",
-  "mediaCount": "{conta} imagens",
+  "mediaCount": "imagens",
   "mediaCountSingle": "1 imagem",
-  "mediaMoreImages": "+ {conte} mais",
+  "mediaMoreImages": "+  mais",
   "errorNotFound": "Beep não encontrado",
   "errorLoadError": "Falha ao carregar os detalhes do bip",
   "shareYourThoughts": "Compartilhe seus pensamentos sobre este avistamento...",

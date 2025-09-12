@@ -37,7 +37,7 @@
   "alertsTitle": "Waarschuwingen nabijgelegen",
   "noAlerts": "Nog geen waarschuwingen in de buurt.",
   "pullToRefresh": "Trek om te vernieuwen",
-  "alertDistance": "{afstand} afstand",
+  "alertDistance": "{distance} afstand",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Lager {lager}°",
+  "alertDirection": "Lager °",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "Geef microfoon toegang voor video-opname met audio.",
   "openSettings": "Instellingen openen",
   "alertDetailTitle": "Waarnemingsdetails",
-  "reportedBy": "Gerapporteerd door {gebruikersnaam}",
+  "reportedBy": "Gerapporteerd door",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Gerapporteerde tijd Ago}",
+  "reportedAt": "",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Koers naar object: {lager}°",
+  "bearingToObject": "Koers naar object: °",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Pilootmodus",
   "compassStandardDescription": "Basisrichting en navigatie",
   "compassPilotDescription": "Geavanceerde navigatie met ETA en vectoring",
-  "pointingTo": "Verwijzing naar {richting}",
+  "pointingTo": "Verwijzing naar",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -170,7 +170,7 @@
   "temperature": "Temperatuur",
   "pushBodyWitness": "Een gebruiker bevestigde dat ze hetzelfde object zien.",
   "weather": "Weer",
-  "cloudCover": "Cloud cover: {percentage}%",
+  "cloudCover": "Cloud cover: %",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Wind: {speed} {unit}",
+  "wind": "Wind:",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -226,7 +226,7 @@
   "videoOnly": "alleen video",
   "imageOnly": "alleen afbeelding",
   "timeJustNow": "net",
-  "timeDaysAgo": "{telling} geleden",
+  "timeDaysAgo": "geleden",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +235,7 @@
       }
     }
   },
-  "timeHoursAgo": "{telling}h geleden",
+  "timeHoursAgo": "h geleden",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +244,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{telling}m geleden",
+  "timeMinutesAgo": "m geleden",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "gefilterd",
   "detailsTitle": "Gegevens",
   "mufonCase": "MUFON Zaak",
-  "mufonCaseDetailsTitle": "MUFON Zaak #{gevalnummer} Details",
+  "mufonCaseDetailsTitle": "MUFON Zaak # Details",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "Fotoanalyse",
-  "mediaItemsProcessed": "Analyse: {count} mediabestand(s) verwerkt",
+  "mediaItemsProcessed": "Analyse:  mediabestand(s) verwerkt",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -411,7 +411,7 @@
   "premiumAccessWitnesses": "Bevestigde getuigen binnen zichtbereik",
   "comingSoon": "Binnenkort",
   "directionDistanceTitle": "Richting en afstand",
-  "mufonCaseTitle": "MUFON Zaak #{gevalnummer}",
+  "mufonCaseTitle": "MUFON Zaak #",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +430,7 @@
   "notificationSightingTitle": "UFO Waarneming",
   "notificationSightingUrgent": "UFO Waarneming",
   "notificationSightingEmergency": "UFO Waarneming",
-  "notificationSightingBody": "{getuigentekst} dichtbij {locatie} Naam}",
+  "notificationSightingBody": "dichtbij  Naam}",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -464,7 +464,7 @@
   },
   "notificationActionSnooze": "Snooze 1h",
   "notificationActionDismiss": "Ingetrokken",
-  "notificationDistance": "{afstand} afstand",
+  "notificationDistance": "afstand",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -486,7 +486,7 @@
   "shareAlert": "Alert delen",
   "previousPage": "Vorige",
   "nextPage": "Volgende",
-  "pageOf": "Blz. Pagina} van {TotalPages} ({TotalCount} totale pieps)",
+  "pageOf": "van  ( totale pieps)",
   "heroTagline": "Ontvang waarschuwingen wanneer naar buiten te gaan en op te zoeken",
   "heroDescription": "Mis nooit meer een UFO waarneming. Ontvang real-time waarschuwingen als iemand bij je in de buurt iets raars ziet in de lucht. Richt je telefoon en vind precies waar je moet zoeken.",
   "downloadApp": "Download App",
@@ -531,16 +531,16 @@
   "mufonEgg": "Eieren",
   "mufonOther": "Object",
   "mufonUnknown": "Onbekend object",
-  "mufonTitleFormat": "MUFON {classificatie} Verslag",
+  "mufonTitleFormat": "MUFON  Verslag",
   "nuforcAttribution": "NUFORC Databaserapport",
   "nuforcCaseNumber": "Zaak #",
   "nuforcGenericTitle": "NUFORC Waarnemingsrapport",
   "mediaImageNotFound": "Afbeelding niet gevonden",
   "mediaPlayVideo": "Video afspelen",
   "mediaViewImage": "Afbeelding bekijken",
-  "mediaCount": "{telling} afbeeldingen",
+  "mediaCount": "afbeeldingen",
   "mediaCountSingle": "1 afbeelding",
-  "mediaMoreImages": "+{telling} meer",
+  "mediaMoreImages": "+ meer",
   "errorNotFound": "Piep niet gevonden",
   "errorLoadError": "Kon piepgegevens niet laden",
   "shareYourThoughts": "Deel je gedachten over deze waarneming...",

@@ -37,7 +37,7 @@
   "alertsTitle": "In der Nähe Alerts",
   "noAlerts": "Noch keine Alarme in der Nähe.",
   "pullToRefresh": "Auffrischen",
-  "alertDistance": "{entfernung} weg",
+  "alertDistance": "{distance} weg",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Lager {lager}°",
+  "alertDirection": "Lager °",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Gemeldet {Zeit Ago",
+  "reportedAt": "Gemeldet ",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Objektträger: {lager}°",
+  "bearingToObject": "Objektträger: °",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Pilotmodus",
   "compassStandardDescription": "Grundüberschrift und Navigation",
   "compassPilotDescription": "Erweiterte Navigation mit ETA und Vektorisierung",
-  "pointingTo": "Auf {Richtung anzeigen}",
+  "pointingTo": "Auf",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "Kalibrierung Kompass..",
   "openAROverlay": "Open AR Overlay",
   "pushTitleAlertNearby": "UFO Alarm bei Ihnen",
-  "pushBodyAlertNearby": "Eine neue Sichtung wurde {distanz} entfernt gemeldet.",
+  "pushBodyAlertNearby": "Eine neue Sichtung wurde  entfernt gemeldet.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "Temperatur",
   "pushBodyWitness": "Ein Benutzer bestätigt, dass sie das gleiche Objekt sehen.",
   "weather": "Wetter",
-  "cloudCover": "Cloud Cover: {prozent}%",
+  "cloudCover": "Cloud Cover: %",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Wind: {speed} {unit}",
+  "wind": "Wind:",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "filtriert",
   "detailsTitle": "Details",
   "mufonCase": "MUFON Rechtssache",
-  "mufonCaseDetailsTitle": "MUFON Fall #{caseNumber} Details",
+  "mufonCaseDetailsTitle": "MUFON Fall # Details",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -283,7 +283,7 @@
   "unknownLocation": "Unbekannte Lage",
   "locationUnknown": "Ort Unbekannt",
   "witnessesLabel": "Zeugen",
-  "witnessesCountMessage": "{count} die leute bestätigten diese sichtung",
+  "witnessesCountMessage": "die leute bestätigten diese sichtung",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "Photoanalyse",
-  "mediaItemsProcessed": "Analyse: {count} Mediendatei(en) verarbeitet",
+  "mediaItemsProcessed": "Analyse:  Mediendatei(en) verarbeitet",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -389,7 +389,7 @@
   "whyReportToMufon": "Warum Bericht an MUFON?",
   "openMufonReport": "Open MUFON Bericht",
   "confirmedWitness": "Sie haben diese Sichtweise bestätigt",
-  "witnessesHaveConfirmed": "{count} die menschen haben diese sichtweise bestätigt",
+  "witnessesHaveConfirmed": "die menschen haben diese sichtweise bestätigt",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -430,7 +430,7 @@
   "notificationSightingTitle": "UFO Sichtung",
   "notificationSightingUrgent": "ZEITSCHRIFTEN Sichtung",
   "notificationSightingEmergency": "🚨 EMERGENY UFO Sichtung",
-  "notificationSightingBody": "{witnessText} in der Nähe von {location Name",
+  "notificationSightingBody": "in der Nähe von",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -464,7 +464,7 @@
   },
   "notificationActionSnooze": "Snooz 1h",
   "notificationActionDismiss": "Entlassung",
-  "notificationDistance": "{entfernung} weg",
+  "notificationDistance": "weg",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -486,7 +486,7 @@
   "shareAlert": "Alarmstufe",
   "previousPage": "Vorherige",
   "nextPage": "Nächste",
-  "pageOf": "Seite {current Seite} von {totalPages} ({totalCount} total beeps)",
+  "pageOf": "Seite  von  ( total beeps)",
   "heroTagline": "Erhalten Sie Alarme, wenn Sie nach draußen gehen und nach oben schauen",
   "heroDescription": "Verpassen Sie nie eine andere UFO-Sicht. Erhalten Sie Echtzeit-Benachrichtigungen, wenn jemand in der Nähe sieht etwas seltsam am Himmel. Zeigen Sie Ihr Telefon und finden Sie genau, wo Sie suchen.",
   "downloadApp": "📱 App herunterladen",
@@ -531,16 +531,16 @@
   "mufonEgg": "Eier",
   "mufonOther": "Gegenstand",
   "mufonUnknown": "Unbekanntes Objekt",
-  "mufonTitleFormat": "MUFON {Klassifikation} Bericht",
+  "mufonTitleFormat": "MUFON  Bericht",
   "nuforcAttribution": "NUFORC Datenbankbericht",
   "nuforcCaseNumber": "Fall",
   "nuforcGenericTitle": "NUFORC Sichtbericht",
   "mediaImageNotFound": "Bild nicht gefunden",
   "mediaPlayVideo": "Video spielen",
   "mediaViewImage": "Bild anzeigen",
-  "mediaCount": "{count} bilder",
+  "mediaCount": "bilder",
   "mediaCountSingle": "1 bild",
-  "mediaMoreImages": "+{count} mehr",
+  "mediaMoreImages": "+ mehr",
   "errorNotFound": "Beep nicht gefunden",
   "errorLoadError": "Versäumt, um Details zu laden",
   "shareYourThoughts": "Teilen Sie Ihre Gedanken über dieses Sehen...",

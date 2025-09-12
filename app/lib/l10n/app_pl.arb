@@ -37,7 +37,7 @@
   "alertsTitle": "Wpisy w pobliżu",
   "noAlerts": "Żadnych alarmów w pobliżu.",
   "pullToRefresh": "Pociągnij, aby odświeżyć",
-  "alertDistance": "{odległość} daleko",
+  "alertDistance": "{distance} daleko",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Łożysko {łożysko} °",
+  "alertDirection": "Łożysko {bearing} °",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "Dostęp do mikrofonu Granta do nagrywania wideo z audio.",
   "openSettings": "Otwórz ustawienia",
   "alertDetailTitle": "Podglądanie szczegółów",
-  "reportedBy": "Zgłoszony przez {nazwa użytkownika}",
+  "reportedBy": "Zgłoszony przez {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Zgłoszone {czas Ago",
+  "reportedAt": "Zgłoszone ",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Nakładanie na obiekt: {naniesienie} °",
+  "bearingToObject": "Nakładanie na obiekt:  °",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Tryb pilota",
   "compassStandardDescription": "Nagłówek i nawigacja",
   "compassPilotDescription": "Zaawansowana nawigacja z ETA i wektoring",
-  "pointingTo": "Wskazanie na {kierunek}",
+  "pointingTo": "Wskazanie na",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -170,7 +170,7 @@
   "temperature": "Temperatura",
   "pushBodyWitness": "Użytkownik potwierdził, że widzi ten sam obiekt.",
   "weather": "Pogoda",
-  "cloudCover": "Chmura: {procent}%",
+  "cloudCover": "Chmura: %",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Wiatr: {prędkość} {jednostka}",
+  "wind": "Wiatr:",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -226,7 +226,7 @@
   "videoOnly": "tylko wideo",
   "imageOnly": "tylko obraz",
   "timeJustNow": "właśnie teraz",
-  "timeDaysAgo": "{liczyć} d ago",
+  "timeDaysAgo": "d ago",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +235,7 @@
       }
     }
   },
-  "timeHoursAgo": "{licz} h ago",
+  "timeHoursAgo": "h ago",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +244,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{count} me ago",
+  "timeMinutesAgo": "me ago",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +262,7 @@
   "filteredSuffix": "filtrowane",
   "detailsTitle": "Szczegóły",
   "mufonCase": "MUFON Przypadek",
-  "mufonCaseDetailsTitle": "MUFON Sprawa # {numer sprawy} Szczegóły",
+  "mufonCaseDetailsTitle": "MUFON Sprawa #  Szczegóły",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -293,7 +293,7 @@
     }
   },
   "photoAnalysisTitle": "Analiza zdjęć",
-  "mediaItemsProcessed": "Analiza: przetwarzany (-e) plik (-y) mediów {count}",
+  "mediaItemsProcessed": "Analiza: przetwarzany (-e) plik (-y) mediów",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -411,7 +411,7 @@
   "premiumAccessWitnesses": "Potwierdzeni świadkowie w zasięgu widoczności",
   "comingSoon": "Wkrótce",
   "directionDistanceTitle": "Kierunek i odległość",
-  "mufonCaseTitle": "MUFON Sprawa # {numer sprawy}",
+  "mufonCaseTitle": "MUFON Sprawa #",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +430,7 @@
   "notificationSightingTitle": "UFO Zwiedzanie",
   "notificationSightingUrgent": "NAPRAWDĘ UFO Zwiedzanie",
   "notificationSightingEmergency": "ANALIZJA UFO Zwiedzanie",
-  "notificationSightingBody": "{świadek Tekst} w pobliżu {lokalizacja Nazwa}",
+  "notificationSightingBody": "w pobliżu",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -464,7 +464,7 @@
   },
   "notificationActionSnooze": "Snooze 1h",
   "notificationActionDismiss": "Rozejść się",
-  "notificationDistance": "{odległość} daleko",
+  "notificationDistance": "daleko",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -486,7 +486,7 @@
   "shareAlert": "Alert akcji",
   "previousPage": "Poprzedni",
   "nextPage": "Następny",
-  "pageOf": "Strona {aktualna Page} of {totalPages} ({totalCount} total beeps)",
+  "pageOf": "Strona  of  ( total beeps)",
   "heroTagline": "Pobierz ostrzeżenia, kiedy wyjść na zewnątrz i spojrzeć w górę",
   "heroDescription": "Nigdy nie przegap kolejnego widoku UFO. Zawiadom o czasie rzeczywistym, gdy ktoś w pobliżu zobaczy coś dziwnego na niebie. Wyceluj w telefon i znajdź dokładnie gdzie szukać.",
   "downloadApp": "Pobierz aplikację",
@@ -531,16 +531,16 @@
   "mufonEgg": "Jaja",
   "mufonOther": "Obiekt",
   "mufonUnknown": "Nieznany obiekt",
-  "mufonTitleFormat": "MUFON {klasyfikacja} Sprawozdanie",
+  "mufonTitleFormat": "MUFON  Sprawozdanie",
   "nuforcAttribution": "NUFORC Sprawozdanie z bazy danych",
   "nuforcCaseNumber": "Case #",
   "nuforcGenericTitle": "NUFORC Sprawozdanie z obserwacji",
   "mediaImageNotFound": "Nie znaleziono obrazka",
   "mediaPlayVideo": "Zagraj w wideo",
   "mediaViewImage": "Wyświetl obrazek",
-  "mediaCount": "{licz} obrazy",
+  "mediaCount": "obrazy",
   "mediaCountSingle": "1 obraz",
-  "mediaMoreImages": "+ {liczyć} więcej",
+  "mediaMoreImages": "+  więcej",
   "errorNotFound": "Beep nie znaleziono",
   "errorLoadError": "Nie udało się wczytać szczegółów sygnału",
   "shareYourThoughts": "Podziel się swoimi myślami na temat tego widzenia...",

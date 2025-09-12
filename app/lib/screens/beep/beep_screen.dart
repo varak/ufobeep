@@ -398,7 +398,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       // Show success with short URL and navigate to sighting detail
       if (mounted) {
         final shortUrl = beepResult['short_url'] as String?;
-        final l10n = AppLocalizations.of(context);
+        final l10n = AppLocalizations.of(context)!;
         final successMessage = l10n.beepSent;
             
         ScaffoldMessenger.of(context).showSnackBar(
@@ -437,7 +437,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     return NightSkyBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -771,20 +771,20 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
             const Icon(Icons.location_on, color: AppColors.brandPrimary),
             const SizedBox(width: 8),
             Text(
-              AppLocalizations.of(context).locationPermissionTitle,
+              AppLocalizations.of(context)!.locationPermissionTitle,
               style: const TextStyle(color: AppColors.textPrimary),
             ),
           ],
         ),
         content: Text(
-          AppLocalizations.of(context).locationPermissionBody,
+          AppLocalizations.of(context)!.locationPermissionBody,
           style: const TextStyle(color: AppColors.textSecondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: Text(
-              AppLocalizations.of(context).cancel,
+              AppLocalizations.of(context)!.cancel,
               style: const TextStyle(color: AppColors.textTertiary),
             ),
           ),
@@ -794,7 +794,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
               backgroundColor: AppColors.brandPrimary,
               foregroundColor: Colors.black,
             ),
-            child: Text(AppLocalizations.of(context).openSettings),
+            child: Text(AppLocalizations.of(context)!.openSettings),
           ),
         ],
       ),
@@ -812,20 +812,20 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
             const Icon(Icons.settings, color: AppColors.semanticWarning),
             const SizedBox(width: 8),
             Text(
-              AppLocalizations.of(context).permissionsRequired,
+              AppLocalizations.of(context)!.permissionsRequired,
               style: const TextStyle(color: AppColors.textPrimary),
             ),
           ],
         ),
         content: Text(
-          AppLocalizations.of(context).locationPermissionBody,
+          AppLocalizations.of(context)!.locationPermissionBody,
           style: const TextStyle(color: AppColors.textSecondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: Text(
-              AppLocalizations.of(context).cancel,
+              AppLocalizations.of(context)!.cancel,
               style: const TextStyle(color: AppColors.textTertiary),
             ),
           ),
@@ -835,7 +835,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
               backgroundColor: AppColors.semanticWarning,
               foregroundColor: Colors.black,
             ),
-            child: Text(AppLocalizations.of(context).openSettings),
+            child: Text(AppLocalizations.of(context)!.openSettings),
           ),
         ],
       ),

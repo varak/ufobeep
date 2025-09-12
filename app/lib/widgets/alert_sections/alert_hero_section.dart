@@ -433,7 +433,7 @@ class AlertHeroSection extends StatelessWidget {
     final localDateTime = dateTime.toLocal();
     final difference = now.difference(localDateTime);
 
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     if (difference.inDays > 0) {
       return l10n.timeDaysAgo(difference.inDays);
     } else if (difference.inHours > 0) {

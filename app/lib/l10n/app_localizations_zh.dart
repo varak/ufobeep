@@ -121,12 +121,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '离开';
+    return '远离';
   }
 
   @override
   String alertDirection(int bearing) {
-    return '方位为_PH_0_%';
+    return '轴承$bearing';
   }
 
   @override
@@ -170,7 +170,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String beepSentWithUrl(String shortUrl) {
-    return 'Beep sent successfully';
+    return '哔声成功发送';
   }
 
   @override
@@ -214,12 +214,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return '报告作者:_PH_0__';
+    return '由 $username 报告';
   }
 
   @override
-  String reportedAt(String timeAgo) {
-    return '报告 _PH_0__';
+  String reportedAt(String timeAgo, Object time) {
+    return '已报告  阿广';
   }
 
   @override
@@ -229,7 +229,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return '反对: - PH_0+++++++++++++++++++++++++++++++++++++';
+    return '向反对方显示 :';
   }
 
   @override
@@ -257,7 +257,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get autoFollowEnabled => '你们现在正在遵守这一警告.';
 
   @override
-  String get noCommentsYet => '还没有评论。 成为第一个!';
+  String get noCommentsYet => '还没有评论。 成为第一个评论者!';
 
   @override
   String get newCommentNotification => '新的评论你跟踪.';
@@ -288,7 +288,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return '指向 _PH_0__ (中文(简体) )';
+    return '指向';
   }
 
   @override
@@ -302,7 +302,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return '据报道,有新的目击地点在_PH_0_离开.';
+    return '传出新的目击画面.';
   }
 
   @override
@@ -315,6 +315,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get pushTitleWitness => '证人确认';
 
   @override
+  String get temperature => '温度';
+
+  @override
   String get pushBodyWitness => '一个用户确认他们看到了同一个对象.';
 
   @override
@@ -322,12 +325,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return '云盖曰: - PH_0+++++++++++++++++++++++++++++++++++++';
+    return '云盖:';
   }
 
   @override
   String wind(num speed, String unit) {
-    return '风:_PH_0___PH_1_';
+    return '风:';
   }
 
   @override
@@ -419,7 +422,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get verified => '已验证';
 
   @override
-  String get beepOnly => '只有哔声';
+  String get beepOnly => '仅报告';
+
+  @override
+  String get reportOnly => '仅报告';
 
   @override
   String get videoOnly => '只有视频';
@@ -432,17 +438,17 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '时间轴:';
+    return '之前';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '0 小时前';
+    return '你刚才说';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '0 分钟前';
+    return '时间轴:';
   }
 
   @override
@@ -474,7 +480,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return '毛里求斯 案例 QQPH_ 0__ 细节';
+    return '细节';
   }
 
   @override
@@ -493,13 +499,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get linkCopied => '链接复制到剪贴板';
 
   @override
-  String get locationLabel => '地点';
+  String get locationLabel => '地点 :';
 
   @override
   String get distanceLabel => '距离';
 
   @override
-  String get timeLabel => '时间';
+  String get timeLabel => '时间 :';
 
   @override
   String get reportedByLabel => '报告';
@@ -523,7 +529,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return '分析:_PH_0_媒体文件已处理';
+    return '分析:  已处理的媒体文件';
   }
 
   @override
@@ -597,6 +603,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get whatDoYouSee => '你看见什么了?';
+
+  @override
+  String get ufo => '不明飞行物';
+
+  @override
+  String get sighting => '观察';
 
   @override
   String get ufoSighting => '不明飞行物 观察';
@@ -692,6 +704,75 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ufoTypeBlimp => '闪烁';
 
   @override
+  String get shapeTriangle => '三角形';
+
+  @override
+  String get shapeDisc => '盘片';
+
+  @override
+  String get shapeDisk => '磁盘';
+
+  @override
+  String get shapeSphere => '区域';
+
+  @override
+  String get shapeCigar => '雪茄';
+
+  @override
+  String get shapeLight => '光线';
+
+  @override
+  String get shapeBoomerang => ' boom';
+
+  @override
+  String get shapeDiamond => '钻石';
+
+  @override
+  String get shapeRectangle => '矩形';
+
+  @override
+  String get shapeOval => '椭圆';
+
+  @override
+  String get shapeCone => '圆锥';
+
+  @override
+  String get shapeCross => '横';
+
+  @override
+  String get shapeCylinder => '圆柱形';
+
+  @override
+  String get shapeDumbbell => '哑铃';
+
+  @override
+  String get shapeTeardrop => '泪滴';
+
+  @override
+  String get shapeTicTac => '盘点';
+
+  @override
+  String get shapeBullet => '子弹';
+
+  @override
+  String get shapeSaturn => '静坐';
+
+  @override
+  String get shapeStarlike => '像星星一样';
+
+  @override
+  String get shapeBlimp => '蓝宝石';
+
+  @override
+  String get shapeFireball => '火球';
+
+  @override
+  String get shapeFormation => '编队';
+
+  @override
+  String get shapeUnknown => '不详';
+
+  @override
   String get actionsTitle => '行动';
 
   @override
@@ -758,7 +839,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return '毛里求斯 案件QQPH_0___';
+    return '毛里求斯 案件数量';
   }
 
   @override
@@ -777,56 +858,326 @@ class AppLocalizationsZh extends AppLocalizations {
   String get alertFollowError => '更新跟随状态出错';
 
   @override
-  String get notificationChannelAlerts => 'UFOBeep Alerts';
+  String get notificationChannelAlerts => 'UFOBEP 警报';
 
   @override
-  String get notificationChannelAlertsDesc =>
-      'Notifications for UFO beeps and proximity alerts';
+  String get notificationChannelAlertsDesc => '关于UFO哔声和近距离警报的通知';
 
   @override
-  String get notificationSightingTitle => 'UFO Sighting';
+  String get notificationSightingTitle => '不明飞行物 观察';
 
   @override
-  String get notificationSightingUrgent => '⚠️ URGENT UFO Sighting';
+  String get notificationSightingUrgent => '紧急UFO 观察';
 
   @override
-  String get notificationSightingEmergency => '🚨 EMERGENCY UFO Sighting';
+  String get notificationSightingEmergency => '紧急UFO 观察';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '$witnessText near $locationName';
+    return '靠近   名称]';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '💬 $username commented';
+    return '注释';
   }
 
   @override
-  String get notificationWitnessText => 'New sighting';
+  String get notificationWitnessText => '新视觉';
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '$count witnesses';
+    return '证人';
   }
 
   @override
-  String get notificationActionSnooze => 'Snooze 1h';
+  String get notificationActionSnooze => '斯努兹 1小时';
 
   @override
-  String get notificationActionDismiss => 'Dismiss';
+  String get notificationActionDismiss => '开除';
 
   @override
   String notificationDistance(String distance) {
-    return '$distance away';
+    return '远离';
   }
 
   @override
-  String get unknown => 'unknown';
+  String get unknown => '不详';
 
   @override
-  String get report => 'report';
+  String get report => '报告';
 
   @override
-  String get mufon => 'mufon';
+  String get mufon => '木冯';
+
+  @override
+  String get recentUfoBeepsTitle => '近期的UFO 黄蜂';
+
+  @override
+  String get recentUfoBeepsSubtitle => '现场UFOBEP社区报告和MUFON数据库目击';
+
+  @override
+  String get recentUfoBeepsDescription =>
+      '此饲料结合了我们移动应用用户的实时UFOBEP\"哔哩哔哩\"与MUFON数据库的历史报告.';
+
+  @override
+  String get loadingBeeps => '正在装入最近的蜂鸣...';
+
+  @override
+  String get noBeepsAvailable => '目前没有哔声.';
+
+  @override
+  String get anomalyReported => '异常报告';
+
+  @override
+  String get copyShortLink => '复制短链接';
+
+  @override
+  String get shareAlert => '共享提醒';
+
+  @override
+  String get previousPage => '上一个';
+
+  @override
+  String get nextPage => '下一个';
+
+  @override
+  String pageOf(Object currentPage, Object totalCount, Object totalPages) {
+    return '页面   ( 总哔声)';
+  }
+
+  @override
+  String get heroTagline => '什么时候到外面看看';
+
+  @override
+  String get heroDescription =>
+      '永远不要错过另一个UFO的目击。 当有人在天上看到奇怪的东西时,即刻发出警报. 把电话对准,找到可以找的地方.';
+
+  @override
+  String get downloadApp => 'QQ 下载 App';
+
+  @override
+  String get viewAllBeeps => 'QQ 查看全部蜂窝';
+
+  @override
+  String get sightingsMap => '图像';
+
+  @override
+  String get globalSightingNetwork => '全球观察网';
+
+  @override
+  String get howItWorks => '如何UFOBEP工作';
+
+  @override
+  String get backToBeeps => '回到蜂窝';
+
+  @override
+  String get loadingDetails => '正在装入哔声细节...';
+
+  @override
+  String get details => '细节';
+
+  @override
+  String get location => '地点';
+
+  @override
+  String get timeAgo => '刚才';
+
+  @override
+  String get timeMinutes => 'm';
+
+  @override
+  String get timeHours => 'h';
+
+  @override
+  String get timeDays => 'd';
+
+  @override
+  String get distanceKm => '公里';
+
+  @override
+  String get distanceMiles => '英里数';
+
+  @override
+  String get distanceNearby => '附近';
+
+  @override
+  String get ufobeepWitnesses => '证人';
+
+  @override
+  String get ufobeepConfirmations => '确认';
+
+  @override
+  String get ufobeepAlertLevel => '警报级别';
+
+  @override
+  String get ufobeepReportType => 'UFOUBUP 报告';
+
+  @override
+  String get mufonAttribution => '毛里求斯 数据库报告';
+
+  @override
+  String get mufonCaseNumber => '案例#';
+
+  @override
+  String get mufonGenericTitle => 'MUFON 观察报告';
+
+  @override
+  String get mufonSphere => '球体';
+
+  @override
+  String get mufonLight => '光线';
+
+  @override
+  String get mufonDisk => '磁盘';
+
+  @override
+  String get mufonTriangle => '三角形';
+
+  @override
+  String get mufonCigar => '雪茄';
+
+  @override
+  String get mufonOval => '奥巴马';
+
+  @override
+  String get mufonCylinder => '圆柱';
+
+  @override
+  String get mufonRectangle => '矩形';
+
+  @override
+  String get mufonDiamond => '钻石';
+
+  @override
+  String get mufonFireball => '火球';
+
+  @override
+  String get mufonFlash => '闪光';
+
+  @override
+  String get mufonFormation => '组建';
+
+  @override
+  String get mufonChanging => '变化';
+
+  @override
+  String get mufonChevron => '雪佛龙';
+
+  @override
+  String get mufonCone => '锥形';
+
+  @override
+  String get mufonCross => '交叉';
+
+  @override
+  String get mufonEgg => '鸡蛋';
+
+  @override
+  String get mufonOther => '对象';
+
+  @override
+  String get mufonUnknown => '未知对象';
+
+  @override
+  String mufonTitleFormat(Object classification) {
+    return 'MUFON  报告';
+  }
+
+  @override
+  String get nuforcAttribution => '努福尔茨 数据库报告';
+
+  @override
+  String get nuforcCaseNumber => '案例#';
+
+  @override
+  String get nuforcGenericTitle => '努福尔茨 观察报告';
+
+  @override
+  String get mediaImageNotFound => '未找到图像';
+
+  @override
+  String get mediaPlayVideo => '播放视频';
+
+  @override
+  String get mediaViewImage => '查看图像';
+
+  @override
+  String mediaCount(Object count) {
+    return '图像';
+  }
+
+  @override
+  String get mediaCountSingle => '1 张图像';
+
+  @override
+  String mediaMoreImages(Object count) {
+    return '再来点';
+  }
+
+  @override
+  String get errorNotFound => '未找到哔声';
+
+  @override
+  String get errorLoadError => '装入哔声细节失败';
+
+  @override
+  String get shareYourThoughts => '分享你对这次目击的看法...';
+
+  @override
+  String get postComment => '邮政注释';
+
+  @override
+  String get loggedInAs => '登录为';
+
+  @override
+  String get logout => '注销';
+
+  @override
+  String get notFollowing => '没有';
+
+  @override
+  String get follow => '跟着';
+
+  @override
+  String get navRecentBeeps => '最近的蜂类';
+
+  @override
+  String get navMap => '地图';
+
+  @override
+  String get navDownloadApp => '下载 App';
+
+  @override
+  String get alertLevel => '警报级别';
+
+  @override
+  String get witnesses => '证人';
+
+  @override
+  String get confirmations => '确认';
+
+  @override
+  String get reporterLabel => '用户报告';
+
+  @override
+  String get coordinatesLabel => '坐标';
+
+  @override
+  String get eventTime => '活动时间';
+
+  @override
+  String get reportedTime => '报告时间';
+
+  @override
+  String get mufonDatabaseReport => '毛里求斯 数据库报告';
+
+  @override
+  String get copyShortLinkTitle => '复制链接到剪贴板';
+
+  @override
+  String get imageNotFound => '未找到图像';
+
+  @override
+  String get ufoSightingAlt => '不明飞行物目击';
 }
