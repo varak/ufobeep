@@ -146,6 +146,12 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
   
 
   void _onFormFieldChanged() {
+    // CRITICAL FIX: Don't rebuild during submission to prevent media files from disappearing
+    if (_isSubmitting) {
+      debugPrint('🚫 Skipping form rebuild during submission to preserve media files');
+      return;
+    }
+    
     setState(() {});
     debugPrint('Form validation: desc=${_descriptionController.text.length} chars, valid=$_isFormValid');
     debugPrint('Form change - sensor data still present: ${_sensorData != null}, GPS: ${_sensorData?.latitude}, ${_sensorData?.longitude}');
