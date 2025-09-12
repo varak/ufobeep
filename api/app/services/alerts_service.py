@@ -5,10 +5,13 @@ Extracts all the database and business logic from HTTP endpoints
 import json
 import uuid
 import math
+import logging
 from datetime import datetime, timezone
 from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass
 from ..utils.short_url_utils import generate_short_url
+
+logger = logging.getLogger(__name__)
 
 @dataclass
 class AlertLocation:
