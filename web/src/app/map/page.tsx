@@ -21,7 +21,7 @@ export default function MapPage() {
   useEffect(() => {
     const fetchAlerts = async () => {
       try {
-        const response = await fetch('/api/beep?limit=200&offset=0&verified_only=false')
+        const response = await fetch('/api/beep')
         const data = await response.json()
         if (data.success && data.data?.alerts) {
           const valid = data.data.alerts.filter((a: Alert) => a.location?.latitude !== 0 || a.location?.longitude !== 0)
