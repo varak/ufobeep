@@ -915,6 +915,7 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('🔧 BUILD: Starting build method - isSubmitting=$_isSubmitting, mediaFiles=${_mediaFiles.length}');
     return NightSkyBackground(
       child: Scaffold(
         appBar: AppBar(
@@ -999,18 +1000,11 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       return const SizedBox.shrink();
     }
     
-    // Temporarily disable MultiFilePreview to isolate hanging issue
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.darkSurface,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.darkBorder),
-      ),
-      child: Text(
-        '${_mediaFiles.length} media files selected (preview disabled for debugging)',
-        style: const TextStyle(color: AppColors.textSecondary),
-      ),
+    return MultiFilePreview(
+      mediaFiles: _mediaFiles,
+      onRemove: _removeMediaFile,
+      onReorder: _reorderMediaFiles,
+      allowEdit: true,
     );
   }
   
