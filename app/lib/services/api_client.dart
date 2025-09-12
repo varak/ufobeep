@@ -1221,7 +1221,7 @@ extension ApiClientExtension on ApiClient {
     try {
       debugPrint('Updating sighting $sightingId with media files: $fileNames');
       
-      final response = await ApiClient.dio.patch('/beep/$sightingId/media', data: {
+      final response = await ApiClient.dio.patch('/api/beep/$sightingId/media', data: {
         'media_files': fileNames,
       });
       
@@ -1322,7 +1322,7 @@ extension ApiClientExtension on ApiClient {
       // Use SafeUploader to handle content:// URIs properly
       debugPrint('before SafeUploader creation');
       final baseUri = Uri.parse(ApiClient.dio.options.baseUrl);
-      final uploadUri = baseUri.resolve('/beep/$sightingId/media');
+      final uploadUri = baseUri.resolve('/api/beep/$sightingId/media');
       
       final uploader = SafeUploader(uploadUri);
       
