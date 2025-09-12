@@ -15,7 +15,7 @@ interface Alert {
 
 export default function MapPage() {
   const [alerts, setAlerts] = useState<Alert[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false) // Don't block map rendering
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -64,8 +64,13 @@ export default function MapPage() {
           </div>
         )}
 
-        {!loading && !error && (
-          <AlertsMap alerts={alerts as any} height="70vh" />
+        {/* Always show map - don't wait for data */}
+        <AlertsMap alerts={alerts as any} height="70vh" />
+        
+        {loading && (
+          <div className="absolute top-4 right-4 bg-dark-surface border border-brand-primary/20 rounded-lg px-3 py-2">
+            <div className="text-sm text-brand-primary">Loading markers...</div>
+          </div>
         )}
       </div>
     </main>
