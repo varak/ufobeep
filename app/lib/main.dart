@@ -264,12 +264,14 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
                        firstFile.path.toLowerCase().endsWith('.avi');
         
         final shareData = {
-          'mediaFiles': [{
-            'mediaFile': firstFile,
-            'isVideo': isVideo,
+          'mediaFiles': files.map((file) => {
+            'mediaFile': file,
+            'isVideo': file.path.toLowerCase().endsWith('.mp4') || 
+                      file.path.toLowerCase().endsWith('.mov') || 
+                      file.path.toLowerCase().endsWith('.avi'),
             'photoMetadata': <String, dynamic>{},
-            'platformFile': null, // Will be handled gracefully in compose screen
-          }],
+            'platformFile': null,
+          }).toList(),
           'sensorData': sensorData,
           'description': '',
         };
@@ -288,12 +290,14 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
                        firstFile.path.toLowerCase().endsWith('.avi');
         
         _queuedShareData = {
-          'mediaFiles': [{
-            'mediaFile': firstFile,
-            'isVideo': isVideo,
+          'mediaFiles': files.map((file) => {
+            'mediaFile': file,
+            'isVideo': file.path.toLowerCase().endsWith('.mp4') || 
+                      file.path.toLowerCase().endsWith('.mov') || 
+                      file.path.toLowerCase().endsWith('.avi'),
             'photoMetadata': <String, dynamic>{},
             'platformFile': null,
-          }],
+          }).toList(),
           'sensorData': sensorData,
           'description': '',
         };
