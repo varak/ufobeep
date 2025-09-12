@@ -5,6 +5,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 import 'permission_service.dart';
 import 'sound_service.dart';
 import 'device_service.dart';
@@ -231,21 +232,27 @@ class BeepService {
       
       print('Sending anonymous beep: ${json.encode(payload)}');
       
-      // Send the beep - ApiClient.dio already has auth headers via AuthInterceptor
-      final response = await _dio.post(
-        '/beep',
-        data: payload,
+      // Use HttpClient instead of Dio to avoid hanging issues
+      final uri = Uri.parse('${ApiClient.baseUrl}/beep');
+      final request = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          if (accessToken != null) 'Authorization': 'Bearer $accessToken',
+        },
+        body: json.encode(payload),
       );
       
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final result = response.data;
+      if (request.statusCode == 200 || request.statusCode == 201) {
+        final result = json.decode(request.body);
         
         // Store in local history
         await _addToHistory(result['sighting_id']);
         
         return result;
       } else {
-        throw Exception('Failed to send beep: ${response.statusCode}');
+        throw Exception('Failed to send beep: ${request.statusCode}');
       }
       
     } catch (e) {
