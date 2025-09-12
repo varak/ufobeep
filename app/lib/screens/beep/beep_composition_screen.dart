@@ -441,31 +441,10 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       try {
         wd.mark("processing file ${i + 1}/${_mediaFiles.length}");
         _log('Uploading file ${i + 1}/${_mediaFiles.length}: ${mediaFile.path}');
+        _log('File exists: ${await mediaFile.exists()}');
         
-        // FIXED: Skip problematic File operations - use XFile directly
-        bool fileExists = false;
-        int fileSize = 0;
-        try {
-          fileExists = await mediaFile.exists().timeout(Duration(seconds: 3));
-          _log('File exists: $fileExists');
-        } catch (e) {
-          _log('Warning: Could not check file existence: $e');
-          fileExists = true; // Assume it exists to continue
-        }
-        
-        if (!fileExists) {
-          _log('Skipping non-existent file: ${mediaFile.path}');
-          continue;
-        }
-        
-        try {
-          wd.mark("checking file length for ${mediaFile.path}");
-          fileSize = await mediaFile.length().timeout(Duration(seconds: 3));
-          _log('File size: $fileSize bytes');
-        } catch (e) {
-          _log('Warning: Could not get file size: $e');
-          // Continue without size - SafeUploader handles unknown sizes
-        }
+        wd.mark("checking file length for ${mediaFile.path}");
+        _log('File size: ${await mediaFile.length()} bytes');
         
         wd.mark("calling uploadMediaToSighting API");
         _log('Calling uploadMediaToSighting...');

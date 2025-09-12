@@ -306,8 +306,9 @@ GoRouter appRouter(AppRouterRef ref) {
                       attachToSightingId: extra?['attachToSightingId'],
                     );
                   } catch (e, stackTrace) {
-                    debugPrint('ERROR creating BeepCompositionScreen: $e');
-                    debugPrint('Stack trace: $stackTrace');
+                    debugPrint('❌ ERROR creating BeepCompositionScreen: $e');
+                    debugPrint('❌ Stack trace: $stackTrace');
+                    debugPrint('❌ Extra data: $extra');
                     
                     // Return error screen instead of crashing
                     return Scaffold(
