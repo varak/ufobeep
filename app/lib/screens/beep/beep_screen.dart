@@ -313,9 +313,8 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
         }
       }
 
-      setState(() {
-        _isCapturing = false;
-      });
+      // FIXED: Don't trigger setState rebuild - navigation happens immediately  
+      _isCapturing = false;
 
       if (mediaFiles.isEmpty) {
         setState(() {
@@ -324,10 +323,8 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
         return;
       }
 
-      // Add selected files to captured media list instead of navigating
+      // Add selected files to captured media list
       final List<File> newMediaFiles = mediaFiles.map((m) => m['mediaFile'] as File).toList();
-      
-      // FIXED: Don't trigger setState rebuild since navigation happens immediately
       _capturedMedia.addAll(newMediaFiles);
       
       debugPrint('✅ BEEP: Added ${newMediaFiles.length} files from gallery. Total: ${_capturedMedia.length}');
