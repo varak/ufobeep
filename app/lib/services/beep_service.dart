@@ -11,6 +11,7 @@ import 'sound_service.dart';
 import 'device_service.dart';
 import 'api_client.dart';
 import 'auth_repository.dart';
+import '../config/environment.dart';
 
 class BeepService {
   static const String _deviceIdKey = 'beep_device_id';
@@ -233,7 +234,7 @@ class BeepService {
       print('Sending anonymous beep: ${json.encode(payload)}');
       
       // Use HttpClient instead of Dio to avoid hanging issues
-      final uri = Uri.parse('${ApiClient.baseUrl}/beep');
+      final uri = Uri.parse('${AppEnvironment.apiBaseUrl}/beep');
       final request = await http.post(
         uri,
         headers: {
