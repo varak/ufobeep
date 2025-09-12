@@ -227,10 +227,12 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       }
       
       wd.mark("setting submission state to true");
-      // Skip setState during submission to avoid UI thread hang
-      _log('Setting isSubmitting = true (no setState to avoid hang)');
-      _isSubmitting = true;
-      _errorMessage = null;
+      // Set isSubmitting with setState to prevent UI inconsistency
+      _log('Setting isSubmitting = true with setState');
+      setState(() {
+        _isSubmitting = true;
+        _errorMessage = null;
+      });
       
       wd.mark("state updated - about to call Future.any with timeout");
       try {
