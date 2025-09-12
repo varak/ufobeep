@@ -9,14 +9,85 @@
 set -e
 
 if [ $# -eq 0 ]; then
-    echo "Usage: ./mufon.sh <date or range>"
+    echo "Usage: ./mufon.sh <date or range> [--retry <log_file>]"
     echo "Examples:"
     echo "  ./mufon.sh 2025-01-27"
     echo "  ./mufon.sh yesterday"
     echo "  ./mufon.sh today"
     echo "  ./mufon.sh 2025-08-01:2025-08-15"
     echo "  ./mufon.sh yesterday:today"
+    echo "  ./mufon.sh --retry logs/mufon_import_20250912_143022.log"
     exit 1
+fi
+
+# Check for retry mode
+if [ "$1" = "--retry" ]; then
+    if [ $# -ne 2 ]; then
+        echo "Usage: ./mufon.sh --retry <log_file>"
+        exit 1
+    fi
+    
+    LOG_PATTERN="$2"
+    
+    # Expand glob pattern and check files exist
+    LOG_FILES=$(ls $LOG_PATTERN 2>/dev/null)
+    
+    if [ -z "$LOG_FILES" ]; then
+        echo "❌ No log files found matching: $LOG_PATTERN"
+        exit 1
+    fi
+    
+    echo "🔍 Analyzing failures in: $LOG_PATTERN"
+    echo "📁 Found log files:"
+    echo "$LOG_FILES"
+    echo ""
+    
+    # Extract failed dates from all matching log files
+    FAILED_DATES=$(grep -E "❌|⚠️|failed|Failed|ERROR" $LOG_FILES | \
+                   grep -oE "20[0-9]{2}-[0-9]{2}-[0-9]{2}" | \
+                   sort | uniq)
+    
+    if [ -z "$FAILED_DATES" ]; then
+        echo "✅ No failed dates found in log file"
+        exit 0
+    fi
+    
+    echo "📅 Found failed dates:"
+    echo "$FAILED_DATES"
+    echo ""
+    
+    read -p "Retry these dates? (y/N): " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "❌ Aborted by user"
+        exit 0
+    fi
+    
+    echo "🔄 Retrying failed dates..."
+    success_count=0
+    fail_count=0
+    
+    for date in $FAILED_DATES; do
+        echo ""
+        echo "🔄 Retrying: $date"
+        
+        # Recursively call mufon.sh for this date
+        if ./mufon.sh "$date"; then
+            echo "✅ Retry successful for $date"
+            ((success_count++))
+        else
+            echo "❌ Retry failed for $date"
+            ((fail_count++))
+        fi
+        
+        sleep 3
+    done
+    
+    echo ""
+    echo "🎉 Retry process complete:"
+    echo "  ✅ Successful: $success_count"
+    echo "  ❌ Failed: $fail_count"
+    exit 0
 fi
 
 DATE_INPUT="$1"
@@ -99,7 +170,12 @@ export MUFON_PASSWORD
 # Bash function to run the embedded Python for a single date
 run_mufon_for_date() {
     local RUN_DATE="$1"
+    echo ""
+    echo "==============================================="
+    echo "Processing MUFON data for: $RUN_DATE"
+    echo "==============================================="
     echo "🔍 Running MUFON extraction and import for $RUN_DATE..."
+    log_both "🎯 Starting MUFON import for $RUN_DATE"
     python3 - "$RUN_DATE" << 'EOF'
 #!/usr/bin/env python3
 import sys

@@ -143,12 +143,12 @@ function generateAlertSlug(alert, locale = 'en', shortId = null) {
   let title = '';
   
   if (isMufon) {
-    // Include shape in MUFON titles: "mufon-sphere-report" or "mufon-report"
+    // Include shape in MUFON titles: "mufon-sphere-ufo-sighting" or "mufon-ufo-sighting"
     if (alert.shape) {
       const shapeTranslation = getShapeTranslation(alert.shape);
-      title = `${mufonTerm}-${shapeTranslation}-${reportTerm}`;
+      title = `${mufonTerm}-${shapeTranslation}-${ufoTerm}-${sightingTerm}`;
     } else {
-      title = `${mufonTerm}-${reportTerm}`;
+      title = `${mufonTerm}-${ufoTerm}-${sightingTerm}`;
     }
   } else {
     // Include shape in UFOBeep titles: "sphere-ufo-sighting" or "ufo-sighting"
