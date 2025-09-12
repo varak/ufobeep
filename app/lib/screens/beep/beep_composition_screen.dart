@@ -541,14 +541,26 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       }
     }
 
-    wd.mark("setting device ID and preparing navigation");
-    // Set device ID as current user so navigation button is hidden
-    final deviceId = await BeepService().getOrCreateDeviceId();
-    ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
-    
-    // SUCCESS: Stay on composition screen to show success state
-    // User can manually navigate if they want to see the beep detail
+    // SUCCESS: Navigate to beep detail after showing success state briefly
     _log('Beep created successfully with ID: $sightingId');
+    if (context.mounted) {
+      wd.mark("scheduling navigation after success");
+      _log('Scheduling navigation to /beep/$sightingId after success message');
+      // Wait 2 seconds to show success state, then navigate to full beep
+      Future.delayed(const Duration(milliseconds: 2000), () async {
+        if (context.mounted) {
+          wd.mark("setting device ID before navigation");
+          // Set device ID as current user so navigation button is hidden
+          final deviceId = await BeepService().getOrCreateDeviceId();
+          ref.read(appStateProvider.notifier).setCurrentUser(deviceId);
+          
+          _log('Navigating to /beep/$sightingId');
+          context.go('/beep/$sightingId');
+        } else {
+          _log('Context not mounted, skipping navigation');
+        }
+      });
+    }
     wd.mark("submission completed successfully");
     } finally {
       wd.dispose();

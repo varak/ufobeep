@@ -3,7 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'app_state.g.dart';
 
 // App State Provider
-@riverpod
+@Riverpod(keepAlive: true)
 class AppState extends _$AppState {
   @override
   AppStateModel build() {
