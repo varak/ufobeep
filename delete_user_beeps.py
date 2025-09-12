@@ -1,17 +1,54 @@
 #!/usr/bin/env python3
 """
-Delete all beeps from a specific user
+Delete all beeps from a specific user by username
+Usage: python3 delete_user_beeps.py <username>
+
+Examples:
+  python3 delete_user_beeps.py "dark.idea.8245"
+  python3 delete_user_beeps.py "enigmatic.entity.2741" 
+  python3 delete_user_beeps.py "instant.storm.2516"
+
+This script safely deletes:
+- Sighting records
+- Media files and metadata
+- Comments
+- Follows
+- Photo analysis results
+- Alert notifications and deliveries
+- Alert events
 """
 
 import subprocess
 import sys
 
-# The reporter_id for dark.idea.8245's test beeps
-REPORTER_ID = "460911d5-e738-42f0-9a91-4e28c8886e44"
-
-def delete_beeps():
-    # Get all sighting IDs for this reporter
-    cmd = f"""sudo -u postgres psql -d ufobeep_db -t -c "SELECT id FROM sightings WHERE reporter_id = '{REPORTER_ID}';" """
+def delete_beeps(username):
+    if username.lower() == 'mufon':
+        print("Deleting ALL MUFON beeps...")
+        # Get all MUFON sighting IDs
+        cmd = f"""sudo -u postgres psql -d ufobeep_db -t -c "SELECT id FROM sightings WHERE source = 'mufon';" """
+    else:
+        print(f"Looking up device ID for username: {username}")
+        
+        # First, find the user ID for this username from users table
+        lookup_cmd = f"""sudo -u postgres psql -d ufobeep_db -t -c "SELECT id FROM users WHERE username = '{username}';" """
+        
+        try:
+            lookup_result = subprocess.run(lookup_cmd, shell=True, capture_output=True, text=True)
+            device_ids = [line.strip() for line in lookup_result.stdout.strip().split('\n') if line.strip()]
+            
+            if not device_ids:
+                print(f"No device ID found for username: {username}")
+                return
+                
+            device_id = device_ids[0]  # Use first match
+            print(f"Found device ID: {device_id}")
+            
+        except Exception as e:
+            print(f"Error looking up device ID: {e}")
+            return
+        
+        # Get all sighting IDs for this device_id
+        cmd = f"""sudo -u postgres psql -d ufobeep_db -t -c "SELECT id FROM sightings WHERE reporter_id = '{device_id}';" """
     
     try:
         result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
@@ -27,16 +64,16 @@ def delete_beeps():
         for sighting_id in sighting_ids:
             print(f"\nDeleting sighting {sighting_id}...")
             
-            # Delete from related tables first
+            # Delete from related tables first (order matters for foreign keys)
             tables = [
-                'media_files',
-                'comments', 
-                'follows',
-                'photo_metadata',
-                'photo_analysis_results',
-                'alert_notifications',
-                'alert_deliveries',
-                'alert_events'
+                'alert_deliveries',    # Delete delivery records first
+                'alert_notifications', # Delete notification records  
+                'alert_events',        # Delete event records
+                'photo_analysis_results', # Delete photo analysis
+                'photo_metadata',      # Delete photo metadata
+                'media_files',         # Delete media file records
+                'comments',            # Delete comments
+                'follows'              # Delete follows last
             ]
             
             for table in tables:
@@ -50,7 +87,10 @@ def delete_beeps():
             print(f"  Deleted sighting record")
         
         # Final count
-        count_cmd = f"""sudo -u postgres psql -d ufobeep_db -t -c "SELECT COUNT(*) FROM sightings WHERE reporter_id = '{REPORTER_ID}';" """
+        if username.lower() == 'mufon':
+            count_cmd = f"""sudo -u postgres psql -d ufobeep_db -t -c "SELECT COUNT(*) FROM sightings WHERE source = 'mufon';" """
+        else:
+            count_cmd = f"""sudo -u postgres psql -d ufobeep_db -t -c "SELECT COUNT(*) FROM sightings WHERE reporter_id = '{device_id}';" """
         result = subprocess.run(count_cmd, shell=True, capture_output=True, text=True)
         remaining = int(result.stdout.strip())
         
@@ -64,4 +104,10 @@ def delete_beeps():
         sys.exit(1)
 
 if __name__ == '__main__':
-    delete_beeps()
+    if len(sys.argv) != 2:
+        print("Usage: python3 delete_user_beeps.py <username>")
+        sys.exit(1)
+    
+    username = sys.argv[1]
+    print(f"Deleting all beeps for username: {username}")
+    delete_beeps(username)
