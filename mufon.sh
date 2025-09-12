@@ -598,38 +598,38 @@ def extract_and_import_mufon(date_str):
                     
                     # Event Date FROM
                     safe_browser_operation(
-                        lambda: iframe.locator("select[name='event_date_lo__month']").select_option(str(month), timeout=10000),
+                        lambda: iframe.locator("select[name='submitted_date_lo__month']").select_option(str(month), timeout=10000),
                         "Select FROM month"
                     )
                     random_delay(0.3, 0.8)
                     
                     safe_browser_operation(
-                        lambda: iframe.locator("select[name='event_date_lo__day']").select_option(str(day), timeout=10000),
+                        lambda: iframe.locator("select[name='submitted_date_lo__day']").select_option(str(day), timeout=10000),
                         "Select FROM day"
                     )
                     random_delay(0.3, 0.8)
                     
                     safe_browser_operation(
-                        lambda: iframe.locator("select[name='event_date_lo__year']").select_option(str(year), timeout=10000),
+                        lambda: iframe.locator("select[name='submitted_date_lo__year']").select_option(str(year), timeout=10000),
                         "Select FROM year"
                     )
                     random_delay(0.3, 0.8)
                     
                     # Event Date TO (same as FROM for single day)
                     safe_browser_operation(
-                        lambda: iframe.locator("select[name='event_date_hi__month']").select_option(str(month), timeout=10000),
+                        lambda: iframe.locator("select[name='submitted_date_hi__month']").select_option(str(month), timeout=10000),
                         "Select TO month"
                     )
                     random_delay(0.3, 0.8)
                     
                     safe_browser_operation(
-                        lambda: iframe.locator("select[name='event_date_hi__day']").select_option(str(day), timeout=10000),
+                        lambda: iframe.locator("select[name='submitted_date_hi__day']").select_option(str(day), timeout=10000),
                         "Select TO day"
                     )
                     random_delay(0.3, 0.8)
                     
                     safe_browser_operation(
-                        lambda: iframe.locator("select[name='event_date_hi__year']").select_option(str(year), timeout=10000),
+                        lambda: iframe.locator("select[name='submitted_date_hi__year']").select_option(str(year), timeout=10000),
                         "Select TO year"
                     )
                     random_delay(0.5, 1.0)
