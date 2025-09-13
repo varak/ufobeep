@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useSearchParams, useRouter } from 'next/navigation'
 import { getAlertSlug } from '@/utils/slug'
 import { useClientTranslations } from '@/hooks/useClientTranslations'
+import { AlertTitleUtils } from '@/utils/alert-title-utils'
 import AlertHero from '@/components/alert-detail/AlertHero'
 import AlertDetails from '@/components/alert-detail/AlertDetails'
 import EnrichmentData from '@/components/alert-detail/EnrichmentData'
@@ -60,36 +61,6 @@ interface Alert {
   distance_km?: number
 }
 
-function getClassifiedTitle(alert: Alert, t: any): string {
-  // For MUFON reports, use classification-based title only if confidence is high enough
-  if (alert.reporter_username === 'MUFON' && 
-      alert.enrichment?.classification?.type && 
-      (alert.enrichment?.classification?.confidence || 0) >= 0.75) {
-    const classificationType = alert.enrichment.classification.type.toLowerCase()
-    const classificationName = classificationType.charAt(0).toUpperCase() + classificationType.slice(1)
-    return `MUFON ${classificationName} Report`
-  }
-  
-  // For NUFORC reports (future)
-  if (alert.reporter_username === 'NUFORC' && 
-      alert.enrichment?.classification?.type &&
-      (alert.enrichment?.classification?.confidence || 0) >= 0.75) {
-    const classificationType = alert.enrichment.classification.type.toLowerCase()
-    const classificationName = classificationType.charAt(0).toUpperCase() + classificationType.slice(1)
-    return `NUFORC ${classificationName} Report`
-  }
-  
-  // For MUFON/NUFORC without high confidence classification, use generic title
-  if (alert.reporter_username === 'MUFON') {
-    return 'MUFON Sighting Report'
-  }
-  if (alert.reporter_username === 'NUFORC') {
-    return 'NUFORC Sighting Report'
-  }
-  
-  // For UFOBeep reports, use original title
-  return alert.title || 'UFOBeep Report'
-}
 
 function getEnrichedLocation(alert: Alert, t: any): string {
   // Try enrichment geocoding first
@@ -222,7 +193,7 @@ export default function AlertDetailPage() {
     // Create enhanced alert for slug generation without causing re-renders
     const tempEnhancedAlert = {
       ...alert,
-      title: getClassifiedTitle(alert, t),
+      title: AlertTitleUtils.getContextualTitle(alert),
       location: {
         latitude: alert.location?.latitude || 0,
         longitude: alert.location?.longitude || 0,
