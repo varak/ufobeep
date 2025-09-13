@@ -393,14 +393,13 @@ def reverse_geocode(location_text: str) -> Optional[Dict[str, any]]:
     try:
         # Use Nominatim for geocoding
         import time
-        time.sleep(1.2)  # Rate limit
+        time.sleep(0.3)  # Minimal rate limit
         
         url = "https://nominatim.openstreetmap.org/search"
         params = {
             "q": search_location,
             "format": "json",
-            "limit": 1,
-            "countrycodes": "us"
+            "limit": 1
         }
         
         headers = {"User-Agent": "UFOBeep-MUFON/1.0 (+https://ufobeep.com)"}
@@ -413,8 +412,8 @@ def reverse_geocode(location_text: str) -> Optional[Dict[str, any]]:
                 lat = float(result["lat"])
                 lon = float(result["lon"])
                 
-                # Validate coordinates are in US bounds
-                if -180 <= lon <= -60 and 20 <= lat <= 70:
+                # Validate coordinates are within valid Earth bounds
+                if -180 <= lon <= 180 and -90 <= lat <= 90:
                     return {
                         "location": search_location,
                         "latitude": lat,
@@ -790,22 +789,22 @@ def extract_and_import_mufon(date_str):
                                     
                                     # Try popup approach first
                                     try:
-                                        with page.expect_popup(timeout=15000) as popup_info:
+                                        with page.expect_popup(timeout=2000) as popup_info:
                                             safe_browser_operation(
                                                 lambda: view_input.click(),
                                                 "Click VIEW button"
                                             )
                                         popup = popup_info.value
                                         safe_browser_operation(
-                                            lambda: popup.wait_for_load_state("domcontentloaded", timeout=10000),
+                                            lambda: popup.wait_for_load_state("domcontentloaded", timeout=1000),
                                             "Wait for popup load"
                                         )
-                                        random_delay(1, 3)
+                                        random_delay(0.2, 0.5)
                                         
                                         # Extract text from popup
                                         try:
                                             safe_browser_operation(
-                                                lambda: popup.wait_for_selector("pre", timeout=30000),
+                                                lambda: popup.wait_for_selector("pre", timeout=1000),
                                                 "Wait for pre element"
                                             )
                                             popup_text = safe_browser_operation(
@@ -854,12 +853,12 @@ def extract_and_import_mufon(date_str):
                                                 lambda: page.wait_for_load_state("domcontentloaded", timeout=10000),
                                                 "Wait for page load (fallback)"
                                             )
-                                            random_delay(1, 3)
+                                            random_delay(0.2, 0.5)
                                             
                                             if page.url != before_url:
                                                 try:
                                                     safe_browser_operation(
-                                                        lambda: page.wait_for_selector("pre", timeout=15000),
+                                                        lambda: page.wait_for_selector("pre", timeout=1000),
                                                         "Wait for pre (fallback)"
                                                     )
                                                     result = safe_browser_operation(
@@ -1121,13 +1120,13 @@ def extract_and_import_mufon(date_str):
                         
                             log(f"🎯 Case #{real_case_id} complete")
                             
-                            # Add random delay between cases to avoid overwhelming server
+                            # Add minimal delay between cases
                             if i < len(rows):  # Don't delay after last case
-                                random_delay(2, 5)
+                                random_delay(0.5, 1)
                         
                     except Exception as e:
                         log(f"⚠️ Error processing row {i}: {e}")
-                        random_delay(3, 7)  # Longer delay after errors
+                        random_delay(1, 2)  # Short delay after errors
                         continue
             
                 log(f"🎉 Processing completed: {imported_count} cases imported")

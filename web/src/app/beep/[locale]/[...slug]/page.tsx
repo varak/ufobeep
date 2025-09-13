@@ -67,12 +67,12 @@ function getEnrichedLocation(alert: Alert, t: any): string {
   if (alert.enrichment?.geocoding?.location) {
     return alert.enrichment.geocoding.location
   }
-  
+
   // Try raw location from enrichment
   if (alert.enrichment?.location_raw) {
     return alert.enrichment.location_raw
   }
-  
+
   // Parse location from description for MUFON reports
   if (alert.description && alert.description.includes('📍 Location:')) {
     const locationMatch = alert.description.match(/📍 Location: ([^\n]+)/)
@@ -80,13 +80,17 @@ function getEnrichedLocation(alert: Alert, t: any): string {
       return locationMatch[1].trim()
     }
   }
-  
+
   // Fall back to basic location name
   if (alert.location?.name && alert.location.name !== 'Unknown Location') {
     return alert.location.name
   }
-  
+
   return t('unknownLocation')
+}
+
+function getClassifiedTitle(alert: Alert, t: any): string {
+  return AlertTitleUtils.getContextualTitle(alert)
 }
 
 export default function AlertDetailPage() {

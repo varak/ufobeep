@@ -3,21 +3,22 @@ interface Alert {
   title: string | null
   description: string | null
   created_at: string
-  reporter_username?: string
+  reporter_username?: string | null
   enrichment?: {
     classification?: {
       type: string
-      confidence: number
+      confidence?: number
     }
+    [key: string]: any
   }
   media_files?: Array<{
-    id: string
+    id?: string
     type: string
     url: string
     thumbnail_url: string
-    is_primary: boolean
-    upload_order: number
-    display_priority: number
+    web_url?: string
+    preview_url?: string
+    filename?: string
   }>
 }
 
