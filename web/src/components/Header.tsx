@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
+import { useClientTranslations } from '@/hooks/useClientTranslations'
 
 function NavLink({ href, label }: { href: string; label: string }) {
   const pathname = usePathname()
@@ -27,6 +28,26 @@ export default function Header() {
   const { isAuthenticated, user, logout } = useAuth()
   const [open, setOpen] = useState(false)
 
+  // Detect locale from browser settings with fallback
+  const getBrowserLocale = () => {
+    if (typeof window === 'undefined') return 'en'
+
+    // Check localStorage preference first
+    const storedLocale = localStorage.getItem('preferred-language')
+    if (storedLocale) {
+      const validLocales = ['en', 'es', 'de', 'fr', 'pt', 'ru', 'ja', 'zh', 'it', 'ar', 'ko', 'tr', 'hi', 'pl', 'cs', 'nl', 'sv', 'da', 'no', 'fi', 'el', 'he']
+      if (validLocales.includes(storedLocale)) return storedLocale
+    }
+
+    // Detect from browser
+    const browserLang = navigator.language.split('-')[0].toLowerCase()
+    const validLocales = ['en', 'es', 'de', 'fr', 'pt', 'ru', 'ja', 'zh', 'it', 'ar', 'ko', 'tr', 'hi', 'pl', 'cs', 'nl', 'sv', 'da', 'no', 'fi', 'el', 'he']
+    return validLocales.includes(browserLang) ? browserLang : 'en'
+  }
+
+  const locale = getBrowserLocale()
+  const { t } = useClientTranslations('common', locale)
+
   return (
     <header className="sticky top-0 z-40 border-b border-dark-border bg-dark-background/85 backdrop-blur supports-[backdrop-filter]:bg-dark-background/60">
       <div className="max-w-6xl mx-auto px-4 md:px-6">
@@ -41,9 +62,9 @@ export default function Header() {
 
           {/* Center: Nav (desktop) */}
           <nav className="hidden md:flex items-center gap-1">
-            <NavLink href="/beep" label="Recent Beeps" />
-            <NavLink href="/map" label="Map" />
-            <NavLink href="/download" label="Download App" />
+            <NavLink href="/beep" label={t('navRecentBeeps')} />
+            <NavLink href="/map" label={t('navMap')} />
+            <NavLink href="/download" label={t('navDownloadApp')} />
           </nav>
 
           {/* Right: Language + Account */}
@@ -56,7 +77,7 @@ export default function Header() {
                   className="text-xs text-text-tertiary hover:text-text-secondary"
                   onClick={logout}
                 >
-                  Logout
+                  {t('logout')}
                 </button>
               </div>
             ) : (
@@ -102,7 +123,7 @@ export default function Header() {
                     href="/auth"
                     className="text-sm text-text-secondary hover:text-text-primary"
                   >
-                    Sign In
+                    {t('signIn')}
                   </Link>
                 )}
               </div>

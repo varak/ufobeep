@@ -27,29 +27,7 @@ export class AlertTitleUtils {
    * Generate a contextual title for an alert based on available data
    */
   static getContextualTitle(alert: Alert): string {
-    // Handle MUFON reports with classification
-    if (alert.reporter_username === 'MUFON') {
-      if (alert.enrichment?.classification?.type && 
-          (alert.enrichment?.classification?.confidence || 0) >= 0.75) {
-        const classificationType = alert.enrichment.classification.type.toLowerCase()
-        const classificationName = classificationType.charAt(0).toUpperCase() + classificationType.slice(1)
-        return `MUFON ${classificationName} Report`
-      }
-      return 'MUFON Sighting Report'
-    }
-    
-    // Handle NUFORC reports
-    if (alert.reporter_username === 'NUFORC') {
-      if (alert.enrichment?.classification?.type && 
-          (alert.enrichment?.classification?.confidence || 0) >= 0.75) {
-        const classificationType = alert.enrichment.classification.type.toLowerCase()
-        const classificationName = classificationType.charAt(0).toUpperCase() + classificationType.slice(1)
-        return `NUFORC ${classificationName} Report`
-      }
-      return 'NUFORC Sighting Report'
-    }
-    
-    // If user provided a title, use it
+    // If database has a title, use it (for MUFON, NUFORC, etc.)
     if (alert.title && alert.title.trim().length > 0) {
       return alert.title;
     }
