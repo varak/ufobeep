@@ -66,8 +66,8 @@ function getClassifiedTitle(alert: Alert, t: any): string {
       alert.enrichment?.classification?.type && 
       (alert.enrichment?.classification?.confidence || 0) >= 0.75) {
     const classificationType = alert.enrichment.classification.type.toLowerCase()
-    const classificationName = t(`mufon.classifications.${classificationType}`, classificationType)
-    return t('mufon.titleFormat', { classification: classificationName })
+    const classificationName = classificationType.charAt(0).toUpperCase() + classificationType.slice(1)
+    return `MUFON ${classificationName} Report`
   }
   
   // For NUFORC reports (future)
@@ -75,20 +75,20 @@ function getClassifiedTitle(alert: Alert, t: any): string {
       alert.enrichment?.classification?.type &&
       (alert.enrichment?.classification?.confidence || 0) >= 0.75) {
     const classificationType = alert.enrichment.classification.type.toLowerCase()
-    const classificationName = t(`nuforc.classifications.${classificationType}`, classificationType)
-    return t('nuforcTitleFormat', { classification: classificationName })
+    const classificationName = classificationType.charAt(0).toUpperCase() + classificationType.slice(1)
+    return `NUFORC ${classificationName} Report`
   }
   
   // For MUFON/NUFORC without high confidence classification, use generic title
   if (alert.reporter_username === 'MUFON') {
-    return t('mufonGenericTitle')
+    return 'MUFON Sighting Report'
   }
   if (alert.reporter_username === 'NUFORC') {
-    return t('nuforcGenericTitle')
+    return 'NUFORC Sighting Report'
   }
   
   // For UFOBeep reports, use original title
-  return alert.title || t('ufobeepReportType')
+  return alert.title || 'UFOBeep Report'
 }
 
 function getEnrichedLocation(alert: Alert, t: any): string {
