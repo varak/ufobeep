@@ -917,7 +917,7 @@ def extract_and_import_mufon(date_str):
                         # Generate SEO-friendly slug using shared generator
                         alert_data_for_slug = {
                             "id": alert_id,
-                            "title": f"MUFON {classification['type'].title()} Report" if classification['confidence'] >= 0.3 else "MUFON Report",
+                            "title": f"MUFON {classification['type'].title()} UFO Sighting Report" if classification['confidence'] >= 0.3 else "MUFON UFO Sighting Report",
                             "created_at": occurred_at_iso or date_posted_iso or datetime.now(timezone.utc).isoformat(),
                             "location": {"name": location},
                             "source": "mufon",
@@ -971,9 +971,9 @@ def extract_and_import_mufon(date_str):
                         # Prepare alert data with correct API structure
                         # Title: Add "MUFON Report" for proper attribution
                         if classification['confidence'] >= 0.3:
-                            title = f"MUFON {classification['type'].title()} Report"
+                            title = f"MUFON {classification['type'].title()} UFO Sighting Report"
                         else:
-                            title = "MUFON Report"
+                            title = "MUFON UFO Sighting Report"
                         
                         # Use clean description with location but without other duplicate metadata
                         # Frontend will handle displaying enrichment data separately
