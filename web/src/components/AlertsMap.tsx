@@ -259,7 +259,7 @@ export default function AlertsMap({
         // Filter alerts by zoom level then add markers with UFO classification support
         const filteredAlerts = filterAlertsByZoom(alerts, mapInstanceRef.current.getZoom())
         filteredAlerts.forEach((alert) => {
-          if (displayAlert.location.latitude === 0 && displayAlert.location.longitude === 0) return
+          if (alert.location.latitude === 0 && alert.location.longitude === 0) return
           
           const marker = createUfoMarker(L, alert, mapInstanceRef.current)
 
@@ -357,7 +357,7 @@ export default function AlertsMap({
           // Re-add markers with new zoom filtering
           const filteredAlerts = filterAlertsByZoom(alerts, newZoom)
           filteredAlerts.forEach((alert) => {
-            if (displayAlert.location.latitude === 0 && displayAlert.location.longitude === 0) return
+            if (alert.location.latitude === 0 && alert.location.longitude === 0) return
 
             const marker = createUfoMarker(L, alert, map)
 
