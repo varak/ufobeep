@@ -308,7 +308,6 @@ async def get_map_points(minimal: bool = False):
                         enrichment_data->>'location_name' as location_name,
                         created_at,
                         source,
-                        username as reporter_username,
                         media_info as media_files,
                         enrichment_data,
                         short_url
@@ -345,7 +344,6 @@ async def get_map_points(minimal: bool = False):
                         },
                         "created_at": row["created_at"].isoformat(),
                         "source": row["source"],
-                        "username": row["reporter_username"],
                         "media_files": json.loads(row["media_files"]).get("files", []) if row["media_files"] else [],
                         "enrichment_data": row["enrichment_data"] or {},
                         "alert_level": "medium",  # Default for now
