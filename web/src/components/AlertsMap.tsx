@@ -187,7 +187,7 @@ export default function AlertsMap({
             {truncateDescription(displayAlert.description)}
             {displayAlert.description && displayAlert.description.split(' ').length > 300 && (
               <a
-                href={`/alert/${displayAlert.id || alert.id}`}
+                href={`/beep/${currentLocale}/${displayAlert.short_url}`}
                 className="text-blue-600 cursor-pointer ml-1">see full report</a>
             )}
           </p>
@@ -203,7 +203,7 @@ export default function AlertsMap({
           <div className="mt-2">
             <a
               className="text-blue-600 underline text-xs"
-              href={`/alert/${displayAlert.id || alert.id}`}
+              href={`/beep/${currentLocale}/${displayAlert.short_url}`}
             >
               View details →
             </a>
