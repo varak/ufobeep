@@ -37,6 +37,15 @@ export default function AlertHero({ alert, openImageIndex, locale = 'en' }: Aler
   const hasMedia = alert.media_files && alert.media_files.length > 0
   const hasDescription = alert.description?.trim()
 
+  // Debug logging
+  console.log('AlertHero debug:', {
+    description: alert.description,
+    trimmed: alert.description?.trim(),
+    hasDescription: !!hasDescription,
+    hasMedia,
+    mediaCount: alert.media_files?.length || 0
+  })
+
   const handleCloseModal = () => {
     setIsMediaModalOpen(false)
     const url = new URL(window.location.href)
