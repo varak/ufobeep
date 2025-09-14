@@ -189,7 +189,16 @@ export default function AlertsMap({
             {truncateDescription(displayAlert.description)}
             {displayAlert.description && displayAlert.description.split(' ').length > 300 && (
               <a
-                href={`/beep/${currentLocale}/${displayAlert.short_url}`}
+                href={`/beep/${currentLocale}/${getAlertSlug({
+                  id: displayAlert.id || alert.id,
+                  title: displayAlert.title,
+                  created_at: displayAlert.created_at,
+                  location: displayAlert.location,
+                  reporter_username: displayAlert.username,
+                  description: displayAlert.description,
+                  source: displayAlert.source,
+                  short_url: displayAlert.short_url
+                }, currentLocale, undefined, displayAlert.short_url)}`}
                 className="text-blue-600 cursor-pointer ml-1">see full report</a>
             )}
           </p>
@@ -205,7 +214,16 @@ export default function AlertsMap({
           <div className="mt-2">
             <a
               className="text-blue-600 underline text-xs"
-              href={`/beep/${currentLocale}/${displayAlert.short_url}`}
+              href={`/beep/${currentLocale}/${getAlertSlug({
+                id: displayAlert.id || alert.id,
+                title: displayAlert.title,
+                created_at: displayAlert.created_at,
+                location: displayAlert.location,
+                reporter_username: displayAlert.username,
+                description: displayAlert.description,
+                source: displayAlert.source,
+                short_url: displayAlert.short_url
+              }, currentLocale, undefined, displayAlert.short_url)}`}
             >
               View details →
             </a>
