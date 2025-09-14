@@ -21,6 +21,7 @@ interface Alert {
   created_at: string
   source?: string
   username?: string
+  short_url?: string
   enrichment_data?: any
   media_files?: Array<{
     id: string
