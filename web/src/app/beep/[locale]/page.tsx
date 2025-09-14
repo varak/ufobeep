@@ -79,7 +79,7 @@ export default function BeepLocalePage({ params }: BeepPageProps) {
         const offset = (currentPage - 1) * beepsPerPage
         const response = await fetch(`/api/beep?limit=${beepsPerPage}&offset=${offset}`)
         const data = await response.json()
-        
+
         if (data.success && data.data?.alerts) {
           setAlerts(data.data.alerts)
           setTotalCount(data.data.total || data.data.alerts.length)
@@ -94,6 +94,14 @@ export default function BeepLocalePage({ params }: BeepPageProps) {
 
     fetchAlerts()
   }, [currentPage, beepsPerPage])
+
+  // Restore scroll position when navigating back
+  useEffect(() => {
+    // Check if we're coming back from a detail page
+    if (typeof window !== 'undefined' && window.history.state?.scrollY) {
+      window.scrollTo(0, window.history.state.scrollY)
+    }
+  }, [])
   
   return (
     <div className="min-h-screen bg-dark-background text-text-primary">
