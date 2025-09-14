@@ -64,7 +64,7 @@ class AlertCard extends ConsumerWidget {
         Expanded(
           child: _buildTitleAndMetadata(context, l10n, units),
         ),
-        _buildTimestampAndDistance(context, units),
+        _buildTimestampAndDistance(context, units, userPrefs),
       ],
     );
   }
@@ -168,7 +168,7 @@ class AlertCard extends ConsumerWidget {
     return const SizedBox.shrink();
   }
 
-  Widget _buildTimestampAndDistance(BuildContext context, String units) {
+  Widget _buildTimestampAndDistance(BuildContext context, String units, dynamic userPrefs) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [

@@ -94,9 +94,9 @@ class UserPreferences {
     this.quietHoursEnd = 7,
     this.allowEmergencyOverride = true,
     this.dndUntil,
-    bool? use24HourTime,
+    this.use24HourTime = true,
     this.lastUpdated,
-  }) : use24HourTime = use24HourTime ?? _getDefault24HourForLanguage(language);
+  });
 
   factory UserPreferences.fromJson(Map<String, dynamic> json) =>
       _$UserPreferencesFromJson(json);
