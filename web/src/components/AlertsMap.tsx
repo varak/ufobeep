@@ -186,7 +186,7 @@ export default function AlertsMap({
             </div>
           )}
 
-          {displayAlert.location?.name && displayAlert.location.name !== 'Unknown Location' && (
+          {displayAlert.location?.name && (
             <div className="bg-gray-100 rounded px-2 py-1 mb-2">
               <p className="text-xs font-medium text-gray-700">📍 {displayAlert.location.name}</p>
             </div>
