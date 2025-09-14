@@ -389,18 +389,28 @@ export default function AlertsMap({
 
         // Create map without center first to avoid LatLng parsing issues
         const mapZoom = userLocation[0] === center[0] && userLocation[1] === center[1] ? zoom : 5.5
+        try { console.debug('[AlertsMap] creating map instance') } catch {}
         const map = L.map(mapRef.current, {
           zoomControl: true,
           attributionControl: true,
           preferCanvas: false
         })
-        // Now set the view with sanitized numeric coordinates
-        map.setView([Number(userLocation[0]), Number(userLocation[1])], Number(mapZoom))
+        try { console.debug('[AlertsMap] setView', userLocation, mapZoom) } catch {}
+        // Now set the view with sanitized numeric coordinates and hard fallback
+        const hasArrayCenter = Array.isArray(userLocation) && userLocation.length === 2
+        const centerLat = hasArrayCenter ? Number(userLocation[0]) : 0
+        const centerLng = hasArrayCenter ? Number(userLocation[1]) : 0
+        const safeLat = Number.isFinite(centerLat) ? centerLat : 0
+        const safeLng = Number.isFinite(centerLng) ? centerLng : 0
+        const safeZoom = Number.isFinite(Number(mapZoom)) ? Number(mapZoom) : 5
+        map.setView([safeLat, safeLng], safeZoom)
+        try { console.debug('[AlertsMap] after setView') } catch {}
         mapInstanceRef.current = map
         setMapInitialized(true) // Mark as initialized
         
         // Add user location marker if we have their actual location
         if (userLocation[0] !== center[0] || userLocation[1] !== center[1]) {
+          try { console.debug('[AlertsMap] add user location marker') } catch {}
           L.circleMarker([Number(userLocation[0]), Number(userLocation[1])], {
             radius: 7,
             fillColor: '#3b82f6',
@@ -409,6 +419,7 @@ export default function AlertsMap({
             opacity: 1,
             fillOpacity: 0.9
           }).addTo(map).bindPopup('You are here')
+          try { console.debug('[AlertsMap] user location marker added') } catch {}
         }
 
         // Add OpenStreetMap tile layer with proper settings
@@ -507,7 +518,7 @@ export default function AlertsMap({
 
             // Include user location in bounds if we have their actual location
             if (userLocation[0] !== center[0] || userLocation[1] !== center[1]) {
-              latlngs.push(userLocation)
+              latlngs.push([Number(userLocation[0]), Number(userLocation[1])])
             }
 
             // Create bounds that include all alerts and user location
