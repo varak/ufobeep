@@ -214,7 +214,7 @@ export default function AlertsMap({
             
             const marker = createUfoMarker(L, alert, map)
             
-            const getMediaIcons = (alert) => {
+            const getMediaIcons = (alert: any) => {
               const hasPhotos = alert.media_files?.some(m => m.type === 'image' || m.type === 'photo')
               const hasVideos = alert.media_files?.some(m => m.type === 'video')
               let icons = ''
@@ -223,7 +223,7 @@ export default function AlertsMap({
               return icons ? ` ${icons}` : ''
             }
 
-            const truncateDescription = (desc, maxWords = 50) => {
+            const truncateDescription = (desc: string, maxWords = 50) => {
               if (!desc) return ''
               const words = desc.split(' ')
               if (words.length <= maxWords) return desc.replace(/\n/g, '<br>')
