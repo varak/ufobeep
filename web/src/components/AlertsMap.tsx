@@ -391,7 +391,7 @@ export default function AlertsMap({
         // Filter alerts by zoom level then add markers for alerts (skip invalid coordinates) with UFO classification support
         const filteredAlerts = filterAlertsByZoom(alerts, currentZoom)
         filteredAlerts.forEach((alert) => {
-          if (displayAlert.location.latitude === 0 && displayAlert.location.longitude === 0) {
+          if (alert.location.latitude === 0 && alert.location.longitude === 0) {
             return // Skip invalid coordinates (0,0 fallback)
           }
 
@@ -576,11 +576,11 @@ export default function AlertsMap({
         iconAnchor: [12, 12]
       })
       
-      return L.marker([displayAlert.location.latitude, displayAlert.location.longitude], { icon: customIcon })
+      return L.marker([alert.location.latitude, alert.location.longitude], { icon: customIcon })
     } else {
       // Use circle markers for regular beep sightings (existing behavior)
       return L.circleMarker(
-        [displayAlert.location.latitude, displayAlert.location.longitude],
+        [alert.location.latitude, alert.location.longitude],
         {
           radius: 8,
           fillColor: getAlertColor(alert.alert_level),
