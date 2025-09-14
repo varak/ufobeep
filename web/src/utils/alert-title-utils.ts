@@ -26,9 +26,31 @@ export class AlertTitleUtils {
   /**
    * Generate a contextual title for an alert based on available data
    */
-  static getContextualTitle(alert: Alert): string {
-    // If database has a title, use it (for MUFON, NUFORC, etc.)
+  static getContextualTitle(alert: Alert, t?: (key: string) => string): string {
+    // If database has a title, check if it needs translation
     if (alert.title && alert.title.trim().length > 0) {
+      // Handle MUFON titles: "MUFON Triangle Sighting" → "MUFON [Translated Shape] [Translated Sighting Report]"
+      if (alert.title.startsWith('MUFON ') && t) {
+        const parts = alert.title.split(' ');
+        if (parts.length >= 3) {
+          const shape = parts[1].toLowerCase();
+          // Map shape to translation key
+          const shapeKey = this.getShapeTranslationKey(shape);
+          if (shapeKey) {
+            return `MUFON ${t(shapeKey)} ${t('sightingReport')}`;
+          }
+        } else if (parts.length === 2 && parts[1] === 'Sighting') {
+          // Generic MUFON sighting
+          return `MUFON ${t('sightingReport')}`;
+        }
+      }
+
+      // Handle UFOBeep titles: "UFOBeep Alert" → "UFOBeep [Translated UFO] [Translated Alert]"
+      if (alert.title === 'UFOBeep Alert' && t) {
+        return `UFOBeep ${t('ufo')} ${t('alert')}`;
+      }
+
+      // Default: return as-is for other titles
       return alert.title;
     }
     
@@ -116,5 +138,35 @@ export class AlertTitleUtils {
     }
     
     return 'Sighting';
+  }
+
+  /**
+   * Map shape names to translation keys
+   */
+  private static getShapeTranslationKey(shape: string): string | null {
+    const shapeMap: { [key: string]: string } = {
+      'triangle': 'mufonTriangle',
+      'sphere': 'mufonSphere',
+      'disc': 'mufonDisc',
+      'disk': 'mufonDisk',
+      'light': 'mufonLight',
+      'cigar': 'mufonCigar',
+      'oval': 'mufonOval',
+      'cylinder': 'mufonCylinder',
+      'rectangle': 'mufonRectangle',
+      'diamond': 'mufonDiamond',
+      'fireball': 'mufonFireball',
+      'formation': 'mufonFormation',
+      'boomerang': 'mufonBoomerang',
+      'cone': 'mufonCone',
+      'cross': 'mufonCross',
+      'changing': 'mufonChanging',
+      'chevron': 'mufonChevron',
+      'egg': 'mufonEgg',
+      'flash': 'mufonFlash',
+      'other': 'mufonOther'
+    };
+
+    return shapeMap[shape.toLowerCase()] || null;
   }
 }

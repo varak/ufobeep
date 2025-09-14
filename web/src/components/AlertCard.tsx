@@ -397,8 +397,8 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
             <div className="flex-1 min-w-0">
               <h3 className="text-text-primary text-sm font-semibold line-clamp-2 leading-tight mb-1">
                 {(() => {
-                  // Get translations directly from translation function
-                  const ufoSightingText = alert.title || t('ufoSighting')
+                  // Get translated title using AlertTitleUtils
+                  const ufoSightingText = AlertTitleUtils.getContextualTitle(alert, t) || t('ufoSighting')
                   const beepOnlyText = t('beepOnly')  
                   const reportOnlyText = t('reportOnly')
                   

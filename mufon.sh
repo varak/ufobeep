@@ -969,11 +969,11 @@ def extract_and_import_mufon(date_str):
                         log(f"📤 Creating alert for MUFON Case #{real_case_id}... (ID: {alert_id})")
                         
                         # Prepare alert data with correct API structure
-                        # Title: Add "MUFON Report" for proper attribution
+                        # Title: Simplified format for frontend translation
                         if classification['confidence'] >= 0.5:
-                            title = f"MUFON {classification['type'].title()} UFO Sighting Report"
+                            title = f"MUFON {classification['type'].title()} Sighting"
                         else:
-                            title = "MUFON UFO Sighting Report"
+                            title = "MUFON Sighting"
                         
                         # Use clean description WITHOUT location - location is stored separately
                         # Frontend will handle displaying location data
