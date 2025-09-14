@@ -489,37 +489,37 @@ class AppLocalizationsHe extends AppLocalizations {
   String get mufonCase => 'MUFON מקרה';
 
   @override
-  String get mufonSighting => 'MUFON עקבו';
+  String get mufonSighting => 'MUFON Sighting Report';
 
   @override
-  String get mufonLightSighting => 'המונחים:';
+  String get mufonLightSighting => 'MUFON Light Sighting Report';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sighting';
+  String get mufonSphereSighting => 'MUFON Sphere Sighting Report';
 
   @override
-  String get mufonDiscSighting => 'MUFON אכזבה';
+  String get mufonDiscSighting => 'MUFON דוח מאכזב';
 
   @override
-  String get mufonTriangleSighting => 'MUFON משולש';
+  String get mufonTriangleSighting => 'MUFON דו\"ח משולש';
 
   @override
-  String get mufonCigarSighting => 'MUFON Cigar Sighting';
+  String get mufonCigarSighting => 'MUFON Sighting Report';
 
   @override
-  String get mufonOvalSighting => 'MUFON Oval Sighting';
+  String get mufonOvalSighting => 'MUFON Oval Sighting Report';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Rectangle Sighting';
+  String get mufonRectangleSighting => 'MUFON המונחים: Sighting Report';
 
   @override
-  String get mufonCylinderSighting => 'MUFON Cylinder Sighting';
+  String get mufonCylinderSighting => 'MUFON Cylinder Sighting Report';
 
   @override
-  String get mufonBoomerangSighting => 'MUFON בומרנג Sighting';
+  String get mufonBoomerangSighting => 'MUFON בומרנג Sighting Report';
 
   @override
-  String get mufonStarlikeSighting => 'MUFON Star Like Sighting';
+  String get mufonStarlikeSighting => 'MUFON תגית: Sighting Report';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
@@ -655,7 +655,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get sighting => 'עקבו';
 
   @override
-  String get ufoSighting => 'עב\"ם עקבו';
+  String get ufoSighting => 'עב\"ם התראה';
 
   @override
   String get envAnalysisTitle => 'ניתוח סביבתי';
@@ -911,13 +911,13 @@ class AppLocalizationsHe extends AppLocalizations {
       'תגיות: UFO beeps and Near alerts';
 
   @override
-  String get notificationSightingTitle => 'עב\"ם עקבו';
+  String get notificationSightingTitle => 'עב\"ם התראה';
 
   @override
-  String get notificationSightingUrgent => 'המונחים: URG עקבו';
+  String get notificationSightingUrgent => 'המונחים: URGENTBeep UFO התראה';
 
   @override
-  String get notificationSightingEmergency => 'תגית: EMERGCY UFO עקבו';
+  String get notificationSightingEmergency => 'תגית: EMERGCY UFOBeep UFO התראה';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
@@ -1226,7 +1226,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get imageNotFound => 'תמונה לא נמצאה';
 
   @override
-  String get ufoSightingAlt => 'עב\"מ';
+  String get ufoSightingAlt => 'עב\"ם Beep UFO התראה';
 
   @override
   String get celestialDataTitle => 'אובייקטים דיגיטליים';

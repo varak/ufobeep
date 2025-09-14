@@ -482,37 +482,37 @@ class AppLocalizationsZh extends AppLocalizations {
   String get mufonCase => '毛里求斯 大小写';
 
   @override
-  String get mufonSighting => '毛里求斯 观察';
+  String get mufonSighting => 'MUFON 观察报告';
 
   @override
-  String get mufonLightSighting => 'MUFON 灯光观察';
+  String get mufonLightSighting => 'MUFON 灯光观察报告';
 
   @override
-  String get mufonSphereSighting => '木森球体观察';
+  String get mufonSphereSighting => 'MUFON 球面观察报告';
 
   @override
-  String get mufonDiscSighting => '毛里求斯 光碟观察';
+  String get mufonDiscSighting => '毛里求斯 磁盘透视报告';
 
   @override
-  String get mufonTriangleSighting => '毛里求斯 三角视线';
+  String get mufonTriangleSighting => '毛里求斯 三角观测报告';
 
   @override
-  String get mufonCigarSighting => 'MUFON 雪茄观察';
+  String get mufonCigarSighting => 'MUFON 雪茄观察报告';
 
   @override
-  String get mufonOvalSighting => '木森奥华观察';
+  String get mufonOvalSighting => 'MUFON OVAL 观察报告';
 
   @override
-  String get mufonRectangleSighting => '毛里求斯 矩形监视';
+  String get mufonRectangleSighting => '毛里求斯 矩形瞄准报告';
 
   @override
-  String get mufonCylinderSighting => 'MUFON 圆柱视线';
+  String get mufonCylinderSighting => 'MUFON 圆柱形探测报告';
 
   @override
-  String get mufonBoomerangSighting => 'MUFON Boomerang 观察';
+  String get mufonBoomerangSighting => 'MUFON Boomerang观察报告';
 
   @override
-  String get mufonStarlikeSighting => 'MUFON 星光照视';
+  String get mufonStarlikeSighting => '毛里求斯 星光照视报告';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
@@ -647,7 +647,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get sighting => '观察';
 
   @override
-  String get ufoSighting => '不明飞行物 观察';
+  String get ufoSighting => '不明飞行物 警报';
 
   @override
   String get envAnalysisTitle => '环境分析';
@@ -900,13 +900,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get notificationChannelAlertsDesc => '关于UFO哔声和近距离警报的通知';
 
   @override
-  String get notificationSightingTitle => '不明飞行物 观察';
+  String get notificationSightingTitle => '不明飞行物 警报';
 
   @override
-  String get notificationSightingUrgent => '紧急UFO 观察';
+  String get notificationSightingUrgent => '紧急UFO 警报';
 
   @override
-  String get notificationSightingEmergency => '紧急UFO 观察';
+  String get notificationSightingEmergency => '紧急UFO 警报';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
@@ -1215,7 +1215,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get imageNotFound => '未找到图像';
 
   @override
-  String get ufoSightingAlt => '不明飞行物目击';
+  String get ufoSightingAlt => '不明飞行物 哔声UFO警报';
 
   @override
   String get celestialDataTitle => '天体';

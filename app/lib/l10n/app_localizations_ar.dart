@@ -491,37 +491,37 @@ class AppLocalizationsAr extends AppLocalizations {
   String get mufonCase => 'MUFON القضية';
 
   @override
-  String get mufonSighting => 'MUFON البصر';
+  String get mufonSighting => 'تقرير المصارعة';
 
   @override
-  String get mufonLightSighting => 'مصارعة الضوء';
+  String get mufonLightSighting => 'تقرير مصارعة الضوء';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sphere Sighting';
+  String get mufonSphereSighting => 'MFON Sphere Sighting Report';
 
   @override
-  String get mufonDiscSighting => 'MUFON مقر القيادة';
+  String get mufonDiscSighting => 'MUFON Disc Sighting Report';
 
   @override
-  String get mufonTriangleSighting => 'MUFON المثلث';
+  String get mufonTriangleSighting => 'MUFON Triangle Sighting Report';
 
   @override
-  String get mufonCigarSighting => 'مصارعة السيجار';
+  String get mufonCigarSighting => 'تقرير مصارعة السيجار';
 
   @override
-  String get mufonOvalSighting => 'MUFON Oval Sighting';
+  String get mufonOvalSighting => 'MUFON Oval Sighting Report';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Rectangle Sighting';
+  String get mufonRectangleSighting => 'MUFON Rectangle Sighting Report';
 
   @override
-  String get mufonCylinderSighting => 'MUFON Cylinder Sighting';
+  String get mufonCylinderSighting => 'MUFON Cylinder Sighting Report';
 
   @override
-  String get mufonBoomerangSighting => 'MFON Boomerang Sighting';
+  String get mufonBoomerangSighting => 'MFON Boomerang Sighting Report';
 
   @override
-  String get mufonStarlikeSighting => '(مافون ستار)';
+  String get mufonStarlikeSighting => 'MUFON Starlike Sighting Report';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
@@ -657,7 +657,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sighting => 'البصر';
 
   @override
-  String get ufoSighting => 'UFO البصر';
+  String get ufoSighting => 'UFOBeep UFO إنذار';
 
   @override
   String get envAnalysisTitle => 'Environmental Analysis';
@@ -913,13 +913,13 @@ class AppLocalizationsAr extends AppLocalizations {
       'الإخطارات المتعلقة بأجهزة الإنذار بالأشعة فوق البنفسجية';
 
   @override
-  String get notificationSightingTitle => 'UFO البصر';
+  String get notificationSightingTitle => 'UFOBeep UFO إنذار';
 
   @override
-  String get notificationSightingUrgent => 'URGENT UFO البصر';
+  String get notificationSightingUrgent => 'URGENT UFOBeep UFO إنذار';
 
   @override
-  String get notificationSightingEmergency => 'EMERGENCY UFO البصر';
+  String get notificationSightingEmergency => 'EMERGENCY UFOBeep UFO إنذار';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
@@ -1230,7 +1230,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get imageNotFound => 'لم يعثر على صورة';
 
   @override
-  String get ufoSightingAlt => 'مشاهده';
+  String get ufoSightingAlt => 'UFO تنبيه Beep UFO';
 
   @override
   String get celestialDataTitle => 'أهداف المهرجان';

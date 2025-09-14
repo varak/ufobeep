@@ -482,37 +482,37 @@ class AppLocalizationsJa extends AppLocalizations {
   String get mufonCase => 'MUFONについて 導入事例';
 
   @override
-  String get mufonSighting => 'MUFONについて スタイリング';
+  String get mufonSighting => 'MUFONサイティングレポート';
 
   @override
-  String get mufonLightSighting => 'MUFONライトサイト';
+  String get mufonLightSighting => 'MUFONライトサイティングレポート';
 
   @override
-  String get mufonSphereSighting => 'MUFON 球の視線';
+  String get mufonSphereSighting => 'MUFON 球面視レポート';
 
   @override
-  String get mufonDiscSighting => 'MUFONについて ディスクサイト';
+  String get mufonDiscSighting => 'MUFONについて ディスクサイトレポート';
 
   @override
-  String get mufonTriangleSighting => 'MUFONについて 三角形の視力';
+  String get mufonTriangleSighting => 'MUFONについて トライアングルシーティングレポート';
 
   @override
-  String get mufonCigarSighting => 'MUFONシガーサイティング';
+  String get mufonCigarSighting => 'MUFONシガーサイトングレポート';
 
   @override
-  String get mufonOvalSighting => 'MUFON楕円形の視認';
+  String get mufonOvalSighting => 'MUFONオーバルサイトングレポート';
 
   @override
-  String get mufonRectangleSighting => 'MUFONについて 長方形の観光';
+  String get mufonRectangleSighting => 'MUFONについて 長方形のサイトングレポート';
 
   @override
-  String get mufonCylinderSighting => 'MUFONシリンダー 視認';
+  String get mufonCylinderSighting => 'MUFONシリンダーサイティングレポート';
 
   @override
-  String get mufonBoomerangSighting => 'MUFONのブーメランの視力';
+  String get mufonBoomerangSighting => 'MUFON Boomerangのサイトレポート';
 
   @override
-  String get mufonStarlikeSighting => 'MUFON スターライク 視線';
+  String get mufonStarlikeSighting => 'MUFONについて 星型観光レポート';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
@@ -647,7 +647,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get sighting => 'スタイリング';
 
   @override
-  String get ufoSighting => 'ユーチューブ スタイリング';
+  String get ufoSighting => 'UFOベープUFO アラート';
 
   @override
   String get envAnalysisTitle => '環境分析';
@@ -901,13 +901,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get notificationChannelAlertsDesc => 'UFOビープと近接アラートの通知';
 
   @override
-  String get notificationSightingTitle => 'ユーチューブ スタイリング';
+  String get notificationSightingTitle => 'UFOベープUFO アラート';
 
   @override
-  String get notificationSightingUrgent => '⚠️ ユゲント UFO スタイリング';
+  String get notificationSightingUrgent => '⚠️ ウルゲン UFOBeep UFO アラート';
 
   @override
-  String get notificationSightingEmergency => '恒例の緊急UFO スタイリング';
+  String get notificationSightingEmergency => '緊急UFOBeep UFO アラート';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
@@ -1217,7 +1217,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get imageNotFound => '画像が見つかりません';
 
   @override
-  String get ufoSightingAlt => 'UFO目撃';
+  String get ufoSightingAlt => 'ユーチューブ Beep UFOアラート';
 
   @override
   String get celestialDataTitle => 'Celestialオブジェクト';

@@ -493,37 +493,37 @@ class AppLocalizationsHi extends AppLocalizations {
   String get mufonCase => 'MUFON मामला';
 
   @override
-  String get mufonSighting => 'MUFON दृष्टि';
+  String get mufonSighting => 'MUFON Sighting Report';
 
   @override
-  String get mufonLightSighting => 'MUFON लाइट दृष्टि';
+  String get mufonLightSighting => 'MUFON लाइट Sighting रिपोर्ट';
 
   @override
-  String get mufonSphereSighting => 'MUFON क्षेत्र दृष्टि';
+  String get mufonSphereSighting => 'MUFON Sphere Sighting Report';
 
   @override
-  String get mufonDiscSighting => 'MUFON डिस्क दृष्टि';
+  String get mufonDiscSighting => 'MUFON डिस्क Sighting रिपोर्ट';
 
   @override
-  String get mufonTriangleSighting => 'MUFON त्रिभुज दृष्टि';
+  String get mufonTriangleSighting => 'MUFON त्रिभुज दृष्टि रिपोर्ट';
 
   @override
-  String get mufonCigarSighting => 'MUFON Cigar Sighting';
+  String get mufonCigarSighting => 'MUFON Cigar Sighting Report';
 
   @override
-  String get mufonOvalSighting => 'MUFON ओवल दृष्टि';
+  String get mufonOvalSighting => 'MUFON Oval Sighting Report';
 
   @override
-  String get mufonRectangleSighting => 'MUFON आयत दृष्टि';
+  String get mufonRectangleSighting => 'MUFON आयत दृष्टि रिपोर्ट';
 
   @override
-  String get mufonCylinderSighting => 'MUFON सिलेंडर दृष्टि';
+  String get mufonCylinderSighting => 'MUFON सिलेंडर दृष्टि रिपोर्ट';
 
   @override
-  String get mufonBoomerangSighting => 'MUFON Boomerang Sighting';
+  String get mufonBoomerangSighting => 'MUFON Boomerang Sighting Report';
 
   @override
-  String get mufonStarlikeSighting => 'MUFON Starlike Sighting';
+  String get mufonStarlikeSighting => 'MUFON स्टारलाइक साइटिंग रिपोर्ट';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
@@ -659,7 +659,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get sighting => 'दृष्टि';
 
   @override
-  String get ufoSighting => 'यूएफओ दृष्टि';
+  String get ufoSighting => 'UFOBep चेतावनी';
 
   @override
   String get envAnalysisTitle => 'पर्यावरणीय विश्लेषण';
@@ -918,13 +918,13 @@ class AppLocalizationsHi extends AppLocalizations {
       'यूएफओ बीप और निकटता अलर्ट के लिए अधिसूचनाएं';
 
   @override
-  String get notificationSightingTitle => 'यूएफओ दृष्टि';
+  String get notificationSightingTitle => 'UFOBep चेतावनी';
 
   @override
-  String get notificationSightingUrgent => 'UFO दृष्टि';
+  String get notificationSightingUrgent => 'UFOBep UFO चेतावनी';
 
   @override
-  String get notificationSightingEmergency => 'EMERGENCY UFO दृष्टि';
+  String get notificationSightingEmergency => 'EMERGENCY UFOBeep UFO चेतावनी';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
@@ -1235,7 +1235,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get imageNotFound => 'छवि नहीं मिली';
 
   @override
-  String get ufoSightingAlt => 'यूएफओ दर्शन';
+  String get ufoSightingAlt => 'यूएफओ बीप यूएफओ चेतावनी';
 
   @override
   String get celestialDataTitle => 'Celestial ऑब्जेक्ट';

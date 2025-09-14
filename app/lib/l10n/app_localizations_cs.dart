@@ -494,37 +494,37 @@ class AppLocalizationsCs extends AppLocalizations {
   String get mufonCase => 'MUFON Případ';
 
   @override
-  String get mufonSighting => 'MUFON Vidění';
+  String get mufonSighting => 'Zpráva o pozorování MUFON';
 
   @override
-  String get mufonLightSighting => 'MUFON Lehké pozorování';
+  String get mufonLightSighting => 'Zpráva o pozorování světla MUFON';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sféra Vidění';
+  String get mufonSphereSighting => 'Zpráva o pozorování mufonové koule';
 
   @override
-  String get mufonDiscSighting => 'MUFON Comment';
+  String get mufonDiscSighting => 'MUFON Zpráva o pozorování disku';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Úhel trojúhelníku';
+  String get mufonTriangleSighting => 'MUFON Zpráva o pozorování trojúhelníku';
 
   @override
-  String get mufonCigarSighting => 'Mufon Cigar Sighting';
+  String get mufonCigarSighting => 'Zpráva MUFON Cigar Shighting';
 
   @override
-  String get mufonOvalSighting => 'MUFON Oválné pozorování';
+  String get mufonOvalSighting => 'Zpráva o pozorování Oválné pracovnice MUFON';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Obdélníkový pohled';
+  String get mufonRectangleSighting => 'MUFON Zpráva o pozorování obdélníku';
 
   @override
-  String get mufonCylinderSighting => 'Mufon Cylinder Viking';
+  String get mufonCylinderSighting => 'Zpráva o pozorování válce MUFON';
 
   @override
-  String get mufonBoomerangSighting => 'MUFON Boomerang Vidění';
+  String get mufonBoomerangSighting => 'Zpráva MUFON Boomerang o pozorování';
 
   @override
-  String get mufonStarlikeSighting => 'MUFON Starlike Sighting';
+  String get mufonStarlikeSighting => 'MUFON Starlike Fighting Report';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
@@ -660,7 +660,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get sighting => 'Vidění';
 
   @override
-  String get ufoSighting => 'UFO Vidění';
+  String get ufoSighting => 'UFOBeep UFO Varování';
 
   @override
   String get envAnalysisTitle => 'Environmentální analýza';
@@ -920,13 +920,13 @@ class AppLocalizationsCs extends AppLocalizations {
       'Oznámení o pípnutí UFO a upozornění na blízkost';
 
   @override
-  String get notificationSightingTitle => 'UFO Vidění';
+  String get notificationSightingTitle => 'UFOBeep UFO Varování';
 
   @override
-  String get notificationSightingUrgent => 'Name Vidění';
+  String get notificationSightingUrgent => 'Name Varování';
 
   @override
-  String get notificationSightingEmergency => 'POSLEDNÍ UFO Vidění';
+  String get notificationSightingEmergency => 'UFO Varování';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
@@ -1238,7 +1238,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get imageNotFound => 'Obrázek nenalezen';
 
   @override
-  String get ufoSightingAlt => 'Pozorování UFO';
+  String get ufoSightingAlt => 'UFO Poplach proti UFO';
 
   @override
   String get celestialDataTitle => 'Nebeské objekty';

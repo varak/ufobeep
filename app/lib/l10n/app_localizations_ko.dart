@@ -483,37 +483,37 @@ class AppLocalizationsKo extends AppLocalizations {
   String get mufonCase => '사이트맵 제품정보';
 
   @override
-  String get mufonSighting => '사이트맵 뚱 베어';
+  String get mufonSighting => 'MUFON Sighting 보고서';
 
   @override
-  String get mufonLightSighting => 'MUFON 빛 시력';
+  String get mufonLightSighting => 'MUFON 빛 Sighting 보고서';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sphere 전투';
+  String get mufonSphereSighting => 'MUFON Sphere 전투 보고서';
 
   @override
-  String get mufonDiscSighting => '사이트맵 디스크 Sighting';
+  String get mufonDiscSighting => '사이트맵 디스크 Sighting 보고서';
 
   @override
-  String get mufonTriangleSighting => '사이트맵 연락처';
+  String get mufonTriangleSighting => '사이트맵 Triangle Sighting 보고서';
 
   @override
-  String get mufonCigarSighting => 'MUFON 시가 Sighting';
+  String get mufonCigarSighting => 'MUFON 시가 Sighting 보고서';
 
   @override
-  String get mufonOvalSighting => 'MUFON 타원형 시력';
+  String get mufonOvalSighting => 'MUFON Oval Sighting 보고서';
 
   @override
-  String get mufonRectangleSighting => '사이트맵 장방형 Sighting';
+  String get mufonRectangleSighting => '사이트맵 Rectangle Sighting 보고서';
 
   @override
-  String get mufonCylinderSighting => 'MUFON 실린더 Sighting';
+  String get mufonCylinderSighting => 'MUFON 실린더 Sighting 보고';
 
   @override
-  String get mufonBoomerangSighting => 'MUFON Boomerang 운동';
+  String get mufonBoomerangSighting => 'MUFON Boomerang Sighting 보고서';
 
   @override
-  String get mufonStarlikeSighting => 'MUFON Starlike 싸움';
+  String get mufonStarlikeSighting => '사이트맵 Starlike Sighting 보고서';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
@@ -648,7 +648,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get sighting => '뚱 베어';
 
   @override
-  String get ufoSighting => '사이트맵 뚱 베어';
+  String get ufoSighting => 'UFOBeep의 UFO 지원하다';
 
   @override
   String get envAnalysisTitle => '환경분석';
@@ -902,13 +902,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get notificationChannelAlertsDesc => 'UFO beeps 및 근접 경고에 대한 알림';
 
   @override
-  String get notificationSightingTitle => '사이트맵 뚱 베어';
+  String get notificationSightingTitle => 'UFOBeep의 UFO 지원하다';
 
   @override
-  String get notificationSightingUrgent => '⚠️ 유벤트 UFO 뚱 베어';
+  String get notificationSightingUrgent => '⚠️ 긴급 UFOBeep UFO 지원하다';
 
   @override
-  String get notificationSightingEmergency => '∙ 에너지 UFO 뚱 베어';
+  String get notificationSightingEmergency => '∙ 에너지 UFOBeep UFO 지원하다';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
@@ -1217,7 +1217,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get imageNotFound => '찾을 수 없음';
 
   @override
-  String get ufoSightingAlt => 'UFO 광경';
+  String get ufoSightingAlt => '사이트맵 Beep UFO 경고';
 
   @override
   String get celestialDataTitle => 'Celestial 개체';

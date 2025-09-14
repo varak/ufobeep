@@ -499,37 +499,37 @@ class AppLocalizationsIt extends AppLocalizations {
   String get mufonCase => 'MUFON Caso';
 
   @override
-  String get mufonSighting => 'MUFON Sighting';
+  String get mufonSighting => 'MUFON Rapporto di tenuta';
 
   @override
-  String get mufonLightSighting => 'Illuminazione MUFON';
+  String get mufonLightSighting => 'MUFON Light Sighting Report';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sphere Sighting';
+  String get mufonSphereSighting => 'MUFON Sphere Sighting Report';
 
   @override
-  String get mufonDiscSighting => 'MUFON Sighting disc';
+  String get mufonDiscSighting => 'MUFON Rapporto di visione';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Triangolo di tenuta';
+  String get mufonTriangleSighting => 'MUFON Rapporto di visione del triangolo';
 
   @override
-  String get mufonCigarSighting => 'MUFON Sighting sigaro';
+  String get mufonCigarSighting => 'MUFON Cigar Sighting Report';
 
   @override
-  String get mufonOvalSighting => 'MUFON Oval Sighting';
+  String get mufonOvalSighting => 'MUFON Rapporto di tenuta ovale';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Rettangolo di tenuta';
+  String get mufonRectangleSighting => 'MUFON Rapporto di tenuta rettangolare';
 
   @override
-  String get mufonCylinderSighting => 'MUFON Cilindro Sighting';
+  String get mufonCylinderSighting => 'Rapporto di tenuta del cilindro MUFON';
 
   @override
-  String get mufonBoomerangSighting => 'MUFON Boomerang Sighting';
+  String get mufonBoomerangSighting => 'MUFON Boomerang Rapporto di tenuta';
 
   @override
-  String get mufonStarlikeSighting => 'MUFON Starlike Sighting';
+  String get mufonStarlikeSighting => 'MUFON Rapporto Starlike Sighting';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
@@ -666,7 +666,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get sighting => 'Sighting';
 
   @override
-  String get ufoSighting => 'UFO Sighting';
+  String get ufoSighting => 'UFOBeep UFO Avviso';
 
   @override
   String get envAnalysisTitle => 'Analisi ambientale';
@@ -928,13 +928,14 @@ class AppLocalizationsIt extends AppLocalizations {
       'Notifiche per UFO beep e avvisi di prossimità';
 
   @override
-  String get notificationSightingTitle => 'UFO Sighting';
+  String get notificationSightingTitle => 'UFOBeep UFO Avviso';
 
   @override
-  String get notificationSightingUrgent => '⚠️ URGENT UFO Sighting';
+  String get notificationSightingUrgent => '⚠️ URGENT UFOBeep UFO Avviso';
 
   @override
-  String get notificationSightingEmergency => '🚨 EMERGENCENZA UFO Sighting';
+  String get notificationSightingEmergency =>
+      '🚨 EMERGENCENZA UFOBeep UFO Avviso';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
@@ -1245,7 +1246,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get imageNotFound => 'Immagine non trovata';
 
   @override
-  String get ufoSightingAlt => 'UFO avvistamento';
+  String get ufoSightingAlt => 'UFO Beep UFO alert';
 
   @override
   String get celestialDataTitle => 'Oggetti celesti';

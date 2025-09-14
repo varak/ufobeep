@@ -500,37 +500,37 @@ class AppLocalizationsEl extends AppLocalizations {
   String get mufonCase => 'ΜΟΥΦΟΝ Υπόθεση';
 
   @override
-  String get mufonSighting => 'ΜΟΥΦΟΝ Ορατότητα';
+  String get mufonSighting => 'Έκθεση παρατήρησης MUFON';
 
   @override
-  String get mufonLightSighting => 'MUFON Φωτεινή Ματιά';
+  String get mufonLightSighting => 'Έκθεση παρατήρησης φωτός MUFON';
 
   @override
-  String get mufonSphereSighting => 'Ματιά Σφαίρας MUFON';
+  String get mufonSphereSighting => 'Έκθεση παρατήρησης σφαίρας MUFON';
 
   @override
-  String get mufonDiscSighting => 'ΜΟΥΦΟΝ Δίσκος Αξιοθέατα';
+  String get mufonDiscSighting => 'ΜΟΥΦΟΝ Έκθεση παρατήρησης δίσκων';
 
   @override
-  String get mufonTriangleSighting => 'ΜΟΥΦΟΝ Ορατότητα τριγώνου';
+  String get mufonTriangleSighting => 'ΜΟΥΦΟΝ Έκθεση παρατήρησης τριγώνου';
 
   @override
-  String get mufonCigarSighting => 'MUFON Εντοπισμός πούρων';
+  String get mufonCigarSighting => 'Έκθεση παρατήρησης πούρων MUFON';
 
   @override
-  String get mufonOvalSighting => 'Οβάλ θέαμα MUFON';
+  String get mufonOvalSighting => 'Έκθεση Οβάλ παρατήρησης MUFON';
 
   @override
-  String get mufonRectangleSighting => 'ΜΟΥΦΟΝ Ορθόγωνη όραση';
+  String get mufonRectangleSighting => 'ΜΟΥΦΟΝ Έκθεση παρατήρησης ορθογωνίου';
 
   @override
-  String get mufonCylinderSighting => 'Εντοπισμός κυλίνδρων MUFON';
+  String get mufonCylinderSighting => 'Έκθεση παρατήρησης κυλίνδρων MUFON';
 
   @override
-  String get mufonBoomerangSighting => 'MUFON Boomerang Αξιοθέατα';
+  String get mufonBoomerangSighting => 'Έκθεση παρατήρησης MUFON Boomerang';
 
   @override
-  String get mufonStarlikeSighting => 'Η Αστροειδής Ματιά του MUFON';
+  String get mufonStarlikeSighting => 'ΜΟΥΦΟΝ Starlike Sighting Αναφορά';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
@@ -667,7 +667,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get sighting => 'Ορατότητα';
 
   @override
-  String get ufoSighting => 'ΑΤΙΑ Ορατότητα';
+  String get ufoSighting => 'UFOBeep UFO Συναγερμός';
 
   @override
   String get envAnalysisTitle => 'Περιβαλλοντική ανάλυση';
@@ -928,13 +928,14 @@ class AppLocalizationsEl extends AppLocalizations {
       'Ειδοποιήσεις για UFO μπιπ και ειδοποιήσεις εγγύτητας';
 
   @override
-  String get notificationSightingTitle => 'ΑΤΙΑ Ορατότητα';
+  String get notificationSightingTitle => 'UFOBeep UFO Συναγερμός';
 
   @override
-  String get notificationSightingUrgent => '⚠️ ΑΣΤΥΝΟΜΙΑ Ορατότητα';
+  String get notificationSightingUrgent => '⚠️ URGENT UFOBeep UFO Συναγερμός';
 
   @override
-  String get notificationSightingEmergency => '🚨 ΑΤΙΑ ΑΝΑΓΚΗΣ Ορατότητα';
+  String get notificationSightingEmergency =>
+      '🚨 Έκτακτη UFOBeep UFO Συναγερμός';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
@@ -1246,7 +1247,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get imageNotFound => 'Η εικόνα δε βρέθηκε';
 
   @override
-  String get ufoSightingAlt => 'Εθεάθη UFO';
+  String get ufoSightingAlt => 'ΑΤΙΑ Συναγερμός ΑΤΙΑ μπιπ';
 
   @override
   String get celestialDataTitle => 'Ουράνια αντικείμενα';
