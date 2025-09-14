@@ -383,25 +383,33 @@ async def get_alert_by_id(
                 FROM sightings
                 WHERE id = $1
             """
-            row = await connection.fetchrow(query, alert_id)
+            # Try as UUID first, then as ID string
+            try:
+                import uuid as uuid_lib
+                # Validate it's a UUID
+                uuid_lib.UUID(alert_id)
+                row = await connection.fetchrow(query, alert_id)
+            except:
+                # Not a UUID, might be short_url or other format
+                row = None
 
             if not row:
                 raise HTTPException(status_code=404, detail="Alert not found")
 
-            # Format the response
+            # Format the response - use correct column names
             alert = {
-                "id": row["id"],
+                "id": str(row["id"]),
                 "title": row["title"],
                 "description": row["description"],
                 "location": {
-                    "latitude": float(row["location_latitude"]) if row["location_latitude"] else 0,
-                    "longitude": float(row["location_longitude"]) if row["location_longitude"] else 0,
-                    "name": row["location_name"] or "Unknown Location"
+                    "latitude": float(row["public_latitude"]) if row["public_latitude"] else 0,
+                    "longitude": float(row["public_longitude"]) if row["public_longitude"] else 0,
+                    "name": row["enrichment_data"].get("location_name") if row["enrichment_data"] else "Unknown Location"
                 },
                 "created_at": row["created_at"].isoformat(),
                 "source": row["source"],
                 "username": row["reporter_username"],
-                "media_files": row["media_files"] or [],
+                "media_files": json.loads(row["media_info"]) if row["media_info"] else [],
                 "enrichment_data": row["enrichment_data"] or {},
                 "alert_level": "medium"
             }
