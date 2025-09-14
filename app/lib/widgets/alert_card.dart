@@ -183,14 +183,30 @@ class AlertCard extends ConsumerWidget {
           ),
           const SizedBox(height: 4),
         ],
-        Text(
-          alert.source == 'mufon' 
-              ? _getMufonReportDate(context, alert) 
-              : _formatDateTime(context, alert.createdAt),
-          style: const TextStyle(
-            color: AppColors.textTertiary,
-            fontSize: 12,
-          ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              alert.source == 'mufon'
+                  ? _getMufonReportDate(context, alert)
+                  : _formatActualDateTime(context, alert.createdAt),
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              alert.source == 'mufon'
+                  ? '' // Skip relative time for MUFON since it shows case number
+                  : _formatDateTime(context, alert.createdAt),
+              style: const TextStyle(
+                color: AppColors.textTertiary,
+                fontSize: 11,
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -648,158 +664,26 @@ class AlertCard extends ConsumerWidget {
       return l10n.timeJustNow;
     }
   }
-}
 
-// Keep CompactAlertCard for backward compatibility
-class CompactAlertCard extends ConsumerWidget {
-  const CompactAlertCard({
-    super.key,
-    required this.alert,
-    this.onTap,
-  });
-
-  final Alert alert;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final userPrefs = ref.watch(userPreferencesProvider);
-    final l10n = AppLocalizations.of(context)!;
-    final units = userPrefs?.units ?? 'metric';
-    return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      elevation: 1,
-      color: AppColors.darkSurface,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-        side: BorderSide(
-          color: AppColors.darkBorder.withOpacity(0.3),
-        ),
-      ),
-      child: InkWell(
-        onTap: onTap ?? () async {
-          await UiFeedback.click();
-          if (context.mounted) {
-            context.go('/alert/${alert.id}');
-          }
-        },
-        borderRadius: BorderRadius.circular(8),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: AppColors.brandPrimary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: const Text(
-                  '🛸',
-                  style: TextStyle(fontSize: 14),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AlertTitleUtils.getDynamicTitle(l10n, alert),
-                      style: const TextStyle(
-                        color: AppColors.textPrimary,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 2),
-                    Row(
-                      children: [
-                        if (alert.distance != null && alert.distance! > 0) ...[
-                          Text(
-                            UnitConversion.formatDistance(alert.distance! * 1000, units),
-                            style: const TextStyle(
-                              color: AppColors.textTertiary,
-                              fontSize: 12,
-                            ),
-                          ),
-                          const Text(
-                            ' • ',
-                            style: TextStyle(
-                              color: AppColors.textTertiary,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                        Text(
-                          alert.source == 'mufon'
-                              ? _getMufonReportDate(context, alert)
-                              : _formatDateTime(context, alert.createdAt),
-                          style: const TextStyle(
-                            color: AppColors.textTertiary,
-                            fontSize: 12,
-                          ),
-                        ),
-                        if (alert.isVerified && alert.source != 'mufon') ...[
-                          const SizedBox(width: 4),
-                          const Icon(
-                            Icons.verified,
-                            color: AppColors.brandPrimary,
-                            size: 12,
-                          ),
-                        ],
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const Icon(
-                Icons.arrow_forward_ios,
-                size: 14,
-                color: AppColors.textTertiary,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  String _formatDateTime(BuildContext context, DateTime dateTime) {
-    final l10n = AppLocalizations.of(context)!;
-    final now = DateTime.now();
+  String _formatActualDateTime(BuildContext context, DateTime dateTime) {
     final localDateTime = dateTime.toLocal();
-    final difference = now.difference(localDateTime);
+    final now = DateTime.now();
 
-    if (difference.inDays > 0) {
-      return l10n.timeDaysAgo(difference.inDays);
-    } else if (difference.inHours > 0) {
-      return l10n.timeHoursAgo(difference.inHours);
-    } else if (difference.inMinutes > 0) {
-      return l10n.timeMinutesAgo(difference.inMinutes);
+    // Show time if it's today, otherwise show date and time
+    if (localDateTime.day == now.day &&
+        localDateTime.month == now.month &&
+        localDateTime.year == now.year) {
+      // Today - show time only: "2:30 PM"
+      return "${localDateTime.hour > 12 ? localDateTime.hour - 12 : (localDateTime.hour == 0 ? 12 : localDateTime.hour)}:${localDateTime.minute.toString().padLeft(2, '0')} ${localDateTime.hour >= 12 ? 'PM' : 'AM'}";
     } else {
-      return l10n.timeJustNow;
+      // Other days - show date and time: "Jan 14, 2:30 PM"
+      final months = [
+        '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      ];
+      final timeStr = "${localDateTime.hour > 12 ? localDateTime.hour - 12 : (localDateTime.hour == 0 ? 12 : localDateTime.hour)}:${localDateTime.minute.toString().padLeft(2, '0')} ${localDateTime.hour >= 12 ? 'PM' : 'AM'}";
+      return "${months[localDateTime.month]} ${localDateTime.day}, $timeStr";
     }
-  }
-
-  String _getMufonReportDate(BuildContext context, Alert alert) {
-    final enrichment = alert.enrichment;
-    if (enrichment != null) {
-      if (enrichment.containsKey('database_when')) {
-        final reportDate = enrichment['database_when']?.toString();
-        if (reportDate != null && reportDate.isNotEmpty) {
-          return reportDate;
-        }
-      }
-      if (enrichment.containsKey('mufon_case_number')) {
-        final caseNumber = enrichment['mufon_case_number']?.toString();
-        if (caseNumber != null && caseNumber.isNotEmpty) {
-          return 'Case #$caseNumber';
-        }
-      }
-    }
-    return _formatDateTime(context, alert.createdAt);
   }
 }
+
