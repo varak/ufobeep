@@ -85,11 +85,8 @@ export default function AlertsMap({
         if (isMinimal) {
           // This is minimal data, need to fetch full details
           setLoading(true)
-          // Call backend directly with the UUID
-          const apiUrl = window.location.hostname === 'localhost'
-            ? `http://localhost:8000/beep/${alert.id}`
-            : `https://ufobeep.com/api/beep/${alert.id}`
-          fetch(apiUrl)
+          // Use frontend API route
+          fetch(`/api/beep/${alert.id}`)
             .then(res => res.json())
             .then(data => {
               if (data.success && data.data) {
@@ -330,8 +327,7 @@ export default function AlertsMap({
         }
 
         // Create map - center on user location with appropriate zoom
-        // Always use a higher zoom (12) when we have user location, otherwise use default
-        const mapZoom = userLocation[0] === center[0] && userLocation[1] === center[1] ? zoom : 12
+        const mapZoom = userLocation[0] === center[0] && userLocation[1] === center[1] ? zoom : 10
         const map = L.map(mapRef.current, {
           center: userLocation,
           zoom: mapZoom,
@@ -433,9 +429,7 @@ export default function AlertsMap({
           markersRef.current.push(marker)
         })
 
-        // Don't auto-fit to all alerts - keep focused on user location
-        // This was causing the map to zoom out too far with 1900+ points
-        /*
+        // Fit map to show all alerts
         if (alerts.length > 0) {
           const validAlerts = alerts.filter(a => a.location.latitude !== 0 && a.location.longitude !== 0)
           if (validAlerts.length > 0) {
@@ -461,7 +455,6 @@ export default function AlertsMap({
             }
           }
         }
-        */
 
       } catch (error) {
         setMapError(true)

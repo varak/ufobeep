@@ -1,30 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { apiConfig } from '@/config/api'
 
-// GET /api/beep/[shortId] - Fetch single beep by ID or short URL
+// GET /api/beep/[id] - Fetch single beep by ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { shortId: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { shortId } = params
-
-    // Debug logging
-    console.log('API endpoint called with shortId:', shortId)
-
-    // Check if it's a UUID or short URL
-    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(shortId)
+    const { id } = params
 
     const baseUrl = process.env.NODE_ENV === 'production'
       ? 'https://ufobeep.com/api'
       : 'http://localhost:8000'
 
-    // Use different endpoint based on whether it's UUID or short URL
-    const apiUrl = isUuid
-      ? `${baseUrl}/beep/${shortId}`  // UUID endpoint
-      : `${baseUrl}/beep/by-short-url/${shortId}`  // Short URL endpoint
-
-    console.log('Calling backend API:', apiUrl)
+    const apiUrl = `${baseUrl}/beep/${id}`
 
     const response = await fetch(apiUrl, {
       method: 'GET',
