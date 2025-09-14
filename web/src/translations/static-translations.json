@@ -30,7 +30,22 @@
     "shapeBlimp": "blimp",
     "shapeFireball": "fireball",
     "shapeFormation": "formation",
-    "shapeUnknown": "unknown"
+    "shapeUnknown": "unknown",
+    "weatherConditionsTitle": "Weather Conditions",
+    "locationEnrichmentTitle": "Location Details",
+    "coordinatesLabel": "Coordinates",
+    "aircraftTrackingTitle": "Aircraft Tracking",
+    "aircraftDataSource": "Data Source",
+    "noAircraftDetected": "No aircraft detected",
+    "temperature": "Temperature",
+    "weather": "Weather",
+    "visibility": "Visibility",
+    "wind": "Wind",
+    "humidity": "Humidity",
+    "city": "City",
+    "state": "State",
+    "country": "Country",
+    "percent": "%"
   },
   "es": {
     "ufoSighting": "OVNI Avistamiento",
