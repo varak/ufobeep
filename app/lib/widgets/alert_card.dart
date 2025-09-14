@@ -649,19 +649,24 @@ class AlertCard extends ConsumerWidget {
   }
 
   String _formatDateTime(BuildContext context, DateTime dateTime) {
-    final l10n = AppLocalizations.of(context)!;
     final now = DateTime.now();
     final localDateTime = dateTime.toLocal();
     final difference = now.difference(localDateTime);
 
+    // Universal elapsed time format - no translation needed
     if (difference.inDays > 0) {
-      return l10n.timeDaysAgo(difference.inDays);
+      final days = difference.inDays;
+      final hours = difference.inHours.remainder(24);
+      return '${days}d ${hours}h';
     } else if (difference.inHours > 0) {
-      return l10n.timeHoursAgo(difference.inHours);
+      final hours = difference.inHours;
+      final minutes = difference.inMinutes.remainder(60);
+      return '$hours:${minutes.toString().padLeft(2, '0')}';
     } else if (difference.inMinutes > 0) {
-      return l10n.timeMinutesAgo(difference.inMinutes);
+      final minutes = difference.inMinutes;
+      return '0:${minutes.toString().padLeft(2, '0')}';
     } else {
-      return l10n.timeJustNow;
+      return '0:00';
     }
   }
 
