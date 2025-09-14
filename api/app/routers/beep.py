@@ -5,6 +5,7 @@ from app.services.alerts_service import AlertsService
 import asyncpg
 import uuid
 import logging
+import json
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
@@ -285,14 +286,14 @@ async def get_map_points(minimal: bool = False):
                 query = """
                     SELECT
                         id,
-                        location_latitude,
-                        location_longitude,
+                        public_latitude,
+                        public_longitude,
                         source,
                         enrichment_data
-                    FROM alerts
-                    WHERE (location_latitude != 0 OR location_longitude != 0)
-                    AND location_latitude IS NOT NULL
-                    AND location_longitude IS NOT NULL
+                    FROM sightings
+                    WHERE (public_latitude != 0 OR public_longitude != 0)
+                    AND public_latitude IS NOT NULL
+                    AND public_longitude IS NOT NULL
                     ORDER BY created_at DESC
                 """
             else:
@@ -302,18 +303,18 @@ async def get_map_points(minimal: bool = False):
                         id,
                         title,
                         description,
-                        location_latitude,
-                        location_longitude,
-                        location_name,
+                        public_latitude,
+                        public_longitude,
+                        enrichment_data->>'location_name' as location_name,
                         created_at,
                         source,
                         reporter_username,
-                        media_files,
+                        media_info as media_files,
                         enrichment_data
-                    FROM alerts
-                    WHERE (location_latitude != 0 OR location_longitude != 0)
-                    AND location_latitude IS NOT NULL
-                    AND location_longitude IS NOT NULL
+                    FROM sightings
+                    WHERE (public_latitude != 0 OR public_longitude != 0)
+                    AND public_latitude IS NOT NULL
+                    AND public_longitude IS NOT NULL
                     ORDER BY created_at DESC
                 """
 
@@ -326,8 +327,8 @@ async def get_map_points(minimal: bool = False):
                     point = {
                         "id": row["id"],
                         "location": {
-                            "latitude": float(row["location_latitude"]),
-                            "longitude": float(row["location_longitude"])
+                            "latitude": float(row["public_latitude"]),
+                            "longitude": float(row["public_longitude"])
                         },
                         "source": row["source"],
                         "enrichment_data": row["enrichment_data"] or {}
@@ -339,14 +340,14 @@ async def get_map_points(minimal: bool = False):
                         "title": row["title"],
                         "description": row["description"],
                         "location": {
-                            "latitude": float(row["location_latitude"]),
-                            "longitude": float(row["location_longitude"]),
+                            "latitude": float(row["public_latitude"]),
+                            "longitude": float(row["public_longitude"]),
                             "name": row["location_name"] or "Unknown Location"
                         },
                         "created_at": row["created_at"].isoformat(),
                         "source": row["source"],
                         "username": row["reporter_username"],
-                        "media_files": row["media_files"] or [],
+                        "media_files": json.loads(row["media_files"]) if row["media_files"] else [],
                         "enrichment_data": row["enrichment_data"] or {},
                         "alert_level": "medium"  # Default for now
                     }
@@ -379,7 +380,7 @@ async def get_alert_by_id(
         async with db_pool.acquire() as connection:
             query = """
                 SELECT *
-                FROM alerts
+                FROM sightings
                 WHERE id = $1
             """
             row = await connection.fetchrow(query, alert_id)
