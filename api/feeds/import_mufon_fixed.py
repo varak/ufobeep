@@ -342,11 +342,11 @@ def import_mufon_cases_fixed(json_file_path):
 
 This is a MUFON case report. Additional witness details may be available in the original MUFON database."""
 
-            # Create enriched title based on UFO classification
-            if ufo_type == "Unknown":
-                title = f"UFO Report"
+            # Create enriched title based on UFO classification (only use shape if confidence >= 0.5)
+            if ufo_type == "Unknown" or classification['confidence'] < 0.5:
+                title = f"MUFON Sighting Report"
             else:
-                title = f"{ufo_type} UFO Report"
+                title = f"MUFON {ufo_type} Sighting Report"
             
             # Create enrichment data with UFO classification for map icons
             enrichment_data = {
