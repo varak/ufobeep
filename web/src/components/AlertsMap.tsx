@@ -97,12 +97,13 @@ export default function AlertsMap({
                   title: data.data.title,
                   description: data.data.description,
                   created_at: data.data.created_at,
-                  location: data.data.location || alert.location,
+                  location: data.data.location,  // Always use the full location from API
                   media_files: data.data.media_files?.files || data.data.media_files || [],
                   username: data.data.username,
                   source: data.data.source,
                   short_url: data.data.short_url
                 }
+                console.log('Fetched location:', data.data.location)  // Debug
                 setFullAlert(fullData)
               }
             })
