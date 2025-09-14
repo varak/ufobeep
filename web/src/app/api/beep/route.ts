@@ -7,8 +7,8 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const queryString = searchParams.toString()
     
-    // Use new unified /beep endpoint
-    const apiUrl = `${apiConfig.fullUrl}/beep${queryString ? `?${queryString}` : ''}`
+    // Use direct backend URL to avoid self-referencing
+    const apiUrl = `http://localhost:8000/beep${queryString ? `?${queryString}` : ''}`
     
     const response = await fetch(apiUrl, {
       method: 'GET',
@@ -47,8 +47,8 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     
-    // Use new unified /beep endpoint
-    const apiUrl = `${apiConfig.fullUrl}/beep`
+    // Use direct backend URL to avoid self-referencing
+    const apiUrl = `http://localhost:8000/beep`
     
     const response = await fetch(apiUrl, {
       method: 'POST',

@@ -21,7 +21,6 @@ interface Alert {
   created_at: string
   source?: string
   username?: string
-  short_url?: string
   enrichment_data?: any
   media_files?: Array<{
     id: string
@@ -99,8 +98,7 @@ export default function AlertsMap({
                   created_at: data.data.created_at,
                   media_files: data.data.media_files?.files || data.data.media_files || [],
                   username: data.data.username,
-                  source: data.data.source,
-                  short_url: data.data.short_url
+                  source: data.data.source
                 }
                 setFullAlert(fullData)
               }
@@ -189,16 +187,7 @@ export default function AlertsMap({
             {truncateDescription(displayAlert.description)}
             {displayAlert.description && displayAlert.description.split(' ').length > 300 && (
               <a
-                href={`/beep/${currentLocale}/${getAlertSlug({
-                  id: displayAlert.id || alert.id,
-                  title: displayAlert.title,
-                  created_at: displayAlert.created_at,
-                  location: displayAlert.location,
-                  reporter_username: displayAlert.username,
-                  description: displayAlert.description,
-                  source: displayAlert.source,
-                  short_url: displayAlert.short_url
-                }, currentLocale, undefined, displayAlert.short_url)}`}
+                href={`/alert/${displayAlert.id || alert.id}`}
                 className="text-blue-600 cursor-pointer ml-1">see full report</a>
             )}
           </p>
@@ -214,16 +203,7 @@ export default function AlertsMap({
           <div className="mt-2">
             <a
               className="text-blue-600 underline text-xs"
-              href={`/beep/${currentLocale}/${getAlertSlug({
-                id: displayAlert.id || alert.id,
-                title: displayAlert.title,
-                created_at: displayAlert.created_at,
-                location: displayAlert.location,
-                reporter_username: displayAlert.username,
-                description: displayAlert.description,
-                source: displayAlert.source,
-                short_url: displayAlert.short_url
-              }, currentLocale, undefined, displayAlert.short_url)}`}
+              href={`/alert/${displayAlert.id || alert.id}`}
             >
               View details →
             </a>

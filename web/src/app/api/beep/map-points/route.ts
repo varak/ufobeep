@@ -7,7 +7,8 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const minimal = searchParams.get('minimal') === 'true'
 
-    const apiUrl = `${apiConfig.fullUrl}/beep/map-points${minimal ? '?minimal=true' : ''}`
+    // In production, use direct backend URL to avoid self-referencing
+    const apiUrl = `http://localhost:8000/beep/map-points${minimal ? '?minimal=true' : ''}`
 
     const response = await fetch(apiUrl, {
       method: 'GET',

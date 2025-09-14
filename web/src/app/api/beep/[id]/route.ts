@@ -9,11 +9,8 @@ export async function GET(
   try {
     const { id } = params
 
-    const baseUrl = process.env.NODE_ENV === 'production'
-      ? 'https://ufobeep.com/api'
-      : 'http://localhost:8000'
-
-    const apiUrl = `${baseUrl}/beep/${id}`
+    // Always use direct backend URL
+    const apiUrl = `http://localhost:8000/beep/${id}`
 
     const response = await fetch(apiUrl, {
       method: 'GET',

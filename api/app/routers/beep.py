@@ -374,22 +374,28 @@ async def get_alert_by_id(
         db_pool = await get_db()
         alerts_service = AlertsService(db_pool)
 
-        # Query alert by ID
+        # Query alert by ID or short_url
         async with db_pool.acquire() as connection:
-            query = """
-                SELECT *
-                FROM sightings
-                WHERE id = $1
-            """
-            # Convert string to UUID for query
+            # Try both UUID and short_url in a single query
+            row = None
             try:
                 import uuid as uuid_lib
-                # Convert string to UUID object for PostgreSQL
+                # Check if it's a valid UUID format
                 alert_uuid = uuid_lib.UUID(alert_id)
-                row = await connection.fetchrow(query, alert_uuid)
+                query = """
+                    SELECT *
+                    FROM sightings
+                    WHERE id = $1 OR short_url = $2
+                """
+                row = await connection.fetchrow(query, alert_uuid, alert_id)
             except:
-                # Not a UUID, might be short_url or other format
-                row = None
+                # Not a UUID, only check short_url
+                query = """
+                    SELECT *
+                    FROM sightings
+                    WHERE short_url = $1
+                """
+                row = await connection.fetchrow(query, alert_id)
 
             if not row:
                 raise HTTPException(status_code=404, detail="Alert not found")
