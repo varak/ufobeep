@@ -42,6 +42,19 @@ interface AlertsMapProps {
   onAlertClick?: (alert: Alert) => void
 }
 
+// US-biased centering for better geolocation experience
+const US_CENTER: [number, number] = [39.5, -98.35]; // continental US centroid
+
+function biasedCenter(
+  user: [number, number],
+  toward: [number, number] = US_CENTER,
+  weightUser = 0.7 // 70% user, 30% US
+): [number, number] {
+  const lat = user[0] * weightUser + toward[0] * (1 - weightUser);
+  const lng = user[1] * weightUser + toward[1] * (1 - weightUser);
+  return [lat, lng];
+}
+
 export default function AlertsMap({
   alerts = [],
   center = [39.8283, -98.5795], // Center of USA
@@ -256,8 +269,10 @@ export default function AlertsMap({
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const userCoords: [number, number] = [position.coords.latitude, position.coords.longitude]
-          setUserLocation(userCoords)
+          const user: [number, number] = [position.coords.latitude, position.coords.longitude]
+          // Use biased center for better US region view
+          const biasedCoords = biasedCenter(user, US_CENTER, 0.7)
+          setUserLocation(biasedCoords)
         },
         (error) => {
           // Use provided center or US center as fallback
@@ -351,7 +366,7 @@ export default function AlertsMap({
         }
 
         // Create map - center on user location with appropriate zoom
-        const mapZoom = userLocation[0] === center[0] && userLocation[1] === center[1] ? zoom : 8
+        const mapZoom = userLocation[0] === center[0] && userLocation[1] === center[1] ? zoom : 5.5
         const map = L.map(mapRef.current, {
           center: userLocation,
           zoom: mapZoom,
