@@ -215,8 +215,8 @@ export default function AlertsMap({
             const marker = createUfoMarker(L, alert, map)
             
             const getMediaIcons = (alert: any) => {
-              const hasPhotos = alert.media_files?.some(m => m.type === 'image' || m.type === 'photo')
-              const hasVideos = alert.media_files?.some(m => m.type === 'video')
+              const hasPhotos = alert.media_files?.some((m: any) => m.type === 'image' || m.type === 'photo')
+              const hasVideos = alert.media_files?.some((m: any) => m.type === 'video')
               let icons = ''
               if (hasPhotos) icons += '📷'
               if (hasVideos) icons += '🎥'
