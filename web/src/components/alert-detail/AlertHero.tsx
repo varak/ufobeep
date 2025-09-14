@@ -38,13 +38,12 @@ export default function AlertHero({ alert, openImageIndex, locale = 'en' }: Aler
   const hasDescription = alert.description?.trim()
 
   // Debug logging
-  console.log('AlertHero debug:', {
-    description: alert.description,
-    trimmed: alert.description?.trim(),
-    hasDescription: !!hasDescription,
-    hasMedia,
-    mediaCount: alert.media_files?.length || 0
-  })
+  console.log('AlertHero debug:')
+  console.log('- description:', JSON.stringify(alert.description))
+  console.log('- trimmed:', JSON.stringify(alert.description?.trim()))
+  console.log('- hasDescription:', !!hasDescription)
+  console.log('- hasMedia:', hasMedia)
+  console.log('- mediaCount:', alert.media_files?.length || 0)
 
   const handleCloseModal = () => {
     setIsMediaModalOpen(false)
