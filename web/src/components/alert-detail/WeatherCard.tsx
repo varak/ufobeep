@@ -51,7 +51,7 @@ export default function WeatherCard({ weather, locale = 'en' }: WeatherCardProps
           <div className="text-text-primary text-sm">{weather.humidity_percent}{t('percent')}</div>
         </div>
         <div>
-          <div className="text-text-tertiary text-xs">Pressure</div>
+          <div className="text-text-tertiary text-xs">{t('pressure')}</div>
           <div className="text-text-primary text-sm">{weather.pressure_hpa} hPa</div>
         </div>
       </div>
