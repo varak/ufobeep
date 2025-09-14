@@ -424,10 +424,10 @@ async def get_alert_by_id(
                     "longitude": float(row["public_longitude"]) if row["public_longitude"] else 0,
                     "name": location_name
                 },
-                "created_at": row["created_at"].isoformat(),
-                "source": row["source"],
-                "username": row["reporter_username"],
-                "media_files": json.loads(row["media_info"]) if row["media_info"] else [],
+                "created_at": row["created_at"].isoformat() if row["created_at"] else "",
+                "source": row["source"] or "",
+                "username": row.get("reporter_username", ""),
+                "media_files": json.loads(row["media_info"]) if row.get("media_info") else [],
                 "enrichment_data": enrichment,
                 "alert_level": "medium"
             }
