@@ -203,25 +203,8 @@ class AlertsService:
     
     def _extract_location(self, sensor_data, enrichment_data) -> Optional[AlertLocation]:
         """Extract location from sensor/enrichment data - unified logic"""
-        
-        # For MUFON records: Use enrichment data (no sensor data available)
-        if enrichment_data:
-            enrichment = self._parse_json(enrichment_data)
-            if enrichment and "geocoding" in enrichment:
-                geocoding = enrichment["geocoding"]
-                if geocoding:
-                    lat = geocoding.get("latitude")
-                    lng = geocoding.get("longitude")
-                    location_name = geocoding.get("location_name") or geocoding.get("location") or geocoding.get("formatted_address") or geocoding.get("display_name") or ""
-                    if self._valid_coords(lat, lng):
-                        return AlertLocation(
-                            latitude=float(lat),
-                            longitude=float(lng),
-                            name=location_name,
-                            accuracy=50.0  # Default for MUFON
-                        )
-        
-        # For regular beeps: Use sensor data first for accurate GPS coordinates
+
+        # For regular beeps: Use sensor data FIRST for accurate GPS coordinates
         # This fixes the 12.1km distance issue where geocoded city center was used instead of actual location
         if sensor_data:
             sensor = self._parse_json(sensor_data)
@@ -268,7 +251,24 @@ class AlertsService:
                             name=location_name,
                             accuracy=50.0
                         )
-        
+
+        # Fallback to enrichment data for MUFON imports (no sensor data available)
+        if enrichment_data:
+            enrichment = self._parse_json(enrichment_data)
+            if enrichment and "geocoding" in enrichment:
+                geocoding = enrichment["geocoding"]
+                if geocoding:
+                    lat = geocoding.get("latitude")
+                    lng = geocoding.get("longitude")
+                    location_name = geocoding.get("location_name") or geocoding.get("location") or geocoding.get("formatted_address") or geocoding.get("display_name") or ""
+                    if self._valid_coords(lat, lng):
+                        return AlertLocation(
+                            latitude=float(lat),
+                            longitude=float(lng),
+                            name=location_name,
+                            accuracy=50.0  # Default for MUFON
+                        )
+
         return None
     
     def _extract_coords_from_sensor(self, sensor_data: dict) -> Tuple[Optional[float], Optional[float]]:
