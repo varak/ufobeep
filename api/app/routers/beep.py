@@ -381,12 +381,12 @@ async def get_alert_by_id(
                 FROM sightings
                 WHERE id = $1
             """
-            # Try as UUID first, then as ID string
+            # Convert string to UUID for query
             try:
                 import uuid as uuid_lib
-                # Validate it's a UUID
-                uuid_lib.UUID(alert_id)
-                row = await connection.fetchrow(query, alert_id)
+                # Convert string to UUID object for PostgreSQL
+                alert_uuid = uuid_lib.UUID(alert_id)
+                row = await connection.fetchrow(query, alert_uuid)
             except:
                 # Not a UUID, might be short_url or other format
                 row = None
@@ -409,10 +409,16 @@ async def get_alert_by_id(
                                enrichment.get("location_name") or \
                                "Unknown Location"
 
+            # Generate title if missing (especially for MUFON)
+            title = row["title"]
+            if not title and row["source"] == "mufon" and enrichment:
+                shape = enrichment.get("shape", "Unknown")
+                title = f"{shape} reported"
+
             alert = {
                 "id": str(row["id"]),
-                "title": row["title"],
-                "description": row["description"],
+                "title": title or "UFO Sighting",
+                "description": row["description"] or "",
                 "location": {
                     "latitude": float(row["public_latitude"]) if row["public_latitude"] else 0,
                     "longitude": float(row["public_longitude"]) if row["public_longitude"] else 0,
