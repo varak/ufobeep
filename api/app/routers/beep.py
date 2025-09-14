@@ -454,7 +454,7 @@ async def get_alert_by_id(
                 "created_at": row["created_at"].isoformat() if row["created_at"] else "",
                 "source": row["source"] or "",
                 "username": row.get("reporter_username", ""),
-                "media_files": json.loads(row["media_info"]) if row.get("media_info") else [],
+                "media_files": json.loads(row["media_info"]).get("files", []) if row.get("media_info") else [],
                 "enrichment_data": enrichment,
                 "alert_level": "medium"
             }
