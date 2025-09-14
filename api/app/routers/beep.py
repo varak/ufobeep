@@ -415,8 +415,29 @@ async def get_alert_by_id(
                 shape = enrichment.get("shape", "Unknown")
                 title = f"{shape} reported"
 
+            # Get short_url from row or generate it from ID using the canonical algorithm
+            short_url = row.get("short_url")
+            if not short_url:
+                # Implement getShortHash from shared/get_short_hash.js
+                SAFE_CHARS = '23456789abcdefghjkmnpqrstuvwxyz'
+                input_str = str(row["id"])
+
+                # Generate hash using the exact algorithm from get_short_hash.js
+                hash_val = 0
+                for char in input_str:
+                    hash_val = ((hash_val << 5) - hash_val) + ord(char)
+                    hash_val = hash_val & 0xFFFFFFFF  # Convert to 32-bit integer
+
+                # Convert hash to base-29 using safe characters
+                short_url = ''
+                num = abs(hash_val)
+                for _ in range(5):  # 5 characters
+                    short_url = SAFE_CHARS[num % len(SAFE_CHARS)] + short_url
+                    num = num // len(SAFE_CHARS)
+
             alert = {
                 "id": str(row["id"]),
+                "short_url": short_url,
                 "title": title or "UFO Sighting",
                 "description": row["description"] or "",
                 "location": {
