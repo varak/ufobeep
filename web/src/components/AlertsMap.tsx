@@ -125,6 +125,33 @@ export default function AlertsMap({
         return words.slice(0, maxWords).join(' ') + '...'
       }
 
+      const getEnrichedLocation = (alert: any): string => {
+        // Try enrichment geocoding first
+        if (alert.enrichment?.geocoding?.location) {
+          return alert.enrichment.geocoding.location
+        }
+
+        // Try raw location from enrichment
+        if (alert.enrichment?.location_raw) {
+          return alert.enrichment.location_raw
+        }
+
+        // Parse location from description for MUFON reports
+        if (alert.description && alert.description.includes('📍 Location:')) {
+          const locationMatch = alert.description.match(/📍 Location: ([^\n]+)/)
+          if (locationMatch && locationMatch[1].trim()) {
+            return locationMatch[1].trim()
+          }
+        }
+
+        // Fall back to basic location name
+        if (alert.location?.name && alert.location.name !== 'Unknown Location') {
+          return alert.location.name
+        }
+
+        return ''
+      }
+
       const handleMediaClick = (index: number) => {
         setIsMediaModalOpen(true)
         setSelectedMediaIndex(index)
@@ -186,8 +213,8 @@ export default function AlertsMap({
             </div>
           )}
 
-          {displayAlert.location?.name && displayAlert.location.name !== 'Unknown Location' && (
-            <p className="text-xs text-gray-500 mb-1">📍 {displayAlert.location.name}</p>
+          {getEnrichedLocation(displayAlert) && (
+            <p className="text-xs text-gray-500 mb-1">📍 {getEnrichedLocation(displayAlert)}</p>
           )}
 
           <p className="text-gray-600 text-xs mb-1">
