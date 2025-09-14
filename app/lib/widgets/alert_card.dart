@@ -656,6 +656,7 @@ class CompactAlertCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userPrefs = ref.watch(userPreferencesProvider);
+    final l10n = AppLocalizations.of(context)!;
     final units = userPrefs?.units ?? 'metric';
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
