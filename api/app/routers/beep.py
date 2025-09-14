@@ -397,6 +397,20 @@ async def get_alert_by_id(
                 raise HTTPException(status_code=404, detail="Alert not found")
 
             # Format the response - use correct column names
+            # Parse enrichment_data if it's a string
+            enrichment = row["enrichment_data"]
+            if isinstance(enrichment, str):
+                try:
+                    enrichment = json.loads(enrichment)
+                except:
+                    enrichment = {}
+
+            location_name = "Unknown Location"
+            if enrichment and isinstance(enrichment, dict):
+                location_name = enrichment.get("geocoding", {}).get("location_name") or \
+                               enrichment.get("location_name") or \
+                               "Unknown Location"
+
             alert = {
                 "id": str(row["id"]),
                 "title": row["title"],
@@ -404,13 +418,13 @@ async def get_alert_by_id(
                 "location": {
                     "latitude": float(row["public_latitude"]) if row["public_latitude"] else 0,
                     "longitude": float(row["public_longitude"]) if row["public_longitude"] else 0,
-                    "name": row["enrichment_data"].get("location_name") if row["enrichment_data"] else "Unknown Location"
+                    "name": location_name
                 },
                 "created_at": row["created_at"].isoformat(),
                 "source": row["source"],
                 "username": row["reporter_username"],
                 "media_files": json.loads(row["media_info"]) if row["media_info"] else [],
-                "enrichment_data": row["enrichment_data"] or {},
+                "enrichment_data": enrichment,
                 "alert_level": "medium"
             }
 

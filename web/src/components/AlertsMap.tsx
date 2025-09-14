@@ -85,7 +85,11 @@ export default function AlertsMap({
         if (isMinimal) {
           // This is minimal data, need to fetch full details
           setLoading(true)
-          fetch(`/api/beep/${alert.id}`)
+          // Call backend directly with the UUID
+          const apiUrl = process.env.NODE_ENV === 'production'
+            ? `https://ufobeep.com/api/beep/${alert.id}`
+            : `http://localhost:8000/beep/${alert.id}`
+          fetch(apiUrl)
             .then(res => res.json())
             .then(data => {
               if (data.success && data.data) {
@@ -326,7 +330,8 @@ export default function AlertsMap({
         }
 
         // Create map - center on user location with appropriate zoom
-        const mapZoom = userLocation[0] === center[0] && userLocation[1] === center[1] ? zoom : 10
+        // Always use a higher zoom (12) when we have user location, otherwise use default
+        const mapZoom = userLocation[0] === center[0] && userLocation[1] === center[1] ? zoom : 12
         const map = L.map(mapRef.current, {
           center: userLocation,
           zoom: mapZoom,
@@ -428,24 +433,26 @@ export default function AlertsMap({
           markersRef.current.push(marker)
         })
 
-        // Fit map to show all alerts with user-centric view
+        // Don't auto-fit to all alerts - keep focused on user location
+        // This was causing the map to zoom out too far with 1900+ points
+        /*
         if (alerts.length > 0) {
           const validAlerts = alerts.filter(a => a.location.latitude !== 0 && a.location.longitude !== 0)
           if (validAlerts.length > 0) {
             const latlngs = validAlerts.map(a => [a.location.latitude, a.location.longitude] as [number, number])
-            
+
             // Include user location in bounds if we have their actual location
             if (userLocation[0] !== center[0] || userLocation[1] !== center[1]) {
               latlngs.push(userLocation)
             }
-            
+
             // Create bounds that include all alerts and user location
             const bounds = L.latLngBounds(latlngs)
-            
+
             // If bounds are very small (all points close together), ensure minimum zoom
             const boundsSizeLat = bounds.getNorth() - bounds.getSouth()
             const boundsSizeLng = bounds.getEast() - bounds.getWest()
-            
+
             if (boundsSizeLat < 0.1 && boundsSizeLng < 0.1) {
               // All points are very close, use moderate zoom around the area
               map.setView(bounds.getCenter(), 12)
@@ -454,6 +461,7 @@ export default function AlertsMap({
             }
           }
         }
+        */
 
       } catch (error) {
         setMapError(true)
