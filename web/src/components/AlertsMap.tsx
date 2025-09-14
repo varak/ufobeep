@@ -328,8 +328,10 @@ export default function AlertsMap({
         // Just update markers without recreating the map
         let L: any
         try {
+          console.log('[AlertsMap] loading leaflet (update path)')
           const leafletModule = await import('leaflet')
           L = (leafletModule as any).default || leafletModule
+          console.log('[AlertsMap] leaflet loaded (update path)')
         } catch (e) {
           console.error('Failed to load Leaflet module:', e)
           setMapError(true)
@@ -374,12 +376,12 @@ export default function AlertsMap({
 
       try {
         // Dynamically import Leaflet
+        console.log('[AlertsMap] loading leaflet (init path)')
         const leafletModule2 = await import('leaflet')
         const L: any = (leafletModule2 as any).default || leafletModule2
+        console.log('[AlertsMap] leaflet loaded (init path)')
         
-        // Fix Leaflet icon paths issue: rely on bundled CSS; avoid remote unpkg
-        delete (L.Icon.Default.prototype as any)._getIconUrl
-        // If default icons fail to resolve, they will still render as our custom markers for MUFON
+        // Do not mutate Leaflet default icon internals; we avoid default markers entirely
 
         // Clear existing map if any
         if (mapInstanceRef.current) {
@@ -389,13 +391,13 @@ export default function AlertsMap({
 
         // Create map without center first to avoid LatLng parsing issues
         const mapZoom = userLocation[0] === center[0] && userLocation[1] === center[1] ? zoom : 5.5
-        try { console.debug('[AlertsMap] creating map instance') } catch {}
+        try { console.log('[AlertsMap] creating map instance') } catch {}
         const map = L.map(mapRef.current, {
           zoomControl: true,
           attributionControl: true,
           preferCanvas: false
         })
-        try { console.debug('[AlertsMap] setView', userLocation, mapZoom) } catch {}
+        try { console.log('[AlertsMap] setView', userLocation, mapZoom) } catch {}
         // Now set the view with sanitized numeric coordinates and hard fallback
         const hasArrayCenter = Array.isArray(userLocation) && userLocation.length === 2
         const centerLat = hasArrayCenter ? Number(userLocation[0]) : 0
@@ -404,13 +406,13 @@ export default function AlertsMap({
         const safeLng = Number.isFinite(centerLng) ? centerLng : 0
         const safeZoom = Number.isFinite(Number(mapZoom)) ? Number(mapZoom) : 5
         map.setView([safeLat, safeLng], safeZoom)
-        try { console.debug('[AlertsMap] after setView') } catch {}
+        try { console.log('[AlertsMap] after setView') } catch {}
         mapInstanceRef.current = map
         setMapInitialized(true) // Mark as initialized
         
         // Add user location marker if we have their actual location
         if (userLocation[0] !== center[0] || userLocation[1] !== center[1]) {
-          try { console.debug('[AlertsMap] add user location marker') } catch {}
+          try { console.log('[AlertsMap] add user location marker') } catch {}
           L.circleMarker([Number(userLocation[0]), Number(userLocation[1])], {
             radius: 7,
             fillColor: '#3b82f6',
@@ -419,7 +421,7 @@ export default function AlertsMap({
             opacity: 1,
             fillOpacity: 0.9
           }).addTo(map).bindPopup('You are here')
-          try { console.debug('[AlertsMap] user location marker added') } catch {}
+          try { console.log('[AlertsMap] user location marker added') } catch {}
         }
 
         // Add OpenStreetMap tile layer with proper settings
@@ -434,13 +436,13 @@ export default function AlertsMap({
         tileLayer.addTo(map)
         
         // Debug breadcrumbs to isolate production failures
-        try { console.debug('[AlertsMap] init: tile layer added') } catch {}
+        try { console.log('[AlertsMap] init: tile layer added') } catch {}
 
         // Add zoom change listener to update markers based on zoom level
         map.on('zoomend', () => {
           const newZoom = map.getZoom()
           setCurrentZoom(newZoom)
-          try { console.debug('[AlertsMap] zoomend:', newZoom) } catch {}
+          try { console.log('[AlertsMap] zoomend:', newZoom) } catch {}
 
           // Update markers based on new zoom level
           markersRef.current.forEach(marker => {
@@ -450,7 +452,7 @@ export default function AlertsMap({
 
           // Re-add markers with new zoom filtering
           const filteredAlerts = filterAlertsByZoom(alerts, newZoom)
-          try { console.debug('[AlertsMap] markers@zoom', newZoom, 'count=', filteredAlerts.length) } catch {}
+          try { console.log('[AlertsMap] markers@zoom', newZoom, 'count=', filteredAlerts.length) } catch {}
           filteredAlerts.forEach((alert) => {
             if (!isValidLatLng(alert.location)) return
 
@@ -474,7 +476,7 @@ export default function AlertsMap({
 
         // Force map to update its size
         setTimeout(() => {
-          try { console.debug('[AlertsMap] invalidateSize') } catch {}
+          try { console.log('[AlertsMap] invalidateSize') } catch {}
           map.invalidateSize()
         }, 100)
 
@@ -486,7 +488,7 @@ export default function AlertsMap({
 
         // Filter alerts by zoom level then add markers for alerts (skip invalid coordinates) with UFO classification support
         const filteredAlerts = filterAlertsByZoom(alerts, currentZoom)
-        try { console.debug('[AlertsMap] initial markers count=', filteredAlerts.length) } catch {}
+        try { console.log('[AlertsMap] initial markers count=', filteredAlerts.length) } catch {}
         filteredAlerts.forEach((alert) => {
           if (!isValidLatLng(alert.location)) return // Skip invalid/missing coordinates
 
@@ -523,7 +525,7 @@ export default function AlertsMap({
 
             // Create bounds that include all alerts and user location
             const bounds = L.latLngBounds(latlngs)
-            try { console.debug('[AlertsMap] bounds ready, points=', latlngs.length) } catch {}
+            try { console.log('[AlertsMap] bounds ready, points=', latlngs.length) } catch {}
 
             // If bounds are very small (all points close together), ensure minimum zoom
             const boundsSizeLat = bounds.getNorth() - bounds.getSouth()
