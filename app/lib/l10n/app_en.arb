@@ -221,7 +221,7 @@
   "noAlertsFound": "No matching alerts",
   "alertsFilterHelp": "Try adjusting your filters to see more results",
   "verified": "Verified",
-  "beepOnly": "Report Only",
+  "beepOnly": "Beep Only",
   "reportOnly": "Report Only",
   "videoOnly": "video only",
   "imageOnly": "image only",

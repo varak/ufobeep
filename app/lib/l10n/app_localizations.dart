@@ -921,7 +921,7 @@ abstract class AppLocalizations {
   /// No description provided for @beepOnly.
   ///
   /// In en, this message translates to:
-  /// **'Report Only'**
+  /// **'Beep Only'**
   String get beepOnly;
 
   /// No description provided for @reportOnly.

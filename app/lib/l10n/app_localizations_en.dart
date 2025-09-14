@@ -430,7 +430,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get verified => 'Verified';
 
   @override
-  String get beepOnly => 'Report Only';
+  String get beepOnly => 'Beep Only';
 
   @override
   String get reportOnly => 'Report Only';
