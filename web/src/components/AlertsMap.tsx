@@ -1,8 +1,5 @@
 'use client'
 
-// Ensure Leaflet styles are bundled and not blocked by CSP
-import 'leaflet/dist/leaflet.css'
-
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { createRoot } from 'react-dom/client'
@@ -87,6 +84,7 @@ export default function AlertsMap({
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
   const [modalMediaFiles, setModalMediaFiles] = useState<any[]>([])
+  const [mapErrorMessage, setMapErrorMessage] = useState<string | null>(null)
 
   // Validate coordinates defensively to avoid runtime errors
   const isValidLatLng = (loc?: { latitude: any; longitude: any }) => {
@@ -98,6 +96,10 @@ export default function AlertsMap({
     // Skip placeholder (0,0)
     if (lat === 0 && lng === 0) return false
     return true
+  }
+
+  const asNumLatLng = (loc: { latitude: any; longitude: any }): [number, number] => {
+    return [Number(loc.latitude), Number(loc.longitude)]
   }
 
   // Helper function to create React popup content - defined outside useEffect
@@ -324,8 +326,16 @@ export default function AlertsMap({
         if (!alertsChanged) return
         
         // Just update markers without recreating the map
-        const leafletModule = await import('leaflet')
-        const L: any = (leafletModule as any).default || leafletModule
+        let L: any
+        try {
+          const leafletModule = await import('leaflet')
+          L = (leafletModule as any).default || leafletModule
+        } catch (e) {
+          console.error('Failed to load Leaflet module:', e)
+          setMapError(true)
+          setMapErrorMessage('Failed to load map library')
+          return
+        }
         
         // Clear existing markers
         markersRef.current.forEach(marker => {
@@ -391,14 +401,18 @@ export default function AlertsMap({
         
         // Add user location marker if we have their actual location
         if (userLocation[0] !== center[0] || userLocation[1] !== center[1]) {
-          L.marker(userLocation, {
-            title: 'Your Location',
-            zIndexOffset: 1000
+          L.circleMarker([Number(userLocation[0]), Number(userLocation[1])], {
+            radius: 7,
+            fillColor: '#3b82f6',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.9
           }).addTo(map).bindPopup('You are here')
         }
 
         // Add OpenStreetMap tile layer with proper settings
-        const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        const tileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 19,
           attribution: '© OpenStreetMap contributors',
           crossOrigin: true,
@@ -482,7 +496,7 @@ export default function AlertsMap({
         if (alerts.length > 0) {
           const validAlerts = alerts.filter(a => isValidLatLng(a.location))
           if (validAlerts.length > 0) {
-            const latlngs = validAlerts.map(a => [a.location.latitude, a.location.longitude] as [number, number])
+            const latlngs = validAlerts.map(a => [Number(a.location.latitude), Number(a.location.longitude)] as [number, number])
 
             // Include user location in bounds if we have their actual location
             if (userLocation[0] !== center[0] || userLocation[1] !== center[1]) {
@@ -508,6 +522,7 @@ export default function AlertsMap({
       } catch (error) {
         console.error('Map initialization error:', error)
         setMapError(true)
+        setMapErrorMessage(error instanceof Error ? error.message : String(error))
       }
     }
 
@@ -640,11 +655,11 @@ export default function AlertsMap({
         iconAnchor: [12, 12]
       })
       
-      return L.marker([alert.location.latitude, alert.location.longitude], { icon: customIcon })
+      return L.marker([Number(alert.location.latitude), Number(alert.location.longitude)], { icon: customIcon })
     } else {
       // Use circle markers for regular beep sightings (existing behavior)
       return L.circleMarker(
-        [alert.location.latitude, alert.location.longitude],
+        [Number(alert.location.latitude), Number(alert.location.longitude)],
         {
           radius: 8,
           fillColor: getAlertColor(alert.alert_level),
@@ -672,6 +687,9 @@ export default function AlertsMap({
             <div className="text-4xl mb-4">🗺️</div>
             <p className="text-text-secondary mb-2">Interactive map unavailable</p>
             <p className="text-text-tertiary text-sm">{alerts.length} sightings available</p>
+            {mapErrorMessage && (
+              <p className="text-text-tertiary text-xs mt-2">{mapErrorMessage}</p>
+            )}
           </div>
         </div>
       )}
