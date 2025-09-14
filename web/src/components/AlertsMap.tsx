@@ -223,7 +223,7 @@ export default function AlertsMap({
               return icons ? ` ${icons}` : ''
             }
 
-            const truncateDescription = (desc: string, maxWords = 50) => {
+            const truncateDescription = (desc: string | null, maxWords = 50) => {
               if (!desc) return ''
               const words = desc.split(' ')
               if (words.length <= maxWords) return desc.replace(/\n/g, '<br>')
