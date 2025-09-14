@@ -262,6 +262,17 @@
   "filteredSuffix": "filtered",
   "detailsTitle": "Details",
   "mufonCase": "MUFON Case",
+  "mufonSighting": "MUFON Sighting",
+  "mufonLightSighting": "MUFON Light Sighting",
+  "mufonSphereSighting": "MUFON Sphere Sighting",
+  "mufonDiscSighting": "MUFON Disc Sighting",
+  "mufonTriangleSighting": "MUFON Triangle Sighting",
+  "mufonCigarSighting": "MUFON Cigar Sighting",
+  "mufonOvalSighting": "MUFON Oval Sighting",
+  "mufonRectangleSighting": "MUFON Rectangle Sighting",
+  "mufonCylinderSighting": "MUFON Cylinder Sighting",
+  "mufonBoomerangSighting": "MUFON Boomerang Sighting",
+  "mufonStarlikeSighting": "MUFON Starlike Sighting",
   "mufonCaseDetailsTitle": "MUFON Case #{caseNumber} Details",
   "@mufonCaseDetailsTitle": {
     "placeholders": {

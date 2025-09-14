@@ -1,8 +1,63 @@
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../models/enriched_alert.dart';
 import '../models/api_models.dart';
 import '../providers/alerts_provider.dart';
 
 abstract class AlertTitleUtils {
+  /// Generate dynamic title for mobile app using translations
+  static String getDynamicTitle(AppLocalizations l10n, Alert alert) {
+    // For MUFON cases, generate dynamic translated title
+    if (alert.reporterUsername == 'MUFON') {
+      final enrichment = alert.enrichment;
+      final classification = enrichment?['classification'] as Map<String, dynamic>?;
+      final type = classification?['type'] as String?;
+      final confidence = (classification?['confidence'] as num?)?.toDouble() ?? 0.0;
+
+      // If high confidence classification, use specific shape
+      if (confidence >= 0.2 && type != null && type != 'unknown') {
+        switch (type.toLowerCase()) {
+          case 'sphere':
+            return l10n.mufonSphereSighting;
+          case 'disc':
+            return l10n.mufonDiscSighting;
+          case 'triangle':
+            return l10n.mufonTriangleSighting;
+          case 'light':
+            return l10n.mufonLightSighting;
+          case 'cigar':
+            return l10n.mufonCigarSighting;
+          case 'oval':
+            return l10n.mufonOvalSighting;
+          case 'rectangle':
+            return l10n.mufonRectangleSighting;
+          case 'cylinder':
+            return l10n.mufonCylinderSighting;
+          case 'boomerang':
+            return l10n.mufonBoomerangSighting;
+          case 'starlike':
+            return l10n.mufonStarlikeSighting;
+          default:
+            return l10n.mufonSighting;
+        }
+      }
+      // Low confidence - generic MUFON sighting
+      return l10n.mufonSighting;
+    }
+
+    // Non-MUFON cases - use regular logic
+    return _generateContextualTitle(
+      title: alert.title,
+      description: alert.description,
+      hasMedia: alert.mediaFiles.isNotEmpty,
+      hasPhoto: alert.mediaFiles.any((media) =>
+        media['type']?.toString() == 'photo' ||
+        media['type']?.toString() == 'image'),
+      hasVideo: alert.mediaFiles.any((media) =>
+        media['type']?.toString() == 'video'),
+      createdAt: alert.createdAt,
+    );
+  }
+
   /// Generate a contextual title for an EnrichedAlert
   static String getContextualTitle(EnrichedAlert alert) {
     return _generateContextualTitle(

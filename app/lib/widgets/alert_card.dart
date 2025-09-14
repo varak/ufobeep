@@ -7,6 +7,7 @@ import '../utils/unit_conversion.dart';
 import '../providers/user_preferences_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../services/ui_feedback.dart';
+import '../utils/alert_title_utils.dart';
 import 'glass_card.dart';
 
 class AlertCard extends ConsumerWidget {
@@ -87,7 +88,7 @@ class AlertCard extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          alert.title == 'UFO Sighting' ? l10n.ufoSighting : alert.title,
+          AlertTitleUtils.getDynamicTitle(l10n, alert),
           style: const TextStyle(
             color: AppColors.textPrimary,
             fontSize: 20,
@@ -695,7 +696,7 @@ class CompactAlertCard extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      alert.title,
+                      AlertTitleUtils.getDynamicTitle(l10n, alert),
                       style: const TextStyle(
                         color: AppColors.textPrimary,
                         fontSize: 14,

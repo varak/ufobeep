@@ -237,7 +237,7 @@ class UFOClassifier:
             ],
             "disc": [
                 r"disc\w*", r"saucer", r"round.*craft", r"circular.*object",
-                r"disk\w*", r"plate.*shaped?"
+                r"disk\w*", r"plate.*shaped?", r"silver.*disc", r"metallic.*disc"
             ],
             "sphere": [
                 r"sphere\w*", r"ball.*shaped?", r"orb\w*", r"round.*ball",
@@ -970,7 +970,7 @@ def extract_and_import_mufon(date_str):
                         
                         # Prepare alert data with correct API structure
                         # Title: Add "MUFON Report" for proper attribution
-                        if classification['confidence'] >= 0.3:
+                        if classification['confidence'] >= 0.2:
                             title = f"MUFON {classification['type'].title()} UFO Sighting Report"
                         else:
                             title = "MUFON UFO Sighting Report"
