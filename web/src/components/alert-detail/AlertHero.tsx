@@ -37,13 +37,12 @@ export default function AlertHero({ alert, openImageIndex, locale = 'en' }: Aler
   const hasMedia = alert.media_files && alert.media_files.length > 0
   const hasDescription = alert.description?.trim()
 
-  // Debug logging
+  // Debug locale and translation
   console.log('AlertHero debug:')
-  console.log('- description:', JSON.stringify(alert.description))
-  console.log('- trimmed:', JSON.stringify(alert.description?.trim()))
-  console.log('- hasDescription:', !!hasDescription)
-  console.log('- hasMedia:', hasMedia)
-  console.log('- mediaCount:', alert.media_files?.length || 0)
+  console.log('- locale passed:', locale)
+  console.log('- beepOnly translation:', t('beepOnly'))
+  console.log('- localStorage locale:', typeof window !== 'undefined' ? localStorage.getItem('preferred-language') : 'SSR')
+
 
   const handleCloseModal = () => {
     setIsMediaModalOpen(false)
@@ -81,17 +80,6 @@ export default function AlertHero({ alert, openImageIndex, locale = 'en' }: Aler
             </h1>
             
             {/* Content type indicator - only show "witness report" when no media to explain lack */}
-            {(() => {
-              const beepOnlyCondition = !hasMedia && !hasDescription;
-              const reportOnlyCondition = !hasMedia && hasDescription;
-              console.log('Condition debug:', {
-                beepOnlyCondition,
-                reportOnlyCondition,
-                hasMedia,
-                hasDescription
-              });
-              return null;
-            })()}
             {!hasMedia && !hasDescription && (
               <div className="inline-flex items-center gap-2 bg-text-tertiary/10 text-text-tertiary px-3 py-1 rounded-full text-sm font-medium border border-text-tertiary/20">
                 <span>📡</span>
