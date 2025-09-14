@@ -79,14 +79,27 @@ export default function AlertsMap({
 
       // Load full alert data on mount
       useEffect(() => {
-        if (!alert.title) {
+        // Check if we have minimal data (only has id and location)
+        const isMinimal = !alert.title && !alert.description && alert.location
+
+        if (isMinimal) {
           // This is minimal data, need to fetch full details
           setLoading(true)
           fetch(`/api/beep/${alert.id}`)
             .then(res => res.json())
             .then(data => {
               if (data.success && data.data) {
-                setFullAlert(data.data)
+                // Map the response to match our Alert interface
+                const fullData = {
+                  ...alert,
+                  title: data.data.title,
+                  description: data.data.description,
+                  created_at: data.data.created_at,
+                  media_files: data.data.media_files || [],
+                  username: data.data.username,
+                  source: data.data.source
+                }
+                setFullAlert(fullData)
               }
             })
             .catch(err => console.error('Error loading alert details:', err))
