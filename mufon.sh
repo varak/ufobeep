@@ -975,11 +975,9 @@ def extract_and_import_mufon(date_str):
                         else:
                             title = "MUFON UFO Sighting Report"
                         
-                        # Use clean description with location but without other duplicate metadata
-                        # Frontend will handle displaying enrichment data separately
+                        # Use clean description WITHOUT location - location is stored separately
+                        # Frontend will handle displaying location data
                         clean_description = long_description if long_description else ""
-                        if clean_description:
-                            clean_description += f"\n\n📍 Location: {location}"
                         
 
                         alert_data = {
