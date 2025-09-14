@@ -6,45 +6,38 @@ import '../providers/alerts_provider.dart';
 abstract class AlertTitleUtils {
   /// Generate dynamic title for mobile app using translations
   static String getDynamicTitle(AppLocalizations l10n, Alert alert) {
-    // For MUFON cases, generate dynamic translated title
-    if (alert.reporterUsername == 'MUFON') {
-      final enrichment = alert.enrichment;
-      final classification = enrichment?['classification'] as Map<String, dynamic>?;
-      final type = classification?['type'] as String?;
-      final confidence = (classification?['confidence'] as num?)?.toDouble() ?? 0.0;
+    // Check if this is a translatable title format (using same logic as web frontend)
+    if (alert.title != null && alert.title!.isNotEmpty) {
+      // Handle MUFON titles: detect "MUFON [Shape] Sighting" pattern
+      if (alert.title!.startsWith('MUFON ')) {
+        final parts = alert.title!.split(' ');
+        if (parts.length >= 3 && parts.last == 'Sighting') {
+          // Extract the shape part between "MUFON" and "Sighting"
+          final shapeParts = parts.sublist(1, parts.length - 1);
+          final shape = shapeParts.join(' ').toLowerCase();
 
-      // If high confidence classification, use specific shape
-      if (confidence >= 0.2 && type != null && type != 'unknown') {
-        switch (type.toLowerCase()) {
-          case 'sphere':
-            return l10n.mufonSphereSighting;
-          case 'disc':
-            return l10n.mufonDiscSighting;
-          case 'triangle':
-            return l10n.mufonTriangleSighting;
-          case 'light':
-            return l10n.mufonLightSighting;
-          case 'cigar':
-            return l10n.mufonCigarSighting;
-          case 'oval':
-            return l10n.mufonOvalSighting;
-          case 'rectangle':
-            return l10n.mufonRectangleSighting;
-          case 'cylinder':
-            return l10n.mufonCylinderSighting;
-          case 'boomerang':
-            return l10n.mufonBoomerangSighting;
-          case 'starlike':
-            return l10n.mufonStarlikeSighting;
-          default:
-            return l10n.mufonSighting;
+          // Get shape translation key using same mapping as web
+          final shapeKey = _getShapeTranslationKey(shape);
+          if (shapeKey != null) {
+            // Build translated title: "MUFON [TranslatedShape] [TranslatedSightingReport]"
+            final shapeTranslation = _getShapeTranslation(l10n, shapeKey);
+            return 'MUFON $shapeTranslation ${l10n.sightingReport}';
+          }
         }
+        // Generic MUFON title
+        return 'MUFON ${l10n.sightingReport}';
       }
-      // Low confidence - generic MUFON sighting
-      return l10n.mufonSighting;
+
+      // Handle UFOBeep titles
+      if (alert.title!.startsWith('UFOBeep Alert')) {
+        return 'UFOBeep ${l10n.ufoAlert}';
+      }
+
+      // Use existing title if it doesn't match our patterns
+      return alert.title!;
     }
 
-    // Non-MUFON cases - use regular logic
+    // No title - use contextual generation
     return _generateContextualTitle(
       title: alert.title,
       description: alert.description,
@@ -56,6 +49,91 @@ abstract class AlertTitleUtils {
         media['type']?.toString() == 'video'),
       createdAt: alert.createdAt,
     );
+  }
+
+  /// Get shape translation key (mirrors web frontend logic)
+  static String? _getShapeTranslationKey(String shape) {
+    switch (shape.toLowerCase()) {
+      case 'triangle':
+        return 'mufonTriangle';
+      case 'sphere':
+        return 'mufonSphere';
+      case 'light':
+        return 'mufonLight';
+      case 'disk':
+      case 'disc':
+        return 'mufonDisk';
+      case 'cigar':
+        return 'mufonCigar';
+      case 'oval':
+        return 'mufonOval';
+      case 'cylinder':
+        return 'mufonCylinder';
+      case 'rectangle':
+        return 'mufonRectangle';
+      case 'diamond':
+        return 'mufonDiamond';
+      case 'fireball':
+        return 'mufonFireball';
+      case 'flash':
+        return 'mufonFlash';
+      case 'formation':
+        return 'mufonFormation';
+      case 'changing':
+        return 'mufonChanging';
+      case 'chevron':
+        return 'mufonChevron';
+      case 'cone':
+        return 'mufonCone';
+      case 'cross':
+        return 'mufonCross';
+      case 'egg':
+        return 'mufonEgg';
+      default:
+        return null;
+    }
+  }
+
+  /// Get shape translation using AppLocalizations
+  static String _getShapeTranslation(AppLocalizations l10n, String shapeKey) {
+    switch (shapeKey) {
+      case 'mufonTriangle':
+        return l10n.mufonTriangle;
+      case 'mufonSphere':
+        return l10n.mufonSphere;
+      case 'mufonLight':
+        return l10n.mufonLight;
+      case 'mufonDisk':
+        return l10n.mufonDisk;
+      case 'mufonCigar':
+        return l10n.mufonCigar;
+      case 'mufonOval':
+        return l10n.mufonOval;
+      case 'mufonCylinder':
+        return l10n.mufonCylinder;
+      case 'mufonRectangle':
+        return l10n.mufonRectangle;
+      case 'mufonDiamond':
+        return l10n.mufonDiamond;
+      case 'mufonFireball':
+        return l10n.mufonFireball;
+      case 'mufonFlash':
+        return l10n.mufonFlash;
+      case 'mufonFormation':
+        return l10n.mufonFormation;
+      case 'mufonChanging':
+        return l10n.mufonChanging;
+      case 'mufonChevron':
+        return l10n.mufonChevron;
+      case 'mufonCone':
+        return l10n.mufonCone;
+      case 'mufonCross':
+        return l10n.mufonCross;
+      case 'mufonEgg':
+        return l10n.mufonEgg;
+      default:
+        return l10n.mufonUnknown;
+    }
   }
 
   /// Generate a contextual title for an EnrichedAlert
