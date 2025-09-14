@@ -387,15 +387,15 @@ export default function AlertsMap({
           mapInstanceRef.current = null
         }
 
-        // Create map - center on user location with appropriate zoom
+        // Create map without center first to avoid LatLng parsing issues
         const mapZoom = userLocation[0] === center[0] && userLocation[1] === center[1] ? zoom : 5.5
         const map = L.map(mapRef.current, {
-          center: userLocation,
-          zoom: mapZoom,
           zoomControl: true,
           attributionControl: true,
           preferCanvas: false
         })
+        // Now set the view with sanitized numeric coordinates
+        map.setView([Number(userLocation[0]), Number(userLocation[1])], Number(mapZoom))
         mapInstanceRef.current = map
         setMapInitialized(true) // Mark as initialized
         
@@ -421,11 +421,15 @@ export default function AlertsMap({
         })
         
         tileLayer.addTo(map)
+        
+        // Debug breadcrumbs to isolate production failures
+        try { console.debug('[AlertsMap] init: tile layer added') } catch {}
 
         // Add zoom change listener to update markers based on zoom level
         map.on('zoomend', () => {
           const newZoom = map.getZoom()
           setCurrentZoom(newZoom)
+          try { console.debug('[AlertsMap] zoomend:', newZoom) } catch {}
 
           // Update markers based on new zoom level
           markersRef.current.forEach(marker => {
@@ -435,6 +439,7 @@ export default function AlertsMap({
 
           // Re-add markers with new zoom filtering
           const filteredAlerts = filterAlertsByZoom(alerts, newZoom)
+          try { console.debug('[AlertsMap] markers@zoom', newZoom, 'count=', filteredAlerts.length) } catch {}
           filteredAlerts.forEach((alert) => {
             if (!isValidLatLng(alert.location)) return
 
@@ -458,6 +463,7 @@ export default function AlertsMap({
 
         // Force map to update its size
         setTimeout(() => {
+          try { console.debug('[AlertsMap] invalidateSize') } catch {}
           map.invalidateSize()
         }, 100)
 
@@ -469,6 +475,7 @@ export default function AlertsMap({
 
         // Filter alerts by zoom level then add markers for alerts (skip invalid coordinates) with UFO classification support
         const filteredAlerts = filterAlertsByZoom(alerts, currentZoom)
+        try { console.debug('[AlertsMap] initial markers count=', filteredAlerts.length) } catch {}
         filteredAlerts.forEach((alert) => {
           if (!isValidLatLng(alert.location)) return // Skip invalid/missing coordinates
 
@@ -505,6 +512,7 @@ export default function AlertsMap({
 
             // Create bounds that include all alerts and user location
             const bounds = L.latLngBounds(latlngs)
+            try { console.debug('[AlertsMap] bounds ready, points=', latlngs.length) } catch {}
 
             // If bounds are very small (all points close together), ensure minimum zoom
             const boundsSizeLat = bounds.getNorth() - bounds.getSouth()
