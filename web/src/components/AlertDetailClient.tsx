@@ -84,7 +84,7 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
           const response = await fetch(url)
           if (!response.ok) break
           const data = await response.json()
-          const alerts: Alert[] = data?.data?.beeps || []
+          const alerts: Alert[] = data?.data?.alerts || []
           foundAlert = alerts.find(a => a.id === params.id) || null
           if (foundAlert) break
           if (alerts.length < limit) break
