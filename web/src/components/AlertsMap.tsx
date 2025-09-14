@@ -2,8 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'next/navigation'
+import { createRoot } from 'react-dom/client'
 import { AlertTitleUtils } from '@/utils/alert-title-utils'
 import { getAlertSlug } from '@/utils/slug'
+import MediaGalleryModal from '@/components/MediaGalleryModal'
+import Link from 'next/link'
 
 interface Alert {
   id: string
@@ -19,6 +22,14 @@ interface Alert {
   source?: string
   username?: string
   enrichment_data?: any
+  media_files?: Array<{
+    id: string
+    type: string
+    url: string
+    thumbnail_url: string
+    web_url?: string
+    preview_url?: string
+  }>
 }
 
 interface AlertsMapProps {
@@ -30,8 +41,8 @@ interface AlertsMapProps {
   onAlertClick?: (alert: Alert) => void
 }
 
-export default function AlertsMap({ 
-  alerts = [], 
+export default function AlertsMap({
+  alerts = [],
   center = [39.8283, -98.5795], // Center of USA
   zoom = 4,
   height = '400px',
@@ -42,7 +53,7 @@ export default function AlertsMap({
   const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null)
   const [mapError, setMapError] = useState(false)
   const params = useParams()
-  
+
   // Get current language from URL or default to 'en'
   const currentLocale = (params?.locale as string) || 'en'
   const [hoveredAlert, setHoveredAlert] = useState<Alert | null>(null)
@@ -54,6 +65,9 @@ export default function AlertsMap({
   const markersRef = useRef<any[]>([])
   const prevAlertsRef = useRef<Alert[]>([])
   const isGettingLocation = useRef(false)
+  const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
+  const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
+  const [modalMediaFiles, setModalMediaFiles] = useState<any[]>([])
 
   // Get user's location on mount - only once
   useEffect(() => {
@@ -196,60 +210,146 @@ export default function AlertsMap({
         
         tileLayer.addTo(map)
         
+        // Create popup component function
+        const createPopupContent = (alert: Alert, L: any) => {
+          const container = L.DomUtil.create('div')
+
+          const PopupContent = () => {
+            const [showModal, setShowModal] = useState(false)
+            const [selectedIndex, setSelectedIndex] = useState(0)
+
+            const truncateDescription = (desc: string | null, maxWords = 400) => {
+              if (!desc) return ''
+              const words = desc.split(' ')
+              if (words.length <= maxWords) return desc
+              return words.slice(0, maxWords).join(' ') + '...'
+            }
+
+            const handleMediaClick = (index: number) => {
+              setSelectedIndex(index)
+              setShowModal(true)
+              setIsMediaModalOpen(true)
+              setSelectedMediaIndex(index)
+              setModalMediaFiles(alert.media_files || [])
+            }
+
+            return (
+              <div className="text-sm w-80">
+                <h4 className="font-semibold text-gray-900 mb-1">
+                  {AlertTitleUtils.getShortTitle(alert)}
+                </h4>
+
+                {/* Media thumbnails */}
+                {alert.media_files && alert.media_files.length > 0 && (
+                  <div className="flex gap-1 mb-2 overflow-x-auto">
+                    {alert.media_files.slice(0, 4).map((media, index) => (
+                      <div
+                        key={index}
+                        className="relative flex-shrink-0 w-16 h-16 bg-gray-100 rounded overflow-hidden cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all"
+                        onClick={() => handleMediaClick(index)}
+                      >
+                        <img
+                          src={media.web_url || media.thumbnail_url || media.url}
+                          alt={`Media ${index + 1}`}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement
+                            target.style.display = 'none'
+                            const parent = target.parentElement
+                            if (parent) {
+                              parent.innerHTML = '<div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400 text-xs">🖼️</div>'
+                            }
+                          }}
+                        />
+                        {media.type === 'video' && (
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/60 rounded-full p-1">
+                              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M6.3 4.1c0-.8.9-1.3 1.5-.9l8.4 4.9c.6.4.6 1.4 0 1.8L7.8 14.8c-.6.4-1.5-.1-1.5-.9V4.1z"/>
+                              </svg>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                    {alert.media_files.length > 4 && (
+                      <div className="flex-shrink-0 w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-gray-600 text-xs">
+                        +{alert.media_files.length - 4}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <p className="text-gray-600 text-xs mb-2">
+                  {truncateDescription(alert.description)}
+                  {alert.description && alert.description.split(' ').length > 400 && (
+                    <span className="text-blue-600 cursor-pointer ml-1">see full report</span>
+                  )}
+                </p>
+
+                {alert.location?.name && alert.location.name !== 'Unknown Location' && (
+                  <div className="text-xs text-gray-500">📍 {alert.location.name}</div>
+                )}
+
+                <div className="text-xs text-gray-400 mt-1">
+                  {new Date(alert.created_at).toLocaleDateString()}
+                </div>
+
+                <div className="mt-2">
+                  <a
+                    className="text-blue-600 underline text-xs"
+                    href={`/beep/${currentLocale}/${getAlertSlug({
+                      id: alert.id,
+                      title: alert.title,
+                      created_at: alert.created_at,
+                      location: alert.location,
+                      reporter_username: alert.username,
+                      description: alert.description,
+                      source: alert.source
+                    }, currentLocale)}`}
+                  >
+                    View details →
+                  </a>
+                </div>
+              </div>
+            )
+          }
+
+          const root = createRoot(container)
+          root.render(<PopupContent />)
+
+          return container
+        }
+
         // Add zoom change listener to update markers based on zoom level
         map.on('zoomend', () => {
           const newZoom = map.getZoom()
           setCurrentZoom(newZoom)
-          
+
           // Update markers based on new zoom level
           markersRef.current.forEach(marker => {
             if (marker) marker.remove()
           })
           markersRef.current = []
-          
+
           // Re-add markers with new zoom filtering
           const filteredAlerts = filterAlertsByZoom(alerts, newZoom)
           filteredAlerts.forEach((alert) => {
             if (alert.location.latitude === 0 && alert.location.longitude === 0) return
-            
+
             const marker = createUfoMarker(L, alert, map)
-            
-            const getMediaIcons = (alert: any) => {
-              const hasPhotos = alert.media_files?.some((m: any) => m.type === 'image' || m.type === 'photo')
-              const hasVideos = alert.media_files?.some((m: any) => m.type === 'video')
-              let icons = ''
-              if (hasPhotos) icons += '📷'
-              if (hasVideos) icons += '🎥'
-              return icons ? ` ${icons}` : ''
-            }
 
-            const truncateDescription = (desc: string | null, maxWords = 50) => {
-              if (!desc) return ''
-              const words = desc.split(' ')
-              if (words.length <= maxWords) return desc.replace(/\n/g, '<br>')
-              return words.slice(0, maxWords).join(' ') + '... <span class="text-blue-600 cursor-pointer">see full report</span>'
-            }
+            const popup = L.popup({
+              maxWidth: 350,
+              className: 'custom-popup'
+            }).setContent(createPopupContent(alert, L))
 
-            const popupContent = `
-              <div class="text-sm">
-                <h4 class="font-semibold text-gray-900 mb-1">${AlertTitleUtils.getShortTitle(alert)}${getMediaIcons(alert)}</h4>
-                <p class="text-gray-600 text-xs mb-2">${truncateDescription(alert.description)}</p>
-                ${alert.location?.name && alert.location.name !== 'Unknown Location' ? `
-                  <div class="text-xs text-gray-500">📍 ${alert.location.name}</div>
-                ` : ''}
-                <div class="text-xs text-gray-400 mt-1">${new Date(alert.created_at).toLocaleDateString()}</div>
-                <div class="mt-2">
-                  <a class="text-blue-600 underline" href="/beep/${currentLocale}/${getAlertSlug({ id: alert.id, title: alert.title, created_at: alert.created_at, location: alert.location, reporter_username: alert.username, description: alert.description, source: alert.source }, currentLocale)}">View details →</a>
-                </div>
-              </div>
-            `
-            
-            marker.bindPopup(popupContent)
+            marker.bindPopup(popup)
             marker.on('click', () => {
               setSelectedAlert(alert)
               if (onAlertClick) onAlertClick(alert)
             })
-            
+
             marker.addTo(map)
             markersRef.current.push(marker)
           })
@@ -275,22 +375,13 @@ export default function AlertsMap({
 
           const marker = createUfoMarker(L, alert, map)
 
-          // Add popup
-          const popupContent = `
-            <div class="text-sm">
-              <h4 class="font-semibold text-gray-900 mb-1">${AlertTitleUtils.getShortTitle(alert)}</h4>
-              <p class="text-gray-600 text-xs mb-2">${(alert.description || '').replace(/\n/g, '<br>')}</p>
-              ${alert.location?.name && alert.location.name !== 'Unknown Location' ? `
-                <div class="text-xs text-gray-500">📍 Location: ${alert.location.name}</div>
-              ` : ''}
-              <div class="text-xs text-gray-400 mt-1">${new Date(alert.created_at).toLocaleDateString()}</div>
-              <div class="mt-2">
-                <a class="text-blue-600 underline" href="/beep/${currentLocale}/${getAlertSlug({ id: alert.id, title: alert.title, created_at: alert.created_at, location: alert.location, reporter_username: alert.username, description: alert.description, source: alert.source }, currentLocale)}">View details →</a>
-              </div>
-            </div>
-          `
+          // Add popup with React component
+          const popup = L.popup({
+            maxWidth: 350,
+            className: 'custom-popup'
+          }).setContent(createPopupContent(alert, L))
 
-          marker.bindPopup(popupContent)
+          marker.bindPopup(popup)
           
           // Add click handler
           marker.on('click', () => {
@@ -548,6 +639,20 @@ export default function AlertsMap({
           </div>
         </div>
       </div>
+
+      {/* Media Gallery Modal */}
+      {isMediaModalOpen && modalMediaFiles.length > 0 && (
+        <MediaGalleryModal
+          isOpen={isMediaModalOpen}
+          onClose={() => {
+            setIsMediaModalOpen(false)
+            setModalMediaFiles([])
+          }}
+          mediaFiles={modalMediaFiles}
+          initialIndex={selectedMediaIndex}
+          alertTitle={selectedAlert?.title || 'UFO Sighting'}
+        />
+      )}
     </div>
   )
 }
