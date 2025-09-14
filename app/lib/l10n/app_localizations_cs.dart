@@ -971,7 +971,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get recentUfoBeepsSubtitle =>
-      'Živé zprávy komunity UFOBeep a pozorování databáze MUFON';
+      'Živé zprávy o pozorování UFO z naší globální komunity';
 
   @override
   String get recentUfoBeepsDescription =>
@@ -1266,4 +1266,22 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get failed => 'Selhalo';
+
+  @override
+  String get locationEnrichmentTitle => 'Podrobnosti o umístění';
+
+  @override
+  String get aircraftDataSource => 'Zdroj dat';
+
+  @override
+  String get noAircraftDetected => 'Žádné letadlo nebylo detekováno';
+
+  @override
+  String get sightingReport => 'Zpráva o pozorování';
+
+  @override
+  String get ufoAlert => 'UFO Varování';
+
+  @override
+  String get alert => 'Varování';
 }

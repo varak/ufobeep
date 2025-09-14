@@ -984,7 +984,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get recentUfoBeepsSubtitle =>
-      'Отчеты сообщества UFOBeep и наблюдения базы данных MUFON';
+      'Отчеты о наблюдениях НЛО в прямом эфире от нашего мирового сообщества';
 
   @override
   String get recentUfoBeepsDescription =>
@@ -1280,4 +1280,22 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get failed => 'Неудачник';
+
+  @override
+  String get locationEnrichmentTitle => 'Подробности о местоположении';
+
+  @override
+  String get aircraftDataSource => 'Источник данных';
+
+  @override
+  String get noAircraftDetected => 'Самолеты не обнаружены';
+
+  @override
+  String get sightingReport => 'Обзорный доклад';
+
+  @override
+  String get ufoAlert => 'НЛО Предупреждение';
+
+  @override
+  String get alert => 'Предупреждение';
 }

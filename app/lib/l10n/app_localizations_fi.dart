@@ -973,7 +973,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get recentUfoBeepsSubtitle =>
-      'Live UFOBeepin yhteisön raportit ja MUFON-tietokannan havainnot';
+      'Live UFO-havaintoraportit maailmanlaajuiselta yhteisöltämme';
 
   @override
   String get recentUfoBeepsDescription =>
@@ -1267,4 +1267,22 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get failed => 'Ei onnistunut';
+
+  @override
+  String get locationEnrichmentTitle => 'Sijaintitiedot';
+
+  @override
+  String get aircraftDataSource => 'Tietolähde';
+
+  @override
+  String get noAircraftDetected => 'Ilma-alusta ei havaittu';
+
+  @override
+  String get sightingReport => 'Havaintoraportti';
+
+  @override
+  String get ufoAlert => 'UFO Varoitus';
+
+  @override
+  String get alert => 'Varoitus';
 }

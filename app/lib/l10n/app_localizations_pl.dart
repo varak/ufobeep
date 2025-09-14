@@ -977,7 +977,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get recentUfoBeepsSubtitle =>
-      'Żywe raporty społeczności UFOBeep i obserwacje bazy danych MUFON';
+      'Raporty z obserwacji UFO na żywo z naszej globalnej społeczności';
 
   @override
   String get recentUfoBeepsDescription =>
@@ -1272,4 +1272,22 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get failed => 'Nieudany';
+
+  @override
+  String get locationEnrichmentTitle => 'Szczegóły lokalizacji';
+
+  @override
+  String get aircraftDataSource => 'Źródło danych';
+
+  @override
+  String get noAircraftDetected => 'Nie wykryto żadnego statku powietrznego';
+
+  @override
+  String get sightingReport => 'Sprawozdanie z obserwacji';
+
+  @override
+  String get ufoAlert => 'UFO Alarm';
+
+  @override
+  String get alert => 'Alarm';
 }

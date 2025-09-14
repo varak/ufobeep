@@ -951,8 +951,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get recentUfoBeepsTitle => '最近のUFO ベップス';
 
   @override
-  String get recentUfoBeepsSubtitle =>
-      'ライブ UFOBeep コミュニティレポート & MUFON データベースの可視化';
+  String get recentUfoBeepsSubtitle => '世界中のコミュニティからライブ UFO を目撃するレポート';
 
   @override
   String get recentUfoBeepsDescription =>
@@ -1245,4 +1244,22 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get failed => '失敗した';
+
+  @override
+  String get locationEnrichmentTitle => 'ロケーション詳細';
+
+  @override
+  String get aircraftDataSource => 'データソース';
+
+  @override
+  String get noAircraftDetected => '航空機が検出されない';
+
+  @override
+  String get sightingReport => '観光レポート';
+
+  @override
+  String get ufoAlert => 'ユーチューブ アラート';
+
+  @override
+  String get alert => 'アラート';
 }

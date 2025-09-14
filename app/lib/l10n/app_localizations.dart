@@ -1929,7 +1929,7 @@ abstract class AppLocalizations {
   /// No description provided for @recentUfoBeepsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Live UFOBeep community reports & MUFON database sightings'**
+  /// **'Live UFO sighting reports from our global community'**
   String get recentUfoBeepsSubtitle;
 
   /// No description provided for @recentUfoBeepsDescription.
@@ -2495,6 +2495,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed'**
   String get failed;
+
+  /// No description provided for @locationEnrichmentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Details'**
+  String get locationEnrichmentTitle;
+
+  /// No description provided for @aircraftDataSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Source'**
+  String get aircraftDataSource;
+
+  /// No description provided for @noAircraftDetected.
+  ///
+  /// In en, this message translates to:
+  /// **'No aircraft detected'**
+  String get noAircraftDetected;
+
+  /// No description provided for @sightingReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Sighting Report'**
+  String get sightingReport;
+
+  /// No description provided for @ufoAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'UFO Alert'**
+  String get ufoAlert;
+
+  /// No description provided for @alert.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert'**
+  String get alert;
 }
 
 class _AppLocalizationsDelegate

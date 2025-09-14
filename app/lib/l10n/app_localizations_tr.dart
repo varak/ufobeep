@@ -976,7 +976,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get recentUfoBeepsSubtitle =>
-      'Canlı UFOBeep topluluğu raporları ve MUFON veritabanı görüşleri';
+      'Canlı UFO küresel topluluğumuzdan raporları gözden geçiriyor';
 
   @override
   String get recentUfoBeepsDescription =>
@@ -1270,4 +1270,22 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get failed => 'Başarısızlık';
+
+  @override
+  String get locationEnrichmentTitle => 'Konum Details';
+
+  @override
+  String get aircraftDataSource => 'Data Source';
+
+  @override
+  String get noAircraftDetected => 'Hiçbir uçak tespit edilmedi';
+
+  @override
+  String get sightingReport => 'Rapor';
+
+  @override
+  String get ufoAlert => 'UFO UFO Uyarı';
+
+  @override
+  String get alert => 'Uyarı';
 }

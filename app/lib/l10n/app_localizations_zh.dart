@@ -950,7 +950,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get recentUfoBeepsTitle => '近期的UFO 黄蜂';
 
   @override
-  String get recentUfoBeepsSubtitle => '现场UFOBEP社区报告和MUFON数据库目击';
+  String get recentUfoBeepsSubtitle => '我们全球社会的目击UFO实况报道';
 
   @override
   String get recentUfoBeepsDescription =>
@@ -1243,4 +1243,22 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get failed => '失败';
+
+  @override
+  String get locationEnrichmentTitle => '地点细节';
+
+  @override
+  String get aircraftDataSource => '数据来源';
+
+  @override
+  String get noAircraftDetected => '未发现飞机';
+
+  @override
+  String get sightingReport => '观察报告';
+
+  @override
+  String get ufoAlert => '不明飞行物 警报';
+
+  @override
+  String get alert => '警报';
 }

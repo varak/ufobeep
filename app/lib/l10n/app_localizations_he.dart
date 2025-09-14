@@ -961,7 +961,8 @@ class AppLocalizationsHe extends AppLocalizations {
   String get recentUfoBeepsTitle => 'העב\"ם האחרון הדבורים';
 
   @override
-  String get recentUfoBeepsSubtitle => 'Live UFOBeep Community Reports & MUFON';
+  String get recentUfoBeepsSubtitle =>
+      'חי עב\"מים מלראות דוחות מהקהילה הגלובלית שלנו';
 
   @override
   String get recentUfoBeepsDescription =>
@@ -1254,4 +1255,22 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get failed => 'נכשל';
+
+  @override
+  String get locationEnrichmentTitle => 'פרטי מיקום';
+
+  @override
+  String get aircraftDataSource => 'מקור נתונים';
+
+  @override
+  String get noAircraftDetected => 'שום מטוס לא זיהה';
+
+  @override
+  String get sightingReport => 'דיווח Sighting';
+
+  @override
+  String get ufoAlert => 'עב\"ם התראה';
+
+  @override
+  String get alert => 'התראה';
 }

@@ -952,7 +952,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get recentUfoBeepsTitle => '최근 UFO 뚱 베어';
 
   @override
-  String get recentUfoBeepsSubtitle => '라이브 UFOBeep 커뮤니티 보고서 & MUFON 데이터베이스 광경';
+  String get recentUfoBeepsSubtitle => '글로벌 커뮤니티의 라이브 UFO 시야 보고서';
 
   @override
   String get recentUfoBeepsDescription =>
@@ -1245,4 +1245,22 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get failed => '실패한';
+
+  @override
+  String get locationEnrichmentTitle => '회사연혁';
+
+  @override
+  String get aircraftDataSource => '데이터 소스';
+
+  @override
+  String get noAircraftDetected => '항공기 감지 없음';
+
+  @override
+  String get sightingReport => '연락처';
+
+  @override
+  String get ufoAlert => '사이트맵 지원하다';
+
+  @override
+  String get alert => '지원하다';
 }

@@ -399,14 +399,20 @@ export default function AlertsMap({
         })
         try { console.log('[AlertsMap] setView', userLocation, mapZoom) } catch {}
         // Now set the view with sanitized numeric coordinates and hard fallback
-        const hasArrayCenter = Array.isArray(userLocation) && userLocation.length === 2
-        const centerLat = hasArrayCenter ? Number(userLocation[0]) : 0
-        const centerLng = hasArrayCenter ? Number(userLocation[1]) : 0
-        const safeLat = Number.isFinite(centerLat) ? centerLat : 0
-        const safeLng = Number.isFinite(centerLng) ? centerLng : 0
-        const safeZoom = Number.isFinite(Number(mapZoom)) ? Number(mapZoom) : 5
-        map.setView([safeLat, safeLng], safeZoom)
-        try { console.log('[AlertsMap] after setView') } catch {}
+        try {
+          const hasArrayCenter = Array.isArray(userLocation) && userLocation.length === 2
+          const centerLat = hasArrayCenter ? Number(userLocation[0]) : 0
+          const centerLng = hasArrayCenter ? Number(userLocation[1]) : 0
+          const safeLat = Number.isFinite(centerLat) ? centerLat : 0
+          const safeLng = Number.isFinite(centerLng) ? centerLng : 0
+          const safeZoom = Number.isFinite(Number(mapZoom)) ? Number(mapZoom) : 5
+          map.setView([safeLat, safeLng], safeZoom)
+          try { console.log('[AlertsMap] after setView') } catch {}
+        } catch (e) {
+          console.error('[AlertsMap] setView failed, falling back to [0,0],2', e)
+          setMapErrorMessage('setView failed')
+          map.setView([0, 0], 2)
+        }
         mapInstanceRef.current = map
         setMapInitialized(true) // Mark as initialized
         
@@ -432,8 +438,13 @@ export default function AlertsMap({
           tileSize: 256,
           zoomOffset: 0
         })
-        
-        tileLayer.addTo(map)
+        try {
+          tileLayer.addTo(map)
+        } catch (e) {
+          console.error('[AlertsMap] tileLayer.addTo failed', e)
+          setMapErrorMessage('tile layer failed')
+          throw e
+        }
         
         // Debug breadcrumbs to isolate production failures
         try { console.log('[AlertsMap] init: tile layer added') } catch {}
@@ -456,7 +467,13 @@ export default function AlertsMap({
           filteredAlerts.forEach((alert) => {
             if (!isValidLatLng(alert.location)) return
 
-            const marker = createUfoMarker(L, alert, map)
+            let marker: any
+            try {
+              marker = createUfoMarker(L, alert, map)
+            } catch (e) {
+              console.error('[AlertsMap] createUfoMarker failed', alert.id, e)
+              return
+            }
 
             const popup = L.popup({
               maxWidth: 350,
@@ -492,7 +509,13 @@ export default function AlertsMap({
         filteredAlerts.forEach((alert) => {
           if (!isValidLatLng(alert.location)) return // Skip invalid/missing coordinates
 
-          const marker = createUfoMarker(L, alert, map)
+          let marker: any
+          try {
+            marker = createUfoMarker(L, alert, map)
+          } catch (e) {
+            console.error('[AlertsMap] createUfoMarker failed', alert.id, e)
+            return
+          }
 
           // Add popup with React component
           const popup = L.popup({
@@ -524,7 +547,14 @@ export default function AlertsMap({
             }
 
             // Create bounds that include all alerts and user location
-            const bounds = L.latLngBounds(latlngs)
+            let bounds: any
+            try {
+              bounds = L.latLngBounds(latlngs)
+            } catch (e) {
+              console.error('[AlertsMap] latLngBounds failed for', latlngs.length, 'points', e)
+              setMapErrorMessage('bounds failed')
+              throw e
+            }
             try { console.log('[AlertsMap] bounds ready, points=', latlngs.length) } catch {}
 
             // If bounds are very small (all points close together), ensure minimum zoom
