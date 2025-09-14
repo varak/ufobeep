@@ -86,9 +86,9 @@ export default function AlertsMap({
           // This is minimal data, need to fetch full details
           setLoading(true)
           // Call backend directly with the UUID
-          const apiUrl = process.env.NODE_ENV === 'production'
-            ? `https://ufobeep.com/api/beep/${alert.id}`
-            : `http://localhost:8000/beep/${alert.id}`
+          const apiUrl = window.location.hostname === 'localhost'
+            ? `http://localhost:8000/beep/${alert.id}`
+            : `https://ufobeep.com/api/beep/${alert.id}`
           fetch(apiUrl)
             .then(res => res.json())
             .then(data => {

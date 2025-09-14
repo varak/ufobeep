@@ -479,46 +479,47 @@ async def get_alert_by_short_url(
         print(f"Error getting alert by short URL: {e}")
         raise HTTPException(status_code=500, detail=f"Error getting alert by short URL: {str(e)}")
 
-@router.get("/{alert_id}")
-async def get_alert_details(
-    alert_id: str,
-    latitude: Optional[float] = None,
-    longitude: Optional[float] = None
-):
-    """Get specific alert details - supports both UUID and short URL automatically"""
-    try:
-        db_pool = await get_db()
-        alerts_service = AlertsService(db_pool)
-        
-        # Try to get by UUID first, then fallback to short URL
-        import uuid
-        alert = None
-        
-        # Check if it looks like a UUID
-        try:
-            uuid.UUID(alert_id)
-            # Valid UUID format, try to get by ID
-            alert = await alerts_service.get_alert_by_id(alert_id)
-        except ValueError:
-            # Not a valid UUID, treat as short URL
-            alert = await alerts_service.get_alert_by_short_url(alert_id)
-        
-        if not alert:
-            raise HTTPException(status_code=404, detail="Alert not found")
-        
-        # Don't close the pool - it's shared across the service
-        
-        return {
-            "success": True,
-            "data": format_alert_response(alert, latitude, longitude),
-            "message": "Alert found"
-        }
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        print(f"Error getting alert details: {e}")
-        raise HTTPException(status_code=500, detail=f"Error getting alert details: {str(e)}")
+# REMOVED DUPLICATE ENDPOINT - already defined above
+# @router.get("/{alert_id}")
+# async def get_alert_details(
+#     alert_id: str,
+#     latitude: Optional[float] = None,
+#     longitude: Optional[float] = None
+# ):
+#     """Get specific alert details - supports both UUID and short URL automatically"""
+#     try:
+#         db_pool = await get_db()
+#         alerts_service = AlertsService(db_pool)
+#
+#         # Try to get by UUID first, then fallback to short URL
+#         import uuid
+#         alert = None
+#
+#         # Check if it looks like a UUID
+#         try:
+#             uuid.UUID(alert_id)
+#             # Valid UUID format, try to get by ID
+#             alert = await alerts_service.get_alert_by_id(alert_id)
+#         except ValueError:
+#             # Not a valid UUID, treat as short URL
+#             alert = await alerts_service.get_alert_by_short_url(alert_id)
+#
+#         if not alert:
+#             raise HTTPException(status_code=404, detail="Alert not found")
+#
+#         # Don't close the pool - it's shared across the service
+#
+#         return {
+#             "success": True,
+#             "data": format_alert_response(alert, latitude, longitude),
+#             "message": "Alert found"
+#         }
+#
+#     except HTTPException:
+#         raise
+#     except Exception as e:
+#         print(f"Error getting alert details: {e}")
+#         raise HTTPException(status_code=500, detail=f"Error getting alert details: {str(e)}")
 
 @router.post("/{beep_id}/media")
 async def upload_beep_media(
