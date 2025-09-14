@@ -123,7 +123,6 @@ class AlertCard extends ConsumerWidget {
             ],
           ),
         ],
-        const SizedBox(height: 4),
         _buildVerificationBadge(l10n),
       ],
     );
@@ -131,37 +130,42 @@ class AlertCard extends ConsumerWidget {
 
   Widget _buildVerificationBadge(AppLocalizations l10n) {
     if (alert.isVerified && alert.source != 'mufon') {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-        decoration: BoxDecoration(
-          color: AppColors.brandPrimary.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: AppColors.brandPrimary.withOpacity(0.3),
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.verified,
-              color: AppColors.brandPrimary,
-              size: 10,
-            ),
-            const SizedBox(width: 2),
-            Text(
-              l10n.verified,
-              style: const TextStyle(
-                color: AppColors.brandPrimary,
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
+      return Column(
+        children: [
+          const SizedBox(height: 4),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration: BoxDecoration(
+              color: AppColors.brandPrimary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: AppColors.brandPrimary.withOpacity(0.3),
               ),
             ),
-          ],
-        ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.verified,
+                  color: AppColors.brandPrimary,
+                  size: 10,
+                ),
+                const SizedBox(width: 2),
+                Text(
+                  l10n.verified,
+                  style: const TextStyle(
+                    color: AppColors.brandPrimary,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       );
     }
-    return const SizedBox(height: 16);
+    return const SizedBox.shrink();
   }
 
   Widget _buildTimestampAndDistance(BuildContext context, String units) {
@@ -266,7 +270,7 @@ class AlertCard extends ConsumerWidget {
     }
     
     if (!hasMedia && hasDescription) {
-      return _buildBadge('Report Only', Icons.visibility, AppColors.textTertiary);
+      return _buildBadge(l10n.reportOnly, Icons.visibility, AppColors.textTertiary);
     }
     
     if (hasMedia && !hasDescription) {
