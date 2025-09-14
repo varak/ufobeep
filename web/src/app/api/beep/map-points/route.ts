@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { apiConfig } from '@/config/api'
 
+// Force dynamic rendering for this API route
+export const dynamic = 'force-dynamic'
+
 // GET /api/beep/map-points - Fetch ALL alert points for map
 export async function GET(request: NextRequest) {
   try {
