@@ -99,7 +99,8 @@ export default function AlertsMap({
                   created_at: data.data.created_at,
                   media_files: data.data.media_files?.files || data.data.media_files || [],
                   username: data.data.username,
-                  source: data.data.source
+                  source: data.data.source,
+                  short_url: data.data.short_url
                 }
                 setFullAlert(fullData)
               }
