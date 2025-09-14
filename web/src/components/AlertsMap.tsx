@@ -121,22 +121,14 @@ export default function AlertsMap({
           if (alert.location.latitude === 0 && alert.location.longitude === 0) return
           
           const marker = createUfoMarker(L, alert, mapInstanceRef.current)
-          
-          const popupContent = `
-            <div class="text-sm">
-              <h4 class="font-semibold text-gray-900 mb-1">${AlertTitleUtils.getShortTitle(alert)}</h4>
-              <p class="text-gray-600 text-xs mb-2">${(alert.description || '').replace(/\n/g, '<br>')}</p>
-              ${alert.location?.name && alert.location.name !== 'Unknown Location' ? `
-                <div class="text-xs text-gray-500">📍 Location: ${alert.location.name}</div>
-              ` : ''}
-              <div class="text-xs text-gray-400 mt-1">${new Date(alert.created_at).toLocaleDateString()}</div>
-              <div class="mt-2">
-                <a class="text-blue-600 underline" href="/beep/${currentLocale}/${getAlertSlug({ id: alert.id, title: alert.title, created_at: alert.created_at, location: alert.location, reporter_username: alert.username, description: alert.description, source: alert.source }, currentLocale)}">View details →</a>
-              </div>
-            </div>
-          `
-          
-          marker.bindPopup(popupContent)
+
+          // Use React component popup
+          const popup = L.popup({
+            maxWidth: 350,
+            className: 'custom-popup'
+          }).setContent(createPopupContentHelper(alert, L))
+
+          marker.bindPopup(popup)
           marker.on('click', () => {
             setSelectedAlert(alert)
             if (onAlertClick) onAlertClick(alert)
@@ -209,15 +201,12 @@ export default function AlertsMap({
         })
         
         tileLayer.addTo(map)
-        
-        // Create popup component function
-        const createPopupContent = (alert: Alert, L: any) => {
+
+        // Helper function to create React popup content
+        const createPopupContentHelper = (alert: Alert, L: any) => {
           const container = L.DomUtil.create('div')
 
           const PopupContent = () => {
-            const [showModal, setShowModal] = useState(false)
-            const [selectedIndex, setSelectedIndex] = useState(0)
-
             const truncateDescription = (desc: string | null, maxWords = 400) => {
               if (!desc) return ''
               const words = desc.split(' ')
@@ -226,8 +215,6 @@ export default function AlertsMap({
             }
 
             const handleMediaClick = (index: number) => {
-              setSelectedIndex(index)
-              setShowModal(true)
               setIsMediaModalOpen(true)
               setSelectedMediaIndex(index)
               setModalMediaFiles(alert.media_files || [])
@@ -288,7 +275,7 @@ export default function AlertsMap({
                 </p>
 
                 {alert.location?.name && alert.location.name !== 'Unknown Location' && (
-                  <div className="text-xs text-gray-500">📍 {alert.location.name}</div>
+                  <p className="text-xs text-gray-500 mb-1">📍 {alert.location.name}</p>
                 )}
 
                 <div className="text-xs text-gray-400 mt-1">
@@ -342,7 +329,7 @@ export default function AlertsMap({
             const popup = L.popup({
               maxWidth: 350,
               className: 'custom-popup'
-            }).setContent(createPopupContent(alert, L))
+            }).setContent(createPopupContentHelper(alert, L))
 
             marker.bindPopup(popup)
             marker.on('click', () => {
@@ -379,7 +366,7 @@ export default function AlertsMap({
           const popup = L.popup({
             maxWidth: 350,
             className: 'custom-popup'
-          }).setContent(createPopupContent(alert, L))
+          }).setContent(createPopupContentHelper(alert, L))
 
           marker.bindPopup(popup)
           
