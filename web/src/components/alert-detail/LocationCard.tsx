@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslation } from 'react-i18next'
+import { useClientTranslations } from '@/hooks/useClientTranslations'
 
 interface LocationData {
   address?: string
@@ -14,10 +14,11 @@ interface LocationData {
 
 interface LocationCardProps {
   location: LocationData
+  locale?: string
 }
 
-export default function LocationCard({ location }: LocationCardProps) {
-  const { t } = useTranslation()
+export default function LocationCard({ location, locale = 'en' }: LocationCardProps) {
+  const { t } = useClientTranslations('common', locale)
 
   return (
     <div className="bg-dark-surface border border-dark-border rounded-lg p-6">

@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslation } from 'react-i18next'
+import { useClientTranslations } from '@/hooks/useClientTranslations'
 
 interface Aircraft {
   callsign: string
@@ -21,10 +21,11 @@ interface AircraftData {
 
 interface AircraftTrackingCardProps {
   aircraftData: AircraftData
+  locale?: string
 }
 
-export default function AircraftTrackingCard({ aircraftData }: AircraftTrackingCardProps) {
-  const { t } = useTranslation()
+export default function AircraftTrackingCard({ aircraftData, locale = 'en' }: AircraftTrackingCardProps) {
+  const { t } = useClientTranslations('common', locale)
 
   if (!aircraftData || aircraftData.total === 0) {
     return (

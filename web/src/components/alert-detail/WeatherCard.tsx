@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslation } from 'react-i18next'
+import { useClientTranslations } from '@/hooks/useClientTranslations'
 import { UnitConversion } from '../../utils/unitConversion'
 
 interface WeatherData {
@@ -14,10 +14,11 @@ interface WeatherData {
 
 interface WeatherCardProps {
   weather: WeatherData
+  locale?: string
 }
 
-export default function WeatherCard({ weather }: WeatherCardProps) {
-  const { t } = useTranslation()
+export default function WeatherCard({ weather, locale = 'en' }: WeatherCardProps) {
+  const { t } = useClientTranslations('common', locale)
   // Website defaults to imperial units
   const units = 'imperial';
 

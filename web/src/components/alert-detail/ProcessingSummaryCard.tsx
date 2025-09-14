@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslation } from 'react-i18next'
+import { useClientTranslations } from '@/hooks/useClientTranslations'
 
 interface ProcessingSummary {
   total_processors?: number
@@ -11,10 +11,11 @@ interface ProcessingSummary {
 
 interface ProcessingSummaryCardProps {
   summary: ProcessingSummary
+  locale?: string
 }
 
-export default function ProcessingSummaryCard({ summary }: ProcessingSummaryCardProps) {
-  const { t } = useTranslation()
+export default function ProcessingSummaryCard({ summary, locale = 'en' }: ProcessingSummaryCardProps) {
+  const { t } = useClientTranslations('common', locale)
 
   return (
     <div className="bg-dark-surface border border-dark-border rounded-lg p-6">

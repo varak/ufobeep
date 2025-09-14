@@ -13,9 +13,10 @@ interface EnrichmentDataProps {
     source?: string
     reporter_username?: string
   }
+  locale?: string
 }
 
-export default function EnrichmentData({ enrichment, alert }: EnrichmentDataProps) {
+export default function EnrichmentData({ enrichment, alert, locale = 'en' }: EnrichmentDataProps) {
   // Skip enrichment data display for MUFON cases
   const isMufonCase = alert?.source === 'mufon' || alert?.reporter_username === 'MUFON_Database'
   
@@ -25,12 +26,12 @@ export default function EnrichmentData({ enrichment, alert }: EnrichmentDataProp
 
   return (
     <div className="space-y-6">
-      {weather && <WeatherCard weather={weather} />}
-      {celestial && <CelestialCard celestial={celestial} />}
-      {geocoding && <LocationCard location={geocoding} />}
-      {satellites && <SatelliteCard satellites={satellites} />}
-      {aircraft_tracking && <AircraftTrackingCard aircraftData={aircraft_tracking} />}
-      {processing_summary && <ProcessingSummaryCard summary={processing_summary} />}
+      {weather && <WeatherCard weather={weather} locale={locale} />}
+      {celestial && <CelestialCard celestial={celestial} locale={locale} />}
+      {geocoding && <LocationCard location={geocoding} locale={locale} />}
+      {satellites && <SatelliteCard satellites={satellites} locale={locale} />}
+      {aircraft_tracking && <AircraftTrackingCard aircraftData={aircraft_tracking} locale={locale} />}
+      {processing_summary && <ProcessingSummaryCard summary={processing_summary} locale={locale} />}
       {blacksky && (
         <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
           <div className="flex items-center gap-2 mb-4">

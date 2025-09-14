@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslation } from 'react-i18next'
+import { useClientTranslations } from '@/hooks/useClientTranslations'
 
 interface CelestialData {
   moon_phase?: number
@@ -14,10 +14,11 @@ interface CelestialData {
 
 interface CelestialCardProps {
   celestial: CelestialData
+  locale?: string
 }
 
-export default function CelestialCard({ celestial }: CelestialCardProps) {
-  const { t } = useTranslation()
+export default function CelestialCard({ celestial, locale = 'en' }: CelestialCardProps) {
+  const { t } = useClientTranslations('common', locale)
 
   return (
     <div className="bg-dark-surface border border-dark-border rounded-lg p-6">

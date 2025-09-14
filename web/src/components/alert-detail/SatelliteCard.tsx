@@ -1,5 +1,7 @@
 'use client'
 
+import { useClientTranslations } from '@/hooks/useClientTranslations'
+
 interface SatellitePass {
   satellite_name: string
   direction: string
@@ -15,9 +17,11 @@ interface SatelliteData {
 
 interface SatelliteCardProps {
   satellites: SatelliteData
+  locale?: string
 }
 
-export default function SatelliteCard({ satellites }: SatelliteCardProps) {
+export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCardProps) {
+  const { t } = useClientTranslations('common', locale)
   const hasData = (satellites.iss_passes && satellites.iss_passes.length > 0) || 
                   (satellites.starlink_passes && satellites.starlink_passes.length > 0)
   
