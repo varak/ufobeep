@@ -32,7 +32,7 @@ const puppeteer = require('puppeteer');
   await page.goto(url, { waitUntil: 'domcontentloaded' });
 
   // Allow network to settle and scripts to run
-  await page.waitForTimeout(6000);
+  await new Promise(r => setTimeout(r, 10000));
 
   // Small diagnostic: query for the map container and fallback message
   const result = await page.evaluate(() => {
@@ -49,4 +49,3 @@ const puppeteer = require('puppeteer');
 
   await browser.close();
 })();
-
