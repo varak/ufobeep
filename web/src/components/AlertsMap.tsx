@@ -214,12 +214,28 @@ export default function AlertsMap({
             
             const marker = createUfoMarker(L, alert, map)
             
+            const getMediaIcons = (alert) => {
+              const hasPhotos = alert.media_files?.some(m => m.type === 'image' || m.type === 'photo')
+              const hasVideos = alert.media_files?.some(m => m.type === 'video')
+              let icons = ''
+              if (hasPhotos) icons += '📷'
+              if (hasVideos) icons += '🎥'
+              return icons ? ` ${icons}` : ''
+            }
+
+            const truncateDescription = (desc, maxWords = 50) => {
+              if (!desc) return ''
+              const words = desc.split(' ')
+              if (words.length <= maxWords) return desc.replace(/\n/g, '<br>')
+              return words.slice(0, maxWords).join(' ') + '... <span class="text-blue-600 cursor-pointer">see full report</span>'
+            }
+
             const popupContent = `
               <div class="text-sm">
-                <h4 class="font-semibold text-gray-900 mb-1">${AlertTitleUtils.getShortTitle(alert)}</h4>
-                <p class="text-gray-600 text-xs mb-2">${(alert.description || '').replace(/\n/g, '<br>')}</p>
+                <h4 class="font-semibold text-gray-900 mb-1">${AlertTitleUtils.getShortTitle(alert)}${getMediaIcons(alert)}</h4>
+                <p class="text-gray-600 text-xs mb-2">${truncateDescription(alert.description)}</p>
                 ${alert.location?.name && alert.location.name !== 'Unknown Location' ? `
-                  <div class="text-xs text-gray-500">📍 Location: ${alert.location.name}</div>
+                  <div class="text-xs text-gray-500">📍 ${alert.location.name}</div>
                 ` : ''}
                 <div class="text-xs text-gray-400 mt-1">${new Date(alert.created_at).toLocaleDateString()}</div>
                 <div class="mt-2">
