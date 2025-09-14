@@ -6,12 +6,12 @@ UFOBeep now supports both traditional long URLs and smart short URLs with automa
 
 ### Smart Short URL System with Multi-Language Support
 - **Format**: `/{short_id}` or `/{short_id}/{lang}`
-- **Intelligent Middleware**: 
+- **Intelligent Middleware**:
   - Auto-detects browser language (Accept-Language header)
   - Fetches alert data directly from backend API
   - Generates localized long slugs using actual ARB translation files
   - Single redirect to proper SEO-friendly URL
-- **Examples**: 
+- **Examples**:
   - `/ehf3` → English browser: `/beep/en/ufo-sighting-las-vegas-nevada-2025-09-11-ehf3`
   - `/ehf3` → Spanish browser: `/beep/es/ovni-avistamiento-las-vegas-nevada-2025-09-11-ehf3`
   - `/ehf3/fr` → Explicit French: `/beep/fr/observation-ovni-las-vegas-nevada-2025-09-11-ehf3`
@@ -19,7 +19,7 @@ UFOBeep now supports both traditional long URLs and smart short URLs with automa
 - **Translation Source**: Uses `app/lib/l10n/app_{locale}.arb` as single source of truth
 
 ### Traditional URLs
-- **Localized Detail Pages**: `/beep/{locale}/{slug}` 
+- **Localized Detail Pages**: `/beep/{locale}/{slug}`
 - **API Endpoints**: `/api/*` (proxied to backend)
 - **Static Pages**: `/app`, `/privacy`, `/terms`, etc.
 
@@ -29,9 +29,10 @@ The API uses unified `/api/beep` endpoints for all sighting operations:
 
 #### Beep Endpoints
 - `GET /api/beep` - List sightings with advanced filtering
-- `POST /api/beep` - Create new sighting  
+- `POST /api/beep` - Create new sighting
 - `GET /api/beep/{id}` - Get specific sighting details
 - `GET /api/beep/by-short-url/{short_id}` - Get sighting by short URL (5-char alphanumeric)
+- `GET /api/beep/map-points` - Get optimized map data **[NEW - COMPLETED]**
 - `POST /api/beep/{id}/media` - Attach media to sighting **[NEW - COMPLETED]**
 - `PATCH /api/beep/{id}/media` - Update media files **[NEW - COMPLETED]**
 - `POST /api/beep/{id}/witnesses` - Confirm witness sighting
@@ -41,6 +42,36 @@ The API uses unified `/api/beep` endpoints for all sighting operations:
 
 **Note**: All responses use consistent data structures with `data.beeps` containing the sighting list.
 
+## Map Data System - COMPLETED ✅
+
+### New Map Points Endpoint
+- **Endpoint**: `GET /api/beep/map-points`
+- **Query Parameters**:
+  - `minimal=true` - Returns only essential data (id, coordinates, source) for lightweight map rendering
+  - `minimal=false` (default) - Returns full alert details for map popups
+- **Purpose**: Optimized endpoint for map display with thousands of data points
+- **Response Format**:
+  ```json
+  {
+    "success": true,
+    "data": [
+      {
+        "id": "ABC12",
+        "public_latitude": 40.7128,
+        "public_longitude": -74.0060,
+        "source": "UFOBeep",
+        "enrichment_data": {...}
+      }
+    ]
+  }
+  ```
+
+### Map Integration Features
+- **Dynamic Rendering**: Fixed map display issues with proper zoom levels
+- **Zoom Optimization**: Level 5 for US overview, Level 8 for user location
+- **Performance**: Minimal query mode for initial load, full details on demand
+- **Multi-Source**: Supports UFOBeep, MUFON, and NUFORC data points
+
 ## Media Upload System - COMPLETED ✅
 
 ### New Unified Implementation
@@ -48,7 +79,7 @@ The API uses unified `/api/beep` endpoints for all sighting operations:
 - **PATCH Support**: `PATCH /api/beep/{beep_id}/media` for file updates
 - **Mobile Integration**: Flutter app uses `/api/beep/` routing (nginx compatible)
 - **Progress Tracking**: Individual file upload progress indicators
-- **UX Improvements**: 
+- **UX Improvements**:
   - Single-press upload (double-press issue eliminated)
   - File-by-file progress (black → blue → green)
   - Individual file removal with X buttons
@@ -82,7 +113,7 @@ Content-Type: multipart/form-data
 - `GET /users/me` - Get current user profile
 - `POST /users/regenerate-username` - Generate new username (FIXED in current release)
 
-## Media Management  
+## Media Management
 - `POST /media/uploads` - Upload media files
 - `GET /media/{id}` - Retrieve media file
 - `POST /media/{id}/presign` - Get presigned upload URL
@@ -133,7 +164,7 @@ NUFORC-sourced alerts (`source: "nuforc"`) provide comprehensive historical data
 ## Geographic Search & Filtering
 - `GET /cities` - Get aggregated city data with sighting counts
   - Response: `{ success: true, data: [{ city: "Phoenix", state: "AZ", country: "US", count: 1247 },...] }`
-- `GET /shapes` - Get shape classifications with counts  
+- `GET /shapes` - Get shape classifications with counts
   - Response: `{ success: true, data: [{ shape: "disc", count: 15432 }, { shape: "triangle", count: 8765 },...] }`
 - `GET /recent` - Recent activity across all sources
   - Query params: `limit=50`, `hours=24` (recent within X hours)
@@ -189,7 +220,7 @@ The Next.js web app uses a compatibility layer:
 - Backend maps to: `/beep` endpoints
 - Response format: `data.beeps`
 
-### Mobile Application  
+### Mobile Application
 The Flutter mobile app uses:
 - Direct calls to: `/api/beep` endpoints **[UPDATED FOR ROUTING]**
 - Response format: `data.beeps`
@@ -217,7 +248,7 @@ retry_with_backoff(get_results, max_retries=2, initial_delay=3)
 UFOBeep uses advanced Next.js middleware for intelligent URL handling:
 
 1. **Request Interception**: `/arnm6` → Middleware captures short URL pattern
-2. **Language Detection**: Analyzes `Accept-Language` header for user preference  
+2. **Language Detection**: Analyzes `Accept-Language` header for user preference
 3. **Data Fetching**: Direct API call to `/api/beep/by-short-url/arnm6` backend
 4. **Translation Loading**: Reads `app/lib/l10n/app_{locale}.arb` files for localized terms
 5. **Slug Generation**: Creates SEO-friendly slug: `ovni-avistamiento-las-vegas-nevada-2025-09-11-arnm6`
@@ -230,13 +261,18 @@ UFOBeep uses advanced Next.js middleware for intelligent URL handling:
 - **Scalability**: Supports all 22 languages automatically
 
 ## Recent Fixes (September 2025)
+- ✅ **Map System Implementation**: Added `/api/beep/map-points` endpoint for optimized map data loading
+- ✅ **Map Display Fixed**: Corrected zoom levels (5 for US view, 8 for user location) and dynamic rendering
+- ✅ **Media Badge Logic**: Fixed three-state system (Image Only/Video Only/Media Only) with proper display logic
+- ✅ **Video Permission Fix**: Added microphone permission request for video recording functionality
+- ✅ **Translation System**: Fixed beepOnly vs reportOnly translation keys across all languages
 - ✅ **Media Upload Feature Complete**: Unified BeepScreen with seamless upload experience
 - ✅ **Double-Press Issue Eliminated**: Single-tap media submission working perfectly
 - ✅ **Progress Indicators Added**: Individual file progress tracking (black → blue → green)
 - ✅ **File Management UX**: X buttons for individual file removal, always-visible controls
 - ✅ **API Endpoint Standardization**: All clients use `/api/beep/` for consistency
 - ✅ **MUFON Script Optimization**: 2.2s login delay (down from 5+s), saving ~18min annually
-- ✅ **Mobile Build 100**: Current production version with complete media upload
+- ✅ **Mobile Build 109**: Current production version with complete map and media features
 - ✅ **Smart Middleware System**: Intelligent short URL processing with language detection
 - ✅ **ARB Translation Integration**: Uses mobile app translation files as single source
 - ✅ **Simplified Flow**: Reduced from 5 steps to 2 steps for better performance
@@ -249,13 +285,14 @@ UFOBeep uses advanced Next.js middleware for intelligent URL handling:
 - ✅ **Notification Delivery**: Fixed confirmation comments to use direct DB insertion with proper notifications
 - ✅ **Type Safety**: Using Set<VoidCallback> to prevent duplicate listeners
 - ✅ **Witness Confirmation**: Fixed "string is not subtype of int at index" crash
-- ✅ **Username Regeneration**: Added force_regenerate parameter 
+- ✅ **Username Regeneration**: Added force_regenerate parameter
 - ✅ **UI Consistency**: Updated button styling across beep and alert pages
 
 ## Current Status
 - **API Endpoints**: All `/api/beep/` endpoints fully functional ✅
+- **Map System**: Complete implementation with optimized data loading ✅
 - **Media Upload**: Complete implementation with progress tracking ✅
-- **Mobile App**: Build 100 (v1.0.0-beta.8+100) deployed ✅
+- **Mobile App**: Build 109 (v1.0.0-beta.8+109) deployed ✅
 - **MUFON Integration**: Optimized and working with new endpoints ✅
 - **Backend**: Stable with dual endpoint support ✅
 
@@ -267,3 +304,4 @@ UFOBeep uses advanced Next.js middleware for intelligent URL handling:
 - Frontend transformation ensures consistent `beeps` naming in web application
 - Short URLs automatically redirect to localized canonical URLs
 - Media uploads now support both POST (create) and PATCH (update) operations
+- Map endpoints support both minimal and full data modes for performance optimization
