@@ -269,6 +269,68 @@ async def get_alerts(
         print(f"Error getting alerts: {e}")
         raise HTTPException(status_code=500, detail=f"Error getting alerts: {str(e)}")
 
+@router.get("/map-points")
+async def get_map_points():
+    """Get ALL alert points for map display - minimal data for performance"""
+    try:
+        db_pool = await get_db()
+
+        # Direct query for just the data needed for map markers
+        async with db_pool.acquire() as connection:
+            query = """
+                SELECT
+                    id,
+                    title,
+                    description,
+                    location_latitude,
+                    location_longitude,
+                    location_name,
+                    created_at,
+                    source,
+                    reporter_username,
+                    media_files,
+                    enrichment_data
+                FROM alerts
+                WHERE (location_latitude != 0 OR location_longitude != 0)
+                AND location_latitude IS NOT NULL
+                AND location_longitude IS NOT NULL
+                ORDER BY created_at DESC
+            """
+
+            rows = await connection.fetch(query)
+
+            # Format minimal response for map
+            map_points = []
+            for row in rows:
+                map_points.append({
+                    "id": row["id"],
+                    "title": row["title"],
+                    "description": row["description"],
+                    "location": {
+                        "latitude": float(row["location_latitude"]),
+                        "longitude": float(row["location_longitude"]),
+                        "name": row["location_name"] or "Unknown Location"
+                    },
+                    "created_at": row["created_at"].isoformat(),
+                    "source": row["source"],
+                    "username": row["reporter_username"],
+                    "media_files": row["media_files"] or [],
+                    "enrichment_data": row["enrichment_data"] or {},
+                    "alert_level": "medium"  # Default for now
+                })
+
+            return {
+                "success": True,
+                "data": {
+                    "alerts": map_points,
+                    "total": len(map_points)
+                }
+            }
+
+    except Exception as e:
+        print(f"Error getting map points: {e}")
+        raise HTTPException(status_code=500, detail=f"Error getting map points: {str(e)}")
+
 @router.get("/by-short-url/{short_url}")
 async def get_alert_by_short_url(
     short_url: str,

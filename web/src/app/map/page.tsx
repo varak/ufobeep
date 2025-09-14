@@ -21,11 +21,12 @@ export default function MapPage() {
   useEffect(() => {
     const fetchAlerts = async () => {
       try {
-        const response = await fetch('/api/beep')
+        // Use dedicated map endpoint that returns ALL points
+        const response = await fetch('/api/beep/map-points')
         const data = await response.json()
         if (data.success && data.data?.alerts) {
-          const valid = data.data.alerts.filter((a: Alert) => a.location?.latitude !== 0 || a.location?.longitude !== 0)
-          setAlerts(valid)
+          // All points are already validated by the API
+          setAlerts(data.data.alerts)
         } else {
           setError('Failed to load alerts')
         }
