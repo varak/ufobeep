@@ -449,7 +449,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return 'قبل';
+    return '_BAR_ _BAR_';
   }
 
   @override

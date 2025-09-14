@@ -457,17 +457,17 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return '${count}___d ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '__PLACEHOLDER_0_h ago';
+    return '${count}_h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}_m ago';
+    return '${count}___m ago';
   }
 
   @override

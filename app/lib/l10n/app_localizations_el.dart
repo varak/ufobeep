@@ -463,12 +463,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String timeHoursAgo(int count) {
-    return '__PLACEHOLDER_0_h πριν';
+    return '__PLACHOLDER_0_ h πριν';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '__PLACHOLDER_0_m Πριν';
+    return 'ΠΡΙΝ ΤΗΝ ΠΡΙΝ';
   }
 
   @override

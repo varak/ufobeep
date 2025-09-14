@@ -441,7 +441,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '__PLACEHOLDER_0_d 前に';
+    return '$count d 前に';
   }
 
   @override

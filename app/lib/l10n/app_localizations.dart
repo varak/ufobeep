@@ -957,19 +957,19 @@ abstract class AppLocalizations {
   /// No description provided for @timeDaysAgo.
   ///
   /// In en, this message translates to:
-  /// **'{count}d ago'**
+  /// **'{count} days ago'**
   String timeDaysAgo(int count);
 
   /// No description provided for @timeHoursAgo.
   ///
   /// In en, this message translates to:
-  /// **'{count}h ago'**
+  /// **'{count} hours ago'**
   String timeHoursAgo(int count);
 
   /// No description provided for @timeMinutesAgo.
   ///
   /// In en, this message translates to:
-  /// **'{count}m ago'**
+  /// **'{count} minutes ago'**
   String timeMinutesAgo(int count);
 
   /// No description provided for @loadMoreAlerts.

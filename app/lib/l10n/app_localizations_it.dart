@@ -457,12 +457,12 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '__PLACEHOLDER_0_d fa';
+    return 'Traduzione:';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '__PLACEHOLDER_0_h fa';
+    return 'Traduzione:';
   }
 
   @override

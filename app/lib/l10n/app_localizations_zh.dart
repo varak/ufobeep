@@ -441,7 +441,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '时间轴:';
+    return '早点开始';
   }
 
   @override
@@ -451,7 +451,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String timeMinutesAgo(int count) {
-    return '0米前的地图';
+    return '0米前的地盘';
   }
 
   @override

@@ -458,17 +458,17 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d il y a';
+    return '${count}_il y a';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h il y a';
+    return '$count h y a';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '_PLACEHOLDER_0__m il y a';
+    return '${count}_ m il y a';
   }
 
   @override

@@ -456,17 +456,17 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '__________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return '__PlacehoLDer_0__ d ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '________________________________________________________________________';
+    return '__PlacehoLDer_0__ h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '______________________________________________________________________________';
+    return '__________________________';
   }
 
   @override

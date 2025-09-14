@@ -453,7 +453,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '_Placeholder_0_d sitten';
+    return '_Placeholder_0__d sitten';
   }
 
   @override
@@ -463,7 +463,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String timeMinutesAgo(int count) {
-    return '_Placeholder_0_m sitten';
+    return '_Placeholder_0_ m sitten';
   }
 
   @override

@@ -455,7 +455,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}_d för';
+    return '__PLACEHOLDER_0_D sedan';
   }
 
   @override
@@ -465,7 +465,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String timeMinutesAgo(int count) {
-    return '__PLACEHOLDER_0_m sedan';
+    return '$count för mig';
   }
 
   @override

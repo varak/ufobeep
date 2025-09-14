@@ -456,17 +456,17 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '__PLACEHOLDER_0_d vor';
+    return '__PLACEHOLDER_0_ d vor';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '__PLACEHOLDER_0_h vor';
+    return '__PLACEHOLDER_0_ vor';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '__PLACEHOLDER_0_m vor';
+    return '$count vor';
   }
 
   @override

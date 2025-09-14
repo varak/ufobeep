@@ -449,17 +449,17 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d ago';
+    return '$count d ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h ago';
+    return '$count h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m ago';
+    return '$count m ago';
   }
 
   @override

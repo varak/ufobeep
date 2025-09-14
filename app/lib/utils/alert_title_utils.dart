@@ -29,7 +29,8 @@ abstract class AlertTitleUtils {
       }
 
       // Handle UFOBeep titles
-      if (alert.title!.startsWith('UFOBeep Alert')) {
+      if (alert.title!.startsWith('UFOBeep Alert') ||
+          alert.title! == 'UFO Sighting') {
         return 'UFOBeep ${l10n.ufoAlert}';
       }
 

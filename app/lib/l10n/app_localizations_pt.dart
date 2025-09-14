@@ -456,17 +456,17 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d há';
+    return '$count há';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h há';
+    return '$count há 1 hora';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}___________________';
+    return '$count há 3 dias';
   }
 
   @override

@@ -462,7 +462,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String timeMinutesAgo(int count) {
-    return 'To make a word';
+    return 'To get the time';
   }
 
   @override

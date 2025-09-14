@@ -456,17 +456,17 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '__PLACEHOLDER_0_d geleden';
+    return '${count}d geleden';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '__PLACEHOLDER_0_h geleden';
+    return '__PLAATSHOLDER_0___ h geleden';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '__PLACEHOLDER_0_m geleden';
+    return '__PLAATSHOLDER_0___ m geleden';
   }
 
   @override

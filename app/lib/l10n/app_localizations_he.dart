@@ -448,17 +448,17 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return 'שם הסרטון: PLACEHOLDER_0__d ago';
+    return 'שם הסרטון: PLACEHOLDER_0__D ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'שם הסרטון: PLACEHOLDER_0_h ago';
+    return 'שם הסרטון: PLACEHOLDER_0__h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'שם הסרטון: PLACEHOLDER_0_m ago';
+    return 'שם הסרטון: PLACEHOLDER_0_M ago';
   }
 
   @override

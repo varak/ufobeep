@@ -442,17 +442,17 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '${count}d 전';
+    return '$count 이전';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}h 전';
+    return '$count h 전';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '${count}m 전';
+    return '$count m 전';
   }
 
   @override
