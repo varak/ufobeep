@@ -74,7 +74,7 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
         const maxSearchPages = 10
 
         for (let page = 0; page < maxSearchPages; page++) {
-          let url = `/api/alerts?limit=${limit}&offset=${currentOffset}&verified_only=false`
+          let url = `/api/beep?limit=${limit}&offset=${currentOffset}`
           
           // Add user location to request if available
           if (userLocation) {
@@ -84,7 +84,7 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
           const response = await fetch(url)
           if (!response.ok) break
           const data = await response.json()
-          const alerts: Alert[] = data?.data?.alerts || []
+          const alerts: Alert[] = data?.data?.beeps || []
           foundAlert = alerts.find(a => a.id === params.id) || null
           if (foundAlert) break
           if (alerts.length < limit) break

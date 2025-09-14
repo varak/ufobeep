@@ -204,14 +204,17 @@ class EnrichmentSection extends StatelessWidget {
     print('DEBUG: Enrichment keys: ${enrichmentData.keys.toList()}');
     print('DEBUG: BlackSky data: ${enrichmentData['blacksky']}');
     print('DEBUG: SkyFi data: ${enrichmentData['skyfi']}');
-    
+
     final hasAircraftData = enrichmentData['aircraft_tracking'] != null;
     final hasWeatherData = enrichmentData['weather'] != null;
     final hasSatelliteData = enrichmentData['satellites'] != null;
     final hasContentData = enrichmentData['content_filter'] != null;
     final hasBlackSkyData = enrichmentData['blacksky'] != null;
     final hasSkyFiData = enrichmentData['skyfi'] != null;
-    final hasData = hasAircraftData || hasWeatherData || hasSatelliteData || hasContentData || hasBlackSkyData || hasSkyFiData;
+    final hasCelestialData = enrichmentData['celestial'] != null;
+    final hasLocationData = enrichmentData['location'] != null;
+    final hasProcessingSummaryData = enrichmentData['processing_summary'] != null;
+    final hasData = hasAircraftData || hasWeatherData || hasSatelliteData || hasContentData || hasBlackSkyData || hasSkyFiData || hasCelestialData || hasLocationData || hasProcessingSummaryData;
     
     print('DEBUG: hasBlackSkyData = $hasBlackSkyData');
     print('DEBUG: hasSkyFiData = $hasSkyFiData');
@@ -222,20 +225,32 @@ class EnrichmentSection extends StatelessWidget {
 
     return Column(
       children: [
-        if (hasAircraftData) ...[
-          _buildAircraftTrackingCard(enrichmentData['aircraft_tracking']),
-          const SizedBox(height: 16),
-        ],
         if (hasWeatherData) ...[
           WeatherCardFromJson(weatherData: enrichmentData['weather']),
+          const SizedBox(height: 16),
+        ],
+        if (hasCelestialData) ...[
+          CelestialCardFromJson(celestialData: enrichmentData['celestial']),
+          const SizedBox(height: 16),
+        ],
+        if (hasLocationData) ...[
+          LocationCardFromJson(locationData: enrichmentData['location']),
           const SizedBox(height: 16),
         ],
         if (hasSatelliteData) ...[
           SatelliteCardFromJson(satelliteData: enrichmentData['satellites']),
           const SizedBox(height: 16),
         ],
+        if (hasAircraftData) ...[
+          _buildAircraftTrackingCard(enrichmentData['aircraft_tracking']),
+          const SizedBox(height: 16),
+        ],
+        if (hasProcessingSummaryData) ...[
+          ProcessingSummaryCardFromJson(summaryData: enrichmentData['processing_summary']),
+          const SizedBox(height: 16),
+        ],
         if (hasBlackSkyData || hasSkyFiData) ...[
-          _canViewPremiumSatelliteImagery() 
+          _canViewPremiumSatelliteImagery()
             ? PremiumSatelliteCard(
                 blackskyData: enrichmentData['blacksky'],
                 skyfiData: enrichmentData['skyfi'],
@@ -1093,6 +1108,382 @@ class ContentAnalysisCardFromJson extends StatelessWidget {
                   color: AppColors.textTertiary,
                   fontSize: 12,
                 ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CelestialCardFromJson extends StatelessWidget {
+  const CelestialCardFromJson({super.key, required this.celestialData});
+
+  final Map<String, dynamic> celestialData;
+
+  @override
+  Widget build(BuildContext context) {
+    return GlassCard(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.nights_stay, color: AppColors.brandPrimary, size: 20),
+                const SizedBox(width: 8),
+                Text(
+                  AppLocalizations.of(context)!.celestialDataTitle,
+                  style: const TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // Sun data
+            if (celestialData['sun'] != null) ...
+              _buildCelestialObject(
+                context,
+                'Sun',
+                Icons.wb_sunny,
+                celestialData['sun'],
+              ),
+
+            // Moon data
+            if (celestialData['moon'] != null) ...
+              _buildCelestialObject(
+                context,
+                'Moon',
+                Icons.nights_stay,
+                celestialData['moon'],
+              ),
+
+            // Visible planets
+            if (celestialData['visible_planets'] != null &&
+                (celestialData['visible_planets'] as List).isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Text(
+                AppLocalizations.of(context)!.visiblePlanets,
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 4),
+              ...(celestialData['visible_planets'] as List).take(3).map((planet) =>
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.circle, size: 6, color: AppColors.brandPrimary),
+                      const SizedBox(width: 8),
+                      Text(
+                        '${planet['name'] ?? 'Unknown'}: ${planet['altitude']?.toStringAsFixed(1) ?? '0'}° alt',
+                        style: const TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildCelestialObject(
+    BuildContext context,
+    String name,
+    IconData icon,
+    Map<String, dynamic> objectData,
+  ) {
+    final isVisible = objectData['is_visible'] ?? false;
+    final altitude = objectData['altitude']?.toDouble() ?? 0.0;
+    final azimuth = objectData['azimuth']?.toDouble() ?? 0.0;
+
+    return [
+      const SizedBox(height: 8),
+      Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: AppColors.darkBackground,
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(
+            color: isVisible ? AppColors.brandPrimary : AppColors.darkBorder,
+          ),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              size: 16,
+              color: isVisible ? AppColors.brandPrimary : AppColors.textTertiary,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        name,
+                        style: const TextStyle(
+                          color: AppColors.textPrimary,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      if (name == 'Moon' && objectData['phase_name'] != null) ...[
+                        const SizedBox(width: 4),
+                        Text(
+                          '(${objectData['phase_name']})',
+                          style: const TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  Text(
+                    '${altitude.toStringAsFixed(1)}° alt • ${azimuth.toStringAsFixed(1)}° az',
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 10,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (isVisible)
+              const Icon(
+                Icons.visibility,
+                size: 12,
+                color: AppColors.brandPrimary,
+              ),
+          ],
+        ),
+      ),
+    ];
+  }
+}
+
+class LocationCardFromJson extends StatelessWidget {
+  const LocationCardFromJson({super.key, required this.locationData});
+
+  final Map<String, dynamic> locationData;
+
+  @override
+  Widget build(BuildContext context) {
+    return GlassCard(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.location_on, color: AppColors.brandPrimary, size: 20),
+                const SizedBox(width: 8),
+                Text(
+                  AppLocalizations.of(context)!.locationDataTitle,
+                  style: const TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // City, State, Country
+            if (locationData['city'] != null || locationData['state'] != null || locationData['country'] != null)
+              Row(
+                children: [
+                  const Icon(Icons.place, size: 16, color: AppColors.textTertiary),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      [locationData['city'], locationData['state'], locationData['country']]
+                        .where((e) => e != null && e.toString().isNotEmpty)
+                        .join(', '),
+                      style: const TextStyle(
+                        color: AppColors.textPrimary,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+            if (locationData['timezone'] != null) ...[
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  const Icon(Icons.schedule, size: 16, color: AppColors.textTertiary),
+                  const SizedBox(width: 8),
+                  Text(
+                    '${AppLocalizations.of(context)!.timezone}: ${locationData['timezone']}',
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+
+            if (locationData['coordinates'] != null) ...[
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  const Icon(Icons.gps_fixed, size: 16, color: AppColors.textTertiary),
+                  const SizedBox(width: 8),
+                  Text(
+                    '${AppLocalizations.of(context)!.coordinates}: ${locationData['coordinates']}',
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 12,
+                      fontFamily: 'monospace',
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ProcessingSummaryCardFromJson extends StatelessWidget {
+  const ProcessingSummaryCardFromJson({super.key, required this.summaryData});
+
+  final Map<String, dynamic> summaryData;
+
+  @override
+  Widget build(BuildContext context) {
+    final successfulProcessors = summaryData['successful_processors'] as List<dynamic>? ?? [];
+    final failedProcessors = summaryData['failed_processors'] as List<dynamic>? ?? [];
+    final processingTimeMs = summaryData['processing_time_ms']?.toDouble() ?? 0.0;
+
+    return GlassCard(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.analytics, color: AppColors.brandPrimary, size: 20),
+                const SizedBox(width: 8),
+                Text(
+                  AppLocalizations.of(context)!.processingSummaryTitle,
+                  style: const TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // Processing time
+            Row(
+              children: [
+                const Icon(Icons.timer, size: 16, color: AppColors.textTertiary),
+                const SizedBox(width: 8),
+                Text(
+                  '${AppLocalizations.of(context)!.processingTime}: ${(processingTimeMs / 1000).toStringAsFixed(1)}s',
+                  style: const TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+
+            // Successful processors
+            if (successfulProcessors.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.check_circle, size: 16, color: AppColors.semanticSuccess),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${AppLocalizations.of(context)!.successful} (${successfulProcessors.length})',
+                          style: const TextStyle(
+                            color: AppColors.semanticSuccess,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(
+                          successfulProcessors.join(', '),
+                          style: const TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+
+            // Failed processors
+            if (failedProcessors.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.error, size: 16, color: AppColors.semanticError),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${AppLocalizations.of(context)!.failed} (${failedProcessors.length})',
+                          style: const TextStyle(
+                            color: AppColors.semanticError,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(
+                          failedProcessors.join(', '),
+                          style: const TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ],

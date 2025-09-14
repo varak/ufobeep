@@ -574,5 +574,14 @@
   "mufonDatabaseReport": "MUFON Database Report",
   "copyShortLinkTitle": "Copy link to clipboard",
   "imageNotFound": "Image not found",
-  "ufoSightingAlt": "UFO sighting"
+  "ufoSightingAlt": "UFO sighting",
+  "celestialDataTitle": "Celestial Objects",
+  "visiblePlanets": "Visible Planets",
+  "locationDataTitle": "Location Information",
+  "timezone": "Timezone",
+  "coordinates": "Coordinates",
+  "processingSummaryTitle": "Processing Summary",
+  "processingTime": "Processing Time",
+  "successful": "Successful",
+  "failed": "Failed"
 }

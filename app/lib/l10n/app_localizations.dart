@@ -2441,6 +2441,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'UFO sighting'**
   String get ufoSightingAlt;
+
+  /// No description provided for @celestialDataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Celestial Objects'**
+  String get celestialDataTitle;
+
+  /// No description provided for @visiblePlanets.
+  ///
+  /// In en, this message translates to:
+  /// **'Visible Planets'**
+  String get visiblePlanets;
+
+  /// No description provided for @locationDataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Information'**
+  String get locationDataTitle;
+
+  /// No description provided for @timezone.
+  ///
+  /// In en, this message translates to:
+  /// **'Timezone'**
+  String get timezone;
+
+  /// No description provided for @coordinates.
+  ///
+  /// In en, this message translates to:
+  /// **'Coordinates'**
+  String get coordinates;
+
+  /// No description provided for @processingSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing Summary'**
+  String get processingSummaryTitle;
+
+  /// No description provided for @processingTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing Time'**
+  String get processingTime;
+
+  /// No description provided for @successful.
+  ///
+  /// In en, this message translates to:
+  /// **'Successful'**
+  String get successful;
+
+  /// No description provided for @failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get failed;
 }
 
 class _AppLocalizationsDelegate

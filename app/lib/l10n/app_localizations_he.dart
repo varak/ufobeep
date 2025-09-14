@@ -1227,4 +1227,31 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get ufoSightingAlt => 'עב\"מ';
+
+  @override
+  String get celestialDataTitle => 'Celestial Objects';
+
+  @override
+  String get visiblePlanets => 'Visible Planets';
+
+  @override
+  String get locationDataTitle => 'Location Information';
+
+  @override
+  String get timezone => 'Timezone';
+
+  @override
+  String get coordinates => 'Coordinates';
+
+  @override
+  String get processingSummaryTitle => 'Processing Summary';
+
+  @override
+  String get processingTime => 'Processing Time';
+
+  @override
+  String get successful => 'Successful';
+
+  @override
+  String get failed => 'Failed';
 }
