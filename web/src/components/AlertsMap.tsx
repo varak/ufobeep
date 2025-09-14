@@ -186,11 +186,11 @@ export default function AlertsMap({
             </div>
           )}
 
-          {displayAlert.location?.name && (
-            <div className="bg-gray-100 rounded px-2 py-1 mb-2">
-              <p className="text-xs font-medium text-gray-700">📍 {displayAlert.location.name}</p>
-            </div>
-          )}
+          <div className="bg-gray-100 rounded px-2 py-1 mb-2">
+            <p className="text-xs font-medium text-gray-700">
+              📍 {displayAlert.location?.name || 'Location loading...'}
+            </p>
+          </div>
 
           <p className="text-gray-600 text-xs mb-2">
             {truncateDescription(displayAlert.description)}
