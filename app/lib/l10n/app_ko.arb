@@ -227,7 +227,7 @@
   "imageOnly": "이미지 만",
   "mediaOnly": "미디어 전용",
   "timeJustNow": "지금 시작",
-  "timeDaysAgo": "{count}d 전",
+  "timeDaysAgo": "{count} 이전",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "{count}h 전",
+  "timeHoursAgo": "{count} h 전",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{count}m 전",
+  "timeMinutesAgo": "{count} m 전",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {

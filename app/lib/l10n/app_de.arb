@@ -227,7 +227,7 @@
   "imageOnly": "Nur Bilder",
   "mediaOnly": "Nur Medien",
   "timeJustNow": "jetzt",
-  "timeDaysAgo": "__PLACEHOLDER_0_d vor",
+  "timeDaysAgo": "__PLACEHOLDER_0_ d vor",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "__PLACEHOLDER_0_h vor",
+  "timeHoursAgo": "__PLACEHOLDER_0_ vor",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "__PLACEHOLDER_0_m vor",
+  "timeMinutesAgo": "{count} vor",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {

@@ -227,7 +227,7 @@
   "imageOnly": "画像のみ",
   "mediaOnly": "メディアのみ",
   "timeJustNow": "ただ今",
-  "timeDaysAgo": "__PLACEHOLDER_0_d 前に",
+  "timeDaysAgo": "{count} d 前に",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {

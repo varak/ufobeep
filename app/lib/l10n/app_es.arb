@@ -227,7 +227,7 @@
   "imageOnly": "Imagen",
   "mediaOnly": "Sólo medios",
   "timeJustNow": "ahora",
-  "timeDaysAgo": "{count}d ago",
+  "timeDaysAgo": "{count}___d ago",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "__PLACEHOLDER_0_h ago",
+  "timeHoursAgo": "{count}_h ago",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{count}_m ago",
+  "timeMinutesAgo": "{count}___m ago",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {

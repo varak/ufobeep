@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "To make a word",
+  "timeMinutesAgo": "To get the time",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {

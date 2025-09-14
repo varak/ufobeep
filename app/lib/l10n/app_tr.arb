@@ -227,7 +227,7 @@
   "imageOnly": "Resim Sadece Resim",
   "mediaOnly": "Medya Sadece Medya",
   "timeJustNow": "sadece şimdi",
-  "timeDaysAgo": "{count}d ago",
+  "timeDaysAgo": "{count} d önce",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "{count}h ago",
+  "timeHoursAgo": "{count} h ago",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{count}m ago",
+  "timeMinutesAgo": "{count} m ago",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {

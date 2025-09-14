@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "__PLACEHOLDER_0_h πριν",
+  "timeHoursAgo": "__PLACHOLDER_0_ h πριν",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "__PLACHOLDER_0_m Πριν",
+  "timeMinutesAgo": "ΠΡΙΝ ΤΗΝ ΠΡΙΝ",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {

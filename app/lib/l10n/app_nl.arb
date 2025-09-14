@@ -227,7 +227,7 @@
   "imageOnly": "Alleen afbeelding",
   "mediaOnly": "Alleen media",
   "timeJustNow": "net",
-  "timeDaysAgo": "__PLACEHOLDER_0_d geleden",
+  "timeDaysAgo": "{count}d geleden",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "__PLACEHOLDER_0_h geleden",
+  "timeHoursAgo": "__PLAATSHOLDER_0___ h geleden",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "__PLACEHOLDER_0_m geleden",
+  "timeMinutesAgo": "__PLAATSHOLDER_0___ m geleden",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {

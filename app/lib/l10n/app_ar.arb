@@ -227,7 +227,7 @@
   "imageOnly": "التصوير فقط",
   "mediaOnly": "وسائط الإعلام فقط",
   "timeJustNow": "الآن",
-  "timeDaysAgo": "قبل",
+  "timeDaysAgo": "_BAR_ _BAR_",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {

@@ -107,7 +107,7 @@
   "imageOnly": "التصوير فقط",
   "mediaOnly": "وسائط الإعلام فقط",
   "timeJustNow": "الآن",
-  "timeDaysAgo": "قبل",
+  "timeDaysAgo": "_BAR_ _BAR_",
   "timeHoursAgo": "قبل",
   "timeMinutesAgo": "_BAR_",
   "loadMoreAlerts": "عدد أكبر من التحذيرات",

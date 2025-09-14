@@ -227,7 +227,7 @@
   "imageOnly": "Vain kuva",
   "mediaOnly": "Vain media",
   "timeJustNow": "juuri nyt",
-  "timeDaysAgo": "_Placeholder_0_d sitten",
+  "timeDaysAgo": "_Placeholder_0__d sitten",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "_Placeholder_0_m sitten",
+  "timeMinutesAgo": "_Placeholder_0_ m sitten",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {

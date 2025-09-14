@@ -227,7 +227,7 @@
   "imageOnly": "צילום בלבד",
   "mediaOnly": "רק מדיה",
   "timeJustNow": "רק עכשיו",
-  "timeDaysAgo": "שם הסרטון: PLACEHOLDER_0__d ago",
+  "timeDaysAgo": "שם הסרטון: PLACEHOLDER_0__D ago",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "שם הסרטון: PLACEHOLDER_0_h ago",
+  "timeHoursAgo": "שם הסרטון: PLACEHOLDER_0__h ago",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "שם הסרטון: PLACEHOLDER_0_m ago",
+  "timeMinutesAgo": "שם הסרטון: PLACEHOLDER_0_M ago",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {

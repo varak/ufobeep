@@ -227,7 +227,7 @@
   "imageOnly": "Bild endast",
   "mediaOnly": "Media Endast",
   "timeJustNow": "just nu",
-  "timeDaysAgo": "{count}_d för",
+  "timeDaysAgo": "__PLACEHOLDER_0_D sedan",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "__PLACEHOLDER_0_m sedan",
+  "timeMinutesAgo": "{count} för mig",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {

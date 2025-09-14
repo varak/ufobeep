@@ -107,7 +107,7 @@
   "imageOnly": "画像のみ",
   "mediaOnly": "メディアのみ",
   "timeJustNow": "ただ今",
-  "timeDaysAgo": "__PLACEHOLDER_0_d 前に",
+  "timeDaysAgo": "{count} d 前に",
   "timeHoursAgo": "__PLACEHOLDER_0_h 前に",
   "timeMinutesAgo": "__PLACEHOLDER_0_m 前に",
   "loadMoreAlerts": "より多くのアラートをロードする",

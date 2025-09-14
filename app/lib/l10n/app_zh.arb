@@ -227,7 +227,7 @@
   "imageOnly": "只有图像",
   "mediaOnly": "仅限媒体",
   "timeJustNow": "刚才",
-  "timeDaysAgo": "时间轴:",
+  "timeDaysAgo": "早点开始",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "0米前的地图",
+  "timeMinutesAgo": "0米前的地盘",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {

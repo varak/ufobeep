@@ -227,7 +227,7 @@
   "imageOnly": "Immagine solo",
   "mediaOnly": "Solo",
   "timeJustNow": "ora",
-  "timeDaysAgo": "__PLACEHOLDER_0_d fa",
+  "timeDaysAgo": "Traduzione:",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "__PLACEHOLDER_0_h fa",
+  "timeHoursAgo": "Traduzione:",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
