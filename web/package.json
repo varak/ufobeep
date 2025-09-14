@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "sync-translations": "node scripts/sync-translations.js"
+    "translate": "./translate.sh"
   },
   "dependencies": {
     "@google-cloud/firestore": "^7.11.3",

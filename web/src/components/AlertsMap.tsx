@@ -85,6 +85,18 @@ export default function AlertsMap({
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
   const [modalMediaFiles, setModalMediaFiles] = useState<any[]>([])
 
+  // Validate coordinates defensively to avoid runtime errors
+  const isValidLatLng = (loc?: { latitude: any; longitude: any }) => {
+    if (!loc || loc.latitude == null || loc.longitude == null) return false
+    const lat = Number(loc.latitude)
+    const lng = Number(loc.longitude)
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) return false
+    if (Math.abs(lat) > 90 || Math.abs(lng) > 180) return false
+    // Skip placeholder (0,0)
+    if (lat === 0 && lng === 0) return false
+    return true
+  }
+
   // Helper function to create React popup content - defined outside useEffect
   const createPopupContentHelper = (alert: Alert, L: any) => {
     const container = L.DomUtil.create('div')
@@ -320,7 +332,7 @@ export default function AlertsMap({
         // Filter alerts by zoom level then add markers with UFO classification support
         const filteredAlerts = filterAlertsByZoom(alerts, mapInstanceRef.current.getZoom())
         filteredAlerts.forEach((alert) => {
-          if (alert.location.latitude === 0 && alert.location.longitude === 0) return
+          if (!isValidLatLng(alert.location)) return
           
           const marker = createUfoMarker(L, alert, mapInstanceRef.current)
 
@@ -418,7 +430,7 @@ export default function AlertsMap({
           // Re-add markers with new zoom filtering
           const filteredAlerts = filterAlertsByZoom(alerts, newZoom)
           filteredAlerts.forEach((alert) => {
-            if (alert.location.latitude === 0 && alert.location.longitude === 0) return
+            if (!isValidLatLng(alert.location)) return
 
             const marker = createUfoMarker(L, alert, map)
 
@@ -452,9 +464,7 @@ export default function AlertsMap({
         // Filter alerts by zoom level then add markers for alerts (skip invalid coordinates) with UFO classification support
         const filteredAlerts = filterAlertsByZoom(alerts, currentZoom)
         filteredAlerts.forEach((alert) => {
-          if (alert.location.latitude === 0 && alert.location.longitude === 0) {
-            return // Skip invalid coordinates (0,0 fallback)
-          }
+          if (!isValidLatLng(alert.location)) return // Skip invalid/missing coordinates
 
           const marker = createUfoMarker(L, alert, map)
 
@@ -478,7 +488,7 @@ export default function AlertsMap({
 
         // Fit map to show all alerts
         if (alerts.length > 0) {
-          const validAlerts = alerts.filter(a => a.location.latitude !== 0 && a.location.longitude !== 0)
+          const validAlerts = alerts.filter(a => isValidLatLng(a.location))
           if (validAlerts.length > 0) {
             const latlngs = validAlerts.map(a => [a.location.latitude, a.location.longitude] as [number, number])
 
@@ -504,6 +514,7 @@ export default function AlertsMap({
         }
 
       } catch (error) {
+        console.error('Map initialization error:', error)
         setMapError(true)
       }
     }

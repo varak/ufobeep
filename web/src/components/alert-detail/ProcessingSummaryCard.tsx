@@ -41,7 +41,7 @@ export default function ProcessingSummaryCard({ summary, locale = 'en' }: Proces
 
         {summary.total_processors !== undefined && (
           <div>
-            <div className="text-text-tertiary text-xs">Total</div>
+            <div className="text-text-tertiary text-xs">{t('total')}</div>
             <div className="text-text-primary text-sm">{summary.total_processors}</div>
           </div>
         )}
