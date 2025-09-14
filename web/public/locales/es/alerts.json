@@ -57,5 +57,6 @@
   "alertFollowError": "Actualización de errores",
   "ufobeepWitnesses": "Testigos",
   "ufobeepConfirmations": "Confirmaciones",
-  "ufobeepAlertLevel": "Nivel de alerta"
+  "ufobeepAlertLevel": "Nivel de alerta",
+  "alert": "Alerta"
 }

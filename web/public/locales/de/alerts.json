@@ -57,5 +57,6 @@
   "alertFollowError": "Fehler bei der Aktualisierung",
   "ufobeepWitnesses": "Zeugen",
   "ufobeepConfirmations": "Bestätigungen",
-  "ufobeepAlertLevel": "Alarmstufe"
+  "ufobeepAlertLevel": "Alarmstufe",
+  "alert": "Alarmstufe"
 }

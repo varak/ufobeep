@@ -586,5 +586,8 @@
   "failed": "Неудачник",
   "locationEnrichmentTitle": "Подробности о местоположении",
   "aircraftDataSource": "Источник данных",
-  "noAircraftDetected": "Самолеты не обнаружены"
+  "noAircraftDetected": "Самолеты не обнаружены",
+  "sightingReport": "Обзорный доклад",
+  "ufoAlert": "НЛО Предупреждение",
+  "alert": "Предупреждение"
 }

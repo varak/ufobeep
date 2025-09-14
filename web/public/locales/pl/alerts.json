@@ -57,5 +57,6 @@
   "alertFollowError": "Błąd podczas aktualizacji statusu folderu",
   "ufobeepWitnesses": "Świadkowie",
   "ufobeepConfirmations": "Potwierdzenia",
-  "ufobeepAlertLevel": "Poziom alarmowy"
+  "ufobeepAlertLevel": "Poziom alarmowy",
+  "alert": "Alarm"
 }

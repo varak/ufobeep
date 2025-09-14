@@ -586,5 +586,8 @@
   "failed": "فشل",
   "locationEnrichmentTitle": "تفاصيل الموقع",
   "aircraftDataSource": "المصدر",
-  "noAircraftDetected": "لم تكتشف أي طائرة"
+  "noAircraftDetected": "لم تكتشف أي طائرة",
+  "sightingReport": "Sighting Report",
+  "ufoAlert": "UFO إنذار",
+  "alert": "إنذار"
 }

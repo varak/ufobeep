@@ -586,5 +586,8 @@
   "failed": "失败",
   "locationEnrichmentTitle": "地点细节",
   "aircraftDataSource": "数据来源",
-  "noAircraftDetected": "未发现飞机"
+  "noAircraftDetected": "未发现飞机",
+  "sightingReport": "观察报告",
+  "ufoAlert": "不明飞行物 警报",
+  "alert": "警报"
 }

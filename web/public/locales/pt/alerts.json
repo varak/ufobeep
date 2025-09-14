@@ -57,5 +57,6 @@
   "alertFollowError": "Erro ao atualizar o status da sequência",
   "ufobeepWitnesses": "Testemunhas",
   "ufobeepConfirmations": "Confirmações",
-  "ufobeepAlertLevel": "Nível de Alerta"
+  "ufobeepAlertLevel": "Nível de Alerta",
+  "alert": "Alerta"
 }

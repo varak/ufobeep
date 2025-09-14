@@ -308,5 +308,7 @@
   "successful": "成功する",
   "locationEnrichmentTitle": "ロケーション詳細",
   "aircraftDataSource": "データソース",
-  "noAircraftDetected": "航空機が検出されない"
+  "noAircraftDetected": "航空機が検出されない",
+  "sightingReport": "観光レポート",
+  "ufoAlert": "ユーチューブ アラート"
 }

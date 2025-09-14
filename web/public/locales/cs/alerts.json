@@ -57,5 +57,6 @@
   "alertFollowError": "Chyba při aktualizaci stavu sledování",
   "ufobeepWitnesses": "Svědci",
   "ufobeepConfirmations": "Potvrzení",
-  "ufobeepAlertLevel": "Úroveň upozornění"
+  "ufobeepAlertLevel": "Úroveň upozornění",
+  "alert": "Varování"
 }

@@ -308,5 +308,7 @@
   "successful": "Framgång",
   "locationEnrichmentTitle": "Plats detaljer",
   "aircraftDataSource": "Datakälla",
-  "noAircraftDetected": "Inga flygplan upptäckta"
+  "noAircraftDetected": "Inga flygplan upptäckta",
+  "sightingReport": "Sighting Report",
+  "ufoAlert": "UFO Alert"
 }

@@ -57,5 +57,6 @@
   "alertFollowError": "Fejl under opdatering af følg status",
   "ufobeepWitnesses": "Vidner",
   "ufobeepConfirmations": "Bekræfter",
-  "ufobeepAlertLevel": "Alarmniveau"
+  "ufobeepAlertLevel": "Alarmniveau",
+  "alert": "Indberetning"
 }

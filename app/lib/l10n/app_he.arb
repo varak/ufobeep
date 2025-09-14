@@ -586,5 +586,8 @@
   "failed": "נכשל",
   "locationEnrichmentTitle": "פרטי מיקום",
   "aircraftDataSource": "מקור נתונים",
-  "noAircraftDetected": "שום מטוס לא זיהה"
+  "noAircraftDetected": "שום מטוס לא זיהה",
+  "sightingReport": "דיווח Sighting",
+  "ufoAlert": "עב\"ם התראה",
+  "alert": "התראה"
 }

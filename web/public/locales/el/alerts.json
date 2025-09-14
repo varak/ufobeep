@@ -57,5 +57,6 @@
   "alertFollowError": "Σφάλμα ενημέρωσης της κατάστασης",
   "ufobeepWitnesses": "Μάρτυρες",
   "ufobeepConfirmations": "Επιβεβαίωση",
-  "ufobeepAlertLevel": "Επίπεδο συναγερμού"
+  "ufobeepAlertLevel": "Επίπεδο συναγερμού",
+  "alert": "Συναγερμός"
 }

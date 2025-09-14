@@ -57,5 +57,6 @@
   "alertFollowError": "עדכון מצב",
   "ufobeepWitnesses": "עדים",
   "ufobeepConfirmations": "אישורים",
-  "ufobeepAlertLevel": "רמת התראה"
+  "ufobeepAlertLevel": "רמת התראה",
+  "alert": "התראה"
 }

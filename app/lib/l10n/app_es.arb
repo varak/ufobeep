@@ -586,5 +586,8 @@
   "failed": "Failed",
   "locationEnrichmentTitle": "Detalles de la ubicación",
   "aircraftDataSource": "Fuente de datos",
-  "noAircraftDetected": "No se detectó ningún avión"
+  "noAircraftDetected": "No se detectó ningún avión",
+  "sightingReport": "Informe de control",
+  "ufoAlert": "OVNI Alerta",
+  "alert": "Alerta"
 }

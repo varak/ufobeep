@@ -586,5 +586,8 @@
   "failed": "Αποτυχία",
   "locationEnrichmentTitle": "Λεπτομέρειες τοποθεσίας",
   "aircraftDataSource": "Πηγή δεδομένων",
-  "noAircraftDetected": "Δεν εντοπίστηκαν αεροσκάφη"
+  "noAircraftDetected": "Δεν εντοπίστηκαν αεροσκάφη",
+  "sightingReport": "Έκθεση παρατήρησης",
+  "ufoAlert": "ΑΤΙΑ Συναγερμός",
+  "alert": "Συναγερμός"
 }

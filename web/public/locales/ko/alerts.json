@@ -57,5 +57,6 @@
   "alertFollowError": "에러 updating 따라 상태",
   "ufobeepWitnesses": "뚱 베어",
   "ufobeepConfirmations": "이름 *",
-  "ufobeepAlertLevel": "출력 레벨"
+  "ufobeepAlertLevel": "출력 레벨",
+  "alert": "지원하다"
 }

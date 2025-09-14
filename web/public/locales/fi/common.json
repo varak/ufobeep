@@ -308,5 +308,7 @@
   "successful": "Onnistunut",
   "locationEnrichmentTitle": "Sijaintitiedot",
   "aircraftDataSource": "Tietolähde",
-  "noAircraftDetected": "Ilma-alusta ei havaittu"
+  "noAircraftDetected": "Ilma-alusta ei havaittu",
+  "sightingReport": "Havaintoraportti",
+  "ufoAlert": "UFO Varoitus"
 }

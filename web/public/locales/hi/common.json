@@ -308,5 +308,7 @@
   "successful": "सफल",
   "locationEnrichmentTitle": "स्थान विवरण",
   "aircraftDataSource": "डेटा स्रोत",
-  "noAircraftDetected": "कोई विमान नहीं पाया"
+  "noAircraftDetected": "कोई विमान नहीं पाया",
+  "sightingReport": "Sighting Report",
+  "ufoAlert": "यूएफओ चेतावनी"
 }

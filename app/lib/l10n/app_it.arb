@@ -586,5 +586,8 @@
   "failed": "Sfigato",
   "locationEnrichmentTitle": "Dettagli della posizione",
   "aircraftDataSource": "Fonte dei dati",
-  "noAircraftDetected": "Nessun aereo rilevato"
+  "noAircraftDetected": "Nessun aereo rilevato",
+  "sightingReport": "Rapporto di tenuta",
+  "ufoAlert": "UFO Avviso",
+  "alert": "Avviso"
 }

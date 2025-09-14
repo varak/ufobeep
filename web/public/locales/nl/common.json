@@ -308,5 +308,7 @@
   "successful": "Succesvol",
   "locationEnrichmentTitle": "Locatiedetails",
   "aircraftDataSource": "Gegevensbron",
-  "noAircraftDetected": "Geen vliegtuig gedetecteerd"
+  "noAircraftDetected": "Geen vliegtuig gedetecteerd",
+  "sightingReport": "Waarnemingsrapport",
+  "ufoAlert": "UFO Waarschuwing"
 }

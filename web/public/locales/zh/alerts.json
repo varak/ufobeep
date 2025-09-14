@@ -57,5 +57,6 @@
   "alertFollowError": "更新跟随状态出错",
   "ufobeepWitnesses": "证人",
   "ufobeepConfirmations": "确认",
-  "ufobeepAlertLevel": "警报级别"
+  "ufobeepAlertLevel": "警报级别",
+  "alert": "警报"
 }

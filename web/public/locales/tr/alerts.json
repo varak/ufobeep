@@ -57,5 +57,6 @@
   "alertFollowError": "Hata Güncellemesi",
   "ufobeepWitnesses": "Tanık Şahitler",
   "ufobeepConfirmations": "Onaylamalar",
-  "ufobeepAlertLevel": "Uyarı Düzeyi"
+  "ufobeepAlertLevel": "Uyarı Düzeyi",
+  "alert": "Uyarı"
 }

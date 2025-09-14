@@ -308,5 +308,7 @@
   "successful": "Réussi",
   "locationEnrichmentTitle": "Détails de la localisation",
   "aircraftDataSource": "Source des données",
-  "noAircraftDetected": "Aucun aéronef détecté"
+  "noAircraftDetected": "Aucun aéronef détecté",
+  "sightingReport": "Rapport d'observation",
+  "ufoAlert": "OVNI Alerte"
 }

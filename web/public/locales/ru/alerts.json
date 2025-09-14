@@ -57,5 +57,6 @@
   "alertFollowError": "Обновление ошибок Следуйте за статусом",
   "ufobeepWitnesses": "Свидетели",
   "ufobeepConfirmations": "Подтверждения",
-  "ufobeepAlertLevel": "Уровень оповещения"
+  "ufobeepAlertLevel": "Уровень оповещения",
+  "alert": "Предупреждение"
 }

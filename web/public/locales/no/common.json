@@ -308,5 +308,7 @@
   "successful": "Successful",
   "locationEnrichmentTitle": "Location Details",
   "aircraftDataSource": "Data Source",
-  "noAircraftDetected": "No aircraft detected"
+  "noAircraftDetected": "No aircraft detected",
+  "sightingReport": "Sighting Report",
+  "ufoAlert": "UFO Alert"
 }

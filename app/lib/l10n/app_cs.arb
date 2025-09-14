@@ -586,5 +586,8 @@
   "failed": "Selhalo",
   "locationEnrichmentTitle": "Podrobnosti o umístění",
   "aircraftDataSource": "Zdroj dat",
-  "noAircraftDetected": "Žádné letadlo nebylo detekováno"
+  "noAircraftDetected": "Žádné letadlo nebylo detekováno",
+  "sightingReport": "Zpráva o pozorování",
+  "ufoAlert": "UFO Varování",
+  "alert": "Varování"
 }

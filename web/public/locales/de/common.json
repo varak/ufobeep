@@ -308,5 +308,7 @@
   "successful": "Erfolgreich",
   "locationEnrichmentTitle": "Location Details",
   "aircraftDataSource": "Datenquelle",
-  "noAircraftDetected": "Keine Luftfahrzeuge erfasst"
+  "noAircraftDetected": "Keine Luftfahrzeuge erfasst",
+  "sightingReport": "Sichtbericht",
+  "ufoAlert": "UFO Alarmstufe"
 }

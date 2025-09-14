@@ -586,5 +586,8 @@
   "failed": "Mislykkedes",
   "locationEnrichmentTitle": "Placering",
   "aircraftDataSource": "Datakilde",
-  "noAircraftDetected": "Intet luftfartøj detekteret"
+  "noAircraftDetected": "Intet luftfartøj detekteret",
+  "sightingReport": "Observationsrapport",
+  "ufoAlert": "UFO Indberetning",
+  "alert": "Indberetning"
 }

@@ -57,5 +57,6 @@
   "alertFollowError": "エラー更新 ステータスをフォローする",
   "ufobeepWitnesses": "ウィッチネス",
   "ufobeepConfirmations": "確認事項",
-  "ufobeepAlertLevel": "アラートレベル"
+  "ufobeepAlertLevel": "アラートレベル",
+  "alert": "アラート"
 }

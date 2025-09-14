@@ -57,5 +57,6 @@
   "alertFollowError": "Erreur de mise à jour suivre l'état",
   "ufobeepWitnesses": "Témoins",
   "ufobeepConfirmations": "Confirmations",
-  "ufobeepAlertLevel": "Niveau d'alerte"
+  "ufobeepAlertLevel": "Niveau d'alerte",
+  "alert": "Alerte"
 }

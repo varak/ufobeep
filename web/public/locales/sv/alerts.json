@@ -57,5 +57,6 @@
   "alertFollowError": "Feluppdatering följer status",
   "ufobeepWitnesses": "Vittnen",
   "ufobeepConfirmations": "Bekräftelser",
-  "ufobeepAlertLevel": "Alert Level"
+  "ufobeepAlertLevel": "Alert Level",
+  "alert": "Alert"
 }

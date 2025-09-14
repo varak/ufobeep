@@ -57,5 +57,6 @@
   "alertFollowError": "Virhe seurauksen tilan päivittämisessä",
   "ufobeepWitnesses": "Todistajat",
   "ufobeepConfirmations": "Vahvistukset",
-  "ufobeepAlertLevel": "Varoitustaso"
+  "ufobeepAlertLevel": "Varoitustaso",
+  "alert": "Varoitus"
 }
