@@ -270,54 +270,87 @@ async def get_alerts(
         raise HTTPException(status_code=500, detail=f"Error getting alerts: {str(e)}")
 
 @router.get("/map-points")
-async def get_map_points():
-    """Get ALL alert points for map display - minimal data for performance"""
+async def get_map_points(minimal: bool = False):
+    """Get ALL alert points for map display
+
+    Args:
+        minimal: If true, returns only id/lat/lng for performance with thousands of points
+    """
     try:
         db_pool = await get_db()
 
-        # Direct query for just the data needed for map markers
         async with db_pool.acquire() as connection:
-            query = """
-                SELECT
-                    id,
-                    title,
-                    description,
-                    location_latitude,
-                    location_longitude,
-                    location_name,
-                    created_at,
-                    source,
-                    reporter_username,
-                    media_files,
-                    enrichment_data
-                FROM alerts
-                WHERE (location_latitude != 0 OR location_longitude != 0)
-                AND location_latitude IS NOT NULL
-                AND location_longitude IS NOT NULL
-                ORDER BY created_at DESC
-            """
+            if minimal:
+                # Ultra-minimal for initial map load
+                query = """
+                    SELECT
+                        id,
+                        location_latitude,
+                        location_longitude,
+                        source,
+                        enrichment_data
+                    FROM alerts
+                    WHERE (location_latitude != 0 OR location_longitude != 0)
+                    AND location_latitude IS NOT NULL
+                    AND location_longitude IS NOT NULL
+                    ORDER BY created_at DESC
+                """
+            else:
+                # Full data for popups
+                query = """
+                    SELECT
+                        id,
+                        title,
+                        description,
+                        location_latitude,
+                        location_longitude,
+                        location_name,
+                        created_at,
+                        source,
+                        reporter_username,
+                        media_files,
+                        enrichment_data
+                    FROM alerts
+                    WHERE (location_latitude != 0 OR location_longitude != 0)
+                    AND location_latitude IS NOT NULL
+                    AND location_longitude IS NOT NULL
+                    ORDER BY created_at DESC
+                """
 
             rows = await connection.fetch(query)
 
-            # Format minimal response for map
             map_points = []
             for row in rows:
-                map_points.append({
-                    "id": row["id"],
-                    "title": row["title"],
-                    "description": row["description"],
-                    "location": {
-                        "latitude": float(row["location_latitude"]),
-                        "longitude": float(row["location_longitude"]),
-                        "name": row["location_name"] or "Unknown Location"
-                    },
-                    "created_at": row["created_at"].isoformat(),
-                    "source": row["source"],
-                    "username": row["reporter_username"],
-                    "media_files": row["media_files"] or [],
-                    "enrichment_data": row["enrichment_data"] or {},
-                    "alert_level": "medium"  # Default for now
-                })
+                if minimal:
+                    # Just enough to place the marker
+                    point = {
+                        "id": row["id"],
+                        "location": {
+                            "latitude": float(row["location_latitude"]),
+                            "longitude": float(row["location_longitude"])
+                        },
+                        "source": row["source"],
+                        "enrichment_data": row["enrichment_data"] or {}
+                    }
+                else:
+                    # Full data for popups
+                    point = {
+                        "id": row["id"],
+                        "title": row["title"],
+                        "description": row["description"],
+                        "location": {
+                            "latitude": float(row["location_latitude"]),
+                            "longitude": float(row["location_longitude"]),
+                            "name": row["location_name"] or "Unknown Location"
+                        },
+                        "created_at": row["created_at"].isoformat(),
+                        "source": row["source"],
+                        "username": row["reporter_username"],
+                        "media_files": row["media_files"] or [],
+                        "enrichment_data": row["enrichment_data"] or {},
+                        "alert_level": "medium"  # Default for now
+                    }
+                map_points.append(point)
 
             return {
                 "success": True,
@@ -330,6 +363,70 @@ async def get_map_points():
     except Exception as e:
         print(f"Error getting map points: {e}")
         raise HTTPException(status_code=500, detail=f"Error getting map points: {str(e)}")
+
+@router.get("/{alert_id}")
+async def get_alert_by_id(
+    alert_id: str,
+    latitude: Optional[float] = None,
+    longitude: Optional[float] = None
+):
+    """Get specific alert by ID"""
+    try:
+        db_pool = await get_db()
+        alerts_service = AlertsService(db_pool)
+
+        # Query alert by ID
+        async with db_pool.acquire() as connection:
+            query = """
+                SELECT *
+                FROM alerts
+                WHERE id = $1
+            """
+            row = await connection.fetchrow(query, alert_id)
+
+            if not row:
+                raise HTTPException(status_code=404, detail="Alert not found")
+
+            # Format the response
+            alert = {
+                "id": row["id"],
+                "title": row["title"],
+                "description": row["description"],
+                "location": {
+                    "latitude": float(row["location_latitude"]) if row["location_latitude"] else 0,
+                    "longitude": float(row["location_longitude"]) if row["location_longitude"] else 0,
+                    "name": row["location_name"] or "Unknown Location"
+                },
+                "created_at": row["created_at"].isoformat(),
+                "source": row["source"],
+                "username": row["reporter_username"],
+                "media_files": row["media_files"] or [],
+                "enrichment_data": row["enrichment_data"] or {},
+                "alert_level": "medium"
+            }
+
+            # Calculate distance if user location provided
+            if latitude and longitude and alert["location"]["latitude"] and alert["location"]["longitude"]:
+                from math import radians, sin, cos, sqrt, atan2
+                R = 6371  # Earth's radius in km
+                lat1, lon1 = radians(latitude), radians(longitude)
+                lat2, lon2 = radians(alert["location"]["latitude"]), radians(alert["location"]["longitude"])
+                dlat = lat2 - lat1
+                dlon = lon2 - lon1
+                a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+                c = 2 * atan2(sqrt(a), sqrt(1-a))
+                alert["distance_km"] = round(R * c, 1)
+
+            return {
+                "success": True,
+                "data": alert
+            }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error getting alert by ID: {e}")
+        raise HTTPException(status_code=500, detail=f"Error getting alert: {str(e)}")
 
 @router.get("/by-short-url/{short_url}")
 async def get_alert_by_short_url(

@@ -1,10 +1,13 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { apiConfig } from '@/config/api'
 
 // GET /api/beep/map-points - Fetch ALL alert points for map
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const apiUrl = `${apiConfig.fullUrl}/beep/map-points`
+    const { searchParams } = new URL(request.url)
+    const minimal = searchParams.get('minimal') === 'true'
+
+    const apiUrl = `${apiConfig.fullUrl}/beep/map-points${minimal ? '?minimal=true' : ''}`
 
     const response = await fetch(apiUrl, {
       method: 'GET',

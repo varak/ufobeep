@@ -74,6 +74,31 @@ export default function AlertsMap({
     const container = L.DomUtil.create('div')
 
     const PopupContent = () => {
+      const [fullAlert, setFullAlert] = useState<Alert | null>(null)
+      const [loading, setLoading] = useState(false)
+
+      // Load full alert data on mount
+      useEffect(() => {
+        if (!alert.title) {
+          // This is minimal data, need to fetch full details
+          setLoading(true)
+          fetch(`/api/beep/${alert.id}`)
+            .then(res => res.json())
+            .then(data => {
+              if (data.success && data.data) {
+                setFullAlert(data.data)
+              }
+            })
+            .catch(err => console.error('Error loading alert details:', err))
+            .finally(() => setLoading(false))
+        } else {
+          // Already have full data
+          setFullAlert(alert)
+        }
+      }, [])
+
+      const displayAlert = fullAlert || alert
+
       const truncateDescription = (desc: string | null, maxWords = 400) => {
         if (!desc) return ''
         // Remove the embedded location line from MUFON descriptions
@@ -86,19 +111,27 @@ export default function AlertsMap({
       const handleMediaClick = (index: number) => {
         setIsMediaModalOpen(true)
         setSelectedMediaIndex(index)
-        setModalMediaFiles(alert.media_files || [])
+        setModalMediaFiles(displayAlert.media_files || [])
+      }
+
+      if (loading) {
+        return (
+          <div className="text-sm w-80 p-4 text-center">
+            <div className="text-gray-500">Loading...</div>
+          </div>
+        )
       }
 
       return (
         <div className="text-sm w-80">
           <h4 className="font-semibold text-gray-900 mb-1">
-            {AlertTitleUtils.getShortTitle(alert)}
+            {displayAlert.title ? AlertTitleUtils.getShortTitle(displayAlert) : 'UFO Sighting'}
           </h4>
 
           {/* Media thumbnails */}
-          {alert.media_files && alert.media_files.length > 0 && (
+          {displayAlert.media_files && displayAlert.media_files.length > 0 && (
             <div className="flex gap-1 mb-2 overflow-x-auto">
-              {alert.media_files.slice(0, 4).map((media, index) => (
+              {displayAlert.media_files.slice(0, 4).map((media, index) => (
                 <div
                   key={index}
                   className="relative flex-shrink-0 w-16 h-16 bg-gray-100 rounded overflow-hidden cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all"
@@ -128,40 +161,40 @@ export default function AlertsMap({
                   )}
                 </div>
               ))}
-              {alert.media_files.length > 4 && (
+              {displayAlert.media_files.length > 4 && (
                 <div className="flex-shrink-0 w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-gray-600 text-xs">
-                  +{alert.media_files.length - 4}
+                  +{displayAlert.media_files.length - 4}
                 </div>
               )}
             </div>
           )}
 
           <p className="text-gray-600 text-xs mb-2">
-            {truncateDescription(alert.description)}
-            {alert.description && alert.description.split(' ').length > 400 && (
+            {truncateDescription(displayAlert.description)}
+            {displayAlert.description && displayAlert.description.split(' ').length > 400 && (
               <span className="text-blue-600 cursor-pointer ml-1">see full report</span>
             )}
           </p>
 
-          {alert.location?.name && alert.location.name !== 'Unknown Location' && (
-            <p className="text-xs text-gray-500 mb-1">📍 {alert.location.name}</p>
+          {displayAlert.location?.name && displayAlert.location.name !== 'Unknown Location' && (
+            <p className="text-xs text-gray-500 mb-1">📍 {displayAlert.location.name}</p>
           )}
 
           <div className="text-xs text-gray-400 mt-1">
-            {new Date(alert.created_at).toLocaleDateString()}
+            {new Date(displayAlert.created_at).toLocaleDateString()}
           </div>
 
           <div className="mt-2">
             <a
               className="text-blue-600 underline text-xs"
               href={`/beep/${currentLocale}/${getAlertSlug({
-                id: alert.id,
-                title: alert.title,
-                created_at: alert.created_at,
-                location: alert.location,
-                reporter_username: alert.username,
-                description: alert.description,
-                source: alert.source
+                id: displayAlert.id || alert.id,
+                title: displayAlert.title,
+                created_at: displayAlert.created_at,
+                location: displayAlert.location,
+                reporter_username: displayAlert.username,
+                description: displayAlert.description,
+                source: displayAlert.source
               }, currentLocale)}`}
             >
               View details →
@@ -226,7 +259,7 @@ export default function AlertsMap({
         // Filter alerts by zoom level then add markers with UFO classification support
         const filteredAlerts = filterAlertsByZoom(alerts, mapInstanceRef.current.getZoom())
         filteredAlerts.forEach((alert) => {
-          if (alert.location.latitude === 0 && alert.location.longitude === 0) return
+          if (displayAlert.location.latitude === 0 && displayAlert.location.longitude === 0) return
           
           const marker = createUfoMarker(L, alert, mapInstanceRef.current)
 
@@ -324,7 +357,7 @@ export default function AlertsMap({
           // Re-add markers with new zoom filtering
           const filteredAlerts = filterAlertsByZoom(alerts, newZoom)
           filteredAlerts.forEach((alert) => {
-            if (alert.location.latitude === 0 && alert.location.longitude === 0) return
+            if (displayAlert.location.latitude === 0 && displayAlert.location.longitude === 0) return
 
             const marker = createUfoMarker(L, alert, map)
 
@@ -358,7 +391,7 @@ export default function AlertsMap({
         // Filter alerts by zoom level then add markers for alerts (skip invalid coordinates) with UFO classification support
         const filteredAlerts = filterAlertsByZoom(alerts, currentZoom)
         filteredAlerts.forEach((alert) => {
-          if (alert.location.latitude === 0 && alert.location.longitude === 0) {
+          if (displayAlert.location.latitude === 0 && displayAlert.location.longitude === 0) {
             return // Skip invalid coordinates (0,0 fallback)
           }
 
@@ -440,23 +473,23 @@ export default function AlertsMap({
   }, [])
 
   const filterAlertsByZoom = (alerts: Alert[], zoomLevel: number) => {
-    // Show LOTS of alerts at all zoom levels for better map usability
+    // Show ALL alerts when zoomed in, consolidate when zoomed out
     let maxAlerts: number
     if (zoomLevel >= 12) {
-      maxAlerts = 200 // Zoomed in - show ALL local alerts
+      maxAlerts = 10000 // Zoomed in - show ALL local alerts
     } else if (zoomLevel >= 8) {
-      maxAlerts = 150 // Medium zoom - show many regional alerts
+      maxAlerts = 500 // Medium zoom - show many regional alerts
     } else if (zoomLevel >= 5) {
-      maxAlerts = 100 // Zoomed out - still show 100 alerts
+      maxAlerts = 200 // Zoomed out - show 200 alerts
     } else {
-      maxAlerts = 75 // Very zoomed out - show 75 most recent alerts minimum
+      maxAlerts = 100 // Very zoomed out - show 100 most recent alerts
     }
-    
+
     // Sort by most recent and take only the limit
-    const sortedAlerts = [...alerts].sort((a, b) => 
+    const sortedAlerts = [...alerts].sort((a, b) =>
       new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     )
-    
+
     return sortedAlerts.slice(0, maxAlerts)
   }
 
@@ -543,11 +576,11 @@ export default function AlertsMap({
         iconAnchor: [12, 12]
       })
       
-      return L.marker([alert.location.latitude, alert.location.longitude], { icon: customIcon })
+      return L.marker([displayAlert.location.latitude, displayAlert.location.longitude], { icon: customIcon })
     } else {
       // Use circle markers for regular beep sightings (existing behavior)
       return L.circleMarker(
-        [alert.location.latitude, alert.location.longitude],
+        [displayAlert.location.latitude, displayAlert.location.longitude],
         {
           radius: 8,
           fillColor: getAlertColor(alert.alert_level),

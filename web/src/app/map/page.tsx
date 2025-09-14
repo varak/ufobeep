@@ -21,8 +21,8 @@ export default function MapPage() {
   useEffect(() => {
     const fetchAlerts = async () => {
       try {
-        // Use dedicated map endpoint that returns ALL points
-        const response = await fetch('/api/beep/map-points')
+        // Use minimal mode for fast initial load - just points
+        const response = await fetch('/api/beep/map-points?minimal=true')
         const data = await response.json()
         if (data.success && data.data?.alerts) {
           // All points are already validated by the API
