@@ -583,5 +583,8 @@
   "processingSummaryTitle": "Forarbejdningsoversigt",
   "processingTime": "Behandlingstid",
   "successful": "Succesfuld",
-  "failed": "Mislykkedes"
+  "failed": "Mislykkedes",
+  "locationEnrichmentTitle": "Placering",
+  "aircraftDataSource": "Datakilde",
+  "noAircraftDetected": "Intet luftfartøj detekteret"
 }

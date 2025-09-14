@@ -583,5 +583,8 @@
   "processingSummaryTitle": "Resumen del proceso",
   "processingTime": "Tiempo de procesamiento",
   "successful": "Éxito",
-  "failed": "Failed"
+  "failed": "Failed",
+  "locationEnrichmentTitle": "Detalles de la ubicación",
+  "aircraftDataSource": "Fuente de datos",
+  "noAircraftDetected": "No se detectó ningún avión"
 }

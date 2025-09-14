@@ -583,5 +583,8 @@
   "processingSummaryTitle": "Shrnutí zpracování",
   "processingTime": "Doba zpracování",
   "successful": "Úspěšné",
-  "failed": "Selhalo"
+  "failed": "Selhalo",
+  "locationEnrichmentTitle": "Podrobnosti o umístění",
+  "aircraftDataSource": "Zdroj dat",
+  "noAircraftDetected": "Žádné letadlo nebylo detekováno"
 }

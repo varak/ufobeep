@@ -305,5 +305,8 @@
   "coordinates": "Współrzędne",
   "processingSummaryTitle": "Podsumowanie przetwarzania",
   "processingTime": "Czas przetwarzania",
-  "successful": "Udane"
+  "successful": "Udane",
+  "locationEnrichmentTitle": "Szczegóły lokalizacji",
+  "aircraftDataSource": "Źródło danych",
+  "noAircraftDetected": "Nie wykryto żadnego statku powietrznego"
 }

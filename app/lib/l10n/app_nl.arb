@@ -583,5 +583,8 @@
   "processingSummaryTitle": "Samenvatting van de verwerking",
   "processingTime": "Verwerkingstijd",
   "successful": "Succesvol",
-  "failed": "Mislukt"
+  "failed": "Mislukt",
+  "locationEnrichmentTitle": "Locatiedetails",
+  "aircraftDataSource": "Gegevensbron",
+  "noAircraftDetected": "Geen vliegtuig gedetecteerd"
 }

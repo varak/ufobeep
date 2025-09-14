@@ -305,5 +305,8 @@
   "coordinates": "Koordinater",
   "processingSummaryTitle": "Forarbejdningsoversigt",
   "processingTime": "Behandlingstid",
-  "successful": "Succesfuld"
+  "successful": "Succesfuld",
+  "locationEnrichmentTitle": "Placering",
+  "aircraftDataSource": "Datakilde",
+  "noAircraftDetected": "Intet luftfartøj detekteret"
 }

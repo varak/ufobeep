@@ -305,5 +305,8 @@
   "coordinates": "관련 기사",
   "processingSummaryTitle": "회사연혁",
   "processingTime": "처리 시간",
-  "successful": "감사합니다"
+  "successful": "감사합니다",
+  "locationEnrichmentTitle": "회사연혁",
+  "aircraftDataSource": "데이터 소스",
+  "noAircraftDetected": "항공기 감지 없음"
 }

@@ -305,5 +305,8 @@
   "coordinates": "Koordinaatit",
   "processingSummaryTitle": "Käsittelyn yhteenveto",
   "processingTime": "Käsittelyaika",
-  "successful": "Onnistunut"
+  "successful": "Onnistunut",
+  "locationEnrichmentTitle": "Sijaintitiedot",
+  "aircraftDataSource": "Tietolähde",
+  "noAircraftDetected": "Ilma-alusta ei havaittu"
 }

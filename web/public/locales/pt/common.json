@@ -305,5 +305,8 @@
   "coordinates": "Coordenadas",
   "processingSummaryTitle": "Resumo de Processamento",
   "processingTime": "Tempo de processamento",
-  "successful": "Sucesso"
+  "successful": "Sucesso",
+  "locationEnrichmentTitle": "Detalhes da localização",
+  "aircraftDataSource": "Fonte dos Dados",
+  "noAircraftDetected": "Nenhuma aeronave detectada"
 }

@@ -305,5 +305,8 @@
   "coordinates": "Συντεταγμένες",
   "processingSummaryTitle": "Περίληψη επεξεργασίας",
   "processingTime": "Χρόνος επεξεργασίας",
-  "successful": "Επιτυχής"
+  "successful": "Επιτυχής",
+  "locationEnrichmentTitle": "Λεπτομέρειες τοποθεσίας",
+  "aircraftDataSource": "Πηγή δεδομένων",
+  "noAircraftDetected": "Δεν εντοπίστηκαν αεροσκάφη"
 }

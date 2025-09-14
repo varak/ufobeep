@@ -583,5 +583,8 @@
   "processingSummaryTitle": "加工概要",
   "processingTime": "処理時間",
   "successful": "成功する",
-  "failed": "失敗した"
+  "failed": "失敗した",
+  "locationEnrichmentTitle": "ロケーション詳細",
+  "aircraftDataSource": "データソース",
+  "noAircraftDetected": "航空機が検出されない"
 }

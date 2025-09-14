@@ -305,5 +305,8 @@
   "coordinates": "Souřadnice",
   "processingSummaryTitle": "Shrnutí zpracování",
   "processingTime": "Doba zpracování",
-  "successful": "Úspěšné"
+  "successful": "Úspěšné",
+  "locationEnrichmentTitle": "Podrobnosti o umístění",
+  "aircraftDataSource": "Zdroj dat",
+  "noAircraftDetected": "Žádné letadlo nebylo detekováno"
 }

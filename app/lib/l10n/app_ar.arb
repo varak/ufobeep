@@ -583,5 +583,8 @@
   "processingSummaryTitle": "موجز المعالجة",
   "processingTime": "تجهيز الوقت",
   "successful": "ناجح",
-  "failed": "فشل"
+  "failed": "فشل",
+  "locationEnrichmentTitle": "تفاصيل الموقع",
+  "aircraftDataSource": "المصدر",
+  "noAircraftDetected": "لم تكتشف أي طائرة"
 }

@@ -305,5 +305,8 @@
   "coordinates": "التنسيق",
   "processingSummaryTitle": "موجز المعالجة",
   "processingTime": "تجهيز الوقت",
-  "successful": "ناجح"
+  "successful": "ناجح",
+  "locationEnrichmentTitle": "تفاصيل الموقع",
+  "aircraftDataSource": "المصدر",
+  "noAircraftDetected": "لم تكتشف أي طائرة"
 }

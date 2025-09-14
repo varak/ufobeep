@@ -583,5 +583,8 @@
   "processingSummaryTitle": "İşleme Özeti",
   "processingTime": "Zaman İşleme Zamanı",
   "successful": "Başarılı",
-  "failed": "Başarısızlık"
+  "failed": "Başarısızlık",
+  "locationEnrichmentTitle": "Konum Details",
+  "aircraftDataSource": "Data Source",
+  "noAircraftDetected": "Hiçbir uçak tespit edilmedi"
 }

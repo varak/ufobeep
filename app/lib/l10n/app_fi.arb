@@ -583,5 +583,8 @@
   "processingSummaryTitle": "Käsittelyn yhteenveto",
   "processingTime": "Käsittelyaika",
   "successful": "Onnistunut",
-  "failed": "Ei onnistunut"
+  "failed": "Ei onnistunut",
+  "locationEnrichmentTitle": "Sijaintitiedot",
+  "aircraftDataSource": "Tietolähde",
+  "noAircraftDetected": "Ilma-alusta ei havaittu"
 }

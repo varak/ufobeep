@@ -305,5 +305,8 @@
   "coordinates": "निर्देशांक",
   "processingSummaryTitle": "प्रसंस्करण सारांश",
   "processingTime": "प्रसंस्करण समय",
-  "successful": "सफल"
+  "successful": "सफल",
+  "locationEnrichmentTitle": "स्थान विवरण",
+  "aircraftDataSource": "डेटा स्रोत",
+  "noAircraftDetected": "कोई विमान नहीं पाया"
 }

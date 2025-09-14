@@ -305,5 +305,8 @@
   "coordinates": "坐标",
   "processingSummaryTitle": "处理摘要",
   "processingTime": "处理时间",
-  "successful": "成功"
+  "successful": "成功",
+  "locationEnrichmentTitle": "地点细节",
+  "aircraftDataSource": "数据来源",
+  "noAircraftDetected": "未发现飞机"
 }

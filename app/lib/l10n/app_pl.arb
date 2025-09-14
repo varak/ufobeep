@@ -583,5 +583,8 @@
   "processingSummaryTitle": "Podsumowanie przetwarzania",
   "processingTime": "Czas przetwarzania",
   "successful": "Udane",
-  "failed": "Nieudany"
+  "failed": "Nieudany",
+  "locationEnrichmentTitle": "Szczegóły lokalizacji",
+  "aircraftDataSource": "Źródło danych",
+  "noAircraftDetected": "Nie wykryto żadnego statku powietrznego"
 }

@@ -583,5 +583,8 @@
   "processingSummaryTitle": "Обработка резюме",
   "processingTime": "Время обработки",
   "successful": "Успешный",
-  "failed": "Неудачник"
+  "failed": "Неудачник",
+  "locationEnrichmentTitle": "Подробности о местоположении",
+  "aircraftDataSource": "Источник данных",
+  "noAircraftDetected": "Самолеты не обнаружены"
 }

@@ -583,5 +583,8 @@
   "processingSummaryTitle": "המונחים:",
   "processingTime": "עיבוד זמן",
   "successful": "הצלחה מוצלחת",
-  "failed": "נכשל"
+  "failed": "נכשל",
+  "locationEnrichmentTitle": "פרטי מיקום",
+  "aircraftDataSource": "מקור נתונים",
+  "noAircraftDetected": "שום מטוס לא זיהה"
 }

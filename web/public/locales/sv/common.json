@@ -305,5 +305,8 @@
   "coordinates": "Koordinater",
   "processingSummaryTitle": "Processing Sammanfattning",
   "processingTime": "Bearbetningstid",
-  "successful": "Framgång"
+  "successful": "Framgång",
+  "locationEnrichmentTitle": "Plats detaljer",
+  "aircraftDataSource": "Datakälla",
+  "noAircraftDetected": "Inga flygplan upptäckta"
 }

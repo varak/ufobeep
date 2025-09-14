@@ -583,5 +583,8 @@
   "processingSummaryTitle": "प्रसंस्करण सारांश",
   "processingTime": "प्रसंस्करण समय",
   "successful": "सफल",
-  "failed": "विफल"
+  "failed": "विफल",
+  "locationEnrichmentTitle": "स्थान विवरण",
+  "aircraftDataSource": "डेटा स्रोत",
+  "noAircraftDetected": "कोई विमान नहीं पाया"
 }

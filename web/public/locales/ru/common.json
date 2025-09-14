@@ -305,5 +305,8 @@
   "coordinates": "Координация",
   "processingSummaryTitle": "Обработка резюме",
   "processingTime": "Время обработки",
-  "successful": "Успешный"
+  "successful": "Успешный",
+  "locationEnrichmentTitle": "Подробности о местоположении",
+  "aircraftDataSource": "Источник данных",
+  "noAircraftDetected": "Самолеты не обнаружены"
 }

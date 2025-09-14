@@ -583,5 +583,8 @@
   "processingSummaryTitle": "Resumo de Processamento",
   "processingTime": "Tempo de processamento",
   "successful": "Sucesso",
-  "failed": "Falha"
+  "failed": "Falha",
+  "locationEnrichmentTitle": "Detalhes da localização",
+  "aircraftDataSource": "Fonte dos Dados",
+  "noAircraftDetected": "Nenhuma aeronave detectada"
 }

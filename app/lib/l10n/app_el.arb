@@ -583,5 +583,8 @@
   "processingSummaryTitle": "Περίληψη επεξεργασίας",
   "processingTime": "Χρόνος επεξεργασίας",
   "successful": "Επιτυχής",
-  "failed": "Αποτυχία"
+  "failed": "Αποτυχία",
+  "locationEnrichmentTitle": "Λεπτομέρειες τοποθεσίας",
+  "aircraftDataSource": "Πηγή δεδομένων",
+  "noAircraftDetected": "Δεν εντοπίστηκαν αεροσκάφη"
 }

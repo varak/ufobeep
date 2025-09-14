@@ -305,5 +305,8 @@
   "coordinates": "Koordinatörleri",
   "processingSummaryTitle": "İşleme Özeti",
   "processingTime": "Zaman İşleme Zamanı",
-  "successful": "Başarılı"
+  "successful": "Başarılı",
+  "locationEnrichmentTitle": "Konum Details",
+  "aircraftDataSource": "Data Source",
+  "noAircraftDetected": "Hiçbir uçak tespit edilmedi"
 }

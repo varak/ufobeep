@@ -583,5 +583,8 @@
   "processingSummaryTitle": "Processing Sammanfattning",
   "processingTime": "Bearbetningstid",
   "successful": "Framgång",
-  "failed": "Misslyckades"
+  "failed": "Misslyckades",
+  "locationEnrichmentTitle": "Plats detaljer",
+  "aircraftDataSource": "Datakälla",
+  "noAircraftDetected": "Inga flygplan upptäckta"
 }
