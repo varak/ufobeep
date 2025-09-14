@@ -40,6 +40,7 @@ interface AlertsMapProps {
   height?: string
   showControls?: boolean
   onAlertClick?: (alert: Alert) => void
+  disableGeolocation?: boolean
 }
 
 // US-biased centering for better geolocation experience
@@ -61,7 +62,8 @@ export default function AlertsMap({
   zoom = 5, // Better US view - not too zoomed in, not too zoomed out
   height = '400px',
   showControls = true,
-  onAlertClick
+  onAlertClick,
+  disableGeolocation = false
 }: AlertsMapProps) {
   const mapRef = useRef<HTMLDivElement>(null)
   const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null)
@@ -265,7 +267,13 @@ export default function AlertsMap({
   useEffect(() => {
     if (isGettingLocation.current) return
     isGettingLocation.current = true
-    
+
+    if (disableGeolocation) {
+      // Just use the provided center without geolocation
+      setUserLocation(center)
+      return
+    }
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -288,7 +296,7 @@ export default function AlertsMap({
       // Use provided center or US center as fallback
       setUserLocation(center)
     }
-  }, [center]) // Include center in deps but guard with ref
+  }, [center, disableGeolocation]) // Include center and disableGeolocation in deps
 
   useEffect(() => {
     // Dynamically import Leaflet for client-side rendering
