@@ -323,20 +323,18 @@ async def get_map_points(minimal: bool = False):
             map_points = []
             for row in rows:
                 if minimal:
-                    # Just enough to place the marker
+                    # Just enough to place the marker - NO enrichment data!
                     point = {
-                        "id": row["id"],
+                        "id": str(row["id"]),
                         "location": {
                             "latitude": float(row["public_latitude"]),
                             "longitude": float(row["public_longitude"])
-                        },
-                        "source": row["source"],
-                        "enrichment_data": row["enrichment_data"] or {}
+                        }
                     }
                 else:
                     # Full data for popups
                     point = {
-                        "id": row["id"],
+                        "id": str(row["id"]),
                         "title": row["title"],
                         "description": row["description"],
                         "location": {
