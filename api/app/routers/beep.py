@@ -308,7 +308,7 @@ async def get_map_points(minimal: bool = False):
                         enrichment_data->>'location_name' as location_name,
                         created_at,
                         source,
-                        reporter_username,
+                        username as reporter_username,
                         media_info as media_files,
                         enrichment_data,
                         short_url
