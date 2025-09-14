@@ -103,7 +103,6 @@ export default function AlertsMap({
                   source: data.data.source,
                   short_url: data.data.short_url
                 }
-                console.log('Setting location:', data.data.location)
                 setFullAlert(fullData)
               }
             })
@@ -187,13 +186,11 @@ export default function AlertsMap({
             </div>
           )}
 
-          <div className="bg-gray-100 rounded px-2 py-1 mb-2">
-            <p className="text-xs font-medium text-gray-700">
-              📍 {displayAlert.location?.name}
-            </p>
-          </div>
+          {displayAlert.location?.name && displayAlert.location.name !== 'Unknown Location' && (
+            <p className="text-xs text-gray-500 mb-1">📍 {displayAlert.location.name}</p>
+          )}
 
-          <p className="text-gray-600 text-xs mb-2">
+          <p className="text-gray-600 text-xs mb-1">
             {truncateDescription(displayAlert.description)}
             {displayAlert.description && displayAlert.description.split(' ').length > 220 && (
               <a
