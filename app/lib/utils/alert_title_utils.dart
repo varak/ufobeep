@@ -1,4 +1,4 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../l10n/app_localizations.dart';
 import '../models/enriched_alert.dart';
 import '../models/api_models.dart';
 import '../providers/alerts_provider.dart';

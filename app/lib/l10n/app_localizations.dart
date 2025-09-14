@@ -1020,6 +1020,72 @@ abstract class AppLocalizations {
   /// **'MUFON Case'**
   String get mufonCase;
 
+  /// No description provided for @mufonSighting.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON Sighting'**
+  String get mufonSighting;
+
+  /// No description provided for @mufonLightSighting.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON Light Sighting'**
+  String get mufonLightSighting;
+
+  /// No description provided for @mufonSphereSighting.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON Sphere Sighting'**
+  String get mufonSphereSighting;
+
+  /// No description provided for @mufonDiscSighting.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON Disc Sighting'**
+  String get mufonDiscSighting;
+
+  /// No description provided for @mufonTriangleSighting.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON Triangle Sighting'**
+  String get mufonTriangleSighting;
+
+  /// No description provided for @mufonCigarSighting.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON Cigar Sighting'**
+  String get mufonCigarSighting;
+
+  /// No description provided for @mufonOvalSighting.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON Oval Sighting'**
+  String get mufonOvalSighting;
+
+  /// No description provided for @mufonRectangleSighting.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON Rectangle Sighting'**
+  String get mufonRectangleSighting;
+
+  /// No description provided for @mufonCylinderSighting.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON Cylinder Sighting'**
+  String get mufonCylinderSighting;
+
+  /// No description provided for @mufonBoomerangSighting.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON Boomerang Sighting'**
+  String get mufonBoomerangSighting;
+
+  /// No description provided for @mufonStarlikeSighting.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON Starlike Sighting'**
+  String get mufonStarlikeSighting;
+
   /// No description provided for @mufonCaseDetailsTitle.
   ///
   /// In en, this message translates to:

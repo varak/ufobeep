@@ -497,6 +497,39 @@ class AppLocalizationsEl extends AppLocalizations {
   String get mufonCase => 'ΜΟΥΦΟΝ Υπόθεση';
 
   @override
+  String get mufonSighting => 'MUFON Sighting';
+
+  @override
+  String get mufonLightSighting => 'MUFON Light Sighting';
+
+  @override
+  String get mufonSphereSighting => 'MUFON Sphere Sighting';
+
+  @override
+  String get mufonDiscSighting => 'MUFON Disc Sighting';
+
+  @override
+  String get mufonTriangleSighting => 'MUFON Triangle Sighting';
+
+  @override
+  String get mufonCigarSighting => 'MUFON Cigar Sighting';
+
+  @override
+  String get mufonOvalSighting => 'MUFON Oval Sighting';
+
+  @override
+  String get mufonRectangleSighting => 'MUFON Rectangle Sighting';
+
+  @override
+  String get mufonCylinderSighting => 'MUFON Cylinder Sighting';
+
+  @override
+  String get mufonBoomerangSighting => 'MUFON Boomerang Sighting';
+
+  @override
+  String get mufonStarlikeSighting => 'MUFON Starlike Sighting';
+
+  @override
   String mufonCaseDetailsTitle(String caseNumber) {
     return 'ΜΟΥΦΟΝ Υπόθεση # Λεπτομέρειες';
   }
