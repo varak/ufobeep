@@ -116,7 +116,7 @@ export default function AlertsMap({
 
       const displayAlert = fullAlert || alert
 
-      const truncateDescription = (desc: string | null, maxWords = 300) => {
+      const truncateDescription = (desc: string | null, maxWords = 220) => {
         if (!desc) return ''
         // Remove the embedded location line from MUFON descriptions
         let cleanDesc = desc.replace(/📍\s*Location:\s*[^\n]+\n?/g, '').trim()
@@ -188,7 +188,7 @@ export default function AlertsMap({
 
           <p className="text-gray-600 text-xs mb-2">
             {truncateDescription(displayAlert.description)}
-            {displayAlert.description && displayAlert.description.split(' ').length > 300 && (
+            {displayAlert.description && displayAlert.description.split(' ').length > 220 && (
               <a
                 href={`/${displayAlert.short_url}`}
                 className="text-blue-600 cursor-pointer ml-1">see full report</a>
