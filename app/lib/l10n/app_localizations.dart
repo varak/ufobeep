@@ -933,14 +933,20 @@ abstract class AppLocalizations {
   /// No description provided for @videoOnly.
   ///
   /// In en, this message translates to:
-  /// **'video only'**
+  /// **'Video Only'**
   String get videoOnly;
 
   /// No description provided for @imageOnly.
   ///
   /// In en, this message translates to:
-  /// **'image only'**
+  /// **'Image Only'**
   String get imageOnly;
+
+  /// No description provided for @mediaOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Media Only'**
+  String get mediaOnly;
 
   /// No description provided for @timeJustNow.
   ///

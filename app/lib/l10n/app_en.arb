@@ -223,8 +223,9 @@
   "verified": "Verified",
   "beepOnly": "Beep Only",
   "reportOnly": "Report Only",
-  "videoOnly": "video only",
-  "imageOnly": "image only",
+  "videoOnly": "Video Only",
+  "imageOnly": "Image Only",
+  "mediaOnly": "Media Only",
   "timeJustNow": "just now",
   "timeDaysAgo": "{count}d ago",
   "@timeDaysAgo": {

@@ -448,6 +448,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get imageOnly => 'bild endast';
 
   @override
+  String get mediaOnly => 'Media Only';
+
+  @override
   String get timeJustNow => 'just nu';
 
   @override

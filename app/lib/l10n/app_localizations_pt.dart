@@ -449,6 +449,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get imageOnly => 'somente imagem';
 
   @override
+  String get mediaOnly => 'Media Only';
+
+  @override
   String get timeJustNow => 'agora mesmo';
 
   @override

@@ -445,6 +445,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get imageOnly => 'केवल छवि';
 
   @override
+  String get mediaOnly => 'Media Only';
+
+  @override
   String get timeJustNow => 'अभी';
 
   @override

@@ -448,6 +448,9 @@ class AppLocalizationsDa extends AppLocalizations {
   String get imageOnly => 'kun billede';
 
   @override
+  String get mediaOnly => 'Media Only';
+
+  @override
   String get timeJustNow => 'lige nu';
 
   @override

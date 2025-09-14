@@ -434,6 +434,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get imageOnly => '仅图像';
 
   @override
+  String get mediaOnly => 'Media Only';
+
+  @override
   String get timeJustNow => '刚才';
 
   @override

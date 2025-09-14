@@ -449,6 +449,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get imageOnly => 'sadece görüntü sadece görüntü';
 
   @override
+  String get mediaOnly => 'Media Only';
+
+  @override
   String get timeJustNow => 'sadece şimdi';
 
   @override

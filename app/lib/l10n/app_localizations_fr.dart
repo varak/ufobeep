@@ -451,6 +451,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get imageOnly => 'image seulement';
 
   @override
+  String get mediaOnly => 'Media Only';
+
+  @override
   String get timeJustNow => 'juste maintenant';
 
   @override

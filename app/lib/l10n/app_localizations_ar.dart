@@ -442,6 +442,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get imageOnly => 'الصورة فقط';
 
   @override
+  String get mediaOnly => 'Media Only';
+
+  @override
   String get timeJustNow => 'الآن';
 
   @override

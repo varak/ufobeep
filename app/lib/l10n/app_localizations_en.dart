@@ -436,10 +436,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reportOnly => 'Report Only';
 
   @override
-  String get videoOnly => 'video only';
+  String get videoOnly => 'Video Only';
 
   @override
-  String get imageOnly => 'image only';
+  String get imageOnly => 'Image Only';
+
+  @override
+  String get mediaOnly => 'Media Only';
 
   @override
   String get timeJustNow => 'just now';

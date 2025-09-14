@@ -446,6 +446,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get imageOnly => 'vain kuva';
 
   @override
+  String get mediaOnly => 'Media Only';
+
+  @override
   String get timeJustNow => 'juuri nyt';
 
   @override

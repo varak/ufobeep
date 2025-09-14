@@ -450,6 +450,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get imageOnly => 'imagen sólo';
 
   @override
+  String get mediaOnly => 'Media Only';
+
+  @override
   String get timeJustNow => 'ahora';
 
   @override

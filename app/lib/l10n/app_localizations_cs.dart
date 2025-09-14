@@ -446,6 +446,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get imageOnly => 'pouze obrázek';
 
   @override
+  String get mediaOnly => 'Media Only';
+
+  @override
   String get timeJustNow => 'právě teď';
 
   @override

@@ -449,6 +449,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get imageOnly => 'nur';
 
   @override
+  String get mediaOnly => 'Media Only';
+
+  @override
   String get timeJustNow => 'jetzt';
 
   @override

@@ -274,21 +274,34 @@ class AlertCard extends ConsumerWidget {
     }
     
     if (hasMedia && !hasDescription) {
-      final isVideo = alert.mediaFiles.first['type'] == 'video';
-      return _buildBadge(
-        isVideo ? l10n.videoOnly : l10n.imageOnly, 
-        isVideo ? Icons.videocam : Icons.photo, 
-        AppColors.brandPrimary
-      );
+      // Check if all media files are the same type
+      final videoCount = alert.mediaFiles.where((media) => media['type'] == 'video').length;
+      final imageCount = alert.mediaFiles.length - videoCount;
+
+      if (videoCount > 0 && imageCount > 0) {
+        // Mixed media - show "Media Only"
+        return _buildBadge(l10n.mediaOnly, Icons.perm_media, AppColors.textTertiary);
+      } else if (videoCount > 0) {
+        // Only videos
+        return _buildBadge(l10n.videoOnly, Icons.videocam, AppColors.textTertiary);
+      } else {
+        // Only images
+        return _buildBadge(l10n.imageOnly, Icons.photo, AppColors.textTertiary);
+      }
     }
-    
+
     if (hasMedia) {
-      final isVideo = alert.mediaFiles.first['type'] == 'video';
-      return _buildBadge(
-        '${alert.mediaFiles.length}', 
-        isVideo ? Icons.videocam : Icons.photo, 
-        AppColors.brandPrimary
-      );
+      // Has media and description - just show media icon without count
+      final videoCount = alert.mediaFiles.where((media) => media['type'] == 'video').length;
+      final imageCount = alert.mediaFiles.length - videoCount;
+
+      if (videoCount > 0 && imageCount > 0) {
+        return _buildBadge(l10n.mediaOnly, Icons.perm_media, AppColors.textTertiary);
+      } else if (videoCount > 0) {
+        return _buildBadge(l10n.videoOnly, Icons.videocam, AppColors.textTertiary);
+      } else {
+        return _buildBadge(l10n.imageOnly, Icons.photo, AppColors.textTertiary);
+      }
     }
     
     return const SizedBox.shrink();

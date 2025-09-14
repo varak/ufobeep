@@ -449,6 +449,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get imageOnly => 'alleen afbeelding';
 
   @override
+  String get mediaOnly => 'Media Only';
+
+  @override
   String get timeJustNow => 'net';
 
   @override

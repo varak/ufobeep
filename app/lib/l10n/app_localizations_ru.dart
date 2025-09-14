@@ -449,6 +449,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get imageOnly => 'только изображение';
 
   @override
+  String get mediaOnly => 'Media Only';
+
+  @override
   String get timeJustNow => 'только сейчас';
 
   @override

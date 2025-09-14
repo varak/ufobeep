@@ -435,6 +435,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get imageOnly => '이미지 만';
 
   @override
+  String get mediaOnly => 'Media Only';
+
+  @override
   String get timeJustNow => '지금 시작';
 
   @override

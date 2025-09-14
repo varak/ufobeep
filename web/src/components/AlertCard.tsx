@@ -290,8 +290,16 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
                     return <span className="text-xs text-text-tertiary">{beepOnlyText}</span>
                   }
                   if (hasMedia && !hasDescription) {
-                    const isVideo = alert.media_files[0].type === 'video'
-                    return <span className="text-xs text-text-tertiary">{isVideo ? 'video only' : 'image only'}</span>
+                    const videoCount = alert.media_files.filter(media => media.type === 'video').length
+                    const imageCount = alert.media_files.length - videoCount
+
+                    if (videoCount > 0 && imageCount > 0) {
+                      return <span className="text-xs text-text-tertiary">{t('mediaOnly')}</span>
+                    } else if (videoCount > 0) {
+                      return <span className="text-xs text-text-tertiary">{t('videoOnly')}</span>
+                    } else {
+                      return <span className="text-xs text-text-tertiary">{t('imageOnly')}</span>
+                    }
                   }
                   if (hasMedia) return <span className="text-xs text-text-tertiary">📸</span>
                   // For MUFON reports, don't show eye icon since "witness report only" is in title

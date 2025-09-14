@@ -451,6 +451,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get imageOnly => 'μόνο εικόνα';
 
   @override
+  String get mediaOnly => 'Media Only';
+
+  @override
   String get timeJustNow => 'μόλις τώρα';
 
   @override
