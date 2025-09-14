@@ -103,6 +103,7 @@ export default function AlertsMap({
                   source: data.data.source,
                   short_url: data.data.short_url
                 }
+                console.log('Setting location:', data.data.location)
                 setFullAlert(fullData)
               }
             })
@@ -188,7 +189,7 @@ export default function AlertsMap({
 
           <div className="bg-gray-100 rounded px-2 py-1 mb-2">
             <p className="text-xs font-medium text-gray-700">
-              📍 {displayAlert.location?.name || 'Location loading...'}
+              📍 {displayAlert.location?.name}
             </p>
           </div>
 
