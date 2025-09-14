@@ -96,7 +96,7 @@ export default function AlertsMap({
                   title: data.data.title,
                   description: data.data.description,
                   created_at: data.data.created_at,
-                  media_files: data.data.media_files || [],
+                  media_files: data.data.media_files?.files || data.data.media_files || [],
                   username: data.data.username,
                   source: data.data.source
                 }
