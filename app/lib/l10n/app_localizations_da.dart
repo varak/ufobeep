@@ -121,12 +121,12 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '$distance væk';
+    return '_ _ PLACEREPORT _ 0 _ _ væk';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Leje  °';
+    return 'Leje _ _ PLACEREPER _ 0 _ _ °';
   }
 
   @override
@@ -219,12 +219,12 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'Indberettet af';
+    return 'Rapporteret af _ _ PLACEREPER _ 0 _ _';
   }
 
   @override
-  String reportedAt(String timeAgo, Object time) {
-    return 'Indberettet';
+  String reportedAt(String timeAgo) {
+    return 'Rapporteret _ _ PLACEREPORT _ 0 _ _';
   }
 
   @override
@@ -234,7 +234,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return 'Bly til objekt:  °';
+    return 'Leje til objekt: _ _ _ PLACEREPER _ 0 _ _ °';
   }
 
   @override
@@ -296,7 +296,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Angiver til';
+    return 'At pege på _ _ PLACEREPORT _ 0 _ _';
   }
 
   @override
@@ -310,7 +310,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'En ny observation blev rapporteret $distance væk.';
+    return 'En ny observation blev rapporteret _ _ PLACEREPER _ 0 _ _ away.';
   }
 
   @override
@@ -334,12 +334,12 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Skydække: %';
+    return 'Skydække: _ _ PLACEREPORT _ 0 _ _%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Vind:';
+    return 'Vind: _ _ PLACEREPORT _ 0 _ _ _ _ PLACEREPORT _ 1 _ _';
   }
 
   @override
@@ -436,36 +436,36 @@ class AppLocalizationsDa extends AppLocalizations {
   String get verified => 'Verificeret';
 
   @override
-  String get beepOnly => 'Kun rapport';
+  String get beepOnly => 'Kun bip';
 
   @override
   String get reportOnly => 'Kun rapport';
 
   @override
-  String get videoOnly => 'kun video';
+  String get videoOnly => 'Kun video';
 
   @override
-  String get imageOnly => 'kun billede';
+  String get imageOnly => 'Kun billede';
 
   @override
-  String get mediaOnly => 'Media Only';
+  String get mediaOnly => 'Kun medier';
 
   @override
   String get timeJustNow => 'lige nu';
 
   @override
   String timeDaysAgo(int count) {
-    return 'd siden';
+    return '_ _ PLACEREPORT _ 0 _ _ d siden';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'h siden';
+    return '_ _ PLACEREPORT _ 0 _ _ h siden';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'm siden';
+    return '_ _ PLACEREPORT _ 0 _ m siden';
   }
 
   @override
@@ -497,19 +497,19 @@ class AppLocalizationsDa extends AppLocalizations {
   String get mufonCase => 'MUFON Sag';
 
   @override
-  String get mufonSighting => 'MUFON Sighting';
+  String get mufonSighting => 'MUFON Sigtning';
 
   @override
   String get mufonLightSighting => 'MUFON Light Sighting';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sphere Sighting';
+  String get mufonSphereSighting => 'MUFON Sphere Sigtning';
 
   @override
-  String get mufonDiscSighting => 'MUFON Disc Sighting';
+  String get mufonDiscSighting => 'MUFON Disk- observation';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Triangle Sighting';
+  String get mufonTriangleSighting => 'MUFON Trekantssigtning';
 
   @override
   String get mufonCigarSighting => 'MUFON Cigar Sighting';
@@ -518,10 +518,10 @@ class AppLocalizationsDa extends AppLocalizations {
   String get mufonOvalSighting => 'MUFON Oval Sighting';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Rectangle Sighting';
+  String get mufonRectangleSighting => 'MUFON Rektangel SightingName';
 
   @override
-  String get mufonCylinderSighting => 'MUFON Cylinder Sighting';
+  String get mufonCylinderSighting => 'MUFON Cylinder Sigtning';
 
   @override
   String get mufonBoomerangSighting => 'MUFON Boomerang Sighting';
@@ -531,7 +531,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON Sag #  Detaljer';
+    return 'MUFON sag # _ _ PLACEREPER _ 0 _ _ Detaljer';
   }
 
   @override
@@ -572,7 +572,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return 'folk bekræftede denne observation';
+    return '_ _ PLACEREPORT _ 0 _ _ folk bekræftede denne observation';
   }
 
   @override
@@ -580,7 +580,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Analyse:  mediefiler behandlet';
+    return 'Analyse: _ _ PLACEREPORT _ 0 _ _ mediefil (r) behandlet';
   }
 
   @override
@@ -849,7 +849,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return 'folk har bekræftet denne observation';
+    return '_ _ PLACEREPORT _ 0 _ _ folk har bekræftet denne observation';
   }
 
   @override
@@ -894,7 +894,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Case #';
+    return 'MUFON Case # _ _ PLACEREPER _ 0 _ _';
   }
 
   @override
@@ -932,12 +932,12 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return 'nær';
+    return '_ _ PLACEREPORT _ 0 _ _ nær _ _ PLACEREPORT _ 1 _ _';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return 'kommenterede';
+    return '_ _ PLACEREPER _ 0 _ _ kommenterede';
   }
 
   @override
@@ -945,7 +945,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return 'vidner';
+    return '- Vidner';
   }
 
   @override
@@ -956,7 +956,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return 'væk';
+    return '_ _ PLACEREPORT _ 0 _ _ væk';
   }
 
   @override
@@ -1002,7 +1002,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Side  af  ( totalt bip)';
+    return 'Side _ _ PLACEREPORT _ 0 _ af _ _ PLACEREPORT _ 1 _ _ (_ _ PLACEREPORT _ 2 _ _ i alt bip)';
   }
 
   @override
@@ -1140,7 +1140,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON  Rapport';
+    return 'MUFON _ _ PLACEREPORT _ 0 _ _ Rapport';
   }
 
   @override
@@ -1163,7 +1163,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return 'billeder';
+    return '_ _ PLACEREPORT _ 0 _ _ billeder';
   }
 
   @override
@@ -1171,7 +1171,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+  mere';
+    return '+ _ _ PLACEREPORT _ 0 _ _ mere';
   }
 
   @override
@@ -1241,29 +1241,29 @@ class AppLocalizationsDa extends AppLocalizations {
   String get ufoSightingAlt => 'UFO observation';
 
   @override
-  String get celestialDataTitle => 'Celestial Objects';
+  String get celestialDataTitle => 'Himmelske objekter';
 
   @override
-  String get visiblePlanets => 'Visible Planets';
+  String get visiblePlanets => 'Synlige planeter';
 
   @override
-  String get locationDataTitle => 'Location Information';
+  String get locationDataTitle => 'Lokaliseringsinformation';
 
   @override
-  String get timezone => 'Timezone';
+  String get timezone => 'Tidszone';
 
   @override
-  String get coordinates => 'Coordinates';
+  String get coordinates => 'Koordinater';
 
   @override
-  String get processingSummaryTitle => 'Processing Summary';
+  String get processingSummaryTitle => 'Forarbejdningsoversigt';
 
   @override
-  String get processingTime => 'Processing Time';
+  String get processingTime => 'Behandlingstid';
 
   @override
-  String get successful => 'Successful';
+  String get successful => 'Succesfuld';
 
   @override
-  String get failed => 'Failed';
+  String get failed => 'Mislykkedes';
 }

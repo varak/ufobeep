@@ -121,12 +121,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '$distance away';
+    return '_ _ PLACETETERER _ 0 _ _ away';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Ložisko';
+    return 'Ložisko _ _ PLACETETELER _ 0 _ _ °';
   }
 
   @override
@@ -219,12 +219,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'Nahlášeno $username';
+    return 'Reported by _ _ PLACETIER _ 0 _ _';
   }
 
   @override
-  String reportedAt(String timeAgo, Object time) {
-    return 'Hlášený čas $time';
+  String reportedAt(String timeAgo) {
+    return 'Hlášený _ _ PLACETETERER _ 0 _ _';
   }
 
   @override
@@ -234,7 +234,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return 'Ložisko objektu:  °';
+    return 'Nošení objektu: _ _ PLACETETELER _ 0 _ _ °';
   }
 
   @override
@@ -296,7 +296,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Ukazuji na';
+    return 'Ukazuje na _ _ PLACETETERER _ 0 _ _';
   }
 
   @override
@@ -310,7 +310,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'Bylo nahlášeno nové pozorování.';
+    return 'Bylo hlášeno nové pozorování _ _ PLACETETERER _ 0 _ _ away.';
   }
 
   @override
@@ -333,12 +333,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Cloud cover: %';
+    return 'Cloud cover: _ _ PLACETETERER _ 0 _ _%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Vítr:';
+    return 'Vítr: _ _ PLACETETELER _ 0 _ _ _ _ PLACETETELER _ 1 _ _';
   }
 
   @override
@@ -434,36 +434,36 @@ class AppLocalizationsCs extends AppLocalizations {
   String get verified => 'Ověřeno';
 
   @override
-  String get beepOnly => 'Pouze hlášení';
+  String get beepOnly => 'Pouze píp';
 
   @override
   String get reportOnly => 'Pouze hlášení';
 
   @override
-  String get videoOnly => 'pouze video';
+  String get videoOnly => 'Pouze video';
 
   @override
-  String get imageOnly => 'pouze obrázek';
+  String get imageOnly => 'Pouze obrázek';
 
   @override
-  String get mediaOnly => 'Media Only';
+  String get mediaOnly => 'Pouze média';
 
   @override
   String get timeJustNow => 'právě teď';
 
   @override
   String timeDaysAgo(int count) {
-    return 'd před';
+    return '_ _ PLACETETERER _ 0 _ _ d před';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'h před';
+    return '_ _ PLACETETERER _ 0 _ _ h před';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'm před';
+    return '_ _ PLACETETERER _ 0 _ _ m před';
   }
 
   @override
@@ -494,41 +494,41 @@ class AppLocalizationsCs extends AppLocalizations {
   String get mufonCase => 'MUFON Případ';
 
   @override
-  String get mufonSighting => 'MUFON Sighting';
+  String get mufonSighting => 'MUFON Vidění';
 
   @override
-  String get mufonLightSighting => 'MUFON Light Sighting';
+  String get mufonLightSighting => 'MUFON Lehké pozorování';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sphere Sighting';
+  String get mufonSphereSighting => 'MUFON Sféra Vidění';
 
   @override
-  String get mufonDiscSighting => 'MUFON Disc Sighting';
+  String get mufonDiscSighting => 'MUFON Comment';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Triangle Sighting';
+  String get mufonTriangleSighting => 'MUFON Úhel trojúhelníku';
 
   @override
-  String get mufonCigarSighting => 'MUFON Cigar Sighting';
+  String get mufonCigarSighting => 'Mufon Cigar Sighting';
 
   @override
-  String get mufonOvalSighting => 'MUFON Oval Sighting';
+  String get mufonOvalSighting => 'MUFON Oválné pozorování';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Rectangle Sighting';
+  String get mufonRectangleSighting => 'MUFON Obdélníkový pohled';
 
   @override
-  String get mufonCylinderSighting => 'MUFON Cylinder Sighting';
+  String get mufonCylinderSighting => 'Mufon Cylinder Viking';
 
   @override
-  String get mufonBoomerangSighting => 'MUFON Boomerang Sighting';
+  String get mufonBoomerangSighting => 'MUFON Boomerang Vidění';
 
   @override
   String get mufonStarlikeSighting => 'MUFON Starlike Sighting';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON Případ #  Podrobnosti';
+    return 'Případ MUFON # _ _ PLACETETELER _ 0 _ _ Podrobnosti';
   }
 
   @override
@@ -569,7 +569,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return 'lidé potvrdili toto pozorování';
+    return '_ _ PLACETETERER _ 0 _ _ lidé potvrdili toto pozorování';
   }
 
   @override
@@ -577,7 +577,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Analýza:  media soubor (y) zpracován';
+    return 'Analýza: _ _ PLACETELER _ 0 _ _ media soubor (y) zpracován';
   }
 
   @override
@@ -845,7 +845,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return 'lidé potvrdili toto pozorování';
+    return '_ _ PLACETETERER _ 0 _ _ lidé potvrdili toto pozorování';
   }
 
   @override
@@ -891,7 +891,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Případ #';
+    return 'MUFON Případ # _ _ PLACETIER _ 0 _ _';
   }
 
   @override
@@ -930,12 +930,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return 'v blízkosti';
+    return '_ _ PLACETIER _ 0 _ _ near _ _ PLACETIER _ 1 _ _';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '$username komentoval';
+    return 'PLACETELER _ 0 _ _ komentáře';
   }
 
   @override
@@ -943,7 +943,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return 'svědci';
+    return '_ _ PLACETETELER _ 0 _ _ svědci';
   }
 
   @override
@@ -954,7 +954,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return '$distance away';
+    return '_ _ PLACETETERER _ 0 _ _ away';
   }
 
   @override
@@ -1000,7 +1000,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Strana  of  ( total pípnutí)';
+    return 'Page _ _ PLACETIER _ 0 _ _ _ _ PLACETIER _ 1 _ _ (_ _ PLACETIER _ 2 _ _ celkem pípnutí)';
   }
 
   @override
@@ -1139,7 +1139,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON  Zpráva';
+    return 'MUFON _ _ PLACETETELER _ 0 _ _ Zpráva';
   }
 
   @override
@@ -1162,7 +1162,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return 'obrázky';
+    return '_ _ PLACETETELER _ 0 _ _ obrázky';
   }
 
   @override
@@ -1170,7 +1170,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+  více';
+    return '+ _ _ PLACETETELER _ 0 _ _ více';
   }
 
   @override
@@ -1241,29 +1241,29 @@ class AppLocalizationsCs extends AppLocalizations {
   String get ufoSightingAlt => 'Pozorování UFO';
 
   @override
-  String get celestialDataTitle => 'Celestial Objects';
+  String get celestialDataTitle => 'Nebeské objekty';
 
   @override
-  String get visiblePlanets => 'Visible Planets';
+  String get visiblePlanets => 'Viditelné planety';
 
   @override
-  String get locationDataTitle => 'Location Information';
+  String get locationDataTitle => 'Informace o umístění';
 
   @override
-  String get timezone => 'Timezone';
+  String get timezone => 'Timezon';
 
   @override
-  String get coordinates => 'Coordinates';
+  String get coordinates => 'Souřadnice';
 
   @override
-  String get processingSummaryTitle => 'Processing Summary';
+  String get processingSummaryTitle => 'Shrnutí zpracování';
 
   @override
-  String get processingTime => 'Processing Time';
+  String get processingTime => 'Doba zpracování';
 
   @override
-  String get successful => 'Successful';
+  String get successful => 'Úspěšné';
 
   @override
-  String get failed => 'Failed';
+  String get failed => 'Selhalo';
 }

@@ -121,12 +121,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return 'расстояние';
+    return '$distance away';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Подшипник';
+    return 'Подшипник $bearing°';
   }
 
   @override
@@ -222,8 +222,8 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String reportedAt(String timeAgo, Object time) {
-    return 'Сообщено  Аго';
+  String reportedAt(String timeAgo) {
+    return 'Об этом сообщает $timeAgo';
   }
 
   @override
@@ -233,7 +233,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return 'Подчинение возражению: $bearing°';
+    return 'Возражение: $bearing°';
   }
 
   @override
@@ -295,7 +295,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Указывая на';
+    return 'Указать на $direction';
   }
 
   @override
@@ -309,7 +309,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'Сообщалось о новом наблюдении на расстоянии.';
+    return 'Об этом сообщает $distance.';
   }
 
   @override
@@ -333,12 +333,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Облако: %';
+    return 'Облачное покрытие: $percent%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Ветер:';
+    return 'Ветер: $speed$unit';
   }
 
   @override
@@ -437,36 +437,36 @@ class AppLocalizationsRu extends AppLocalizations {
   String get verified => 'Проверенный';
 
   @override
-  String get beepOnly => 'Только отчет';
+  String get beepOnly => 'Только гудок';
 
   @override
   String get reportOnly => 'Только отчет';
 
   @override
-  String get videoOnly => 'только видео';
+  String get videoOnly => 'Только видео';
 
   @override
-  String get imageOnly => 'только изображение';
+  String get imageOnly => 'Только изображение';
 
   @override
-  String get mediaOnly => 'Media Only';
+  String get mediaOnly => 'Только СМИ';
 
   @override
   String get timeJustNow => 'только сейчас';
 
   @override
   String timeDaysAgo(int count) {
-    return 'd ago';
+    return '__________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'счет давно';
+    return '________________________________________________________________________';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'm ago';
+    return '______________________________________________________________________________';
   }
 
   @override
@@ -498,28 +498,28 @@ class AppLocalizationsRu extends AppLocalizations {
   String get mufonCase => 'МУФОН Дело';
 
   @override
-  String get mufonSighting => 'MUFON Sighting';
+  String get mufonSighting => 'МУФОН прицел';
 
   @override
-  String get mufonLightSighting => 'MUFON Light Sighting';
+  String get mufonLightSighting => 'Световое зрение MUFON';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sphere Sighting';
+  String get mufonSphereSighting => 'Обсуждение Mufon Sphere Sighting';
 
   @override
-  String get mufonDiscSighting => 'MUFON Disc Sighting';
+  String get mufonDiscSighting => 'МУФОН Дисковое зрение';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Triangle Sighting';
+  String get mufonTriangleSighting => 'МУФОН Треугольное зрение';
 
   @override
-  String get mufonCigarSighting => 'MUFON Cigar Sighting';
+  String get mufonCigarSighting => 'Сигарный прицел MUFON';
 
   @override
-  String get mufonOvalSighting => 'MUFON Oval Sighting';
+  String get mufonOvalSighting => 'МУФОН Оваль Зрение';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Rectangle Sighting';
+  String get mufonRectangleSighting => 'МУФОН Прямоугольное зрение';
 
   @override
   String get mufonCylinderSighting => 'MUFON Cylinder Sighting';
@@ -528,11 +528,11 @@ class AppLocalizationsRu extends AppLocalizations {
   String get mufonBoomerangSighting => 'MUFON Boomerang Sighting';
 
   @override
-  String get mufonStarlikeSighting => 'MUFON Starlike Sighting';
+  String get mufonStarlikeSighting => 'Звездоподобное прицеливание MUFON';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'МУФОН Случай # Подробности';
+    return 'MUFON Case #$caseNumber Подробности';
   }
 
   @override
@@ -573,7 +573,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return 'люди подтвердили это наблюдение';
+    return '_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
@@ -581,7 +581,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Анализ:  медиафайл(ы) обработан';
+    return 'Анализ: $count медиафайл(ы)';
   }
 
   @override
@@ -850,7 +850,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return 'люди подтвердили это наблюдение';
+    return '_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
@@ -897,7 +897,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'МУФОН Случай #';
+    return 'МУФОН Случай #$caseNumber';
   }
 
   @override
@@ -936,12 +936,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '[свидетель] рядом с местом Имя';
+    return '$witnessText около $locationName';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '↓  прокомментировал';
+    return '・$username прокомментировал';
   }
 
   @override
@@ -949,7 +949,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return 'свидетели';
+    return '___ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ ___ ___ ___ ___ __ ___ ___ ___ ___ ___ ___ ___ ___ ___';
   }
 
   @override
@@ -960,7 +960,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return 'расстояние';
+    return '$distance away';
   }
 
   @override
@@ -1007,7 +1007,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Страница  Страница  ( полные звуковые сигналы)';
+    return 'Страница ${currentPage}_$totalPages ($totalCount полные звуковые сигналы)';
   }
 
   @override
@@ -1025,7 +1025,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get viewAllBeeps => 'Смотреть все клипы';
 
   @override
-  String get sightingsMap => ' ️ Карта достопримечательностей';
+  String get sightingsMap => '️ Карта достопримечательностей';
 
   @override
   String get globalSightingNetwork => 'Глобальная сеть наблюдения';
@@ -1146,7 +1146,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON  Доклад';
+    return 'MUFON$classification Report';
   }
 
   @override
@@ -1169,7 +1169,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return 'изображения';
+    return '$count Изображения';
   }
 
   @override
@@ -1177,7 +1177,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+ больше';
+    return '+$count';
   }
 
   @override
@@ -1248,29 +1248,29 @@ class AppLocalizationsRu extends AppLocalizations {
   String get ufoSightingAlt => 'Наблюдение НЛО';
 
   @override
-  String get celestialDataTitle => 'Celestial Objects';
+  String get celestialDataTitle => 'Небесные объекты';
 
   @override
-  String get visiblePlanets => 'Visible Planets';
+  String get visiblePlanets => 'Видимые планеты';
 
   @override
-  String get locationDataTitle => 'Location Information';
+  String get locationDataTitle => 'Информация о местонахождении';
 
   @override
-  String get timezone => 'Timezone';
+  String get timezone => 'Таймзона';
 
   @override
-  String get coordinates => 'Coordinates';
+  String get coordinates => 'Координация';
 
   @override
-  String get processingSummaryTitle => 'Processing Summary';
+  String get processingSummaryTitle => 'Обработка резюме';
 
   @override
-  String get processingTime => 'Processing Time';
+  String get processingTime => 'Время обработки';
 
   @override
-  String get successful => 'Successful';
+  String get successful => 'Успешный';
 
   @override
-  String get failed => 'Failed';
+  String get failed => 'Неудачник';
 }

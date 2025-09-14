@@ -544,7 +544,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Reported {timeAgo}'**
-  String reportedAt(String timeAgo, Object time);
+  String reportedAt(String timeAgo);
 
   /// No description provided for @distanceAway.
   ///
@@ -1029,67 +1029,67 @@ abstract class AppLocalizations {
   /// No description provided for @mufonSighting.
   ///
   /// In en, this message translates to:
-  /// **'MUFON Sighting'**
+  /// **'MUFON Sighting Report'**
   String get mufonSighting;
 
   /// No description provided for @mufonLightSighting.
   ///
   /// In en, this message translates to:
-  /// **'MUFON Light Sighting'**
+  /// **'MUFON Light Sighting Report'**
   String get mufonLightSighting;
 
   /// No description provided for @mufonSphereSighting.
   ///
   /// In en, this message translates to:
-  /// **'MUFON Sphere Sighting'**
+  /// **'MUFON Sphere Sighting Report'**
   String get mufonSphereSighting;
 
   /// No description provided for @mufonDiscSighting.
   ///
   /// In en, this message translates to:
-  /// **'MUFON Disc Sighting'**
+  /// **'MUFON Disc Sighting Report'**
   String get mufonDiscSighting;
 
   /// No description provided for @mufonTriangleSighting.
   ///
   /// In en, this message translates to:
-  /// **'MUFON Triangle Sighting'**
+  /// **'MUFON Triangle Sighting Report'**
   String get mufonTriangleSighting;
 
   /// No description provided for @mufonCigarSighting.
   ///
   /// In en, this message translates to:
-  /// **'MUFON Cigar Sighting'**
+  /// **'MUFON Cigar Sighting Report'**
   String get mufonCigarSighting;
 
   /// No description provided for @mufonOvalSighting.
   ///
   /// In en, this message translates to:
-  /// **'MUFON Oval Sighting'**
+  /// **'MUFON Oval Sighting Report'**
   String get mufonOvalSighting;
 
   /// No description provided for @mufonRectangleSighting.
   ///
   /// In en, this message translates to:
-  /// **'MUFON Rectangle Sighting'**
+  /// **'MUFON Rectangle Sighting Report'**
   String get mufonRectangleSighting;
 
   /// No description provided for @mufonCylinderSighting.
   ///
   /// In en, this message translates to:
-  /// **'MUFON Cylinder Sighting'**
+  /// **'MUFON Cylinder Sighting Report'**
   String get mufonCylinderSighting;
 
   /// No description provided for @mufonBoomerangSighting.
   ///
   /// In en, this message translates to:
-  /// **'MUFON Boomerang Sighting'**
+  /// **'MUFON Boomerang Sighting Report'**
   String get mufonBoomerangSighting;
 
   /// No description provided for @mufonStarlikeSighting.
   ///
   /// In en, this message translates to:
-  /// **'MUFON Starlike Sighting'**
+  /// **'MUFON Starlike Sighting Report'**
   String get mufonStarlikeSighting;
 
   /// No description provided for @mufonCaseDetailsTitle.
@@ -1347,7 +1347,7 @@ abstract class AppLocalizations {
   /// No description provided for @ufoSighting.
   ///
   /// In en, this message translates to:
-  /// **'UFO Sighting'**
+  /// **'UFOBeep UFO Alert'**
   String get ufoSighting;
 
   /// No description provided for @envAnalysisTitle.
@@ -1845,19 +1845,19 @@ abstract class AppLocalizations {
   /// No description provided for @notificationSightingTitle.
   ///
   /// In en, this message translates to:
-  /// **'UFO Sighting'**
+  /// **'UFOBeep UFO Alert'**
   String get notificationSightingTitle;
 
   /// No description provided for @notificationSightingUrgent.
   ///
   /// In en, this message translates to:
-  /// **'⚠️ URGENT UFO Sighting'**
+  /// **'⚠️ URGENT UFOBeep UFO Alert'**
   String get notificationSightingUrgent;
 
   /// No description provided for @notificationSightingEmergency.
   ///
   /// In en, this message translates to:
-  /// **'🚨 EMERGENCY UFO Sighting'**
+  /// **'🚨 EMERGENCY UFOBeep UFO Alert'**
   String get notificationSightingEmergency;
 
   /// No description provided for @notificationSightingBody.
@@ -2439,7 +2439,7 @@ abstract class AppLocalizations {
   /// No description provided for @ufoSightingAlt.
   ///
   /// In en, this message translates to:
-  /// **'UFO sighting'**
+  /// **'UFOBeep UFO alert'**
   String get ufoSightingAlt;
 
   /// No description provided for @celestialDataTitle.

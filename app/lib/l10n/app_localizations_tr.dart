@@ -121,12 +121,12 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return 'uzaklığı:';
+    return '$distance away';
   }
 
   @override
   String alertDirection(int bearing) {
-    return '';
+    return 'Page $bearing°';
   }
 
   @override
@@ -223,8 +223,8 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String reportedAt(String timeAgo, Object time) {
-    return 'Raporlanmış $time';
+  String reportedAt(String timeAgo) {
+    return 'Reported $timeAgo';
   }
 
   @override
@@ -295,7 +295,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return '';
+    return '$direction';
   }
 
   @override
@@ -309,7 +309,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'Yeni bir görüş bildirdi  uzakta.';
+    return 'Yeni bir görüşe göre $distance away.';
   }
 
   @override
@@ -334,12 +334,12 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Cloud cover: %';
+    return 'Cloud cover: $percent%%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Rüzgar:';
+    return 'Rüzgar: $speed $unit';
   }
 
   @override
@@ -437,36 +437,36 @@ class AppLocalizationsTr extends AppLocalizations {
   String get verified => 'Onaylandı';
 
   @override
-  String get beepOnly => 'Rapor Sadece Rapor';
+  String get beepOnly => 'Beep Only';
 
   @override
   String get reportOnly => 'Rapor Sadece Rapor';
 
   @override
-  String get videoOnly => 'video sadece video';
+  String get videoOnly => 'Video Sadece Video';
 
   @override
-  String get imageOnly => 'sadece görüntü sadece görüntü';
+  String get imageOnly => 'Resim Sadece Resim';
 
   @override
-  String get mediaOnly => 'Media Only';
+  String get mediaOnly => 'Medya Sadece Medya';
 
   @override
   String get timeJustNow => 'sadece şimdi';
 
   @override
   String timeDaysAgo(int count) {
-    return 'd ago';
+    return '${count}d ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'h ago';
+    return '${count}h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'm ago';
+    return '${count}m ago';
   }
 
   @override
@@ -504,13 +504,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get mufonLightSighting => 'MUFON Light Sighting';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sphere Sighting';
+  String get mufonSphereSighting => 'MUFON Sphere Sight';
 
   @override
-  String get mufonDiscSighting => 'MUFON Disc Sighting';
+  String get mufonDiscSighting => 'MUFON Disiplin';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Triangle Sighting';
+  String get mufonTriangleSighting => 'MUFON Üçgeni';
 
   @override
   String get mufonCigarSighting => 'MUFON Cigar Sighting';
@@ -519,10 +519,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get mufonOvalSighting => 'MUFON Oval Sighting';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Rectangle Sighting';
+  String get mufonRectangleSighting => 'MUFON Rect Fukushima Sighting';
 
   @override
-  String get mufonCylinderSighting => 'MUFON Cylinder Sighting';
+  String get mufonCylinderSighting => 'MUFON Silindir Sighting';
 
   @override
   String get mufonBoomerangSighting => 'MUFON Boomerang Sighting';
@@ -532,7 +532,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON Vaka # Detay';
+    return 'MUFON Vaka #$caseNumber Details';
   }
 
   @override
@@ -574,7 +574,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return 'insanlar bu görüşü doğruluyor';
+    return '$count insanlar bu görüşü doğruladı';
   }
 
   @override
@@ -582,7 +582,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Analiz:  medya dosyası (s) işlendi';
+    return 'Analiz: $count media file(s) processed';
   }
 
   @override
@@ -850,7 +850,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return 'insanlar bu görüşü doğruladı';
+    return '$count insanlar bu görüşü doğruladı';
   }
 
   @override
@@ -896,7 +896,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Vaka #';
+    return 'MUFON Vaka #$caseNumber';
   }
 
   @override
@@ -934,12 +934,12 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return 'yakın Ad';
+    return '$witnessText yakın $locationName';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '';
+    return '__ $username yorumlandı';
   }
 
   @override
@@ -947,7 +947,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return 'tanıklar';
+    return '$count tanıkları';
   }
 
   @override
@@ -958,7 +958,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return 'uzaklığı:';
+    return '$distance away';
   }
 
   @override
@@ -1004,7 +1004,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Page   ( toplam beeps)';
+    return 'Sayfa $currentPage of $totalPages ($totalCount total beeps)';
   }
 
   @override
@@ -1015,13 +1015,13 @@ class AppLocalizationsTr extends AppLocalizations {
       'Asla başka bir UFO görüşünü kaçırmayın. Yakınınızdaki biri gökyüzünde garip bir şey gördüğünde gerçek zamanlı uyarılar alın. Telefonunuzu işaret edin ve tam olarak nereye bakacağınızı bulun.';
 
   @override
-  String get downloadApp => '  Download App';
+  String get downloadApp => 'Download App';
 
   @override
-  String get viewAllBeeps => '  View All Beeps';
+  String get viewAllBeeps => 'View All Beeps';
 
   @override
-  String get sightingsMap => '  Sightings Map';
+  String get sightingsMap => 'Sightings Map';
 
   @override
   String get globalSightingNetwork => 'Global Sighting Network';
@@ -1142,7 +1142,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON  Rapor';
+    return 'MUFON $classification Report';
   }
 
   @override
@@ -1165,7 +1165,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return 'görüntüler';
+    return '$count görüntüler';
   }
 
   @override
@@ -1173,7 +1173,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+';
+    return '+$count more';
   }
 
   @override
@@ -1250,23 +1250,23 @@ class AppLocalizationsTr extends AppLocalizations {
   String get visiblePlanets => 'Visible Planets';
 
   @override
-  String get locationDataTitle => 'Location Information';
+  String get locationDataTitle => 'Konum Bilgileri';
 
   @override
   String get timezone => 'Timezone';
 
   @override
-  String get coordinates => 'Coordinates';
+  String get coordinates => 'Koordinatörleri';
 
   @override
-  String get processingSummaryTitle => 'Processing Summary';
+  String get processingSummaryTitle => 'İşleme Özeti';
 
   @override
-  String get processingTime => 'Processing Time';
+  String get processingTime => 'Zaman İşleme Zamanı';
 
   @override
-  String get successful => 'Successful';
+  String get successful => 'Başarılı';
 
   @override
-  String get failed => 'Failed';
+  String get failed => 'Başarısızlık';
 }

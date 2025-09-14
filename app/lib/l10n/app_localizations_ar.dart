@@ -121,12 +121,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return 'ابتعد';
+    return '_';
   }
 
   @override
   String alertDirection(int bearing) {
-    return '$bearing°';
+    return '-';
   }
 
   @override
@@ -217,12 +217,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'Reported by $username';
+    return 'Reported by __PLACEHOLDER_0';
   }
 
   @override
-  String reportedAt(String timeAgo, Object time) {
-    return 'Reported $time';
+  String reportedAt(String timeAgo) {
+    return 'Reported_PLACEHOLDER_0';
   }
 
   @override
@@ -232,7 +232,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return 'اعتراض: $bearing°';
+    return 'اعتراض:';
   }
 
   @override
@@ -292,7 +292,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Pointing to';
+    return 'نشير إلى';
   }
 
   @override
@@ -329,12 +329,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return '';
+    return 'غطاء السحاب: _';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Wind:';
+    return 'الفائز: ${speed}__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
@@ -430,7 +430,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get verified => 'مصدق عليه';
 
   @override
-  String get beepOnly => 'التقرير فقط';
+  String get beepOnly => 'Beep فقط';
 
   @override
   String get reportOnly => 'التقرير فقط';
@@ -439,10 +439,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get videoOnly => 'الفيديو فقط';
 
   @override
-  String get imageOnly => 'الصورة فقط';
+  String get imageOnly => 'التصوير فقط';
 
   @override
-  String get mediaOnly => 'Media Only';
+  String get mediaOnly => 'وسائط الإعلام فقط';
 
   @override
   String get timeJustNow => 'الآن';
@@ -454,12 +454,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String timeHoursAgo(int count) {
-    return 'منذ';
+    return 'قبل';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'منذ';
+    return '_BAR_';
   }
 
   @override
@@ -491,22 +491,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get mufonCase => 'MUFON القضية';
 
   @override
-  String get mufonSighting => 'MUFON Sighting';
+  String get mufonSighting => 'MUFON البصر';
 
   @override
-  String get mufonLightSighting => 'MUFON Light Sighting';
+  String get mufonLightSighting => 'مصارعة الضوء';
 
   @override
   String get mufonSphereSighting => 'MUFON Sphere Sighting';
 
   @override
-  String get mufonDiscSighting => 'MUFON Disc Sighting';
+  String get mufonDiscSighting => 'MUFON مقر القيادة';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Triangle Sighting';
+  String get mufonTriangleSighting => 'MUFON المثلث';
 
   @override
-  String get mufonCigarSighting => 'MUFON Cigar Sighting';
+  String get mufonCigarSighting => 'مصارعة السيجار';
 
   @override
   String get mufonOvalSighting => 'MUFON Oval Sighting';
@@ -518,14 +518,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get mufonCylinderSighting => 'MUFON Cylinder Sighting';
 
   @override
-  String get mufonBoomerangSighting => 'MUFON Boomerang Sighting';
+  String get mufonBoomerangSighting => 'MFON Boomerang Sighting';
 
   @override
-  String get mufonStarlikeSighting => 'MUFON Starlike Sighting';
+  String get mufonStarlikeSighting => '(مافون ستار)';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON Case # details';
+    return 'MUFON Case #_PLACEHOLDER_0_تفاصيل';
   }
 
   @override
@@ -566,7 +566,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return 'الناس أكدوا هذا المشاهد';
+    return 'الناس أكدوا هذا';
   }
 
   @override
@@ -574,7 +574,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Analysis:  media file(s) processed';
+    return 'Analysis: ${count}media file(s) processed';
   }
 
   @override
@@ -842,7 +842,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return 'الناس أكدوا هذا المشهد';
+    return 'الناس أكدوا هذا';
   }
 
   @override
@@ -916,19 +916,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get notificationSightingTitle => 'UFO البصر';
 
   @override
-  String get notificationSightingUrgent => '  URGENT UFO البصر';
+  String get notificationSightingUrgent => 'URGENT UFO البصر';
 
   @override
-  String get notificationSightingEmergency => '  EMERGENCY UFO البصر';
+  String get notificationSightingEmergency => 'EMERGENCY UFO البصر';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return 'قرب موقع الاسم';
+    return '_BAR_ _BAR_ _BAR_';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '💬 $username commented';
+    return '💬 __PLACEHOLDER_0 علق';
   }
 
   @override
@@ -936,7 +936,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return 'الشهود';
+    return '_BAR_ _BAR_ _BAR_';
   }
 
   @override
@@ -947,7 +947,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return 'ابتعد';
+    return '_';
   }
 
   @override
@@ -993,7 +993,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'of  ( total beeps)';
+    return 'Page ${currentPage}______________BAR_ _BAR_';
   }
 
   @override
@@ -1005,13 +1005,13 @@ class AppLocalizationsAr extends AppLocalizations {
       'لا تفوتني رؤية أخرى الحصول على إنذارات في الوقت الحقيقي عندما شخص ما بالقرب منك يرى شيء غريب في السماء. اوجهي هاتفك وابحثي عن المكان المناسب.';
 
   @override
-  String get downloadApp => '  Download App';
+  String get downloadApp => 'Download App';
 
   @override
-  String get viewAllBeeps => '  View All Beeps';
+  String get viewAllBeeps => 'View All Beeps';
 
   @override
-  String get sightingsMap => '  Sightings Map';
+  String get sightingsMap => 'Sightings Map';
 
   @override
   String get globalSightingNetwork => 'Global Sighting Network';
@@ -1132,7 +1132,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON  التقرير';
+    return 'MUFON __PLACEHOLDER_0';
   }
 
   @override
@@ -1155,7 +1155,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return '';
+    return '__PLACEHOLDER_0_صور';
   }
 
   @override
@@ -1233,29 +1233,29 @@ class AppLocalizationsAr extends AppLocalizations {
   String get ufoSightingAlt => 'مشاهده';
 
   @override
-  String get celestialDataTitle => 'Celestial Objects';
+  String get celestialDataTitle => 'أهداف المهرجان';
 
   @override
-  String get visiblePlanets => 'Visible Planets';
+  String get visiblePlanets => 'Planets Visible';
 
   @override
-  String get locationDataTitle => 'Location Information';
+  String get locationDataTitle => 'معلومات الموقع';
 
   @override
   String get timezone => 'Timezone';
 
   @override
-  String get coordinates => 'Coordinates';
+  String get coordinates => 'التنسيق';
 
   @override
-  String get processingSummaryTitle => 'Processing Summary';
+  String get processingSummaryTitle => 'موجز المعالجة';
 
   @override
-  String get processingTime => 'Processing Time';
+  String get processingTime => 'تجهيز الوقت';
 
   @override
-  String get successful => 'Successful';
+  String get successful => 'ناجح';
 
   @override
-  String get failed => 'Failed';
+  String get failed => 'فشل';
 }

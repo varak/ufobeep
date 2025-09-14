@@ -121,12 +121,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '$distance';
+    return '$distance 멀리';
   }
 
   @override
   String alertDirection(int bearing) {
-    return '방위 $bearing°';
+    return '베어링 $bearing°';
   }
 
   @override
@@ -214,12 +214,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return '작성자: $username';
+    return '$username에 의해 신고';
   }
 
   @override
-  String reportedAt(String timeAgo, Object time) {
-    return '로그인 ';
+  String reportedAt(String timeAgo) {
+    return '$timeAgo에 대하여';
   }
 
   @override
@@ -229,7 +229,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return '물체에 베어링 : $bearing °';
+    return '객체에 베어링 : $bearing°';
   }
 
   @override
@@ -288,7 +288,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return '에 대한 지적';
+    return '$direction에 대한 포스팅';
   }
 
   @override
@@ -302,7 +302,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return '새로운 광경은 를보고했다.';
+    return '새로운 광경은 $distance를 나타냈습니다.';
   }
 
   @override
@@ -325,12 +325,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return '클라우드 커버: %';
+    return '구름 덮개: $percent%의 경우';
   }
 
   @override
   String wind(num speed, String unit) {
-    return '바람:';
+    return '바람: $speed $unit';
   }
 
   @override
@@ -423,7 +423,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get verified => '인증 및 인증';
 
   @override
-  String get beepOnly => '계정 관리';
+  String get beepOnly => '계정 만들기';
 
   @override
   String get reportOnly => '계정 관리';
@@ -435,24 +435,24 @@ class AppLocalizationsKo extends AppLocalizations {
   String get imageOnly => '이미지 만';
 
   @override
-  String get mediaOnly => 'Media Only';
+  String get mediaOnly => '미디어 전용';
 
   @override
   String get timeJustNow => '지금 시작';
 
   @override
   String timeDaysAgo(int count) {
-    return 'd 전';
+    return '${count}d 전';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'h 전';
+    return '${count}h 전';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'm 전';
+    return '${count}m 전';
   }
 
   @override
@@ -483,41 +483,41 @@ class AppLocalizationsKo extends AppLocalizations {
   String get mufonCase => '사이트맵 제품정보';
 
   @override
-  String get mufonSighting => 'MUFON Sighting';
+  String get mufonSighting => '사이트맵 뚱 베어';
 
   @override
-  String get mufonLightSighting => 'MUFON Light Sighting';
+  String get mufonLightSighting => 'MUFON 빛 시력';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sphere Sighting';
+  String get mufonSphereSighting => 'MUFON Sphere 전투';
 
   @override
-  String get mufonDiscSighting => 'MUFON Disc Sighting';
+  String get mufonDiscSighting => '사이트맵 디스크 Sighting';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Triangle Sighting';
+  String get mufonTriangleSighting => '사이트맵 연락처';
 
   @override
-  String get mufonCigarSighting => 'MUFON Cigar Sighting';
+  String get mufonCigarSighting => 'MUFON 시가 Sighting';
 
   @override
-  String get mufonOvalSighting => 'MUFON Oval Sighting';
+  String get mufonOvalSighting => 'MUFON 타원형 시력';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Rectangle Sighting';
+  String get mufonRectangleSighting => '사이트맵 장방형 Sighting';
 
   @override
-  String get mufonCylinderSighting => 'MUFON Cylinder Sighting';
+  String get mufonCylinderSighting => 'MUFON 실린더 Sighting';
 
   @override
-  String get mufonBoomerangSighting => 'MUFON Boomerang Sighting';
+  String get mufonBoomerangSighting => 'MUFON Boomerang 운동';
 
   @override
-  String get mufonStarlikeSighting => 'MUFON Starlike Sighting';
+  String get mufonStarlikeSighting => 'MUFON Starlike 싸움';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return '사이트맵 사례 # 세부 정보';
+    return 'MUFON 케이스 #$caseNumber 세부 정보';
   }
 
   @override
@@ -558,7 +558,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return '사람들은이 광경을 확인';
+    return '$count 사람들은 이 광경을 확인';
   }
 
   @override
@@ -566,7 +566,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Analysis:  미디어 파일 처리';
+    return '분석: $count 미디어 파일(s) 처리';
   }
 
   @override
@@ -832,7 +832,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return '사람들은이 광경을 확인했습니다';
+    return '$count 사람들은 이 광경을 확인했습니다';
   }
 
   @override
@@ -876,7 +876,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return '사이트맵 케이스 #';
+    return '사이트맵 케이스 #$caseNumber';
   }
 
   @override
@@ -912,7 +912,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '닫기 이름 *';
+    return '$witnessText 가까운 $locationName';
   }
 
   @override
@@ -925,7 +925,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '이름 *';
+    return '$count 증인';
   }
 
   @override
@@ -936,7 +936,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return '';
+    return '$distance 멀리';
   }
 
   @override
@@ -981,7 +981,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return '페이지  의  ( 총 금액)';
+    return '페이지 $currentPage $totalPages ($totalCount 총 금액)';
   }
 
   @override
@@ -995,7 +995,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get downloadApp => '앱 다운로드';
 
   @override
-  String get viewAllBeeps => ' All 모두 Beeps';
+  String get viewAllBeeps => 'All 모두 Beeps';
 
   @override
   String get sightingsMap => 'Sightings 지도';
@@ -1119,7 +1119,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON 예제 제품정보';
+    return 'MUFON $classification 보고서';
   }
 
   @override
@@ -1142,7 +1142,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return '이미지';
+    return '$count 이미지';
   }
 
   @override
@@ -1150,7 +1150,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+ 더보기';
+    return '+$count 더';
   }
 
   @override
@@ -1220,29 +1220,29 @@ class AppLocalizationsKo extends AppLocalizations {
   String get ufoSightingAlt => 'UFO 광경';
 
   @override
-  String get celestialDataTitle => 'Celestial Objects';
+  String get celestialDataTitle => 'Celestial 개체';
 
   @override
-  String get visiblePlanets => 'Visible Planets';
+  String get visiblePlanets => '눈에 보이는 행성';
 
   @override
-  String get locationDataTitle => 'Location Information';
+  String get locationDataTitle => '오시는 길';
 
   @override
-  String get timezone => 'Timezone';
+  String get timezone => '시간 영역';
 
   @override
-  String get coordinates => 'Coordinates';
+  String get coordinates => '관련 기사';
 
   @override
-  String get processingSummaryTitle => 'Processing Summary';
+  String get processingSummaryTitle => '회사연혁';
 
   @override
-  String get processingTime => 'Processing Time';
+  String get processingTime => '처리 시간';
 
   @override
-  String get successful => 'Successful';
+  String get successful => '감사합니다';
 
   @override
-  String get failed => 'Failed';
+  String get failed => '실패한';
 }

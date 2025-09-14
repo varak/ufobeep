@@ -121,7 +121,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '$distance दूर';
+    return '0_____________________________________________________________________________________________________________________________';
   }
 
   @override
@@ -218,12 +218,12 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'द्वारा रिपोर्ट $username';
+    return 'द्वारा रिपोर्ट किया गया _PLACEHOLDER_0_';
   }
 
   @override
-  String reportedAt(String timeAgo, Object time) {
-    return 'रिपोर्ट Ago';
+  String reportedAt(String timeAgo) {
+    return 'रिपोर्ट $timeAgo';
   }
 
   @override
@@ -233,7 +233,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return 'वस्तु पर असर: $bearing°';
+    return 'ऑब्जेक्ट करने के लिए असर: __PLACEHOLDER_0_°';
   }
 
   @override
@@ -293,7 +293,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'को इंगित करना';
+    return 'पॉइंट टू __PLACEHOLDER_0_';
   }
 
   @override
@@ -307,7 +307,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'एक नए दर्शन की सूचना $distance दूर थी।.';
+    return 'एक नए दर्शन की सूचना मिली थी ${distance}_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________.';
   }
 
   @override
@@ -331,12 +331,12 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'क्लाउड कवर: %';
+    return 'क्लाउड कवर: 0 _ 0';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'पवन:';
+    return 'पवन: ${speed}_${unit}_';
   }
 
   @override
@@ -433,7 +433,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get verified => 'सत्यापित';
 
   @override
-  String get beepOnly => 'केवल रिपोर्ट करें';
+  String get beepOnly => 'केवल बीप';
 
   @override
   String get reportOnly => 'केवल रिपोर्ट करें';
@@ -445,24 +445,24 @@ class AppLocalizationsHi extends AppLocalizations {
   String get imageOnly => 'केवल छवि';
 
   @override
-  String get mediaOnly => 'Media Only';
+  String get mediaOnly => 'केवल मीडिया';
 
   @override
   String get timeJustNow => 'अभी';
 
   @override
   String timeDaysAgo(int count) {
-    return 'd पहले';
+    return 'To get the time';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'h पहले';
+    return 'To get the time';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '';
+    return 'To make a word';
   }
 
   @override
@@ -493,31 +493,31 @@ class AppLocalizationsHi extends AppLocalizations {
   String get mufonCase => 'MUFON मामला';
 
   @override
-  String get mufonSighting => 'MUFON Sighting';
+  String get mufonSighting => 'MUFON दृष्टि';
 
   @override
-  String get mufonLightSighting => 'MUFON Light Sighting';
+  String get mufonLightSighting => 'MUFON लाइट दृष्टि';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sphere Sighting';
+  String get mufonSphereSighting => 'MUFON क्षेत्र दृष्टि';
 
   @override
-  String get mufonDiscSighting => 'MUFON Disc Sighting';
+  String get mufonDiscSighting => 'MUFON डिस्क दृष्टि';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Triangle Sighting';
+  String get mufonTriangleSighting => 'MUFON त्रिभुज दृष्टि';
 
   @override
   String get mufonCigarSighting => 'MUFON Cigar Sighting';
 
   @override
-  String get mufonOvalSighting => 'MUFON Oval Sighting';
+  String get mufonOvalSighting => 'MUFON ओवल दृष्टि';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Rectangle Sighting';
+  String get mufonRectangleSighting => 'MUFON आयत दृष्टि';
 
   @override
-  String get mufonCylinderSighting => 'MUFON Cylinder Sighting';
+  String get mufonCylinderSighting => 'MUFON सिलेंडर दृष्टि';
 
   @override
   String get mufonBoomerangSighting => 'MUFON Boomerang Sighting';
@@ -527,7 +527,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON Case # Details';
+    return 'MUFON Case #_PLACEHOLDER_0__ Details';
   }
 
   @override
@@ -568,7 +568,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return 'लोगों ने इस दर्शन की पुष्टि की';
+    return '${count}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
@@ -576,7 +576,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'विश्लेषण:  मीडिया फ़ाइल (s) संसाधित';
+    return 'विश्लेषण: $count मीडिया फ़ाइल (s) संसाधित';
   }
 
   @override
@@ -844,7 +844,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return 'लोगों ने इस दर्शन की पुष्टि की है';
+    return '${count}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
@@ -890,7 +890,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON केस #';
+    return 'MUFON केस #$caseNumber';
   }
 
   @override
@@ -928,12 +928,12 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return 'के पास नाम';
+    return '${witnessText}________________________________________________________________________________________________________________________________________';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return 'the name of a commented by a comment';
+    return 'One who has been commented by the post of the post';
   }
 
   @override
@@ -941,7 +941,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return 'गवाह';
+    return '${count}_ गवाह';
   }
 
   @override
@@ -952,7 +952,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return '$distance दूर';
+    return '0_____________________________________________________________________________________________________________________________';
   }
 
   @override
@@ -998,7 +998,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'पृष्ठ  ( कुल beeps)';
+    return 'पृष्ठ ${currentPage}__${totalCount}________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
@@ -1136,7 +1136,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON  रिपोर्ट';
+    return 'MUFON $classification रिपोर्ट';
   }
 
   @override
@@ -1159,7 +1159,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return 'images';
+    return '0 _ 0';
   }
 
   @override
@@ -1167,7 +1167,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+ more';
+    return '+_PLACEHOLDER_0_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
@@ -1238,29 +1238,29 @@ class AppLocalizationsHi extends AppLocalizations {
   String get ufoSightingAlt => 'यूएफओ दर्शन';
 
   @override
-  String get celestialDataTitle => 'Celestial Objects';
+  String get celestialDataTitle => 'Celestial ऑब्जेक्ट';
 
   @override
-  String get visiblePlanets => 'Visible Planets';
+  String get visiblePlanets => 'दर्शनीय ग्रह';
 
   @override
-  String get locationDataTitle => 'Location Information';
+  String get locationDataTitle => 'स्थान सूचना';
 
   @override
-  String get timezone => 'Timezone';
+  String get timezone => 'मौसम';
 
   @override
-  String get coordinates => 'Coordinates';
+  String get coordinates => 'निर्देशांक';
 
   @override
-  String get processingSummaryTitle => 'Processing Summary';
+  String get processingSummaryTitle => 'प्रसंस्करण सारांश';
 
   @override
-  String get processingTime => 'Processing Time';
+  String get processingTime => 'प्रसंस्करण समय';
 
   @override
-  String get successful => 'Successful';
+  String get successful => 'सफल';
 
   @override
-  String get failed => 'Failed';
+  String get failed => 'विफल';
 }

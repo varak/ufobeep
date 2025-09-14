@@ -1,5 +1,8 @@
 'use client'
 
+// Ensure Leaflet styles are bundled and not blocked by CSP
+import 'leaflet/dist/leaflet.css'
+
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { createRoot } from 'react-dom/client'
@@ -321,7 +324,8 @@ export default function AlertsMap({
         if (!alertsChanged) return
         
         // Just update markers without recreating the map
-        const L = (await import('leaflet')).default
+        const leafletModule = await import('leaflet')
+        const L: any = (leafletModule as any).default || leafletModule
         
         // Clear existing markers
         markersRef.current.forEach(marker => {
@@ -360,24 +364,12 @@ export default function AlertsMap({
 
       try {
         // Dynamically import Leaflet
-        const L = (await import('leaflet')).default
+        const leafletModule2 = await import('leaflet')
+        const L: any = (leafletModule2 as any).default || leafletModule2
         
-        // Fix Leaflet icon paths issue
+        // Fix Leaflet icon paths issue: rely on bundled CSS; avoid remote unpkg
         delete (L.Icon.Default.prototype as any)._getIconUrl
-        L.Icon.Default.mergeOptions({
-          iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-          iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-          shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-        })
-        
-        // Import Leaflet CSS
-        if (typeof window !== 'undefined' && !document.querySelector('#leaflet-css')) {
-          const link = document.createElement('link')
-          link.id = 'leaflet-css'
-          link.rel = 'stylesheet'
-          link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
-          document.head.appendChild(link)
-        }
+        // If default icons fail to resolve, they will still render as our custom markers for MUFON
 
         // Clear existing map if any
         if (mapInstanceRef.current) {

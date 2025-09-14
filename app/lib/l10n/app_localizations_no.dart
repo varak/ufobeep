@@ -221,8 +221,8 @@ class AppLocalizationsNo extends AppLocalizations {
   }
 
   @override
-  String reportedAt(String timeAgo, Object time) {
-    return 'Reported';
+  String reportedAt(String timeAgo) {
+    return 'Reported $timeAgo';
   }
 
   @override
@@ -292,7 +292,7 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Pointing to';
+    return 'Pointing to $direction';
   }
 
   @override
@@ -329,12 +329,12 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Cloud cover: %';
+    return 'Cloud cover: $percent%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Wind:';
+    return 'Wind: $speed $unit';
   }
 
   @override
@@ -430,16 +430,16 @@ class AppLocalizationsNo extends AppLocalizations {
   String get verified => 'Verified';
 
   @override
-  String get beepOnly => 'Report Only';
+  String get beepOnly => 'Beep Only';
 
   @override
   String get reportOnly => 'Report Only';
 
   @override
-  String get videoOnly => 'video only';
+  String get videoOnly => 'Video Only';
 
   @override
-  String get imageOnly => 'image only';
+  String get imageOnly => 'Image Only';
 
   @override
   String get mediaOnly => 'Media Only';
@@ -449,17 +449,17 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return 'd ago';
+    return '${count}d ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'h ago';
+    return '${count}h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'm ago';
+    return '${count}m ago';
   }
 
   @override
@@ -525,7 +525,7 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON Case # Details';
+    return 'MUFON Case #$caseNumber Details';
   }
 
   @override
@@ -566,7 +566,7 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return 'people confirmed this sighting';
+    return '$count people confirmed this sighting';
   }
 
   @override
@@ -574,7 +574,7 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Analysis:  media file(s) processed';
+    return 'Analysis: $count media file(s) processed';
   }
 
   @override
@@ -842,7 +842,7 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return 'people have confirmed this sighting';
+    return '$count people have confirmed this sighting';
   }
 
   @override
@@ -888,7 +888,7 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Case #';
+    return 'MUFON Case #$caseNumber';
   }
 
   @override
@@ -927,7 +927,7 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return 'near';
+    return '$witnessText near $locationName';
   }
 
   @override
@@ -940,7 +940,7 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return 'witnesses';
+    return '$count witnesses';
   }
 
   @override
@@ -997,7 +997,7 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Page  of  ( total beeps)';
+    return 'Page $currentPage of $totalPages ($totalCount total beeps)';
   }
 
   @override
@@ -1135,7 +1135,7 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON  Report';
+    return 'MUFON $classification Report';
   }
 
   @override
@@ -1158,7 +1158,7 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return 'images';
+    return '$count images';
   }
 
   @override
@@ -1166,7 +1166,7 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+ more';
+    return '+$count more';
   }
 
   @override

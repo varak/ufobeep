@@ -121,12 +121,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '$distance pois';
+    return '_Placeholder_0_ pois';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Suuntima °';
+    return 'Suunta __PAIKKAHOLDER_0_°';
   }
 
   @override
@@ -217,12 +217,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'Raportoinut $username';
+    return 'Ilmoittanut __PAIKKAHOLDER_0__';
   }
 
   @override
-  String reportedAt(String timeAgo, Object time) {
-    return 'Raportoitu (aika) Ago';
+  String reportedAt(String timeAgo) {
+    return 'Raportoitu __PAIKKAHOLDER_0___';
   }
 
   @override
@@ -232,7 +232,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return 'Suunta kohteeseen: °';
+    return 'Kohde: __PAIKKAHOLDER_0_°';
   }
 
   @override
@@ -294,7 +294,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Osoitetaan';
+    return 'Osoitetaan __PAIKKAHOLDER_0__';
   }
 
   @override
@@ -308,7 +308,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'Uusi havainto ilmoitettiin  poissa.';
+    return 'Uusi havainto raportoitiin __PASSIHOLDER_0_ pois.';
   }
 
   @override
@@ -331,12 +331,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Pilvipeite: %';
+    return 'Pilvipeite: __Placeholder_0__%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Tuuli:';
+    return 'Tuuli: __PAIKKAHOLDER_0____PAIKKAHOLDER_1__';
   }
 
   @override
@@ -434,36 +434,36 @@ class AppLocalizationsFi extends AppLocalizations {
   String get verified => 'Varmennettu';
 
   @override
-  String get beepOnly => 'Raportoi vain';
+  String get beepOnly => 'Vain piip';
 
   @override
   String get reportOnly => 'Raportoi vain';
 
   @override
-  String get videoOnly => 'ainoastaan video';
+  String get videoOnly => 'Vain video';
 
   @override
-  String get imageOnly => 'vain kuva';
+  String get imageOnly => 'Vain kuva';
 
   @override
-  String get mediaOnly => 'Media Only';
+  String get mediaOnly => 'Vain media';
 
   @override
   String get timeJustNow => 'juuri nyt';
 
   @override
   String timeDaysAgo(int count) {
-    return 'd';
+    return '_Placeholder_0_d sitten';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'h sitten';
+    return '_Placeholder_0_h sitten';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'm sitten';
+    return '_Placeholder_0_m sitten';
   }
 
   @override
@@ -495,41 +495,41 @@ class AppLocalizationsFi extends AppLocalizations {
   String get mufonCase => 'MUFON Asia';
 
   @override
-  String get mufonSighting => 'MUFON Sighting';
+  String get mufonSighting => 'MUFON Näkyminen';
 
   @override
   String get mufonLightSighting => 'MUFON Light Sighting';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sphere Sighting';
+  String get mufonSphereSighting => 'MUFON-pallon katselu';
 
   @override
-  String get mufonDiscSighting => 'MUFON Disc Sighting';
+  String get mufonDiscSighting => 'MUFON Levyn havainnointi';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Triangle Sighting';
+  String get mufonTriangleSighting => 'MUFON Kolmion näkyvyys';
 
   @override
-  String get mufonCigarSighting => 'MUFON Cigar Sighting';
+  String get mufonCigarSighting => 'MUFON Sikari Näky';
 
   @override
-  String get mufonOvalSighting => 'MUFON Oval Sighting';
+  String get mufonOvalSighting => 'MUFON Oval Näky';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Rectangle Sighting';
+  String get mufonRectangleSighting => 'MUFON Suorakulmio';
 
   @override
-  String get mufonCylinderSighting => 'MUFON Cylinder Sighting';
+  String get mufonCylinderSighting => 'MUFON-sylinterin näkyvyys';
 
   @override
-  String get mufonBoomerangSighting => 'MUFON Boomerang Sighting';
+  String get mufonBoomerangSighting => 'Mufon Boomerang Näky';
 
   @override
   String get mufonStarlikeSighting => 'MUFON Starlike Sighting';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON Asia # Yksityiskohdat';
+    return 'MUFON-tapaus #__Placeholder_0_ Yksityiskohdat';
   }
 
   @override
@@ -570,7 +570,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return 'ihmiset vahvistivat tämän';
+    return '_Placeholder_0_ ihmiset vahvistivat tämän havainnon';
   }
 
   @override
@@ -578,7 +578,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Analyysi:  mediatiedosto [s] käsitelty';
+    return 'Analyysi: __PAIKKAHOLDER_0__ mediatiedosto [s] käsitelty';
   }
 
   @override
@@ -846,7 +846,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return 'ihmiset ovat vahvistaneet tämän';
+    return '_Placeholder_0_ ihmiset ovat vahvistaneet tämän havainnon';
   }
 
   @override
@@ -892,7 +892,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Asia # (tapausnumero)';
+    return 'MUFON Asia #__Placeholder_0___';
   }
 
   @override
@@ -931,7 +931,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return 'lähellä';
+    return '__PASSIHOLDER_0___ lähellä __PASSIHOLDER_1_';
   }
 
   @override
@@ -944,7 +944,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return 'todistajat';
+    return '_Placeholder_0__ silminnäkijät';
   }
 
   @override
@@ -955,7 +955,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return 'pois';
+    return '_Placeholder_0_ pois';
   }
 
   @override
@@ -1001,7 +1001,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Sivu  of  ( total beeps)';
+    return 'Sivu __PASSIHOLDER_0__ of _PASSIHOLDER_1__ (__PASSIHOLDER_2_ total piips)';
   }
 
   @override
@@ -1140,7 +1140,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON  Kertomus';
+    return 'MUFON__Placeholder_0_report';
   }
 
   @override
@@ -1163,7 +1163,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return 'kuvat';
+    return '_Placeholder_0_vedokset';
   }
 
   @override
@@ -1171,7 +1171,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+  lisää';
+    return '+__PASSIHOLDER_0_ lisää';
   }
 
   @override
@@ -1241,29 +1241,29 @@ class AppLocalizationsFi extends AppLocalizations {
   String get ufoSightingAlt => 'UFO-havainto';
 
   @override
-  String get celestialDataTitle => 'Celestial Objects';
+  String get celestialDataTitle => 'Taivaalliset objektit';
 
   @override
-  String get visiblePlanets => 'Visible Planets';
+  String get visiblePlanets => 'Näkyvät planeetat';
 
   @override
-  String get locationDataTitle => 'Location Information';
+  String get locationDataTitle => 'Sijaintitiedot';
 
   @override
-  String get timezone => 'Timezone';
+  String get timezone => 'Aikavyöhyke';
 
   @override
-  String get coordinates => 'Coordinates';
+  String get coordinates => 'Koordinaatit';
 
   @override
-  String get processingSummaryTitle => 'Processing Summary';
+  String get processingSummaryTitle => 'Käsittelyn yhteenveto';
 
   @override
-  String get processingTime => 'Processing Time';
+  String get processingTime => 'Käsittelyaika';
 
   @override
-  String get successful => 'Successful';
+  String get successful => 'Onnistunut';
 
   @override
-  String get failed => 'Failed';
+  String get failed => 'Ei onnistunut';
 }

@@ -121,12 +121,12 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '$distance';
+    return '__PACEHOLDER_0____';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Rolamento °';
+    return 'Rolamento __PLACELODER_0___';
   }
 
   @override
@@ -218,12 +218,12 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'Reportado por $username';
+    return 'Reportado por __PLACEHOLDER_0_';
   }
 
   @override
-  String reportedAt(String timeAgo, Object time) {
-    return 'Relatado';
+  String reportedAt(String timeAgo) {
+    return 'Reportado $timeAgo';
   }
 
   @override
@@ -233,7 +233,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return 'Rolamento para objeto: °';
+    return 'Rolamento para objeto: ${bearing}_°';
   }
 
   @override
@@ -295,7 +295,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Apontando para';
+    return 'Apontando para __PLACEHOLDER_0_';
   }
 
   @override
@@ -309,7 +309,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'Foi notificado um novo avistamento (distância).';
+    return 'Foi relatado um novo avistamento ${distance}_______________________________________________________________________________________________________________________________________________________________________________________________.';
   }
 
   @override
@@ -333,7 +333,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Capa da nuvem:';
+    return 'Capa da nuvem: __PACEHOLDER_0__';
   }
 
   @override
@@ -437,36 +437,36 @@ class AppLocalizationsPt extends AppLocalizations {
   String get verified => 'Verificado';
 
   @override
-  String get beepOnly => 'Apenas Relatório';
+  String get beepOnly => 'Apenas Beep';
 
   @override
   String get reportOnly => 'Apenas Relatório';
 
   @override
-  String get videoOnly => 'somente vídeo';
+  String get videoOnly => 'Apenas Vídeo';
 
   @override
-  String get imageOnly => 'somente imagem';
+  String get imageOnly => 'Apenas a Imagem';
 
   @override
-  String get mediaOnly => 'Media Only';
+  String get mediaOnly => 'Somente mídia';
 
   @override
   String get timeJustNow => 'agora mesmo';
 
   @override
   String timeDaysAgo(int count) {
-    return 'há';
+    return '${count}d há';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'h há';
+    return '${count}h há';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'm há';
+    return '${count}___________________';
   }
 
   @override
@@ -498,41 +498,42 @@ class AppLocalizationsPt extends AppLocalizations {
   String get mufonCase => 'MUFON Processo';
 
   @override
-  String get mufonSighting => 'MUFON Sighting';
+  String get mufonSighting => 'MUFON Avistamento';
 
   @override
-  String get mufonLightSighting => 'MUFON Light Sighting';
+  String get mufonLightSighting => 'Avistamento de luz de MUFON';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sphere Sighting';
+  String get mufonSphereSighting => 'Avistamento de Esferas de MUFON';
 
   @override
-  String get mufonDiscSighting => 'MUFON Disc Sighting';
+  String get mufonDiscSighting => 'MUFON Avistamento do Disco';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Triangle Sighting';
+  String get mufonTriangleSighting => 'MUFON Visão do Triângulo';
 
   @override
-  String get mufonCigarSighting => 'MUFON Cigar Sighting';
+  String get mufonCigarSighting => 'Avistamento de charutos MUFON';
 
   @override
-  String get mufonOvalSighting => 'MUFON Oval Sighting';
+  String get mufonOvalSighting => 'Visualização Oval de MUFON';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Rectangle Sighting';
+  String get mufonRectangleSighting => 'MUFON Visão Rectangular';
 
   @override
-  String get mufonCylinderSighting => 'MUFON Cylinder Sighting';
+  String get mufonCylinderSighting => 'Visualização do Cilindro MUFON';
 
   @override
   String get mufonBoomerangSighting => 'MUFON Boomerang Sighting';
 
   @override
-  String get mufonStarlikeSighting => 'MUFON Starlike Sighting';
+  String get mufonStarlikeSighting =>
+      'Avistamento semelhante a estrelas de MUFON';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON Detalhes do Caso #';
+    return 'CASO MUFON #$caseNumber Detalhes';
   }
 
   @override
@@ -573,7 +574,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return 'as pessoas confirmaram este avistamento';
+    return 'As pessoas confirmaram este avistamento';
   }
 
   @override
@@ -581,7 +582,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Análise:  arquivo( s) de mídia processado( s)';
+    return 'Análise: $count arquivos de mídia processados';
   }
 
   @override
@@ -850,7 +851,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return 'as pessoas confirmaram este avistamento';
+    return 'As pessoas confirmaram esta aparição';
   }
 
   @override
@@ -896,7 +897,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Caso #';
+    return 'MUFON Caso #__PLACEHOLDER_0_';
   }
 
   @override
@@ -935,12 +936,12 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return 'próximo';
+    return 'LOCALIZADOR';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return 'comentado';
+    return '_${username}_ comentado';
   }
 
   @override
@@ -948,7 +949,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return 'testemunhas';
+    return '__PACEHOLDER_0__ testemunhas';
   }
 
   @override
@@ -959,7 +960,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return '';
+    return '__PACEHOLDER_0____';
   }
 
   @override
@@ -1005,7 +1006,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Página  de  ( total beeps)';
+    return 'Página __PACEVOLDER_________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
@@ -1143,7 +1144,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON  Relatório';
+    return 'MUFON ${classification}_ Relatório';
   }
 
   @override
@@ -1166,7 +1167,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return 'imagens';
+    return '__PACEHOLDER_0____ imagens';
   }
 
   @override
@@ -1174,7 +1175,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+  mais';
+    return 'Mais';
   }
 
   @override
@@ -1245,29 +1246,29 @@ class AppLocalizationsPt extends AppLocalizations {
   String get ufoSightingAlt => 'Avistamento de OVNIs';
 
   @override
-  String get celestialDataTitle => 'Celestial Objects';
+  String get celestialDataTitle => 'Objetos Celestiais';
 
   @override
-  String get visiblePlanets => 'Visible Planets';
+  String get visiblePlanets => 'Planetas Visíveis';
 
   @override
-  String get locationDataTitle => 'Location Information';
+  String get locationDataTitle => 'Informação da Localização';
 
   @override
-  String get timezone => 'Timezone';
+  String get timezone => 'Fuso horário';
 
   @override
-  String get coordinates => 'Coordinates';
+  String get coordinates => 'Coordenadas';
 
   @override
-  String get processingSummaryTitle => 'Processing Summary';
+  String get processingSummaryTitle => 'Resumo de Processamento';
 
   @override
-  String get processingTime => 'Processing Time';
+  String get processingTime => 'Tempo de processamento';
 
   @override
-  String get successful => 'Successful';
+  String get successful => 'Sucesso';
 
   @override
-  String get failed => 'Failed';
+  String get failed => 'Falha';
 }

@@ -121,12 +121,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '远离';
+    return '离开这里';
   }
 
   @override
   String alertDirection(int bearing) {
-    return '轴承$bearing';
+    return '夹着... PLACEHOLDER_0..';
   }
 
   @override
@@ -214,12 +214,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return '由 $username 报告';
+    return '由_PLACEHOLDER_0___报导';
   }
 
   @override
-  String reportedAt(String timeAgo, Object time) {
-    return '已报告  阿广';
+  String reportedAt(String timeAgo) {
+    return '报告_PLACEHOLDER_0__';
   }
 
   @override
@@ -229,7 +229,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return '向反对方显示 :';
+    return '持械反对:_PLACEHOLDER_0_____________________';
   }
 
   @override
@@ -288,7 +288,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return '指向';
+    return '指向  _PLACEHOLDER_0__ (英语)';
   }
 
   @override
@@ -302,7 +302,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return '传出新的目击画面.';
+    return '[永久失效連結] [永久失效連結] [永久失效連結] 互联网档案馆的存檔,存档日期2013-07-01.';
   }
 
   @override
@@ -325,12 +325,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return '云盖:';
+    return '云盖曰: - 地点 - 地点';
   }
 
   @override
   String wind(num speed, String unit) {
-    return '风:';
+    return '风速:_PLACEHOLDER_0__PLACEHOLDER_1_';
   }
 
   @override
@@ -422,36 +422,36 @@ class AppLocalizationsZh extends AppLocalizations {
   String get verified => '已验证';
 
   @override
-  String get beepOnly => '仅报告';
+  String get beepOnly => '只鸣';
 
   @override
   String get reportOnly => '仅报告';
 
   @override
-  String get videoOnly => '只有视频';
+  String get videoOnly => '仅限视频';
 
   @override
-  String get imageOnly => '仅图像';
+  String get imageOnly => '只有图像';
 
   @override
-  String get mediaOnly => 'Media Only';
+  String get mediaOnly => '仅限媒体';
 
   @override
   String get timeJustNow => '刚才';
 
   @override
   String timeDaysAgo(int count) {
-    return '之前';
+    return '时间轴:';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '你刚才说';
+    return '早点说';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '时间轴:';
+    return '0米前的地图';
   }
 
   @override
@@ -482,41 +482,41 @@ class AppLocalizationsZh extends AppLocalizations {
   String get mufonCase => '毛里求斯 大小写';
 
   @override
-  String get mufonSighting => 'MUFON Sighting';
+  String get mufonSighting => '毛里求斯 观察';
 
   @override
-  String get mufonLightSighting => 'MUFON Light Sighting';
+  String get mufonLightSighting => 'MUFON 灯光观察';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sphere Sighting';
+  String get mufonSphereSighting => '木森球体观察';
 
   @override
-  String get mufonDiscSighting => 'MUFON Disc Sighting';
+  String get mufonDiscSighting => '毛里求斯 光碟观察';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Triangle Sighting';
+  String get mufonTriangleSighting => '毛里求斯 三角视线';
 
   @override
-  String get mufonCigarSighting => 'MUFON Cigar Sighting';
+  String get mufonCigarSighting => 'MUFON 雪茄观察';
 
   @override
-  String get mufonOvalSighting => 'MUFON Oval Sighting';
+  String get mufonOvalSighting => '木森奥华观察';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Rectangle Sighting';
+  String get mufonRectangleSighting => '毛里求斯 矩形监视';
 
   @override
-  String get mufonCylinderSighting => 'MUFON Cylinder Sighting';
+  String get mufonCylinderSighting => 'MUFON 圆柱视线';
 
   @override
-  String get mufonBoomerangSighting => 'MUFON Boomerang Sighting';
+  String get mufonBoomerangSighting => 'MUFON Boomerang 观察';
 
   @override
-  String get mufonStarlikeSighting => 'MUFON Starlike Sighting';
+  String get mufonStarlikeSighting => 'MUFON 星光照视';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return '细节';
+    return 'MUFON案 详细情况';
   }
 
   @override
@@ -565,7 +565,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return '分析:  已处理的媒体文件';
+    return '分析:_PLACEHOLDER_0_媒体文件已处理';
   }
 
   @override
@@ -704,7 +704,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ufoTypeUnknown => '未知';
 
   @override
-  String get ufoTypeBoomerang => ' Boom';
+  String get ufoTypeBoomerang => 'Boom';
 
   @override
   String get ufoTypeDiamond => '钻石';
@@ -758,7 +758,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get shapeLight => '光线';
 
   @override
-  String get shapeBoomerang => ' boom';
+  String get shapeBoomerang => 'boom';
 
   @override
   String get shapeDiamond => '钻石';
@@ -875,7 +875,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return '毛里求斯 案件数量';
+    return '毛里求斯 案件QQPLACEHOLDER_0___';
   }
 
   @override
@@ -910,12 +910,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '靠近   名称]';
+    return '靠近... PLACEHOLDER_0_ 靠近... PLACEHOLDER_ 1_';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '注释';
+    return '~PLACEHOLDER_0_评论';
   }
 
   @override
@@ -934,7 +934,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return '远离';
+    return '离开这里';
   }
 
   @override
@@ -979,7 +979,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return '页面   ( 总哔声)';
+    return '页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆';
   }
 
   @override
@@ -1117,7 +1117,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON  报告';
+    return '毛里求斯 报告';
   }
 
   @override
@@ -1140,7 +1140,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return '图像';
+    return '_PLACEHOLDER_0_图像';
   }
 
   @override
@@ -1148,7 +1148,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '再来点';
+    return '再来一点';
   }
 
   @override
@@ -1218,29 +1218,29 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ufoSightingAlt => '不明飞行物目击';
 
   @override
-  String get celestialDataTitle => 'Celestial Objects';
+  String get celestialDataTitle => '天体';
 
   @override
-  String get visiblePlanets => 'Visible Planets';
+  String get visiblePlanets => '可见行星';
 
   @override
-  String get locationDataTitle => 'Location Information';
+  String get locationDataTitle => '地点信息';
 
   @override
-  String get timezone => 'Timezone';
+  String get timezone => '时区';
 
   @override
-  String get coordinates => 'Coordinates';
+  String get coordinates => '坐标';
 
   @override
-  String get processingSummaryTitle => 'Processing Summary';
+  String get processingSummaryTitle => '处理摘要';
 
   @override
-  String get processingTime => 'Processing Time';
+  String get processingTime => '处理时间';
 
   @override
-  String get successful => 'Successful';
+  String get successful => '成功';
 
   @override
-  String get failed => 'Failed';
+  String get failed => '失败';
 }

@@ -121,12 +121,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '$distance から';
+    return '__PLACEHOLDER_0_ 離れて';
   }
 
   @override
   String alertDirection(int bearing) {
-    return '軸受け $bearing°';
+    return '軸受け_PLACEHOLDER_0__°';
   }
 
   @override
@@ -214,12 +214,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return '$username によるレポート';
+    return '$username による報告';
   }
 
   @override
-  String reportedAt(String timeAgo, Object time) {
-    return 'レポート';
+  String reportedAt(String timeAgo) {
+    return 'レポート ${timeAgo}_';
   }
 
   @override
@@ -229,7 +229,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return '対物への軸受け: $bearing°';
+    return 'オブジェクトへのベアリング:_PLACEHOLDER_0__°';
   }
 
   @override
@@ -288,7 +288,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'へのポインティング';
+    return '$direction へのポイント';
   }
 
   @override
@@ -302,7 +302,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return '先日は「$distance」と伝えました.';
+    return '新たな視力が報告されました_PLACEHOLDER_0__ 離れて.';
   }
 
   @override
@@ -325,12 +325,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'クラウドカバー:%';
+    return '雲カバー: $percent%の特長';
   }
 
   @override
   String wind(num speed, String unit) {
-    return '風:';
+    return '風:_PLACEHOLDER_0______${unit}_';
   }
 
   @override
@@ -422,7 +422,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get verified => 'プロフィール';
 
   @override
-  String get beepOnly => 'レポートのみ';
+  String get beepOnly => 'ビープのみ';
 
   @override
   String get reportOnly => 'レポートのみ';
@@ -434,24 +434,24 @@ class AppLocalizationsJa extends AppLocalizations {
   String get imageOnly => '画像のみ';
 
   @override
-  String get mediaOnly => 'Media Only';
+  String get mediaOnly => 'メディアのみ';
 
   @override
   String get timeJustNow => 'ただ今';
 
   @override
   String timeDaysAgo(int count) {
-    return 'd 前に';
+    return '__PLACEHOLDER_0_d 前に';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'h 前に';
+    return '__PLACEHOLDER_0_h 前に';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'm 前に';
+    return '__PLACEHOLDER_0_m 前に';
   }
 
   @override
@@ -482,41 +482,41 @@ class AppLocalizationsJa extends AppLocalizations {
   String get mufonCase => 'MUFONについて 導入事例';
 
   @override
-  String get mufonSighting => 'MUFON Sighting';
+  String get mufonSighting => 'MUFONについて スタイリング';
 
   @override
-  String get mufonLightSighting => 'MUFON Light Sighting';
+  String get mufonLightSighting => 'MUFONライトサイト';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sphere Sighting';
+  String get mufonSphereSighting => 'MUFON 球の視線';
 
   @override
-  String get mufonDiscSighting => 'MUFON Disc Sighting';
+  String get mufonDiscSighting => 'MUFONについて ディスクサイト';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Triangle Sighting';
+  String get mufonTriangleSighting => 'MUFONについて 三角形の視力';
 
   @override
-  String get mufonCigarSighting => 'MUFON Cigar Sighting';
+  String get mufonCigarSighting => 'MUFONシガーサイティング';
 
   @override
-  String get mufonOvalSighting => 'MUFON Oval Sighting';
+  String get mufonOvalSighting => 'MUFON楕円形の視認';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Rectangle Sighting';
+  String get mufonRectangleSighting => 'MUFONについて 長方形の観光';
 
   @override
-  String get mufonCylinderSighting => 'MUFON Cylinder Sighting';
+  String get mufonCylinderSighting => 'MUFONシリンダー 視認';
 
   @override
-  String get mufonBoomerangSighting => 'MUFON Boomerang Sighting';
+  String get mufonBoomerangSighting => 'MUFONのブーメランの視力';
 
   @override
-  String get mufonStarlikeSighting => 'MUFON Starlike Sighting';
+  String get mufonStarlikeSighting => 'MUFON スターライク 視線';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFONについて ケース # 詳細';
+    return 'MUFON ケース #${caseNumber}_';
   }
 
   @override
@@ -557,7 +557,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return '人がこの視線を確認した';
+    return '$count 人々はこの視線を確認しました';
   }
 
   @override
@@ -565,7 +565,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return '解析:  処理されたメディアファイル';
+    return '解析: $count メディアファイル(s) 処理';
   }
 
   @override
@@ -831,7 +831,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return '人がこの視線を確認している';
+    return '$count 人々はこの視線を確認しました';
   }
 
   @override
@@ -875,7 +875,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFONについて ケース #';
+    return 'MUFONについて ケース #${caseNumber}_';
   }
 
   @override
@@ -911,12 +911,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '名前';
+    return '${witnessText}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '$usernameコメント';
+    return '💬_PLACEHOLDER_0__コメント';
   }
 
   @override
@@ -924,7 +924,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '証人';
+    return '$count 証人';
   }
 
   @override
@@ -935,7 +935,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return '$distance から';
+    return '__PLACEHOLDER_0_ 離れて';
   }
 
   @override
@@ -981,7 +981,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'ページの先頭へ  ( 総ビープ) のページ';
+    return 'ページの ${currentPage}_ の ${totalPages}_ (${totalCount}_の総ビープ)';
   }
 
   @override
@@ -1119,7 +1119,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON  レポート';
+    return 'MUFON $classification レポート';
   }
 
   @override
@@ -1142,7 +1142,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return '画像';
+    return '__PLACEHOLDER_0_さんの画像';
   }
 
   @override
@@ -1150,7 +1150,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+ 以上';
+    return 'お問い合わせ';
   }
 
   @override
@@ -1220,29 +1220,29 @@ class AppLocalizationsJa extends AppLocalizations {
   String get ufoSightingAlt => 'UFO目撃';
 
   @override
-  String get celestialDataTitle => 'Celestial Objects';
+  String get celestialDataTitle => 'Celestialオブジェクト';
 
   @override
-  String get visiblePlanets => 'Visible Planets';
+  String get visiblePlanets => '可視惑星';
 
   @override
-  String get locationDataTitle => 'Location Information';
+  String get locationDataTitle => '所在地案内';
 
   @override
-  String get timezone => 'Timezone';
+  String get timezone => 'タイムゾーン';
 
   @override
-  String get coordinates => 'Coordinates';
+  String get coordinates => 'コーディネート';
 
   @override
-  String get processingSummaryTitle => 'Processing Summary';
+  String get processingSummaryTitle => '加工概要';
 
   @override
-  String get processingTime => 'Processing Time';
+  String get processingTime => '処理時間';
 
   @override
-  String get successful => 'Successful';
+  String get successful => '成功する';
 
   @override
-  String get failed => 'Failed';
+  String get failed => '失敗した';
 }

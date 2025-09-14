@@ -122,12 +122,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '$distance μακριά';
+    return '__PACHOLDER_0_ μακριά';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Διόπτευση $bearing°';
+    return 'Διόπτευση __PLACEHOLDER_0_°';
   }
 
   @override
@@ -223,8 +223,8 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String reportedAt(String timeAgo, Object time) {
-    return 'Αναφέρθηκε  Πριν';
+  String reportedAt(String timeAgo) {
+    return 'Αναφέρθηκε $timeAgo';
   }
 
   @override
@@ -234,7 +234,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return 'Διόπτευση προς αντικείμενο: °';
+    return 'Με σκοπό την ένσταση: $bearing°';
   }
 
   @override
@@ -296,7 +296,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Σημείο προς';
+    return 'Επισημαίνοντας στο $direction';
   }
 
   @override
@@ -310,7 +310,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'Μια νέα παρατήρηση αναφέρθηκε μακριά.';
+    return 'Μια νέα παρατήρηση αναφέρθηκε $distance μακριά.';
   }
 
   @override
@@ -334,12 +334,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Κάλυψη νεφών: %';
+    return 'Σύννεφο: __PLACEHOLDER_0_%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Άνεμος:';
+    return 'Άνεμος: ${speed}_PLACEHOLDER_1_';
   }
 
   @override
@@ -439,36 +439,36 @@ class AppLocalizationsEl extends AppLocalizations {
   String get verified => 'Επαληθευμένο';
 
   @override
-  String get beepOnly => 'Μόνο αναφορά';
+  String get beepOnly => 'Μόνο μπιπ';
 
   @override
   String get reportOnly => 'Μόνο αναφορά';
 
   @override
-  String get videoOnly => 'μόνο βίντεο';
+  String get videoOnly => 'Μόνο βίντεο';
 
   @override
-  String get imageOnly => 'μόνο εικόνα';
+  String get imageOnly => 'Μόνο εικόνα';
 
   @override
-  String get mediaOnly => 'Media Only';
+  String get mediaOnly => 'Μόνο μέσα ενημέρωσης';
 
   @override
   String get timeJustNow => 'μόλις τώρα';
 
   @override
   String timeDaysAgo(int count) {
-    return 'd πριν';
+    return '__PLACEHOLDER_0_D πριν';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'h πριν';
+    return '__PLACEHOLDER_0_h πριν';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'm πριν';
+    return '__PLACHOLDER_0_m Πριν';
   }
 
   @override
@@ -500,41 +500,41 @@ class AppLocalizationsEl extends AppLocalizations {
   String get mufonCase => 'ΜΟΥΦΟΝ Υπόθεση';
 
   @override
-  String get mufonSighting => 'MUFON Sighting';
+  String get mufonSighting => 'ΜΟΥΦΟΝ Ορατότητα';
 
   @override
-  String get mufonLightSighting => 'MUFON Light Sighting';
+  String get mufonLightSighting => 'MUFON Φωτεινή Ματιά';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sphere Sighting';
+  String get mufonSphereSighting => 'Ματιά Σφαίρας MUFON';
 
   @override
-  String get mufonDiscSighting => 'MUFON Disc Sighting';
+  String get mufonDiscSighting => 'ΜΟΥΦΟΝ Δίσκος Αξιοθέατα';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Triangle Sighting';
+  String get mufonTriangleSighting => 'ΜΟΥΦΟΝ Ορατότητα τριγώνου';
 
   @override
-  String get mufonCigarSighting => 'MUFON Cigar Sighting';
+  String get mufonCigarSighting => 'MUFON Εντοπισμός πούρων';
 
   @override
-  String get mufonOvalSighting => 'MUFON Oval Sighting';
+  String get mufonOvalSighting => 'Οβάλ θέαμα MUFON';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Rectangle Sighting';
+  String get mufonRectangleSighting => 'ΜΟΥΦΟΝ Ορθόγωνη όραση';
 
   @override
-  String get mufonCylinderSighting => 'MUFON Cylinder Sighting';
+  String get mufonCylinderSighting => 'Εντοπισμός κυλίνδρων MUFON';
 
   @override
-  String get mufonBoomerangSighting => 'MUFON Boomerang Sighting';
+  String get mufonBoomerangSighting => 'MUFON Boomerang Αξιοθέατα';
 
   @override
-  String get mufonStarlikeSighting => 'MUFON Starlike Sighting';
+  String get mufonStarlikeSighting => 'Η Αστροειδής Ματιά του MUFON';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'ΜΟΥΦΟΝ Υπόθεση # Λεπτομέρειες';
+    return 'Υπόθεση MUFON #__PLACEHOLDER_0_ Λεπτομέρειες';
   }
 
   @override
@@ -576,7 +576,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return 'οι άνθρωποι επιβεβαίωσαν αυτή την παρατήρηση';
+    return '__PLACEHOLDER_0_ Οι άνθρωποι επιβεβαίωσαν αυτή την παρατήρηση';
   }
 
   @override
@@ -584,7 +584,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Ανάλυση:  επεξεργασμένο αρχείο( α) μέσων';
+    return 'Ανάλυση: __PLACEHOLDER_0_ media file(s) processed';
   }
 
   @override
@@ -852,7 +852,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return 'άνθρωποι έχουν επιβεβαιώσει αυτή την παρατήρηση';
+    return '__PLACEHOLDER_0_ Οι άνθρωποι έχουν επιβεβαιώσει αυτή την παρατήρηση';
   }
 
   @override
@@ -899,7 +899,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'ΜΟΥΦΟΝ Υπόθεση #';
+    return 'ΜΟΥΦΟΝ Υπόθεση #$caseNumber';
   }
 
   @override
@@ -938,12 +938,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return 'κοντά  Όνομα';
+    return '__PLACHOLDER_0___PLACHOLDER_1_';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '💬  σχολίασε';
+    return '💬 $username σχολίασε';
   }
 
   @override
@@ -951,7 +951,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return 'μαρτύρων';
+    return '__PLACEHOLDER_0_ μάρτυρες';
   }
 
   @override
@@ -962,7 +962,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return 'μακριά';
+    return '__PACHOLDER_0_ μακριά';
   }
 
   @override
@@ -1008,7 +1008,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Σελίδα  του';
+    return 'Σελίδα _${currentPage}__PLACEHOLDER_1_ (__PLACEHOLDER_2_ σύνολο μπιπ)';
   }
 
   @override
@@ -1146,7 +1146,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON  Έκθεση';
+    return 'Έκθεση MUFON __PLACEHOLDER_0_';
   }
 
   @override
@@ -1169,7 +1169,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return 'εικόνες';
+    return '__PLACEHOLDER_0_ εικόνες';
   }
 
   @override
@@ -1177,7 +1177,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+  περισσότερα';
+    return '+___PLACHOLDER_0_ more';
   }
 
   @override
@@ -1249,29 +1249,29 @@ class AppLocalizationsEl extends AppLocalizations {
   String get ufoSightingAlt => 'Εθεάθη UFO';
 
   @override
-  String get celestialDataTitle => 'Celestial Objects';
+  String get celestialDataTitle => 'Ουράνια αντικείμενα';
 
   @override
-  String get visiblePlanets => 'Visible Planets';
+  String get visiblePlanets => 'Ορατοί Πλανήτες';
 
   @override
-  String get locationDataTitle => 'Location Information';
+  String get locationDataTitle => 'Πληροφορίες τοποθεσίας';
 
   @override
-  String get timezone => 'Timezone';
+  String get timezone => 'Ζώνη ώρας';
 
   @override
-  String get coordinates => 'Coordinates';
+  String get coordinates => 'Συντεταγμένες';
 
   @override
-  String get processingSummaryTitle => 'Processing Summary';
+  String get processingSummaryTitle => 'Περίληψη επεξεργασίας';
 
   @override
-  String get processingTime => 'Processing Time';
+  String get processingTime => 'Χρόνος επεξεργασίας';
 
   @override
-  String get successful => 'Successful';
+  String get successful => 'Επιτυχής';
 
   @override
-  String get failed => 'Failed';
+  String get failed => 'Αποτυχία';
 }

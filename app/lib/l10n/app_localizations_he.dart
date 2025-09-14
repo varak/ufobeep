@@ -121,12 +121,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return 'משם';
+    return 'שם הסרטון: PLACEHOLDER_0_Out_';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'המונחים:';
+    return 'תגית: PLACEHOLDER_0_ °';
   }
 
   @override
@@ -217,12 +217,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'פורסם על ידי [username]';
+    return 'תגית: PLACEHOLDER_0_____';
   }
 
   @override
-  String reportedAt(String timeAgo, Object time) {
-    return 'דו\"ח Ago';
+  String reportedAt(String timeAgo) {
+    return 'תגית: PLACEHOLDER_0______';
   }
 
   @override
@@ -232,7 +232,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return 'המונחים:';
+    return 'תגית:_PLACEHOLDER_0_ °';
   }
 
   @override
@@ -291,7 +291,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'המונחים:';
+    return 'תגית: PLACEHOLDER_0_________';
   }
 
   @override
@@ -305,7 +305,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'מראית עין חדשה דווחה מרחוק.';
+    return 'מראה חדש דווח -_PLACEHOLDER_0____.';
   }
 
   @override
@@ -328,12 +328,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'כיסוי ענן:%';
+    return 'כיסוי ענן: PLACEHOLDER_0_%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'רוח: [מהירות]';
+    return 'רוח:_PLACEHOLDER_0___${unit}_____________________________________________________';
   }
 
   @override
@@ -429,36 +429,36 @@ class AppLocalizationsHe extends AppLocalizations {
   String get verified => 'מאומת';
 
   @override
-  String get beepOnly => 'דיווח רק';
+  String get beepOnly => 'להיות רק';
 
   @override
   String get reportOnly => 'דיווח רק';
 
   @override
-  String get videoOnly => 'וידאו רק';
+  String get videoOnly => 'וידאו בלבד';
 
   @override
-  String get imageOnly => 'תמונה רק';
+  String get imageOnly => 'צילום בלבד';
 
   @override
-  String get mediaOnly => 'Media Only';
+  String get mediaOnly => 'רק מדיה';
 
   @override
   String get timeJustNow => 'רק עכשיו';
 
   @override
   String timeDaysAgo(int count) {
-    return 'לפני הספירה';
+    return 'שם הסרטון: PLACEHOLDER_0__d ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'לפני הספירה';
+    return 'שם הסרטון: PLACEHOLDER_0_h ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'לפני הספירה';
+    return 'שם הסרטון: PLACEHOLDER_0_m ago';
   }
 
   @override
@@ -489,19 +489,19 @@ class AppLocalizationsHe extends AppLocalizations {
   String get mufonCase => 'MUFON מקרה';
 
   @override
-  String get mufonSighting => 'MUFON Sighting';
+  String get mufonSighting => 'MUFON עקבו';
 
   @override
-  String get mufonLightSighting => 'MUFON Light Sighting';
+  String get mufonLightSighting => 'המונחים:';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sphere Sighting';
+  String get mufonSphereSighting => 'MUFON Sighting';
 
   @override
-  String get mufonDiscSighting => 'MUFON Disc Sighting';
+  String get mufonDiscSighting => 'MUFON אכזבה';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Triangle Sighting';
+  String get mufonTriangleSighting => 'MUFON משולש';
 
   @override
   String get mufonCigarSighting => 'MUFON Cigar Sighting';
@@ -516,14 +516,14 @@ class AppLocalizationsHe extends AppLocalizations {
   String get mufonCylinderSighting => 'MUFON Cylinder Sighting';
 
   @override
-  String get mufonBoomerangSighting => 'MUFON Boomerang Sighting';
+  String get mufonBoomerangSighting => 'MUFON בומרנג Sighting';
 
   @override
-  String get mufonStarlikeSighting => 'MUFON Starlike Sighting';
+  String get mufonStarlikeSighting => 'MUFON Star Like Sighting';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON המונחים:';
+    return 'MUFON Case #_PLACEHOLDER_0__פרטים';
   }
 
   @override
@@ -564,7 +564,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return 'אנשים אישרו את המראה הזה';
+    return '_PLACEHOLDER_0__ אנשים אישרו את המראה הזה';
   }
 
   @override
@@ -572,7 +572,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'ניתוח: קובץ מדיה (s) מעובד';
+    return 'ניתוח:_PLACEHOLDER_0___קובץ מדיה(s) מעובד';
   }
 
   @override
@@ -840,7 +840,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return 'אנשים אישרו את המראה הזה';
+    return '_PLACEHOLDER_0__ אנשים אישרו את המראה הזה';
   }
 
   @override
@@ -884,7 +884,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON המונחים:';
+    return 'MUFON מקרה #${caseNumber}____________________________________';
   }
 
   @override
@@ -921,12 +921,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return 'קרוב ל-[[1948]] שם';
+    return 'שם הסרטון: PLACEHOLDER_0___b_${locationName}__________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return 'המונחים: 💬';
+    return '💬_PLACEHOLDER_0_ commented';
   }
 
   @override
@@ -934,7 +934,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return 'עדים';
+    return 'שם הסרטון: PLACEHOLDER_0_ Witness';
   }
 
   @override
@@ -945,7 +945,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return 'משם';
+    return 'שם הסרטון: PLACEHOLDER_0_Out_';
   }
 
   @override
@@ -990,7 +990,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'עמוד הבית > שם הסרטון: [totalPages]';
+    return 'דף הבית > PLACEHOLDER_0____${totalPages}______________________________________${totalCount}_ Total beeps)';
   }
 
   @override
@@ -1128,7 +1128,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'המונחים: דיווח';
+    return 'MUFON_PLACEHOLDER_0_ Report';
   }
 
   @override
@@ -1151,7 +1151,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return 'תמונות';
+    return 'PLACEHOLDER_0_תמונות';
   }
 
   @override
@@ -1159,7 +1159,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return 'תגית: more';
+    return '+_${count}__________________________________________________';
   }
 
   @override
@@ -1229,29 +1229,29 @@ class AppLocalizationsHe extends AppLocalizations {
   String get ufoSightingAlt => 'עב\"מ';
 
   @override
-  String get celestialDataTitle => 'Celestial Objects';
+  String get celestialDataTitle => 'אובייקטים דיגיטליים';
 
   @override
-  String get visiblePlanets => 'Visible Planets';
+  String get visiblePlanets => 'כוכבי לכת';
 
   @override
-  String get locationDataTitle => 'Location Information';
+  String get locationDataTitle => 'מידע מיקום';
 
   @override
   String get timezone => 'Timezone';
 
   @override
-  String get coordinates => 'Coordinates';
+  String get coordinates => 'לתאם';
 
   @override
-  String get processingSummaryTitle => 'Processing Summary';
+  String get processingSummaryTitle => 'המונחים:';
 
   @override
-  String get processingTime => 'Processing Time';
+  String get processingTime => 'עיבוד זמן';
 
   @override
-  String get successful => 'Successful';
+  String get successful => 'הצלחה מוצלחת';
 
   @override
-  String get failed => 'Failed';
+  String get failed => 'נכשל';
 }

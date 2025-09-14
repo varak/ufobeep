@@ -121,12 +121,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '$distance weg';
+    return '__PLACEHOLDER_0_ weg';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Lager °';
+    return 'Lager $bearing°';
   }
 
   @override
@@ -220,12 +220,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'Gemeldet durch $username';
+    return 'Bericht $username';
   }
 
   @override
-  String reportedAt(String timeAgo, Object time) {
-    return 'Gemeldet ';
+  String reportedAt(String timeAgo) {
+    return 'Bericht $timeAgo';
   }
 
   @override
@@ -235,7 +235,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return 'Objektträger: °';
+    return 'Objektträger: $bearing°';
   }
 
   @override
@@ -296,7 +296,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Auf';
+    return 'Auf $direction';
   }
 
   @override
@@ -310,7 +310,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'Eine neue Sichtung wurde  entfernt gemeldet.';
+    return 'Eine neue Sichtung wurde __PLACEHOLDER_0_ weg gemeldet.';
   }
 
   @override
@@ -334,12 +334,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Cloud Cover: %';
+    return 'Cloud Cover: __PLACEHOLDER_0_%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Wind:';
+    return 'Wind: $speed ${unit}_';
   }
 
   @override
@@ -437,36 +437,36 @@ class AppLocalizationsDe extends AppLocalizations {
   String get verified => 'Verifiziert';
 
   @override
-  String get beepOnly => 'Nur';
+  String get beepOnly => 'Nur seufzen';
 
   @override
   String get reportOnly => 'Nur';
 
   @override
-  String get videoOnly => 'nur';
+  String get videoOnly => 'Nur Video';
 
   @override
-  String get imageOnly => 'nur';
+  String get imageOnly => 'Nur Bilder';
 
   @override
-  String get mediaOnly => 'Media Only';
+  String get mediaOnly => 'Nur Medien';
 
   @override
   String get timeJustNow => 'jetzt';
 
   @override
   String timeDaysAgo(int count) {
-    return 'vorher';
+    return '__PLACEHOLDER_0_d vor';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'vorher';
+    return '__PLACEHOLDER_0_h vor';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'vorher';
+    return '__PLACEHOLDER_0_m vor';
   }
 
   @override
@@ -498,41 +498,41 @@ class AppLocalizationsDe extends AppLocalizations {
   String get mufonCase => 'MUFON Rechtssache';
 
   @override
-  String get mufonSighting => 'MUFON Sighting';
+  String get mufonSighting => 'MUFON Sichtung';
 
   @override
-  String get mufonLightSighting => 'MUFON Light Sighting';
+  String get mufonLightSighting => 'MUFON Lichtblick';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sphere Sighting';
+  String get mufonSphereSighting => 'MUFON Sphäre Sicht';
 
   @override
   String get mufonDiscSighting => 'MUFON Disc Sighting';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Triangle Sighting';
+  String get mufonTriangleSighting => 'MUFON Dreiecksblick';
 
   @override
-  String get mufonCigarSighting => 'MUFON Cigar Sighting';
+  String get mufonCigarSighting => 'MUFON Zigarrenbeobachtung';
 
   @override
-  String get mufonOvalSighting => 'MUFON Oval Sighting';
+  String get mufonOvalSighting => 'MUFON Oval Sehenswürdigkeiten';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Rectangle Sighting';
+  String get mufonRectangleSighting => 'MUFON Rechteckblick';
 
   @override
-  String get mufonCylinderSighting => 'MUFON Cylinder Sighting';
+  String get mufonCylinderSighting => 'MUFON Zylinder Sicht';
 
   @override
-  String get mufonBoomerangSighting => 'MUFON Boomerang Sighting';
+  String get mufonBoomerangSighting => 'MUFON Boomerang Sicht';
 
   @override
-  String get mufonStarlikeSighting => 'MUFON Starlike Sighting';
+  String get mufonStarlikeSighting => 'MUFON Starlike Sehenswürdigkeiten';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON Fall # Details';
+    return 'MUFON Fall #$caseNumber Details';
   }
 
   @override
@@ -573,7 +573,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return 'die leute bestätigten diese sichtung';
+    return '$count Personen haben diese Sichtweise bestätigt';
   }
 
   @override
@@ -581,7 +581,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Analyse:  Mediendatei(en) verarbeitet';
+    return 'Analyse: __PLACEHOLDER_0_ Mediendatei(en) verarbeitet';
   }
 
   @override
@@ -849,7 +849,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return 'die menschen haben diese sichtweise bestätigt';
+    return '__PLACEHOLDER_0_ Menschen haben diese Sichtweise bestätigt';
   }
 
   @override
@@ -894,7 +894,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Rechtssache';
+    return 'MUFON Rechtssache #$caseNumber';
   }
 
   @override
@@ -933,12 +933,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return 'in der Nähe von';
+    return '__PLACEHOLDER_0_ in der Nähe ${locationName}_';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '💬 $username kommentiert';
+    return '💬 __PLACEHOLDER_0_ kommentiert';
   }
 
   @override
@@ -946,7 +946,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return 'zeugen';
+    return '__PLACEHOLDER_0_ Zeugen';
   }
 
   @override
@@ -957,7 +957,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return 'weg';
+    return '__PLACEHOLDER_0_ weg';
   }
 
   @override
@@ -1003,7 +1003,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Seite  von  ( total beeps)';
+    return 'Seite $currentPage von $totalPages (___PLACEHOLDER_2_ insgesamt beeps)';
   }
 
   @override
@@ -1142,7 +1142,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON  Bericht';
+    return 'MUFON $classification Bericht';
   }
 
   @override
@@ -1165,7 +1165,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return 'bilder';
+    return '__PLACEHOLDER_0_ Bilder';
   }
 
   @override
@@ -1173,7 +1173,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+ mehr';
+    return '+__PLACEHOLDER_0_ mehr';
   }
 
   @override
@@ -1244,29 +1244,29 @@ class AppLocalizationsDe extends AppLocalizations {
   String get ufoSightingAlt => 'UFO Sehenswürdigkeiten';
 
   @override
-  String get celestialDataTitle => 'Celestial Objects';
+  String get celestialDataTitle => 'Keltische Objekte';
 
   @override
-  String get visiblePlanets => 'Visible Planets';
+  String get visiblePlanets => 'Sichtbare Planeten';
 
   @override
   String get locationDataTitle => 'Location Information';
 
   @override
-  String get timezone => 'Timezone';
+  String get timezone => 'Zeitzone';
 
   @override
-  String get coordinates => 'Coordinates';
+  String get coordinates => 'Koordinaten';
 
   @override
-  String get processingSummaryTitle => 'Processing Summary';
+  String get processingSummaryTitle => 'Zusammenfassung der Verarbeitung';
 
   @override
-  String get processingTime => 'Processing Time';
+  String get processingTime => 'Bearbeitungszeit';
 
   @override
-  String get successful => 'Successful';
+  String get successful => 'Erfolgreich';
 
   @override
-  String get failed => 'Failed';
+  String get failed => 'Versäumt';
 }
