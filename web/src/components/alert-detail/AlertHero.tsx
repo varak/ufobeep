@@ -81,6 +81,17 @@ export default function AlertHero({ alert, openImageIndex, locale = 'en' }: Aler
             </h1>
             
             {/* Content type indicator - only show "witness report" when no media to explain lack */}
+            {(() => {
+              const beepOnlyCondition = !hasMedia && !hasDescription;
+              const reportOnlyCondition = !hasMedia && hasDescription;
+              console.log('Condition debug:', {
+                beepOnlyCondition,
+                reportOnlyCondition,
+                hasMedia,
+                hasDescription
+              });
+              return null;
+            })()}
             {!hasMedia && !hasDescription && (
               <div className="inline-flex items-center gap-2 bg-text-tertiary/10 text-text-tertiary px-3 py-1 rounded-full text-sm font-medium border border-text-tertiary/20">
                 <span>📡</span>
