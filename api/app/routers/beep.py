@@ -409,13 +409,11 @@ async def get_alert_by_id(
                 except:
                     enrichment = {}
 
-            # Try to get location name from multiple sources
-            location_name = row.get("location_name")  # First try database field
-            if not location_name and enrichment and isinstance(enrichment, dict):
+            location_name = "Unknown Location"
+            if enrichment and isinstance(enrichment, dict):
                 location_name = enrichment.get("geocoding", {}).get("location_name") or \
-                               enrichment.get("location_name")
-            if not location_name:
-                location_name = "Unknown Location"
+                               enrichment.get("location_name") or \
+                               "Unknown Location"
 
             # Generate title if missing (especially for MUFON)
             title = row["title"]
