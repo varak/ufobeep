@@ -76,8 +76,10 @@ export default function AlertsMap({
     const PopupContent = () => {
       const truncateDescription = (desc: string | null, maxWords = 400) => {
         if (!desc) return ''
-        const words = desc.split(' ')
-        if (words.length <= maxWords) return desc
+        // Remove the embedded location line from MUFON descriptions
+        let cleanDesc = desc.replace(/📍\s*Location:\s*[^\n]+\n?/g, '').trim()
+        const words = cleanDesc.split(' ')
+        if (words.length <= maxWords) return cleanDesc
         return words.slice(0, maxWords).join(' ') + '...'
       }
 
