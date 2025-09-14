@@ -917,12 +917,12 @@ def extract_and_import_mufon(date_str):
                         # Generate SEO-friendly slug using shared generator
                         alert_data_for_slug = {
                             "id": alert_id,
-                            "title": f"MUFON {classification['type'].title()} UFO Sighting Report" if classification['confidence'] >= 0.3 else "MUFON UFO Sighting Report",
+                            "title": f"MUFON {classification['type'].title()} Sighting Report" if classification['confidence'] >= 0.5 else "MUFON Sighting Report",
                             "created_at": occurred_at_iso or date_posted_iso or datetime.now(timezone.utc).isoformat(),
                             "location": {"name": location},
                             "source": "mufon",
                             "short_url": None,  # Will be generated
-                            "shape": classification['type'] if classification['confidence'] >= 0.3 else None
+                            "shape": classification['type'] if classification['confidence'] >= 0.5 else None
                         }
                         
                         # Generate SEO slug for multiple languages
@@ -970,7 +970,7 @@ def extract_and_import_mufon(date_str):
                         
                         # Prepare alert data with correct API structure
                         # Title: Add "MUFON Report" for proper attribution
-                        if classification['confidence'] >= 0.2:
+                        if classification['confidence'] >= 0.5:
                             title = f"MUFON {classification['type'].title()} UFO Sighting Report"
                         else:
                             title = "MUFON UFO Sighting Report"
@@ -992,7 +992,7 @@ def extract_and_import_mufon(date_str):
                             "date_posted": date_posted_iso,  # Populate date_posted field
                             "occurred_at": occurred_at_iso,  # Include the parsed occurrence timestamp
                             "report_url": f"https://mufon.com/case/{real_case_id}",  # Direct MUFON case URL
-                            "shape": classification['type'] if classification['confidence'] > 0.3 else None,  # UFO shape
+                            "shape": classification['type'] if classification['confidence'] >= 0.5 else None,  # UFO shape
                             "duration": None  # Duration not available in MUFON data currently
                         }
                         
@@ -1033,7 +1033,7 @@ def extract_and_import_mufon(date_str):
                             "has_media": len(media_files) > 0,
                             # SEO slug data
                             "seo_slug_en": english_slug,  # Store generated slug for SEO
-                            "shape": classification['type'] if classification['confidence'] >= 0.3 else None,
+                            "shape": classification['type'] if classification['confidence'] >= 0.5 else None,
                             # Hide widgets for MUFON alerts
                             "hide_witness_widget": True,
                             "hide_location_widget": True

@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Leaflet map styles (for AlertsMap) */
+@import 'leaflet/dist/leaflet.css';
+
 /* Leaflet map container styles */
 .leaflet-container {
   width: 100%;

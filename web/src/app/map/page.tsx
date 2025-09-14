@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import AlertsMap from '@/components/AlertsMap'
+import dynamic from 'next/dynamic'
+const AlertsMap = dynamic(() => import('@/components/AlertsMap'), { ssr: false })
 import Link from 'next/link'
 
 interface Alert {
@@ -77,4 +78,3 @@ export default function MapPage() {
     </main>
   )
 }
-
