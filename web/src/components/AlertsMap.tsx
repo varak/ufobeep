@@ -113,7 +113,7 @@ export default function AlertsMap({
 
       const displayAlert = fullAlert || alert
 
-      const truncateDescription = (desc: string | null, maxWords = 400) => {
+      const truncateDescription = (desc: string | null, maxWords = 300) => {
         if (!desc) return ''
         // Remove the embedded location line from MUFON descriptions
         let cleanDesc = desc.replace(/📍\s*Location:\s*[^\n]+\n?/g, '').trim()
@@ -185,8 +185,10 @@ export default function AlertsMap({
 
           <p className="text-gray-600 text-xs mb-2">
             {truncateDescription(displayAlert.description)}
-            {displayAlert.description && displayAlert.description.split(' ').length > 400 && (
-              <span className="text-blue-600 cursor-pointer ml-1">see full report</span>
+            {displayAlert.description && displayAlert.description.split(' ').length > 300 && (
+              <a
+                href={`/alert/${displayAlert.id || alert.id}`}
+                className="text-blue-600 cursor-pointer ml-1">see full report</a>
             )}
           </p>
 
@@ -201,15 +203,7 @@ export default function AlertsMap({
           <div className="mt-2">
             <a
               className="text-blue-600 underline text-xs"
-              href={`/beep/${currentLocale}/${getAlertSlug({
-                id: displayAlert.id || alert.id,
-                title: displayAlert.title,
-                created_at: displayAlert.created_at,
-                location: displayAlert.location,
-                reporter_username: displayAlert.username,
-                description: displayAlert.description,
-                source: displayAlert.source
-              }, currentLocale)}`}
+              href={`/alert/${displayAlert.id || alert.id}`}
             >
               View details →
             </a>
