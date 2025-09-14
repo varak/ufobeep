@@ -27,7 +27,15 @@ export class AlertTitleUtils {
    * Generate a contextual title for an alert based on available data
    */
   static getContextualTitle(alert: Alert, t?: (key: string) => string): string {
-    // If database has a title, check if it needs translation
+    // Handle UFOBeep alerts - ALWAYS use proper title
+    if (alert.reporter_username !== 'MUFON') {
+      if (t) {
+        return `UFOBeep ${t('ufo')} ${t('alert')}`;
+      }
+      return 'UFOBeep UFO Alert';
+    }
+
+    // Handle MUFON alerts - check for existing title first
     if (alert.title && alert.title.trim().length > 0) {
       // Handle MUFON titles: "MUFON Triangle Sighting" → "MUFON [Translated Shape] [Translated Sighting Report]"
       if (alert.title.startsWith('MUFON ') && t) {
@@ -45,23 +53,8 @@ export class AlertTitleUtils {
         }
       }
 
-      // Handle UFOBeep titles: "UFOBeep Alert" → "UFOBeep [Translated UFO] [Translated Alert]"
-      if (alert.title === 'UFOBeep Alert' && t) {
-        return `UFOBeep ${t('ufo')} ${t('alert')}`;
-      }
-
-      // Default: return as-is for other titles
+      // Return MUFON title as-is if it exists
       return alert.title;
-    }
-    
-    // If user provided description, use first few words as title
-    if (alert.description && alert.description.trim().length > 0) {
-      const words = alert.description.trim().split(' ');
-      if (words.length <= 4) {
-        return alert.description;
-      } else {
-        return `${words.slice(0, 4).join(' ')}...`;
-      }
     }
     
     // Check if alert has media
