@@ -1,7 +1,7 @@
 {
   "alertsTitle": "Nearby Alerts",
-  "alertDistance": "uzaklığı:",
-  "alertDirection": "{t}",
+  "alertDistance": "{distance} away",
+  "alertDirection": "Page {bearing}°",
   "beepExplain": "Yakındaki bekçileri gördüğünüzü ve uyarmayı yakalayın.",
   "beepSent": "Beep sent",
   "beepSentWithUrl": "Beep başarıyla gönderildi",

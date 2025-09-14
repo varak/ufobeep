@@ -1,7 +1,7 @@
 {
   "alertsTitle": "Waarschuwingen nabijgelegen",
-  "alertDistance": "{afstand} afstand",
-  "alertDirection": "Lager {lager}°",
+  "alertDistance": "{distance}_ weg",
+  "alertDirection": "__PLAATSHOLDER_0__°",
   "beepExplain": "Neem wat je ziet en waarschuw de bewakers in de buurt.",
   "beepSent": "Piep verzonden",
   "beepSentWithUrl": "Beep succesvol verzonden",

@@ -37,7 +37,7 @@
   "alertsTitle": "تنبيهات قريبة",
   "noAlerts": "لا تنبيهات قريبة بعد.",
   "pullToRefresh": "سحب لتنعش",
-  "alertDistance": "ابتعد",
+  "alertDistance": "_",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "{bearing}°",
+  "alertDirection": "-",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "الحصول على الميكروفون للحصول على الفيديو بالصوت.",
   "openSettings": "الأطر المفتوحة",
   "alertDetailTitle": "تفاصيل النظر",
-  "reportedBy": "Reported by {username}",
+  "reportedBy": "Reported by __PLACEHOLDER_0",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Reported {time}",
+  "reportedAt": "Reported_PLACEHOLDER_0",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "اعتراض: {bearing}°",
+  "bearingToObject": "اعتراض:",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Pilot Mode",
   "compassStandardDescription": "العنوان الأساسي والملاحة",
   "compassPilotDescription": "الملاحة المتقدمة مع اتفاق التجارة الحرة والمبادرة",
-  "pointingTo": "Pointing to",
+  "pointingTo": "نشير إلى",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -170,7 +170,7 @@
   "temperature": "درجة الحرارة",
   "pushBodyWitness": "المستعمل أكد أنهم يرون نفس الجسم.",
   "weather": "الطقس",
-  "cloudCover": "",
+  "cloudCover": "غطاء السحاب: _",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Wind:",
+  "wind": "الفائز: {speed}__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -221,10 +221,11 @@
   "noAlertsFound": "لا تنبيهات مطابقة",
   "alertsFilterHelp": "حاول تعديل مرشحيك لرؤية المزيد من النتائج",
   "verified": "مصدق عليه",
-  "beepOnly": "التقرير فقط",
+  "beepOnly": "Beep فقط",
   "reportOnly": "التقرير فقط",
   "videoOnly": "الفيديو فقط",
-  "imageOnly": "الصورة فقط",
+  "imageOnly": "التصوير فقط",
+  "mediaOnly": "وسائط الإعلام فقط",
   "timeJustNow": "الآن",
   "timeDaysAgo": "قبل",
   "@timeDaysAgo": {
@@ -235,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "منذ",
+  "timeHoursAgo": "قبل",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "منذ",
+  "timeMinutesAgo": "_BAR_",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +263,18 @@
   "filteredSuffix": "ممتلئة",
   "detailsTitle": "التفاصيل",
   "mufonCase": "MUFON القضية",
-  "mufonCaseDetailsTitle": "MUFON Case # details",
+  "mufonSighting": "MUFON البصر",
+  "mufonLightSighting": "مصارعة الضوء",
+  "mufonSphereSighting": "MUFON Sphere Sighting",
+  "mufonDiscSighting": "MUFON مقر القيادة",
+  "mufonTriangleSighting": "MUFON المثلث",
+  "mufonCigarSighting": "مصارعة السيجار",
+  "mufonOvalSighting": "MUFON Oval Sighting",
+  "mufonRectangleSighting": "MUFON Rectangle Sighting",
+  "mufonCylinderSighting": "MUFON Cylinder Sighting",
+  "mufonBoomerangSighting": "MFON Boomerang Sighting",
+  "mufonStarlikeSighting": "(مافون ستار)",
+  "mufonCaseDetailsTitle": "MUFON Case #_PLACEHOLDER_0_تفاصيل",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -283,7 +295,7 @@
   "unknownLocation": "مكان مجهول",
   "locationUnknown": "الموقع غير معروف",
   "witnessesLabel": "الشهود",
-  "witnessesCountMessage": "الناس أكدوا هذا المشاهد",
+  "witnessesCountMessage": "الناس أكدوا هذا",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -293,7 +305,7 @@
     }
   },
   "photoAnalysisTitle": "تحليل الصور",
-  "mediaItemsProcessed": "Analysis:  media file(s) processed",
+  "mediaItemsProcessed": "Analysis: {count}media file(s) processed",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -389,7 +401,7 @@
   "whyReportToMufon": "لماذا نبلغ (مافون)؟?",
   "openMufonReport": "مفتوح التقرير",
   "confirmedWitness": "لقد أكدت هذا المشهد",
-  "witnessesHaveConfirmed": "الناس أكدوا هذا المشهد",
+  "witnessesHaveConfirmed": "الناس أكدوا هذا",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -428,9 +440,9 @@
   "notificationChannelAlerts": "UFOBeep Alerts",
   "notificationChannelAlertsDesc": "الإخطارات المتعلقة بأجهزة الإنذار بالأشعة فوق البنفسجية",
   "notificationSightingTitle": "UFO البصر",
-  "notificationSightingUrgent": "  URGENT UFO البصر",
-  "notificationSightingEmergency": "  EMERGENCY UFO البصر",
-  "notificationSightingBody": "قرب موقع الاسم",
+  "notificationSightingUrgent": "URGENT UFO البصر",
+  "notificationSightingEmergency": "EMERGENCY UFO البصر",
+  "notificationSightingBody": "_BAR_ _BAR_ _BAR_",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -443,7 +455,7 @@
       }
     }
   },
-  "notificationCommentTitle": "💬 {username} commented",
+  "notificationCommentTitle": "💬 __PLACEHOLDER_0 علق",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -453,7 +465,7 @@
     }
   },
   "notificationWitnessText": "مشاهدة جديدة",
-  "notificationWitnessTextMultiple": "الشهود",
+  "notificationWitnessTextMultiple": "_BAR_ _BAR_ _BAR_",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -464,7 +476,7 @@
   },
   "notificationActionSnooze": "Snooze 1h",
   "notificationActionDismiss": "الانصراف",
-  "notificationDistance": "ابتعد",
+  "notificationDistance": "_",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -486,12 +498,12 @@
   "shareAlert": "تحذير",
   "previousPage": "سابقا",
   "nextPage": "التالي",
-  "pageOf": "of  ( total beeps)",
+  "pageOf": "Page {currentPage}______________BAR_ _BAR_",
   "heroTagline": "الحصول على تنبيهات عندما يذهب خارج وانظر إلى ما يصل",
   "heroDescription": "لا تفوتني رؤية أخرى الحصول على إنذارات في الوقت الحقيقي عندما شخص ما بالقرب منك يرى شيء غريب في السماء. اوجهي هاتفك وابحثي عن المكان المناسب.",
-  "downloadApp": "  Download App",
-  "viewAllBeeps": "  View All Beeps",
-  "sightingsMap": "  Sightings Map",
+  "downloadApp": "Download App",
+  "viewAllBeeps": "View All Beeps",
+  "sightingsMap": "Sightings Map",
   "globalSightingNetwork": "Global Sighting Network",
   "howItWorks": "كَمْ يَعمَلُ",
   "backToBeeps": "العودة إلى بيبس",
@@ -531,14 +543,14 @@
   "mufonEgg": "البيض",
   "mufonOther": "اعتراض",
   "mufonUnknown": "غير معروف",
-  "mufonTitleFormat": "MUFON  التقرير",
+  "mufonTitleFormat": "MUFON __PLACEHOLDER_0",
   "nuforcAttribution": "NUFORC تقرير قاعدة البيانات",
   "nuforcCaseNumber": "القضية",
   "nuforcGenericTitle": "NUFORC Sighting Report",
   "mediaImageNotFound": "لم يعثر على صورة",
   "mediaPlayVideo": "العب فيديو",
   "mediaViewImage": "الصورة البصرية",
-  "mediaCount": "",
+  "mediaCount": "__PLACEHOLDER_0_صور",
   "mediaCountSingle": "صورة واحدة",
   "mediaMoreImages": "أكثر",
   "errorNotFound": "بيب لم يعثر عليه",
@@ -562,5 +574,14 @@
   "mufonDatabaseReport": "MUFON تقرير قاعدة البيانات",
   "copyShortLinkTitle": "وصلة نسخ إلى لوح مشبك",
   "imageNotFound": "لم يعثر على صورة",
-  "ufoSightingAlt": "مشاهده"
+  "ufoSightingAlt": "مشاهده",
+  "celestialDataTitle": "أهداف المهرجان",
+  "visiblePlanets": "Planets Visible",
+  "locationDataTitle": "معلومات الموقع",
+  "timezone": "Timezone",
+  "coordinates": "التنسيق",
+  "processingSummaryTitle": "موجز المعالجة",
+  "processingTime": "تجهيز الوقت",
+  "successful": "ناجح",
+  "failed": "فشل"
 }

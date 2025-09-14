@@ -37,7 +37,7 @@
   "alertsTitle": "Blízké výstrahy",
   "noAlerts": "Zatím žádné varování.",
   "pullToRefresh": "Zatáhněte za obnovení",
-  "alertDistance": "{distance} away",
+  "alertDistance": "_ _ PLACETETERER _ 0 _ _ away",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Ložisko",
+  "alertDirection": "Ložisko _ _ PLACETETELER _ 0 _ _ °",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "Grant mikrofon přístup pro záznam videa s audio.",
   "openSettings": "Otevřít nastavení",
   "alertDetailTitle": "Detaily pozorování",
-  "reportedBy": "Nahlášeno {username}",
+  "reportedBy": "Reported by _ _ PLACETIER _ 0 _ _",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Hlášený čas {time}",
+  "reportedAt": "Hlášený _ _ PLACETETERER _ 0 _ _",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Ložisko objektu:  °",
+  "bearingToObject": "Nošení objektu: _ _ PLACETETELER _ 0 _ _ °",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Režim pilota",
   "compassStandardDescription": "Základní název a navigace",
   "compassPilotDescription": "Pokročilá navigace s ETA a vektorováním",
-  "pointingTo": "Ukazuji na",
+  "pointingTo": "Ukazuje na _ _ PLACETETERER _ 0 _ _",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "Kalibrační kompas..",
   "openAROverlay": "Otevřené překrytí AR",
   "pushTitleAlertNearby": "Pozor UFO blízko vás",
-  "pushBodyAlertNearby": "Bylo nahlášeno nové pozorování.",
+  "pushBodyAlertNearby": "Bylo hlášeno nové pozorování _ _ PLACETETERER _ 0 _ _ away.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "Teplota",
   "pushBodyWitness": "Uživatel potvrdil, že vidí stejný objekt.",
   "weather": "Počasí",
-  "cloudCover": "Cloud cover: %",
+  "cloudCover": "Cloud cover: _ _ PLACETETERER _ 0 _ _%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Vítr:",
+  "wind": "Vítr: _ _ PLACETETELER _ 0 _ _ _ _ PLACETETELER _ 1 _ _",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -221,12 +221,13 @@
   "noAlertsFound": "Žádné odpovídající záznamy",
   "alertsFilterHelp": "Zkuste nastavit filtry, abyste viděli další výsledky",
   "verified": "Ověřeno",
-  "beepOnly": "Pouze hlášení",
+  "beepOnly": "Pouze píp",
   "reportOnly": "Pouze hlášení",
-  "videoOnly": "pouze video",
-  "imageOnly": "pouze obrázek",
+  "videoOnly": "Pouze video",
+  "imageOnly": "Pouze obrázek",
+  "mediaOnly": "Pouze média",
   "timeJustNow": "právě teď",
-  "timeDaysAgo": "d před",
+  "timeDaysAgo": "_ _ PLACETETERER _ 0 _ _ d před",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "h před",
+  "timeHoursAgo": "_ _ PLACETETERER _ 0 _ _ h před",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "m před",
+  "timeMinutesAgo": "_ _ PLACETETERER _ 0 _ _ m před",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +263,18 @@
   "filteredSuffix": "filtrované",
   "detailsTitle": "Podrobnosti",
   "mufonCase": "MUFON Případ",
-  "mufonCaseDetailsTitle": "MUFON Případ #  Podrobnosti",
+  "mufonSighting": "MUFON Vidění",
+  "mufonLightSighting": "MUFON Lehké pozorování",
+  "mufonSphereSighting": "MUFON Sféra Vidění",
+  "mufonDiscSighting": "MUFON Comment",
+  "mufonTriangleSighting": "MUFON Úhel trojúhelníku",
+  "mufonCigarSighting": "Mufon Cigar Sighting",
+  "mufonOvalSighting": "MUFON Oválné pozorování",
+  "mufonRectangleSighting": "MUFON Obdélníkový pohled",
+  "mufonCylinderSighting": "Mufon Cylinder Viking",
+  "mufonBoomerangSighting": "MUFON Boomerang Vidění",
+  "mufonStarlikeSighting": "MUFON Starlike Sighting",
+  "mufonCaseDetailsTitle": "Případ MUFON # _ _ PLACETETELER _ 0 _ _ Podrobnosti",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -283,7 +295,7 @@
   "unknownLocation": "Neznámé umístění",
   "locationUnknown": "Umístění není známo",
   "witnessesLabel": "Svědci",
-  "witnessesCountMessage": "lidé potvrdili toto pozorování",
+  "witnessesCountMessage": "_ _ PLACETETERER _ 0 _ _ lidé potvrdili toto pozorování",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -293,7 +305,7 @@
     }
   },
   "photoAnalysisTitle": "Analýza fotografií",
-  "mediaItemsProcessed": "Analýza:  media soubor (y) zpracován",
+  "mediaItemsProcessed": "Analýza: _ _ PLACETELER _ 0 _ _ media soubor (y) zpracován",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -389,7 +401,7 @@
   "whyReportToMufon": "Proč se hlásit na MUFON?",
   "openMufonReport": "Open MUFON Zpráva",
   "confirmedWitness": "Potvrdil jste toto pozorování",
-  "witnessesHaveConfirmed": "lidé potvrdili toto pozorování",
+  "witnessesHaveConfirmed": "_ _ PLACETETERER _ 0 _ _ lidé potvrdili toto pozorování",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -411,7 +423,7 @@
   "premiumAccessWitnesses": "Potvrzení svědci v dosahu viditelnosti",
   "comingSoon": "Už brzy",
   "directionDistanceTitle": "Směr a vzdálenost",
-  "mufonCaseTitle": "MUFON Případ #",
+  "mufonCaseTitle": "MUFON Případ # _ _ PLACETIER _ 0 _ _",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +442,7 @@
   "notificationSightingTitle": "UFO Vidění",
   "notificationSightingUrgent": "Name Vidění",
   "notificationSightingEmergency": "POSLEDNÍ UFO Vidění",
-  "notificationSightingBody": "v blízkosti",
+  "notificationSightingBody": "_ _ PLACETIER _ 0 _ _ near _ _ PLACETIER _ 1 _ _",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -443,7 +455,7 @@
       }
     }
   },
-  "notificationCommentTitle": "{username} komentoval",
+  "notificationCommentTitle": "PLACETELER _ 0 _ _ komentáře",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -453,7 +465,7 @@
     }
   },
   "notificationWitnessText": "Nové pozorování",
-  "notificationWitnessTextMultiple": "svědci",
+  "notificationWitnessTextMultiple": "_ _ PLACETETELER _ 0 _ _ svědci",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -464,7 +476,7 @@
   },
   "notificationActionSnooze": "Snooze 1h",
   "notificationActionDismiss": "Rozpustit",
-  "notificationDistance": "{distance} away",
+  "notificationDistance": "_ _ PLACETETERER _ 0 _ _ away",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -486,7 +498,7 @@
   "shareAlert": "Upozornění o sdílení",
   "previousPage": "Předchozí",
   "nextPage": "Další",
-  "pageOf": "Strana  of  ( total pípnutí)",
+  "pageOf": "Page _ _ PLACETIER _ 0 _ _ _ _ PLACETIER _ 1 _ _ (_ _ PLACETIER _ 2 _ _ celkem pípnutí)",
   "heroTagline": "Získejte upozornění, kdy jít ven a podívat se nahoru",
   "heroDescription": "Nikdy si nenechte ujít další pozorování UFO. Získejte reálné-čas upozornění, když někdo blízko vás vidí něco divného na obloze. Namiřte telefon a najděte přesně, kde hledat.",
   "downloadApp": "Name",
@@ -531,16 +543,16 @@
   "mufonEgg": "Vejce",
   "mufonOther": "Předmět",
   "mufonUnknown": "Neznámý objekt",
-  "mufonTitleFormat": "MUFON  Zpráva",
+  "mufonTitleFormat": "MUFON _ _ PLACETETELER _ 0 _ _ Zpráva",
   "nuforcAttribution": "NUFORC Databázová zpráva",
   "nuforcCaseNumber": "Případ #",
   "nuforcGenericTitle": "NUFORC Zpráva o pozorování",
   "mediaImageNotFound": "Obrázek nenalezen",
   "mediaPlayVideo": "Přehrát video",
   "mediaViewImage": "Zobrazit obrázek",
-  "mediaCount": "obrázky",
+  "mediaCount": "_ _ PLACETETELER _ 0 _ _ obrázky",
   "mediaCountSingle": "1 obrázek",
-  "mediaMoreImages": "+  více",
+  "mediaMoreImages": "+ _ _ PLACETETELER _ 0 _ _ více",
   "errorNotFound": "Píp nenalezen",
   "errorLoadError": "Nepodařilo se načíst detaily pípnutí",
   "shareYourThoughts": "Podělte se o své myšlenky o tomto pozorování...",
@@ -562,5 +574,14 @@
   "mufonDatabaseReport": "MUFON Databázová zpráva",
   "copyShortLinkTitle": "Kopírovat odkaz do schránky",
   "imageNotFound": "Obrázek nenalezen",
-  "ufoSightingAlt": "Pozorování UFO"
+  "ufoSightingAlt": "Pozorování UFO",
+  "celestialDataTitle": "Nebeské objekty",
+  "visiblePlanets": "Viditelné planety",
+  "locationDataTitle": "Informace o umístění",
+  "timezone": "Timezon",
+  "coordinates": "Souřadnice",
+  "processingSummaryTitle": "Shrnutí zpracování",
+  "processingTime": "Doba zpracování",
+  "successful": "Úspěšné",
+  "failed": "Selhalo"
 }

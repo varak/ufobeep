@@ -37,7 +37,7 @@
   "alertsTitle": "Nearby Alerts",
   "noAlerts": "Henüz yakınlarda uyarı yok.",
   "pullToRefresh": "Yeniden yenilemek için",
-  "alertDistance": "uzaklığı:",
+  "alertDistance": "{distance} away",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "",
+  "alertDirection": "Page {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Raporlanmış {time}",
+  "reportedAt": "Reported {timeAgo}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Pilot Mod",
   "compassStandardDescription": "Temel başlık ve navigasyon",
   "compassPilotDescription": "ETA ve vektöring ile Gelişmiş navigasyon",
-  "pointingTo": "",
+  "pointingTo": "{direction}",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "Kalibrating compass..",
   "openAROverlay": "Open AR overlay",
   "pushTitleAlertNearby": "UFO Uyarısı yakınınızda",
-  "pushBodyAlertNearby": "Yeni bir görüş bildirdi  uzakta.",
+  "pushBodyAlertNearby": "Yeni bir görüşe göre {distance} away.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "Sıcaklık",
   "pushBodyWitness": "Bir kullanıcı aynı nesneyi gördüklerini doğruladı.",
   "weather": "Hava",
-  "cloudCover": "Cloud cover: %",
+  "cloudCover": "Cloud cover: {percent}%%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Rüzgar:",
+  "wind": "Rüzgar: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -221,12 +221,13 @@
   "noAlertsFound": "Eşleşen uyarılar yok",
   "alertsFilterHelp": "Daha fazla sonuç görmek için filtrelerinizi ayarlamaya çalışın",
   "verified": "Onaylandı",
-  "beepOnly": "Rapor Sadece Rapor",
+  "beepOnly": "Beep Only",
   "reportOnly": "Rapor Sadece Rapor",
-  "videoOnly": "video sadece video",
-  "imageOnly": "sadece görüntü sadece görüntü",
+  "videoOnly": "Video Sadece Video",
+  "imageOnly": "Resim Sadece Resim",
+  "mediaOnly": "Medya Sadece Medya",
   "timeJustNow": "sadece şimdi",
-  "timeDaysAgo": "d ago",
+  "timeDaysAgo": "{count}d ago",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "h ago",
+  "timeHoursAgo": "{count}h ago",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "m ago",
+  "timeMinutesAgo": "{count}m ago",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +263,18 @@
   "filteredSuffix": "filtrelenmiş filtre",
   "detailsTitle": "Detaylar",
   "mufonCase": "MUFON Vaka Örneği",
-  "mufonCaseDetailsTitle": "MUFON Vaka # Detay",
+  "mufonSighting": "MUFON Sighting",
+  "mufonLightSighting": "MUFON Light Sighting",
+  "mufonSphereSighting": "MUFON Sphere Sight",
+  "mufonDiscSighting": "MUFON Disiplin",
+  "mufonTriangleSighting": "MUFON Üçgeni",
+  "mufonCigarSighting": "MUFON Cigar Sighting",
+  "mufonOvalSighting": "MUFON Oval Sighting",
+  "mufonRectangleSighting": "MUFON Rect Fukushima Sighting",
+  "mufonCylinderSighting": "MUFON Silindir Sighting",
+  "mufonBoomerangSighting": "MUFON Boomerang Sighting",
+  "mufonStarlikeSighting": "MUFON Starlike Sighting",
+  "mufonCaseDetailsTitle": "MUFON Vaka #{caseNumber} Details",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -283,7 +295,7 @@
   "unknownLocation": "Bilinmeyen Konum",
   "locationUnknown": "Konum Bilinmeyen",
   "witnessesLabel": "Tanık Şahitler",
-  "witnessesCountMessage": "insanlar bu görüşü doğruluyor",
+  "witnessesCountMessage": "{count} insanlar bu görüşü doğruladı",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -293,7 +305,7 @@
     }
   },
   "photoAnalysisTitle": "Photo Analysis",
-  "mediaItemsProcessed": "Analiz:  medya dosyası (s) işlendi",
+  "mediaItemsProcessed": "Analiz: {count} media file(s) processed",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -389,7 +401,7 @@
   "whyReportToMufon": "Neden MUFON'a Rapor?",
   "openMufonReport": "Açık MUFON Rapor",
   "confirmedWitness": "Bu manzarayı doğruladın",
-  "witnessesHaveConfirmed": "insanlar bu görüşü doğruladı",
+  "witnessesHaveConfirmed": "{count} insanlar bu görüşü doğruladı",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -411,7 +423,7 @@
   "premiumAccessWitnesses": "Görünürlük aralığındaki tanıkları onaylayın",
   "comingSoon": "Yakında Geliyor",
   "directionDistanceTitle": "Yön & Uzaktan",
-  "mufonCaseTitle": "MUFON Vaka #",
+  "mufonCaseTitle": "MUFON Vaka #{caseNumber}",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +442,7 @@
   "notificationSightingTitle": "UFO UFO Sighting",
   "notificationSightingUrgent": "UR URGENT UFO Sighting",
   "notificationSightingEmergency": "EMER EMERGENCY UFO Sighting",
-  "notificationSightingBody": "yakın Ad}",
+  "notificationSightingBody": "{witnessText} yakın {locationName}",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -443,7 +455,7 @@
       }
     }
   },
-  "notificationCommentTitle": "",
+  "notificationCommentTitle": "__ {username} yorumlandı",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -453,7 +465,7 @@
     }
   },
   "notificationWitnessText": "Yeni görüş",
-  "notificationWitnessTextMultiple": "tanıklar",
+  "notificationWitnessTextMultiple": "{count} tanıkları",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -464,7 +476,7 @@
   },
   "notificationActionSnooze": "Snooze 1",
   "notificationActionDismiss": "Başarısızlık",
-  "notificationDistance": "uzaklığı:",
+  "notificationDistance": "{distance} away",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -486,12 +498,12 @@
   "shareAlert": "Paylaş",
   "previousPage": "Önceki",
   "nextPage": "Sonraki",
-  "pageOf": "Page   ( toplam beeps)",
+  "pageOf": "Sayfa {currentPage} of {totalPages} ({totalCount} total beeps)",
   "heroTagline": "Dışarı çıkmak ve yukarı bakmak için uyarılar alın",
   "heroDescription": "Asla başka bir UFO görüşünü kaçırmayın. Yakınınızdaki biri gökyüzünde garip bir şey gördüğünde gerçek zamanlı uyarılar alın. Telefonunuzu işaret edin ve tam olarak nereye bakacağınızı bulun.",
-  "downloadApp": "  Download App",
-  "viewAllBeeps": "  View All Beeps",
-  "sightingsMap": "  Sightings Map",
+  "downloadApp": "Download App",
+  "viewAllBeeps": "View All Beeps",
+  "sightingsMap": "Sightings Map",
   "globalSightingNetwork": "Global Sighting Network",
   "howItWorks": "UFOBeep Nasıl Çalışıyor",
   "backToBeeps": "Beeps",
@@ -531,16 +543,16 @@
   "mufonEgg": "Yumurta",
   "mufonOther": "Object",
   "mufonUnknown": "Bilinmeyen Object",
-  "mufonTitleFormat": "MUFON  Rapor",
+  "mufonTitleFormat": "MUFON {classification} Report",
   "nuforcAttribution": "NUFORC Veritabanı Raporu",
   "nuforcCaseNumber": "Vaka # #",
   "nuforcGenericTitle": "NUFORC Rapor",
   "mediaImageNotFound": "Resim bulunamadı",
   "mediaPlayVideo": "Play Video",
   "mediaViewImage": "View Image View Image",
-  "mediaCount": "görüntüler",
+  "mediaCount": "{count} görüntüler",
   "mediaCountSingle": "1 resim",
-  "mediaMoreImages": "+",
+  "mediaMoreImages": "+{count} more",
   "errorNotFound": "Arıp bulunamadı",
   "errorLoadError": "Beep detaylarını yüklemek için başarısız oldu",
   "shareYourThoughts": "Bu görüş hakkındaki düşüncelerini paylaşın...",
@@ -562,5 +574,14 @@
   "mufonDatabaseReport": "MUFON Veritabanı Raporu",
   "copyShortLinkTitle": "Klip için kopya link",
   "imageNotFound": "Resim bulunamadı",
-  "ufoSightingAlt": "UFO, UFO'yu görmek"
+  "ufoSightingAlt": "UFO, UFO'yu görmek",
+  "celestialDataTitle": "Celestial Objects",
+  "visiblePlanets": "Visible Planets",
+  "locationDataTitle": "Konum Bilgileri",
+  "timezone": "Timezone",
+  "coordinates": "Koordinatörleri",
+  "processingSummaryTitle": "İşleme Özeti",
+  "processingTime": "Zaman İşleme Zamanı",
+  "successful": "Başarılı",
+  "failed": "Başarısızlık"
 }

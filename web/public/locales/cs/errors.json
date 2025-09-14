@@ -6,5 +6,6 @@
   "errorPermissionDenied": "Povolení zamítnuto.",
   "errorInvalidUsername": "To uživatelské jméno není k dispozici.",
   "errorNotFound": "Píp nenalezen",
-  "errorLoadError": "Nepodařilo se načíst detaily pípnutí"
+  "errorLoadError": "Nepodařilo se načíst detaily pípnutí",
+  "failed": "Selhalo"
 }

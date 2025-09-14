@@ -6,5 +6,6 @@
   "errorPermissionDenied": "הכחשה.",
   "errorInvalidUsername": "שם משתמש זה אינו זמין.",
   "errorNotFound": "לא נמצא",
-  "errorLoadError": "נכשל לטעון פרטים"
+  "errorLoadError": "נכשל לטעון פרטים",
+  "failed": "נכשל"
 }

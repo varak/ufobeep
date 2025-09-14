@@ -6,5 +6,6 @@
   "errorPermissionDenied": "अनुमति से इनकार कर दिया।.",
   "errorInvalidUsername": "यह उपयोगकर्ता नाम उपलब्ध नहीं है।.",
   "errorNotFound": "बीप नहीं मिला",
-  "errorLoadError": "बीप विवरण लोड करने में विफल"
+  "errorLoadError": "बीप विवरण लोड करने में विफल",
+  "failed": "विफल"
 }

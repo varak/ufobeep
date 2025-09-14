@@ -6,5 +6,6 @@
   "errorPermissionDenied": "拒绝许可.",
   "errorInvalidUsername": "这个用户名不可用 .",
   "errorNotFound": "未找到哔声",
-  "errorLoadError": "装入哔声细节失败"
+  "errorLoadError": "装入哔声细节失败",
+  "failed": "失败"
 }

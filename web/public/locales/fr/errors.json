@@ -6,5 +6,6 @@
   "errorPermissionDenied": "Autorisation refusée.",
   "errorInvalidUsername": "Ce nom d'utilisateur n'est pas disponible.",
   "errorNotFound": "Bip non trouvé",
-  "errorLoadError": "Impossible de charger les détails du bip"
+  "errorLoadError": "Impossible de charger les détails du bip",
+  "failed": "Échec"
 }

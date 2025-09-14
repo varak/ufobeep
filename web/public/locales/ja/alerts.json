@@ -1,7 +1,7 @@
 {
   "alertsTitle": "近くのアラート",
-  "alertDistance": "{distance} から",
-  "alertDirection": "軸受け {bearing}°",
+  "alertDistance": "__PLACEHOLDER_0_ 離れて",
+  "alertDirection": "軸受け_PLACEHOLDER_0__°",
   "beepExplain": "近く見ているものをキャプチャし、近くの監視者に警告します.",
   "beepSent": "フィードバック",
   "beepSentWithUrl": "首尾よく送られるビープ",

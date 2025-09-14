@@ -6,5 +6,6 @@
   "errorPermissionDenied": "許可が拒否されました.",
   "errorInvalidUsername": "ユーザー名は利用できません.",
   "errorNotFound": "ビープが見つかりません",
-  "errorLoadError": "ビープの詳細を読み込む失敗"
+  "errorLoadError": "ビープの詳細を読み込む失敗",
+  "failed": "失敗した"
 }

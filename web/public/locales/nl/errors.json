@@ -6,5 +6,6 @@
   "errorPermissionDenied": "Toestemming geweigerd.",
   "errorInvalidUsername": "Die gebruikersnaam is niet beschikbaar.",
   "errorNotFound": "Piep niet gevonden",
-  "errorLoadError": "Kon piepgegevens niet laden"
+  "errorLoadError": "Kon piepgegevens niet laden",
+  "failed": "Mislukt"
 }

@@ -1,7 +1,7 @@
 {
   "alertsTitle": "Nära Alerts",
-  "alertDistance": "avstånd bort",
-  "alertDirection": "Bär {Bearing}",
+  "alertDistance": "__PLACEHOLDER_0_ bort",
+  "alertDirection": "Bär __PLACEHOLDER_0_°",
   "beepExplain": "Fånga vad du ser och varna närliggande tittare.",
   "beepSent": "Beep skickade",
   "beepSentWithUrl": "Beep skickas framgångsrikt",

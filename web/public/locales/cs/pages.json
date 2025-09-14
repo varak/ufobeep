@@ -2,5 +2,5 @@
   "welcomeTitle": "Vítejte v UFOBeepu",
   "settings": "Nastavení",
   "settingsTitle": "Nastavení",
-  "pageOf": "Strana {aktuální Page} of {totalPages} ({totalCount} total pípnutí)"
+  "pageOf": "Page _ _ PLACETIER _ 0 _ _ _ _ PLACETIER _ 1 _ _ (_ _ PLACETIER _ 2 _ _ celkem pípnutí)"
 }

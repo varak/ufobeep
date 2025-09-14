@@ -37,7 +37,7 @@
   "alertsTitle": "In der Nähe Alerts",
   "noAlerts": "Noch keine Alarme in der Nähe.",
   "pullToRefresh": "Auffrischen",
-  "alertDistance": "{distance} weg",
+  "alertDistance": "__PLACEHOLDER_0_ weg",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Lager °",
+  "alertDirection": "Lager {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "Geben Sie Mikrofonzugriff für Videoaufnahme mit Audio.",
   "openSettings": "Offene Einstellungen",
   "alertDetailTitle": "Details zum Angebot",
-  "reportedBy": "Gemeldet durch {username}",
+  "reportedBy": "Bericht {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Gemeldet ",
+  "reportedAt": "Bericht {timeAgo}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Objektträger: °",
+  "bearingToObject": "Objektträger: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Pilotmodus",
   "compassStandardDescription": "Grundüberschrift und Navigation",
   "compassPilotDescription": "Erweiterte Navigation mit ETA und Vektorisierung",
-  "pointingTo": "Auf",
+  "pointingTo": "Auf {direction}",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "Kalibrierung Kompass..",
   "openAROverlay": "Open AR Overlay",
   "pushTitleAlertNearby": "UFO Alarm bei Ihnen",
-  "pushBodyAlertNearby": "Eine neue Sichtung wurde  entfernt gemeldet.",
+  "pushBodyAlertNearby": "Eine neue Sichtung wurde __PLACEHOLDER_0_ weg gemeldet.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "Temperatur",
   "pushBodyWitness": "Ein Benutzer bestätigt, dass sie das gleiche Objekt sehen.",
   "weather": "Wetter",
-  "cloudCover": "Cloud Cover: %",
+  "cloudCover": "Cloud Cover: __PLACEHOLDER_0_%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Wind:",
+  "wind": "Wind: {speed} {unit}_",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -221,12 +221,13 @@
   "noAlertsFound": "Keine passenden Alarme",
   "alertsFilterHelp": "Versuchen Sie, Ihre Filter anzupassen, um mehr Ergebnisse zu sehen",
   "verified": "Verifiziert",
-  "beepOnly": "Nur",
+  "beepOnly": "Nur seufzen",
   "reportOnly": "Nur",
-  "videoOnly": "nur",
-  "imageOnly": "nur",
+  "videoOnly": "Nur Video",
+  "imageOnly": "Nur Bilder",
+  "mediaOnly": "Nur Medien",
   "timeJustNow": "jetzt",
-  "timeDaysAgo": "vorher",
+  "timeDaysAgo": "__PLACEHOLDER_0_d vor",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "vorher",
+  "timeHoursAgo": "__PLACEHOLDER_0_h vor",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "vorher",
+  "timeMinutesAgo": "__PLACEHOLDER_0_m vor",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +263,18 @@
   "filteredSuffix": "filtriert",
   "detailsTitle": "Details",
   "mufonCase": "MUFON Rechtssache",
-  "mufonCaseDetailsTitle": "MUFON Fall # Details",
+  "mufonSighting": "MUFON Sichtung",
+  "mufonLightSighting": "MUFON Lichtblick",
+  "mufonSphereSighting": "MUFON Sphäre Sicht",
+  "mufonDiscSighting": "MUFON Disc Sighting",
+  "mufonTriangleSighting": "MUFON Dreiecksblick",
+  "mufonCigarSighting": "MUFON Zigarrenbeobachtung",
+  "mufonOvalSighting": "MUFON Oval Sehenswürdigkeiten",
+  "mufonRectangleSighting": "MUFON Rechteckblick",
+  "mufonCylinderSighting": "MUFON Zylinder Sicht",
+  "mufonBoomerangSighting": "MUFON Boomerang Sicht",
+  "mufonStarlikeSighting": "MUFON Starlike Sehenswürdigkeiten",
+  "mufonCaseDetailsTitle": "MUFON Fall #{caseNumber} Details",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -283,7 +295,7 @@
   "unknownLocation": "Unbekannte Lage",
   "locationUnknown": "Ort Unbekannt",
   "witnessesLabel": "Zeugen",
-  "witnessesCountMessage": "die leute bestätigten diese sichtung",
+  "witnessesCountMessage": "{count} Personen haben diese Sichtweise bestätigt",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -293,7 +305,7 @@
     }
   },
   "photoAnalysisTitle": "Photoanalyse",
-  "mediaItemsProcessed": "Analyse:  Mediendatei(en) verarbeitet",
+  "mediaItemsProcessed": "Analyse: __PLACEHOLDER_0_ Mediendatei(en) verarbeitet",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -389,7 +401,7 @@
   "whyReportToMufon": "Warum Bericht an MUFON?",
   "openMufonReport": "Open MUFON Bericht",
   "confirmedWitness": "Sie haben diese Sichtweise bestätigt",
-  "witnessesHaveConfirmed": "die menschen haben diese sichtweise bestätigt",
+  "witnessesHaveConfirmed": "__PLACEHOLDER_0_ Menschen haben diese Sichtweise bestätigt",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -411,7 +423,7 @@
   "premiumAccessWitnesses": "Bestätigte Zeugen im Sichtbereich",
   "comingSoon": "Ich komme bald",
   "directionDistanceTitle": "Richtung und Distanz",
-  "mufonCaseTitle": "MUFON Rechtssache",
+  "mufonCaseTitle": "MUFON Rechtssache #{caseNumber}",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +442,7 @@
   "notificationSightingTitle": "UFO Sichtung",
   "notificationSightingUrgent": "ZEITSCHRIFTEN Sichtung",
   "notificationSightingEmergency": "🚨 EMERGENY UFO Sichtung",
-  "notificationSightingBody": "in der Nähe von",
+  "notificationSightingBody": "__PLACEHOLDER_0_ in der Nähe {locationName}_",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -443,7 +455,7 @@
       }
     }
   },
-  "notificationCommentTitle": "💬 {username} kommentiert",
+  "notificationCommentTitle": "💬 __PLACEHOLDER_0_ kommentiert",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -453,7 +465,7 @@
     }
   },
   "notificationWitnessText": "Neue Sichtung",
-  "notificationWitnessTextMultiple": "zeugen",
+  "notificationWitnessTextMultiple": "__PLACEHOLDER_0_ Zeugen",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -464,7 +476,7 @@
   },
   "notificationActionSnooze": "Snooz 1h",
   "notificationActionDismiss": "Entlassung",
-  "notificationDistance": "weg",
+  "notificationDistance": "__PLACEHOLDER_0_ weg",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -486,7 +498,7 @@
   "shareAlert": "Alarmstufe",
   "previousPage": "Vorherige",
   "nextPage": "Nächste",
-  "pageOf": "Seite  von  ( total beeps)",
+  "pageOf": "Seite {currentPage} von {totalPages} (___PLACEHOLDER_2_ insgesamt beeps)",
   "heroTagline": "Erhalten Sie Alarme, wenn Sie nach draußen gehen und nach oben schauen",
   "heroDescription": "Verpassen Sie nie eine andere UFO-Sicht. Erhalten Sie Echtzeit-Benachrichtigungen, wenn jemand in der Nähe sieht etwas seltsam am Himmel. Zeigen Sie Ihr Telefon und finden Sie genau, wo Sie suchen.",
   "downloadApp": "📱 App herunterladen",
@@ -531,16 +543,16 @@
   "mufonEgg": "Eier",
   "mufonOther": "Gegenstand",
   "mufonUnknown": "Unbekanntes Objekt",
-  "mufonTitleFormat": "MUFON  Bericht",
+  "mufonTitleFormat": "MUFON {classification} Bericht",
   "nuforcAttribution": "NUFORC Datenbankbericht",
   "nuforcCaseNumber": "Fall",
   "nuforcGenericTitle": "NUFORC Sichtbericht",
   "mediaImageNotFound": "Bild nicht gefunden",
   "mediaPlayVideo": "Video spielen",
   "mediaViewImage": "Bild anzeigen",
-  "mediaCount": "bilder",
+  "mediaCount": "__PLACEHOLDER_0_ Bilder",
   "mediaCountSingle": "1 bild",
-  "mediaMoreImages": "+ mehr",
+  "mediaMoreImages": "+__PLACEHOLDER_0_ mehr",
   "errorNotFound": "Beep nicht gefunden",
   "errorLoadError": "Versäumt, um Details zu laden",
   "shareYourThoughts": "Teilen Sie Ihre Gedanken über dieses Sehen...",
@@ -562,5 +574,14 @@
   "mufonDatabaseReport": "MUFON Datenbankbericht",
   "copyShortLinkTitle": "Kopieren Sie Link zur Zwischenablage",
   "imageNotFound": "Bild nicht gefunden",
-  "ufoSightingAlt": "UFO Sehenswürdigkeiten"
+  "ufoSightingAlt": "UFO Sehenswürdigkeiten",
+  "celestialDataTitle": "Keltische Objekte",
+  "visiblePlanets": "Sichtbare Planeten",
+  "locationDataTitle": "Location Information",
+  "timezone": "Zeitzone",
+  "coordinates": "Koordinaten",
+  "processingSummaryTitle": "Zusammenfassung der Verarbeitung",
+  "processingTime": "Bearbeitungszeit",
+  "successful": "Erfolgreich",
+  "failed": "Versäumt"
 }

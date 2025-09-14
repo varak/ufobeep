@@ -1,7 +1,7 @@
 {
   "alertsTitle": "In der Nähe Alerts",
-  "alertDistance": "{entfernung} weg",
-  "alertDirection": "Lager {lager}°",
+  "alertDistance": "__PLACEHOLDER_0_ weg",
+  "alertDirection": "Lager {bearing}°",
   "beepExplain": "Erfassen Sie das, was Sie sehen und aufmerksam machen in der Nähe der Wachen.",
   "beepSent": "Bitte senden Sie uns",
   "beepSentWithUrl": "Erfolgreich gesendet",

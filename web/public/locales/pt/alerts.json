@@ -1,7 +1,7 @@
 {
   "alertsTitle": "Alertas próximos",
-  "alertDistance": "{distância}",
-  "alertDirection": "Rolamento {rolamento}°",
+  "alertDistance": "__PACEHOLDER_0____",
+  "alertDirection": "Rolamento __PLACELODER_0___",
   "beepExplain": "Capture o que você vê e alerta os observadores próximos.",
   "beepSent": "Bip enviado",
   "beepSentWithUrl": "Beep enviado com sucesso",

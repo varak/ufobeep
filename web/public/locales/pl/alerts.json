@@ -1,7 +1,7 @@
 {
   "alertsTitle": "Wpisy w pobliżu",
-  "alertDistance": "{odległość} daleko",
-  "alertDirection": "Łożysko {łożysko} °",
+  "alertDistance": "_ _ PLACESENT _ 0 _ _ away",
+  "alertDirection": "Łożysko _ _ PLACESORA _ 0 _ _ °",
   "beepExplain": "Uchwyć to, co widzisz i zaalarmuj pobliskich obserwatorów.",
   "beepSent": "Beep wysłany",
   "beepSentWithUrl": "Beep wysłany pomyślnie",

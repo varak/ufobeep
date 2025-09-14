@@ -37,7 +37,7 @@
   "alertsTitle": "I nærheden",
   "noAlerts": "Ingen advarsler i nærheden endnu.",
   "pullToRefresh": "Træk for at opdatere",
-  "alertDistance": "{distance} væk",
+  "alertDistance": "_ _ PLACEREPORT _ 0 _ _ væk",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Leje  °",
+  "alertDirection": "Leje _ _ PLACEREPER _ 0 _ _ °",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "Grant mikrofon adgang til videooptagelse med lyd.",
   "openSettings": "Åbn indstillinger",
   "alertDetailTitle": "Observationsdetaljer",
-  "reportedBy": "Indberettet af",
+  "reportedBy": "Rapporteret af _ _ PLACEREPER _ 0 _ _",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Indberettet",
+  "reportedAt": "Rapporteret _ _ PLACEREPORT _ 0 _ _",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Bly til objekt:  °",
+  "bearingToObject": "Leje til objekt: _ _ _ PLACEREPER _ 0 _ _ °",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Pilottilstand",
   "compassStandardDescription": "Overskrift og navigation",
   "compassPilotDescription": "Avanceret navigation med ETA og vektoring",
-  "pointingTo": "Angiver til",
+  "pointingTo": "At pege på _ _ PLACEREPORT _ 0 _ _",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "Kalibrerende kompas..",
   "openAROverlay": "Åbne AR-overlay",
   "pushTitleAlertNearby": "UFO alarm nær dig",
-  "pushBodyAlertNearby": "En ny observation blev rapporteret {distance} væk.",
+  "pushBodyAlertNearby": "En ny observation blev rapporteret _ _ PLACEREPER _ 0 _ _ away.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "Temperatur",
   "pushBodyWitness": "En bruger bekræftede, at de ser det samme objekt.",
   "weather": "Vejret",
-  "cloudCover": "Skydække: %",
+  "cloudCover": "Skydække: _ _ PLACEREPORT _ 0 _ _%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Vind:",
+  "wind": "Vind: _ _ PLACEREPORT _ 0 _ _ _ _ PLACEREPORT _ 1 _ _",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -221,12 +221,13 @@
   "noAlertsFound": "Ingen matchende indberetninger",
   "alertsFilterHelp": "Prøv at justere dine filtre for at se flere resultater",
   "verified": "Verificeret",
-  "beepOnly": "Kun rapport",
+  "beepOnly": "Kun bip",
   "reportOnly": "Kun rapport",
-  "videoOnly": "kun video",
-  "imageOnly": "kun billede",
+  "videoOnly": "Kun video",
+  "imageOnly": "Kun billede",
+  "mediaOnly": "Kun medier",
   "timeJustNow": "lige nu",
-  "timeDaysAgo": "d siden",
+  "timeDaysAgo": "_ _ PLACEREPORT _ 0 _ _ d siden",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "h siden",
+  "timeHoursAgo": "_ _ PLACEREPORT _ 0 _ _ h siden",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "m siden",
+  "timeMinutesAgo": "_ _ PLACEREPORT _ 0 _ m siden",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +263,18 @@
   "filteredSuffix": "filtreret",
   "detailsTitle": "Detaljer",
   "mufonCase": "MUFON Sag",
-  "mufonCaseDetailsTitle": "MUFON Sag #  Detaljer",
+  "mufonSighting": "MUFON Sigtning",
+  "mufonLightSighting": "MUFON Light Sighting",
+  "mufonSphereSighting": "MUFON Sphere Sigtning",
+  "mufonDiscSighting": "MUFON Disk- observation",
+  "mufonTriangleSighting": "MUFON Trekantssigtning",
+  "mufonCigarSighting": "MUFON Cigar Sighting",
+  "mufonOvalSighting": "MUFON Oval Sighting",
+  "mufonRectangleSighting": "MUFON Rektangel SightingName",
+  "mufonCylinderSighting": "MUFON Cylinder Sigtning",
+  "mufonBoomerangSighting": "MUFON Boomerang Sighting",
+  "mufonStarlikeSighting": "MUFON Starlike Sighting",
+  "mufonCaseDetailsTitle": "MUFON sag # _ _ PLACEREPER _ 0 _ _ Detaljer",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -283,7 +295,7 @@
   "unknownLocation": "Ukendt placering",
   "locationUnknown": "Sted ukendt",
   "witnessesLabel": "Vidner",
-  "witnessesCountMessage": "folk bekræftede denne observation",
+  "witnessesCountMessage": "_ _ PLACEREPORT _ 0 _ _ folk bekræftede denne observation",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -293,7 +305,7 @@
     }
   },
   "photoAnalysisTitle": "Fotoanalyse",
-  "mediaItemsProcessed": "Analyse:  mediefiler behandlet",
+  "mediaItemsProcessed": "Analyse: _ _ PLACEREPORT _ 0 _ _ mediefil (r) behandlet",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -389,7 +401,7 @@
   "whyReportToMufon": "Hvorfor rapportere til MUFON?",
   "openMufonReport": "Åbne MUFON Rapport",
   "confirmedWitness": "Du bekræftede denne observation",
-  "witnessesHaveConfirmed": "folk har bekræftet denne observation",
+  "witnessesHaveConfirmed": "_ _ PLACEREPORT _ 0 _ _ folk har bekræftet denne observation",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -411,7 +423,7 @@
   "premiumAccessWitnesses": "Bekræftede vidner inden for sigtbarhed",
   "comingSoon": "Kommer snart",
   "directionDistanceTitle": "Kørselsretning og afstand",
-  "mufonCaseTitle": "MUFON Case #",
+  "mufonCaseTitle": "MUFON Case # _ _ PLACEREPER _ 0 _ _",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +442,7 @@
   "notificationSightingTitle": "UFO Sigtning",
   "notificationSightingUrgent": "UFO Sigtning",
   "notificationSightingEmergency": "UFO OM NØDVENDIGT Sigtning",
-  "notificationSightingBody": "nær",
+  "notificationSightingBody": "_ _ PLACEREPORT _ 0 _ _ nær _ _ PLACEREPORT _ 1 _ _",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -443,7 +455,7 @@
       }
     }
   },
-  "notificationCommentTitle": "kommenterede",
+  "notificationCommentTitle": "_ _ PLACEREPER _ 0 _ _ kommenterede",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -453,7 +465,7 @@
     }
   },
   "notificationWitnessText": "Ny observation",
-  "notificationWitnessTextMultiple": "vidner",
+  "notificationWitnessTextMultiple": "- Vidner",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -464,7 +476,7 @@
   },
   "notificationActionSnooze": "Snooze 1h",
   "notificationActionDismiss": "Frafald",
-  "notificationDistance": "væk",
+  "notificationDistance": "_ _ PLACEREPORT _ 0 _ _ væk",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -486,7 +498,7 @@
   "shareAlert": "Del alarm",
   "previousPage": "Forrige",
   "nextPage": "Næste",
-  "pageOf": "Side  af  ( totalt bip)",
+  "pageOf": "Side _ _ PLACEREPORT _ 0 _ af _ _ PLACEREPORT _ 1 _ _ (_ _ PLACEREPORT _ 2 _ _ i alt bip)",
   "heroTagline": "Få advarsler når du skal gå udenfor og se op",
   "heroDescription": "Gå aldrig glip af endnu en UFO observation. Få realtidsadvarsler når nogen nær dig ser noget underligt på himlen. Ret din telefon og find præcis hvor du skal kigge.",
   "downloadApp": "Download App",
@@ -531,16 +543,16 @@
   "mufonEgg": "Æg",
   "mufonOther": "Objekt",
   "mufonUnknown": "Ukendt objekt",
-  "mufonTitleFormat": "MUFON  Rapport",
+  "mufonTitleFormat": "MUFON _ _ PLACEREPORT _ 0 _ _ Rapport",
   "nuforcAttribution": "NUFORC Databaserapport",
   "nuforcCaseNumber": "Case #",
   "nuforcGenericTitle": "NUFORC Observationsrapport",
   "mediaImageNotFound": "Billede ikke fundet",
   "mediaPlayVideo": "Afspil video",
   "mediaViewImage": "Vis billede",
-  "mediaCount": "billeder",
+  "mediaCount": "_ _ PLACEREPORT _ 0 _ _ billeder",
   "mediaCountSingle": "1 billede",
-  "mediaMoreImages": "+  mere",
+  "mediaMoreImages": "+ _ _ PLACEREPORT _ 0 _ _ mere",
   "errorNotFound": "Bip ikke fundet",
   "errorLoadError": "Kunne ikke indlæse bip detaljer",
   "shareYourThoughts": "Del dine tanker om denne observation...",
@@ -562,5 +574,14 @@
   "mufonDatabaseReport": "MUFON Databaserapport",
   "copyShortLinkTitle": "Kopiér link til udklipsholderen",
   "imageNotFound": "Billede ikke fundet",
-  "ufoSightingAlt": "UFO observation"
+  "ufoSightingAlt": "UFO observation",
+  "celestialDataTitle": "Himmelske objekter",
+  "visiblePlanets": "Synlige planeter",
+  "locationDataTitle": "Lokaliseringsinformation",
+  "timezone": "Tidszone",
+  "coordinates": "Koordinater",
+  "processingSummaryTitle": "Forarbejdningsoversigt",
+  "processingTime": "Behandlingstid",
+  "successful": "Succesfuld",
+  "failed": "Mislykkedes"
 }

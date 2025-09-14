@@ -1,7 +1,7 @@
 {
   "alertsTitle": "근처 Alerts",
-  "alertDistance": "{거리}",
-  "alertDirection": "방위 {bearing}°",
+  "alertDistance": "{distance} 멀리",
+  "alertDirection": "베어링 {bearing}°",
   "beepExplain": "당신이 볼 수있는 캡처 및 가까운 watchers에 경고.",
   "beepSent": "Beep 전송",
   "beepSentWithUrl": "Beep는 성공적으로 보냈습니다",

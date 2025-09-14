@@ -6,5 +6,6 @@
   "errorPermissionDenied": "Permission denied.",
   "errorInvalidUsername": "That username isn’t available.",
   "errorNotFound": "Beep not found",
-  "errorLoadError": "Failed to load beep details"
+  "errorLoadError": "Failed to load beep details",
+  "failed": "Failed"
 }

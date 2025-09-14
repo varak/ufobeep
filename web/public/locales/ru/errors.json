@@ -6,5 +6,6 @@
   "errorPermissionDenied": "Разрешение отказано.",
   "errorInvalidUsername": "Это имя пользователя недоступно.",
   "errorNotFound": "Бип не найден",
-  "errorLoadError": "Не удалось загрузить детали звукового сигнала"
+  "errorLoadError": "Не удалось загрузить детали звукового сигнала",
+  "failed": "Неудачник"
 }

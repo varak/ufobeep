@@ -1,7 +1,7 @@
 {
   "alertsTitle": "تنبيهات قريبة",
-  "alertDistance": "ابتعد",
-  "alertDirection": "{bearing}°",
+  "alertDistance": "_",
+  "alertDirection": "-",
   "beepExplain": "التقط ما تراه و تنبيه الساعين القريبين.",
   "beepSent": "Beep sent",
   "beepSentWithUrl": "Beep أرسل بنجاح",

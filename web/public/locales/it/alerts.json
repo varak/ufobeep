@@ -1,7 +1,7 @@
 {
   "alertsTitle": "Avvisi nelle vicinanze",
-  "alertDistance": "traduzione:",
-  "alertDirection": "Cuscinetto {portante}°",
+  "alertDistance": "Traduzione:",
+  "alertDirection": "Cuscinetto {bearing}°",
   "beepExplain": "Cattura ciò che vedi e allerta gli spettatori vicini.",
   "beepSent": "Beep inviato",
   "beepSentWithUrl": "Beep inviato con successo",

@@ -6,5 +6,6 @@
   "errorPermissionDenied": "권한이 없습니다.",
   "errorInvalidUsername": "그 사용자 이름은 사용할 수 없습니다.",
   "errorNotFound": "찾을 수 없음",
-  "errorLoadError": "Beep 세부사항을 적재하는 실패"
+  "errorLoadError": "Beep 세부사항을 적재하는 실패",
+  "failed": "실패한"
 }

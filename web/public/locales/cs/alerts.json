@@ -1,7 +1,7 @@
 {
   "alertsTitle": "Blízké výstrahy",
-  "alertDistance": "{distance} away",
-  "alertDirection": "Ložisko",
+  "alertDistance": "_ _ PLACETETERER _ 0 _ _ away",
+  "alertDirection": "Ložisko _ _ PLACETETELER _ 0 _ _ °",
   "beepExplain": "Zachyťte to, co vidíte a upozorněte blízké pozorovatele.",
   "beepSent": "Píp odeslán",
   "beepSentWithUrl": "Píp odeslaný úspěšně",

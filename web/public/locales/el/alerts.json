@@ -1,7 +1,7 @@
 {
   "alertsTitle": "Κοντινές ειδοποιήσεις",
-  "alertDistance": "{απόσταση} μακριά",
-  "alertDirection": "Διόπτευση {ουσία}°",
+  "alertDistance": "__PACHOLDER_0_ μακριά",
+  "alertDirection": "Διόπτευση __PLACEHOLDER_0_°",
   "beepExplain": "Συλλάβετε ό, τι βλέπετε και ειδοποιήστε τους κοντινούς παρατηρητές.",
   "beepSent": "Αποστολή μπιπ",
   "beepSentWithUrl": "Το μπιπ στάλθηκε επιτυχώς",

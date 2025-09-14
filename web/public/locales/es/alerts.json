@@ -1,7 +1,7 @@
 {
   "alertsTitle": "Alertas cercanas",
-  "alertDistance": "{distance} away",
-  "alertDirection": "Rodamiento {bear}°",
+  "alertDistance": "{distance}__ de distancia",
+  "alertDirection": "Rodamiento {bearing}_°",
   "beepExplain": "Captura lo que ves y alerta a los observadores cercanos.",
   "beepSent": "Beep sent",
   "beepSentWithUrl": "Beep enviado con éxito",

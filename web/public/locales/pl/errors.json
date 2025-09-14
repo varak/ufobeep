@@ -6,5 +6,6 @@
   "errorPermissionDenied": "Odmawiam.",
   "errorInvalidUsername": "Ta nazwa użytkownika nie jest dostępna.",
   "errorNotFound": "Beep nie znaleziono",
-  "errorLoadError": "Nie udało się wczytać szczegółów sygnału"
+  "errorLoadError": "Nie udało się wczytać szczegółów sygnału",
+  "failed": "Nieudany"
 }

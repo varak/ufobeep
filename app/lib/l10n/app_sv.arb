@@ -37,7 +37,7 @@
   "alertsTitle": "Nära Alerts",
   "noAlerts": "Inga varningar i närheten ännu.",
   "pullToRefresh": "Pull to refresh",
-  "alertDistance": "avstånd bort",
+  "alertDistance": "__PLACEHOLDER_0_ bort",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Bär",
+  "alertDirection": "Bär __PLACEHOLDER_0_°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "Grant mikrofonåtkomst för videoinspelning med ljud.",
   "openSettings": "Öppna inställningar",
   "alertDetailTitle": "Sighting detaljer",
-  "reportedBy": "Rapporterad av {username}",
+  "reportedBy": "Rapporterad av {username}__",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Rapporterad ",
+  "reportedAt": "Rapporterad {timeAgo}__",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Bär för objekt: Bär",
+  "bearingToObject": "Bär mot objekt: __PLACEHOLDER_0_°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Pilotläge",
   "compassStandardDescription": "Grundläggande rubrik och navigering",
   "compassPilotDescription": "Avancerad navigering med ETA och vektor",
-  "pointingTo": "Att peka på",
+  "pointingTo": "Peka på {direction}___",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "Kalibrerande kompass..",
   "openAROverlay": "Open AR Overlay",
   "pushTitleAlertNearby": "UFO varning nära dig",
-  "pushBodyAlertNearby": "En ny observation rapporterades bort.",
+  "pushBodyAlertNearby": "En ny observation rapporterades __PLACEHOLDER_0_ bort.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "Temperatur",
   "pushBodyWitness": "En användare bekräftade att de ser samma objekt.",
   "weather": "Vädret",
-  "cloudCover": "Cloud cover: %",
+  "cloudCover": "Cloud cover: __PLACEHOLDER_0_%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Vind:",
+  "wind": "Vind: {speed}_{unit}__________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -221,12 +221,13 @@
   "noAlertsFound": "Inga matchande varningar",
   "alertsFilterHelp": "Försök att justera dina filter för att se fler resultat",
   "verified": "Verifierad",
-  "beepOnly": "Rapport Endast",
+  "beepOnly": "Beep Only",
   "reportOnly": "Rapport Endast",
-  "videoOnly": "video endast",
-  "imageOnly": "bild endast",
+  "videoOnly": "Video Endast",
+  "imageOnly": "Bild endast",
+  "mediaOnly": "Media Endast",
   "timeJustNow": "just nu",
-  "timeDaysAgo": "för",
+  "timeDaysAgo": "{count}_d för",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "för",
+  "timeHoursAgo": "{count} för",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "för",
+  "timeMinutesAgo": "__PLACEHOLDER_0_m sedan",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +263,18 @@
   "filteredSuffix": "filtrerad",
   "detailsTitle": "Detaljer",
   "mufonCase": "Mufonen fall",
-  "mufonCaseDetailsTitle": "Mufonen Fall # Detaljer",
+  "mufonSighting": "Mufonen Sighting",
+  "mufonLightSighting": "MUFON Light Sighting",
+  "mufonSphereSighting": "Mufon sfären synar",
+  "mufonDiscSighting": "Mufonen Disc Sighting",
+  "mufonTriangleSighting": "Mufonen Triangle Sighting",
+  "mufonCigarSighting": "Mufon Cigar Sighting",
+  "mufonOvalSighting": "MUFON Oval Sighting",
+  "mufonRectangleSighting": "Mufonen Rectangle Sighting",
+  "mufonCylinderSighting": "Mufon Cylinder Sighting",
+  "mufonBoomerangSighting": "Mufon Boomerang Sighting",
+  "mufonStarlikeSighting": "Mufon Starlike Sighting",
+  "mufonCaseDetailsTitle": "MUFON Case #_PLACEHOLDER_0_ Detaljer",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -283,7 +295,7 @@
   "unknownLocation": "Okänd plats",
   "locationUnknown": "Plats okänd",
   "witnessesLabel": "Vittnen",
-  "witnessesCountMessage": "människor bekräftade denna observation",
+  "witnessesCountMessage": "{count} människor bekräftade denna observation",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -293,7 +305,7 @@
     }
   },
   "photoAnalysisTitle": "Fotoanalys",
-  "mediaItemsProcessed": "Analys:  media file(s) bearbetad",
+  "mediaItemsProcessed": "Analys: {count} media file(s) bearbetade",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -389,7 +401,7 @@
   "whyReportToMufon": "Varför rapportera till MUFON?",
   "openMufonReport": "Open MUFON Rapport",
   "confirmedWitness": "Du bekräftade denna observation",
-  "witnessesHaveConfirmed": "människor har bekräftat denna observation",
+  "witnessesHaveConfirmed": "{count} människor har bekräftat denna observation",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -411,7 +423,7 @@
   "premiumAccessWitnesses": "Bekräftade vittnen inom synlighetsområdet",
   "comingSoon": "Kommer snart",
   "directionDistanceTitle": "Direction & Distance",
-  "mufonCaseTitle": "Mufonen Fall #",
+  "mufonCaseTitle": "Mufonen Fall #_PLACEHOLDER_0__",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +442,7 @@
   "notificationSightingTitle": "UFO Sighting",
   "notificationSightingUrgent": "URGENT UFO Sighting",
   "notificationSightingEmergency": "EMERGENCY UFO Sighting",
-  "notificationSightingBody": "nära Namn }",
+  "notificationSightingBody": "__PLACEHOLDER_0_ nära {locationName}_",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -453,7 +465,7 @@
     }
   },
   "notificationWitnessText": "Ny observation",
-  "notificationWitnessTextMultiple": "vittnen",
+  "notificationWitnessTextMultiple": "__PLACEHOLDER_0_ vittnen",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -464,7 +476,7 @@
   },
   "notificationActionSnooze": "Snooze 1h",
   "notificationActionDismiss": "Avfärda",
-  "notificationDistance": "avstånd bort",
+  "notificationDistance": "__PLACEHOLDER_0_ bort",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -486,7 +498,7 @@
   "shareAlert": "Dela alert",
   "previousPage": "Föregående",
   "nextPage": "Nästa",
-  "pageOf": "Sidan  ( totala pip)",
+  "pageOf": "Page {currentPage} av {totalPages}_ (_PLACEHOLDER_2_______________________________________________________________________________________________________________________________________________________________________________________________________________________",
   "heroTagline": "Få varningar när du ska gå ut och titta upp",
   "heroDescription": "Missa aldrig en annan UFO-observation. Få realtidsvarningar när någon nära dig ser något konstigt på himlen. Peka din telefon och hitta exakt var du ska titta.",
   "downloadApp": "Nedladdning App",
@@ -531,16 +543,16 @@
   "mufonEgg": "Ägg",
   "mufonOther": "Objekt",
   "mufonUnknown": "Okända objekt",
-  "mufonTitleFormat": "Mufon  Rapport",
+  "mufonTitleFormat": "MUFON {classification} Rapport",
   "nuforcAttribution": "NUFORC Databasrapport",
   "nuforcCaseNumber": "Fall #",
   "nuforcGenericTitle": "NUFORC Sighting Report",
   "mediaImageNotFound": "Bild som inte hittats",
   "mediaPlayVideo": "Spela Video",
   "mediaViewImage": "Visa bild",
-  "mediaCount": "bilder",
+  "mediaCount": "{count}_ bilder",
   "mediaCountSingle": "1 bild",
-  "mediaMoreImages": "+ mer",
+  "mediaMoreImages": "+_PLACEHOLDER_0_ mer",
   "errorNotFound": "Beep hittades inte",
   "errorLoadError": "Misslyckades med att ladda beep detaljer",
   "shareYourThoughts": "Dela dina tankar om denna observation...",
@@ -562,5 +574,14 @@
   "mufonDatabaseReport": "Mufonen Databasrapport",
   "copyShortLinkTitle": "Kopiera länk till Clipboard",
   "imageNotFound": "Bild som inte hittats",
-  "ufoSightingAlt": "UFO observation"
+  "ufoSightingAlt": "UFO observation",
+  "celestialDataTitle": "Celestial Objects",
+  "visiblePlanets": "Synliga planeter",
+  "locationDataTitle": "Platsinformation",
+  "timezone": "Timezone",
+  "coordinates": "Koordinater",
+  "processingSummaryTitle": "Processing Sammanfattning",
+  "processingTime": "Bearbetningstid",
+  "successful": "Framgång",
+  "failed": "Misslyckades"
 }

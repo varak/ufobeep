@@ -2,5 +2,5 @@
   "welcomeTitle": "مرحبا بكم في UFOBeep",
   "settings": "التركيبات",
   "settingsTitle": "التركيبات",
-  "pageOf": "الصفحة Page} of {totalPages} ({totalCount} total beeps)"
+  "pageOf": "Page {currentPage}______________BAR_ _BAR_"
 }

@@ -2,5 +2,5 @@
   "welcomeTitle": "Welkom bij UFObeep",
   "settings": "Instellingen",
   "settingsTitle": "Instellingen",
-  "pageOf": "Blz. Pagina} van {TotalPages} ({TotalCount} totale pieps)"
+  "pageOf": "Pagina __PLAATSHOLDER_0__ van __PLAATSHOLDER_1__ (__PLAATSHOLDER_2__ totale piepers)"
 }

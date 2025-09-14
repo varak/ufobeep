@@ -37,7 +37,7 @@
   "alertsTitle": "近くのアラート",
   "noAlerts": "近隣のアラートはありません.",
   "pullToRefresh": "リフレッシュするプル",
-  "alertDistance": "{distance} から",
+  "alertDistance": "__PLACEHOLDER_0_ 離れて",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "軸受け {bearing}°",
+  "alertDirection": "軸受け_PLACEHOLDER_0__°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "ビデオキャプチャ用のマイクアクセスを音声で付与します.",
   "openSettings": "オープン設定",
   "alertDetailTitle": "観光スポット詳細",
-  "reportedBy": "{username} によるレポート",
+  "reportedBy": "{username} による報告",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "レポート",
+  "reportedAt": "レポート {timeAgo}_",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "対物への軸受け: {bearing}°",
+  "bearingToObject": "オブジェクトへのベアリング:_PLACEHOLDER_0__°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "パイロットモード",
   "compassStandardDescription": "基本的な見出しとナビゲーション",
   "compassPilotDescription": "ETAとベクターの高度なナビゲーション",
-  "pointingTo": "へのポインティング",
+  "pointingTo": "{direction} へのポイント",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "キャリブレーションコンパス..",
   "openAROverlay": "AR オーバーレイを開く",
   "pushTitleAlertNearby": "あなたの近くにUFOアラート",
-  "pushBodyAlertNearby": "先日は「{distance}」と伝えました.",
+  "pushBodyAlertNearby": "新たな視力が報告されました_PLACEHOLDER_0__ 離れて.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "温度",
   "pushBodyWitness": "同じオブジェクトが確認されたユーザ.",
   "weather": "ふりがな",
-  "cloudCover": "クラウドカバー:%",
+  "cloudCover": "雲カバー: {percent}%の特長",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "風:",
+  "wind": "風:_PLACEHOLDER_0______{unit}_",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -221,12 +221,13 @@
   "noAlertsFound": "マッチングアラートなし",
   "alertsFilterHelp": "フィルターを調整して、より多くの結果を見る",
   "verified": "プロフィール",
-  "beepOnly": "レポートのみ",
+  "beepOnly": "ビープのみ",
   "reportOnly": "レポートのみ",
   "videoOnly": "ビデオのみ",
   "imageOnly": "画像のみ",
+  "mediaOnly": "メディアのみ",
   "timeJustNow": "ただ今",
-  "timeDaysAgo": "d 前に",
+  "timeDaysAgo": "__PLACEHOLDER_0_d 前に",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "h 前に",
+  "timeHoursAgo": "__PLACEHOLDER_0_h 前に",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "m 前に",
+  "timeMinutesAgo": "__PLACEHOLDER_0_m 前に",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +263,18 @@
   "filteredSuffix": "フィルター",
   "detailsTitle": "ニュース",
   "mufonCase": "MUFONについて 導入事例",
-  "mufonCaseDetailsTitle": "MUFONについて ケース # 詳細",
+  "mufonSighting": "MUFONについて スタイリング",
+  "mufonLightSighting": "MUFONライトサイト",
+  "mufonSphereSighting": "MUFON 球の視線",
+  "mufonDiscSighting": "MUFONについて ディスクサイト",
+  "mufonTriangleSighting": "MUFONについて 三角形の視力",
+  "mufonCigarSighting": "MUFONシガーサイティング",
+  "mufonOvalSighting": "MUFON楕円形の視認",
+  "mufonRectangleSighting": "MUFONについて 長方形の観光",
+  "mufonCylinderSighting": "MUFONシリンダー 視認",
+  "mufonBoomerangSighting": "MUFONのブーメランの視力",
+  "mufonStarlikeSighting": "MUFON スターライク 視線",
+  "mufonCaseDetailsTitle": "MUFON ケース #{caseNumber}_",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -283,7 +295,7 @@
   "unknownLocation": "未知の場所",
   "locationUnknown": "所在地 不明",
   "witnessesLabel": "ウィッチネス",
-  "witnessesCountMessage": "人がこの視線を確認した",
+  "witnessesCountMessage": "{count} 人々はこの視線を確認しました",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -293,7 +305,7 @@
     }
   },
   "photoAnalysisTitle": "フォト分析",
-  "mediaItemsProcessed": "解析:  処理されたメディアファイル",
+  "mediaItemsProcessed": "解析: {count} メディアファイル(s) 処理",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -389,7 +401,7 @@
   "whyReportToMufon": "なぜMUFONへの報告?",
   "openMufonReport": "MUFONを開く レポート",
   "confirmedWitness": "この視線を確認しました",
-  "witnessesHaveConfirmed": "人がこの視線を確認している",
+  "witnessesHaveConfirmed": "{count} 人々はこの視線を確認しました",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -411,7 +423,7 @@
   "premiumAccessWitnesses": "可視範囲内で確認された証人",
   "comingSoon": "近日公開",
   "directionDistanceTitle": "方向及び間隔",
-  "mufonCaseTitle": "MUFONについて ケース #",
+  "mufonCaseTitle": "MUFONについて ケース #{caseNumber}_",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +442,7 @@
   "notificationSightingTitle": "ユーチューブ スタイリング",
   "notificationSightingUrgent": "⚠️ ユゲント UFO スタイリング",
   "notificationSightingEmergency": "恒例の緊急UFO スタイリング",
-  "notificationSightingBody": "名前}",
+  "notificationSightingBody": "{witnessText}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -443,7 +455,7 @@
       }
     }
   },
-  "notificationCommentTitle": "{username}コメント",
+  "notificationCommentTitle": "💬_PLACEHOLDER_0__コメント",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -453,7 +465,7 @@
     }
   },
   "notificationWitnessText": "新しい視線",
-  "notificationWitnessTextMultiple": "証人",
+  "notificationWitnessTextMultiple": "{count} 証人",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -464,7 +476,7 @@
   },
   "notificationActionSnooze": "スヌーズ 1h",
   "notificationActionDismiss": "免責事項",
-  "notificationDistance": "{distance} から",
+  "notificationDistance": "__PLACEHOLDER_0_ 離れて",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -486,7 +498,7 @@
   "shareAlert": "アラートを共有する",
   "previousPage": "新着情報",
   "nextPage": "次へ",
-  "pageOf": "ページの先頭へ  ( 総ビープ) のページ}",
+  "pageOf": "ページの {currentPage}_ の {totalPages}_ ({totalCount}_の総ビープ)",
   "heroTagline": "外部に行くときにアラートを取得し、調べる",
   "heroDescription": "UFOを見逃さない。 近くの人が空に奇妙な何かを見たときにリアルタイムのアラートを取得します。 携帯電話をポイントし、どこを見ても正確に見つけてください.",
   "downloadApp": "◀ アプリのダウンロード",
@@ -531,16 +543,16 @@
   "mufonEgg": "ツイート",
   "mufonOther": "オブジェクト",
   "mufonUnknown": "未知のオブジェクト",
-  "mufonTitleFormat": "MUFON  レポート",
+  "mufonTitleFormat": "MUFON {classification} レポート",
   "nuforcAttribution": "ログイン データベースレポート",
   "nuforcCaseNumber": "ケース #",
   "nuforcGenericTitle": "ログイン 観光レポート",
   "mediaImageNotFound": "画像が見つかりません",
   "mediaPlayVideo": "再生ビデオ",
   "mediaViewImage": "画像を見る",
-  "mediaCount": "画像",
+  "mediaCount": "__PLACEHOLDER_0_さんの画像",
   "mediaCountSingle": "1 画像",
-  "mediaMoreImages": "+ 以上",
+  "mediaMoreImages": "お問い合わせ",
   "errorNotFound": "ビープが見つかりません",
   "errorLoadError": "ビープの詳細を読み込む失敗",
   "shareYourThoughts": "この視線についてのあなたの考えを共有する...",
@@ -562,5 +574,14 @@
   "mufonDatabaseReport": "MUFONについて データベースレポート",
   "copyShortLinkTitle": "クリップボードへのリンクをコピーする",
   "imageNotFound": "画像が見つかりません",
-  "ufoSightingAlt": "UFO目撃"
+  "ufoSightingAlt": "UFO目撃",
+  "celestialDataTitle": "Celestialオブジェクト",
+  "visiblePlanets": "可視惑星",
+  "locationDataTitle": "所在地案内",
+  "timezone": "タイムゾーン",
+  "coordinates": "コーディネート",
+  "processingSummaryTitle": "加工概要",
+  "processingTime": "処理時間",
+  "successful": "成功する",
+  "failed": "失敗した"
 }

@@ -2,5 +2,5 @@
   "welcomeTitle": "UFOBeep'e hoş geldiniz",
   "settings": "Ayarlar",
   "settingsTitle": "Ayarlar",
-  "pageOf": "Page {current Page} { totalPages} ({toplam Ülke} toplam beeps)"
+  "pageOf": "Sayfa {currentPage} of {totalPages} ({totalCount} total beeps)"
 }

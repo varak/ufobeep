@@ -6,5 +6,6 @@
   "errorPermissionDenied": "Tilladelse nægtet.",
   "errorInvalidUsername": "Det brugernavn er ikke tilgængeligt.",
   "errorNotFound": "Bip ikke fundet",
-  "errorLoadError": "Kunne ikke indlæse bip detaljer"
+  "errorLoadError": "Kunne ikke indlæse bip detaljer",
+  "failed": "Mislykkedes"
 }

@@ -2,5 +2,5 @@
   "welcomeTitle": "Välkommen till UFOBeep",
   "settings": "Inställningar",
   "settingsTitle": "Inställningar",
-  "pageOf": "Sidan {nuvarande Page {totalPages} ({totalCount} totala pip)"
+  "pageOf": "Page {currentPage} av {totalPages}_ (_PLACEHOLDER_2_______________________________________________________________________________________________________________________________________________________________________________________________________________________"
 }

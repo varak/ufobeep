@@ -37,7 +37,7 @@
   "alertsTitle": "近距离警告",
   "noAlerts": "附近还没有警报.",
   "pullToRefresh": "拉来拉去",
-  "alertDistance": "远离",
+  "alertDistance": "离开这里",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "轴承{bearing}",
+  "alertDirection": "夹着... PLACEHOLDER_0..",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "允许麦克风进入 视频捕捉带音频.",
   "openSettings": "打开设置",
   "alertDetailTitle": "查看细节",
-  "reportedBy": "由 {username} 报告",
+  "reportedBy": "由_PLACEHOLDER_0___报导",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "已报告  阿广",
+  "reportedAt": "报告_PLACEHOLDER_0__",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "向反对方显示 :",
+  "bearingToObject": "持械反对:_PLACEHOLDER_0_____________________",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "试点模式",
   "compassStandardDescription": "基本航向和导航",
   "compassPilotDescription": "带有ETA和矢量的高级导航",
-  "pointingTo": "指向",
+  "pointingTo": "指向  _PLACEHOLDER_0__ (英语)",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "校准指南针..",
   "openAROverlay": "打开 AR 覆盖",
   "pushTitleAlertNearby": "你身边的UFO警报",
-  "pushBodyAlertNearby": "传出新的目击画面.",
+  "pushBodyAlertNearby": "[永久失效連結] [永久失效連結] [永久失效連結] 互联网档案馆的存檔,存档日期2013-07-01.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "温度",
   "pushBodyWitness": "一个用户确认他们看到了同一个对象.",
   "weather": "天气",
-  "cloudCover": "云盖:",
+  "cloudCover": "云盖曰: - 地点 - 地点",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "风:",
+  "wind": "风速:_PLACEHOLDER_0__PLACEHOLDER_1_",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -221,12 +221,13 @@
   "noAlertsFound": "没有匹配的提示",
   "alertsFilterHelp": "尝试调整过滤器以查看更多结果",
   "verified": "已验证",
-  "beepOnly": "仅报告",
+  "beepOnly": "只鸣",
   "reportOnly": "仅报告",
-  "videoOnly": "只有视频",
-  "imageOnly": "仅图像",
+  "videoOnly": "仅限视频",
+  "imageOnly": "只有图像",
+  "mediaOnly": "仅限媒体",
   "timeJustNow": "刚才",
-  "timeDaysAgo": "之前",
+  "timeDaysAgo": "时间轴:",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "你刚才说",
+  "timeHoursAgo": "早点说",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "时间轴:",
+  "timeMinutesAgo": "0米前的地图",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +263,18 @@
   "filteredSuffix": "过滤",
   "detailsTitle": "细节",
   "mufonCase": "毛里求斯 大小写",
-  "mufonCaseDetailsTitle": "细节",
+  "mufonSighting": "毛里求斯 观察",
+  "mufonLightSighting": "MUFON 灯光观察",
+  "mufonSphereSighting": "木森球体观察",
+  "mufonDiscSighting": "毛里求斯 光碟观察",
+  "mufonTriangleSighting": "毛里求斯 三角视线",
+  "mufonCigarSighting": "MUFON 雪茄观察",
+  "mufonOvalSighting": "木森奥华观察",
+  "mufonRectangleSighting": "毛里求斯 矩形监视",
+  "mufonCylinderSighting": "MUFON 圆柱视线",
+  "mufonBoomerangSighting": "MUFON Boomerang 观察",
+  "mufonStarlikeSighting": "MUFON 星光照视",
+  "mufonCaseDetailsTitle": "MUFON案 详细情况",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -293,7 +305,7 @@
     }
   },
   "photoAnalysisTitle": "照片分析",
-  "mediaItemsProcessed": "分析:  已处理的媒体文件",
+  "mediaItemsProcessed": "分析:_PLACEHOLDER_0_媒体文件已处理",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -347,7 +359,7 @@
   "ufoTypeRectangle": "矩形",
   "ufoTypeFormation": "组建",
   "ufoTypeUnknown": "未知",
-  "ufoTypeBoomerang": " Boom",
+  "ufoTypeBoomerang": "Boom",
   "ufoTypeDiamond": "钻石",
   "ufoTypeOval": "奥巴马",
   "ufoTypeCone": "锥形",
@@ -365,7 +377,7 @@
   "shapeSphere": "区域",
   "shapeCigar": "雪茄",
   "shapeLight": "光线",
-  "shapeBoomerang": " boom",
+  "shapeBoomerang": "boom",
   "shapeDiamond": "钻石",
   "shapeRectangle": "矩形",
   "shapeOval": "椭圆",
@@ -411,7 +423,7 @@
   "premiumAccessWitnesses": "在可见范围内确认的证人",
   "comingSoon": "快来了",
   "directionDistanceTitle": "方向距离( D)",
-  "mufonCaseTitle": "毛里求斯 案件数量",
+  "mufonCaseTitle": "毛里求斯 案件QQPLACEHOLDER_0___",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +442,7 @@
   "notificationSightingTitle": "不明飞行物 观察",
   "notificationSightingUrgent": "紧急UFO 观察",
   "notificationSightingEmergency": "紧急UFO 观察",
-  "notificationSightingBody": "靠近   名称]",
+  "notificationSightingBody": "靠近... PLACEHOLDER_0_ 靠近... PLACEHOLDER_ 1_",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -443,7 +455,7 @@
       }
     }
   },
-  "notificationCommentTitle": "注释",
+  "notificationCommentTitle": "~PLACEHOLDER_0_评论",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -464,7 +476,7 @@
   },
   "notificationActionSnooze": "斯努兹 1小时",
   "notificationActionDismiss": "开除",
-  "notificationDistance": "远离",
+  "notificationDistance": "离开这里",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -486,7 +498,7 @@
   "shareAlert": "共享提醒",
   "previousPage": "上一个",
   "nextPage": "下一个",
-  "pageOf": "页面   ( 总哔声)",
+  "pageOf": "页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆",
   "heroTagline": "什么时候到外面看看",
   "heroDescription": "永远不要错过另一个UFO的目击。 当有人在天上看到奇怪的东西时,即刻发出警报. 把电话对准,找到可以找的地方.",
   "downloadApp": "QQ 下载 App",
@@ -531,16 +543,16 @@
   "mufonEgg": "鸡蛋",
   "mufonOther": "对象",
   "mufonUnknown": "未知对象",
-  "mufonTitleFormat": "MUFON  报告",
+  "mufonTitleFormat": "毛里求斯 报告",
   "nuforcAttribution": "努福尔茨 数据库报告",
   "nuforcCaseNumber": "案例#",
   "nuforcGenericTitle": "努福尔茨 观察报告",
   "mediaImageNotFound": "未找到图像",
   "mediaPlayVideo": "播放视频",
   "mediaViewImage": "查看图像",
-  "mediaCount": "图像",
+  "mediaCount": "_PLACEHOLDER_0_图像",
   "mediaCountSingle": "1 张图像",
-  "mediaMoreImages": "再来点",
+  "mediaMoreImages": "再来一点",
   "errorNotFound": "未找到哔声",
   "errorLoadError": "装入哔声细节失败",
   "shareYourThoughts": "分享你对这次目击的看法...",
@@ -562,5 +574,14 @@
   "mufonDatabaseReport": "毛里求斯 数据库报告",
   "copyShortLinkTitle": "复制链接到剪贴板",
   "imageNotFound": "未找到图像",
-  "ufoSightingAlt": "不明飞行物目击"
+  "ufoSightingAlt": "不明飞行物目击",
+  "celestialDataTitle": "天体",
+  "visiblePlanets": "可见行星",
+  "locationDataTitle": "地点信息",
+  "timezone": "时区",
+  "coordinates": "坐标",
+  "processingSummaryTitle": "处理摘要",
+  "processingTime": "处理时间",
+  "successful": "成功",
+  "failed": "失败"
 }

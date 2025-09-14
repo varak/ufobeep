@@ -2,5 +2,5 @@
   "welcomeTitle": "ברוכים הבאים ל- UFOBeep",
   "settings": "הגדרות",
   "settingsTitle": "הגדרות",
-  "pageOf": "עמוד הבית > שם הסרטון: [totalPages]"
+  "pageOf": "דף הבית > PLACEHOLDER_0____{totalPages}______________________________________{totalCount}_ Total beeps)"
 }

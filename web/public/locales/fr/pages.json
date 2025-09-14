@@ -2,5 +2,5 @@
   "welcomeTitle": "Bienvenue à UFOBeep",
   "settings": "Paramètres",
   "settingsTitle": "Paramètres",
-  "pageOf": "Page {current Page} de {totalPages} ({totalCoup} total bips)"
+  "pageOf": "Page {currentPage} de {totalPages} ({totalCount} bips totaux)"
 }

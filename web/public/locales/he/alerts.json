@@ -1,7 +1,7 @@
 {
   "alertsTitle": "התראות בקרבת מקום",
-  "alertDistance": "משם",
-  "alertDirection": "המונחים:",
+  "alertDistance": "שם הסרטון: PLACEHOLDER_0_Out_",
+  "alertDirection": "תגית: PLACEHOLDER_0_ °",
   "beepExplain": "לתפוס את מה שאתה רואה ולהזהיר צופים סמוכים.",
   "beepSent": "Beep",
   "beepSentWithUrl": "Beep שלח בהצלחה",

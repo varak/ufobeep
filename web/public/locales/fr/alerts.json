@@ -1,7 +1,7 @@
 {
   "alertsTitle": "Alertes à proximité",
-  "alertDistance": "{distance} loin",
-  "alertDirection": "Roulement {portant}°",
+  "alertDistance": "__PLACÉHOLDER_0__ loin",
+  "alertDirection": "Roulement {bearing}°",
   "beepExplain": "Capturez ce que vous voyez et alertez les observateurs à proximité.",
   "beepSent": "Bip envoyé",
   "beepSentWithUrl": "Bip envoyé avec succès",

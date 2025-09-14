@@ -6,5 +6,6 @@
   "errorPermissionDenied": "Tillstånd förnekas.",
   "errorInvalidUsername": "Det användarnamnet är inte tillgängligt.",
   "errorNotFound": "Beep hittades inte",
-  "errorLoadError": "Misslyckades med att ladda beep detaljer"
+  "errorLoadError": "Misslyckades med att ladda beep detaljer",
+  "failed": "Misslyckades"
 }

@@ -6,5 +6,6 @@
   "errorPermissionDenied": "Permesso negato.",
   "errorInvalidUsername": "Questo nome utente non è disponibile.",
   "errorNotFound": "Beep non trovato",
-  "errorLoadError": "Non caricare i dettagli del segnale acustico"
+  "errorLoadError": "Non caricare i dettagli del segnale acustico",
+  "failed": "Sfigato"
 }

@@ -6,5 +6,6 @@
   "errorPermissionDenied": "İzin inkar etti.",
   "errorInvalidUsername": "Bu kullanıcı mevcut değildir.",
   "errorNotFound": "Arıp bulunamadı",
-  "errorLoadError": "Beep detaylarını yüklemek için başarısız oldu"
+  "errorLoadError": "Beep detaylarını yüklemek için başarısız oldu",
+  "failed": "Başarısızlık"
 }

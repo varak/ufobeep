@@ -37,7 +37,7 @@
   "alertsTitle": "התראות בקרבת מקום",
   "noAlerts": "עדיין לא אזהרות.",
   "pullToRefresh": "למשוך כדי לרענן",
-  "alertDistance": "משם",
+  "alertDistance": "שם הסרטון: PLACEHOLDER_0_Out_",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "המונחים:",
+  "alertDirection": "תגית: PLACEHOLDER_0_ °",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "גישה מיקרופון עבור וידאו לכידת עם אודיו.",
   "openSettings": "הגדרות פתוחות",
   "alertDetailTitle": "פרטים",
-  "reportedBy": "פורסם על ידי [username]",
+  "reportedBy": "תגית: PLACEHOLDER_0_____",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "דו\"ח Ago",
+  "reportedAt": "תגית: PLACEHOLDER_0______",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "המונחים:",
+  "bearingToObject": "תגית:_PLACEHOLDER_0_ °",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "מצב טייס",
   "compassStandardDescription": "כותרות בסיסיות וניווט",
   "compassPilotDescription": "ניווט מתקדם עם ETA וקטורינג",
-  "pointingTo": "המונחים:",
+  "pointingTo": "תגית: PLACEHOLDER_0_________",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "מצפן קצר..",
   "openAROverlay": "פתח את AR Overlay",
   "pushTitleAlertNearby": "אזהרות עב\"מ קרוב אליך",
-  "pushBodyAlertNearby": "מראית עין חדשה דווחה מרחוק.",
+  "pushBodyAlertNearby": "מראה חדש דווח -_PLACEHOLDER_0____.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "טמפרטורה",
   "pushBodyWitness": "משתמש אישר שהוא רואה את אותו האובייקט.",
   "weather": "מזג אוויר",
-  "cloudCover": "כיסוי ענן:%",
+  "cloudCover": "כיסוי ענן: PLACEHOLDER_0_%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "רוח: [מהירות]",
+  "wind": "רוח:_PLACEHOLDER_0___{unit}_____________________________________________________",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -221,12 +221,13 @@
   "noAlertsFound": "אין אזהרות",
   "alertsFilterHelp": "נסה להתאים את המסננים שלך כדי לראות תוצאות נוספות",
   "verified": "מאומת",
-  "beepOnly": "דיווח רק",
+  "beepOnly": "להיות רק",
   "reportOnly": "דיווח רק",
-  "videoOnly": "וידאו רק",
-  "imageOnly": "תמונה רק",
+  "videoOnly": "וידאו בלבד",
+  "imageOnly": "צילום בלבד",
+  "mediaOnly": "רק מדיה",
   "timeJustNow": "רק עכשיו",
-  "timeDaysAgo": "לפני הספירה",
+  "timeDaysAgo": "שם הסרטון: PLACEHOLDER_0__d ago",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -235,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "לפני הספירה",
+  "timeHoursAgo": "שם הסרטון: PLACEHOLDER_0_h ago",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -244,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "לפני הספירה",
+  "timeMinutesAgo": "שם הסרטון: PLACEHOLDER_0_m ago",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -262,7 +263,18 @@
   "filteredSuffix": "סינון",
   "detailsTitle": "פרטים",
   "mufonCase": "MUFON מקרה",
-  "mufonCaseDetailsTitle": "MUFON המונחים:",
+  "mufonSighting": "MUFON עקבו",
+  "mufonLightSighting": "המונחים:",
+  "mufonSphereSighting": "MUFON Sighting",
+  "mufonDiscSighting": "MUFON אכזבה",
+  "mufonTriangleSighting": "MUFON משולש",
+  "mufonCigarSighting": "MUFON Cigar Sighting",
+  "mufonOvalSighting": "MUFON Oval Sighting",
+  "mufonRectangleSighting": "MUFON Rectangle Sighting",
+  "mufonCylinderSighting": "MUFON Cylinder Sighting",
+  "mufonBoomerangSighting": "MUFON בומרנג Sighting",
+  "mufonStarlikeSighting": "MUFON Star Like Sighting",
+  "mufonCaseDetailsTitle": "MUFON Case #_PLACEHOLDER_0__פרטים",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -283,7 +295,7 @@
   "unknownLocation": "מיקום לא ידוע",
   "locationUnknown": "מיקום לא ידוע",
   "witnessesLabel": "עדים",
-  "witnessesCountMessage": "אנשים אישרו את המראה הזה",
+  "witnessesCountMessage": "_PLACEHOLDER_0__ אנשים אישרו את המראה הזה",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -293,7 +305,7 @@
     }
   },
   "photoAnalysisTitle": "Photo Analysis",
-  "mediaItemsProcessed": "ניתוח: קובץ מדיה (s) מעובד",
+  "mediaItemsProcessed": "ניתוח:_PLACEHOLDER_0___קובץ מדיה(s) מעובד",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -389,7 +401,7 @@
   "whyReportToMufon": "למה לדווח על MUFON?",
   "openMufonReport": "פתוח MUFON דיווח",
   "confirmedWitness": "אישרת את המראה הזה",
-  "witnessesHaveConfirmed": "אנשים אישרו את המראה הזה",
+  "witnessesHaveConfirmed": "_PLACEHOLDER_0__ אנשים אישרו את המראה הזה",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -411,7 +423,7 @@
   "premiumAccessWitnesses": "עדים בולטים בטווח הנראות",
   "comingSoon": "בקרוב",
   "directionDistanceTitle": "המונחים & Distance",
-  "mufonCaseTitle": "MUFON המונחים:",
+  "mufonCaseTitle": "MUFON מקרה #{caseNumber}____________________________________",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -430,7 +442,7 @@
   "notificationSightingTitle": "עב\"ם עקבו",
   "notificationSightingUrgent": "המונחים: URG עקבו",
   "notificationSightingEmergency": "תגית: EMERGCY UFO עקבו",
-  "notificationSightingBody": "קרוב ל-[[1948]] שם",
+  "notificationSightingBody": "שם הסרטון: PLACEHOLDER_0___b_{locationName}__________________________________________________________________________________________________________________________________________________________________________________________________________________________",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -443,7 +455,7 @@
       }
     }
   },
-  "notificationCommentTitle": "המונחים: 💬",
+  "notificationCommentTitle": "💬_PLACEHOLDER_0_ commented",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -453,7 +465,7 @@
     }
   },
   "notificationWitnessText": "מראה חדש",
-  "notificationWitnessTextMultiple": "עדים",
+  "notificationWitnessTextMultiple": "שם הסרטון: PLACEHOLDER_0_ Witness",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -464,7 +476,7 @@
   },
   "notificationActionSnooze": "סנוזה 1h",
   "notificationActionDismiss": "משמעת",
-  "notificationDistance": "משם",
+  "notificationDistance": "שם הסרטון: PLACEHOLDER_0_Out_",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -486,7 +498,7 @@
   "shareAlert": "המונחים:",
   "previousPage": "הקודם",
   "nextPage": "הבא",
-  "pageOf": "עמוד הבית > שם הסרטון: [totalPages]",
+  "pageOf": "דף הבית > PLACEHOLDER_0____{totalPages}______________________________________{totalCount}_ Total beeps)",
   "heroTagline": "קבלו התראות כשאתם יוצאים החוצה ומתבוננים",
   "heroDescription": "לעולם אל תחמיצו מראה עב\"מים נוסף. קבל התראות בזמן אמת כאשר מישהו לידך רואה משהו מוזר בשמים. מצא את הטלפון שלך ולמצוא בדיוק איפה להסתכל.",
   "downloadApp": "להורדה App",
@@ -531,16 +543,16 @@
   "mufonEgg": "ביצים",
   "mufonOther": "אובייקטים",
   "mufonUnknown": "אובייקטים לא ידועים",
-  "mufonTitleFormat": "המונחים: דיווח",
+  "mufonTitleFormat": "MUFON_PLACEHOLDER_0_ Report",
   "nuforcAttribution": "NUFORC דוח מסד נתונים",
   "nuforcCaseNumber": "מקרה #",
   "nuforcGenericTitle": "NUFORC דיווח Sighting",
   "mediaImageNotFound": "תמונה לא נמצאה",
   "mediaPlayVideo": "Play וידאו",
   "mediaViewImage": "View Image",
-  "mediaCount": "תמונות",
+  "mediaCount": "PLACEHOLDER_0_תמונות",
   "mediaCountSingle": "תמונה 1",
-  "mediaMoreImages": "תגית: more",
+  "mediaMoreImages": "+_{count}__________________________________________________",
   "errorNotFound": "לא נמצא",
   "errorLoadError": "נכשל לטעון פרטים",
   "shareYourThoughts": "שתפו את המחשבות שלכם על המראה הזה...",
@@ -562,5 +574,14 @@
   "mufonDatabaseReport": "MUFON דוח מסד נתונים",
   "copyShortLinkTitle": "קישור ל-Creboard",
   "imageNotFound": "תמונה לא נמצאה",
-  "ufoSightingAlt": "עב\"מ"
+  "ufoSightingAlt": "עב\"מ",
+  "celestialDataTitle": "אובייקטים דיגיטליים",
+  "visiblePlanets": "כוכבי לכת",
+  "locationDataTitle": "מידע מיקום",
+  "timezone": "Timezone",
+  "coordinates": "לתאם",
+  "processingSummaryTitle": "המונחים:",
+  "processingTime": "עיבוד זמן",
+  "successful": "הצלחה מוצלחת",
+  "failed": "נכשל"
 }

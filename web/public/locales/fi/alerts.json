@@ -1,7 +1,7 @@
 {
   "alertsTitle": "Lähellä olevat hälytykset",
-  "alertDistance": "{etäisyys} pois",
-  "alertDirection": "Suuntima {kantava}°",
+  "alertDistance": "_Placeholder_0_ pois",
+  "alertDirection": "Suunta __PAIKKAHOLDER_0_°",
   "beepExplain": "Vangitkaa näkemänne ja hälyttäkää lähivalvojat.",
   "beepSent": "Lähetetty",
   "beepSentWithUrl": "Piip lähetetty onnistuneesti",

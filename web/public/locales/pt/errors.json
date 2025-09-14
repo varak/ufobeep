@@ -6,5 +6,6 @@
   "errorPermissionDenied": "Permissão negada.",
   "errorInvalidUsername": "Esse nome de usuário não está disponível.",
   "errorNotFound": "Beep não encontrado",
-  "errorLoadError": "Falha ao carregar os detalhes do bip"
+  "errorLoadError": "Falha ao carregar os detalhes do bip",
+  "failed": "Falha"
 }

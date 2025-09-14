@@ -1,7 +1,7 @@
 {
   "alertsTitle": "Близкие оповещения",
-  "alertDistance": "расстояние",
-  "alertDirection": "Подшипник",
+  "alertDistance": "{distance} away",
+  "alertDirection": "Подшипник {bearing}°",
   "beepExplain": "Захватывайте то, что видите, и предупреждайте близких наблюдателей.",
   "beepSent": "Пип отправлен",
   "beepSentWithUrl": "Пип успешно отправлен",

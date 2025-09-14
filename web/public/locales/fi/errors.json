@@ -6,5 +6,6 @@
   "errorPermissionDenied": "Lupa evätty.",
   "errorInvalidUsername": "Tämä käyttäjätunnus ei ole saatavilla.",
   "errorNotFound": "Piip ei löytynyt",
-  "errorLoadError": "Piippauksen yksityiskohtia ei voitu ladata"
+  "errorLoadError": "Piippauksen yksityiskohtia ei voitu ladata",
+  "failed": "Ei onnistunut"
 }

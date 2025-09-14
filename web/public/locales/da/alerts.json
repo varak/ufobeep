@@ -1,7 +1,7 @@
 {
   "alertsTitle": "I nærheden",
-  "alertDistance": "{afstand} væk",
-  "alertDirection": "Leje {leje} °",
+  "alertDistance": "_ _ PLACEREPORT _ 0 _ _ væk",
+  "alertDirection": "Leje _ _ PLACEREPER _ 0 _ _ °",
   "beepExplain": "Indtag, hvad du ser, og alarm i nærheden tilskuere.",
   "beepSent": "Beep sendt",
   "beepSentWithUrl": "Beep sendt med succes",
