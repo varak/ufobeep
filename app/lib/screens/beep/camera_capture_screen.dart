@@ -63,14 +63,25 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
 
   Future<void> _initializeCamera() async {
     try {
-      // Fast camera initialization - no timeouts
+      // Request camera permission
       final camStatus = await Permission.camera.request();
-      
+
       if (!await Permission.camera.isGranted) {
         setState(() {
           _errorMessage = 'Camera permission required';
         });
         return;
+      }
+
+      // Request microphone permission for video mode
+      if (_isVideoMode) {
+        final micStatus = await Permission.microphone.request();
+        if (!await Permission.microphone.isGranted) {
+          setState(() {
+            _errorMessage = 'Microphone permission required for video recording';
+          });
+          return;
+        }
       }
 
       _cameras = await availableCameras();
@@ -81,7 +92,11 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
         return;
       }
 
-      _controller = CameraController(_cameras!.first, ResolutionPreset.max, enableAudio: false);
+      _controller = CameraController(
+        _cameras!.first,
+        ResolutionPreset.max,
+        enableAudio: _isVideoMode // Enable audio only for video mode
+      );
       await _controller!.initialize();
 
       _isInitialized = true;
