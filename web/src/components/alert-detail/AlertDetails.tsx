@@ -328,7 +328,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <span className="text-text-tertiary text-sm font-medium">{t('shareLink')}:</span>
-              <code className="text-brand-primary text-sm bg-dark-bg px-2 py-1 rounded">
+              <code className="text-brand-primary text-sm bg-dark-surface border border-dark-border px-2 py-1 rounded">
                 ufobeep.com{getShortAlertUrl(alert, locale)}
               </code>
               <button

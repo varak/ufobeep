@@ -45,7 +45,7 @@ interface AlertsMapProps {
 export default function AlertsMap({
   alerts = [],
   center = [39.8283, -98.5795], // Center of USA
-  zoom = 4,
+  zoom = 5, // Better US view - not too zoomed in, not too zoomed out
   height = '400px',
   showControls = true,
   onAlertClick
@@ -351,7 +351,7 @@ export default function AlertsMap({
         }
 
         // Create map - center on user location with appropriate zoom
-        const mapZoom = userLocation[0] === center[0] && userLocation[1] === center[1] ? zoom : 10
+        const mapZoom = userLocation[0] === center[0] && userLocation[1] === center[1] ? zoom : 8
         const map = L.map(mapRef.current, {
           center: userLocation,
           zoom: mapZoom,

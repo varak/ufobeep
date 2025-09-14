@@ -1,5 +1,7 @@
 'use client'
 
+import { useTranslation } from 'react-i18next'
+
 interface Aircraft {
   callsign: string
   distance_km: number
@@ -22,6 +24,8 @@ interface AircraftTrackingCardProps {
 }
 
 export default function AircraftTrackingCard({ aircraftData }: AircraftTrackingCardProps) {
+  const { t } = useTranslation()
+
   if (!aircraftData || aircraftData.total === 0) {
     return (
       <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
@@ -30,13 +34,13 @@ export default function AircraftTrackingCard({ aircraftData }: AircraftTrackingC
             <span className="text-xl">✈️</span>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-brand-primary">Aircraft Tracking</h3>
-            <p className="text-sm text-text-secondary">OpenSky Network data</p>
+            <h3 className="text-lg font-semibold text-brand-primary">{t('aircraftTrackingTitle')}</h3>
+            <p className="text-sm text-text-secondary">{t('aircraftDataSource')}</p>
           </div>
         </div>
-        
+
         <div className="text-center py-4 text-text-tertiary">
-          <p>No aircraft detected within 50km radius</p>
+          <p>{t('noAircraftDetected')}</p>
         </div>
       </div>
     )
@@ -50,14 +54,14 @@ export default function AircraftTrackingCard({ aircraftData }: AircraftTrackingC
             <span className="text-xl">✈️</span>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-brand-primary">Aircraft Tracking</h3>
-            <p className="text-sm text-text-secondary">OpenSky Network data</p>
+            <h3 className="text-lg font-semibold text-brand-primary">{t('aircraftTrackingTitle')}</h3>
+            <p className="text-sm text-text-secondary">{t('aircraftDataSource')}</p>
           </div>
         </div>
-        
+
         <div className="text-right">
           <div className="text-lg font-bold text-brand-primary">{aircraftData.total}</div>
-          <div className="text-xs text-text-tertiary">aircraft detected</div>
+          <div className="text-xs text-text-tertiary">{t('aircraftDetected')}</div>
         </div>
       </div>
 
@@ -67,15 +71,15 @@ export default function AircraftTrackingCard({ aircraftData }: AircraftTrackingC
 
       {aircraftData.aircraft.length > 0 && (
         <div className="space-y-3">
-          <h4 className="text-sm font-medium text-brand-primary">Nearby Aircraft</h4>
+          <h4 className="text-sm font-medium text-brand-primary">{t('nearbyAircraft')}</h4>
           <div className="space-y-2">
             {aircraftData.aircraft.map((aircraft, index) => (
-              <div key={index} className="bg-dark-background border border-dark-border rounded-lg p-3">
+              <div key={index} className="bg-dark-surface border border-dark-border rounded-lg p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <span className="font-medium text-brand-primary">
-                        {aircraft.callsign || 'Unknown'}
+                        {aircraft.callsign || t('unknown')}
                       </span>
                       <span className="text-xs text-text-tertiary bg-dark-surface px-2 py-1 rounded">
                         {aircraft.country}
@@ -107,7 +111,7 @@ export default function AircraftTrackingCard({ aircraftData }: AircraftTrackingC
           
           {aircraftData.total > aircraftData.aircraft.length && (
             <div className="text-center text-xs text-text-tertiary pt-2">
-              +{aircraftData.total - aircraftData.aircraft.length} more aircraft in area
+              +{aircraftData.total - aircraftData.aircraft.length} {t('moreAircraftInArea')}
             </div>
           )}
         </div>
