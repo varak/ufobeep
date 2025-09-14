@@ -310,7 +310,8 @@ async def get_map_points(minimal: bool = False):
                         source,
                         reporter_username,
                         media_info as media_files,
-                        enrichment_data
+                        enrichment_data,
+                        short_url
                     FROM sightings
                     WHERE (public_latitude != 0 OR public_longitude != 0)
                     AND public_latitude IS NOT NULL
@@ -347,7 +348,8 @@ async def get_map_points(minimal: bool = False):
                         "username": row["reporter_username"],
                         "media_files": json.loads(row["media_files"]) if row["media_files"] else [],
                         "enrichment_data": row["enrichment_data"] or {},
-                        "alert_level": "medium"  # Default for now
+                        "alert_level": "medium",  # Default for now
+                        "short_url": row["short_url"]
                     }
                 map_points.append(point)
 
