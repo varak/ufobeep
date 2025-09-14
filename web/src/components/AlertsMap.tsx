@@ -103,7 +103,6 @@ export default function AlertsMap({
                   source: data.data.source,
                   short_url: data.data.short_url
                 }
-                console.log('Fetched location:', data.data.location)  // Debug
                 setFullAlert(fullData)
               }
             })
