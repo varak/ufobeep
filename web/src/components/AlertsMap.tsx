@@ -186,6 +186,10 @@ export default function AlertsMap({
             </div>
           )}
 
+          {displayAlert.location?.name && displayAlert.location.name !== 'Unknown Location' && (
+            <p className="text-xs text-gray-500 mb-2">📍 {displayAlert.location.name}</p>
+          )}
+
           <p className="text-gray-600 text-xs mb-2">
             {truncateDescription(displayAlert.description)}
             {displayAlert.description && displayAlert.description.split(' ').length > 220 && (
@@ -194,10 +198,6 @@ export default function AlertsMap({
                 className="text-blue-600 cursor-pointer ml-1">see full report</a>
             )}
           </p>
-
-          {displayAlert.location?.name && displayAlert.location.name !== 'Unknown Location' && (
-            <p className="text-xs text-gray-500 mb-1">📍 {displayAlert.location.name}</p>
-          )}
 
           <div className="text-xs text-gray-400 mt-1">
             {new Date(displayAlert.created_at).toLocaleDateString()}
