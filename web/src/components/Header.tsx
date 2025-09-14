@@ -67,9 +67,8 @@ export default function Header() {
             <NavLink href="/download" label={t('navDownloadApp')} />
           </nav>
 
-          {/* Right: Language + Account */}
+          {/* Right: Account */}
           <div className="hidden md:flex items-center gap-3">
-            <LanguageSwitcher variant="minimal" />
             {isAuthenticated ? (
               <div className="flex items-center gap-2">
                 <span className="text-sm text-text-secondary">{user?.username}</span>

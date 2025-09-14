@@ -223,21 +223,8 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
-    if (compact) {
-      const now = new Date()
-      const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60))
-      
-      if (diffInHours < 24) return date.toLocaleString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      })
-      if (diffInHours < 48) return '1 day ago'
-      return `${Math.floor(diffInHours / 24)} days ago`
-    }
-    
-    // Standardized format for all alerts (MUFON and UFOBeep)
+
+    // Standardized format for all alerts (MUFON and UFOBeep) - actual timestamp
     return date.toLocaleString('en-US', {
       month: 'short',
       day: 'numeric',
@@ -245,6 +232,29 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
       hour: '2-digit',
       minute: '2-digit'
     })
+  }
+
+  const formatElapsed = (dateString: string) => {
+    const date = new Date(dateString)
+    const now = new Date()
+    const diffMs = now.getTime() - date.getTime()
+
+    const diffMinutes = Math.floor(diffMs / (1000 * 60))
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+
+    // T+ format - universal aerospace/military time elapsed notation
+    if (diffDays > 0) {
+      const hours = diffHours % 24
+      return `T+${diffDays}d${hours}h`
+    } else if (diffHours > 0) {
+      const minutes = diffMinutes % 60
+      return `T+${diffHours}h${minutes}m`
+    } else if (diffMinutes > 0) {
+      return `T+${diffMinutes}m`
+    } else {
+      return 'T+0m'
+    }
   }
 
   const formatLocation = (location: Alert['location']) => {
@@ -474,6 +484,9 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
               )}
               <div className="text-text-tertiary text-xs">
                 {formatDate(getDisplayDate())}
+              </div>
+              <div className="text-text-tertiary text-xs font-medium">
+                {formatElapsed(getDisplayDate())}
               </div>
             </div>
           </div>

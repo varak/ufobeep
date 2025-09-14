@@ -39,7 +39,7 @@ class AlertCard extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildHeaderRow(context, l10n, units),
+          _buildHeaderRow(context, l10n, units, userPrefs),
           const SizedBox(height: 12),
           if (alert.mediaFiles.isNotEmpty) ...[
             _buildMediaThumbnails(context),
@@ -55,7 +55,7 @@ class AlertCard extends ConsumerWidget {
     );
   }
 
-  Widget _buildHeaderRow(BuildContext context, AppLocalizations l10n, String units) {
+  Widget _buildHeaderRow(BuildContext context, AppLocalizations l10n, String units, dynamic userPrefs) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -189,7 +189,7 @@ class AlertCard extends ConsumerWidget {
             Text(
               alert.source == 'mufon'
                   ? _getMufonReportDate(context, alert)
-                  : _formatActualDateTime(context, alert.createdAt),
+                  : _formatActualDateTime(context, alert.createdAt, use24Hour: userPrefs?.use24HourTime),
               style: const TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 13,
@@ -653,40 +653,51 @@ class AlertCard extends ConsumerWidget {
     final localDateTime = dateTime.toLocal();
     final difference = now.difference(localDateTime);
 
-    // Universal elapsed time format - no translation needed
+    // T+ format - universal aerospace/military time elapsed notation
     if (difference.inDays > 0) {
       final days = difference.inDays;
       final hours = difference.inHours.remainder(24);
-      return '${days}d ${hours}h';
+      return 'T+${days}d${hours}h';
     } else if (difference.inHours > 0) {
       final hours = difference.inHours;
       final minutes = difference.inMinutes.remainder(60);
-      return '$hours:${minutes.toString().padLeft(2, '0')}';
+      return 'T+${hours}h${minutes}m';
     } else if (difference.inMinutes > 0) {
       final minutes = difference.inMinutes;
-      return '0:${minutes.toString().padLeft(2, '0')}';
+      return 'T+${minutes}m';
     } else {
-      return '0:00';
+      return 'T+0m';
     }
   }
 
-  String _formatActualDateTime(BuildContext context, DateTime dateTime) {
+  String _formatActualDateTime(BuildContext context, DateTime dateTime, {bool? use24Hour}) {
     final localDateTime = dateTime.toLocal();
     final now = DateTime.now();
+    final is24Hour = use24Hour ?? true; // Default to 24-hour if not specified
+
+    String formatTime(DateTime dt) {
+      if (is24Hour) {
+        return "${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}";
+      } else {
+        final hour12 = dt.hour > 12 ? dt.hour - 12 : (dt.hour == 0 ? 12 : dt.hour);
+        final ampm = dt.hour >= 12 ? 'PM' : 'AM';
+        return "$hour12:${dt.minute.toString().padLeft(2, '0')} $ampm";
+      }
+    }
 
     // Show time if it's today, otherwise show date and time
     if (localDateTime.day == now.day &&
         localDateTime.month == now.month &&
         localDateTime.year == now.year) {
-      // Today - show time only: "2:30 PM"
-      return "${localDateTime.hour > 12 ? localDateTime.hour - 12 : (localDateTime.hour == 0 ? 12 : localDateTime.hour)}:${localDateTime.minute.toString().padLeft(2, '0')} ${localDateTime.hour >= 12 ? 'PM' : 'AM'}";
+      // Today - show time only
+      return formatTime(localDateTime);
     } else {
-      // Other days - show date and time: "Jan 14, 2:30 PM"
+      // Other days - show date and time
       final months = [
         '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
       ];
-      final timeStr = "${localDateTime.hour > 12 ? localDateTime.hour - 12 : (localDateTime.hour == 0 ? 12 : localDateTime.hour)}:${localDateTime.minute.toString().padLeft(2, '0')} ${localDateTime.hour >= 12 ? 'PM' : 'AM'}";
+      final timeStr = formatTime(localDateTime);
       return "${months[localDateTime.month]} ${localDateTime.day}, $timeStr";
     }
   }

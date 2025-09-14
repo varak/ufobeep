@@ -69,6 +69,7 @@ class UserPreferences {
   final int quietHoursEnd; // End hour (24-hour format)
   final bool allowEmergencyOverride; // Allow emergency alerts during quiet hours
   final DateTime? dndUntil; // Do Not Disturb until this time (null = DND off)
+  final bool use24HourTime; // Use 24-hour time format (true) or 12-hour with AM/PM (false)
   final DateTime? lastUpdated;
 
   const UserPreferences({
@@ -93,8 +94,9 @@ class UserPreferences {
     this.quietHoursEnd = 7,
     this.allowEmergencyOverride = true,
     this.dndUntil,
+    bool? use24HourTime,
     this.lastUpdated,
-  });
+  }) : use24HourTime = use24HourTime ?? _getDefault24HourForLanguage(language);
 
   factory UserPreferences.fromJson(Map<String, dynamic> json) =>
       _$UserPreferencesFromJson(json);
@@ -123,6 +125,7 @@ class UserPreferences {
     int? quietHoursEnd,
     bool? allowEmergencyOverride,
     Object? dndUntil = _undefinedValue,
+    bool? use24HourTime,
     Object? lastUpdated = _undefinedValue,
   }) {
     return UserPreferences(
@@ -147,6 +150,7 @@ class UserPreferences {
       quietHoursEnd: quietHoursEnd ?? this.quietHoursEnd,
       allowEmergencyOverride: allowEmergencyOverride ?? this.allowEmergencyOverride,
       dndUntil: dndUntil == _undefinedValue ? this.dndUntil : dndUntil as DateTime?,
+      use24HourTime: use24HourTime ?? this.use24HourTime,
       lastUpdated: lastUpdated == _undefinedValue ? this.lastUpdated : lastUpdated as DateTime?,
     );
   }
@@ -210,7 +214,39 @@ class UserPreferences {
     return languageToUnits[languageCode.toLowerCase()] ?? 'metric';
   }
 
-  static const List<String> availableLanguages = ['en', 'es', 'de'];
+  /// Internal method to get default 24-hour time format for language
+  static bool _getDefault24HourForLanguage(String languageCode) {
+    const Map<String, bool> languageTo24Hour = {
+      'en': false,  // English - 12-hour with AM/PM (US style)
+      'es': true,   // Spanish - 24-hour
+      'de': true,   // German - 24-hour
+      'fr': true,   // French - 24-hour
+      'it': true,   // Italian - 24-hour
+      'pt': true,   // Portuguese - 24-hour
+      'ru': true,   // Russian - 24-hour
+      'zh': true,   // Chinese - 24-hour
+      'ja': true,   // Japanese - 24-hour
+      'ko': true,   // Korean - 24-hour
+      'ar': true,   // Arabic - 24-hour
+      'hi': true,   // Hindi - 24-hour
+      'tr': true,   // Turkish - 24-hour
+      'nl': true,   // Dutch - 24-hour
+      'sv': true,   // Swedish - 24-hour
+      'da': true,   // Danish - 24-hour
+      'no': true,   // Norwegian - 24-hour
+      'fi': true,   // Finnish - 24-hour
+      'pl': true,   // Polish - 24-hour
+      'cs': true,   // Czech - 24-hour
+      'el': true,   // Greek - 24-hour
+      'he': true,   // Hebrew - 24-hour
+    };
+    return languageTo24Hour[languageCode.toLowerCase()] ?? true; // Default to 24-hour
+  }
+
+  static const List<String> availableLanguages = [
+    'en', 'es', 'de', 'fr', 'it', 'pt', 'ru', 'zh', 'ja', 'ko',
+    'ar', 'hi', 'tr', 'nl', 'sv', 'da', 'no', 'fi', 'pl', 'cs', 'el', 'he'
+  ];
   static const List<String> availableCategories = [
     'ufo', 'anomaly', 'aircraft', 'missing_person', 'unclassified'
   ];
