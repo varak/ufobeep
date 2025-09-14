@@ -49,6 +49,9 @@ interface Alert {
     external_url?: string
     [key: string]: any
   }
+  enrichment_data?: {
+    [key: string]: any
+  }
   media_files: Array<{
     id?: string
     type: string
@@ -261,10 +264,8 @@ export default function AlertDetailPage() {
         {/* Details Section */}
         <AlertDetails alert={enhancedAlert} locale={locale} />
         
-        {/* Enrichment Data (if available) */}
-        {enhancedAlert.enrichment && Object.keys(enhancedAlert.enrichment).length > 0 && (
-          <EnrichmentData alert={enhancedAlert} />
-        )}
+        {/* Enrichment Data */}
+        <EnrichmentData alert={enhancedAlert} enrichment={enhancedAlert.enrichment_data} />
 
         {/* Comments Section for all reports */}
         <AlertComments alertId={enhancedAlert.id} locale={locale} />

@@ -66,7 +66,7 @@ export default function MapPage() {
         )}
 
         {/* Always show map - don't wait for data */}
-        <AlertsMap alerts={alerts as any} height="70vh" disableGeolocation={true} />
+        <AlertsMap alerts={alerts as any} height="70vh" />
         
         {loading && (
           <div className="absolute top-4 right-4 bg-dark-surface border border-brand-primary/20 rounded-lg px-3 py-2">
