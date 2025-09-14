@@ -301,7 +301,7 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
                       return <span className="text-xs text-text-tertiary">{t('imageOnly')}</span>
                     }
                   }
-                  if (hasMedia) return <span className="text-xs text-text-tertiary">📸</span>
+                  if (hasMedia && hasDescription) return null
                   // For MUFON reports, don't show eye icon since "witness report only" is in title
                   if (alert.reporter_username === 'MUFON') return null
                   return <span className="text-xs text-text-tertiary">👁️</span>

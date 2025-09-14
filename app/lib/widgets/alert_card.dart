@@ -290,18 +290,9 @@ class AlertCard extends ConsumerWidget {
       }
     }
 
-    if (hasMedia) {
-      // Has media and description - just show media icon without count
-      final videoCount = alert.mediaFiles.where((media) => media['type'] == 'video').length;
-      final imageCount = alert.mediaFiles.length - videoCount;
-
-      if (videoCount > 0 && imageCount > 0) {
-        return _buildBadge(l10n.mediaOnly, Icons.perm_media, AppColors.textTertiary);
-      } else if (videoCount > 0) {
-        return _buildBadge(l10n.videoOnly, Icons.videocam, AppColors.textTertiary);
-      } else {
-        return _buildBadge(l10n.imageOnly, Icons.photo, AppColors.textTertiary);
-      }
+    // If has both media and description, show no badge
+    if (hasMedia && hasDescription) {
+      return const SizedBox.shrink();
     }
     
     return const SizedBox.shrink();
