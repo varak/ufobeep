@@ -21,6 +21,13 @@
 - **ALWAYS add new translation keys to app/lib/l10n/app_en.arb ONLY, then run node scripts/generate-all-translations.js**
 - **NEVER run node scripts/generate-all-translations.js directly - it always times out in CLI environment**
 - **Instead: tell user to run translate.sh script which handles the timeout properly**
+- **NEVER make changes to files unless explicitly requested by user**
+- **NEVER assume what changes are needed beyond the specific request**
+
+## CRITICAL RULE: RE-READ CLAUDE.md AFTER AUTOCOMPACT
+- **MANDATORY: After any context continuation or autocompact, IMMEDIATELY re-read this CLAUDE.md file**
+- **This ensures all rules and prohibitions are fresh in memory after context reset**
+- **Failure to follow this rule leads to unauthorized changes and violations of user instructions**
 
 ## Development Quick Start Context
 
