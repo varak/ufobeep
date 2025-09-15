@@ -1123,7 +1123,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                             fontSize: 12,
                           ),
                         ),
-                        if (canDelete) ..[
+                        if (canDelete) ...[
                           const SizedBox(width: 8),
                           GestureDetector(
                             onTap: () => _showDeleteCommentDialog(comment),
