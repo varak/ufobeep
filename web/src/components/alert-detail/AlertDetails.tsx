@@ -200,7 +200,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
             <span className="text-text-primary text-sm">
               {(() => {
                 // Clean up location name to avoid duplication
-                let locationName = alert.reporter_username === 'MUFON' || alert.source === 'mufon'
+                let locationName = alert.reporter_username === 'MUFON'
                   ? (alert.enrichment?.geocoding?.display_name ||
                      alert.enrichment?.geocoding?.location ||
                      alert.enrichment?.location_raw ||
