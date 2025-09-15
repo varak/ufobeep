@@ -729,6 +729,11 @@ export default function AlertsMap({
         arr.push(p)
         groups.set(key, arr)
       })
+      // Build overlap count per id for reliable click behavior
+      const overlapCount = new Map<string, number>()
+      groups.forEach((arr) => {
+        arr.forEach(p => overlapCount.set(String(p.id), arr.length))
+      })
       // No jitter by default; we'll spiderfy on click using these groups
       const jitterMap = new Map<string, [number, number]>()
       groups.forEach((arr, key) => {
@@ -746,9 +751,10 @@ export default function AlertsMap({
           const src = (a?.source || '').toString().toLowerCase()
           if (['beep','ufobeep','ufo_beep','ufo-beep'].includes(src) || (a as any)?.b === 1) { hasUfoBeep = true; break }
         }
-        // Even heavier spread for UFOBeep icon groups so they never overlap
-        const base = hasUfoBeep ? 90 : 24 // meters
-        const r = Math.min(hasUfoBeep ? 220 : 80, base + arr.length * (hasUfoBeep ? 10 : 3))
+        // Scale jitter more at lower zooms so points separate sooner
+        const zoomFactor = zoom < 16 ? (1 + (16 - zoom) * 0.3) : 1
+        const base = hasUfoBeep ? 90 * zoomFactor : 24 * zoomFactor // meters
+        const r = Math.min(hasUfoBeep ? 220 * zoomFactor : 100 * zoomFactor, base + arr.length * (hasUfoBeep ? 10 : 4) * zoomFactor)
         arr.forEach((p, i) => {
           const angle = (2 * Math.PI * i) / arr.length
           const dLat = (r * Math.sin(angle)) * degPerMeterLat
@@ -851,11 +857,10 @@ export default function AlertsMap({
           marker.bindPopup(popup)
           marker.on('click', () => {
             try {
-              const key = `${lat.toFixed(5)},${lng.toFixed(5)}`
-              const arr = groups.get(key) || []
+              const countAtId = overlapCount.get(String(id)) || 1
               const z = Math.round(map.getZoom() || 0)
               const alreadySeparated = !!jitterPos
-              if (arr.length > 1 && z < 18 && !alreadySeparated) {
+              if (countAtId > 1 && z < 18 && !alreadySeparated) {
                 const targetZoom = Math.min(Math.max(15, z + 3), 18)
                 map.flyTo([lat, lng], targetZoom, { duration: 0.45 })
                 return
