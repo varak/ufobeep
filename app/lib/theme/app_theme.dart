@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Brand colors
-  static const Color brandPrimary = Color(0xFF39FF14);
-  static const Color brandPrimaryDark = Color(0xFF2ACC0F);
-  static const Color brandPrimaryLight = Color(0xFF5FFF3A);
+  static const Color brandPrimary = Color(0xFFFFFFFF);
+  static const Color brandPrimaryDark = Color(0xFFE0E0E0);
+  static const Color brandPrimaryLight = Color(0xFFFFFFFF);
 
   // Dark theme colors
   static const Color darkBackground = Color(0xFF0A0A0A);
@@ -18,12 +18,12 @@ class AppColors {
   static const Color textSecondary = Color(0xFFB3B3B3);
   static const Color textTertiary = Color(0xFF808080);
   static const Color textInverse = Color(0xFF0A0A0A);
-  static const Color textAccent = Color(0xFF39FF14);
+  static const Color textAccent = Color(0xFFFFFFFF);
 
   // Semantic colors
   static const Color error = Color(0xFFFF3838);
   static const Color warning = Color(0xFFFFB814);
-  static const Color success = Color(0xFF39FF14);
+  static const Color success = Color(0xFFFFFFFF);
   static const Color info = Color(0xFF14B8FF);
   
   // Semantic aliases for consistency

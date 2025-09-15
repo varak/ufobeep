@@ -11,9 +11,9 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          primary: '#39FF14',
-          'primary-dark': '#2ACC0F',
-          'primary-light': '#5FFF3A',
+          primary: '#FFFFFF',
+          'primary-dark': '#E0E0E0',
+          'primary-light': '#FFFFFF',
         },
         dark: {
           background: '#0A0A0A',
@@ -27,12 +27,12 @@ const config: Config = {
           secondary: '#B3B3B3',
           tertiary: '#808080',
           inverse: '#0A0A0A',
-          accent: '#39FF14',
+          accent: '#FFFFFF',
         },
         semantic: {
           error: '#FF3838',
           warning: '#FFB814',
-          success: '#39FF14',
+          success: '#FFFFFF',
           info: '#14B8FF',
         },
       },

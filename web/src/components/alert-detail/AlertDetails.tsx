@@ -182,10 +182,10 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
               </div>
             </div>
           )}
-          <div 
-            className="text-text-secondary leading-relaxed prose prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ 
-              __html: getCleanDescription().replace(/\n/g, '<br>') 
+          <div
+            className="text-text-primary leading-relaxed prose prose-invert max-w-none"
+            dangerouslySetInnerHTML={{
+              __html: getCleanDescription().replace(/\n/g, '<br>')
             }}
           />
         </div>
@@ -210,7 +210,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
               <div className="mb-2">
                 <div className="flex items-center gap-2">
                   <span className="text-text-tertiary text-sm font-medium">{t('reportedTime')}</span>
-                  <span className="text-text-secondary text-sm">{alert.enrichment_data.report_date}</span>
+                  <span className="text-text-primary text-sm">{alert.enrichment_data.report_date}</span>
                 </div>
               </div>
             )}
@@ -218,7 +218,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-text-tertiary text-sm font-medium">{t('addedToUfobeep')}:</span>
-                <span className="text-text-secondary text-sm">{formatDateISO(alert.created_at)}</span>
+                <span className="text-text-primary text-sm">{formatDateISO(alert.created_at)}</span>
               </div>
             </div>
           </div>
@@ -231,7 +231,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
               <span className="text-text-tertiary text-sm font-medium">{t('timeLabel')}</span>
               <span className="text-text-primary text-sm">{formatFullDate(alert.created_at)}</span>
             </div>
-            <div className="text-text-secondary text-xs mt-1">
+            <div className="text-text-primary text-xs mt-1">
               {formatDate(alert.created_at)}
             </div>
           </div>
@@ -296,7 +296,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-text-tertiary text-sm font-medium">{t('weather')}</span>
                 </div>
-                <div className="text-text-secondary text-sm">
+                <div className="text-text-primary text-sm">
                   {alert.enrichment.weather.weather_description && (
                     <div>{alert.enrichment.weather.weather_description}</div>
                   )}
@@ -325,7 +325,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-text-tertiary text-sm font-medium">{t('aircraftTrackingTitle')}</span>
                 </div>
-                <div className="text-text-secondary text-sm">
+                <div className="text-text-primary text-sm">
                   {alert.enrichment.nearby_aircraft ? (
                     <div>{alert.enrichment.nearby_aircraft.length} {t('nearbyAircraft')}</div>
                   ) : (
@@ -344,7 +344,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-text-tertiary text-sm font-medium">{t('satellitePassesTitle')}</span>
                 </div>
-                <div className="text-text-secondary text-sm">
+                <div className="text-text-primary text-sm">
                   {alert.enrichment.satellite_passes.length > 0 ? (
                     <div>
                       <div>{alert.enrichment.satellite_passes.length} visible passes during timeframe</div>
