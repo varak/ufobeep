@@ -62,10 +62,10 @@ class _NotificationManagementScreenState
         return;
       }
       
-      debugPrint('📡 Calling /users/$userId/subscriptions...');
-      final response = await ApiClient.dio.get('/users/$userId/subscriptions');
+      debugPrint('📡 Calling /beep/following...');
+      final response = await ApiClient.dio.get('/beep/following');
       debugPrint('✅ Subscriptions response: ${response.data}');
-      
+
       if (mounted) {
         setState(() {
           _subscriptions = List<Map<String, dynamic>>.from(response.data['subscriptions'] ?? []);
