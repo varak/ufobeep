@@ -570,6 +570,41 @@ export default function AlertsMap({
       const zoom = Math.round(map.getZoom() || 0)
       const clusters = index.getClusters(bbox, zoom)
 
+      // Build jitter map for points sharing identical coordinates in this viewport
+      const pointItems: Array<{id: string; lat: number; lng: number}> = []
+      clusters.forEach((c: any) => {
+        if (!(c.properties && c.properties.cluster)) {
+          const [lng, lat] = c.geometry.coordinates
+          const id = String(c.properties?.id)
+          pointItems.push({ id, lat, lng })
+        }
+      })
+      const groups = new Map<string, Array<{id: string; lat: number; lng: number}>>()
+      pointItems.forEach(p => {
+        const key = `${p.lat.toFixed(5)},${p.lng.toFixed(5)}`
+        const arr = groups.get(key) || []
+        arr.push(p)
+        groups.set(key, arr)
+      })
+      const jitterMap = new Map<string, [number, number]>()
+      groups.forEach((arr, key) => {
+        if (arr.length <= 1) return
+        const [lat0Str, lng0Str] = key.split(',')
+        const lat0 = parseFloat(lat0Str)
+        const lng0 = parseFloat(lng0Str)
+        const cosLat = Math.cos((lat0 * Math.PI) / 180)
+        const degPerMeterLat = 1 / 111320
+        const degPerMeterLng = 1 / (111320 * (cosLat || 1))
+        const base = 10 // meters
+        const r = Math.min(30, base + arr.length * 2)
+        arr.forEach((p, i) => {
+          const angle = (2 * Math.PI * i) / arr.length
+          const dLat = (r * Math.sin(angle)) * degPerMeterLat
+          const dLng = (r * Math.cos(angle)) * degPerMeterLng
+          jitterMap.set(p.id, [lat0 + dLat, lng0 + dLng])
+        })
+      })
+
       clusters.forEach((c: any) => {
         const [lng, lat] = c.geometry.coordinates
         if (c.properties && c.properties.cluster) {
@@ -599,7 +634,8 @@ export default function AlertsMap({
           const id = c.properties && c.properties.id
           const alert = (alerts as any[]).find(a => a.id === id)
           if (!alert || !isValidLatLng(alert.location)) return
-          const marker = createUfoMarker(L, alert, map)
+          const jitterPos = jitterMap.get(String(id)) as [number, number] | undefined
+          const marker = createUfoMarker(L, alert, map, jitterPos)
           const popup = L.popup({ maxWidth: 350, className: 'custom-popup' }).setContent(createPopupContentHelper(alert, L))
           marker.bindPopup(popup)
           marker.addTo(map)
@@ -685,7 +721,7 @@ export default function AlertsMap({
     return '📍'
   }
 
-  const createUfoMarker = (L: any, alert: Alert, map: any) => {
+  const createUfoMarker = (L: any, alert: Alert, map: any, pos?: [number, number]) => {
     const isClassifiedUfo = alert.source === 'mufon' || alert.username === 'MUFON_Database'
     
     if (isClassifiedUfo) {
@@ -715,11 +751,15 @@ export default function AlertsMap({
         iconAnchor: [12, 12]
       })
       
-      return L.marker([Number(alert.location.latitude), Number(alert.location.longitude)], { icon: customIcon })
+      const lat = pos ? Number(pos[0]) : Number(alert.location.latitude)
+      const lng = pos ? Number(pos[1]) : Number(alert.location.longitude)
+      return L.marker([lat, lng], { icon: customIcon })
     } else {
       // Use circle markers for regular beep sightings (existing behavior)
+      const lat = pos ? Number(pos[0]) : Number(alert.location.latitude)
+      const lng = pos ? Number(pos[1]) : Number(alert.location.longitude)
       return L.circleMarker(
-        [Number(alert.location.latitude), Number(alert.location.longitude)],
+        [lat, lng],
         {
           radius: 8,
           fillColor: getAlertColor(alert.alert_level),
