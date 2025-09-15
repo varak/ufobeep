@@ -40,6 +40,7 @@ class Alert {
     this.canConfirmWitness = true,
     this.commentCount = 0,
     this.shortUrl,
+    this.occurredAt,
   });
 
   final String id;
@@ -73,6 +74,7 @@ class Alert {
   final bool canConfirmWitness;
   final int commentCount;
   final String? shortUrl;
+  final DateTime? occurredAt;
 
   // Computed properties
   bool get isVerified => status == 'verified';
@@ -149,6 +151,7 @@ class Alert {
     bool? canConfirmWitness,
     int? commentCount,
     String? shortUrl,
+    DateTime? occurredAt,
   }) {
     return Alert(
       id: id ?? this.id,
@@ -182,6 +185,7 @@ class Alert {
       canConfirmWitness: canConfirmWitness ?? this.canConfirmWitness,
       commentCount: commentCount ?? this.commentCount,
       shortUrl: shortUrl ?? this.shortUrl,
+      occurredAt: occurredAt ?? this.occurredAt,
     );
   }
 
@@ -289,6 +293,7 @@ class Alert {
         canConfirmWitness: json['can_confirm_witness'] as bool? ?? true,
         commentCount: json['comment_count'] as int? ?? 0,
         shortUrl: json['short_url'] as String?,
+        occurredAt: json['occurred_at'] != null ? DateTime.parse(json['occurred_at'] as String) : null,
       );
     } catch (e) {
       debugPrint('Error parsing alert JSON for ${json['id']}: $e');
@@ -331,6 +336,7 @@ class Alert {
       'can_confirm_witness': canConfirmWitness,
       'comment_count': commentCount,
       if (shortUrl != null) 'short_url': shortUrl,
+      if (occurredAt != null) 'occurred_at': occurredAt!.toIso8601String(),
     };
   }
 }
