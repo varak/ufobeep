@@ -36,6 +36,34 @@
   z-index: 8 !important;
 }
 
+/* Leaflet popup layout fixes (for AlertsMap popups) */
+/* Ensure close button is correctly positioned and content doesn't overlap it */
+.custom-popup .leaflet-popup-close-button {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  color: #111827; /* slate-900 for visibility on light popup */
+}
+
+.custom-popup .leaflet-popup-content {
+  /* Add right padding so the close button doesn't cover text */
+  margin: 12px 28px 12px 12px !important;
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+  background: #ffffff; /* explicit background for dark theme pages */
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+}
+
+.custom-popup .leaflet-popup-tip {
+  background: #ffffff;
+}
+
 /* Hide scrollbar for media gallery */
 .scrollbar-hide {
   -ms-overflow-style: none;

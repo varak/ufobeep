@@ -801,7 +801,7 @@ export default function AlertsMap({
                 if (!alert || !isValidLatLng(alert.location)) return
                 const m = createUfoMarker(L, alert, map, [sLat, sLng])
                 const pc = createPopupContentHelper(alert, L)
-                const popup = L.popup({ maxWidth: 350, className: 'custom-popup' }).setContent(pc)
+                const popup = L.popup({ maxWidth: 440, className: 'custom-popup' }).setContent(pc)
                 m.bindPopup(popup)
                 m.on('popupopen', () => { try { (pc as any).__mount?.() } catch {} })
                 m.addTo(map)
@@ -820,7 +820,7 @@ export default function AlertsMap({
                   if (!alert || !isValidLatLng(alert.location)) return
                   const m = createUfoMarker(L, alert, map, [sLat, sLng])
                   const pc = createPopupContentHelper(alert, L)
-                  const popup = L.popup({ maxWidth: 350, className: 'custom-popup' }).setContent(pc)
+                  const popup = L.popup({ maxWidth: 440, className: 'custom-popup' }).setContent(pc)
                   m.bindPopup(popup)
                   m.on('popupopen', () => { try { (pc as any).__mount?.() } catch {} })
                   m.addTo(map)
@@ -864,7 +864,7 @@ export default function AlertsMap({
           const jitterPos = jitterMap.get(String(id)) as [number, number] | undefined
           const marker = createUfoMarker(L, alert, map, jitterPos)
           const pcInd = createPopupContentHelper(alert, L)
-          const popup = L.popup({ maxWidth: 350, className: 'custom-popup' }).setContent(pcInd)
+          const popup = L.popup({ maxWidth: 440, className: 'custom-popup' }).setContent(pcInd)
           marker.bindPopup(popup)
           marker.on('popupopen', () => { try { (pcInd as any).__mount?.() } catch {} })
           marker.on('click', () => {
