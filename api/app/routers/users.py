@@ -1750,8 +1750,10 @@ async def get_user_subscriptions(user_id: str, current_user = Depends(get_curren
                 COALESCE(
                     enrichment_data->'geocoding'->>'display_name',
                     enrichment_data->'geocoding'->>'location',
+                    enrichment_data->'geocoding'->>'location_name',
+                    enrichment_data->'weather'->>'city',
                     enrichment_data->>'location_name',
-                    CONCAT(ROUND(s.lat::numeric, 4), ', ', ROUND(s.lon::numeric, 4))
+                    'Unknown Location'
                 ) as location_name,
                 s.lat as latitude,
                 s.lon as longitude,
