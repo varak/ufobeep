@@ -133,29 +133,47 @@ export default function AlertsMap({
         if (isMinimal) {
           // This is minimal data, need to fetch full details
           setLoading(true)
-          // Use frontend API route
-          fetch(`/api/beep/${alert.id}`)
-            .then(res => res.json())
-            .then(data => {
-              if (data.success && data.data) {
-                // Map the response to match our Alert interface
-                const fullData = {
-                  ...alert,
-                  title: data.data.title,
-                  description: data.data.description,
-                  created_at: data.data.created_at,
-                  location: data.data.location,  // Always use the full location from API
-                  media_files: data.data.media_files?.files || data.data.media_files || [],
-                  username: data.data.username,
-                  source: data.data.source,
-                  short_url: data.data.short_url,
-                  enrichment_data: data.data.enrichment_data || data.data.enrichment
+          const loader = () => {
+            fetch(`/api/beep/${alert.id}`)
+              .then(res => res.json())
+              .then(data => {
+                if (data.success && data.data) {
+                  // Map the response to match our Alert interface
+                  const fullData = {
+                    ...alert,
+                    title: data.data.title,
+                    description: data.data.description,
+                    created_at: data.data.created_at,
+                    location: data.data.location,  // Always use the full location from API
+                    media_files: data.data.media_files?.files || data.data.media_files || [],
+                    username: data.data.username,
+                    source: data.data.source,
+                    short_url: data.data.short_url,
+                    enrichment_data: data.data.enrichment_data || data.data.enrichment
+                  }
+                  setFullAlert(fullData as any)
                 }
-                setFullAlert(fullData)
-              }
-            })
-            .catch(err => console.error('Error loading alert details:', err))
-            .finally(() => setLoading(false))
+              })
+              .catch(err => console.error('Error loading alert details:', err))
+              .finally(() => setLoading(false))
+          }
+          // Defer slightly if low-end to keep interactions smooth
+          try {
+            const c: any = (navigator as any).connection
+            const saveData = !!c?.saveData
+            const type = (c?.effectiveType || '').toLowerCase()
+            const cores = (navigator as any).hardwareConcurrency || 4
+            const low = saveData || type === '2g' || type === 'slow-2g' || type === '3g' || cores <= 4
+            if (low && 'requestIdleCallback' in window) {
+              ;(window as any).requestIdleCallback(loader, { timeout: 300 })
+            } else if (low) {
+              setTimeout(loader, 150)
+            } else {
+              loader()
+            }
+          } catch {
+            loader()
+          }
         } else {
           // Already have full data
           setFullAlert(alert)
@@ -270,22 +288,25 @@ export default function AlertsMap({
           <h4 className="font-semibold text-gray-900 mb-1">
             {(displayAlert.source === 'mufon' || displayAlert.username === 'MUFON_Database')
               ? (displayAlert.title ? AlertTitleUtils.getShortTitle(displayAlert as any) : 'MUFON Sighting')
-              : 'UFOBeep UFO Sighting'}
+              : 'UFOBeep UFO Alert'}
           </h4>
 
           {/* Media thumbnails */}
           {displayAlert.media_files && displayAlert.media_files.length > 0 && (
             <div className="flex gap-1 mb-2 overflow-x-auto">
-              {displayAlert.media_files.slice(0, 4).map((media, index) => (
+              {(displayAlert.media_files.length > 0 ? displayAlert.media_files.slice(0, 4) : []).map((media, index) => (
                 <div
                   key={index}
                   className="relative flex-shrink-0 w-16 h-16 bg-gray-100 rounded overflow-hidden cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all"
                   onClick={() => handleMediaClick(index)}
                 >
                   <img
-                    src={media.web_url || media.thumbnail_url || media.url}
+                    src={media.thumbnail_url || media.web_url || media.url}
                     alt={`Media ${index + 1}`}
                     className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    referrerPolicy="no-referrer"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement
                       target.style.display = 'none'
@@ -665,6 +686,31 @@ export default function AlertsMap({
         groups.set(key, arr)
       })
       // No jitter by default; we'll spiderfy on click using these groups
+      const jitterMap = new Map<string, [number, number]>()
+      groups.forEach((arr, key) => {
+        if (arr.length <= 1) return
+        const [lat0Str, lng0Str] = key.split(',')
+        const lat0 = parseFloat(lat0Str)
+        const lng0 = parseFloat(lng0Str)
+        const cosLat = Math.cos((lat0 * Math.PI) / 180)
+        const degPerMeterLat = 1 / 111320
+        const degPerMeterLng = 1 / (111320 * (cosLat || 1))
+        // Determine if group contains any UFOBeep alerts
+        let hasUfoBeep = false
+        for (const p of arr) {
+          const a = (alerts as any[]).find(x => String(x.id) === String(p.id))
+          const src = (a?.source || '').toString().toLowerCase()
+          if (['beep','ufobeep','ufo_beep','ufo-beep'].includes(src)) { hasUfoBeep = true; break }
+        }
+        const base = hasUfoBeep ? 26 : 16 // meters; bigger ring for icon markers
+        const r = Math.min(54, base + arr.length * 2.5)
+        arr.forEach((p, i) => {
+          const angle = (2 * Math.PI * i) / arr.length
+          const dLat = (r * Math.sin(angle)) * degPerMeterLat
+          const dLng = (r * Math.cos(angle)) * degPerMeterLng
+          jitterMap.set(p.id, [lat0 + dLat, lng0 + dLng])
+        })
+      })
 
       clusters.forEach((c: any) => {
         const [lng, lat] = c.geometry.coordinates
@@ -685,10 +731,7 @@ export default function AlertsMap({
           const divIcon = L.divIcon({ html, className: 'cluster-marker', iconSize: [size, size], iconAnchor: [size/2, size/2] })
           const marker = L.marker([lat, lng], { icon: divIcon })
           try { marker.bindTooltip('Zoom in to expand', { direction: 'top', offset: [0, -size/2], opacity: 0.8 }) } catch {}
-          marker.on('click', () => {
-            const nextZoom = Math.min(index.getClusterExpansionZoom(c.id), 18)
-            map.flyTo([lat, lng], nextZoom, { duration: 0.6 })
-          })
+          marker.on('click', () => { try { marker.openPopup() } catch {} })
           marker.addTo(map)
           markersRef.current.push(marker)
         } else {
@@ -696,7 +739,8 @@ export default function AlertsMap({
           const id = c.properties && c.properties.id
           const alert = (alerts as any[]).find(a => a.id === id)
           if (!alert || !isValidLatLng(alert.location)) return
-          const marker = createUfoMarker(L, alert, map)
+          const jitterPos = jitterMap.get(String(id)) as [number, number] | undefined
+          const marker = createUfoMarker(L, alert, map, jitterPos)
           const popup = L.popup({ maxWidth: 350, className: 'custom-popup' }).setContent(createPopupContentHelper(alert, L))
           marker.bindPopup(popup)
           marker.on('click', () => {
@@ -827,8 +871,7 @@ export default function AlertsMap({
   const createUfoMarker = (L: any, alert: Alert, map: any, pos?: [number, number]) => {
     const isMufon = (alert.source?.toLowerCase?.() === 'mufon') || alert.username === 'MUFON_Database'
     const isUfoBeep = (!isMufon) && (
-      (alert.source == null) ||
-      (typeof alert.source === 'string' && ['beep','ufobeep','ufo_beep','ufo-beep'].includes(alert.source.toLowerCase()))
+      typeof alert.source === 'string' && ['beep','ufobeep','ufo_beep','ufo-beep'].includes(alert.source.toLowerCase())
     )
 
     if (isMufon) {

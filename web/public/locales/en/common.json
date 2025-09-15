@@ -314,5 +314,6 @@
   "aircraftDataSource": "Data Source",
   "noAircraftDetected": "No aircraft detected",
   "sightingReport": "Sighting Report",
-  "ufoAlert": "UFO Alert"
+  "ufoAlert": "UFO Alert",
+  "alert": "Alert"
 }

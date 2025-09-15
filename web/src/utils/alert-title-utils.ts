@@ -34,7 +34,7 @@ export class AlertTitleUtils {
     // Handle UFOBeep alerts - ALWAYS use proper title
     if (!isMufonAlert) {
       if (t) {
-        return t('ufoAlert');
+        return `UFOBeep ${t('ufo')} ${t('alert')}`;
       }
       return 'UFOBeep UFO Alert';
     }
