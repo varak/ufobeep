@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useState, Suspense } from 'react'
-import dynamic from 'next/dynamic'
-const AlertsMap = dynamic(() => import('@/components/AlertsMap'), { ssr: false })
+import dynamicImport from 'next/dynamic'
+const AlertsMap = dynamicImport(() => import('@/components/AlertsMap'), { ssr: false })
 import Link from 'next/link'
 
 interface Alert {
