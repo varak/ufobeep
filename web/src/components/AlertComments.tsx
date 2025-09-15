@@ -186,14 +186,29 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
   }
 
   const handleDeleteComment = async (commentId: number) => {
-    if (!isAuthenticated || commentId === 0) return // Don't allow deleting the original description
+    console.log('Delete clicked for comment ID:', commentId)
 
-    if (!confirm(t('confirmDeleteComment') || 'Are you sure you want to delete this comment?')) {
+    if (!isAuthenticated || commentId === 0) {
+      console.log('Delete blocked - not authenticated or comment ID 0')
       return
     }
 
+    const confirmMsg = t('confirmDeleteComment') || 'Are you sure you want to delete this comment?'
+    console.log('Showing confirm dialog:', confirmMsg)
+
+    if (!confirm(confirmMsg)) {
+      console.log('User cancelled deletion')
+      return
+    }
+
+    console.log('Proceeding with deletion...')
+    setMessage('Deleting comment...')
+    setMessageType('success')
+
     try {
       const token = getAuthToken()
+      console.log('Making DELETE request to:', `/api/beep/${alertId}/comments/${commentId}`)
+
       const response = await fetch(`/api/beep/${alertId}/comments/${commentId}`, {
         method: 'DELETE',
         headers: {
@@ -202,7 +217,10 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
         }
       })
 
+      console.log('DELETE response status:', response.status)
+
       if (response.ok) {
+        console.log('Delete successful, refreshing comments...')
         // Proactively refresh comments (SSE may be delayed or blocked)
         try {
           const refresh = await fetch(`/api/beep/${alertId}/comments`)
@@ -210,24 +228,31 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
             const data = await refresh.json()
             const sorted = (data.items || []).sort((a: Comment, b: Comment) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
             setComments(sorted)
+            console.log('Comments refreshed, new count:', sorted.length)
           }
-        } catch {}
-        setMessage(t('commentDeleted', 'Comment deleted'))
+        } catch (err) {
+          console.error('Error refreshing comments:', err)
+        }
+        setMessage(t('commentDeleted', 'Comment deleted successfully!'))
         setMessageType('success')
         setTimeout(() => setMessage(''), 3000)
       } else {
+        console.log('Delete failed with status:', response.status)
         let msg = 'Failed to delete comment'
         try {
           const errorData = await response.json()
+          console.log('Error data:', errorData)
           msg = errorData.detail || errorData.error || msg
-        } catch {}
+        } catch (err) {
+          console.error('Error parsing error response:', err)
+        }
         setMessage(msg)
         setMessageType('error')
         setTimeout(() => setMessage(''), 5000)
       }
     } catch (error) {
       console.error('Error deleting comment:', error)
-      setMessage('Failed to delete comment')
+      setMessage('Network error - failed to delete comment')
       setMessageType('error')
       setTimeout(() => setMessage(''), 5000)
     }
@@ -377,7 +402,7 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
             <div key={comment.id} className="border-l-2 border-brand-primary/30 pl-4 pb-3">
               <div className="flex items-start gap-3">
                 {/* Column 1: Avatar + Username */}
-                <div className="flex items-center gap-2 flex-shrink-0 min-w-0 w-32">
+                <div className="flex items-center gap-2 flex-shrink-0 min-w-0 w-40">
                   <div className="w-6 h-6 bg-brand-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
                     <span className="text-brand-primary text-xs font-semibold">
                       {comment.username?.charAt(0).toUpperCase() || 'U'}
