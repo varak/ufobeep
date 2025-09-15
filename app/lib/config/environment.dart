@@ -21,7 +21,7 @@ class AppEnvironment {
       await dotenv.load(fileName: '.env');
     } catch (e) {
       if (kDebugMode) {
-        print('Warning: Could not load .env file: $e');
+        debugPrint('Warning: Could not load .env file: $e');
       }
     }
   }
@@ -158,17 +158,17 @@ class AppEnvironment {
   // Logging
   static void logConfig() {
     if (enableLogging) {
-      print('=== UFOBeep Environment Configuration ===');
-      print('Environment: $_current');
-      print('API Base URL: $apiBaseUrl');
-      print('Matrix Base URL: $matrixBaseUrl');
-      print('App Version: $appVersion');
-      print('Debug Mode: $debugMode');
-      print('Supported Locales: ${supportedLocales.join(", ")}');
-      print('Default Locale: $defaultLocale');
-      print('AR Compass: $enableArCompass');
-      print('Pilot Mode: $enablePilotMode');
-      print('==========================================');
+      debugPrint('=== UFOBeep Environment Configuration ===');
+      debugPrint('Environment: $_current');
+      debugPrint('API Base URL: $apiBaseUrl');
+      debugPrint('Matrix Base URL: $matrixBaseUrl');
+      debugPrint('App Version: $appVersion');
+      debugPrint('Debug Mode: $debugMode');
+      debugPrint('Supported Locales: ${supportedLocales.join(", ")}');
+      debugPrint('Default Locale: $defaultLocale');
+      debugPrint('AR Compass: $enableArCompass');
+      debugPrint('Pilot Mode: $enablePilotMode');
+      debugPrint('==========================================');
     }
   }
 }

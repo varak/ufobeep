@@ -120,7 +120,7 @@ class TypeSafeJson {
   
   /// Log type mismatch warnings for debugging
   static void logTypeMismatch(String expected, dynamic actual, String context) {
-    print('🔴 TYPE MISMATCH in $context: Expected $expected, got ${actual.runtimeType}: $actual');
+    debugPrint('🔴 TYPE MISMATCH in $context: Expected $expected, got ${actual.runtimeType}: $actual');
   }
 }
 

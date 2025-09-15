@@ -39,13 +39,13 @@ class PermissionService {
   Future<void> initializePermissions() async {
     if (_permissionsInitialized) return;
 
-    print('Initializing permissions (fast check)...');
+    debugPrint('Initializing permissions (fast check)...');
     
     // Just check current status - don't request or do background work
     await _checkCurrentPermissions();
     
     _permissionsInitialized = true;
-    print('Permissions checked: Location=$_locationGranted, Camera=$_cameraGranted, Photos=$_photosGranted, Notifications=$_notificationGranted');
+    debugPrint('Permissions checked: Location=$_locationGranted, Camera=$_cameraGranted, Photos=$_photosGranted, Notifications=$_notificationGranted');
   }
   
   /// Fast permission check without requests
@@ -67,7 +67,7 @@ class PermissionService {
       _photosGranted = false;
       
     } catch (e) {
-      print('Error checking permissions: $e');
+      debugPrint('Error checking permissions: $e');
       // Safe defaults
       _locationGranted = false;
       _cameraGranted = false;
@@ -116,9 +116,9 @@ class PermissionService {
       _locationGranted = permission == LocationPermission.always || 
                         permission == LocationPermission.whileInUse;
                         
-      print('Location permission: $_locationGranted (status: $permission)');
+      debugPrint('Location permission: $_locationGranted (status: $permission)');
     } catch (e) {
-      print('Error requesting location permission: $e');
+      debugPrint('Error requesting location permission: $e');
       _locationGranted = false;
     }
   }
@@ -128,9 +128,9 @@ class PermissionService {
     try {
       final status = await Permission.camera.request();
       _cameraGranted = status == PermissionStatus.granted;
-      print('Camera permission: $_cameraGranted');
+      debugPrint('Camera permission: $_cameraGranted');
     } catch (e) {
-      print('Error requesting camera permission: $e');
+      debugPrint('Error requesting camera permission: $e');
       _cameraGranted = false;
     }
   }
@@ -148,9 +148,9 @@ class PermissionService {
         ),
       );
       _photosGranted = result.isAuth;
-      print('Photos permission: $_photosGranted');
+      debugPrint('Photos permission: $_photosGranted');
     } catch (e) {
-      print('Error requesting photos permission: $e');
+      debugPrint('Error requesting photos permission: $e');
       _photosGranted = false;
     }
   }
@@ -160,9 +160,9 @@ class PermissionService {
     try {
       final status = await Permission.notification.request();
       _notificationGranted = status == PermissionStatus.granted;
-      print('Notification permission: $_notificationGranted');
+      debugPrint('Notification permission: $_notificationGranted');
     } catch (e) {
-      print('Error requesting notification permission: $e');
+      debugPrint('Error requesting notification permission: $e');
       _notificationGranted = false;
     }
   }
@@ -177,7 +177,7 @@ class PermissionService {
         timeLimit: const Duration(seconds: 10),
       );
     } catch (e) {
-      print('Error getting current location: $e');
+      debugPrint('Error getting current location: $e');
       return null;
     }
   }
@@ -211,15 +211,15 @@ class PermissionService {
   Future<bool> requestCameraForCapture() async {
     if (_cameraGranted) return true;
     
-    print('Requesting camera permission for photo capture...');
+    debugPrint('Requesting camera permission for photo capture...');
     final status = await Permission.camera.request();
     _cameraGranted = status == PermissionStatus.granted;
     
     if (_cameraGranted) {
       await _cachePermissions();
-      print('Camera permission granted');
+      debugPrint('Camera permission granted');
     } else {
-      print('Camera permission denied');
+      debugPrint('Camera permission denied');
     }
     
     return _cameraGranted;
@@ -229,7 +229,7 @@ class PermissionService {
   Future<bool> requestPhotosForGallery() async {
     if (_photosGranted) return true;
     
-    print('Requesting photos permission for gallery access...');
+    debugPrint('Requesting photos permission for gallery access...');
     try {
       final result = await PhotoManager.requestPermissionExtend(
         requestOption: const PermissionRequestOption(
@@ -244,12 +244,12 @@ class PermissionService {
       
       if (_photosGranted) {
         await _cachePermissions();
-        print('Photos permission granted');
+        debugPrint('Photos permission granted');
       } else {
-        print('Photos permission denied');
+        debugPrint('Photos permission denied');
       }
     } catch (e) {
-      print('Error requesting photos permission: $e');
+      debugPrint('Error requesting photos permission: $e');
       _photosGranted = false;
     }
     
@@ -280,12 +280,12 @@ class PermissionService {
   
   /// Request notification permission (for push notifications)
   Future<bool> requestNotificationPermissionForPush() async {
-    print('Requesting notification permission for push alerts...');
+    debugPrint('Requesting notification permission for push alerts...');
     final granted = await requestPermission(Permission.notification);
     if (granted) {
-      print('Notification permission granted for push alerts');
+      debugPrint('Notification permission granted for push alerts');
     } else {
-      print('Notification permission denied for push alerts');
+      debugPrint('Notification permission denied for push alerts');
     }
     return granted;
   }
@@ -298,33 +298,33 @@ class PermissionService {
       return true;
     }
     
-    print('Location not ready for beep - checking permissions...');
+    debugPrint('Location not ready for beep - checking permissions...');
     
     // Check current permission status
     final currentStatus = await Permission.location.status;
     
     if (currentStatus.isPermanentlyDenied) {
       // User permanently denied - can't request again
-      print('Location permanently denied - must go to Settings');
+      debugPrint('Location permanently denied - must go to Settings');
       return false;
     }
     
     if (!currentStatus.isGranted) {
       // Request permission
-      print('Requesting location permission for beep submission...');
+      debugPrint('Requesting location permission for beep submission...');
       final newStatus = await Permission.location.request();
       _locationGranted = newStatus.isGranted;
       await _cachePermissions();
       
       if (!_locationGranted) {
-        print('Location permission denied for beep');
+        debugPrint('Location permission denied for beep');
         return false;
       }
     }
     
     // Permission granted, but might not have cached location
     if (_cachedLocation == null) {
-      print('Getting location for beep submission...');
+      debugPrint('Getting location for beep submission...');
       await getCurrentLocation();
     }
     
@@ -335,11 +335,11 @@ class PermissionService {
   /// Background location fetch to avoid blocking startup
   Future<void> _backgroundLocationFetch() async {
     try {
-      print('Background: Fetching initial location...');
+      debugPrint('Background: Fetching initial location...');
       await getCurrentLocation();
-      print('Background: Initial location cached successfully');
+      debugPrint('Background: Initial location cached successfully');
     } catch (e) {
-      print('Background: Failed to get initial location - $e (will retry when needed)');
+      debugPrint('Background: Failed to get initial location - $e (will retry when needed)');
     }
   }
 }

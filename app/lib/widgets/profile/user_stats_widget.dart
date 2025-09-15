@@ -42,7 +42,7 @@ class UserStatsWidget extends ConsumerWidget {
       }
       return null;
     } catch (e) {
-      print('Error loading user stats: $e');
+      debugPrint('Error loading user stats: $e');
       return null;
     }
   }

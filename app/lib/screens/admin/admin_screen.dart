@@ -83,7 +83,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
         });
       }
     } catch (e) {
-      print('Failed to load engagement metrics: $e');
+      debugPrint('Failed to load engagement metrics: $e');
       // Don't show error to user - engagement metrics are optional
     }
   }
@@ -106,7 +106,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
         });
       }
     } catch (e) {
-      print('Failed to load recent alerts: $e');
+      debugPrint('Failed to load recent alerts: $e');
     }
   }
 
@@ -122,7 +122,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
         _rateLimitMessage = 'Loaded current status';
       });
     } catch (e) {
-      print('Failed to load rate limit status: $e');
+      debugPrint('Failed to load rate limit status: $e');
       setState(() {
         _rateLimitMessage = 'Error loading status';
       });

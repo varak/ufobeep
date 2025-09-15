@@ -59,7 +59,7 @@ class _AccountRecoveryScreenState extends ConsumerState<AccountRecoveryScreen> {
         });
       }
     } catch (e) {
-      print('Failed to load saved contact info: $e');
+      debugPrint('Failed to load saved contact info: $e');
       if (mounted) {
         setState(() {
           _hasLoadedSavedData = true;

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'dart:io';
 import 'dart:convert';
@@ -18,12 +16,10 @@ import 'providers/user_preferences_provider.dart';
 import 'routing/app_router.dart';
 import 'services/push_notification_service.dart';
 import 'services/sound_service.dart';
-import 'services/permission_service.dart';
 import 'services/share_intent_service.dart';
 import 'services/pending_share_queue.dart';
 import 'services/notifications.dart';
 import 'services/ui_feedback.dart';
-import 'services/analytics_service.dart';
 import 'services/auth_service.dart';
 import 'services/api_client.dart';
 import 'services/auth_repository.dart';
@@ -31,7 +27,6 @@ import 'services/device_registration_manager.dart';
 import 'services/location_update_manager.dart';
 import 'services/sensor_service.dart';
 import 'features/auth/deep_link_handler.dart';
-import 'features/auth/auth_gate.dart';
 import 'theme/app_theme.dart';
 
 void main() async {
@@ -62,7 +57,7 @@ void main() async {
   final packageInfo = await PackageInfo.fromPlatform();
   final buildNumber = packageInfo.buildNumber;
   final version = packageInfo.version;
-  print('🚀 UFOBeep starting... v$version build #$buildNumber');
+  debugPrint('🚀 UFOBeep starting... v$version build #$buildNumber');
   
   // Initialize environment first (needed by other services)
   await AppEnvironment.initialize();
@@ -88,7 +83,7 @@ void main() async {
   
   // Initialize DeviceRegistrationManager AFTER Firebase is initialized
   DeviceRegistrationManager().start();
-  print('✅ DeviceRegistrationManager started');
+  debugPrint('✅ DeviceRegistrationManager started');
   
   // Initialize LocationUpdateManager for battery-efficient location updates
   final locationManager = LocationUpdateManager(
@@ -96,10 +91,10 @@ void main() async {
     baseUrl: AppEnvironment.apiBaseUrl,
   );
   await locationManager.start();
-  print('✅ LocationUpdateManager started');
+  debugPrint('✅ LocationUpdateManager started');
   
   final sharedPreferences = results[1] as SharedPreferences;
-  print('✅ Core initialization: ${stopwatch.elapsedMilliseconds}ms');
+  debugPrint('✅ Core initialization: ${stopwatch.elapsedMilliseconds}ms');
   
   // Set up Firebase messaging background handler early
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -110,7 +105,7 @@ void main() async {
   // Log configuration
   AppEnvironment.logConfig();
   
-  print('✅ App ready: ${stopwatch.elapsedMilliseconds}ms');
+  debugPrint('✅ App ready: ${stopwatch.elapsedMilliseconds}ms');
   
   runApp(
     ProviderScope(
@@ -126,7 +121,7 @@ void main() async {
 }
 
 Future<void> _initializeNonCriticalServices() async {
-  print('🔧 Initializing background services...');
+  debugPrint('🔧 Initializing background services...');
   final stopwatch = Stopwatch()..start();
   
   // Initialize services that don't block app startup  
@@ -140,7 +135,7 @@ Future<void> _initializeNonCriticalServices() async {
   // Initialize share intent service - placeholder, actual init will be done in the app widget
   // ShareIntentService init will be called later with proper callback
   
-  print('✅ Background services ready: ${stopwatch.elapsedMilliseconds}ms');
+  debugPrint('✅ Background services ready: ${stopwatch.elapsedMilliseconds}ms');
 }
 
 class UFOBeepApp extends ConsumerStatefulWidget {
@@ -177,7 +172,7 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
     _authRepo = AuthRepository();
     _authListener = () {
       if (_authRepo.isReady && _authRepo.currentUser != null && _queuedShareData != null) {
-        print('Main: Authentication detected, processing queued share data');
+        debugPrint('Main: Authentication detected, processing queued share data');
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _processQueuedShareData();
         });
@@ -212,7 +207,7 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
     
     // Initialize ShareIntentService with callback
     ShareIntentService().init(onQueued: () async {
-      print('Main: Share intent detected, processing queue...');
+      debugPrint('Main: Share intent detected, processing queue...');
       await _processShareQueue(router);
     });
   }
@@ -222,7 +217,7 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
     
     try {
       final items = PendingShareQueue().items;
-      print('Main: Processing ${items.length} shared items');
+      debugPrint('Main: Processing ${items.length} shared items');
       
       // Convert SharedMediaItems to Files
       final files = <File>[];
@@ -231,31 +226,31 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
         if (await file.exists()) {
           files.add(file);
         } else {
-          print('Main: Shared file does not exist: ${item.uri.path}');
+          debugPrint('Main: Shared file does not exist: ${item.uri.path}');
         }
       }
       
       if (files.isEmpty) {
-        print('Main: No valid shared files found');
+        debugPrint('Main: No valid shared files found');
         PendingShareQueue().clear();
         return;
       }
         
       // Collect location data for beep composition
-      print('Main: Collecting location data for shared media...');
+      debugPrint('Main: Collecting location data for shared media...');
       SensorData? sensorData;
       try {
         final sensorService = SensorService();
         sensorData = await sensorService.captureSensorData();
-        print('Main: Location data collected successfully');
+        debugPrint('Main: Location data collected successfully');
       } catch (e) {
-        print('Main: Failed to collect sensor data: $e');
+        debugPrint('Main: Failed to collect sensor data: $e');
         // Continue without sensor data
       }
         
       // Check if user is authenticated
       if (_authRepo.isReady && _authRepo.currentUser != null) {
-        print('Main: User authenticated, navigating to beep composition');
+        debugPrint('Main: User authenticated, navigating to beep composition');
         
         // Navigate to beep composition screen with the first shared file
         final firstFile = files.first;
@@ -276,12 +271,12 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
           'description': '',
         };
         
-        print('🎯 MAIN: Share intent (authenticated) - navigating with data: $shareData');
+        debugPrint('🎯 MAIN: Share intent (authenticated) - navigating with data: $shareData');
         router.go('/beepscreen', extra: shareData);
         
         PendingShareQueue().clear();
       } else {
-        print('Main: User not authenticated, queueing share data');
+        debugPrint('Main: User not authenticated, queueing share data');
         
         // Queue the share data for after authentication  
         final firstFile = files.first;
@@ -305,12 +300,12 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
       }
         
     } catch (e, stackTrace) {
-      print('ERROR: Failed to process shared media: $e');
-      print('Stack trace: $stackTrace');
+      debugPrint('ERROR: Failed to process shared media: $e');
+      debugPrint('Stack trace: $stackTrace');
       
       // Fallback: navigate to regular beep screen if share intent fails
       router.go('/beep');
-      print('Main: Fell back to regular beep screen due to error');
+      debugPrint('Main: Fell back to regular beep screen due to error');
       PendingShareQueue().clear();
     }
   }
@@ -379,7 +374,7 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
   }
   
   void _handleInitialMessage(RemoteMessage message) {
-    print('Processing initial message: ${message.messageId}');
+    debugPrint('Processing initial message: ${message.messageId}');
     
     final notificationType = message.data['type'] ?? 'general';
     
@@ -387,14 +382,14 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
       case 'sighting_alert':
         final sightingId = message.data['sighting_id'];
         if (sightingId != null) {
-          print('Navigating to sighting alert: $sightingId');
+          debugPrint('Navigating to sighting alert: $sightingId');
           pushNotificationService.navigateToAlert(sightingId);
         }
         break;
       case 'chat_message':
         final chatId = message.data['chat_id'];
         if (chatId != null) {
-          print('Navigating to chat: $chatId');
+          debugPrint('Navigating to chat: $chatId');
           pushNotificationService.navigateToChat(chatId);
         }
         break;
@@ -404,15 +399,15 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
   void _processQueuedShareData() {
     if (_queuedShareData == null) return;
     
-    print('🎯 MAIN: Processing queued share data after authentication');
+    debugPrint('🎯 MAIN: Processing queued share data after authentication');
     final router = ref.read(appRouterProvider);
     final shareData = _queuedShareData!;
     _queuedShareData = null; // Clear the queue
     
-    print('🎯 MAIN: Share intent (queued) - navigating with data: $shareData');
+    debugPrint('🎯 MAIN: Share intent (queued) - navigating with data: $shareData');
     // Navigate to beep composer with the queued share data
     router.go('/beep/compose', extra: shareData);
-    print('🎯 MAIN: Navigated to beep composer with queued share data');
+    debugPrint('🎯 MAIN: Navigated to beep composer with queued share data');
   }
 
   @override
@@ -442,14 +437,14 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  print('Handling background message: ${message.messageId}');
+  debugPrint('Handling background message: ${message.messageId}');
   
   // Process the notification type and play appropriate sounds
   final notificationType = message.data['type'] ?? 'general';
   final witnessCountStr = message.data['witness_count'] ?? '1';
   final witnessCount = int.tryParse(witnessCountStr) ?? 1;
   
-  print('Background notification type: $notificationType, witnesses: $witnessCount');
+  debugPrint('Background notification type: $notificationType, witnesses: $witnessCount');
   
   // Check DND/Quiet Hours before doing any background sounds/handling
   bool muted = false;
@@ -472,7 +467,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     }
   } catch (_) {}
   if (muted && notificationType == 'sighting_alert') {
-    print('🔕 Background: muted by DND/Quiet Hours');
+    debugPrint('🔕 Background: muted by DND/Quiet Hours');
     return;
   }
 
@@ -488,10 +483,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       if (prefsJson != null) {
         final prefsMap = jsonDecode(prefsJson) as Map<String, dynamic>;
         userPrefs = UserPreferences.fromJson(prefsMap);
-        print('🔇 Background: Loaded user preferences for DND checking');
+        debugPrint('🔇 Background: Loaded user preferences for DND checking');
       }
     } catch (e) {
-      print('⚠️ Background: Could not load user preferences: $e');
+      debugPrint('⚠️ Background: Could not load user preferences: $e');
     }
     
     // Handle sighting alerts with escalated sounds
@@ -499,13 +494,13 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       // Play appropriate escalated alert sound based on witness count
       if (witnessCount >= 10) {
         await SoundService.I.play(AlertSound.emergency, haptic: true, witnessCount: witnessCount, userPrefs: userPrefs);
-        print('🚨 BACKGROUND: Playing EMERGENCY alert (${witnessCount} witnesses)');
+        debugPrint('🚨 BACKGROUND: Playing EMERGENCY alert (${witnessCount} witnesses)');
       } else if (witnessCount >= 3) {
         await SoundService.I.play(AlertSound.urgent, witnessCount: witnessCount, userPrefs: userPrefs);
-        print('⚠️ BACKGROUND: Playing URGENT alert (${witnessCount} witnesses)');
+        debugPrint('⚠️ BACKGROUND: Playing URGENT alert (${witnessCount} witnesses)');
       } else {
         await SoundService.I.play(AlertSound.normal, witnessCount: witnessCount, userPrefs: userPrefs);
-        print('📢 BACKGROUND: Playing NORMAL alert (${witnessCount} witnesses)');
+        debugPrint('📢 BACKGROUND: Playing NORMAL alert (${witnessCount} witnesses)');
       }
       
       // Also play push notification sound
@@ -515,6 +510,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       await SoundService.I.play(AlertSound.pushPing, userPrefs: userPrefs);
     }
   } catch (e) {
-    print('Error playing background notification sound: $e');
+    debugPrint('Error playing background notification sound: $e');
   }
 }

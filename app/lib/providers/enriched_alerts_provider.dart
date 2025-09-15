@@ -4,6 +4,7 @@ import '../models/alert_enrichment.dart';
 import '../models/enriched_alert.dart';
 import '../models/quarantine_state.dart';
 import '../models/alerts_filter.dart';
+import 'alerts_provider.dart';
 import '../services/api_client.dart';
 
 part 'enriched_alerts_provider.g.dart';
@@ -46,10 +47,16 @@ class EnrichedAlertsList extends _$EnrichedAlertsList {
             : null,
       );
 
-      final response = await apiClient.getAlerts(query);
+      final response = await apiClient.getNearbyAlerts(
+        latitude: latitude ?? 0.0,
+        longitude: longitude ?? 0.0,
+        radiusKm: maxDistanceKm ?? 50.0,
+        limit: limit,
+        offset: offset,
+      );
       
-      if (response.success) {
-        final sightings = response.data.sightings;
+      if (response['success'] == true) {
+        final sightings = response['data']['sightings'] ?? [];
         final enrichedAlerts = <EnrichedAlert>[];
         
         for (final sighting in sightings) {
@@ -77,10 +84,10 @@ class EnrichedAlertsList extends _$EnrichedAlertsList {
         
         return enrichedAlerts;
       } else {
-        throw Exception('Failed to fetch alerts: ${response.message}');
+        throw Exception('Failed to fetch alerts: ${response['message'] ?? 'Unknown error'}');
       }
     } catch (e) {
-      print('Error fetching enriched alerts: $e');
+      debugPrint('Error fetching enriched alerts: $e');
       return [];
     }
   }
@@ -249,7 +256,7 @@ class EnrichedAlertsList extends _$EnrichedAlertsList {
   ) async {
     // TODO: Implement API call to sync quarantine state
     // This would send the quarantine action to the backend
-    print('Syncing quarantine for $alertId: $action, reasons: $reasons');
+    debugPrint('Syncing quarantine for $alertId: $action, reasons: $reasons');
   }
 
   /// Sync approval with API (placeholder)
@@ -260,7 +267,7 @@ class EnrichedAlertsList extends _$EnrichedAlertsList {
   ) async {
     // TODO: Implement API call to sync approval
     // This would update the backend that content was approved
-    print('Syncing approval for $alertId by $moderatorName');
+    debugPrint('Syncing approval for $alertId by $moderatorName');
   }
 }
 
@@ -285,7 +292,7 @@ Future<EnrichedAlert?> enrichedAlertById(EnrichedAlertByIdRef ref, String alertI
     // For now, return null to indicate not found
     return null;
   } catch (e) {
-    print('Error fetching enriched alert $alertId: $e');
+    debugPrint('Error fetching enriched alert $alertId: $e');
     return null;
   }
 }
@@ -300,7 +307,7 @@ Future<List<EnrichedAlert>> filteredEnrichedAlerts(
   bool isModerator = false,
 }) async {
   final alertsAsync = ref.watch(enrichedAlertsListProvider);
-  final filter = ref.watch(alertsFilterStateProvider);
+  final filter = ref.watch(alertsFilterStateProvider).value ?? AlertsFilter();
   
   if (!alertsAsync.hasValue) {
     return [];
@@ -335,7 +342,7 @@ Future<List<EnrichedAlert>> filteredEnrichedAlerts(
 
   // Apply sorting
   filteredAlerts.sort((a, b) {
-    int comparison;
+    int comparison = 0;
     
     switch (filter.sortBy) {
       case AlertSortBy.newest:

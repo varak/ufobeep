@@ -207,7 +207,7 @@ class CompassInfo extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: () {
                 // TODO: Navigate to alert details
-                print('Navigate to alert details');
+                debugPrint('Navigate to alert details');
               },
               icon: const Icon(Icons.info_outline, size: 18),
               label: const Text('Details'),

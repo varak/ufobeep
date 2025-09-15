@@ -1,15 +1,10 @@
-import 'dart:async';
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:file_picker/file_picker.dart';
 
 import '../theme/app_theme.dart';
-import '../services/analytics_service.dart';
-import '../services/auth_service.dart';
-import '../services/auth_repository.dart';
 import '../services/ui_feedback.dart';
 
 import '../screens/alerts/alerts_screen.dart';
@@ -102,9 +97,9 @@ GoRouter appRouter(AppRouterRef ref) {
     },
     // Add error handling for unrecognized routes
     errorBuilder: (context, state) {
-      print('🚫 GO ROUTER ERROR:');
-      print('   Location: ${state.uri}');
-      print('   Error: ${state.error}');
+      debugPrint('🚫 GO ROUTER ERROR:');
+      debugPrint('   Location: ${state.uri}');
+      debugPrint('   Error: ${state.error}');
       
       // Return a fallback screen that navigates to alerts
       return Scaffold(

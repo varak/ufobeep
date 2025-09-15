@@ -63,11 +63,11 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       String? userId;
       try {
         userId = await userService.getCurrentUserId();
-        print('DEBUG: Loaded user ID: "$userId"');
+        debugPrint('DEBUG: Loaded user ID: "$userId"');
       } catch (e) {
         // Fallback to device ID for users not yet migrated to username system
         final deviceId = await beepService.getOrCreateDeviceId();
-        print('DEBUG: Fallback to device ID: "$deviceId"');
+        debugPrint('DEBUG: Fallback to device ID: "$deviceId"');
         userId = deviceId;
       }
       
@@ -75,7 +75,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         setState(() {
           _currentUserDeviceId = userId; // Using same variable name during transition
         });
-        print('DEBUG: Set _currentUserDeviceId to: "$_currentUserDeviceId"');
+        debugPrint('DEBUG: Set _currentUserDeviceId to: "$_currentUserDeviceId"');
         
         // Check if this user is a confirmed witness
         await _checkWitnessStatus(userId);
@@ -84,7 +84,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         await _checkFollowStatus();
       }
     } catch (e) {
-      print('Error loading user data: $e');
+      debugPrint('Error loading user data: $e');
     }
   }
 
@@ -101,7 +101,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         });
       }
     } catch (e) {
-      print('❌ ERROR checking witness status: $e');
+      debugPrint('❌ ERROR checking witness status: $e');
       if (mounted) {
         setState(() {
           _isWitnessConfirmed = false;
@@ -150,7 +150,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         });
       }
     } catch (e) {
-      print('❌ ERROR checking follow status: $e');
+      debugPrint('❌ ERROR checking follow status: $e');
       if (mounted) {
         setState(() {
           _isFollowing = false;
@@ -201,7 +201,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         }
       }
     } catch (e) {
-      print('Error toggling follow: $e');
+      debugPrint('Error toggling follow: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -259,8 +259,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
           );
         }
 
-        print('DEBUG: Building alert detail for alert.reporterId: "${alert.reporterId}"');
-        print('DEBUG: Current _currentUserDeviceId: "$_currentUserDeviceId"');
+        debugPrint('DEBUG: Building alert detail for alert.reporterId: "${alert.reporterId}"');
+        debugPrint('DEBUG: Current _currentUserDeviceId: "$_currentUserDeviceId"');
         
         return NightSkyBackground(
           child: Scaffold(

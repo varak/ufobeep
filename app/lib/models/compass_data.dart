@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'package:json_annotation/json_annotation.dart';
 import '../services/compass_math.dart';
 

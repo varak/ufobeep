@@ -222,7 +222,7 @@ class Alert {
           }
         }
       } catch (e) {
-        print('Error parsing media_files for alert ${json['id']}: $e');
+        debugPrint('Error parsing media_files for alert ${json['id']}: $e');
       }
       
       // Safely parse photo analysis
@@ -238,7 +238,7 @@ class Alert {
           }
         }
       } catch (e) {
-        print('Error parsing photo_analysis for alert ${json['id']}: $e');
+        debugPrint('Error parsing photo_analysis for alert ${json['id']}: $e');
       }
       
       // Safely parse tags
@@ -253,7 +253,7 @@ class Alert {
           }
         }
       } catch (e) {
-        print('Error parsing tags for alert ${json['id']}: $e');
+        debugPrint('Error parsing tags for alert ${json['id']}: $e');
       }
       
       return Alert(
@@ -290,8 +290,8 @@ class Alert {
         shortUrl: json['short_url'] as String?,
       );
     } catch (e) {
-      print('Error parsing alert JSON for ${json['id']}: $e');
-      print('Raw JSON: $json');
+      debugPrint('Error parsing alert JSON for ${json['id']}: $e');
+      debugPrint('Raw JSON: $json');
       rethrow;
     }
   }
@@ -379,7 +379,7 @@ class AlertsList extends _$AlertsList {
         userLon = location.longitude;
       }
     } catch (e) {
-      print('Could not get user location for distance calculation: $e');
+      debugPrint('Could not get user location for distance calculation: $e');
     }
     
     // Fetch first page of alerts from API
@@ -416,8 +416,8 @@ class AlertsList extends _$AlertsList {
         verifiedOnly: verifiedOnly,
       );
 
-      print('UFOBEEP: /alerts API response: success=${response['success']}, message=${response['message']}');
-      print('UFOBEEP: Response keys: ${response.keys.toList()}');
+      debugPrint('UFOBEEP: /alerts API response: success=${response['success']}, message=${response['message']}');
+      debugPrint('UFOBEEP: Response keys: ${response.keys.toList()}');
       
       if (response['success'] == true && response['data'] != null && response['data']['alerts'] != null) {
         final alertsData = response['data'] as Map<String, dynamic>;
@@ -438,7 +438,7 @@ class AlertsList extends _$AlertsList {
               .cast<Map<String, dynamic>>()
               .map((alertJson) => Alert.fromApiJson(alertJson))
               .toList();
-          print('UFOBEEP: Successfully parsed ${parsedAlerts.length} valid alerts, total=${total}');
+          debugPrint('UFOBEEP: Successfully parsed ${parsedAlerts.length} valid alerts, total=${total}');
           
           final hasMore = offset + parsedAlerts.length < total;
           
@@ -449,17 +449,17 @@ class AlertsList extends _$AlertsList {
             hasMore: hasMore,
           );
         } catch (parseError) {
-          print('UFOBEEP: ERROR parsing alerts: $parseError');
-          print('UFOBEEP: First valid alert raw data: ${validAlerts.isNotEmpty ? validAlerts.first : 'N/A'}');
+          debugPrint('UFOBEEP: ERROR parsing alerts: $parseError');
+          debugPrint('UFOBEEP: First valid alert raw data: ${validAlerts.isNotEmpty ? validAlerts.first : 'N/A'}');
           throw Exception('Failed to parse alerts: $parseError');
         }
       } else {
-        print('📱 API returned failure: ${response['message']}');
+        debugPrint('📱 API returned failure: ${response['message']}');
         throw Exception(response['message'] ?? 'Failed to fetch alerts');
       }
     } catch (e) {
       // On API error, return empty data
-      print('Error fetching alerts: $e');
+      debugPrint('Error fetching alerts: $e');
       return AlertsListData(
         alerts: const [],
         total: 0,
@@ -569,31 +569,31 @@ Future<Alert?> alertById(AlertByIdRef ref, String alertId) async {
     // Fetch from API first for latest data
     final apiClient = ApiClient.instance;
     
-    print('Fetching alert $alertId from API...');
+    debugPrint('Fetching alert $alertId from API...');
     final response = await apiClient.getAlertDetails(alertId).timeout(
       const Duration(seconds: 5),
       onTimeout: () {
-        print('Timeout fetching alert $alertId');
+        debugPrint('Timeout fetching alert $alertId');
         throw Exception('Request timeout');
       },
     );
     
-    print('API response for $alertId: ${response.toString().substring(0, 200)}...');
+    debugPrint('API response for $alertId: ${response.toString().substring(0, 200)}...');
     
     if (response['success'] == true) {
       final alertData = response['data'] as Map<String, dynamic>;
-      print('Creating Alert from API data, media_files count: ${alertData['media_files']?.length ?? 0}');
-      print('Alert data keys: ${alertData.keys.toList()}');
-      print('Alert latitude/longitude: ${alertData['location']?['latitude']}, ${alertData['location']?['longitude']}');
+      debugPrint('Creating Alert from API data, media_files count: ${alertData['media_files']?.length ?? 0}');
+      debugPrint('Alert data keys: ${alertData.keys.toList()}');
+      debugPrint('Alert latitude/longitude: ${alertData['location']?['latitude']}, ${alertData['location']?['longitude']}');
       
       try {
         final alert = Alert.fromApiJson(alertData);
-        print('Created Alert object successfully, mediaFiles count: ${alert.mediaFiles.length}');
+        debugPrint('Created Alert object successfully, mediaFiles count: ${alert.mediaFiles.length}');
         return alert;
       } catch (parseError, stackTrace) {
-        print('ERROR parsing alert data: $parseError');
-        print('Stack trace: $stackTrace');
-        print('Raw alert data: $alertData');
+        debugPrint('ERROR parsing alert data: $parseError');
+        debugPrint('Stack trace: $stackTrace');
+        debugPrint('Raw alert data: $alertData');
         throw Exception('Failed to parse alert data: $parseError');
       }
     }
@@ -604,7 +604,7 @@ Future<Alert?> alertById(AlertByIdRef ref, String alertId) async {
       final alertsData = alertsAsync.value!;
       for (final alert in alertsData.alerts) {
         if (alert.id == alertId) {
-          print('Using cached alert $alertId');
+          debugPrint('Using cached alert $alertId');
           return alert;
         }
       }
@@ -612,11 +612,11 @@ Future<Alert?> alertById(AlertByIdRef ref, String alertId) async {
     
     return null;
   } catch (e) {
-    print('Error fetching alert $alertId: $e');
+    debugPrint('Error fetching alert $alertId: $e');
     
     // If it's a 404 error or timeout, don't retry endlessly
     if (e.toString().contains('404') || e.toString().contains('timeout')) {
-      print('Alert $alertId not found or timed out, checking cache only');
+      debugPrint('Alert $alertId not found or timed out, checking cache only');
       
       // Check cache one time for 404/timeout cases
       final alertsAsync = ref.watch(alertsListProvider);
@@ -840,7 +840,7 @@ Future<List<Alert>> nearbyAlerts(
       throw Exception(response['message'] ?? 'Failed to fetch nearby alerts');
     }
   } catch (e) {
-    print('Error fetching nearby alerts: $e');
+    debugPrint('Error fetching nearby alerts: $e');
     return [];
   }
 }

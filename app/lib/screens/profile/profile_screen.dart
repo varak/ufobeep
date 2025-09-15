@@ -283,7 +283,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ),
         const SizedBox(height: 16),
         
-        // Quiet Hours Toggle
+        // App Settings
         GlassCard(
           child: Column(
             children: [
@@ -293,8 +293,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 subtitle: AppLocalizations.of(context)!.manageNotificationsDesc,
                 onTap: () => context.push('/profile/notifications'),
                 isFirst: true,
-                isLast: true,
+                isLast: false,
               ),
+              _buildTimeFormatToggle(preferences),
             ],
           ),
         ),
@@ -1145,6 +1146,102 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ),
       ),
     );
+  }
+
+  Widget _buildTimeFormatToggle(UserPreferences preferences) {
+    return _buildNavItemWithToggle(
+      icon: Icons.access_time,
+      title: AppLocalizations.of(context)!.timeFormat,
+      subtitle: preferences.use24HourTime
+          ? AppLocalizations.of(context)!.timeFormat24Hour
+          : AppLocalizations.of(context)!.timeFormat12Hour,
+      value: preferences.use24HourTime,
+      onChanged: (value) => _updateTimeFormat(value),
+      isFirst: false,
+      isLast: true,
+    );
+  }
+
+  Widget _buildNavItemWithToggle({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+    bool isFirst = false,
+    bool isLast = false,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        border: isLast ? null : Border(
+          bottom: BorderSide(
+            color: AppColors.darkBorder.withOpacity(0.3),
+            width: 1,
+          ),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              color: AppColors.brandPrimary,
+              size: 24,
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  if (subtitle.isNotEmpty) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            Switch(
+              value: value,
+              onChanged: onChanged,
+              activeColor: AppColors.brandPrimary,
+              inactiveThumbColor: AppColors.textSecondary,
+              inactiveTrackColor: AppColors.darkBorder,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _updateTimeFormat(bool use24Hour) async {
+    try {
+      final userPreferencesNotifier = ref.read(userPreferencesProvider.notifier);
+      await userPreferencesNotifier.updatePreferences(use24HourTime: use24Hour);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to update time format: $e'),
+            backgroundColor: AppColors.semanticError,
+          ),
+        );
+      }
+    }
   }
 
 }

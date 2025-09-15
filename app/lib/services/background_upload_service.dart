@@ -56,7 +56,7 @@ class BackgroundUploadService {
       
     } catch (e) {
       if (kDebugMode) {
-        print('BackgroundUploadService: Error scheduling upload: $e');
+        debugPrint('BackgroundUploadService: Error scheduling upload: $e');
       }
     }
   }
@@ -70,7 +70,7 @@ class BackgroundUploadService {
       await prefs.setString(_pendingUploadsKey, jsonEncode(existingUploads));
     } catch (e) {
       if (kDebugMode) {
-        print('BackgroundUploadService: Error adding to pending uploads: $e');
+        debugPrint('BackgroundUploadService: Error adding to pending uploads: $e');
       }
     }
   }
@@ -85,7 +85,7 @@ class BackgroundUploadService {
       return uploadsList.cast<Map<String, dynamic>>();
     } catch (e) {
       if (kDebugMode) {
-        print('BackgroundUploadService: Error getting pending uploads: $e');
+        debugPrint('BackgroundUploadService: Error getting pending uploads: $e');
       }
       return [];
     }
@@ -119,7 +119,7 @@ class BackgroundUploadService {
       final int retryCount = uploadTask['retryCount'] ?? 0;
       
       if (kDebugMode) {
-        print('BackgroundUploadService: Processing upload for alert $alertId');
+        debugPrint('BackgroundUploadService: Processing upload for alert $alertId');
       }
 
       // Attempt upload
@@ -131,7 +131,7 @@ class BackgroundUploadService {
         await _savePendingUploads(pendingUploads);
         
         if (kDebugMode) {
-          print('BackgroundUploadService: Upload successful for alert $alertId');
+          debugPrint('BackgroundUploadService: Upload successful for alert $alertId');
         }
       } else {
         // Increment retry count
@@ -144,7 +144,7 @@ class BackgroundUploadService {
           await _addToFailedUploads(uploadTask);
           
           if (kDebugMode) {
-            print('BackgroundUploadService: Upload failed permanently for alert $alertId');
+            debugPrint('BackgroundUploadService: Upload failed permanently for alert $alertId');
           }
         } else {
           // Update retry count and try again later
@@ -152,14 +152,14 @@ class BackgroundUploadService {
           await _savePendingUploads(pendingUploads);
           
           if (kDebugMode) {
-            print('BackgroundUploadService: Upload failed, retry ${retryCount + 1}/3 for alert $alertId');
+            debugPrint('BackgroundUploadService: Upload failed, retry ${retryCount + 1}/3 for alert $alertId');
           }
         }
       }
       
     } catch (e) {
       if (kDebugMode) {
-        print('BackgroundUploadService: Error processing uploads: $e');
+        debugPrint('BackgroundUploadService: Error processing uploads: $e');
       }
     } finally {
       _isUploading = false;
@@ -171,7 +171,7 @@ class BackgroundUploadService {
       final File mediaFile = File(filePath);
       if (!await mediaFile.exists()) {
         if (kDebugMode) {
-          print('BackgroundUploadService: Media file no longer exists: $filePath');
+          debugPrint('BackgroundUploadService: Media file no longer exists: $filePath');
         }
         return true; // Consider this "successful" so we don't retry
       }
@@ -188,7 +188,7 @@ class BackgroundUploadService {
 
       if (presignResponse.statusCode != 200) {
         if (kDebugMode) {
-          print('BackgroundUploadService: Failed to get presign URL: ${presignResponse.statusCode}');
+          debugPrint('BackgroundUploadService: Failed to get presign URL: ${presignResponse.statusCode}');
         }
         return false;
       }
@@ -216,14 +216,14 @@ class BackgroundUploadService {
         return true;
       } else {
         if (kDebugMode) {
-          print('BackgroundUploadService: Upload failed with status: ${uploadResponse.statusCode}');
+          debugPrint('BackgroundUploadService: Upload failed with status: ${uploadResponse.statusCode}');
         }
         return false;
       }
       
     } catch (e) {
       if (kDebugMode) {
-        print('BackgroundUploadService: Upload error: $e');
+        debugPrint('BackgroundUploadService: Upload error: $e');
       }
       return false;
     }
@@ -235,7 +235,7 @@ class BackgroundUploadService {
       await prefs.setString(_pendingUploadsKey, jsonEncode(uploads));
     } catch (e) {
       if (kDebugMode) {
-        print('BackgroundUploadService: Error saving pending uploads: $e');
+        debugPrint('BackgroundUploadService: Error saving pending uploads: $e');
       }
     }
   }
@@ -252,7 +252,7 @@ class BackgroundUploadService {
       await prefs.setString(_failedUploadsKey, jsonEncode(failedUploads));
     } catch (e) {
       if (kDebugMode) {
-        print('BackgroundUploadService: Error adding to failed uploads: $e');
+        debugPrint('BackgroundUploadService: Error adding to failed uploads: $e');
       }
     }
   }
@@ -288,7 +288,7 @@ class BackgroundUploadService {
       }
     } catch (e) {
       if (kDebugMode) {
-        print('BackgroundUploadService: Error retrying failed uploads: $e');
+        debugPrint('BackgroundUploadService: Error retrying failed uploads: $e');
       }
     }
   }

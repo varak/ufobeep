@@ -55,24 +55,24 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
 
     try {
       final formattedPhone = _formatPhoneNumber(_phoneController.text.trim());
-      print('Sending verification code to: $formattedPhone');
+      debugPrint('Sending verification code to: $formattedPhone');
 
       await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: formattedPhone,
         verificationCompleted: (PhoneAuthCredential credential) async {
           // Auto-verification completed (Android only)
-          print('Auto-verification completed');
+          debugPrint('Auto-verification completed');
           await _linkPhoneCredential(credential);
         },
         verificationFailed: (FirebaseAuthException e) {
-          print('Verification failed: ${e.message}');
+          debugPrint('Verification failed: ${e.message}');
           setState(() {
             _isLoading = false;
             _errorMessage = _getErrorMessage(e);
           });
         },
         codeSent: (String verificationId, int? resendToken) {
-          print('Code sent, verification ID: $verificationId');
+          debugPrint('Code sent, verification ID: $verificationId');
           setState(() {
             _verificationId = verificationId;
             _resendToken = resendToken;
@@ -81,7 +81,7 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
           });
         },
         codeAutoRetrievalTimeout: (String verificationId) {
-          print('Auto-retrieval timeout for: $verificationId');
+          debugPrint('Auto-retrieval timeout for: $verificationId');
           setState(() {
             _verificationId = verificationId;
           });
@@ -89,7 +89,7 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
         timeout: const Duration(seconds: 60),
       );
     } catch (e) {
-      print('Error sending verification code: $e');
+      debugPrint('Error sending verification code: $e');
       setState(() {
         _isLoading = false;
         _errorMessage = 'Failed to send verification code. Please try again.';
@@ -114,7 +114,7 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
 
       await _linkPhoneCredential(credential);
     } catch (e) {
-      print('Error verifying code: $e');
+      debugPrint('Error verifying code: $e');
       setState(() {
         _isLoading = false;
         if (e is FirebaseAuthException) {
@@ -129,7 +129,7 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
   Future<void> _linkPhoneCredential(PhoneAuthCredential credential) async {
     try {
       // No anonymous users allowed - always sign in with phone
-      print('Signing in with phone credential...');
+      debugPrint('Signing in with phone credential...');
       final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
       
       if (mounted) {
@@ -143,7 +143,7 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
         context.pop(); // Return to previous screen
       }
     } catch (e) {
-      print('Error linking/signing in with phone: $e');
+      debugPrint('Error linking/signing in with phone: $e');
       setState(() {
         _isLoading = false;
         if (e is FirebaseAuthException) {

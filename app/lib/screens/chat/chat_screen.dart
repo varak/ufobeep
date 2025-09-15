@@ -58,7 +58,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       // Load initial messages
       await _loadMatrixMessages();
     } catch (e) {
-      print('Failed to initialize Matrix chat: $e');
+      debugPrint('Failed to initialize Matrix chat: $e');
       // Fallback to mock messages on error
       _loadMockMessages();
     }
@@ -80,7 +80,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         displayName: 'UFOBeep User',
       );
     } catch (e) {
-      print('Matrix authentication failed: $e');
+      debugPrint('Matrix authentication failed: $e');
     }
   }
   
@@ -93,7 +93,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         _roomInfo = roomInfo;
       });
     } catch (e) {
-      print('Failed to load room info: $e');
+      debugPrint('Failed to load room info: $e');
     }
   }
   
@@ -120,7 +120,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         _hasMore = chatMessages.length >= 50; // More messages available if we got full limit
       });
     } catch (e) {
-      print('Failed to load Matrix messages: $e');
+      debugPrint('Failed to load Matrix messages: $e');
       setState(() {
         _isLoading = false;
       });
@@ -251,7 +251,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         }
       }
     } catch (e) {
-      print('Failed to send message: $e');
+      debugPrint('Failed to send message: $e');
       if (mounted) {
         setState(() {
           final index = _messages.indexWhere((m) => m.id == newMessage.id);
@@ -397,7 +397,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   void _handleReactionTap(ChatMessage message, String emoji) {
     // TODO: Toggle reaction
-    print('Toggle $emoji on message ${message.id}');
+    debugPrint('Toggle $emoji on message ${message.id}');
   }
 
   void _loadMoreMessages() async {
@@ -430,7 +430,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         }
       }
     } catch (e) {
-      print('Failed to load more messages: $e');
+      debugPrint('Failed to load more messages: $e');
       if (mounted) {
         setState(() {
           _isLoading = false;

@@ -51,7 +51,7 @@ class NetworkConnectivityService {
       
       _initialized = true;
     } catch (e) {
-      print('Failed to initialize network connectivity service: $e');
+      debugPrint('Failed to initialize network connectivity service: $e');
       rethrow;
     }
   }
@@ -118,7 +118,7 @@ class NetworkConnectivityService {
     } on TimeoutException {
       _updateNetworkStatus(NetworkStatus.limited);
     } catch (e) {
-      print('Reachability check failed: $e');
+      debugPrint('Reachability check failed: $e');
       _updateNetworkStatus(NetworkStatus.limited);
     }
   }
@@ -130,7 +130,7 @@ class NetworkConnectivityService {
       _currentStatus = status;
       _networkStatusController.add(status);
       
-      print('Network status changed: $previousStatus -> $status');
+      debugPrint('Network status changed: $previousStatus -> $status');
     }
   }
 
@@ -146,7 +146,7 @@ class NetworkConnectivityService {
             _onConnectivityChanged(results);
           }
         } catch (e) {
-          print('Periodic connectivity check failed: $e');
+          debugPrint('Periodic connectivity check failed: $e');
         }
       },
     );

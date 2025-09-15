@@ -102,7 +102,7 @@ class SocialAuthService {
   /// Creates new account or links to existing account
   Future<SocialAuthResult> signInWithGoogle() async {
     try {
-      print('Starting Google Sign-In...');
+      debugPrint('Starting Google Sign-In...');
       
       // Force account picker by signing out first
       await _googleSignIn.signOut();
@@ -115,7 +115,7 @@ class SocialAuthService {
         return SocialAuthResult.failure('Google Sign-In cancelled by user');
       }
 
-      print('Google Sign-In successful: ${googleUser.email}');
+      debugPrint('Google Sign-In successful: ${googleUser.email}');
       
       // Get authentication details
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -123,9 +123,9 @@ class SocialAuthService {
       final hasId = googleAuth.idToken != null && googleAuth.idToken!.isNotEmpty;
       // TEMP diagnostic logs (remove later)
       // ignore: avoid_print
-      print('GSIGN: idToken? ' + (hasId ? 'YES len=' + googleAuth.idToken!.length.toString() : 'NO'));
+      debugPrint('GSIGN: idToken? ' + (hasId ? 'YES len=' + googleAuth.idToken!.length.toString() : 'NO'));
       // ignore: avoid_print
-      print('GSIGN: accessToken? ' + ((googleAuth.accessToken?.isNotEmpty ?? false) ? 'YES' : 'NO'));
+      debugPrint('GSIGN: accessToken? ' + ((googleAuth.accessToken?.isNotEmpty ?? false) ? 'YES' : 'NO'));
       
       if (!hasId) {
         return SocialAuthResult.failure('No Google idToken (likely consent/tester/cache issue)');
@@ -146,7 +146,7 @@ class SocialAuthService {
       
       // IMPORTANT: send Firebase ID token to backend (NOT the Google idToken)
       final firebaseIdToken = await cred.user!.getIdToken(true);
-      print('FIREBASE_ID_TOKEN len=${firebaseIdToken?.length ?? 'null'}');
+      debugPrint('FIREBASE_ID_TOKEN len=${firebaseIdToken?.length ?? 'null'}');
       
       if (firebaseIdToken == null || firebaseIdToken.isEmpty) {
         return SocialAuthResult.failure('Firebase ID token is null or empty');
@@ -170,7 +170,7 @@ class SocialAuthService {
           }),
         ).timeout(const Duration(seconds: 12));
         
-        print('AUTH/firebase RESP: ${response.statusCode} ${response.body}');
+        debugPrint('AUTH/firebase RESP: ${response.statusCode} ${response.body}');
         
         if (response.statusCode < 200 || response.statusCode >= 300) {
           return SocialAuthResult.failure('Backend auth failed: ${response.statusCode} ${response.body}');
@@ -178,22 +178,22 @@ class SocialAuthService {
         
         // Parse JSON response and return success
         final data = jsonDecode(response.body);
-        print('SOCIAL AUTH DEBUG: Full backend response: $data');
+        debugPrint('SOCIAL AUTH DEBUG: Full backend response: $data');
         
         // Extract user data from nested structure
         final user = data['user'] ?? {};
-        print('SOCIAL AUTH DEBUG: User object from response: $user');
+        debugPrint('SOCIAL AUTH DEBUG: User object from response: $user');
         
         final userId = user['id'] ?? cred.user!.uid;
         final username = user['username'];  // Don't fallback - we need to know if it's missing
         final email = user['email'] ?? cred.user!.email;
         final isNewUser = data['is_new_user'] ?? false;
         
-        print('SOCIAL AUTH DEBUG: Extracted values:');
-        print('  - userId: $userId');
-        print('  - username: $username');
-        print('  - userEmail: $email');
-        print('  - isNewUser: $isNewUser');
+        debugPrint('SOCIAL AUTH DEBUG: Extracted values:');
+        debugPrint('  - userId: $userId');
+        debugPrint('  - username: $username');
+        debugPrint('  - userEmail: $email');
+        debugPrint('  - isNewUser: $isNewUser');
         
         // Update AuthRepository with tokens and user data using centralized method
         final access = data['access'] as String?;
@@ -206,11 +206,11 @@ class SocialAuthService {
             'user': user,
             'expires_in': data['expires_in'] ?? 3600,
           });
-          print('SOCIAL AUTH: Updated AuthRepository with tokens using centralized method');
+          debugPrint('SOCIAL AUTH: Updated AuthRepository with tokens using centralized method');
           
           // Immediately nudge device registration after successful Google login
           await DeviceRegistrationManager().nudge();
-          print('SOCIAL AUTH: Device registration nudged');
+          debugPrint('SOCIAL AUTH: Device registration nudged');
         }
         
         // Only store user info if we have a valid username
@@ -222,7 +222,7 @@ class SocialAuthService {
             email: email,
           );
           
-          print('SOCIAL AUTH: Existing user with username $username');
+          debugPrint('SOCIAL AUTH: Existing user with username $username');
           
           return SocialAuthResult.success(
             userId: userId,
@@ -233,7 +233,7 @@ class SocialAuthService {
           );
         } else {
           // User exists but no username - they need to complete registration
-          print('SOCIAL AUTH: User exists but needs to set username');
+          debugPrint('SOCIAL AUTH: User exists but needs to set username');
           
           return SocialAuthResult(
             success: true,
@@ -249,7 +249,7 @@ class SocialAuthService {
         return SocialAuthResult.failure('Network error: $e');
       }
     } catch (e) {
-      print('Firebase Sign-In error: $e');
+      debugPrint('Firebase Sign-In error: $e');
       return SocialAuthResult.failure('Firebase Sign-In error: $e');
     }
   }
@@ -262,7 +262,7 @@ class SocialAuthService {
         return SocialAuthResult.failure('Apple Sign-In is only available on iOS');
       }
 
-      print('Starting Apple Sign-In...');
+      debugPrint('Starting Apple Sign-In...');
 
       // Check if Apple Sign-In is available
       if (!await SignInWithApple.isAvailable()) {
@@ -277,7 +277,7 @@ class SocialAuthService {
         ],
       );
 
-      print('Apple Sign-In successful: ${credential.userIdentifier}');
+      debugPrint('Apple Sign-In successful: ${credential.userIdentifier}');
 
       // Get device info
       final deviceId = await _deviceService.getDeviceId();
@@ -318,11 +318,11 @@ class SocialAuthService {
             'user': user,
             'expires_in': data['expires_in'] ?? 3600,
           });
-          print('APPLE AUTH: Updated AuthRepository with tokens using centralized method');
+          debugPrint('APPLE AUTH: Updated AuthRepository with tokens using centralized method');
           
           // Immediately nudge device registration after successful Apple login
           await DeviceRegistrationManager().nudge();
-          print('APPLE AUTH: Device registration nudged');
+          debugPrint('APPLE AUTH: Device registration nudged');
         }
         
         // Safe access to nested user data
@@ -338,7 +338,7 @@ class SocialAuthService {
             deviceId: deviceId,
           );
 
-          print('Apple login successful: $username');
+          debugPrint('Apple login successful: $username');
           
           return SocialAuthResult.success(
             userId: userId,
@@ -355,7 +355,7 @@ class SocialAuthService {
         return SocialAuthResult.failure(errorData['detail'] ?? 'Apple login failed');
       }
     } catch (e) {
-      print('Apple Sign-In error: $e');
+      debugPrint('Apple Sign-In error: $e');
       return SocialAuthResult.failure('Apple Sign-In error: $e');
     }
   }
@@ -381,7 +381,7 @@ class SocialAuthService {
         return false;
       }
     } catch (e) {
-      print('Magic link request error: $e');
+      debugPrint('Magic link request error: $e');
       return false;
     }
   }
@@ -402,7 +402,7 @@ class SocialAuthService {
 
       return response.statusCode == 200;
     } catch (e) {
-      print('Set password error: $e');
+      debugPrint('Set password error: $e');
       return false;
     }
   }
@@ -419,7 +419,7 @@ class SocialAuthService {
           completer.complete(true);
         },
         verificationFailed: (e) {
-          print('Phone verification failed: ${e.message}');
+          debugPrint('Phone verification failed: ${e.message}');
           completer.complete(false);
         },
         codeSent: (verificationId, resendToken) {
@@ -433,7 +433,7 @@ class SocialAuthService {
       
       return await completer.future;
     } catch (e) {
-      print('Add phone error: $e');
+      debugPrint('Add phone error: $e');
       return false;
     }
   }
@@ -453,7 +453,7 @@ class SocialAuthService {
       await _completePhoneVerification(credential);
       return true;
     } catch (e) {
-      print('Verify code error: $e');
+      debugPrint('Verify code error: $e');
       return false;
     }
   }
@@ -479,7 +479,7 @@ class SocialAuthService {
         }
       }
     } catch (e) {
-      print('Complete verification error: $e');
+      debugPrint('Complete verification error: $e');
     }
   }
 
@@ -497,9 +497,9 @@ class SocialAuthService {
       await prefs.remove(_usernameKey);
       await prefs.remove(_isRegisteredKey);
       
-      print('Social auth sign out complete');
+      debugPrint('Social auth sign out complete');
     } catch (e) {
-      print('Sign out error: $e');
+      debugPrint('Sign out error: $e');
     }
   }
 
@@ -515,7 +515,7 @@ class SocialAuthService {
       
       return isGoogleSignedIn || hasLocalUser;
     } catch (e) {
-      print('Sign-in check error: $e');
+      debugPrint('Sign-in check error: $e');
       return false;
     }
   }
@@ -536,7 +536,7 @@ class SocialAuthService {
       await prefs.setString('user_email', email);
     }
     
-    print('User info stored locally: $username ($userId) ${email ?? ""}');
+    debugPrint('User info stored locally: $username ($userId) ${email ?? ""}');
   }
 
   /// Get current user info
@@ -555,7 +555,7 @@ class SocialAuthService {
       
       return null;
     } catch (e) {
-      print('Get current user error: $e');
+      debugPrint('Get current user error: $e');
       return null;
     }
   }

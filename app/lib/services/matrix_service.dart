@@ -134,10 +134,10 @@ class MatrixService {
         }
       }
       
-      print('Failed to generate Matrix SSO token: ${response.statusCode}');
+      debugPrint('Failed to generate Matrix SSO token: ${response.statusCode}');
       return null;
     } catch (e) {
-      print('Error generating Matrix SSO token: $e');
+      debugPrint('Error generating Matrix SSO token: $e');
       return null;
     }
   }
@@ -163,7 +163,7 @@ class MatrixService {
       
       return null;
     } catch (e) {
-      print('Error getting cached SSO token: $e');
+      debugPrint('Error getting cached SSO token: $e');
       return null;
     }
   }
@@ -180,10 +180,10 @@ class MatrixService {
         return MatrixRoomInfo.fromJson(data);
       }
       
-      print('Failed to get Matrix room info: ${response.statusCode}');
+      debugPrint('Failed to get Matrix room info: ${response.statusCode}');
       return null;
     } catch (e) {
-      print('Error getting Matrix room info: $e');
+      debugPrint('Error getting Matrix room info: $e');
       return null;
     }
   }
@@ -203,10 +203,10 @@ class MatrixService {
         }
       }
       
-      print('Failed to get Matrix room transcript: ${response.statusCode}');
+      debugPrint('Failed to get Matrix room transcript: ${response.statusCode}');
       return [];
     } catch (e) {
-      print('Error getting Matrix room transcript: $e');
+      debugPrint('Error getting Matrix room transcript: $e');
       return [];
     }
   }
@@ -223,10 +223,10 @@ class MatrixService {
         return data['success'] == true;
       }
       
-      print('Failed to join Matrix room: ${response.statusCode}');
+      debugPrint('Failed to join Matrix room: ${response.statusCode}');
       return false;
     } catch (e) {
-      print('Error joining Matrix room: $e');
+      debugPrint('Error joining Matrix room: $e');
       return false;
     }
   }
@@ -236,12 +236,12 @@ class MatrixService {
     try {
       // This would typically use url_launcher to open the Matrix URL
       // For now, we'll just log the URL
-      print('Opening Matrix room: $matrixToUrl');
+      debugPrint('Opening Matrix room: $matrixToUrl');
       
       // In a real implementation:
       // await launchUrl(Uri.parse(matrixToUrl));
     } catch (e) {
-      print('Error opening Matrix room: $e');
+      debugPrint('Error opening Matrix room: $e');
     }
   }
 
@@ -259,7 +259,7 @@ class MatrixService {
       
       return false;
     } catch (e) {
-      print('Error checking Matrix health: $e');
+      debugPrint('Error checking Matrix health: $e');
       return false;
     }
   }

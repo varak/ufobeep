@@ -63,11 +63,11 @@ class _SignInScreenState extends State<SignInScreen> {
     });
 
     try {
-      print('🔐 Starting Google Sign-In...');
+      debugPrint('🔐 Starting Google Sign-In...');
       final result = await SocialAuthService().signInWithGoogle();
       
       if (result.success && result.userId != null) {
-        print('✅ Google Sign-In successful for: ${result.email}');
+        debugPrint('✅ Google Sign-In successful for: ${result.email}');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Welcome ${result.username ?? result.email}!'),
@@ -81,7 +81,7 @@ class _SignInScreenState extends State<SignInScreen> {
         }
       }
     } catch (e) {
-      print('❌ Google Sign-In failed: $e');
+      debugPrint('❌ Google Sign-In failed: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Sign-in failed: $e'),
@@ -120,7 +120,7 @@ class _SignInScreenState extends State<SignInScreen> {
     });
 
     try {
-      print('📧 Sending magic link to: ${_emailController.text.trim()}');
+      debugPrint('📧 Sending magic link to: ${_emailController.text.trim()}');
       await AuthService().sendMagicLink(_emailController.text.trim());
       
       setState(() {
@@ -129,10 +129,10 @@ class _SignInScreenState extends State<SignInScreen> {
       });
       
       _startCooldown();
-      print('✅ Magic link sent successfully');
+      debugPrint('✅ Magic link sent successfully');
       
     } catch (e) {
-      print('❌ Magic link failed: $e');
+      debugPrint('❌ Magic link failed: $e');
       setState(() {
         _errorMessage = 'Failed to send magic link. Please try again.';
       });
@@ -146,7 +146,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
   
   Future<void> _handleClearAllData() async {
-    print('🗑️ Clearing all local data...');
+    debugPrint('🗑️ Clearing all local data...');
     
     // Clear SharedPreferences
     final prefs = await SharedPreferences.getInstance();
@@ -163,7 +163,7 @@ class _SignInScreenState extends State<SignInScreen> {
       _cooldownSeconds = 0;
     });
     
-    print('✅ All data cleared');
+    debugPrint('✅ All data cleared');
     
     // Show snackbar after clearing
     if (mounted) {
@@ -177,17 +177,17 @@ class _SignInScreenState extends State<SignInScreen> {
   }
   
   Future<void> _checkExistingAuth() async {
-    print('🔍 Checking for existing authentication...');
+    debugPrint('🔍 Checking for existing authentication...');
     try {
       final user = await UserService.instance.getCurrentUser();
       if (user['userId'] != null && user['userId']!.isNotEmpty) {
-        print('👤 Found existing user: ${user['username']}');
+        debugPrint('👤 Found existing user: ${user['username']}');
         if (mounted && context.mounted) {
           context.go('/');
         }
       }
     } catch (e) {
-      print('⚠️ No existing auth found: $e');
+      debugPrint('⚠️ No existing auth found: $e');
     }
   }
 

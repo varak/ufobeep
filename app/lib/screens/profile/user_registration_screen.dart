@@ -478,22 +478,22 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
         ),
       );
 
-      print('CLEAR DATA: Starting complete data clear...');
+      debugPrint('CLEAR DATA: Starting complete data clear...');
 
       // 1. Sign out from Firebase Auth
       await authService.signOut();
-      print('CLEAR DATA: Firebase Auth signed out');
+      debugPrint('CLEAR DATA: Firebase Auth signed out');
 
       // 2. Sign out from Social Auth (Google)
       await SocialAuthService().signOut();
-      print('CLEAR DATA: Social Auth signed out');
+      debugPrint('CLEAR DATA: Social Auth signed out');
 
       // 3. Clear ALL SharedPreferences data
       final prefs = await SharedPreferences.getInstance();
       await prefs.clear();
-      print('CLEAR DATA: SharedPreferences cleared');
+      debugPrint('CLEAR DATA: SharedPreferences cleared');
 
-      print('CLEAR DATA: All data cleared successfully');
+      debugPrint('CLEAR DATA: All data cleared successfully');
 
       // Dismiss loading dialog
       if (mounted) {
@@ -516,7 +516,7 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
       }
 
     } catch (e) {
-      print('CLEAR DATA: Error during data clear: $e');
+      debugPrint('CLEAR DATA: Error during data clear: $e');
       
       // Dismiss loading dialog if still showing
       if (mounted) {

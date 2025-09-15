@@ -121,9 +121,9 @@ class SoundService {
           ),
         ),
       );
-      print('🔊 Audio context configured for notifications');
+      debugPrint('🔊 Audio context configured for notifications');
     } catch (e) {
-      print('Failed to configure audio context: $e');
+      debugPrint('Failed to configure audio context: $e');
       // Continue anyway - basic playback will still work
     }
 
@@ -162,10 +162,10 @@ class SoundService {
   /// witnessCount: Number of witnesses for emergency override logic
   /// userPrefs: User preferences for quiet hours settings (optional)
   Future<void> play(AlertSound sound, {bool haptic = false, int witnessCount = 1, dynamic userPrefs}) async {
-    print('🔊 SOUND DEBUG: Attempting to play ${sound.name} (haptic: $haptic)');
+    debugPrint('🔊 SOUND DEBUG: Attempting to play ${sound.name} (haptic: $haptic)');
     
     if (!_initialized) {
-      print('🔊 SOUND DEBUG: Not initialized, calling init()...');
+      debugPrint('🔊 SOUND DEBUG: Not initialized, calling init()...');
       // Fail-safe: init on first use if caller forgot.
       await init();
     }
@@ -177,7 +177,7 @@ class SoundService {
     if (isAlert && !isCritical) {
       final canPlay = await _checkRateLimit();
       if (!canPlay) {
-        print('Rate limited: Skipping alert sound (max 3 per 15 minutes)');
+        debugPrint('Rate limited: Skipping alert sound (max 3 per 15 minutes)');
         return;
       }
     }
@@ -186,17 +186,17 @@ class SoundService {
     if (isAlert && userPrefs != null) {
       final shouldMute = _shouldMuteForQuietHours(userPrefs, witnessCount);
       if (shouldMute) {
-        print('Quiet hours: Muting alert (witnesses: $witnessCount)');
+        debugPrint('Quiet hours: Muting alert (witnesses: $witnessCount)');
         return;
       }
     }
 
     if (_muted && !(isCritical && bypassMuteForCritical)) {
-      print('🔊 SOUND DEBUG: Skipping sound - muted (critical: $isCritical, bypass: $bypassMuteForCritical)');
+      debugPrint('🔊 SOUND DEBUG: Skipping sound - muted (critical: $isCritical, bypass: $bypassMuteForCritical)');
       return;
     }
     
-    print('🔊 SOUND DEBUG: Passed mute check, proceeding with playback...');
+    debugPrint('🔊 SOUND DEBUG: Passed mute check, proceeding with playback...');
 
     // Simple anti-overlap policy:
     // - If something is currently playing and this is NOT critical, stop it first.
@@ -216,12 +216,12 @@ class SoundService {
 
     // Optional haptics
     if (haptic) {
-      print('🔊 SOUND DEBUG: Attempting haptic feedback...');
+      debugPrint('🔊 SOUND DEBUG: Attempting haptic feedback...');
       final canVibrate = await Vibration.hasVibrator() ?? false;
-      print('🔊 SOUND DEBUG: Device can vibrate: $canVibrate');
+      debugPrint('🔊 SOUND DEBUG: Device can vibrate: $canVibrate');
       if (canVibrate) {
         Vibration.vibrate(duration: isCritical ? 120 : 40);
-        print('🔊 SOUND DEBUG: Haptic feedback triggered');
+        debugPrint('🔊 SOUND DEBUG: Haptic feedback triggered');
       }
     }
 
@@ -236,17 +236,17 @@ class SoundService {
 
     // Fire-and-forget: short SFX. We await to keep _current accurate.
     try {
-      print('🔊 SOUND DEBUG: Playing audio after warmup...');
+      debugPrint('🔊 SOUND DEBUG: Playing audio after warmup...');
       await player.resume(); // source already set; resume triggers immediate play
-      print('🔊 SOUND DEBUG: Audio resume successful');
+      debugPrint('🔊 SOUND DEBUG: Audio resume successful');
     } catch (e) {
-      print('🔊 SOUND DEBUG: Resume failed: $e, trying direct play fallback...');
+      debugPrint('🔊 SOUND DEBUG: Resume failed: $e, trying direct play fallback...');
       // Fallback if resume fails: try full play with explicit source.
       try {
         await player.play(AssetSource('$_assetPrefix/${_fileMap[sound]}'));
-        print('🔊 SOUND DEBUG: Fallback play successful');
+        debugPrint('🔊 SOUND DEBUG: Fallback play successful');
       } catch (e2) {
-        print('🔊 SOUND DEBUG: All playback methods failed: $e2');
+        debugPrint('🔊 SOUND DEBUG: All playback methods failed: $e2');
       }
     }
 
@@ -272,7 +272,7 @@ class SoundService {
     if (userPrefs?.dndUntil != null) {
       final now = DateTime.now();
       if (now.isBefore(userPrefs.dndUntil)) {
-        print('DND active until ${userPrefs.dndUntil} - muting all alerts');
+        debugPrint('DND active until ${userPrefs.dndUntil} - muting all alerts');
         return true; // Mute everything during DND
       }
     }
@@ -301,7 +301,7 @@ class SoundService {
     final allowOverride = userPrefs?.allowEmergencyOverride ?? true;
     
     if (isEmergency && allowOverride) {
-      print('Emergency override: Playing alert despite quiet hours (witnesses: $witnessCount)');
+      debugPrint('Emergency override: Playing alert despite quiet hours (witnesses: $witnessCount)');
       return false; // Don't mute - emergency override
     }
     
@@ -338,7 +338,7 @@ class SoundService {
   /// Prevents Android from suppressing the start of notification sounds
   Future<void> _warmUpAudio() async {
     try {
-      print('🔊 Warming up audio channel...');
+      debugPrint('🔊 Warming up audio channel...');
       
       // 1. Request audio focus from system
       await SystemChannels.platform.invokeMethod<void>(
@@ -358,9 +358,9 @@ class SoundService {
       // Clean up warmup player
       await warmupPlayer.dispose();
       
-      print('🔊 Audio channel warmed up');
+      debugPrint('🔊 Audio channel warmed up');
     } catch (e) {
-      print('🔊 Audio warmup failed (non-critical): $e');
+      debugPrint('🔊 Audio warmup failed (non-critical): $e');
       // Continue anyway - warmup failure shouldn't block sound playback
     }
   }

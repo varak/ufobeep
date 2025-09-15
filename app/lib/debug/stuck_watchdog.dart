@@ -10,11 +10,11 @@ class StuckWatchdog {
     _timer?.cancel();
     _timer = Timer(const Duration(seconds: 5), () {
       // ignore: avoid_print
-      print("🛑 WATCHDOG: no progress >5s. Last steps:\n${_log.join("\n")}");
+      debugPrint("🛑 WATCHDOG: no progress >5s. Last steps:\n${_log.join("\n")}");
     });
     // also print each mark so you see forward motion
     // ignore: avoid_print
-    print("➡️  ${_log.last}");
+    debugPrint("➡️  ${_log.last}");
   }
 
   void dispose() { _timer?.cancel(); }

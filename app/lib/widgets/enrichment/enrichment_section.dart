@@ -201,9 +201,9 @@ class EnrichmentSection extends StatelessWidget {
 
   Widget _buildEnrichmentData(Map<String, dynamic> enrichmentData) {
     // Debug logging
-    print('DEBUG: Enrichment keys: ${enrichmentData.keys.toList()}');
-    print('DEBUG: BlackSky data: ${enrichmentData['blacksky']}');
-    print('DEBUG: SkyFi data: ${enrichmentData['skyfi']}');
+    debugPrint('DEBUG: Enrichment keys: ${enrichmentData.keys.toList()}');
+    debugPrint('DEBUG: BlackSky data: ${enrichmentData['blacksky']}');
+    debugPrint('DEBUG: SkyFi data: ${enrichmentData['skyfi']}');
 
     final hasAircraftData = enrichmentData['aircraft_tracking'] != null;
     final hasWeatherData = enrichmentData['weather'] != null;
@@ -216,8 +216,8 @@ class EnrichmentSection extends StatelessWidget {
     final hasProcessingSummaryData = enrichmentData['processing_summary'] != null;
     final hasData = hasAircraftData || hasWeatherData || hasSatelliteData || hasContentData || hasBlackSkyData || hasSkyFiData || hasCelestialData || hasLocationData || hasProcessingSummaryData;
     
-    print('DEBUG: hasBlackSkyData = $hasBlackSkyData');
-    print('DEBUG: hasSkyFiData = $hasSkyFiData');
+    debugPrint('DEBUG: hasBlackSkyData = $hasBlackSkyData');
+    debugPrint('DEBUG: hasSkyFiData = $hasSkyFiData');
 
     if (!hasData) {
       return const SizedBox.shrink();
@@ -350,37 +350,37 @@ class EnrichmentSection extends StatelessWidget {
   /// Check if current user can view premium satellite imagery
   /// Only beep creator and confirmed witnesses can see BlackSky/SkyFi data (MP13-4)
   bool _canViewPremiumSatelliteImagery() {
-    print('DEBUG: _canViewPremiumSatelliteImagery check');
-    print('DEBUG: currentUserDeviceId: "$currentUserDeviceId"');
-    print('DEBUG: alertCreatorDeviceId: "$alertCreatorDeviceId"');
-    print('DEBUG: isWitnessConfirmed: $isWitnessConfirmed');
+    debugPrint('DEBUG: _canViewPremiumSatelliteImagery check');
+    debugPrint('DEBUG: currentUserDeviceId: "$currentUserDeviceId"');
+    debugPrint('DEBUG: alertCreatorDeviceId: "$alertCreatorDeviceId"');
+    debugPrint('DEBUG: isWitnessConfirmed: $isWitnessConfirmed');
     
     // Deny access if no current user ID (guest users)
     if (currentUserDeviceId == null) {
-      print('DEBUG: No current user ID - guest access denied');
+      debugPrint('DEBUG: No current user ID - guest access denied');
       return false;
     }
     
     // Deny access if no alert creator ID (can't determine creator)
     if (alertCreatorDeviceId == null || alertCreatorDeviceId!.isEmpty) {
-      print('DEBUG: No alert creator ID - access denied');
+      debugPrint('DEBUG: No alert creator ID - access denied');
       return false;
     }
     
     // Allow if user is the alert creator
     if (currentUserDeviceId == alertCreatorDeviceId) {
-      print('DEBUG: User is alert creator, allowing access');
+      debugPrint('DEBUG: User is alert creator, allowing access');
       return true;
     }
     
     // Allow if user is a confirmed witness (already validated within 2x visibility distance)
     if (isWitnessConfirmed) {
-      print('DEBUG: User is confirmed witness, allowing access');
+      debugPrint('DEBUG: User is confirmed witness, allowing access');
       return true;
     }
     
     // Otherwise, deny access (guest users)
-    print('DEBUG: Access denied - not creator or confirmed witness');
+    debugPrint('DEBUG: Access denied - not creator or confirmed witness');
     return false;
   }
 

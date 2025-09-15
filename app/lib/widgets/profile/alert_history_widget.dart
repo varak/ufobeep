@@ -49,7 +49,7 @@ class AlertHistoryWidget extends ConsumerWidget {
       }
       return null;
     } catch (e) {
-      print('Error loading alert history: $e');
+      debugPrint('Error loading alert history: $e');
       return null;
     }
   }
@@ -321,7 +321,7 @@ class AlertHistoryWidget extends ConsumerWidget {
         context.go('/alert/$alertId');
       } catch (e) {
         // Fallback navigation or error handling
-        print('Navigation error: $e');
+        debugPrint('Navigation error: $e');
       }
     }
   }

@@ -49,7 +49,7 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
       }
     } catch (e) {
       if (AppEnvironment.enableLogging) {
-        print('Error loading user preferences: $e');
+        debugPrint('Error loading user preferences: $e');
       }
       // Fallback to default preferences
       state = UserPreferences(
@@ -72,7 +72,7 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
       return true;
     } catch (e) {
       if (AppEnvironment.enableLogging) {
-        print('Error saving user preferences: $e');
+        debugPrint('Error saving user preferences: $e');
       }
       return false;
     }
@@ -81,27 +81,27 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
   /// Sync critical user preferences (DND, snooze_until) to backend
   Future<void> _syncToBackend(UserPreferences prefs) async {
     try {
-      print('🔄 Starting DND sync to backend...');
+      debugPrint('🔄 Starting DND sync to backend...');
       
       final beepService = BeepService();
       final deviceId = await beepService.getOrCreateDeviceId();
       
-      print('📱 Device ID for sync: $deviceId');
+      debugPrint('📱 Device ID for sync: $deviceId');
       
       // Prepare API request with snooze_until field
       final Map<String, dynamic> updateData = {
         'snooze_until': prefs.dndUntil?.toUtc().toIso8601String(), // null to disable DND
       };
       
-      print('📡 Sending PUT /devices/$deviceId with data: $updateData');
+      debugPrint('📡 Sending PUT /devices/$deviceId with data: $updateData');
       
       // Send to backend device update API
       final response = await ApiClient.dio.put('/devices/$deviceId', data: updateData);
       
-      print('✅ DND sync successful: ${response.statusCode} ${response.data}');
+      debugPrint('✅ DND sync successful: ${response.statusCode} ${response.data}');
     } catch (e) {
-      print('❌ Failed to sync DND to backend: $e');
-      print('❌ Error type: ${e.runtimeType}');
+      debugPrint('❌ Failed to sync DND to backend: $e');
+      debugPrint('❌ Error type: ${e.runtimeType}');
       // Don't throw - local preferences should still work
     }
   }
@@ -142,7 +142,7 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
       return true;
     } catch (e) {
       if (AppEnvironment.enableLogging) {
-        print('Error in setLanguageImmediate: $e');
+        debugPrint('Error in setLanguageImmediate: $e');
       }
       return false;
     }
@@ -219,7 +219,7 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
       return true;
     } catch (e) {
       if (AppEnvironment.enableLogging) {
-        print('Error clearing user preferences: $e');
+        debugPrint('Error clearing user preferences: $e');
       }
       return false;
     }

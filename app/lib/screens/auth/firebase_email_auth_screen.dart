@@ -63,7 +63,7 @@ class _FirebaseEmailAuthScreenState extends State<FirebaseEmailAuthScreen> {
         });
       }
     } catch (e) {
-      print('Error sending email link: $e');
+      debugPrint('Error sending email link: $e');
       setState(() {
         _isLoading = false;
         _errorMessage = 'Failed to send email. Please try again.';

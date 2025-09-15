@@ -35,10 +35,10 @@ class BeepService {
       // Import DeviceService if not already available
       final deviceService = DeviceService();
       final standardDeviceId = await deviceService.getDeviceId();
-      print('Using standard device ID: $standardDeviceId');
+      debugPrint('Using standard device ID: $standardDeviceId');
       return standardDeviceId;
     } catch (e) {
-      print('Fallback to local device ID generation: $e');
+      debugPrint('Fallback to local device ID generation: $e');
       
       // Fallback to local generation if DeviceService fails
       final prefs = await SharedPreferences.getInstance();
@@ -58,7 +58,7 @@ class BeepService {
             deviceIdentifier = _uuid.v4();
           }
         } catch (e) {
-          print('Error getting device info: $e');
+          debugPrint('Error getting device info: $e');
           deviceIdentifier = _uuid.v4();
         }
         
@@ -84,38 +84,38 @@ class BeepService {
       final currentUser = authRepo.currentUser;
       final accessToken = await authRepo.getAccessToken();
       
-      print('🔐 BEEP AUTH DEBUG:');
-      print('  currentUser: ${currentUser?.toJson()}');
-      print('  accessToken exists: ${accessToken != null}');
+      debugPrint('🔐 BEEP AUTH DEBUG:');
+      debugPrint('  currentUser: ${currentUser?.toJson()}');
+      debugPrint('  accessToken exists: ${accessToken != null}');
       
       if (currentUser == null || accessToken == null) {
-        print('❌ BEEP: User not authenticated (no user or token in AuthRepository)');
+        debugPrint('❌ BEEP: User not authenticated (no user or token in AuthRepository)');
         throw Exception('User not authenticated. Please sign in first to send beeps.');
       }
       
-      print('✅ BEEP: Sending beep as user: ${currentUser.username} (${currentUser.id})');
+      debugPrint('✅ BEEP: Sending beep as user: ${currentUser.username} (${currentUser.id})');
       
       // Access token is already set in ApiClient by AuthRepository
-      print('🔐 BEEP: Using AuthRepository access token for authentication');
+      debugPrint('🔐 BEEP: Using AuthRepository access token for authentication');
       
       // Try to get current location for beeps - bypass complex PermissionService
       Position? currentPosition;
       if (latitude == null || longitude == null) {
-        print('📍 LOCATION DEBUG: Need to get current location');
+        debugPrint('📍 LOCATION DEBUG: Need to get current location');
         
         try {
           // Check permission directly with Geolocator (more reliable)
           LocationPermission permission = await Geolocator.checkPermission();
-          print('📍 Direct permission check: $permission');
+          debugPrint('📍 Direct permission check: $permission');
           
           if (permission == LocationPermission.denied) {
-            print('📍 Permission denied, requesting...');
+            debugPrint('📍 Permission denied, requesting...');
             permission = await Geolocator.requestPermission();
-            print('📍 After request: $permission');
+            debugPrint('📍 After request: $permission');
           }
           
           if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
-            print('📍 Permission granted, getting location...');
+            debugPrint('📍 Permission granted, getting location...');
             
             // Try to get current location with high accuracy and reasonable timeout
             try {
@@ -125,29 +125,29 @@ class BeepService {
               );
               
               if (currentPosition != null) {
-                print('✅ Got current location: ${currentPosition.latitude}, ${currentPosition.longitude}');
-                print('📍 Location accuracy: ${currentPosition.accuracy}m');
+                debugPrint('✅ Got current location: ${currentPosition.latitude}, ${currentPosition.longitude}');
+                debugPrint('📍 Location accuracy: ${currentPosition.accuracy}m');
                 await SoundService.I.play(AlertSound.gpsOk);
               }
             } catch (e) {
-              print('⚠️ Current position failed, trying last known position: $e');
+              debugPrint('⚠️ Current position failed, trying last known position: $e');
               
               // Fallback to last known position if current fails
               currentPosition = await Geolocator.getLastKnownPosition();
               
               if (currentPosition != null) {
-                print('📍 Using last known location: ${currentPosition.latitude}, ${currentPosition.longitude}');
-                print('📍 Location accuracy: ${currentPosition.accuracy}m (cached)');
+                debugPrint('📍 Using last known location: ${currentPosition.latitude}, ${currentPosition.longitude}');
+                debugPrint('📍 Location accuracy: ${currentPosition.accuracy}m (cached)');
                 await SoundService.I.play(AlertSound.gpsOk);
               }
             }
           } else {
-            print('❌ Location permission not granted: $permission');
+            debugPrint('❌ Location permission not granted: $permission');
             await SoundService.I.play(AlertSound.gpsFail);
           }
         } catch (e) {
-          print('❌ Failed to get current location: $e');
-          print('❌ Location error type: ${e.runtimeType}');
+          debugPrint('❌ Failed to get current location: $e');
+          debugPrint('❌ Location error type: ${e.runtimeType}');
           await SoundService.I.play(AlertSound.gpsFail);
         }
       }
@@ -160,7 +160,7 @@ class BeepService {
       
       // Location is required for beeps
       if (finalLat == null || finalLng == null) {
-        print('❌ FINAL LOCATION CHECK: lat=$finalLat, lng=$finalLng');
+        debugPrint('❌ FINAL LOCATION CHECK: lat=$finalLat, lng=$finalLng');
         
         // Check permission status one more time to give helpful error
         try {
@@ -228,10 +228,10 @@ class BeepService {
           };
         }
       } catch (e) {
-        print('Could not get device info: $e');
+        debugPrint('Could not get device info: $e');
       }
       
-      print('Sending anonymous beep: ${json.encode(payload)}');
+      debugPrint('Sending anonymous beep: ${json.encode(payload)}');
       
       // Use HttpClient instead of Dio to avoid hanging issues
       final uri = Uri.parse('${AppEnvironment.apiBaseUrl}/beep');
@@ -257,7 +257,7 @@ class BeepService {
       }
       
     } catch (e) {
-      print('Error sending anonymous beep: $e');
+      debugPrint('Error sending anonymous beep: $e');
       
       // Return a mock response for testing if API fails
       if (e.toString().contains('SocketException') || 
@@ -318,7 +318,7 @@ class BeepService {
       await prefs.remove(_beepHistoryKey);
       
     } catch (e) {
-      print('Error claiming beeps: $e');
+      debugPrint('Error claiming beeps: $e');
       // Don't throw, this is not critical
     }
   }

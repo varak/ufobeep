@@ -55,9 +55,9 @@ class FirebaseAuthService {
       await prefs.setString(_usernameKey, username);
       await prefs.setString(_userIdKey, currentUser!.uid);
       
-      print('Username saved: $username for UID: ${currentUser!.uid}');
+      debugPrint('Username saved: $username for UID: ${currentUser!.uid}');
     } catch (e) {
-      print('Error saving username: $e');
+      debugPrint('Error saving username: $e');
       throw Exception('Failed to save username: $e');
     }
   }
@@ -88,7 +88,7 @@ class FirebaseAuthService {
 
       return null;
     } catch (e) {
-      print('Error getting username: $e');
+      debugPrint('Error getting username: $e');
       return null;
     }
   }
@@ -102,7 +102,7 @@ class FirebaseAuthService {
     required Function(String) codeAutoRetrievalTimeout,
   }) async {
     try {
-      print('Starting phone verification for: $phoneNumber');
+      debugPrint('Starting phone verification for: $phoneNumber');
       
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
@@ -115,7 +115,7 @@ class FirebaseAuthService {
       
       return null; // Success - callbacks will handle the rest
     } catch (e) {
-      print('Error starting phone verification: $e');
+      debugPrint('Error starting phone verification: $e');
       return 'Failed to send verification code: $e';
     }
   }
@@ -126,7 +126,7 @@ class FirebaseAuthService {
     required String smsCode,
   }) async {
     try {
-      print('Verifying SMS code...');
+      debugPrint('Verifying SMS code...');
       
       // Create phone credential
       final PhoneAuthCredential credential = PhoneAuthProvider.credential(
@@ -135,7 +135,7 @@ class FirebaseAuthService {
       );
 
       // Always sign in with phone credential - no anonymous users allowed
-      print('Signing in with phone credential...');
+      debugPrint('Signing in with phone credential...');
       final userCredential = await _auth.signInWithCredential(credential);
       
       // Create/update user document in Firestore
@@ -153,7 +153,7 @@ class FirebaseAuthService {
         'phoneNumber': userCredential.user?.phoneNumber,
       };
     } catch (e) {
-      print('Error verifying SMS code: $e');
+      debugPrint('Error verifying SMS code: $e');
       return {
         'success': false,
         'error': 'Invalid verification code: $e',
@@ -164,7 +164,7 @@ class FirebaseAuthService {
   /// Send email link for passwordless authentication
   Future<Map<String, dynamic>> sendEmailLink(String email) async {
     try {
-      print('Sending email link to: $email');
+      debugPrint('Sending email link to: $email');
       
       final actionCodeSettings = ActionCodeSettings(
         url: 'https://ufobeep.com/auth/email-link', // Deep link back to app
@@ -189,7 +189,7 @@ class FirebaseAuthService {
         'email': email,
       };
     } catch (e) {
-      print('Error sending email link: $e');
+      debugPrint('Error sending email link: $e');
       return {
         'success': false,
         'error': 'Failed to send email: $e',
@@ -218,7 +218,7 @@ class FirebaseAuthService {
         );
 
         // Always sign in with email credential - no anonymous users allowed
-        print('Signing in with email link credential...');
+        debugPrint('Signing in with email link credential...');
         final userCredential = await _auth.signInWithCredential(credential);
         
         // Create/update user document in Firestore
@@ -242,7 +242,7 @@ class FirebaseAuthService {
         };
       }
     } catch (e) {
-      print('Error signing in with email link: $e');
+      debugPrint('Error signing in with email link: $e');
       return {
         'success': false,
         'error': 'Email verification failed: $e',
@@ -261,7 +261,7 @@ class FirebaseAuthService {
       }
       return null;
     } catch (e) {
-      print('Error getting user profile: $e');
+      debugPrint('Error getting user profile: $e');
       return null;
     }
   }
@@ -277,9 +277,9 @@ class FirebaseAuthService {
       await prefs.remove(_userIdKey);
       await prefs.remove('auth_email');
       
-      print('User signed out successfully');
+      debugPrint('User signed out successfully');
     } catch (e) {
-      print('Error signing out: $e');
+      debugPrint('Error signing out: $e');
     }
   }
 
@@ -304,7 +304,7 @@ class FirebaseAuthService {
 
       return {'success': true, 'message': 'Account deleted successfully'};
     } catch (e) {
-      print('Error deleting account: $e');
+      debugPrint('Error deleting account: $e');
       return {'success': false, 'error': 'Failed to delete account: $e'};
     }
   }

@@ -36,12 +36,12 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
   @override
   void initState() {
     super.initState();
-    print('💬 CommentsScreen: mounted for sightingId=${widget.sightingId}');
+    debugPrint('💬 CommentsScreen: mounted for sightingId=${widget.sightingId}');
     _loadComments();
     _autoFollowOnView(); // Auto-follow when viewing comments
     WidgetsBinding.instance.addObserver(this);
     // Listen for refresh notifications from push notifications
-    print('💬 CommentsScreen: registering listener for sightingId=${widget.sightingId}');
+    debugPrint('💬 CommentsScreen: registering listener for sightingId=${widget.sightingId}');
     CommentsRefreshNotifier.instance.addListener(widget.sightingId, _loadComments);
   }
   
@@ -49,7 +49,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     // Remove refresh listener
-    print('💬 CommentsScreen: removing listener for sightingId=${widget.sightingId}');
+    debugPrint('💬 CommentsScreen: removing listener for sightingId=${widget.sightingId}');
     CommentsRefreshNotifier.instance.removeListener(widget.sightingId, _loadComments);
     super.dispose();
   }
@@ -77,7 +77,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
         await _commentsService.followSighting(widget.sightingId);
         followSuccess = true;
       } catch (e) {
-        print('Auto-follow failed: $e');
+        debugPrint('Auto-follow failed: $e');
       }
       
       setState(() {
@@ -102,28 +102,28 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
         final accessToken = await authRepo.getAccessToken();
         
         if (accessToken == null) {
-          print('👤 Auto-follow skipped: user not authenticated');
+          debugPrint('👤 Auto-follow skipped: user not authenticated');
           return;
         }
         
-        print('👀 Auto-follow attempt $attempt for sighting ${widget.sightingId}');
+        debugPrint('👀 Auto-follow attempt $attempt for sighting ${widget.sightingId}');
         await _commentsService.followSighting(widget.sightingId);
         
         setState(() {
           _isFollowing = true;
         });
-        print('✅ Auto-followed alert ${widget.sightingId} when viewing comments');
+        debugPrint('✅ Auto-followed alert ${widget.sightingId} when viewing comments');
         return; // Success, exit retry loop
         
       } catch (e) {
-        print('⚠️ Auto-follow attempt $attempt failed: $e');
+        debugPrint('⚠️ Auto-follow attempt $attempt failed: $e');
         if (attempt < 3) {
           // Wait before retry with exponential backoff
           await Future.delayed(Duration(milliseconds: 200 * attempt));
         }
       }
     }
-    print('❌ Auto-follow failed after 3 attempts for sighting ${widget.sightingId}');
+    debugPrint('❌ Auto-follow failed after 3 attempts for sighting ${widget.sightingId}');
   }
   
   Future<void> _sendComment(String body) async {
