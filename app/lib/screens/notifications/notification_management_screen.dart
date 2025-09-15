@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../theme/app_theme.dart';
 import '../../models/user_preferences.dart';
 import '../../providers/user_preferences_provider.dart';
@@ -552,7 +553,7 @@ class _NotificationManagementScreenState
               style: TextStyle(color: AppColors.warning),
             ),
           ),
-          onTap: () => Navigator.of(context).pushNamed('/alert/$sightingId'),
+          onTap: () => context.go('/alert/$sightingId'),
         ),
         if (!isLast) const Divider(color: Colors.white30),
       ],
