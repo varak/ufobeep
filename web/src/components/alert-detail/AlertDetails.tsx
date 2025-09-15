@@ -201,7 +201,10 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
               {(() => {
                 // Clean up location name to avoid duplication
                 let locationName = alert.reporter_username === 'MUFON'
-                  ? (alert.enrichment?.location_raw || alert.location?.name || 'Unknown Location')
+                  ? (alert.enrichment?.geocoding?.display_name ||
+                     alert.enrichment?.geocoding?.location ||
+                     alert.enrichment?.location_raw ||
+                     alert.location?.name || 'Unknown Location')
                   : (alert.location?.name || 'Unknown Location')
 
                 // If we have coordinates but location name is "Unknown Location", format the coordinates

@@ -87,6 +87,7 @@ def format_alert_response(alert, user_lat=None, user_lon=None):
                 alert.enrichment.get("geocoding", {}).get("longitude", 0.0) if alert.enrichment else 0.0
             ),
             "name": alert.location.name if alert.location and alert.location.name != "Unknown Location" else (
+                alert.enrichment.get("geocoding", {}).get("display_name") or
                 alert.enrichment.get("geocoding", {}).get("location", "Unknown Location") if alert.enrichment else "Unknown Location"
             )
         },
@@ -312,6 +313,7 @@ async def get_map_points(minimal: bool = False):
                         public_latitude,
                         public_longitude,
                         COALESCE(
+                            enrichment_data->'geocoding'->>'display_name',
                             enrichment_data->'geocoding'->>'location',
                             enrichment_data->>'location_name',
                             'Unknown Location'
