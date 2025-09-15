@@ -226,7 +226,7 @@ export default function AlertDetailPage() {
       const url = `/beep/${locale}/${expectedSlug}${qs ? `?${qs}` : ''}`
       router.replace(url)
     }
-  }, [alert, params?.slug, router, searchParams, locale])
+  }, [alert, params?.slug, router, searchParams, locale, t])
   
   if (loading) {
     return (

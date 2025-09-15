@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useClientTranslations } from '@/hooks/useClientTranslations'
 
@@ -36,7 +36,7 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
   const [isFollowing, setIsFollowing] = useState(false)
   const [followLoading, setFollowLoading] = useState(false)
 
-  const fetchComments = async (silent = false) => {
+  const fetchComments = useCallback(async (silent = false) => {
     try {
       if (!silent) setLoading(true)
       const response = await fetch(`/api/beep/${alertId}/comments`)
@@ -57,11 +57,11 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
     } finally {
       if (!silent) setLoading(false)
     }
-  }
+  }, [alertId])
 
   useEffect(() => {
     fetchComments()
-  }, [alertId])
+  }, [fetchComments])
 
   // Set up SSE for real-time comment updates
   useEffect(() => {
@@ -112,7 +112,7 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
         eventSource.close()
       }
     }
-  }, [alertId])
+  }, [alertId, fetchComments])
 
   // Check follow status when user is authenticated
   useEffect(() => {
@@ -123,11 +123,11 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
       setMessage(t('successfullyLoggedIn', 'Successfully logged in!'))
       setMessageType('success')
     }
-  }, [isAuthenticated, alertId])
+  }, [isAuthenticated, alertId, checkFollowStatus, t])
 
-  const checkFollowStatus = async () => {
+  const checkFollowStatus = useCallback(async () => {
     if (!isAuthenticated) return
-    
+
     try {
       const token = getAuthToken()
       const response = await fetch(`/api/alerts/${alertId}/follow`, {
@@ -135,7 +135,7 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
           'Authorization': `Bearer ${token}`
         },
       })
-      
+
       if (response.ok) {
         const data = await response.json()
         setIsFollowing(data.following)
@@ -143,7 +143,7 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
     } catch (error) {
       console.error('Failed to check follow status:', error)
     }
-  }
+  }, [isAuthenticated, alertId, getAuthToken])
 
   const handleFollowToggle = async () => {
     if (!isAuthenticated) return

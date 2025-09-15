@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -20,9 +20,9 @@ export default function SubscriptionsPage() {
 
   useEffect(() => {
     fetchSubscriptions()
-  }, [])
+  }, [fetchSubscriptions])
 
-  const fetchSubscriptions = async () => {
+  const fetchSubscriptions = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
@@ -57,7 +57,7 @@ export default function SubscriptionsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [isAuthenticated, getAuthToken])
 
   const unfollow = async (alertId: string) => {
     try {
