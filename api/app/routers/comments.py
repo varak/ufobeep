@@ -35,9 +35,9 @@ def _uid(authorization: str = Header(None)) -> str:
 async def list_comments(sighting_id: str, limit: int = 30) -> Dict[str, Any]:
     pool = await get_database_pool()
     async with pool.acquire() as conn:
-        # Fetch regular comments (newest first for current UI compatibility)
+        # Fetch regular comments (oldest first for chronological conversation flow)
         rows = await conn.fetch(
-            "SELECT c.id, c.user_id, u.username, c.body, c.media_url, c.created_at FROM comments c JOIN users u ON c.user_id = u.id WHERE c.sighting_id=$1::uuid ORDER BY c.created_at DESC LIMIT $2",
+            "SELECT c.id, c.user_id, u.username, c.body, c.media_url, c.created_at FROM comments c JOIN users u ON c.user_id = u.id WHERE c.sighting_id=$1::uuid ORDER BY c.created_at ASC LIMIT $2",
             sighting_id, limit
         )
         
@@ -49,13 +49,13 @@ async def list_comments(sighting_id: str, limit: int = 30) -> Dict[str, Any]:
         )
         
         comments = [dict(r) for r in rows]
-        
-        # If there's a description, add it as the last pseudo-comment (chronologically first, so appears last in DESC order)
+
+        # If there's a description, add it as the first pseudo-comment (chronologically first in ASC order)
         # Skip for MUFON cases as requested by user
         is_mufon_case = sighting and (sighting.get('source') == 'mufon' or sighting.get('username') == 'MUFON_Database')
-        
-        if (sighting and sighting['description'] and sighting['description'].strip() 
-            and sighting['reporter_id'] and sighting['username'] 
+
+        if (sighting and sighting['description'] and sighting['description'].strip()
+            and sighting['reporter_id'] and sighting['username']
             and not is_mufon_case):
             description_comment = {
                 'id': 0,  # Special ID for original description
@@ -65,8 +65,8 @@ async def list_comments(sighting_id: str, limit: int = 30) -> Dict[str, Any]:
                 'media_url': None,
                 'created_at': sighting['created_at'].isoformat()
             }
-            # Add description at the end (chronologically first, so last in DESC order for proper conversation flow)
-            comments.append(description_comment)
+            # Add description at the beginning (chronologically first in ASC order for proper conversation flow)
+            comments.insert(0, description_comment)
         
     return {"items": comments, "next_cursor": None}
 
