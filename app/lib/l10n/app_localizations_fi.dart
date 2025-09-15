@@ -1242,6 +1242,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get reportedTime => 'Raportoitu aika';
 
   @override
+  String get addedToUfobeep => 'Added to UFOBeep';
+
+  @override
   String get mufonDatabaseReport => 'MUFON Tietokantaraportti';
 
   @override

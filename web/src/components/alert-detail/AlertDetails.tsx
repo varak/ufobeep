@@ -10,6 +10,7 @@ interface Alert {
   title: string
   description: string
   created_at: string
+  occurred_at?: string
   reporter_username?: string
   location: {
     latitude: number
@@ -176,28 +177,35 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
       )}
 
       {/* Time - Show MUFON times if available, otherwise show UFOBeep time */}
-      {alert.enrichment?.sighting_datetime || alert.enrichment?.report_date ? (
+      {alert.reporter_username === 'MUFON' ? (
         <div className="flex items-start gap-3 mb-4">
           <span className="text-text-tertiary mt-0.5">📅</span>
           <div className="flex-1">
-            {/* Sighting Time */}
-            {alert.enrichment.sighting_datetime && (
+            {/* Event Time (when sighting occurred) */}
+            {alert.occurred_at && (
               <div className="mb-2">
                 <div className="flex items-center gap-2">
                   <span className="text-text-tertiary text-sm font-medium">{t('eventTime')}</span>
-                  <span className="text-text-primary text-sm">{formatDateISO(alert.enrichment.sighting_datetime)}</span>
+                  <span className="text-text-primary text-sm">{formatDateISO(alert.occurred_at)}</span>
                 </div>
               </div>
             )}
-            {/* Report Time */}
-            {alert.enrichment.report_date && (
-              <div>
+            {/* Report Time (when added to MUFON database) */}
+            {alert.enrichment?.report_date && (
+              <div className="mb-2">
                 <div className="flex items-center gap-2">
                   <span className="text-text-tertiary text-sm font-medium">{t('reportedTime')}</span>
                   <span className="text-text-secondary text-sm">{formatDateISO(alert.enrichment.report_date)}</span>
                 </div>
               </div>
             )}
+            {/* UFOBeep Import Time */}
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-text-tertiary text-sm font-medium">{t('addedToUfobeep')}:</span>
+                <span className="text-text-secondary text-sm">{formatDateISO(alert.created_at)}</span>
+              </div>
+            </div>
           </div>
         </div>
       ) : (

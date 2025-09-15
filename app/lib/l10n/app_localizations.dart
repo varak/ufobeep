@@ -2442,6 +2442,12 @@ abstract class AppLocalizations {
   /// **'Reported time'**
   String get reportedTime;
 
+  /// No description provided for @addedToUfobeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to UFOBeep'**
+  String get addedToUfobeep;
+
   /// No description provided for @mufonDatabaseReport.
   ///
   /// In en, this message translates to:

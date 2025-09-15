@@ -1232,6 +1232,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reportedTime => 'الوقت المبلغ عنه';
 
   @override
+  String get addedToUfobeep => 'Added to UFOBeep';
+
+  @override
   String get mufonDatabaseReport => 'MUFON تقرير قاعدة البيانات';
 
   @override

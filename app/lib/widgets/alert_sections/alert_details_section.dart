@@ -8,6 +8,7 @@ import '../glass_card.dart';
 import '../../l10n/app_localizations.dart';
 import '../../utils/unit_conversion.dart';
 import '../../services/permission_service.dart';
+import '../../utils/short_url_utils.dart';
 
 class AlertDetailsSection extends StatelessWidget {
   const AlertDetailsSection({
@@ -89,7 +90,7 @@ class AlertDetailsSection extends StatelessWidget {
               _buildDetailRow(
                 Icons.location_on,
                 AppLocalizations.of(context)!.locationLabel,
-                alert.locationName ?? AppLocalizations.of(context)!.unknownLocation,
+                _getMufonLocationName(context, alert),
                 subtitle: alert.latitude != 0.0 && alert.longitude != 0.0
                     ? '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}'
                     : null,
@@ -98,6 +99,10 @@ class AlertDetailsSection extends StatelessWidget {
               if (alert.latitude != 0.0 && alert.longitude != 0.0)
                 _buildDistanceRow(context),
             ],
+
+            // Share URL section for MUFON reports
+            const SizedBox(height: 12),
+            _buildShareUrlRow(context, alert),
 
           ],
           
@@ -266,7 +271,7 @@ class AlertDetailsSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '$label:',
+                      label.endsWith(':') ? label : '$label:',
                       style: const TextStyle(
                         color: AppColors.textTertiary,
                         fontSize: 14,
@@ -370,12 +375,35 @@ class AlertDetailsSection extends StatelessWidget {
   }
 
   String _getMufonLocationName(BuildContext context, Alert alert) {
-    // For MUFON alerts, use the locationName field which contains the city, state format
+    // For MUFON alerts, try multiple sources for location
+
+    // First try enrichment data for better location names
+    if (alert.enrichment != null) {
+      // Try geocoding display name first
+      final displayName = alert.enrichment!['geocoding']?['display_name'];
+      if (displayName != null && displayName.toString().isNotEmpty) {
+        return displayName.toString();
+      }
+
+      // Try geocoding location field
+      final geocodingLocation = alert.enrichment!['geocoding']?['location'];
+      if (geocodingLocation != null && geocodingLocation.toString().isNotEmpty) {
+        return geocodingLocation.toString();
+      }
+
+      // Try location_raw field
+      final locationRaw = alert.enrichment!['location_raw'];
+      if (locationRaw != null && locationRaw.toString().isNotEmpty) {
+        return locationRaw.toString();
+      }
+    }
+
+    // Fall back to the basic locationName field
     if (alert.locationName != null && alert.locationName!.isNotEmpty && alert.locationName != 'Unknown Location') {
       return alert.locationName!;
     }
-    
-    // For MUFON reports, never show lat/lng coordinates - just return unknown
+
+    // Last resort - return unknown location
     return AppLocalizations.of(context)!.locationUnknown;
   }
 
@@ -445,5 +473,73 @@ class AlertDetailsSection extends StatelessWidget {
       default:
         return l10n.ufoTypeUnknown;
     }
+  }
+
+  Widget _buildShareUrlRow(BuildContext context, Alert alert) {
+    final locale = Localizations.localeOf(context).languageCode;
+    final shareUrl = getShortAlertUrl(alert.shortUrl, locale: locale);
+    final shareLink = 'ufobeep.com$shareUrl';
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.link, size: 20, color: AppColors.brandPrimary),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.shareLink,
+                  style: const TextStyle(
+                    color: AppColors.textTertiary,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        shareLink,
+                        style: const TextStyle(
+                          color: AppColors.brandPrimary,
+                          fontSize: 14,
+                          fontFamily: 'monospace',
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Clipboard.setData(ClipboardData(text: shareLink));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(AppLocalizations.of(context)!.linkCopied),
+                            duration: const Duration(seconds: 2),
+                            backgroundColor: AppColors.brandPrimary,
+                          ),
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.copy,
+                        size: 16,
+                        color: AppColors.textSecondary,
+                      ),
+                      style: IconButton.styleFrom(
+                        minimumSize: const Size(32, 32),
+                        padding: const EdgeInsets.all(4),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

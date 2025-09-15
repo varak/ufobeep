@@ -1250,6 +1250,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get reportedTime => 'Χρόνος αναφοράς';
 
   @override
+  String get addedToUfobeep => 'Added to UFOBeep';
+
+  @override
   String get mufonDatabaseReport => 'ΜΟΥΦΟΝ Έκθεση βάσης δεδομένων';
 
   @override

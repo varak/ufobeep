@@ -1230,6 +1230,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get reportedTime => 'זמן דיווח';
 
   @override
+  String get addedToUfobeep => 'Added to UFOBeep';
+
+  @override
   String get mufonDatabaseReport => 'MUFON דוח מסד נתונים';
 
   @override

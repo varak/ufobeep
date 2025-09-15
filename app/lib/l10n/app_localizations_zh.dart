@@ -1218,6 +1218,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get reportedTime => '报告时间';
 
   @override
+  String get addedToUfobeep => 'Added to UFOBeep';
+
+  @override
   String get mufonDatabaseReport => '毛里求斯 数据库报告';
 
   @override

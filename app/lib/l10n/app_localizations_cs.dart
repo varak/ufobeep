@@ -1241,6 +1241,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get reportedTime => 'Vykazovaný čas';
 
   @override
+  String get addedToUfobeep => 'Added to UFOBeep';
+
+  @override
   String get mufonDatabaseReport => 'MUFON Databázová zpráva';
 
   @override

@@ -1247,6 +1247,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get reportedTime => 'Tiempo informado';
 
   @override
+  String get addedToUfobeep => 'Added to UFOBeep';
+
+  @override
   String get mufonDatabaseReport => 'MUFON Informe de base de datos';
 
   @override

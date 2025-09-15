@@ -1220,6 +1220,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get reportedTime => '접수시간';
 
   @override
+  String get addedToUfobeep => 'Added to UFOBeep';
+
+  @override
   String get mufonDatabaseReport => '사이트맵 Database 보고';
 
   @override

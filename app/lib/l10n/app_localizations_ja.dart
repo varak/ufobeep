@@ -1219,6 +1219,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get reportedTime => '報告時間';
 
   @override
+  String get addedToUfobeep => 'Added to UFOBeep';
+
+  @override
   String get mufonDatabaseReport => 'MUFONについて データベースレポート';
 
   @override

@@ -1245,6 +1245,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get reportedTime => 'Raporlanmış zaman';
 
   @override
+  String get addedToUfobeep => 'Added to UFOBeep';
+
+  @override
   String get mufonDatabaseReport => 'MUFON Veritabanı Raporu';
 
   @override

@@ -1241,6 +1241,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get reportedTime => 'Rapporterad tid';
 
   @override
+  String get addedToUfobeep => 'Added to UFOBeep';
+
+  @override
   String get mufonDatabaseReport => 'Mufonen Databasrapport';
 
   @override

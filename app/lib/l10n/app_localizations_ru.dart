@@ -1255,6 +1255,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get reportedTime => 'Сообщенное время';
 
   @override
+  String get addedToUfobeep => 'Added to UFOBeep';
+
+  @override
   String get mufonDatabaseReport => 'МУФОН Отчет о базе данных';
 
   @override
