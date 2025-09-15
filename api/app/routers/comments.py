@@ -174,10 +174,16 @@ async def delete_comment(
     pool = await get_database_pool()
 
     async with pool.acquire() as conn:
+        # Convert comment_id to integer since it comes from URL as string
+        try:
+            comment_id_int = int(comment_id)
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Invalid comment ID format")
+
         # First check if the comment exists and belongs to the user
         comment_row = await conn.fetchrow(
             "SELECT user_id FROM comments WHERE id = $1 AND sighting_id = $2",
-            comment_id, sighting_id
+            comment_id_int, sighting_id
         )
 
         if not comment_row:
@@ -189,7 +195,7 @@ async def delete_comment(
         # Delete the comment
         result = await conn.execute(
             "DELETE FROM comments WHERE id = $1 AND sighting_id = $2 AND user_id = $3",
-            comment_id, sighting_id, user_id
+            comment_id_int, sighting_id, user_id
         )
 
         if result == "DELETE 0":
