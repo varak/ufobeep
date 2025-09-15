@@ -401,15 +401,27 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
             'photoMetadata': {}, // Videos don't have EXIF data
           });
         } else {
-          // Return video data to the calling screen
-          debugPrint('🎥 CAMERA: Returning video to caller');
-          Navigator.of(context).pop({
-            'mediaFile': savedFile,
-            'isVideo': true,
-            'sensorData': sensorData,
-            'description': widget.description,
-            'attachToSightingId': widget.attachToSightingId, // Pass alert ID for existing alert media
-          });
+          // Return video data using consistent CameraCaptureResult type
+          final result = CameraCaptureResult(
+            path: savedFile.path,
+            isVideo: true,
+            sensorData: sensorData != null ? {
+              'latitude': sensorData.latitude,
+              'longitude': sensorData.longitude,
+              'accuracy': sensorData.accuracy,
+              'altitude': sensorData.altitude,
+              'azimuthDeg': sensorData.azimuthDeg,
+              'utc': sensorData.utc.toIso8601String(),
+            } : null,
+            photoMetadata: {}, // Videos don't have EXIF data
+            description: widget.description,
+            attachToSightingId: widget.attachToSightingId,
+          );
+
+          debugPrint('🎥 CAMERA -> pop result: ${result.path}');
+          debugPrint('🎥 CAMERA: Result details - isVideo: ${result.isVideo}, hasMetadata: ${result.photoMetadata != null}, hasSensorData: ${result.sensorData != null}');
+
+          Navigator.of(context).pop(result);
         }
       }
     } catch (e) {
