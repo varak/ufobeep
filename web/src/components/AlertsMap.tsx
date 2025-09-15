@@ -198,6 +198,11 @@ export default function AlertsMap({
         )
       }
 
+      const isValidDate = (d: any) => {
+        const dt = new Date(d as any)
+        return !isNaN(dt.getTime())
+      }
+
       return (
         <div className="text-sm w-80">
           <h4 className="font-semibold text-gray-900 mb-1">
@@ -258,9 +263,11 @@ export default function AlertsMap({
             )}
           </p>
 
-          <div className="text-xs text-gray-400 mt-1">
-            {new Date(displayAlert.created_at).toLocaleDateString()}
-          </div>
+          {displayAlert.created_at && isValidDate(displayAlert.created_at) && (
+            <div className="text-xs text-gray-400 mt-1">
+              {new Date(displayAlert.created_at).toLocaleDateString()}
+            </div>
+          )}
 
           <div className="mt-2">
             <a
