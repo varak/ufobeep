@@ -161,7 +161,7 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
     
     // IMMEDIATELY emit authenticated state after successful token storage
     await _emit(AuthState.authenticated(userId: 'authenticated-user', username: 'user'));
-    debugPrint('[AuthService] ✅ IMMEDIATE authenticated state emission after login');
+    print('[AuthService] ✅ IMMEDIATE authenticated state emission after login');
 
     // Fetch user profile in background - don't block authentication
     log('[AuthService] Starting background user profile fetch...');
@@ -207,8 +207,8 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
   
   /// Emit new auth state (ChatGPT's recommendation)
   Future<void> _emit(AuthState newState) async {
-    debugPrint('[Auth] State change: ${_state.phase} -> ${newState.phase}');
-    debugPrint('[Auth] New state: $newState');
+    print('[Auth] State change: ${_state.phase} -> ${newState.phase}');
+    print('[Auth] New state: $newState');
     _state = newState;
     _authStream.add(newState);
     notifyListeners();
@@ -216,7 +216,7 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
   
   /// Signal to UI we're processing a magic link (prevents premature Login screen)
   Future<void> beginProcessingLink() async {
-    debugPrint('[Auth] beginProcessingLink()');
+    print('[Auth] beginProcessingLink()');
     await _emit(AuthState.processingLink());
   }
 
@@ -250,17 +250,17 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
   
   /// Check stored authentication and update state (ChatGPT's recommendation)
   Future<void> _checkStoredAuth() async {
-    debugPrint('[Auth] Checking stored authentication...');
+    print('[Auth] Checking stored authentication...');
     try {
       // Use AuthRepository to load tokens  
       final access = await AuthRepository().getAccessToken();
       
       if (access != null && access.isNotEmpty) {
-        debugPrint('[Auth] ✅ Found valid stored authentication tokens');
+        print('[Auth] ✅ Found valid stored authentication tokens');
         
         // Set auth token in ApiClient for all future requests
         _apiClient.setAuthToken(access);
-        debugPrint('[Auth] ✅ ApiClient auth token restored from storage');
+        print('[Auth] ✅ ApiClient auth token restored from storage');
         
         // TODO: Get user info from /me endpoint or cached storage
         // For now, use placeholder values - this will be updated in bootstrap logic
@@ -270,12 +270,12 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
           email: null,
         ));
       } else {
-        debugPrint('[Auth] ❌ No valid stored tokens found');
+        print('[Auth] ❌ No valid stored tokens found');
         await _emit(AuthState.unauthenticated());
       }
     } catch (e, st) {
-      debugPrint('[Auth][ERROR] checkStoredAuth exception: $e');
-      debugPrint('[Auth][ERROR] Stack trace: $st');
+      print('[Auth][ERROR] checkStoredAuth exception: $e');
+      print('[Auth][ERROR] Stack trace: $st');
       await _emit(AuthState.unauthenticated());
     }
   }
@@ -284,7 +284,7 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
   /// This does NOT create any user session until the link is verified
   Future<void> sendMagicLink(String email) async {
     try {
-      debugPrint('MAGIC LINK DEBUG: Starting magic link send for: $email');
+      print('MAGIC LINK DEBUG: Starting magic link send for: $email');
       
       // Configure the action code settings for magic link
       final ActionCodeSettings actionCodeSettings = ActionCodeSettings(
@@ -299,12 +299,12 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
         iOSBundleId: 'com.ufobeep.ios',
       );
 
-      debugPrint('MAGIC LINK DEBUG: ActionCodeSettings configured');
-      debugPrint('MAGIC LINK DEBUG: URL: ${actionCodeSettings.url}');
-      debugPrint('MAGIC LINK DEBUG: Package: ${actionCodeSettings.androidPackageName}');
+      print('MAGIC LINK DEBUG: ActionCodeSettings configured');
+      print('MAGIC LINK DEBUG: URL: ${actionCodeSettings.url}');
+      print('MAGIC LINK DEBUG: Package: ${actionCodeSettings.androidPackageName}');
 
       // Send the magic link email
-      debugPrint('MAGIC LINK DEBUG: Calling Firebase sendSignInLinkToEmail...');
+      print('MAGIC LINK DEBUG: Calling Firebase sendSignInLinkToEmail...');
       await _auth.sendSignInLinkToEmail(
         email: email,
         actionCodeSettings: actionCodeSettings,
@@ -314,17 +314,17 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_pendingEmailKey, email);
 
-      debugPrint('MAGIC LINK DEBUG: Magic link sent successfully to: $email');
-      debugPrint('MAGIC LINK DEBUG: Email stored locally for verification');
+      print('MAGIC LINK DEBUG: Magic link sent successfully to: $email');
+      print('MAGIC LINK DEBUG: Email stored locally for verification');
     } on FirebaseAuthException catch (e) {
-      debugPrint('MAGIC LINK DEBUG: Firebase Auth error sending magic link:');
-      debugPrint('  Code: ${e.code}');
-      debugPrint('  Message: ${e.message}');
-      debugPrint('  Details: ${e.toString()}');
+      print('MAGIC LINK DEBUG: Firebase Auth error sending magic link:');
+      print('  Code: ${e.code}');
+      print('  Message: ${e.message}');
+      print('  Details: ${e.toString()}');
       throw AuthException._fromFirebaseAuthException(e);
     } catch (e) {
-      debugPrint('MAGIC LINK DEBUG: Unknown error sending magic link: $e');
-      debugPrint('MAGIC LINK DEBUG: Error type: ${e.runtimeType}');
+      print('MAGIC LINK DEBUG: Unknown error sending magic link: $e');
+      print('MAGIC LINK DEBUG: Error type: ${e.runtimeType}');
       throw AuthException._fromFirebaseAuthException(e);
     }
   }
@@ -337,11 +337,11 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
     String? email,
   }) async {
     try {
-      debugPrint('🔑 JWT MAGIC LINK AUTH DEBUG:');
-      debugPrint('   Token: ${token.substring(0, 20)}...');
-      debugPrint('   User ID: $userId');
-      debugPrint('   Username: $username');
-      debugPrint('   Email: $email');
+      print('🔑 JWT MAGIC LINK AUTH DEBUG:');
+      print('   Token: ${token.substring(0, 20)}...');
+      print('   User ID: $userId');
+      print('   Username: $username');
+      print('   Email: $email');
       
       // Store auth data securely with fallback
       await AppStorage.saveWithFallback(AppStorage.accessKey, token);
@@ -352,7 +352,7 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
         await AppStorage.saveWithFallback(AppStorage.emailKey, email);
       }
       
-      debugPrint('✅ JWT auth data stored securely');
+      print('✅ JWT auth data stored securely');
       
       return MagicLinkResult.success(
         userId: userId,
@@ -361,8 +361,8 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       );
       
     } catch (e, stackTrace) {
-      debugPrint('❌ JWT magic link auth failed: $e');
-      debugPrint('📚 Stack trace: $stackTrace');
+      print('❌ JWT magic link auth failed: $e');
+      print('📚 Stack trace: $stackTrace');
       return MagicLinkResult.failure('Authentication failed: ${e.toString()}');
     }
   }
@@ -374,30 +374,30 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
     String? userId,
     String? username,
   }) async {
-    debugPrint('[Auth] loginWithMagicToken start. httpsOnly=${userId == null && username == null}');
-    debugPrint('[Auth] token length: ${token.length}');
+    print('[Auth] loginWithMagicToken start. httpsOnly=${userId == null && username == null}');
+    print('[Auth] token length: ${token.length}');
     
     try {
       Map<String, dynamic>? respJson;
 
       if (userId != null && username != null) {
         // CUSTOM SCHEME: already have identity; still verify token with backend
-        debugPrint('[Auth] Custom scheme flow - verifying token with backend');
+        print('[Auth] Custom scheme flow - verifying token with backend');
         respJson = await _apiClient.exchangeMagicToken(token);
       } else {
         // HTTPS APP LINK: only token present; must exchange with backend
-        debugPrint('[Auth] HTTPS App Link flow - exchanging token with backend');
+        print('[Auth] HTTPS App Link flow - exchanging token with backend');
         respJson = await _apiClient.exchangeMagicToken(token);
       }
 
       if (respJson == null) {
-        debugPrint('[Auth][ERROR] Empty response from backend.');
+        print('[Auth][ERROR] Empty response from backend.');
         _showDevSnack('Magic link failed: empty response');
         return false;
       }
 
-      debugPrint('[Auth] Backend response keys: ${respJson.keys}');
-      debugPrint('[Auth] Backend response: $respJson');
+      print('[Auth] Backend response keys: ${respJson.keys}');
+      print('[Auth] Backend response: $respJson');
 
       // NEW: Handle the correct response format from /auth/magic/exchange
       // { access_token, refresh_token, user: { id, username, email } }
@@ -413,16 +413,16 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       final isNewUser = respJson['is_new_user'] as bool? ?? false;
       final firebaseToken = respJson['firebase_custom_token'] as String?;
       
-      debugPrint('[Auth] Parsed fields - email: "$email", userId: "$backendUserId", username: "$backendUsername"');
-      debugPrint('[Auth] Refresh token available: ${refreshToken != null}');
+      print('[Auth] Parsed fields - email: "$email", userId: "$backendUserId", username: "$backendUsername"');
+      print('[Auth] Refresh token available: ${refreshToken != null}');
 
       if ([access, backendUserId, backendUsername].any((v) => v == null || (v as String).isEmpty)) {
-        debugPrint('[Auth][ERROR] Missing fields in backend response: $respJson');
+        print('[Auth][ERROR] Missing fields in backend response: $respJson');
         _showDevSnack('Magic link failed: missing fields in response');
         return false;
       }
 
-      debugPrint('[Auth] Valid response - using AuthRepository');
+      print('[Auth] Valid response - using AuthRepository');
 
       // Use centralized token persistence
       await handleLoginSuccess({
@@ -432,15 +432,15 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
         'expires_in': 3600,
       });
 
-      debugPrint('[Auth] AuthRepository updated. userId=$backendUserId username=$backendUsername email=$email isNew=$isNewUser');
+      print('[Auth] AuthRepository updated. userId=$backendUserId username=$backendUsername email=$email isNew=$isNewUser');
       
       // Handle Firebase custom token if provided
       if (firebaseToken != null && firebaseToken.isNotEmpty) {
         try {
           await FirebaseAuth.instance.signInWithCustomToken(firebaseToken);
-          debugPrint('[Auth] ✅ Firebase authentication successful');
+          print('[Auth] ✅ Firebase authentication successful');
         } catch (e) {
-          debugPrint('[Auth] ⚠️ Firebase authentication failed: $e');
+          print('[Auth] ⚠️ Firebase authentication failed: $e');
           // Continue without Firebase auth - not critical for basic auth
         }
       }
@@ -452,16 +452,16 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
         email: email,
       ));
       
-      debugPrint('[Auth] ✅ Authentication successful - state updated');
+      print('[Auth] ✅ Authentication successful - state updated');
       return true;
     } catch (e, st) {
-      debugPrint('[Auth][ERROR] loginWithMagicToken failed: $e');
-      debugPrint('[Auth][ERROR] Stack trace: $st');
+      print('[Auth][ERROR] loginWithMagicToken failed: $e');
+      print('[Auth][ERROR] Stack trace: $st');
       // If DioError, surface HTTP status & body
       if (e is DioException) {
         final code = e.response?.statusCode;
         final body = e.response?.data;
-        debugPrint('[Auth][ERROR] HTTP $code body=$body');
+        print('[Auth][ERROR] HTTP $code body=$body');
         _showDevSnack('Magic link HTTP $code');
       } else {
         _showDevSnack('Magic link exception: $e');
@@ -474,30 +474,30 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
   Future<bool> loginWithMagicCode({required String code}) async {
     final startedAt = DateTime.now();
     final reqId = "magic-${startedAt.millisecondsSinceEpoch}";
-    debugPrint('[MAGIC][$reqId] loginWithMagicCode start');
-    debugPrint('[MAGIC][$reqId] code length: ${code.length}');
-    debugPrint('[MAGIC][$reqId] code preview: ${code.substring(0, code.length.clamp(0, 8))}...');
+    print('[MAGIC][$reqId] loginWithMagicCode start');
+    print('[MAGIC][$reqId] code length: ${code.length}');
+    print('[MAGIC][$reqId] code preview: ${code.substring(0, code.length.clamp(0, 8))}...');
     
     try {
       // Exchange authorization code for tokens with 8-second timeout
-      debugPrint('[MAGIC][$reqId] calling _apiClient.exchangeMagicCode() with timeout');
+      print('[MAGIC][$reqId] calling _apiClient.exchangeMagicCode() with timeout');
       final respJson = await _apiClient.exchangeMagicCode(code).timeout(
         const Duration(seconds: 8),
         onTimeout: () {
-          debugPrint('[MAGIC][$reqId] TIMEOUT after 8 seconds');
+          print('[MAGIC][$reqId] TIMEOUT after 8 seconds');
           throw TimeoutException('Magic link verification timed out', const Duration(seconds: 8));
         },
       );
-      debugPrint('[MAGIC][$reqId] API call completed in ${DateTime.now().difference(startedAt).inMilliseconds}ms');
+      print('[MAGIC][$reqId] API call completed in ${DateTime.now().difference(startedAt).inMilliseconds}ms');
       
       if (respJson == null) {
-        debugPrint('[MAGIC][$reqId] ERROR: Empty response from backend');
+        print('[MAGIC][$reqId] ERROR: Empty response from backend');
         _showDevSnack('Magic link failed: No response from server');
         return false;
       }
       
-      debugPrint('[MAGIC][$reqId] Backend response keys: ${respJson.keys}');
-      debugPrint('[MAGIC][$reqId] Backend response data: $respJson');
+      print('[MAGIC][$reqId] Backend response keys: ${respJson.keys}');
+      print('[MAGIC][$reqId] Backend response data: $respJson');
       
       // Expected JSON: { access, refresh, user: {id, username, email} }
       // Try both field names for compatibility
@@ -506,7 +506,7 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       final userObj = respJson['user'] as Map<String, dynamic>?;
       
       if (accessToken == null || userObj == null) {
-        debugPrint('[MAGIC][$reqId] ERROR: Missing required fields - accessToken: ${accessToken != null}, userObj: ${userObj != null}');
+        print('[MAGIC][$reqId] ERROR: Missing required fields - accessToken: ${accessToken != null}, userObj: ${userObj != null}');
         _showDevSnack('Magic link failed: Invalid server response');
         return false;
       }
@@ -516,13 +516,13 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       final email = userObj['email']?.toString();
       
       if (userId == null || username == null) {
-        debugPrint('[MAGIC][$reqId] ERROR: Missing user data - userId: $userId, username: $username');
+        print('[MAGIC][$reqId] ERROR: Missing user data - userId: $userId, username: $username');
         _showDevSnack('Magic link failed: Missing user information');
         return false;
       }
       
       // Use centralized token persistence
-      debugPrint('[MAGIC][$reqId] ==================== TOKEN PERSISTENCE START ====================');
+      print('[MAGIC][$reqId] ==================== TOKEN PERSISTENCE START ====================');
       final updateStartTime = DateTime.now();
       try {
         await handleLoginSuccess({
@@ -533,51 +533,51 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
         });
         
         final updateDuration = DateTime.now().difference(updateStartTime).inMilliseconds;
-        debugPrint('[MAGIC][$reqId] ✅ Token persistence completed in ${updateDuration}ms');
-        debugPrint('[MAGIC][$reqId] ==================== TOKEN PERSISTENCE SUCCESS ====================');
+        print('[MAGIC][$reqId] ✅ Token persistence completed in ${updateDuration}ms');
+        print('[MAGIC][$reqId] ==================== TOKEN PERSISTENCE SUCCESS ====================');
       } catch (e, stackTrace) {
         final updateDuration = DateTime.now().difference(updateStartTime).inMilliseconds;
-        debugPrint('[MAGIC][$reqId] ==================== TOKEN PERSISTENCE ERROR ====================');
-        debugPrint('[MAGIC][$reqId] ❌ Token persistence failed after ${updateDuration}ms: $e');
-        debugPrint('[MAGIC][$reqId] ❌ Error type: ${e.runtimeType}');
-        debugPrint('[MAGIC][$reqId] ❌ Stack trace: $stackTrace');
-        debugPrint('[MAGIC][$reqId] ==================== TOKEN PERSISTENCE FAILURE ====================');
+        print('[MAGIC][$reqId] ==================== TOKEN PERSISTENCE ERROR ====================');
+        print('[MAGIC][$reqId] ❌ Token persistence failed after ${updateDuration}ms: $e');
+        print('[MAGIC][$reqId] ❌ Error type: ${e.runtimeType}');
+        print('[MAGIC][$reqId] ❌ Stack trace: $stackTrace');
+        print('[MAGIC][$reqId] ==================== TOKEN PERSISTENCE FAILURE ====================');
         _showDevSnack('Failed to store authentication data: ${e.toString()}');
         return false;
       }
       
       final totalMs = DateTime.now().difference(startedAt).inMilliseconds;
-      debugPrint('[MAGIC][$reqId] ✅ Magic link authentication successful in ${totalMs}ms - userId: $userId, username: $username');
+      print('[MAGIC][$reqId] ✅ Magic link authentication successful in ${totalMs}ms - userId: $userId, username: $username');
       
       // Emit authenticated state
-      debugPrint('[MAGIC][$reqId] Emitting authenticated state');
+      print('[MAGIC][$reqId] Emitting authenticated state');
       await _emit(AuthState.authenticated(
         userId: userId,
         username: username,
         email: email,
       ));
       
-      debugPrint('[MAGIC][$reqId] ✅ Magic link authentication completed successfully');
-      debugPrint('[MAGIC][$reqId] Final auth state - AuthRepository ready: ${AuthRepository().isReady}');
-      debugPrint('[MAGIC][$reqId] Final auth state - AuthRepository user: ${AuthRepository().currentUser?.username}');
+      print('[MAGIC][$reqId] ✅ Magic link authentication completed successfully');
+      print('[MAGIC][$reqId] Final auth state - AuthRepository ready: ${AuthRepository().isReady}');
+      print('[MAGIC][$reqId] Final auth state - AuthRepository user: ${AuthRepository().currentUser?.username}');
       
       _showDevSnack('Welcome back, $username!');
       return true;
       
     } on TimeoutException catch (e) {
-      debugPrint('[MAGIC][$reqId] ❌ TIMEOUT: ${e.message}');
+      print('[MAGIC][$reqId] ❌ TIMEOUT: ${e.message}');
       _showDevSnack('Magic link verification timed out. Please try again.');
       return false;
     } catch (e, st) {
       final errorMs = DateTime.now().difference(startedAt).inMilliseconds;
-      debugPrint('[MAGIC][$reqId] ❌ ERROR after ${errorMs}ms: $e');
-      debugPrint('[MAGIC][$reqId] ❌ Stack trace: $st');
+      print('[MAGIC][$reqId] ❌ ERROR after ${errorMs}ms: $e');
+      print('[MAGIC][$reqId] ❌ Stack trace: $st');
       
       // Handle specific error cases with detailed logging
       if (e is DioException) {
         final code = e.response?.statusCode;
         final body = e.response?.data;
-        debugPrint('[MAGIC][$reqId] ❌ DioException HTTP $code body=$body');
+        print('[MAGIC][$reqId] ❌ DioException HTTP $code body=$body');
         
         if (code == 410) {
           _showDevSnack('Magic link expired or already used');
@@ -591,7 +591,7 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
           _showDevSnack('Magic link failed (HTTP $code)');
         }
       } else {
-        debugPrint('[MAGIC][$reqId] ❌ Non-DioException: ${e.runtimeType}');
+        print('[MAGIC][$reqId] ❌ Non-DioException: ${e.runtimeType}');
         _showDevSnack('Magic link verification failed: ${e.toString()}');
       }
       
@@ -629,7 +629,7 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
         return MagicLinkResult.failure('Firebase authentication failed');
       }
 
-      debugPrint('Firebase magic link sign-in successful: ${userCredential.user?.uid}');
+      print('Firebase magic link sign-in successful: ${userCredential.user?.uid}');
 
       // Get Firebase ID token to call backend
       final firebaseIdToken = await userCredential.user!.getIdToken(true);
@@ -656,7 +656,7 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
           }),
         ).timeout(const Duration(seconds: 12));
         
-        debugPrint('Magic link backend auth response: ${response.statusCode} ${response.body}');
+        print('Magic link backend auth response: ${response.statusCode} ${response.body}');
         
         if (response.statusCode < 200 || response.statusCode >= 300) {
           return MagicLinkResult.failure('Backend authentication failed: ${response.statusCode}');
@@ -664,20 +664,20 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
         
         // Parse response and store user info locally
         final data = jsonDecode(response.body);
-        debugPrint('MAGIC LINK DEBUG: Full backend response: $data');
+        print('MAGIC LINK DEBUG: Full backend response: $data');
         
         final user = data['user'] ?? {};
-        debugPrint('MAGIC LINK DEBUG: User object from response: $user');
+        print('MAGIC LINK DEBUG: User object from response: $user');
         
         final userId = user['user_id'] ?? userCredential.user!.uid;
         final username = user['username'];
         final userEmail = user['email'] ?? email;
         
-        debugPrint('MAGIC LINK DEBUG: Extracted values:');
-        debugPrint('  - userId: $userId');
-        debugPrint('  - username: $username');
-        debugPrint('  - userEmail: $userEmail');
-        debugPrint('  - isNewUser: ${data['is_new_user'] ?? false}');
+        print('MAGIC LINK DEBUG: Extracted values:');
+        print('  - userId: $userId');
+        print('  - username: $username');
+        print('  - userEmail: $userEmail');
+        print('  - isNewUser: ${data['is_new_user'] ?? false}');
         
         // Store user info locally if we have a username
         if (username != null && username.isNotEmpty) {
@@ -688,7 +688,7 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
             email: userEmail,
           );
           
-          debugPrint('Magic link auth success: user has username $username');
+          print('Magic link auth success: user has username $username');
           return MagicLinkResult.success(
             userId: userId,
             username: username,
@@ -697,7 +697,7 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
           );
         } else {
           // User exists but no username set - they need to create one
-          debugPrint('Magic link auth success: user needs to set username');
+          print('Magic link auth success: user needs to set username');
           return MagicLinkResult.success(
             userId: userId,
             username: null,
@@ -707,12 +707,12 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
         }
         
       } catch (e) {
-        debugPrint('Backend integration error: $e');
+        print('Backend integration error: $e');
         return MagicLinkResult.failure('Failed to verify account: $e');
       }
       
     } catch (e) {
-      debugPrint('Error handling magic link: $e');
+      print('Error handling magic link: $e');
       
       // Clear any pending email on failure to prevent stale state
       final prefs = await SharedPreferences.getInstance();
@@ -748,17 +748,17 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
     
     await prefs.setString('user_preferences', jsonEncode(defaultPrefs.toJson()));
     
-    debugPrint('MAGIC LINK DEBUG: User info and preferences stored locally:');
-    debugPrint('  - username: $username');
-    debugPrint('  - userId: $userId'); 
-    debugPrint('  - email: ${email ?? "none"}');
-    debugPrint('  - preferences: ${defaultPrefs.toJson()}');
+    print('MAGIC LINK DEBUG: User info and preferences stored locally:');
+    print('  - username: $username');
+    print('  - userId: $userId'); 
+    print('  - email: ${email ?? "none"}');
+    print('  - preferences: ${defaultPrefs.toJson()}');
     
     // Verify storage worked
     final storedUsername = prefs.getString(_usernameKey);
     final storedPrefs = prefs.getString('user_preferences');
-    debugPrint('MAGIC LINK DEBUG: Verification - stored username: $storedUsername');
-    debugPrint('MAGIC LINK DEBUG: Verification - stored preferences: $storedPrefs');
+    print('MAGIC LINK DEBUG: Verification - stored username: $storedUsername');
+    print('MAGIC LINK DEBUG: Verification - stored preferences: $storedPrefs');
   }
 
   /// Sign out the current user
@@ -777,9 +777,9 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       // Update auth state
       await _emit(AuthState.unauthenticated());
       
-      debugPrint('[Auth] ✅ User signed out successfully');
+      print('[Auth] ✅ User signed out successfully');
     } catch (e) {
-      debugPrint('[Auth][ERROR] Error signing out: $e');
+      print('[Auth][ERROR] Error signing out: $e');
       // Still emit unauthenticated state even if cleanup fails
       await _emit(AuthState.unauthenticated());
     }
@@ -801,7 +801,7 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
   void _showDevSnack(String msg) {
     // No-op in release; in debug show a global snack. Replace with your app's logger/toast solution.
     assert(() {
-      debugPrint('[DEV-SNACK] $msg');
+      print('[DEV-SNACK] $msg');
       return true;
     }());
   }

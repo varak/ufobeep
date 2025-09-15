@@ -356,11 +356,7 @@ export default function AlertsMap({
           const popup = L.popup({
             maxWidth: 350,
             className: 'custom-popup'
-          }).setContent(`<div class="text-sm w-80">
-              <h4 class="font-semibold text-gray-900 mb-1">${(alert.title || 'UFO Sighting').toString().slice(0,80)}</h4>
-              <p class="text-gray-600 text-xs mb-1">${(alert.description || '').toString().replace(/</g,'&lt;').slice(0,200)}</p>
-              <div class="text-xs text-gray-400 mt-1">${new Date(alert.created_at).toLocaleDateString()}</div>
-            </div>`)
+          }).setContent(createPopupContentHelper(alert, L))
 
           marker.bindPopup(popup)
           marker.on('click', () => {
@@ -482,11 +478,7 @@ export default function AlertsMap({
             const popup = L.popup({
               maxWidth: 350,
               className: 'custom-popup'
-            }).setContent(`<div class="text-sm w-80">
-                <h4 class="font-semibold text-gray-900 mb-1">${(alert.title || 'UFO Sighting').toString().slice(0,80)}</h4>
-                <p class="text-gray-600 text-xs mb-1">${(alert.description || '').toString().replace(/</g,'&lt;').slice(0,200)}</p>
-                <div class="text-xs text-gray-400 mt-1">${new Date(alert.created_at).toLocaleDateString()}</div>
-              </div>`)
+            }).setContent(createPopupContentHelper(alert, L))
 
             marker.bindPopup(popup)
             marker.on('click', () => {
@@ -529,11 +521,7 @@ export default function AlertsMap({
           const popup = L.popup({
             maxWidth: 350,
             className: 'custom-popup'
-          }).setContent(`<div class="text-sm w-80">
-              <h4 class="font-semibold text-gray-900 mb-1">${(alert.title || 'UFO Sighting').toString().slice(0,80)}</h4>
-              <p class="text-gray-600 text-xs mb-1">${(alert.description || '').toString().replace(/</g,'&lt;').slice(0,200)}</p>
-              <div class="text-xs text-gray-400 mt-1">${new Date(alert.created_at).toLocaleDateString()}</div>
-            </div>`)
+          }).setContent(createPopupContentHelper(alert, L))
 
           marker.bindPopup(popup)
           

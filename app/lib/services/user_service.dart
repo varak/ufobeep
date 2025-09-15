@@ -210,7 +210,7 @@ class UserService {
         throw Exception('Failed to get user: ${response.statusCode}');
       }
     } catch (e) {
-      debugPrint('Error getting user by device ID: $e');
+      print('Error getting user by device ID: $e');
       return null;
     }
   }
@@ -232,7 +232,7 @@ class UserService {
         throw Exception('Failed to get profile: ${response.statusCode}');
       }
     } catch (e) {
-      debugPrint('Error getting user profile: $e');
+      print('Error getting user profile: $e');
       return null;
     }
   }
@@ -272,7 +272,7 @@ class UserService {
         final storedUserId = prefs.getString(_userIdKey);
         
         if (storedUsername != null && storedUserId != null) {
-          debugPrint('User already registered: $storedUsername');
+          print('User already registered: $storedUsername');
           return true;
         }
       }
@@ -280,15 +280,15 @@ class UserService {
       // Try to get user from server by device ID
       final existingUser = await getUserByDeviceId();
       if (existingUser != null) {
-        debugPrint('Found existing user: ${existingUser.username}');
+        print('Found existing user: ${existingUser.username}');
         return true;
       }
       
-      debugPrint('User needs registration');
+      print('User needs registration');
       return false;
       
     } catch (e) {
-      debugPrint('Error initializing user: $e');
+      print('Error initializing user: $e');
       return false;
     }
   }
@@ -315,7 +315,7 @@ class UserService {
     await prefs.setString(_deviceIdKey, deviceId);
     await prefs.setBool(_isRegisteredKey, true);
     
-    debugPrint('Stored user info: $username ($userId)');
+    print('Stored user info: $username ($userId)');
   }
 
   /// Clear user data (for logout/reset)
@@ -395,7 +395,7 @@ class UserService {
         };
       }
     } catch (e) {
-      debugPrint('Error requesting account recovery: $e');
+      print('Error requesting account recovery: $e');
       return {
         'success': false,
         'message': 'Network error. Please try again.'
@@ -422,7 +422,7 @@ class UserService {
         };
       }
     } catch (e) {
-      debugPrint('Error requesting SMS account recovery: $e');
+      print('Error requesting SMS account recovery: $e');
       return {
         'success': false,
         'message': 'Network error. Please try again.'
@@ -457,7 +457,7 @@ class UserService {
           await prefs.setString('email', data['email']);
         }
 
-        debugPrint('Account recovered successfully: ${data['username']}');
+        print('Account recovered successfully: ${data['username']}');
         
         return data;
       } else {
@@ -467,7 +467,7 @@ class UserService {
         };
       }
     } catch (e) {
-      debugPrint('Error verifying recovery code: $e');
+      print('Error verifying recovery code: $e');
       return {
         'success': false,
         'error': 'Network error. Please try again.'
@@ -483,7 +483,7 @@ class UserService {
       // But we can add a separate endpoint later if needed
       return true;
     } catch (e) {
-      debugPrint('Error sending verification email: $e');
+      print('Error sending verification email: $e');
       return false;
     }
   }
@@ -520,7 +520,7 @@ class UserService {
         };
       }
     } catch (e) {
-      debugPrint('Error sending magic link: $e');
+      print('Error sending magic link: $e');
       return {
         'success': false,
         'message': 'Network error. Please try again.'
@@ -577,7 +577,7 @@ class UserService {
         };
       }
     } catch (e) {
-      debugPrint('Error completing magic link: $e');
+      print('Error completing magic link: $e');
       return {
         'success': false,
         'message': 'Network error. Please try again.'

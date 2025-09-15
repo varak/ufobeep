@@ -24,7 +24,7 @@ import '../routing/app_router.dart';
 // Top-level background handler for notification actions
 @pragma('vm:entry-point')
 void notificationTapBackground(NotificationResponse response) async {
-  debugPrint('📱 Background notification action: ${response.actionId} for payload: ${response.payload}');
+  print('📱 Background notification action: ${response.actionId} for payload: ${response.payload}');
   
   final payload = response.payload;
   if (payload == null) return;
@@ -36,7 +36,7 @@ void notificationTapBackground(NotificationResponse response) async {
   final sightingId = parts[0];
   final action = response.actionId;
   
-  debugPrint('Processing background notification action: $action for sighting: $sightingId');
+  print('Processing background notification action: $action for sighting: $sightingId');
   
   // Handle snooze action in background
   if (action == 'dismiss_snooze') {
@@ -60,9 +60,9 @@ void notificationTapBackground(NotificationResponse response) async {
       final updatedPrefsJson = jsonEncode(prefsMap);
       await prefs.setString('user_preferences', updatedPrefsJson);
       
-      debugPrint('📱 Background: DND enabled until ${dndUntil.toString().substring(11, 16)}');
+      print('📱 Background: DND enabled until ${dndUntil.toString().substring(11, 16)}');
     } catch (e) {
-      debugPrint('❌ Background: Failed to enable DND: $e');
+      print('❌ Background: Failed to enable DND: $e');
     }
   }
 }
@@ -111,7 +111,7 @@ class PushNotificationService {
   Future<void> initialize() async {
     // Initialize notification system with unified bootstrap
     await NotificationBootstrap.initialize();
-    debugPrint('🔔 PUSH: Bootstrap initialization completed');
+    print('🔔 PUSH: Bootstrap initialization completed');
     
     // Request permission for push notifications
     final permission = await requestPermission();
@@ -128,7 +128,7 @@ class PushNotificationService {
         
         // Listen for token refresh
         _messaging.onTokenRefresh.listen((newToken) async {
-          debugPrint('FCM token refreshed: $newToken');
+          print('FCM token refreshed: $newToken');
           await _cacheToken(newToken);
           // Notify DeviceRegistrationManager of the new token
           DeviceRegistrationManager().onFcmTokenAvailable(newToken);
@@ -153,11 +153,11 @@ class PushNotificationService {
         // Android 13+ requires explicit POST_NOTIFICATIONS permission
         final status = await Permission.notification.request();
         if (status != PermissionStatus.granted) {
-          debugPrint('Android 13+ POST_NOTIFICATIONS permission denied: $status');
+          print('Android 13+ POST_NOTIFICATIONS permission denied: $status');
           await prefs.setBool(_permissionKey, false);
           return false;
         }
-        debugPrint('Android 13+ POST_NOTIFICATIONS permission granted');
+        print('Android 13+ POST_NOTIFICATIONS permission granted');
       }
     }
     
@@ -170,15 +170,15 @@ class PushNotificationService {
       // If system says we don't have permission, clear cache and re-request
       if (!hasSystemPermission) {
         await prefs.remove(_permissionKey);
-        debugPrint('System permission denied, cleared cache and will re-request');
+        print('System permission denied, cleared cache and will re-request');
       } else {
         // Update cache to match system state
         await prefs.setBool(_permissionKey, true);
-        debugPrint('System permission confirmed, updated cache');
+        print('System permission confirmed, updated cache');
         return true;
       }
     } catch (e) {
-      debugPrint('Error checking system permission status: $e');
+      print('Error checking system permission status: $e');
       // Fall back to re-requesting if we can't check
       await prefs.remove(_permissionKey);
     }
@@ -201,14 +201,14 @@ class PushNotificationService {
       await prefs.setBool(_permissionKey, granted);
       
       if (granted) {
-        debugPrint('Push notification permission granted');
+        print('Push notification permission granted');
       } else {
-        debugPrint('Push notification permission denied: ${settings.authorizationStatus}');
+        print('Push notification permission denied: ${settings.authorizationStatus}');
       }
 
       return granted;
     } catch (e) {
-      debugPrint('Error requesting push notification permission: $e');
+      print('Error requesting push notification permission: $e');
       return false;
     }
   }
@@ -218,11 +218,11 @@ class PushNotificationService {
       final token = await _messaging.getToken();
       if (token != null) {
         await _cacheToken(token);
-        debugPrint('FCM Token obtained: ${token.substring(0, 20)}...');
+        print('FCM Token obtained: ${token.substring(0, 20)}...');
       }
       return token;
     } catch (e) {
-      debugPrint('Error getting FCM token: $e');
+      print('Error getting FCM token: $e');
       return null;
     }
   }
@@ -240,8 +240,8 @@ class PushNotificationService {
   void _setupMessageHandlers() {
     // Handle messages when app is in foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      debugPrint('🔔 FOREGROUND FCM: Received message ${message.messageId}');
-      debugPrint('🔔 FOREGROUND FCM: App is in foreground - must manually show notification');
+      print('🔔 FOREGROUND FCM: Received message ${message.messageId}');
+      print('🔔 FOREGROUND FCM: App is in foreground - must manually show notification');
       
       // For foreground notifications, show via bootstrap service first
       _showForegroundNotification(message);
@@ -251,7 +251,7 @@ class PushNotificationService {
 
     // Handle messages when app is in background but not terminated
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      debugPrint('App opened from background message: ${message.messageId}');
+      print('App opened from background message: ${message.messageId}');
       _handleMessage(message, isBackground: true);
     });
 
@@ -259,11 +259,11 @@ class PushNotificationService {
   }
 
   void _handleMessage(RemoteMessage message, {required bool isBackground}) {
-    debugPrint('🔔 FCM DEBUG: Push notification received (background: $isBackground)');
-    debugPrint('🔔 FCM DEBUG: Title: ${message.notification?.title}');
-    debugPrint('🔔 FCM DEBUG: Body: ${message.notification?.body}');
-    debugPrint('🔔 FCM DEBUG: Data: ${message.data}');
-    debugPrint('🔔 FCM DEBUG: Message ID: ${message.messageId}');
+    print('🔔 FCM DEBUG: Push notification received (background: $isBackground)');
+    print('🔔 FCM DEBUG: Title: ${message.notification?.title}');
+    print('🔔 FCM DEBUG: Body: ${message.notification?.body}');
+    print('🔔 FCM DEBUG: Data: ${message.data}');
+    print('🔔 FCM DEBUG: Message ID: ${message.messageId}');
 
     // Handle different notification types
     final notificationType = message.data['type'] ?? 'general';
@@ -299,7 +299,7 @@ class PushNotificationService {
 
       final now = DateTime.now();
       if (user.dndUntil != null && user.dndUntil!.isAfter(now)) {
-        debugPrint('🔕 Notifications muted by DND until ${user.dndUntil}');
+        print('🔕 Notifications muted by DND until ${user.dndUntil}');
         return true;
       }
 
@@ -313,18 +313,18 @@ class PushNotificationService {
                 ? (hour >= start && hour < end)
                 : (hour >= start || hour < end)); // overnight window
         if (inWindow && !(user.allowEmergencyOverride)) {
-          debugPrint('🌙 Notifications muted by Quiet Hours ($start-$end)');
+          print('🌙 Notifications muted by Quiet Hours ($start-$end)');
           return true;
         }
       }
     } catch (e) {
-      debugPrint('DND/QuietHours check failed: $e');
+      print('DND/QuietHours check failed: $e');
     }
     return false;
   }
 
   void _handleSightingAlert(RemoteMessage message) async {
-    debugPrint('🔔 SIGHTING DEBUG: Handling sighting alert notification');
+    print('🔔 SIGHTING DEBUG: Handling sighting alert notification');
     final sightingId = message.data['sighting_id'];
     final witnessCountStr = message.data['witness_count'] ?? '1';
     final witnessCount = int.tryParse(witnessCountStr) ?? 1;
@@ -339,16 +339,16 @@ class PushNotificationService {
     final isOwnBeep = submitterDeviceId != null && submitterDeviceId == currentDeviceId;
     
     if (isOwnBeep) {
-      debugPrint('⚠️ RECEIVED OWN BEEP NOTIFICATION: device $currentDeviceId submitted sighting $sightingId (server exclusion failed)');
+      print('⚠️ RECEIVED OWN BEEP NOTIFICATION: device $currentDeviceId submitted sighting $sightingId (server exclusion failed)');
       // Continue processing instead of returning - this ensures notifications work regardless of exclusion bugs
     }
     
-    debugPrint('📱 PROCESSING ALERT: sighting $sightingId from device $submitterDeviceId (current: $currentDeviceId)');
+    print('📱 PROCESSING ALERT: sighting $sightingId from device $submitterDeviceId (current: $currentDeviceId)');
     
     
     // Respect DND/Quiet Hours: if active, do not surface or play sounds
     if (await _isDndOrQuietHoursActive()) {
-      debugPrint('🔕 Suppressing alert notification due to DND/Quiet Hours');
+      print('🔕 Suppressing alert notification due to DND/Quiet Hours');
       return;
     }
 
@@ -388,21 +388,21 @@ class PushNotificationService {
         // Force invalidate individual alert cache for the new sighting
         if (sightingId != null) {
           container.invalidate(alertByIdProvider(sightingId));
-          debugPrint('🔄 Force invalidated individual alert cache for $sightingId');
+          print('🔄 Force invalidated individual alert cache for $sightingId');
           
           // Pre-fetch the fresh alert data to populate cache
           container.read(alertByIdProvider(sightingId));
-          debugPrint('📥 Pre-fetched fresh alert data for $sightingId');
+          print('📥 Pre-fetched fresh alert data for $sightingId');
         }
         
-        debugPrint('🔄 Refreshed alerts tab due to new proximity alert');
+        print('🔄 Refreshed alerts tab due to new proximity alert');
       } catch (e) {
-        debugPrint('Could not refresh alerts tab: $e');
+        print('Could not refresh alerts tab: $e');
       }
     }
     
     if (sightingId != null) {
-      debugPrint('Sighting ID: $sightingId, Witnesses: $witnessCount');
+      print('Sighting ID: $sightingId, Witnesses: $witnessCount');
       
       // Extract sighting location data for compass navigation
       final sightingLat = message.data['latitude'];
@@ -420,9 +420,9 @@ class PushNotificationService {
         
         // Pre-fetch fresh data to ensure media is loaded
         container.read(alertByIdProvider(sightingId));
-        debugPrint('Force invalidated and pre-fetched alert $sightingId for fresh notification data with media');
+        print('Force invalidated and pre-fetched alert $sightingId for fresh notification data with media');
       } catch (e) {
-        debugPrint('Could not refresh alerts cache: $e');
+        print('Could not refresh alerts cache: $e');
       }
       
       // Navigate to alert details instead of compass
@@ -432,11 +432,11 @@ class PushNotificationService {
   }
 
   void _handleCommentNotification(RemoteMessage message) async {
-    debugPrint('🔔 Handling comment notification');
-    debugPrint('🔔 Full message data: ${message.data}');
+    print('🔔 Handling comment notification');
+    print('🔔 Full message data: ${message.data}');
 
     if (await _isDndOrQuietHoursActive()) {
-      debugPrint('🔕 Suppressing comment notification due to DND/Quiet Hours');
+      print('🔕 Suppressing comment notification due to DND/Quiet Hours');
       return;
     }
     
@@ -448,7 +448,7 @@ class PushNotificationService {
     final commentId = message.data['comment_id'] ?? message.data['commentId'];
     
     if (sightingId != null) {
-      debugPrint('🔔 Comment on sighting: $sightingId (comment ID: $commentId)');
+      print('🔔 Comment on sighting: $sightingId (comment ID: $commentId)');
       
       // Show visual notification
       await _showCommentNotification(message);
@@ -458,45 +458,45 @@ class PushNotificationService {
       
       // Always trigger comments refresh for any listening screens
       // This is safe because only screens with registered listeners will refresh
-      debugPrint('🔔 Calling CommentsRefreshNotifier.notifyRefresh($sightingId)');
+      print('🔔 Calling CommentsRefreshNotifier.notifyRefresh($sightingId)');
       CommentsRefreshNotifier.instance.notifyRefresh(sightingId);
       
       // Refresh alerts to show new comment count
       try {
         final container = ProviderScope.containerOf(rootNavigatorKey.currentContext!);
         container.invalidate(alertByIdProvider(sightingId));
-        debugPrint('🔄 Refreshed alert provider for $sightingId');
+        print('🔄 Refreshed alert provider for $sightingId');
       } catch (e) {
-        debugPrint('❌ Could not refresh alert cache: $e');
+        print('❌ Could not refresh alert cache: $e');
       }
       
       // Navigate to comments (this will be ignored if user is already there)
       navigateToComments(sightingId);
     } else {
-      debugPrint('⚠️ Comment notification missing sighting_id in data: ${message.data}');
+      print('⚠️ Comment notification missing sighting_id in data: ${message.data}');
     }
   }
 
   Future<void> _handleChatMessage(RemoteMessage message) async {
-    debugPrint('Handling chat message notification');
+    print('Handling chat message notification');
     if (await _isDndOrQuietHoursActive()) {
-      debugPrint('🔕 Suppressing chat notification due to DND/Quiet Hours');
+      print('🔕 Suppressing chat notification due to DND/Quiet Hours');
       return;
     }
     final chatId = message.data['chat_id'];
     if (chatId != null) {
-      debugPrint('Chat ID: $chatId');
+      print('Chat ID: $chatId');
       navigateToChat(chatId);
     }
   }
 
   void _handleSystemNotification(RemoteMessage message) {
-    debugPrint('Handling system notification');
+    print('Handling system notification');
     // TODO: Show in-app notification or navigate to settings
   }
 
   void _handleGeneralNotification(RemoteMessage message) {
-    debugPrint('Handling general notification');
+    print('Handling general notification');
     // TODO: Show generic notification handler
   }
 
@@ -505,30 +505,30 @@ class PushNotificationService {
       // This could be expanded to track notification statistics
       // For now, just log the interaction
       if (opened) {
-        debugPrint('Notification was opened by user');
+        print('Notification was opened by user');
       } else {
-        debugPrint('Notification was received in foreground');
+        print('Notification was received in foreground');
       }
     } catch (e) {
-      debugPrint('Error updating notification stats: $e');
+      print('Error updating notification stats: $e');
     }
   }
 
   Future<void> subscribeToTopic(String topic) async {
     try {
       await _messaging.subscribeToTopic(topic);
-      debugPrint('Subscribed to topic: $topic');
+      print('Subscribed to topic: $topic');
     } catch (e) {
-      debugPrint('Error subscribing to topic $topic: $e');
+      print('Error subscribing to topic $topic: $e');
     }
   }
 
   Future<void> unsubscribeFromTopic(String topic) async {
     try {
       await _messaging.unsubscribeFromTopic(topic);
-      debugPrint('Unsubscribed from topic: $topic');
+      print('Unsubscribed from topic: $topic');
     } catch (e) {
-      debugPrint('Error unsubscribing from topic $topic: $e');
+      print('Error unsubscribing from topic $topic: $e');
     }
   }
 
@@ -550,14 +550,14 @@ class PushNotificationService {
       final context = rootNavigatorKey.currentContext;
       if (context != null && context.mounted) {
         context.go('/beep/$alertId');
-        debugPrint('Navigated to beep detail: $alertId');
+        print('Navigated to beep detail: $alertId');
       } else {
-        debugPrint('Cannot navigate: no valid context available');
+        print('Cannot navigate: no valid context available');
         // Store for later navigation when app becomes active
         _pendingNavigation = '/beep/$alertId';
       }
     } catch (e) {
-      debugPrint('Error navigating to beep $alertId: $e');
+      print('Error navigating to beep $alertId: $e');
     }
   }
 
@@ -573,26 +573,26 @@ class PushNotificationService {
           final targetRoute = '/beep/$alertId/comments';
           
           if (currentLocation.contains(targetRoute)) {
-            debugPrint('🔄 Already on comments screen for $alertId - skipping navigation');
+            print('🔄 Already on comments screen for $alertId - skipping navigation');
             return;
           }
           
-          debugPrint('🔄 Navigating to comments: $targetRoute');
+          print('🔄 Navigating to comments: $targetRoute');
           context.go(targetRoute);
-          debugPrint('✅ Navigation completed for: $alertId');
+          print('✅ Navigation completed for: $alertId');
         } catch (routeError) {
           // Fallback: attempt navigation anyway
-          debugPrint('⚠️ Could not check current route, navigating anyway: $routeError');
+          print('⚠️ Could not check current route, navigating anyway: $routeError');
           final route = '/beep/$alertId/comments';
           context.go(route);
         }
       } else {
-        debugPrint('❌ Cannot navigate: no valid context available');
+        print('❌ Cannot navigate: no valid context available');
         _pendingNavigation = '/beep/$alertId/comments';
-        debugPrint('📝 Set pending navigation: $_pendingNavigation');
+        print('📝 Set pending navigation: $_pendingNavigation');
       }
     } catch (e) {
-      debugPrint('❌ Error navigating to comments $alertId: $e');
+      print('❌ Error navigating to comments $alertId: $e');
     }
   }
 
@@ -601,13 +601,13 @@ class PushNotificationService {
       final context = rootNavigatorKey.currentContext;
       if (context != null && context.mounted) {
         context.go('/beep/$chatId/chat');
-        debugPrint('Navigated to chat: $chatId');
+        print('Navigated to chat: $chatId');
       } else {
-        debugPrint('Cannot navigate: no valid context available');
+        print('Cannot navigate: no valid context available');
         _pendingNavigation = '/beep/$chatId/chat';
       }
     } catch (e) {
-      debugPrint('Error navigating to chat $chatId: $e');
+      print('Error navigating to chat $chatId: $e');
     }
   }
 
@@ -635,14 +635,14 @@ class PushNotificationService {
         
         final uri = Uri(path: '/compass', queryParameters: params);
         context.go(uri.toString());
-        debugPrint('Navigated to compass for sighting: $sightingId at ($targetLat, $targetLon)');
+        print('Navigated to compass for sighting: $sightingId at ($targetLat, $targetLon)');
       } else {
-        debugPrint('Cannot navigate to compass: no valid context or coordinates');
+        print('Cannot navigate to compass: no valid context or coordinates');
         // Fallback to alert detail
         navigateToAlert(sightingId);
       }
     } catch (e) {
-      debugPrint('Error navigating to compass for sighting $sightingId: $e');
+      print('Error navigating to compass for sighting $sightingId: $e');
       // Fallback to alert detail
       navigateToAlert(sightingId);
     }
@@ -653,7 +653,7 @@ class PushNotificationService {
       final context = rootNavigatorKey.currentContext;
       if (context != null && context.mounted) {
         context.go(_pendingNavigation!);
-        debugPrint('Processed pending navigation: $_pendingNavigation');
+        print('Processed pending navigation: $_pendingNavigation');
         _pendingNavigation = null;
       }
     }
@@ -675,7 +675,7 @@ class PushNotificationService {
             lon = position.longitude;
           }
         } catch (e) {
-          debugPrint('Failed to get location for FCM registration: $e');
+          print('Failed to get location for FCM registration: $e');
         }
       }
 
@@ -690,9 +690,9 @@ class PushNotificationService {
         'system_notifications': true,
       });
 
-      debugPrint('FCM device registration successful: ${response.data['success']}');
+      print('FCM device registration successful: ${response.data['success']}');
     } catch (e) {
-      debugPrint('Failed to register with FCM API: $e');
+      print('Failed to register with FCM API: $e');
     }
   }
 
@@ -705,10 +705,10 @@ class PushNotificationService {
         'device_id': deviceId,
       });
 
-      debugPrint('Test push response: ${response.data}');
+      print('Test push response: ${response.data}');
       return response.data['ok'] == true;
     } catch (e) {
-      debugPrint('Failed to send test push: $e');
+      print('Failed to send test push: $e');
       return false;
     }
   }
@@ -753,43 +753,43 @@ class PushNotificationService {
         .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
     
-    debugPrint('✅ Local notifications initialized for rich notification support');
+    print('✅ Local notifications initialized for rich notification support');
   }
   
   void _onNotificationTapped(NotificationResponse response) {
-    debugPrint('📱 Foreground notification tapped: ${response.actionId} for payload: ${response.payload}');
+    print('📱 Foreground notification tapped: ${response.actionId} for payload: ${response.payload}');
     
     final payload = response.payload;
     if (payload == null) {
-      debugPrint('❌ No payload in notification response');
+      print('❌ No payload in notification response');
       return;
     }
     
     // Parse the payload to get sighting ID
     final parts = payload.split('|');
     if (parts.isEmpty) {
-      debugPrint('❌ Empty payload parts');
+      print('❌ Empty payload parts');
       return;
     }
     
     final sightingId = parts[0];
     final action = response.actionId;
     
-    debugPrint('✅ Processing foreground notification action: $action for sighting: $sightingId');
+    print('✅ Processing foreground notification action: $action for sighting: $sightingId');
     
     // Handle different action buttons
     switch (action) {
       case 'dismiss_snooze':
-        debugPrint('🔔 Snooze button tapped - calling _handleSnoozeAction');
+        print('🔔 Snooze button tapped - calling _handleSnoozeAction');
         _handleSnoozeAction(sightingId);
         break;
       case 'dismiss':
-        debugPrint('🔔 Dismiss button tapped');
+        print('🔔 Dismiss button tapped');
         _handleDismissAction(sightingId);
         break;
       default:
         // Default tap action - navigate to alert
-        debugPrint('🔔 Default notification tap - navigating to alert');
+        print('🔔 Default notification tap - navigating to alert');
         navigateToAlert(sightingId);
         break;
     }
@@ -831,7 +831,7 @@ class PushNotificationService {
       payload: sightingId,
     );
     
-    debugPrint('📱 Comment notification shown for sighting $sightingId');
+    print('📱 Comment notification shown for sighting $sightingId');
   }
 
   Future<void> _showForegroundNotification(RemoteMessage message) async {
@@ -844,15 +844,15 @@ class PushNotificationService {
         body: body,
         data: message.data,
       );
-      debugPrint('🔔 FOREGROUND: Shown via bootstrap service');
+      print('🔔 FOREGROUND: Shown via bootstrap service');
     } catch (e) {
-      debugPrint('🔔 FOREGROUND ERROR: Failed to show via bootstrap: $e');
+      print('🔔 FOREGROUND ERROR: Failed to show via bootstrap: $e');
       // Fallback to legacy rich notification if needed
     }
   }
 
   Future<void> _showRichNotification(String sightingId, int witnessCount, String? distance, String locationName) async {
-    debugPrint('🔔 RICH NOTIF DEBUG: Showing rich notification for sighting $sightingId with $witnessCount witnesses');
+    print('🔔 RICH NOTIF DEBUG: Showing rich notification for sighting $sightingId with $witnessCount witnesses');
     // Format distance for display
     String distanceText = '';
     if (distance != null) {
@@ -927,19 +927,19 @@ class PushNotificationService {
         payload: '$sightingId|$witnessCount|$distance|$locationName',
       );
       
-      debugPrint('🔔 RICH NOTIF DEBUG: ✅ Successfully showed local notification for sighting $sightingId');
+      print('🔔 RICH NOTIF DEBUG: ✅ Successfully showed local notification for sighting $sightingId');
     } catch (e) {
-      debugPrint('🔔 RICH NOTIF DEBUG: ❌ ERROR showing local notification: $e');
+      print('🔔 RICH NOTIF DEBUG: ❌ ERROR showing local notification: $e');
     }
   }
   
   void _handleSeeItTooAction(String sightingIdRaw) async {
-    debugPrint('📱 User confirmed sighting: $sightingIdRaw');
+    print('📱 User confirmed sighting: $sightingIdRaw');
     
     // Validate and sanitize sighting ID outside try block for scope access
     final sightingId = sightingIdRaw.trim();
     if (sightingId.isEmpty) {
-      debugPrint('❌ Invalid sighting ID for witness confirmation');
+      print('❌ Invalid sighting ID for witness confirmation');
       return;
     }
     
@@ -972,7 +972,7 @@ class PushNotificationService {
 
       // Sanity: ensure it's a Map (not List) *before* send
       assert(witnessData is Map<String, dynamic>);
-      debugPrint('[SEEIT] Sending payload: ${jsonEncode(witnessData)}');
+      print('[SEEIT] Sending payload: ${jsonEncode(witnessData)}');
 
       final resp = await ApiClient.dio.post(
         '/beep/$sightingId/witnesses',
@@ -985,8 +985,8 @@ class PushNotificationService {
       final data = _asJsonMap(raw);
 
       // TEMP LOGS (keep until bug is fixed)
-      debugPrint('[SEEIT] resp.type=${raw.runtimeType} keys=${data.keys}');
-      debugPrint('[SEEIT] resp.json=${jsonEncode(data)}');
+      print('[SEEIT] resp.type=${raw.runtimeType} keys=${data.keys}');
+      print('[SEEIT] resp.json=${jsonEncode(data)}');
 
       // If backend returns a List in any path, fail fast with a clear message.
       if (data["_type"] == "List") {
@@ -996,18 +996,18 @@ class PushNotificationService {
       // SAFE ACCESS: never do data['x']['y'] without guarding
       final success = data["success"] ?? data["ok"] ?? false;
       if (success is bool && success) {
-        debugPrint('✅ Witness confirmation successful');
+        print('✅ Witness confirmation successful');
         
         // Safe access to nested response data
         final witnessCount = data["witness_count"] ?? data["data"]?["witness_count"] ?? 0;
         if (witnessCount > 0) {
-          debugPrint('[SEEIT] New witness count: $witnessCount');
+          print('[SEEIT] New witness count: $witnessCount');
         }
       } else {
         // handle error object safely  
         final err = _asJsonMap(data["error"]);
-        debugPrint('[SEEIT] error=$err');
-        debugPrint('⚠️ Unexpected response format or error: ${data["message"] ?? "Unknown error"}');
+        print('[SEEIT] error=$err');
+        print('⚠️ Unexpected response format or error: ${data["message"] ?? "Unknown error"}');
       }
 
       // Check for existing comments AFTER confirmation to get the updated state
@@ -1024,29 +1024,29 @@ class PushNotificationService {
             !comment['body'].toString().contains('I saw it too!')
           ).toList();
           commentsExisted = nonAutoComments.isNotEmpty;
-          debugPrint('🔍 Comments existed (excluding auto-comment): $commentsExisted (${comments.length} total, ${nonAutoComments.length} non-auto)');
+          print('🔍 Comments existed (excluding auto-comment): $commentsExisted (${comments.length} total, ${nonAutoComments.length} non-auto)');
         }
       } catch (e) {
-        debugPrint('⚠️ Could not check comments after confirmation: $e');
+        print('⚠️ Could not check comments after confirmation: $e');
         // Default to staying on alert page on error
         commentsExisted = false;
       }
 
       // Smart navigation: only go to comments if there's already a conversation
       if (commentsExisted) {
-        debugPrint('🔄 Comments existed - navigating to join conversation for sighting: $sightingId');
+        print('🔄 Comments existed - navigating to join conversation for sighting: $sightingId');
         navigateToComments(sightingId);
       } else {
-        debugPrint('🏠 No existing conversation - staying on alert screen to show confirmation for sighting: $sightingId');
+        print('🏠 No existing conversation - staying on alert screen to show confirmation for sighting: $sightingId');
         // Stay on current screen (alert detail) to show witness confirmation
         // User is auto-followed via backend and will get future comment notifications
       }
       
-      debugPrint('✅ Witness confirmation sent for sighting $sightingId');
+      print('✅ Witness confirmation sent for sighting $sightingId');
     } catch (e, st) {
       // Emit extremely specific diagnostics to find the exact offender
-      debugPrint('[SEEIT][EXC] $e');
-      debugPrint('[SEEIT][STACK] $st');
+      print('[SEEIT][EXC] $e');
+      print('[SEEIT][STACK] $st');
       
       // Extract clear error message from DioException
       String errorMessage = 'Failed to send witness confirmation';
@@ -1059,11 +1059,11 @@ class PushNotificationService {
             errorMessage = errorData;
           }
         } catch (parseError) {
-          debugPrint('Could not parse error response: $parseError');
+          print('Could not parse error response: $parseError');
         }
       }
       
-      debugPrint('❌ $errorMessage: $e');
+      print('❌ $errorMessage: $e');
       // On error, don't navigate anywhere - stay on current screen to show error
       // (Smart navigation doesn't apply when confirmation failed)
     }
@@ -1071,36 +1071,36 @@ class PushNotificationService {
   
   
   void _handleSnoozeAction(String sightingId) async {
-    debugPrint('📱 SNOOZE ACTION: User snoozed alerts for 1 hour: $sightingId');
+    print('📱 SNOOZE ACTION: User snoozed alerts for 1 hour: $sightingId');
     
     try {
       // Enable 1-hour DND using the UserPreferences system
       await _enableDndFor1Hour();
       
-      debugPrint('✅ SNOOZE SUCCESS: Enabled DND for 1 hour via snooze');
+      print('✅ SNOOZE SUCCESS: Enabled DND for 1 hour via snooze');
       
       // TODO: Add backend sync once the public API is available
       // The local DND setting will be synced when user opens the app next
     } catch (e) {
-      debugPrint('❌ SNOOZE ERROR: Failed to enable DND: $e');
+      print('❌ SNOOZE ERROR: Failed to enable DND: $e');
     }
   }
   
   void _handleDismissAction(String sightingId) {
-    debugPrint('📱 User dismissed notification for sighting: $sightingId');
+    print('📱 User dismissed notification for sighting: $sightingId');
     // Just dismiss - no API call needed
   }
 
   /// Enable DND for 1 hour using same pattern as profile screen
   Future<void> _enableDndFor1Hour() async {
-    debugPrint('🔧 ENABLE_DND: Starting DND setup...');
+    print('🔧 ENABLE_DND: Starting DND setup...');
     
     try {
       // Get user preferences from SharedPreferences
       final prefs = await SharedPreferences.getInstance();
       final prefsJson = prefs.getString('user_preferences');
       
-      debugPrint('🔧 ENABLE_DND: Retrieved prefs JSON: ${prefsJson?.substring(0, 100) ?? 'null'}...');
+      print('🔧 ENABLE_DND: Retrieved prefs JSON: ${prefsJson?.substring(0, 100) ?? 'null'}...');
       
       if (prefsJson != null) {
         final prefsMap = jsonDecode(prefsJson) as Map<String, dynamic>;
@@ -1110,15 +1110,15 @@ class PushNotificationService {
         final dndUntil = DateTime.now().add(Duration(hours: 1));
         final updatedPrefs = currentPrefs.copyWith(dndUntil: dndUntil);
         
-        debugPrint('🔧 ENABLE_DND: DND until: $dndUntil');
+        print('🔧 ENABLE_DND: DND until: $dndUntil');
         
         // Save updated preferences
         final updatedPrefsJson = jsonEncode(updatedPrefs.toJson());
         await prefs.setString('user_preferences', updatedPrefsJson);
         
-        debugPrint('📱 ENABLE_DND: DND enabled until ${dndUntil.toString().substring(11, 16)}');
+        print('📱 ENABLE_DND: DND enabled until ${dndUntil.toString().substring(11, 16)}');
       } else {
-        debugPrint('⚠️ ENABLE_DND: No user preferences found, creating default with DND');
+        print('⚠️ ENABLE_DND: No user preferences found, creating default with DND');
         
         // Create default preferences with DND enabled
         final dndUntil = DateTime.now().add(Duration(hours: 1));
@@ -1127,11 +1127,11 @@ class PushNotificationService {
         final prefsJson = jsonEncode(defaultPrefs.toJson());
         await prefs.setString('user_preferences', prefsJson);
         
-        debugPrint('📱 ENABLE_DND: Created default preferences with DND enabled until ${dndUntil.toString().substring(11, 16)}');
+        print('📱 ENABLE_DND: Created default preferences with DND enabled until ${dndUntil.toString().substring(11, 16)}');
       }
     } catch (e, stackTrace) {
-      debugPrint('❌ ENABLE_DND: Failed to enable DND: $e');
-      debugPrint('❌ ENABLE_DND: Stack trace: $stackTrace');
+      print('❌ ENABLE_DND: Failed to enable DND: $e');
+      print('❌ ENABLE_DND: Stack trace: $stackTrace');
     }
   }
 
@@ -1151,13 +1151,13 @@ class CommentsRefreshNotifier {
   final Map<String, Set<VoidCallback>> _listeners = {};
   
   void addListener(String sightingId, VoidCallback callback) {
-    debugPrint('📝 CommentsRefreshNotifier: addListener for sighting $sightingId');
+    print('📝 CommentsRefreshNotifier: addListener for sighting $sightingId');
     (_listeners[sightingId] ??= <VoidCallback>{}).add(callback);
-    debugPrint('📝 CommentsRefreshNotifier: now ${_listeners[sightingId]!.length} listeners for $sightingId');
+    print('📝 CommentsRefreshNotifier: now ${_listeners[sightingId]!.length} listeners for $sightingId');
   }
   
   void removeListener(String sightingId, VoidCallback callback) {
-    debugPrint('📝 CommentsRefreshNotifier: removeListener for sighting $sightingId');
+    print('📝 CommentsRefreshNotifier: removeListener for sighting $sightingId');
     _listeners[sightingId]?.remove(callback);
     if (_listeners[sightingId]?.isEmpty == true) {
       _listeners.remove(sightingId);
@@ -1165,24 +1165,24 @@ class CommentsRefreshNotifier {
   }
   
   void notifyRefresh(String sightingId) {
-    debugPrint('🔄 CommentsRefreshNotifier: notifying refresh for sighting $sightingId');
+    print('🔄 CommentsRefreshNotifier: notifying refresh for sighting $sightingId');
     final callbacks = List<VoidCallback>.from(_listeners[sightingId] ?? const []);
-    debugPrint('🔄 CommentsRefreshNotifier: found ${callbacks.length} listeners');
+    print('🔄 CommentsRefreshNotifier: found ${callbacks.length} listeners');
     
     if (callbacks.isEmpty) {
-      debugPrint('⚠️ CommentsRefreshNotifier: no listeners registered for sighting $sightingId');
-      debugPrint('⚠️ Current listener keys: ${_listeners.keys.toList()}');
+      print('⚠️ CommentsRefreshNotifier: no listeners registered for sighting $sightingId');
+      print('⚠️ Current listener keys: ${_listeners.keys.toList()}');
       return;
     }
     
     // Ensure callbacks run on the UI frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      debugPrint('🔄 CommentsRefreshNotifier: executing ${callbacks.length} callbacks on UI frame');
+      print('🔄 CommentsRefreshNotifier: executing ${callbacks.length} callbacks on UI frame');
       for (final callback in callbacks) {
         try {
           callback();
         } catch (e, st) {
-          debugPrint('❌ CommentsRefreshNotifier callback error: $e\n$st');
+          print('❌ CommentsRefreshNotifier callback error: $e\n$st');
         }
       }
     });

@@ -1231,7 +1231,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Future<void> _updateTimeFormat(bool use24Hour) async {
     try {
       final userPreferencesNotifier = ref.read(userPreferencesProvider.notifier);
-      await userPreferencesNotifier.updatePreferences(use24HourTime: use24Hour);
+      await userPreferencesNotifier.updatePreferences(
+        userPreferencesNotifier.state!.copyWith(use24HourTime: use24Hour)
+      );
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

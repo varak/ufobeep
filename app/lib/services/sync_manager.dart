@@ -57,7 +57,7 @@ class SyncManager {
       _initialized = true;
       _updateSyncStatus(SyncStatus.idle);
     } catch (e) {
-      debugPrint('Failed to initialize sync manager: $e');
+      print('Failed to initialize sync manager: $e');
       rethrow;
     }
   }

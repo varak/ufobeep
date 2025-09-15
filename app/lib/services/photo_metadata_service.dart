@@ -29,55 +29,55 @@ class PhotoMetadataService {
             metadata['location'] = locationData;
           }
         } catch (e) {
-          debugPrint('Failed to extract location data from EXIF: $e');
+          print('Failed to extract location data from EXIF: $e');
         }
         
         try {
           // Camera settings and technical data
           metadata['camera'] = _extractCameraData(exifData);
         } catch (e) {
-          debugPrint('Failed to extract camera data from EXIF: $e');
+          print('Failed to extract camera data from EXIF: $e');
         }
         
         try {
           // Device orientation and compass data (if available in EXIF)
           metadata['orientation'] = _extractOrientationData(exifData);
         } catch (e) {
-          debugPrint('Failed to extract orientation data from EXIF: $e');
+          print('Failed to extract orientation data from EXIF: $e');
         }
         
         try {
           // Timestamp data
           metadata['timestamps'] = _extractTimestampData(exifData);
         } catch (e) {
-          debugPrint('Failed to extract timestamp data from EXIF: $e');
+          print('Failed to extract timestamp data from EXIF: $e');
         }
         
         try {
           // Image properties
           metadata['image_properties'] = _extractImageProperties(exifData);
         } catch (e) {
-          debugPrint('Failed to extract image properties from EXIF: $e');
+          print('Failed to extract image properties from EXIF: $e');
         }
         
         try {
           // Device and software info
           metadata['device_info'] = _extractDeviceInfo(exifData);
         } catch (e) {
-          debugPrint('Failed to extract device info from EXIF: $e');
+          print('Failed to extract device info from EXIF: $e');
         }
         
         try {
           // Raw EXIF for debugging/advanced processing
           metadata['raw_exif_keys'] = exifData.keys.toList();
         } catch (e) {
-          debugPrint('Failed to extract raw EXIF keys: $e');
+          print('Failed to extract raw EXIF keys: $e');
         }
       }
       
       return metadata;
     } catch (e) {
-      debugPrint('Error extracting comprehensive metadata: $e');
+      print('Error extracting comprehensive metadata: $e');
       return {
         'exif_available': false,
         'extraction_error': e.toString(),
@@ -96,7 +96,7 @@ class PhotoMetadataService {
       final Map<String, IfdTag> exifData = await readExifFromBytes(imageBytes);
       
       if (exifData.isEmpty) {
-        debugPrint('No EXIF data found in image');
+        print('No EXIF data found in image');
         return null;
       }
       
@@ -106,18 +106,18 @@ class PhotoMetadataService {
       final double? altitude = _extractGpsAltitude(exifData);
       
       if (latitude != null && longitude != null) {
-        debugPrint('Extracted GPS coordinates: lat=$latitude, lng=$longitude, alt=$altitude');
+        print('Extracted GPS coordinates: lat=$latitude, lng=$longitude, alt=$altitude');
         return {
           'latitude': latitude,
           'longitude': longitude,
           if (altitude != null) 'altitude': altitude,
         };
       } else {
-        debugPrint('No GPS coordinates found in EXIF data');
+        print('No GPS coordinates found in EXIF data');
         return null;
       }
     } catch (e) {
-      debugPrint('Error extracting GPS coordinates from image: $e');
+      print('Error extracting GPS coordinates from image: $e');
       return null;
     }
   }
@@ -148,7 +148,7 @@ class PhotoMetadataService {
         seconds = _ratioToDouble(coordValuesList[2]);
       } catch (e) {
         // If individual access fails, return null instead of crashing
-        debugPrint('Failed to parse GPS coordinate values: $e');
+        print('Failed to parse GPS coordinate values: $e');
         return null;
       }
       
@@ -161,7 +161,7 @@ class PhotoMetadataService {
       
       return decimalDegrees;
     } catch (e) {
-      debugPrint('Error parsing GPS coordinate: $e');
+      print('Error parsing GPS coordinate: $e');
       return null;
     }
   }
@@ -180,7 +180,7 @@ class PhotoMetadataService {
       try {
         altitude = _ratioToDouble(altTag.values.toList().first);
       } catch (e) {
-        debugPrint('Error parsing altitude value: $e');
+        print('Error parsing altitude value: $e');
         return null;
       }
       
@@ -192,13 +192,13 @@ class PhotoMetadataService {
             altitude = -altitude;
           }
         } catch (e) {
-          debugPrint('Error parsing altitude reference: $e');
+          print('Error parsing altitude reference: $e');
         }
       }
       
       return altitude;
     } catch (e) {
-      debugPrint('Error parsing GPS altitude: $e');
+      print('Error parsing GPS altitude: $e');
       return null;
     }
   }
@@ -255,7 +255,7 @@ class PhotoMetadataService {
       
       return null;
     } catch (e) {
-      debugPrint('Error extracting image timestamp: $e');
+      print('Error extracting image timestamp: $e');
       return null;
     }
   }
@@ -297,7 +297,7 @@ class PhotoMetadataService {
       
       return data.isNotEmpty ? data : null;
     } catch (e) {
-      debugPrint('Error extracting location data: $e');
+      print('Error extracting location data: $e');
       return null;
     }
   }
@@ -426,14 +426,14 @@ class PhotoMetadataService {
   /// Embed GPS coordinates into image EXIF data
   static Future<File> embedGpsInImage(File imageFile, double latitude, double longitude, {double? altitude}) async {
     try {
-      debugPrint('📍 EXIF: Embedding GPS coordinates lat=$latitude, lng=$longitude, alt=$altitude');
+      print('📍 EXIF: Embedding GPS coordinates lat=$latitude, lng=$longitude, alt=$altitude');
       
       // Read the image
       final Uint8List imageBytes = await imageFile.readAsBytes();
       img.Image? image = img.decodeImage(imageBytes);
       
       if (image == null) {
-        debugPrint('❌ EXIF: Failed to decode image for GPS embedding');
+        print('❌ EXIF: Failed to decode image for GPS embedding');
         return imageFile; // Return original if decode fails
       }
 
@@ -480,11 +480,11 @@ class PhotoMetadataService {
       // Write back to the same file
       await imageFile.writeAsBytes(encodedImage);
       
-      debugPrint('✅ EXIF: Successfully embedded GPS coordinates in image');
+      print('✅ EXIF: Successfully embedded GPS coordinates in image');
       return imageFile;
       
     } catch (e) {
-      debugPrint('❌ EXIF: Failed to embed GPS coordinates: $e');
+      print('❌ EXIF: Failed to embed GPS coordinates: $e');
       return imageFile; // Return original file if embedding fails
     }
   }

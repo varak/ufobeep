@@ -1236,6 +1236,30 @@ abstract class AppLocalizations {
   /// **'App Settings'**
   String get appSettings;
 
+  /// No description provided for @timeFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Format'**
+  String get timeFormat;
+
+  /// No description provided for @timeFormat24Hour.
+  ///
+  /// In en, this message translates to:
+  /// **'24-hour (14:30)'**
+  String get timeFormat24Hour;
+
+  /// No description provided for @timeFormat12Hour.
+  ///
+  /// In en, this message translates to:
+  /// **'12-hour (2:30 PM)'**
+  String get timeFormat12Hour;
+
+  /// No description provided for @timeFormatDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Display time in 24-hour or 12-hour format'**
+  String get timeFormatDesc;
+
   /// No description provided for @alertRange.
   ///
   /// In en, this message translates to:

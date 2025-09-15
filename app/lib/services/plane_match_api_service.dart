@@ -25,14 +25,14 @@ class PlaneMatchApiService {
       _dio.interceptors.add(LogInterceptor(
         requestBody: true,
         responseBody: true,
-        logPrint: (obj) => debugPrint(obj.toString()),
+        logPrint: (obj) => print(obj.toString()),
       ));
     }
 
     // Add error handling interceptor
     _dio.interceptors.add(InterceptorsWrapper(
       onError: (error, handler) {
-        debugPrint('PlaneMatchApiService Error: ${error.message}');
+        print('PlaneMatchApiService Error: ${error.message}');
         handler.next(error);
       },
     ));
@@ -40,7 +40,7 @@ class PlaneMatchApiService {
 
   Future<PlaneMatchResponse> matchPlane(SensorData sensorData) async {
     try {
-      debugPrint('PlaneMatchApiService: Sending sensor data for plane matching');
+      print('PlaneMatchApiService: Sending sensor data for plane matching');
       
       final request = PlaneMatchRequest(
         sensorData: sensorData,
@@ -54,7 +54,7 @@ class PlaneMatchApiService {
       );
 
       if (response.statusCode == 200) {
-        debugPrint('PlaneMatchApiService: Received plane match response');
+        print('PlaneMatchApiService: Received plane match response');
         return PlaneMatchResponse.fromJson(response.data);
       } else {
         throw PlaneMatchException(
@@ -64,7 +64,7 @@ class PlaneMatchApiService {
       }
 
     } on DioException catch (e) {
-      debugPrint('PlaneMatchApiService: Dio error - ${e.message}');
+      print('PlaneMatchApiService: Dio error - ${e.message}');
       
       if (e.type == DioExceptionType.connectionTimeout) {
         throw PlaneMatchException('Connection timeout - please check your internet connection');
@@ -87,7 +87,7 @@ class PlaneMatchApiService {
         throw PlaneMatchException('Network error - please check your connection');
       }
     } catch (e) {
-      debugPrint('PlaneMatchApiService: Unexpected error - $e');
+      print('PlaneMatchApiService: Unexpected error - $e');
       
       if (e is PlaneMatchException) {
         rethrow;
@@ -111,7 +111,7 @@ class PlaneMatchApiService {
       }
 
     } on DioException catch (e) {
-      debugPrint('PlaneMatchApiService: Health check failed - ${e.message}');
+      print('PlaneMatchApiService: Health check failed - ${e.message}');
       throw PlaneMatchException('Service health check failed');
     }
   }
@@ -133,7 +133,7 @@ class PlaneMatchApiService {
         return responseData;
       }
     } catch (e) {
-      debugPrint('PlaneMatchApiService: Could not extract error message: $e');
+      print('PlaneMatchApiService: Could not extract error message: $e');
     }
     return null;
   }
@@ -210,7 +210,7 @@ class MockPlaneMatchApiService extends PlaneMatchApiService {
     final response = _mockResponses[_responseIndex % _mockResponses.length];
     _responseIndex++;
     
-    debugPrint('MockPlaneMatchApiService: Returning mock response - isPlane: ${response.isPlane}');
+    print('MockPlaneMatchApiService: Returning mock response - isPlane: ${response.isPlane}');
     
     return response.copyWith(timestamp: DateTime.now().toUtc());
   }

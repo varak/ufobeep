@@ -36,22 +36,22 @@ class DeepLinkService {
       // Handle app launch from link
       final initialUri = await _appLinks.getInitialAppLink();
       if (initialUri != null) {
-        debugPrint('App launched from link: $initialUri');
+        print('App launched from link: $initialUri');
         await _handleDeepLink(initialUri);
       }
 
       // Handle links while app is running
       _linkSubscription = _appLinks.uriLinkStream.listen(
         (Uri uri) async {
-          debugPrint('Received app link: $uri');
+          print('Received app link: $uri');
           await _handleDeepLink(uri);
         },
         onError: (err) {
-          debugPrint('Deep link error: $err');
+          print('Deep link error: $err');
         },
       );
     } catch (e) {
-      debugPrint('Failed to initialize app links: $e');
+      print('Failed to initialize app links: $e');
     }
   }
 
@@ -63,30 +63,30 @@ class DeepLinkService {
           await FirebaseMessaging.instance.getInitialMessage();
 
       if (initialMessage != null) {
-        debugPrint('App launched from notification: ${initialMessage.data}');
+        print('App launched from notification: ${initialMessage.data}');
         await _handlePushNotificationData(initialMessage.data);
       }
 
       // Handle notification tap when app is in background
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-        debugPrint('Notification opened app: ${message.data}');
+        print('Notification opened app: ${message.data}');
         await _handlePushNotificationData(message.data);
       });
 
       // Handle notification when app is in foreground (optional)
       FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-        debugPrint('Foreground notification: ${message.data}');
+        print('Foreground notification: ${message.data}');
         // Optionally show in-app notification or handle immediately
       });
     } catch (e) {
-      debugPrint('Failed to initialize push notification links: $e');
+      print('Failed to initialize push notification links: $e');
     }
   }
 
   /// Handle deep link URI
   Future<void> _handleDeepLink(Uri uri) async {
     if (_router == null) {
-      debugPrint('❌ Router not initialized');
+      print('❌ Router not initialized');
       return;
     }
 
@@ -96,20 +96,20 @@ class DeepLinkService {
       final List<String> pathSegments = uri.pathSegments;
       final Map<String, String> queryParams = uri.queryParameters;
 
-      debugPrint('🔗 DEEP LINK HANDLER DEBUG:');
-      debugPrint('   📍 Full URI: $uri');
-      debugPrint('   📱 Scheme: $scheme');
-      debugPrint('   🌐 Host: $host');
-      debugPrint('   📂 Path segments: $pathSegments');
-      debugPrint('   ⚙️  Query params: $queryParams');
+      print('🔗 DEEP LINK HANDLER DEBUG:');
+      print('   📍 Full URI: $uri');
+      print('   📱 Scheme: $scheme');
+      print('   🌐 Host: $host');
+      print('   📂 Path segments: $pathSegments');
+      print('   ⚙️  Query params: $queryParams');
       
       // Special logging for auth completion
       if (host == 'auth' && pathSegments.isNotEmpty && pathSegments[0] == 'complete') {
-        debugPrint('🔐 MAGIC LINK DEEP LINK DETECTED:');
-        debugPrint('   🎫 Token: ${queryParams['token']?.substring(0, 20)}...');
-        debugPrint('   👤 User ID: ${queryParams['user_id']}');
-        debugPrint('   📝 Username: ${queryParams['username']}');
-        debugPrint('   📧 Email: ${queryParams['email']}');
+        print('🔐 MAGIC LINK DEEP LINK DETECTED:');
+        print('   🎫 Token: ${queryParams['token']?.substring(0, 20)}...');
+        print('   👤 User ID: ${queryParams['user_id']}');
+        print('   📝 Username: ${queryParams['username']}');
+        print('   📧 Email: ${queryParams['email']}');
       }
 
       // Handle ufobeep:// scheme
@@ -122,21 +122,21 @@ class DeepLinkService {
       }
       // Handle Firebase dynamic link format (com.ufobeep:/__/auth/...)
       else if (scheme.startsWith('com.ufobeep')) {
-        debugPrint('🔥 Firebase format detected, converting to standard auth flow...');
+        print('🔥 Firebase format detected, converting to standard auth flow...');
         await _handleFirebaseDynamicLink(uri);
       } else {
-        debugPrint('⚠️ Unsupported deep link scheme: $scheme');
-        debugPrint('   Falling back to alerts screen...');
+        print('⚠️ Unsupported deep link scheme: $scheme');
+        print('   Falling back to alerts screen...');
         _router!.go('/beep');
       }
     } catch (e) {
-      debugPrint('❌ Error handling deep link: $e');
-      debugPrint('   Stack trace: ${StackTrace.current}');
+      print('❌ Error handling deep link: $e');
+      print('   Stack trace: ${StackTrace.current}');
       // Fallback to alerts screen with better error handling
       try {
         _router!.go('/beep');
       } catch (routerError) {
-        debugPrint('❌ Even fallback navigation failed: $routerError');
+        print('❌ Even fallback navigation failed: $routerError');
       }
     }
   }
@@ -167,7 +167,7 @@ class DeepLinkService {
         await _handleProfileLink(pathSegments, queryParams);
         break;
       default:
-        debugPrint('Unknown UFOBeep host: $host');
+        print('Unknown UFOBeep host: $host');
         _router!.go('/');
     }
   }
@@ -197,7 +197,7 @@ class DeepLinkService {
       case 'auth':
         // Handle web auth links (e.g., https://ufobeep.com/auth/magic?token=...)
         if (pathSegments.length > 1 && pathSegments[1] == 'magic') {
-          debugPrint('Web magic link detected, checking authentication state...');
+          print('Web magic link detected, checking authentication state...');
           await _handleMagicLinkCompletion(queryParams);
         } else {
           _router!.go('/sign-in');
@@ -300,23 +300,23 @@ class DeepLinkService {
     List<String> pathSegments,
     Map<String, String> queryParams,
   ) async {
-    debugPrint('🔐 AUTH LINK HANDLER DEBUG:');
-    debugPrint('   📂 Path segments: $pathSegments');
-    debugPrint('   ⚙️  Query params: $queryParams');
+    print('🔐 AUTH LINK HANDLER DEBUG:');
+    print('   📂 Path segments: $pathSegments');
+    print('   ⚙️  Query params: $queryParams');
     
     if (pathSegments.isEmpty) {
-      debugPrint('⚠️  No path segments, redirecting to /sign-in');
+      print('⚠️  No path segments, redirecting to /sign-in');
       _router!.go('/sign-in');
       return;
     }
 
     final action = pathSegments[0];
-    debugPrint('🎬 Action: $action');
+    print('🎬 Action: $action');
     
     if (action == 'complete') {
       // Redirect to proper GoRouter route instead of handling auth here
       // This ensures consistent auth flow through the app's routing system
-      debugPrint('🔄 DEEP LINK REDIRECT: Deep link redirecting to GoRouter /auth/complete route');
+      print('🔄 DEEP LINK REDIRECT: Deep link redirecting to GoRouter /auth/complete route');
       
       // Build the route with query parameters
       final uri = Uri(
@@ -325,12 +325,12 @@ class DeepLinkService {
       );
       
       final routeString = uri.toString();
-      debugPrint('🎯 Final route: $routeString');
+      print('🎯 Final route: $routeString');
       
       _router!.go(routeString);
-      debugPrint('✅ Redirect completed');
+      print('✅ Redirect completed');
     } else {
-      debugPrint('⚠️  Unknown action: $action, redirecting to /sign-in');
+      print('⚠️  Unknown action: $action, redirecting to /sign-in');
       _router!.go('/sign-in');
     }
   }
@@ -346,8 +346,8 @@ class DeepLinkService {
 
   /// Handle Firebase dynamic link format (com.ufobeep:/__/auth/action?oobCode=...)
   Future<void> _handleFirebaseDynamicLink(Uri uri) async {
-    debugPrint('🔥 FIREBASE DYNAMIC LINK DEBUG:');
-    debugPrint('   Full URI: $uri');
+    print('🔥 FIREBASE DYNAMIC LINK DEBUG:');
+    print('   Full URI: $uri');
     
     try {
       // Extract relevant parameters from Firebase format
@@ -355,9 +355,9 @@ class DeepLinkService {
       
       // Check for oobCode (out of band code) or other Firebase auth params
       if (queryParams.containsKey('oobCode') || queryParams.containsKey('mode')) {
-        debugPrint('   Firebase auth action detected');
-        debugPrint('   Mode: ${queryParams['mode']}');
-        debugPrint('   OOB Code: ${queryParams['oobCode']}');
+        print('   Firebase auth action detected');
+        print('   Mode: ${queryParams['mode']}');
+        print('   OOB Code: ${queryParams['oobCode']}');
         
         // Convert to our standard auth success flow
         _router!.go('/beep');
@@ -366,17 +366,17 @@ class DeepLinkService {
       
       // Check if it contains our custom token parameter
       if (queryParams.containsKey('token')) {
-        debugPrint('   Custom token found: ${queryParams['token']}');
+        print('   Custom token found: ${queryParams['token']}');
         _router!.go('/beep');
         return;
       }
       
       // Fallback for unrecognized Firebase links
-      debugPrint('   Unrecognized Firebase link format, navigating to alerts');
+      print('   Unrecognized Firebase link format, navigating to alerts');
       _router!.go('/alerts');
       
     } catch (e) {
-      debugPrint('❌ Error processing Firebase dynamic link: $e');
+      print('❌ Error processing Firebase dynamic link: $e');
       _router!.go('/alerts');
     }
   }
@@ -387,7 +387,7 @@ class DeepLinkService {
       final String? type = data['type'];
       final String? deepLink = data['deep_link'];
 
-      debugPrint('Handling push notification type: $type');
+      print('Handling push notification type: $type');
 
       // Use deep link if available
       if (deepLink != null && deepLink.isNotEmpty) {
@@ -422,11 +422,11 @@ class DeepLinkService {
           break;
 
         default:
-          debugPrint('Unknown notification type: $type');
+          print('Unknown notification type: $type');
           _router!.go('/');
       }
     } catch (e) {
-      debugPrint('Error handling push notification data: $e');
+      print('Error handling push notification data: $e');
       _router!.go('/');
     }
   }
@@ -436,7 +436,7 @@ class DeepLinkService {
     try {
       return Uri.parse(link);
     } catch (e) {
-      debugPrint('Failed to parse deep link: $link, error: $e');
+      print('Failed to parse deep link: $link, error: $e');
       return null;
     }
   }
@@ -480,7 +480,7 @@ class DeepLinkService {
   Future<void> testNavigation(String deepLink) async {
     if (!kDebugMode) return;
     
-    debugPrint('🧪 Testing deep link: $deepLink');
+    print('🧪 Testing deep link: $deepLink');
     final uri = parseDeepLink(deepLink);
     if (uri != null) {
       await _handleDeepLink(uri);

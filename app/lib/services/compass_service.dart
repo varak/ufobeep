@@ -59,9 +59,9 @@ class CompassService {
       // Try to start sensor updates with timeout fallback
       await _startSensorsWithFallback();
       
-      debugPrint('Compass service started');
+      print('Compass service started');
     } catch (e) {
-      debugPrint('Error starting compass service: $e');
+      print('Error starting compass service: $e');
       // Don't rethrow - fallback to location-only mode
       _startLocationOnlyMode();
     }
@@ -81,10 +81,10 @@ class CompassService {
         accelerometerEvents.first.timeout(const Duration(seconds: 2)),
       ]);
       
-      debugPrint('Sensors initialized successfully');
+      print('Sensors initialized successfully');
     } catch (e) {
-      debugPrint('Sensor initialization failed or timed out: $e');
-      debugPrint('Falling back to location-only compass mode');
+      print('Sensor initialization failed or timed out: $e');
+      print('Falling back to location-only compass mode');
       await stopListening();
       _startLocationOnlyMode();
     }
@@ -118,7 +118,7 @@ class CompassService {
     _accelerometerSubscription = null;
     _locationSubscription = null;
     
-    debugPrint('Compass service stopped');
+    print('Compass service stopped');
   }
 
   Future<void> _startLocationUpdates() async {
@@ -177,7 +177,7 @@ class CompassService {
         _processMagnetometerData(event.x, event.y, event.z);
       },
       onError: (error) {
-        debugPrint('Magnetometer error: $error');
+        print('Magnetometer error: $error');
       },
     );
   }
@@ -190,7 +190,7 @@ class CompassService {
         _accelerometerZ = event.z;
       },
       onError: (error) {
-        debugPrint('Accelerometer error: $error');
+        print('Accelerometer error: $error');
       },
     );
   }

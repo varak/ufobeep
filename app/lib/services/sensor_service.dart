@@ -15,29 +15,29 @@ class SensorService {
 
   /// Get precise location for device registration - fail if unavailable
   Future<Position?> getPreciseLocation({Duration timeout = const Duration(seconds: 10)}) async {
-    debugPrint('SensorService: Getting precise location for device registration...');
+    print('SensorService: Getting precise location for device registration...');
     
     // Ensure location services enabled
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      debugPrint('SensorService: ❌ Location services disabled');
+      print('SensorService: ❌ Location services disabled');
       return null;
     }
 
     // Permission flow
     LocationPermission perm = await Geolocator.checkPermission();
     if (perm == LocationPermission.denied) {
-      debugPrint('SensorService: Location permission denied, requesting...');
+      print('SensorService: Location permission denied, requesting...');
       perm = await Geolocator.requestPermission();
     }
     
     if (perm == LocationPermission.denied || perm == LocationPermission.deniedForever) {
-      debugPrint('SensorService: ❌ Location permission not granted: $perm');
+      print('SensorService: ❌ Location permission not granted: $perm');
       return null;
     }
 
     try {
-      debugPrint('SensorService: Getting current position with ${timeout.inSeconds}s timeout...');
+      print('SensorService: Getting current position with ${timeout.inSeconds}s timeout...');
       final pos = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
         timeLimit: timeout,
@@ -45,34 +45,34 @@ class SensorService {
       
       // Guard against invalid (0,0) coordinates
       if (pos.latitude.abs() < 0.0001 && pos.longitude.abs() < 0.0001) {
-        debugPrint('SensorService: ⚠️ Got (0,0) coordinates, trying last known position');
+        print('SensorService: ⚠️ Got (0,0) coordinates, trying last known position');
         final last = await Geolocator.getLastKnownPosition();
         if (last == null) {
-          debugPrint('SensorService: ❌ No last known position available');
+          print('SensorService: ❌ No last known position available');
           return null;
         }
         if (last.latitude.abs() < 0.0001 && last.longitude.abs() < 0.0001) {
-          debugPrint('SensorService: ❌ Last known position also (0,0)');
+          print('SensorService: ❌ Last known position also (0,0)');
           return null;
         }
-        debugPrint('SensorService: ✅ Using last known position: ${last.latitude}, ${last.longitude}');
+        print('SensorService: ✅ Using last known position: ${last.latitude}, ${last.longitude}');
         return last;
       }
       
-      debugPrint('SensorService: ✅ Got current position: ${pos.latitude}, ${pos.longitude}, accuracy: ${pos.accuracy}m');
+      print('SensorService: ✅ Got current position: ${pos.latitude}, ${pos.longitude}, accuracy: ${pos.accuracy}m');
       return pos;
     } catch (e) {
-      debugPrint('SensorService: ⚠️ getCurrentPosition failed: $e, trying last known');
+      print('SensorService: ⚠️ getCurrentPosition failed: $e, trying last known');
       final last = await Geolocator.getLastKnownPosition();
       if (last == null) {
-        debugPrint('SensorService: ❌ No fallback position available');
+        print('SensorService: ❌ No fallback position available');
         return null;
       }
       if (last.latitude.abs() < 0.0001 && last.longitude.abs() < 0.0001) {
-        debugPrint('SensorService: ❌ Fallback position is (0,0)');
+        print('SensorService: ❌ Fallback position is (0,0)');
         return null;
       }
-      debugPrint('SensorService: ✅ Using fallback position: ${last.latitude}, ${last.longitude}');
+      print('SensorService: ✅ Using fallback position: ${last.latitude}, ${last.longitude}');
       return last;
     }
   }
@@ -83,7 +83,7 @@ class SensorService {
       // Check if location services are enabled
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        debugPrint('Location services are disabled');
+        print('Location services are disabled');
         return false;
       }
 
@@ -93,21 +93,21 @@ class SensorService {
       if (permission == LocationPermission.denied) {
         // Request permission
         permission = await Geolocator.requestPermission();
-        debugPrint('Location permission requested: $permission');
+        print('Location permission requested: $permission');
       }
 
       final granted = permission == LocationPermission.whileInUse || 
                      permission == LocationPermission.always;
       
       if (granted) {
-        debugPrint('Location permission granted for proximity alerts');
+        print('Location permission granted for proximity alerts');
       } else {
-        debugPrint('Location permission denied: $permission');
+        print('Location permission denied: $permission');
       }
       
       return granted;
     } catch (e) {
-      debugPrint('Error requesting location permission: $e');
+      print('Error requesting location permission: $e');
       return false;
     }
   }
@@ -124,12 +124,12 @@ class SensorService {
         position = await _captureLocation().timeout(
           const Duration(seconds: 4),
           onTimeout: () {
-            debugPrint('Location capture timed out');
+            print('Location capture timed out');
             return null;
           },
         );
       } catch (e) {
-        debugPrint('Location capture failed: $e');
+        print('Location capture failed: $e');
         position = null;
       }
 
@@ -138,12 +138,12 @@ class SensorService {
         orientation = await _captureDeviceOrientation().timeout(
           const Duration(seconds: 6),
           onTimeout: () {
-            debugPrint('Orientation capture timed out');
+            print('Orientation capture timed out');
             return _getDefaultOrientation();
           },
         );
       } catch (e) {
-        debugPrint('Orientation capture failed: $e');
+        print('Orientation capture failed: $e');
         orientation = _getDefaultOrientation();
       }
 
@@ -154,7 +154,7 @@ class SensorService {
           onTimeout: () => 66.0,
         );
       } catch (e) {
-        debugPrint('HFOV capture failed: $e');
+        print('HFOV capture failed: $e');
         hfov = 66.0;
       }
 
@@ -170,7 +170,7 @@ class SensorService {
         hfovDeg: hfov ?? 66.0,
       );
     } catch (e) {
-      debugPrint('SensorService: Error capturing sensor data: $e');
+      print('SensorService: Error capturing sensor data: $e');
       // Return default sensor data instead of throwing
       return SensorData(
         utc: DateTime.now().toUtc(),
@@ -199,14 +199,14 @@ class SensorService {
       // Check if location services are enabled
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        debugPrint('Location services are disabled');
+        print('Location services are disabled');
         return null;
       }
 
       // Check permissions (should be granted during app initialization)
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
-        debugPrint('Location permission denied: $permission');
+        print('Location permission denied: $permission');
         return null;
       }
 
@@ -216,7 +216,7 @@ class SensorService {
         timeLimit: const Duration(seconds: 3), // Reduced timeout
       );
     } catch (e) {
-      debugPrint('Failed to get location: $e');
+      print('Failed to get location: $e');
       return null; // Return null instead of throwing
     }
   }
@@ -230,11 +230,11 @@ class SensorService {
       );
       
       if (!sensorCheck) {
-        debugPrint('Sensors not available, using default orientation');
+        print('Sensors not available, using default orientation');
         return _getDefaultOrientation();
       }
     } catch (e) {
-      debugPrint('Sensor check failed: $e, using default orientation');
+      print('Sensor check failed: $e, using default orientation');
       return _getDefaultOrientation();
     }
 
@@ -259,7 +259,7 @@ class SensorService {
           }
         },
         onError: (e) {
-          debugPrint('Accelerometer error: $e');
+          print('Accelerometer error: $e');
           if (!accelCompleter.isCompleted) accelCompleter.complete();
         },
       );
@@ -274,7 +274,7 @@ class SensorService {
           }
         },
         onError: (e) {
-          debugPrint('Magnetometer error (likely no sensor): $e');
+          print('Magnetometer error (likely no sensor): $e');
           if (!magCompleter.isCompleted) magCompleter.complete();
         },
       );
@@ -285,38 +285,38 @@ class SensorService {
           accelCompleter.future.timeout(
             const Duration(seconds: 2), // Reduced timeout
             onTimeout: () {
-              debugPrint('Accelerometer timeout - using partial samples: ${accelSamples.length}');
+              print('Accelerometer timeout - using partial samples: ${accelSamples.length}');
               if (!accelCompleter.isCompleted) accelCompleter.complete();
             },
           ),
           magCompleter.future.timeout(
             const Duration(seconds: 2), // Reduced timeout
             onTimeout: () {
-              debugPrint('Magnetometer timeout (no sensor) - using partial samples: ${magSamples.length}');
+              print('Magnetometer timeout (no sensor) - using partial samples: ${magSamples.length}');
               if (!magCompleter.isCompleted) magCompleter.complete();
             },
           ),
         ]);
       } catch (e) {
-        debugPrint('Sensor timeout or error: $e');
+        print('Sensor timeout or error: $e');
         // Continue with whatever samples we have
       }
 
       // Use accelerometer-only orientation if no magnetometer
       if (accelSamples.isEmpty) {
-        debugPrint('No accelerometer samples, using default orientation');
+        print('No accelerometer samples, using default orientation');
         return _getDefaultOrientation();
       }
       
       if (magSamples.isEmpty) {
-        debugPrint('No magnetometer samples, using accelerometer-only orientation');
+        print('No magnetometer samples, using accelerometer-only orientation');
         return _calculateOrientationAccelOnly(accelSamples);
       }
 
       // Calculate averaged readings with both sensors
       return _calculateOrientation(accelSamples, magSamples);
     } catch (e) {
-      debugPrint('Failed to capture device orientation: $e');
+      print('Failed to capture device orientation: $e');
       return _getDefaultOrientation();
     } finally {
       // Always cleanup subscriptions
@@ -404,7 +404,7 @@ class SensorService {
       }
       return null;
     } catch (e) {
-      debugPrint('SensorService: Could not estimate HFOV: $e');
+      print('SensorService: Could not estimate HFOV: $e');
       return null;
     }
   }
@@ -469,7 +469,7 @@ class SensorService {
 
       return results.every((available) => available);
     } catch (e) {
-      debugPrint('SensorService: Sensor availability check failed: $e');
+      print('SensorService: Sensor availability check failed: $e');
       return false;
     }
   }

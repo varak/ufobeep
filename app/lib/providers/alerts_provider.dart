@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/alerts_filter.dart';
 import '../services/api_client.dart';
 import '../services/permission_service.dart';
+import 'package:flutter/foundation.dart';
 
 part 'alerts_provider.g.dart';
 

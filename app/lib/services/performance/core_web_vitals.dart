@@ -30,9 +30,9 @@ class CoreWebVitalsService {
       _setupInputDelayObserver();
       
       _initialized = true;
-      debugPrint('Core Web Vitals monitoring initialized');
+      print('Core Web Vitals monitoring initialized');
     } catch (e) {
-      debugPrint('Failed to initialize Core Web Vitals: $e');
+      print('Failed to initialize Core Web Vitals: $e');
     }
   }
 
@@ -84,7 +84,7 @@ class CoreWebVitalsService {
         _reportMetric(metric, value.toDouble());
       };
     } catch (e) {
-      debugPrint('Failed to setup performance observer: $e');
+      print('Failed to setup performance observer: $e');
     }
   }
 
@@ -107,7 +107,7 @@ class CoreWebVitalsService {
         });
       ''']);
     } catch (e) {
-      debugPrint('Failed to setup resource timing: $e');
+      print('Failed to setup resource timing: $e');
     }
   }
 
@@ -152,7 +152,7 @@ class CoreWebVitalsService {
         }
       ''']);
     } catch (e) {
-      debugPrint('Failed to setup CLS observer: $e');
+      print('Failed to setup CLS observer: $e');
     }
   }
 
@@ -180,7 +180,7 @@ class CoreWebVitalsService {
         });
       ''']);
     } catch (e) {
-      debugPrint('Failed to setup input delay observer: $e');
+      print('Failed to setup input delay observer: $e');
     }
   }
 
@@ -196,7 +196,7 @@ class CoreWebVitalsService {
     );
     
     _metricsController.add(metric);
-    debugPrint('Core Web Vital: $name = ${value.toStringAsFixed(2)}ms (${metric.rating})');
+    print('Core Web Vital: $name = ${value.toStringAsFixed(2)}ms (${metric.rating})');
   }
 
   /// Get metric rating based on thresholds

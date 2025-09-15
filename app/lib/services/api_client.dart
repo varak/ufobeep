@@ -101,9 +101,9 @@ class ApiClient {
           rethrow;
         }
         // Catch any type casting errors and provide better context
-        debugPrint('🔴 API Response parsing error: $e');
-        debugPrint('🔴 Response data type: ${response.data.runtimeType}');
-        debugPrint('🔴 Response data: ${response.data}');
+        print('🔴 API Response parsing error: $e');
+        print('🔴 Response data type: ${response.data.runtimeType}');
+        print('🔴 Response data: ${response.data}');
         throw ApiClientException(
           'Failed to parse API response: ${e.toString()}',
           statusCode: response.statusCode,
@@ -152,28 +152,28 @@ class ApiClient {
 
   // Safe response parsing to handle different response types
   Map<String, dynamic> _safeResponseToMap(dynamic responseData, {String context = 'API response'}) {
-    debugPrint('=== SAFE RESPONSE PARSING ===');
-    debugPrint('Context: $context');
-    debugPrint('Response type: ${responseData.runtimeType}');
-    debugPrint('Response value: $responseData');
+    print('=== SAFE RESPONSE PARSING ===');
+    print('Context: $context');
+    print('Response type: ${responseData.runtimeType}');
+    print('Response value: $responseData');
 
     if (responseData is Map<String, dynamic>) {
-      debugPrint('✅ Response is already a Map');
+      print('✅ Response is already a Map');
       return responseData;
     } else if (responseData is List && responseData.isNotEmpty) {
-      debugPrint('⚠️ Response is a List, attempting to extract first Map element');
+      print('⚠️ Response is a List, attempting to extract first Map element');
       if (responseData.first is Map<String, dynamic>) {
-        debugPrint('✅ First element is a Map, using it');
+        print('✅ First element is a Map, using it');
         return responseData.first as Map<String, dynamic>;
       } else {
-        debugPrint('❌ First element is not a Map, wrapping List in data field');
+        print('❌ First element is not a Map, wrapping List in data field');
         return {'success': true, 'data': responseData};
       }
     } else if (responseData is String) {
-      debugPrint('⚠️ Response is a String, wrapping in message field');
+      print('⚠️ Response is a String, wrapping in message field');
       return {'success': true, 'message': responseData};
     } else {
-      debugPrint('❌ Unknown response type, creating error response');
+      print('❌ Unknown response type, creating error response');
       return {
         'success': false,
         'error': 'Invalid response type: ${responseData.runtimeType}',
@@ -608,7 +608,7 @@ class ApiClient {
   // Photo metadata submission for astronomical/aircraft identification
   Future<bool> submitPhotoMetadata(String sightingId, Map<String, dynamic> metadata) async {
     try {
-      debugPrint('Submitting comprehensive photo metadata for sighting $sightingId');
+      print('Submitting comprehensive photo metadata for sighting $sightingId');
       
       final response = await ApiClient.dio.post(
         '/photo-metadata/$sightingId',
@@ -616,17 +616,17 @@ class ApiClient {
       );
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
-        debugPrint('Photo metadata submitted successfully');
+        print('Photo metadata submitted successfully');
         return true;
       } else {
-        debugPrint('Failed to submit photo metadata: ${response.statusCode}');
+        print('Failed to submit photo metadata: ${response.statusCode}');
         return false;
       }
     } on DioException catch (e) {
-      debugPrint('Error submitting photo metadata: ${_handleError(e)}');
+      print('Error submitting photo metadata: ${_handleError(e)}');
       return false;
     } catch (e) {
-      debugPrint('Unexpected error submitting photo metadata: $e');
+      print('Unexpected error submitting photo metadata: $e');
       return false;
     }
   }
@@ -770,7 +770,7 @@ class ApiClient {
   @Deprecated('Use exchangeMagicCode instead')
   Future<Map<String, dynamic>> exchangeMagicToken(String token) async {
     // For backward compatibility, try to use token as code
-    debugPrint('[ApiClient] WARNING: exchangeMagicToken is deprecated, redirecting to exchangeMagicCode');
+    print('[ApiClient] WARNING: exchangeMagicToken is deprecated, redirecting to exchangeMagicCode');
     return exchangeMagicCode(token);
   }
 
@@ -780,11 +780,11 @@ class ApiClient {
     final reqId = "api-${startTime.millisecondsSinceEpoch}";
     
     try {
-      debugPrint('[API][$reqId] ==================== MAGIC CODE EXCHANGE START ====================');
-      debugPrint('[API][$reqId] Timestamp: ${DateTime.now().toIso8601String()}');
-      debugPrint('[API][$reqId] Code length: ${code.length}');
-      debugPrint('[API][$reqId] Code preview: ${code.length > 8 ? '${code.substring(0, 8)}...' : code}');
-      debugPrint('[API][$reqId] Base URL: ${dio.options.baseUrl}');
+      print('[API][$reqId] ==================== MAGIC CODE EXCHANGE START ====================');
+      print('[API][$reqId] Timestamp: ${DateTime.now().toIso8601String()}');
+      print('[API][$reqId] Code length: ${code.length}');
+      print('[API][$reqId] Code preview: ${code.length > 8 ? '${code.substring(0, 8)}...' : code}');
+      print('[API][$reqId] Base URL: ${dio.options.baseUrl}');
       
       // Get device info for the request
       String deviceId = 'unknown';
@@ -797,9 +797,9 @@ class ApiClient {
         if (storedDeviceId != null) {
           deviceId = storedDeviceId;
         }
-        debugPrint('[API][$reqId] Device ID: $deviceId');
+        print('[API][$reqId] Device ID: $deviceId');
       } catch (e) {
-        debugPrint('[API][$reqId] ❌ Could not get device ID: $e');
+        print('[API][$reqId] ❌ Could not get device ID: $e');
       }
       
       // Prepare request body (use only 'code' as per backend API spec)
@@ -810,9 +810,9 @@ class ApiClient {
         'app_version': '1.0.0', // TODO: Get from package info
       };
       
-      debugPrint('[API][$reqId] Request body prepared: ${requestBody.keys}');
-      debugPrint('[API][$reqId] Calling POST /auth/magic/exchange');
-      debugPrint('[API][$reqId] Timeout settings - send: 8s, receive: 8s');
+      print('[API][$reqId] Request body prepared: ${requestBody.keys}');
+      print('[API][$reqId] Calling POST /auth/magic/exchange');
+      print('[API][$reqId] Timeout settings - send: 8s, receive: 8s');
       
       final requestStartTime = DateTime.now();
       final response = await ApiClient.dio.post(
@@ -832,56 +832,56 @@ class ApiClient {
       
       final requestEndTime = DateTime.now();
       final requestDuration = requestEndTime.difference(requestStartTime).inMilliseconds;
-      debugPrint('[API][$reqId] ==================== HTTP REQUEST COMPLETED ====================');
+      print('[API][$reqId] ==================== HTTP REQUEST COMPLETED ====================');
       
-      debugPrint('[API][$reqId] Request duration: ${requestDuration}ms');
-      debugPrint('[API][$reqId] Response status: ${response.statusCode}');
-      debugPrint('[API][$reqId] Response data type: ${response.data.runtimeType}');
-      debugPrint('[API][$reqId] Raw response data: ${response.data}');
+      print('[API][$reqId] Request duration: ${requestDuration}ms');
+      print('[API][$reqId] Response status: ${response.statusCode}');
+      print('[API][$reqId] Response data type: ${response.data.runtimeType}');
+      print('[API][$reqId] Raw response data: ${response.data}');
       
       if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
         final responseData = response.data as Map<String, dynamic>;
-        debugPrint('[API][$reqId] ==================== SUCCESS RESPONSE ANALYSIS ====================');
-        debugPrint('[API][$reqId] ✅ HTTP 200 received, parsing response data');
-        debugPrint('[API][$reqId] Response keys: ${responseData.keys.toList()}');
-        debugPrint('[API][$reqId] Success field: ${responseData['success']}');
+        print('[API][$reqId] ==================== SUCCESS RESPONSE ANALYSIS ====================');
+        print('[API][$reqId] ✅ HTTP 200 received, parsing response data');
+        print('[API][$reqId] Response keys: ${responseData.keys.toList()}');
+        print('[API][$reqId] Success field: ${responseData['success']}');
         
         // Check for required fields (backend now returns standardized format)
         // Expected: { success, access, refresh, expires_in, user: {id, email, username, ...} }
         final hasAccess = responseData.containsKey('access') || responseData.containsKey('access_token');
         final hasRefresh = responseData.containsKey('refresh') || responseData.containsKey('refresh_token');
         final hasUser = responseData.containsKey('user');
-        debugPrint('[API][$reqId] Required fields check: access=$hasAccess, refresh=$hasRefresh, user=$hasUser');
+        print('[API][$reqId] Required fields check: access=$hasAccess, refresh=$hasRefresh, user=$hasUser');
         
         if (responseData['access'] != null) {
           final accessToken = responseData['access'] as String;
-          debugPrint('[API][$reqId] Access token length: ${accessToken.length}');
-          debugPrint('[API][$reqId] Access token preview: ${accessToken.length > 20 ? '${accessToken.substring(0, 20)}...' : accessToken}');
+          print('[API][$reqId] Access token length: ${accessToken.length}');
+          print('[API][$reqId] Access token preview: ${accessToken.length > 20 ? '${accessToken.substring(0, 20)}...' : accessToken}');
         }
         
         if (responseData['refresh'] != null) {
           final refreshToken = responseData['refresh'] as String;
-          debugPrint('[API][$reqId] Refresh token length: ${refreshToken.length}');
+          print('[API][$reqId] Refresh token length: ${refreshToken.length}');
         }
         
         if (responseData['user'] != null) {
           final userData = responseData['user'] as Map<String, dynamic>;
-          debugPrint('[API][$reqId] User data keys: ${userData.keys.toList()}');
-          debugPrint('[API][$reqId] User data: $userData');
+          print('[API][$reqId] User data keys: ${userData.keys.toList()}');
+          print('[API][$reqId] User data: $userData');
         }
         
-        debugPrint('[API][$reqId] ✅ Response validation passed, returning data');
-        debugPrint('[API][$reqId] ==================== MAGIC CODE EXCHANGE SUCCESS ====================');
+        print('[API][$reqId] ✅ Response validation passed, returning data');
+        print('[API][$reqId] ==================== MAGIC CODE EXCHANGE SUCCESS ====================');
         return responseData;
       } else {
-        debugPrint('[API][$reqId] ==================== ERROR RESPONSE ANALYSIS ====================');
+        print('[API][$reqId] ==================== ERROR RESPONSE ANALYSIS ====================');
         final errorMsg = response.data is Map 
           ? (response.data as Map)['detail'] ?? 'Code exchange failed'
           : 'Code exchange failed';
-        debugPrint('[API][$reqId] ❌ HTTP ${response.statusCode}: $errorMsg');
-        debugPrint('[API][$reqId] ❌ Full response data: ${response.data}');
-        debugPrint('[API][$reqId] ❌ Response type: ${response.data.runtimeType}');
-        debugPrint('[API][$reqId] ==================== MAGIC CODE EXCHANGE ERROR ====================');
+        print('[API][$reqId] ❌ HTTP ${response.statusCode}: $errorMsg');
+        print('[API][$reqId] ❌ Full response data: ${response.data}');
+        print('[API][$reqId] ❌ Response type: ${response.data.runtimeType}');
+        print('[API][$reqId] ==================== MAGIC CODE EXCHANGE ERROR ====================');
         throw ApiClientException(
           'Backend code exchange failed: $errorMsg',
           statusCode: response.statusCode,
@@ -889,60 +889,60 @@ class ApiClient {
       }
     } on DioException catch (e) {
       final errorTime = DateTime.now().difference(startTime).inMilliseconds;
-      debugPrint('[API][$reqId] ==================== DIO EXCEPTION ANALYSIS ====================');
-      debugPrint('[API][$reqId] ❌ DioException after ${errorTime}ms');
-      debugPrint('[API][$reqId] ❌ Exception type: ${e.type}');
-      debugPrint('[API][$reqId] ❌ Exception message: ${e.message}');
-      debugPrint('[API][$reqId] ❌ Request options: ${e.requestOptions.uri}');
-      debugPrint('[API][$reqId] ❌ Request method: ${e.requestOptions.method}');
-      debugPrint('[API][$reqId] ❌ Request headers: ${e.requestOptions.headers}');
-      debugPrint('[API][$reqId] ❌ Request data: ${e.requestOptions.data}');
+      print('[API][$reqId] ==================== DIO EXCEPTION ANALYSIS ====================');
+      print('[API][$reqId] ❌ DioException after ${errorTime}ms');
+      print('[API][$reqId] ❌ Exception type: ${e.type}');
+      print('[API][$reqId] ❌ Exception message: ${e.message}');
+      print('[API][$reqId] ❌ Request options: ${e.requestOptions.uri}');
+      print('[API][$reqId] ❌ Request method: ${e.requestOptions.method}');
+      print('[API][$reqId] ❌ Request headers: ${e.requestOptions.headers}');
+      print('[API][$reqId] ❌ Request data: ${e.requestOptions.data}');
       
       if (e.response != null) {
-        debugPrint('[API][$reqId] ❌ Response status: ${e.response?.statusCode}');
-        debugPrint('[API][$reqId] ❌ Response headers: ${e.response?.headers}');
-        debugPrint('[API][$reqId] ❌ Response data: ${e.response?.data}');
-        debugPrint('[API][$reqId] ❌ Response type: ${e.response?.data.runtimeType}');
+        print('[API][$reqId] ❌ Response status: ${e.response?.statusCode}');
+        print('[API][$reqId] ❌ Response headers: ${e.response?.headers}');
+        print('[API][$reqId] ❌ Response data: ${e.response?.data}');
+        print('[API][$reqId] ❌ Response type: ${e.response?.data.runtimeType}');
       } else {
-        debugPrint('[API][$reqId] ❌ No response object - connection failed');
+        print('[API][$reqId] ❌ No response object - connection failed');
       }
       
-      debugPrint('[API][$reqId] ❌ Stack trace: ${e.stackTrace}');
+      print('[API][$reqId] ❌ Stack trace: ${e.stackTrace}');
       
       String errorMessage;
       if (e.type == DioExceptionType.sendTimeout) {
         errorMessage = 'Request timed out after 5 seconds';
-        debugPrint('[API][$reqId] ❌ SEND TIMEOUT detected');
+        print('[API][$reqId] ❌ SEND TIMEOUT detected');
       } else if (e.type == DioExceptionType.receiveTimeout) {
         errorMessage = 'Response timed out after 5 seconds';
-        debugPrint('[API][$reqId] ❌ RECEIVE TIMEOUT detected');
+        print('[API][$reqId] ❌ RECEIVE TIMEOUT detected');
       } else if (e.type == DioExceptionType.connectionTimeout) {
         errorMessage = 'Connection timed out';
-        debugPrint('[API][$reqId] ❌ CONNECTION TIMEOUT detected');
+        print('[API][$reqId] ❌ CONNECTION TIMEOUT detected');
       } else if (e.type == DioExceptionType.connectionError) {
         errorMessage = 'Connection error: ${e.message}';
-        debugPrint('[API][$reqId] ❌ CONNECTION ERROR detected');
+        print('[API][$reqId] ❌ CONNECTION ERROR detected');
       } else if (e.response?.statusCode == 410) {
         final errorData = e.response?.data;
         errorMessage = errorData is Map 
           ? (errorData['detail'] ?? 'Invalid, expired, or already used code') 
           : 'Invalid, expired, or already used code';
-        debugPrint('[API][$reqId] ❌ HTTP 410 - Code invalid/expired/used');
+        print('[API][$reqId] ❌ HTTP 410 - Code invalid/expired/used');
       } else {
         errorMessage = 'Network error during code exchange: ${e.message}';
-        debugPrint('[API][$reqId] ❌ Generic network error');
+        print('[API][$reqId] ❌ Generic network error');
       }
       
-      debugPrint('[API][$reqId] ==================== THROWING API CLIENT EXCEPTION ====================');
+      print('[API][$reqId] ==================== THROWING API CLIENT EXCEPTION ====================');
       throw ApiClientException(errorMessage, statusCode: e.response?.statusCode);
       
     } catch (e, stackTrace) {
       final errorTime = DateTime.now().difference(startTime).inMilliseconds;
-      debugPrint('[API][$reqId] ==================== UNEXPECTED EXCEPTION ====================');
-      debugPrint('[API][$reqId] ❌ Unexpected error after ${errorTime}ms: $e');
-      debugPrint('[API][$reqId] ❌ Error type: ${e.runtimeType}');
-      debugPrint('[API][$reqId] ❌ Stack trace: $stackTrace');
-      debugPrint('[API][$reqId] ==================== THROWING UNEXPECTED ERROR ====================');
+      print('[API][$reqId] ==================== UNEXPECTED EXCEPTION ====================');
+      print('[API][$reqId] ❌ Unexpected error after ${errorTime}ms: $e');
+      print('[API][$reqId] ❌ Error type: ${e.runtimeType}');
+      print('[API][$reqId] ❌ Stack trace: $stackTrace');
+      print('[API][$reqId] ==================== THROWING UNEXPECTED ERROR ====================');
       throw ApiClientException('Unexpected error: $e', statusCode: null);
     }
   }
@@ -1023,7 +1023,7 @@ extension ApiClientExtension on ApiClient {
         };
       }
       
-      debugPrint('Creating sighting first to get ID...');
+      print('Creating sighting first to get ID...');
       final sightingResponse = await ApiClient.dio.post('/beep', data: sightingData);
       
       // Extract sighting ID from response
@@ -1032,7 +1032,7 @@ extension ApiClientExtension on ApiClient {
         final data = sightingResponse.data as Map<String, dynamic>;
         if (data['success'] == true && data['data'] != null) {
           sightingId = data['data']['sighting_id'] as String;
-          debugPrint('Sighting created with ID: $sightingId');
+          print('Sighting created with ID: $sightingId');
         } else {
           throw Exception('Failed to create sighting: ${data['message']}');
         }
@@ -1043,12 +1043,12 @@ extension ApiClientExtension on ApiClient {
       // Step 2: Upload media files using the sighting ID
       List<String> mediaFileNames = [];
       if (mediaFiles.isNotEmpty) {
-        debugPrint('Uploading ${mediaFiles.length} media files for sighting $sightingId...');
+        print('Uploading ${mediaFiles.length} media files for sighting $sightingId...');
         if (onProgress != null) onProgress(0.3);
         
         for (int i = 0; i < mediaFiles.length; i++) {
           final file = mediaFiles[i];
-          debugPrint('Uploading file ${i + 1}/${mediaFiles.length}: ${file.path}');
+          print('Uploading file ${i + 1}/${mediaFiles.length}: ${file.path}');
           
           // Upload file using sighting ID
           final fileName = await uploadMediaFileForSighting(sightingId, file);
@@ -1060,7 +1060,7 @@ extension ApiClientExtension on ApiClient {
           }
         }
         
-        debugPrint('All media files uploaded successfully');
+        print('All media files uploaded successfully');
         
         // Step 3: Update sighting with media file names
         if (onProgress != null) onProgress(0.9);
@@ -1077,7 +1077,7 @@ extension ApiClientExtension on ApiClient {
       if (e is DioException) {
         throw _handleError(e);
       }
-      debugPrint('Sighting submission error: $e');
+      print('Sighting submission error: $e');
       rethrow;
     }
   }
@@ -1092,7 +1092,7 @@ extension ApiClientExtension on ApiClient {
       }
       return fileName;
     } catch (e) {
-      debugPrint('Error extracting filename from $filePath: $e');
+      print('Error extracting filename from $filePath: $e');
       return 'media_file_${DateTime.now().millisecondsSinceEpoch}';
     }
   }
@@ -1107,7 +1107,7 @@ extension ApiClientExtension on ApiClient {
       }
       return extension;
     } catch (e) {
-      debugPrint('Error extracting extension from $filePath: $e');
+      print('Error extracting extension from $filePath: $e');
       return '';
     }
   }
@@ -1147,7 +1147,7 @@ extension ApiClientExtension on ApiClient {
 
   Future<String> uploadMediaFile(String sightingId, File file) async {
     try {
-      debugPrint('Uploading media file using presigned upload: ${file.path}');
+      print('Uploading media file using presigned upload: ${file.path}');
       
       // Step 1: Get presigned upload URL
       final presignResponse = await createPresignedUpload(file);
@@ -1155,7 +1155,7 @@ extension ApiClientExtension on ApiClient {
       final uploadUrl = presignResponse['upload_url'] as String;
       final fields = presignResponse['fields'] as Map<String, dynamic>;
       
-      debugPrint('Got presigned upload URL: $uploadUrl');
+      print('Got presigned upload URL: $uploadUrl');
       
       // Step 2: Upload file directly to S3/MinIO
       final success = await uploadFileToStorage(uploadUrl, fields, file);
@@ -1164,17 +1164,17 @@ extension ApiClientExtension on ApiClient {
         throw Exception('Failed to upload file to storage');
       }
       
-      debugPrint('File uploaded to storage successfully');
+      print('File uploaded to storage successfully');
       
       // Step 3: File is already saved, return the API URL
       final fileName = _safeExtractFilename(file.path);
       final mediaUrl = '${AppEnvironment.apiBaseUrl}/media/default/${fileName}';
       
-      debugPrint('Media upload completed successfully with URL: $mediaUrl');
+      print('Media upload completed successfully with URL: $mediaUrl');
       return mediaUrl;
       
     } catch (e) {
-      debugPrint('Error uploading media file: $e');
+      print('Error uploading media file: $e');
       rethrow;
     }
   }
@@ -1182,17 +1182,17 @@ extension ApiClientExtension on ApiClient {
   // New sighting-based media upload method
   Future<String> uploadMediaFileForSighting(String sightingId, File file) async {
     try {
-      debugPrint('Uploading media file for sighting: $sightingId');
+      print('Uploading media file for sighting: $sightingId');
       
       // Step 1: Get presigned upload URL with sighting ID
       final presignResponse = await createPresignedUploadForSighting(sightingId, file);
-      debugPrint('Presign response: $presignResponse');
+      print('Presign response: $presignResponse');
       
       final uploadId = presignResponse['upload_id'] as String;
       final uploadUrl = presignResponse['upload_url'] as String;
       final fields = presignResponse['fields'] as Map<String, dynamic>;
       
-      debugPrint('Got presigned upload URL: $uploadUrl');
+      print('Got presigned upload URL: $uploadUrl');
       
       // Step 2: Upload file directly to S3/MinIO
       final success = await uploadFileToStorage(uploadUrl, fields, file);
@@ -1201,37 +1201,37 @@ extension ApiClientExtension on ApiClient {
         throw Exception('Failed to upload file to storage');
       }
       
-      debugPrint('File uploaded to storage successfully');
+      print('File uploaded to storage successfully');
       
       // Step 3: Complete the upload to create database record
-      debugPrint('Completing media upload...');
+      print('Completing media upload...');
       await completeMediaUploadForSighting(uploadId, file);
       
       final fileName = _safeExtractFilename(file.path);
-      debugPrint('Media upload completed successfully with filename: $fileName');
+      print('Media upload completed successfully with filename: $fileName');
       return fileName;
       
     } catch (e) {
-      debugPrint('Error uploading media file: $e');
+      print('Error uploading media file: $e');
       rethrow;
     }
   }
 
   Future<void> updateSightingMedia(String sightingId, List<String> fileNames) async {
     try {
-      debugPrint('Updating sighting $sightingId with media files: $fileNames');
+      print('Updating sighting $sightingId with media files: $fileNames');
       
       final response = await ApiClient.dio.patch('/api/beep/$sightingId/media', data: {
         'media_files': fileNames,
       });
       
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
-        debugPrint('Sighting media updated successfully');
+        print('Sighting media updated successfully');
       } else {
         throw Exception('Failed to update sighting media: ${response.statusMessage}');
       }
     } catch (e) {
-      debugPrint('Error updating sighting media: $e');
+      print('Error updating sighting media: $e');
       rethrow;
     }
   }
@@ -1249,7 +1249,7 @@ extension ApiClientExtension on ApiClient {
         'sighting_id': sightingId, // NEW: Include sighting ID
       };
       
-      debugPrint('Creating presigned upload for sighting $sightingId: $fileName ($fileSize bytes)');
+      print('Creating presigned upload for sighting $sightingId: $fileName ($fileSize bytes)');
       
       final response = await ApiClient.dio.post('/media/presign', data: requestData);
       
@@ -1267,7 +1267,7 @@ extension ApiClientExtension on ApiClient {
     try {
       final fileName = _safeExtractFilename(file.path);
       
-      debugPrint('Completing upload for: $uploadId');
+      print('Completing upload for: $uploadId');
       
       final response = await ApiClient.dio.post('/media/complete', data: {
         'upload_id': uploadId,
@@ -1289,13 +1289,13 @@ extension ApiClientExtension on ApiClient {
   Future<Map<String, dynamic>> uploadMediaToSightingXFile(String sightingId, XFile xfile) async {
     final t0 = DateTime.now();
     try {
-      debugPrint('=== MEDIA UPLOAD DEBUG START ===');
-      debugPrint('start $t0');
-      debugPrint('Sighting ID: $sightingId');
-      debugPrint('File path: ${xfile.path}');
-      debugPrint('isContent=${xfile.path.startsWith("content://")} name=${xfile.name} mime=${xfile.mimeType}');
+      print('=== MEDIA UPLOAD DEBUG START ===');
+      print('start $t0');
+      print('Sighting ID: $sightingId');
+      print('File path: ${xfile.path}');
+      print('isContent=${xfile.path.startsWith("content://")} name=${xfile.name} mime=${xfile.mimeType}');
       
-      debugPrint('before length');
+      print('before length');
       
       // CRITICAL FIX: Wrap xfile.length() with timeout to prevent hanging on content:// URIs
       int fileSize;
@@ -1303,24 +1303,24 @@ extension ApiClientExtension on ApiClient {
         fileSize = await xfile.length().timeout(
           Duration(seconds: 5), 
           onTimeout: () {
-            debugPrint('WARNING: xfile.length() timed out, using chunked upload');
+            print('WARNING: xfile.length() timed out, using chunked upload');
             return -1; // Signal for chunked upload
           }
         );
       } catch (e) {
-        debugPrint('ERROR: xfile.length() failed: $e, using chunked upload');
+        print('ERROR: xfile.length() failed: $e, using chunked upload');
         fileSize = -1; // Signal for chunked upload
       }
       
-      debugPrint('after length ($fileSize bytes)');
+      print('after length ($fileSize bytes)');
       
       if (fileSize == 0) {
-        debugPrint('ERROR: File is empty');
+        print('ERROR: File is empty');
         throw Exception('Media file is empty');
       }
       
       // Use SafeUploader to handle content:// URIs properly
-      debugPrint('before SafeUploader creation');
+      print('before SafeUploader creation');
       final baseUri = Uri.parse(ApiClient.dio.options.baseUrl);
       final uploadUri = baseUri.resolve('/api/beep/$sightingId/media');
       
@@ -1333,7 +1333,7 @@ extension ApiClientExtension on ApiClient {
         authHeaders['Authorization'] = 'Bearer $authToken';
       }
       
-      debugPrint('before upload');
+      print('before upload');
       final resp = await uploader.uploadXFile(
         xfile: xfile,
         headers: authHeaders,
@@ -1341,34 +1341,34 @@ extension ApiClientExtension on ApiClient {
         fieldName: 'files',
       );
       
-      debugPrint('after upload status=${resp.statusCode} dt=${DateTime.now().difference(t0)}');
+      print('after upload status=${resp.statusCode} dt=${DateTime.now().difference(t0)}');
       
       if (resp.statusCode >= 200 && resp.statusCode < 300) {
-        debugPrint('=== MEDIA UPLOAD SUCCESS ===');
-        debugPrint('Response body: ${resp.body}');
+        print('=== MEDIA UPLOAD SUCCESS ===');
+        print('Response body: ${resp.body}');
         
         // Parse JSON response
         try {
           final Map<String, dynamic> jsonResponse = json.decode(resp.body);
           return jsonResponse;
         } catch (e) {
-          debugPrint('Warning: Non-JSON response, returning success indicator');
+          print('Warning: Non-JSON response, returning success indicator');
           return {'success': true, 'message': 'Upload completed'};
         }
       } else {
-        debugPrint('ERROR: Upload failed with status ${resp.statusCode}');
+        print('ERROR: Upload failed with status ${resp.statusCode}');
         throw Exception('Failed to upload media: ${resp.statusCode} - ${resp.body}');
       }
     } catch (e) {
-      debugPrint('=== MEDIA UPLOAD ERROR ===');
-      debugPrint('Error: $e dt=${DateTime.now().difference(t0)}');
+      print('=== MEDIA UPLOAD ERROR ===');
+      print('Error: $e dt=${DateTime.now().difference(t0)}');
       rethrow;
     }
   }
 
   // Compatibility wrapper for existing File-based calls
   Future<Map<String, dynamic>> uploadMediaToSighting(String sightingId, File file) async {
-    debugPrint('COMPATIBILITY: Converting File to XFile for: ${file.path}');
+    print('COMPATIBILITY: Converting File to XFile for: ${file.path}');
     final xfile = XFile(file.path);
     return uploadMediaToSightingXFile(sightingId, xfile);
   }
@@ -1379,16 +1379,16 @@ extension ApiClientExtension on ApiClient {
       final secureStorage = await SharedPreferences.getInstance();
       return secureStorage.getString('auth_token');
     } catch (e) {
-      debugPrint('Warning: Could not retrieve auth token: $e');
+      print('Warning: Could not retrieve auth token: $e');
       return null;
     }
   }
 
   Future<Map<String, dynamic>> triggerAlertsForSighting(String sightingId, double latitude, double longitude) async {
     try {
-      debugPrint('=== TRIGGER ALERTS DEBUG START ===');
+      print('=== TRIGGER ALERTS DEBUG START ===');
       final deviceId = await beepService.getOrCreateDeviceId();
-      debugPrint('Got device ID for alerts: $deviceId');
+      print('Got device ID for alerts: $deviceId');
       
       final response = await ApiClient.dio.post(
         '/beep/send/$sightingId',
@@ -1402,23 +1402,23 @@ extension ApiClientExtension on ApiClient {
         options: Options(headers: {'Content-Type': 'application/json'}),
       );
 
-      debugPrint('Alert trigger response status: ${response.statusCode}');
-      debugPrint('Alert trigger response data: ${response.data}');
+      print('Alert trigger response status: ${response.statusCode}');
+      print('Alert trigger response data: ${response.data}');
       
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
-        debugPrint('=== TRIGGER ALERTS SUCCESS ===');
+        print('=== TRIGGER ALERTS SUCCESS ===');
         return _safeResponseToMap(response.data, context: 'Trigger alerts response');
       } else {
         throw Exception('Failed to trigger alerts: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      debugPrint('=== TRIGGER ALERTS DIO ERROR ===');
-      debugPrint('DioException: $e');
+      print('=== TRIGGER ALERTS DIO ERROR ===');
+      print('DioException: $e');
       throw _handleError(e);
     } catch (e) {
-      debugPrint('=== TRIGGER ALERTS GENERAL ERROR ===');
-      debugPrint('Error: $e');
-      debugPrint('Error type: ${e.runtimeType}');
+      print('=== TRIGGER ALERTS GENERAL ERROR ===');
+      print('Error: $e');
+      print('Error type: ${e.runtimeType}');
       rethrow;
     }
   }
@@ -1438,7 +1438,7 @@ extension ApiClientExtension on ApiClient {
         // 'checksum': await _calculateFileChecksum(file),
       };
       
-      debugPrint('Creating presigned upload for: $fileName ($fileSize bytes)');
+      print('Creating presigned upload for: $fileName ($fileSize bytes)');
       
       final response = await ApiClient.dio.post('/media/presign', data: requestData);
       
@@ -1478,7 +1478,7 @@ extension ApiClientExtension on ApiClient {
         },
       };
       
-      debugPrint('Completing upload for: $uploadId');
+      print('Completing upload for: $uploadId');
       
       final response = await ApiClient.dio.post('/media/complete', data: requestData);
       
@@ -1488,7 +1488,7 @@ extension ApiClientExtension on ApiClient {
           throw ApiClientException('Invalid completion response - no URL returned');
         }
         final mediaUrl = data['url'] as String;
-        debugPrint('Upload completed with URL: $mediaUrl');
+        print('Upload completed with URL: $mediaUrl');
         return mediaUrl;
       }
       
@@ -1528,7 +1528,7 @@ extension ApiClientExtension on ApiClient {
         if (sightingId != null) 'sighting_id': sightingId,
       };
       
-      debugPrint('Creating bulk presigned uploads for ${files.length} files');
+      print('Creating bulk presigned uploads for ${files.length} files');
       
       final response = await ApiClient.dio.post('/media/bulk-presign', data: requestData);
       
@@ -1553,7 +1553,7 @@ extension ApiClientExtension on ApiClient {
     File file,
   ) async {
     try {
-      debugPrint('Uploading file to storage: $uploadUrl');
+      print('Uploading file to storage: $uploadUrl');
       
       // Create form data with all required fields
       final formData = FormData();
@@ -1577,7 +1577,7 @@ extension ApiClientExtension on ApiClient {
                 ? 'media_file_${DateTime.now().millisecondsSinceEpoch}' 
                 : fileName;
             } catch (e) {
-              debugPrint('Error extracting filename from ${file.path}: $e');
+              print('Error extracting filename from ${file.path}: $e');
               return 'media_file_${DateTime.now().millisecondsSinceEpoch}';
             }
           })(),
@@ -1597,15 +1597,15 @@ extension ApiClientExtension on ApiClient {
         ),
       );
       
-      debugPrint('Storage upload response status: ${uploadResponse.statusCode}');
+      print('Storage upload response status: ${uploadResponse.statusCode}');
       
       // S3 returns 204 on successful upload
       return uploadResponse.statusCode == 204 || uploadResponse.statusCode == 200;
       
     } catch (e) {
       if (e is DioException) {
-        debugPrint('File upload failed: ${e.message}');
-        debugPrint('Response: ${e.response?.data}');
+        print('File upload failed: ${e.message}');
+        print('Response: ${e.response?.data}');
       }
       return false;
     }

@@ -219,7 +219,7 @@ class DeviceService {
         return 'unknown_${DateTime.now().millisecondsSinceEpoch}';
       }
     } catch (e) {
-      debugPrint('Error generating device ID: $e');
+      print('Error generating device ID: $e');
       return 'fallback_${DateTime.now().millisecondsSinceEpoch}';
     }
   }
@@ -261,7 +261,7 @@ class DeviceService {
         };
       }
     } catch (e) {
-      debugPrint('Error collecting device info: $e');
+      print('Error collecting device info: $e');
     }
 
     return {};
@@ -277,13 +277,13 @@ class DeviceService {
       final hasPermission = await sensorService.requestLocationPermission();
       
       if (!hasPermission) {
-        debugPrint('Device location update: Permission denied');
+        print('Device location update: Permission denied');
         return false;
       }
       
       final sensorData = await sensorService.captureSensorData();
       if (sensorData == null || sensorData.latitude == 0.0 || sensorData.longitude == 0.0) {
-        debugPrint('Device location update: No valid GPS data');
+        print('Device location update: No valid GPS data');
         return false;
       }
       
@@ -300,14 +300,14 @@ class DeviceService {
       );
       
       if (response.statusCode == 200) {
-        debugPrint('Device location updated: lat=${sensorData.latitude}, lon=${sensorData.longitude}');
+        print('Device location updated: lat=${sensorData.latitude}, lon=${sensorData.longitude}');
         return true;
       } else {
-        debugPrint('Device location update failed: ${response.statusCode} ${response.body}');
+        print('Device location update failed: ${response.statusCode} ${response.body}');
         return false;
       }
     } catch (e) {
-      debugPrint('Error updating device location: $e');
+      print('Error updating device location: $e');
       return false;
     }
   }
@@ -330,16 +330,16 @@ class DeviceService {
 
       // Validate required location coordinates
       if (latitude.abs() < 0.0001 && longitude.abs() < 0.0001) {
-        debugPrint('❌ Device registration: Invalid coordinates (0,0) - registration requires valid location');
+        print('❌ Device registration: Invalid coordinates (0,0) - registration requires valid location');
         throw Exception('Device registration failed: Invalid location coordinates (0,0)');
       }
       
       if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
-        debugPrint('❌ Device registration: Coordinates out of valid range lat=$latitude, lon=$longitude');
+        print('❌ Device registration: Coordinates out of valid range lat=$latitude, lon=$longitude');
         throw Exception('Device registration failed: Location coordinates out of valid range');
       }
       
-      debugPrint('✅ Device registration: Using provided location lat=$latitude, lon=$longitude');
+      print('✅ Device registration: Using provided location lat=$latitude, lon=$longitude');
 
       final request = DeviceRegistrationRequest(
         deviceId: deviceId,
@@ -367,9 +367,9 @@ class DeviceService {
       
       // Log auth status for debugging
       if (headers.containsKey('Authorization')) {
-        debugPrint('Device registration: Using auth token for registration');
+        print('Device registration: Using auth token for registration');
       } else {
-        debugPrint('Device registration: WARNING - No auth token available');
+        print('Device registration: WARNING - No auth token available');
       }
 
       final response = await _httpClient.post(
@@ -386,15 +386,15 @@ class DeviceService {
           // Cache registration info
           await _cacheRegisteredDevice(deviceResponse);
           
-          debugPrint('Device registered successfully: ${deviceResponse.deviceId}');
+          print('Device registered successfully: ${deviceResponse.deviceId}');
           return deviceResponse;
         }
       }
 
-      debugPrint('Device registration failed: ${response.statusCode} ${response.body}');
+      print('Device registration failed: ${response.statusCode} ${response.body}');
       return null;
     } catch (e) {
-      debugPrint('Error registering device: $e');
+      print('Error registering device: $e');
       return null;
     }
   }
@@ -417,15 +417,15 @@ class DeviceService {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['success'] == true) {
-          debugPrint('Push token updated successfully');
+          print('Push token updated successfully');
           return true;
         }
       }
 
-      debugPrint('Push token update failed: ${response.statusCode}');
+      print('Push token update failed: ${response.statusCode}');
       return false;
     } catch (e) {
-      debugPrint('Error updating push token: $e');
+      print('Error updating push token: $e');
       return false;
     }
   }
@@ -457,7 +457,7 @@ class DeviceService {
 
       return response.statusCode == 200;
     } catch (e) {
-      debugPrint('Error updating device preferences: $e');
+      print('Error updating device preferences: $e');
       return false;
     }
   }
@@ -484,7 +484,7 @@ class DeviceService {
         await prefs.setInt(_lastHeartbeatKey, now);
       }
     } catch (e) {
-      debugPrint('Error sending device heartbeat: $e');
+      print('Error sending device heartbeat: $e');
     }
   }
 
@@ -502,13 +502,13 @@ class DeviceService {
       if (response.statusCode == 200) {
         // Clear cached registration
         await _clearCachedDevice();
-        debugPrint('Device unregistered successfully');
+        print('Device unregistered successfully');
         return true;
       }
 
       return false;
     } catch (e) {
-      debugPrint('Error unregistering device: $e');
+      print('Error unregistering device: $e');
       return false;
     }
   }
@@ -526,7 +526,7 @@ class DeviceService {
 
       return null;
     } catch (e) {
-      debugPrint('Error getting cached device: $e');
+      print('Error getting cached device: $e');
       return null;
     }
   }
@@ -583,7 +583,7 @@ class DeviceService {
       // For now, return null if no cached token exists
       return null;
     } catch (e) {
-      debugPrint('Error getting FCM token: $e');
+      print('Error getting FCM token: $e');
       return null;
     }
   }

@@ -16,7 +16,7 @@ class NotificationBootstrap {
     if (_isInitialized) return;
 
     try {
-      debugPrint('🔔 BOOTSTRAP: Initializing notification system...');
+      print('🔔 BOOTSTRAP: Initializing notification system...');
 
       // Initialize local notifications plugin
       const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -32,20 +32,20 @@ class NotificationBootstrap {
       );
 
       await _localNotifications.initialize(initSettings);
-      debugPrint('🔔 BOOTSTRAP: Local notifications plugin initialized');
+      print('🔔 BOOTSTRAP: Local notifications plugin initialized');
 
       // Create unified notification channel with localized strings
       await _createNotificationChannel(context);
-      debugPrint('🔔 BOOTSTRAP: Notification channel created');
+      print('🔔 BOOTSTRAP: Notification channel created');
 
       // Request notification permission on Android 13+
       await _requestNotificationPermission();
-      debugPrint('🔔 BOOTSTRAP: Permission check completed');
+      print('🔔 BOOTSTRAP: Permission check completed');
 
       _isInitialized = true;
-      debugPrint('🔔 BOOTSTRAP: Notification system initialization complete');
+      print('🔔 BOOTSTRAP: Notification system initialization complete');
     } catch (e) {
-      debugPrint('🔔 BOOTSTRAP ERROR: Failed to initialize notifications: $e');
+      print('🔔 BOOTSTRAP ERROR: Failed to initialize notifications: $e');
       rethrow;
     }
   }
@@ -60,9 +60,9 @@ class NotificationBootstrap {
         final l10n = AppLocalizations.of(context)!;
         channelName = l10n?.notificationChannelAlerts ?? channelName;
         channelDescription = l10n?.notificationChannelAlertsDesc ?? channelDescription;
-        debugPrint('🔔 BOOTSTRAP: Using localized channel strings');
+        print('🔔 BOOTSTRAP: Using localized channel strings');
       } catch (e) {
-        debugPrint('🔔 BOOTSTRAP: Could not load localized strings, using fallback: $e');
+        print('🔔 BOOTSTRAP: Could not load localized strings, using fallback: $e');
       }
     }
 
@@ -81,7 +81,7 @@ class NotificationBootstrap {
         .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(androidChannel);
 
-    debugPrint('🔔 BOOTSTRAP: Created notification channel "$_channelId" with Importance.max');
+    print('🔔 BOOTSTRAP: Created notification channel "$_channelId" with Importance.max');
   }
 
   static Future<bool> _requestNotificationPermission() async {
@@ -91,22 +91,22 @@ class NotificationBootstrap {
 
     // Check current permission status
     final status = await Permission.notification.status;
-    debugPrint('🔔 BOOTSTRAP: Current notification permission status: $status');
+    print('🔔 BOOTSTRAP: Current notification permission status: $status');
 
     if (status.isGranted) {
-      debugPrint('🔔 BOOTSTRAP: Notification permission already granted');
+      print('🔔 BOOTSTRAP: Notification permission already granted');
       return true;
     }
 
     if (status.isDenied) {
-      debugPrint('🔔 BOOTSTRAP: Requesting notification permission...');
+      print('🔔 BOOTSTRAP: Requesting notification permission...');
       final result = await Permission.notification.request();
-      debugPrint('🔔 BOOTSTRAP: Permission request result: $result');
+      print('🔔 BOOTSTRAP: Permission request result: $result');
       return result.isGranted;
     }
 
     if (status.isPermanentlyDenied) {
-      debugPrint('🔔 BOOTSTRAP: Notification permission permanently denied');
+      print('🔔 BOOTSTRAP: Notification permission permanently denied');
       return false;
     }
 
@@ -120,7 +120,7 @@ class NotificationBootstrap {
     BuildContext? context,
   }) async {
     if (!_isInitialized) {
-      debugPrint('🔔 BOOTSTRAP WARNING: Notification system not initialized, initializing now...');
+      print('🔔 BOOTSTRAP WARNING: Notification system not initialized, initializing now...');
       await initialize(context: context);
     }
 
@@ -135,7 +135,7 @@ class NotificationBootstrap {
           channelName = l10n?.notificationChannelAlerts ?? channelName;
           channelDescription = l10n?.notificationChannelAlertsDesc ?? channelDescription;
         } catch (e) {
-          debugPrint('🔔 BOOTSTRAP: Could not load localized strings for notification: $e');
+          print('🔔 BOOTSTRAP: Could not load localized strings for notification: $e');
         }
       }
 
@@ -170,9 +170,9 @@ class NotificationBootstrap {
         payload: data?.toString(),
       );
 
-      debugPrint('🔔 BOOTSTRAP: Local notification shown - Title: "$title", Body: "$body"');
+      print('🔔 BOOTSTRAP: Local notification shown - Title: "$title", Body: "$body"');
     } catch (e) {
-      debugPrint('🔔 BOOTSTRAP ERROR: Failed to show local notification: $e');
+      print('🔔 BOOTSTRAP ERROR: Failed to show local notification: $e');
       rethrow;
     }
   }

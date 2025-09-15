@@ -5,6 +5,7 @@
 /// cause crashes like "type 'String' is not a subtype of type 'int' of 'index'"
 
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 
 class TypeSafeJson {
   /// Safely converts any dynamic value to Map<String, dynamic>

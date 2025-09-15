@@ -43,9 +43,9 @@ class MemoryOptimizerService {
       _setupGCObserver();
       
       _isOptimizing = true;
-      debugPrint('Memory optimizer initialized');
+      print('Memory optimizer initialized');
     } catch (e) {
-      debugPrint('Failed to initialize memory optimizer: $e');
+      print('Failed to initialize memory optimizer: $e');
     }
   }
 
@@ -69,7 +69,7 @@ class MemoryOptimizerService {
         timestamp: DateTime.now(),
       );
     } catch (e) {
-      debugPrint('Failed to get memory usage: $e');
+      print('Failed to get memory usage: $e');
       return MemoryUsage(
         heapUsed: 0,
         heapCapacity: 0,
@@ -83,15 +83,15 @@ class MemoryOptimizerService {
   void forceGarbageCollection() {
     try {
       developer.Service.forceGC();
-      debugPrint('Forced garbage collection');
+      print('Forced garbage collection');
     } catch (e) {
-      debugPrint('Failed to force GC: $e');
+      print('Failed to force GC: $e');
     }
   }
 
   /// Optimize memory usage
   Future<void> optimizeMemory() async {
-    debugPrint('Starting memory optimization...');
+    print('Starting memory optimization...');
     
     // Clear caches
     _imageCache.clear();
@@ -111,7 +111,7 @@ class MemoryOptimizerService {
     await Future.delayed(const Duration(milliseconds: 100));
     
     final usage = await getCurrentMemoryUsage();
-    debugPrint('Memory optimization complete. Current usage: ${usage.heapUsed / 1024 / 1024:.1f}MB');
+    print('Memory optimization complete. Current usage: ${usage.heapUsed / 1024 / 1024:.1f}MB');
   }
 
   /// Setup memory monitoring
@@ -541,7 +541,7 @@ class _MemoryEfficientImageState extends State<MemoryEfficientImage> {
         await _decodeImage(imageData);
       }
     } catch (e) {
-      debugPrint('Failed to load image: $e');
+      print('Failed to load image: $e');
     }
   }
 
@@ -560,7 +560,7 @@ class _MemoryEfficientImageState extends State<MemoryEfficientImage> {
         });
       }
     } catch (e) {
-      debugPrint('Failed to decode image: $e');
+      print('Failed to decode image: $e');
     }
   }
 

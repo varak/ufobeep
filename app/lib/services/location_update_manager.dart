@@ -47,13 +47,13 @@ class LocationUpdateManager {
   /// Start location monitoring with battery-efficient settings
   Future<void> start() async {
     if (_isStarted) {
-      debugPrint('📍 LocationUpdateManager: Already started');
+      print('📍 LocationUpdateManager: Already started');
       return;
     }
 
     // Check location services
     if (!await Geolocator.isLocationServiceEnabled()) {
-      debugPrint('📍 LocationUpdateManager: Location services disabled');
+      print('📍 LocationUpdateManager: Location services disabled');
       return;
     }
 
@@ -65,11 +65,11 @@ class LocationUpdateManager {
     
     if (permission == LocationPermission.denied || 
         permission == LocationPermission.deniedForever) {
-      debugPrint('📍 LocationUpdateManager: Location permission denied');
+      print('📍 LocationUpdateManager: Location permission denied');
       return;
     }
 
-    debugPrint('📍 LocationUpdateManager: Starting with 1km distance filter + 15min throttle');
+    print('📍 LocationUpdateManager: Starting with 1km distance filter + 15min throttle');
 
     // Seed with last known position (no network call yet)
     try {
@@ -77,10 +77,10 @@ class LocationUpdateManager {
       if (lastKnown != null && _isValidCoordinate(lastKnown)) {
         _lastSentPosition = lastKnown;
         _lastSentAt = DateTime.now();
-        debugPrint('📍 LocationUpdateManager: Seeded with last known: ${lastKnown.latitude}, ${lastKnown.longitude}');
+        print('📍 LocationUpdateManager: Seeded with last known: ${lastKnown.latitude}, ${lastKnown.longitude}');
       }
     } catch (e) {
-      debugPrint('📍 LocationUpdateManager: Error getting last known position: $e');
+      print('📍 LocationUpdateManager: Error getting last known position: $e');
     }
 
     // Configure location settings with OS-level distance filter
@@ -95,16 +95,16 @@ class LocationUpdateManager {
         .listen(_onPositionUpdate, onError: _onLocationError);
     
     _isStarted = true;
-    debugPrint('📍 LocationUpdateManager: Started location stream');
+    print('📍 LocationUpdateManager: Started location stream');
   }
 
   /// Handle new position updates with throttling and distance filtering
   Future<void> _onPositionUpdate(Position position) async {
-    debugPrint('📍 LocationUpdateManager: Position update: ${position.latitude}, ${position.longitude}');
+    print('📍 LocationUpdateManager: Position update: ${position.latitude}, ${position.longitude}');
     
     // Validate coordinates
     if (!_isValidCoordinate(position)) {
-      debugPrint('📍 LocationUpdateManager: Invalid coordinates received, ignoring');
+      print('📍 LocationUpdateManager: Invalid coordinates received, ignoring');
       return;
     }
 
@@ -116,7 +116,7 @@ class LocationUpdateManager {
         if (_lastSentPosition != null) {
           final distanceM = _distanceInMeters(_lastSentPosition!, position);
           if (distanceM < _minimumDistanceMeters) {
-            debugPrint('📍 LocationUpdateManager: Throttled - ${timeSinceLastSent.inMinutes}min < 15min, distance ${distanceM.round()}m < 1km');
+            print('📍 LocationUpdateManager: Throttled - ${timeSinceLastSent.inMinutes}min < 15min, distance ${distanceM.round()}m < 1km');
             return;
           }
         }
@@ -127,7 +127,7 @@ class LocationUpdateManager {
     if (_lastSentPosition != null) {
       final distanceM = _distanceInMeters(_lastSentPosition!, position);
       if (distanceM < _minimumDistanceMeters) {
-        debugPrint('📍 LocationUpdateManager: Distance filter - ${distanceM.round()}m < ${_minimumDistanceMeters}m');
+        print('📍 LocationUpdateManager: Distance filter - ${distanceM.round()}m < ${_minimumDistanceMeters}m');
         return;
       }
     }
@@ -141,11 +141,11 @@ class LocationUpdateManager {
     try {
       final accessToken = await auth.getAccessToken();
       if (accessToken == null || accessToken.isEmpty) {
-        debugPrint('📍 LocationUpdateManager: No access token available');
+        print('📍 LocationUpdateManager: No access token available');
         return;
       }
 
-      debugPrint('📍 LocationUpdateManager: 🚀 Sending location update: ${position.latitude}, ${position.longitude}');
+      print('📍 LocationUpdateManager: 🚀 Sending location update: ${position.latitude}, ${position.longitude}');
 
       final response = await http.post(
         Uri.parse('$baseUrl/devices/update-location'),
@@ -163,18 +163,18 @@ class LocationUpdateManager {
         // Success!
         _lastSentPosition = position;
         _lastSentAt = DateTime.now();
-        debugPrint('✅ LocationUpdateManager: Location updated successfully');
+        print('✅ LocationUpdateManager: Location updated successfully');
       } else {
-        debugPrint('❌ LocationUpdateManager: Update failed - ${response.statusCode}: ${response.body}');
+        print('❌ LocationUpdateManager: Update failed - ${response.statusCode}: ${response.body}');
       }
     } catch (e) {
-      debugPrint('❌ LocationUpdateManager: Network error: $e');
+      print('❌ LocationUpdateManager: Network error: $e');
     }
   }
 
   /// Handle location stream errors
   void _onLocationError(Object error) {
-    debugPrint('❌ LocationUpdateManager: Location stream error: $error');
+    print('❌ LocationUpdateManager: Location stream error: $error');
   }
 
   /// Validate coordinates are not null/zero
@@ -190,13 +190,13 @@ class LocationUpdateManager {
     _locationSubscription = null;
     _isStarted = false;
     
-    debugPrint('📍 LocationUpdateManager: Stopped');
+    print('📍 LocationUpdateManager: Stopped');
   }
 
   /// Manually trigger location update (for testing)
   Future<void> forceLocationUpdate() async {
     if (!_isStarted) {
-      debugPrint('📍 LocationUpdateManager: Not started, cannot force update');
+      print('📍 LocationUpdateManager: Not started, cannot force update');
       return;
     }
 
@@ -210,7 +210,7 @@ class LocationUpdateManager {
         await _sendLocationUpdate(position);
       }
     } catch (e) {
-      debugPrint('❌ LocationUpdateManager: Force update failed: $e');
+      print('❌ LocationUpdateManager: Force update failed: $e');
     }
   }
 

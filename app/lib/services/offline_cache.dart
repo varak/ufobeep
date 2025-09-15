@@ -54,7 +54,7 @@ class OfflineCacheService {
       // Clean expired cache entries on startup
       await _cleanExpiredEntries();
     } catch (e) {
-      debugPrint('Failed to initialize offline cache: $e');
+      print('Failed to initialize offline cache: $e');
       rethrow;
     }
   }
@@ -77,7 +77,7 @@ class OfflineCacheService {
       await _alertsBox!.put(cacheKey, jsonEncode(cacheData));
       await _updateCacheMetadata(cacheKey, CacheEntryType.alerts);
     } catch (e) {
-      debugPrint('Failed to cache alerts: $e');
+      print('Failed to cache alerts: $e');
     }
   }
 
@@ -121,7 +121,7 @@ class OfflineCacheService {
       
       return alerts;
     } catch (e) {
-      debugPrint('Failed to retrieve cached alerts: $e');
+      print('Failed to retrieve cached alerts: $e');
       return null;
     }
   }
@@ -149,7 +149,7 @@ class OfflineCacheService {
         customExpiry: customExpiry,
       );
     } catch (e) {
-      debugPrint('Failed to cache API response for $endpoint: $e');
+      print('Failed to cache API response for $endpoint: $e');
     }
   }
 
@@ -177,7 +177,7 @@ class OfflineCacheService {
       
       return cacheData['data'] as Map<String, dynamic>;
     } catch (e) {
-      debugPrint('Failed to retrieve cached API response for $endpoint: $e');
+      print('Failed to retrieve cached API response for $endpoint: $e');
       return null;
     }
   }
@@ -198,7 +198,7 @@ class OfflineCacheService {
       await _alertsBox!.put(cacheKey, jsonEncode(cacheData));
       await _updateCacheMetadata(cacheKey, CacheEntryType.singleAlert);
     } catch (e) {
-      debugPrint('Failed to cache single alert ${alert.id}: $e');
+      print('Failed to cache single alert ${alert.id}: $e');
     }
   }
 
@@ -223,7 +223,7 @@ class OfflineCacheService {
       
       return EnrichedAlert.fromJson(cacheData['data'] as Map<String, dynamic>);
     } catch (e) {
-      debugPrint('Failed to retrieve cached alert $alertId: $e');
+      print('Failed to retrieve cached alert $alertId: $e');
       return null;
     }
   }
@@ -246,7 +246,7 @@ class OfflineCacheService {
       await _apiBox!.put('pending_$submissionId', jsonEncode(cacheData));
       await _updateCacheMetadata('pending_$submissionId', CacheEntryType.pendingSubmission);
     } catch (e) {
-      debugPrint('Failed to cache pending submission: $e');
+      print('Failed to cache pending submission: $e');
     }
   }
 
@@ -273,7 +273,7 @@ class OfflineCacheService {
       
       return submissions;
     } catch (e) {
-      debugPrint('Failed to get pending submissions: $e');
+      print('Failed to get pending submissions: $e');
       return [];
     }
   }
@@ -287,7 +287,7 @@ class OfflineCacheService {
       await _apiBox!.delete(key);
       await _removeCacheMetadata(key);
     } catch (e) {
-      debugPrint('Failed to mark submission as synced: $e');
+      print('Failed to mark submission as synced: $e');
     }
   }
 
@@ -300,7 +300,7 @@ class OfflineCacheService {
       await _apiBox!.clear();
       await _metadataBox!.clear();
     } catch (e) {
-      debugPrint('Failed to clear all cache: $e');
+      print('Failed to clear all cache: $e');
     }
   }
 
@@ -344,10 +344,10 @@ class OfflineCacheService {
       }
       
       if (expiredKeys.isNotEmpty) {
-        debugPrint('Cleaned ${expiredKeys.length} expired cache entries');
+        print('Cleaned ${expiredKeys.length} expired cache entries');
       }
     } catch (e) {
-      debugPrint('Failed to clean expired cache entries: $e');
+      print('Failed to clean expired cache entries: $e');
     }
   }
 
@@ -367,7 +367,7 @@ class OfflineCacheService {
       
       await _metadataBox!.put(key, jsonEncode(metadata.toJson()));
     } catch (e) {
-      debugPrint('Failed to update cache metadata for $key: $e');
+      print('Failed to update cache metadata for $key: $e');
     }
   }
 
@@ -376,7 +376,7 @@ class OfflineCacheService {
     try {
       await _metadataBox!.delete(key);
     } catch (e) {
-      debugPrint('Failed to remove cache metadata for $key: $e');
+      print('Failed to remove cache metadata for $key: $e');
     }
   }
 
@@ -397,7 +397,7 @@ class OfflineCacheService {
       
       return metadata;
     } catch (e) {
-      debugPrint('Failed to get cache metadata: $e');
+      print('Failed to get cache metadata: $e');
       return {};
     }
   }
@@ -452,7 +452,7 @@ class OfflineCacheService {
         lastCleanup: now, // This would be tracked separately in a real implementation
       );
     } catch (e) {
-      debugPrint('Failed to get cache statistics: $e');
+      print('Failed to get cache statistics: $e');
       return const CacheStatistics();
     }
   }
@@ -472,7 +472,7 @@ class OfflineCacheService {
       await _metadataBox?.close();
       _initialized = false;
     } catch (e) {
-      debugPrint('Failed to dispose cache service: $e');
+      print('Failed to dispose cache service: $e');
     }
   }
 }

@@ -38,7 +38,7 @@ class OfflineFirstApiService {
       _startBackgroundSync();
       _initialized = true;
     } catch (e) {
-      debugPrint('Failed to initialize offline-first API service: $e');
+      print('Failed to initialize offline-first API service: $e');
       rethrow;
     }
   }
@@ -58,7 +58,7 @@ class OfflineFirstApiService {
       if (!forceRefresh) {
         final cachedAlerts = await _cacheService.getCachedAlerts(key: cacheKey);
         if (cachedAlerts != null && cachedAlerts.isNotEmpty) {
-          debugPrint('Serving ${cachedAlerts.length} alerts from cache');
+          print('Serving ${cachedAlerts.length} alerts from cache');
           return _createAlertsResponse(cachedAlerts, fromCache: true);
         }
       }
@@ -91,7 +91,7 @@ class OfflineFirstApiService {
         if (allowStale) {
           final staleAlerts = await _cacheService.getCachedAlerts(key: cacheKey);
           if (staleAlerts != null && staleAlerts.isNotEmpty) {
-            debugPrint('Serving ${staleAlerts.length} stale alerts from cache (offline)');
+            print('Serving ${staleAlerts.length} stale alerts from cache (offline)');
             return _createAlertsResponse(staleAlerts, fromCache: true, isStale: true);
           }
         }
@@ -99,14 +99,14 @@ class OfflineFirstApiService {
         throw NetworkException('No network connection and no cached data available');
       }
     } catch (e) {
-      debugPrint('Error in getAlerts: $e');
+      print('Error in getAlerts: $e');
       
       // Last resort: try to serve any cached data
       if (allowStale) {
         final cacheKey = _generateAlertsCacheKey(query);
         final cachedAlerts = await _cacheService.getCachedAlerts(key: cacheKey);
         if (cachedAlerts != null && cachedAlerts.isNotEmpty) {
-          debugPrint('Serving cached alerts as fallback');
+          print('Serving cached alerts as fallback');
           return _createAlertsResponse(cachedAlerts, fromCache: true, isStale: true);
         }
       }
@@ -161,7 +161,7 @@ class OfflineFirstApiService {
         throw NetworkException('No network connection and no cached data available');
       }
     } catch (e) {
-      debugPrint('Error in getAlert: $e');
+      print('Error in getAlert: $e');
       
       // Fallback to cached data
       if (allowStale) {
@@ -235,7 +235,7 @@ class OfflineFirstApiService {
     await _ensureInitialized();
     
     if (!_networkService.hasConnection) {
-      debugPrint('Cannot sync pending submissions: no network connection');
+      print('Cannot sync pending submissions: no network connection');
       return;
     }
     
@@ -243,11 +243,11 @@ class OfflineFirstApiService {
       final pendingSubmissions = await _cacheService.getPendingSubmissions();
       
       if (pendingSubmissions.isEmpty) {
-        debugPrint('No pending submissions to sync');
+        print('No pending submissions to sync');
         return;
       }
       
-      debugPrint('Syncing ${pendingSubmissions.length} pending submissions');
+      print('Syncing ${pendingSubmissions.length} pending submissions');
       
       for (final submission in pendingSubmissions) {
         try {
@@ -267,12 +267,12 @@ class OfflineFirstApiService {
             policy: RetryPolicy.aggressivePolicy,
           );
         } catch (e) {
-          debugPrint('Failed to sync submission ${submission['id']}: $e');
+          print('Failed to sync submission ${submission['id']}: $e');
           // Continue with other submissions
         }
       }
     } catch (e) {
-      debugPrint('Error syncing pending submissions: $e');
+      print('Error syncing pending submissions: $e');
     }
   }
 
@@ -422,7 +422,7 @@ extension OfflineFirstApiServiceExtension on OfflineFirstApiService {
         );
       }
     } catch (e) {
-      debugPrint('Online operation failed: $e');
+      print('Online operation failed: $e');
     }
     
     // Try cache fallback
@@ -430,7 +430,7 @@ extension OfflineFirstApiServiceExtension on OfflineFirstApiService {
       final cached = await cacheOperation();
       if (cached != null) return cached;
     } catch (e) {
-      debugPrint('Cache operation failed: $e');
+      print('Cache operation failed: $e');
     }
     
     return fallbackValue;
@@ -439,16 +439,16 @@ extension OfflineFirstApiServiceExtension on OfflineFirstApiService {
   /// Prefetch data for offline use
   Future<void> prefetchForOffline(List<AlertsQuery> queries) async {
     if (!_networkService.hasConnection) {
-      debugPrint('Cannot prefetch: no network connection');
+      print('Cannot prefetch: no network connection');
       return;
     }
     
     for (final query in queries) {
       try {
         await getAlerts(query, forceRefresh: true);
-        debugPrint('Prefetched alerts for query: ${_generateAlertsCacheKey(query)}');
+        print('Prefetched alerts for query: ${_generateAlertsCacheKey(query)}');
       } catch (e) {
-        debugPrint('Failed to prefetch alerts: $e');
+        print('Failed to prefetch alerts: $e');
       }
     }
   }

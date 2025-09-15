@@ -614,6 +614,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get appSettings => 'Настройки приложений';
 
   @override
+  String get timeFormat => 'Time Format';
+
+  @override
+  String get timeFormat24Hour => '24-hour (14:30)';
+
+  @override
+  String get timeFormat12Hour => '12-hour (2:30 PM)';
+
+  @override
+  String get timeFormatDesc => 'Display time in 24-hour or 12-hour format';
+
+  @override
   String get alertRange => 'Диапазон тревоги';
 
   @override

@@ -522,19 +522,19 @@ class InitializationService {
 
   void _logInfo(String message) {
     if (AppEnvironment.enableLogging) {
-      debugPrint('[InitializationService] INFO: $message');
+      print('[InitializationService] INFO: $message');
     }
   }
 
   void _logWarning(String message) {
     if (AppEnvironment.enableLogging) {
-      debugPrint('[InitializationService] WARNING: $message');
+      print('[InitializationService] WARNING: $message');
     }
   }
 
   void _logError(String message) {
     if (AppEnvironment.enableLogging) {
-      debugPrint('[InitializationService] ERROR: $message');
+      print('[InitializationService] ERROR: $message');
     }
   }
 

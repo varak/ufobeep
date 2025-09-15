@@ -38,18 +38,18 @@ class AuthRepository with ChangeNotifier {
   /// Call once on startup to ensure tokens are loaded into memory
   Future<void> ensureLoaded() async {
     if (_loaded) return;
-    debugPrint('[AuthRepo] ensureLoaded() - loading tokens from secure storage');
+    print('[AuthRepo] ensureLoaded() - loading tokens from secure storage');
     
     final tokenData = await _secureStorage.readTokens();
     _access = tokenData['access'];
     _refresh = tokenData['refresh'];
     _loaded = true;
     
-    debugPrint('[AuthRepo] ensureLoaded() complete - access: ${_access != null}, refresh: ${_refresh != null}');
+    print('[AuthRepo] ensureLoaded() complete - access: ${_access != null}, refresh: ${_refresh != null}');
   }
 
   Future<void> loadSessionOnStartup() async {
-    debugPrint('[Bootstrap] Starting session load');
+    print('[Bootstrap] Starting session load');
     _isHydrating = true;
     
     try {
@@ -57,39 +57,39 @@ class AuthRepository with ChangeNotifier {
       await ensureLoaded();
       
       if (_access == null || _access!.isEmpty) {
-        debugPrint('[Bootstrap] No tokens found - starting unauthenticated');
+        print('[Bootstrap] No tokens found - starting unauthenticated');
         _isReady = true;
         _isHydrating = false;
         notifyListeners();
         return;
       }
       
-      debugPrint('[Bootstrap] Tokens found - validating with /me');
+      print('[Bootstrap] Tokens found - validating with /me');
       ApiClient.setBearer(_access!);
       
       try {
         await fetchMe();
-        debugPrint('[Bootstrap] Session restored successfully - user: ${_currentUser?.username}');
+        print('[Bootstrap] Session restored successfully - user: ${_currentUser?.username}');
       } catch (e) {
-        debugPrint('[Bootstrap] /me validation failed: $e - continuing with tokens intact');
+        print('[Bootstrap] /me validation failed: $e - continuing with tokens intact');
         // DO NOT clear tokens on fetchMe failure - tokens are still valid
         // User profile will be fetched later when network/API is available
       }
       
     } catch (e) {
-      debugPrint('[Bootstrap] Session load failed: $e, clearing session');
+      print('[Bootstrap] Session load failed: $e, clearing session');
       await clearSession();
     } finally {
       _isReady = true;
       _isHydrating = false;
-      debugPrint('[Bootstrap] Complete - ready=${_isReady}, user=${_currentUser?.username ?? "none"}');
+      print('[Bootstrap] Complete - ready=${_isReady}, user=${_currentUser?.username ?? "none"}');
       notifyListeners();
     }
   }
 
   Future<void> setTokens({required String access, required String refresh}) async {
-    debugPrint('[Auth] ========== TOKEN STORAGE START ==========');
-    debugPrint('[Auth] Saving tokens: access(${access.length}), refresh(${refresh.length})');
+    print('[Auth] ========== TOKEN STORAGE START ==========');
+    print('[Auth] Saving tokens: access(${access.length}), refresh(${refresh.length})');
     
     try {
       // Update in-memory cache first
@@ -105,43 +105,43 @@ class AuthRepository with ChangeNotifier {
       );
       
       ApiClient.setBearer(access);
-      debugPrint('[Auth] ✅ ApiClient bearer token updated');
-      debugPrint('[Auth] ✅ In-memory cache updated');
+      print('[Auth] ✅ ApiClient bearer token updated');
+      print('[Auth] ✅ In-memory cache updated');
       
       // Trigger device registration now that we have auth token
       DeviceRegistrationManager().onAuthTokenAvailable(access);
       
-      debugPrint('[Auth] ========== TOKEN STORAGE SUCCESS ==========');
+      print('[Auth] ========== TOKEN STORAGE SUCCESS ==========');
     } catch (e, stackTrace) {
-      debugPrint('[Auth] ❌ CRITICAL: Token storage failed: $e');
-      debugPrint('[Auth] ❌ Stack trace: $stackTrace');
-      debugPrint('[Auth] ========== TOKEN STORAGE FAILED ==========');
+      print('[Auth] ❌ CRITICAL: Token storage failed: $e');
+      print('[Auth] ❌ Stack trace: $stackTrace');
+      print('[Auth] ========== TOKEN STORAGE FAILED ==========');
       rethrow;
     }
   }
 
   /// This is the key fix: read-through cache pattern
   Future<String?> getAccessToken() async {
-    debugPrint('[AuthRepo] getAccessToken() - loaded: $_loaded, cached access: ${_access != null}');
+    print('[AuthRepo] getAccessToken() - loaded: $_loaded, cached access: ${_access != null}');
     
     if (!_loaded || (_access == null || _access!.isEmpty)) {
-      debugPrint('[AuthRepo] getAccessToken() - cache miss, loading from storage');
+      print('[AuthRepo] getAccessToken() - cache miss, loading from storage');
       await ensureLoaded();
     }
     
-    debugPrint('[AuthRepo] getAccessToken() - returning: ${_access != null ? "token(${_access!.length})" : "null"}');
+    print('[AuthRepo] getAccessToken() - returning: ${_access != null ? "token(${_access!.length})" : "null"}');
     return _access;
   }
   
   Future<String?> getRefreshToken() async {
-    debugPrint('[AuthRepo] getRefreshToken() - loaded: $_loaded, cached refresh: ${_refresh != null}');
+    print('[AuthRepo] getRefreshToken() - loaded: $_loaded, cached refresh: ${_refresh != null}');
     
     if (!_loaded || (_refresh == null || _refresh!.isEmpty)) {
-      debugPrint('[AuthRepo] getRefreshToken() - cache miss, loading from storage');
+      print('[AuthRepo] getRefreshToken() - cache miss, loading from storage');
       await ensureLoaded();
     }
     
-    debugPrint('[AuthRepo] getRefreshToken() - returning: ${_refresh != null ? "token(${_refresh!.length})" : "null"}');
+    print('[AuthRepo] getRefreshToken() - returning: ${_refresh != null ? "token(${_refresh!.length})" : "null"}');
     return _refresh;
   }
 
@@ -164,7 +164,7 @@ class AuthRepository with ChangeNotifier {
     }
     
     _currentUser = UserModel.fromJson(userData);
-    debugPrint('✅ fetchMe() - username updated to: ${_currentUser?.username}');
+    print('✅ fetchMe() - username updated to: ${_currentUser?.username}');
     notifyListeners();
   }
 
@@ -202,7 +202,7 @@ class AuthRepository with ChangeNotifier {
     // Notify DeviceRegistrationManager that auth is cleared
     DeviceRegistrationManager().onAuthCleared();
     
-    debugPrint('[AuthRepo] clearSession() - cache and storage cleared');
+    print('[AuthRepo] clearSession() - cache and storage cleared');
     notifyListeners();
   }
 

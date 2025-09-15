@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 
 class StuckWatchdog {
   final _log = <String>[];

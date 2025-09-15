@@ -27,12 +27,12 @@ class DeviceRegistrationManager {
     if (_isStarted) return;
     _isStarted = true;
     
-    debugPrint('🔄 DeviceRegistrationManager: Starting listeners');
+    print('🔄 DeviceRegistrationManager: Starting listeners');
     
     // Listen for FCM token changes
     _fcmSub?.cancel();
     _fcmSub = FirebaseMessaging.instance.onTokenRefresh.listen((token) {
-      debugPrint('🔔 DeviceRegistrationManager: FCM token refreshed');
+      print('🔔 DeviceRegistrationManager: FCM token refreshed');
       _trigger();
     });
     
@@ -55,14 +55,14 @@ class DeviceRegistrationManager {
       // Get current auth token
       final accessToken = await AuthRepository().getAccessToken();
       if (accessToken == null || accessToken.isEmpty) {
-        debugPrint('📱 DeviceRegistrationManager: No auth token - skipping registration');
+        print('📱 DeviceRegistrationManager: No auth token - skipping registration');
         return;
       }
 
       // Get current FCM token  
       final fcmToken = await FirebaseMessaging.instance.getToken();
       if (fcmToken == null || fcmToken.isEmpty) {
-        debugPrint('📱 DeviceRegistrationManager: No FCM token - skipping registration');
+        print('📱 DeviceRegistrationManager: No FCM token - skipping registration');
         return;
       }
 
@@ -72,29 +72,29 @@ class DeviceRegistrationManager {
       // Check if we already registered this combination
       final isSameAsLast = (_lastRegisteredFcm == fcmToken) && (_lastRegisteredUser == userKey);
       if (isSameAsLast) {
-        debugPrint('📱 DeviceRegistrationManager: Already registered (user: $userKey, fcm: ...${fcmToken.substring(fcmToken.length - 6)}) - skipping');
+        print('📱 DeviceRegistrationManager: Already registered (user: $userKey, fcm: ...${fcmToken.substring(fcmToken.length - 6)}) - skipping');
         return;
       }
 
-      debugPrint('📱 DeviceRegistrationManager: 🚀 Attempting registration');
-      debugPrint('📱 DeviceRegistrationManager: ├── User key: $userKey');  
-      debugPrint('📱 DeviceRegistrationManager: ├── FCM: ...${fcmToken.substring(fcmToken.length - 6)}');
-      debugPrint('📱 DeviceRegistrationManager: └── Platform: ${Platform.isAndroid ? "android" : Platform.isIOS ? "ios" : "unknown"}');
+      print('📱 DeviceRegistrationManager: 🚀 Attempting registration');
+      print('📱 DeviceRegistrationManager: ├── User key: $userKey');  
+      print('📱 DeviceRegistrationManager: ├── FCM: ...${fcmToken.substring(fcmToken.length - 6)}');
+      print('📱 DeviceRegistrationManager: └── Platform: ${Platform.isAndroid ? "android" : Platform.isIOS ? "ios" : "unknown"}');
 
       // CRITICAL: Get location FIRST - fail registration if no location available
-      debugPrint('📱 DeviceRegistrationManager: Getting location for proximity alerts...');
+      print('📱 DeviceRegistrationManager: Getting location for proximity alerts...');
       final sensorService = SensorService();
       final position = await sensorService.getPreciseLocation();
       
       if (position == null) {
-        debugPrint('❌ DeviceRegistrationManager: FAILED - Cannot get device location');
-        debugPrint('📱 DeviceRegistrationManager: Registration requires location for proximity alerts');
+        print('❌ DeviceRegistrationManager: FAILED - Cannot get device location');
+        print('📱 DeviceRegistrationManager: Registration requires location for proximity alerts');
         // Don't throw - just log and skip registration
-        debugPrint('📱 DeviceRegistrationManager: Skipping device registration due to location requirement');
+        print('📱 DeviceRegistrationManager: Skipping device registration due to location requirement');
         return;
       }
 
-      debugPrint('✅ DeviceRegistrationManager: Got location: ${position.latitude}, ${position.longitude}');
+      print('✅ DeviceRegistrationManager: Got location: ${position.latitude}, ${position.longitude}');
 
       // Call the existing DeviceService method with explicit location
       final deviceResponse = await _deviceService.registerDevice(
@@ -110,60 +110,60 @@ class DeviceRegistrationManager {
         _lastRegisteredFcm = fcmToken;
         _lastRegisteredUser = userKey;
         
-        debugPrint('✅ DeviceRegistrationManager: SUCCESS - Device registered with location');
-        debugPrint('📱 DeviceRegistrationManager: ├── Device ID: ${deviceResponse.deviceId}');
-        debugPrint('📱 DeviceRegistrationManager: ├── Platform: ${deviceResponse.platform.value}');
-        debugPrint('📱 DeviceRegistrationManager: ├── Push enabled: ${deviceResponse.pushEnabled}');
-        debugPrint('📱 DeviceRegistrationManager: └── Location: ${position.latitude}, ${position.longitude}');
+        print('✅ DeviceRegistrationManager: SUCCESS - Device registered with location');
+        print('📱 DeviceRegistrationManager: ├── Device ID: ${deviceResponse.deviceId}');
+        print('📱 DeviceRegistrationManager: ├── Platform: ${deviceResponse.platform.value}');
+        print('📱 DeviceRegistrationManager: ├── Push enabled: ${deviceResponse.pushEnabled}');
+        print('📱 DeviceRegistrationManager: └── Location: ${position.latitude}, ${position.longitude}');
       } else {
-        debugPrint('❌ DeviceRegistrationManager: FAILED - Registration returned null');
+        print('❌ DeviceRegistrationManager: FAILED - Registration returned null');
       }
 
     } catch (e, stackTrace) {
-      debugPrint('❌ DeviceRegistrationManager: EXCEPTION during registration: $e');
-      debugPrint('📱 DeviceRegistrationManager: Stack trace: $stackTrace');
+      print('❌ DeviceRegistrationManager: EXCEPTION during registration: $e');
+      print('📱 DeviceRegistrationManager: Stack trace: $stackTrace');
       
       // Parse specific errors
       if (e.toString().contains('401') || e.toString().contains('Unauthorized')) {
-        debugPrint('📱 DeviceRegistrationManager: ├── 401 UNAUTHORIZED - JWT token may be invalid/expired');
+        print('📱 DeviceRegistrationManager: ├── 401 UNAUTHORIZED - JWT token may be invalid/expired');
       } else if (e.toString().contains('403') || e.toString().contains('Forbidden')) {
-        debugPrint('📱 DeviceRegistrationManager: ├── 403 FORBIDDEN - insufficient permissions');
+        print('📱 DeviceRegistrationManager: ├── 403 FORBIDDEN - insufficient permissions');
       }
     }
   }
 
   /// Manual trigger for immediate registration attempt
   Future<void> nudge() async {
-    debugPrint('📱 DeviceRegistrationManager: Manual nudge requested');
+    print('📱 DeviceRegistrationManager: Manual nudge requested');
     await _trigger();
   }
 
   /// Backward compatibility methods from old implementation
   void onAuthTokenAvailable(String jwt) {
-    debugPrint('🔐 DeviceRegistrationManager: Auth token available (backward compat) - triggering');
+    print('🔐 DeviceRegistrationManager: Auth token available (backward compat) - triggering');
     _trigger();
   }
 
   void onAuthCleared() {
-    debugPrint('🔐 DeviceRegistrationManager: Auth cleared - resetting state');
+    print('🔐 DeviceRegistrationManager: Auth cleared - resetting state');
     _lastRegisteredFcm = null;
     _lastRegisteredUser = null;
   }
 
   void onFcmTokenAvailable(String token) {
-    debugPrint('🔔 DeviceRegistrationManager: FCM token available (backward compat) - triggering');
+    print('🔔 DeviceRegistrationManager: FCM token available (backward compat) - triggering');
     _trigger();
   }
 
   void onPushPermissionChanged(bool enabled) {
-    debugPrint('🔔 DeviceRegistrationManager: Push permission changed: $enabled');
+    print('🔔 DeviceRegistrationManager: Push permission changed: $enabled');
     if (enabled) {
       _trigger();
     }
   }
 
   Future<void> ensureRegisteredSoon() async {
-    debugPrint('📱 DeviceRegistrationManager: ensureRegisteredSoon (backward compat)');
+    print('📱 DeviceRegistrationManager: ensureRegisteredSoon (backward compat)');
     await _trigger();
   }
 
@@ -173,6 +173,6 @@ class DeviceRegistrationManager {
     _debounce?.cancel();
     _fcmSub?.cancel();
     _isStarted = false;
-    debugPrint('📱 DeviceRegistrationManager: Disposed');
+    print('📱 DeviceRegistrationManager: Disposed');
   }
 }

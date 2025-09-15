@@ -110,7 +110,7 @@ class AlertSoundService {
     if (level == AlertLevel.normal || level == AlertLevel.urgent) {
       final inQuietHours = await _isInQuietHours();
       if (inQuietHours) {
-        debugPrint('In quiet hours, using vibration only');
+        print('In quiet hours, using vibration only');
         await _vibrateOnly(level);
         return;
       }
@@ -150,7 +150,7 @@ class AlertSoundService {
     try {
       await _audioPlayer.play(AssetSource(soundFile));
     } catch (e) {
-      debugPrint('Error playing alert sound: $e');
+      print('Error playing alert sound: $e');
       // Fallback to system sound
       await _playSystemSound(level);
     }
@@ -294,7 +294,7 @@ class AlertSoundService {
   }
 
   Future<void> testAlert(AlertLevel level) async {
-    debugPrint('Testing alert level: $level');
+    print('Testing alert level: $level');
     await playAlertSound(level);
   }
 

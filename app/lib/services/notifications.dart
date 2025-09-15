@@ -45,7 +45,7 @@ class Notifications {
       // Play alert sound using our sound service (includes warm-up)
       await SoundService.I.play(AlertSound.normal, haptic: true);
     } catch (e) {
-      debugPrint('Error handling foreground beep: $e');
+      print('Error handling foreground beep: $e');
     }
   }
 }

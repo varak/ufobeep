@@ -25,12 +25,12 @@ class LocationService {
 
     // Strategy 1: Try preferred coordinates first
     if (isValidCoordinate(preferredLat, preferredLon)) {
-      debugPrint('✅ GPS Strategy 1: Using preferred coordinates: $preferredLat, $preferredLon');
+      print('✅ GPS Strategy 1: Using preferred coordinates: $preferredLat, $preferredLon');
       return {'lat': preferredLat!, 'lon': preferredLon!};
     }
 
     // Strategy 2: High accuracy current position
-    debugPrint('🔄 GPS Strategy 2: High accuracy current position...');
+    print('🔄 GPS Strategy 2: High accuracy current position...');
     try {
       final Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
@@ -38,16 +38,16 @@ class LocationService {
       );
       
       if (isValidCoordinate(position.latitude, position.longitude)) {
-        debugPrint('✅ GPS Strategy 2: Current position: ${position.latitude}, ${position.longitude}');
+        print('✅ GPS Strategy 2: Current position: ${position.latitude}, ${position.longitude}');
         return {'lat': position.latitude, 'lon': position.longitude};
       }
     } catch (e) {
-      debugPrint('❌ GPS Strategy 2: Current position failed: $e');
+      print('❌ GPS Strategy 2: Current position failed: $e');
     }
 
     // Strategy 3: Position stream (Flutter equivalent of watchPosition)
     if (usePositionStream) {
-      debugPrint('🔄 GPS Strategy 3: Position stream...');
+      print('🔄 GPS Strategy 3: Position stream...');
       try {
         await for (final Position position in Geolocator.getPositionStream(
           locationSettings: const LocationSettings(
@@ -56,17 +56,17 @@ class LocationService {
           ),
         ).timeout(timeout)) {
           if (isValidCoordinate(position.latitude, position.longitude)) {
-            debugPrint('✅ GPS Strategy 3: Stream position: ${position.latitude}, ${position.longitude}');
+            print('✅ GPS Strategy 3: Stream position: ${position.latitude}, ${position.longitude}');
             return {'lat': position.latitude, 'lon': position.longitude};
           }
         }
       } catch (e) {
-        debugPrint('❌ GPS Strategy 3: Position stream failed: $e');
+        print('❌ GPS Strategy 3: Position stream failed: $e');
       }
     }
 
     // Strategy 4: Medium accuracy fallback
-    debugPrint('🔄 GPS Strategy 4: Medium accuracy fallback...');
+    print('🔄 GPS Strategy 4: Medium accuracy fallback...');
     try {
       final Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.medium,
@@ -74,26 +74,26 @@ class LocationService {
       );
       
       if (isValidCoordinate(position.latitude, position.longitude)) {
-        debugPrint('✅ GPS Strategy 4: Medium accuracy: ${position.latitude}, ${position.longitude}');
+        print('✅ GPS Strategy 4: Medium accuracy: ${position.latitude}, ${position.longitude}');
         return {'lat': position.latitude, 'lon': position.longitude};
       }
     } catch (e) {
-      debugPrint('❌ GPS Strategy 4: Medium accuracy failed: $e');
+      print('❌ GPS Strategy 4: Medium accuracy failed: $e');
     }
 
     // Strategy 5: Last known position
-    debugPrint('🔄 GPS Strategy 5: Last known position...');
+    print('🔄 GPS Strategy 5: Last known position...');
     try {
       final Position? lastPosition = await Geolocator.getLastKnownPosition();
       if (lastPosition != null && isValidCoordinate(lastPosition.latitude, lastPosition.longitude)) {
-        debugPrint('✅ GPS Strategy 5: Last known position: ${lastPosition.latitude}, ${lastPosition.longitude}');
+        print('✅ GPS Strategy 5: Last known position: ${lastPosition.latitude}, ${lastPosition.longitude}');
         return {'lat': lastPosition.latitude, 'lon': lastPosition.longitude};
       }
     } catch (e) {
-      debugPrint('❌ GPS Strategy 5: Last known position failed: $e');
+      print('❌ GPS Strategy 5: Last known position failed: $e');
     }
 
-    debugPrint('❌ All GPS strategies failed - no valid coordinates available');
+    print('❌ All GPS strategies failed - no valid coordinates available');
     return null;
   }
 
@@ -114,7 +114,7 @@ class LocationService {
         timeLimit: timeLimit ?? const Duration(seconds: 10),
       );
     } catch (e) {
-      debugPrint('getCurrentPosition failed: $e');
+      print('getCurrentPosition failed: $e');
       return null;
     }
   }
@@ -123,19 +123,19 @@ class LocationService {
   Future<bool> isLocationAvailable() async {
     try {
       if (!await Geolocator.isLocationServiceEnabled()) {
-        debugPrint('Location services disabled');
+        print('Location services disabled');
         return false;
       }
 
       final permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
-        debugPrint('Location permission denied: $permission');
+        print('Location permission denied: $permission');
         return false;
       }
 
       return true;
     } catch (e) {
-      debugPrint('Location availability check failed: $e');
+      print('Location availability check failed: $e');
       return false;
     }
   }

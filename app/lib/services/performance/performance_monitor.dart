@@ -45,9 +45,9 @@ class PerformanceMonitorService {
       _startReporting();
       
       _isMonitoring = true;
-      debugPrint('Performance monitoring initialized');
+      print('Performance monitoring initialized');
     } catch (e) {
-      debugPrint('Failed to initialize performance monitoring: $e');
+      print('Failed to initialize performance monitoring: $e');
     }
   }
 
@@ -155,7 +155,7 @@ class PerformanceMonitorService {
         }
       }
     } catch (e) {
-      debugPrint('Failed to record memory metrics: $e');
+      print('Failed to record memory metrics: $e');
     }
   }
 
