@@ -26,6 +26,12 @@ interface Alert {
     mufon_case_id?: string
     [key: string]: any
   }
+  enrichment_data?: {
+    report_date?: string
+    sighting_datetime?: string
+    mufon_case_id?: string
+    [key: string]: any
+  }
   distance_km?: number
 }
 
@@ -182,20 +188,20 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
           <span className="text-text-tertiary mt-0.5">📅</span>
           <div className="flex-1">
             {/* Event Time (when sighting occurred) */}
-            {alert.occurred_at && (
+            {(alert.occurred_at || alert.enrichment?.sighting_datetime || alert.enrichment_data?.sighting_datetime) && (
               <div className="mb-2">
                 <div className="flex items-center gap-2">
                   <span className="text-text-tertiary text-sm font-medium">{t('eventTime')}</span>
-                  <span className="text-text-primary text-sm">{formatDateISO(alert.occurred_at)}</span>
+                  <span className="text-text-primary text-sm">{formatDateISO(alert.occurred_at || alert.enrichment?.sighting_datetime || alert.enrichment_data?.sighting_datetime)}</span>
                 </div>
               </div>
             )}
             {/* Report Time (when added to MUFON database) */}
-            {alert.enrichment?.report_date && (
+            {(alert.enrichment?.report_date || alert.enrichment_data?.report_date) && (
               <div className="mb-2">
                 <div className="flex items-center gap-2">
                   <span className="text-text-tertiary text-sm font-medium">{t('reportedTime')}</span>
-                  <span className="text-text-secondary text-sm">{formatDateISO(alert.enrichment.report_date)}</span>
+                  <span className="text-text-secondary text-sm">{formatDateISO(alert.enrichment?.report_date || alert.enrichment_data?.report_date)}</span>
                 </div>
               </div>
             )}
