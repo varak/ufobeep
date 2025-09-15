@@ -14,6 +14,9 @@ interface Alert {
   created_at: string
 }
 
+// Force dynamic rendering to avoid SSG issues with client-side hooks
+export const dynamic = 'force-dynamic'
+
 export default function MapPage() {
   const [alerts, setAlerts] = useState<Alert[]>([])
   const [loading, setLoading] = useState(false) // Don't block map rendering
