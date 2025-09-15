@@ -46,6 +46,14 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
   // Check if this is a UFOBeep report (not MUFON/NUFORC)
   const isUfoBeepReport = !alert.reporter_username || 
     (alert.reporter_username !== 'MUFON' && alert.reporter_username !== 'NUFORC')
+  // Parse MUFON date format like "1979-07-21\n12:00AM"
+  const parseMufonDate = (dateString: string) => {
+    if (!dateString) return dateString
+    // Extract just the date part before the newline/br
+    const datePart = dateString.split(/[\n<]/)[0].trim()
+    return datePart
+  }
+
   const formatDate = (dateString: string) => {
     // Map locale to proper browser locale format
     const localeMap: Record<string, string> = {
@@ -192,7 +200,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
               <div className="mb-2">
                 <div className="flex items-center gap-2">
                   <span className="text-text-tertiary text-sm font-medium">{t('eventTime')}</span>
-                  <span className="text-text-primary text-sm">{formatDateISO((alert.occurred_at || alert.enrichment?.sighting_datetime || alert.enrichment_data?.sighting_datetime)!)}</span>
+                  <span className="text-text-primary text-sm">{parseMufonDate(alert.enrichment_data?.sighting_datetime || alert.enrichment?.sighting_datetime || alert.occurred_at || '')}</span>
                 </div>
               </div>
             )}
@@ -201,7 +209,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
               <div className="mb-2">
                 <div className="flex items-center gap-2">
                   <span className="text-text-tertiary text-sm font-medium">{t('reportedTime')}</span>
-                  <span className="text-text-secondary text-sm">{formatDateISO((alert.enrichment?.report_date || alert.enrichment_data?.report_date)!)}</span>
+                  <span className="text-text-secondary text-sm">{alert.enrichment_data?.report_date || alert.enrichment?.report_date || ''}</span>
                 </div>
               </div>
             )}
