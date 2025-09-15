@@ -62,8 +62,8 @@ class _NotificationManagementScreenState
         return;
       }
       
-      debugPrint('📡 Calling /beep/following...');
-      final response = await ApiClient.dio.get('/beep/following');
+      debugPrint('📡 Calling /users/$userId/subscriptions...');
+      final response = await ApiClient.dio.get('/users/$userId/subscriptions');
       debugPrint('✅ Subscriptions response: ${response.data}');
 
       if (mounted) {
