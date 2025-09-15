@@ -2,21 +2,21 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useAuth } from '@/contexts/AuthContext'
 
 interface Subscription {
-  alert_id: string
-  alert_title: string
-  alert_created_at: string
+  sighting_id: string
+  title: string
   location_name: string
-  followed_at: string
   comment_count: number
-  last_comment_at: string | null
+  created_at: string
 }
 
 export default function SubscriptionsPage() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const { isAuthenticated, getAuthToken } = useAuth()
 
   useEffect(() => {
     fetchSubscriptions()
@@ -27,15 +27,21 @@ export default function SubscriptionsPage() {
       setLoading(true)
       setError(null)
 
-      // TODO: This needs to be updated when web authentication is implemented
-      // For now, using a placeholder user ID
-      const userId = 'web-user-placeholder'
-      
-      const response = await fetch(`/api/users/${userId}/subscriptions`, {
+      if (!isAuthenticated) {
+        setError('Please sign in to view your subscriptions')
+        return
+      }
+
+      const token = getAuthToken()
+      if (!token) {
+        setError('Authentication token not found')
+        return
+      }
+
+      const response = await fetch('/api/beep/following', {
         headers: {
           'Content-Type': 'application/json',
-          // TODO: Add Authorization header when web auth is implemented
-          // 'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`
         }
       })
 
@@ -55,11 +61,17 @@ export default function SubscriptionsPage() {
 
   const unfollow = async (alertId: string) => {
     try {
-      const response = await fetch(`/api/beep/${alertId}/follow`, {
+      const token = getAuthToken()
+      if (!token) {
+        alert('Authentication required to unfollow alerts')
+        return
+      }
+
+      const response = await fetch(`/api/alerts/${alertId}/follow`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          // TODO: Add Authorization header when web auth is implemented
+          'Authorization': `Bearer ${token}`
         }
       })
 
@@ -68,10 +80,10 @@ export default function SubscriptionsPage() {
       }
 
       // Remove from local state
-      setSubscriptions(prev => prev.filter(sub => sub.alert_id !== alertId))
-      
+      setSubscriptions(prev => prev.filter(sub => sub.sighting_id !== alertId))
+
       // Show success message
-      const alertTitle = subscriptions.find(s => s.alert_id === alertId)?.alert_title || 'Alert'
+      const alertTitle = subscriptions.find(s => s.sighting_id === alertId)?.title || 'Alert'
       alert(`Unfollowed "${alertTitle}" - you won&apos;t receive comment notifications anymore`)
     } catch (err) {
       console.error('Error unfollowing alert:', err)
@@ -175,17 +187,17 @@ export default function SubscriptionsPage() {
             <div className="space-y-4">
               {subscriptions.map((subscription) => (
                 <div
-                  key={subscription.alert_id}
+                  key={subscription.sighting_id}
                   className="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-gray-600 transition-colors"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center space-x-3 mb-3">
                         <Link
-                          href={`/beep/${subscription.alert_id}`}
+                          href={`/beep/en/${subscription.sighting_id}`}
                           className="text-xl font-semibold text-blue-400 hover:text-blue-300 transition-colors"
                         >
-                          {subscription.alert_title}
+                          {subscription.title}
                         </Link>
                         <span className="px-2 py-1 bg-blue-900/50 text-blue-400 text-xs rounded-full">
                           Following
@@ -212,31 +224,20 @@ export default function SubscriptionsPage() {
                           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
-                          Alert: {formatDate(subscription.alert_created_at)}
+                          Alert: {formatDate(subscription.created_at)}
                         </div>
-                      </div>
-                      
-                      <div className="flex items-center text-sm text-gray-500 space-x-4">
-                        <div>
-                          Followed: {formatDate(subscription.followed_at)}
-                        </div>
-                        {subscription.last_comment_at && (
-                          <div>
-                            Last comment: {formatDate(subscription.last_comment_at)}
-                          </div>
-                        )}
                       </div>
                     </div>
                     
                     <div className="flex items-center space-x-2 ml-4">
                       <Link
-                        href={`/beep/${subscription.alert_id}`}
+                        href={`/beep/en/${subscription.sighting_id}`}
                         className="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 rounded transition-colors"
                       >
                         View Alert
                       </Link>
                       <button
-                        onClick={() => unfollow(subscription.alert_id)}
+                        onClick={() => unfollow(subscription.sighting_id)}
                         className="px-3 py-1 text-sm bg-red-900/50 hover:bg-red-900 text-red-400 rounded transition-colors"
                       >
                         Unfollow
