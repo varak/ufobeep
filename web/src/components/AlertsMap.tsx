@@ -479,7 +479,7 @@ export default function AlertsMap({
               properties: { id: a.id }
             }))
           featuresRef.current = features
-          const index = new Supercluster({ radius: 50, maxZoom: 16, minPoints: 2 })
+          const index = new Supercluster({ radius: 90, maxZoom: 16, minPoints: 2 })
           index.load(features as any)
           clusterIndexRef.current = index
           renderClusters(L, mapInstanceRef.current)
@@ -582,7 +582,7 @@ export default function AlertsMap({
               properties: { id: a.id }
             }))
           featuresRef.current = features
-          const index = new Supercluster({ radius: 50, maxZoom: 16, minPoints: 2 })
+          const index = new Supercluster({ radius: 90, maxZoom: 16, minPoints: 2 })
           index.load(features as any)
           clusterIndexRef.current = index
           renderClusters(L, map)
@@ -743,8 +743,8 @@ export default function AlertsMap({
           const src = (a?.source || '').toString().toLowerCase()
           if (['beep','ufobeep','ufo_beep','ufo-beep'].includes(src)) { hasUfoBeep = true; break }
         }
-        const base = hasUfoBeep ? 26 : 16 // meters; bigger ring for icon markers
-        const r = Math.min(54, base + arr.length * 2.5)
+        const base = hasUfoBeep ? 36 : 24 // meters; bigger ring for icon markers
+        const r = Math.min(80, base + arr.length * 3)
         arr.forEach((p, i) => {
           const angle = (2 * Math.PI * i) / arr.length
           const dLat = (r * Math.sin(angle)) * degPerMeterLat
@@ -882,8 +882,9 @@ export default function AlertsMap({
   const getUfoIcon = (_alert: Alert) => '📍'
 
   const createUfoMarker = (L: any, alert: Alert, map: any, pos?: [number, number]) => {
-    const src = (alert.source || '').toString().toLowerCase()
-    const isUfoBeep = src === 'ufobeep' || src === 'beep' || src === 'ufo_beep' || src === 'ufo-beep'
+    const src = (alert as any).source ? (alert as any).source.toString().toLowerCase() : ''
+    const flagB = (alert as any).b === 1 || (alert as any).is_ufobeep === true
+    const isUfoBeep = flagB || src === 'ufobeep' || src === 'beep' || src === 'ufo_beep' || src === 'ufo-beep'
 
     if (isUfoBeep) {
       // UFOBeep markers: bright cyan UFO icon to stand out

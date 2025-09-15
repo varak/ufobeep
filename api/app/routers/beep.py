@@ -289,14 +289,13 @@ async def get_map_points(minimal: bool = False):
 
         async with db_pool.acquire() as connection:
             if minimal:
-                # Ultra-minimal for initial map load
+                # Ultra-minimal for initial map load (include only coords + minimal source flag)
                 query = """
                     SELECT
                         id,
                         public_latitude,
                         public_longitude,
-                        source,
-                        enrichment_data
+                        LOWER(source) AS source
                     FROM sightings
                     WHERE (public_latitude != 0 OR public_longitude != 0)
                     AND public_latitude IS NOT NULL
@@ -335,13 +334,17 @@ async def get_map_points(minimal: bool = False):
             map_points = []
             for row in rows:
                 if minimal:
-                    # Just enough to place the marker - NO enrichment data!
+                    # Minimal payload: id + coords + tiny flag 'b' (1 = UFOBeep)
+                    src = row["source"] or ''
+                    is_ufb = src in ("ufobeep", "beep", "ufo_beep", "ufo-beep")
                     point = {
                         "id": str(row["id"]),
                         "location": {
                             "latitude": float(row["public_latitude"]),
                             "longitude": float(row["public_longitude"])
-                        }
+                        },
+                        # Single-character flag: 1 for UFOBeep, null otherwise
+                        "b": 1 if is_ufb else None
                     }
                 else:
                     # Full data for popups
@@ -911,4 +914,3 @@ async def send_alert_beep(alert_id: str, request: dict):
     except Exception as e:
         print(f"Error sending alert beep: {e}")
         raise HTTPException(status_code=500, detail=f"Error sending alert beep: {str(e)}")
-
