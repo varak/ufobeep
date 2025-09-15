@@ -59,7 +59,7 @@ function biasedCenter(
 export default function AlertsMap({
   alerts = [],
   center = [39.8283, -98.5795], // Center of USA
-  zoom = 5, // Better US view - not too zoomed in, not too zoomed out
+  zoom = 5.5, // Slightly closer view to fit most of the US
   height = '400px',
   showControls = true,
   onAlertClick,
@@ -74,7 +74,9 @@ export default function AlertsMap({
   const currentLocale = locale || 'en'
   const [hoveredAlert, setHoveredAlert] = useState<Alert | null>(null)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
-  const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
+  // Keep user's exact geolocation separate from the map center we choose
+  const [exactUserLocation, setExactUserLocation] = useState<[number, number] | null>(null)
+  const [mapCenter, setMapCenter] = useState<[number, number] | null>(null)
   const [mapInitialized, setMapInitialized] = useState(false)
   const [currentZoom, setCurrentZoom] = useState(zoom)
   const mapInstanceRef = useRef<any>(null)
@@ -294,7 +296,7 @@ export default function AlertsMap({
 
     if (disableGeolocation) {
       // Just use the provided center without geolocation
-      setUserLocation(center)
+      setMapCenter([Number(center[0]), Number(center[1])])
       return
     }
 
@@ -302,13 +304,14 @@ export default function AlertsMap({
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const user: [number, number] = [position.coords.latitude, position.coords.longitude]
-          // Use biased center for better US region view
-          const biasedCoords = biasedCenter(user, US_CENTER, 0.7)
-          setUserLocation(biasedCoords)
+          setExactUserLocation([Number(user[0]), Number(user[1])])
+          // Center the map with a slight US bias for better initial context
+          const biasedCoords = biasedCenter(user, US_CENTER, 0.6)
+          setMapCenter([Number(biasedCoords[0]), Number(biasedCoords[1])])
         },
         (error) => {
           // Use provided center or US center as fallback
-          setUserLocation(center)
+          setMapCenter([Number(center[0]), Number(center[1])])
         },
         {
           timeout: 10000,
@@ -318,14 +321,14 @@ export default function AlertsMap({
       )
     } else {
       // Use provided center or US center as fallback
-      setUserLocation(center)
+      setMapCenter([Number(center[0]), Number(center[1])])
     }
   }, [center, disableGeolocation]) // Include center and disableGeolocation in deps
 
   useEffect(() => {
     // Dynamically import Leaflet for client-side rendering
     const initMap = async () => {
-      if (!mapRef.current || !userLocation) return
+      if (!mapRef.current || !mapCenter) return
 
       // If map is already initialized, only update markers if alerts changed
       if (mapInitialized && mapInstanceRef.current) {
@@ -397,19 +400,21 @@ export default function AlertsMap({
         }
 
         // Create map without center first to avoid LatLng parsing issues
-        const mapZoom = userLocation[0] === center[0] && userLocation[1] === center[1] ? zoom : 5.5
+        const mapZoom = mapCenter[0] === center[0] && mapCenter[1] === center[1] ? zoom : 5.5
         try { console.log('[AlertsMap] creating map instance') } catch {}
         const map = L.map(mapRef.current, {
           zoomControl: true,
           attributionControl: true,
-          preferCanvas: false
+          preferCanvas: false,
+          zoomSnap: 0.5,
+          zoomDelta: 0.5
         })
-        try { console.log('[AlertsMap] setView', userLocation, mapZoom) } catch {}
+        try { console.log('[AlertsMap] setView', mapCenter, mapZoom) } catch {}
         // Now set the view with sanitized numeric coordinates and hard fallback
         try {
-          const hasArrayCenter = Array.isArray(userLocation) && userLocation.length === 2
-          const centerLat = hasArrayCenter ? Number(userLocation[0]) : 0
-          const centerLng = hasArrayCenter ? Number(userLocation[1]) : 0
+          const hasArrayCenter = Array.isArray(mapCenter) && mapCenter.length === 2
+          const centerLat = hasArrayCenter ? Number(mapCenter[0]) : 0
+          const centerLng = hasArrayCenter ? Number(mapCenter[1]) : 0
           const safeLat = Number.isFinite(centerLat) ? centerLat : 0
           const safeLng = Number.isFinite(centerLng) ? centerLng : 0
           const safeZoom = Number.isFinite(Number(mapZoom)) ? Number(mapZoom) : 5
@@ -422,18 +427,19 @@ export default function AlertsMap({
         }
         mapInstanceRef.current = map
         setMapInitialized(true) // Mark as initialized
-        
-        // Add user location marker if we have their actual location
-        if (userLocation[0] !== center[0] || userLocation[1] !== center[1]) {
-          try { console.log('[AlertsMap] add user location marker') } catch {}
-          L.circleMarker([Number(userLocation[0]), Number(userLocation[1])], {
+
+        // Add user location marker ONLY at the exact geolocation (no bias)
+        if (exactUserLocation && (exactUserLocation[0] !== 0 || exactUserLocation[1] !== 0)) {
+          try { console.log('[AlertsMap] add user location marker at', exactUserLocation) } catch {}
+          const userMarker = L.circleMarker([Number(exactUserLocation[0]), Number(exactUserLocation[1])], {
             radius: 7,
             fillColor: '#3b82f6',
             color: '#ffffff',
             weight: 2,
             opacity: 1,
             fillOpacity: 0.9
-          }).addTo(map).bindPopup('You are here')
+          }).addTo(map)
+          userMarker.bindPopup('You are here')
           try { console.log('[AlertsMap] user location marker added') } catch {}
         }
 
@@ -549,8 +555,8 @@ export default function AlertsMap({
             const latlngs = validAlerts.map(a => [Number(a.location.latitude), Number(a.location.longitude)] as [number, number])
 
             // Include user location in bounds if we have their actual location
-            if (userLocation[0] !== center[0] || userLocation[1] !== center[1]) {
-              latlngs.push([Number(userLocation[0]), Number(userLocation[1])])
+            if (exactUserLocation) {
+              latlngs.push([Number(exactUserLocation[0]), Number(exactUserLocation[1])])
             }
 
             // Create bounds that include all alerts and user location
@@ -595,7 +601,7 @@ export default function AlertsMap({
       }
     }
 
-  }, [alerts, userLocation]) // Only re-run when alerts or user location changes
+  }, [alerts, mapCenter, exactUserLocation]) // Only re-run when alerts or center changes
 
   // Handle window resize
   useEffect(() => {
@@ -764,8 +770,26 @@ export default function AlertsMap({
       </div>
 
       {/* Map instructions */}
-      <div className="absolute top-4 right-4 bg-dark-surface/90 backdrop-blur-sm p-2 rounded-lg border border-dark-border z-10 text-xs text-text-tertiary">
-        Click & drag to pan • Scroll to zoom
+      <div className="absolute top-4 right-4 flex gap-2 items-center z-10">
+        {/* Recenter to my location (if available) */}
+        {exactUserLocation && (
+          <button
+            onClick={() => {
+              if (mapInstanceRef.current && exactUserLocation) {
+                try {
+                  mapInstanceRef.current.flyTo([Number(exactUserLocation[0]), Number(exactUserLocation[1])], Math.max(mapInstanceRef.current.getZoom() || 5.5, 8), { duration: 0.8 })
+                } catch {}
+              }
+            }}
+            className="bg-dark-surface/90 hover:bg-dark-surface-elevated border border-dark-border text-xs text-text-primary px-3 py-2 rounded-lg"
+            title="Go to my location"
+          >
+            ⦿ My location
+          </button>
+        )}
+        <div className="bg-dark-surface/90 backdrop-blur-sm p-2 rounded-lg border border-dark-border text-xs text-text-tertiary">
+          Click & drag to pan • Scroll to zoom
+        </div>
       </div>
 
       {/* Legend */}
