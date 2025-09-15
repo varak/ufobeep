@@ -146,7 +146,7 @@ else
 fi
 
 # Change to working directory
-# cd /home/ufobeep/ufobeep
+cd /home/ufobeep/ufobeep
 
 # Load environment credentials
 echo "✅ Loading MUFON credentials..."
@@ -934,7 +934,7 @@ def extract_and_import_mufon(date_str):
                         try:
                             # Generate English slug
                             result = subprocess.run(
-                                ["node", "/home/mike/D/ufobeep/shared/generate_slug.js", slug_data_json, "en"],
+                                ["node", "/home/ufobeep/ufobeep/shared/generate_slug.js", slug_data_json, "en"],
                                 capture_output=True,
                                 text=True,
                                 timeout=10
