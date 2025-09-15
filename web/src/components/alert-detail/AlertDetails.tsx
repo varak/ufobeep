@@ -207,11 +207,10 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
                      alert.location?.name || 'Unknown Location')
                   : (alert.location?.name || 'Unknown Location')
 
-                // For MUFON reports, also check enrichment_data (alternative path)
-                if ((locationName === 'Unknown Location' || locationName.includes('°')) && alert.enrichment_data?.geocoding) {
-                  locationName = alert.enrichment_data.geocoding.display_name ||
-                                alert.enrichment_data.geocoding.location ||
-                                locationName
+                // For MUFON reports, also check enrichment fallback
+                if (locationName === 'Unknown Location' || locationName.includes('°')) {
+                  // Remove coordinates fallback since we want proper location names
+                  locationName = 'Unknown Location'
                 }
                 
                 // Remove duplicate state/country suffixes
