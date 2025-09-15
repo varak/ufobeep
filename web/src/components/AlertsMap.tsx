@@ -137,7 +137,8 @@ export default function AlertsMap({
                   media_files: data.data.media_files?.files || data.data.media_files || [],
                   username: data.data.username,
                   source: data.data.source,
-                  short_url: data.data.short_url
+                  short_url: data.data.short_url,
+                  enrichment: data.data.enrichment || data.data.enrichment_data || alert.enrichment
                 }
                 setFullAlert(fullData)
               }
@@ -203,8 +204,20 @@ export default function AlertsMap({
       }
 
       const isValidDate = (d: any) => {
+        if (!d) return false
         const dt = new Date(d as any)
         return !isNaN(dt.getTime())
+      }
+
+      const getDisplayDate = (a: any): string => {
+        const enriched = a?.enrichment || a?.enrichment_data
+        // Prefer event occurrence date (MUFON or enriched cases)
+        const firstChoice = enriched?.sighting_datetime || enriched?.event_datetime || enriched?.occurred_at
+        const secondChoice = enriched?.report_date || enriched?.reported_at
+        const fallback = a?.created_at
+        const chosen = firstChoice || secondChoice || fallback
+        if (isValidDate(chosen)) return new Date(chosen).toLocaleDateString()
+        return ''
       }
 
       return (
@@ -267,10 +280,8 @@ export default function AlertsMap({
             )}
           </p>
 
-          {displayAlert.created_at && isValidDate(displayAlert.created_at) && (
-            <div className="text-xs text-gray-400 mt-1">
-              {new Date(displayAlert.created_at).toLocaleDateString()}
-            </div>
+          {getDisplayDate(displayAlert) && (
+            <div className="text-xs text-gray-400 mt-1">{getDisplayDate(displayAlert)}</div>
           )}
 
           <div className="mt-2">

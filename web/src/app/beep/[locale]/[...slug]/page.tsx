@@ -252,7 +252,8 @@ export default function AlertDetailPage() {
       longitude: alert.location?.longitude || 0,
       name: getEnrichedLocation(alert, t)
     },
-    media_files: alert.media_files || []
+    media_files: alert.media_files || [],
+    enrichment_data: alert.enrichment_data // Ensure enrichment_data is preserved
   }
 
   return (

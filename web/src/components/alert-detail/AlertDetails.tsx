@@ -195,21 +195,21 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
         <div className="flex items-start gap-3 mb-4">
           <span className="text-text-tertiary mt-0.5">📅</span>
           <div className="flex-1">
-            {/* Event Time (when sighting occurred) */}
-            {(alert.occurred_at || alert.enrichment?.sighting_datetime || alert.enrichment_data?.sighting_datetime) && (
+            {/* Event Time (when sighting occurred) - for MUFON reports */}
+            {alert.enrichment_data?.sighting_datetime && (
               <div className="mb-2">
                 <div className="flex items-center gap-2">
                   <span className="text-text-tertiary text-sm font-medium">{t('eventTime')}</span>
-                  <span className="text-text-primary text-sm">{parseMufonDate(alert.enrichment_data?.sighting_datetime || alert.enrichment?.sighting_datetime || alert.occurred_at || '')}</span>
+                  <span className="text-text-primary text-sm">{parseMufonDate(alert.enrichment_data.sighting_datetime)}</span>
                 </div>
               </div>
             )}
             {/* Report Time (when added to MUFON database) */}
-            {(alert.enrichment?.report_date || alert.enrichment_data?.report_date) && (
+            {alert.enrichment_data?.report_date && (
               <div className="mb-2">
                 <div className="flex items-center gap-2">
                   <span className="text-text-tertiary text-sm font-medium">{t('reportedTime')}</span>
-                  <span className="text-text-secondary text-sm">{alert.enrichment_data?.report_date || alert.enrichment?.report_date || ''}</span>
+                  <span className="text-text-secondary text-sm">{alert.enrichment_data.report_date}</span>
                 </div>
               </div>
             )}
