@@ -1,37 +1,5 @@
 import { NextRequest } from 'next/server'
-
-// In-memory store for SSE connections per alert
-const alertConnections = new Map<string, Set<ReadableStreamDefaultController>>()
-
-// Helper to broadcast to all connections for an alert
-export function broadcastCommentUpdate(alertId: string) {
-  const connections = alertConnections.get(alertId)
-  if (connections) {
-    const message = `data: ${JSON.stringify({ type: 'comment_update', alertId })}\n\n`
-
-    // Send to all connections, remove dead ones
-    const deadConnections: ReadableStreamDefaultController[] = []
-
-    for (const controller of connections) {
-      try {
-        controller.enqueue(new TextEncoder().encode(message))
-      } catch (error) {
-        deadConnections.push(controller)
-      }
-    }
-
-    // Clean up dead connections
-    for (const dead of deadConnections) {
-      connections.delete(dead)
-    }
-
-    if (connections.size === 0) {
-      alertConnections.delete(alertId)
-    }
-
-    console.log(`[SSE] Broadcast to ${connections.size} connections for alert ${alertId}`)
-  }
-}
+import { addSSEConnection, removeSSEConnection } from '@/utils/sse-broadcast'
 
 export async function GET(
   request: NextRequest,
@@ -44,10 +12,7 @@ export async function GET(
   const stream = new ReadableStream({
     start(controller) {
       // Add connection to alert's subscriber list
-      if (!alertConnections.has(alertId)) {
-        alertConnections.set(alertId, new Set())
-      }
-      alertConnections.get(alertId)!.add(controller)
+      addSSEConnection(alertId, controller)
 
       // Send initial connection message
       const initialMessage = `data: ${JSON.stringify({ type: 'connected', alertId })}\n\n`
@@ -66,10 +31,7 @@ export async function GET(
       request.signal.addEventListener('abort', () => {
         console.log(`[SSE] Connection closed for alert ${alertId}`)
         clearInterval(heartbeat)
-        alertConnections.get(alertId)?.delete(controller)
-        if (alertConnections.get(alertId)?.size === 0) {
-          alertConnections.delete(alertId)
-        }
+        removeSSEConnection(alertId, controller)
         try {
           controller.close()
         } catch {}

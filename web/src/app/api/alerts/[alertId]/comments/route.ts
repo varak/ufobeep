@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { apiConfig } from '@/config/api'
-import { broadcastCommentUpdate } from './stream/route'
+import { broadcastCommentUpdate } from '@/utils/sse-broadcast'
 
 // GET /api/alerts/[alertId]/comments - Fetch comments for an alert
 export async function GET(
