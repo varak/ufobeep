@@ -201,10 +201,25 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
       })
 
       if (response.ok) {
-        // Comment will be automatically refreshed via SSE broadcast
+        // Proactively refresh comments (SSE may be delayed or blocked)
+        try {
+          const refresh = await fetch(`/api/beep/${alertId}/comments`)
+          if (refresh.ok) {
+            const data = await refresh.json()
+            const sorted = (data.items || []).sort((a: Comment, b: Comment) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+            setComments(sorted)
+          }
+        } catch {}
+        setMessage(t('commentDeleted', 'Comment deleted'))
+        setMessageType('success')
+        setTimeout(() => setMessage(''), 3000)
       } else {
-        const errorData = await response.json()
-        setMessage(errorData.error || 'Failed to delete comment')
+        let msg = 'Failed to delete comment'
+        try {
+          const errorData = await response.json()
+          msg = errorData.detail || errorData.error || msg
+        } catch {}
+        setMessage(msg)
         setMessageType('error')
         setTimeout(() => setMessage(''), 5000)
       }
