@@ -38,7 +38,7 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
     
     try {
       const token = getAuthToken()
-      const response = await fetch(`/api/alerts/${alertId}/follow`, {
+      const response = await fetch(`/api/beep/${alertId}/follow`, {
         headers: {
           'Authorization': `Bearer ${token}`
         },
@@ -60,7 +60,7 @@ export default function CommentButton({ alertId, onCommentAdded }: CommentButton
     try {
       const token = getAuthToken()
       const method = isFollowing ? 'DELETE' : 'POST'
-      const response = await fetch(`/api/alerts/${alertId}/follow`, {
+      const response = await fetch(`/api/beep/${alertId}/follow`, {
         method,
         headers: {
           'Authorization': `Bearer ${token}`

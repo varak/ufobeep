@@ -67,7 +67,7 @@ export default function SubscriptionsPage() {
         return
       }
 
-      const response = await fetch(`/api/alerts/${alertId}/follow`, {
+      const response = await fetch(`/api/beep/${alertId}/follow`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
