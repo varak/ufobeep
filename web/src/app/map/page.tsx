@@ -25,9 +25,9 @@ export default function MapPage() {
         // Use minimal mode for fast initial load - just points
         const response = await fetch('/api/beep/map-points?minimal=true')
         const data = await response.json()
-        if (data.success && data.data) {
+        if (data.success && data.data && data.data.alerts) {
           // All points are already validated by the API
-          setAlerts(data.data)
+          setAlerts(data.data.alerts)
         } else {
           setError('Failed to load alerts')
         }
