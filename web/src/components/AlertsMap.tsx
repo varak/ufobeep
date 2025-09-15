@@ -544,6 +544,62 @@ export default function AlertsMap({
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  // Render clusters or points based on current view
+  const renderClusters = (L: any, map: any) => {
+    try {
+      // Clear existing markers
+      markersRef.current.forEach(m => { try { m.remove() } catch {} })
+      markersRef.current = []
+
+      const index = clusterIndexRef.current
+      if (!index) return
+
+      const b = map.getBounds()
+      const bbox: [number, number, number, number] = [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]
+      const zoom = Math.round(map.getZoom() || 0)
+      const clusters = index.getClusters(bbox, zoom)
+
+      clusters.forEach((c: any) => {
+        const [lng, lat] = c.geometry.coordinates
+        if (c.properties && c.properties.cluster) {
+          const count = c.properties.point_count
+          const size = count < 10 ? 28 : count < 50 ? 32 : count < 250 ? 38 : 44
+          const html = `
+            <div style="
+              background: rgba(57,255,20,0.15);
+              border: 2px solid #39FF14;
+              color: #fff;
+              width: ${size}px; height: ${size}px;
+              border-radius: 50%;
+              display: flex; align-items: center; justify-content: center;
+              box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+              font-weight: 700; font-size: 12px;"
+            >${count}</div>`
+          const divIcon = L.divIcon({ html, className: 'cluster-marker', iconSize: [size, size], iconAnchor: [size/2, size/2] })
+          const marker = L.marker([lat, lng], { icon: divIcon })
+          marker.on('click', () => {
+            const nextZoom = Math.min(index.getClusterExpansionZoom(c.id), 18)
+            map.flyTo([lat, lng], nextZoom, { duration: 0.6 })
+          })
+          marker.addTo(map)
+          markersRef.current.push(marker)
+        } else {
+          // Individual point
+          const id = c.properties && c.properties.id
+          const alert = (alerts as any[]).find(a => a.id === id)
+          if (!alert || !isValidLatLng(alert.location)) return
+          const marker = createUfoMarker(L, alert, map)
+          const popup = L.popup({ maxWidth: 350, className: 'custom-popup' }).setContent(createPopupContentHelper(alert, L))
+          marker.bindPopup(popup)
+          marker.addTo(map)
+          markersRef.current.push(marker)
+        }
+      })
+    } catch (e) {
+      console.error('renderClusters failed', e)
+    }
+  }
+
   const filterAlertsByZoom = (alerts: Alert[], zoomLevel: number) => {
     // Show ALL alerts when zoomed in, consolidate when zoomed out
     let maxAlerts: number
