@@ -10,18 +10,18 @@ export function broadcastCommentUpdate(alertId: string) {
     // Send to all connections, remove dead ones
     const deadConnections: ReadableStreamDefaultController[] = []
 
-    for (const controller of connections) {
+    connections.forEach(controller => {
       try {
         controller.enqueue(new TextEncoder().encode(message))
       } catch (error) {
         deadConnections.push(controller)
       }
-    }
+    })
 
     // Clean up dead connections
-    for (const dead of deadConnections) {
+    deadConnections.forEach(dead => {
       connections.delete(dead)
-    }
+    })
 
     if (connections.size === 0) {
       alertConnections.delete(alertId)

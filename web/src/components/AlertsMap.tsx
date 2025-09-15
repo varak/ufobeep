@@ -878,47 +878,8 @@ export default function AlertsMap({
     }
   }
 
-  const getUfoIcon = (alert: Alert) => {
-    // Check if this is a MUFON classified sighting
-    if (alert.source === 'mufon' || alert.username === 'MUFON_Database') {
-      // Try to get UFO classification from enrichment data
-      if (alert.enrichment_data && alert.enrichment_data.ufo_classification) {
-        const classification = alert.enrichment_data.ufo_classification
-        if (classification.type) {
-          const ufoType = classification.type.toLowerCase()
-          
-          // Return appropriate Unicode symbols for each UFO type
-          switch (ufoType) {
-            case 'triangle':
-              return '△' // Triangle
-            case 'disc':
-            case 'saucer':
-              return '●' // Disc/circle
-            case 'sphere':
-              return '○' // Sphere
-            case 'cigar':
-              return '─' // Horizontal line for cigar
-            case 'light':
-              return '☀' // Sun/light
-            case 'formation':
-              return '⋯' // Multiple dots for formation
-            case 'boomerang':
-              return '‹' // Angular shape
-            case 'rectangle':
-              return '▢' // Rectangle
-            case 'diamond':
-              return '◊' // Diamond
-            default:
-              return '?' // Unknown UFO type
-          }
-        }
-      }
-      // Default MUFON icon if no classification
-      return '?'
-    }
-    // Non-MUFON, non-UFOBeep sources (e.g., NUFORC) use neutral pin
-    return '📍'
-  }
+  // Simplified: we no longer use MUFON shape icons
+  const getUfoIcon = (_alert: Alert) => '📍'
 
   const createUfoMarker = (L: any, alert: Alert, map: any, pos?: [number, number]) => {
     const isMufon = (alert.source?.toLowerCase?.() === 'mufon') || alert.username === 'MUFON_Database'
