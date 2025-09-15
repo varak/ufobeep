@@ -518,6 +518,8 @@ export default function AlertsMap({
           zoomSnap: 0.5,
           zoomDelta: 0.5
         })
+        // Move default Leaflet zoom controls away from overlays
+        try { map.zoomControl.setPosition('bottomleft') } catch {}
         try { console.log('[AlertsMap] setView', mapCenter, mapZoom) } catch {}
         // Now set the view with sanitized numeric coordinates and hard fallback
         try {
@@ -689,7 +691,8 @@ export default function AlertsMap({
 
       const b = map.getBounds()
       const bbox: [number, number, number, number] = [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]
-      const zoom = Math.round(map.getZoom() || 0)
+      // Use ceil so clusters break apart sooner as you zoom in
+      const zoom = Math.ceil(map.getZoom() || 0)
       const clusters = index.getClusters(bbox, zoom)
 
       // Build jitter map for points sharing identical coordinates in this viewport
@@ -758,29 +761,60 @@ export default function AlertsMap({
         const [lng, lat] = c.geometry.coordinates
         if (c.properties && c.properties.cluster) {
           const count = c.properties.point_count
-          const size = count < 10 ? 28 : count < 50 ? 32 : count < 250 ? 38 : 44
-          const html = `
-            <div style="
-              background: rgba(57,255,20,0.15);
-              border: 2px solid #39FF14;
-              color: #fff;
-              width: ${size}px; height: ${size}px;
-              border-radius: 50%;
-              display: flex; align-items: center; justify-content: center;
-              box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-              font-weight: 700; font-size: 12px;"
-            >${count}</div>`
-          const divIcon = L.divIcon({ html, className: 'cluster-marker', iconSize: [size, size], iconAnchor: [size/2, size/2] })
-          const marker = L.marker([lat, lng], { icon: divIcon })
-          try { marker.bindTooltip('Zoom in to expand', { direction: 'top', offset: [0, -size/2], opacity: 0.8 }) } catch {}
+          // For small clusters, expand in-place into jittered points so they are immediately clickable
+          if (count <= 12) {
+            try {
+              const leaves = index.getLeaves(c.id, count, 0) as any[]
+              // Spread them around cluster center using a ring (independent of identical coordinate grouping)
+              const cosLat = Math.cos((lat * Math.PI) / 180)
+              const degPerMeterLat = 1 / 111320
+              const degPerMeterLng = 1 / (111320 * (cosLat || 1))
+              const base = 50 // meters
+              const r = Math.min(120, base + count * 6)
+              leaves.forEach((leaf, i) => {
+                const angle = (2 * Math.PI * i) / leaves.length
+                const dLat = (r * Math.sin(angle)) * degPerMeterLat
+                const dLng = (r * Math.cos(angle)) * degPerMeterLng
+                const sLat = lat + dLat
+                const sLng = lng + dLng
+                const id = leaf.properties && leaf.properties.id
+                const alert = (alerts as any[]).find(a => a.id === id)
+                if (!alert || !isValidLatLng(alert.location)) return
+                const m = createUfoMarker(L, alert, map, [sLat, sLng])
+                const popup = L.popup({ maxWidth: 350, className: 'custom-popup' }).setContent(createPopupContentHelper(alert, L))
+                m.bindPopup(popup)
+                m.addTo(map)
+                markersRef.current.push(m)
+              })
+            } catch (e) {
+              console.error('Cluster inline expand failed', e)
+            }
+          } else {
+            // Render a clickable cluster badge
+            const size = count < 10 ? 28 : count < 50 ? 32 : count < 250 ? 38 : 44
+            const html = `
+              <div style="
+                background: rgba(57,255,20,0.15);
+                border: 2px solid #39FF14;
+                color: #fff;
+                width: ${size}px; height: ${size}px;
+                border-radius: 50%;
+                display: flex; align-items: center; justify-content: center;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+                font-weight: 700; font-size: 12px;"
+              >${count}</div>`
+            const divIcon = L.divIcon({ html, className: 'cluster-marker', iconSize: [size, size], iconAnchor: [size/2, size/2] })
+            const marker = L.marker([lat, lng], { icon: divIcon })
+            try { marker.bindTooltip('Zoom in to expand', { direction: 'top', offset: [0, -size/2], opacity: 0.8 }) } catch {}
           marker.on('click', () => {
             try {
-              const nextZoom = Math.min(index.getClusterExpansionZoom(c.id), 18)
+              const nextZoom = Math.min(index.getClusterExpansionZoom(c.id) + 1, 18)
               map.flyTo([lat, lng], nextZoom, { duration: 0.6 })
             } catch {}
           })
-          marker.addTo(map)
-          markersRef.current.push(marker)
+            marker.addTo(map)
+            markersRef.current.push(marker)
+          }
         } else {
           // Individual point
           const id = c.properties && c.properties.id
@@ -796,8 +830,8 @@ export default function AlertsMap({
               const arr = groups.get(key) || []
               const z = Math.round(map.getZoom() || 0)
               const alreadySeparated = !!jitterPos
-              if (arr.length > 1 && z < 14 && !alreadySeparated) {
-                const targetZoom = Math.min(Math.max(14, z + 2), 18)
+              if (arr.length > 1 && z < 18 && !alreadySeparated) {
+                const targetZoom = Math.min(Math.max(15, z + 3), 18)
                 map.flyTo([lat, lng], targetZoom, { duration: 0.45 })
                 return
               }
