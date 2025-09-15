@@ -120,7 +120,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
     if (!alert.description) return ''
     
     // For MUFON alerts, remove the duplicate metadata section
-    if (alert.reporter_username === 'MUFON') {
+    if (alert.source === 'mufon' || alert.reporter_username === 'MUFON') {
       return alert.description.split('━━━━━━━━━━━━━━━━━━━━━━━━')[0].trim()
     }
     
@@ -191,7 +191,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
       )}
 
       {/* Time - Show MUFON times if available, otherwise show UFOBeep time */}
-      {alert.reporter_username === 'MUFON' ? (
+      {(alert.source === 'mufon' || alert.reporter_username === 'MUFON') ? (
         <div className="flex items-start gap-3 mb-4">
           <span className="text-text-tertiary mt-0.5">📅</span>
           <div className="flex-1">
