@@ -314,5 +314,6 @@
   "aircraftDataSource": "データソース",
   "noAircraftDetected": "航空機が検出されない",
   "sightingReport": "観光レポート",
-  "ufoAlert": "ユーチューブ アラート"
+  "ufoAlert": "ユーチューブ アラート",
+  "alert": "アラート"
 }

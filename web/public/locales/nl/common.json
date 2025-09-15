@@ -314,5 +314,6 @@
   "aircraftDataSource": "Gegevensbron",
   "noAircraftDetected": "Geen vliegtuig gedetecteerd",
   "sightingReport": "Waarnemingsrapport",
-  "ufoAlert": "UFO Waarschuwing"
+  "ufoAlert": "UFO Waarschuwing",
+  "alert": "Waarschuwing"
 }

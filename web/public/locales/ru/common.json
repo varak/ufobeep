@@ -314,5 +314,6 @@
   "aircraftDataSource": "Источник данных",
   "noAircraftDetected": "Самолеты не обнаружены",
   "sightingReport": "Обзорный доклад",
-  "ufoAlert": "НЛО Предупреждение"
+  "ufoAlert": "НЛО Предупреждение",
+  "alert": "Предупреждение"
 }

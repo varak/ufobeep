@@ -314,5 +314,6 @@
   "aircraftDataSource": "데이터 소스",
   "noAircraftDetected": "항공기 감지 없음",
   "sightingReport": "연락처",
-  "ufoAlert": "사이트맵 지원하다"
+  "ufoAlert": "사이트맵 지원하다",
+  "alert": "지원하다"
 }

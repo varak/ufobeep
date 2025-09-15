@@ -314,5 +314,6 @@
   "aircraftDataSource": "المصدر",
   "noAircraftDetected": "لم تكتشف أي طائرة",
   "sightingReport": "Sighting Report",
-  "ufoAlert": "UFO إنذار"
+  "ufoAlert": "UFO إنذار",
+  "alert": "إنذار"
 }

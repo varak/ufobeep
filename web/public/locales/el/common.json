@@ -314,5 +314,6 @@
   "aircraftDataSource": "Πηγή δεδομένων",
   "noAircraftDetected": "Δεν εντοπίστηκαν αεροσκάφη",
   "sightingReport": "Έκθεση παρατήρησης",
-  "ufoAlert": "ΑΤΙΑ Συναγερμός"
+  "ufoAlert": "ΑΤΙΑ Συναγερμός",
+  "alert": "Συναγερμός"
 }

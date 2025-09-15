@@ -314,5 +314,6 @@
   "aircraftDataSource": "डेटा स्रोत",
   "noAircraftDetected": "कोई विमान नहीं पाया",
   "sightingReport": "Sighting Report",
-  "ufoAlert": "यूएफओ चेतावनी"
+  "ufoAlert": "यूएफओ चेतावनी",
+  "alert": "चेतावनी"
 }

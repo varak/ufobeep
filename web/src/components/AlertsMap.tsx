@@ -100,6 +100,8 @@ export default function AlertsMap({
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
   const [modalMediaFiles, setModalMediaFiles] = useState<any[]>([])
   const [mapErrorMessage, setMapErrorMessage] = useState<string | null>(null)
+  const [debugEnabled, setDebugEnabled] = useState(false)
+  const [debugCounts, setDebugCounts] = useState<{ mufon: number; ufobeep: number; other: number; total: number }>({ mufon: 0, ufobeep: 0, other: 0, total: 0 })
 
   // Validate coordinates defensively to avoid runtime errors
   const isValidLatLng = (loc?: { latitude: any; longitude: any }) => {
@@ -116,6 +118,27 @@ export default function AlertsMap({
   const asNumLatLng = (loc: { latitude: any; longitude: any }): [number, number] => {
     return [Number(loc.latitude), Number(loc.longitude)]
   }
+
+  // Source helpers (do NOT filter out unknown-source alerts)
+  const isMufonAlert = (a: any) => {
+    const src = (a?.source || '').toString().toLowerCase()
+    const reporter = (a?.reporter_username || a?.username || '').toString()
+    return src === 'mufon' || reporter === 'MUFON' || reporter === 'MUFON_Database'
+  }
+  const isNuforcAlert = (a: any) => {
+    const src = (a?.source || '').toString().toLowerCase()
+    const reporter = (a?.reporter_username || a?.username || '').toString()
+    return src === 'nuforc' || reporter === 'NUFORC' || reporter === 'NUFORC_Database'
+  }
+  const isUfoBeepAlert = (a: any) => !isMufonAlert(a) && !isNuforcAlert(a)
+
+  // Debug toggle from query param
+  useEffect(() => {
+    try {
+      const sp = new URLSearchParams(window.location.search)
+      if (sp.get('debug') === '1') setDebugEnabled(true)
+    } catch {}
+  }, [])
 
   // Helper function to create React popup content - defined outside useEffect
   const createPopupContentHelper = (alert: Alert, L: any) => {
@@ -671,6 +694,24 @@ export default function AlertsMap({
 
       // Build jitter map for points sharing identical coordinates in this viewport
       const pointItems: Array<{id: string; lat: number; lng: number}> = []
+      // Update debug counts by class within current bounds
+      try {
+        if (debugEnabled) {
+          const b2 = map.getBounds()
+          let mufon = 0, ufobeep = 0, other = 0, total = 0
+          for (const a of alerts as any[]) {
+            if (!isValidLatLng(a.location)) continue
+            const la = Number(a.location.latitude), lo = Number(a.location.longitude)
+            if (!b2.contains({ lat: la, lng: lo })) continue
+            total++
+            if (isMufonAlert(a)) mufon++
+            else if (isUfoBeepAlert(a)) ufobeep++
+            else other++
+          }
+          setDebugCounts({ mufon, ufobeep, other, total })
+        }
+      } catch {}
+
       clusters.forEach((c: any) => {
         if (!(c.properties && c.properties.cluster)) {
           const [lng, lat] = c.geometry.coordinates
@@ -731,7 +772,18 @@ export default function AlertsMap({
           const divIcon = L.divIcon({ html, className: 'cluster-marker', iconSize: [size, size], iconAnchor: [size/2, size/2] })
           const marker = L.marker([lat, lng], { icon: divIcon })
           try { marker.bindTooltip('Zoom in to expand', { direction: 'top', offset: [0, -size/2], opacity: 0.8 }) } catch {}
-          marker.on('click', () => { try { marker.openPopup() } catch {} })
+          marker.on('click', () => {
+            try {
+              const key = `${lat.toFixed(5)},${lng.toFixed(5)}`
+              const arr = groups.get(key) || []
+              const z = Math.round(map.getZoom() || 0)
+              if (arr.length > 1 && z < 16) {
+                map.flyTo([lat, lng], Math.min(z + 3, 18), { duration: 0.5 })
+                return
+              }
+              marker.openPopup()
+            } catch {}
+          })
           marker.addTo(map)
           markersRef.current.push(marker)
         } else {
@@ -983,50 +1035,69 @@ export default function AlertsMap({
                 } catch {}
               }
             }}
-            className="bg-dark-surface/90 hover:bg-dark-surface-elevated border border-dark-border text-xs text-text-primary px-3 py-2 rounded-lg"
+            className="bg-dark-surface/90 hover:bg-dark-surface-elevated border border-dark-border text-xs md:text-sm text-text-primary px-3 py-2 md:py-2 rounded-lg"
             title="Go to my location"
           >
             ⦿ My location
           </button>
         )}
+        {/* Speed mode toggle */}
+        <button
+          className="bg-dark-surface/90 hover:bg-dark-surface-elevated border border-dark-border text-xs md:text-sm text-text-primary px-3 py-2 md:py-2 rounded-lg"
+          title="Toggle faster loading mode"
+          onClick={() => {
+            try {
+              const cur = localStorage.getItem('ufobeep:perf') || 'auto'
+              const next = cur === 'low' ? 'auto' : 'low'
+              localStorage.setItem('ufobeep:perf', next)
+              // Visual hint
+              alert(next === 'low' ? 'Faster loading mode: ON' : 'Faster loading mode: AUTO')
+            } catch {}
+          }}
+        >⚡ Speed</button>
         <div className="bg-dark-surface/90 backdrop-blur-sm p-2 rounded-lg border border-dark-border text-xs text-text-tertiary">
           Click & drag to pan • Scroll to zoom
         </div>
       </div>
 
       {/* Legend */}
-      <div className="absolute bottom-4 right-4 bg-dark-surface/90 backdrop-blur-sm p-2 rounded-lg border border-dark-border text-xs z-10">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2 group relative">
-            <div className="w-2 h-2 rounded-full bg-red-500"></div>
-            <span className="text-text-tertiary">Critical</span>
-            <div className="absolute left-0 bottom-full mb-2 bg-dark-surface-elevated border border-dark-border p-2 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20">
-              Immediate threat or extraordinary phenomenon
-            </div>
+      <div className="absolute bottom-4 right-4 bg-dark-surface/90 backdrop-blur-sm p-3 rounded-lg border border-dark-border text-xs z-10">
+        <div className="font-semibold text-text-primary mb-2">Legend</div>
+        <div className="space-y-2">
+          {/* UFOBeep */}
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-5 rounded-full flex items-center justify-center" style={{ background: '#00E5FF', border: '2px solid #fff', color: '#0b1020' }}>🛸</div>
+            <span className="text-text-secondary">UFOBeep sighting</span>
           </div>
-          <div className="flex items-center gap-2 group relative">
-            <div className="w-2 h-2 rounded-full bg-orange-500"></div>
-            <span className="text-text-tertiary">High</span>
-            <div className="absolute left-0 bottom-full mb-2 bg-dark-surface-elevated border border-dark-border p-2 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20">
-              Significant sighting with clear evidence
-            </div>
+          {/* MUFON */}
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-5 rounded-full flex items-center justify-center" style={{ background: '#39FF14', border: '2px solid #fff', color: '#fff' }}>△</div>
+            <span className="text-text-secondary">MUFON (shape icon)</span>
           </div>
-          <div className="flex items-center gap-2 group relative">
-            <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
-            <span className="text-text-tertiary">Medium</span>
-            <div className="absolute left-0 bottom-full mb-2 bg-dark-surface-elevated border border-dark-border p-2 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20">
-              Notable anomaly requiring investigation
-            </div>
+          {/* Other/Unknown */}
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full" style={{ background: '#A78BFA', border: '2px solid #fff' }}></div>
+            <span className="text-text-secondary">Other/unknown source</span>
           </div>
-          <div className="flex items-center gap-2 group relative">
-            <div className="w-2 h-2 rounded-full bg-green-500"></div>
-            <span className="text-text-tertiary">Low</span>
-            <div className="absolute left-0 bottom-full mb-2 bg-dark-surface-elevated border border-dark-border p-2 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20">
-              Minor observation or distant object
-            </div>
+          {/* Cluster */}
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ background: 'rgba(57,255,20,0.15)', border: '2px solid #39FF14', color: '#fff' }}>#</div>
+            <span className="text-text-secondary">Cluster (click to expand)</span>
           </div>
         </div>
       </div>
+
+      {/* Debug overlay */}
+      {debugEnabled && (
+        <div className="absolute bottom-4 left-4 bg-dark-surface/90 backdrop-blur-sm p-2 md:p-3 rounded-lg border border-dark-border text-xs md:text-sm z-10 text-text-primary">
+          <div className="font-semibold mb-1">Debug (viewport)</div>
+          <div>MUFON: {debugCounts.mufon}</div>
+          <div>UFOBeep: {debugCounts.ufobeep}</div>
+          <div>Other: {debugCounts.other}</div>
+          <div>Total: {debugCounts.total}</div>
+          <button className="mt-2 bg-dark-surface-elevated border border-dark-border px-2 py-1 rounded" onClick={() => setDebugEnabled(false)}>Hide</button>
+        </div>
+      )}
 
       {/* Media Gallery Modal */}
       {isMediaModalOpen && modalMediaFiles.length > 0 && (

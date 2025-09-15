@@ -314,5 +314,6 @@
   "aircraftDataSource": "Tietolähde",
   "noAircraftDetected": "Ilma-alusta ei havaittu",
   "sightingReport": "Havaintoraportti",
-  "ufoAlert": "UFO Varoitus"
+  "ufoAlert": "UFO Varoitus",
+  "alert": "Varoitus"
 }

@@ -181,7 +181,7 @@ class TranslationGenerator {
         organized['common.json'][key] = value;
       } else if (key.includes('tab') || key.includes('menu')) {
         organized['navigation.json'][key] = value;
-      } else if (key === 'ufobeepReportType' || key === 'beepOnly' || key === 'alertLevel' || key === 'backToBeeps') {
+      } else if (key === 'ufobeepReportType' || key === 'beepOnly' || key === 'alertLevel' || key === 'backToBeeps' || key === 'alert') {
         // Critical component keys must go to common.json where components look for them
         organized['common.json'][key] = value;
       } else if (key.includes('alert') || key.includes('beep') || key.includes('ufoType') || key.includes('shape')) {

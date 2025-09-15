@@ -314,5 +314,6 @@
   "aircraftDataSource": "Datakilde",
   "noAircraftDetected": "Intet luftfartøj detekteret",
   "sightingReport": "Observationsrapport",
-  "ufoAlert": "UFO Indberetning"
+  "ufoAlert": "UFO Indberetning",
+  "alert": "Indberetning"
 }

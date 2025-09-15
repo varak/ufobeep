@@ -314,5 +314,6 @@
   "aircraftDataSource": "מקור נתונים",
   "noAircraftDetected": "שום מטוס לא זיהה",
   "sightingReport": "דיווח Sighting",
-  "ufoAlert": "עב\"ם התראה"
+  "ufoAlert": "עב\"ם התראה",
+  "alert": "התראה"
 }
