@@ -114,17 +114,6 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
     }
   }, [alertId, fetchComments])
 
-  // Check follow status when user is authenticated
-  useEffect(() => {
-    if (isAuthenticated) {
-      checkFollowStatus()
-      // Close login form if user just authenticated
-      setShowLoginForm(false)
-      setMessage(t('successfullyLoggedIn', 'Successfully logged in!'))
-      setMessageType('success')
-    }
-  }, [isAuthenticated, alertId, checkFollowStatus, t])
-
   const checkFollowStatus = useCallback(async () => {
     if (!isAuthenticated) return
 
@@ -144,6 +133,17 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
       console.error('Failed to check follow status:', error)
     }
   }, [isAuthenticated, alertId, getAuthToken])
+
+  // Check follow status when user is authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      checkFollowStatus()
+      // Close login form if user just authenticated
+      setShowLoginForm(false)
+      setMessage(t('successfullyLoggedIn', 'Successfully logged in!'))
+      setMessageType('success')
+    }
+  }, [isAuthenticated, alertId, checkFollowStatus, t])
 
   const handleFollowToggle = async () => {
     if (!isAuthenticated) return
