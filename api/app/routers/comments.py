@@ -164,6 +164,51 @@ async def create_comment(
 
     return {"id": row["id"]}
 
+@router.delete("/{sighting_id}/comments/{comment_id}", status_code=200)
+async def delete_comment(
+    sighting_id: str,
+    comment_id: str,
+    user_id: str = Depends(_uid)
+) -> Dict[str, Any]:
+    """Delete a comment - only the comment author can delete their comment"""
+    pool = await get_database_pool()
+
+    async with pool.acquire() as conn:
+        # First check if the comment exists and belongs to the user
+        comment_row = await conn.fetchrow(
+            "SELECT user_id FROM comments WHERE id = $1 AND sighting_id = $2",
+            comment_id, sighting_id
+        )
+
+        if not comment_row:
+            raise HTTPException(status_code=404, detail="Comment not found")
+
+        if str(comment_row['user_id']) != str(user_id):
+            raise HTTPException(status_code=403, detail="You can only delete your own comments")
+
+        # Delete the comment
+        result = await conn.execute(
+            "DELETE FROM comments WHERE id = $1 AND sighting_id = $2 AND user_id = $3",
+            comment_id, sighting_id, user_id
+        )
+
+        if result == "DELETE 0":
+            raise HTTPException(status_code=404, detail="Comment not found or already deleted")
+
+    # Trigger SSE broadcast for real-time web updates
+    try:
+        async with httpx.AsyncClient() as client:
+            await client.post(
+                f"https://ufobeep.com/api/alerts/{sighting_id}/comments",
+                json={"broadcast_only": True},
+                timeout=2.0
+            )
+        logger.info(f"SSE broadcast triggered for comment deletion on sighting {sighting_id}")
+    except Exception as e:
+        logger.warning(f"Failed to trigger SSE broadcast for comment deletion: {e}")
+
+    return {"message": "Comment deleted successfully"}
+
 @router.post("/{sighting_id}/follow", status_code=201)
 async def follow_sighting(sighting_id: str, user_id: str = Depends(_uid)) -> Dict[str, Any]:
     pool = await get_database_pool()
