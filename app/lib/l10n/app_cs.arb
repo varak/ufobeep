@@ -227,7 +227,7 @@
   "imageOnly": "Pouze obrázek",
   "mediaOnly": "Pouze média",
   "timeJustNow": "právě teď",
-  "timeDaysAgo": "_ _ PLACETETERER _ 0 _ _ d před",
+  "timeDaysAgo": "Před pár dny",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "_ _ PLACETETERER _ 0 _ _ h před",
+  "timeHoursAgo": "Před pár hodinami",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "_ _ PLACETETERER _ 0 _ _ m před",
+  "timeMinutesAgo": "Před pár minutami",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -322,6 +322,10 @@
   "gallery": "Galerie",
   "basicSettings": "Základní nastavení",
   "appSettings": "Nastavení aplikace",
+  "timeFormat": "Časový formát",
+  "timeFormat24Hour": "24 hodin (14: 30)",
+  "timeFormat12Hour": "12- hodina (14: 30)",
+  "timeFormatDesc": "Doba zobrazení ve formátu 24 hodin nebo 12 hodin",
   "alertRange": "Rozsah upozornění",
   "manageNotificationsDesc": "Správa předplatného a nastavení",
   "permissionsTitle": "Povolení",
@@ -571,6 +575,7 @@
   "coordinatesLabel": "Souřadnice",
   "eventTime": "Doba události",
   "reportedTime": "Vykazovaný čas",
+  "addedToUfobeep": "Přidáno do UFOBeep",
   "mufonDatabaseReport": "MUFON Databázová zpráva",
   "copyShortLinkTitle": "Kopírovat odkaz do schránky",
   "imageNotFound": "Obrázek nenalezen",

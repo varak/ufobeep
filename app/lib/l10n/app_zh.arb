@@ -227,7 +227,7 @@
   "imageOnly": "只有图像",
   "mediaOnly": "仅限媒体",
   "timeJustNow": "刚才",
-  "timeDaysAgo": "早点开始",
+  "timeDaysAgo": "# 几天前,我来到了这里#",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "早点说",
+  "timeHoursAgo": "0小时前",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "0米前的地盘",
+  "timeMinutesAgo": "0分钟前",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -322,6 +322,10 @@
   "gallery": "图片库",
   "basicSettings": "基本设置",
   "appSettings": "应用程序设置",
+  "timeFormat": "时间格式",
+  "timeFormat24Hour": "24小时(14:30)",
+  "timeFormat12Hour": "12小时(下午2: 30)",
+  "timeFormatDesc": "以24小时或12小时格式显示时间",
   "alertRange": "警报范围",
   "manageNotificationsDesc": "管理订阅设置( S)",
   "permissionsTitle": "权限",
@@ -571,6 +575,7 @@
   "coordinatesLabel": "坐标",
   "eventTime": "活动时间",
   "reportedTime": "报告时间",
+  "addedToUfobeep": "添加到UFOBEP",
   "mufonDatabaseReport": "毛里求斯 数据库报告",
   "copyShortLinkTitle": "复制链接到剪贴板",
   "imageNotFound": "未找到图像",

@@ -227,7 +227,7 @@
   "imageOnly": "Nur Bilder",
   "mediaOnly": "Nur Medien",
   "timeJustNow": "jetzt",
-  "timeDaysAgo": "__PLACEHOLDER_0_ d vor",
+  "timeDaysAgo": "__PLACEHOLDER_0_ vor Tagen",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "__PLACEHOLDER_0_ vor",
+  "timeHoursAgo": "__PLACEHOLDER_0_ vor Stunden",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{count} vor",
+  "timeMinutesAgo": "__PLACEHOLDER_0_ vor Minuten",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -322,6 +322,10 @@
   "gallery": "Galerie",
   "basicSettings": "Grundeinstellungen",
   "appSettings": "App-Einstellungen",
+  "timeFormat": "Zeitformat",
+  "timeFormat24Hour": "24-stunden (14:30)",
+  "timeFormat12Hour": "12-Stunden (2:30 Uhr)",
+  "timeFormatDesc": "Anzeigezeit im 24-Stunden- oder 12-Stunden-Format",
   "alertRange": "Alarmbereich",
   "manageNotificationsDesc": "Abonnements verwalten & Einstellungen",
   "permissionsTitle": "Genehmigungen",
@@ -571,6 +575,7 @@
   "coordinatesLabel": "Koordinaten",
   "eventTime": "Veranstaltungszeit",
   "reportedTime": "Gemeldete Zeit",
+  "addedToUfobeep": "Zusätzlich zu UFOBeep",
   "mufonDatabaseReport": "MUFON Datenbankbericht",
   "copyShortLinkTitle": "Kopieren Sie Link zur Zwischenablage",
   "imageNotFound": "Bild nicht gefunden",

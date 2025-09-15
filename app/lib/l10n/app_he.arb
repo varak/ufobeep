@@ -227,7 +227,7 @@
   "imageOnly": "צילום בלבד",
   "mediaOnly": "רק מדיה",
   "timeJustNow": "רק עכשיו",
-  "timeDaysAgo": "שם הסרטון: PLACEHOLDER_0__D ago",
+  "timeDaysAgo": "שם הסרטון: PLACEHOLDER_0__Day ago",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "שם הסרטון: PLACEHOLDER_0__h ago",
+  "timeHoursAgo": "שם הסרטון: PLACEHOLDER_0___Times ago",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "שם הסרטון: PLACEHOLDER_0_M ago",
+  "timeMinutesAgo": "שם הסרטון: PLACEHOLDER_0___Times ago",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -322,6 +322,10 @@
   "gallery": "גלריה",
   "basicSettings": "הגדרות בסיסיות",
   "appSettings": "הגדרות App Settings",
+  "timeFormat": "עיצוב זמן",
+  "timeFormat24Hour": "24 שעות (14:30)",
+  "timeFormat12Hour": "12 שעות (2:30 ראש)",
+  "timeFormatDesc": "מציג זמן בפורמט 24 שעות או 12 שעות",
   "alertRange": "המונחים",
   "manageNotificationsDesc": "ניהול מנויים והגדרות",
   "permissionsTitle": "הרשאות",
@@ -571,6 +575,7 @@
   "coordinatesLabel": "לתאם",
   "eventTime": "זמן אירוע",
   "reportedTime": "זמן דיווח",
+  "addedToUfobeep": "תגית: UFOBeep",
   "mufonDatabaseReport": "MUFON דוח מסד נתונים",
   "copyShortLinkTitle": "קישור ל-Creboard",
   "imageNotFound": "תמונה לא נמצאה",

@@ -227,7 +227,7 @@
   "imageOnly": "Μόνο εικόνα",
   "mediaOnly": "Μόνο μέσα ενημέρωσης",
   "timeJustNow": "μόλις τώρα",
-  "timeDaysAgo": "__PLACEHOLDER_0_D πριν",
+  "timeDaysAgo": "__PACHOLDER_0_ ημέρες πριν",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "__PLACHOLDER_0_ h πριν",
+  "timeHoursAgo": "__PLACEHOLDER_0_ ώρες πριν",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "ΠΡΙΝ ΤΗΝ ΠΡΙΝ",
+  "timeMinutesAgo": "__PLACEHOLDER_0_ πριν από λίγα λεπτά",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -322,6 +322,10 @@
   "gallery": "Γκαλερί",
   "basicSettings": "Βασικές ρυθμίσεις",
   "appSettings": "Settings εφαρμογών",
+  "timeFormat": "Μορφή χρόνου",
+  "timeFormat24Hour": "24 ώρες (14:30)",
+  "timeFormat12Hour": "12 ώρες (2:30 μ.μ.)",
+  "timeFormatDesc": "Εμφάνιση ώρας σε 24ωρη ή 12ωρη μορφή",
   "alertRange": "Εύρος ειδοποίησης",
   "manageNotificationsDesc": "Διαχείριση συνδρομών & ρυθμίσεων",
   "permissionsTitle": "Άδειες",
@@ -571,6 +575,7 @@
   "coordinatesLabel": "Συντεταγμένες",
   "eventTime": "Ώρα συμβάντος",
   "reportedTime": "Χρόνος αναφοράς",
+  "addedToUfobeep": "Προστέθηκε στο UFOBeep",
   "mufonDatabaseReport": "ΜΟΥΦΟΝ Έκθεση βάσης δεδομένων",
   "copyShortLinkTitle": "Αντιγραφή δεσμού στο πρόχειρο",
   "imageNotFound": "Η εικόνα δε βρέθηκε",

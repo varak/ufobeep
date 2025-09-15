@@ -227,7 +227,7 @@
   "imageOnly": "Kun billede",
   "mediaOnly": "Kun medier",
   "timeJustNow": "lige nu",
-  "timeDaysAgo": "_ _ PLACEREPORT _ 0 _ _ d siden",
+  "timeDaysAgo": "_ _ PLACEREPORT _ 0 _ _ dage siden",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "_ _ PLACEREPORT _ 0 _ _ h siden",
+  "timeHoursAgo": "_ _ PLACEREPORT _ 0 _ _ timer siden",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "_ _ PLACEREPORT _ 0 _ m siden",
+  "timeMinutesAgo": "_ _ PLACEREPER _ 0 _ _ minutter siden",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -322,6 +322,10 @@
   "gallery": "Galleri",
   "basicSettings": "Grundlæggende indstillinger",
   "appSettings": "App indstillinger",
+  "timeFormat": "Tidsformat",
+  "timeFormat24Hour": "24 timer (14: 30)",
+  "timeFormat12Hour": "12-time (14: 30)",
+  "timeFormatDesc": "Vis tid i 24- timers eller 12- timers format",
   "alertRange": "Advarselsområde",
   "manageNotificationsDesc": "Administrer abonnementer og indstillinger",
   "permissionsTitle": "Tilladelser",
@@ -571,6 +575,7 @@
   "coordinatesLabel": "Koordinater",
   "eventTime": "Begivenhedstid",
   "reportedTime": "Rapporteret tid",
+  "addedToUfobeep": "Tilføjet UFOBeep",
   "mufonDatabaseReport": "MUFON Databaserapport",
   "copyShortLinkTitle": "Kopiér link til udklipsholderen",
   "imageNotFound": "Billede ikke fundet",

@@ -227,7 +227,7 @@
   "imageOnly": "Apenas a Imagem",
   "mediaOnly": "Somente mídia",
   "timeJustNow": "agora mesmo",
-  "timeDaysAgo": "{count} há",
+  "timeDaysAgo": "{count} há dias",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "{count} há 1 hora",
+  "timeHoursAgo": "{count} há horas",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{count} há 3 dias",
+  "timeMinutesAgo": "{count} há minutos",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -322,6 +322,10 @@
   "gallery": "Galeria",
   "basicSettings": "Configuração Básica",
   "appSettings": "Configuração da Aplicação",
+  "timeFormat": "Formato de Hora",
+  "timeFormat24Hour": "24 horas (14:30)",
+  "timeFormat12Hour": "12 horas (2h30)",
+  "timeFormatDesc": "Tempo de exibição em formato 24 horas ou 12 horas",
   "alertRange": "Intervalo de Alerta",
   "manageNotificationsDesc": "Gerenciar as & configurações de assinaturas",
   "permissionsTitle": "Permissões",
@@ -571,6 +575,7 @@
   "coordinatesLabel": "Coordenadas",
   "eventTime": "Hora do evento",
   "reportedTime": "Hora de notificação",
+  "addedToUfobeep": "Adicionado ao OVNIBeep",
   "mufonDatabaseReport": "MUFON Relatório da Base de Dados",
   "copyShortLinkTitle": "Copiar o link para a área de transferência",
   "imageNotFound": "Imagem não encontrada",

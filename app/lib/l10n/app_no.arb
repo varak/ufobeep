@@ -227,7 +227,7 @@
   "imageOnly": "Image Only",
   "mediaOnly": "Media Only",
   "timeJustNow": "just now",
-  "timeDaysAgo": "{count} d ago",
+  "timeDaysAgo": "{count} days ago",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "{count} h ago",
+  "timeHoursAgo": "{count} hours ago",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{count} m ago",
+  "timeMinutesAgo": "{count} minutes ago",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -322,6 +322,10 @@
   "gallery": "Gallery",
   "basicSettings": "Basic Settings",
   "appSettings": "App Settings",
+  "timeFormat": "Time Format",
+  "timeFormat24Hour": "24-hour (14:30)",
+  "timeFormat12Hour": "12-hour (2:30 PM)",
+  "timeFormatDesc": "Display time in 24-hour or 12-hour format",
   "alertRange": "Alert Range",
   "manageNotificationsDesc": "Manage subscriptions & settings",
   "permissionsTitle": "Permissions",
@@ -571,6 +575,7 @@
   "coordinatesLabel": "Coordinates",
   "eventTime": "Event time",
   "reportedTime": "Reported time",
+  "addedToUfobeep": "Added to UFOBeep",
   "mufonDatabaseReport": "MUFON Database Report",
   "copyShortLinkTitle": "Copy link to clipboard",
   "imageNotFound": "Image not found",

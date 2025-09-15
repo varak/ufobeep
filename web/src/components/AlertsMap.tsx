@@ -209,21 +209,24 @@ export default function AlertsMap({
         return !isNaN(dt.getTime())
       }
 
-      const getDisplayDate = (a: any): string => {
-        const enriched = a?.enrichment || a?.enrichment_data
-        // Prefer event occurrence date (MUFON or enriched cases)
-        const firstChoice = enriched?.sighting_datetime || enriched?.event_datetime || enriched?.occurred_at
-        const secondChoice = enriched?.report_date || enriched?.reported_at
-        const fallback = a?.created_at
-        const chosen = firstChoice || secondChoice || fallback
-        if (isValidDate(chosen)) return new Date(chosen).toLocaleDateString()
-        return ''
+      const getSightingDate = (a: any): string => {
+        const e = a?.enrichment || a?.enrichment_data
+        const val = e?.sighting_datetime || e?.event_datetime || e?.occurred_at
+        return isValidDate(val) ? new Date(val).toLocaleDateString() : ''
+      }
+
+      const getReportedDate = (a: any): string => {
+        const e = a?.enrichment || a?.enrichment_data
+        const val = e?.report_date || e?.reported_at || a?.created_at
+        return isValidDate(val) ? new Date(val).toLocaleDateString() : ''
       }
 
       return (
         <div className="text-sm w-80">
           <h4 className="font-semibold text-gray-900 mb-1">
-            {displayAlert.title ? AlertTitleUtils.getShortTitle(displayAlert) : 'UFO Sighting'}
+            {(displayAlert.source === 'mufon' || displayAlert.username === 'MUFON_Database')
+              ? (displayAlert.title ? AlertTitleUtils.getShortTitle(displayAlert as any) : 'MUFON Sighting')
+              : 'UFOBeep UFO Sighting'}
           </h4>
 
           {/* Media thumbnails */}
@@ -280,8 +283,15 @@ export default function AlertsMap({
             )}
           </p>
 
-          {getDisplayDate(displayAlert) && (
-            <div className="text-xs text-gray-400 mt-1">{getDisplayDate(displayAlert)}</div>
+          {(getSightingDate(displayAlert) || getReportedDate(displayAlert)) && (
+            <div className="text-xs text-gray-400 mt-1 space-y-0.5">
+              {getSightingDate(displayAlert) && (
+                <div>🕒 Sighted: {getSightingDate(displayAlert)}</div>
+              )}
+              {getReportedDate(displayAlert) && (
+                <div>📝 Reported: {getReportedDate(displayAlert)}</div>
+              )}
+            </div>
           )}
 
           <div className="mt-2">
@@ -586,24 +596,7 @@ export default function AlertsMap({
         arr.push(p)
         groups.set(key, arr)
       })
-      const jitterMap = new Map<string, [number, number]>()
-      groups.forEach((arr, key) => {
-        if (arr.length <= 1) return
-        const [lat0Str, lng0Str] = key.split(',')
-        const lat0 = parseFloat(lat0Str)
-        const lng0 = parseFloat(lng0Str)
-        const cosLat = Math.cos((lat0 * Math.PI) / 180)
-        const degPerMeterLat = 1 / 111320
-        const degPerMeterLng = 1 / (111320 * (cosLat || 1))
-        const base = 10 // meters
-        const r = Math.min(30, base + arr.length * 2)
-        arr.forEach((p, i) => {
-          const angle = (2 * Math.PI * i) / arr.length
-          const dLat = (r * Math.sin(angle)) * degPerMeterLat
-          const dLng = (r * Math.cos(angle)) * degPerMeterLng
-          jitterMap.set(p.id, [lat0 + dLat, lng0 + dLng])
-        })
-      })
+      // No jitter by default; we'll spiderfy on click using these groups
 
       clusters.forEach((c: any) => {
         const [lng, lat] = c.geometry.coordinates
@@ -634,10 +627,53 @@ export default function AlertsMap({
           const id = c.properties && c.properties.id
           const alert = (alerts as any[]).find(a => a.id === id)
           if (!alert || !isValidLatLng(alert.location)) return
-          const jitterPos = jitterMap.get(String(id)) as [number, number] | undefined
-          const marker = createUfoMarker(L, alert, map, jitterPos)
+          const marker = createUfoMarker(L, alert, map)
           const popup = L.popup({ maxWidth: 350, className: 'custom-popup' }).setContent(createPopupContentHelper(alert, L))
           marker.bindPopup(popup)
+          marker.on('click', () => {
+            const key = `${lat.toFixed(5)},${lng.toFixed(5)}`
+            const arr = groups.get(key) || []
+            if (arr.length <= 1) {
+              try { marker.openPopup() } catch {}
+              return
+            }
+            // Clear existing spiderfy
+            // Compute circle positions and draw
+            const cosLat = Math.cos((lat * Math.PI) / 180)
+            const degPerMeterLat = 1 / 111320
+            const degPerMeterLng = 1 / (111320 * (cosLat || 1))
+            const base = 12 // meters
+            const r = Math.min(36, base + arr.length * 2.5)
+            const sMarkers: any[] = []
+            const lines: any[] = []
+            // Remove any previous spiderfy artifacts
+            try {
+              // @ts-ignore
+              if (window.__ufobeepSpider) {
+                window.__ufobeepSpider.markers.forEach((m:any)=>{try{m.remove()}catch{}})
+                window.__ufobeepSpider.lines.forEach((l:any)=>{try{l.remove()}catch{}})
+                window.__ufobeepSpider=null
+              }
+            } catch {}
+            arr.forEach((p, i) => {
+              const angle = (2 * Math.PI * i) / arr.length
+              const dLat = (r * Math.sin(angle)) * degPerMeterLat
+              const dLng = (r * Math.cos(angle)) * degPerMeterLng
+              const sLat = lat + dLat
+              const sLng = lng + dLng
+              const a = (alerts as any[]).find(x => String(x.id) === String(p.id))
+              if (!a) return
+              const sm = createUfoMarker(L, a, map, [sLat, sLng])
+              const sp = L.popup({ maxWidth: 350, className: 'custom-popup' }).setContent(createPopupContentHelper(a, L))
+              sm.bindPopup(sp)
+              sm.addTo(map)
+              sMarkers.push(sm)
+              const ln = L.polyline([[lat, lng], [sLat, sLng]], { color: '#39FF14', weight: 1, opacity: 0.6 })
+              ln.addTo(map)
+              lines.push(ln)
+            })
+            try { /* @ts-ignore */ window.__ufobeepSpider = { markers: sMarkers, lines } } catch {}
+          })
           marker.addTo(map)
           markersRef.current.push(marker)
         }
@@ -755,20 +791,21 @@ export default function AlertsMap({
       const lng = pos ? Number(pos[1]) : Number(alert.location.longitude)
       return L.marker([lat, lng], { icon: customIcon })
     } else {
-      // Use circle markers for regular beep sightings (existing behavior)
+      // UFOBeep markers: bright cyan UFO icon to stand out
       const lat = pos ? Number(pos[0]) : Number(alert.location.latitude)
       const lng = pos ? Number(pos[1]) : Number(alert.location.longitude)
-      return L.circleMarker(
-        [lat, lng],
-        {
-          radius: 8,
-          fillColor: getAlertColor(alert.alert_level),
-          color: '#ffffff',
-          weight: 2,
-          opacity: 1,
-          fillOpacity: 0.8
-        }
-      )
+      const html = `
+        <div style="
+          background: #00E5FF;
+          border: 2px solid #ffffff;
+          border-radius: 50%;
+          width: 26px; height: 26px;
+          display: flex; align-items: center; justify-content: center;
+          color: #0b1020; font-size: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.45);
+          text-shadow: 0 0 2px rgba(255,255,255,0.6);
+        ">🛸</div>`
+      const divIcon = L.divIcon({ html, className: 'beep-marker', iconSize: [26, 26], iconAnchor: [13, 13] })
+      return L.marker([lat, lng], { icon: divIcon })
     }
   }
 

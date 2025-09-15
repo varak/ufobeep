@@ -227,7 +227,7 @@
   "imageOnly": "Tylko obrazek",
   "mediaOnly": "Tylko media",
   "timeJustNow": "właśnie teraz",
-  "timeDaysAgo": "_ _ PLACESENT _ 0 _ _ d temu",
+  "timeDaysAgo": "_ _ PLACESENT _ 0 _ _ dni temu",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "_ _ PLACESENT _ 0 _ _ h temu",
+  "timeHoursAgo": "_ _ PLACESENT _ 0 _ _ godzin temu",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "_ _ PLACESENT _ 0 _ _ m temu",
+  "timeMinutesAgo": "_ _ PLACESENT _ 0 _ _ minutes temu",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -322,6 +322,10 @@
   "gallery": "Galeria",
   "basicSettings": "Ustawienia podstawowe",
   "appSettings": "Ustawienia aplikacji",
+  "timeFormat": "Format czasu",
+  "timeFormat24Hour": "24 godziny (14: 30)",
+  "timeFormat12Hour": "12 godzin (14: 30)",
+  "timeFormatDesc": "Czas wyświetlania w formacie 24-godzinnym lub 12-godzinnym",
   "alertRange": "Zakres alarmów",
   "manageNotificationsDesc": "Zarządzanie subskrypcjami i ustawieniami",
   "permissionsTitle": "Uprawnienia",
@@ -571,6 +575,7 @@
   "coordinatesLabel": "Współrzędne",
   "eventTime": "Czas zdarzenia",
   "reportedTime": "Zgłoszony czas",
+  "addedToUfobeep": "Dodano do UFOBeep",
   "mufonDatabaseReport": "MUFON Sprawozdanie z bazy danych",
   "copyShortLinkTitle": "Kopiuj link do schowka",
   "imageNotFound": "Nie znaleziono obrazka",

@@ -227,7 +227,7 @@
   "imageOnly": "画像のみ",
   "mediaOnly": "メディアのみ",
   "timeJustNow": "ただ今",
-  "timeDaysAgo": "{count} d 前に",
+  "timeDaysAgo": "{count} 日前",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "__PLACEHOLDER_0_h 前に",
+  "timeHoursAgo": "__PLACEHOLDER_0_時間前",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "__PLACEHOLDER_0_m 前に",
+  "timeMinutesAgo": "{count} 分前",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -322,6 +322,10 @@
   "gallery": "ギャラリー",
   "basicSettings": "基本設定",
   "appSettings": "アプリの設定",
+  "timeFormat": "時間フォーマット",
+  "timeFormat24Hour": "24時間(14:30)",
+  "timeFormat12Hour": "12時間(2:30 PM)",
+  "timeFormatDesc": "24時間または12時間のフォーマットの表示時間",
   "alertRange": "アラート範囲",
   "manageNotificationsDesc": "サブスクリプションと設定の管理",
   "permissionsTitle": "パーミッション",
@@ -571,6 +575,7 @@
   "coordinatesLabel": "コーディネート",
   "eventTime": "イベント情報",
   "reportedTime": "報告時間",
+  "addedToUfobeep": "UFOBeep に追加",
   "mufonDatabaseReport": "MUFONについて データベースレポート",
   "copyShortLinkTitle": "クリップボードへのリンクをコピーする",
   "imageNotFound": "画像が見つかりません",

@@ -227,7 +227,7 @@
   "imageOnly": "Resim Sadece Resim",
   "mediaOnly": "Medya Sadece Medya",
   "timeJustNow": "sadece şimdi",
-  "timeDaysAgo": "{count} d önce",
+  "timeDaysAgo": "{count} days ago",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "{count} h ago",
+  "timeHoursAgo": "{count} saatler önce",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{count} m ago",
+  "timeMinutesAgo": "{count} dakika önce",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -322,6 +322,10 @@
   "gallery": "Gallery",
   "basicSettings": "Temel Ayarlar",
   "appSettings": "App Ayarları",
+  "timeFormat": "Zaman Biçimi",
+  "timeFormat24Hour": "24 saat (14:30)",
+  "timeFormat12Hour": "12 saat (2:30 PM)",
+  "timeFormatDesc": "24 saat veya 12 saat içinde görüntü zamanı",
   "alertRange": "Alert Range",
   "manageNotificationsDesc": "Aboneliği ve ayarları yönetin",
   "permissionsTitle": "İzinler",
@@ -571,6 +575,7 @@
   "coordinatesLabel": "Koordinatörleri",
   "eventTime": "Event time",
   "reportedTime": "Raporlanmış zaman",
+  "addedToUfobeep": "UFOBeep",
   "mufonDatabaseReport": "MUFON Veritabanı Raporu",
   "copyShortLinkTitle": "Klip için kopya link",
   "imageNotFound": "Resim bulunamadı",

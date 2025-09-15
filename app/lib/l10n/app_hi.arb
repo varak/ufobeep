@@ -227,7 +227,7 @@
   "imageOnly": "केवल छवि",
   "mediaOnly": "केवल मीडिया",
   "timeJustNow": "अभी",
-  "timeDaysAgo": "To get the time",
+  "timeDaysAgo": "{count}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "To get the time",
+  "timeHoursAgo": "{count}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "To get the time",
+  "timeMinutesAgo": "0_0_0_0_0 मिनट पहले",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -322,6 +322,10 @@
   "gallery": "गैलरी",
   "basicSettings": "मूल सेटिंग",
   "appSettings": "ऐप सेटिंग",
+  "timeFormat": "समय स्वरूप",
+  "timeFormat24Hour": "24 घंटे (14:30)",
+  "timeFormat12Hour": "12 घंटे (2:30 अपराह्न)",
+  "timeFormatDesc": "24 घंटे या 12 घंटे के प्रारूप में समय प्रदर्शित करें",
   "alertRange": "चेतावनी रेंज",
   "manageNotificationsDesc": "सदस्यता और सेटिंग्स प्रबंधित करें",
   "permissionsTitle": "अनुमतियां",
@@ -571,6 +575,7 @@
   "coordinatesLabel": "निर्देशांक",
   "eventTime": "घटना समय",
   "reportedTime": "रिपोर्ट समय",
+  "addedToUfobeep": "UFOBeep में जोड़ा गया",
   "mufonDatabaseReport": "MUFON डेटाबेस रिपोर्ट",
   "copyShortLinkTitle": "क्लिपबोर्ड के लिए लिंक कॉपी करें",
   "imageNotFound": "छवि नहीं मिली",

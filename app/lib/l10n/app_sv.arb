@@ -227,7 +227,7 @@
   "imageOnly": "Bild endast",
   "mediaOnly": "Media Endast",
   "timeJustNow": "just nu",
-  "timeDaysAgo": "__PLACEHOLDER_0_D sedan",
+  "timeDaysAgo": "__PLACEHOLDER_0_dagar sedan",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "{count} för",
+  "timeHoursAgo": "{count}_ för några timmar sedan",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "{count} för mig",
+  "timeMinutesAgo": "{count} för några minuter sedan",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -322,6 +322,10 @@
   "gallery": "Galleriet",
   "basicSettings": "Grundläggande inställningar",
   "appSettings": "App Inställningar",
+  "timeFormat": "Tidsformat",
+  "timeFormat24Hour": "24 timmar (14:30)",
+  "timeFormat12Hour": "12 timmar (2:30 PM)",
+  "timeFormatDesc": "Visa tid i 24-timmars eller 12-timmars format",
   "alertRange": "Alert Range",
   "manageNotificationsDesc": "Hantera prenumerationer och inställningar",
   "permissionsTitle": "Tillstånd",
@@ -571,6 +575,7 @@
   "coordinatesLabel": "Koordinater",
   "eventTime": "Event Time",
   "reportedTime": "Rapporterad tid",
+  "addedToUfobeep": "Tillagd till UFOBeep",
   "mufonDatabaseReport": "Mufonen Databasrapport",
   "copyShortLinkTitle": "Kopiera länk till Clipboard",
   "imageNotFound": "Bild som inte hittats",

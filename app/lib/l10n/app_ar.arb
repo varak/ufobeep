@@ -227,7 +227,7 @@
   "imageOnly": "التصوير فقط",
   "mediaOnly": "وسائط الإعلام فقط",
   "timeJustNow": "الآن",
-  "timeDaysAgo": "_BAR_ _BAR_",
+  "timeDaysAgo": "قبل أيام",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "قبل",
+  "timeHoursAgo": "قبل ساعات",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "_BAR_",
+  "timeMinutesAgo": "قبل دقائق",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -322,6 +322,10 @@
   "gallery": "Gallery",
   "basicSettings": "الأساسيات",
   "appSettings": "App Settings",
+  "timeFormat": "الشكل الزمني",
+  "timeFormat24Hour": "24 ساعة (14:30)",
+  "timeFormat12Hour": "12 ساعة (2:30 PM)",
+  "timeFormatDesc": "وقت العرض على مدار الساعة أو 12 ساعة",
   "alertRange": "إنذار رانج",
   "manageNotificationsDesc": "الاشتراكات في المؤسسة",
   "permissionsTitle": "الانبعاثات",
@@ -571,6 +575,7 @@
   "coordinatesLabel": "التنسيق",
   "eventTime": "وقت الحدث",
   "reportedTime": "الوقت المبلغ عنه",
+  "addedToUfobeep": "مضافا إليها",
   "mufonDatabaseReport": "MUFON تقرير قاعدة البيانات",
   "copyShortLinkTitle": "وصلة نسخ إلى لوح مشبك",
   "imageNotFound": "لم يعثر على صورة",

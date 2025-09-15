@@ -227,7 +227,7 @@
   "imageOnly": "Только изображение",
   "mediaOnly": "Только СМИ",
   "timeJustNow": "только сейчас",
-  "timeDaysAgo": "__PlacehoLDer_0__ d ago",
+  "timeDaysAgo": "___________________",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "__PlacehoLDer_0__ h ago",
+  "timeHoursAgo": "____________________________",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "__________________________",
+  "timeMinutesAgo": "____________________________",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -322,6 +322,10 @@
   "gallery": "Галерея",
   "basicSettings": "Основные настройки",
   "appSettings": "Настройки приложений",
+  "timeFormat": "Формат времени",
+  "timeFormat24Hour": "24 часа (14:30)",
+  "timeFormat12Hour": "12 часов (2:30 вечера)",
+  "timeFormatDesc": "Время показа в 24-часовом или 12-часовом формате",
   "alertRange": "Диапазон тревоги",
   "manageNotificationsDesc": "Управление подписками и настройками",
   "permissionsTitle": "Разрешения",
@@ -571,6 +575,7 @@
   "coordinatesLabel": "Координация",
   "eventTime": "Время события",
   "reportedTime": "Сообщенное время",
+  "addedToUfobeep": "Добавлено в UFOBeep",
   "mufonDatabaseReport": "МУФОН Отчет о базе данных",
   "copyShortLinkTitle": "Скопировать ссылку на clipboard",
   "imageNotFound": "Изображение не найдено",

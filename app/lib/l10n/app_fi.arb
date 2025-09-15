@@ -227,7 +227,7 @@
   "imageOnly": "Vain kuva",
   "mediaOnly": "Vain media",
   "timeJustNow": "juuri nyt",
-  "timeDaysAgo": "_Placeholder_0__d sitten",
+  "timeDaysAgo": "_Placeholder_0__ päivää sitten",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "timeHoursAgo": "_Placeholder_0_h sitten",
+  "timeHoursAgo": "__PASSIHOLDER_0__ tunteja sitten",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -245,7 +245,7 @@
       }
     }
   },
-  "timeMinutesAgo": "_Placeholder_0_ m sitten",
+  "timeMinutesAgo": "_Placeholder_0__ minuuttia sitten",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -322,6 +322,10 @@
   "gallery": "Galleria",
   "basicSettings": "Perusasetukset",
   "appSettings": "Sovelluksen asetukset",
+  "timeFormat": "Aikamuoto",
+  "timeFormat24Hour": "24 tuntia (14:30)",
+  "timeFormat12Hour": "12 tuntia (2:30 PM)",
+  "timeFormatDesc": "Näyttöaika 24 tunnin tai 12 tunnin muodossa",
   "alertRange": "Varoitusalue",
   "manageNotificationsDesc": "Hallitse tilauksia ja asetuksia",
   "permissionsTitle": "Lupa",
@@ -571,6 +575,7 @@
   "coordinatesLabel": "Koordinaatit",
   "eventTime": "Tapahtuma-aika",
   "reportedTime": "Raportoitu aika",
+  "addedToUfobeep": "Lisätty UFO- piippiin",
   "mufonDatabaseReport": "MUFON Tietokantaraportti",
   "copyShortLinkTitle": "Kopioi linkki leikepöydälle",
   "imageNotFound": "Kuvaa ei löytynyt",
