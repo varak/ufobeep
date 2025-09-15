@@ -279,7 +279,7 @@ async def get_user_subscriptions(user_id: str = Depends(_uid)) -> Dict[str, Any]
         for row in rows:
             subscriptions.append({
                 'sighting_id': str(row['sighting_id']),
-                'title': row['title'] or (row['description'][:50] + '...' if row['description'] else 'UFO Sighting'),
+                'title': row['title'] or 'UFOBeep Alert',
                 'location_name': row['location_name'] or 'Unknown Location',
                 'comment_count': row['comment_count'],
                 'created_at': row['created_at'].isoformat()

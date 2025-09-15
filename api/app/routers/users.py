@@ -1766,7 +1766,7 @@ async def get_user_subscriptions(user_id: str, current_user = Depends(get_curren
         # Format subscriptions for response
         formatted_subs = []
         for sub in subscriptions:
-            title = sub['title'] or (sub['description'][:50] + '...' if sub['description'] else 'UFO Sighting')
+            title = sub['title'] or 'UFOBeep Alert'
             
             formatted_subs.append({
                 'sighting_id': str(sub['sighting_id']),
