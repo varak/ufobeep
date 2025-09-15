@@ -258,14 +258,19 @@ async def get_user_subscriptions(user_id: str = Depends(_uid)) -> Dict[str, Any]
                 s.id as sighting_id,
                 s.title,
                 s.description,
-                s.location_name,
+                COALESCE(
+                    enrichment_data->'geocoding'->>'display_name',
+                    enrichment_data->'geocoding'->>'location',
+                    enrichment_data->>'location_name',
+                    'Unknown Location'
+                ) as location_name,
                 s.created_at,
                 COUNT(c.id) as comment_count
             FROM follows f
             JOIN sightings s ON f.sighting_id = s.id
             LEFT JOIN comments c ON s.id = c.sighting_id
             WHERE f.user_id = $1
-            GROUP BY s.id, s.title, s.description, s.location_name, s.created_at
+            GROUP BY s.id, s.title, s.description, s.created_at, s.enrichment_data
             ORDER BY f.created_at DESC
             LIMIT 50
         """, user_id)
