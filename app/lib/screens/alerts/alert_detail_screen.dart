@@ -985,35 +985,31 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
           ),
           const SizedBox(height: 16),
           
-          // Show existing comments if any
-          if (alert.commentCount > 0) ...[
-            FutureBuilder<List<Comment>>(
-              future: CommentsService().getComments(alert.id), // Remove limit to show all comments
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: CircularProgressIndicator(color: AppColors.brandPrimary, strokeWidth: 2),
-                    ),
-                  );
-                }
+          // Show existing comments - always load, don't rely on commentCount
+          FutureBuilder<List<Comment>>(
+            future: CommentsService().getComments(alert.id),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: CircularProgressIndicator(color: AppColors.brandPrimary, strokeWidth: 2),
+                  ),
+                );
+              }
 
-                if (snapshot.hasError) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Error loading comments',
-                      style: const TextStyle(color: AppColors.semanticError, fontSize: 14),
-                    ),
-                  );
-                }
+              if (snapshot.hasError) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Error loading comments',
+                    style: const TextStyle(color: AppColors.semanticError, fontSize: 14),
+                  ),
+                );
+              }
 
-                final comments = snapshot.data ?? [];
-                if (comments.isEmpty) {
-                  return const SizedBox.shrink();
-                }
-
+              final comments = snapshot.data ?? [];
+              if (comments.isNotEmpty) {
                 return Column(
                   children: [
                     ...comments.map((comment) => _buildCommentItem(comment)).toList(),
@@ -1022,9 +1018,12 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                     const SizedBox(height: 16),
                   ],
                 );
-              },
-            ),
-          ],
+              }
+
+              // If no comments, still show a small spacing before the input field
+              return const SizedBox(height: 8);
+            },
+          ),
           
           // Inline comment input
           TextField(
