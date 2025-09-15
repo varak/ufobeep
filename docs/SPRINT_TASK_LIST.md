@@ -51,6 +51,8 @@
 - [ ] Add "Translate" buttons to mobile alert modals with instant translation
 - [ ] Integrate translation functionality into Next.js web pages
 - [ ] Add language detection and auto-translation for web visitors
+- [ ] **NEW**: Implement Google Analytics 4 tracking across web platform
+- [ ] **NEW**: Track user engagement, language preferences, and geographic distribution
 - [ ] **Outcome**: Map visualization rivaling NUFORC.org + real-time translation to all 21 supported languages
 
 ### **Phase 6: Polish & Launch Preparation** (Weeks 11-12)
@@ -60,6 +62,8 @@
 - [ ] SEO and discoverability improvements
 - [ ] Documentation for third-party API users
 - [ ] Play Store preparation when platform is complete
+- [ ] **NEW**: Explore desktop app via Electron (wrap web app with native notifications)
+- [ ] **NEW**: Evaluate desktop app feasibility and user demand
 - [ ] **Outcome**: World-class UFO research platform ready for public
 
 ---
@@ -309,12 +313,17 @@
 **Target Completion**: End of Week 2
 
 ### **✅ Completed**
-- [x] Created comprehensive development roadmap 
+- [x] Created comprehensive development roadmap
 - [x] Enhanced API documentation with NUFORC integration
 - [x] Added readable short URL generation to task list
 - [x] Established quality-first development approach
 - [x] **CRITICAL**: Fixed database connection pool leak causing API failures after 5-10 requests
 - [x] Updated documentation with prevention guidelines ([DATABASE_POOL_GUIDELINES.md](DATABASE_POOL_GUIDELINES.md))
+- [x] **Following Alerts Fix**: Fixed mobile app navigation and location display for UFOBeep/MUFON data
+- [x] **Comment Deletion**: Added comment deletion endpoints and mobile app functionality
+- [x] **Privacy Policy**: Comprehensive privacy policy with GDPR compliance and Matrix integration
+- [x] **Documentation Updates**: Added comment deletion and user subscription endpoints to ENDPOINTS.md
+- [x] **Web Update Mechanism**: Created documentation explaining how web users receive updates
 
 ### **🔄 In Progress**
 - [ ] **NEXT**: Enable PostGIS extension on production database
@@ -326,8 +335,26 @@
 3. **Test Approach**: All changes must maintain backward compatibility
 4. **Success Check**: Existing UFOBeep alert creation still works after database changes
 
-### **🔄 Update This Section**
-*Update this status section as you complete each phase/task to maintain roadmap clarity*
+### **📊 Current Development Status**
+*Updated: September 15, 2025*
+
+**Recent Achievements:**
+- ✅ Following Alerts completely functional with proper navigation and location display
+- ✅ Comment deletion working across web and mobile platforms
+- ✅ Privacy policy comprehensive and GDPR-compliant
+- ✅ Documentation updated with all recent API endpoints
+- ✅ Web update mechanism documented for user understanding
+
+**Next Priorities:**
+1. **Fix multi-media upload bug** (Phase 2 - critical)
+2. **Share-to-beep feature** (Phase 2 - critical)
+3. **DND/quiet hours** (Phase 2 - user experience)
+4. **NUFORC data import** (Phase 3 - major data expansion)
+5. **LibreTranslate + Google Analytics** (Phase 5 - internationalization & insights)
+
+**New Documentation:**
+- [WEB_UPDATE_MECHANISM.md](WEB_UPDATE_MECHANISM.md) - How web users receive updates
+- Updated [ENDPOINTS.md](ENDPOINTS.md) - Complete API documentation including comment deletion
 
 ## 📚 **Reference Documentation**
 - **Main Roadmap**: This document (SPRINT_TASK_LIST.md)

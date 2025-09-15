@@ -796,47 +796,17 @@ export default function AlertsMap({
           const popup = L.popup({ maxWidth: 350, className: 'custom-popup' }).setContent(createPopupContentHelper(alert, L))
           marker.bindPopup(popup)
           marker.on('click', () => {
-            const key = `${lat.toFixed(5)},${lng.toFixed(5)}`
-            const arr = groups.get(key) || []
-            if (arr.length <= 1) {
-              try { marker.openPopup() } catch {}
-              return
-            }
-            // Clear existing spiderfy
-            // Compute circle positions and draw
-            const cosLat = Math.cos((lat * Math.PI) / 180)
-            const degPerMeterLat = 1 / 111320
-            const degPerMeterLng = 1 / (111320 * (cosLat || 1))
-            const base = 12 // meters
-            const r = Math.min(36, base + arr.length * 2.5)
-            const sMarkers: any[] = []
-            const lines: any[] = []
-            // Remove any previous spiderfy artifacts
             try {
-              if (window.__ufobeepSpider) {
-                window.__ufobeepSpider.markers.forEach((m:any)=>{try{m.remove()}catch{}})
-                window.__ufobeepSpider.lines.forEach((l:any)=>{try{l.remove()}catch{}})
-                window.__ufobeepSpider=null
+              const key = `${lat.toFixed(5)},${lng.toFixed(5)}`
+              const arr = groups.get(key) || []
+              const z = Math.round(map.getZoom() || 0)
+              const alreadySeparated = jitterMap.has(String(id))
+              if (arr.length > 1 && z < 13 && !alreadySeparated) {
+                map.flyTo([lat, lng], Math.min(z + 3, 18), { duration: 0.5 })
+                return
               }
+              marker.openPopup()
             } catch {}
-            arr.forEach((p, i) => {
-              const angle = (2 * Math.PI * i) / arr.length
-              const dLat = (r * Math.sin(angle)) * degPerMeterLat
-              const dLng = (r * Math.cos(angle)) * degPerMeterLng
-              const sLat = lat + dLat
-              const sLng = lng + dLng
-              const a = (alerts as any[]).find(x => String(x.id) === String(p.id))
-              if (!a) return
-              const sm = createUfoMarker(L, a, map, [sLat, sLng])
-              const sp = L.popup({ maxWidth: 350, className: 'custom-popup' }).setContent(createPopupContentHelper(a, L))
-              sm.bindPopup(sp)
-              sm.addTo(map)
-              sMarkers.push(sm)
-              const ln = L.polyline([[lat, lng], [sLat, sLng]], { color: '#39FF14', weight: 1, opacity: 0.6 })
-              ln.addTo(map)
-              lines.push(ln)
-            })
-            try { window.__ufobeepSpider = { markers: sMarkers, lines } } catch {}
           })
           marker.addTo(map)
           markersRef.current.push(marker)

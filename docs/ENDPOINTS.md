@@ -197,9 +197,12 @@ GET /api/beep?source=NUFORC&shape=triangle&tier=1,2&near=Las%20Vegas&radius=200&
 ## Comments System
 - `GET /api/beep/{id}/comments` - Get sighting comments
 - `POST /api/beep/{id}/comments` - Add comment to sighting
+- `DELETE /api/beep/{sighting_id}/comments/{comment_id}` - Delete comment (status_code=200)
 
 ## Social Features
 - `POST /api/beep/{id}/follow` - Follow sighting for updates
+- `DELETE /api/beep/{sighting_id}/follow` - Unfollow sighting (status_code=200)
+- `GET /users/{user_id}/subscriptions` - Get user's active subscriptions/follows
 - `POST /devices/register` - Register device for push notifications
 
 ## User Preferences
@@ -287,6 +290,9 @@ UFOBeep uses advanced Next.js middleware for intelligent URL handling:
 - ✅ **Witness Confirmation**: Fixed "string is not subtype of int at index" crash
 - ✅ **Username Regeneration**: Added force_regenerate parameter
 - ✅ **UI Consistency**: Updated button styling across beep and alert pages
+- ✅ **Following Alerts Navigation**: Fixed context.go routing for mobile app
+- ✅ **Following Alerts Location Display**: Fixed COALESCE for UFOBeep and MUFON location data
+- ✅ **Comment Deletion Documentation**: Added DELETE endpoints to documentation
 
 ## Current Status
 - **API Endpoints**: All `/api/beep/` endpoints fully functional ✅
