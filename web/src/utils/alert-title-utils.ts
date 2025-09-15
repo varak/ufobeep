@@ -4,6 +4,7 @@ interface Alert {
   description: string | null
   created_at: string
   reporter_username?: string | null
+  source?: string | null
   enrichment?: {
     classification?: {
       type: string
@@ -27,8 +28,11 @@ export class AlertTitleUtils {
    * Generate a contextual title for an alert based on available data
    */
   static getContextualTitle(alert: Alert, t?: (key: string) => string): string {
+    // Check for MUFON alerts using both source and reporter_username
+    const isMufonAlert = alert.source === 'mufon' || alert.reporter_username === 'MUFON';
+
     // Handle UFOBeep alerts - ALWAYS use proper title
-    if (alert.reporter_username !== 'MUFON') {
+    if (!isMufonAlert) {
       if (t) {
         return `UFOBeep ${t('ufo')} ${t('alert')}`;
       }

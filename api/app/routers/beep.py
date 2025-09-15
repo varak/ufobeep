@@ -102,7 +102,7 @@ def format_alert_response(alert, user_lat=None, user_lon=None):
         "processed_at": alert.created_at.isoformat(),
         "matrix_room_id": "",
         "reporter_id": alert.reporter_id or "",
-        "reporter_username": alert.reporter_username,
+        "reporter_username": "MUFON" if getattr(alert, 'source', None) == "mufon" else alert.reporter_username,
         "enrichment": alert.enrichment or {},
         "photo_analysis": [],
         "total_confirmations": alert.witness_count,
@@ -465,7 +465,7 @@ async def get_alert_by_id(
                 },
                 "created_at": row["created_at"].isoformat() if row["created_at"] else "",
                 "source": row["source"] or "",
-                "username": row.get("reporter_username", ""),
+                "username": "MUFON" if row["source"] == "mufon" else row.get("reporter_username", ""),
                 "media_files": json.loads(row["media_info"]).get("files", []) if row.get("media_info") else [],
                 "enrichment_data": enrichment,
                 "alert_level": "medium"
