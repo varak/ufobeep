@@ -404,7 +404,7 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
                 <button
                   type="submit"
                   disabled={isSubmitting || !comment.trim()}
-                  className="flex-1 bg-brand-primary hover:bg-brand-primary/90 disabled:bg-brand-primary/50 text-white py-3 px-4 rounded-lg font-medium transition-colors"
+                  className="flex-1 bg-dark-surface-elevated hover:bg-dark-border disabled:bg-dark-surface text-white border border-dark-border py-3 px-4 rounded-lg font-medium transition-colors"
                 >
                   {isSubmitting ? t('posting') : t('postComment')}
                 </button>

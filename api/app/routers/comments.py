@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any
 import logging
+import httpx
 from app.core.auth import verify_access_token
 from app.services.database_service import get_database_pool
 from app.services.notify import notify_users_excluding_device
@@ -148,7 +149,19 @@ async def create_comment(
         except Exception as e:
             print(f"DEBUG: Exception in fallback notify_users: {e}")
             logger.error(f"Failed to send comment notifications (fallback): {e}")
-    
+
+    # Trigger SSE broadcast for real-time web updates
+    try:
+        async with httpx.AsyncClient() as client:
+            await client.post(
+                f"https://ufobeep.com/api/alerts/{sighting_id}/comments",
+                json={"broadcast_only": True},
+                timeout=2.0
+            )
+        logger.info(f"SSE broadcast triggered for sighting {sighting_id}")
+    except Exception as e:
+        logger.warning(f"Failed to trigger SSE broadcast: {e}")
+
     return {"id": row["id"]}
 
 @router.post("/{sighting_id}/follow", status_code=201)

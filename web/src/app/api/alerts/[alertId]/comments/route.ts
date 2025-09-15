@@ -46,9 +46,16 @@ export async function POST(
     const { alertId } = params
     const body = await request.json()
     const authHeader = request.headers.get('authorization')
-    
+
+    // Check if this is a broadcast-only request from FastAPI backend
+    if (body.broadcast_only) {
+      // Just trigger the SSE broadcast without creating a comment
+      broadcastCommentUpdate(alertId)
+      return NextResponse.json({ message: 'SSE broadcast triggered' })
+    }
+
     const apiUrl = `${apiConfig.fullUrl}/beep/${alertId}/comments`
-    
+
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -57,7 +64,7 @@ export async function POST(
       },
       body: JSON.stringify(body)
     })
-    
+
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}))
       return NextResponse.json(

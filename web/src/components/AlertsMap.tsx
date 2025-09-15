@@ -882,42 +882,10 @@ export default function AlertsMap({
   const getUfoIcon = (_alert: Alert) => '📍'
 
   const createUfoMarker = (L: any, alert: Alert, map: any, pos?: [number, number]) => {
-    const isMufon = (alert.source?.toLowerCase?.() === 'mufon') || alert.username === 'MUFON_Database'
-    const isUfoBeep = (!isMufon) && (
-      typeof alert.source === 'string' && ['beep','ufobeep','ufo_beep','ufo-beep'].includes(alert.source.toLowerCase())
-    )
+    const src = (alert.source || '').toString().toLowerCase()
+    const isUfoBeep = src === 'ufobeep' || src === 'beep' || src === 'ufo_beep' || src === 'ufo-beep'
 
-    if (isMufon) {
-      // Create custom HTML marker for UFO types
-      const iconSymbol = getUfoIcon(alert)
-      const color = getAlertColor(alert.alert_level)
-      
-      const customIcon = L.divIcon({
-        html: `
-          <div style="
-            background: ${color}; 
-            border: 2px solid white; 
-            border-radius: 50%; 
-            width: 24px; 
-            height: 24px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 12px; 
-            font-weight: bold;
-            color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-          ">${iconSymbol}</div>
-        `,
-        className: 'ufo-marker',
-        iconSize: [24, 24],
-        iconAnchor: [12, 12]
-      })
-      
-      const lat = pos ? Number(pos[0]) : Number(alert.location.latitude)
-      const lng = pos ? Number(pos[1]) : Number(alert.location.longitude)
-      return L.marker([lat, lng], { icon: customIcon })
-    } else if (isUfoBeep) {
+    if (isUfoBeep) {
       // UFOBeep markers: bright cyan UFO icon to stand out
       const lat = pos ? Number(pos[0]) : Number(alert.location.latitude)
       const lng = pos ? Number(pos[1]) : Number(alert.location.longitude)
@@ -934,18 +902,18 @@ export default function AlertsMap({
       const divIcon = L.divIcon({ html, className: 'beep-marker', iconSize: [26, 26], iconAnchor: [13, 13] })
       return L.marker([lat, lng], { icon: divIcon })
     } else {
-      // Other sources (e.g., NUFORC): neutral styled circle
+      // Unified green dot for all non-UFOBeep
       const lat = pos ? Number(pos[0]) : Number(alert.location.latitude)
       const lng = pos ? Number(pos[1]) : Number(alert.location.longitude)
       return L.circleMarker(
         [lat, lng],
         {
-          radius: 7,
-          fillColor: '#A78BFA', // violet
+          radius: 8,
+          fillColor: '#39FF14',
           color: '#ffffff',
           weight: 2,
           opacity: 1,
-          fillOpacity: 0.85
+          fillOpacity: 0.9
         }
       )
     }
@@ -1021,26 +989,18 @@ export default function AlertsMap({
         </div>
       </div>
 
-      {/* Legend */}
+      {/* Legend (two sets + cluster) */}
       <div className="absolute bottom-4 right-4 bg-dark-surface/90 backdrop-blur-sm p-3 rounded-lg border border-dark-border text-xs z-10">
         <div className="font-semibold text-text-primary mb-2">Legend</div>
         <div className="space-y-2">
-          {/* UFOBeep */}
           <div className="flex items-center gap-2">
             <div className="w-5 h-5 rounded-full flex items-center justify-center" style={{ background: '#00E5FF', border: '2px solid #fff', color: '#0b1020' }}>🛸</div>
-            <span className="text-text-secondary">UFOBeep sighting</span>
+            <span className="text-text-secondary">UFOBeep</span>
           </div>
-          {/* MUFON */}
           <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded-full flex items-center justify-center" style={{ background: '#39FF14', border: '2px solid #fff', color: '#fff' }}>△</div>
-            <span className="text-text-secondary">MUFON (shape icon)</span>
+            <div className="w-4 h-4 rounded-full" style={{ background: '#39FF14', border: '2px solid #fff' }}></div>
+            <span className="text-text-secondary">MUFON/Other</span>
           </div>
-          {/* Other/Unknown */}
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full" style={{ background: '#A78BFA', border: '2px solid #fff' }}></div>
-            <span className="text-text-secondary">Other/unknown source</span>
-          </div>
-          {/* Cluster */}
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ background: 'rgba(57,255,20,0.15)', border: '2px solid #39FF14', color: '#fff' }}>#</div>
             <span className="text-text-secondary">Cluster (click to expand)</span>
