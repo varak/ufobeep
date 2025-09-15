@@ -192,7 +192,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
               <div className="mb-2">
                 <div className="flex items-center gap-2">
                   <span className="text-text-tertiary text-sm font-medium">{t('eventTime')}</span>
-                  <span className="text-text-primary text-sm">{formatDateISO(alert.occurred_at || alert.enrichment?.sighting_datetime || alert.enrichment_data?.sighting_datetime)}</span>
+                  <span className="text-text-primary text-sm">{formatDateISO((alert.occurred_at || alert.enrichment?.sighting_datetime || alert.enrichment_data?.sighting_datetime)!)}</span>
                 </div>
               </div>
             )}
@@ -201,7 +201,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
               <div className="mb-2">
                 <div className="flex items-center gap-2">
                   <span className="text-text-tertiary text-sm font-medium">{t('reportedTime')}</span>
-                  <span className="text-text-secondary text-sm">{formatDateISO(alert.enrichment?.report_date || alert.enrichment_data?.report_date)}</span>
+                  <span className="text-text-secondary text-sm">{formatDateISO((alert.enrichment?.report_date || alert.enrichment_data?.report_date)!)}</span>
                 </div>
               </div>
             )}
