@@ -45,7 +45,7 @@ class AlertCard extends ConsumerWidget {
             _buildMediaThumbnails(context),
             const SizedBox(height: 12),
           ],
-          if (alert.description?.isNotEmpty == true) ...[
+          if (_getPreviewDescription()?.isNotEmpty == true) ...[
             _buildDescription(),
             const SizedBox(height: 12),
           ],
@@ -213,16 +213,52 @@ class AlertCard extends ConsumerWidget {
   }
 
   Widget _buildDescription() {
+    final previewText = _getPreviewDescription();
+    if (previewText == null || previewText.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
     return Text(
-      alert.description!,
+      previewText,
       style: const TextStyle(
         color: AppColors.textSecondary,
-        fontSize: 18,
-        height: 1.5,
+        fontSize: 14,
+        height: 1.4,
       ),
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
     );
+  }
+
+  /// Smart description selection for preview cards - matches web logic
+  String? _getPreviewDescription() {
+    // MUFON alerts have short_description in enrichment
+    if (alert.enrichment?['short_description'] != null) {
+      final shortDesc = alert.enrichment!['short_description'].toString();
+      if (shortDesc.isNotEmpty) {
+        return shortDesc;
+      }
+    }
+
+    // For MUFON alerts, clean up the description by removing duplicate metadata
+    if (alert.reporterUsername == 'MUFON' && alert.description != null) {
+      // Remove the appended metadata section (everything after the separator line)
+      final cleanDescription = alert.description!.split('━━━━━━━━━━━━━━━━━━━━━━━━')[0].trim();
+      final truncated = cleanDescription.length > 150
+          ? cleanDescription.substring(0, 150)
+          : cleanDescription;
+      return truncated + (cleanDescription.length > 150 ? '...' : '');
+    }
+
+    // Regular alerts use truncated main description
+    if (alert.description != null && alert.description!.isNotEmpty) {
+      final truncated = alert.description!.length > 150
+          ? alert.description!.substring(0, 150)
+          : alert.description!;
+      return truncated + (alert.description!.length > 150 ? '...' : '');
+    }
+
+    return null;
   }
 
   Widget _buildFooterRow(AppLocalizations l10n) {
@@ -279,7 +315,7 @@ class AlertCard extends ConsumerWidget {
 
   Widget _buildContentTypeIndicator(AppLocalizations l10n) {
     final hasMedia = alert.mediaFiles.isNotEmpty;
-    final hasDescription = alert.description?.trim().isNotEmpty ?? false;
+    final hasDescription = _getPreviewDescription()?.trim().isNotEmpty ?? false;
     
     if (!hasMedia && !hasDescription) {
       return _buildBadge(l10n.beepOnly, Icons.location_on, AppColors.textTertiary);
