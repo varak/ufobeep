@@ -15,7 +15,7 @@ function NavLink({ href, label }: { href: string; label: string }) {
       href={href}
       className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
         active
-          ? 'text-white bg-brand-primary'
+          ? 'text-brand-primary bg-dark-surface-elevated border border-brand-primary'
           : 'text-text-secondary hover:text-text-primary hover:bg-dark-surface-elevated'
       }`}
     >

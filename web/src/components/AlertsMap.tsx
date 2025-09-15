@@ -863,8 +863,10 @@ export default function AlertsMap({
           if (!alert || !isValidLatLng(alert.location)) return
           const jitterPos = jitterMap.get(String(id)) as [number, number] | undefined
           const marker = createUfoMarker(L, alert, map, jitterPos)
-          const popup = L.popup({ maxWidth: 350, className: 'custom-popup' }).setContent(createPopupContentHelper(alert, L))
+          const pcInd = createPopupContentHelper(alert, L)
+          const popup = L.popup({ maxWidth: 350, className: 'custom-popup' }).setContent(pcInd)
           marker.bindPopup(popup)
+          marker.on('popupopen', () => { try { (pcInd as any).__mount?.() } catch {} })
           marker.on('click', () => {
             try {
               const countAtId = overlapCount.get(String(id)) || 1
