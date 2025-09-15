@@ -139,11 +139,13 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
     if (isAuthenticated) {
       checkFollowStatus()
       // Close login form if user just authenticated
-      setShowLoginForm(false)
-      setMessage(t('successfullyLoggedIn', 'Successfully logged in!'))
-      setMessageType('success')
+      if (showLoginForm) {
+        setShowLoginForm(false)
+        setMessage(t('successfullyLoggedIn', 'Successfully logged in!'))
+        setMessageType('success')
+      }
     }
-  }, [isAuthenticated, alertId, checkFollowStatus, t])
+  }, [isAuthenticated, alertId, checkFollowStatus, t, showLoginForm])
 
   const handleFollowToggle = async () => {
     if (!isAuthenticated) return
