@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { apiConfig } from '@/config/api'
+import { broadcastCommentUpdate } from './stream/route'
 
 // GET /api/alerts/[alertId]/comments - Fetch comments for an alert
 export async function GET(
@@ -64,8 +65,12 @@ export async function POST(
         { status: response.status }
       )
     }
-    
+
     const data = await response.json()
+
+    // Broadcast to SSE connections that a new comment was added
+    broadcastCommentUpdate(alertId)
+
     return NextResponse.json(data)
   } catch (error) {
     console.error('Error creating comment:', error)

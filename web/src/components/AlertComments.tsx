@@ -36,29 +36,82 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
   const [isFollowing, setIsFollowing] = useState(false)
   const [followLoading, setFollowLoading] = useState(false)
 
+  const fetchComments = async (silent = false) => {
+    try {
+      if (!silent) setLoading(true)
+      const response = await fetch(`/api/beep/${alertId}/comments`)
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch comments')
+      }
+
+      const data = await response.json()
+      // Sort chronologically - oldest to newest for natural conversation flow
+      const sortedComments = (data.items || []).sort((a: Comment, b: Comment) =>
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      )
+      setComments(sortedComments)
+      setError(null)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error')
+    } finally {
+      if (!silent) setLoading(false)
+    }
+  }
+
   useEffect(() => {
-    const fetchComments = async () => {
+    fetchComments()
+  }, [alertId])
+
+  // Set up SSE for real-time comment updates
+  useEffect(() => {
+    let eventSource: EventSource | null = null
+
+    const connectSSE = () => {
       try {
-        const response = await fetch(`/api/beep/${alertId}/comments`)
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch comments')
+        eventSource = new EventSource(`/api/alerts/${alertId}/comments/stream`)
+
+        eventSource.onopen = () => {
+          console.log('[SSE] Connected to comment updates')
         }
-        
-        const data = await response.json()
-        // Sort chronologically - oldest to newest for natural conversation flow
-        const sortedComments = (data.items || []).sort((a: Comment, b: Comment) => 
-          new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-        )
-        setComments(sortedComments)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error')
-      } finally {
-        setLoading(false)
+
+        eventSource.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data)
+
+            if (data.type === 'comment_update' && data.alertId === alertId) {
+              console.log('[SSE] Received comment update, refreshing comments')
+              fetchComments(true) // Silent refresh
+            }
+          } catch (error) {
+            console.error('[SSE] Error parsing message:', error)
+          }
+        }
+
+        eventSource.onerror = (error) => {
+          console.log('[SSE] Connection error, will retry:', error)
+          eventSource?.close()
+          // Reconnect after 5 seconds
+          setTimeout(() => {
+            if (eventSource?.readyState === EventSource.CLOSED) {
+              connectSSE()
+            }
+          }, 5000)
+        }
+
+      } catch (error) {
+        console.error('[SSE] Failed to create EventSource:', error)
       }
     }
 
-    fetchComments()
+    connectSSE()
+
+    // Cleanup on unmount
+    return () => {
+      if (eventSource) {
+        eventSource.close()
+      }
+    }
   }, [alertId])
 
   // Check follow status when user is authenticated
