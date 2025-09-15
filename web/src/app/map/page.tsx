@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import dynamic from 'next/dynamic'
 const AlertsMap = dynamic(() => import('@/components/AlertsMap'), { ssr: false })
 import Link from 'next/link'
@@ -67,7 +67,9 @@ export default function MapPage() {
         )}
 
         {/* Always show map - don't wait for data */}
-        <AlertsMap alerts={alerts as any} height="70vh" />
+        <Suspense fallback={<div className="text-center py-16"><div className="text-5xl mb-3">🗺️</div><div className="text-text-secondary">Loading map...</div></div>}>
+          <AlertsMap alerts={alerts as any} height="70vh" />
+        </Suspense>
         
         {loading && (
           <div className="absolute top-4 right-4 bg-dark-surface border border-brand-primary/20 rounded-lg px-3 py-2">
