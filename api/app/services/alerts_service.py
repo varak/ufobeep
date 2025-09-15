@@ -67,8 +67,8 @@ class AlertsService:
                     FROM comments 
                     GROUP BY sighting_id
                 ) c ON s.id = c.sighting_id
-                WHERE s.is_public = true 
-                ORDER BY COALESCE(s.occurred_at, s.created_at) DESC 
+                WHERE s.is_public = true
+                ORDER BY s.created_at DESC
                 LIMIT $1 OFFSET $2
             """, limit, offset)
             
