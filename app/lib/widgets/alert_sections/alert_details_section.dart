@@ -68,39 +68,37 @@ class AlertDetailsSection extends StatelessWidget {
           
           // MUFON-specific metadata
           if (alert.source == 'mufon') ...[
-            // MUFON case number now shown in header instead
-            
-            // Sighting date
-            if (alert.enrichment?['reported_when'] != null)
+            // Event date (when sighting occurred)
+            if (alert.occurredAt != null)
               _buildDetailRow(
                 Icons.event,
-                AppLocalizations.of(context)!.sightingDate,
-                alert.enrichment!['reported_when'],
+                AppLocalizations.of(context)!.eventTime,
+                _formatDateISO(alert.occurredAt!),
               ),
-            
-            // Date entered into MUFON database
-            if (alert.enrichment?['database_when'] != null)
+
+            // Date reported to MUFON database
+            if (alert.enrichment?['report_date'] != null)
               _buildDetailRow(
                 Icons.storage,
-                AppLocalizations.of(context)!.mufonDatabaseEntryDate,
-                alert.enrichment!['database_when'],
+                AppLocalizations.of(context)!.reportedTime,
+                _parseAndFormatDateISO(alert.enrichment!['report_date']) ?? alert.enrichment!['report_date'],
               ),
-            
-            // Location - only show for MUFON if we have a proper city/state name (not unknown)
-            if (showLocation && 
-                alert.locationName != null && 
-                alert.locationName!.isNotEmpty && 
-                alert.locationName != 'Unknown Location') ...[
+
+            // Always show location for MUFON reports
+            if (showLocation) ...[
               _buildDetailRow(
                 Icons.location_on,
                 AppLocalizations.of(context)!.locationLabel,
-                alert.locationName!,
+                alert.locationName ?? AppLocalizations.of(context)!.unknownLocation,
+                subtitle: alert.latitude != 0.0 && alert.longitude != 0.0
+                    ? '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}'
+                    : null,
               ),
               // Always show distance if we have coordinates
               if (alert.latitude != 0.0 && alert.longitude != 0.0)
                 _buildDistanceRow(context),
             ],
-            
+
           ],
           
           // UFOBeep-specific metadata (non-MUFON)
@@ -323,18 +321,52 @@ class AlertDetailsSection extends StatelessWidget {
   String _formatFullDateTime(DateTime dateTime) {
     final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    
+
     // Convert to local timezone first
     final localDateTime = dateTime.toLocal();
-    
+
     final month = months[localDateTime.month - 1];
     final day = localDateTime.day;
     final year = localDateTime.year;
     final hour = localDateTime.hour == 0 ? 12 : (localDateTime.hour > 12 ? localDateTime.hour - 12 : localDateTime.hour);
     final minute = localDateTime.minute.toString().padLeft(2, '0');
     final amPm = localDateTime.hour >= 12 ? 'PM' : 'AM';
-    
+
     return '$month $day, $year at $hour:$minute $amPm';
+  }
+
+  String _formatDateISO(DateTime dateTime) {
+    final now = DateTime.now();
+    final date = dateTime.toLocal();
+
+    // ISO format (YYYY-MM-DD) for international consistency
+    final year = date.year.toString();
+    final month = date.month.toString().padLeft(2, '0');
+    final day = date.day.toString().padLeft(2, '0');
+    final isoDate = '$year-$month-$day';
+
+    // Check if it's today
+    final isToday = date.year == now.year && date.month == now.month && date.day == now.day;
+
+    if (isToday) {
+      // Show date and time for today's sightings
+      final hour = date.hour.toString().padLeft(2, '0');
+      final minute = date.minute.toString().padLeft(2, '0');
+      return '$isoDate • $hour:$minute';
+    } else {
+      // Show just the ISO date for older sightings
+      return isoDate;
+    }
+  }
+
+  String? _parseAndFormatDateISO(String? dateString) {
+    if (dateString == null || dateString.isEmpty) return null;
+    try {
+      final dateTime = DateTime.parse(dateString);
+      return _formatDateISO(dateTime);
+    } catch (e) {
+      return dateString; // Return original if parsing fails
+    }
   }
 
   String _getMufonLocationName(BuildContext context, Alert alert) {

@@ -43,7 +43,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
     // Map locale to proper browser locale format
     const localeMap: Record<string, string> = {
       'en': 'en-US',
-      'es': 'es-ES', 
+      'es': 'es-ES',
       'de': 'de-DE',
       'fr': 'fr-FR',
       'pt': 'pt-PT',
@@ -65,7 +65,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
       'el': 'el-GR',
       'he': 'he-IL'
     }
-    
+
     const browserLocale = localeMap[locale] || 'en-US'
     return new Date(dateString).toLocaleString(browserLocale, {
       weekday: 'long',
@@ -75,6 +75,30 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
       hour: '2-digit',
       minute: '2-digit'
     })
+  }
+
+  const formatDateISO = (dateString: string) => {
+    const date = new Date(dateString)
+    const now = new Date()
+
+    // ISO format (YYYY-MM-DD) for international consistency
+    const isoDate = date.toISOString().split('T')[0]
+
+    // Check if it's today
+    const isToday = date.toDateString() === now.toDateString()
+
+    if (isToday) {
+      // Show date and time for today's sightings
+      const timeStr = date.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false // Use 24-hour format for consistency
+      })
+      return `${isoDate} • ${timeStr}`
+    } else {
+      // Show just the ISO date for older sightings
+      return isoDate
+    }
   }
 
   const getCleanDescription = () => {
@@ -161,7 +185,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
               <div className="mb-2">
                 <div className="flex items-center gap-2">
                   <span className="text-text-tertiary text-sm font-medium">{t('eventTime')}</span>
-                  <span className="text-text-primary text-sm">{alert.enrichment.sighting_datetime}</span>
+                  <span className="text-text-primary text-sm">{formatDateISO(alert.enrichment.sighting_datetime)}</span>
                 </div>
               </div>
             )}
@@ -170,7 +194,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-text-tertiary text-sm font-medium">{t('reportedTime')}</span>
-                  <span className="text-text-secondary text-sm">{alert.enrichment.report_date}</span>
+                  <span className="text-text-secondary text-sm">{formatDateISO(alert.enrichment.report_date)}</span>
                 </div>
               </div>
             )}
