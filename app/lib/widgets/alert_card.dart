@@ -714,30 +714,32 @@ class AlertCard extends ConsumerWidget {
     final now = DateTime.now();
     final is24Hour = use24Hour ?? true; // Default to 24-hour if not specified
 
-    String formatTime(DateTime dt) {
-      if (is24Hour) {
-        return "${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}";
-      } else {
-        final hour12 = dt.hour > 12 ? dt.hour - 12 : (dt.hour == 0 ? 12 : dt.hour);
-        final ampm = dt.hour >= 12 ? 'PM' : 'AM';
-        return "$hour12:${dt.minute.toString().padLeft(2, '0')} $ampm";
-      }
-    }
+    // ISO format (YYYY-MM-DD) for international consistency
+    final isoDate = "${localDateTime.year.toString().padLeft(4, '0')}-"
+        "${localDateTime.month.toString().padLeft(2, '0')}-"
+        "${localDateTime.day.toString().padLeft(2, '0')}";
 
-    // Show time if it's today, otherwise show date and time
-    if (localDateTime.day == now.day &&
+    // Check if it's today
+    final isToday = localDateTime.day == now.day &&
         localDateTime.month == now.month &&
-        localDateTime.year == now.year) {
-      // Today - show time only
-      return formatTime(localDateTime);
+        localDateTime.year == now.year;
+
+    if (isToday) {
+      // Show date and time for today's sightings
+      String formatTime(DateTime dt) {
+        if (is24Hour) {
+          return "${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}";
+        } else {
+          final hour12 = dt.hour > 12 ? dt.hour - 12 : (dt.hour == 0 ? 12 : dt.hour);
+          final ampm = dt.hour >= 12 ? 'PM' : 'AM';
+          return "$hour12:${dt.minute.toString().padLeft(2, '0')} $ampm";
+        }
+      }
+
+      return "$isoDate • ${formatTime(localDateTime)}";
     } else {
-      // Other days - show date and time
-      final months = [
-        '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-      ];
-      final timeStr = formatTime(localDateTime);
-      return "${months[localDateTime.month]} ${localDateTime.day}, $timeStr";
+      // Show just the ISO date for older sightings
+      return isoDate;
     }
   }
 }

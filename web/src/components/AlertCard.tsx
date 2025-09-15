@@ -223,15 +223,26 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
+    const now = new Date()
 
-    // Standardized format for all alerts (MUFON and UFOBeep) - actual timestamp
-    return date.toLocaleString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
+    // ISO format (YYYY-MM-DD) for international consistency
+    const isoDate = date.toISOString().split('T')[0]
+
+    // Check if it's today
+    const isToday = date.toDateString() === now.toDateString()
+
+    if (isToday) {
+      // Show date and time for today's sightings
+      const timeStr = date.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false // Use 24-hour format for consistency
+      })
+      return `${isoDate} • ${timeStr}`
+    } else {
+      // Show just the ISO date for older sightings
+      return isoDate
+    }
   }
 
   const formatElapsed = (dateString: string) => {
