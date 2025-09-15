@@ -68,7 +68,7 @@ export default function MapPage() {
 
         {/* Always show map - don't wait for data */}
         <Suspense fallback={<div className="text-center py-16"><div className="text-5xl mb-3">🗺️</div><div className="text-text-secondary">Loading map...</div></div>}>
-          <AlertsMap alerts={alerts as any} height="70vh" />
+          <AlertsMap alerts={alerts as any} height="70vh" locale="en" />
         </Suspense>
         
         {loading && (

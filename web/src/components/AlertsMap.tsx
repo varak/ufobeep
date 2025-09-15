@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { useParams } from 'next/navigation'
 import { createRoot } from 'react-dom/client'
 import { AlertTitleUtils } from '@/utils/alert-title-utils'
 import { getAlertSlug } from '@/utils/slug'
@@ -41,6 +40,7 @@ interface AlertsMapProps {
   showControls?: boolean
   onAlertClick?: (alert: Alert) => void
   disableGeolocation?: boolean
+  locale?: string
 }
 
 // US-biased centering for better geolocation experience
@@ -63,15 +63,15 @@ export default function AlertsMap({
   height = '400px',
   showControls = true,
   onAlertClick,
-  disableGeolocation = false
+  disableGeolocation = false,
+  locale = 'en'
 }: AlertsMapProps) {
   const mapRef = useRef<HTMLDivElement>(null)
   const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null)
   const [mapError, setMapError] = useState(false)
-  const params = useParams()
 
-  // Get current language from URL or default to 'en'
-  const currentLocale = (params?.locale as string) || 'en'
+  // Use provided locale or default to 'en'
+  const currentLocale = locale || 'en'
   const [hoveredAlert, setHoveredAlert] = useState<Alert | null>(null)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
