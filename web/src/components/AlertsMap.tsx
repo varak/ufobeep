@@ -744,11 +744,11 @@ export default function AlertsMap({
         for (const p of arr) {
           const a = (alerts as any[]).find(x => String(x.id) === String(p.id))
           const src = (a?.source || '').toString().toLowerCase()
-          if (['beep','ufobeep','ufo_beep','ufo-beep'].includes(src)) { hasUfoBeep = true; break }
+          if (['beep','ufobeep','ufo_beep','ufo-beep'].includes(src) || (a as any)?.b === 1) { hasUfoBeep = true; break }
         }
-        // Heavier spread for UFOBeep icon groups so they never overlap
-        const base = hasUfoBeep ? 60 : 24 // meters
-        const r = Math.min(hasUfoBeep ? 150 : 80, base + arr.length * (hasUfoBeep ? 6 : 3))
+        // Even heavier spread for UFOBeep icon groups so they never overlap
+        const base = hasUfoBeep ? 90 : 24 // meters
+        const r = Math.min(hasUfoBeep ? 220 : 80, base + arr.length * (hasUfoBeep ? 10 : 3))
         arr.forEach((p, i) => {
           const angle = (2 * Math.PI * i) / arr.length
           const dLat = (r * Math.sin(angle)) * degPerMeterLat
@@ -772,9 +772,11 @@ export default function AlertsMap({
               const rings = count <= 12 ? 1 : 2
               const perRing1 = rings === 1 ? count : Math.ceil(count / 2)
               const perRing2 = rings === 2 ? count - perRing1 : 0
-              const baseR = 60 // meters
-              const ringR1 = Math.min(130, baseR + perRing1 * 5)
-              const ringR2 = rings === 2 ? Math.min(160, ringR1 + 30 + perRing2 * 3) : 0
+              // Scale spread more at lower zooms (bigger separation when zoomed out)
+              const zoomFactor = zoom < 16 ? (1 + (16 - zoom) * 0.25) : 1
+              const baseR = 60 * zoomFactor // meters
+              const ringR1 = Math.min(130 * zoomFactor, baseR + perRing1 * 5 * zoomFactor)
+              const ringR2 = rings === 2 ? Math.min(160 * zoomFactor, ringR1 + 30 * zoomFactor + perRing2 * 3 * zoomFactor) : 0
               // Place first ring
               leaves.slice(0, perRing1).forEach((leaf, i) => {
                 const angle = (2 * Math.PI * i) / perRing1
@@ -966,7 +968,7 @@ export default function AlertsMap({
       )}
       
       {/* Map overlay with real data */}
-      <div className="absolute top-4 left-4 bg-dark-surface/90 backdrop-blur-sm p-3 rounded-lg border border-dark-border z-10">
+      <div className="absolute top-4 left-4 bg-dark-surface/90 backdrop-blur-sm p-3 rounded-lg border border-dark-border z-10" style={{ pointerEvents: 'none' }}>
         <div className="flex items-center gap-2 mb-2">
           <div className="w-2 h-2 bg-brand-primary rounded-full animate-pulse"></div>
           <span className="text-sm text-brand-primary font-medium">Live Sightings</span>
@@ -1014,7 +1016,7 @@ export default function AlertsMap({
       </div>
 
       {/* Legend (two sets + cluster) */}
-      <div className="absolute bottom-4 right-4 bg-dark-surface/90 backdrop-blur-sm p-3 rounded-lg border border-dark-border text-xs z-10">
+      <div className="absolute bottom-4 right-4 bg-dark-surface/90 backdrop-blur-sm p-3 rounded-lg border border-dark-border text-xs z-10" style={{ pointerEvents: 'none' }}>
         <div className="font-semibold text-text-primary mb-2">Legend</div>
         <div className="space-y-2">
           <div className="flex items-center gap-2">
