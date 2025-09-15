@@ -81,6 +81,8 @@ export default function AlertsMap({
   const [currentZoom, setCurrentZoom] = useState(zoom)
   const mapInstanceRef = useRef<any>(null)
   const markersRef = useRef<any[]>([])
+  const clusterIndexRef = useRef<any>(null)
+  const featuresRef = useRef<any[]>([])
   const prevAlertsRef = useRef<Alert[]>([])
   const isGettingLocation = useRef(false)
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
@@ -335,48 +337,26 @@ export default function AlertsMap({
         const alertsChanged = JSON.stringify(alerts) !== JSON.stringify(prevAlertsRef.current)
         if (!alertsChanged) return
         
-        // Just update markers without recreating the map
-        let L: any
+        // Rebuild supercluster index and re-render
         try {
-          console.log('[AlertsMap] loading leaflet (update path)')
           const leafletModule = await import('leaflet')
-          L = (leafletModule as any).default || leafletModule
-          console.log('[AlertsMap] leaflet loaded (update path)')
+          const L: any = (leafletModule as any).default || leafletModule
+          const { default: Supercluster } = await import('supercluster')
+          const features = alerts
+            .filter(a => isValidLatLng(a.location))
+            .map(a => ({
+              type: 'Feature',
+              geometry: { type: 'Point', coordinates: [Number(a.location.longitude), Number(a.location.latitude)] },
+              properties: { id: a.id }
+            }))
+          featuresRef.current = features
+          const index = new Supercluster({ radius: 60, maxZoom: 16, minPoints: 2 })
+          index.load(features as any)
+          clusterIndexRef.current = index
+          renderClusters(L, mapInstanceRef.current)
         } catch (e) {
-          console.error('Failed to load Leaflet module:', e)
-          setMapError(true)
-          setMapErrorMessage('Failed to load map library')
-          return
+          console.error('Cluster rebuild failed', e)
         }
-        
-        // Clear existing markers
-        markersRef.current.forEach(marker => {
-          if (marker) marker.remove()
-        })
-        markersRef.current = []
-        
-        // Filter alerts by zoom level then add markers with UFO classification support
-        const filteredAlerts = filterAlertsByZoom(alerts, mapInstanceRef.current.getZoom())
-        filteredAlerts.forEach((alert) => {
-          if (!isValidLatLng(alert.location)) return
-          
-          const marker = createUfoMarker(L, alert, mapInstanceRef.current)
-
-          // Use React component popup
-          const popup = L.popup({
-            maxWidth: 350,
-            className: 'custom-popup'
-          }).setContent(createPopupContentHelper(alert, L))
-
-          marker.bindPopup(popup)
-          marker.on('click', () => {
-            setSelectedAlert(alert)
-            if (onAlertClick) onAlertClick(alert)
-          })
-          
-          marker.addTo(mapInstanceRef.current)
-          markersRef.current.push(marker)
-        })
         
         prevAlertsRef.current = alerts
         return
@@ -462,47 +442,32 @@ export default function AlertsMap({
         // Debug breadcrumbs to isolate production failures
         try { console.log('[AlertsMap] init: tile layer added') } catch {}
 
-        // Add zoom change listener to update markers based on zoom level
-        map.on('zoomend', () => {
+        // Build cluster index and render, then listen to zoom/pan
+        try {
+          const { default: Supercluster } = await import('supercluster')
+          const features = alerts
+            .filter(a => isValidLatLng(a.location))
+            .map(a => ({
+              type: 'Feature',
+              geometry: { type: 'Point', coordinates: [Number(a.location.longitude), Number(a.location.latitude)] },
+              properties: { id: a.id }
+            }))
+          featuresRef.current = features
+          const index = new Supercluster({ radius: 60, maxZoom: 16, minPoints: 2 })
+          index.load(features as any)
+          clusterIndexRef.current = index
+          renderClusters(L, map)
+        } catch (e) {
+          console.error('Cluster init failed', e)
+        }
+
+        const rerender = () => {
           const newZoom = map.getZoom()
           setCurrentZoom(newZoom)
-          try { console.log('[AlertsMap] zoomend:', newZoom) } catch {}
-
-          // Update markers based on new zoom level
-          markersRef.current.forEach(marker => {
-            if (marker) marker.remove()
-          })
-          markersRef.current = []
-
-          // Re-add markers with new zoom filtering
-          const filteredAlerts = filterAlertsByZoom(alerts, newZoom)
-          try { console.log('[AlertsMap] markers@zoom', newZoom, 'count=', filteredAlerts.length) } catch {}
-          filteredAlerts.forEach((alert) => {
-            if (!isValidLatLng(alert.location)) return
-
-            let marker: any
-            try {
-              marker = createUfoMarker(L, alert, map)
-            } catch (e) {
-              console.error('[AlertsMap] createUfoMarker failed', alert.id, e)
-              return
-            }
-
-            const popup = L.popup({
-              maxWidth: 350,
-              className: 'custom-popup'
-            }).setContent(createPopupContentHelper(alert, L))
-
-            marker.bindPopup(popup)
-            marker.on('click', () => {
-              setSelectedAlert(alert)
-              if (onAlertClick) onAlertClick(alert)
-            })
-
-            marker.addTo(map)
-            markersRef.current.push(marker)
-          })
-        })
+          renderClusters(L, map)
+        }
+        map.on('zoomend', rerender)
+        map.on('moveend', rerender)
 
         // Force map to update its size
         setTimeout(() => {
@@ -510,43 +475,7 @@ export default function AlertsMap({
           map.invalidateSize()
         }, 100)
 
-        // Clear existing markers
-        markersRef.current.forEach(marker => {
-          if (marker) marker.remove()
-        })
-        markersRef.current = []
-
-        // Filter alerts by zoom level then add markers for alerts (skip invalid coordinates) with UFO classification support
-        const filteredAlerts = filterAlertsByZoom(alerts, currentZoom)
-        try { console.log('[AlertsMap] initial markers count=', filteredAlerts.length) } catch {}
-        filteredAlerts.forEach((alert) => {
-          if (!isValidLatLng(alert.location)) return // Skip invalid/missing coordinates
-
-          let marker: any
-          try {
-            marker = createUfoMarker(L, alert, map)
-          } catch (e) {
-            console.error('[AlertsMap] createUfoMarker failed', alert.id, e)
-            return
-          }
-
-          // Add popup with React component
-          const popup = L.popup({
-            maxWidth: 350,
-            className: 'custom-popup'
-          }).setContent(createPopupContentHelper(alert, L))
-
-          marker.bindPopup(popup)
-          
-          // Add click handler
-          marker.on('click', () => {
-            setSelectedAlert(alert)
-            if (onAlertClick) onAlertClick(alert)
-          })
-
-          marker.addTo(map)
-          markersRef.current.push(marker)
-        })
+        // Initial markers rendered by clustering above
 
         // Fit map to show all alerts
         if (alerts.length > 0) {
