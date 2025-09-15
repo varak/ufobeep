@@ -287,7 +287,7 @@ class Alert {
         reporterUsername: json['reporter_username'] as String?,
         source: json['source'] as String?,
         username: json['username'] as String?,
-        enrichment: json['enrichment'] as Map<String, dynamic>?,
+        enrichment: json['enrichment_data'] as Map<String, dynamic>?,
         photoAnalysis: parsedPhotoAnalysis,
         totalConfirmations: json['total_confirmations'] as int? ?? 0,
         canConfirmWitness: json['can_confirm_witness'] as bool? ?? true,

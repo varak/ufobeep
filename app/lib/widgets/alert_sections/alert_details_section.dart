@@ -69,12 +69,15 @@ class AlertDetailsSection extends StatelessWidget {
           
           // MUFON-specific metadata
           if (alert.source == 'mufon') ...[
-            // Event date (when sighting occurred)
-            if (alert.occurredAt != null)
+            // Debug info - let's see what data we have
+            // print('DEBUG MUFON Alert: source=${alert.source}, occurredAt=${alert.occurredAt}, enrichment=${alert.enrichment}');
+
+            // Event date (when sighting actually occurred)
+            if (alert.enrichment?['sighting_datetime'] != null)
               _buildDetailRow(
                 Icons.event,
                 AppLocalizations.of(context)!.eventTime,
-                _formatDateISO(alert.occurredAt!),
+                _parseMufonSightingDate(alert.enrichment!['sighting_datetime']),
               ),
 
             // Date reported to MUFON database
@@ -84,6 +87,13 @@ class AlertDetailsSection extends StatelessWidget {
                 AppLocalizations.of(context)!.reportedTime,
                 _parseAndFormatDateISO(alert.enrichment!['report_date']) ?? alert.enrichment!['report_date'],
               ),
+
+            // Always show UFOBeep import date for MUFON reports
+            _buildDetailRow(
+              Icons.schedule,
+              AppLocalizations.of(context)!.addedToUfobeep,
+              _formatDateISO(alert.createdAt),
+            ),
 
             // Always show location for MUFON reports
             if (showLocation) ...[
@@ -374,18 +384,31 @@ class AlertDetailsSection extends StatelessWidget {
     }
   }
 
-  String _getMufonLocationName(BuildContext context, Alert alert) {
-    // For MUFON alerts, try multiple sources for location
+  String _parseMufonSightingDate(String dateString) {
+    // MUFON format: "1979-07-21\n12:00AM" or "1979-07-21<br>12:00AM"
+    try {
+      // Extract just the date part before newline or <br>
+      String datePart = dateString.split('\n')[0].split('<br>')[0].trim();
 
-    // First try enrichment data for better location names
+      // Parse and format to ISO
+      final dateTime = DateTime.parse(datePart);
+      return _formatDateISO(dateTime);
+    } catch (e) {
+      // If parsing fails, return the original string cleaned up
+      return dateString.replaceAll('\n', ' ').replaceAll('<br>', ' ');
+    }
+  }
+
+  String _getMufonLocationName(BuildContext context, Alert alert) {
+    // For MUFON alerts, use enrichment data for better location names
     if (alert.enrichment != null) {
-      // Try geocoding display name first
+      // Try geocoding display name first - this gives the full address
       final displayName = alert.enrichment!['geocoding']?['display_name'];
       if (displayName != null && displayName.toString().isNotEmpty) {
         return displayName.toString();
       }
 
-      // Try geocoding location field
+      // Try geocoding location field - shorter format like "Manteca, CA"
       final geocodingLocation = alert.enrichment!['geocoding']?['location'];
       if (geocodingLocation != null && geocodingLocation.toString().isNotEmpty) {
         return geocodingLocation.toString();
