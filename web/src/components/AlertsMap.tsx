@@ -144,7 +144,7 @@ export default function AlertsMap({
   const createPopupContentHelper = (alert: Alert, L: any) => {
     const container = L.DomUtil.create('div')
 
-    const PopupContent = () => {
+      const PopupContent = () => {
       const [fullAlert, setFullAlert] = useState<Alert | null>(null)
       const [loading, setLoading] = useState(false)
 
@@ -330,6 +330,12 @@ export default function AlertsMap({
                     loading="lazy"
                     decoding="async"
                     referrerPolicy="no-referrer"
+                    onLoad={() => {
+                      try {
+                        // Notify Leaflet popup to recalc layout after async image load
+                        (container as any).dispatchEvent(new CustomEvent('ufobeep:img-load'))
+                      } catch {}
+                    }}
                     onError={(e) => {
                       const target = e.target as HTMLImageElement
                       target.style.display = 'none'
@@ -803,7 +809,16 @@ export default function AlertsMap({
                 const pc = createPopupContentHelper(alert, L)
                 const popup = L.popup({ maxWidth: 440, className: 'custom-popup' }).setContent(pc)
                 m.bindPopup(popup)
-                m.on('popupopen', () => { try { (pc as any).__mount?.() } catch {} })
+                m.on('popupopen', (e: any) => {
+                  try {
+                    (pc as any).__mount?.()
+                    // After dynamic React mount, force Leaflet to recalc size
+                    setTimeout(() => { try { e?.popup?.update?.() } catch {} }, 0)
+                    const onImg = () => { try { e?.popup?.update?.() } catch {} }
+                    try { (pc as any).addEventListener?.('ufobeep:img-load', onImg) } catch {}
+                    m.on('popupclose', () => { try { (pc as any).removeEventListener?.('ufobeep:img-load', onImg) } catch {} })
+                  } catch {}
+                })
                 m.addTo(map)
                 markersRef.current.push(m)
               })
@@ -822,7 +837,15 @@ export default function AlertsMap({
                   const pc = createPopupContentHelper(alert, L)
                   const popup = L.popup({ maxWidth: 440, className: 'custom-popup' }).setContent(pc)
                   m.bindPopup(popup)
-                  m.on('popupopen', () => { try { (pc as any).__mount?.() } catch {} })
+                  m.on('popupopen', (e: any) => {
+                    try {
+                      (pc as any).__mount?.()
+                      setTimeout(() => { try { e?.popup?.update?.() } catch {} }, 0)
+                      const onImg = () => { try { e?.popup?.update?.() } catch {} }
+                      try { (pc as any).addEventListener?.('ufobeep:img-load', onImg) } catch {}
+                      m.on('popupclose', () => { try { (pc as any).removeEventListener?.('ufobeep:img-load', onImg) } catch {} })
+                    } catch {}
+                  })
                   m.addTo(map)
                   markersRef.current.push(m)
                 })
@@ -866,7 +889,15 @@ export default function AlertsMap({
           const pcInd = createPopupContentHelper(alert, L)
           const popup = L.popup({ maxWidth: 440, className: 'custom-popup' }).setContent(pcInd)
           marker.bindPopup(popup)
-          marker.on('popupopen', () => { try { (pcInd as any).__mount?.() } catch {} })
+          marker.on('popupopen', (e: any) => {
+            try {
+              (pcInd as any).__mount?.()
+              setTimeout(() => { try { e?.popup?.update?.() } catch {} }, 0)
+              const onImg = () => { try { e?.popup?.update?.() } catch {} }
+              try { (pcInd as any).addEventListener?.('ufobeep:img-load', onImg) } catch {}
+              marker.on('popupclose', () => { try { (pcInd as any).removeEventListener?.('ufobeep:img-load', onImg) } catch {} })
+            } catch {}
+          })
           marker.on('click', () => {
             try {
               const countAtId = overlapCount.get(String(id)) || 1
