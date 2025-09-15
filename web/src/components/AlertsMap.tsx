@@ -743,8 +743,9 @@ export default function AlertsMap({
           const src = (a?.source || '').toString().toLowerCase()
           if (['beep','ufobeep','ufo_beep','ufo-beep'].includes(src)) { hasUfoBeep = true; break }
         }
-        const base = hasUfoBeep ? 36 : 24 // meters; bigger ring for icon markers
-        const r = Math.min(80, base + arr.length * 3)
+        // Heavier spread for UFOBeep icon groups so they never overlap
+        const base = hasUfoBeep ? 60 : 24 // meters
+        const r = Math.min(hasUfoBeep ? 150 : 80, base + arr.length * (hasUfoBeep ? 6 : 3))
         arr.forEach((p, i) => {
           const angle = (2 * Math.PI * i) / arr.length
           const dLat = (r * Math.sin(angle)) * degPerMeterLat
