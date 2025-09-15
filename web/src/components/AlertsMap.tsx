@@ -140,7 +140,7 @@ export default function AlertsMap({
     } catch {}
   }, [])
 
-  // Helper function to create React popup content - defined outside useEffect
+  // Helper function to create React popup content container; mount lazily on popupopen
   const createPopupContentHelper = (alert: Alert, L: any) => {
     const container = L.DomUtil.create('div')
 
@@ -394,8 +394,14 @@ export default function AlertsMap({
       )
     }
 
-    const root = createRoot(container)
-    root.render(<PopupContent />)
+    ;(container as any).__mount = () => {
+      if ((container as any).__mounted) return
+      try {
+        const root = createRoot(container)
+        root.render(<PopupContent />)
+        ;(container as any).__mounted = true
+      } catch {}
+    }
 
     return container
   }
@@ -794,8 +800,10 @@ export default function AlertsMap({
                 const alert = (alerts as any[]).find(a => a.id === id)
                 if (!alert || !isValidLatLng(alert.location)) return
                 const m = createUfoMarker(L, alert, map, [sLat, sLng])
-                const popup = L.popup({ maxWidth: 350, className: 'custom-popup' }).setContent(createPopupContentHelper(alert, L))
+                const pc = createPopupContentHelper(alert, L)
+                const popup = L.popup({ maxWidth: 350, className: 'custom-popup' }).setContent(pc)
                 m.bindPopup(popup)
+                m.on('popupopen', () => { try { (pc as any).__mount?.() } catch {} })
                 m.addTo(map)
                 markersRef.current.push(m)
               })
@@ -811,8 +819,10 @@ export default function AlertsMap({
                   const alert = (alerts as any[]).find(a => a.id === id)
                   if (!alert || !isValidLatLng(alert.location)) return
                   const m = createUfoMarker(L, alert, map, [sLat, sLng])
-                  const popup = L.popup({ maxWidth: 350, className: 'custom-popup' }).setContent(createPopupContentHelper(alert, L))
+                  const pc = createPopupContentHelper(alert, L)
+                  const popup = L.popup({ maxWidth: 350, className: 'custom-popup' }).setContent(pc)
                   m.bindPopup(popup)
+                  m.on('popupopen', () => { try { (pc as any).__mount?.() } catch {} })
                   m.addTo(map)
                   markersRef.current.push(m)
                 })
