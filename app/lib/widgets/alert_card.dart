@@ -671,6 +671,14 @@ class AlertCard extends ConsumerWidget {
   String _getMufonReportDate(BuildContext context, Alert alert) {
     final enrichment = alert.enrichment;
     if (enrichment != null) {
+      // Try report_date first (new format)
+      if (enrichment.containsKey('report_date')) {
+        final reportDate = enrichment['report_date']?.toString();
+        if (reportDate != null && reportDate.isNotEmpty) {
+          return reportDate;
+        }
+      }
+      // Fallback to database_when (old format)
       if (enrichment.containsKey('database_when')) {
         final reportDate = enrichment['database_when']?.toString();
         if (reportDate != null && reportDate.isNotEmpty) {
@@ -684,7 +692,9 @@ class AlertCard extends ConsumerWidget {
         }
       }
     }
-    return _formatDateTime(context, alert.createdAt);
+    // Use createdAt as fallback but format as date only for MUFON consistency
+    final dateOnly = alert.createdAt.toLocal();
+    return '${dateOnly.year}-${dateOnly.month.toString().padLeft(2, '0')}-${dateOnly.day.toString().padLeft(2, '0')}';
   }
 
   String _formatDateTime(BuildContext context, DateTime dateTime) {
