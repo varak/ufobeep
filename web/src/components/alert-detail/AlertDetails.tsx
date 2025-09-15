@@ -181,7 +181,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
           <span className="text-text-tertiary mt-0.5">⏰</span>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <span className="text-text-tertiary text-sm font-medium">{t('timeLabel')}:</span>
+              <span className="text-text-tertiary text-sm font-medium">{t('timeLabel')}</span>
               <span className="text-text-primary text-sm">{formatFullDate(alert.created_at)}</span>
             </div>
             <div className="text-text-secondary text-xs mt-1">
@@ -196,22 +196,22 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
         <span className="text-text-tertiary mt-0.5">📍</span>
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <span className="text-text-tertiary text-sm font-medium">{t('locationLabel')}:</span>
+            <span className="text-text-tertiary text-sm font-medium">{t('locationLabel')}</span>
             <span className="text-text-primary text-sm">
               {(() => {
                 // Clean up location name to avoid duplication
-                let locationName = alert.reporter_username === 'MUFON'
+                let locationName = alert.reporter_username === 'MUFON' || alert.source === 'mufon'
                   ? (alert.enrichment?.geocoding?.display_name ||
                      alert.enrichment?.geocoding?.location ||
                      alert.enrichment?.location_raw ||
                      alert.location?.name || 'Unknown Location')
                   : (alert.location?.name || 'Unknown Location')
 
-                // If we have coordinates but location name is "Unknown Location", format the coordinates
-                if (locationName === 'Unknown Location' && alert.location?.latitude && alert.location?.longitude) {
-                  const lat = alert.location.latitude.toFixed(4)
-                  const lng = alert.location.longitude.toFixed(4)
-                  locationName = `${lat}°, ${lng}°`
+                // For MUFON reports, also check enrichment_data (alternative path)
+                if ((locationName === 'Unknown Location' || locationName.includes('°')) && alert.enrichment_data?.geocoding) {
+                  locationName = alert.enrichment_data.geocoding.display_name ||
+                                alert.enrichment_data.geocoding.location ||
+                                locationName
                 }
                 
                 // Remove duplicate state/country suffixes
