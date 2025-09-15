@@ -12,6 +12,7 @@ interface Alert {
   created_at: string
   occurred_at?: string
   reporter_username?: string
+  source?: string
   location: {
     latitude: number
     longitude: number
