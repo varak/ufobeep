@@ -1742,14 +1742,19 @@ async def get_user_subscriptions(user_id: str, current_user = Depends(get_curren
     async with pool.acquire() as conn:
         # Get followed alerts with sighting details
         subscriptions = await conn.fetch("""
-            SELECT 
+            SELECT
                 f.sighting_id,
                 f.created_at as followed_at,
                 s.title,
                 s.description,
-                s.location_name,
-                s.latitude,
-                s.longitude,
+                COALESCE(
+                    enrichment_data->'geocoding'->>'display_name',
+                    enrichment_data->'geocoding'->>'location',
+                    enrichment_data->>'location_name',
+                    'Unknown Location'
+                ) as location_name,
+                s.lat as latitude,
+                s.lon as longitude,
                 s.created_at as sighting_created_at,
                 (SELECT COUNT(*) FROM comments c WHERE c.sighting_id = s.id) as comment_count
             FROM follows f
