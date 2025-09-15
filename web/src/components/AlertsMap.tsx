@@ -138,7 +138,7 @@ export default function AlertsMap({
                   username: data.data.username,
                   source: data.data.source,
                   short_url: data.data.short_url,
-                  enrichment: data.data.enrichment || data.data.enrichment_data || alert.enrichment
+                  enrichment_data: data.data.enrichment_data || data.data.enrichment
                 }
                 setFullAlert(fullData)
               }
