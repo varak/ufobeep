@@ -138,6 +138,32 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     }
   }
 
+  Future<void> _deleteComment(String commentId) async {
+    try {
+      final service = CommentsService();
+      await service.deleteComment(widget.alertId, commentId);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Comment deleted'),
+            backgroundColor: AppColors.brandPrimary,
+          ),
+        );
+        // Refresh details to update comment list
+        ref.invalidate(alertByIdProvider(widget.alertId));
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to delete comment: $e'),
+            backgroundColor: AppColors.semanticError,
+          ),
+        );
+      }
+    }
+  }
+
   Future<void> _checkFollowStatus() async {
     try {
       final response = await ApiClient.dio.get(
@@ -962,7 +988,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
           // Show existing comments if any
           if (alert.commentCount > 0) ...[
             FutureBuilder<List<Comment>>(
-              future: CommentsService().getComments(alert.id, limit: 5),
+              future: CommentsService().getComments(alert.id), // Remove limit to show all comments
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -972,7 +998,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                     ),
                   );
                 }
-                
+
                 if (snapshot.hasError) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -982,22 +1008,15 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                     ),
                   );
                 }
-                
+
                 final comments = snapshot.data ?? [];
                 if (comments.isEmpty) {
                   return const SizedBox.shrink();
                 }
-                
+
                 return Column(
                   children: [
                     ...comments.map((comment) => _buildCommentItem(comment)).toList(),
-                    if (alert.commentCount > 5)
-                      TextButton.icon(
-                        onPressed: () => _navigateToComments(alert),
-                        icon: const Icon(Icons.forum, size: 18, color: AppColors.brandPrimary),
-                        label: Text('View all ${alert.commentCount} comments'),
-                        style: TextButton.styleFrom(foregroundColor: AppColors.brandPrimary),
-                      ),
                     const SizedBox(height: 16),
                     const Divider(color: AppColors.darkBorder, thickness: 1),
                     const SizedBox(height: 16),
@@ -1059,7 +1078,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   
   Widget _buildCommentItem(Comment comment) {
     final timeAgo = _formatCommentTime(context, comment.createdAt);
-    
+    final canDelete = _currentUserDeviceId != null && comment.userId == _currentUserDeviceId;
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Column(
@@ -1094,12 +1114,30 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Text(
-                      timeAgo,
-                      style: const TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 12,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          timeAgo,
+                          style: const TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 12,
+                          ),
+                        ),
+                        if (canDelete) ..[
+                          const SizedBox(width: 8),
+                          GestureDetector(
+                            onTap: () => _showDeleteCommentDialog(comment),
+                            child: Container(
+                              padding: const EdgeInsets.all(4),
+                              child: const Icon(
+                                Icons.delete_outline,
+                                size: 16,
+                                color: AppColors.semanticError,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
                   ],
                 ),
@@ -1122,6 +1160,44 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       ),
     );
   }
+
+  void _showDeleteCommentDialog(Comment comment) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColors.darkSurface,
+          title: const Text(
+            'Delete Comment',
+            style: TextStyle(color: AppColors.textPrimary),
+          ),
+          content: const Text(
+            'Are you sure you want to delete this comment? This action cannot be undone.',
+            style: TextStyle(color: AppColors.textSecondary),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: AppColors.textSecondary),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _deleteComment(comment.id.toString());
+              },
+              child: const Text(
+                'Delete',
+                style: TextStyle(color: AppColors.semanticError),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
   
   String _formatCommentTime(BuildContext context, DateTime dateTime) {
     final l10n = AppLocalizations.of(context)!;
@@ -1139,17 +1215,5 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     }
   }
 
-  void _navigateToComments(Alert alert) async {
-    await UiFeedback.click();
-    
-    final alertTitle = AlertTitleUtils.getContextualTitleFromAlert(alert);
-    final uri = Uri(path: '/alert/${alert.id}/comments', queryParameters: {
-      'title': alertTitle,
-    });
-    
-    if (mounted) {
-      context.go(uri.toString());
-    }
-  }
 
 }

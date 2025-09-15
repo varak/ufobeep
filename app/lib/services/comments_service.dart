@@ -78,28 +78,65 @@ class CommentsService {
     }
   }
   
+  /// Delete a comment
+  Future<void> deleteComment(String sightingId, String commentId) async {
+    try {
+      print('🗑️ Deleting comment: $commentId from sighting: $sightingId');
+
+      // Ensure we have the latest access token
+      final authRepo = AuthRepository();
+      final accessToken = await authRepo.getAccessToken();
+
+      if (accessToken == null) {
+        throw Exception('Authentication required to delete comments');
+      }
+
+      // Set the bearer token before making the request
+      ApiClient.setBearer(accessToken);
+      print('🔑 Bearer token set for delete comment request');
+
+      final response = await ApiClient.dio.delete('/beep/$sightingId/comments/$commentId');
+
+      print('🗑️ Delete comment response status: ${response.statusCode}');
+      print('🗑️ Delete comment response data: ${response.data}');
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to delete comment: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('❌ Error deleting comment: $e');
+      if (e is DioException) {
+        print('❌ DioException response: ${e.response?.data}');
+        print('❌ DioException status: ${e.response?.statusCode}');
+        print('❌ DioException headers: ${e.response?.headers}');
+        print('❌ DioException request headers: ${e.requestOptions.headers}');
+      }
+      rethrow;
+    }
+  }
+
   /// Follow a sighting for notifications
   Future<void> followSighting(String sightingId) async {
     try {
       print('👀 Following sighting: $sightingId');
-      
+
       // Ensure we have the latest access token
       final authRepo = AuthRepository();
       final accessToken = await authRepo.getAccessToken();
-      
+
       if (accessToken == null) {
         throw Exception('Authentication required to follow sightings');
       }
-      
+
       // Set the bearer token before making the request
       ApiClient.setBearer(accessToken);
       print('🔑 Bearer token set for follow request');
-      
+
       final response = await ApiClient.dio.post('/beep/$sightingId/follow');
-      
+
       print('👀 Follow response status: ${response.statusCode}');
       print('👀 Follow response data: ${response.data}');
-      
+
       if (response.statusCode != 201) {
         throw Exception('Failed to follow sighting: ${response.statusCode}');
       }
