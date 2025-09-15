@@ -775,8 +775,7 @@ export default function AlertsMap({
           try { marker.bindTooltip('Zoom in to expand', { direction: 'top', offset: [0, -size/2], opacity: 0.8 }) } catch {}
           marker.on('click', () => {
             try {
-              // Zoom a bit more than the default expansion level
-              const nextZoom = Math.min(index.getClusterExpansionZoom(c.id) + 1, 18)
+              const nextZoom = Math.min(index.getClusterExpansionZoom(c.id), 18)
               map.flyTo([lat, lng], nextZoom, { duration: 0.6 })
             } catch {}
           })
@@ -796,9 +795,10 @@ export default function AlertsMap({
               const key = `${lat.toFixed(5)},${lng.toFixed(5)}`
               const arr = groups.get(key) || []
               const z = Math.round(map.getZoom() || 0)
-              if (arr.length > 1 && z < 18) {
-                const targetZoom = Math.min(Math.max(16, z + 4), 18)
-                map.flyTo([lat, lng], targetZoom, { duration: 0.5 })
+              const alreadySeparated = !!jitterPos
+              if (arr.length > 1 && z < 14 && !alreadySeparated) {
+                const targetZoom = Math.min(Math.max(14, z + 2), 18)
+                map.flyTo([lat, lng], targetZoom, { duration: 0.45 })
                 return
               }
               marker.openPopup()
