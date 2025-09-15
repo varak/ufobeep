@@ -101,6 +101,59 @@ class UserPreferences {
   factory UserPreferences.fromJson(Map<String, dynamic> json) =>
       _$UserPreferencesFromJson(json);
 
+  /// Create UserPreferences with language-aware defaults
+  factory UserPreferences.withLanguageDefaults({
+    String? displayName,
+    String? email,
+    String language = 'en',
+    double alertRangeKm = 10.0,
+    bool enablePushNotifications = true,
+    bool enableLocationAlerts = true,
+    bool enableArCompass = true,
+    bool enablePilotMode = false,
+    List<String> alertCategories = const ['ufo', 'anomaly', 'aircraft'],
+    String? units,
+    bool darkMode = true,
+    bool useWeatherVisibility = true,
+    bool enableVisibilityFilters = true,
+    LocationPrivacy locationPrivacy = LocationPrivacy.jittered,
+    bool? mediaOnlyAlerts,
+    bool? ignoreAnonymousBeeps,
+    bool quietHoursEnabled = false,
+    int quietHoursStart = 22,
+    int quietHoursEnd = 7,
+    bool allowEmergencyOverride = true,
+    DateTime? dndUntil,
+    bool? use24HourTime,
+    DateTime? lastUpdated,
+  }) {
+    return UserPreferences(
+      displayName: displayName,
+      email: email,
+      language: language,
+      alertRangeKm: alertRangeKm,
+      enablePushNotifications: enablePushNotifications,
+      enableLocationAlerts: enableLocationAlerts,
+      enableArCompass: enableArCompass,
+      enablePilotMode: enablePilotMode,
+      alertCategories: alertCategories,
+      units: units ?? _getDefaultUnitsForLanguage(language),
+      darkMode: darkMode,
+      useWeatherVisibility: useWeatherVisibility,
+      enableVisibilityFilters: enableVisibilityFilters,
+      locationPrivacy: locationPrivacy,
+      mediaOnlyAlerts: mediaOnlyAlerts,
+      ignoreAnonymousBeeps: ignoreAnonymousBeeps,
+      quietHoursEnabled: quietHoursEnabled,
+      quietHoursStart: quietHoursStart,
+      quietHoursEnd: quietHoursEnd,
+      allowEmergencyOverride: allowEmergencyOverride,
+      dndUntil: dndUntil,
+      use24HourTime: use24HourTime ?? _getDefault24HourForLanguage(language),
+      lastUpdated: lastUpdated,
+    );
+  }
+
   Map<String, dynamic> toJson() => _$UserPreferencesToJson(this);
 
   UserPreferences copyWith({
@@ -179,10 +232,15 @@ class UserPreferences {
   String get effectiveUnits {
     // If user has explicitly set units, use that
     if (units != 'metric') return units;
-    
+
     // Otherwise, auto-detect from language
     // Import is at top of file
     return _getDefaultUnitsForLanguage(language);
+  }
+
+  /// Get effective time format - uses language-aware default
+  bool get effectiveUse24HourTime {
+    return use24HourTime;
   }
 
   /// Internal method to get default units for language (matches UnitConversion logic)
@@ -288,7 +346,7 @@ class RegistrationData {
       alertRangeKm <= 100.0;
 
   UserPreferences toUserPreferences() {
-    return UserPreferences(
+    return UserPreferences.withLanguageDefaults(
       displayName: displayName,
       email: email,
       language: language,
