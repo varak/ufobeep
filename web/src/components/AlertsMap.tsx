@@ -93,6 +93,7 @@ export default function AlertsMap({
   const markersRef = useRef<any[]>([])
   const clusterIndexRef = useRef<any>(null)
   const featuresRef = useRef<any[]>([])
+  const hasSavedViewRef = useRef(false)
   const prevAlertsRef = useRef<Alert[]>([])
   const isGettingLocation = useRef(false)
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
@@ -355,6 +356,21 @@ export default function AlertsMap({
     return container
   }
 
+  // Load saved view if available
+  useEffect(() => {
+    try {
+      const raw = typeof window !== 'undefined' && localStorage.getItem('ufobeep:map:view')
+      if (raw) {
+        const v = JSON.parse(raw)
+        if (Array.isArray(v.center) && v.center.length === 2 && Number.isFinite(v.zoom)) {
+          setMapCenter([Number(v.center[0]), Number(v.center[1])])
+          setCurrentZoom(Number(v.zoom))
+          hasSavedViewRef.current = true
+        }
+      }
+    } catch {}
+  }, [])
+
   // Get user's location on mount - only once
   useEffect(() => {
     if (isGettingLocation.current) return
@@ -369,6 +385,7 @@ export default function AlertsMap({
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          if (hasSavedViewRef.current) return
           const user: [number, number] = [position.coords.latitude, position.coords.longitude]
           setExactUserLocation([Number(user[0]), Number(user[1])])
           // Center the map with a slight US bias for better initial context
@@ -376,8 +393,10 @@ export default function AlertsMap({
           setMapCenter([Number(biasedCoords[0]), Number(biasedCoords[1])])
         },
         (error) => {
-          // Use provided center or US center as fallback
-          setMapCenter([Number(center[0]), Number(center[1])])
+          if (!hasSavedViewRef.current) {
+            // Use provided center or US center as fallback
+            setMapCenter([Number(center[0]), Number(center[1])])
+          }
         },
         {
           timeout: 10000,
@@ -387,7 +406,9 @@ export default function AlertsMap({
       )
     } else {
       // Use provided center or US center as fallback
-      setMapCenter([Number(center[0]), Number(center[1])])
+      if (!hasSavedViewRef.current) {
+        setMapCenter([Number(center[0]), Number(center[1])])
+      }
     }
   }, [center, disableGeolocation]) // Include center and disableGeolocation in deps
 
@@ -414,7 +435,7 @@ export default function AlertsMap({
               properties: { id: a.id }
             }))
           featuresRef.current = features
-          const index = new Supercluster({ radius: 60, maxZoom: 16, minPoints: 2 })
+          const index = new Supercluster({ radius: 50, maxZoom: 16, minPoints: 2 })
           index.load(features as any)
           clusterIndexRef.current = index
           renderClusters(L, mapInstanceRef.current)
@@ -517,7 +538,7 @@ export default function AlertsMap({
               properties: { id: a.id }
             }))
           featuresRef.current = features
-          const index = new Supercluster({ radius: 60, maxZoom: 16, minPoints: 2 })
+          const index = new Supercluster({ radius: 50, maxZoom: 16, minPoints: 2 })
           index.load(features as any)
           clusterIndexRef.current = index
           renderClusters(L, map)
@@ -529,6 +550,10 @@ export default function AlertsMap({
           const newZoom = map.getZoom()
           setCurrentZoom(newZoom)
           renderClusters(L, map)
+          try {
+            const ctr = map.getCenter()
+            localStorage.setItem('ufobeep:map:view', JSON.stringify({ center: [ctr.lat, ctr.lng], zoom: newZoom }))
+          } catch {}
         }
         map.on('zoomend', rerender)
         map.on('moveend', rerender)
@@ -659,6 +684,7 @@ export default function AlertsMap({
             >${count}</div>`
           const divIcon = L.divIcon({ html, className: 'cluster-marker', iconSize: [size, size], iconAnchor: [size/2, size/2] })
           const marker = L.marker([lat, lng], { icon: divIcon })
+          try { marker.bindTooltip('Zoom in to expand', { direction: 'top', offset: [0, -size/2], opacity: 0.8 }) } catch {}
           marker.on('click', () => {
             const nextZoom = Math.min(index.getClusterExpansionZoom(c.id), 18)
             map.flyTo([lat, lng], nextZoom, { duration: 0.6 })
@@ -794,15 +820,18 @@ export default function AlertsMap({
       // Default MUFON icon if no classification
       return '?'
     }
-    
-    // Regular UFO beep sightings use standard pin
+    // Non-MUFON, non-UFOBeep sources (e.g., NUFORC) use neutral pin
     return '📍'
   }
 
   const createUfoMarker = (L: any, alert: Alert, map: any, pos?: [number, number]) => {
-    const isClassifiedUfo = alert.source === 'mufon' || alert.username === 'MUFON_Database'
-    
-    if (isClassifiedUfo) {
+    const isMufon = (alert.source?.toLowerCase?.() === 'mufon') || alert.username === 'MUFON_Database'
+    const isUfoBeep = (!isMufon) && (
+      (alert.source == null) ||
+      (typeof alert.source === 'string' && ['beep','ufobeep','ufo_beep','ufo-beep'].includes(alert.source.toLowerCase()))
+    )
+
+    if (isMufon) {
       // Create custom HTML marker for UFO types
       const iconSymbol = getUfoIcon(alert)
       const color = getAlertColor(alert.alert_level)
@@ -832,7 +861,7 @@ export default function AlertsMap({
       const lat = pos ? Number(pos[0]) : Number(alert.location.latitude)
       const lng = pos ? Number(pos[1]) : Number(alert.location.longitude)
       return L.marker([lat, lng], { icon: customIcon })
-    } else {
+    } else if (isUfoBeep) {
       // UFOBeep markers: bright cyan UFO icon to stand out
       const lat = pos ? Number(pos[0]) : Number(alert.location.latitude)
       const lng = pos ? Number(pos[1]) : Number(alert.location.longitude)
@@ -848,6 +877,21 @@ export default function AlertsMap({
         ">🛸</div>`
       const divIcon = L.divIcon({ html, className: 'beep-marker', iconSize: [26, 26], iconAnchor: [13, 13] })
       return L.marker([lat, lng], { icon: divIcon })
+    } else {
+      // Other sources (e.g., NUFORC): neutral styled circle
+      const lat = pos ? Number(pos[0]) : Number(alert.location.latitude)
+      const lng = pos ? Number(pos[1]) : Number(alert.location.longitude)
+      return L.circleMarker(
+        [lat, lng],
+        {
+          radius: 7,
+          fillColor: '#A78BFA', // violet
+          color: '#ffffff',
+          weight: 2,
+          opacity: 1,
+          fillOpacity: 0.85
+        }
+      )
     }
   }
 
