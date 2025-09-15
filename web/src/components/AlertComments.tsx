@@ -69,7 +69,7 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
 
     const connectSSE = () => {
       try {
-        eventSource = new EventSource(`/api/alerts/${alertId}/comments/stream`)
+        eventSource = new EventSource(`/api/beep/${alertId}/comments/stream`)
 
         eventSource.onopen = () => {
           console.log('[SSE] Connected to comment updates')
@@ -130,7 +130,7 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
 
     try {
       const token = getAuthToken()
-      const response = await fetch(`/api/alerts/${alertId}/follow`, {
+      const response = await fetch(`/api/beep/${alertId}/follow`, {
         headers: {
           'Authorization': `Bearer ${token}`
         },
@@ -152,7 +152,7 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
     try {
       const token = getAuthToken()
       const method = isFollowing ? 'DELETE' : 'POST'
-      const response = await fetch(`/api/alerts/${alertId}/follow`, {
+      const response = await fetch(`/api/beep/${alertId}/follow`, {
         method,
         headers: {
           'Authorization': `Bearer ${token}`
@@ -192,7 +192,7 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
 
     try {
       const token = getAuthToken()
-      const response = await fetch(`/api/alerts/${alertId}/comments/${commentId}`, {
+      const response = await fetch(`/api/beep/${alertId}/comments/${commentId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
