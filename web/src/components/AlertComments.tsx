@@ -400,49 +400,48 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
         <div className="space-y-4 mb-6">
           {comments.map((comment) => (
             <div key={comment.id} className="border-l-2 border-brand-primary/30 pl-4 pb-3">
-              <div className="flex items-start gap-3">
-                {/* Column 1: Avatar + Username */}
-                <div className="flex items-center gap-2 flex-shrink-0 min-w-0 w-40">
+              {/* Two-line layout: Header + Content */}
+              <div className="space-y-2">
+                {/* Header row: Avatar + Username + Timestamp + Delete */}
+                <div className="flex items-center gap-3">
                   <div className="w-6 h-6 bg-brand-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
                     <span className="text-brand-primary text-xs font-semibold">
                       {comment.username?.charAt(0).toUpperCase() || 'U'}
                     </span>
                   </div>
-                  <div className="font-medium text-text-primary text-sm truncate">
-                    {comment.username || 'Anonymous'}:
+                  <div className="font-medium text-text-primary text-sm flex-1 min-w-0">
+                    {comment.username || 'Anonymous'}
+                  </div>
+                  <div className="flex items-center gap-2 text-text-tertiary text-xs flex-shrink-0">
+                    <span>{formatDate(comment.created_at)}</span>
+                    {canDeleteComment(comment) && (
+                      <button
+                        onClick={() => handleDeleteComment(comment.id)}
+                        className="text-red-400 hover:text-red-300 p-1 rounded transition-colors"
+                        title="Delete comment"
+                      >
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
+                    )}
                   </div>
                 </div>
-                
-                {/* Column 2: Comment Text */}
-                <div className="flex-1 min-w-0">
+
+                {/* Content row: Comment text with full width */}
+                <div className="ml-9">
                   <p className="text-text-secondary text-sm leading-relaxed whitespace-pre-wrap">
                     {comment.body}
                   </p>
-                  
+
                   {comment.media_url && (
                     <div className="mt-2">
-                      <img 
-                        src={comment.media_url} 
-                        alt={t('commentAttachment')} 
+                      <img
+                        src={comment.media_url}
+                        alt={t('commentAttachment')}
                         className="max-w-xs rounded-lg border border-dark-border"
                       />
                     </div>
-                  )}
-                </div>
-                
-                {/* Column 3: Timestamp + Delete Button */}
-                <div className="flex items-center gap-2 text-text-tertiary text-xs flex-shrink-0 text-right min-w-0">
-                  <span>{formatDate(comment.created_at)}</span>
-                  {canDeleteComment(comment) && (
-                    <button
-                      onClick={() => handleDeleteComment(comment.id)}
-                      className="text-red-400 hover:text-red-300 p-1 rounded transition-colors"
-                      title="Delete comment"
-                    >
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
-                    </button>
                   )}
                 </div>
               </div>
