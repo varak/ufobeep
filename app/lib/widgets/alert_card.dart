@@ -232,16 +232,19 @@ class AlertCard extends ConsumerWidget {
 
   /// Smart description selection for preview cards - matches web logic
   String? _getPreviewDescription() {
-    // MUFON alerts have short_description in enrichment
-    if (alert.enrichment?['short_description'] != null) {
-      final shortDesc = alert.enrichment!['short_description'].toString();
-      if (shortDesc.isNotEmpty) {
-        return shortDesc;
+    // MUFON alerts have short_description - check enrichment data from API
+    if (alert.source == 'mufon' && alert.enrichment != null) {
+      final enrichment = alert.enrichment!;
+      if (enrichment.containsKey('short_description')) {
+        final shortDesc = enrichment['short_description']?.toString().trim();
+        if (shortDesc != null && shortDesc.isNotEmpty) {
+          return shortDesc;
+        }
       }
     }
 
-    // For MUFON alerts, clean up the description by removing duplicate metadata
-    if (alert.reporterUsername == 'MUFON' && alert.description != null) {
+    // For MUFON alerts without short_description, clean up the long description
+    if (alert.source == 'mufon' && alert.description != null) {
       // Remove the appended metadata section (everything after the separator line)
       final cleanDescription = alert.description!.split('━━━━━━━━━━━━━━━━━━━━━━━━')[0].trim();
       final truncated = cleanDescription.length > 150
