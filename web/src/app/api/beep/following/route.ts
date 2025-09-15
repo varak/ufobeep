@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { apiConfig } from '@/config/api'
 
+export const dynamic = 'force-dynamic'
+
 // GET /api/beep/following - Get user's following subscriptions
 export async function GET(request: NextRequest) {
   try {
