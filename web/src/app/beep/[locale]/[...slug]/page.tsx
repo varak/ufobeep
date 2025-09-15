@@ -66,7 +66,16 @@ interface Alert {
 
 
 function getEnrichedLocation(alert: Alert, t: any): string {
-  // Try enrichment geocoding first
+  // Try enrichment_data geocoding first (primary data source)
+  if (alert.enrichment_data?.geocoding?.display_name) {
+    return alert.enrichment_data.geocoding.display_name
+  }
+
+  if (alert.enrichment_data?.geocoding?.location) {
+    return alert.enrichment_data.geocoding.location
+  }
+
+  // Try enrichment geocoding (fallback)
   if (alert.enrichment?.geocoding?.location) {
     return alert.enrichment.geocoding.location
   }
