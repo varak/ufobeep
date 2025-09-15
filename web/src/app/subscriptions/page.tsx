@@ -34,7 +34,22 @@ export default function SubscriptionsPage() {
         return
       }
 
-      const response = await fetch('/api/beep/following', {
+      // Need to get user ID first, then fetch subscriptions
+      const meResponse = await fetch('/api/users/me', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      if (!meResponse.ok) {
+        throw new Error(`HTTP error! status: ${meResponse.status}`)
+      }
+
+      const userData = await meResponse.json()
+      const userId = userData.id
+
+      const response = await fetch(`/api/users/${userId}/subscriptions`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
