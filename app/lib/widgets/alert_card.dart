@@ -199,7 +199,7 @@ class AlertCard extends ConsumerWidget {
             const SizedBox(height: 2),
             Text(
               alert.source == 'mufon'
-                  ? '' // Skip relative time for MUFON since it shows case number
+                  ? _formatDateTime(context, alert.createdAt) // Show T+ time for MUFON reports
                   : _formatDateTime(context, alert.createdAt),
               style: const TextStyle(
                 color: AppColors.textTertiary,
