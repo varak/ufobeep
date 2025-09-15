@@ -200,9 +200,16 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
             <span className="text-text-primary text-sm">
               {(() => {
                 // Clean up location name to avoid duplication
-                let locationName = alert.reporter_username === 'MUFON' 
+                let locationName = alert.reporter_username === 'MUFON'
                   ? (alert.enrichment?.location_raw || alert.location?.name || 'Unknown Location')
                   : (alert.location?.name || 'Unknown Location')
+
+                // If we have coordinates but location name is "Unknown Location", format the coordinates
+                if (locationName === 'Unknown Location' && alert.location?.latitude && alert.location?.longitude) {
+                  const lat = alert.location.latitude.toFixed(4)
+                  const lng = alert.location.longitude.toFixed(4)
+                  locationName = `${lat}°, ${lng}°`
+                }
                 
                 // Remove duplicate state/country suffixes
                 if (locationName.includes(',')) {

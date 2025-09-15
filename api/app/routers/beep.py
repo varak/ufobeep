@@ -80,9 +80,15 @@ def format_alert_response(alert, user_lat=None, user_lon=None):
         "witness_count": alert.witness_count,
         "created_at": alert.created_at.isoformat(),
         "location": {
-            "latitude": alert.location.latitude if alert.location else 0.0,
-            "longitude": alert.location.longitude if alert.location else 0.0,
-            "name": alert.location.name if alert.location else "Unknown Location"
+            "latitude": alert.location.latitude if alert.location else (
+                alert.enrichment.get("geocoding", {}).get("latitude", 0.0) if alert.enrichment else 0.0
+            ),
+            "longitude": alert.location.longitude if alert.location else (
+                alert.enrichment.get("geocoding", {}).get("longitude", 0.0) if alert.enrichment else 0.0
+            ),
+            "name": alert.location.name if alert.location and alert.location.name != "Unknown Location" else (
+                alert.enrichment.get("geocoding", {}).get("location", "Unknown Location") if alert.enrichment else "Unknown Location"
+            )
         },
         "distance_km": round(distance_km, 2),
         "bearing_deg": round(bearing_deg, 1),
@@ -305,7 +311,11 @@ async def get_map_points(minimal: bool = False):
                         description,
                         public_latitude,
                         public_longitude,
-                        enrichment_data->>'location_name' as location_name,
+                        COALESCE(
+                            enrichment_data->'geocoding'->>'location',
+                            enrichment_data->>'location_name',
+                            'Unknown Location'
+                        ) as location_name,
                         created_at,
                         source,
                         media_info as media_files,
