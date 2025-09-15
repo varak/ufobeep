@@ -762,19 +762,24 @@ export default function AlertsMap({
         if (c.properties && c.properties.cluster) {
           const count = c.properties.point_count
           // For small clusters, expand in-place into jittered points so they are immediately clickable
-          if (count <= 12) {
+          if (count <= 24) {
             try {
               const leaves = index.getLeaves(c.id, count, 0) as any[]
-              // Spread them around cluster center using a ring (independent of identical coordinate grouping)
               const cosLat = Math.cos((lat * Math.PI) / 180)
               const degPerMeterLat = 1 / 111320
               const degPerMeterLng = 1 / (111320 * (cosLat || 1))
-              const base = 50 // meters
-              const r = Math.min(120, base + count * 6)
-              leaves.forEach((leaf, i) => {
-                const angle = (2 * Math.PI * i) / leaves.length
-                const dLat = (r * Math.sin(angle)) * degPerMeterLat
-                const dLng = (r * Math.cos(angle)) * degPerMeterLng
+              // Two-ring layout for dense small clusters
+              const rings = count <= 12 ? 1 : 2
+              const perRing1 = rings === 1 ? count : Math.ceil(count / 2)
+              const perRing2 = rings === 2 ? count - perRing1 : 0
+              const baseR = 60 // meters
+              const ringR1 = Math.min(130, baseR + perRing1 * 5)
+              const ringR2 = rings === 2 ? Math.min(160, ringR1 + 30 + perRing2 * 3) : 0
+              // Place first ring
+              leaves.slice(0, perRing1).forEach((leaf, i) => {
+                const angle = (2 * Math.PI * i) / perRing1
+                const dLat = (ringR1 * Math.sin(angle)) * degPerMeterLat
+                const dLng = (ringR1 * Math.cos(angle)) * degPerMeterLng
                 const sLat = lat + dLat
                 const sLng = lng + dLng
                 const id = leaf.properties && leaf.properties.id
@@ -786,6 +791,24 @@ export default function AlertsMap({
                 m.addTo(map)
                 markersRef.current.push(m)
               })
+              // Place second ring if needed
+              if (rings === 2 && perRing2 > 0) {
+                leaves.slice(perRing1).forEach((leaf, j) => {
+                  const angle = (2 * Math.PI * j) / perRing2
+                  const dLat = (ringR2 * Math.sin(angle)) * degPerMeterLat
+                  const dLng = (ringR2 * Math.cos(angle)) * degPerMeterLng
+                  const sLat = lat + dLat
+                  const sLng = lng + dLng
+                  const id = leaf.properties && leaf.properties.id
+                  const alert = (alerts as any[]).find(a => a.id === id)
+                  if (!alert || !isValidLatLng(alert.location)) return
+                  const m = createUfoMarker(L, alert, map, [sLat, sLng])
+                  const popup = L.popup({ maxWidth: 350, className: 'custom-popup' }).setContent(createPopupContentHelper(alert, L))
+                  m.bindPopup(popup)
+                  m.addTo(map)
+                  markersRef.current.push(m)
+                })
+              }
             } catch (e) {
               console.error('Cluster inline expand failed', e)
             }
