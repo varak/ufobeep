@@ -341,7 +341,7 @@ export default function AlertsMap({
         try {
           const leafletModule = await import('leaflet')
           const L: any = (leafletModule as any).default || leafletModule
-          const { default: Supercluster } = await import('supercluster')
+          const { default: Supercluster } = await import('supercluster') as any
           const features = alerts
             .filter(a => isValidLatLng(a.location))
             .map(a => ({
@@ -444,7 +444,7 @@ export default function AlertsMap({
 
         // Build cluster index and render, then listen to zoom/pan
         try {
-          const { default: Supercluster } = await import('supercluster')
+          const { default: Supercluster } = await import('supercluster') as any
           const features = alerts
             .filter(a => isValidLatLng(a.location))
             .map(a => ({
