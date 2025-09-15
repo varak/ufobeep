@@ -18,10 +18,6 @@ export default function SubscriptionsPage() {
   const [error, setError] = useState<string | null>(null)
   const { isAuthenticated, getAuthToken } = useAuth()
 
-  useEffect(() => {
-    fetchSubscriptions()
-  }, [fetchSubscriptions])
-
   const fetchSubscriptions = useCallback(async () => {
     try {
       setLoading(true)
@@ -58,6 +54,10 @@ export default function SubscriptionsPage() {
       setLoading(false)
     }
   }, [isAuthenticated, getAuthToken])
+
+  useEffect(() => {
+    fetchSubscriptions()
+  }, [fetchSubscriptions])
 
   const unfollow = async (alertId: string) => {
     try {

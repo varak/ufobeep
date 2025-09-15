@@ -3,39 +3,39 @@ import { proxyToBackendAPI, handleBroadcastRequest } from '@/utils/api-proxy'
 
 export const dynamic = 'force-dynamic'
 
-// GET /api/beep/[alertId]/comments - Get comments for alert
+// GET /api/beep/[id]/comments - Get comments for alert
 export async function GET(
   request: NextRequest,
-  { params }: { params: { alertId: string } }
+  { params }: { params: { id: string } }
 ) {
-  const { alertId } = params
+  const { id } = params
   const { searchParams } = new URL(request.url)
   const limit = searchParams.get('limit') || '30'
 
   return proxyToBackendAPI(
     request,
-    `/beep/${alertId}/comments?limit=${limit}`,
+    `/beep/${id}/comments?limit=${limit}`,
     'GET',
     { allowUnauthenticated: true }
   )
 }
 
-// POST /api/beep/[alertId]/comments - Create comment for alert
+// POST /api/beep/[id]/comments - Create comment for alert
 export async function POST(
   request: NextRequest,
-  { params }: { params: { alertId: string } }
+  { params }: { params: { id: string } }
 ) {
-  const { alertId } = params
+  const { id } = params
 
   // Handle broadcast-only requests from FastAPI
-  const broadcastResponse = await handleBroadcastRequest(request, alertId)
+  const broadcastResponse = await handleBroadcastRequest(request, id)
   if (broadcastResponse) {
     return broadcastResponse
   }
 
   return proxyToBackendAPI(
     request,
-    `/beep/${alertId}/comments`,
+    `/beep/${id}/comments`,
     'POST',
     { triggerSSEBroadcast: true }
   )

@@ -3,16 +3,16 @@ import { proxyToBackendAPI } from '@/utils/api-proxy'
 
 export const dynamic = 'force-dynamic'
 
-// DELETE /api/beep/[alertId]/comments/[commentId] - Delete a comment
+// DELETE /api/beep/[id]/comments/[commentId] - Delete a comment
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { alertId: string; commentId: string } }
+  { params }: { params: { id: string; commentId: string } }
 ) {
-  const { alertId, commentId } = params
+  const { id, commentId } = params
 
   return proxyToBackendAPI(
     request,
-    `/beep/${alertId}/comments/${commentId}`,
+    `/beep/${id}/comments/${commentId}`,
     'DELETE',
     { triggerSSEBroadcast: true }
   )

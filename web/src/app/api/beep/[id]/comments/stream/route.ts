@@ -1,14 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { alertConnections, deadConnections, cleanupDeadConnections } from '@/utils/sse-broadcast'
 
 export const dynamic = 'force-dynamic'
 
-// GET /api/beep/[alertId]/comments/stream - SSE stream for real-time comment updates
+// Local in-memory store for this route
+const alertConnections = new Map<string, Set<ReadableStreamDefaultController>>()
+
+// GET /api/beep/[id]/comments/stream - SSE stream for real-time comment updates
 export async function GET(
   request: NextRequest,
-  { params }: { params: { alertId: string } }
+  { params }: { params: { id: string } }
 ) {
-  const { alertId } = params
+  const { id } = params
 
   // Create SSE response
   const encoder = new TextEncoder()
@@ -19,13 +21,13 @@ export async function GET(
       controller = ctrl
 
       // Add this connection to the alert connections
-      if (!alertConnections.has(alertId)) {
-        alertConnections.set(alertId, new Set())
+      if (!alertConnections.has(id)) {
+        alertConnections.set(id, new Set())
       }
-      alertConnections.get(alertId)!.add(controller)
+      alertConnections.get(id)!.add(controller)
 
       // Send initial connection message
-      const initMessage = `data: ${JSON.stringify({ type: 'connected', alertId })}\n\n`
+      const initMessage = `data: ${JSON.stringify({ type: 'connected', alertId: id })}\n\n`
       controller.enqueue(encoder.encode(initMessage))
 
       // Set up heartbeat
@@ -35,7 +37,11 @@ export async function GET(
           controller!.enqueue(encoder.encode(heartbeatMessage))
         } catch (error) {
           clearInterval(heartbeatInterval)
-          deadConnections.push(controller!)
+          // Remove dead connection
+          const connections = alertConnections.get(id)
+          if (connections) {
+            connections.delete(controller!)
+          }
         }
       }, 30000) // 30 second heartbeat
 
@@ -46,11 +52,11 @@ export async function GET(
     cancel() {
       // Clean up this connection
       if (controller) {
-        const connections = alertConnections.get(alertId)
+        const connections = alertConnections.get(id)
         if (connections) {
           connections.delete(controller)
           if (connections.size === 0) {
-            alertConnections.delete(alertId)
+            alertConnections.delete(id)
           }
         }
 
@@ -59,9 +65,6 @@ export async function GET(
           clearInterval((controller as any)._heartbeatInterval)
         }
       }
-
-      // Clean up dead connections periodically
-      cleanupDeadConnections()
     }
   })
 
