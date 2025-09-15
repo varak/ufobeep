@@ -26,16 +26,31 @@ export async function GET(
       )
     }
     
-    const data = await response.json()
+    const raw = await response.json()
 
-    // Transform response for frontend compatibility
-    // The backend returns data directly, not nested under 'alert' or 'beep'
-    if (data.success && data.data) {
-      // Return data as-is since it's already in the right format
-      return NextResponse.json(data)
+    // Normalize to { success: true, data: {...} } for frontend consistency
+    let normalized: any
+    if (raw && raw.success && raw.data) {
+      normalized = raw.data
+    } else if (raw && raw.data) {
+      normalized = raw.data
+    } else if (raw && (raw.alert || raw.beep)) {
+      normalized = raw.alert || raw.beep
+    } else {
+      normalized = raw
     }
 
-    return NextResponse.json(data)
+    // Optional: field fallbacks to improve client robustness
+    if (normalized) {
+      // Ensure created_at has a value if backend used a different key
+      normalized.created_at = normalized.created_at || normalized.occurred_at || normalized.timestamp || normalized.date || null
+      // Normalize media files container shape
+      if (normalized.media_files && normalized.media_files.files) {
+        normalized.media_files = normalized.media_files.files
+      }
+    }
+
+    return NextResponse.json({ success: true, data: normalized })
   } catch (error) {
     console.error('Error fetching beep by short URL:', error)
     console.error('Error details:', error instanceof Error ? error.message : error)
