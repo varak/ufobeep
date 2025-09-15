@@ -446,9 +446,7 @@ app.include_router(copescan.router, prefix="/copescan", tags=["copescan"])
 from app.routers import beep
 app.include_router(beep.router)
 
-# Include alerts router for API consistency (same functionality as beep)
-from app.routers import alerts
-app.include_router(alerts.router)
+# Removed alerts router - all requests should use /beep/ endpoints only
 
 # Include engagement tracking router
 from app.routers import beep_engagement
