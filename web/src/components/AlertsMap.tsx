@@ -43,6 +43,16 @@ interface AlertsMapProps {
   locale?: string
 }
 
+// Extend Window interface for spiderfy functionality
+declare global {
+  interface Window {
+    __ufobeepSpider?: {
+      markers: any[]
+      lines: any[]
+    } | null
+  }
+}
+
 // US-biased centering for better geolocation experience
 const US_CENTER: [number, number] = [39.5, -98.35]; // continental US centroid
 
@@ -209,16 +219,49 @@ export default function AlertsMap({
         return !isNaN(dt.getTime())
       }
 
+      // Try to parse a variety of common date formats
+      const normalizeDate = (d: any): Date | null => {
+        if (!d) return null
+        if (d instanceof Date && !isNaN(d.getTime())) return d
+        // Numbers (epoch ms or seconds)
+        if (typeof d === 'number') {
+          const ms = d > 1e12 ? d : d * 1000
+          const dt = new Date(ms)
+          return isNaN(dt.getTime()) ? null : dt
+        }
+        if (typeof d === 'string') {
+          // If string has date and time separated by space, convert to ISO-ish
+          let s = d.trim()
+          if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}(:\d{2})?$/.test(s)) {
+            s = s.replace(' ', 'T') + 'Z'
+          }
+          const dt = new Date(s)
+          return isNaN(dt.getTime()) ? null : dt
+        }
+        return null
+      }
+
+      const pickFirstDate = (obj: any, keys: string[]): Date | null => {
+        if (!obj) return null
+        for (const k of keys) {
+          const v = obj[k]
+          const dt = normalizeDate(v)
+          if (dt) return dt
+        }
+        return null
+      }
+
       const getSightingDate = (a: any): string => {
         const e = a?.enrichment || a?.enrichment_data
-        const val = e?.sighting_datetime || e?.event_datetime || e?.occurred_at
-        return isValidDate(val) ? new Date(val).toLocaleDateString() : ''
+        // Prefer actual occurrence; include extra fallbacks for MUFON
+        const dt = pickFirstDate(e, ['sighting_datetime', 'event_datetime', 'occurred_at', 'sighting_date', 'event_date'])
+        return dt ? dt.toLocaleDateString() : ''
       }
 
       const getReportedDate = (a: any): string => {
         const e = a?.enrichment || a?.enrichment_data
-        const val = e?.report_date || e?.reported_at || a?.created_at
-        return isValidDate(val) ? new Date(val).toLocaleDateString() : ''
+        const dt = pickFirstDate(e, ['report_date', 'reported_at', 'submission_date']) || normalizeDate(a?.created_at)
+        return dt ? dt.toLocaleDateString() : ''
       }
 
       return (
@@ -648,7 +691,6 @@ export default function AlertsMap({
             const lines: any[] = []
             // Remove any previous spiderfy artifacts
             try {
-              // @ts-ignore
               if (window.__ufobeepSpider) {
                 window.__ufobeepSpider.markers.forEach((m:any)=>{try{m.remove()}catch{}})
                 window.__ufobeepSpider.lines.forEach((l:any)=>{try{l.remove()}catch{}})
@@ -672,7 +714,7 @@ export default function AlertsMap({
               ln.addTo(map)
               lines.push(ln)
             })
-            try { /* @ts-ignore */ window.__ufobeepSpider = { markers: sMarkers, lines } } catch {}
+            try { window.__ufobeepSpider = { markers: sMarkers, lines } } catch {}
           })
           marker.addTo(map)
           markersRef.current.push(marker)
