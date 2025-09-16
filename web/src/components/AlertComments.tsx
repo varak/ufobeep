@@ -212,12 +212,17 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
                   setExpandedIds(prev => new Set(prev).add(normalized.id))
                   scrollToComment(normalized.id)
                 } else {
-                  // For other users' comments: auto-scroll only if user is near bottom
+                  // For other users' comments: ALWAYS track the latest comment ID
+                  console.log('[scroll-to-comment] New comment from other user:', normalized.id, 'isNearBottom:', isNearBottom())
                   latestCommentIdRef.current = normalized.id
+
+                  // Auto-scroll only if user is near bottom
                   if (isNearBottom()) {
+                    console.log('[scroll-to-comment] Auto-scrolling to new comment (near bottom):', normalized.id)
                     setExpandedIds(prev => new Set(prev).add(normalized.id))
                     scrollToComment(normalized.id)
                   } else {
+                    console.log('[scroll-to-comment] Showing notification for comment:', normalized.id)
                     setNewCommentsCount(c => c + 1)
                   }
                 }
@@ -625,11 +630,14 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
           <button
             onClick={() => {
               const id = latestCommentIdRef.current
+              console.log('[scroll-to-comment] Notification clicked, latestCommentIdRef:', id)
               if (id != null) {
+                console.log('[scroll-to-comment] Scrolling to latest comment:', id)
                 setExpandedIds(prev => new Set(prev).add(id))
                 scrollToComment(id)
               } else if (comments.length > 0) {
                 const last = comments[comments.length - 1]
+                console.log('[scroll-to-comment] No latest ID, scrolling to last comment:', last.id)
                 setExpandedIds(prev => new Set(prev).add(last.id))
                 scrollToComment(last.id)
               }
