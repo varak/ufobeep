@@ -64,6 +64,36 @@
   background: #ffffff;
 }
 
+/* Comment clamp utilities */
+.clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Responsive custom class (matches Tailwind md:) */
+@media (min-width: 768px) {
+  .md\:clamp-8 {
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Gradient fade for truncated comments (dark surface compatible) */
+.fade-gradient {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2.5rem;
+  background: linear-gradient(to bottom, rgba(30,41,59,0) 0%, rgba(30,41,59,0.9) 100%);
+  border-bottom-left-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+}
+
 /* Hide scrollbar for media gallery */
 .scrollbar-hide {
   -ms-overflow-style: none;

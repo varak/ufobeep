@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useMemo } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useClientTranslations } from '@/hooks/useClientTranslations'
+import CommentItem from '@/components/CommentItem'
 
 interface Comment {
   id: number
@@ -35,6 +36,8 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
   const [messageType, setMessageType] = useState<'success' | 'error' | ''>('')
   const [isFollowing, setIsFollowing] = useState(false)
   const [followLoading, setFollowLoading] = useState(false)
+  const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set())
+  const [copiedId, setCopiedId] = useState<number | null>(null)
 
   const fetchComments = useCallback(async (silent = false) => {
     try {
@@ -62,6 +65,21 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
   useEffect(() => {
     fetchComments()
   }, [fetchComments])
+
+  // Auto-expand if hash targets a comment
+  useEffect(() => {
+    const h = (typeof window !== 'undefined') ? window.location.hash : ''
+    const m = h && h.match(/^#c-(\d+)$/)
+    if (m) {
+      const id = Number(m[1])
+      setExpandedIds(prev => new Set(prev).add(id))
+      // Scroll a bit later after render
+      setTimeout(() => {
+        const el = document.getElementById(`c-${id}`)
+        el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 150)
+    }
+  }, [])
 
   // Set up SSE for real-time comment updates
   useEffect(() => {
@@ -428,11 +446,31 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
                   </div>
                 </div>
 
-                {/* Content row: Comment text with full width */}
-                <div className="ml-9">
-                  <p className="text-text-secondary text-sm leading-relaxed whitespace-pre-wrap">
-                    {comment.body}
-                  </p>
+                {/* Content row: Comment with clamp/expand + copy link */}
+                <div className="ml-9 relative">
+                  <CommentItem
+                    id={comment.id}
+                    body={comment.body}
+                    expanded={expandedIds.has(comment.id)}
+                    copied={copiedId === comment.id}
+                    onToggle={(id) => {
+                      setExpandedIds(prev => {
+                        const next = new Set(prev)
+                        if (next.has(id)) next.delete(id); else next.add(id)
+                        return next
+                      })
+                    }}
+                    onCopyLink={async (id) => {
+                      try {
+                        const url = `${window.location.origin}${window.location.pathname}#c-${id}`
+                        await navigator.clipboard.writeText(url)
+                        setCopiedId(id)
+                        setTimeout(() => setCopiedId(prev => prev === id ? null : prev), 1500)
+                        // Update the URL hash without reload
+                        try { history.replaceState(null, '', `#c-${id}`) } catch {}
+                      } catch {}
+                    }}
+                  />
 
                   {comment.media_url && (
                     <div className="mt-2">
