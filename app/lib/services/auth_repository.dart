@@ -53,15 +53,15 @@ class AuthRepository with ChangeNotifier {
     _isHydrating = true;
 
     try {
-      // Add timeout to prevent hanging indefinitely
+      // Add timeout to prevent hanging indefinitely (reduced from 10s to 5s for faster fresh installs)
       await Future.any([
         _performSessionLoad(),
-        Future.delayed(const Duration(seconds: 10), () => throw TimeoutException('Session load timeout', const Duration(seconds: 10))),
+        Future.delayed(const Duration(seconds: 5), () => throw TimeoutException('Session load timeout', const Duration(seconds: 5))),
       ]);
     } catch (e) {
       print('[Bootstrap] Session load failed: $e');
       if (e is TimeoutException) {
-        print('[Bootstrap] Session load timed out - proceeding without authentication');
+        print('[Bootstrap] Session load timed out after 5s - proceeding without authentication');
       } else {
         print('[Bootstrap] Session load error - clearing session');
         await clearSession();
