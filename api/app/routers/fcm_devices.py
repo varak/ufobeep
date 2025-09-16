@@ -72,6 +72,75 @@ async def register_device(request: RegisterDeviceRequest):
         logger.error(f"Error registering device {request.device_id}: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to register device: {str(e)}")
 
+@router.post("/register/anonymous")
+async def register_anonymous_device(request: RegisterDeviceRequest):
+    """Register or update anonymous device FCM token and location for proximity alerts only"""
+    try:
+        geohash_val = None
+        if request.lat is not None and request.lon is not None:
+            # Generate 7-character geohash for proximity queries
+            geohash_val = pygeohash.encode(request.lat, request.lon, precision=7)
+
+        async with db_pool.acquire() as conn:
+            # Check if anonymous device already exists
+            existing = await conn.fetchrow(
+                "SELECT id FROM devices WHERE device_id = $1 AND user_id IS NULL AND is_active = true",
+                request.device_id
+            )
+
+            if existing:
+                # Update existing anonymous device
+                await conn.execute("""
+                    UPDATE devices SET
+                      push_token = $1,
+                      platform = $2,
+                      lat = $3,
+                      lon = $4,
+                      geohash = $5,
+                      last_seen = $6,
+                      updated_at = $6
+                    WHERE device_id = $7 AND user_id IS NULL
+                """, request.fcm_token, request.platform, request.lat, request.lon, geohash_val, datetime.utcnow(), request.device_id)
+            else:
+                # Create new anonymous device (user_id = NULL)
+                await conn.execute("""
+                    INSERT INTO devices (
+                        device_id, device_name, platform, push_token, lat, lon, geohash,
+                        push_provider, push_enabled, alert_notifications, last_seen
+                    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+                """,
+                    request.device_id,
+                    "Anonymous Device",
+                    request.platform,
+                    request.fcm_token,
+                    request.lat,
+                    request.lon,
+                    geohash_val,
+                    'fcm',
+                    True,
+                    True,  # Enable proximity alerts
+                    datetime.utcnow()
+                )
+
+        logger.info(f"Registered anonymous device {request.device_id} with platform {request.platform}")
+
+        return {
+            "ok": True,
+            "device_id": request.device_id,
+            "geohash": geohash_val,
+            "message": "Anonymous device registered successfully for proximity alerts"
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to register anonymous device: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "error": "ANONYMOUS_DEVICE_REGISTRATION_FAILED",
+                "message": "Failed to register anonymous device"
+            }
+        )
+
 class PushTestRequest(BaseModel):
     device_id: str
 
