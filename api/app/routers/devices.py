@@ -329,6 +329,115 @@ async def register_device(
         )
 
 
+@router.post("/register/anonymous", response_model=DeviceDetailResponse)
+async def register_anonymous_device(request: DeviceRegistrationRequest):
+    """
+    Register a device anonymously for push notifications (no user authentication required)
+
+    Allows devices to receive proximity alerts without login.
+    Device will be upgraded to authenticated when user logs in.
+    """
+    try:
+        db_pool = await get_db()
+        current_time = datetime.utcnow()
+
+        async with db_pool.acquire() as conn:
+            # Check if this device already exists (anonymous or authenticated)
+            existing = await conn.fetchrow(
+                """
+                SELECT id, user_id, push_enabled, is_active
+                FROM devices
+                WHERE device_id = $1
+                """,
+                request.device_id
+            )
+
+            if existing:
+                # Update existing device (keep user_id if it exists - don't downgrade authenticated to anonymous)
+                result = await conn.execute(
+                    """
+                    UPDATE devices SET
+                        push_token = $1, push_provider = $2, app_version = $3, os_version = $4, device_name = $5,
+                        alert_notifications = $6, chat_notifications = $7, system_notifications = $8,
+                        timezone = $9, locale = $10, lat = $11, lon = $12,
+                        last_seen = $13, updated_at = $13, token_updated_at = $13, is_active = true
+                    WHERE device_id = $14
+                    """,
+                    request.push_token, request.push_provider.value if request.push_provider else 'fcm',
+                    request.app_version, request.os_version, request.device_name,
+                    request.alert_notifications, request.chat_notifications, request.system_notifications,
+                    request.timezone, request.locale, request.lat, request.lon,
+                    current_time, request.device_id
+                )
+                logger.info(f"Updated anonymous/existing device {request.device_id}")
+            else:
+                # Create new anonymous device (user_id = NULL)
+                device_record_id = await conn.fetchval(
+                    """
+                    INSERT INTO devices (
+                        user_id, device_id, device_name, platform, app_version, os_version,
+                        push_token, push_provider, push_enabled,
+                        alert_notifications, chat_notifications, system_notifications,
+                        lat, lon, is_active, last_seen, registered_at, token_updated_at, created_at, updated_at
+                    ) VALUES (
+                        NULL, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19
+                    ) RETURNING id
+                    """,
+                    request.device_id, request.device_name or 'Anonymous Device',
+                    request.platform.value if request.platform else 'unknown',
+                    request.app_version, request.os_version,
+                    request.push_token, request.push_provider.value if request.push_provider else 'fcm',
+                    True,  # push_enabled
+                    request.alert_notifications, request.chat_notifications, request.system_notifications,
+                    request.lat, request.lon, True, current_time, current_time, current_time, current_time, current_time
+                )
+                logger.info(f"Created anonymous device {request.device_id} with ID {device_record_id}")
+
+            # Fetch the device data to return
+            device_data = await conn.fetchrow(
+                """
+                SELECT * FROM devices
+                WHERE device_id = $1
+                """,
+                request.device_id
+            )
+
+            if not device_data:
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail="Device registration succeeded but could not fetch device data"
+                )
+
+            # Return device details (anonymous devices will have user_id = NULL)
+            return DeviceDetailResponse(
+                device_id=device_data["device_id"],
+                platform=DevicePlatform(device_data["platform"]) if device_data["platform"] else DevicePlatform.UNKNOWN,
+                push_enabled=device_data["push_enabled"],
+                push_provider=PushProvider(device_data["push_provider"]) if device_data["push_provider"] else PushProvider.FCM,
+                alert_notifications=device_data["alert_notifications"],
+                chat_notifications=device_data["chat_notifications"],
+                system_notifications=device_data["system_notifications"],
+                timezone=device_data["timezone"],
+                locale=device_data["locale"],
+                is_active=device_data["is_active"],
+                last_seen=device_data["last_seen"].isoformat() if device_data["last_seen"] else None,
+                registered_at=device_data["registered_at"].isoformat(),
+                is_anonymous=device_data["user_id"] is None  # Flag to indicate anonymous device
+            )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to register anonymous device: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "error": "ANONYMOUS_DEVICE_REGISTRATION_FAILED",
+                "message": "Failed to register anonymous device"
+            }
+        )
+
+
 @router.get("", response_model=DeviceListResponse)
 async def list_user_devices(user_id: Optional[str] = Depends(get_current_user_id)):
     """

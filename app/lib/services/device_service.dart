@@ -312,7 +312,7 @@ class DeviceService {
     }
   }
 
-  /// Register device with push token and mandatory location
+  /// Register device with push token and mandatory location (authenticated)
   Future<DeviceResponse?> registerDevice({
     required String pushToken,
     required double latitude,
@@ -333,12 +333,12 @@ class DeviceService {
         print('❌ Device registration: Invalid coordinates (0,0) - registration requires valid location');
         throw Exception('Device registration failed: Invalid location coordinates (0,0)');
       }
-      
+
       if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
         print('❌ Device registration: Coordinates out of valid range lat=$latitude, lon=$longitude');
         throw Exception('Device registration failed: Location coordinates out of valid range');
       }
-      
+
       print('✅ Device registration: Using provided location lat=$latitude, lon=$longitude');
 
       final request = DeviceRegistrationRequest(
@@ -364,7 +364,7 @@ class DeviceService {
 
       // Get auth headers using helper method
       final headers = await _getAuthHeaders();
-      
+
       // Log auth status for debugging
       if (headers.containsKey('Authorization')) {
         print('Device registration: Using auth token for registration');
@@ -382,10 +382,10 @@ class DeviceService {
         final data = jsonDecode(response.body);
         if (data['success'] == true) {
           final deviceResponse = DeviceResponse.fromJson(data['data']);
-          
+
           // Cache registration info
           await _cacheRegisteredDevice(deviceResponse);
-          
+
           print('Device registered successfully: ${deviceResponse.deviceId}');
           return deviceResponse;
         }
@@ -395,6 +395,96 @@ class DeviceService {
       return null;
     } catch (e) {
       print('Error registering device: $e');
+      return null;
+    }
+  }
+
+  /// Register device anonymously (for proximity alerts without login)
+  Future<DeviceResponse?> registerDeviceAnonymously({
+    required String pushToken,
+    required double latitude,
+    required double longitude,
+    String? deviceName,
+    bool alertNotifications = true,
+    bool chatNotifications = true,
+    bool systemNotifications = true,
+  }) async {
+    try {
+      final deviceId = await getDeviceId();
+      final platform = getDevicePlatform();
+
+      // Validate required location coordinates
+      if (latitude.abs() < 0.0001 && longitude.abs() < 0.0001) {
+        print('❌ Anonymous device registration: Invalid coordinates (0,0) - registration requires valid location');
+        throw Exception('Anonymous device registration failed: Invalid location coordinates (0,0)');
+      }
+
+      if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
+        print('❌ Anonymous device registration: Coordinates out of valid range lat=$latitude, lon=$longitude');
+        throw Exception('Anonymous device registration failed: Location coordinates out of valid range');
+      }
+
+      print('✅ Anonymous device registration: Using provided location lat=$latitude, lon=$longitude');
+
+      // Simplified payload for anonymous registration
+      final requestBody = {
+        'device_id': deviceId,
+        'fcm_token': pushToken,
+        'platform': platform.value,
+        'lat': latitude,
+        'lon': longitude,
+      };
+
+      final url = Uri.parse('${env.AppEnvironment.apiBaseUrl}/devices/register/anonymous');
+
+      // No auth headers for anonymous registration
+      final response = await _httpClient.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(requestBody),
+      );
+
+      print('Anonymous registration response: ${response.statusCode} ${response.body}');
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['ok'] == true) {
+          // Create a simplified device response for anonymous registration
+          final deviceResponse = DeviceResponse(
+            id: data['device_id'] ?? deviceId,
+            deviceId: deviceId,
+            deviceName: deviceName,
+            platform: platform,
+            appVersion: null,
+            osVersion: null,
+            deviceModel: null,
+            manufacturer: null,
+            pushEnabled: true,
+            alertNotifications: alertNotifications,
+            chatNotifications: chatNotifications,
+            systemNotifications: systemNotifications,
+            isActive: true,
+            lastSeen: DateTime.now(),
+            timezone: DateTime.now().timeZoneName,
+            locale: Platform.localeName,
+            notificationsSent: 0,
+            notificationsOpened: 0,
+            registeredAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          );
+
+          // Cache registration info
+          await _cacheRegisteredDevice(deviceResponse);
+
+          print('✅ Anonymous device registered successfully: ${deviceResponse.deviceId}');
+          return deviceResponse;
+        }
+      }
+
+      print('❌ Anonymous device registration failed: ${response.statusCode} ${response.body}');
+      return null;
+    } catch (e) {
+      print('❌ Error registering anonymous device: $e');
       return null;
     }
   }

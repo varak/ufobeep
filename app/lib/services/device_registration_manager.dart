@@ -49,26 +49,24 @@ class DeviceRegistrationManager {
     });
   }
 
-  /// Attempt device registration if both tokens are available AND location can be obtained
+  /// Attempt device registration if tokens are available AND location can be obtained
+  /// Tries authenticated registration first, falls back to anonymous if no auth
   Future<void> _attemptRegistration() async {
     try {
-      // Get current auth token
-      final accessToken = await AuthRepository().getAccessToken();
-      if (accessToken == null || accessToken.isEmpty) {
-        print('📱 DeviceRegistrationManager: No auth token - skipping registration');
-        return;
-      }
-
-      // Get current FCM token  
+      // Get current FCM token first (required for both modes)
       final fcmToken = await FirebaseMessaging.instance.getToken();
       if (fcmToken == null || fcmToken.isEmpty) {
         print('📱 DeviceRegistrationManager: No FCM token - skipping registration');
         return;
       }
 
-      // Create a user key to detect user changes (simple hash of token)
-      final userKey = accessToken.hashCode.toString();
-      
+      // Get current auth token
+      final accessToken = await AuthRepository().getAccessToken();
+      final isAuthenticated = accessToken != null && accessToken.isNotEmpty;
+
+      // Create a user key to detect user changes
+      final userKey = isAuthenticated ? accessToken.hashCode.toString() : 'anonymous';
+
       // Check if we already registered this combination
       final isSameAsLast = (_lastRegisteredFcm == fcmToken) && (_lastRegisteredUser == userKey);
       if (isSameAsLast) {
@@ -77,7 +75,8 @@ class DeviceRegistrationManager {
       }
 
       print('📱 DeviceRegistrationManager: 🚀 Attempting registration');
-      print('📱 DeviceRegistrationManager: ├── User key: $userKey');  
+      print('📱 DeviceRegistrationManager: ├── Mode: ${isAuthenticated ? "AUTHENTICATED" : "ANONYMOUS"}');
+      print('📱 DeviceRegistrationManager: ├── User key: $userKey');
       print('📱 DeviceRegistrationManager: ├── FCM: ...${fcmToken.substring(fcmToken.length - 6)}');
       print('📱 DeviceRegistrationManager: └── Platform: ${Platform.isAndroid ? "android" : Platform.isIOS ? "ios" : "unknown"}');
 
@@ -85,35 +84,49 @@ class DeviceRegistrationManager {
       print('📱 DeviceRegistrationManager: Getting location for proximity alerts...');
       final sensorService = SensorService();
       final position = await sensorService.getPreciseLocation();
-      
+
       if (position == null) {
         print('❌ DeviceRegistrationManager: FAILED - Cannot get device location');
         print('📱 DeviceRegistrationManager: Registration requires location for proximity alerts');
-        // Don't throw - just log and skip registration
         print('📱 DeviceRegistrationManager: Skipping device registration due to location requirement');
         return;
       }
 
       print('✅ DeviceRegistrationManager: Got location: ${position.latitude}, ${position.longitude}');
 
-      // Call the existing DeviceService method with explicit location
-      final deviceResponse = await _deviceService.registerDevice(
-        pushToken: fcmToken,
-        latitude: position.latitude,
-        longitude: position.longitude,
-        alertNotifications: true,
-        chatNotifications: true,
-        systemNotifications: true,
-      );
+      // Choose registration method based on auth status
+      final DeviceResponse? deviceResponse;
+      if (isAuthenticated) {
+        print('📱 DeviceRegistrationManager: Using authenticated registration');
+        deviceResponse = await _deviceService.registerDevice(
+          pushToken: fcmToken,
+          latitude: position.latitude,
+          longitude: position.longitude,
+          alertNotifications: true,
+          chatNotifications: true,
+          systemNotifications: true,
+        );
+      } else {
+        print('📱 DeviceRegistrationManager: Using anonymous registration for proximity alerts');
+        deviceResponse = await _deviceService.registerDeviceAnonymously(
+          pushToken: fcmToken,
+          latitude: position.latitude,
+          longitude: position.longitude,
+          alertNotifications: true,
+          chatNotifications: true,
+          systemNotifications: true,
+        );
+      }
 
       if (deviceResponse != null) {
         _lastRegisteredFcm = fcmToken;
         _lastRegisteredUser = userKey;
-        
+
         print('✅ DeviceRegistrationManager: SUCCESS - Device registered with location');
         print('📱 DeviceRegistrationManager: ├── Device ID: ${deviceResponse.deviceId}');
         print('📱 DeviceRegistrationManager: ├── Platform: ${deviceResponse.platform.value}');
         print('📱 DeviceRegistrationManager: ├── Push enabled: ${deviceResponse.pushEnabled}');
+        print('📱 DeviceRegistrationManager: ├── Mode: ${isAuthenticated ? "authenticated" : "anonymous"}');
         print('📱 DeviceRegistrationManager: └── Location: ${position.latitude}, ${position.longitude}');
       } else {
         print('❌ DeviceRegistrationManager: FAILED - Registration returned null');
@@ -122,10 +135,37 @@ class DeviceRegistrationManager {
     } catch (e, stackTrace) {
       print('❌ DeviceRegistrationManager: EXCEPTION during registration: $e');
       print('📱 DeviceRegistrationManager: Stack trace: $stackTrace');
-      
+
       // Parse specific errors
       if (e.toString().contains('401') || e.toString().contains('Unauthorized')) {
         print('📱 DeviceRegistrationManager: ├── 401 UNAUTHORIZED - JWT token may be invalid/expired');
+        print('📱 DeviceRegistrationManager: ├── Retrying with anonymous registration...');
+
+        // Fallback to anonymous registration on auth failure
+        try {
+          final fcmToken = await FirebaseMessaging.instance.getToken();
+          final sensorService = SensorService();
+          final position = await sensorService.getPreciseLocation();
+
+          if (fcmToken != null && position != null) {
+            final deviceResponse = await _deviceService.registerDeviceAnonymously(
+              pushToken: fcmToken,
+              latitude: position.latitude,
+              longitude: position.longitude,
+              alertNotifications: true,
+              chatNotifications: true,
+              systemNotifications: true,
+            );
+
+            if (deviceResponse != null) {
+              _lastRegisteredFcm = fcmToken;
+              _lastRegisteredUser = 'anonymous';
+              print('✅ DeviceRegistrationManager: Fallback to anonymous registration succeeded');
+            }
+          }
+        } catch (fallbackError) {
+          print('❌ DeviceRegistrationManager: Anonymous fallback also failed: $fallbackError');
+        }
       } else if (e.toString().contains('403') || e.toString().contains('Forbidden')) {
         print('📱 DeviceRegistrationManager: ├── 403 FORBIDDEN - insufficient permissions');
       }
