@@ -49,8 +49,8 @@ class DeviceRegistrationManager {
     });
   }
 
-  /// Attempt device registration if tokens are available AND location can be obtained
-  /// Tries authenticated registration first, falls back to anonymous if no auth
+  /// Attempt device registration - anonymous first for immediate push notifications, then authenticated
+  /// This ensures push notifications work immediately without requiring login
   Future<void> _attemptRegistration() async {
     try {
       // Get current FCM token first (required for both modes)
@@ -80,42 +80,60 @@ class DeviceRegistrationManager {
       print('📱 DeviceRegistrationManager: ├── FCM: ...${fcmToken.substring(fcmToken.length - 6)}');
       print('📱 DeviceRegistrationManager: └── Platform: ${Platform.isAndroid ? "android" : Platform.isIOS ? "ios" : "unknown"}');
 
-      // CRITICAL: Get location FIRST - fail registration if no location available
+      // Try to get location, but don't block registration if unavailable
       print('📱 DeviceRegistrationManager: Getting location for proximity alerts...');
       final sensorService = SensorService();
       final position = await sensorService.getPreciseLocation();
 
+      // Always register for push notifications even without location
+      // Location will be updated when available via LocationUpdateManager
+      final double? latitude = position?.latitude;
+      final double? longitude = position?.longitude;
+
       if (position == null) {
-        print('❌ DeviceRegistrationManager: FAILED - Cannot get device location');
-        print('📱 DeviceRegistrationManager: Registration requires location for proximity alerts');
-        print('📱 DeviceRegistrationManager: Skipping device registration due to location requirement');
-        return;
+        print('⚠️ DeviceRegistrationManager: No location available yet - registering without location');
+        print('📱 DeviceRegistrationManager: Location will be updated by LocationUpdateManager when available');
+      } else {
+        print('✅ DeviceRegistrationManager: Got location: ${position.latitude}, ${position.longitude}');
       }
 
-      print('✅ DeviceRegistrationManager: Got location: ${position.latitude}, ${position.longitude}');
+      // ALWAYS start with anonymous registration for immediate push notifications
+      // This ensures notifications work without requiring login
+      DeviceResponse? deviceResponse;
 
-      // Choose registration method based on auth status
-      final DeviceResponse? deviceResponse;
-      if (isAuthenticated) {
-        print('📱 DeviceRegistrationManager: Using authenticated registration');
-        deviceResponse = await _deviceService.registerDevice(
+      if (!isAuthenticated) {
+        print('📱 DeviceRegistrationManager: Using anonymous registration for immediate push notifications');
+        deviceResponse = await _deviceService.registerDeviceAnonymously(
           pushToken: fcmToken,
-          latitude: position.latitude,
-          longitude: position.longitude,
+          latitude: latitude,
+          longitude: longitude,
           alertNotifications: true,
           chatNotifications: true,
           systemNotifications: true,
         );
       } else {
-        print('📱 DeviceRegistrationManager: Using anonymous registration for proximity alerts');
-        deviceResponse = await _deviceService.registerDeviceAnonymously(
-          pushToken: fcmToken,
-          latitude: position.latitude,
-          longitude: position.longitude,
-          alertNotifications: true,
-          chatNotifications: true,
-          systemNotifications: true,
-        );
+        print('📱 DeviceRegistrationManager: Using authenticated registration');
+        try {
+          deviceResponse = await _deviceService.registerDevice(
+            pushToken: fcmToken,
+            latitude: latitude,
+            longitude: longitude,
+            alertNotifications: true,
+            chatNotifications: true,
+            systemNotifications: true,
+          );
+        } catch (authError) {
+          print('⚠️ DeviceRegistrationManager: Authenticated registration failed, falling back to anonymous');
+          print('📱 DeviceRegistrationManager: Auth error: $authError');
+          deviceResponse = await _deviceService.registerDeviceAnonymously(
+            pushToken: fcmToken,
+            latitude: latitude,
+            longitude: longitude,
+            alertNotifications: true,
+            chatNotifications: true,
+            systemNotifications: true,
+          );
+        }
       }
 
       if (deviceResponse != null) {
