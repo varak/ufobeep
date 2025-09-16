@@ -45,6 +45,8 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
       const response = await fetch(`/api/beep/${alertId}/comments`)
 
       if (!response.ok) {
+        const detail = await response.text().catch(() => '')
+        console.error('[comments] fetch failed', response.status, detail)
         throw new Error('Failed to fetch comments')
       }
 
@@ -56,6 +58,7 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
       setComments(sortedComments)
       setError(null)
     } catch (err) {
+      console.error('[comments] fetch error', err)
       setError(err instanceof Error ? err.message : 'Unknown error')
     } finally {
       if (!silent) setLoading(false)
@@ -380,13 +383,15 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
     setMessageType('')
   }
 
-  // Clear message after 5 seconds
-  if (message) {
-    setTimeout(() => {
+  // Clear message after 5 seconds with cleanup
+  useEffect(() => {
+    if (!message) return
+    const t = setTimeout(() => {
       setMessage('')
       setMessageType('')
     }, 5000)
-  }
+    return () => clearTimeout(t)
+  }, [message])
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
