@@ -48,3 +48,4 @@ api/feeds/.secrets
 .env.*
 logs/
 backups/
+*.g.dart
