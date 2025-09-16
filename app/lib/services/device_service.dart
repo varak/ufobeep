@@ -448,10 +448,13 @@ class DeviceService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        if (data['ok'] == true) {
+        print('✅ Anonymous registration: Parsed response - success: ${data['success']}, has data: ${data['data'] != null}');
+        if (data['success'] == true && data['data'] != null) {
+          // Extract device data from the nested 'data' field
+          final deviceData = data['data'];
           // Create a simplified device response for anonymous registration
           final deviceResponse = DeviceResponse(
-            id: data['device_id'] ?? deviceId,
+            id: deviceData['id'] ?? deviceId,
             deviceId: deviceId,
             deviceName: deviceName,
             platform: platform,
