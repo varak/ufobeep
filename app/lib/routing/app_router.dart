@@ -208,7 +208,9 @@ GoRouter appRouter(AppRouterRef ref) {
                 name: 'alert-detail',
                 builder: (context, state) {
                   final alertId = state.pathParameters['id']!;
-                  return AlertDetailScreen(alertId: alertId);
+                  final extra = state.extra as Map<String, dynamic>?;
+                  final initialCommentId = extra?['initialCommentId'] as String?;
+                  return AlertDetailScreen(alertId: alertId, initialCommentId: initialCommentId);
                 },
                 routes: [
                   // Comments for specific alert
@@ -414,7 +416,9 @@ GoRouter appRouter(AppRouterRef ref) {
             name: 'beep-detail',
             builder: (context, state) {
               final beepId = state.pathParameters['id']!;
-              return AlertDetailScreen(alertId: beepId);
+              final extra = state.extra as Map<String, dynamic>?;
+              final initialCommentId = extra?['initialCommentId'] as String?;
+              return AlertDetailScreen(alertId: beepId, initialCommentId: initialCommentId);
             },
             routes: [
               // Comments for specific beep

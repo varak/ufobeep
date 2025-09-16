@@ -365,7 +365,8 @@ class PushNotificationService:
         commenter_username: str,
         comment_body: str,
         targets: List[PushTarget],
-        beep_title: Optional[str] = None
+        beep_title: Optional[str] = None,
+        comment_id: Optional[str] = None
     ) -> Dict[str, Any]:
         """Send comment notification to followers of a beep"""
         # Apply DND/snooze/mute filters before sending
@@ -382,6 +383,7 @@ class PushNotificationService:
         data = {
             "type": "comment",
             "sighting_id": sighting_id,
+            "comment_id": comment_id,
             "deep_link": f"ufobeep://beep/{sighting_id}/comments",
             "click_action": "OPEN_COMMENTS"
         }

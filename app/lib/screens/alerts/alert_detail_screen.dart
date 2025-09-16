@@ -24,13 +24,15 @@ import '../../services/ui_feedback.dart';
 import '../../widgets/glass_card.dart';
 import '../../l10n/app_localizations.dart';
 import '../../services/comments_service.dart';
+import '../../services/push_notification_service.dart';
 import '../../models/comment.dart';
 import '../../utils/short_url_utils.dart';
 
 class AlertDetailScreen extends ConsumerStatefulWidget {
-  const AlertDetailScreen({super.key, required this.alertId});
+  const AlertDetailScreen({super.key, required this.alertId, this.initialCommentId});
 
   final String alertId;
+  final String? initialCommentId;
 
   @override
   ConsumerState<AlertDetailScreen> createState() => _AlertDetailScreenState();
@@ -43,17 +45,66 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   bool _followingLoading = false;
   final TextEditingController _commentController = TextEditingController();
   bool _isPostingComment = false;
+  final ScrollController _scrollController = ScrollController();
+  final Map<String, GlobalKey> _commentKeys = {};
+  bool _hasScrolledToComment = false;
+  List<Comment>? _comments;
+  bool _loadingComments = true;
+  String? _commentsError;
 
   @override
   void initState() {
     super.initState();
     _loadUserData();
+    _loadComments();
+    // Listen for refresh notifications from push notifications
+    debugPrint('💬 AlertDetailScreen: registering listener for alertId=${widget.alertId}');
+    CommentsRefreshNotifier.instance.addListener(widget.alertId, _refreshComments);
   }
 
   @override
   void dispose() {
     _commentController.dispose();
+    _scrollController.dispose();
+    // Remove refresh listener
+    debugPrint('💬 AlertDetailScreen: removing listener for alertId=${widget.alertId}');
+    CommentsRefreshNotifier.instance.removeListener(widget.alertId, _refreshComments);
     super.dispose();
+  }
+
+  Future<void> _loadComments() async {
+    try {
+      setState(() {
+        _loadingComments = true;
+        _commentsError = null;
+      });
+
+      final comments = await CommentsService().getComments(widget.alertId);
+
+      if (mounted) {
+        setState(() {
+          _comments = comments;
+          _loadingComments = false;
+        });
+
+        // Scroll to target comment after comments are loaded
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _scrollToCommentIfNeeded();
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _commentsError = e.toString();
+          _loadingComments = false;
+        });
+      }
+    }
+  }
+
+  void _refreshComments() {
+    debugPrint('💬 AlertDetailScreen: refreshing comments for ${widget.alertId}');
+    _loadComments();
   }
 
   Future<void> _loadUserData() async {
@@ -124,6 +175,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         );
         // Refresh details to update comment count
         ref.invalidate(alertByIdProvider(widget.alertId));
+        // Refresh comments to show the new comment
+        _loadComments();
       }
     } catch (e) {
       if (mounted) {
@@ -151,6 +204,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         );
         // Refresh details to update comment list
         ref.invalidate(alertByIdProvider(widget.alertId));
+        // Refresh comments to remove the deleted comment
+        _loadComments();
       }
     } catch (e) {
       if (mounted) {
@@ -312,6 +367,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             ],
           ),
           body: SingleChildScrollView(
+            controller: _scrollController,
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -985,45 +1041,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
           ),
           const SizedBox(height: 16),
           
-          // Show existing comments - always load, don't rely on commentCount
-          FutureBuilder<List<Comment>>(
-            future: CommentsService().getComments(alert.id),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: CircularProgressIndicator(color: AppColors.brandPrimary, strokeWidth: 2),
-                  ),
-                );
-              }
-
-              if (snapshot.hasError) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Error loading comments',
-                    style: const TextStyle(color: AppColors.semanticError, fontSize: 14),
-                  ),
-                );
-              }
-
-              final comments = snapshot.data ?? [];
-              if (comments.isNotEmpty) {
-                return Column(
-                  children: [
-                    ...comments.map((comment) => _buildCommentItem(comment)).toList(),
-                    const SizedBox(height: 16),
-                    const Divider(color: AppColors.darkBorder, thickness: 1),
-                    const SizedBox(height: 16),
-                  ],
-                );
-              }
-
-              // If no comments, still show a small spacing before the input field
-              return const SizedBox(height: 8);
-            },
-          ),
+          // Show existing comments - uses state variables for real-time updates
+          _buildCommentsDisplay(),
           
           // Inline comment input
           TextField(
@@ -1074,13 +1093,68 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       ),
     );
   }
-  
+
+  Widget _buildCommentsDisplay() {
+    if (_loadingComments) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: CircularProgressIndicator(color: AppColors.brandPrimary, strokeWidth: 2),
+        ),
+      );
+    }
+
+    if (_commentsError != null) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          'Error loading comments',
+          style: const TextStyle(color: AppColors.semanticError, fontSize: 14),
+        ),
+      );
+    }
+
+    final comments = _comments ?? [];
+    if (comments.isNotEmpty) {
+      // Scroll to target comment after comments are rendered
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _scrollToCommentIfNeeded();
+      });
+
+      return Column(
+        children: [
+          ...comments.map((comment) => _buildCommentItem(comment)).toList(),
+          const SizedBox(height: 16),
+          const Divider(color: AppColors.darkBorder, thickness: 1),
+          const SizedBox(height: 16),
+        ],
+      );
+    }
+
+    // If no comments, still show a small spacing before the input field
+    return const SizedBox(height: 8);
+  }
+
   Widget _buildCommentItem(Comment comment) {
     final timeAgo = _formatCommentTime(context, comment.createdAt);
     final canDelete = _currentUserDeviceId != null && comment.userId == _currentUserDeviceId;
 
-    return Padding(
+    // Create or get a GlobalKey for this comment
+    final commentId = comment.id.toString();
+    _commentKeys[commentId] ??= GlobalKey();
+    final commentKey = _commentKeys[commentId]!;
+
+    // Check if this is the target comment from notification
+    final isTargetComment = widget.initialCommentId == commentId;
+
+    return Container(
+      key: commentKey,
       padding: const EdgeInsets.only(bottom: 12),
+      decoration: isTargetComment ? BoxDecoration(
+        color: AppColors.brandPrimary.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
+      ) : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1202,7 +1276,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     final l10n = AppLocalizations.of(context)!;
     final now = DateTime.now();
     final difference = now.difference(dateTime);
-    
+
     if (difference.inDays > 0) {
       return l10n!.timeDaysAgo(difference.inDays);
     } else if (difference.inHours > 0) {
@@ -1211,6 +1285,28 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       return l10n!.timeMinutesAgo(difference.inMinutes);
     } else {
       return l10n!.timeJustNow;
+    }
+  }
+
+  void _scrollToCommentIfNeeded() {
+    // Only scroll once and only if we have an initialCommentId
+    if (widget.initialCommentId != null && !_hasScrolledToComment) {
+      final commentKey = _commentKeys[widget.initialCommentId!];
+      if (commentKey?.currentContext != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          try {
+            Scrollable.ensureVisible(
+              commentKey!.currentContext!,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+              alignment: 0.1, // Scroll to 10% from top of screen
+            );
+            _hasScrolledToComment = true;
+          } catch (e) {
+            debugPrint('Error scrolling to comment: $e');
+          }
+        });
+      }
     }
   }
 

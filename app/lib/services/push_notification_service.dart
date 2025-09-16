@@ -439,28 +439,28 @@ class PushNotificationService {
       print('🔕 Suppressing comment notification due to DND/Quiet Hours');
       return;
     }
-    
+
     // Handle various possible field names for sighting ID
-    final sightingId = message.data['sighting_id'] ?? 
-                       message.data['sightingId'] ?? 
-                       message.data['alert_id'] ?? 
+    final sightingId = message.data['sighting_id'] ??
+                       message.data['sightingId'] ??
+                       message.data['alert_id'] ??
                        message.data['alertId'];
     final commentId = message.data['comment_id'] ?? message.data['commentId'];
-    
+
     if (sightingId != null) {
       print('🔔 Comment on sighting: $sightingId (comment ID: $commentId)');
-      
+
       // Show visual notification
       await _showCommentNotification(message);
-      
+
       // Play notification sound for comment
       await SoundService.I.play(AlertSound.pushPing);
-      
+
       // Always trigger comments refresh for any listening screens
       // This is safe because only screens with registered listeners will refresh
       print('🔔 Calling CommentsRefreshNotifier.notifyRefresh($sightingId)');
       CommentsRefreshNotifier.instance.notifyRefresh(sightingId);
-      
+
       // Refresh alerts to show new comment count
       try {
         final container = ProviderScope.containerOf(rootNavigatorKey.currentContext!);
@@ -469,9 +469,9 @@ class PushNotificationService {
       } catch (e) {
         print('❌ Could not refresh alert cache: $e');
       }
-      
-      // Navigate to comments (this will be ignored if user is already there)
-      navigateToComments(sightingId);
+
+      // Navigate directly to alert detail with commentId instead of comments screen
+      navigateToAlertWithComment(sightingId, commentId);
     } else {
       print('⚠️ Comment notification missing sighting_id in data: ${message.data}');
     }
@@ -562,6 +562,25 @@ class PushNotificationService {
   }
 
   String? _pendingNavigation;
+
+  void navigateToAlertWithComment(String alertId, String? commentId) {
+    try {
+      final context = rootNavigatorKey.currentContext;
+      if (context != null && context.mounted) {
+        // Navigate to alert detail screen - router will pass commentId as extra
+        final route = '/beep/$alertId';
+        print('🔄 Navigating to alert detail with commentId: $commentId for alert: $alertId');
+        context.go(route, extra: {'initialCommentId': commentId});
+        print('✅ Navigation completed for: $alertId with comment: $commentId');
+      } else {
+        print('❌ Cannot navigate: no valid context available');
+        _pendingNavigation = '/beep/$alertId';
+        print('📝 Set pending navigation: $_pendingNavigation');
+      }
+    } catch (e) {
+      print('❌ Error navigating to alert $alertId with comment $commentId: $e');
+    }
+  }
 
   void navigateToComments(String alertId) {
     try {

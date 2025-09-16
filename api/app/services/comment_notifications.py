@@ -20,17 +20,19 @@ class CommentNotificationService:
         commenter_user_id: str,
         commenter_username: str,
         comment_body: str,
+        comment_id: str = None,
         db_pool=None
     ) -> Dict[str, Any]:
         """
         Send push notifications to all followers of a sighting when a comment is posted
-        
+
         Args:
             sighting_id: The sighting that was commented on
             commenter_user_id: The user who posted the comment
             commenter_username: Username of the commenter
             comment_body: The comment text
-            
+            comment_id: The ID of the comment for deep linking
+
         Returns:
             Dict with notification results
         """
@@ -63,7 +65,8 @@ class CommentNotificationService:
                 commenter_username=commenter_username,
                 comment_body=comment_body,
                 targets=targets,
-                alert_title=alert_title
+                alert_title=alert_title,
+                comment_id=comment_id
             )
             
             logger.info(

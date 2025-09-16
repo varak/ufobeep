@@ -34,11 +34,13 @@ async def notification_consumer(app: FastAPI):
                 logger.info(f"🔔 Processing queued notification for sighting {sighting_id}")
                 
                 # Process notification using shared database pool
+                comment_id = task_data.get("comment_id")
                 await comment_notification_service.notify_comment_posted(
                     sighting_id=sighting_id,
                     commenter_user_id=commenter_user_id,
                     commenter_username=commenter_username,
                     comment_body=comment_body,
+                    comment_id=comment_id,
                     db_pool=db_pool
                 )
                 
