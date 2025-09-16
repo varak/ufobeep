@@ -408,21 +408,14 @@ async def register_anonymous_device(request: DeviceRegistrationRequest):
                     detail="Device registration succeeded but could not fetch device data"
                 )
 
-            # Return device details (anonymous devices will have user_id = NULL)
+            # Create DeviceResponse object first
+            device_response = device_response_from_db(device_data)
+
+            # Return wrapped in DeviceDetailResponse format
             return DeviceDetailResponse(
-                device_id=device_data["device_id"],
-                platform=DevicePlatform(device_data["platform"]) if device_data["platform"] else DevicePlatform.UNKNOWN,
-                push_enabled=device_data["push_enabled"],
-                push_provider=PushProvider(device_data["push_provider"]) if device_data["push_provider"] else PushProvider.FCM,
-                alert_notifications=device_data["alert_notifications"],
-                chat_notifications=device_data["chat_notifications"],
-                system_notifications=device_data["system_notifications"],
-                timezone=device_data["timezone"],
-                locale=device_data["locale"],
-                is_active=device_data["is_active"],
-                last_seen=device_data["last_seen"].isoformat() if device_data["last_seen"] else None,
-                registered_at=device_data["registered_at"].isoformat(),
-                is_anonymous=device_data["user_id"] is None  # Flag to indicate anonymous device
+                success=True,
+                data=device_response,
+                timestamp=current_time.isoformat()
             )
 
     except HTTPException:
