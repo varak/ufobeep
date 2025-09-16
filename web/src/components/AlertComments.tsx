@@ -84,9 +84,10 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
     }
   }, [])
 
-  // Set up SSE for real-time comment updates
+  // Set up SSE for real-time comment updates with polling fallback
   useEffect(() => {
     let eventSource: EventSource | null = null
+    let lastSseAt = 0
 
     const connectSSE = () => {
       try {
@@ -94,11 +95,13 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
 
         eventSource.onopen = () => {
           console.log('[SSE] Connected to comment updates')
+          lastSseAt = Date.now()
         }
 
         eventSource.onmessage = (event) => {
           try {
             const data = JSON.parse(event.data)
+            lastSseAt = Date.now()
 
             if (data.type === 'comment_update' && data.alertId === alertId) {
               console.log('[SSE] Received comment update, refreshing comments')
@@ -127,11 +130,31 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
 
     connectSSE()
 
+    // Polling fallback: refresh every 20s if no SSE signal and tab visible
+    const pollInterval = setInterval(() => {
+      try {
+        if (document.visibilityState !== 'visible') return
+        const elapsed = Date.now() - lastSseAt
+        if (elapsed > 20000) {
+          fetchComments(true)
+        }
+      } catch {}
+    }, 20000)
+
+    const onVis = () => {
+      if (document.visibilityState === 'visible') {
+        fetchComments(true)
+      }
+    }
+    document.addEventListener('visibilitychange', onVis)
+
     // Cleanup on unmount
     return () => {
       if (eventSource) {
         eventSource.close()
       }
+      clearInterval(pollInterval)
+      document.removeEventListener('visibilitychange', onVis)
     }
   }, [alertId, fetchComments])
 
