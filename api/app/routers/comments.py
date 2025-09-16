@@ -151,10 +151,11 @@ async def create_comment(
             logger.error(f"Failed to send comment notifications (fallback): {e}")
 
     # Trigger SSE broadcast for real-time web updates
+    # NOTE: Using /beep endpoint - /alerts is deprecated
     try:
         async with httpx.AsyncClient() as client:
             await client.post(
-                f"https://ufobeep.com/api/alerts/{sighting_id}/comments",
+                f"https://ufobeep.com/api/beep/{sighting_id}/comments",
                 json={"broadcast_only": True},
                 timeout=2.0
             )
@@ -202,10 +203,11 @@ async def delete_comment(
             raise HTTPException(status_code=404, detail="Comment not found or already deleted")
 
     # Trigger SSE broadcast for real-time web updates
+    # NOTE: Using /beep endpoint - /alerts is deprecated
     try:
         async with httpx.AsyncClient() as client:
             await client.post(
-                f"https://ufobeep.com/api/alerts/{sighting_id}/comments",
+                f"https://ufobeep.com/api/beep/{sighting_id}/comments",
                 json={"broadcast_only": True},
                 timeout=2.0
             )
