@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server'
 import { proxyToBackendAPI, handleBroadcastRequest } from '@/utils/api-proxy'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 
 // GET /api/beep/[id]/comments - Get comments for alert
 export async function GET(
