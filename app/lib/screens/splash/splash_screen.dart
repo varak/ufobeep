@@ -83,21 +83,21 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     
     final authRepo = AuthRepository();
     
-    // Wait for AuthRepository to be ready (including hydration completion)
+    // Wait for AuthRepository to be ready with timeout protection
     int waitAttempts = 0;
-    const maxWaitAttempts = 50; // 5 seconds max wait
+    const maxWaitAttempts = 30; // 3 seconds max wait (reduced to prevent hanging)
     const waitInterval = Duration(milliseconds: 100);
-    
+
     while (!authRepo.isReady && waitAttempts < maxWaitAttempts) {
       if (authRepo.isHydrating) {
         debugPrint('SPLASH DEBUG: AuthRepository is hydrating, waiting... (${waitAttempts + 1}/$maxWaitAttempts)');
       } else if (!authRepo.isReady) {
         debugPrint('SPLASH DEBUG: AuthRepository not ready, waiting... (${waitAttempts + 1}/$maxWaitAttempts)');
       }
-      
+
       await Future.delayed(waitInterval);
       waitAttempts++;
-      
+
       if (!mounted) return;
     }
     

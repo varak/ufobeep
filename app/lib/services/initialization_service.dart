@@ -268,17 +268,22 @@ class InitializationService {
       
       final authRepo = AuthRepository();
       
-      // Load existing session from secure storage
-      await authRepo.loadSessionOnStartup();
+      // Session loading is handled by main.dart - avoid double initialization
+      // await authRepo.loadSessionOnStartup();
       
-      // Wait for AuthRepository to be ready
+      // Wait for AuthRepository to be ready with timeout protection
       int waitAttempts = 0;
-      const maxWaitAttempts = 30; // 3 seconds max wait
+      const maxWaitAttempts = 50; // 5 seconds max wait
       const waitInterval = Duration(milliseconds: 100);
-      
+
       while (!authRepo.isReady && waitAttempts < maxWaitAttempts) {
+        _logInfo('AuthRepository waiting for ready state... (${waitAttempts + 1}/$maxWaitAttempts)');
         await Future.delayed(waitInterval);
         waitAttempts++;
+      }
+
+      if (!authRepo.isReady) {
+        _logWarning('AuthRepository failed to become ready after ${maxWaitAttempts * 100}ms - proceeding anyway');
       }
       
       final isAuthenticated = authRepo.currentUser != null;

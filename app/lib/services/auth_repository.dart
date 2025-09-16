@@ -51,39 +51,49 @@ class AuthRepository with ChangeNotifier {
   Future<void> loadSessionOnStartup() async {
     print('[Bootstrap] Starting session load');
     _isHydrating = true;
-    
+
     try {
-      // Ensure tokens are loaded into memory cache
-      await ensureLoaded();
-      
-      if (_access == null || _access!.isEmpty) {
-        print('[Bootstrap] No tokens found - starting unauthenticated');
-        _isReady = true;
-        _isHydrating = false;
-        notifyListeners();
-        return;
-      }
-      
-      print('[Bootstrap] Tokens found - validating with /me');
-      ApiClient.setBearer(_access!);
-      
-      try {
-        await fetchMe();
-        print('[Bootstrap] Session restored successfully - user: ${_currentUser?.username}');
-      } catch (e) {
-        print('[Bootstrap] /me validation failed: $e - continuing with tokens intact');
-        // DO NOT clear tokens on fetchMe failure - tokens are still valid
-        // User profile will be fetched later when network/API is available
-      }
-      
+      // Add timeout to prevent hanging indefinitely
+      await Future.any([
+        _performSessionLoad(),
+        Future.delayed(const Duration(seconds: 10), () => throw TimeoutException('Session load timeout', const Duration(seconds: 10))),
+      ]);
     } catch (e) {
-      print('[Bootstrap] Session load failed: $e, clearing session');
-      await clearSession();
+      print('[Bootstrap] Session load failed: $e');
+      if (e is TimeoutException) {
+        print('[Bootstrap] Session load timed out - proceeding without authentication');
+      } else {
+        print('[Bootstrap] Session load error - clearing session');
+        await clearSession();
+      }
     } finally {
+      // CRITICAL: Always ensure these are set to prevent infinite hanging
       _isReady = true;
       _isHydrating = false;
       print('[Bootstrap] Complete - ready=${_isReady}, user=${_currentUser?.username ?? "none"}');
       notifyListeners();
+    }
+  }
+
+  Future<void> _performSessionLoad() async {
+    // Ensure tokens are loaded into memory cache
+    await ensureLoaded();
+
+    if (_access == null || _access!.isEmpty) {
+      print('[Bootstrap] No tokens found - starting unauthenticated');
+      return;
+    }
+
+    print('[Bootstrap] Tokens found - validating with /me');
+    ApiClient.setBearer(_access!);
+
+    try {
+      await fetchMe();
+      print('[Bootstrap] Session restored successfully - user: ${_currentUser?.username}');
+    } catch (e) {
+      print('[Bootstrap] /me validation failed: $e - continuing with tokens intact');
+      // DO NOT clear tokens on fetchMe failure - tokens are still valid
+      // User profile will be fetched later when network/API is available
     }
   }
 
