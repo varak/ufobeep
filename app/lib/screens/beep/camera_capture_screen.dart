@@ -163,6 +163,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
               accuracy: fullSensorData?.accuracy ?? 0.0,
               altitude: fullSensorData?.altitude ?? 0.0,
               azimuthDeg: fullSensorData?.azimuthDeg ?? 0.0,
+              pitchDeg: fullSensorData?.pitchDeg ?? 0.0,
               hfovDeg: fullSensorData?.hfovDeg ?? 66.0,
               utc: DateTime.now(),
             );
@@ -175,6 +176,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
               accuracy: 0.0,
               altitude: 0.0,
               azimuthDeg: 0.0,
+              pitchDeg: 0.0,
               hfovDeg: 66.0,
               utc: DateTime.now(),
             );
@@ -405,6 +407,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
               accuracy: fullSensorData?.accuracy ?? 0.0,
               altitude: fullSensorData?.altitude ?? 0.0,
               azimuthDeg: fullSensorData?.azimuthDeg ?? 0.0,
+              pitchDeg: fullSensorData?.pitchDeg ?? 0.0,
               hfovDeg: fullSensorData?.hfovDeg ?? 66.0,
               utc: DateTime.now(),
             );
@@ -417,6 +420,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
               accuracy: 0.0,
               altitude: 0.0,
               azimuthDeg: 0.0,
+              pitchDeg: 0.0,
               hfovDeg: 66.0,
               utc: DateTime.now(),
             );
