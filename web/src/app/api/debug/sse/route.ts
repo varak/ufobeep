@@ -10,7 +10,9 @@ export async function GET() {
     const alertsSet = g.__ufobeep_alertsConnections as Set<ReadableStreamDefaultController> | undefined
     const perAlert: Record<string, number> = {}
     if (alertMap) {
-      for (const [k, v] of alertMap.entries()) perAlert[k] = v.size
+      alertMap.forEach((v, k) => {
+        perAlert[k] = v.size
+      })
     }
     return NextResponse.json({
       success: true,
