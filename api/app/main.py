@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.middleware.request_middleware import RequestTimeoutMiddleware, ErrorHandlingMiddleware
 from app.config.environment import settings
-from app.routers import plane_match, media_serve, devices, emails, photo_analysis, mufon, copescan, users, firebase_users, auth_magic, comments, share_cards, media_uploads
+from app.routers import plane_match, media_serve, devices, emails, photo_analysis, mufon, users, firebase_users, auth_magic, comments, share_cards, media_uploads
 from app.routers import admin_simple as admin
 from routers import feeds as feeds_router
 from app.services.media_service import get_media_service
@@ -441,7 +441,6 @@ app.include_router(devices.router)
 app.include_router(emails.router)
 app.include_router(photo_analysis.router)
 app.include_router(mufon.router)
-app.include_router(copescan.router, prefix="/copescan", tags=["copescan"])
 
 # Include beep router for unified beep/sighting endpoints
 from app.routers import beep
