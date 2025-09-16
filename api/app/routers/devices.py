@@ -409,7 +409,7 @@ async def register_anonymous_device(request: DeviceRegistrationRequest):
                 )
 
             # Create DeviceResponse object first
-            device_response = device_response_from_db(device_data)
+            device_response = create_device_response(device_data)
 
             # Return wrapped in DeviceDetailResponse format
             return DeviceDetailResponse(
