@@ -105,11 +105,15 @@ export async function handleBroadcastRequest(
 ): Promise<NextResponse | null> {
   try {
     const body = await request.json()
+    console.log(`[SSE] handleBroadcastRequest for alert ${alertId}:`, body)
     if (body.broadcast_only) {
+      console.log(`[SSE] Broadcasting comment_update to all clients for alert ${alertId}`)
       broadcastCommentUpdate(alertId)
+      console.log(`[SSE] Broadcast complete for alert ${alertId}`)
       return NextResponse.json({ message: 'Broadcast sent' })
     }
-  } catch {
+  } catch (error) {
+    console.log(`[SSE] handleBroadcastRequest parse error for alert ${alertId}:`, error)
     // Not a JSON request, continue with normal processing
   }
   return null

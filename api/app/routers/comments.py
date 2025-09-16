@@ -153,15 +153,21 @@ async def create_comment(
     # Trigger SSE broadcast for real-time web updates
     # NOTE: Using /beep endpoint - /alerts is deprecated
     try:
+        print(f"DEBUG: Triggering SSE broadcast for sighting {sighting_id}")
         async with httpx.AsyncClient() as client:
-            await client.post(
+            response = await client.post(
                 f"https://ufobeep.com/api/beep/{sighting_id}/comments",
                 json={"broadcast_only": True},
-                timeout=2.0
+                timeout=10.0  # Increased from 2.0s
             )
-        logger.info(f"SSE broadcast triggered for sighting {sighting_id}")
+            print(f"DEBUG: SSE broadcast response: status={response.status_code}, body={response.text[:200]}")
+            if response.status_code == 200:
+                logger.info(f"✅ SSE broadcast successful for sighting {sighting_id}")
+            else:
+                logger.warning(f"❌ SSE broadcast failed: status={response.status_code}, body={response.text[:100]}")
     except Exception as e:
-        logger.warning(f"Failed to trigger SSE broadcast: {e}")
+        print(f"DEBUG: SSE broadcast exception: {e}")
+        logger.warning(f"❌ Failed to trigger SSE broadcast for sighting {sighting_id}: {e}")
 
     return {"id": row["id"]}
 
@@ -205,15 +211,21 @@ async def delete_comment(
     # Trigger SSE broadcast for real-time web updates
     # NOTE: Using /beep endpoint - /alerts is deprecated
     try:
+        print(f"DEBUG: Triggering SSE broadcast for comment deletion on sighting {sighting_id}")
         async with httpx.AsyncClient() as client:
-            await client.post(
+            response = await client.post(
                 f"https://ufobeep.com/api/beep/{sighting_id}/comments",
                 json={"broadcast_only": True},
-                timeout=2.0
+                timeout=10.0  # Increased from 2.0s
             )
-        logger.info(f"SSE broadcast triggered for comment deletion on sighting {sighting_id}")
+            print(f"DEBUG: SSE deletion broadcast response: status={response.status_code}, body={response.text[:200]}")
+            if response.status_code == 200:
+                logger.info(f"✅ SSE deletion broadcast successful for sighting {sighting_id}")
+            else:
+                logger.warning(f"❌ SSE deletion broadcast failed: status={response.status_code}, body={response.text[:100]}")
     except Exception as e:
-        logger.warning(f"Failed to trigger SSE broadcast for comment deletion: {e}")
+        print(f"DEBUG: SSE deletion broadcast exception: {e}")
+        logger.warning(f"❌ Failed to trigger SSE broadcast for comment deletion on sighting {sighting_id}: {e}")
 
     return {"message": "Comment deleted successfully"}
 
