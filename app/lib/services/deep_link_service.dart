@@ -95,6 +95,7 @@ class DeepLinkService {
       final String host = uri.host;
       final List<String> pathSegments = uri.pathSegments;
       final Map<String, String> queryParams = uri.queryParameters;
+      final String? fragment = uri.fragment.isNotEmpty ? uri.fragment : null;
 
       print('🔗 DEEP LINK HANDLER DEBUG:');
       print('   📍 Full URI: $uri');
@@ -102,6 +103,7 @@ class DeepLinkService {
       print('   🌐 Host: $host');
       print('   📂 Path segments: $pathSegments');
       print('   ⚙️  Query params: $queryParams');
+      print('   🔗 Fragment: $fragment');
       
       // Special logging for auth completion
       if (host == 'auth' && pathSegments.isNotEmpty && pathSegments[0] == 'complete') {
@@ -114,7 +116,7 @@ class DeepLinkService {
 
       // Handle ufobeep:// scheme
       if (scheme == 'ufobeep') {
-        await _handleUFOBeepScheme(host, pathSegments, queryParams);
+        await _handleUFOBeepScheme(host, pathSegments, queryParams, fragment);
       } 
       // Handle https:// scheme (web app links)
       else if (scheme == 'https' && (host == 'ufobeep.com' || host == 'www.ufobeep.com')) {
@@ -146,10 +148,14 @@ class DeepLinkService {
     String host,
     List<String> pathSegments,
     Map<String, String> queryParams,
+    String? fragment,
   ) async {
     switch (host) {
       case 'sighting':
         await _handleSightingLink(pathSegments, queryParams);
+        break;
+      case 'beep':
+        await _handleBeepLink(pathSegments, queryParams, fragment);
         break;
       case 'alerts':
         await _handleAlertsLink(pathSegments, queryParams);
@@ -237,6 +243,47 @@ class DeepLinkService {
       // Navigate to sighting detail
       _router!.go('/alerts/$sightingId');
     }
+  }
+
+  /// Handle beep-related deep links (ufobeep://beep/sighting_id/comments#c-comment_id)
+  Future<void> _handleBeepLink(
+    List<String> pathSegments,
+    Map<String, String> queryParams,
+    String? fragment,
+  ) async {
+    if (pathSegments.isEmpty) {
+      _router!.go('/');
+      return;
+    }
+
+    final sightingId = pathSegments[0];
+
+    String route = '/beep/$sightingId';
+
+    if (pathSegments.length > 1) {
+      switch (pathSegments[1]) {
+        case 'comments':
+          // Handle fragment for comment anchoring
+          if (fragment != null && fragment.startsWith('c-')) {
+            final commentId = fragment.substring(2); // Remove 'c-' prefix
+            route += '?scrollToComment=$commentId';
+          }
+          break;
+        case 'chat':
+          // Navigate to sighting detail with chat tab
+          route += '?tab=chat';
+          break;
+        case 'compass':
+          // Navigate to compass pointing to sighting
+          _router!.go('/compass?target_sighting=$sightingId');
+          return;
+        default:
+          // Use base route
+          break;
+      }
+    }
+
+    _router!.go(route);
   }
 
   /// Handle alerts list deep links
