@@ -80,22 +80,17 @@ class DeviceRegistrationManager {
       print('📱 DeviceRegistrationManager: ├── FCM: ...${fcmToken.substring(fcmToken.length - 6)}');
       print('📱 DeviceRegistrationManager: └── Platform: ${Platform.isAndroid ? "android" : Platform.isIOS ? "ios" : "unknown"}');
 
-      // Try to get location, but don't block registration if unavailable
+      // Get location for proximity alerts
       print('📱 DeviceRegistrationManager: Getting location for proximity alerts...');
       final sensorService = SensorService();
       final position = await sensorService.getPreciseLocation();
 
-      // Always register for push notifications even without location
-      // Location will be updated when available via LocationUpdateManager
-      final double? latitude = position?.latitude;
-      final double? longitude = position?.longitude;
-
       if (position == null) {
-        print('⚠️ DeviceRegistrationManager: No location available yet - registering without location');
-        print('📱 DeviceRegistrationManager: Location will be updated by LocationUpdateManager when available');
-      } else {
-        print('✅ DeviceRegistrationManager: Got location: ${position.latitude}, ${position.longitude}');
+        print('❌ DeviceRegistrationManager: Cannot get location - skipping registration');
+        return;
       }
+
+      print('✅ DeviceRegistrationManager: Got location: ${position.latitude}, ${position.longitude}');
 
       // ALWAYS start with anonymous registration for immediate push notifications
       // This ensures notifications work without requiring login
@@ -105,8 +100,8 @@ class DeviceRegistrationManager {
         print('📱 DeviceRegistrationManager: Using anonymous registration for immediate push notifications');
         deviceResponse = await _deviceService.registerDeviceAnonymously(
           pushToken: fcmToken,
-          latitude: latitude,
-          longitude: longitude,
+          latitude: position.latitude,
+          longitude: position.longitude,
           alertNotifications: true,
           chatNotifications: true,
           systemNotifications: true,
@@ -116,8 +111,8 @@ class DeviceRegistrationManager {
         try {
           deviceResponse = await _deviceService.registerDevice(
             pushToken: fcmToken,
-            latitude: latitude,
-            longitude: longitude,
+            latitude: position.latitude,
+            longitude: position.longitude,
             alertNotifications: true,
             chatNotifications: true,
             systemNotifications: true,
@@ -127,8 +122,8 @@ class DeviceRegistrationManager {
           print('📱 DeviceRegistrationManager: Auth error: $authError');
           deviceResponse = await _deviceService.registerDeviceAnonymously(
             pushToken: fcmToken,
-            latitude: latitude,
-            longitude: longitude,
+            latitude: position.latitude,
+            longitude: position.longitude,
             alertNotifications: true,
             chatNotifications: true,
             systemNotifications: true,
@@ -145,7 +140,7 @@ class DeviceRegistrationManager {
         print('📱 DeviceRegistrationManager: ├── Platform: ${deviceResponse.platform.value}');
         print('📱 DeviceRegistrationManager: ├── Push enabled: ${deviceResponse.pushEnabled}');
         print('📱 DeviceRegistrationManager: ├── Mode: ${isAuthenticated ? "authenticated" : "anonymous"}');
-        print('📱 DeviceRegistrationManager: └── Location: ${position.latitude}, ${position.longitude}');
+        print('📱 DeviceRegistrationManager: └── Location: ${position!.latitude}, ${position.longitude}');
       } else {
         print('❌ DeviceRegistrationManager: FAILED - Registration returned null');
       }
