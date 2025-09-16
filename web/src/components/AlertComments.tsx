@@ -65,6 +65,20 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
     }
   }, [alertId])
 
+  // Normalize various backend shapes into the Comment interface; return null if incomplete
+  const normalizeComment = useCallback((raw: any): Comment | null => {
+    if (!raw || typeof raw !== 'object') return null
+    const id = raw.id ?? raw.comment_id ?? raw.commentId
+    const body = raw.body ?? raw.text ?? raw.comment ?? ''
+    const username = raw.username ?? raw.user_name ?? raw.user?.username ?? user?.username ?? 'Anonymous'
+    const created = raw.created_at ?? raw.createdAt ?? raw.timestamp
+    const created_at = created ? new Date(created).toISOString() : null
+    const media_url = raw.media_url ?? raw.mediaUrl ?? null
+    const user_id = String(raw.user_id ?? raw.userId ?? raw.user?.id ?? user?.id ?? '')
+    if (!id || !body || !created_at) return null
+    return { id: Number(id), body, username, created_at, media_url, user_id }
+  }, [user])
+
   useEffect(() => {
     fetchComments()
   }, [fetchComments])
@@ -100,11 +114,13 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
           try {
             const data = JSON.parse(event.data)
             if (data.alertId !== alertId) return
-            if (data.type === 'comment_add' && data.comment && data.comment.id) {
+            if (data.type === 'comment_add' && data.comment) {
+              const normalized = normalizeComment(data.comment)
+              if (!normalized) { fetchComments(true); return }
               setComments(prev => {
-                const exists = prev.some(c => String(c.id) === String(data.comment.id))
+                const exists = prev.some(c => String(c.id) === String(normalized.id))
                 if (exists) return prev
-                const next = [...prev, data.comment]
+                const next = [...prev, normalized]
                 next.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
                 return next
               })
@@ -351,20 +367,23 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
         setShowCommentForm(false)
         setMessage(t('commentPosted'))
         setMessageType('success')
-        // Insert created comment locally if available
+        // Insert created comment locally if we can normalize it; otherwise fetch once
         try {
           const created = await response.json()
-          const item: any = (created && (created.item || created.data || created))
-          if (item && item.id) {
+          const item: any = (created && (created.comment || created.item || created.data || created))
+          const normalized = normalizeComment(item)
+          if (normalized) {
             setComments(prev => {
-              const exists = prev.some(c => String(c.id) === String(item.id))
+              const exists = prev.some(c => String(c.id) === String(normalized.id))
               if (exists) return prev
-              const next = [...prev, item]
+              const next = [...prev, normalized]
               next.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
               return next
             })
+          } else {
+            fetchComments(true)
           }
-        } catch {}
+        } catch { fetchComments(true) }
       } else {
         const errorData = await response.json()
         setMessage(errorData.detail || 'Failed to post comment')
