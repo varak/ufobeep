@@ -22,6 +22,7 @@ import '../../services/location_service.dart';
 import '../../debug/stuck_watchdog.dart';
 import '../../widgets/dev_menu_button.dart';
 import '../../services/ui_feedback.dart';
+import '../../services/gps_cache_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../models/sensor_data.dart';
 import '../../models/camera_result.dart';
@@ -56,7 +57,8 @@ class BeepScreen extends ConsumerStatefulWidget {
 class _BeepScreenState extends ConsumerState<BeepScreen> {
   final ImagePicker _picker = ImagePicker();
   final SensorService _sensorService = SensorService();
-  
+  final LocationService _locationService = LocationService();
+
   local.SightingSubmission? _currentSubmission;
   bool _isCapturing = false;
   bool _sensorsAvailable = false;
@@ -67,6 +69,11 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   Set<int> _completedUploads = {}; // Track completed uploads
   final TextEditingController _descriptionController = TextEditingController();
   List<File> _capturedMedia = [];
+
+  // GPS pre-fetching state
+  Map<String, double>? _preFetchedGPS;
+  bool _isGPSFetching = false;
+  String _gpsStatus = 'Waiting...';
   
 
   @override
@@ -75,7 +82,10 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
     debugPrint('🏗️ BEEP SCREEN CONSTRUCTOR: Creating new BeepScreen instance');
     debugPrint('🏗️ Initial media count: ${widget.initialMediaFile != null ? 1 : 0}');
     _checkSensorAvailability();
-    
+
+    // Start GPS pre-fetching immediately
+    _startGPSPreFetching();
+
     // Handle initial media file from camera
     if (widget.initialMediaFile != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -94,7 +104,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
         _pickFromGallery();
       });
     }
-    
+
     // Warm up native UI feedback
     UiFeedback.init();
   }
@@ -113,6 +123,56 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
         _sensorsAvailable = false;
         _errorMessage = 'Sensor check failed: $e';
       });
+    }
+  }
+
+  Future<void> _startGPSPreFetching() async {
+    debugPrint('🌍 BEEP: Starting GPS pre-fetching...');
+
+    // First check if we have cached GPS
+    final cachedGPS = GPSCacheService.I.getCachedGPS();
+    if (cachedGPS != null) {
+      setState(() {
+        _preFetchedGPS = cachedGPS;
+        _isGPSFetching = false;
+        _gpsStatus = 'Ready (${cachedGPS['lat']!.toStringAsFixed(4)}, ${cachedGPS['lon']!.toStringAsFixed(4)})';
+      });
+      debugPrint('✅ BEEP: Using cached GPS - ${cachedGPS['lat']}, ${cachedGPS['lon']}');
+      return;
+    }
+
+    setState(() {
+      _isGPSFetching = true;
+      _gpsStatus = 'Searching...';
+    });
+
+    try {
+      // Use the reliable GPS collection with all strategies
+      final coordinates = await _locationService.getReliableCoordinates();
+
+      if (mounted) {
+        setState(() {
+          _preFetchedGPS = coordinates;
+          _isGPSFetching = false;
+          if (coordinates != null) {
+            _gpsStatus = 'Ready (${coordinates['lat']!.toStringAsFixed(4)}, ${coordinates['lon']!.toStringAsFixed(4)})';
+            debugPrint('✅ BEEP: GPS pre-fetched successfully - ${coordinates['lat']}, ${coordinates['lon']}');
+            // Cache the GPS for future screen recreations
+            GPSCacheService.I.cacheGPS(coordinates);
+          } else {
+            _gpsStatus = 'No GPS';
+            debugPrint('❌ BEEP: GPS pre-fetching failed');
+          }
+        });
+      }
+    } catch (e) {
+      debugPrint('❌ BEEP: GPS pre-fetching error: $e');
+      if (mounted) {
+        setState(() {
+          _isGPSFetching = false;
+          _gpsStatus = 'Error';
+        });
+      }
     }
   }
 
@@ -169,13 +229,15 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   Future<void> _capturePhoto() async {
     // Avoid double taps racing navigation
     if (Navigator.of(context).userGestureInProgress) return;
-    
+
     // Navigate to camera screen and await the result
     final description = _descriptionController.text.trim();
     debugPrint('🎯 CAMERA BUTTON: Navigating to /beep/camera with description: $description');
-    
+    debugPrint('🌍 CAMERA BUTTON: Pre-fetched GPS available: ${_preFetchedGPS != null}');
+
     final result = await context.push<CameraCaptureResult>('/beep/camera', extra: {
       'description': description,
+      'preFetchedGPS': _preFetchedGPS,
     });
     
     debugPrint('📸 BEEP <- result: $result');
@@ -487,11 +549,44 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       debugPrint('🔴 BEEP: Starting media beep submission with ${_capturedMedia.length} files');
       
       wd.mark("collecting GPS data");
-      // Collect GPS data
+      // Collect GPS data - use pre-fetched GPS if available
       SensorData? sensorData;
       try {
-        sensorData = await _sensorService.captureSensorData();
-        debugPrint('🔴 BEEP: GPS collected - lat=${sensorData.latitude}, lon=${sensorData.longitude}');
+        if (_preFetchedGPS != null) {
+          debugPrint('🔴 BEEP: Using pre-fetched GPS for submission');
+          debugPrint('🔴 BEEP: Pre-fetched GPS - lat=${_preFetchedGPS!['lat']}, lon=${_preFetchedGPS!['lon']}');
+
+          // Try to get sensor data for compass/orientation, but don't fail on GPS
+          try {
+            final fullSensorData = await _sensorService.captureSensorData();
+            sensorData = SensorData(
+              latitude: _preFetchedGPS!['lat']!,
+              longitude: _preFetchedGPS!['lon']!,
+              accuracy: fullSensorData?.accuracy ?? 0.0,
+              altitude: fullSensorData?.altitude ?? 0.0,
+              azimuthDeg: fullSensorData?.azimuthDeg ?? 0.0,
+              hfovDeg: fullSensorData?.hfovDeg ?? 66.0,
+              utc: DateTime.now(),
+            );
+            debugPrint('🔴 BEEP: Combined pre-fetched GPS with sensor data');
+          } catch (e) {
+            // If sensor collection fails, just use GPS coordinates
+            sensorData = SensorData(
+              latitude: _preFetchedGPS!['lat']!,
+              longitude: _preFetchedGPS!['lon']!,
+              accuracy: 0.0,
+              altitude: 0.0,
+              azimuthDeg: 0.0,
+              hfovDeg: 66.0,
+              utc: DateTime.now(),
+            );
+            debugPrint('🔴 BEEP: Using pre-fetched GPS only, sensor collection failed: $e');
+          }
+        } else {
+          debugPrint('🔴 BEEP: No pre-fetched GPS, collecting GPS and sensor data...');
+          sensorData = await _sensorService.captureSensorData();
+          debugPrint('🔴 BEEP: GPS collected - lat=${sensorData.latitude}, lon=${sensorData.longitude}');
+        }
       } catch (e) {
         debugPrint('🔴 BEEP: GPS collection failed: $e');
         throw Exception('GPS location required. Please enable GPS or take photos with location enabled.');
@@ -851,8 +946,47 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
           ),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          actions: const [
-            DevMenuButton(),
+          actions: [
+            // GPS status indicator
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    _isGPSFetching
+                        ? Icons.gps_not_fixed
+                        : _preFetchedGPS != null
+                            ? Icons.gps_fixed
+                            : Icons.gps_off,
+                    color: _isGPSFetching
+                        ? Colors.orange
+                        : _preFetchedGPS != null
+                            ? Colors.green
+                            : Colors.red,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    _isGPSFetching
+                        ? 'GPS...'
+                        : _preFetchedGPS != null
+                            ? 'GPS Ready'
+                            : 'No GPS',
+                    style: TextStyle(
+                      color: _isGPSFetching
+                          ? Colors.orange
+                          : _preFetchedGPS != null
+                              ? Colors.green
+                              : Colors.red,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const DevMenuButton(),
           ],
           centerTitle: true,
         ),

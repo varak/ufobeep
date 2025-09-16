@@ -21,15 +21,18 @@ class CameraCaptureScreen extends StatefulWidget {
   final String? description;
   final String? attachToSightingId;
   final bool returnToComposition;
-  
+  final Map<String, double>? preFetchedGPS;
+
   CameraCaptureScreen({
-    super.key, 
+    super.key,
     this.description,
     this.attachToSightingId,
     this.returnToComposition = false,
+    this.preFetchedGPS,
   }) {
     debugPrint('📸📸📸 PRODUCTION CAMERA CAPTURE SCREEN CONSTRUCTED 📸📸📸');
     debugPrint('📸 Parameters: description="$description", attachTo="$attachToSightingId", returnTo=$returnToComposition');
+    debugPrint('🌍 Pre-fetched GPS available: ${preFetchedGPS != null}');
   }
 
   @override
@@ -143,17 +146,50 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
         _isInitialized = false;
       });
       
-      // Get sensor data with retry for GPS
+      // Get sensor data with retry for GPS - use pre-fetched GPS if available
       SensorData? sensorData;
       try {
-        debugPrint('🌍 CAMERA: Attempting to capture GPS and sensor data...');
-        sensorData = await _sensorService.captureSensorData();
-        if (sensorData != null && sensorData.latitude != 0.0 && sensorData.longitude != 0.0) {
-          debugPrint('✅ CAMERA: Got valid sensor data - lat: ${sensorData.latitude}, lng: ${sensorData.longitude}, accuracy: ${sensorData.accuracy}m');
+        // Check if we have pre-fetched GPS coordinates
+        if (widget.preFetchedGPS != null) {
+          debugPrint('🌍 CAMERA: Using pre-fetched GPS coordinates');
+          debugPrint('✅ CAMERA: Pre-fetched GPS - lat: ${widget.preFetchedGPS!['lat']}, lng: ${widget.preFetchedGPS!['lon']}');
+
+          // Create SensorData with pre-fetched GPS and real-time sensors
+          try {
+            final fullSensorData = await _sensorService.captureSensorData();
+            sensorData = SensorData(
+              latitude: widget.preFetchedGPS!['lat']!,
+              longitude: widget.preFetchedGPS!['lon']!,
+              accuracy: fullSensorData?.accuracy ?? 0.0,
+              altitude: fullSensorData?.altitude ?? 0.0,
+              azimuthDeg: fullSensorData?.azimuthDeg ?? 0.0,
+              hfovDeg: fullSensorData?.hfovDeg ?? 66.0,
+              utc: DateTime.now(),
+            );
+            debugPrint('✅ CAMERA: Combined pre-fetched GPS with sensor data');
+          } catch (e) {
+            // If sensor collection fails, just use GPS coordinates
+            sensorData = SensorData(
+              latitude: widget.preFetchedGPS!['lat']!,
+              longitude: widget.preFetchedGPS!['lon']!,
+              accuracy: 0.0,
+              altitude: 0.0,
+              azimuthDeg: 0.0,
+              hfovDeg: 66.0,
+              utc: DateTime.now(),
+            );
+            debugPrint('⚠️ CAMERA: Using pre-fetched GPS only, sensor collection failed: $e');
+          }
         } else {
-          debugPrint('⚠️ CAMERA: Got invalid GPS coordinates (0,0) - GPS may have timed out');
-          // Don't use 0,0 coordinates - better to have no location than wrong location
-          sensorData = null;
+          debugPrint('🌍 CAMERA: No pre-fetched GPS, attempting to capture GPS and sensor data...');
+          sensorData = await _sensorService.captureSensorData();
+          if (sensorData != null && sensorData.latitude != 0.0 && sensorData.longitude != 0.0) {
+            debugPrint('✅ CAMERA: Got valid sensor data - lat: ${sensorData.latitude}, lng: ${sensorData.longitude}, accuracy: ${sensorData.accuracy}m');
+          } else {
+            debugPrint('⚠️ CAMERA: Got invalid GPS coordinates (0,0) - GPS may have timed out');
+            // Don't use 0,0 coordinates - better to have no location than wrong location
+            sensorData = null;
+          }
         }
       } catch (e) {
         debugPrint('❌ CAMERA: Failed to capture sensor data: $e');
@@ -352,13 +388,46 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       // Play stop sound
       await SoundService.I.play(AlertSound.gpsOk, haptic: true);
 
-      // Get sensor data
+      // Get sensor data - use pre-fetched GPS if available
       SensorData? sensorData;
       try {
-        debugPrint('🌍 VIDEO: Capturing GPS and sensor data...');
-        sensorData = await _sensorService.captureSensorData();
-        if (sensorData != null && sensorData.latitude != 0.0 && sensorData.longitude != 0.0) {
-          debugPrint('✅ VIDEO: Got valid sensor data - lat: ${sensorData.latitude}, lng: ${sensorData.longitude}');
+        // Check if we have pre-fetched GPS coordinates
+        if (widget.preFetchedGPS != null) {
+          debugPrint('🌍 VIDEO: Using pre-fetched GPS coordinates');
+          debugPrint('✅ VIDEO: Pre-fetched GPS - lat: ${widget.preFetchedGPS!['lat']}, lng: ${widget.preFetchedGPS!['lon']}');
+
+          // Create SensorData with pre-fetched GPS and real-time sensors
+          try {
+            final fullSensorData = await _sensorService.captureSensorData();
+            sensorData = SensorData(
+              latitude: widget.preFetchedGPS!['lat']!,
+              longitude: widget.preFetchedGPS!['lon']!,
+              accuracy: fullSensorData?.accuracy ?? 0.0,
+              altitude: fullSensorData?.altitude ?? 0.0,
+              azimuthDeg: fullSensorData?.azimuthDeg ?? 0.0,
+              hfovDeg: fullSensorData?.hfovDeg ?? 66.0,
+              utc: DateTime.now(),
+            );
+            debugPrint('✅ VIDEO: Combined pre-fetched GPS with sensor data');
+          } catch (e) {
+            // If sensor collection fails, just use GPS coordinates
+            sensorData = SensorData(
+              latitude: widget.preFetchedGPS!['lat']!,
+              longitude: widget.preFetchedGPS!['lon']!,
+              accuracy: 0.0,
+              altitude: 0.0,
+              azimuthDeg: 0.0,
+              hfovDeg: 66.0,
+              utc: DateTime.now(),
+            );
+            debugPrint('⚠️ VIDEO: Using pre-fetched GPS only, sensor collection failed: $e');
+          }
+        } else {
+          debugPrint('🌍 VIDEO: No pre-fetched GPS, capturing GPS and sensor data...');
+          sensorData = await _sensorService.captureSensorData();
+          if (sensorData != null && sensorData.latitude != 0.0 && sensorData.longitude != 0.0) {
+            debugPrint('✅ VIDEO: Got valid sensor data - lat: ${sensorData.latitude}, lng: ${sensorData.longitude}');
+          }
         }
       } catch (e) {
         debugPrint('❌ VIDEO: Failed to capture sensor data: $e');

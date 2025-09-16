@@ -165,7 +165,13 @@ GoRouter appRouter(AppRouterRef ref) {
         parentNavigatorKey: _rootNavigatorKey,
         pageBuilder: (context, state) {
           debugPrint('🚦 ROUTER: /beep/camera pageBuilder called - creating PRODUCTION CameraCaptureScreen');
-          return _NoTransitionPage(CameraCaptureScreen());
+          final extra = state.extra as Map<String, dynamic>?;
+          return _NoTransitionPage(CameraCaptureScreen(
+            description: extra?['description'],
+            attachToSightingId: extra?['attachToSightingId'],
+            returnToComposition: extra?['returnToComposition'] ?? false,
+            preFetchedGPS: extra?['preFetchedGPS'],
+          ));
         },
       ),
       
