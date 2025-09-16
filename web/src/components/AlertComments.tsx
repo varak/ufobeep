@@ -39,6 +39,8 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
   const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set())
   const [copiedId, setCopiedId] = useState<number | null>(null)
   const pendingScrollRef = useRef<number | 'bottom' | null>(null)
+  const [newCommentsCount, setNewCommentsCount] = useState(0)
+  const latestCommentIdRef = useRef<number | null>(null)
 
   const scrollToComment = useCallback((id: number) => {
     try { history.replaceState(null, '', `#c-${id}`) } catch {}
@@ -50,6 +52,28 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
       }
     }, 120)
   }, [])
+
+  // Utility: determine if user is near the bottom of the page (window scroll)
+  const isNearBottom = useCallback(() => {
+    try {
+      const doc = document.documentElement
+      const remaining = doc.scrollHeight - (doc.scrollTop + window.innerHeight)
+      return remaining < 200
+    } catch {
+      return true
+    }
+  }, [])
+
+  // When user scrolls back to bottom, clear the new comments chip
+  useEffect(() => {
+    const onScroll = () => {
+      if (newCommentsCount > 0 && isNearBottom()) {
+        setNewCommentsCount(0)
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [newCommentsCount, isNearBottom])
 
   const fetchComments = useCallback(async (silent = false) => {
     try {
@@ -159,6 +183,15 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
                 if (uid && String(normalized.user_id) === uid) {
                   setExpandedIds(prev => new Set(prev).add(normalized.id))
                   scrollToComment(normalized.id)
+                } else {
+                  // For other users' comments: auto-scroll only if user is near bottom
+                  latestCommentIdRef.current = normalized.id
+                  if (isNearBottom()) {
+                    setExpandedIds(prev => new Set(prev).add(normalized.id))
+                    scrollToComment(normalized.id)
+                  } else {
+                    setNewCommentsCount(c => c + 1)
+                  }
                 }
               } catch {}
             } else if (data.type === 'comment_delete' && data.commentId) {
@@ -555,6 +588,29 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* New comments chip: appears when new comments arrive and user isn't at bottom */}
+      {newCommentsCount > 0 && (
+        <div className="fixed bottom-20 right-6 z-20">
+          <button
+            onClick={() => {
+              const id = latestCommentIdRef.current
+              if (id != null) {
+                setExpandedIds(prev => new Set(prev).add(id))
+                scrollToComment(id)
+              } else if (comments.length > 0) {
+                const last = comments[comments.length - 1]
+                setExpandedIds(prev => new Set(prev).add(last.id))
+                scrollToComment(last.id)
+              }
+              setNewCommentsCount(0)
+            }}
+            className="px-3 py-2 rounded-full bg-brand-primary text-white shadow-md hover:bg-brand-primary/90 text-sm"
+          >
+            {newCommentsCount} new {newCommentsCount === 1 ? 'comment' : 'comments'} ↓
+          </button>
         </div>
       )}
 
