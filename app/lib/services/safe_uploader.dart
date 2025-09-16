@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 /// - Uses streaming with chunked transfer
 /// - Provides per-part length when available
 class SafeUploader {
-  SafeUploader(this.endpoint, {http.Client? client, this.timeout = const Duration(seconds: 45)})
+  SafeUploader(this.endpoint, {http.Client? client, this.timeout = const Duration(minutes: 30)})
       : _client = client ?? http.Client();
 
   final Uri endpoint;

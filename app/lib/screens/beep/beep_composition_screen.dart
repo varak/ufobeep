@@ -1143,13 +1143,25 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
                     ? Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(AppColors.brandPrimary),
-                            ),
+                          TweenAnimationBuilder<double>(
+                            tween: Tween(begin: 0.0, end: 1.0),
+                            duration: Duration(milliseconds: 1000),
+                            builder: (context, value, child) {
+                              return Transform.translate(
+                                offset: Offset(0, -2 * value),
+                                child: Icon(
+                                  Icons.upload,
+                                  size: 20,
+                                  color: AppColors.brandPrimary,
+                                ),
+                              );
+                            },
+                            onEnd: () {
+                              // Restart animation
+                              if (_isSubmitting && mounted) {
+                                setState(() {});
+                              }
+                            },
                           ),
                           const SizedBox(width: 12),
                           Text(l10n.processing),

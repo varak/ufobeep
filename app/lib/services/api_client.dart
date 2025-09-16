@@ -36,8 +36,6 @@ class ApiClient {
   // ChatGPT: Static dio access for AuthRepository and AuthInterceptor
   static final Dio dio = Dio(BaseOptions(
     baseUrl: AppEnvironment.apiBaseUrl,
-    connectTimeout: const Duration(seconds: 10),
-    receiveTimeout: const Duration(seconds: 15),
   ));
 
   static void init() {
