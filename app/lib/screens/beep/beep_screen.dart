@@ -956,22 +956,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                                                 ? Icon(Icons.check, color: Colors.white70, size: 20)
                                                 : null),
                                           )
-                                        : Image.file(
-                                            _capturedMedia[index],
-                                            fit: BoxFit.cover,
-                                            width: 80,
-                                            height: 80,
-                                            errorBuilder: (context, error, stackTrace) {
-                                              return Container(
-                                                color: Colors.white.withOpacity(0.1),
-                                                child: Icon(
-                                                  Icons.broken_image,
-                                                  color: Colors.white.withOpacity(0.5),
-                                                  size: 20,
-                                                ),
-                                              );
-                                            },
-                                          ),
+                                        : _buildMediaThumbnail(_capturedMedia[index]),
                                       Positioned(
                                         top: 2,
                                         right: 2,
@@ -1221,6 +1206,62 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
         ],
       ),
     ) ?? false;
+  }
+
+  // Helper method to build media thumbnail, properly handling both images and videos
+  Widget _buildMediaThumbnail(File mediaFile) {
+    final String fileName = mediaFile.path.toLowerCase();
+    final bool isVideo = fileName.endsWith('.mp4') ||
+                         fileName.endsWith('.mov') ||
+                         fileName.endsWith('.avi') ||
+                         fileName.endsWith('.webm') ||
+                         fileName.endsWith('.3gp') ||
+                         fileName.endsWith('.mkv');
+
+    if (isVideo) {
+      // Show video icon for video files instead of trying to load as image
+      return Container(
+        width: 80,
+        height: 80,
+        color: Colors.black.withOpacity(0.3),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.videocam,
+                color: AppColors.brandPrimary,
+                size: 24,
+              ),
+              SizedBox(height: 4),
+              Icon(
+                Icons.play_circle_filled,
+                color: Colors.white.withOpacity(0.8),
+                size: 16,
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      // Show image for photo files
+      return Image.file(
+        mediaFile,
+        fit: BoxFit.cover,
+        width: 80,
+        height: 80,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            color: Colors.white.withOpacity(0.1),
+            child: Icon(
+              Icons.broken_image,
+              color: Colors.white.withOpacity(0.5),
+              size: 20,
+            ),
+          );
+        },
+      );
+    }
   }
 
   @override
