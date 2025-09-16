@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { addAlertsSSEConnection, removeAlertsSSEConnection } from '@/utils/sse-broadcast'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 
 // GET /api/alerts/stream - SSE stream for live alert adds
 export async function GET(_request: NextRequest) {
@@ -40,4 +41,3 @@ export async function GET(_request: NextRequest) {
     },
   })
 }
-

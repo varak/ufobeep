@@ -1,5 +1,7 @@
-// In-memory store for SSE connections per alert
-const alertConnections = new Map<string, Set<ReadableStreamDefaultController>>()
+// In-memory store for SSE connections per alert (singleton across imports)
+const g = globalThis as any
+if (!g.__ufobeep_alertConnections) g.__ufobeep_alertConnections = new Map<string, Set<ReadableStreamDefaultController>>()
+const alertConnections: Map<string, Set<ReadableStreamDefaultController>> = g.__ufobeep_alertConnections
 
 // Internal helper to send a payload to all subscribers of an alert
 function sendToAlert(alertId: string, payload: any) {
@@ -43,7 +45,8 @@ export function removeSSEConnection(alertId: string, controller: ReadableStreamD
 }
 
 // ===== Global Alerts Stream (for live map) =====
-const alertsConnections = new Set<ReadableStreamDefaultController>()
+if (!g.__ufobeep_alertsConnections) g.__ufobeep_alertsConnections = new Set<ReadableStreamDefaultController>()
+const alertsConnections: Set<ReadableStreamDefaultController> = g.__ufobeep_alertsConnections
 
 function sendToAlertsAll(payload: any) {
   if (alertsConnections.size === 0) return

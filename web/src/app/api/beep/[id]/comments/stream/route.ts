@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { addSSEConnection, removeSSEConnection } from '@/utils/sse-broadcast'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 
 // GET /api/beep/[id]/comments/stream - SSE stream for real-time comment updates
 export async function GET(
