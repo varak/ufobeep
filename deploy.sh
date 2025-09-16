@@ -358,9 +358,7 @@ if [ "$DEPLOY_API" = true ]; then
             source "$VENV_DIR/bin/activate"
         fi
         
-        echo "Running migrations..."
-        source "$VENV_DIR/bin/activate"
-        python run_migration.py || echo "Migration completed or not needed"
+        echo "Skipping migrations (obsolete)"
         
         echo "Restarting API service..."
         sudo systemctl restart ufobeep-api
@@ -369,9 +367,9 @@ if [ "$DEPLOY_API" = true ]; then
         sleep 10
 
         echo "Checking API status..."
-        # Try health check with retries
+        # Try health check with retries (using localhost since /healthz is internal only)
         for i in {1..3}; do
-            if curl -s --connect-timeout 10 --max-time 15 https://ufobeep.com/api/healthz | grep -q '"ok":true'; then
+            if curl -s --connect-timeout 10 --max-time 15 http://localhost:8000/healthz | grep -q '"ok":true'; then
                 echo "✅ API is healthy"
                 exit 0
             fi
