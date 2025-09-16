@@ -60,7 +60,7 @@ void main() async {
   debugPrint('🚀 UFOBeep starting... v$version build #$buildNumber');
   
   // Initialize environment first (needed by other services)
-  await AppEnvironment.initialize();
+  await AppEnvironment.initialize(packageInfo: packageInfo);
   
   // ChatGPT: Initialize ApiClient with interceptor
   ApiClient.init();

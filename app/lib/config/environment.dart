@@ -10,11 +10,11 @@ class AppEnvironment {
   
   static Environment get current => _current;
   
-  static Future<void> initialize({Environment? env}) async {
+  static Future<void> initialize({Environment? env, PackageInfo? packageInfo}) async {
     _current = env ?? _getEnvironmentFromPlatform();
-    
+
     // Initialize package info for version
-    await _initializePackageInfo();
+    await _initializePackageInfo(packageInfo);
     
     // Load environment variables from .env file
     try {
@@ -115,8 +115,8 @@ class AppEnvironment {
   
   static PackageInfo? _packageInfo;
   
-  static Future<void> _initializePackageInfo() async {
-    _packageInfo = await PackageInfo.fromPlatform();
+  static Future<void> _initializePackageInfo(PackageInfo? packageInfo) async {
+    _packageInfo = packageInfo ?? await PackageInfo.fromPlatform();
   }
   
   // Debug Settings
