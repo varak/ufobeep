@@ -682,7 +682,7 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
             <form onSubmit={handleCommentSubmit} className="space-y-4">
               <div>
                 <textarea
-                  id="comment"
+                  id="comment-input"
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                   placeholder={t('shareYourThoughts')}

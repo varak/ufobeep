@@ -384,7 +384,7 @@ class PushNotificationService:
             "type": "comment",
             "sighting_id": sighting_id,
             "comment_id": comment_id,
-            "deep_link": f"ufobeep://beep/{sighting_id}/comments#c-{comment_id}",
+            "deep_link": f"ufobeep://beep/{sighting_id}/comments#comment-input",
             "click_action": "OPEN_COMMENTS"
         }
         
