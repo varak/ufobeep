@@ -87,13 +87,15 @@ void main() async {
     debugPrint('✅ DeviceRegistrationManager started asynchronously');
   });
   
-  // Initialize LocationUpdateManager for battery-efficient location updates
-  final locationManager = LocationUpdateManager(
-    auth: auth, 
-    baseUrl: AppEnvironment.apiBaseUrl,
-  );
-  await locationManager.start();
-  debugPrint('✅ LocationUpdateManager started');
+  // Initialize LocationUpdateManager asynchronously to prevent blocking startup
+  Future.delayed(Duration.zero, () async {
+    final locationManager = LocationUpdateManager(
+      auth: auth,
+      baseUrl: AppEnvironment.apiBaseUrl,
+    );
+    await locationManager.start();
+    debugPrint('✅ LocationUpdateManager started in background');
+  });
   
   final sharedPreferences = results[1] as SharedPreferences;
   debugPrint('✅ Core initialization: ${stopwatch.elapsedMilliseconds}ms');
