@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback, useMemo } from 'react'
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useClientTranslations } from '@/hooks/useClientTranslations'
 import CommentItem from '@/components/CommentItem'
@@ -38,6 +38,18 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
   const [followLoading, setFollowLoading] = useState(false)
   const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set())
   const [copiedId, setCopiedId] = useState<number | null>(null)
+  const pendingScrollRef = useRef<number | 'bottom' | null>(null)
+
+  const scrollToComment = useCallback((id: number) => {
+    try { history.replaceState(null, '', `#c-${id}`) } catch {}
+    // Defer until DOM updates
+    setTimeout(() => {
+      const el = document.getElementById(`c-${id}`)
+      if (el && typeof el.scrollIntoView === 'function') {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })
+      }
+    }, 120)
+  }, [])
 
   const fetchComments = useCallback(async (silent = false) => {
     try {
@@ -56,6 +68,23 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
         new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
       )
       setComments(sortedComments)
+      // If we have a pending scroll request (e.g., after POST fallback), fulfill it
+      setTimeout(() => {
+        const req = pendingScrollRef.current
+        if (req !== null) {
+          if (req === 'bottom') {
+            const last = sortedComments[sortedComments.length - 1]
+            if (last) {
+              setExpandedIds(prev => new Set(prev).add(last.id))
+              scrollToComment(last.id)
+            }
+          } else {
+            setExpandedIds(prev => new Set(prev).add(req))
+            scrollToComment(req)
+          }
+          pendingScrollRef.current = null
+        }
+      }, 50)
       setError(null)
     } catch (err) {
       console.error('[comments] fetch error', err)
@@ -63,7 +92,7 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
     } finally {
       if (!silent) setLoading(false)
     }
-  }, [alertId])
+  }, [alertId, scrollToComment])
 
   // Normalize various backend shapes into the Comment interface; return null if incomplete
   const normalizeComment = useCallback((raw: any): Comment | null => {
@@ -124,6 +153,14 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
                 next.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
                 return next
               })
+              // If this is the posting user, expand and scroll to their new comment
+              try {
+                const uid = String(user?.id ?? '')
+                if (uid && String(normalized.user_id) === uid) {
+                  setExpandedIds(prev => new Set(prev).add(normalized.id))
+                  scrollToComment(normalized.id)
+                }
+              } catch {}
             } else if (data.type === 'comment_delete' && data.commentId) {
               setComments(prev => prev.filter(c => String(c.id) !== String(data.commentId)))
             } else if (data.type === 'comment_update') {
@@ -380,10 +417,15 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
               next.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
               return next
             })
+            // Expand and scroll to the new comment
+            setExpandedIds(prev => new Set(prev).add(normalized.id))
+            scrollToComment(normalized.id)
           } else {
+            // We don't have enough data; fetch and then scroll to bottom
+            pendingScrollRef.current = 'bottom'
             fetchComments(true)
           }
-        } catch { fetchComments(true) }
+        } catch { pendingScrollRef.current = 'bottom'; fetchComments(true) }
       } else {
         const errorData = await response.json()
         setMessage(errorData.detail || 'Failed to post comment')
