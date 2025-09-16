@@ -80,7 +80,11 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   void initState() {
     super.initState();
     debugPrint('🏗️ BEEP SCREEN CONSTRUCTOR: Creating new BeepScreen instance');
-    debugPrint('🏗️ Initial media count: ${widget.initialMediaFile != null ? 1 : 0}');
+    debugPrint('🏗️ Initial media file: ${widget.initialMediaFile?.path}');
+    debugPrint('🏗️ Initial media files: ${widget.initialMediaFiles?.length} files');
+    debugPrint('🏗️ Initial sensor data: ${widget.initialSensorData != null ? "GPS ${widget.initialSensorData!.latitude}, ${widget.initialSensorData!.longitude}" : "null"}');
+    debugPrint('🏗️ Attach to sighting: ${widget.attachToSightingId}');
+    debugPrint('🏗️ Auto gallery: ${widget.autoOpenGallery}');
     _checkSensorAvailability();
 
     // Start GPS pre-fetching immediately
@@ -129,13 +133,28 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   Future<void> _startGPSPreFetching() async {
     debugPrint('🌍 BEEP: Starting GPS pre-fetching...');
 
+    // Check if we already have GPS data from share intent
+    if (widget.initialSensorData != null) {
+      final sensorGPS = {
+        'lat': widget.initialSensorData!.latitude,
+        'lon': widget.initialSensorData!.longitude,
+      };
+      setState(() {
+        _preFetchedGPS = sensorGPS;
+        _isGPSFetching = false;
+        _gpsStatus = 'Ready (from share: ${sensorGPS['lat']!.toStringAsFixed(4)}, ${sensorGPS['lon']!.toStringAsFixed(4)})';
+      });
+      debugPrint('✅ BEEP: Using GPS from share intent - ${sensorGPS['lat']}, ${sensorGPS['lon']}');
+      return;
+    }
+
     // First check if we have cached GPS
     final cachedGPS = GPSCacheService.I.getCachedGPS();
     if (cachedGPS != null) {
       setState(() {
         _preFetchedGPS = cachedGPS;
         _isGPSFetching = false;
-        _gpsStatus = 'Ready (${cachedGPS['lat']!.toStringAsFixed(4)}, ${cachedGPS['lon']!.toStringAsFixed(4)})';
+        _gpsStatus = 'Ready (cached: ${cachedGPS['lat']!.toStringAsFixed(4)}, ${cachedGPS['lon']!.toStringAsFixed(4)})';
       });
       debugPrint('✅ BEEP: Using cached GPS - ${cachedGPS['lat']}, ${cachedGPS['lon']}');
       return;
@@ -208,16 +227,21 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   }
 
   Future<void> _handleSharedMediaFiles() async {
-    if (widget.initialMediaFiles == null || widget.initialMediaFiles!.isEmpty) return;
-    
+    if (widget.initialMediaFiles == null || widget.initialMediaFiles!.isEmpty) {
+      debugPrint('📸 BEEP: No shared media files to process');
+      return;
+    }
+
     try {
       debugPrint('📸 BEEP: Processing ${widget.initialMediaFiles!.length} shared media files');
-      
+      debugPrint('📸 BEEP: Shared files: ${widget.initialMediaFiles!.map((f) => f.path).toList()}');
+
       setState(() {
         _capturedMedia.addAll(widget.initialMediaFiles!);
       });
-      
+
       debugPrint('✅ BEEP: Added ${widget.initialMediaFiles!.length} shared files to media list');
+      debugPrint('✅ BEEP: Total captured media count: ${_capturedMedia.length}');
     } catch (e) {
       debugPrint('❌ BEEP: Failed to process shared media files: $e');
       setState(() {
