@@ -41,3 +41,32 @@ export function removeSSEConnection(alertId: string, controller: ReadableStreamD
   alertConnections.get(alertId)?.delete(controller)
   if (alertConnections.get(alertId)?.size === 0) alertConnections.delete(alertId)
 }
+
+// ===== Global Alerts Stream (for live map) =====
+const alertsConnections = new Set<ReadableStreamDefaultController>()
+
+function sendToAlertsAll(payload: any) {
+  if (alertsConnections.size === 0) return
+  const enc = new TextEncoder()
+  const msg = `data: ${JSON.stringify(payload)}\n\n`
+  const dead: ReadableStreamDefaultController[] = []
+  alertsConnections.forEach(ctrl => { try { ctrl.enqueue(enc.encode(msg)) } catch { dead.push(ctrl) } })
+  dead.forEach(d => alertsConnections.delete(d))
+}
+
+export function addAlertsSSEConnection(controller: ReadableStreamDefaultController) {
+  alertsConnections.add(controller)
+}
+
+export function removeAlertsSSEConnection(controller: ReadableStreamDefaultController) {
+  alertsConnections.delete(controller)
+}
+
+export function broadcastAlertAdd(alert: any) {
+  // Emit minimal payload to keep traffic low
+  const payload = {
+    type: 'alert_add',
+    alert: alert,
+  }
+  sendToAlertsAll(payload)
+}

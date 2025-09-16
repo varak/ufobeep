@@ -102,6 +102,7 @@ export default function AlertsMap({
   const [mapErrorMessage, setMapErrorMessage] = useState<string | null>(null)
   const [debugEnabled, setDebugEnabled] = useState(false)
   const [debugCounts, setDebugCounts] = useState<{ mufon: number; ufobeep: number; other: number; total: number }>({ mufon: 0, ufobeep: 0, other: 0, total: 0 })
+  const [liveAlerts, setLiveAlerts] = useState<Alert[]>([])
 
   // Validate coordinates defensively to avoid runtime errors
   const isValidLatLng = (loc?: { latitude: any; longitude: any }) => {
@@ -483,7 +484,8 @@ export default function AlertsMap({
           const leafletModule = await import('leaflet')
           const L: any = (leafletModule as any).default || leafletModule
           const { default: Supercluster } = await import('supercluster')
-          const features = alerts
+          const allAlerts = [...alerts, ...liveAlerts]
+          const features = allAlerts
             .filter(a => isValidLatLng(a.location))
             .map(a => ({
               type: 'Feature',
@@ -588,7 +590,8 @@ export default function AlertsMap({
         // Build cluster index and render, then listen to zoom/pan
         try {
           const { default: Supercluster } = await import('supercluster')
-          const features = alerts
+          const allAlerts = [...alerts, ...liveAlerts]
+          const features = allAlerts
             .filter(a => isValidLatLng(a.location))
             .map(a => ({
               type: 'Feature',
@@ -625,8 +628,9 @@ export default function AlertsMap({
         // Initial markers rendered by clustering above
 
         // Fit map to show all alerts
-        if (alerts.length > 0) {
-          const validAlerts = alerts.filter(a => isValidLatLng(a.location))
+        const initialAlerts = [...alerts, ...liveAlerts]
+        if (initialAlerts.length > 0) {
+          const validAlerts = initialAlerts.filter(a => isValidLatLng(a.location))
           if (validAlerts.length > 0) {
             const latlngs = validAlerts.map(a => [Number(a.location.latitude), Number(a.location.longitude)] as [number, number])
 
@@ -678,6 +682,103 @@ export default function AlertsMap({
     }
 
   }, [alerts, mapCenter, exactUserLocation]) // Only re-run when alerts or center changes
+
+  // Live updates: connect SSE only when visible and map is in view; throttle cluster rebuilds
+  useEffect(() => {
+    let es: EventSource | null = null
+    let observer: IntersectionObserver | null = null
+    let queued: any[] = []
+    let timer: any = null
+
+    const flush = async () => {
+      if (!queued.length || !mapInstanceRef.current) return
+      const toAdd = queued
+      queued = []
+      setLiveAlerts(prev => {
+        // Deduplicate by id
+        const existing = new Set(prev.map(a => String(a.id)))
+        const nextAdds: Alert[] = []
+        toAdd.forEach((a: any) => { if (!existing.has(String(a.id))) nextAdds.push(a) })
+        return nextAdds.length ? [...prev, ...nextAdds] : prev
+      })
+      try {
+        const leafletModule = await import('leaflet')
+        const L: any = (leafletModule as any).default || leafletModule
+        const { default: Supercluster } = await import('supercluster')
+        const allAlerts = [...alerts, ...liveAlerts, ...toAdd]
+        const features = allAlerts
+          .filter(a => isValidLatLng(a.location))
+          .map(a => ({
+            type: 'Feature',
+            geometry: { type: 'Point', coordinates: [Number(a.location.longitude), Number(a.location.latitude)] },
+            properties: { id: a.id }
+          }))
+        featuresRef.current = features
+        const index = new Supercluster({ radius: 90, maxZoom: 16, minPoints: 2 })
+        index.load(features as any)
+        clusterIndexRef.current = index
+        renderClusters(L, mapInstanceRef.current)
+      } catch (e) { console.error('live flush failed', e) }
+    }
+
+    const schedule = () => {
+      if (timer) return
+      timer = setTimeout(() => { timer = null; flush() }, 600)
+    }
+
+    const open = () => {
+      if (es || !mapInstanceRef.current) return
+      try {
+        es = new EventSource('/api/alerts/stream')
+        es.onmessage = (ev) => {
+          try {
+            const data = JSON.parse(ev.data)
+            if (data.type !== 'alert_add' || !data.alert) return
+            const a = data.alert
+            if (!isValidLatLng(a.location)) return
+            // Only consider if within current bounds
+            try {
+              const b = mapInstanceRef.current.getBounds()
+              const lat = Number(a.location.latitude), lng = Number(a.location.longitude)
+              if (!b.contains({ lat, lng })) return
+            } catch {}
+            queued.push({
+              id: String(a.id),
+              title: a.title || null,
+              description: null,
+              location: { latitude: Number(a.location.latitude), longitude: Number(a.location.longitude), name: a.location?.name || '' },
+              alert_level: a.alert_level || 'low',
+              created_at: a.created_at || new Date().toISOString(),
+              source: a.source || 'ufobeep'
+            } as Alert)
+            schedule()
+          } catch {}
+        }
+        es.onerror = () => { try { es?.close() } finally { es = null } }
+      } catch {}
+    }
+
+    const handleVis = () => {
+      if (document.visibilityState === 'visible') open(); else { try { es?.close() } finally { es = null } }
+    }
+
+    if (mapRef.current) {
+      observer = new IntersectionObserver((entries) => {
+        const inView = entries[0]?.isIntersecting
+        if (inView && document.visibilityState === 'visible') open(); else { try { es?.close() } finally { es = null } }
+      }, { threshold: 0.4 })
+      observer.observe(mapRef.current)
+    }
+    document.addEventListener('visibilitychange', handleVis)
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVis)
+      if (observer && mapRef.current) observer.unobserve(mapRef.current)
+      observer?.disconnect()
+      if (es) es.close()
+      if (timer) clearTimeout(timer)
+    }
+  }, [alerts])
 
   // Handle window resize
   useEffect(() => {
