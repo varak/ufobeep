@@ -8,9 +8,7 @@ import logging
 import sys
 import os
 
-# Add path for push service
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
-from services.push_service import send_to_token
+from app.services.push_service import send_to_token
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
