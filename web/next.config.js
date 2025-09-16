@@ -49,11 +49,25 @@ const nextConfig = {
   
   // Rewrites for API proxying in development and production
   async rewrites() {
-    const apiDestination = process.env.NODE_ENV === 'development' 
+    const apiDestination = process.env.NODE_ENV === 'development'
       ? `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'}/:path*`
       : 'http://localhost:8000/:path*';
-      
+
     return [
+      // Don't proxy SSE stream endpoints - handle them locally with Next.js
+      {
+        source: '/api/beep/:id/comments/stream',
+        destination: '/api/beep/:id/comments/stream', // Keep local
+      },
+      {
+        source: '/api/alerts/stream',
+        destination: '/api/alerts/stream', // Keep local
+      },
+      {
+        source: '/api/debug/:path*',
+        destination: '/api/debug/:path*', // Keep debug endpoints local
+      },
+      // Proxy all other API requests to backend
       {
         source: '/api/:path*',
         destination: apiDestination,
