@@ -110,6 +110,9 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
               })
             } else if (data.type === 'comment_delete' && data.commentId) {
               setComments(prev => prev.filter(c => String(c.id) !== String(data.commentId)))
+            } else if (data.type === 'comment_update') {
+              // Generic update fallback used when delta isn't available
+              fetchComments(true)
             }
           } catch (error) {
             console.error('[SSE] Error parsing message:', error)

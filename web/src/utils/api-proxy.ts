@@ -68,13 +68,18 @@ export async function proxyToBackendAPI(
       const delMatch = backendPath.match(/\/beep\/([^\/]+)\/comments\/([^\/]+)/)
       if (method === 'POST' && addMatch) {
         const alertId = addMatch[1]
-        // Try common shapes: {item}, {data}, or the object itself
         const comment = (data && (data.item || data.data || data))
-        try { broadcastCommentAdd(alertId, comment) } catch { broadcastCommentUpdate(alertId) }
+        if (comment && (comment.id != null || comment.comment_id != null)) {
+          broadcastCommentAdd(alertId, comment)
+        } else {
+          // Fallback for backends that don't return the created comment
+          broadcastCommentUpdate(alertId)
+        }
       } else if (method === 'DELETE' && delMatch) {
         const alertId = delMatch[1]
         const commentId = delMatch[2]
-        try { broadcastCommentDelete(alertId, commentId) } catch { broadcastCommentUpdate(alertId) }
+        if (commentId) broadcastCommentDelete(alertId, commentId)
+        else broadcastCommentUpdate(alertId)
       } else {
         const idMatch = backendPath.match(/\/beep\/([^\/]+)\//)
         if (idMatch) broadcastCommentUpdate(idMatch[1])
