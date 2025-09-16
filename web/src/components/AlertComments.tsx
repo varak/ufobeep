@@ -84,10 +84,9 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
     }
   }, [])
 
-  // Set up SSE for real-time comment updates with polling fallback
+  // Set up SSE for real-time comment updates (surgical deltas; no page-wide refresh)
   useEffect(() => {
     let eventSource: EventSource | null = null
-    let lastSseAt = 0
 
     const connectSSE = () => {
       try {
@@ -95,17 +94,22 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
 
         eventSource.onopen = () => {
           console.log('[SSE] Connected to comment updates')
-          lastSseAt = Date.now()
         }
 
         eventSource.onmessage = (event) => {
           try {
             const data = JSON.parse(event.data)
-            lastSseAt = Date.now()
-
-            if (data.type === 'comment_update' && data.alertId === alertId) {
-              console.log('[SSE] Received comment update, refreshing comments')
-              fetchComments(true) // Silent refresh
+            if (data.alertId !== alertId) return
+            if (data.type === 'comment_add' && data.comment && data.comment.id) {
+              setComments(prev => {
+                const exists = prev.some(c => String(c.id) === String(data.comment.id))
+                if (exists) return prev
+                const next = [...prev, data.comment]
+                next.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+                return next
+              })
+            } else if (data.type === 'comment_delete' && data.commentId) {
+              setComments(prev => prev.filter(c => String(c.id) !== String(data.commentId)))
             }
           } catch (error) {
             console.error('[SSE] Error parsing message:', error)
@@ -130,31 +134,11 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
 
     connectSSE()
 
-    // Polling fallback: refresh every 20s if no SSE signal and tab visible
-    const pollInterval = setInterval(() => {
-      try {
-        if (document.visibilityState !== 'visible') return
-        const elapsed = Date.now() - lastSseAt
-        if (elapsed > 20000) {
-          fetchComments(true)
-        }
-      } catch {}
-    }, 20000)
-
-    const onVis = () => {
-      if (document.visibilityState === 'visible') {
-        fetchComments(true)
-      }
-    }
-    document.addEventListener('visibilitychange', onVis)
-
     // Cleanup on unmount
     return () => {
       if (eventSource) {
         eventSource.close()
       }
-      clearInterval(pollInterval)
-      document.removeEventListener('visibilitychange', onVis)
     }
   }, [alertId, fetchComments])
 
@@ -264,19 +248,9 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
       console.log('DELETE response status:', response.status)
 
       if (response.ok) {
-        console.log('Delete successful, refreshing comments...')
-        // Proactively refresh comments (SSE may be delayed or blocked)
-        try {
-          const refresh = await fetch(`/api/beep/${alertId}/comments`)
-          if (refresh.ok) {
-            const data = await refresh.json()
-            const sorted = (data.items || []).sort((a: Comment, b: Comment) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-            setComments(sorted)
-            console.log('Comments refreshed, new count:', sorted.length)
-          }
-        } catch (err) {
-          console.error('Error refreshing comments:', err)
-        }
+        console.log('Delete successful')
+        // Remove locally; SSE will notify other tabs
+        setComments(prev => prev.filter(c => String(c.id) !== String(commentId)))
         setMessage(t('commentDeleted', 'Comment deleted successfully!'))
         setMessageType('success')
         setTimeout(() => setMessage(''), 3000)
@@ -374,16 +348,20 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
         setShowCommentForm(false)
         setMessage(t('commentPosted'))
         setMessageType('success')
-        
-        // Refresh comments
-        const fetchCommentsResponse = await fetch(`/api/beep/${alertId}/comments`)
-        if (fetchCommentsResponse.ok) {
-          const data = await fetchCommentsResponse.json()
-          const sortedComments = (data.items || []).sort((a: Comment, b: Comment) => 
-            new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-          )
-          setComments(sortedComments)
-        }
+        // Insert created comment locally if available
+        try {
+          const created = await response.json()
+          const item: any = (created && (created.item || created.data || created))
+          if (item && item.id) {
+            setComments(prev => {
+              const exists = prev.some(c => String(c.id) === String(item.id))
+              if (exists) return prev
+              const next = [...prev, item]
+              next.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+              return next
+            })
+          }
+        } catch {}
       } else {
         const errorData = await response.json()
         setMessage(errorData.detail || 'Failed to post comment')

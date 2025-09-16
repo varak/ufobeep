@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { apiConfig } from '@/config/api'
-import { broadcastCommentUpdate } from '@/utils/sse-broadcast'
+import { broadcastCommentUpdate, broadcastCommentAdd, broadcastCommentDelete } from '@/utils/sse-broadcast'
 
 export interface ProxyOptions {
   triggerSSEBroadcast?: boolean
@@ -62,11 +62,22 @@ export async function proxyToBackendAPI(
 
     const data = await response.json()
 
-    // Trigger SSE broadcast if requested
+    // Trigger SSE broadcast if requested (surgical deltas for comments)
     if (options.triggerSSEBroadcast && backendPath.includes('/comments')) {
-      const alertIdMatch = backendPath.match(/\/beep\/([^\/]+)\//)
-      if (alertIdMatch) {
-        broadcastCommentUpdate(alertIdMatch[1])
+      const addMatch = backendPath.match(/\/beep\/([^\/]+)\/comments(\/?$)/)
+      const delMatch = backendPath.match(/\/beep\/([^\/]+)\/comments\/([^\/]+)/)
+      if (method === 'POST' && addMatch) {
+        const alertId = addMatch[1]
+        // Try common shapes: {item}, {data}, or the object itself
+        const comment = (data && (data.item || data.data || data))
+        try { broadcastCommentAdd(alertId, comment) } catch { broadcastCommentUpdate(alertId) }
+      } else if (method === 'DELETE' && delMatch) {
+        const alertId = delMatch[1]
+        const commentId = delMatch[2]
+        try { broadcastCommentDelete(alertId, commentId) } catch { broadcastCommentUpdate(alertId) }
+      } else {
+        const idMatch = backendPath.match(/\/beep\/([^\/]+)\//)
+        if (idMatch) broadcastCommentUpdate(idMatch[1])
       }
     }
 
