@@ -81,9 +81,11 @@ void main() async {
   final auth = AuthRepository();
   await auth.loadSessionOnStartup();
   
-  // Initialize DeviceRegistrationManager AFTER Firebase is initialized
-  DeviceRegistrationManager().start();
-  debugPrint('✅ DeviceRegistrationManager started');
+  // Initialize DeviceRegistrationManager asynchronously to prevent blocking startup
+  Future.delayed(Duration.zero, () {
+    DeviceRegistrationManager().start();
+    debugPrint('✅ DeviceRegistrationManager started asynchronously');
+  });
   
   // Initialize LocationUpdateManager for battery-efficient location updates
   final locationManager = LocationUpdateManager(
