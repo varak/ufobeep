@@ -44,13 +44,41 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
 
   const scrollToComment = useCallback((id: number) => {
     try { history.replaceState(null, '', `#c-${id}`) } catch {}
-    // Defer until DOM updates
-    setTimeout(() => {
+
+    const attemptScroll = () => {
       const el = document.getElementById(`c-${id}`)
       if (el && typeof el.scrollIntoView === 'function') {
         el.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })
+        return true
       }
-    }, 120)
+      return false
+    }
+
+    // Try immediately first
+    if (attemptScroll()) return
+
+    // If not found, wait for next frame and try again
+    requestAnimationFrame(() => {
+      if (attemptScroll()) return
+
+      // If still not found, use MutationObserver to wait for DOM changes
+      const observer = new MutationObserver(() => {
+        if (attemptScroll()) {
+          observer.disconnect()
+        }
+      })
+
+      // Watch for new comment elements being added
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['id']
+      })
+
+      // Clean up observer after 2 seconds to prevent memory leaks
+      setTimeout(() => observer.disconnect(), 2000)
+    })
   }, [])
 
   // Utility: determine if user is near the bottom of the page (window scroll)

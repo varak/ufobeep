@@ -54,20 +54,26 @@ const nextConfig = {
       : 'http://localhost:8000/:path*';
 
     return [
-      // Don't proxy SSE stream endpoints - handle them locally with Next.js
+      // First, handle all routes that should NOT be proxied to backend
+      // These return empty array to prevent fallback to catch-all rule
+
+      // SSE stream endpoints - handle locally
       {
         source: '/api/beep/:id/comments/stream',
-        destination: '/api/beep/:id/comments/stream', // Keep local
+        destination: '/api/beep/:id/comments/stream',
       },
       {
         source: '/api/alerts/stream',
-        destination: '/api/alerts/stream', // Keep local
+        destination: '/api/alerts/stream',
       },
+
+      // Debug endpoints - handle locally
       {
         source: '/api/debug/:path*',
-        destination: '/api/debug/:path*', // Keep debug endpoints local
+        destination: '/api/debug/:path*',
       },
-      // Proxy all other API requests to backend
+
+      // All other API routes - proxy to backend
       {
         source: '/api/:path*',
         destination: apiDestination,
