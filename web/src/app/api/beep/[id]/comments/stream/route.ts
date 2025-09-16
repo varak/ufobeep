@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { addSSEConnection, removeSSEConnection } from '@/utils/sse-broadcast'
 
 export const dynamic = 'force-dynamic'
-
-// Local in-memory store for this route
-const alertConnections = new Map<string, Set<ReadableStreamDefaultController>>()
 
 // GET /api/beep/[id]/comments/stream - SSE stream for real-time comment updates
 export async function GET(
@@ -20,11 +18,8 @@ export async function GET(
     start(ctrl) {
       controller = ctrl
 
-      // Add this connection to the alert connections
-      if (!alertConnections.has(id)) {
-        alertConnections.set(id, new Set())
-      }
-      alertConnections.get(id)!.add(controller)
+      // Register with shared broadcaster so proxy hooks can reach this stream
+      addSSEConnection(id, controller)
 
       // Send initial connection message
       const initMessage = `data: ${JSON.stringify({ type: 'connected', alertId: id })}\n\n`
@@ -38,10 +33,7 @@ export async function GET(
         } catch (error) {
           clearInterval(heartbeatInterval)
           // Remove dead connection
-          const connections = alertConnections.get(id)
-          if (connections) {
-            connections.delete(controller!)
-          }
+          removeSSEConnection(id, controller!)
         }
       }, 30000) // 30 second heartbeat
 
@@ -52,14 +44,7 @@ export async function GET(
     cancel() {
       // Clean up this connection
       if (controller) {
-        const connections = alertConnections.get(id)
-        if (connections) {
-          connections.delete(controller)
-          if (connections.size === 0) {
-            alertConnections.delete(id)
-          }
-        }
-
+        removeSSEConnection(id, controller)
         // Clear heartbeat
         if ((controller as any)._heartbeatInterval) {
           clearInterval((controller as any)._heartbeatInterval)
