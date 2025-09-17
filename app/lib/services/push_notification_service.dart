@@ -847,7 +847,7 @@ class PushNotificationService {
       title,
       body,
       notificationDetails,
-      payload: sightingId,
+      payload: 'ufobeep://beep/$sightingId?focusComment=true',
     );
     
     print('📱 Comment notification shown for sighting $sightingId');
