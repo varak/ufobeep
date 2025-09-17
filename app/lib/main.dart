@@ -613,7 +613,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         title,
         body,
         notificationDetails,
-        payload: sightingId != null ? 'ufobeep://beep/$sightingId' : null, // Deep link payload for navigation
+        payload: sightingId != null ? 'ufobeep://beep/$sightingId' : null, // Deep link to beep detail page where comments are integrated
       );
 
       debugPrint('🔔 BACKGROUND: Showed comment notification - $title: $body');

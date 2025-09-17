@@ -521,11 +521,9 @@ class DeepLinkService {
     return link;
   }
 
-  /// Test deep link navigation
+  /// Navigate using deep link
   Future<void> testNavigation(String deepLink) async {
-    if (!kDebugMode) return;
-    
-    print('🧪 Testing deep link: $deepLink');
+    print('🔗 Processing notification deep link: $deepLink');
     final uri = parseDeepLink(deepLink);
     if (uri != null) {
       await _handleDeepLink(uri);
