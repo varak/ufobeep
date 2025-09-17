@@ -28,6 +28,7 @@ import 'services/auth_repository.dart';
 import 'services/device_registration_manager.dart';
 import 'services/location_update_manager.dart';
 import 'services/sensor_service.dart';
+import 'services/deep_link_service.dart';
 import 'features/auth/deep_link_handler.dart';
 
 import 'theme/app_theme.dart';
@@ -554,7 +555,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       final title = '$urgencyIcon UFO Sighting';
       final body = '$witnessText near $locationName$distanceText';
 
-      const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+      final AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
         'ufobeep_alerts',
         'UFO Alerts',
         channelDescription: 'UFO sighting proximity alerts',
@@ -574,7 +575,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         fullScreenIntent: true,
       );
 
-      const NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
+      final NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
 
       await flutterLocalNotificationsPlugin.show(
         sightingId.hashCode,
@@ -605,7 +606,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         showWhen: true,
       );
 
-      const NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
+      final NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
 
       await flutterLocalNotificationsPlugin.show(
         (sightingId?.hashCode ?? 0) + 1000, // Different ID from alert notifications
