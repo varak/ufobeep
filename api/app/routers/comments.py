@@ -156,7 +156,7 @@ async def create_comment(
         print(f"DEBUG: Triggering SSE broadcast for sighting {sighting_id}")
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                f"https://ufobeep.com/api/beep/{sighting_id}/comments",
+                f"http://localhost:3000/api/beep/{sighting_id}/comments",
                 json={"broadcast_only": True},
                 timeout=10.0  # Increased from 2.0s
             )
@@ -214,7 +214,7 @@ async def delete_comment(
         print(f"DEBUG: Triggering SSE broadcast for comment deletion on sighting {sighting_id}")
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                f"https://ufobeep.com/api/beep/{sighting_id}/comments",
+                f"http://localhost:3000/api/beep/{sighting_id}/comments",
                 json={"broadcast_only": True},
                 timeout=10.0  # Increased from 2.0s
             )
