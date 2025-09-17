@@ -28,6 +28,7 @@ import 'services/device_registration_manager.dart';
 import 'services/location_update_manager.dart';
 import 'services/sensor_service.dart';
 import 'features/auth/deep_link_handler.dart';
+
 import 'theme/app_theme.dart';
 
 void main() async {
@@ -81,7 +82,11 @@ void main() async {
   // ChatGPT: perform silent refresh before runApp for fast/clean routing
   final auth = AuthRepository();
   await auth.loadSessionOnStartup();
-  
+
+  // Initialize AuthService to restore authentication state
+  await AuthService().initialize();
+  debugPrint('✅ AuthService initialized - authentication state restored');
+
   // Initialize DeviceRegistrationManager asynchronously to prevent blocking startup
   Future.delayed(Duration.zero, () {
     DeviceRegistrationManager().start();
@@ -513,10 +518,14 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         'ufobeep_alerts',
         'UFO Alerts',
         channelDescription: 'UFO sighting proximity alerts',
-        importance: Importance.high,
-        priority: Priority.high,
+        importance: Importance.max,
+        priority: Priority.max,
         playSound: true,
         enableVibration: true,
+        visibility: NotificationVisibility.public,
+        ticker: 'UFO Alert - New Sighting Nearby', // TODO: Use proper l10n after translation generation
+        enableLights: true,
+        showWhen: true,
       );
 
       const NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
@@ -526,6 +535,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         title,
         body,
         notificationDetails,
+        payload: sightingId, // Add payload for navigation
       );
 
       debugPrint('🔔 BACKGROUND: Showed sighting notification - $title: $body');
@@ -543,6 +553,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         priority: Priority.high,
         playSound: true,
         enableVibration: true,
+        visibility: NotificationVisibility.public,
+        ticker: 'New Comment on UFO Alert', // TODO: Use proper l10n after translation generation
+        enableLights: true,
+        showWhen: true,
       );
 
       const NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
@@ -552,6 +566,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         title,
         body,
         notificationDetails,
+        payload: sightingId, // Add payload for navigation
       );
 
       debugPrint('🔔 BACKGROUND: Showed comment notification - $title: $body');
