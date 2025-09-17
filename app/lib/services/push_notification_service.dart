@@ -1186,11 +1186,12 @@ class CommentsRefreshNotifier {
   void notifyRefresh(String sightingId) {
     print('🔄 CommentsRefreshNotifier: notifying refresh for sighting $sightingId');
     final callbacks = List<VoidCallback>.from(_listeners[sightingId] ?? const []);
-    print('🔄 CommentsRefreshNotifier: found ${callbacks.length} listeners');
-    
+    print('🔄 CommentsRefreshNotifier: found ${callbacks.length} listeners for $sightingId');
+    print('🔄 CommentsRefreshNotifier: all listener keys: ${_listeners.keys.toList()}');
+
     if (callbacks.isEmpty) {
       print('⚠️ CommentsRefreshNotifier: no listeners registered for sighting $sightingId');
-      print('⚠️ Current listener keys: ${_listeners.keys.toList()}');
+      print('⚠️ Available listeners for other sightings: ${_listeners.keys.toList()}');
       return;
     }
     

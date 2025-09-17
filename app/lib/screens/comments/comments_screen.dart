@@ -92,9 +92,12 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
 
         // Auto-scroll to bottom if new comments were added
         if (hadNewComments && comments.isNotEmpty) {
+          debugPrint('💬 Auto-scrolling: ${comments.length} comments (was $_previousCommentCount)');
           WidgetsBinding.instance.addPostFrameCallback((_) {
             _scrollToBottom();
           });
+        } else if (hadNewComments) {
+          debugPrint('💬 No auto-scroll: hadNewComments=$hadNewComments, isEmpty=${comments.isEmpty}');
         }
       });
     } catch (e) {
