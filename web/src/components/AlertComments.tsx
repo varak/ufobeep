@@ -218,9 +218,10 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
                   console.log('[scroll-to-comment] New comment from other user:', normalized.id, 'isNearBottom:', isNearBottom())
                   latestCommentIdRef.current = normalized.id
 
-                  // Auto-scroll only if user is near bottom
-                  if (isNearBottom()) {
-                    console.log('[scroll-to-comment] Auto-scrolling to new comment (near bottom):', normalized.id)
+                  // Auto-scroll if user is near bottom OR if there are no other new comments pending
+                  // This ensures users get immediate feedback when actively viewing comments
+                  if (isNearBottom() || newCommentsCount === 0) {
+                    console.log('[scroll-to-comment] Auto-scrolling to new comment:', normalized.id, 'reason:', isNearBottom() ? 'near bottom' : 'no pending comments')
                     setExpandedIds(prev => new Set(prev).add(normalized.id))
                     scrollToComment(normalized.id)
                   } else {
