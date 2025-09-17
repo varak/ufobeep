@@ -199,6 +199,30 @@ GET /api/beep?source=NUFORC&shape=triangle&tier=1,2&near=Las%20Vegas&radius=200&
 - `POST /api/beep/{id}/comments` - Add comment to sighting
 - `DELETE /api/beep/{sighting_id}/comments/{comment_id}` - Delete comment (status_code=200)
 
+## Real-Time WebSocket Endpoints ✅ **WORKING**
+- `WS /ws/beep/{beep_id}` - Real-time comment updates for web browsers
+  - **Protocol**: WebSocket over HTTPS (wss://)
+  - **Messages**: JSON with `type: 'comment_added'`, `type: 'comment_deleted'`
+  - **Nginx Proxy**: Routes `/ws/` to API server port 8000
+  - **Auto-Reconnect**: Automatic retry on connection loss
+  - **Usage**: Web browsers connect for live comment updates without refresh
+
+### WebSocket Message Format
+```json
+{
+  "type": "comment_added",
+  "beep_id": "uuid-string",
+  "comment": {
+    "id": 123,
+    "user_id": "uuid-string",
+    "username": "user_name",
+    "body": "comment text",
+    "media_url": "optional-url",
+    "created_at": "2025-09-17T08:00:00Z"
+  }
+}
+```
+
 ## Social Features
 - `POST /api/beep/{id}/follow` - Follow sighting for updates
 - `DELETE /api/beep/{sighting_id}/follow` - Unfollow sighting (status_code=200)
