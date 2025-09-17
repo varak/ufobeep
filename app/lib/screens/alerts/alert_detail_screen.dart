@@ -94,10 +94,13 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
         // Scroll to target comment or bottom after comments are loaded
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (fromNotification && _comments.isNotEmpty) {
+          if (fromNotification && _comments?.isNotEmpty == true) {
             // Auto-scroll to bottom for notification-triggered refreshes
-            debugPrint('💬 AlertDetailScreen: auto-scrolling to bottom (from notification)');
-            _scrollToBottom();
+            _scrollController.animateTo(
+              _scrollController.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+            );
           } else {
             _scrollToCommentIfNeeded();
           }
