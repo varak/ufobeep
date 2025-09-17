@@ -29,10 +29,11 @@ import '../../models/comment.dart';
 import '../../utils/short_url_utils.dart';
 
 class AlertDetailScreen extends ConsumerStatefulWidget {
-  const AlertDetailScreen({super.key, required this.alertId, this.initialCommentId});
+  const AlertDetailScreen({super.key, required this.alertId, this.initialCommentId, this.shouldFocusComment});
 
   final String alertId;
   final String? initialCommentId;
+  final bool? shouldFocusComment;
 
   @override
   ConsumerState<AlertDetailScreen> createState() => _AlertDetailScreenState();
@@ -44,10 +45,13 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   bool _isFollowing = false;
   bool _followingLoading = false;
   final TextEditingController _commentController = TextEditingController();
+  final FocusNode _commentFocusNode = FocusNode();
+  final GlobalKey _commentInputKey = GlobalKey();
   bool _isPostingComment = false;
   final ScrollController _scrollController = ScrollController();
   final Map<String, GlobalKey> _commentKeys = {};
   bool _hasScrolledToComment = false;
+  bool _hasFocusedComment = false;
   List<Comment>? _comments;
   bool _loadingComments = true;
   String? _commentsError;
@@ -65,6 +69,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   @override
   void dispose() {
     _commentController.dispose();
+    _commentFocusNode.dispose();
     _scrollController.dispose();
     // Remove refresh listener
     debugPrint('💬 AlertDetailScreen: removing listener for alertId=${widget.alertId}');
@@ -90,6 +95,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         // Scroll to target comment after comments are loaded
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _scrollToCommentIfNeeded();
+          _focusCommentIfNeeded();
         });
       }
     } catch (e) {
@@ -1045,29 +1051,33 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
           _buildCommentsDisplay(),
           
           // Inline comment input
-          TextField(
-            controller: _commentController,
-            maxLines: 3,
-            minLines: 1,
-            style: const TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)!.addComment,
-              hintStyle: const TextStyle(color: AppColors.textSecondary),
-              filled: true,
-              fillColor: Colors.white10,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: AppColors.darkBorder.withOpacity(0.3)),
+          Container(
+            key: _commentInputKey,
+            child: TextField(
+              controller: _commentController,
+              focusNode: _commentFocusNode,
+              maxLines: 3,
+              minLines: 1,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: AppLocalizations.of(context)!.addComment,
+                hintStyle: const TextStyle(color: AppColors.textSecondary),
+                filled: true,
+                fillColor: Colors.white10,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: AppColors.darkBorder.withOpacity(0.3)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: AppColors.darkBorder.withOpacity(0.3)),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  borderSide: BorderSide(color: AppColors.brandPrimary, width: 2),
+                ),
+                contentPadding: const EdgeInsets.all(12),
               ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: AppColors.darkBorder.withOpacity(0.3)),
-              ),
-              focusedBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-                borderSide: BorderSide(color: AppColors.brandPrimary, width: 2),
-              ),
-              contentPadding: const EdgeInsets.all(12),
             ),
           ),
           const SizedBox(height: 8),
@@ -1304,6 +1314,35 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             _hasScrolledToComment = true;
           } catch (e) {
             debugPrint('Error scrolling to comment: $e');
+          }
+        });
+      }
+    }
+  }
+
+  void _focusCommentIfNeeded() {
+    // Only focus once and only if shouldFocusComment is true
+    if (widget.shouldFocusComment == true && !_hasFocusedComment) {
+      final commentInputContext = _commentInputKey.currentContext;
+      if (commentInputContext != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          try {
+            // First scroll to the comment input area
+            Scrollable.ensureVisible(
+              commentInputContext,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+              alignment: 0.8, // Scroll to 80% from top to keep input visible
+            ).then((_) {
+              // Then focus the text field after scrolling is complete
+              if (mounted) {
+                _commentFocusNode.requestFocus();
+                debugPrint('💬 Focused comment input for quick reply');
+              }
+            });
+            _hasFocusedComment = true;
+          } catch (e) {
+            debugPrint('Error focusing comment input: $e');
           }
         });
       }

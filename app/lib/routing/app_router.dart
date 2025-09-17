@@ -210,7 +210,12 @@ GoRouter appRouter(AppRouterRef ref) {
                   final alertId = state.pathParameters['id']!;
                   final extra = state.extra as Map<String, dynamic>?;
                   final initialCommentId = extra?['initialCommentId'] as String?;
-                  return AlertDetailScreen(alertId: alertId, initialCommentId: initialCommentId);
+                  final shouldFocusComment = state.uri.queryParameters['focusComment'] == 'true';
+                  return AlertDetailScreen(
+                    alertId: alertId,
+                    initialCommentId: initialCommentId,
+                    shouldFocusComment: shouldFocusComment,
+                  );
                 },
                 routes: [
                   // Comments for specific alert
@@ -418,7 +423,12 @@ GoRouter appRouter(AppRouterRef ref) {
               final beepId = state.pathParameters['id']!;
               final extra = state.extra as Map<String, dynamic>?;
               final initialCommentId = extra?['initialCommentId'] as String?;
-              return AlertDetailScreen(alertId: beepId, initialCommentId: initialCommentId);
+              final shouldFocusComment = state.uri.queryParameters['focusComment'] == 'true';
+              return AlertDetailScreen(
+                alertId: beepId,
+                initialCommentId: initialCommentId,
+                shouldFocusComment: shouldFocusComment,
+              );
             },
             routes: [
               // Comments for specific beep
