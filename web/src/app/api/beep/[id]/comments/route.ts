@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { proxyToBackendAPI, handleBroadcastRequest } from '@/utils/api-proxy'
+import { proxyToBackendAPI } from '@/utils/api-proxy'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
@@ -28,16 +28,9 @@ export async function POST(
 ) {
   const { id } = params
 
-  // Handle broadcast-only requests from FastAPI
-  const broadcastResponse = await handleBroadcastRequest(request, id)
-  if (broadcastResponse) {
-    return broadcastResponse
-  }
-
   return proxyToBackendAPI(
     request,
     `/beep/${id}/comments`,
-    'POST',
-    { triggerSSEBroadcast: true }
+    'POST'
   )
 }
