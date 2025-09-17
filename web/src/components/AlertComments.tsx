@@ -267,7 +267,7 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
         websocket.close()
       }
     }
-  }, [alertId, fetchComments])
+  }, [alertId, fetchComments, isNearBottom, normalizeComment, scrollToComment, user?.id])
 
   const checkFollowStatus = useCallback(async () => {
     if (!isAuthenticated) return
