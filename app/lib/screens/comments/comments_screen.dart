@@ -28,10 +28,12 @@ class CommentsScreen extends ConsumerStatefulWidget {
 
 class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBindingObserver {
   final CommentsService _commentsService = CommentsService();
+  final ScrollController _scrollController = ScrollController();
   List<Comment> _comments = [];
   bool _isLoading = true;
   bool _isFollowing = false; // TODO: Get actual follow status from API
   String? _error;
+  int _previousCommentCount = 0;
   
   @override
   void initState() {
@@ -48,6 +50,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _scrollController.dispose();
     // Remove refresh listener
     debugPrint('💬 CommentsScreen: removing listener for sightingId=${widget.sightingId}');
     CommentsRefreshNotifier.instance.removeListener(widget.sightingId, _loadComments);
@@ -81,9 +84,18 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
       }
       
       setState(() {
+        final hadNewComments = comments.length > _previousCommentCount;
         _comments = comments;
         _isLoading = false;
         _isFollowing = followSuccess;
+        _previousCommentCount = comments.length;
+
+        // Auto-scroll to bottom if new comments were added
+        if (hadNewComments && comments.isNotEmpty) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _scrollToBottom();
+          });
+        }
       });
     } catch (e) {
       setState(() {
@@ -168,7 +180,17 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
       }
     }
   }
-  
+
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
+
   Future<void> _toggleFollow() async {
     await UiFeedback.click();
     
@@ -362,6 +384,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
       color: AppColors.brandPrimary,
       backgroundColor: AppColors.darkSurface,
       child: ListView.separated(
+        controller: _scrollController,
         padding: const EdgeInsets.symmetric(vertical: 8),
         itemCount: _comments.length,
         separatorBuilder: (context, index) => const Divider(

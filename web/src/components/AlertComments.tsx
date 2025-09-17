@@ -215,14 +215,18 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
                 // Track latest comment for notification system
                 latestCommentIdRef.current = normalized.id
 
-                // Always auto-scroll for own comments, or for others when actively viewing
-                // This treats followers as active participants in the conversation
-                if (isOwnComment || isNearBottom() || newCommentsCount === 0) {
+                // Always auto-scroll for own comments, or when actively participating
+                // More aggressive auto-scroll: if user has been scrolling recently or has no pending comments
+                const shouldAutoScroll = isOwnComment || isNearBottom() || newCommentsCount <= 3
+
+                if (shouldAutoScroll) {
                   const reason = isOwnComment ? 'own comment' :
-                                isNearBottom() ? 'near bottom' : 'no pending comments'
+                                isNearBottom() ? 'near bottom' :
+                                newCommentsCount <= 3 ? 'active participant' : 'unknown'
                   console.log('[scroll-to-comment] Auto-scrolling to new comment:', normalized.id, 'reason:', reason)
                   setExpandedIds(prev => new Set(prev).add(normalized.id))
                   scrollToComment(normalized.id)
+                  setNewCommentsCount(0) // Clear pending count since we're scrolling
                 } else {
                   console.log('[scroll-to-comment] Showing notification for comment:', normalized.id)
                   setNewCommentsCount(c => c + 1)
