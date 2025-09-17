@@ -503,6 +503,9 @@
   "previousPage": "Previous",
   "nextPage": "Next",
   "pageOf": "Page {currentPage} of {totalPages} ({totalCount} total beeps)",
+  "firstPage": "First",
+  "lastPage": "Last",
+  "jumpToPage": "Jump to page",
   "heroTagline": "Get alerts when to go outside and look up",
   "heroDescription": "Never miss another UFO sighting. Get real-time alerts when someone near you sees something weird in the sky. Point your phone and find exactly where to look.",
   "downloadApp": "📱 Download App",
@@ -594,5 +597,7 @@
   "noAircraftDetected": "No aircraft detected",
   "sightingReport": "Sighting Report",
   "ufoAlert": "UFO Alert",
-  "alert": "Alert"
+  "alert": "Alert",
+  "notificationTickerUfoAlert": "UFO Alert - New Sighting Nearby",
+  "notificationTickerComment": "New Comment on UFO Alert"
 }

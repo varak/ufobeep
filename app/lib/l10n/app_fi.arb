@@ -503,6 +503,9 @@
   "previousPage": "Edellinen",
   "nextPage": "Seuraava",
   "pageOf": "Sivu __PASSIHOLDER_0__ of _PASSIHOLDER_1__ (__PASSIHOLDER_2_ total piips)",
+  "firstPage": "Ensimmäinen",
+  "lastPage": "Viimeinen",
+  "jumpToPage": "Siirry sivulle",
   "heroTagline": "Hanki hälytykset, milloin mennä ulos ja katsoa ylös",
   "heroDescription": "Älä koskaan jätä UFO-havaintoa väliin. Hanki reaaliaikainen hälytys, kun joku lähelläsi näkee jotain outoa taivaalla. Osoita puhelimeen ja etsi tarkalleen mistä etsiä.",
   "downloadApp": "Lataa sovellus",
@@ -594,5 +597,7 @@
   "noAircraftDetected": "Ilma-alusta ei havaittu",
   "sightingReport": "Havaintoraportti",
   "ufoAlert": "UFO Varoitus",
-  "alert": "Varoitus"
+  "alert": "Varoitus",
+  "notificationTickerUfoAlert": "UFO-hälytys - Uusi nähtävyys",
+  "notificationTickerComment": "UFO-hälytysjärjestelmän uusi huomautus"
 }

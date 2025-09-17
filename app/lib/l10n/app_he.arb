@@ -503,6 +503,9 @@
   "previousPage": "הקודם",
   "nextPage": "הבא",
   "pageOf": "דף הבית > PLACEHOLDER_0____{totalPages}______________________________________{totalCount}_ Total beeps)",
+  "firstPage": "הראשון",
+  "lastPage": "אחרון",
+  "jumpToPage": "לקפוץ לדף",
   "heroTagline": "קבלו התראות כשאתם יוצאים החוצה ומתבוננים",
   "heroDescription": "לעולם אל תחמיצו מראה עב\"מים נוסף. קבל התראות בזמן אמת כאשר מישהו לידך רואה משהו מוזר בשמים. מצא את הטלפון שלך ולמצוא בדיוק איפה להסתכל.",
   "downloadApp": "להורדה App",
@@ -594,5 +597,7 @@
   "noAircraftDetected": "שום מטוס לא זיהה",
   "sightingReport": "דיווח Sighting",
   "ufoAlert": "עב\"ם התראה",
-  "alert": "התראה"
+  "alert": "התראה",
+  "notificationTickerUfoAlert": "תגית: New Sighting Near",
+  "notificationTickerComment": "תגית: UFO Alert"
 }

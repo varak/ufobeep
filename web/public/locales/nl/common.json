@@ -232,6 +232,9 @@
   "shareAlert": "Alert delen",
   "previousPage": "Vorige",
   "nextPage": "Volgende",
+  "firstPage": "Eerste",
+  "lastPage": "Laatste",
+  "jumpToPage": "Naar pagina springen",
   "heroTagline": "Ontvang waarschuwingen wanneer naar buiten te gaan en op te zoeken",
   "heroDescription": "Mis nooit meer een UFO waarneming. Ontvang real-time waarschuwingen als iemand bij je in de buurt iets raars ziet in de lucht. Richt je telefoon en vind precies waar je moet zoeken.",
   "downloadApp": "Download App",
@@ -315,5 +318,7 @@
   "noAircraftDetected": "Geen vliegtuig gedetecteerd",
   "sightingReport": "Waarnemingsrapport",
   "ufoAlert": "UFO Waarschuwing",
-  "alert": "Waarschuwing"
+  "alert": "Waarschuwing",
+  "notificationTickerUfoAlert": "UFO Alert - Nieuwe Waarneming nabij",
+  "notificationTickerComment": "Nieuwe reactie op UFO-alarm"
 }

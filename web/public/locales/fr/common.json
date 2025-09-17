@@ -232,6 +232,9 @@
   "shareAlert": "Partager l'alerte",
   "previousPage": "Précédent",
   "nextPage": "Suivant",
+  "firstPage": "Première",
+  "lastPage": "Dernier",
+  "jumpToPage": "Aller à la page",
   "heroTagline": "Obtenir des alertes quand aller dehors et regarder vers le haut",
   "heroDescription": "Ne manquez jamais une autre OVNI. Obtenez des alertes en temps réel quand quelqu'un près de vous voit quelque chose de bizarre dans le ciel. Pointez votre téléphone et trouvez exactement où chercher.",
   "downloadApp": "Télécharger l'application",
@@ -315,5 +318,7 @@
   "noAircraftDetected": "Aucun aéronef détecté",
   "sightingReport": "Rapport d'observation",
   "ufoAlert": "OVNI Alerte",
-  "alert": "Alerte"
+  "alert": "Alerte",
+  "notificationTickerUfoAlert": "Alerte ovni - Nouvelle vue à proximité",
+  "notificationTickerComment": "Nouveau commentaire sur OVNI Alert"
 }

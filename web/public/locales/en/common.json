@@ -232,7 +232,6 @@
   "shareAlert": "Share alert",
   "previousPage": "Previous",
   "nextPage": "Next",
-  "pageOf": "Page {currentPage} of {totalPages} ({totalCount} total beeps)",
   "firstPage": "First",
   "lastPage": "Last",
   "jumpToPage": "Jump to page",
@@ -319,5 +318,7 @@
   "noAircraftDetected": "No aircraft detected",
   "sightingReport": "Sighting Report",
   "ufoAlert": "UFO Alert",
-  "alert": "Alert"
+  "alert": "Alert",
+  "notificationTickerUfoAlert": "UFO Alert - New Sighting Nearby",
+  "notificationTickerComment": "New Comment on UFO Alert"
 }

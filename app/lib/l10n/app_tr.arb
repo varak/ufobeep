@@ -503,6 +503,9 @@
   "previousPage": "Önceki",
   "nextPage": "Sonraki",
   "pageOf": "Sayfa {currentPage} of {totalPages} ({totalCount} total beeps)",
+  "firstPage": "First",
+  "lastPage": "Son",
+  "jumpToPage": "Sayfaya Git",
   "heroTagline": "Dışarı çıkmak ve yukarı bakmak için uyarılar alın",
   "heroDescription": "Asla başka bir UFO görüşünü kaçırmayın. Yakınınızdaki biri gökyüzünde garip bir şey gördüğünde gerçek zamanlı uyarılar alın. Telefonunuzu işaret edin ve tam olarak nereye bakacağınızı bulun.",
   "downloadApp": "Download App",
@@ -594,5 +597,7 @@
   "noAircraftDetected": "Hiçbir uçak tespit edilmedi",
   "sightingReport": "Rapor",
   "ufoAlert": "UFO UFO Uyarı",
-  "alert": "Uyarı"
+  "alert": "Uyarı",
+  "notificationTickerUfoAlert": "UFO Uyarısı - New Sighting Nearby",
+  "notificationTickerComment": "UFO Uyarısı Üzerine Yeni Yorum"
 }

@@ -232,6 +232,9 @@
   "shareAlert": "Alert akcji",
   "previousPage": "Poprzedni",
   "nextPage": "Następny",
+  "firstPage": "Najpierw",
+  "lastPage": "Ostatni",
+  "jumpToPage": "Przejdź do strony",
   "heroTagline": "Pobierz ostrzeżenia, kiedy wyjść na zewnątrz i spojrzeć w górę",
   "heroDescription": "Nigdy nie przegap kolejnego widoku UFO. Zawiadom o czasie rzeczywistym, gdy ktoś w pobliżu zobaczy coś dziwnego na niebie. Wyceluj w telefon i znajdź dokładnie gdzie szukać.",
   "downloadApp": "Pobierz aplikację",
@@ -315,5 +318,7 @@
   "noAircraftDetected": "Nie wykryto żadnego statku powietrznego",
   "sightingReport": "Sprawozdanie z obserwacji",
   "ufoAlert": "UFO Alarm",
-  "alert": "Alarm"
+  "alert": "Alarm",
+  "notificationTickerUfoAlert": "Alert UFO - Nowy widok w pobliżu",
+  "notificationTickerComment": "Nowy komentarz na temat UFO Alert"
 }

@@ -232,6 +232,9 @@
   "shareAlert": "Alarmstufe",
   "previousPage": "Vorherige",
   "nextPage": "Nächste",
+  "firstPage": "Erste",
+  "lastPage": "Letzter Beitrag",
+  "jumpToPage": "Zur Seite springen",
   "heroTagline": "Erhalten Sie Alarme, wenn Sie nach draußen gehen und nach oben schauen",
   "heroDescription": "Verpassen Sie nie eine andere UFO-Sicht. Erhalten Sie Echtzeit-Benachrichtigungen, wenn jemand in der Nähe sieht etwas seltsam am Himmel. Zeigen Sie Ihr Telefon und finden Sie genau, wo Sie suchen.",
   "downloadApp": "📱 App herunterladen",
@@ -315,5 +318,7 @@
   "noAircraftDetected": "Keine Luftfahrzeuge erfasst",
   "sightingReport": "Sichtbericht",
   "ufoAlert": "UFO Alarmstufe",
-  "alert": "Alarmstufe"
+  "alert": "Alarmstufe",
+  "notificationTickerUfoAlert": "UFO Alert - Neue Sehenswürdigkeiten in der Nähe",
+  "notificationTickerComment": "Neuer Kommentar zu UFO Alert"
 }

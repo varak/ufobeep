@@ -232,6 +232,9 @@
   "shareAlert": "Dela alert",
   "previousPage": "Föregående",
   "nextPage": "Nästa",
+  "firstPage": "Först först",
+  "lastPage": "Senaste",
+  "jumpToPage": "Hoppa till sida",
   "heroTagline": "Få varningar när du ska gå ut och titta upp",
   "heroDescription": "Missa aldrig en annan UFO-observation. Få realtidsvarningar när någon nära dig ser något konstigt på himlen. Peka din telefon och hitta exakt var du ska titta.",
   "downloadApp": "Nedladdning App",
@@ -315,5 +318,7 @@
   "noAircraftDetected": "Inga flygplan upptäckta",
   "sightingReport": "Sighting Report",
   "ufoAlert": "UFO Alert",
-  "alert": "Alert"
+  "alert": "Alert",
+  "notificationTickerUfoAlert": "UFO Alert - Ny syn i närheten",
+  "notificationTickerComment": "Ny kommentar till UFO Alert"
 }

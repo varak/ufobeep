@@ -503,6 +503,9 @@
   "previousPage": "Προηγούμενο",
   "nextPage": "Επόμενο",
   "pageOf": "Σελίδα _{currentPage}__PLACEHOLDER_1_ (__PLACEHOLDER_2_ σύνολο μπιπ)",
+  "firstPage": "Πρώτο",
+  "lastPage": "Τελευταία",
+  "jumpToPage": "Μετάβαση στη σελίδα",
   "heroTagline": "Πάρε ειδοποιήσεις όταν βγεις έξω και κοίτα ψηλά",
   "heroDescription": "Ποτέ μην χάσεις άλλο UFO. Πάρε ειδοποιήσεις σε πραγματικό χρόνο όταν κάποιος κοντά σου δει κάτι περίεργο στον ουρανό. Σημάδεψε το τηλέφωνό σου και βρες πού ακριβώς να ψάξεις.",
   "downloadApp": "📱 Λήψη εφαρμογής",
@@ -594,5 +597,7 @@
   "noAircraftDetected": "Δεν εντοπίστηκαν αεροσκάφη",
   "sightingReport": "Έκθεση παρατήρησης",
   "ufoAlert": "ΑΤΙΑ Συναγερμός",
-  "alert": "Συναγερμός"
+  "alert": "Συναγερμός",
+  "notificationTickerUfoAlert": "Συναγερμός UFO - Νέα Αξιοθέατα σε κοντινή απόσταση",
+  "notificationTickerComment": "Νέο σχόλιο για το UFO Alert"
 }

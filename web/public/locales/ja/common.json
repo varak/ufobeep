@@ -232,6 +232,9 @@
   "shareAlert": "アラートを共有する",
   "previousPage": "新着情報",
   "nextPage": "次へ",
+  "firstPage": "ファースト",
+  "lastPage": "最近の投稿",
+  "jumpToPage": "ページをジャンプ",
   "heroTagline": "外部に行くときにアラートを取得し、調べる",
   "heroDescription": "UFOを見逃さない。 近くの人が空に奇妙な何かを見たときにリアルタイムのアラートを取得します。 携帯電話をポイントし、どこを見ても正確に見つけてください.",
   "downloadApp": "◀ アプリのダウンロード",
@@ -315,5 +318,7 @@
   "noAircraftDetected": "航空機が検出されない",
   "sightingReport": "観光レポート",
   "ufoAlert": "ユーチューブ アラート",
-  "alert": "アラート"
+  "alert": "アラート",
+  "notificationTickerUfoAlert": "UFOアラート - 近くの新しいサイト",
+  "notificationTickerComment": "UFOアラートの新しいコメント"
 }

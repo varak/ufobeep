@@ -232,6 +232,9 @@
   "shareAlert": "Del alarm",
   "previousPage": "Forrige",
   "nextPage": "Næste",
+  "firstPage": "Første",
+  "lastPage": "Sidste",
+  "jumpToPage": "Spring til side",
   "heroTagline": "Få advarsler når du skal gå udenfor og se op",
   "heroDescription": "Gå aldrig glip af endnu en UFO observation. Få realtidsadvarsler når nogen nær dig ser noget underligt på himlen. Ret din telefon og find præcis hvor du skal kigge.",
   "downloadApp": "Download App",
@@ -315,5 +318,7 @@
   "noAircraftDetected": "Intet luftfartøj detekteret",
   "sightingReport": "Observationsrapport",
   "ufoAlert": "UFO Indberetning",
-  "alert": "Indberetning"
+  "alert": "Indberetning",
+  "notificationTickerUfoAlert": "UFO Alert - Ny observation i nærheden",
+  "notificationTickerComment": "Ny kommentar til UFO Alert"
 }

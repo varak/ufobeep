@@ -503,6 +503,9 @@
   "previousPage": "上一个",
   "nextPage": "下一个",
   "pageOf": "页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆",
+  "firstPage": "第一届",
+  "lastPage": "最后一个",
+  "jumpToPage": "跳转到页面",
   "heroTagline": "什么时候到外面看看",
   "heroDescription": "永远不要错过另一个UFO的目击。 当有人在天上看到奇怪的东西时,即刻发出警报. 把电话对准,找到可以找的地方.",
   "downloadApp": "QQ 下载 App",
@@ -594,5 +597,7 @@
   "noAircraftDetected": "未发现飞机",
   "sightingReport": "观察报告",
   "ufoAlert": "不明飞行物 警报",
-  "alert": "警报"
+  "alert": "警报",
+  "notificationTickerUfoAlert": "UFO 警告 - 附近新视觉",
+  "notificationTickerComment": "关于 UFO 提醒的新注释"
 }

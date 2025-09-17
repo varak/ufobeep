@@ -232,6 +232,9 @@
   "shareAlert": "تحذير",
   "previousPage": "سابقا",
   "nextPage": "التالي",
+  "firstPage": "أولا",
+  "lastPage": "آخر",
+  "jumpToPage": "اقفز على الصفحة",
   "heroTagline": "الحصول على تنبيهات عندما يذهب خارج وانظر إلى ما يصل",
   "heroDescription": "لا تفوتني رؤية أخرى الحصول على إنذارات في الوقت الحقيقي عندما شخص ما بالقرب منك يرى شيء غريب في السماء. اوجهي هاتفك وابحثي عن المكان المناسب.",
   "downloadApp": "Download App",
@@ -315,5 +318,7 @@
   "noAircraftDetected": "لم تكتشف أي طائرة",
   "sightingReport": "Sighting Report",
   "ufoAlert": "UFO إنذار",
-  "alert": "إنذار"
+  "alert": "إنذار",
+  "notificationTickerUfoAlert": "إنذار من طراز UFO Alert - New Sighting Nearby",
+  "notificationTickerComment": "تعليق جديد على تنبيه المنظمة"
 }

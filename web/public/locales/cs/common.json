@@ -232,6 +232,9 @@
   "shareAlert": "Upozornění o sdílení",
   "previousPage": "Předchozí",
   "nextPage": "Další",
+  "firstPage": "První",
+  "lastPage": "Poslední",
+  "jumpToPage": "Přejít na stránku",
   "heroTagline": "Získejte upozornění, kdy jít ven a podívat se nahoru",
   "heroDescription": "Nikdy si nenechte ujít další pozorování UFO. Získejte reálné-čas upozornění, když někdo blízko vás vidí něco divného na obloze. Namiřte telefon a najděte přesně, kde hledat.",
   "downloadApp": "Name",
@@ -315,5 +318,7 @@
   "noAircraftDetected": "Žádné letadlo nebylo detekováno",
   "sightingReport": "Zpráva o pozorování",
   "ufoAlert": "UFO Varování",
-  "alert": "Varování"
+  "alert": "Varování",
+  "notificationTickerUfoAlert": "UFO poplach - nové pozorování v blízkosti",
+  "notificationTickerComment": "Nový komentář k UFO upozornění"
 }

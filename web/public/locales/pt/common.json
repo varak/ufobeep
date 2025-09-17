@@ -232,6 +232,9 @@
   "shareAlert": "Alerta de partilha",
   "previousPage": "Anterior",
   "nextPage": "Próxima",
+  "firstPage": "Primeiro",
+  "lastPage": "Último",
+  "jumpToPage": "Ir para a página",
   "heroTagline": "Obter alertas quando sair e olhar para cima",
   "heroDescription": "Nunca percas outro OVNI. Receber alertas em tempo real quando alguém perto de ti vir algo estranho no céu. Aponte o telefone e encontre exatamente onde procurar.",
   "downloadApp": "Aplicação de Download",
@@ -315,5 +318,7 @@
   "noAircraftDetected": "Nenhuma aeronave detectada",
   "sightingReport": "Relatório de Avistamento",
   "ufoAlert": "UFO Alerta",
-  "alert": "Alerta"
+  "alert": "Alerta",
+  "notificationTickerUfoAlert": "Alerta de OVNIs - Novas Visões nas proximidades",
+  "notificationTickerComment": "Novo comentário sobre o alerta UFO"
 }

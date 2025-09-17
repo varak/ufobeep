@@ -503,6 +503,9 @@
   "previousPage": "Precedente",
   "nextPage": "Il prossimo",
   "pageOf": "Pagina {currentPage} di {totalPages}_ (_PLACEHOLDER_2___ total beeps)",
+  "firstPage": "Primo",
+  "lastPage": "Ultimo",
+  "jumpToPage": "Vai alla pagina",
   "heroTagline": "Ricevi avvisi quando uscire e guardare in alto",
   "heroDescription": "Non perdere mai un altro avvistamento UFO. Ricevi avvisi in tempo reale quando qualcuno vicino a te vede qualcosa di strano nel cielo. Punta il telefono e trova esattamente dove guardare.",
   "downloadApp": "📱 Scarica App",
@@ -594,5 +597,7 @@
   "noAircraftDetected": "Nessun aereo rilevato",
   "sightingReport": "Rapporto di tenuta",
   "ufoAlert": "UFO Avviso",
-  "alert": "Avviso"
+  "alert": "Avviso",
+  "notificationTickerUfoAlert": "Avviso UFO - Nuova vista nelle vicinanze",
+  "notificationTickerComment": "Nuovo commento su UFO Alert"
 }
