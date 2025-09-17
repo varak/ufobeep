@@ -57,15 +57,8 @@ const nextConfig = {
       // First, handle all routes that should NOT be proxied to backend
       // These return empty array to prevent fallback to catch-all rule
 
-      // SSE stream endpoints - handle locally
-      {
-        source: '/api/beep/:id/comments/stream',
-        destination: '/api/beep/:id/comments/stream',
-      },
-      {
-        source: '/api/alerts/stream',
-        destination: '/api/alerts/stream',
-      },
+      // WebSocket endpoints are handled by nginx proxy at /ws/*
+      // No local rewrites needed for WebSocket connections
 
       // Debug endpoints - handle locally
       {
