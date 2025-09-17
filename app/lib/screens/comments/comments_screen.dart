@@ -83,23 +83,25 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
         debugPrint('Auto-follow failed: $e');
       }
       
+      final hadNewComments = comments.length > _previousCommentCount;
+      final oldCount = _previousCommentCount;
+
       setState(() {
-        final hadNewComments = comments.length > _previousCommentCount;
         _comments = comments;
         _isLoading = false;
         _isFollowing = followSuccess;
         _previousCommentCount = comments.length;
-
-        // Auto-scroll to bottom if new comments were added
-        if (hadNewComments && comments.isNotEmpty) {
-          debugPrint('💬 Auto-scrolling: ${comments.length} comments (was $_previousCommentCount)');
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            _scrollToBottom();
-          });
-        } else if (hadNewComments) {
-          debugPrint('💬 No auto-scroll: hadNewComments=$hadNewComments, isEmpty=${comments.isEmpty}');
-        }
       });
+
+      // Auto-scroll to bottom if new comments were added (outside setState to avoid timing issues)
+      if (hadNewComments && comments.isNotEmpty) {
+        debugPrint('💬 Auto-scrolling: ${comments.length} comments (was $oldCount)');
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _scrollToBottom();
+        });
+      } else if (hadNewComments) {
+        debugPrint('💬 No auto-scroll: hadNewComments=$hadNewComments, isEmpty=${comments.isEmpty}');
+      }
     } catch (e) {
       setState(() {
         _error = e.toString();
