@@ -461,6 +461,28 @@ class DeepLinkService {
           }
           break;
 
+        case 'comment':
+          final String? sightingId = data['sighting_id'];
+          final String? commentId = data['comment_id'];
+          if (sightingId != null) {
+            print('🔄 Comment notification: navigating to beep $sightingId with comment $commentId');
+            _router!.go('/beep/$sightingId?focusComment=true&commentId=$commentId');
+          } else {
+            _router!.go('/');
+          }
+          break;
+
+        case 'comment':
+          final String? sightingId = data['sighting_id'];
+          final String? commentId = data['comment_id'];
+          if (sightingId != null) {
+            print('🔄 Comment notification: navigating to beep $sightingId with comment $commentId');
+            _router!.go('/beep/$sightingId?focusComment=true&commentId=$commentId');
+          } else {
+            _router!.go('/');
+          }
+          break;
+
         case 'system':
           // Navigate to appropriate system page
           _router!.go('/profile');
