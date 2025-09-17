@@ -7,6 +7,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'dart:io';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'config/environment.dart';
 import 'config/locale_config.dart';
@@ -196,6 +197,11 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
         _handleInitialMessage(widget.initialMessage!);
       });
     }
+
+    // Check for pending notification payloads from background handler
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkPendingNotificationPayload();
+    });
     
     // Set up share intent callback once in initState  
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -406,6 +412,29 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
     }
   }
 
+  Future<void> _checkPendingNotificationPayload() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final payload = prefs.getString('pending_notification_payload');
+
+      if (payload != null && payload.isNotEmpty) {
+        debugPrint('🔔 Found pending notification payload: $payload');
+
+        // Clear the stored payload
+        await prefs.remove('pending_notification_payload');
+
+        // Handle the deep link
+        final uri = Uri.parse(payload);
+        if (uri.scheme == 'ufobeep') {
+          debugPrint('🔔 Processing notification deep link: $payload');
+          await deepLinkService.testNavigation(payload);
+        }
+      }
+    } catch (e) {
+      debugPrint('❌ Error checking pending notification payload: $e');
+    }
+  }
+
   void _processQueuedShareData() {
     if (_queuedShareData == null) return;
     
@@ -492,7 +521,18 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
     );
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) async {
+        debugPrint('🔔 BACKGROUND: Notification tapped with payload: ${response.payload}');
+        if (response.payload != null && response.payload!.isNotEmpty) {
+          // Store the payload for when the app launches/resumes
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('pending_notification_payload', response.payload!);
+          debugPrint('🔔 BACKGROUND: Stored payload for app launch: ${response.payload}');
+        }
+      },
+    );
 
     // Create notification based on type
     if (notificationType == 'sighting_alert') {
@@ -521,11 +561,17 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         importance: Importance.max,
         priority: Priority.max,
         playSound: true,
+        sound: RawResourceAndroidNotificationSound('notification'),
         enableVibration: true,
+        vibrationPattern: Int64List.fromList([0, 1000, 500, 1000]),
         visibility: NotificationVisibility.public,
         ticker: 'UFO Alert - New Sighting Nearby', // TODO: Use proper l10n after translation generation
         enableLights: true,
+        ledOnMs: 1000,
+        ledOffMs: 500,
+        ledColor: Color.fromARGB(255, 255, 0, 0),
         showWhen: true,
+        fullScreenIntent: true,
       );
 
       const NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
@@ -535,7 +581,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         title,
         body,
         notificationDetails,
-        payload: sightingId, // Add payload for navigation
+        payload: 'ufobeep://beep/$sightingId', // Deep link payload for navigation
       );
 
       debugPrint('🔔 BACKGROUND: Showed sighting notification - $title: $body');
@@ -566,7 +612,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         title,
         body,
         notificationDetails,
-        payload: sightingId, // Add payload for navigation
+        payload: sightingId != null ? 'ufobeep://beep/$sightingId' : null, // Deep link payload for navigation
       );
 
       debugPrint('🔔 BACKGROUND: Showed comment notification - $title: $body');

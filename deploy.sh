@@ -46,10 +46,10 @@ else
             apk|mobile) DEPLOY_APK=true ;;
             all) DEPLOY_ALL=true ;;
             moto) DEPLOY_APK=true; TARGET_DEVICES=$(adb devices | grep -E "192\.168\." | head -1 | cut -f1) ;;
-            tablet) DEPLOY_APK=true; TARGET_DEVICES="356120372031894" ;;
-            pixel) DEPLOY_APK=true; TARGET_DEVICES="HT75D0202593" ;;
-            samsung) DEPLOY_APK=true; TARGET_DEVICES="Y5SSW8MZDIU45995" ;;
-            claude) DEPLOY_APK=true; TARGET_DEVICES="Y5SSW8MZDIU45995" ;;
+            tablet) DEPLOY_APK=true; TARGET_DEVICES="R9WN925WV9J" ;;
+            pixel) DEPLOY_APK=true; TARGET_DEVICES="54281JEBF23381" ;;
+            samsung) DEPLOY_APK=true; TARGET_DEVICES="R9WN925WV9J" ;;
+            claude) DEPLOY_APK=true; TARGET_DEVICES="adb-ZY22K6LB7J-2fmNSm._adb-tls-connect._tcp" ;;
             --auto-commit=*) 
                 AUTO_COMMIT=true
                 COMMIT_MSG="${arg#*=}"
