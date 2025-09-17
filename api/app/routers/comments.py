@@ -154,26 +154,27 @@ async def create_comment(
             print(f"DEBUG: Exception in fallback notify_users: {e}")
             logger.error(f"Failed to send comment notifications (fallback): {e}")
 
-    # Trigger WebSocket broadcast for real-time web updates
-    try:
-        print(f"DEBUG: Triggering WebSocket broadcast for sighting {sighting_id}")
-        from app.services.websocket_manager import websocket_manager
-        await websocket_manager.broadcast_to_beep(sighting_id, {
-            "type": "comment_added",
-            "beep_id": sighting_id,
-            "comment": {
-                "id": row["id"],
-                "user_id": user_id,
-                "username": user_row['username'] if user_row else "Unknown",
-                "body": body.body,
-                "media_url": body.media_url,
-                "created_at": now.isoformat()
-            }
-        })
-        logger.info(f"✅ WebSocket broadcast successful for sighting {sighting_id}")
-    except Exception as e:
-        print(f"DEBUG: WebSocket broadcast exception: {e}")
-        logger.warning(f"❌ Failed to trigger WebSocket broadcast for sighting {sighting_id}: {e}")
+    # WebSocket broadcasts are for web browsers only - mobile gets push notifications above
+    # Commented out to prevent double notifications to mobile devices
+    # try:
+    #     print(f"DEBUG: Triggering WebSocket broadcast for sighting {sighting_id}")
+    #     from app.services.websocket_manager import websocket_manager
+    #     await websocket_manager.broadcast_to_beep(sighting_id, {
+    #         "type": "comment_added",
+    #         "beep_id": sighting_id,
+    #         "comment": {
+    #             "id": row["id"],
+    #             "user_id": user_id,
+    #             "username": user_row['username'] if user_row else "Unknown",
+    #             "body": body.body,
+    #             "media_url": body.media_url,
+    #             "created_at": now.isoformat()
+    #         }
+    #     })
+    #     logger.info(f"✅ WebSocket broadcast successful for sighting {sighting_id}")
+    # except Exception as e:
+    #     print(f"DEBUG: WebSocket broadcast exception: {e}")
+    #     logger.warning(f"❌ Failed to trigger WebSocket broadcast for sighting {sighting_id}: {e}")
 
     return {"id": row["id"]}
 
