@@ -146,10 +146,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         userId = await userService.getCurrentUserId();
         debugPrint('DEBUG: Loaded user ID: "$userId"');
       } catch (e) {
-        // Fallback to device ID for users not yet migrated to username system
-        final deviceId = await beepService.getOrCreateDeviceId();
-        debugPrint('DEBUG: Fallback to device ID: "$deviceId"');
-        userId = deviceId;
+        debugPrint('DEBUG: Could not get user ID: $e');
+        userId = null; // Don't fallback to device ID - use null for proper filtering
       }
       
       if (mounted && userId != null) {
