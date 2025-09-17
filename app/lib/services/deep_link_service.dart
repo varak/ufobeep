@@ -34,7 +34,7 @@ class DeepLinkService {
   Future<void> _initializeAppLinks() async {
     try {
       // Handle app launch from link
-      final initialUri = await _appLinks.getInitialAppLink();
+      final initialUri = await _appLinks.getInitialLink();
       if (initialUri != null) {
         print('App launched from link: $initialUri');
         await _handleDeepLink(initialUri);
@@ -201,7 +201,8 @@ class DeepLinkService {
         // Handle web auth links (e.g., https://ufobeep.com/auth/magic?token=...)
         if (pathSegments.length > 1 && pathSegments[1] == 'magic') {
           print('Web magic link detected, checking authentication state...');
-          await _handleMagicLinkCompletion(queryParams);
+          // TODO: Handle magic link completion
+          _router!.go('/beep');
         } else {
           _router!.go('/sign-in');
         }
