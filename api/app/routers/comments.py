@@ -104,12 +104,14 @@ async def create_comment(
             sighting_id
         )
     
-    # Send notifications using device-exclusion system 
-    print(f"DEBUG: user_row={user_row}, follower_rows={follower_rows}")
+    # Send notifications using device-exclusion system (prefer device exclusion when available)
+    notification_sent = False
+    print(f"DEBUG: user_row={user_row}, follower_rows={follower_rows}, device_id={body.device_id}")
+
     if user_row and follower_rows and body.device_id:
         try:
             follower_user_ids = [row["user_id"] for row in follower_rows]
-            print(f"DEBUG: Calling notify_users_excluding_device with {len(follower_user_ids)} followers, excluding device {body.device_id}")
+            print(f"DEBUG: Using device exclusion: {len(follower_user_ids)} followers, excluding device {body.device_id}")
             sent = await notify_users_excluding_device(
                 pool,
                 follower_user_ids,
@@ -122,12 +124,14 @@ async def create_comment(
                     "sighting_id": sighting_id,
                 },
             )
-            print(f"DEBUG: notify_users_excluding_device returned {sent}")
+            notification_sent = True
+            print(f"DEBUG: Device exclusion sent {sent} notifications")
             logger.info(f"Comment notification sent: {sent} notifications for sighting {sighting_id} (excluded device {body.device_id})")
         except Exception as e:
-            print(f"DEBUG: Exception in notify_users_excluding_device: {e}")
-            logger.error(f"Failed to send comment notifications: {e}")
-    elif user_row and follower_rows and not body.device_id:
+            print(f"DEBUG: Device exclusion failed: {e}")
+            logger.error(f"Failed to send comment notifications with device exclusion: {e}")
+
+    if not notification_sent and user_row and follower_rows:
         # Fallback to user-exclusion if no device_id provided (for backward compatibility)
         try:
             follower_user_ids = [row["user_id"] for row in follower_rows if row["user_id"] != user_id]
