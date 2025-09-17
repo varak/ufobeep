@@ -404,9 +404,9 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
     debugPrint('DEBUG: _isOriginalCreator check');
     debugPrint('DEBUG: currentUserDeviceId: "${widget.currentUserDeviceId}"');
     debugPrint('DEBUG: alert.reporterId: "${widget.alert.reporterId}"');
-    
-    if (widget.currentUserDeviceId == null || 
-        widget.alert.reporterId == null || 
+
+    if (widget.currentUserDeviceId == null ||
+        widget.alert.reporterId == null ||
         widget.alert.reporterId!.isEmpty) {
       debugPrint('DEBUG: One of the IDs is null/empty, returning false');
       return false;

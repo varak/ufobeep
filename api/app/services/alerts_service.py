@@ -401,20 +401,15 @@ class AlertsService:
                           external_id: str = None) -> str:
         """Create new alert/sighting"""
         async with self.db_pool.acquire() as conn:
-            # Get existing user by username or device_id
+            # Get existing user by username or use device_id directly
             reporter_id = None
             if username:
                 reporter_id = await self.get_user_id_by_username(conn, username)
                 print(f"create_alert: username={username} reporter_id={reporter_id}")
             elif device_id:
-                # Fallback: look up user by device_id for mobile app beep creation
-                user_row = await conn.fetchrow(
-                    "SELECT id FROM users WHERE username = $1",
-                    f"legacy.{device_id.replace('-', '.')}"
-                )
-                if user_row:
-                    reporter_id = str(user_row['id'])
-                    print(f"create_alert: device_id={device_id} reporter_id={reporter_id}")
+                # For mobile app: use device_id directly as reporter_id
+                reporter_id = device_id
+                print(f"create_alert: using device_id as reporter_id={reporter_id}")
 
             # For MUFON imports, create the user if it doesn't exist
             if not reporter_id and source == "mufon" and username:
