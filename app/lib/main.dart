@@ -592,7 +592,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       final body = message.notification?.body ?? 'Someone commented on an alert';
       final sightingId = message.data['sighting_id'];
 
-      const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+      final AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
         'ufobeep_comments',
         'Comment Notifications',
         channelDescription: 'Notifications when someone comments',
