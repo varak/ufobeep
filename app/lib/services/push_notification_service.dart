@@ -243,9 +243,7 @@ class PushNotificationService {
       print('🔔 FOREGROUND FCM: Received message ${message.messageId}');
       print('🔔 FOREGROUND FCM: App is in foreground - must manually show notification');
       
-      // For foreground notifications, show via bootstrap service first
-      _showForegroundNotification(message);
-      
+      // For foreground notifications, only handle the message logic (no double display)
       _handleMessage(message, isBackground: false);
     });
 
