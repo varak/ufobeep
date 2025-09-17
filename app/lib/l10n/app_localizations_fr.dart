@@ -1314,4 +1314,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get alert => 'Alerte';
+
+  @override
+  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+
+  @override
+  String get notificationTickerComment => 'New Comment on UFO Alert';
 }

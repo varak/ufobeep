@@ -2561,6 +2561,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Alert'**
   String get alert;
+
+  /// No description provided for @notificationTickerUfoAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'UFO Alert - New Sighting Nearby'**
+  String get notificationTickerUfoAlert;
+
+  /// No description provided for @notificationTickerComment.
+  ///
+  /// In en, this message translates to:
+  /// **'New Comment on UFO Alert'**
+  String get notificationTickerComment;
 }
 
 class _AppLocalizationsDelegate

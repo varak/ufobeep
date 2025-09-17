@@ -1288,4 +1288,10 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get alert => 'התראה';
+
+  @override
+  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+
+  @override
+  String get notificationTickerComment => 'New Comment on UFO Alert';
 }

@@ -1276,4 +1276,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get alert => '警报';
+
+  @override
+  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+
+  @override
+  String get notificationTickerComment => 'New Comment on UFO Alert';
 }

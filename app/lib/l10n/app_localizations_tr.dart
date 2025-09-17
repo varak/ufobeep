@@ -1303,4 +1303,10 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get alert => 'Uyarı';
+
+  @override
+  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+
+  @override
+  String get notificationTickerComment => 'New Comment on UFO Alert';
 }
