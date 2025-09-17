@@ -1,70 +1,54 @@
 # UFOBeep Development Roadmap - Complete Platform Enhancement
 
 **Created**: September 1, 2025  
-**Updated**: September 8, 2025  
-**Status**: Quality-First Development (Play Store when ready)  
-**Goal**: Build world-class UFO research platform with 175,000+ searchable reports
+**Updated**: September 17, 2025
+**Status**: Core App Completion Focus (NUFORC Integration On Hold)
+**Goal**: Ship 100% functional UFOBeep app with core features working perfectly
 
-## 🗺️ **DEVELOPMENT ROADMAP**
+## 🗺️ **REVISED DEVELOPMENT ROADMAP**
 
-### **Phase 1: Foundation & Database Enhancement** (Weeks 1-2)
-*Reference: [NUFORC_INTEGRATION_PLAN.md](NUFORC_INTEGRATION_PLAN.md) Phase 1*
-- [ ] Enable PostGIS extension on production database
-- [ ] Extend `beeps` table with new columns (source, external_id, tier, shape, duration, etc.)
-- [ ] Create spatial indexes and populate location geometry from existing lat/lng
-- [ ] Test backward compatibility with existing UFOBeep functionality
-- [ ] **Outcome**: Database foundation ready for 175,000+ reports
+### **🎯 IMMEDIATE FOCUS: Core App 100% Completion**
 
-### **Phase 2: Critical Bug Fixes & User Features** (Weeks 3-4)  
-*Parallel with current Sprint C tasks*
-- [ ] Fix multi-media upload bug (gallery multi-select issue)
-- [ ] Fix share-to-beep feature and test external app integration
-- [ ] Implement DND/quiet hours, units, language settings
-- [ ] Add readable short URL generation (no confusing characters)
-- [ ] Complete share cards with OG tags
-- [ ] **Outcome**: Core user experience polished and reliable
+**Real-Time System**: ✅ **COMPLETED** (Sept 17, 2025)
+- [x] Mobile push notifications working (single, no duplicates)
+- [x] Mobile auto-scroll fixed for all comments
+- [x] Web WebSocket real-time updates working
+- [x] Comment deep-linking and navigation working
+- [x] Cross-platform comment synchronization working
 
-### **Phase 3: Data Import & Integration** (Weeks 5-6)
-*Reference: [NUFORC_INTEGRATION_PLAN.md](NUFORC_INTEGRATION_PLAN.md) Phase 2*
-- [ ] Create `nuforc.sh` script for systematic NUFORC data collection
-- [ ] Import 170,000+ historical NUFORC reports with quality tiers
-- [ ] Enhance existing `mufon.sh` to populate new database fields
-- [ ] Set up nightly automation for both import scripts
-- [ ] **Outcome**: Comprehensive UFO database with all major sources
+### **Phase 1: Critical Bug Fixes** (Week 1)
+- [ ] **PRIORITY 1**: Fix multi-media upload bug (gallery multi-select issue)
+- [ ] **PRIORITY 2**: Fix share-to-beep feature and test external app integration
+- [ ] **PRIORITY 3**: Complete DND/quiet hours implementation
+- [ ] **PRIORITY 4**: Fix units setting (metric/imperial) functionality
+- [ ] **PRIORITY 5**: Implement language setting with proper i18n
+- [ ] **Outcome**: Zero critical bugs, all core features working
 
-### **Phase 4: Advanced Search & API** (Weeks 7-8)
-*Reference: [NUFORC_INTEGRATION_PLAN.md](NUFORC_INTEGRATION_PLAN.md) Phase 3 + [ENDPOINTS.md](ENDPOINTS.md)*
-- [ ] Implement geographic radius search ("UFOs near Phoenix")
-- [ ] Add smart ID routing for MUFON/NUFORC/UFOBeep alerts
-- [ ] Create `/cities`, `/shapes`, `/recent` endpoints
-- [ ] Build PostGIS spatial query functions
-- [ ] **Outcome**: Powerful search across 175,000+ reports
+### **Phase 2: User Experience Polish** (Week 2)
+- [ ] UI consistency audit and theming fixes
+- [ ] Map clustering and performance improvements
+- [ ] Share cards with Open Graph tags
+- [ ] Readable short URL generation (clear characters only)
+- [ ] Field diagnostic screen for troubleshooting
+- [ ] **Outcome**: Professional, polished user experience
 
-### **Phase 5: Advanced Mapping & Translation** (Weeks 9-10)
-*Reference: [NUFORC_INTEGRATION_PLAN.md](NUFORC_INTEGRATION_PLAN.md) Phase 4*
-- [ ] Replace basic mapping with Mapbox GL JS
-- [ ] Implement vector tiles for efficient rendering of 175K+ points
-- [ ] Add marker clustering, color coding, and interactive features
-- [ ] Create mobile-optimized responsive map interface
-- [ ] Install and configure LibreTranslate on production server
-- [ ] Build real-time translation API (no caching needed - on-the-fly)
-- [ ] Add "Translate" buttons to mobile alert modals with instant translation
-- [ ] Integrate translation functionality into Next.js web pages
-- [ ] Add language detection and auto-translation for web visitors
-- [ ] **NEW**: Implement Google Analytics 4 tracking across web platform
-- [ ] **NEW**: Track user engagement, language preferences, and geographic distribution
-- [ ] **Outcome**: Map visualization rivaling NUFORC.org + real-time translation to all 21 supported languages
+### **Phase 3: Operations & Reliability** (Week 3)
+- [ ] Sentry integration for error tracking
+- [ ] CI/CD pipeline setup
+- [ ] Performance monitoring and optimization
+- [ ] Language-specific share platforms
+- [ ] Play Store preparation and metadata
+- [ ] **Outcome**: Production-ready, monitored system
 
-### **Phase 6: Polish & Launch Preparation** (Weeks 11-12)
-*Final integration and testing*
-- [ ] Comprehensive testing across all data sources
-- [ ] Performance optimization for large datasets
-- [ ] SEO and discoverability improvements
-- [ ] Documentation for third-party API users
-- [ ] Play Store preparation when platform is complete
-- [ ] **NEW**: Explore desktop app via Electron (wrap web app with native notifications)
-- [ ] **NEW**: Evaluate desktop app feasibility and user demand
-- [ ] **Outcome**: World-class UFO research platform ready for public
+### **🔄 NUFORC INTEGRATION: ON HOLD**
+*All NUFORC-related tasks moved to future roadmap*
+- Database expansion with PostGIS
+- Import of 175,000+ historical reports
+- Advanced geographic search
+- Vector mapping for large datasets
+- Advanced translation features
+
+**Rationale**: Ship core UFOBeep app first, add NUFORC data as major update later
 
 ---
 
@@ -267,94 +251,108 @@
 - **Screenshots**: For each supported language
 - **Test**: On multiple devices and Android versions
 
-## 📊 **Priority Order**
+## 📊 **REVISED PRIORITY ORDER** (NUFORC On Hold)
 
-**Week 1 - Critical Fixes**:
-1. Fix multi-media upload bug (CRITICAL)
-2. Fix share to beep feature (CRITICAL)
+### **🚨 WEEK 1 - CRITICAL FIXES (MUST COMPLETE)**
+1. **Fix multi-media upload bug** (BLOCKING: Gallery multi-select crashes)
+2. **Fix share-to-beep feature** (BLOCKING: External app integration broken)
+3. **Complete DND/quiet hours** (ESSENTIAL: User notification control)
+4. **Fix units setting** (ESSENTIAL: Metric/Imperial toggle not working)
+5. **Language setting with i18n** (ESSENTIAL: Multi-language support broken)
 
-**Week 2 - User Settings**:
-3. DND/quiet hours implementation
-4. Units setting functionality
-5. Language setting with i18n
-6. Readable short URL generation (improves share links)
+### **🟡 WEEK 2 - USER EXPERIENCE (HIGH PRIORITY)**
+6. **UI consistency audit** (POLISH: Professional appearance)
+7. **Map clustering** (PERFORMANCE: Handle many alerts)
+8. **Readable short URLs** (UX: Clear sharing links)
+9. **Share cards with OG tags** (VIRAL: Beautiful link previews)
+10. **Field diagnostic screen** (SUPPORT: Troubleshooting tool)
 
-**Week 3 - Polish & Sharing**:
-7. UI consistency audit
-8. Language-specific share platforms
-9. Share cards with OG tags
+### **🟢 WEEK 3 - OPERATIONS & LAUNCH (NICE TO HAVE)**
+11. **Sentry integration** (MONITORING: Error tracking)
+12. **CI/CD pipeline** (AUTOMATION: Build process)
+13. **Language-specific share platforms** (GROWTH: Regional targeting)
+14. **Play Store preparation** (LAUNCH: Store listing and metadata)
+15. **Performance optimization** (SCALE: Handle production load)
 
-**Week 4 - Operations**:
-10. Map improvements & clustering
-11. Field diagnostic screen
-12. Sentry integration
+### **🔵 FUTURE PHASES (POST-LAUNCH)**
+- NUFORC database integration (175,000+ historical reports)
+- Advanced geographic search and PostGIS
+- LibreTranslate integration
+- Desktop app exploration
+- Vector mapping for large datasets
 
-**Week 5 - Release Prep**:
-13. CI/CD pipeline
-14. Play Store preparation
-15. Multi-language store listings
+## 🎯 **CORE APP SUCCESS METRICS**
 
-## 🎯 **Final Success Metrics**
+### **Must-Have for Launch**
+- [ ] **Zero Critical Bugs**: Multi-media upload and share-to-beep working perfectly
+- [ ] **All Settings Functional**: DND/quiet hours, units, language selection working
+- [ ] **Real-Time System**: ✅ Mobile + web comment updates working (COMPLETED)
+- [ ] **Professional UI**: Consistent theming and polished user experience
+- [ ] **Performance**: Smooth map with clustering, fast comment loading
+- [ ] **Reliability**: 48-hour zero-crash testing period
+- [ ] **Share Features**: OG cards, readable URLs, platform-specific sharing
 
-- [ ] **Database**: 175,000+ reports searchable across UFOBeep/MUFON/NUFORC sources
-- [ ] **Performance**: <2s response for geographic radius searches, map handles 175K+ points
-- [ ] **Search**: "UFOs near Las Vegas" returns relevant results within 50km radius
-- [ ] **Quality**: Zero crash rate for 48 hours, all settings functional
-- [ ] **Mobile**: Share feature works perfectly, multi-media upload reliable
-- [ ] **API**: Geographic search, smart ID routing, comprehensive filtering working
-- [ ] **Launch Ready**: Store listing, documentation, and platform complete
+### **Nice-to-Have for Launch**
+- [ ] **Monitoring**: Sentry error tracking operational
+- [ ] **Automation**: CI/CD pipeline for easy deployments
+- [ ] **Documentation**: Complete API docs and deployment guides
+- [ ] **Store Ready**: Play Store listing, screenshots, metadata complete
+
+### **Future Major Updates (Post-Launch)**
+- **NUFORC Integration**: 175,000+ historical reports
+- **Advanced Search**: Geographic radius queries with PostGIS
+- **Translation System**: LibreTranslate integration
+- **Desktop App**: Electron wrapper exploration
 
 ---
 
 ## 📋 **CURRENT STATUS & NEXT STEPS**
 
-### **🏁 Current Phase: Foundation & Database Enhancement (Phase 1)**
-**Started**: September 8, 2025  
-**Target Completion**: End of Week 2
+### **🎉 MAJOR BREAKTHROUGH: Real-Time System Complete**
+**Completed**: September 17, 2025
+**Achievement**: Both mobile and web real-time comment systems fully functional
 
-### **✅ Completed**
-- [x] Created comprehensive development roadmap
-- [x] Enhanced API documentation with NUFORC integration
-- [x] Added readable short URL generation to task list
-- [x] Established quality-first development approach
-- [x] **CRITICAL**: Fixed database connection pool leak causing API failures after 5-10 requests
-- [x] Updated documentation with prevention guidelines ([DATABASE_POOL_GUIDELINES.md](DATABASE_POOL_GUIDELINES.md))
-- [x] **Following Alerts Fix**: Fixed mobile app navigation and location display for UFOBeep/MUFON data
-- [x] **Comment Deletion**: Added comment deletion endpoints and mobile app functionality
-- [x] **Privacy Policy**: Comprehensive privacy policy with GDPR compliance and Matrix integration
-- [x] **Documentation Updates**: Added comment deletion and user subscription endpoints to ENDPOINTS.md
-- [x] **Web Update Mechanism**: Created documentation explaining how web users receive updates
+### **✅ Recently Completed**
+- [x] **CRITICAL BREAKTHROUGH**: Fixed real-time comment system across all platforms
+  - Mobile: Single push notifications, auto-scroll, deep-linking working
+  - Web: WebSocket real-time updates, auto-scroll, cross-tab sync working
+  - Infrastructure: nginx WebSocket proxy properly configured
+- [x] **Database Pool**: Fixed connection pool leak causing API failures
+- [x] **Comment System**: Deletion, following, and real-time updates working
+- [x] **Documentation**: Complete real-time system architecture documented
+- [x] **Web Update Mechanism**: Full WebSocket implementation documented
 
-### **🔄 In Progress**
-- [ ] **NEXT**: Enable PostGIS extension on production database
-- [ ] **NEXT**: Extend `beeps` table with new columns for NUFORC/MUFON data
+### **🔄 Current Focus: Core App 100% Completion**
+**Priority**: Critical bug fixes and essential features only
+**Timeline**: 3 weeks to 100% functional app
+**NUFORC Integration**: Moved to post-launch phase
 
-### **📍 Pick Up Here After Restart**
-1. **Database Foundation**: Begin Phase 1 tasks - PostGIS setup and schema extension
-2. **Reference Documents**: [NUFORC_INTEGRATION_PLAN.md](NUFORC_INTEGRATION_PLAN.md) Phase 1
-3. **Test Approach**: All changes must maintain backward compatibility
-4. **Success Check**: Existing UFOBeep alert creation still works after database changes
+### **📍 Immediate Next Steps (Week 1)**
+1. **Fix multi-media upload bug** - Gallery multi-select crashes on initial beep creation
+2. **Fix share-to-beep feature** - External app integration broken/untested
+3. **Complete DND/quiet hours** - User notification control essential
+4. **Fix units setting** - Metric/Imperial toggle not applying everywhere
+5. **Language setting with i18n** - Multi-language support broken
 
 ### **📊 Current Development Status**
-*Updated: September 15, 2025*
+*Updated: September 17, 2025*
 
-**Recent Achievements:**
-- ✅ Following Alerts completely functional with proper navigation and location display
-- ✅ Comment deletion working across web and mobile platforms
-- ✅ Privacy policy comprehensive and GDPR-compliant
-- ✅ Documentation updated with all recent API endpoints
-- ✅ Web update mechanism documented for user understanding
+**Major Systems Working:**
+- ✅ **Real-Time Comments**: Both mobile and web platforms
+- ✅ **Push Notifications**: Single, reliable delivery
+- ✅ **WebSocket System**: Live updates across browser tabs
+- ✅ **Auto-Scroll**: Consistent behavior on all platforms
+- ✅ **Navigation**: Deep-linking and comment focus working
 
-**Next Priorities:**
-1. **Fix multi-media upload bug** (Phase 2 - critical)
-2. **Share-to-beep feature** (Phase 2 - critical)
-3. **DND/quiet hours** (Phase 2 - user experience)
-4. **NUFORC data import** (Phase 3 - major data expansion)
-5. **LibreTranslate + Google Analytics** (Phase 5 - internationalization & insights)
+**Critical Issues Remaining:**
+- ❌ **Multi-media Upload**: Gallery multi-select causes crashes
+- ❌ **Share-to-Beep**: External app integration broken
+- ❌ **Settings**: DND, units, language toggles not functional
 
-**New Documentation:**
-- [WEB_UPDATE_MECHANISM.md](WEB_UPDATE_MECHANISM.md) - How web users receive updates
-- Updated [ENDPOINTS.md](ENDPOINTS.md) - Complete API documentation including comment deletion
+**Ready for Launch When:**
+- All critical bugs fixed
+- All settings functional
+- 48-hour zero-crash testing complete
 
 ## 📚 **Reference Documentation**
 - **Main Roadmap**: This document (SPRINT_TASK_LIST.md)
