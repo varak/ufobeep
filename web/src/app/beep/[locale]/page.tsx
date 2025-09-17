@@ -140,39 +140,177 @@ export default function BeepLocalePage({ params }: BeepPageProps) {
             </div>
           )}
           
-          {/* Pagination Controls */}
+          {/* Advanced Pagination Controls */}
           {!loading && alerts.length > 0 && totalPages > 1 && (
-            <div className="flex justify-center items-center gap-4 mt-8 py-6">
-              <button
-                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                disabled={currentPage === 1}
-                className={`px-4 py-2 rounded-lg font-medium ${
-                  currentPage === 1 
-                    ? 'bg-gray-600 text-gray-400 cursor-not-allowed' 
-                    : 'bg-primary-600 hover:bg-primary-700 text-white'
-                }`}
-              >
-                ← {t('previousPage', 'Previous')}
-              </button>
-              
-              <span className="text-text-secondary">
+            <div className="mt-8 py-6">
+              {/* Page info */}
+              <div className="text-center text-text-secondary mb-4">
                 {t('pageOf', 'Page {currentPage} of {totalPages} ({totalCount} total beeps)')
                   .replace('{currentPage}', currentPage.toString())
                   .replace('{totalPages}', totalPages.toString())
                   .replace('{totalCount}', totalCount.toString())}
-              </span>
-              
-              <button
-                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                disabled={currentPage === totalPages}
-                className={`px-4 py-2 rounded-lg font-medium ${
-                  currentPage === totalPages 
-                    ? 'bg-gray-600 text-gray-400 cursor-not-allowed' 
-                    : 'bg-primary-600 hover:bg-primary-700 text-white'
-                }`}
-              >
-                {t('nextPage', 'Next')} →
-              </button>
+              </div>
+
+              {/* Pagination controls */}
+              <div className="flex justify-center items-center gap-2 flex-wrap">
+                {/* First page and previous */}
+                <button
+                  onClick={() => setCurrentPage(1)}
+                  disabled={currentPage === 1}
+                  className={`px-3 py-2 rounded-lg font-medium ${
+                    currentPage === 1
+                      ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                      : 'bg-primary-600 hover:bg-primary-700 text-white'
+                  }`}
+                >
+                  ← {t('firstPage', 'First')}
+                </button>
+
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 5))}
+                  disabled={currentPage <= 5}
+                  className={`px-3 py-2 rounded-lg font-medium ${
+                    currentPage <= 5
+                      ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                      : 'bg-primary-600 hover:bg-primary-700 text-white'
+                  }`}
+                >
+                  -5
+                </button>
+
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className={`px-3 py-2 rounded-lg font-medium ${
+                    currentPage === 1
+                      ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                      : 'bg-primary-600 hover:bg-primary-700 text-white'
+                  }`}
+                >
+                  -1
+                </button>
+
+                {/* Page numbers around current page */}
+                {(() => {
+                  const pages = []
+                  const startPage = Math.max(1, currentPage - 2)
+                  const endPage = Math.min(totalPages, currentPage + 2)
+
+                  // Add first page if not in range
+                  if (startPage > 1) {
+                    pages.push(
+                      <button
+                        key={1}
+                        onClick={() => setCurrentPage(1)}
+                        className="px-3 py-2 rounded-lg font-medium bg-gray-700 hover:bg-gray-600 text-white"
+                      >
+                        1
+                      </button>
+                    )
+                    if (startPage > 2) {
+                      pages.push(
+                        <span key="dots1" className="px-2 text-text-secondary">...</span>
+                      )
+                    }
+                  }
+
+                  // Add pages around current
+                  for (let i = startPage; i <= endPage; i++) {
+                    pages.push(
+                      <button
+                        key={i}
+                        onClick={() => setCurrentPage(i)}
+                        className={`px-3 py-2 rounded-lg font-medium ${
+                          i === currentPage
+                            ? 'bg-primary-500 text-white'
+                            : 'bg-gray-700 hover:bg-gray-600 text-white'
+                        }`}
+                      >
+                        {i}
+                      </button>
+                    )
+                  }
+
+                  // Add last page if not in range
+                  if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                      pages.push(
+                        <span key="dots2" className="px-2 text-text-secondary">...</span>
+                      )
+                    }
+                    pages.push(
+                      <button
+                        key={totalPages}
+                        onClick={() => setCurrentPage(totalPages)}
+                        className="px-3 py-2 rounded-lg font-medium bg-gray-700 hover:bg-gray-600 text-white"
+                      >
+                        {totalPages}
+                      </button>
+                    )
+                  }
+
+                  return pages
+                })()}
+
+                {/* Next and last page */}
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                  className={`px-3 py-2 rounded-lg font-medium ${
+                    currentPage === totalPages
+                      ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                      : 'bg-primary-600 hover:bg-primary-700 text-white'
+                  }`}
+                >
+                  +1
+                </button>
+
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 5))}
+                  disabled={currentPage >= totalPages - 4}
+                  className={`px-3 py-2 rounded-lg font-medium ${
+                    currentPage >= totalPages - 4
+                      ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                      : 'bg-primary-600 hover:bg-primary-700 text-white'
+                  }`}
+                >
+                  +5
+                </button>
+
+                <button
+                  onClick={() => setCurrentPage(totalPages)}
+                  disabled={currentPage === totalPages}
+                  className={`px-3 py-2 rounded-lg font-medium ${
+                    currentPage === totalPages
+                      ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                      : 'bg-primary-600 hover:bg-primary-700 text-white'
+                  }`}
+                >
+                  {t('lastPage', 'Last')} →
+                </button>
+              </div>
+
+              {/* Jump to page input */}
+              <div className="flex justify-center items-center gap-2 mt-4">
+                <label className="text-text-secondary">{t('jumpToPage', 'Jump to page')}:</label>
+                <input
+                  type="number"
+                  min="1"
+                  max={totalPages}
+                  placeholder={currentPage.toString()}
+                  className="w-20 px-3 py-1 rounded bg-gray-700 text-white border border-gray-600 focus:border-primary-500 focus:outline-none"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      const page = parseInt((e.target as HTMLInputElement).value)
+                      if (page >= 1 && page <= totalPages) {
+                        setCurrentPage(page)
+                      }
+                      ;(e.target as HTMLInputElement).value = ''
+                    }
+                  }}
+                />
+                <span className="text-text-secondary">of {totalPages}</span>
+              </div>
             </div>
           )}
         </div>
