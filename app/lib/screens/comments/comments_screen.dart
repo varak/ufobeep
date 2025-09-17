@@ -44,7 +44,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
     WidgetsBinding.instance.addObserver(this);
     // Listen for refresh notifications from push notifications
     debugPrint('💬 CommentsScreen: registering listener for sightingId=${widget.sightingId}');
-    CommentsRefreshNotifier.instance.addListener(widget.sightingId, _loadComments);
+    CommentsRefreshNotifier.instance.addListener(widget.sightingId, () => _loadComments(forceAutoScroll: true));
   }
   
   @override
@@ -53,7 +53,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
     _scrollController.dispose();
     // Remove refresh listener
     debugPrint('💬 CommentsScreen: removing listener for sightingId=${widget.sightingId}');
-    CommentsRefreshNotifier.instance.removeListener(widget.sightingId, _loadComments);
+    CommentsRefreshNotifier.instance.removeListener(widget.sightingId, () => _loadComments(forceAutoScroll: true));
     super.dispose();
   }
   
@@ -65,7 +65,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
     }
   }
   
-  Future<void> _loadComments() async {
+  Future<void> _loadComments({bool forceAutoScroll = false}) async {
     try {
       setState(() {
         _isLoading = true;
@@ -93,14 +93,14 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
         _previousCommentCount = comments.length;
       });
 
-      // Auto-scroll to bottom if new comments were added (outside setState to avoid timing issues)
-      if (hadNewComments && comments.isNotEmpty) {
-        debugPrint('💬 Auto-scrolling: ${comments.length} comments (was $oldCount)');
+      // Auto-scroll to bottom if new comments were added OR if forced (for notifications)
+      if ((hadNewComments || forceAutoScroll) && comments.isNotEmpty) {
+        debugPrint('💬 Auto-scrolling: ${comments.length} comments (was $oldCount) forced=$forceAutoScroll');
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _scrollToBottom();
         });
-      } else if (hadNewComments) {
-        debugPrint('💬 No auto-scroll: hadNewComments=$hadNewComments, isEmpty=${comments.isEmpty}');
+      } else {
+        debugPrint('💬 No auto-scroll: hadNew=$hadNewComments, forced=$forceAutoScroll, isEmpty=${comments.isEmpty}');
       }
     } catch (e) {
       setState(() {
