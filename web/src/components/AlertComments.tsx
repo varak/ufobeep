@@ -179,23 +179,25 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
     }
   }, [])
 
-  // Set up SSE for real-time comment updates (surgical deltas; no page-wide refresh)
+  // Set up WebSocket for real-time comment updates (surgical deltas; no page-wide refresh)
   useEffect(() => {
-    let eventSource: EventSource | null = null
+    let websocket: WebSocket | null = null
 
-    const connectSSE = () => {
+    const connectWebSocket = () => {
       try {
-        eventSource = new EventSource(`/api/beep/${alertId}/comments/stream`)
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
+        const host = window.location.host
+        websocket = new WebSocket(`${protocol}//${host}/ws/beep/${alertId}`)
 
-        eventSource.onopen = () => {
-          console.log('[SSE] Connected to comment updates')
+        websocket.onopen = () => {
+          console.log('[WebSocket] Connected to comment updates')
         }
 
-        eventSource.onmessage = (event) => {
+        websocket.onmessage = (event) => {
           try {
             const data = JSON.parse(event.data)
-            if (data.alertId !== alertId) return
-            if (data.type === 'comment_add' && data.comment) {
+            if (data.beep_id !== alertId) return
+            if (data.type === 'comment_added' && data.comment) {
               const normalized = normalizeComment(data.comment)
               if (!normalized) { fetchComments(true); return }
               setComments(prev => {
@@ -227,39 +229,42 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
                   }
                 }
               } catch {}
-            } else if (data.type === 'comment_delete' && data.commentId) {
-              setComments(prev => prev.filter(c => String(c.id) !== String(data.commentId)))
+            } else if (data.type === 'comment_deleted' && data.comment_id) {
+              setComments(prev => prev.filter(c => String(c.id) !== String(data.comment_id)))
             } else if (data.type === 'comment_update') {
               // Generic update fallback used when delta isn't available
               fetchComments(true)
             }
           } catch (error) {
-            console.error('[SSE] Error parsing message:', error)
+            console.error('[WebSocket] Error parsing message:', error)
           }
         }
 
-        eventSource.onerror = (error) => {
-          console.log('[SSE] Connection error, will retry:', error)
-          eventSource?.close()
+        websocket.onerror = (error) => {
+          console.log('[WebSocket] Connection error, will retry:', error)
+        }
+
+        websocket.onclose = () => {
+          console.log('[WebSocket] Connection closed, will retry in 5 seconds')
           // Reconnect after 5 seconds
           setTimeout(() => {
-            if (eventSource?.readyState === EventSource.CLOSED) {
-              connectSSE()
+            if (!websocket || websocket.readyState === WebSocket.CLOSED) {
+              connectWebSocket()
             }
           }, 5000)
         }
 
       } catch (error) {
-        console.error('[SSE] Failed to create EventSource:', error)
+        console.error('[WebSocket] Failed to create WebSocket:', error)
       }
     }
 
-    connectSSE()
+    connectWebSocket()
 
     // Cleanup on unmount
     return () => {
-      if (eventSource) {
-        eventSource.close()
+      if (websocket) {
+        websocket.close()
       }
     }
   }, [alertId, fetchComments])

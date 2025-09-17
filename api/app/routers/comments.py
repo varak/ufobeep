@@ -150,24 +150,26 @@ async def create_comment(
             print(f"DEBUG: Exception in fallback notify_users: {e}")
             logger.error(f"Failed to send comment notifications (fallback): {e}")
 
-    # Trigger SSE broadcast for real-time web updates
-    # NOTE: Using /beep endpoint - /alerts is deprecated
+    # Trigger WebSocket broadcast for real-time web updates
     try:
-        print(f"DEBUG: Triggering SSE broadcast for sighting {sighting_id}")
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                f"http://localhost:3000/api/beep/{sighting_id}/comments",
-                json={"broadcast_only": True},
-                timeout=10.0  # Increased from 2.0s
-            )
-            print(f"DEBUG: SSE broadcast response: status={response.status_code}, body={response.text[:200]}")
-            if response.status_code == 200:
-                logger.info(f"✅ SSE broadcast successful for sighting {sighting_id}")
-            else:
-                logger.warning(f"❌ SSE broadcast failed: status={response.status_code}, body={response.text[:100]}")
+        print(f"DEBUG: Triggering WebSocket broadcast for sighting {sighting_id}")
+        from app.services.websocket_manager import websocket_manager
+        await websocket_manager.broadcast_to_beep(sighting_id, {
+            "type": "comment_added",
+            "beep_id": sighting_id,
+            "comment": {
+                "id": row["id"],
+                "user_id": user_id,
+                "username": user_row['username'] if user_row else "Unknown",
+                "body": body.body,
+                "media_url": body.media_url,
+                "created_at": now.isoformat()
+            }
+        })
+        logger.info(f"✅ WebSocket broadcast successful for sighting {sighting_id}")
     except Exception as e:
-        print(f"DEBUG: SSE broadcast exception: {e}")
-        logger.warning(f"❌ Failed to trigger SSE broadcast for sighting {sighting_id}: {e}")
+        print(f"DEBUG: WebSocket broadcast exception: {e}")
+        logger.warning(f"❌ Failed to trigger WebSocket broadcast for sighting {sighting_id}: {e}")
 
     return {"id": row["id"]}
 
@@ -208,24 +210,19 @@ async def delete_comment(
         if result == "DELETE 0":
             raise HTTPException(status_code=404, detail="Comment not found or already deleted")
 
-    # Trigger SSE broadcast for real-time web updates
-    # NOTE: Using /beep endpoint - /alerts is deprecated
+    # Trigger WebSocket broadcast for real-time web updates
     try:
-        print(f"DEBUG: Triggering SSE broadcast for comment deletion on sighting {sighting_id}")
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                f"http://localhost:3000/api/beep/{sighting_id}/comments",
-                json={"broadcast_only": True},
-                timeout=10.0  # Increased from 2.0s
-            )
-            print(f"DEBUG: SSE deletion broadcast response: status={response.status_code}, body={response.text[:200]}")
-            if response.status_code == 200:
-                logger.info(f"✅ SSE deletion broadcast successful for sighting {sighting_id}")
-            else:
-                logger.warning(f"❌ SSE deletion broadcast failed: status={response.status_code}, body={response.text[:100]}")
+        print(f"DEBUG: Triggering WebSocket broadcast for comment deletion on sighting {sighting_id}")
+        from app.services.websocket_manager import websocket_manager
+        await websocket_manager.broadcast_to_beep(sighting_id, {
+            "type": "comment_deleted",
+            "beep_id": sighting_id,
+            "comment_id": comment_id_int
+        })
+        logger.info(f"✅ WebSocket deletion broadcast successful for sighting {sighting_id}")
     except Exception as e:
-        print(f"DEBUG: SSE deletion broadcast exception: {e}")
-        logger.warning(f"❌ Failed to trigger SSE broadcast for comment deletion on sighting {sighting_id}: {e}")
+        print(f"DEBUG: WebSocket deletion broadcast exception: {e}")
+        logger.warning(f"❌ Failed to trigger WebSocket broadcast for comment deletion on sighting {sighting_id}: {e}")
 
     return {"message": "Comment deleted successfully"}
 

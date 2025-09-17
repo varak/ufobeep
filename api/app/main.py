@@ -461,6 +461,9 @@ app.include_router(auth_magic.router)
 # Include MP16 routers for comments and share cards
 app.include_router(comments.router)
 app.include_router(share_cards.router)
+# Include WebSocket router for real-time updates
+from app.routers import websockets
+app.include_router(websockets.router)
 # Include MP16 media uploads with idempotency
 app.include_router(media_uploads.router)
 # Include feeds router for data ingestion
