@@ -14,7 +14,6 @@ export async function DELETE(
   return proxyToBackendAPI(
     request,
     `/beep/${id}/comments/${commentId}`,
-    'DELETE',
-    { triggerSSEBroadcast: true }
+    'DELETE'
   )
 }
