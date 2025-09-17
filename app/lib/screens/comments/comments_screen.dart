@@ -187,12 +187,17 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> with WidgetsBin
   }
 
   void _scrollToBottom() {
+    debugPrint('🔄 _scrollToBottom called: hasClients=${_scrollController.hasClients}');
     if (_scrollController.hasClients) {
+      final maxExtent = _scrollController.position.maxScrollExtent;
+      debugPrint('🔄 Scrolling to maxExtent: $maxExtent');
       _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
+        maxExtent,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
+    } else {
+      debugPrint('❌ Cannot scroll: no scroll controller clients');
     }
   }
 
