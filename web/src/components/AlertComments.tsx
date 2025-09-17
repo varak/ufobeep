@@ -187,7 +187,7 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
       try {
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
         const host = window.location.host
-        websocket = new WebSocket(`${protocol}//${host}/api/ws/beep/${alertId}`)
+        websocket = new WebSocket(`${protocol}//${host}/ws/beep/${alertId}`)
 
         websocket.onopen = () => {
           console.log('[WebSocket] Connected to comment updates')
