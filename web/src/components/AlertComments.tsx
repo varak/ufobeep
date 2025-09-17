@@ -469,7 +469,8 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          body: comment.trim()
+          body: comment.trim(),
+          device_id: 'web_' + (localStorage.getItem('web_device_id') || Math.random().toString(36).substr(2, 9))
         }),
       })
 
