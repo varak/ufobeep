@@ -252,7 +252,11 @@ class PushNotificationService {
     // Handle messages when app is in background but not terminated
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('App opened from background message: ${message.messageId}');
-      _handleMessage(message, isBackground: true);
+      // Only handle navigation, don't trigger _handleMessage to avoid double processing
+      final notificationType = message.data['type'] ?? 'general';
+      if (notificationType == 'comment') {
+        _handleCommentNotification(message);
+      }
     });
 
     // Handle messages when app is terminated (handled in main.dart background handler)
