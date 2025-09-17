@@ -77,7 +77,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     super.dispose();
   }
 
-  Future<void> _loadComments() async {
+  Future<void> _loadComments({bool fromNotification = false}) async {
     try {
       setState(() {
         _loadingComments = true;
@@ -92,9 +92,15 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
           _loadingComments = false;
         });
 
-        // Scroll to target comment after comments are loaded
+        // Scroll to target comment or bottom after comments are loaded
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          _scrollToCommentIfNeeded();
+          if (fromNotification && _comments.isNotEmpty) {
+            // Auto-scroll to bottom for notification-triggered refreshes
+            debugPrint('💬 AlertDetailScreen: auto-scrolling to bottom (from notification)');
+            _scrollToBottom();
+          } else {
+            _scrollToCommentIfNeeded();
+          }
           _focusCommentIfNeeded();
         });
       }
@@ -110,7 +116,22 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
   void _refreshComments() {
     debugPrint('💬 AlertDetailScreen: refreshing comments for ${widget.alertId}');
-    _loadComments();
+    _loadComments(fromNotification: true);
+  }
+
+  void _scrollToBottom() {
+    debugPrint('🔄 AlertDetailScreen: _scrollToBottom called: hasClients=${_scrollController.hasClients}');
+    if (_scrollController.hasClients) {
+      final maxExtent = _scrollController.position.maxScrollExtent;
+      debugPrint('🔄 AlertDetailScreen: Scrolling to maxExtent: $maxExtent');
+      _scrollController.animateTo(
+        maxExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    } else {
+      debugPrint('❌ AlertDetailScreen: Cannot scroll: no scroll controller clients');
+    }
   }
 
   Future<void> _loadUserData() async {
