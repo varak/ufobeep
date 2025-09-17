@@ -522,7 +522,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       const NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
 
       await flutterLocalNotificationsPlugin.show(
-        sightingId.hashCode(),
+        sightingId.hashCode,
         title,
         body,
         notificationDetails,
@@ -548,7 +548,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       const NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
 
       await flutterLocalNotificationsPlugin.show(
-        (sightingId?.hashCode() ?? 0) + 1000, // Different ID from alert notifications
+        (sightingId?.hashCode ?? 0) + 1000, // Different ID from alert notifications
         title,
         body,
         notificationDetails,
