@@ -216,8 +216,8 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
                 latestCommentIdRef.current = normalized.id
 
                 // Always auto-scroll for own comments, or when actively participating
-                // More aggressive auto-scroll: if user has been scrolling recently or has no pending comments
-                const shouldAutoScroll = isOwnComment || isNearBottom() || newCommentsCount <= 3
+                // More aggressive auto-scroll: always scroll for incoming comments when actively participating
+                const shouldAutoScroll = isOwnComment || isNearBottom() || newCommentsCount === 0
 
                 if (shouldAutoScroll) {
                   const reason = isOwnComment ? 'own comment' :
