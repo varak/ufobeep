@@ -243,8 +243,16 @@ class PushNotificationService {
       print('🔔 FOREGROUND FCM: Received message ${message.messageId}');
       print('🔔 FOREGROUND FCM: App is in foreground - must manually show notification');
       
-      // For foreground notifications, only handle the message logic (no double display)
-      _handleMessage(message, isBackground: false);
+      // For foreground notifications, show via bootstrap service first
+      _showForegroundNotification(message);
+
+      // Don't trigger duplicate notifications for foreground messages
+      final notificationType = message.data['type'] ?? 'general';
+      if (notificationType == 'comment') {
+        _handleCommentNotification(message, showNotification: false);
+      } else {
+        _handleMessage(message, isBackground: false);
+      }
     });
 
     // Handle messages when app is in background but not terminated
@@ -253,7 +261,7 @@ class PushNotificationService {
       // Only handle navigation, don't trigger _handleMessage to avoid double processing
       final notificationType = message.data['type'] ?? 'general';
       if (notificationType == 'comment') {
-        _handleCommentNotification(message);
+        _handleCommentNotification(message, showNotification: true);
       }
     });
 
@@ -433,7 +441,7 @@ class PushNotificationService {
     }
   }
 
-  void _handleCommentNotification(RemoteMessage message) async {
+  void _handleCommentNotification(RemoteMessage message, {bool showNotification = true}) async {
     print('🔔 Handling comment notification');
     print('🔔 Full message data: ${message.data}');
 
@@ -452,8 +460,10 @@ class PushNotificationService {
     if (sightingId != null) {
       print('🔔 Comment on sighting: $sightingId (comment ID: $commentId)');
 
-      // Show visual notification
-      await _showCommentNotification(message);
+      // Show visual notification only when requested (not for foreground)
+      if (showNotification) {
+        await _showCommentNotification(message);
+      }
 
       // Play notification sound for comment
       await SoundService.I.play(AlertSound.pushPing);
