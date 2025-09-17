@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'dart:io';
 import 'dart:convert';
@@ -475,10 +476,90 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     return;
   }
 
-  // Initialize sound service for background processing
+  // Initialize local notifications for background processing
   try {
+    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+    // Initialize notification plugin
+    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const DarwinInitializationSettings initializationSettingsIOS = DarwinInitializationSettings();
+    const InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+    // Create notification based on type
+    if (notificationType == 'sighting_alert') {
+      final sightingId = message.data['sighting_id'];
+      final distance = message.data['distance'];
+      final locationName = message.data['location_name'] ?? 'Unknown Location';
+
+      // Format distance display
+      final distanceText = distance != null ?
+        (double.tryParse(distance)! < 1.0 ?
+          ' • ${(double.tryParse(distance)! * 1000).toInt()}m away' :
+          ' • ${double.tryParse(distance)!.toStringAsFixed(1)}km away') : '';
+
+      // Create urgency indicators
+      final urgencyIcon = witnessCount >= 10 ? '🚨' :
+                         witnessCount >= 3 ? '⚠️' : '📢';
+      final witnessText = witnessCount > 1 ? '$witnessCount witnesses' : 'New sighting';
+
+      final title = '$urgencyIcon UFO Sighting';
+      final body = '$witnessText near $locationName$distanceText';
+
+      const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+        'ufobeep_alerts',
+        'UFO Alerts',
+        channelDescription: 'UFO sighting proximity alerts',
+        importance: Importance.high,
+        priority: Priority.high,
+        playSound: true,
+        enableVibration: true,
+      );
+
+      const NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
+
+      await flutterLocalNotificationsPlugin.show(
+        sightingId.hashCode(),
+        title,
+        body,
+        notificationDetails,
+      );
+
+      debugPrint('🔔 BACKGROUND: Showed sighting notification - $title: $body');
+
+    } else if (notificationType == 'comment') {
+      final title = message.notification?.title ?? '💬 New Comment';
+      final body = message.notification?.body ?? 'Someone commented on an alert';
+      final sightingId = message.data['sighting_id'];
+
+      const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+        'ufobeep_comments',
+        'Comment Notifications',
+        channelDescription: 'Notifications when someone comments',
+        importance: Importance.high,
+        priority: Priority.high,
+        playSound: true,
+        enableVibration: true,
+      );
+
+      const NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
+
+      await flutterLocalNotificationsPlugin.show(
+        (sightingId?.hashCode() ?? 0) + 1000, // Different ID from alert notifications
+        title,
+        body,
+        notificationDetails,
+      );
+
+      debugPrint('🔔 BACKGROUND: Showed comment notification - $title: $body');
+    }
+
+    // Initialize sound service for background processing
     await SoundService.I.init();
-    
+
     // Load user preferences for DND/quiet hours checking
     dynamic userPrefs;
     try {
@@ -492,7 +573,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     } catch (e) {
       debugPrint('⚠️ Background: Could not load user preferences: $e');
     }
-    
+
     // Handle sighting alerts with escalated sounds
     if (notificationType == 'sighting_alert') {
       // Play appropriate escalated alert sound based on witness count
@@ -506,7 +587,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         await SoundService.I.play(AlertSound.normal, witnessCount: witnessCount, userPrefs: userPrefs);
         debugPrint('📢 BACKGROUND: Playing NORMAL alert (${witnessCount} witnesses)');
       }
-      
+
       // Also play push notification sound
       await SoundService.I.play(AlertSound.pushPing, userPrefs: userPrefs);
     } else {
@@ -514,6 +595,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       await SoundService.I.play(AlertSound.pushPing, userPrefs: userPrefs);
     }
   } catch (e) {
-    debugPrint('Error playing background notification sound: $e');
+    debugPrint('Error in background notification handling: $e');
   }
 }
