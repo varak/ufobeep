@@ -207,27 +207,25 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
                 next.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
                 return next
               })
-              // If this is the posting user, expand and scroll to their new comment
+              // Auto-scroll behavior for new comments
               try {
                 const uid = String(user?.id ?? '')
-                if (uid && String(normalized.user_id) === uid) {
+                const isOwnComment = uid && String(normalized.user_id) === uid
+
+                // Track latest comment for notification system
+                latestCommentIdRef.current = normalized.id
+
+                // Always auto-scroll for own comments, or for others when actively viewing
+                // This treats followers as active participants in the conversation
+                if (isOwnComment || isNearBottom() || newCommentsCount === 0) {
+                  const reason = isOwnComment ? 'own comment' :
+                                isNearBottom() ? 'near bottom' : 'no pending comments'
+                  console.log('[scroll-to-comment] Auto-scrolling to new comment:', normalized.id, 'reason:', reason)
                   setExpandedIds(prev => new Set(prev).add(normalized.id))
                   scrollToComment(normalized.id)
                 } else {
-                  // For other users' comments: ALWAYS track the latest comment ID
-                  console.log('[scroll-to-comment] New comment from other user:', normalized.id, 'isNearBottom:', isNearBottom())
-                  latestCommentIdRef.current = normalized.id
-
-                  // Auto-scroll if user is near bottom OR if there are no other new comments pending
-                  // This ensures users get immediate feedback when actively viewing comments
-                  if (isNearBottom() || newCommentsCount === 0) {
-                    console.log('[scroll-to-comment] Auto-scrolling to new comment:', normalized.id, 'reason:', isNearBottom() ? 'near bottom' : 'no pending comments')
-                    setExpandedIds(prev => new Set(prev).add(normalized.id))
-                    scrollToComment(normalized.id)
-                  } else {
-                    console.log('[scroll-to-comment] Showing notification for comment:', normalized.id)
-                    setNewCommentsCount(c => c + 1)
-                  }
+                  console.log('[scroll-to-comment] Showing notification for comment:', normalized.id)
+                  setNewCommentsCount(c => c + 1)
                 }
               } catch {}
             } else if (data.type === 'comment_deleted' && data.comment_id) {
