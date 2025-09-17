@@ -73,11 +73,8 @@ class DeepLinkService {
         await _handlePushNotificationData(message.data);
       });
 
-      // Handle notification when app is in foreground (optional)
-      FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-        print('Foreground notification: ${message.data}');
-        // Optionally show in-app notification or handle immediately
-      });
+      // Note: Foreground notifications are handled by PushNotificationService
+      // to avoid duplicate notification handling
     } catch (e) {
       print('Failed to initialize push notification links: $e');
     }

@@ -826,14 +826,14 @@ class PushNotificationService {
       importance: Importance.high,
       priority: Priority.high,
       showWhen: true,
-      playSound: false, // We handle sounds separately
+      playSound: true, // Enable sound for comment notifications
       enableVibration: true,
     );
     
     final iosDetails = DarwinNotificationDetails(
       presentAlert: true,
       presentBadge: true,
-      presentSound: false, // We handle sounds separately
+      presentSound: true, // Enable sound for comment notifications
       interruptionLevel: InterruptionLevel.active,
     );
     
