@@ -408,8 +408,8 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
     debugPrint('DEBUG: alert.username: "${widget.alert.username}"');
 
     // Primary method: Compare usernames (most reliable)
-    if (widget.currentUsername != null && widget.alert.reporterUsername != null) {
-      final isCreatorByUsername = widget.currentUsername == widget.alert.reporterUsername;
+    if (widget.currentUsername != null && widget.alert.username != null) {
+      final isCreatorByUsername = widget.currentUsername == widget.alert.username;
       debugPrint('DEBUG: isCreator by username: $isCreatorByUsername');
       return isCreatorByUsername;
     }
