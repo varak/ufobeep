@@ -579,7 +579,7 @@
   "eventTime": "Tapahtuma-aika",
   "reportedTime": "Raportoitu aika",
   "addedToUfobeep": "Lisätty UFO- piippiin",
-  "mufonDatabaseReport": "MUFON Tietokantaraportti",
+  "mufonDatabaseReport": "MUFON Tapausnumero:",
   "copyShortLinkTitle": "Kopioi linkki leikepöydälle",
   "imageNotFound": "Kuvaa ei löytynyt",
   "ufoSightingAlt": "UFO Piip UFO-hälytys",
