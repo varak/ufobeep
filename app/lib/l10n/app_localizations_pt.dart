@@ -440,7 +440,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get beepOnly => 'Apenas Beep';
 
   @override
-  String get reportOnly => 'Apenas Relatório';
+  String get reportOnly => 'Somente texto';
 
   @override
   String get videoOnly => 'Apenas Vídeo';

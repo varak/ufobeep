@@ -433,7 +433,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get beepOnly => 'Beep فقط';
 
   @override
-  String get reportOnly => 'التقرير فقط';
+  String get reportOnly => 'النص فقط';
 
   @override
   String get videoOnly => 'الفيديو فقط';

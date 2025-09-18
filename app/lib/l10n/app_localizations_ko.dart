@@ -426,7 +426,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get beepOnly => '계정 만들기';
 
   @override
-  String get reportOnly => '계정 관리';
+  String get reportOnly => '텍스트 만';
 
   @override
   String get videoOnly => '비디오 만';

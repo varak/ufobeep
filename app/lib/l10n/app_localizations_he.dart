@@ -432,7 +432,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get beepOnly => 'להיות רק';
 
   @override
-  String get reportOnly => 'דיווח רק';
+  String get reportOnly => 'טקסט רק';
 
   @override
   String get videoOnly => 'וידאו בלבד';

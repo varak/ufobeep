@@ -436,7 +436,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get beepOnly => 'केवल बीप';
 
   @override
-  String get reportOnly => 'केवल रिपोर्ट करें';
+  String get reportOnly => 'केवल पाठ';
 
   @override
   String get videoOnly => 'केवल वीडियो';

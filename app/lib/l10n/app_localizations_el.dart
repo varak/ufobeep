@@ -442,7 +442,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get beepOnly => 'Μόνο μπιπ';
 
   @override
-  String get reportOnly => 'Μόνο αναφορά';
+  String get reportOnly => 'Μόνο κείμενο';
 
   @override
   String get videoOnly => 'Μόνο βίντεο';

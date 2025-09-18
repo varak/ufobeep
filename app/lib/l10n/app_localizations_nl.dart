@@ -440,7 +440,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get beepOnly => 'Alleen piepen';
 
   @override
-  String get reportOnly => 'Alleen rapporteren';
+  String get reportOnly => 'Alleen tekst';
 
   @override
   String get videoOnly => 'Alleen video';

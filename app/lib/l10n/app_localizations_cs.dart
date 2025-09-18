@@ -437,7 +437,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get beepOnly => 'Pouze píp';
 
   @override
-  String get reportOnly => 'Pouze hlášení';
+  String get reportOnly => 'Pouze text';
 
   @override
   String get videoOnly => 'Pouze video';

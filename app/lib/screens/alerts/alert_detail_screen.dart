@@ -15,7 +15,7 @@ import '../../widgets/alert_sections/alert_hero_section.dart';
 import '../../widgets/alert_sections/alert_details_section.dart';
 import '../../widgets/alert_sections/alert_direction_section.dart';
 import '../../widgets/alert_sections/alert_actions_section.dart';
-import '../../widgets/video_player_widget.dart';
+import '../../widgets/chewie_video_widget.dart';
 import '../../widgets/enrichment/enrichment_section.dart';
 import '../../services/beep_service.dart';
 import '../../services/user_service.dart';
@@ -566,11 +566,13 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
   Widget _buildFullscreenMediaContent(String mediaUrl, String mediaType) {
     if (mediaType == 'video') {
-      // For videos, use VideoPlayerWidget in fullscreen
-      return VideoPlayerWidget(
+      // For videos, use ChewieVideoWidget in fullscreen with enhanced streaming
+      return ChewieVideoWidget(
         videoUrl: mediaUrl,
         width: double.infinity,
         height: double.infinity,
+        autoPlay: true,
+        showControls: true,
       );
     } else {
       // For images, use InteractiveViewer for zoom functionality

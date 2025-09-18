@@ -441,7 +441,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get beepOnly => 'Beep Only';
 
   @override
-  String get reportOnly => 'Report Only';
+  String get reportOnly => 'Texto Sólo';
 
   @override
   String get videoOnly => 'Video sólo';

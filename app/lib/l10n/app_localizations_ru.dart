@@ -440,7 +440,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get beepOnly => 'Только гудок';
 
   @override
-  String get reportOnly => 'Только отчет';
+  String get reportOnly => 'Только текст';
 
   @override
   String get videoOnly => 'Только видео';

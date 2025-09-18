@@ -439,7 +439,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get beepOnly => 'Beep Only';
 
   @override
-  String get reportOnly => 'Rapport Endast';
+  String get reportOnly => 'Text Endast';
 
   @override
   String get videoOnly => 'Video Endast';

@@ -439,7 +439,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get beepOnly => 'Kun bip';
 
   @override
-  String get reportOnly => 'Kun rapport';
+  String get reportOnly => 'Kun tekst';
 
   @override
   String get videoOnly => 'Kun video';

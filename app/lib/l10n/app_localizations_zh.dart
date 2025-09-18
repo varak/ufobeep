@@ -425,7 +425,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get beepOnly => '只鸣';
 
   @override
-  String get reportOnly => '仅报告';
+  String get reportOnly => '仅限文本';
 
   @override
   String get videoOnly => '仅限视频';

@@ -437,7 +437,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get beepOnly => 'Vain piip';
 
   @override
-  String get reportOnly => 'Raportoi vain';
+  String get reportOnly => 'Vain teksti';
 
   @override
   String get videoOnly => 'Vain video';

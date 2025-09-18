@@ -927,7 +927,7 @@ abstract class AppLocalizations {
   /// No description provided for @reportOnly.
   ///
   /// In en, this message translates to:
-  /// **'Report Only'**
+  /// **'Text Only'**
   String get reportOnly;
 
   /// No description provided for @videoOnly.

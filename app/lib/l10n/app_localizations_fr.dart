@@ -442,7 +442,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get beepOnly => 'Bip seulement';
 
   @override
-  String get reportOnly => 'Rapport seulement';
+  String get reportOnly => 'Texte seulement';
 
   @override
   String get videoOnly => 'Vidéo seulement';

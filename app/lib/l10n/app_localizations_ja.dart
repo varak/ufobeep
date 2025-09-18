@@ -425,7 +425,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get beepOnly => 'ビープのみ';
 
   @override
-  String get reportOnly => 'レポートのみ';
+  String get reportOnly => 'テキストのみ';
 
   @override
   String get videoOnly => 'ビデオのみ';
