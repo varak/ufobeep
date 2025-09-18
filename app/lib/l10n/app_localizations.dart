@@ -2010,6 +2010,24 @@ abstract class AppLocalizations {
   /// **'Page {currentPage} of {totalPages} ({totalCount} total beeps)'**
   String pageOf(Object currentPage, Object totalCount, Object totalPages);
 
+  /// No description provided for @firstPage.
+  ///
+  /// In en, this message translates to:
+  /// **'First'**
+  String get firstPage;
+
+  /// No description provided for @lastPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Last'**
+  String get lastPage;
+
+  /// No description provided for @jumpToPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Jump to page'**
+  String get jumpToPage;
+
   /// No description provided for @heroTagline.
   ///
   /// In en, this message translates to:

@@ -1031,6 +1031,15 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get firstPage => 'Первый';
+
+  @override
+  String get lastPage => 'Последний';
+
+  @override
+  String get jumpToPage => 'Перейти на страницу';
+
+  @override
   String get heroTagline =>
       'Получить оповещения, когда выходить на улицу и смотреть вверх';
 
@@ -1316,8 +1325,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get alert => 'Предупреждение';
 
   @override
-  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+  String get notificationTickerUfoAlert =>
+      'Предупреждение об НЛО - новое наблюдение поблизости';
 
   @override
-  String get notificationTickerComment => 'New Comment on UFO Alert';
+  String get notificationTickerComment => 'Новые комментарии к UFO Alert';
 }

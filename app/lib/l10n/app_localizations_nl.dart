@@ -1019,6 +1019,15 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get firstPage => 'Eerste';
+
+  @override
+  String get lastPage => 'Laatste';
+
+  @override
+  String get jumpToPage => 'Naar pagina springen';
+
+  @override
   String get heroTagline =>
       'Ontvang waarschuwingen wanneer naar buiten te gaan en op te zoeken';
 
@@ -1303,8 +1312,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get alert => 'Waarschuwing';
 
   @override
-  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+  String get notificationTickerUfoAlert =>
+      'UFO Alert - Nieuwe Waarneming nabij';
 
   @override
-  String get notificationTickerComment => 'New Comment on UFO Alert';
+  String get notificationTickerComment => 'Nieuwe reactie op UFO-alarm';
 }

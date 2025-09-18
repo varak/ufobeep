@@ -995,6 +995,15 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get firstPage => '第一届';
+
+  @override
+  String get lastPage => '最后一个';
+
+  @override
+  String get jumpToPage => '跳转到页面';
+
+  @override
   String get heroTagline => '什么时候到外面看看';
 
   @override
@@ -1278,8 +1287,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get alert => '警报';
 
   @override
-  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+  String get notificationTickerUfoAlert => 'UFO 警告 - 附近新视觉';
 
   @override
-  String get notificationTickerComment => 'New Comment on UFO Alert';
+  String get notificationTickerComment => '关于 UFO 提醒的新注释';
 }

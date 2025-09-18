@@ -1007,6 +1007,15 @@ class AppLocalizationsHe extends AppLocalizations {
   }
 
   @override
+  String get firstPage => 'הראשון';
+
+  @override
+  String get lastPage => 'אחרון';
+
+  @override
+  String get jumpToPage => 'לקפוץ לדף';
+
+  @override
   String get heroTagline => 'קבלו התראות כשאתם יוצאים החוצה ומתבוננים';
 
   @override
@@ -1290,8 +1299,8 @@ class AppLocalizationsHe extends AppLocalizations {
   String get alert => 'התראה';
 
   @override
-  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+  String get notificationTickerUfoAlert => 'תגית: New Sighting Near';
 
   @override
-  String get notificationTickerComment => 'New Comment on UFO Alert';
+  String get notificationTickerComment => 'תגית: UFO Alert';
 }

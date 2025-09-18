@@ -1018,6 +1018,15 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
+  String get firstPage => 'Först först';
+
+  @override
+  String get lastPage => 'Senaste';
+
+  @override
+  String get jumpToPage => 'Hoppa till sida';
+
+  @override
   String get heroTagline => 'Få varningar när du ska gå ut och titta upp';
 
   @override
@@ -1301,8 +1310,8 @@ class AppLocalizationsSv extends AppLocalizations {
   String get alert => 'Alert';
 
   @override
-  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+  String get notificationTickerUfoAlert => 'UFO Alert - Ny syn i närheten';
 
   @override
-  String get notificationTickerComment => 'New Comment on UFO Alert';
+  String get notificationTickerComment => 'Ny kommentar till UFO Alert';
 }

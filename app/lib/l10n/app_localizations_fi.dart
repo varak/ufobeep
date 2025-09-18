@@ -1018,6 +1018,15 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
+  String get firstPage => 'Ensimmäinen';
+
+  @override
+  String get lastPage => 'Viimeinen';
+
+  @override
+  String get jumpToPage => 'Siirry sivulle';
+
+  @override
   String get heroTagline =>
       'Hanki hälytykset, milloin mennä ulos ja katsoa ylös';
 
@@ -1302,8 +1311,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get alert => 'Varoitus';
 
   @override
-  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+  String get notificationTickerUfoAlert => 'UFO-hälytys - Uusi nähtävyys';
 
   @override
-  String get notificationTickerComment => 'New Comment on UFO Alert';
+  String get notificationTickerComment =>
+      'UFO-hälytysjärjestelmän uusi huomautus';
 }

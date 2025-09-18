@@ -1015,6 +1015,15 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
+  String get firstPage => 'पहला';
+
+  @override
+  String get lastPage => 'अंतिम';
+
+  @override
+  String get jumpToPage => 'पृष्ठ पर जाएं';
+
+  @override
   String get heroTagline => 'बाहर जाने और देखने के लिए अलर्ट प्राप्त करें';
 
   @override
@@ -1299,8 +1308,8 @@ class AppLocalizationsHi extends AppLocalizations {
   String get alert => 'चेतावनी';
 
   @override
-  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+  String get notificationTickerUfoAlert => 'यूएफओ अलर्ट';
 
   @override
-  String get notificationTickerComment => 'New Comment on UFO Alert';
+  String get notificationTickerComment => 'यूएफओ अलर्ट पर नई टिप्पणी';
 }

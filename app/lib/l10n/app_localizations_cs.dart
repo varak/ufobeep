@@ -1017,6 +1017,15 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
+  String get firstPage => 'První';
+
+  @override
+  String get lastPage => 'Poslední';
+
+  @override
+  String get jumpToPage => 'Přejít na stránku';
+
+  @override
   String get heroTagline =>
       'Získejte upozornění, kdy jít ven a podívat se nahoru';
 
@@ -1302,8 +1311,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get alert => 'Varování';
 
   @override
-  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+  String get notificationTickerUfoAlert =>
+      'UFO poplach - nové pozorování v blízkosti';
 
   @override
-  String get notificationTickerComment => 'New Comment on UFO Alert';
+  String get notificationTickerComment => 'Nový komentář k UFO upozornění';
 }

@@ -1021,6 +1021,15 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get firstPage => 'First';
+
+  @override
+  String get lastPage => 'Son';
+
+  @override
+  String get jumpToPage => 'Sayfaya Git';
+
+  @override
   String get heroTagline => 'Dışarı çıkmak ve yukarı bakmak için uyarılar alın';
 
   @override
@@ -1305,8 +1314,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get alert => 'Uyarı';
 
   @override
-  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+  String get notificationTickerUfoAlert => 'UFO Uyarısı - New Sighting Nearby';
 
   @override
-  String get notificationTickerComment => 'New Comment on UFO Alert';
+  String get notificationTickerComment => 'UFO Uyarısı Üzerine Yeni Yorum';
 }

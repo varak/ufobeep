@@ -997,6 +997,15 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get firstPage => '한국어';
+
+  @override
+  String get lastPage => '이름 *';
+
+  @override
+  String get jumpToPage => '공지사항';
+
+  @override
   String get heroTagline => '외부로 이동할 때 경고를 얻고 봐';
 
   @override
@@ -1280,8 +1289,8 @@ class AppLocalizationsKo extends AppLocalizations {
   String get alert => '지원하다';
 
   @override
-  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+  String get notificationTickerUfoAlert => 'UFO 경고 - 새로운 Sighting Nearby';
 
   @override
-  String get notificationTickerComment => 'New Comment on UFO Alert';
+  String get notificationTickerComment => 'UFO Alert의 새로운 의견';
 }

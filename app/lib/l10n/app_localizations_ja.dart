@@ -996,6 +996,15 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get firstPage => 'ファースト';
+
+  @override
+  String get lastPage => '最近の投稿';
+
+  @override
+  String get jumpToPage => 'ページをジャンプ';
+
+  @override
   String get heroTagline => '外部に行くときにアラートを取得し、調べる';
 
   @override
@@ -1279,8 +1288,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get alert => 'アラート';
 
   @override
-  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+  String get notificationTickerUfoAlert => 'UFOアラート - 近くの新しいサイト';
 
   @override
-  String get notificationTickerComment => 'New Comment on UFO Alert';
+  String get notificationTickerComment => 'UFOアラートの新しいコメント';
 }

@@ -1025,6 +1025,15 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
+  String get firstPage => 'Πρώτο';
+
+  @override
+  String get lastPage => 'Τελευταία';
+
+  @override
+  String get jumpToPage => 'Μετάβαση στη σελίδα';
+
+  @override
   String get heroTagline => 'Πάρε ειδοποιήσεις όταν βγεις έξω και κοίτα ψηλά';
 
   @override
@@ -1310,8 +1319,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get alert => 'Συναγερμός';
 
   @override
-  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+  String get notificationTickerUfoAlert =>
+      'Συναγερμός UFO - Νέα Αξιοθέατα σε κοντινή απόσταση';
 
   @override
-  String get notificationTickerComment => 'New Comment on UFO Alert';
+  String get notificationTickerComment => 'Νέο σχόλιο για το UFO Alert';
 }

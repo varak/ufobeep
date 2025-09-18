@@ -1024,6 +1024,15 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get firstPage => 'Primera';
+
+  @override
+  String get lastPage => 'Último';
+
+  @override
+  String get jumpToPage => 'Saltar a página';
+
+  @override
   String get heroTagline => 'Obtener alertas cuando salir y mirar hacia arriba';
 
   @override
@@ -1308,8 +1317,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get alert => 'Alerta';
 
   @override
-  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+  String get notificationTickerUfoAlert =>
+      'Alerta OVNI - Nuevo Avistamiento cerca';
 
   @override
-  String get notificationTickerComment => 'New Comment on UFO Alert';
+  String get notificationTickerComment => 'Nuevo comentario en la alerta OVNI';
 }

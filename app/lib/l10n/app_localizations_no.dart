@@ -1013,6 +1013,15 @@ class AppLocalizationsNo extends AppLocalizations {
   }
 
   @override
+  String get firstPage => 'First';
+
+  @override
+  String get lastPage => 'Last';
+
+  @override
+  String get jumpToPage => 'Jump to page';
+
+  @override
   String get heroTagline => 'Get alerts when to go outside and look up';
 
   @override
