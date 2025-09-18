@@ -300,7 +300,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
               <span className="text-text-tertiary mt-0.5">🌤️</span>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-text-tertiary text-sm font-medium">{t('weather')}</span>
+                  <span className="text-text-tertiary text-sm font-medium">{t('weatherConditionsTitle')}</span>
                 </div>
                 <div className="text-text-primary text-sm">
                   {alert.enrichment.weather.weather_description && (
