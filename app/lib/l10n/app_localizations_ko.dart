@@ -1295,87 +1295,86 @@ class AppLocalizationsKo extends AppLocalizations {
   String get notificationTickerComment => 'UFO Alert의 새로운 의견';
 
   @override
-  String get weatherConditions => 'Weather Conditions';
+  String get weatherConditions => '기상 조건';
 
   @override
-  String get visibility => 'Visibility';
+  String get visibility => '제품정보';
 
   @override
-  String get humidity => 'Humidity';
+  String get humidity => '제품 정보';
 
   @override
-  String get pressure => 'Pressure';
+  String get pressure => '압력';
 
   @override
-  String get locationDetails => 'Location Details';
+  String get locationDetails => '회사연혁';
 
   @override
-  String get city => 'City';
+  String get city => '(주)';
 
   @override
-  String get state => 'State';
+  String get state => '주요 특징';
 
   @override
-  String get country => 'Country';
+  String get country => '이름 *';
 
   @override
-  String get satelliteActivity => 'Satellite Activity';
+  String get satelliteActivity => '위성 활동';
 
   @override
-  String get satellitesVisibleOverhead =>
-      'Satellites visible overhead at sighting time & location';
+  String get satellitesVisibleOverhead => '광경 시간 및 위치에 눈에 보이는 오버 헤드';
 
   @override
-  String get dataSource => 'Data Source';
+  String get dataSource => '데이터 소스';
 
   @override
-  String get blackskyImagery => 'BlackSky Imagery';
+  String get blackskyImagery => 'BlackSky 이미지';
 
   @override
-  String get resolution => 'Resolution';
+  String get resolution => '제품 설명';
 
   @override
-  String get groundResolution => '35cm ground resolution';
+  String get groundResolution => '35cm 지상 해결책';
 
   @override
-  String get delivery => 'Delivery';
+  String get delivery => '제품 정보';
 
   @override
-  String get averageDelivery => '90-minute average';
+  String get averageDelivery => '평균 90분';
 
   @override
-  String get cost => 'Cost';
+  String get cost => '제품정보';
 
   @override
-  String get skyfiSatelliteImagery => 'SkyFi Satellite Imagery';
+  String get skyfiSatelliteImagery => 'SkyFi 위성 이미지';
 
   @override
-  String get region => 'Region';
+  String get region => '이름 *';
 
   @override
-  String get remoteArea => 'Remote Area';
+  String get remoteArea => '먼 지역';
 
   @override
-  String get startingPrice => 'Starting Price';
+  String get startingPrice => '시작 가격';
 
   @override
-  String get coverage => 'Coverage';
+  String get coverage => '회사 소개';
 
   @override
-  String get confidenceCoverage => '95% confidence';
+  String get confidenceCoverage => '95% 신뢰';
 
   @override
-  String get status => 'Status';
+  String get status => '주요연혁';
 
   @override
-  String get shareThoughts => 'Share your thoughts about this sighting...';
+  String get shareThoughts => '이 광경에 대한 생각을 공유 ...';
 
   @override
-  String get postCommand => 'Post Command';
+  String get postCommand => '포스트 명령';
 
   @override
-  String get clouds => 'Clouds';
+  String get clouds => '클라우드';
 
   @override
-  String get windLabel => 'Wind';
+  String get windLabel => 'Ღ♥ღ';
 }

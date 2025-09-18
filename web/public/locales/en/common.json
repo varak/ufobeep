@@ -322,6 +322,7 @@
   "notificationTickerUfoAlert": "UFO Alert - New Sighting Nearby",
   "notificationTickerComment": "New Comment on UFO Alert",
   "weatherConditions": "Weather Conditions",
+  "visibility": "Visibility",
   "humidity": "Humidity",
   "pressure": "Pressure",
   "locationDetails": "Location Details",

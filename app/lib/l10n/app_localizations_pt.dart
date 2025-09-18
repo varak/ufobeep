@@ -1324,87 +1324,88 @@ class AppLocalizationsPt extends AppLocalizations {
   String get notificationTickerComment => 'Novo comentário sobre o alerta UFO';
 
   @override
-  String get weatherConditions => 'Weather Conditions';
+  String get weatherConditions => 'Condições meteorológicas';
 
   @override
-  String get visibility => 'Visibility';
+  String get visibility => 'Visibilidade';
 
   @override
-  String get humidity => 'Humidity';
+  String get humidity => 'Humidade';
 
   @override
-  String get pressure => 'Pressure';
+  String get pressure => 'Pressão';
 
   @override
-  String get locationDetails => 'Location Details';
+  String get locationDetails => 'Detalhes da localização';
 
   @override
-  String get city => 'City';
+  String get city => 'Cidade';
 
   @override
-  String get state => 'State';
+  String get state => 'Estado';
 
   @override
-  String get country => 'Country';
+  String get country => 'País';
 
   @override
-  String get satelliteActivity => 'Satellite Activity';
+  String get satelliteActivity => 'Actividade por Satélite';
 
   @override
   String get satellitesVisibleOverhead =>
-      'Satellites visible overhead at sighting time & location';
+      'Satélites visíveis em cima ao avistar hora e local';
 
   @override
-  String get dataSource => 'Data Source';
+  String get dataSource => 'Fonte dos Dados';
 
   @override
-  String get blackskyImagery => 'BlackSky Imagery';
+  String get blackskyImagery => 'Imagem de BlackSky';
 
   @override
-  String get resolution => 'Resolution';
+  String get resolution => 'Resolução';
 
   @override
-  String get groundResolution => '35cm ground resolution';
+  String get groundResolution => 'resolução do solo de 35cm';
 
   @override
-  String get delivery => 'Delivery';
+  String get delivery => 'Entrega';
 
   @override
-  String get averageDelivery => '90-minute average';
+  String get averageDelivery => 'média de 90 minutos';
 
   @override
-  String get cost => 'Cost';
+  String get cost => 'Custo';
 
   @override
-  String get skyfiSatelliteImagery => 'SkyFi Satellite Imagery';
+  String get skyfiSatelliteImagery => 'Satélite SkyFi Imagem';
 
   @override
-  String get region => 'Region';
+  String get region => 'Região';
 
   @override
-  String get remoteArea => 'Remote Area';
+  String get remoteArea => 'Área Remota';
 
   @override
-  String get startingPrice => 'Starting Price';
+  String get startingPrice => 'Preço Inicial';
 
   @override
-  String get coverage => 'Coverage';
+  String get coverage => 'Cobertura';
 
   @override
-  String get confidenceCoverage => '95% confidence';
+  String get confidenceCoverage => '95% de confiança';
 
   @override
-  String get status => 'Status';
+  String get status => 'Estado';
 
   @override
-  String get shareThoughts => 'Share your thoughts about this sighting...';
+  String get shareThoughts =>
+      'Compartilhe seus pensamentos sobre este avistamento...';
 
   @override
-  String get postCommand => 'Post Command';
+  String get postCommand => 'Comando Postal';
 
   @override
-  String get clouds => 'Clouds';
+  String get clouds => 'Nuvens';
 
   @override
-  String get windLabel => 'Wind';
+  String get windLabel => 'Vento';
 }

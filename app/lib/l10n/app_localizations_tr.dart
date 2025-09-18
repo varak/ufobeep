@@ -1320,35 +1320,35 @@ class AppLocalizationsTr extends AppLocalizations {
   String get notificationTickerComment => 'UFO Uyarısı Üzerine Yeni Yorum';
 
   @override
-  String get weatherConditions => 'Weather Conditions';
+  String get weatherConditions => 'Hava Koşulları';
 
   @override
-  String get visibility => 'Visibility';
+  String get visibility => 'Viability';
 
   @override
-  String get humidity => 'Humidity';
+  String get humidity => 'Nem';
 
   @override
-  String get pressure => 'Pressure';
+  String get pressure => 'Basınç';
 
   @override
-  String get locationDetails => 'Location Details';
+  String get locationDetails => 'Konum Details';
 
   @override
-  String get city => 'City';
+  String get city => 'Şehir Şehri';
 
   @override
-  String get state => 'State';
+  String get state => 'Devlet Devleti';
 
   @override
-  String get country => 'Country';
+  String get country => 'Ülke';
 
   @override
-  String get satelliteActivity => 'Satellite Activity';
+  String get satelliteActivity => 'Uydu Aktivitesi';
 
   @override
   String get satellitesVisibleOverhead =>
-      'Satellites visible overhead at sighting time & location';
+      'Uydular, zamanı ve yeri göz önünde bulunduruyor';
 
   @override
   String get dataSource => 'Data Source';
@@ -1357,28 +1357,28 @@ class AppLocalizationsTr extends AppLocalizations {
   String get blackskyImagery => 'BlackSky Imagery';
 
   @override
-  String get resolution => 'Resolution';
+  String get resolution => 'Karar';
 
   @override
-  String get groundResolution => '35cm ground resolution';
+  String get groundResolution => '35cm zemin çözünürlüğü';
 
   @override
-  String get delivery => 'Delivery';
+  String get delivery => 'Teslimat';
 
   @override
-  String get averageDelivery => '90-minute average';
+  String get averageDelivery => '90 dakikalık ortalama';
 
   @override
-  String get cost => 'Cost';
+  String get cost => 'Maliyet';
 
   @override
-  String get skyfiSatelliteImagery => 'SkyFi Satellite Imagery';
+  String get skyfiSatelliteImagery => 'SkyFi Uydu Imagery';
 
   @override
-  String get region => 'Region';
+  String get region => 'Bölge Bölgesi';
 
   @override
-  String get remoteArea => 'Remote Area';
+  String get remoteArea => 'Uzak Alan';
 
   @override
   String get startingPrice => 'Starting Price';
@@ -1387,20 +1387,20 @@ class AppLocalizationsTr extends AppLocalizations {
   String get coverage => 'Coverage';
 
   @override
-  String get confidenceCoverage => '95% confidence';
+  String get confidenceCoverage => '% 95 güven';
 
   @override
-  String get status => 'Status';
+  String get status => 'Durum durumu';
 
   @override
-  String get shareThoughts => 'Share your thoughts about this sighting...';
+  String get shareThoughts => 'Bu görüş hakkındaki düşüncelerini paylaşın...';
 
   @override
-  String get postCommand => 'Post Command';
+  String get postCommand => 'Post Komutanlığı';
 
   @override
-  String get clouds => 'Clouds';
+  String get clouds => 'Bulutlar';
 
   @override
-  String get windLabel => 'Wind';
+  String get windLabel => 'Rüzgar Rüzgar Rüzgarı';
 }

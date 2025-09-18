@@ -1293,87 +1293,86 @@ class AppLocalizationsZh extends AppLocalizations {
   String get notificationTickerComment => '关于 UFO 提醒的新注释';
 
   @override
-  String get weatherConditions => 'Weather Conditions';
+  String get weatherConditions => '天气条件';
 
   @override
-  String get visibility => 'Visibility';
+  String get visibility => '可见度';
 
   @override
-  String get humidity => 'Humidity';
+  String get humidity => '湿度';
 
   @override
-  String get pressure => 'Pressure';
+  String get pressure => '压力';
 
   @override
-  String get locationDetails => 'Location Details';
+  String get locationDetails => '地点细节';
 
   @override
-  String get city => 'City';
+  String get city => '城市';
 
   @override
-  String get state => 'State';
+  String get state => '状态';
 
   @override
-  String get country => 'Country';
+  String get country => '国家';
 
   @override
-  String get satelliteActivity => 'Satellite Activity';
+  String get satelliteActivity => '卫星活动';
 
   @override
-  String get satellitesVisibleOverhead =>
-      'Satellites visible overhead at sighting time & location';
+  String get satellitesVisibleOverhead => '视时间和地点可见的卫星';
 
   @override
-  String get dataSource => 'Data Source';
+  String get dataSource => '数据来源';
 
   @override
-  String get blackskyImagery => 'BlackSky Imagery';
+  String get blackskyImagery => '黑色天空图像';
 
   @override
-  String get resolution => 'Resolution';
+  String get resolution => '决议';
 
   @override
-  String get groundResolution => '35cm ground resolution';
+  String get groundResolution => '35厘米地面分辨率';
 
   @override
-  String get delivery => 'Delivery';
+  String get delivery => '交付';
 
   @override
-  String get averageDelivery => '90-minute average';
+  String get averageDelivery => '平均90分钟';
 
   @override
-  String get cost => 'Cost';
+  String get cost => '费用';
 
   @override
-  String get skyfiSatelliteImagery => 'SkyFi Satellite Imagery';
+  String get skyfiSatelliteImagery => '天线卫星 图像';
 
   @override
-  String get region => 'Region';
+  String get region => '地区';
 
   @override
-  String get remoteArea => 'Remote Area';
+  String get remoteArea => '远程区域';
 
   @override
-  String get startingPrice => 'Starting Price';
+  String get startingPrice => '开始价格';
 
   @override
-  String get coverage => 'Coverage';
+  String get coverage => '覆盖范围';
 
   @override
-  String get confidenceCoverage => '95% confidence';
+  String get confidenceCoverage => '95%的信心';
 
   @override
-  String get status => 'Status';
+  String get status => '状态';
 
   @override
-  String get shareThoughts => 'Share your thoughts about this sighting...';
+  String get shareThoughts => '分享你对这次目击的看法...';
 
   @override
-  String get postCommand => 'Post Command';
+  String get postCommand => '邮局命令';
 
   @override
-  String get clouds => 'Clouds';
+  String get clouds => '云层';
 
   @override
-  String get windLabel => 'Wind';
+  String get windLabel => '风';
 }

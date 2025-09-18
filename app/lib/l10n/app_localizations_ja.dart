@@ -1294,87 +1294,86 @@ class AppLocalizationsJa extends AppLocalizations {
   String get notificationTickerComment => 'UFOアラートの新しいコメント';
 
   @override
-  String get weatherConditions => 'Weather Conditions';
+  String get weatherConditions => '気象条件';
 
   @override
-  String get visibility => 'Visibility';
+  String get visibility => '可視性';
 
   @override
-  String get humidity => 'Humidity';
+  String get humidity => '湿度: 8';
 
   @override
-  String get pressure => 'Pressure';
+  String get pressure => 'プレッシャー';
 
   @override
-  String get locationDetails => 'Location Details';
+  String get locationDetails => 'ロケーション詳細';
 
   @override
-  String get city => 'City';
+  String get city => 'シティ';
 
   @override
-  String get state => 'State';
+  String get state => 'ステータス';
 
   @override
-  String get country => 'Country';
+  String get country => 'カントリー';
 
   @override
-  String get satelliteActivity => 'Satellite Activity';
+  String get satelliteActivity => '衛星活動';
 
   @override
-  String get satellitesVisibleOverhead =>
-      'Satellites visible overhead at sighting time & location';
+  String get satellitesVisibleOverhead => '視力時間と位置で見える衛星';
 
   @override
-  String get dataSource => 'Data Source';
+  String get dataSource => 'データソース';
 
   @override
-  String get blackskyImagery => 'BlackSky Imagery';
+  String get blackskyImagery => 'ブラックスカイのイメージ';
 
   @override
-  String get resolution => 'Resolution';
+  String get resolution => 'ソリューション';
 
   @override
-  String get groundResolution => '35cm ground resolution';
+  String get groundResolution => '35cmの地上の決断';
 
   @override
-  String get delivery => 'Delivery';
+  String get delivery => 'デリバリー';
 
   @override
-  String get averageDelivery => '90-minute average';
+  String get averageDelivery => '90分平均';
 
   @override
-  String get cost => 'Cost';
+  String get cost => 'コスト';
 
   @override
-  String get skyfiSatelliteImagery => 'SkyFi Satellite Imagery';
+  String get skyfiSatelliteImagery => 'SkyFi衛星 イメージ';
 
   @override
-  String get region => 'Region';
+  String get region => 'エリア';
 
   @override
-  String get remoteArea => 'Remote Area';
+  String get remoteArea => '遠隔区域';
 
   @override
-  String get startingPrice => 'Starting Price';
+  String get startingPrice => '開始価格';
 
   @override
-  String get coverage => 'Coverage';
+  String get coverage => 'カバレッジ';
 
   @override
-  String get confidenceCoverage => '95% confidence';
+  String get confidenceCoverage => '95%の自信';
 
   @override
-  String get status => 'Status';
+  String get status => 'ステータス';
 
   @override
-  String get shareThoughts => 'Share your thoughts about this sighting...';
+  String get shareThoughts => 'この視線についてのあなたの考えを共有する...';
 
   @override
-  String get postCommand => 'Post Command';
+  String get postCommand => 'コマンドの投稿';
 
   @override
-  String get clouds => 'Clouds';
+  String get clouds => 'クラウド';
 
   @override
-  String get windLabel => 'Wind';
+  String get windLabel => 'ウインド';
 }

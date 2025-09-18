@@ -1308,87 +1308,86 @@ class AppLocalizationsAr extends AppLocalizations {
   String get notificationTickerComment => 'تعليق جديد على تنبيه المنظمة';
 
   @override
-  String get weatherConditions => 'Weather Conditions';
+  String get weatherConditions => 'أحوال الطقس';
 
   @override
-  String get visibility => 'Visibility';
+  String get visibility => 'الرؤية';
 
   @override
-  String get humidity => 'Humidity';
+  String get humidity => 'الهضمية';
 
   @override
-  String get pressure => 'Pressure';
+  String get pressure => 'الضغط';
 
   @override
-  String get locationDetails => 'Location Details';
+  String get locationDetails => 'تفاصيل الموقع';
 
   @override
-  String get city => 'City';
+  String get city => 'المدينة';
 
   @override
-  String get state => 'State';
+  String get state => 'الدولة';
 
   @override
-  String get country => 'Country';
+  String get country => 'البلد';
 
   @override
-  String get satelliteActivity => 'Satellite Activity';
+  String get satelliteActivity => 'النشاط الساتلي';
 
   @override
-  String get satellitesVisibleOverhead =>
-      'Satellites visible overhead at sighting time & location';
+  String get satellitesVisibleOverhead => 'سواتل مرئية في الموقع';
 
   @override
-  String get dataSource => 'Data Source';
+  String get dataSource => 'المصدر';
 
   @override
-  String get blackskyImagery => 'BlackSky Imagery';
+  String get blackskyImagery => 'بلاك سكاي';
 
   @override
-  String get resolution => 'Resolution';
+  String get resolution => 'القرار';
 
   @override
   String get groundResolution => '35cm ground resolution';
 
   @override
-  String get delivery => 'Delivery';
+  String get delivery => 'التسليم';
 
   @override
-  String get averageDelivery => '90-minute average';
+  String get averageDelivery => 'متوسط 90 دقيقة';
 
   @override
-  String get cost => 'Cost';
+  String get cost => 'التكلفة';
 
   @override
-  String get skyfiSatelliteImagery => 'SkyFi Satellite Imagery';
+  String get skyfiSatelliteImagery => 'ساتل SkyFi التصوير';
 
   @override
-  String get region => 'Region';
+  String get region => 'المنطقة';
 
   @override
-  String get remoteArea => 'Remote Area';
+  String get remoteArea => 'المنطقة النائية';
 
   @override
-  String get startingPrice => 'Starting Price';
+  String get startingPrice => 'بدء الأسعار';
 
   @override
-  String get coverage => 'Coverage';
+  String get coverage => 'التغطية';
 
   @override
-  String get confidenceCoverage => '95% confidence';
+  String get confidenceCoverage => 'ثقة 95 في المائة';
 
   @override
-  String get status => 'Status';
+  String get status => 'الحالة';
 
   @override
-  String get shareThoughts => 'Share your thoughts about this sighting...';
+  String get shareThoughts => 'شارك أفكارك حول هذا المنظر...';
 
   @override
-  String get postCommand => 'Post Command';
+  String get postCommand => 'القيادة';
 
   @override
-  String get clouds => 'Clouds';
+  String get clouds => 'السحابات';
 
   @override
-  String get windLabel => 'Wind';
+  String get windLabel => 'الرياح';
 }

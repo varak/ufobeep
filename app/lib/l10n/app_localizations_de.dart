@@ -1322,86 +1322,86 @@ class AppLocalizationsDe extends AppLocalizations {
   String get notificationTickerComment => 'Neuer Kommentar zu UFO Alert';
 
   @override
-  String get weatherConditions => 'Weather Conditions';
+  String get weatherConditions => 'Wetterbedingungen';
 
   @override
-  String get visibility => 'Visibility';
+  String get visibility => 'Sichtbarkeit';
 
   @override
-  String get humidity => 'Humidity';
+  String get humidity => 'Luftfeuchtigkeit';
 
   @override
-  String get pressure => 'Pressure';
+  String get pressure => 'Druck';
 
   @override
   String get locationDetails => 'Location Details';
 
   @override
-  String get city => 'City';
+  String get city => 'Stadt';
 
   @override
-  String get state => 'State';
+  String get state => 'Staat';
 
   @override
-  String get country => 'Country';
+  String get country => 'Land';
 
   @override
-  String get satelliteActivity => 'Satellite Activity';
+  String get satelliteActivity => 'Satellitenaktivität';
 
   @override
   String get satellitesVisibleOverhead =>
-      'Satellites visible overhead at sighting time & location';
+      'Satelliten sichtbar über Kopf bei Sichtzeit & Lage';
 
   @override
-  String get dataSource => 'Data Source';
+  String get dataSource => 'Datenquelle';
 
   @override
   String get blackskyImagery => 'BlackSky Imagery';
 
   @override
-  String get resolution => 'Resolution';
+  String get resolution => 'Entschließung';
 
   @override
-  String get groundResolution => '35cm ground resolution';
+  String get groundResolution => '35cm bodenauflösung';
 
   @override
-  String get delivery => 'Delivery';
+  String get delivery => 'Lieferung';
 
   @override
-  String get averageDelivery => '90-minute average';
+  String get averageDelivery => 'durchschnitt 90 minuten';
 
   @override
-  String get cost => 'Cost';
+  String get cost => 'Kosten';
 
   @override
-  String get skyfiSatelliteImagery => 'SkyFi Satellite Imagery';
+  String get skyfiSatelliteImagery => 'SkyFi Satelliten Bilder';
 
   @override
   String get region => 'Region';
 
   @override
-  String get remoteArea => 'Remote Area';
+  String get remoteArea => 'Fernbereich';
 
   @override
-  String get startingPrice => 'Starting Price';
+  String get startingPrice => 'Anfangspreis';
 
   @override
-  String get coverage => 'Coverage';
+  String get coverage => 'Deckung';
 
   @override
-  String get confidenceCoverage => '95% confidence';
+  String get confidenceCoverage => '95% vertrauen';
 
   @override
   String get status => 'Status';
 
   @override
-  String get shareThoughts => 'Share your thoughts about this sighting...';
+  String get shareThoughts => 'Teilen Sie Ihre Gedanken über dieses Sehen...';
 
   @override
   String get postCommand => 'Post Command';
 
   @override
-  String get clouds => 'Clouds';
+  String get clouds => 'Wolken';
 
   @override
   String get windLabel => 'Wind';

@@ -1323,87 +1323,88 @@ class AppLocalizationsPl extends AppLocalizations {
   String get notificationTickerComment => 'Nowy komentarz na temat UFO Alert';
 
   @override
-  String get weatherConditions => 'Weather Conditions';
+  String get weatherConditions => 'Warunki pogodowe';
 
   @override
-  String get visibility => 'Visibility';
+  String get visibility => 'Widoczność';
 
   @override
-  String get humidity => 'Humidity';
+  String get humidity => 'Wilgotność';
 
   @override
-  String get pressure => 'Pressure';
+  String get pressure => 'Ciśnienie';
 
   @override
-  String get locationDetails => 'Location Details';
+  String get locationDetails => 'Szczegóły lokalizacji';
 
   @override
-  String get city => 'City';
+  String get city => 'Miasto';
 
   @override
-  String get state => 'State';
+  String get state => 'Państwo';
 
   @override
-  String get country => 'Country';
+  String get country => 'Kraj';
 
   @override
-  String get satelliteActivity => 'Satellite Activity';
+  String get satelliteActivity => 'Działalność satelitarna';
 
   @override
   String get satellitesVisibleOverhead =>
-      'Satellites visible overhead at sighting time & location';
+      'Satelity widoczne nad głową w czasie i miejscu obserwacji';
 
   @override
-  String get dataSource => 'Data Source';
+  String get dataSource => 'Źródło danych';
 
   @override
   String get blackskyImagery => 'BlackSky Imagery';
 
   @override
-  String get resolution => 'Resolution';
+  String get resolution => 'Rozdzielczość';
 
   @override
-  String get groundResolution => '35cm ground resolution';
+  String get groundResolution => 'rozdzielczość podłoża 35cm';
 
   @override
-  String get delivery => 'Delivery';
+  String get delivery => 'Dostawa';
 
   @override
-  String get averageDelivery => '90-minute average';
+  String get averageDelivery => 'średnia 90- minutowa';
 
   @override
-  String get cost => 'Cost';
+  String get cost => 'Koszt';
 
   @override
-  String get skyfiSatelliteImagery => 'SkyFi Satellite Imagery';
+  String get skyfiSatelliteImagery => 'SkyFi Satellite Wyobraźnia';
 
   @override
   String get region => 'Region';
 
   @override
-  String get remoteArea => 'Remote Area';
+  String get remoteArea => 'Obszar zdalny';
 
   @override
-  String get startingPrice => 'Starting Price';
+  String get startingPrice => 'Cena początkowa';
 
   @override
-  String get coverage => 'Coverage';
+  String get coverage => 'Zakres';
 
   @override
-  String get confidenceCoverage => '95% confidence';
+  String get confidenceCoverage => '95% przedział';
 
   @override
-  String get status => 'Status';
+  String get status => 'Stan';
 
   @override
-  String get shareThoughts => 'Share your thoughts about this sighting...';
+  String get shareThoughts =>
+      'Podziel się swoimi myślami na temat tego widzenia...';
 
   @override
-  String get postCommand => 'Post Command';
+  String get postCommand => 'Polecenie pocztowe';
 
   @override
-  String get clouds => 'Clouds';
+  String get clouds => 'Chmury';
 
   @override
-  String get windLabel => 'Wind';
+  String get windLabel => 'Wiatr';
 }

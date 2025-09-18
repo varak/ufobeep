@@ -900,7 +900,7 @@ class SatelliteCardFromJson extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Satellite Passes (${allPasses.length})',
+                        '${AppLocalizations.of(context)!.satellitePassesTitle} (${allPasses.length})',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: AppColors.textPrimary,
                           fontWeight: FontWeight.w600,
