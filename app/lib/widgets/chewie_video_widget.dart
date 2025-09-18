@@ -48,85 +48,19 @@ class _ChewieVideoWidgetState extends State<ChewieVideoWidget> {
         _videoController = VideoPlayerController.file(widget.videoFile!);
       } else {
         debugPrint('🎥 CHEWIE: Initializing with network URL: ${widget.videoUrl!}');
-        _videoController = VideoPlayerController.networkUrl(
-          Uri.parse(widget.videoUrl!),
-          // Add headers for better compatibility
-          httpHeaders: {
-            'User-Agent': 'UFOBeep-Mobile/1.0',
-            'Accept': 'video/mp4,video/*,*/*',
-          },
-        );
+        _videoController = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl!));
       }
 
       debugPrint('🎥 CHEWIE: Starting video controller initialization...');
       await _videoController!.initialize();
 
-      // Create chewie controller with optimized settings for large files
+      // Create simple chewie controller (minimal configuration)
       _chewieController = ChewieController(
         videoPlayerController: _videoController!,
         autoPlay: widget.autoPlay,
         looping: false,
         showControls: widget.showControls,
-        allowFullScreen: true,
-        allowMuting: true,
-        showControlsOnInitialize: true,
-        // Optimizations for large files
-        materialProgressColors: ChewieProgressColors(
-          playedColor: AppColors.brandPrimary,
-          handleColor: AppColors.brandPrimary,
-          backgroundColor: AppColors.textTertiary.withOpacity(0.3),
-          bufferedColor: AppColors.textTertiary.withOpacity(0.6),
-        ),
-        placeholder: Container(
-          color: AppColors.darkSurface,
-          child: const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(color: AppColors.brandPrimary),
-                SizedBox(height: 12),
-                Text(
-                  'Loading video...',
-                  style: TextStyle(color: AppColors.textSecondary),
-                ),
-              ],
-            ),
-          ),
-        ),
-        errorBuilder: (context, errorMessage) {
-          return Container(
-            color: AppColors.darkSurface,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.error_outline,
-                    color: AppColors.semanticError,
-                    size: 48,
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    'Video failed to load',
-                    style: const TextStyle(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    errorMessage,
-                    style: const TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 12,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
+        allowFullScreen: false,  // Disable fullscreen to avoid conflicts
       );
 
       if (mounted) {
