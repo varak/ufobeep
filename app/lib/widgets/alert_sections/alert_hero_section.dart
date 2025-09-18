@@ -62,9 +62,23 @@ class AlertHeroSection extends StatelessWidget {
 
                           // Generate proper translated title
                           final caseNumber = alert.enrichment?['mufon_case_number'];
-                          final title = caseNumber != null
-                            ? l10n.mufonCaseTitle(caseNumber)
-                            : 'UFOBeep ${l10n.ufo} ${l10n.alert}';
+                          String title;
+
+                          if (caseNumber != null) {
+                            // For MUFON alerts, try to get classification first
+                            final classification = alert.enrichment?['classification']?.toString().toLowerCase().trim()
+                                ?? alert.enrichment?['ufo_type']?.toString().toLowerCase().trim();
+
+                            if (classification != null && classification.isNotEmpty) {
+                              // Use classification-aware title format
+                              title = l10n.mufonTitleFormat(classification);
+                            } else {
+                              // Fallback to case title only
+                              title = l10n.mufonCaseTitle(caseNumber);
+                            }
+                          } else {
+                            title = 'UFOBeep ${l10n.ufo} ${l10n.alert}';
+                          }
 
                           return Text(
                             title,
@@ -213,9 +227,23 @@ class AlertHeroSection extends StatelessWidget {
                     final l10n = AppLocalizations.of(context)!;
 
                     final caseNumber = alert.enrichment?['mufon_case_number'];
-                    final title = caseNumber != null
-                      ? l10n.mufonCaseTitle(caseNumber)
-                      : 'UFOBeep ${l10n.ufo} ${l10n.alert}';
+                    String title;
+
+                    if (caseNumber != null) {
+                      // For MUFON alerts, try to get classification first
+                      final classification = alert.enrichment?['classification']?.toString().toLowerCase().trim()
+                          ?? alert.enrichment?['ufo_type']?.toString().toLowerCase().trim();
+
+                      if (classification != null && classification.isNotEmpty) {
+                        // Use classification-aware title format
+                        title = l10n.mufonTitleFormat(classification);
+                      } else {
+                        // Fallback to case title only
+                        title = l10n.mufonCaseTitle(caseNumber);
+                      }
+                    } else {
+                      title = 'UFOBeep ${l10n.ufo} ${l10n.alert}';
+                    }
 
                     return Text(
                       title,
