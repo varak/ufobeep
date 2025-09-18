@@ -48,7 +48,7 @@ dependencies:
   gal: ^2.3.0
   audioplayers: ^6.0.0  # <-- Audio playback for Phase 0 alert sounds
   video_player: ^2.9.2  # <-- Video playback for composition screen
-  better_player: ^0.0.86  # <-- Enhanced video player with better codec support and lower overhead
+  better_player: ^0.0.84  # <-- Enhanced video player with better codec support and lower overhead
   timeago: ^3.7.0       # <-- Time formatting for comments
   
   # Permissions
