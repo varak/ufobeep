@@ -95,10 +95,14 @@ class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
   }
 
   void _toggleFullscreen() {
-    // This would typically navigate to a fullscreen player route
-    // For now, just show a placeholder
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Fullscreen mode')),
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => FullscreenVideoPlayer(
+          controller: _controller!,
+          videoUrl: widget.videoUrl,
+          videoFile: widget.videoFile,
+        ),
+      ),
     );
   }
 
@@ -292,5 +296,164 @@ class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
         ),
       ),
     );
+  }
+}
+
+class FullscreenVideoPlayer extends StatefulWidget {
+  final VideoPlayerController controller;
+  final String? videoUrl;
+  final File? videoFile;
+
+  const FullscreenVideoPlayer({
+    super.key,
+    required this.controller,
+    this.videoUrl,
+    this.videoFile,
+  });
+
+  @override
+  State<FullscreenVideoPlayer> createState() => _FullscreenVideoPlayerState();
+}
+
+class _FullscreenVideoPlayerState extends State<FullscreenVideoPlayer> {
+  bool _showControls = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: GestureDetector(
+        onTap: () {
+          setState(() {
+            _showControls = !_showControls;
+          });
+        },
+        child: Stack(
+          children: [
+            // Full screen video
+            Center(
+              child: AspectRatio(
+                aspectRatio: widget.controller.value.aspectRatio,
+                child: VideoPlayer(widget.controller),
+              ),
+            ),
+
+            // Controls overlay
+            if (_showControls)
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.black.withOpacity(0.7),
+                        Colors.transparent,
+                        Colors.black.withOpacity(0.7),
+                      ],
+                      stops: const [0.0, 0.5, 1.0],
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      // Top controls
+                      SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.arrow_back, color: Colors.white, size: 32),
+                                onPressed: () => Navigator.of(context).pop(),
+                              ),
+                              const Spacer(),
+                              IconButton(
+                                icon: const Icon(Icons.fullscreen_exit, color: Colors.white, size: 32),
+                                onPressed: () => Navigator.of(context).pop(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      const Spacer(),
+
+                      // Center play/pause button
+                      Center(
+                        child: IconButton(
+                          iconSize: 80,
+                          icon: Icon(
+                            widget.controller.value.isPlaying ? Icons.pause_circle_filled : Icons.play_circle_filled,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            if (widget.controller.value.isPlaying) {
+                              widget.controller.pause();
+                            } else {
+                              widget.controller.play();
+                            }
+                            setState(() {});
+                          },
+                        ),
+                      ),
+
+                      const Spacer(),
+
+                      // Bottom controls
+                      SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  widget.controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                                  color: Colors.white,
+                                  size: 32,
+                                ),
+                                onPressed: () {
+                                  if (widget.controller.value.isPlaying) {
+                                    widget.controller.pause();
+                                  } else {
+                                    widget.controller.play();
+                                  }
+                                  setState(() {});
+                                },
+                              ),
+                              Expanded(
+                                child: VideoProgressIndicator(
+                                  widget.controller,
+                                  allowScrubbing: true,
+                                  colors: const VideoProgressColors(
+                                    playedColor: AppColors.brandPrimary,
+                                    bufferedColor: Colors.grey,
+                                    backgroundColor: Colors.white24,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Text(
+                                '${_formatDuration(widget.controller.value.position)} / ${_formatDuration(widget.controller.value.duration)}',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+    return '$minutes:$seconds';
   }
 }

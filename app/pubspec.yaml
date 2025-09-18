@@ -5,7 +5,7 @@ description: "UFOBeep - Real-time sighting alert system"
 publish_to: 'none'
 
 # App version and build number
-version: 1.0.0-beta.8+151
+version: 1.0.0-beta.8+154
 
 environment:
   sdk: ^3.8.1
@@ -48,7 +48,7 @@ dependencies:
   gal: ^2.3.0
   audioplayers: ^6.0.0  # <-- Audio playback for Phase 0 alert sounds
   video_player: ^2.9.2  # <-- Video playback for composition screen
-  better_player_plus: ^1.0.8  # <-- Maintained fork with better codec support
+# better_player_plus: ^1.0.8  # <-- Replaced with native video_player for tablet compatibility
   timeago: ^3.7.0       # <-- Time formatting for comments
   
   # Permissions
