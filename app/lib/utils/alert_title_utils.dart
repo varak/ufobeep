@@ -22,8 +22,8 @@ abstract class AlertTitleUtils {
         }
         return 'MUFON ${l10n.sightingReport}';
       } else {
-        // Fallback to case title
-        return l10n.mufonCaseTitle(caseNumber);
+        // Use generic title for unknown/low confidence (no case number in hero)
+        return 'MUFON ${l10n.sightingReport}';
       }
     }
 
