@@ -48,7 +48,7 @@ dependencies:
   gal: ^2.3.0
   audioplayers: ^6.0.0  # <-- Audio playback for Phase 0 alert sounds
   video_player: ^2.9.2  # <-- Video playback for composition screen
-  better_player_plus: ^0.0.6  # <-- Maintained fork with better codec support
+  better_player_plus: ^1.0.8  # <-- Maintained fork with better codec support
   timeago: ^3.7.0       # <-- Time formatting for comments
   
   # Permissions
