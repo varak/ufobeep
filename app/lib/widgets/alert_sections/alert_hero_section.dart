@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import '../../providers/alerts_provider.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/alert_title_utils.dart';
 import '../video_player_widget.dart';
 import '../glass_card.dart';
 
@@ -60,44 +61,8 @@ class AlertHeroSection extends StatelessWidget {
                         builder: (context) {
                           final l10n = AppLocalizations.of(context)!;
 
-                          // Generate proper translated title
-                          final caseNumber = alert.enrichment?['mufon_case_number'];
-                          String title;
-
-                          if (caseNumber != null) {
-                            // For MUFON alerts, try to get classification first
-                            String? classification;
-
-                            // Try to extract clean classification from various fields
-                            final enrichment = alert.enrichment;
-                            if (enrichment != null) {
-                              // Try ufo_type first (simpler field)
-                              classification = enrichment['ufo_type']?.toString().toLowerCase().trim();
-
-                              // If no ufo_type, try to parse classification field
-                              if (classification == null || classification.isEmpty) {
-                                final classField = enrichment['classification'];
-                                if (classField is String) {
-                                  // Extract just the type if it's a formatted string like "type: sphere"
-                                  final match = RegExp(r'type:\s*(\w+)').firstMatch(classField);
-                                  classification = match?.group(1)?.toLowerCase().trim() ?? classField.toLowerCase().trim();
-                                } else if (classField is Map) {
-                                  // If it's a complex object, try to extract 'type' field
-                                  classification = classField['type']?.toString().toLowerCase().trim();
-                                }
-                              }
-                            }
-
-                            if (classification != null && classification.isNotEmpty) {
-                              // Use classification-aware title format
-                              title = l10n.mufonTitleFormat(classification);
-                            } else {
-                              // Fallback to case title only
-                              title = l10n.mufonCaseTitle(caseNumber);
-                            }
-                          } else {
-                            title = 'UFOBeep ${l10n.ufo} ${l10n.alert}';
-                          }
+                          // Use the same title generation logic as alert cards
+                          final title = AlertTitleUtils.getDynamicTitle(l10n, alert);
 
                           return Text(
                             title,
@@ -245,43 +210,8 @@ class AlertHeroSection extends StatelessWidget {
                   builder: (context) {
                     final l10n = AppLocalizations.of(context)!;
 
-                    final caseNumber = alert.enrichment?['mufon_case_number'];
-                    String title;
-
-                    if (caseNumber != null) {
-                      // For MUFON alerts, try to get classification first
-                      String? classification;
-
-                      // Try to extract clean classification from various fields
-                      final enrichment = alert.enrichment;
-                      if (enrichment != null) {
-                        // Try ufo_type first (simpler field)
-                        classification = enrichment['ufo_type']?.toString().toLowerCase().trim();
-
-                        // If no ufo_type, try to parse classification field
-                        if (classification == null || classification.isEmpty) {
-                          final classField = enrichment['classification'];
-                          if (classField is String) {
-                            // Extract just the type if it's a formatted string like "type: sphere"
-                            final match = RegExp(r'type:\s*(\w+)').firstMatch(classField);
-                            classification = match?.group(1)?.toLowerCase().trim() ?? classField.toLowerCase().trim();
-                          } else if (classField is Map) {
-                            // If it's a complex object, try to extract 'type' field
-                            classification = classField['type']?.toString().toLowerCase().trim();
-                          }
-                        }
-                      }
-
-                      if (classification != null && classification.isNotEmpty) {
-                        // Use classification-aware title format
-                        title = l10n.mufonTitleFormat(classification);
-                      } else {
-                        // Fallback to case title only
-                        title = l10n.mufonCaseTitle(caseNumber);
-                      }
-                    } else {
-                      title = 'UFOBeep ${l10n.ufo} ${l10n.alert}';
-                    }
+                    // Use the same title generation logic as alert cards
+                    final title = AlertTitleUtils.getDynamicTitle(l10n, alert);
 
                     return Text(
                       title,

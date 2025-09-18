@@ -123,13 +123,30 @@ abstract class AlertTitleUtils {
     if (classification == null || classification.isEmpty) {
       final classField = enrichment['classification'];
       if (classField is String) {
+        // Clean the string first - remove HTML tags and decode entities
+        String cleanField = classField
+            .replaceAll(RegExp(r'<[^>]*>'), '') // Remove HTML tags
+            .replaceAll('&lt;', '<')
+            .replaceAll('&gt;', '>')
+            .replaceAll('&amp;', '&')
+            .replaceAll('&quot;', '"')
+            .replaceAll('&#39;', "'");
+
         // Extract just the type if it's a formatted string like "type: sphere"
-        final match = RegExp(r'type:\s*(\w+)').firstMatch(classField);
-        classification = match?.group(1)?.toLowerCase().trim() ?? classField.toLowerCase().trim();
+        final match = RegExp(r'type:\s*(\w+)').firstMatch(cleanField);
+        classification = match?.group(1)?.toLowerCase().trim() ?? cleanField.toLowerCase().trim();
       } else if (classField is Map) {
         // If it's a complex object, try to extract 'type' field
         classification = classField['type']?.toString().toLowerCase().trim();
       }
+    }
+
+    // Clean the final classification of any remaining HTML or special chars
+    if (classification != null) {
+      classification = classification
+          .replaceAll(RegExp(r'<[^>]*>'), '') // Remove HTML tags
+          .replaceAll(RegExp(r'[^\w\s]'), '') // Remove special chars except word chars and spaces
+          .trim();
     }
 
     return classification;
