@@ -3,7 +3,7 @@ import '../../l10n/app_localizations.dart';
 import '../../providers/alerts_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/alert_title_utils.dart';
-import '../chewie_video_widget.dart';
+import '../better_player_widget.dart';
 import '../glass_card.dart';
 
 class AlertHeroSection extends StatelessWidget {
@@ -424,9 +424,9 @@ class AlertHeroSection extends StatelessWidget {
       );
     }
 
-    // For videos, use the ChewieVideoWidget with enhanced streaming
+    // For videos, use the BetterPlayerWidget with enhanced codec support
     if (apiType == 'video') {
-      return ChewieVideoWidget(
+      return BetterPlayerWidget(
         videoUrl: mediaUrl,
         width: double.infinity,
         height: double.infinity,
