@@ -5,7 +5,7 @@ import '../../theme/app_theme.dart';
 import '../../utils/alert_title_utils.dart';
 import '../better_player_widget.dart';
 import '../glass_card.dart';
-import '../shared_media_gallery.dart';
+import '../simple_media_gallery.dart';
 
 class AlertHeroSection extends StatelessWidget {
   const AlertHeroSection({
@@ -292,10 +292,8 @@ class AlertHeroSection extends StatelessWidget {
           bottomLeft: Radius.circular(16),
           bottomRight: Radius.circular(16),
         ),
-        child: SharedMediaGallery(
+        child: SimpleMediaGallery(
           items: mediaItems,
-          enableDeepLinking: true,
-          enableKeyboardNav: true,
           enableLazyLoading: true,
         ),
       ),

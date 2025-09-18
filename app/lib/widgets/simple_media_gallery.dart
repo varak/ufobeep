@@ -1,110 +1,78 @@
-import 'dart:convert';
-import 'dart:html' as html;
-import 'dart:js' as js;
 import 'package:flutter/material.dart';
 import 'better_player_widget.dart';
 
-/// Shared media gallery widget that uses the same core logic as web
-/// Bridges to JavaScript MediaGalleryCore for consistency
-class SharedMediaGallery extends StatefulWidget {
+/// Simple media gallery widget for mobile Flutter app
+/// Displays media items in a grid with fullscreen viewer
+class SimpleMediaGallery extends StatefulWidget {
   final List<MediaItem> items;
-  final bool enableDeepLinking;
-  final bool enableKeyboardNav;
   final bool enableLazyLoading;
-  final String? className;
   final Function(MediaItem, int)? onMediaOpen;
   final Function()? onMediaClose;
   final Function(MediaItem, int)? onMediaChange;
 
-  const SharedMediaGallery({
+  const SimpleMediaGallery({
     super.key,
     required this.items,
-    this.enableDeepLinking = true,
-    this.enableKeyboardNav = true,
     this.enableLazyLoading = true,
-    this.className,
     this.onMediaOpen,
     this.onMediaClose,
     this.onMediaChange,
   });
 
   @override
-  State<SharedMediaGallery> createState() => _SharedMediaGalleryState();
+  State<SimpleMediaGallery> createState() => _SimpleMediaGalleryState();
 }
 
-class _SharedMediaGalleryState extends State<SharedMediaGallery> {
-  late js.JsObject _galleryCore;
+class _SimpleMediaGalleryState extends State<SimpleMediaGallery> {
   int? _currentIndex;
   bool _isFullscreen = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _initializeGalleryCore();
-  }
-
-  void _initializeGalleryCore() {
-    final config = {
-      'items': widget.items.map((item) => item.toJson()).toList(),
-      'enableDeepLinking': widget.enableDeepLinking,
-      'enableKeyboardNav': widget.enableKeyboardNav,
-      'enableLazyLoading': widget.enableLazyLoading,
-      'thumbnailCols': {
-        'mobile': 2,
-        'tablet': 3,
-        'desktop': 4,
-      },
-    };
-
-    final callbacks = js.JsObject.jsify({
-      'onMediaOpen': (item, index) {
-        setState(() {
-          _currentIndex = index;
-          _isFullscreen = true;
-        });
-        widget.onMediaOpen?.call(MediaItem.fromJson(item), index);
-      },
-      'onMediaClose': () {
-        setState(() {
-          _currentIndex = null;
-          _isFullscreen = false;
-        });
-        widget.onMediaClose?.call();
-      },
-      'onMediaChange': (item, index) {
-        setState(() {
-          _currentIndex = index;
-        });
-        widget.onMediaChange?.call(MediaItem.fromJson(item), index);
-      },
+  void _openMedia(int index) {
+    setState(() {
+      _currentIndex = index;
+      _isFullscreen = true;
     });
 
-    // Initialize the JavaScript MediaGalleryCore
-    _galleryCore = js.JsObject(
-      js.context['MediaGalleryCore'],
-      [js.JsObject.jsify(config), callbacks]
-    );
-  }
-
-  void _openMedia(int index) {
-    _galleryCore.callMethod('openMedia', [index]);
+    final item = widget.items[index];
+    widget.onMediaOpen?.call(item, index);
+    widget.onMediaChange?.call(item, index);
   }
 
   void _closeMedia() {
-    _galleryCore.callMethod('closeMedia');
+    setState(() {
+      _currentIndex = null;
+      _isFullscreen = false;
+    });
+    widget.onMediaClose?.call();
   }
 
   void _nextMedia() {
-    _galleryCore.callMethod('nextMedia');
+    if (_currentIndex == null || _currentIndex! >= widget.items.length - 1) return;
+
+    final newIndex = _currentIndex! + 1;
+    setState(() {
+      _currentIndex = newIndex;
+    });
+
+    final item = widget.items[newIndex];
+    widget.onMediaChange?.call(item, newIndex);
   }
 
   void _prevMedia() {
-    _galleryCore.callMethod('prevMedia');
+    if (_currentIndex == null || _currentIndex! <= 0) return;
+
+    final newIndex = _currentIndex! - 1;
+    setState(() {
+      _currentIndex = newIndex;
+    });
+
+    final item = widget.items[newIndex];
+    widget.onMediaChange?.call(item, newIndex);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
         // Thumbnail grid
         _buildThumbnailGrid(),
@@ -179,6 +147,16 @@ class _SharedMediaGalleryState extends State<SharedMediaGallery> {
                         Image.network(
                           item.thumbnail ?? item.url,
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              color: Colors.grey[800],
+                              child: const Icon(
+                                Icons.videocam,
+                                color: Colors.white,
+                                size: 32,
+                              ),
+                            );
+                          },
                         ),
                         const Center(
                           child: Icon(
@@ -193,10 +171,12 @@ class _SharedMediaGalleryState extends State<SharedMediaGallery> {
 
             // Hover overlay
             Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
                   borderRadius: BorderRadius.circular(8),
-                  color: Colors.black.withOpacity(0.1),
+                  onTap: () => _openMedia(index),
+                  child: Container(),
                 ),
               ),
             ),
@@ -226,17 +206,44 @@ class _SharedMediaGalleryState extends State<SharedMediaGallery> {
             Center(
               child: Container(
                 constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.9,
+                  maxWidth: MediaQuery.of(context).size.width * 0.95,
                   maxHeight: MediaQuery.of(context).size.height * 0.9,
                 ),
                 child: item.type == 'image'
-                    ? Image.network(
-                        item.url,
-                        fit: BoxFit.contain,
+                    ? InteractiveViewer(
+                        child: Image.network(
+                          item.url,
+                          fit: BoxFit.contain,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return const Center(
+                              child: CircularProgressIndicator(color: Colors.white),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.error, color: Colors.white, size: 48),
+                                  SizedBox(height: 16),
+                                  Text(
+                                    'Failed to load image',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                       )
                     : AspectRatio(
                         aspectRatio: 16 / 9,
-                        child: VideoPlayerWidget(videoUrl: item.url),
+                        child: BetterPlayerWidget(
+                          videoUrl: item.url,
+                          autoPlay: true,
+                          showControls: true,
+                        ),
                       ),
               ),
             ),
@@ -248,11 +255,15 @@ class _SharedMediaGalleryState extends State<SharedMediaGallery> {
                 Positioned(
                   left: 16,
                   top: MediaQuery.of(context).size.height / 2 - 24,
-                  child: IconButton(
-                    onPressed: _prevMedia,
-                    icon: const Icon(Icons.chevron_left, size: 48, color: Colors.white),
-                    style: IconButton.styleFrom(
-                      backgroundColor: Colors.black54,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black54,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: IconButton(
+                      onPressed: _prevMedia,
+                      icon: const Icon(Icons.chevron_left, size: 32, color: Colors.white),
+                      padding: const EdgeInsets.all(12),
                     ),
                   ),
                 ),
@@ -262,11 +273,15 @@ class _SharedMediaGalleryState extends State<SharedMediaGallery> {
                 Positioned(
                   right: 16,
                   top: MediaQuery.of(context).size.height / 2 - 24,
-                  child: IconButton(
-                    onPressed: _nextMedia,
-                    icon: const Icon(Icons.chevron_right, size: 48, color: Colors.white),
-                    style: IconButton.styleFrom(
-                      backgroundColor: Colors.black54,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black54,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: IconButton(
+                      onPressed: _nextMedia,
+                      icon: const Icon(Icons.chevron_right, size: 32, color: Colors.white),
+                      padding: const EdgeInsets.all(12),
                     ),
                   ),
                 ),
@@ -276,11 +291,15 @@ class _SharedMediaGalleryState extends State<SharedMediaGallery> {
             Positioned(
               top: MediaQuery.of(context).padding.top + 16,
               right: 16,
-              child: IconButton(
-                onPressed: _closeMedia,
-                icon: const Icon(Icons.close, size: 32, color: Colors.white),
-                style: IconButton.styleFrom(
-                  backgroundColor: Colors.black54,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black54,
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: IconButton(
+                  onPressed: _closeMedia,
+                  icon: const Icon(Icons.close, size: 24, color: Colors.white),
+                  padding: const EdgeInsets.all(12),
                 ),
               ),
             ),
@@ -356,22 +375,6 @@ class MediaItem {
       alt: json['alt'],
       width: json['width'],
       height: json['height'],
-    );
-  }
-}
-
-// Video player widget using the existing BetterPlayerWidget
-class VideoPlayerWidget extends StatelessWidget {
-  final String videoUrl;
-
-  const VideoPlayerWidget({super.key, required this.videoUrl});
-
-  @override
-  Widget build(BuildContext context) {
-    return BetterPlayerWidget(
-      videoUrl: videoUrl,
-      autoPlay: true,
-      showControls: true,
     );
   }
 }
