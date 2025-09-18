@@ -122,7 +122,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
     if (!alert.description) return ''
     
     // For MUFON alerts, remove the duplicate metadata section
-    if (alert.source === 'mufon' || alert.reporter_username === 'MUFON') {
+    if (alert.source === 'mufon' || alert.username === 'MUFON') {
       return alert.description.split('━━━━━━━━━━━━━━━━━━━━━━━━')[0].trim()
     }
     
@@ -144,7 +144,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
 
   return (
     <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
-      {alert.reporter_username !== 'MUFON' && (
+      {alert.username !== 'MUFON' && (
         <div className="flex items-center gap-2 mb-4">
           <span className="text-brand-primary">ℹ️</span>
           <h2 className="text-lg font-semibold text-brand-primary">{t('detailsTitle')}</h2>
@@ -168,7 +168,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
       {alert.description && (
         <div className="mb-6">
           {/* MUFON attribution with case number */}
-          {alert.reporter_username === 'MUFON' && (
+          {alert.username === 'MUFON' && (
             <div className="mb-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
               <div className="flex items-center gap-2">
                 <span className="text-blue-400">🛸</span>
@@ -191,7 +191,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
       )}
 
       {/* Time - Show MUFON times if available, otherwise show UFOBeep time */}
-      {(alert.source === 'mufon' || alert.reporter_username === 'MUFON') ? (
+      {(alert.source === 'mufon' || alert.username === 'MUFON') ? (
         <div className="flex items-start gap-3 mb-4">
           <span className="text-text-tertiary mt-0.5">📅</span>
           <div className="flex-1">
@@ -246,7 +246,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
             <span className="text-text-primary text-sm">
               {(() => {
                 // Clean up location name to avoid duplication
-                let locationName = alert.reporter_username === 'MUFON'
+                let locationName = alert.username === 'MUFON'
                   ? (alert.enrichment?.geocoding?.display_name ||
                      alert.enrichment?.geocoding?.location ||
                      alert.enrichment?.location_raw ||
