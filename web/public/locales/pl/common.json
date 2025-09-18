@@ -434,6 +434,6 @@
   "errorNotFound": "Beep nie znaleziono",
   "errorLoadError": "Nie udało się wczytać szczegółów sygnału",
   "addedToUfobeep": "Dodano do UFOBeep",
-  "mufonDatabaseReport": "MUFON Sprawozdanie z bazy danych",
+  "mufonDatabaseReport": "MUFON Numer sprawy:",
   "failed": "Nieudany"
 }

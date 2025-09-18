@@ -434,6 +434,6 @@
   "errorNotFound": "Beep hittades inte",
   "errorLoadError": "Misslyckades med att ladda beep detaljer",
   "addedToUfobeep": "Tillagd till UFOBeep",
-  "mufonDatabaseReport": "Mufonen Databasrapport",
+  "mufonDatabaseReport": "Mufonen Fallnummer:",
   "failed": "Misslyckades"
 }

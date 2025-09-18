@@ -434,6 +434,6 @@
   "errorNotFound": "Piip ei löytynyt",
   "errorLoadError": "Piippauksen yksityiskohtia ei voitu ladata",
   "addedToUfobeep": "Lisätty UFO- piippiin",
-  "mufonDatabaseReport": "MUFON Tietokantaraportti",
+  "mufonDatabaseReport": "MUFON Tapausnumero:",
   "failed": "Ei onnistunut"
 }

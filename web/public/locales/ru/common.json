@@ -434,6 +434,6 @@
   "errorNotFound": "Бип не найден",
   "errorLoadError": "Не удалось загрузить детали звукового сигнала",
   "addedToUfobeep": "Добавлено в UFOBeep",
-  "mufonDatabaseReport": "МУФОН Отчет о базе данных",
+  "mufonDatabaseReport": "МУФОН Номер дела:",
   "failed": "Неудачник"
 }
