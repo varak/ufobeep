@@ -3,6 +3,7 @@ import '../../l10n/app_localizations.dart';
 import '../../providers/alerts_provider.dart';
 import '../../theme/app_theme.dart';
 import '../video_player_widget.dart';
+import '../glass_card.dart';
 
 class AlertHeroSection extends StatelessWidget {
   const AlertHeroSection({
@@ -25,14 +26,7 @@ class AlertHeroSection extends StatelessWidget {
   }
 
   Widget _buildFullHero() {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.darkSurface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: AppColors.brandPrimary.withOpacity(0.2),
-        ),
-      ),
+    return GlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -165,15 +159,8 @@ class AlertHeroSection extends StatelessWidget {
   }
 
   Widget _buildCompactHero() {
-    return Container(
+    return GlassCard(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.darkSurface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.brandPrimary.withOpacity(0.1),
-        ),
-      ),
       child: Row(
         children: [
           // Compact UFO icon
@@ -196,15 +183,30 @@ class AlertHeroSection extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  alert.title,
-                  style: const TextStyle(
-                    color: AppColors.textPrimary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                Builder(
+                  builder: (context) {
+                    final l10n = AppLocalizations.of(context)!;
+
+                    // Generate proper translated title for compact view
+                    String title;
+                    if (alert.source == 'mufon' || alert.reporterUsername == 'MUFON') {
+                      title = 'MUFON ${l10n.sightingReport}';
+                    } else {
+                      // UFOBeep alert - show "UFOBeep UFO Alert"
+                      title = 'UFOBeep ${l10n.ufo} ${l10n.alert}';
+                    }
+
+                    return Text(
+                      title,
+                      style: const TextStyle(
+                        color: AppColors.textPrimary,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    );
+                  },
                 ),
                 const SizedBox(height: 4),
                 Builder(
