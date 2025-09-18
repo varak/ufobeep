@@ -115,7 +115,7 @@ export function generateAlertArticleStructuredData(alert: {
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: AlertTitleUtils.getContextualTitle(alert),
+    headline: alert.title || 'UFO Sighting',
     description: alert.description || 'UFO sighting captured with UFOBeep',
     datePublished: alert.created_at,
     dateModified: alert.created_at,
