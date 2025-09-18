@@ -130,7 +130,8 @@ class AlertDetailsSection extends StatelessWidget {
             _buildDetailRow(
               Icons.person,
               AppLocalizations.of(context)!.reportedByLabel,
-              alert.reporterUsername ?? alert.username ?? 'Anonymous',
+              (alert.reporterUsername?.isNotEmpty == true) ? alert.reporterUsername! :
+              (alert.username?.isNotEmpty == true) ? alert.username! : 'Anonymous',
               subtitle: null,
             ),
             
