@@ -126,8 +126,8 @@ class AlertDetailsSection extends StatelessWidget {
               subtitle: _formatFullDateTime(alert.createdAt),
             ),
 
-            // Reporter info - same logic as alerts list
-            if (alert.reporterUsername != null)
+            // Reporter info - only for UFOBeep user-generated alerts
+            if (alert.reporterUsername != null && alert.source == 'ufobeep')
               _buildDetailRow(
                 Icons.person,
                 AppLocalizations.of(context)!.reportedByLabel,
