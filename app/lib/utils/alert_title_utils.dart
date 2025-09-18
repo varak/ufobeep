@@ -13,8 +13,15 @@ abstract class AlertTitleUtils {
       String? classification = _extractCleanClassification(alert.enrichment);
 
       if (classification != null && classification.isNotEmpty) {
-        // Use classification-aware title format
-        return l10n.mufonTitleFormat(classification);
+        // Translate the classification first, then use in title format
+        final shapeKey = _getShapeTranslationKey(classification);
+        if (shapeKey != null) {
+          final translatedClassification = _getShapeTranslation(l10n, shapeKey);
+          return l10n.mufonTitleFormat(translatedClassification);
+        } else {
+          // Use raw classification if no translation found
+          return l10n.mufonTitleFormat(classification);
+        }
       } else {
         // Fallback to case title
         return l10n.mufonCaseTitle(caseNumber);
