@@ -126,14 +126,13 @@ class AlertDetailsSection extends StatelessWidget {
               subtitle: _formatFullDateTime(alert.createdAt),
             ),
             
-            // Reporter info
-            if (alert.reporterUsername != null) 
-              _buildDetailRow(
-                Icons.person,
-                AppLocalizations.of(context)!.reportedByLabel,
-                alert.reporterUsername!,
-                subtitle: null,
-              ),
+            // Reporter info - always show (use username or fallback)
+            _buildDetailRow(
+              Icons.person,
+              AppLocalizations.of(context)!.reportedByLabel,
+              alert.reporterUsername ?? alert.username ?? 'Anonymous',
+              subtitle: null,
+            ),
             
             // Witness count (if more than 1)
             if (alert.witnessCount > 1)
