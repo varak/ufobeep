@@ -398,17 +398,19 @@ async def get_alert_by_id(
                 # Check if it's a valid UUID format
                 alert_uuid = uuid_lib.UUID(alert_id)
                 query = """
-                    SELECT *
-                    FROM sightings
-                    WHERE id = $1 OR short_url = $2
+                    SELECT s.*, u.username as reporter_username
+                    FROM sightings s
+                    LEFT JOIN users u ON s.reporter_id = u.id::text
+                    WHERE s.id = $1 OR s.short_url = $2
                 """
                 row = await connection.fetchrow(query, alert_uuid, alert_id)
             except:
                 # Not a UUID, only check short_url
                 query = """
-                    SELECT *
-                    FROM sightings
-                    WHERE short_url = $1
+                    SELECT s.*, u.username as reporter_username
+                    FROM sightings s
+                    LEFT JOIN users u ON s.reporter_id = u.id::text
+                    WHERE s.short_url = $1
                 """
                 row = await connection.fetchrow(query, alert_id)
 
