@@ -41,6 +41,7 @@ class AlertDetailScreen extends ConsumerStatefulWidget {
 
 class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   String? _currentUserDeviceId;
+  String? _currentUsername;
   bool _isWitnessConfirmed = false;
   bool _isFollowing = false;
   bool _followingLoading = false;
@@ -144,17 +145,20 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       String? userId;
       try {
         userId = await userService.getCurrentUserId();
-        debugPrint('DEBUG: Loaded user ID: "$userId"');
+        final username = await userService.getCurrentUsername();
+        debugPrint('DEBUG: Loaded user ID: "$userId", username: "$username"');
+
+        if (mounted) {
+          setState(() {
+            _currentUserDeviceId = userId; // Using same variable name during transition
+            _currentUsername = username;
+          });
+          debugPrint('DEBUG: Set _currentUserDeviceId: "$_currentUserDeviceId", _currentUsername: "$_currentUsername"');
+        }
       } catch (e) {
-        debugPrint('DEBUG: Could not get user ID: $e');
-        userId = null; // Don't fallback to device ID - use null for proper filtering
+        debugPrint('DEBUG: Could not get user info: $e');
+        // Don't fallback to device ID - use null for proper filtering
       }
-      
-      if (mounted && userId != null) {
-        setState(() {
-          _currentUserDeviceId = userId; // Using same variable name during transition
-        });
-        debugPrint('DEBUG: Set _currentUserDeviceId to: "$_currentUserDeviceId"');
         
         // Check if this user is a confirmed witness
         await _checkWitnessStatus(userId);
@@ -506,11 +510,18 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                   const SizedBox(height: 24),
                 ],
 
+                // Reporter information
+                if (alert.username != null && alert.username!.isNotEmpty) ...[
+                  _buildReporterSection(alert),
+                  const SizedBox(height: 24),
+                ],
+
                 // Action buttons (including witness confirmation) - hidden for MUFON alerts
                 if (alert.source != 'mufon') ...[
                   AlertActionsSection(
                     alert: alert,
                     currentUserDeviceId: _currentUserDeviceId,
+                    currentUsername: _currentUsername,
                     onAddPhotos: () => _showAddPhotosDialog(widget.alertId),
                     onReportToMufon: () => _showMufonReportDialog(),
                     onWitnessConfirmed: (witnessCount) {
@@ -1371,5 +1382,62 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     }
   }
 
+  Widget _buildReporterSection(Alert alert) {
+    final isOwnBeep = _currentUsername != null && _currentUsername == alert.username;
 
+    return GlassCard(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          Icon(
+            isOwnBeep ? Icons.person : Icons.person_outline,
+            color: isOwnBeep ? AppColors.brandPrimary : AppColors.textSecondary,
+            size: 20,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  isOwnBeep ? 'Your Beep' : 'Reported by',
+                  style: TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  alert.username ?? 'Anonymous',
+                  style: TextStyle(
+                    color: isOwnBeep ? AppColors.brandPrimary : AppColors.textPrimary,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (isOwnBeep)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: AppColors.brandPrimary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
+              ),
+              child: Text(
+                'You',
+                style: TextStyle(
+                  color: AppColors.brandPrimary,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
 }

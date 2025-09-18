@@ -39,6 +39,7 @@ class AlertActionsSection extends StatefulWidget {
     this.onWitnessConfirmed,
     this.showAllActions = true,
     this.currentUserDeviceId,
+    this.currentUsername,
   });
 
   final Alert alert;
@@ -47,6 +48,7 @@ class AlertActionsSection extends StatefulWidget {
   final Function(int witnessCount)? onWitnessConfirmed;
   final bool showAllActions;
   final String? currentUserDeviceId;
+  final String? currentUsername;
 
   @override
   State<AlertActionsSection> createState() => _AlertActionsSectionState();
@@ -402,6 +404,18 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
   /// Check if current user is the original creator of this alert
   bool _isOriginalCreator() {
     debugPrint('DEBUG: _isOriginalCreator check');
+    debugPrint('DEBUG: currentUsername: "${widget.currentUsername}"');
+    debugPrint('DEBUG: alert.username: "${widget.alert.username}"');
+
+    // Primary method: Compare usernames (most reliable)
+    if (widget.currentUsername != null && widget.alert.username != null) {
+      final isCreatorByUsername = widget.currentUsername == widget.alert.username;
+      debugPrint('DEBUG: isCreator by username: $isCreatorByUsername');
+      return isCreatorByUsername;
+    }
+
+    // Fallback method: Compare device/reporter IDs
+    debugPrint('DEBUG: Fallback to ID comparison');
     debugPrint('DEBUG: currentUserDeviceId: "${widget.currentUserDeviceId}"');
     debugPrint('DEBUG: alert.reporterId: "${widget.alert.reporterId}"');
 
@@ -411,9 +425,9 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
       debugPrint('DEBUG: One of the IDs is null/empty, returning false');
       return false;
     }
-    
-    final isCreator = widget.currentUserDeviceId == widget.alert.reporterId;
-    debugPrint('DEBUG: isCreator result: $isCreator');
-    return isCreator;
+
+    final isCreatorById = widget.currentUserDeviceId == widget.alert.reporterId;
+    debugPrint('DEBUG: isCreator by ID: $isCreatorById');
+    return isCreatorById;
   }
 }
