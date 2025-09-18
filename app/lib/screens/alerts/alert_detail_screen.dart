@@ -511,11 +511,6 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                   const SizedBox(height: 24),
                 ],
 
-                // Reporter information
-                if (alert.username != null && alert.username!.isNotEmpty) ...[
-                  _buildReporterSection(alert),
-                  const SizedBox(height: 24),
-                ],
 
                 // Action buttons (including witness confirmation) - hidden for MUFON alerts
                 if (alert.source != 'mufon') ...[
@@ -1383,62 +1378,4 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     }
   }
 
-  Widget _buildReporterSection(Alert alert) {
-    final isOwnBeep = _currentUsername != null && _currentUsername == alert.username;
-
-    return GlassCard(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          Icon(
-            isOwnBeep ? Icons.person : Icons.person_outline,
-            color: isOwnBeep ? AppColors.brandPrimary : AppColors.textSecondary,
-            size: 20,
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  isOwnBeep ? 'Your Beep' : 'Reported by',
-                  style: TextStyle(
-                    color: AppColors.textSecondary,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  alert.username ?? 'Anonymous',
-                  style: TextStyle(
-                    color: isOwnBeep ? AppColors.brandPrimary : AppColors.textPrimary,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          if (isOwnBeep)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: AppColors.brandPrimary.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
-              ),
-              child: Text(
-                'You',
-                style: TextStyle(
-                  color: AppColors.brandPrimary,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
 }

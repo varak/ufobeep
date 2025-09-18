@@ -127,11 +127,11 @@ class AlertDetailsSection extends StatelessWidget {
             ),
 
             // Reporter info - same condition as alerts list
-            if (alert.reporterUsername != null && alert.source != 'mufon')
+            if (alert.username != null && alert.username!.isNotEmpty && alert.source != 'mufon')
               _buildDetailRow(
                 Icons.person,
                 AppLocalizations.of(context)!.reportedByLabel,
-                alert.reporterUsername!,
+                alert.username!,
                 subtitle: null,
               ),
             
