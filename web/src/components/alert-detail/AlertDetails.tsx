@@ -11,7 +11,6 @@ interface Alert {
   description: string
   created_at: string
   occurred_at?: string
-  reporter_username?: string
   username?: string
   source?: string
   location: {
@@ -152,18 +151,16 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
         </div>
       )}
 
-      {/* Reporter section - only for UFOBeep reports with reporter_username */}
-      {isUfoBeepReport && alert.username && (
-        <div className="flex items-start gap-3 mb-4">
-          <span className="text-text-tertiary mt-0.5">👤</span>
-          <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <span className="text-text-tertiary text-sm font-medium">{t('reporterLabel')}:</span>
-              <span className="text-text-primary text-sm">{alert.username}</span>
-            </div>
+      {/* Reporter section */}
+      <div className="flex items-start gap-3 mb-4">
+        <span className="text-text-tertiary mt-0.5">👤</span>
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <span className="text-text-tertiary text-sm font-medium">Reported by:</span>
+            <span className="text-text-primary text-sm">{alert.username}</span>
           </div>
         </div>
-      )}
+      </div>
 
 
 
