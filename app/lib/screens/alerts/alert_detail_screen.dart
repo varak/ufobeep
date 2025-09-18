@@ -384,16 +384,13 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 builder: (ctx) {
                   final l10n = AppLocalizations.of(ctx)!;
 
-                  // Generate proper translated title: "UFOBeep UFO Alert" with proper translations
+                  // Generate proper translated title: "UFOBeep UFO Alert"
                   String title;
                   if (alert.source == 'mufon' || alert.reporterUsername == 'MUFON') {
                     title = 'MUFON ${l10n.sightingReport}';
-                  } else if (alert.mediaFiles.isNotEmpty) {
-                    // Media beep - show "UFOBeep UFO Alert"
-                    title = 'UFOBeep ${l10n.ufo} ${l10n.alert}';
                   } else {
-                    // Text-only beep - show "UFOBeep UFO Alert (Report Only)"
-                    title = 'UFOBeep ${l10n.ufo} ${l10n.alert} (${l10n.reportOnly})';
+                    // All UFOBeep alerts - just "UFOBeep UFO Alert"
+                    title = 'UFOBeep ${l10n.ufo} ${l10n.alert}';
                   }
 
                   return Text(title);

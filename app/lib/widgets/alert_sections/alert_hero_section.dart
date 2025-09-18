@@ -62,13 +62,28 @@ class AlertHeroSection extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        alert.title,
-                        style: const TextStyle(
-                          color: AppColors.textPrimary,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      Builder(
+                        builder: (context) {
+                          final l10n = AppLocalizations.of(context)!;
+
+                          // Generate proper translated title
+                          String title;
+                          if (alert.source == 'mufon' || alert.reporterUsername == 'MUFON') {
+                            title = 'MUFON ${l10n.sightingReport}';
+                          } else {
+                            // UFOBeep alert - show "UFOBeep UFO Alert"
+                            title = 'UFOBeep ${l10n.ufo} ${l10n.alert}';
+                          }
+
+                          return Text(
+                            title,
+                            style: const TextStyle(
+                              color: AppColors.textPrimary,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          );
+                        },
                       ),
                       const SizedBox(height: 8),
                       
@@ -83,12 +98,14 @@ class AlertHeroSection extends StatelessWidget {
                               color: AppColors.textTertiary.withOpacity(0.3),
                             ),
                           ),
-                          child: const Text(
-                            'beep only',
-                            style: TextStyle(
-                              color: AppColors.textTertiary,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
+                          child: Builder(
+                            builder: (context) => Text(
+                              AppLocalizations.of(context)!.beepOnly,
+                              style: const TextStyle(
+                                color: AppColors.textTertiary,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ),
