@@ -151,7 +151,11 @@ class AlertDetailsSection extends StatelessWidget {
               if (alert.latitude != 0.0 && alert.longitude != 0.0)
                 _buildDistanceRow(context),
             ],
-            
+
+            // Share URL section for non-MUFON reports (add spacing if location was shown)
+            if (showLocation) const SizedBox(height: 12),
+            _buildShareUrlRow(context, alert),
+
           ],
           // UFO type classification removed for MUFON reports
         ],
