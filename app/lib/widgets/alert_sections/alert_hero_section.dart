@@ -61,13 +61,10 @@ class AlertHeroSection extends StatelessWidget {
                           final l10n = AppLocalizations.of(context)!;
 
                           // Generate proper translated title
-                          String title;
-                          if (alert.source == 'mufon' || alert.reporterUsername == 'MUFON') {
-                            title = 'MUFON ${l10n.sightingReport}';
-                          } else {
-                            // UFOBeep alert - show "UFOBeep UFO Alert"
-                            title = 'UFOBeep ${l10n.ufo} ${l10n.alert}';
-                          }
+                          final caseNumber = alert.enrichment?['mufon_case_number'];
+                          final title = caseNumber != null
+                            ? l10n.mufonCaseTitle(caseNumber)
+                            : 'UFOBeep ${l10n.ufo} ${l10n.alert}';
 
                           return Text(
                             title,
@@ -215,14 +212,10 @@ class AlertHeroSection extends StatelessWidget {
                   builder: (context) {
                     final l10n = AppLocalizations.of(context)!;
 
-                    // Generate proper translated title for compact view
-                    String title;
-                    if (alert.source == 'mufon' || alert.reporterUsername == 'MUFON') {
-                      title = 'MUFON ${l10n.sightingReport}';
-                    } else {
-                      // UFOBeep alert - show "UFOBeep UFO Alert"
-                      title = 'UFOBeep ${l10n.ufo} ${l10n.alert}';
-                    }
+                    final caseNumber = alert.enrichment?['mufon_case_number'];
+                    final title = caseNumber != null
+                      ? l10n.mufonCaseTitle(caseNumber)
+                      : 'UFOBeep ${l10n.ufo} ${l10n.alert}';
 
                     return Text(
                       title,

@@ -36,23 +36,11 @@ export class AlertTitleUtils {
       return `UFOBeep ${t('ufo')} ${t('alert')}`;
     }
 
-    // Handle MUFON alerts - check for existing title first
-    if (alert.title && alert.title.trim().length > 0) {
-      // Handle MUFON titles: "MUFON Triangle Sighting" → "MUFON [Translated Shape] [Translated Sighting Report]"
-      if (alert.title.startsWith('MUFON ')) {
-        const parts = alert.title.split(' ');
-        if (parts.length >= 3) {
-          const shape = parts[1].toLowerCase();
-          const shapeKey = this.getShapeTranslationKey(shape);
-          return `MUFON ${t(shapeKey || 'mufonUnknown')} ${t('sightingReport')}`;
-        } else if (parts.length === 2 && parts[1] === 'Sighting') {
-          return `MUFON ${t('sightingReport')}`;
-        }
-      }
-
-      // Return MUFON title as-is if it exists
-      return alert.title;
-    }
+    // MUFON case number or standard title
+    const caseNumber = alert.enrichment?.mufon_case_id || alert.enrichment_data?.mufon_case_id;
+    return caseNumber
+      ? t('mufonCaseTitle', { caseNumber })
+      : `UFOBeep ${t('ufo')} ${t('alert')}`;
     
     // Check if alert has media
     const hasMedia = alert.media_files && alert.media_files.length > 0;
