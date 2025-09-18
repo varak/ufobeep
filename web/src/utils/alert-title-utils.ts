@@ -43,7 +43,7 @@ export class AlertTitleUtils {
       : `UFOBeep ${t('ufo')} ${t('alert')}`;
     
     // Check if alert has media
-    const hasMedia = alert.media_files && alert.media_files.length > 0;
+    const hasMedia = alert.media_files?.length ?? 0 > 0;
     
     // Generate contextual title based on available data
     if (hasMedia) {
