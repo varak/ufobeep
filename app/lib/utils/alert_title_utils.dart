@@ -20,7 +20,7 @@ abstract class AlertTitleUtils {
           final shapeTranslation = _getShapeTranslation(l10n, shapeKey);
           return 'MUFON $shapeTranslation ${l10n.sightingReport}';
         }
-        return l10n.mufonGenericTitle;
+        return 'MUFON ${l10n.sightingReport}';
       } else {
         // Fallback to case title
         return l10n.mufonCaseTitle(caseNumber);
