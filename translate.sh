@@ -5,6 +5,39 @@
 
 set -e
 
+# Show help if requested
+if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+    echo "🌍 UFOBeep Translation Generator"
+    echo "================================"
+    echo ""
+    echo "USAGE:"
+    echo "  ./translate.sh [options]"
+    echo ""
+    echo "OPTIONS:"
+    echo "  --help, -h           Show this help message"
+    echo "  --language=LANG      Generate specific language only (e.g., --language=fr)"
+    echo "  --english-only       Generate only English templates (fast, no translation)"
+    echo "  --no-translate       Generate all languages with English fallbacks (fast)"
+    echo ""
+    echo "EXAMPLES:"
+    echo "  ./translate.sh                    # Generate all 22 languages (full translation)"
+    echo "  ./translate.sh --language=fr      # Generate French only"
+    echo "  ./translate.sh --language=de      # Generate German only"
+    echo "  ./translate.sh --english-only     # Generate English templates only"
+    echo "  ./translate.sh --no-translate     # All languages with English fallbacks"
+    echo ""
+    echo "SUPPORTED LANGUAGES:"
+    echo "  en, es, de, fr, pt, it, ru, ja, zh, ar, nl, pl, cs, tr, ko, hi, sv, da, no, fi, el, he"
+    echo ""
+    echo "WHAT IT DOES:"
+    echo "  1. Reads English ARB file as single source of truth"
+    echo "  2. Generates translations via LibreTranslate (if available)"
+    echo "  3. Syncs mobile ARB keys to web JSON files automatically"
+    echo "  4. Updates Flutter localizations"
+    echo ""
+    exit 0
+fi
+
 echo "🌍 UFOBeep Translation Generator"
 echo "================================"
 
@@ -22,9 +55,9 @@ if [ ! -d "node_modules" ]; then
     npm install
 fi
 
-# Run translation generator
-echo "🔄 Generating all translations..."
-node scripts/generate-all-translations.js
+# Run translation generator with any passed arguments
+echo "🔄 Generating translations..."
+node scripts/generate-all-translations.js "$@"
 
 # Generate Flutter app localizations
 if [ -d "app" ]; then

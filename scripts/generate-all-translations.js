@@ -421,6 +421,7 @@ class TranslationGenerator {
       try {
         await this.generateWebLocales(langCode);
         await this.generateAppLocales(langCode);
+        await this.syncMobileToWeb(langCode);
         console.log(`✅ Completed ${langCode}\n`);
         results.success++;
       } catch (error) {
@@ -479,8 +480,50 @@ output-class: AppLocalizations
 ${flutterConfig}`;
 
     fs.writeFileSync(path.join(__dirname, '../app/l10n.yaml'), l10nYaml);
-    
+
     console.log('✅ Configuration files generated');
+  }
+
+  async syncMobileToWeb(langCode) {
+    console.log(`  🔄 Syncing mobile ARB to web JSON for ${langCode}...`);
+
+    // Read mobile ARB file
+    const mobileArbPath = path.join(APP_LOCALES_DIR, `app_${langCode}.arb`);
+    if (!fs.existsSync(mobileArbPath)) {
+      console.log(`  ⚠️  Mobile ARB not found: ${mobileArbPath}`);
+      return;
+    }
+
+    const mobileArb = JSON.parse(fs.readFileSync(mobileArbPath, 'utf8'));
+
+    // Read existing web common.json file
+    const webCommonPath = path.join(WEB_LOCALES_DIR, langCode, 'common.json');
+    let webCommon = {};
+    if (fs.existsSync(webCommonPath)) {
+      webCommon = JSON.parse(fs.readFileSync(webCommonPath, 'utf8'));
+    }
+
+    // Copy missing keys from mobile ARB to web common.json
+    let addedKeys = 0;
+    for (const [key, value] of Object.entries(mobileArb)) {
+      // Skip metadata keys that start with @
+      if (key.startsWith('@') || key === '@@locale') continue;
+
+      // If key doesn't exist in web common.json, add it
+      if (!webCommon.hasOwnProperty(key)) {
+        webCommon[key] = value;
+        addedKeys++;
+      }
+    }
+
+    // Write updated web common.json
+    fs.writeFileSync(webCommonPath, JSON.stringify(webCommon, null, 2) + '\n');
+
+    if (addedKeys > 0) {
+      console.log(`  ✅ Synced ${addedKeys} missing keys to web/common.json`);
+    } else {
+      console.log(`  ✅ Web translations already up to date`);
+    }
   }
 }
 
