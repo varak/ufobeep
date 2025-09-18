@@ -132,9 +132,19 @@ abstract class AlertTitleUtils {
             .replaceAll('&quot;', '"')
             .replaceAll('&#39;', "'");
 
-        // Extract just the type if it's a formatted string like "type: sphere"
-        final match = RegExp(r'type:\s*(\w+)').firstMatch(cleanField);
-        classification = match?.group(1)?.toLowerCase().trim() ?? cleanField.toLowerCase().trim();
+        // Extract just the type from various formats:
+        // - "type: sphere" format
+        // - JSON-like "{type: sphere, keywords: [orbs]}" format
+        final typeColonMatch = RegExp(r'type:\s*(\w+)').firstMatch(cleanField);
+        final typeBraceMatch = RegExp(r'\{type:\s*(\w+)').firstMatch(cleanField);
+
+        if (typeColonMatch != null) {
+          classification = typeColonMatch.group(1)?.toLowerCase().trim();
+        } else if (typeBraceMatch != null) {
+          classification = typeBraceMatch.group(1)?.toLowerCase().trim();
+        } else {
+          classification = cleanField.toLowerCase().trim();
+        }
       } else if (classField is Map) {
         // If it's a complex object, try to extract 'type' field
         classification = classField['type']?.toString().toLowerCase().trim();
