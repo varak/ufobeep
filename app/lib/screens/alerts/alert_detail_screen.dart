@@ -382,10 +382,21 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             appBar: AppBar(
               title: Builder(
                 builder: (ctx) {
-                  final raw = AlertTitleUtils.getContextualTitleFromAlert(alert);
-                  final l10n = AppLocalizations.of(ctx);
-                  final display = raw == 'UFO Sighting' ? l10n!.ufoSighting : raw;
-                  return Text(display);
+                  final l10n = AppLocalizations.of(ctx)!;
+
+                  // Generate proper translated title: "UFOBeep UFO Alert" with proper translations
+                  String title;
+                  if (alert.source == 'mufon' || alert.reporterUsername == 'MUFON') {
+                    title = 'MUFON ${l10n.sightingReport}';
+                  } else if (alert.mediaFiles.isNotEmpty) {
+                    // Media beep - show "UFOBeep UFO Alert"
+                    title = 'UFOBeep ${l10n.ufo} ${l10n.alert}';
+                  } else {
+                    // Text-only beep - show "UFOBeep UFO Alert (Report Only)"
+                    title = 'UFOBeep ${l10n.ufo} ${l10n.alert} (${l10n.reportOnly})';
+                  }
+
+                  return Text(title);
                 },
               ),
               backgroundColor: Colors.transparent,
