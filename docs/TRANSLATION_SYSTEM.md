@@ -1,15 +1,17 @@
 # UFOBeep Translation System
 
-**Last Updated**: September 11, 2025  
+**Last Updated**: September 17, 2025
 **Status**: ✅ Production Ready with 22 Language Support
 
-## Recent Critical Updates (Sept 11, 2025)
+## Recent Critical Updates (Sept 17, 2025)
 
 ### 🔥 Major Fixes Implemented
-1. **Fixed 404 Errors**: Beep clicks now use existing `short_url` instead of generating conflicting IDs
-2. **Fixed Language Switcher**: Corrected URL pattern from `/[locale]/beep` to `/beep/[locale]`  
-3. **ARB as Single Source**: Mobile app ARB files now serve as single source of truth for all translations
-4. **Naming Consistency**: Renamed `beeps.json` → `beep.json` across all languages for consistency
+1. **Fixed Alert Detail Reporter Display**: Mobile and web now consistently show "Reported by" field in Details section using `alert.username`
+2. **Implemented T+ Time Format**: Consistent aerospace/military time notation (T+1h30m) across mobile and web detail pages
+3. **Fixed Translation System**: Removed English fallbacks, made AlertTitleUtils require translation function for all 22 languages
+4. **Fixed "I See It Too" Button Logic**: Properly hides button for user's own beeps using correct username field comparison
+5. **Enhanced Detail Page Layout**: Moved share link and reporter info into Details section for cleaner mobile/web consistency
+6. **Added Comprehensive Translation Keys**: 28+ new keys for weather, location, satellite, and aircraft sections with full translation coverage
 
 ## Overview
 
@@ -248,13 +250,15 @@ curl https://ufobeep.com/locales/es/beep.json
 
 ## 📊 Current Status
 
-### ✅ Completed (Sept 11, 2025)
-- **Single Source ARB System**: Mobile ARB files drive all translations
-- **404 Fix**: AlertCard uses existing short_url consistently
-- **URL Pattern Fix**: Language switcher uses `/beep/[locale]` correctly
-- **Namespace Consistency**: All files/code use singular 'beep'
-- **22 Language Support**: All languages fully translated
-- **Edge Runtime Compatible**: Static translations for Vercel Edge
+### ✅ Completed (Sept 17, 2025)
+- **Universal Translation System**: All 22 languages work consistently without English fallbacks
+- **T+ Time Format**: Aerospace/military time notation (T+1h30m) implemented across all platforms
+- **Reporter Display Fix**: "Reported by" field correctly shows in Details section using alert.username
+- **I See It Too Logic**: Button properly hidden for user's own beeps using username comparison
+- **Detail Page Layout**: Share link and reporter info integrated into Details section
+- **Translation Key Coverage**: 28+ new keys added for weather, location, satellite, aircraft sections
+- **AlertTitleUtils Fixed**: Now requires translation function, eliminates English fallbacks
+- **Web Component Consistency**: Removed duplicate inline sections, uses only proper card components
 
 ### 🔄 In Progress
 - **Documentation Updates**: Updating all docs to reflect new architecture

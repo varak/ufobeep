@@ -24,6 +24,16 @@ Guardrails: keep `/alerts`, `/media/uploads`; proximity & device location must s
 - ✅ **Push Notifications**: End-to-end witness confirmation flow working
 - ✅ **Username Regeneration**: Fixed API call with proper parameters
 
+## 🌍 **Translation System Overhaul (September 17, 2025)**
+- ✅ **Universal Translation Coverage**: All 22 languages now work consistently without English fallbacks
+- ✅ **T+ Time Format**: Aerospace/military time notation (T+1h30m) implemented across mobile and web
+- ✅ **Reporter Display Fix**: "Reported by" field shows correctly in Details section using alert.username
+- ✅ **I See It Too Logic**: Button properly hidden for user's own beeps using username comparison
+- ✅ **Detail Page Layout**: Share link and reporter info integrated into Details section for consistency
+- ✅ **Translation Key Expansion**: 28+ new keys added for weather, location, satellite, aircraft sections
+- ✅ **AlertTitleUtils Fixed**: Eliminated English fallbacks, requires translation function for all languages
+- ✅ **Web Component Unification**: Removed duplicate inline sections, uses only proper card components
+
 ## Sprint A — Multi-Media Alerts
 [api] Keep MP14 endpoints. Add Idempotency on POST `/media/uploads`, `/alerts`.
 [app] Composer multi-select; post with first media; attach rest via `/alerts/{id}/media`.
