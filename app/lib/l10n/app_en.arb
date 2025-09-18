@@ -625,5 +625,6 @@
   "confidenceCoverage": "95% confidence",
   "status": "Status",
   "shareThoughts": "Share your thoughts about this sighting...",
-  "postCommand": "Post Command"
+  "postCommand": "Post Command",
+  "clouds": "Clouds"
 }

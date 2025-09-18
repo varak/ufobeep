@@ -66,9 +66,9 @@ class PremiumSatelliteCard extends StatelessWidget {
             if (blackskyData != null) ...[
               _buildSatelliteOption(
                 context,
-                'BlackSky',
-                '35cm Resolution',
-                'Coming Soon',
+                AppLocalizations.of(context)!.blackskyImagery,
+                AppLocalizations.of(context)!.groundResolution,
+                AppLocalizations.of(context)!.comingSoon,
                 AppColors.brandPrimary,
                 () => _showBlackSkyInfo(context),
               ),
@@ -79,9 +79,9 @@ class PremiumSatelliteCard extends StatelessWidget {
             if (skyfiData != null) ...[
               _buildSatelliteOption(
                 context,
-                'SkyFi',
-                '10-50cm Resolution',
-                'Coming Soon',
+                AppLocalizations.of(context)!.skyfiSatelliteImagery,
+                '10-50cm Resolution', // Keep this as is since it's different from groundResolution
+                AppLocalizations.of(context)!.comingSoon,
                 AppColors.brandPrimary,
                 () => _showSkyFiInfo(context),
               ),

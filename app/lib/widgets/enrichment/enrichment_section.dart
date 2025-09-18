@@ -634,22 +634,22 @@ class WeatherCardFromJson extends ConsumerWidget {
               children: [
                 _WeatherDetail(
                   icon: Icons.air,
-                  label: 'Wind',
+                  label: AppLocalizations.of(context)!.wind.split(':')[0], // Get "Wind" from "Wind: {speed} {unit}"
                   value: UnitConversion.formatWindSpeed(weatherData['wind_speed_ms'], units),
                 ),
                 _WeatherDetail(
                   icon: Icons.visibility,
-                  label: 'Visibility',
+                  label: AppLocalizations.of(context)!.visibility,
                   value: UnitConversion.formatVisibility(weatherData['visibility_km'], units),
                 ),
                 _WeatherDetail(
                   icon: Icons.water_drop,
-                  label: 'Humidity',
+                  label: AppLocalizations.of(context)!.humidity,
                   value: _formatHumidity(weatherData['humidity_percent']),
                 ),
                 _WeatherDetail(
                   icon: Icons.cloud,
-                  label: 'Clouds',
+                  label: AppLocalizations.of(context)!.clouds,
                   value: _formatCloudCover(weatherData['cloud_cover_percent']),
                 ),
               ],
@@ -728,7 +728,7 @@ class CelestialCard extends StatelessWidget {
                 Icon(Icons.nights_stay, color: AppColors.brandPrimary, size: 20),
                 const SizedBox(width: 8),
                 Text(
-                  'Celestial Objects',
+                  AppLocalizations.of(context)!.celestialDataTitle,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w600,
@@ -766,7 +766,7 @@ class CelestialCard extends StatelessWidget {
             if (celestial.visiblePlanets.isNotEmpty) ...[
               const SizedBox(height: 16),
               Text(
-                'Visible Planets',
+                AppLocalizations.of(context)!.visiblePlanets,
                 style: TextStyle(
                   color: AppColors.textPrimary,
                   fontSize: 14,
