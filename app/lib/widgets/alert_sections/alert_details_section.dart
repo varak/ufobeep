@@ -125,9 +125,9 @@ class AlertDetailsSection extends StatelessWidget {
               _formatDateTime(context, alert.createdAt),
               subtitle: _formatFullDateTime(alert.createdAt),
             ),
-            
-            // Reporter info - only show if available (match alerts list logic)
-            if (alert.reporterUsername != null && alert.source != 'mufon')
+
+            // Reporter info - same logic as alerts list
+            if (alert.reporterUsername != null)
               _buildDetailRow(
                 Icons.person,
                 AppLocalizations.of(context)!.reportedByLabel,
