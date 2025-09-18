@@ -133,10 +133,6 @@ abstract class AlertTitleUtils {
       classification = match?.group(1)?.toLowerCase().trim() ?? classField.toLowerCase().trim();
     }
 
-    // Fallback to ufo_type only if no classification field found
-    if (classification == null || classification.isEmpty) {
-      classification = enrichment['ufo_type']?.toString().toLowerCase().trim();
-    }
 
     // Apply same 0.5 confidence threshold as backend
     if (confidence > 0.0 && confidence < 0.5) {
