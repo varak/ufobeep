@@ -275,7 +275,7 @@ export default function AlertDetailPage() {
         <AlertDetails alert={enhancedAlert} locale={locale} />
         
         {/* Enrichment Data */}
-        <EnrichmentData alert={enhancedAlert} enrichment={enhancedAlert.enrichment_data} />
+        <EnrichmentData alert={enhancedAlert} enrichment={enhancedAlert.enrichment_data} locale={locale} />
 
         {/* Comments Section for all reports */}
         <AlertComments alertId={enhancedAlert.id} locale={locale} />
