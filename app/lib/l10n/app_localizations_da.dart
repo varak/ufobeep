@@ -1318,56 +1318,56 @@ class AppLocalizationsDa extends AppLocalizations {
   String get notificationTickerComment => 'Ny kommentar til UFO Alert';
 
   @override
-  String get weatherConditions => 'Weather Conditions';
+  String get weatherConditions => 'Vejrforhold';
 
   @override
-  String get visibility => 'Visibility';
+  String get visibility => 'Synlighed';
 
   @override
-  String get humidity => 'Humidity';
+  String get humidity => 'Fugtighed';
 
   @override
-  String get pressure => 'Pressure';
+  String get pressure => 'Tryk';
 
   @override
-  String get locationDetails => 'Location Details';
+  String get locationDetails => 'Placering';
 
   @override
-  String get city => 'City';
+  String get city => 'By';
 
   @override
-  String get state => 'State';
+  String get state => 'Tilstand';
 
   @override
-  String get country => 'Country';
+  String get country => 'Land';
 
   @override
-  String get satelliteActivity => 'Satellite Activity';
+  String get satelliteActivity => 'Satellitaktivitet';
 
   @override
   String get satellitesVisibleOverhead =>
-      'Satellites visible overhead at sighting time & location';
+      'Satellitter synlige overhead ved observation tid & placering';
 
   @override
-  String get dataSource => 'Data Source';
+  String get dataSource => 'Datakilde';
 
   @override
   String get blackskyImagery => 'BlackSky Imagery';
 
   @override
-  String get resolution => 'Resolution';
+  String get resolution => 'Opløsning';
 
   @override
-  String get groundResolution => '35cm ground resolution';
+  String get groundResolution => '35cm jordopløsning';
 
   @override
-  String get delivery => 'Delivery';
+  String get delivery => 'Levering';
 
   @override
-  String get averageDelivery => '90-minute average';
+  String get averageDelivery => '90 minutters gennemsnit';
 
   @override
-  String get cost => 'Cost';
+  String get cost => 'Omkostninger';
 
   @override
   String get skyfiSatelliteImagery => 'SkyFi Satellite Imagery';
@@ -1376,29 +1376,29 @@ class AppLocalizationsDa extends AppLocalizations {
   String get region => 'Region';
 
   @override
-  String get remoteArea => 'Remote Area';
+  String get remoteArea => 'Fjernområde';
 
   @override
-  String get startingPrice => 'Starting Price';
+  String get startingPrice => 'Startpris';
 
   @override
-  String get coverage => 'Coverage';
+  String get coverage => 'Dækning';
 
   @override
-  String get confidenceCoverage => '95% confidence';
+  String get confidenceCoverage => '95% konfidensinterval';
 
   @override
   String get status => 'Status';
 
   @override
-  String get shareThoughts => 'Share your thoughts about this sighting...';
+  String get shareThoughts => 'Del dine tanker om denne observation...';
 
   @override
-  String get postCommand => 'Post Command';
+  String get postCommand => 'Post- kommando';
 
   @override
-  String get clouds => 'Clouds';
+  String get clouds => 'Skyer';
 
   @override
-  String get windLabel => 'Wind';
+  String get windLabel => 'Vind';
 }

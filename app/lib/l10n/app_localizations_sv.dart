@@ -1316,38 +1316,38 @@ class AppLocalizationsSv extends AppLocalizations {
   String get notificationTickerComment => 'Ny kommentar till UFO Alert';
 
   @override
-  String get weatherConditions => 'Weather Conditions';
+  String get weatherConditions => 'Väderförhållanden';
 
   @override
-  String get visibility => 'Visibility';
+  String get visibility => 'Synlighet';
 
   @override
   String get humidity => 'Humidity';
 
   @override
-  String get pressure => 'Pressure';
+  String get pressure => 'Tryck';
 
   @override
-  String get locationDetails => 'Location Details';
+  String get locationDetails => 'Plats detaljer';
 
   @override
-  String get city => 'City';
+  String get city => 'Staden City';
 
   @override
-  String get state => 'State';
+  String get state => 'Staten';
 
   @override
-  String get country => 'Country';
+  String get country => 'Landet';
 
   @override
-  String get satelliteActivity => 'Satellite Activity';
+  String get satelliteActivity => 'Satellitaktivitet';
 
   @override
   String get satellitesVisibleOverhead =>
-      'Satellites visible overhead at sighting time & location';
+      'Satelliter synliga överhuvudet vid observationstid och plats';
 
   @override
-  String get dataSource => 'Data Source';
+  String get dataSource => 'Datakälla';
 
   @override
   String get blackskyImagery => 'BlackSky Imagery';
@@ -1356,47 +1356,47 @@ class AppLocalizationsSv extends AppLocalizations {
   String get resolution => 'Resolution';
 
   @override
-  String get groundResolution => '35cm ground resolution';
+  String get groundResolution => '35cm grundupplösning';
 
   @override
-  String get delivery => 'Delivery';
+  String get delivery => 'Leverans';
 
   @override
-  String get averageDelivery => '90-minute average';
+  String get averageDelivery => '90 minuter genomsnitt';
 
   @override
-  String get cost => 'Cost';
+  String get cost => 'Kostnad';
 
   @override
-  String get skyfiSatelliteImagery => 'SkyFi Satellite Imagery';
+  String get skyfiSatelliteImagery => 'SkyFi satellit Imagery';
 
   @override
   String get region => 'Region';
 
   @override
-  String get remoteArea => 'Remote Area';
+  String get remoteArea => 'Fjärrområde';
 
   @override
-  String get startingPrice => 'Starting Price';
+  String get startingPrice => 'Starta pris';
 
   @override
-  String get coverage => 'Coverage';
+  String get coverage => 'Täckning';
 
   @override
-  String get confidenceCoverage => '95% confidence';
+  String get confidenceCoverage => '95% förtroende';
 
   @override
   String get status => 'Status';
 
   @override
-  String get shareThoughts => 'Share your thoughts about this sighting...';
+  String get shareThoughts => 'Dela dina tankar om denna observation...';
 
   @override
-  String get postCommand => 'Post Command';
+  String get postCommand => 'Postkommando';
 
   @override
-  String get clouds => 'Clouds';
+  String get clouds => 'Moln';
 
   @override
-  String get windLabel => 'Wind';
+  String get windLabel => 'Vind';
 }

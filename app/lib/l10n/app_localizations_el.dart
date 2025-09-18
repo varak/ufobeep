@@ -1326,87 +1326,88 @@ class AppLocalizationsEl extends AppLocalizations {
   String get notificationTickerComment => 'Νέο σχόλιο για το UFO Alert';
 
   @override
-  String get weatherConditions => 'Weather Conditions';
+  String get weatherConditions => 'Καιρικές συνθήκες';
 
   @override
-  String get visibility => 'Visibility';
+  String get visibility => 'Ορατότητα';
 
   @override
-  String get humidity => 'Humidity';
+  String get humidity => 'Υγρασία';
 
   @override
-  String get pressure => 'Pressure';
+  String get pressure => 'Πίεση';
 
   @override
-  String get locationDetails => 'Location Details';
+  String get locationDetails => 'Λεπτομέρειες τοποθεσίας';
 
   @override
-  String get city => 'City';
+  String get city => 'Πόλη';
 
   @override
-  String get state => 'State';
+  String get state => 'Κατάσταση';
 
   @override
-  String get country => 'Country';
+  String get country => 'Χώρες';
 
   @override
-  String get satelliteActivity => 'Satellite Activity';
+  String get satelliteActivity => 'Δορυφορική δραστηριότητα';
 
   @override
   String get satellitesVisibleOverhead =>
-      'Satellites visible overhead at sighting time & location';
+      'Δορυφορικοί δορυφόροι ορατοί από πάνω κατά το χρόνο και την τοποθεσία παρατήρησης';
 
   @override
-  String get dataSource => 'Data Source';
+  String get dataSource => 'Πηγή δεδομένων';
 
   @override
-  String get blackskyImagery => 'BlackSky Imagery';
+  String get blackskyImagery => 'Εικόνα BlackSky';
 
   @override
-  String get resolution => 'Resolution';
+  String get resolution => 'Ανάλυση';
 
   @override
-  String get groundResolution => '35cm ground resolution';
+  String get groundResolution => '35cm ανάλυση εδάφους';
 
   @override
-  String get delivery => 'Delivery';
+  String get delivery => 'Παράδοση';
 
   @override
-  String get averageDelivery => '90-minute average';
+  String get averageDelivery => 'μέσος όρος 90 λεπτών';
 
   @override
-  String get cost => 'Cost';
+  String get cost => 'Κόστος';
 
   @override
-  String get skyfiSatelliteImagery => 'SkyFi Satellite Imagery';
+  String get skyfiSatelliteImagery => 'Δορυφόρος SkyFi Εικόνα';
 
   @override
-  String get region => 'Region';
+  String get region => 'Περιφέρεια';
 
   @override
-  String get remoteArea => 'Remote Area';
+  String get remoteArea => 'Απομακρυσμένη περιοχή';
 
   @override
-  String get startingPrice => 'Starting Price';
+  String get startingPrice => 'Τιμή εκκίνησης';
 
   @override
-  String get coverage => 'Coverage';
+  String get coverage => 'Κάλυψη';
 
   @override
-  String get confidenceCoverage => '95% confidence';
+  String get confidenceCoverage => '95% εμπιστοσύνη';
 
   @override
-  String get status => 'Status';
+  String get status => 'Κατάσταση';
 
   @override
-  String get shareThoughts => 'Share your thoughts about this sighting...';
+  String get shareThoughts =>
+      'Μοιραστείτε τις σκέψεις σας για αυτή την εμφάνιση...';
 
   @override
-  String get postCommand => 'Post Command';
+  String get postCommand => 'Αποστολή';
 
   @override
-  String get clouds => 'Clouds';
+  String get clouds => 'Σύννεφα';
 
   @override
-  String get windLabel => 'Wind';
+  String get windLabel => 'Άνεμος';
 }

@@ -1318,87 +1318,87 @@ class AppLocalizationsFi extends AppLocalizations {
       'UFO-hälytysjärjestelmän uusi huomautus';
 
   @override
-  String get weatherConditions => 'Weather Conditions';
+  String get weatherConditions => 'Sääolosuhteet';
 
   @override
-  String get visibility => 'Visibility';
+  String get visibility => 'Näkyvyys';
 
   @override
-  String get humidity => 'Humidity';
+  String get humidity => 'Kosteus';
 
   @override
-  String get pressure => 'Pressure';
+  String get pressure => 'Paine';
 
   @override
-  String get locationDetails => 'Location Details';
+  String get locationDetails => 'Sijaintitiedot';
 
   @override
-  String get city => 'City';
+  String get city => 'Kaupunki';
 
   @override
-  String get state => 'State';
+  String get state => 'Tila';
 
   @override
-  String get country => 'Country';
+  String get country => 'Maa';
 
   @override
-  String get satelliteActivity => 'Satellite Activity';
+  String get satelliteActivity => 'Satelliittitoiminta';
 
   @override
   String get satellitesVisibleOverhead =>
-      'Satellites visible overhead at sighting time & location';
+      'Satelliitit näkyvät yläpuolella havaintohetkellä ja paikan päällä';
 
   @override
-  String get dataSource => 'Data Source';
+  String get dataSource => 'Tietolähde';
 
   @override
-  String get blackskyImagery => 'BlackSky Imagery';
+  String get blackskyImagery => 'BlackSky-kuvasto';
 
   @override
-  String get resolution => 'Resolution';
+  String get resolution => 'Päätöslauselma';
 
   @override
-  String get groundResolution => '35cm ground resolution';
+  String get groundResolution => '35cm pohjaresoluutio';
 
   @override
-  String get delivery => 'Delivery';
+  String get delivery => 'Toimitus';
 
   @override
-  String get averageDelivery => '90-minute average';
+  String get averageDelivery => '90 minuutin keskiarvo';
 
   @override
-  String get cost => 'Cost';
+  String get cost => 'Kustannukset';
 
   @override
-  String get skyfiSatelliteImagery => 'SkyFi Satellite Imagery';
+  String get skyfiSatelliteImagery => 'SkyFi-satelliitti Kuvasto';
 
   @override
-  String get region => 'Region';
+  String get region => 'Alue';
 
   @override
-  String get remoteArea => 'Remote Area';
+  String get remoteArea => 'Etäalue';
 
   @override
-  String get startingPrice => 'Starting Price';
+  String get startingPrice => 'Aloitushinta';
 
   @override
-  String get coverage => 'Coverage';
+  String get coverage => 'Kattavuus';
 
   @override
-  String get confidenceCoverage => '95% confidence';
+  String get confidenceCoverage => '95% luottamusväli';
 
   @override
-  String get status => 'Status';
+  String get status => 'Tila';
 
   @override
-  String get shareThoughts => 'Share your thoughts about this sighting...';
+  String get shareThoughts => 'Jaa ajatuksesi tästä havainnosta...';
 
   @override
-  String get postCommand => 'Post Command';
+  String get postCommand => 'Postikomento';
 
   @override
-  String get clouds => 'Clouds';
+  String get clouds => 'Pilvet';
 
   @override
-  String get windLabel => 'Wind';
+  String get windLabel => 'Tuuli';
 }
