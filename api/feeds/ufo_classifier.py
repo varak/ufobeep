@@ -31,10 +31,12 @@ class UFOClassifier:
             "sphere": [
                 r"sphere\w*",
                 r"ball.*shaped?",
-                r"orb\w*",
+                r"orb\w*",  # This should get high confidence
                 r"round.*ball",
                 r"spherical",
                 r"globe.*shaped?",
+                r"orbs?",  # Direct match for "orb" or "orbs"
+                r"round.*object",
             ],
             "cigar": [
                 r"cigar\w*",
@@ -130,8 +132,8 @@ class UFOClassifier:
         best_type = max(type_scores.keys(), key=lambda k: type_scores[k])
         max_score = type_scores[best_type]
         
-        # Calculate confidence (0.0 to 1.0)
-        confidence = min(max_score / 10.0, 1.0)  # Normalize to 0-1
+        # Calculate confidence (0.0 to 1.0) - more generous for clear matches
+        confidence = min(max_score / 6.0, 1.0)  # Less conservative normalization
         
         # Add shape characteristics
         characteristics = self._extract_characteristics(text)

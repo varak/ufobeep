@@ -13,15 +13,8 @@ abstract class AlertTitleUtils {
       String? classification = _extractCleanClassification(alert.enrichment);
 
       if (classification != null && classification.isNotEmpty) {
-        // Translate the classification first, then use in title format
-        final shapeKey = _getShapeTranslationKey(classification);
-        if (shapeKey != null) {
-          final translatedClassification = _getShapeTranslation(l10n, shapeKey);
-          return l10n.mufonTitleFormat(translatedClassification);
-        } else {
-          // Use raw classification if no translation found
-          return l10n.mufonTitleFormat(classification);
-        }
+        // Use classification-aware title format
+        return l10n.mufonTitleFormat(classification);
       } else {
         // Fallback to case title
         return l10n.mufonCaseTitle(caseNumber);
@@ -122,6 +115,7 @@ abstract class AlertTitleUtils {
     if (enrichment == null) return null;
 
     String? classification;
+    double confidence = 0.0;
 
     // Try ufo_type first (simpler field)
     classification = enrichment['ufo_type']?.toString().toLowerCase().trim();
@@ -130,40 +124,23 @@ abstract class AlertTitleUtils {
     if (classification == null || classification.isEmpty) {
       final classField = enrichment['classification'];
       if (classField is String) {
-        // Clean the string first - remove HTML tags and decode entities
-        String cleanField = classField
-            .replaceAll(RegExp(r'<[^>]*>'), '') // Remove HTML tags
-            .replaceAll('&lt;', '<')
-            .replaceAll('&gt;', '>')
-            .replaceAll('&amp;', '&')
-            .replaceAll('&quot;', '"')
-            .replaceAll('&#39;', "'");
-
-        // Extract just the type from various formats:
-        // - "type: sphere" format
-        // - JSON-like "{type: sphere, keywords: [orbs]}" format
-        final typeColonMatch = RegExp(r'type:\s*(\w+)').firstMatch(cleanField);
-        final typeBraceMatch = RegExp(r'\{type:\s*(\w+)').firstMatch(cleanField);
-
-        if (typeColonMatch != null) {
-          classification = typeColonMatch.group(1)?.toLowerCase().trim();
-        } else if (typeBraceMatch != null) {
-          classification = typeBraceMatch.group(1)?.toLowerCase().trim();
-        } else {
-          classification = cleanField.toLowerCase().trim();
-        }
+        // Extract just the type if it's a formatted string like "type: sphere"
+        final match = RegExp(r'type:\s*(\w+)').firstMatch(classField);
+        classification = match?.group(1)?.toLowerCase().trim() ?? classField.toLowerCase().trim();
       } else if (classField is Map) {
         // If it's a complex object, try to extract 'type' field
         classification = classField['type']?.toString().toLowerCase().trim();
+        // Also get confidence if available
+        final confValue = classField['confidence'];
+        if (confValue is num) {
+          confidence = confValue.toDouble();
+        }
       }
     }
 
-    // Clean the final classification of any remaining HTML or special chars
-    if (classification != null) {
-      classification = classification
-          .replaceAll(RegExp(r'<[^>]*>'), '') // Remove HTML tags
-          .replaceAll(RegExp(r'[^\w\s]'), '') // Remove special chars except word chars and spaces
-          .trim();
+    // Apply same 0.5 confidence threshold as backend
+    if (confidence > 0.0 && confidence < 0.5) {
+      return null;  // Too low confidence, don't show classification
     }
 
     return classification;
