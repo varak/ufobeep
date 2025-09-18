@@ -102,7 +102,7 @@ function getEnrichedLocation(alert: Alert, t: any): string {
 }
 
 function getClassifiedTitle(alert: Alert, t: any): string {
-  return AlertTitleUtils.getContextualTitle(alert, t)
+  return AlertTitleUtils.getContextualTitle(alert)
 }
 
 export default function AlertDetailPage() {
@@ -209,7 +209,7 @@ export default function AlertDetailPage() {
     // Create enhanced alert for slug generation without causing re-renders
     const tempEnhancedAlert = {
       ...alert,
-      title: AlertTitleUtils.getContextualTitle(alert, t),
+      title: AlertTitleUtils.getContextualTitle(alert),
       location: {
         latitude: alert.location?.latitude || 0,
         longitude: alert.location?.longitude || 0,
