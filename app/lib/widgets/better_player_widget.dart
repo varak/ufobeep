@@ -232,19 +232,8 @@ class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
                   ),
                   child: Column(
                     children: [
-                      // Top controls
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.fullscreen, color: Colors.white),
-                              onPressed: _toggleFullscreen,
-                            ),
-                          ],
-                        ),
-                      ),
+                      // Top controls (empty for now)
+                      const SizedBox(height: 8),
 
                       const Spacer(),
 
@@ -284,6 +273,10 @@ class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
                                   backgroundColor: Colors.white24,
                                 ),
                               ),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.fullscreen, color: Colors.white),
+                              onPressed: _toggleFullscreen,
                             ),
                           ],
                         ),
