@@ -66,8 +66,27 @@ class AlertHeroSection extends StatelessWidget {
 
                           if (caseNumber != null) {
                             // For MUFON alerts, try to get classification first
-                            final classification = alert.enrichment?['classification']?.toString().toLowerCase().trim()
-                                ?? alert.enrichment?['ufo_type']?.toString().toLowerCase().trim();
+                            String? classification;
+
+                            // Try to extract clean classification from various fields
+                            final enrichment = alert.enrichment;
+                            if (enrichment != null) {
+                              // Try ufo_type first (simpler field)
+                              classification = enrichment['ufo_type']?.toString().toLowerCase().trim();
+
+                              // If no ufo_type, try to parse classification field
+                              if (classification == null || classification.isEmpty) {
+                                final classField = enrichment['classification'];
+                                if (classField is String) {
+                                  // Extract just the type if it's a formatted string like "type: sphere"
+                                  final match = RegExp(r'type:\s*(\w+)').firstMatch(classField);
+                                  classification = match?.group(1)?.toLowerCase().trim() ?? classField.toLowerCase().trim();
+                                } else if (classField is Map) {
+                                  // If it's a complex object, try to extract 'type' field
+                                  classification = classField['type']?.toString().toLowerCase().trim();
+                                }
+                              }
+                            }
 
                             if (classification != null && classification.isNotEmpty) {
                               // Use classification-aware title format
@@ -231,8 +250,27 @@ class AlertHeroSection extends StatelessWidget {
 
                     if (caseNumber != null) {
                       // For MUFON alerts, try to get classification first
-                      final classification = alert.enrichment?['classification']?.toString().toLowerCase().trim()
-                          ?? alert.enrichment?['ufo_type']?.toString().toLowerCase().trim();
+                      String? classification;
+
+                      // Try to extract clean classification from various fields
+                      final enrichment = alert.enrichment;
+                      if (enrichment != null) {
+                        // Try ufo_type first (simpler field)
+                        classification = enrichment['ufo_type']?.toString().toLowerCase().trim();
+
+                        // If no ufo_type, try to parse classification field
+                        if (classification == null || classification.isEmpty) {
+                          final classField = enrichment['classification'];
+                          if (classField is String) {
+                            // Extract just the type if it's a formatted string like "type: sphere"
+                            final match = RegExp(r'type:\s*(\w+)').firstMatch(classField);
+                            classification = match?.group(1)?.toLowerCase().trim() ?? classField.toLowerCase().trim();
+                          } else if (classField is Map) {
+                            // If it's a complex object, try to extract 'type' field
+                            classification = classField['type']?.toString().toLowerCase().trim();
+                          }
+                        }
+                      }
 
                       if (classification != null && classification.isNotEmpty) {
                         // Use classification-aware title format
