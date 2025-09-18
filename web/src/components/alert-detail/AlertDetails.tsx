@@ -45,8 +45,9 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
   const { t } = useClientTranslations('common', locale)
   
   // Check if this is a UFOBeep report (not MUFON/NUFORC)
-  const isUfoBeepReport = !alert.reporter_username || 
-    (alert.reporter_username !== 'MUFON' && alert.reporter_username !== 'NUFORC')
+  const isUfoBeepReport = alert.reporter_username &&
+    alert.reporter_username !== 'MUFON' &&
+    alert.reporter_username !== 'NUFORC'
   // Parse MUFON date format like "1979-07-21\n12:00AM"
   const parseMufonDate = (dateString: string) => {
     if (!dateString) return dateString
