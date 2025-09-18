@@ -6,6 +6,21 @@ import '../providers/alerts_provider.dart';
 abstract class AlertTitleUtils {
   /// Generate dynamic title for mobile app using translations
   static String getDynamicTitle(AppLocalizations l10n, Alert alert) {
+    // Check for MUFON case with enrichment data first
+    final caseNumber = alert.enrichment?['mufon_case_number'];
+    if (caseNumber != null) {
+      // Try to get clean classification from enrichment data
+      String? classification = _extractCleanClassification(alert.enrichment);
+
+      if (classification != null && classification.isNotEmpty) {
+        // Use classification-aware title format
+        return l10n.mufonTitleFormat(classification);
+      } else {
+        // Fallback to case title
+        return l10n.mufonCaseTitle(caseNumber);
+      }
+    }
+
     // Check if this is a translatable title format (using same logic as web frontend)
     if (alert.title != null && alert.title!.isNotEmpty) {
       // Handle MUFON titles: detect "MUFON [Shape] Sighting" pattern
@@ -93,6 +108,31 @@ abstract class AlertTitleUtils {
       default:
         return null;
     }
+  }
+
+  /// Extract clean classification from enrichment data
+  static String? _extractCleanClassification(Map<String, dynamic>? enrichment) {
+    if (enrichment == null) return null;
+
+    String? classification;
+
+    // Try ufo_type first (simpler field)
+    classification = enrichment['ufo_type']?.toString().toLowerCase().trim();
+
+    // If no ufo_type, try to parse classification field
+    if (classification == null || classification.isEmpty) {
+      final classField = enrichment['classification'];
+      if (classField is String) {
+        // Extract just the type if it's a formatted string like "type: sphere"
+        final match = RegExp(r'type:\s*(\w+)').firstMatch(classField);
+        classification = match?.group(1)?.toLowerCase().trim() ?? classField.toLowerCase().trim();
+      } else if (classField is Map) {
+        // If it's a complex object, try to extract 'type' field
+        classification = classField['type']?.toString().toLowerCase().trim();
+      }
+    }
+
+    return classification;
   }
 
   /// Get shape translation using AppLocalizations
