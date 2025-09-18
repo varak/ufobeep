@@ -117,25 +117,25 @@ abstract class AlertTitleUtils {
     String? classification;
     double confidence = 0.0;
 
-    // Try ufo_type first (simpler field)
-    classification = enrichment['ufo_type']?.toString().toLowerCase().trim();
-
-    // If no ufo_type, try to parse classification field
-    if (classification == null || classification.isEmpty) {
-      final classField = enrichment['classification'];
-      if (classField is String) {
-        // Extract just the type if it's a formatted string like "type: sphere"
-        final match = RegExp(r'type:\s*(\w+)').firstMatch(classField);
-        classification = match?.group(1)?.toLowerCase().trim() ?? classField.toLowerCase().trim();
-      } else if (classField is Map) {
-        // If it's a complex object, try to extract 'type' field
-        classification = classField['type']?.toString().toLowerCase().trim();
-        // Also get confidence if available
-        final confValue = classField['confidence'];
-        if (confValue is num) {
-          confidence = confValue.toDouble();
-        }
+    // Always check confidence first from classification field
+    final classField = enrichment['classification'];
+    if (classField is Map) {
+      // Get confidence from the classification object
+      final confValue = classField['confidence'];
+      if (confValue is num) {
+        confidence = confValue.toDouble();
       }
+      // Get type from the classification object
+      classification = classField['type']?.toString().toLowerCase().trim();
+    } else if (classField is String) {
+      // Extract from string format like "type: sphere"
+      final match = RegExp(r'type:\s*(\w+)').firstMatch(classField);
+      classification = match?.group(1)?.toLowerCase().trim() ?? classField.toLowerCase().trim();
+    }
+
+    // Fallback to ufo_type only if no classification field found
+    if (classification == null || classification.isEmpty) {
+      classification = enrichment['ufo_type']?.toString().toLowerCase().trim();
     }
 
     // Apply same 0.5 confidence threshold as backend
