@@ -34,22 +34,27 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   Future<void> _initializeVideoPlayer() async {
     try {
       if (widget.videoFile != null) {
+        debugPrint('🎥 VIDEO: Initializing with local file: ${widget.videoFile!.path}');
         _videoController = VideoPlayerController.file(widget.videoFile!);
       } else {
+        debugPrint('🎥 VIDEO: Initializing with network URL: ${widget.videoUrl!}');
         _videoController = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl!));
       }
-      
+
+      debugPrint('🎥 VIDEO: Starting controller initialization...');
       await _videoController!.initialize();
-      
+
       if (mounted) {
         setState(() {
           _isVideoInitialized = true;
         });
       }
-      
-      debugPrint('🎥 VIDEO: Player initialized');
+
+      debugPrint('🎥 VIDEO: Player initialized successfully - Duration: ${_videoController!.value.duration}');
     } catch (e) {
       debugPrint('❌ VIDEO: Failed to initialize player: $e');
+      debugPrint('❌ VIDEO: Video URL was: ${widget.videoUrl}');
+      debugPrint('❌ VIDEO: Video file was: ${widget.videoFile?.path}');
       if (mounted) {
         setState(() {
           _isVideoInitialized = false;
