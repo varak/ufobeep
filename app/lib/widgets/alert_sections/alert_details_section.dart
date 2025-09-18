@@ -321,19 +321,24 @@ class AlertDetailsSection extends StatelessWidget {
   }
 
   String _formatDateTime(BuildContext context, DateTime dateTime) {
-    final l10n = AppLocalizations.of(context)!;
     final now = DateTime.now();
     final localDateTime = dateTime.toLocal();
     final difference = now.difference(localDateTime);
 
+    // T+ format - universal aerospace/military time elapsed notation
     if (difference.inDays > 0) {
-      return l10n.timeDaysAgo(difference.inDays);
+      final days = difference.inDays;
+      final hours = difference.inHours.remainder(24);
+      return 'T+${days}d${hours}h';
     } else if (difference.inHours > 0) {
-      return l10n.timeHoursAgo(difference.inHours);
+      final hours = difference.inHours;
+      final minutes = difference.inMinutes.remainder(60);
+      return 'T+${hours}h${minutes}m';
     } else if (difference.inMinutes > 0) {
-      return l10n.timeMinutesAgo(difference.inMinutes);
+      final minutes = difference.inMinutes;
+      return 'T+${minutes}m';
     } else {
-      return l10n.timeJustNow;
+      return 'T+0m';
     }
   }
 

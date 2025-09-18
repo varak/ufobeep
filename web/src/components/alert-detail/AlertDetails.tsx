@@ -134,12 +134,19 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
     const now = new Date()
     const diff = now.getTime() - date.getTime()
     const minutes = Math.floor(diff / (1000 * 60))
-    
-    if (minutes < 60) return `${minutes}m ago`
+
+    // T+ format - universal aerospace/military time elapsed notation
+    if (minutes < 60) {
+      return `T+${minutes}m`
+    }
     const hours = Math.floor(minutes / 60)
-    if (hours < 24) return `${hours}h ago`
+    if (hours < 24) {
+      const remainingMinutes = minutes % 60
+      return `T+${hours}h${remainingMinutes}m`
+    }
     const days = Math.floor(hours / 24)
-    return `${days}d ago`
+    const remainingHours = hours % 24
+    return `T+${days}d${remainingHours}h`
   }
 
   return (
