@@ -31,7 +31,7 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
     <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
       <div className="flex items-center gap-2 mb-4">
         <span className="text-brand-primary">🛰️</span>
-        <h2 className="text-lg font-semibold text-brand-primary">Satellite Activity</h2>
+        <h2 className="text-lg font-semibold text-brand-primary">{t('satelliteActivity')}</h2>
       </div>
       
       {satellites.iss_passes && satellites.iss_passes.length > 0 && (
@@ -67,7 +67,7 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
       )}
 
       <div className="text-xs text-text-tertiary mt-3 p-2 bg-dark-background rounded">
-        Satellites visible overhead at sighting time & location
+        {t('satellitesVisibleOverhead')}
       </div>
     </div>
   )
