@@ -12,6 +12,7 @@ interface Alert {
   created_at: string
   occurred_at?: string
   reporter_username?: string
+  username?: string
   source?: string
   location: {
     latitude: number
@@ -45,9 +46,9 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
   const { t } = useClientTranslations('common', locale)
   
   // Check if this is a UFOBeep report (not MUFON/NUFORC)
-  const isUfoBeepReport = alert.reporter_username &&
-    alert.reporter_username !== 'MUFON' &&
-    alert.reporter_username !== 'NUFORC'
+  const isUfoBeepReport = alert.username &&
+    alert.username !== 'MUFON' &&
+    alert.username !== 'NUFORC'
   // Parse MUFON date format like "1979-07-21\n12:00AM"
   const parseMufonDate = (dateString: string) => {
     if (!dateString) return dateString
@@ -152,13 +153,13 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
       )}
 
       {/* Reporter section - only for UFOBeep reports with reporter_username */}
-      {isUfoBeepReport && alert.reporter_username && (
+      {isUfoBeepReport && alert.username && (
         <div className="flex items-start gap-3 mb-4">
           <span className="text-text-tertiary mt-0.5">👤</span>
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <span className="text-text-tertiary text-sm font-medium">{t('reporterLabel')}:</span>
-              <span className="text-text-primary text-sm">{alert.reporter_username}</span>
+              <span className="text-text-primary text-sm">{alert.username}</span>
             </div>
           </div>
         </div>
