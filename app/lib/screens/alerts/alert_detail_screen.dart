@@ -155,16 +155,17 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
           });
           debugPrint('DEBUG: Set _currentUserDeviceId: "$_currentUserDeviceId", _currentUsername: "$_currentUsername"');
         }
+
+        // Check if this user is a confirmed witness
+        if (userId != null) {
+          await _checkWitnessStatus(userId);
+        }
+
+        // Check follow status for comments
+        await _checkFollowStatus();
       } catch (e) {
         debugPrint('DEBUG: Could not get user info: $e');
         // Don't fallback to device ID - use null for proper filtering
-      }
-        
-        // Check if this user is a confirmed witness
-        await _checkWitnessStatus(userId);
-        
-        // Check follow status for comments
-        await _checkFollowStatus();
       }
     } catch (e) {
       debugPrint('Error loading user data: $e');
