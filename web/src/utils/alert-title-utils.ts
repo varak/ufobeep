@@ -27,32 +27,25 @@ export class AlertTitleUtils {
   /**
    * Generate a contextual title for an alert based on available data
    */
-  static getContextualTitle(alert: Alert, t?: (key: string) => string): string {
+  static getContextualTitle(alert: Alert, t: (key: string) => string): string {
     // Check for MUFON alerts using both source and reporter_username
     const isMufonAlert = alert.source === 'mufon' || alert.reporter_username === 'MUFON';
 
     // Handle UFOBeep alerts - ALWAYS use proper title
     if (!isMufonAlert) {
-      if (t) {
-        return `UFOBeep ${t('ufo')} ${t('alert')}`;
-      }
-      return 'UFOBeep UFO Alert';
+      return `UFOBeep ${t('ufo')} ${t('alert')}`;
     }
 
     // Handle MUFON alerts - check for existing title first
     if (alert.title && alert.title.trim().length > 0) {
       // Handle MUFON titles: "MUFON Triangle Sighting" → "MUFON [Translated Shape] [Translated Sighting Report]"
-      if (alert.title.startsWith('MUFON ') && t) {
+      if (alert.title.startsWith('MUFON ')) {
         const parts = alert.title.split(' ');
         if (parts.length >= 3) {
           const shape = parts[1].toLowerCase();
-          // Map shape to translation key
           const shapeKey = this.getShapeTranslationKey(shape);
-          if (shapeKey) {
-            return `MUFON ${t(shapeKey)} ${t('sightingReport')}`;
-          }
+          return `MUFON ${t(shapeKey || 'mufonUnknown')} ${t('sightingReport')}`;
         } else if (parts.length === 2 && parts[1] === 'Sighting') {
-          // Generic MUFON sighting
           return `MUFON ${t('sightingReport')}`;
         }
       }
