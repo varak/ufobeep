@@ -37,7 +37,7 @@ export class AlertTitleUtils {
     }
 
     // MUFON case number or standard title
-    const caseNumber = alert.enrichment?.mufon_case_id || alert.enrichment_data?.mufon_case_id;
+    const caseNumber = alert.enrichment?.mufon_case_id;
     return caseNumber
       ? t('mufonCaseTitle', { caseNumber })
       : `UFOBeep ${t('ufo')} ${t('alert')}`;
