@@ -1320,4 +1320,89 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get notificationTickerComment => 'Neuer Kommentar zu UFO Alert';
+
+  @override
+  String get weatherConditions => 'Weather Conditions';
+
+  @override
+  String get visibility => 'Visibility';
+
+  @override
+  String get humidity => 'Humidity';
+
+  @override
+  String get pressure => 'Pressure';
+
+  @override
+  String get locationDetails => 'Location Details';
+
+  @override
+  String get city => 'City';
+
+  @override
+  String get state => 'State';
+
+  @override
+  String get country => 'Country';
+
+  @override
+  String get satelliteActivity => 'Satellite Activity';
+
+  @override
+  String get satellitesVisibleOverhead =>
+      'Satellites visible overhead at sighting time & location';
+
+  @override
+  String get dataSource => 'Data Source';
+
+  @override
+  String get blackskyImagery => 'BlackSky Imagery';
+
+  @override
+  String get resolution => 'Resolution';
+
+  @override
+  String get groundResolution => '35cm ground resolution';
+
+  @override
+  String get delivery => 'Delivery';
+
+  @override
+  String get averageDelivery => '90-minute average';
+
+  @override
+  String get cost => 'Cost';
+
+  @override
+  String get skyfiSatelliteImagery => 'SkyFi Satellite Imagery';
+
+  @override
+  String get region => 'Region';
+
+  @override
+  String get remoteArea => 'Remote Area';
+
+  @override
+  String get startingPrice => 'Starting Price';
+
+  @override
+  String get coverage => 'Coverage';
+
+  @override
+  String get confidenceCoverage => '95% confidence';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get shareThoughts => 'Share your thoughts about this sighting...';
+
+  @override
+  String get postCommand => 'Post Command';
+
+  @override
+  String get clouds => 'Clouds';
+
+  @override
+  String get windLabel => 'Wind';
 }

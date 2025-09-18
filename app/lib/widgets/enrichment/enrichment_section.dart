@@ -634,7 +634,7 @@ class WeatherCardFromJson extends ConsumerWidget {
               children: [
                 _WeatherDetail(
                   icon: Icons.air,
-                  label: AppLocalizations.of(context)!.wind.split(':')[0], // Get "Wind" from "Wind: {speed} {unit}"
+                  label: AppLocalizations.of(context)!.windLabel,
                   value: UnitConversion.formatWindSpeed(weatherData['wind_speed_ms'], units),
                 ),
                 _WeatherDetail(

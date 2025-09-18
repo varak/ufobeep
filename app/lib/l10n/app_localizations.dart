@@ -2591,6 +2591,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New Comment on UFO Alert'**
   String get notificationTickerComment;
+
+  /// No description provided for @weatherConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather Conditions'**
+  String get weatherConditions;
+
+  /// No description provided for @visibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Visibility'**
+  String get visibility;
+
+  /// No description provided for @humidity.
+  ///
+  /// In en, this message translates to:
+  /// **'Humidity'**
+  String get humidity;
+
+  /// No description provided for @pressure.
+  ///
+  /// In en, this message translates to:
+  /// **'Pressure'**
+  String get pressure;
+
+  /// No description provided for @locationDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Details'**
+  String get locationDetails;
+
+  /// No description provided for @city.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get city;
+
+  /// No description provided for @state.
+  ///
+  /// In en, this message translates to:
+  /// **'State'**
+  String get state;
+
+  /// No description provided for @country.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get country;
+
+  /// No description provided for @satelliteActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Satellite Activity'**
+  String get satelliteActivity;
+
+  /// No description provided for @satellitesVisibleOverhead.
+  ///
+  /// In en, this message translates to:
+  /// **'Satellites visible overhead at sighting time & location'**
+  String get satellitesVisibleOverhead;
+
+  /// No description provided for @dataSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Source'**
+  String get dataSource;
+
+  /// No description provided for @blackskyImagery.
+  ///
+  /// In en, this message translates to:
+  /// **'BlackSky Imagery'**
+  String get blackskyImagery;
+
+  /// No description provided for @resolution.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolution'**
+  String get resolution;
+
+  /// No description provided for @groundResolution.
+  ///
+  /// In en, this message translates to:
+  /// **'35cm ground resolution'**
+  String get groundResolution;
+
+  /// No description provided for @delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery'**
+  String get delivery;
+
+  /// No description provided for @averageDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'90-minute average'**
+  String get averageDelivery;
+
+  /// No description provided for @cost.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost'**
+  String get cost;
+
+  /// No description provided for @skyfiSatelliteImagery.
+  ///
+  /// In en, this message translates to:
+  /// **'SkyFi Satellite Imagery'**
+  String get skyfiSatelliteImagery;
+
+  /// No description provided for @region.
+  ///
+  /// In en, this message translates to:
+  /// **'Region'**
+  String get region;
+
+  /// No description provided for @remoteArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Remote Area'**
+  String get remoteArea;
+
+  /// No description provided for @startingPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting Price'**
+  String get startingPrice;
+
+  /// No description provided for @coverage.
+  ///
+  /// In en, this message translates to:
+  /// **'Coverage'**
+  String get coverage;
+
+  /// No description provided for @confidenceCoverage.
+  ///
+  /// In en, this message translates to:
+  /// **'95% confidence'**
+  String get confidenceCoverage;
+
+  /// No description provided for @status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// No description provided for @shareThoughts.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your thoughts about this sighting...'**
+  String get shareThoughts;
+
+  /// No description provided for @postCommand.
+  ///
+  /// In en, this message translates to:
+  /// **'Post Command'**
+  String get postCommand;
+
+  /// No description provided for @clouds.
+  ///
+  /// In en, this message translates to:
+  /// **'Clouds'**
+  String get clouds;
+
+  /// No description provided for @windLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind'**
+  String get windLabel;
 }
 
 class _AppLocalizationsDelegate

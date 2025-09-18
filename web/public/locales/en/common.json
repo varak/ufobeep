@@ -346,5 +346,6 @@
   "status": "Status",
   "shareThoughts": "Share your thoughts about this sighting...",
   "postCommand": "Post Command",
-  "clouds": "Clouds"
+  "clouds": "Clouds",
+  "windLabel": "Wind"
 }
