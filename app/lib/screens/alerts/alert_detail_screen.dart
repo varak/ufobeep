@@ -420,6 +420,9 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 AlertDetailsSection(
                   alert: alert,
                   units: (ref.read(userPreferencesProvider)?.units ?? 'metric'),
+                  use24HourTime: ref.read(userPreferencesProvider)?.use24HourTime ??
+                                 UserPreferences._getDefault24HourForLanguage(
+                                   ref.read(userPreferencesProvider)?.language ?? 'en'),
                   onShareTap: () => _showShareOptions(alert),
                 ),
                 const SizedBox(height: 16),
@@ -429,6 +432,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 if (alert.source != 'mufon') ...[
                   AlertDirectionSection(
                     alert: alert,
+                    units: (ref.read(userPreferencesProvider)?.units ?? 'metric'),
                     onNavigate: (bearing, distance) => _navigateToSighting(alert, bearing, distance),
                     onShowMap: (userLocation, alert) => _showMapView(userLocation, alert),
                   ),

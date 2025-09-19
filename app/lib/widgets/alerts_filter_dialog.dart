@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
 import '../models/alerts_filter.dart';
 import '../providers/alerts_provider.dart';
+import '../providers/user_preferences_provider.dart';
 
 class AlertsFilterDialog extends ConsumerStatefulWidget {
   const AlertsFilterDialog({super.key});
@@ -180,10 +181,17 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
       if (_distanceSliderValue >= 100.0) {
         return 'Show All Alerts';
       } else if (_distanceSliderValue <= 0.0) {
-        return 'Weather Visibility (~5km)';
+        final units = ref.read(userPreferencesProvider)?.units ?? 'metric';
+        return units == 'imperial' ? 'Weather Visibility (~3mi)' : 'Weather Visibility (~5km)';
       } else {
+        final units = ref.read(userPreferencesProvider)?.units ?? 'metric';
         final distance = 5.0 + (_distanceSliderValue / 100.0) * 195.0;
-        return '${distance.toInt()}km radius';
+        if (units == 'imperial') {
+          final distanceMi = distance * 0.621371;
+          return '${distanceMi.toInt()}mi radius';
+        } else {
+          return '${distance.toInt()}km radius';
+        }
       }
     }
 

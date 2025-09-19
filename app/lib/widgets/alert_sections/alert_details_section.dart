@@ -17,6 +17,7 @@ class AlertDetailsSection extends StatelessWidget {
     this.showDescription = true,
     this.showLocation = true,
     this.units = 'metric',
+    this.use24HourTime = true,
     this.onShareTap,
   });
 
@@ -24,6 +25,7 @@ class AlertDetailsSection extends StatelessWidget {
   final bool showDescription;
   final bool showLocation;
   final String units;
+  final bool use24HourTime;
   final VoidCallback? onShareTap;
 
   @override
@@ -124,7 +126,7 @@ class AlertDetailsSection extends StatelessWidget {
             _buildDetailRow(
               Icons.access_time,
               AppLocalizations.of(context)!.timeLabel,
-              _formatFullDateTime(alert.createdAt),
+              _formatFullDateTime(alert.createdAt, use24Hour: use24HourTime),
               subtitle: _formatDateTime(context, alert.createdAt),
             ),
 
@@ -344,7 +346,7 @@ class AlertDetailsSection extends StatelessWidget {
     }
   }
 
-  String _formatFullDateTime(DateTime dateTime) {
+  String _formatFullDateTime(DateTime dateTime, {bool use24Hour = true}) {
     final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -354,11 +356,18 @@ class AlertDetailsSection extends StatelessWidget {
     final month = months[localDateTime.month - 1];
     final day = localDateTime.day;
     final year = localDateTime.year;
-    final hour = localDateTime.hour == 0 ? 12 : (localDateTime.hour > 12 ? localDateTime.hour - 12 : localDateTime.hour);
     final minute = localDateTime.minute.toString().padLeft(2, '0');
-    final amPm = localDateTime.hour >= 12 ? 'PM' : 'AM';
 
-    return '$month $day, $year at $hour:$minute $amPm';
+    if (use24Hour) {
+      // 24-hour format (e.g., "Sep 19, 2025 at 14:30")
+      final hour = localDateTime.hour.toString().padLeft(2, '0');
+      return '$month $day, $year at $hour:$minute';
+    } else {
+      // 12-hour format with AM/PM (e.g., "Sep 19, 2025 at 2:30 PM")
+      final hour = localDateTime.hour == 0 ? 12 : (localDateTime.hour > 12 ? localDateTime.hour - 12 : localDateTime.hour);
+      final amPm = localDateTime.hour >= 12 ? 'PM' : 'AM';
+      return '$month $day, $year at $hour:$minute $amPm';
+    }
   }
 
   String _formatDateISO(DateTime dateTime) {

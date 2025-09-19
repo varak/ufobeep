@@ -12,11 +12,13 @@ class AlertDirectionSection extends StatelessWidget {
   const AlertDirectionSection({
     super.key,
     required this.alert,
+    this.units = 'metric',
     this.onNavigate,
     this.onShowMap,
   });
 
   final Alert alert;
+  final String units;
   final Function(double bearing, double distance)? onNavigate;
   final Function(Position userLocation, Alert alert)? onShowMap;
 
@@ -133,7 +135,7 @@ class AlertDirectionSection extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    AppLocalizations.of(context)!.distanceAway(UnitConversion.formatDistance(distance * 1000, 'metric')),
+                    AppLocalizations.of(context)!.distanceAway(UnitConversion.formatDistance(distance * 1000, units)),
                     style: const TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 14,
