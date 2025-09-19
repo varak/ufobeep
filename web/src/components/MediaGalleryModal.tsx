@@ -17,14 +17,16 @@ interface MediaGalleryModalProps {
   mediaFiles: MediaFile[]
   initialIndex?: number
   alertTitle?: string
+  onBackToList?: () => void
 }
 
-export default function MediaGalleryModal({ 
-  isOpen, 
-  onClose, 
-  mediaFiles, 
+export default function MediaGalleryModal({
+  isOpen,
+  onClose,
+  mediaFiles,
   initialIndex = 0,
-  alertTitle 
+  alertTitle,
+  onBackToList
 }: MediaGalleryModalProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex)
 
@@ -100,6 +102,15 @@ export default function MediaGalleryModal({
           <div className="bg-dark-background/50 text-text-tertiary px-3 py-1 rounded-full text-xs">
             ← → Navigate • ESC Close
           </div>
+          {onBackToList && (
+            <button
+              onClick={onBackToList}
+              className="text-text-primary hover:text-brand-primary p-3 rounded-lg border border-dark-border transition-colors hover:bg-dark-background/50"
+              title="Back to beep list"
+            >
+              <span className="text-sm">← Beeps</span>
+            </button>
+          )}
           <button
             onClick={onClose}
             className="text-text-primary hover:text-brand-primary p-3 rounded-lg border border-dark-border transition-colors hover:bg-dark-background/50"
