@@ -229,7 +229,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return 'daleko';
+    return '_ _ PLACESENT _ 0 _ _';
   }
 
   @override

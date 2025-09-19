@@ -229,7 +229,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return 'loin';
+    return '_PLACEHOLDER_0__';
   }
 
   @override

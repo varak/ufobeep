@@ -227,7 +227,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return 'pois';
+    return '__PAIKKAHOLDER_0___';
   }
 
   @override

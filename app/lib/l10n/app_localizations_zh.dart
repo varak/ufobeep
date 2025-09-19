@@ -224,7 +224,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return '离开';
+    return '– 地点/地点/地点/地点/地点/地点';
   }
 
   @override

@@ -224,7 +224,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return '뚱 베어';
+    return '₢ 킹';
   }
 
   @override

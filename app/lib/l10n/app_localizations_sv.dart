@@ -228,7 +228,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return 'bort';
+    return '$distance';
   }
 
   @override

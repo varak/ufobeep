@@ -229,7 +229,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return 'væk';
+    return '_ _ PLACEREPORT _ 0 _ _';
   }
 
   @override

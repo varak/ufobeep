@@ -227,7 +227,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return 'بعيدا';
+    return '_';
   }
 
   @override

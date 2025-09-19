@@ -12,8 +12,6 @@ UserPreferences _$UserPreferencesFromJson(Map<String, dynamic> json) =>
       email: json['email'] as String?,
       language: json['language'] as String? ?? 'en',
       alertRangeKm: (json['alertRangeKm'] as num?)?.toDouble() ?? 10.0,
-      enablePushNotifications: json['enablePushNotifications'] as bool? ?? true,
-      enableLocationAlerts: json['enableLocationAlerts'] as bool? ?? true,
       enableArCompass: json['enableArCompass'] as bool? ?? true,
       enablePilotMode: json['enablePilotMode'] as bool? ?? false,
       alertCategories:
@@ -52,8 +50,6 @@ Map<String, dynamic> _$UserPreferencesToJson(UserPreferences instance) =>
       'email': instance.email,
       'language': instance.language,
       'alertRangeKm': instance.alertRangeKm,
-      'enablePushNotifications': instance.enablePushNotifications,
-      'enableLocationAlerts': instance.enableLocationAlerts,
       'enableArCompass': instance.enableArCompass,
       'enablePilotMode': instance.enablePilotMode,
       'alertCategories': instance.alertCategories,

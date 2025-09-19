@@ -229,7 +229,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return 'via';
+    return '#';
   }
 
   @override

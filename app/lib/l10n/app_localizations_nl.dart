@@ -229,7 +229,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return 'weg';
+    return '__PLAATSHOLDER_0___';
   }
 
   @override

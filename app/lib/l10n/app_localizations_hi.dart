@@ -228,7 +228,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return 'दूर';
+    return '_';
   }
 
   @override

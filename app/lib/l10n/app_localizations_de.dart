@@ -230,7 +230,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return 'weg';
+    return '$distance';
   }
 
   @override

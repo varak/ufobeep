@@ -228,7 +228,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return 'longe';
+    return '__PACELODER_0_';
   }
 
   @override

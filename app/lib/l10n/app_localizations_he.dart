@@ -227,7 +227,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return 'משם';
+    return 'שם הסרטון: PLACEHOLDER_0______';
   }
 
   @override

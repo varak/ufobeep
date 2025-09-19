@@ -549,7 +549,7 @@ abstract class AppLocalizations {
   /// No description provided for @distanceAway.
   ///
   /// In en, this message translates to:
-  /// **'away'**
+  /// **'{distance}'**
   String distanceAway(String distance);
 
   /// No description provided for @bearingToObject.

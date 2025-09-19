@@ -224,7 +224,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return 'ふりがな';
+    return '${distance}_______________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override

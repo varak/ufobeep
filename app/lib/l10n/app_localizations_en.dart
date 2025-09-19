@@ -227,7 +227,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return 'away';
+    return '$distance';
   }
 
   @override

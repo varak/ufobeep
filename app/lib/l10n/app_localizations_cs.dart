@@ -229,7 +229,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return 'pryč';
+    return '_ _ PLACETETERER _ 0 _ _';
   }
 
   @override
