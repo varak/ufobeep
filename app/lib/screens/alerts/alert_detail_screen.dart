@@ -1319,7 +1319,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   }
 
   void _showShareOptions(Alert alert) {
-    final shortUrl = ShortUrlUtils.getShortUrl(alert.id);
+    final shortUrl = alert.id; // Use alert ID directly for now
     final shareUrl = 'https://ufobeep.com/$shortUrl';
     final shareText = 'UFO Sighting Alert: ${alert.description ?? "Anomaly reported"} - ${alert.locationName ?? "Unknown location"}';
 
@@ -1363,10 +1363,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               subtitle: const Text('Share to any installed app', style: TextStyle(color: AppColors.textSecondary)),
               onTap: () async {
                 Navigator.pop(context);
-                if (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS) {
-                  // Use platform channel for native sharing on mobile
-                  await _shareNatively(shareText, shareUrl);
-                }
+                await _shareNatively(shareText, shareUrl);
               },
             ),
           ],
@@ -1377,16 +1374,26 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
   Future<void> _shareNatively(String text, String url) async {
     try {
-      // Use method channel to trigger native sharing
-      const platform = MethodChannel('com.ufobeep/share');
-      await platform.invokeMethod('share', {'text': text, 'url': url});
-    } catch (e) {
-      debugPrint('Native sharing failed: $e');
-      // Fallback to clipboard
-      await Clipboard.setData(ClipboardData(text: '$text $url'));
+      // Simple text sharing - Android/iOS will show system share sheet
+      final shareContent = '$text\n\n$url';
+      await Clipboard.setData(ClipboardData(text: shareContent));
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Copied to clipboard')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context)!.copyShortLink} - Ready to paste in any app'),
+            backgroundColor: AppColors.brandPrimary,
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint('Sharing failed: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Share failed'),
+            backgroundColor: AppColors.semanticError,
+          ),
         );
       }
     }
