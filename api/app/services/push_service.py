@@ -110,6 +110,7 @@ class PushTarget:
     platform: str
     user_id: str
     preferences: Dict[str, bool]
+    language: str = "en"  # User's preferred language - default to English for compatibility
 
 
 class PushNotificationService:
@@ -344,20 +345,44 @@ class PushNotificationService:
             **(additional_data or {})
         }
         
-        payload = PushPayload(
-            title=title,
-            body=body,
-            data=data,
-            sound="default",
-            click_action="FLUTTER_NOTIFICATION_CLICK"
-        )
+        # Group targets by language for multilingual notifications
+        from app.services.notification_translation_service import get_ufo_alert_title, get_sighting_notification_body
+        from collections import defaultdict
 
-        return await self.send_notification(
-            targets=targets,
-            payload=payload,
-            notification_type=NotificationType.BEEP,
-            collapse_key=f"sighting_{sighting_id}"
-        )
+        targets_by_language = defaultdict(list)
+        for target in targets:
+            targets_by_language[target.language].append(target)
+
+        all_results = {"total_sent": 0, "total_failed": 0, "fcm_results": [], "apns_results": []}
+
+        # Send notifications per language group
+        for language, lang_targets in targets_by_language.items():
+            # Create notification in this language
+            localized_title = f"🛸 {get_ufo_alert_title(language)}"
+            localized_body = get_sighting_notification_body(language)
+
+            payload = PushPayload(
+                title=localized_title,
+                body=localized_body,
+                data=data,
+                sound="default",
+                click_action="FLUTTER_NOTIFICATION_CLICK"
+            )
+
+            result = await self.send_notification(
+                targets=lang_targets,
+                payload=payload,
+                notification_type=NotificationType.BEEP,
+                collapse_key=f"sighting_{sighting_id}"
+            )
+
+            # Aggregate results
+            all_results["total_sent"] += result["total_sent"]
+            all_results["total_failed"] += result["total_failed"]
+            all_results["fcm_results"].extend(result.get("fcm_results", []))
+            all_results["apns_results"].extend(result.get("apns_results", []))
+
+        return all_results
         
     async def send_comment_notification(
         self,
@@ -375,32 +400,50 @@ class PushNotificationService:
         # Truncate comment for preview
         comment_preview = comment_body[:80] + "..." if len(comment_body) > 80 else comment_body
         
-        # Create notification title
-        title = f"💬 {commenter_username} commented"
-        if beep_title:
-            title += f" on {beep_title[:30]}..."
+        # Group targets by language for multilingual notifications
+        from app.services.notification_translation_service import get_comment_notification_title
+        from collections import defaultdict
 
-        data = {
-            "type": "comment",
-            "sighting_id": sighting_id,
-            "comment_id": comment_id,
-            "deep_link": f"ufobeep://beep/{sighting_id}/comments#comment-input",
-            "click_action": "OPEN_COMMENTS"
-        }
+        targets_by_language = defaultdict(list)
+        for target in targets:
+            targets_by_language[target.language].append(target)
 
-        payload = PushPayload(
-            title=title,
-            body=comment_preview,
-            data=data,
-            sound="default"
-        )
+        all_results = {"total_sent": 0, "total_failed": 0, "fcm_results": [], "apns_results": []}
 
-        return await self.send_notification(
-            targets=targets,
-            payload=payload,
-            notification_type=NotificationType.BEEP,
-            collapse_key=f"comments_{sighting_id}"
-        )
+        # Send notifications per language group
+        for language, lang_targets in targets_by_language.items():
+            # Create notification title in this language
+            title = f"💬 {get_comment_notification_title(language, commenter_username, beep_title)}"
+
+            data = {
+                "type": "comment",
+                "sighting_id": sighting_id,
+                "comment_id": comment_id,
+                "deep_link": f"ufobeep://beep/{sighting_id}/comments#comment-input",
+                "click_action": "OPEN_COMMENTS"
+            }
+
+            payload = PushPayload(
+                title=title,
+                body=comment_preview,
+                data=data,
+                sound="default"
+            )
+
+            result = await self.send_notification(
+                targets=lang_targets,
+                payload=payload,
+                notification_type=NotificationType.BEEP,
+                collapse_key=f"comments_{sighting_id}"
+            )
+
+            # Aggregate results
+            all_results["total_sent"] += result["total_sent"]
+            all_results["total_failed"] += result["total_failed"]
+            all_results["fcm_results"].extend(result.get("fcm_results", []))
+            all_results["apns_results"].extend(result.get("apns_results", []))
+
+        return all_results
 
     async def _apply_quiet_hours_and_mutes(self, sighting_id: str, targets: List[PushTarget]) -> List[PushTarget]:
         """Filter targets by device/user DND, snooze, and per-alert mutes"""

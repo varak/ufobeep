@@ -171,13 +171,17 @@ class CommentNotificationService:
                 "system_notifications": prefs_json.get("system_notifications", row.get("system_notifications", True))
             }
             
+            # Extract user language from preferences
+            user_language = (row.get("preferences") or {}).get("language", "en")
+
             target = PushTarget(
                 device_id=row["device_id"],
                 push_token=row["push_token"],
                 provider=provider,
                 platform=row["platform"],
                 user_id=row["user_id"],
-                preferences=preferences
+                preferences=preferences,
+                language=user_language
             )
             targets.append(target)
         

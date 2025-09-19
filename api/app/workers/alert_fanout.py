@@ -281,6 +281,10 @@ class AlertFanoutWorker:
                     except ValueError:
                         provider = PushProvider.FCM
                         
+                    # Extract user language from device preferences
+                    device_prefs = device.get("preferences", {})
+                    user_language = device_prefs.get("language", "en")
+
                     push_target = PushTarget(
                         device_id=device["device_id"],
                         push_token=device["push_token"],
@@ -289,9 +293,10 @@ class AlertFanoutWorker:
                         user_id=user_id,
                         preferences={
                             "alert_notifications": device.get("alert_notifications", True),
-                            "chat_notifications": device.get("chat_notifications", True), 
+                            "chat_notifications": device.get("chat_notifications", True),
                             "system_notifications": device.get("system_notifications", True)
-                        }
+                        },
+                        language=user_language
                     )
                     
                     push_targets.append(push_target)
