@@ -135,9 +135,9 @@ class CommentNotificationService:
         
         pool = db_pool or await get_database_pool()
         async with pool.acquire() as conn:
-            # Get active devices with push tokens for the users
+            # Get active devices with push tokens AND user language preferences
             rows = await conn.fetch("""
-                SELECT 
+                SELECT
                     d.device_id,
                     d.push_token,
                     d.push_provider,
@@ -146,7 +146,8 @@ class CommentNotificationService:
                     d.alert_notifications,
                     d.chat_notifications,
                     d.system_notifications,
-                    d.preferences
+                    d.preferences,
+                    COALESCE(d.preferences->>'language', 'en') as user_language
                 FROM devices d
                 WHERE d.user_id = ANY($1)
                 AND d.is_active = true
@@ -177,7 +178,8 @@ class CommentNotificationService:
                 provider=provider,
                 platform=row["platform"],
                 user_id=row["user_id"],
-                preferences=preferences
+                preferences=preferences,
+                language=row["user_language"]
             )
             targets.append(target)
         
