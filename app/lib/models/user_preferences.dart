@@ -146,7 +146,7 @@ class UserPreferences {
       locationPrivacy: locationPrivacy,
       mediaOnlyAlerts: mediaOnlyAlerts,
       ignoreAnonymousBeeps: ignoreAnonymousBeeps,
-      quietHoursEnabled: quietHoursEnabled ?? false, // Always default to disabled
+      quietHoursEnabled: quietHoursEnabled, // Don't override existing user preferences
       quietHoursStart: quietHoursStart ?? defaultQuietStart,
       quietHoursEnd: quietHoursEnd ?? defaultQuietEnd,
       allowEmergencyOverride: allowEmergencyOverride,
