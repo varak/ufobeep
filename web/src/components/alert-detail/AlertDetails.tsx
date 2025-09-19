@@ -180,7 +180,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
               <div className="flex items-center gap-2">
                 <span className="text-blue-400">🛸</span>
                 <span className="text-blue-300 font-medium">
-                  {t('mufonCaseTitle', { caseNumber: alert.enrichment?.mufon_case_id || '' })}
+                  {t('mufonCaseTitle', { caseNumber: alert.enrichment_data?.mufon_case_number || alert.enrichment?.mufon_case_id || '' })}
                 </span>
               </div>
             </div>
