@@ -536,6 +536,7 @@ async def update_device(
             
             # Build update query dynamically based on provided fields
             update_fields = request.dict(exclude_unset=True)
+            print(f"🔧 BACKEND: Received update_fields for device {target_device_id}: {update_fields}")
             if update_fields:
                 set_clauses = []
                 params = []
