@@ -358,10 +358,44 @@ class AppLocalizationsZh extends AppLocalizations {
   String get quietHoursDesc => '选定时数之间的静态提示 .';
 
   @override
+  String get quietHoursEnabled => 'Enable quiet hours';
+
+  @override
+  String get quietHoursFrom => 'From';
+
+  @override
+  String get quietHoursUntil => 'Until';
+
+  @override
+  String get quietHoursDefaultTime => 'Default quiet hours';
+
+  @override
+  String get emergencyOverride => 'Emergency override';
+
+  @override
+  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
+
+  @override
   String get dndMode => '不要烦恼';
 
   @override
   String get dndUntil => '不要打扰到这里';
+
+  @override
+  String dndEnabled(Object time) {
+    return 'DND enabled until $time';
+  }
+
+  @override
+  String get dndDisabled => 'DND disabled';
+
+  @override
+  String get quietHoursActive => 'Quiet hours active';
+
+  @override
+  String quietHoursScheduled(Object end, Object start) {
+    return 'Quiet hours: $start - $end';
+  }
 
   @override
   String get language => '语言';

@@ -468,22 +468,12 @@ class PushNotificationService:
         def in_dnd_window(pref: Dict[str, Any]) -> bool:
             preferences = pref.get("preferences") or {}
 
-            # Support Flutter format (quietHoursEnabled, quietHoursStart, quietHoursEnd)
-            if preferences.get("quietHoursEnabled"):
-                start_hour = preferences.get("quietHoursStart", 22)  # Default 10 PM
-                end_hour = preferences.get("quietHoursEnd", 7)       # Default 7 AM
-            else:
-                # Support legacy format (dnd.enabled, dnd.start, dnd.end)
-                dnd = preferences.get("dnd") or {}
-                if not dnd.get("enabled"):
-                    return False
-                try:
-                    start = dnd.get("start") or "22:00"
-                    end = dnd.get("end") or "07:00"
-                    start_hour = int(start.split(":", 1)[0])
-                    end_hour = int(end.split(":", 1)[0])
-                except Exception:
-                    return False
+            # Only support Flutter format (quietHoursEnabled, quietHoursStart, quietHoursEnd)
+            if not preferences.get("quietHoursEnabled"):
+                return False
+
+            start_hour = preferences.get("quietHoursStart", 22)  # Default 10 PM
+            end_hour = preferences.get("quietHoursEnd", 7)       # Default 7 AM
 
             try:
                 tzname = pref.get("timezone", "UTC")

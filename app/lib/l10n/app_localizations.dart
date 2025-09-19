@@ -792,6 +792,42 @@ abstract class AppLocalizations {
   /// **'Silence alerts between selected hours.'**
   String get quietHoursDesc;
 
+  /// No description provided for @quietHoursEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable quiet hours'**
+  String get quietHoursEnabled;
+
+  /// No description provided for @quietHoursFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get quietHoursFrom;
+
+  /// No description provided for @quietHoursUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Until'**
+  String get quietHoursUntil;
+
+  /// No description provided for @quietHoursDefaultTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Default quiet hours'**
+  String get quietHoursDefaultTime;
+
+  /// No description provided for @emergencyOverride.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency override'**
+  String get emergencyOverride;
+
+  /// No description provided for @emergencyOverrideDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow urgent alerts during quiet hours'**
+  String get emergencyOverrideDesc;
+
   /// No description provided for @dndMode.
   ///
   /// In en, this message translates to:
@@ -803,6 +839,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Do not disturb until'**
   String get dndUntil;
+
+  /// No description provided for @dndEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'DND enabled until {time}'**
+  String dndEnabled(Object time);
+
+  /// No description provided for @dndDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'DND disabled'**
+  String get dndDisabled;
+
+  /// No description provided for @quietHoursActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiet hours active'**
+  String get quietHoursActive;
+
+  /// No description provided for @quietHoursScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiet hours: {start} - {end}'**
+  String quietHoursScheduled(Object end, Object start);
 
   /// No description provided for @language.
   ///

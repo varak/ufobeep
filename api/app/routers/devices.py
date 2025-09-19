@@ -89,11 +89,7 @@ class DeviceUpdateRequest(BaseModel):
     alert_range_km: Optional[float] = Field(None, ge=1.0, le=100.0, description="Alert range in kilometers")
     # DND / Snooze
     snooze_until: Optional[str] = Field(None, description="Global snooze until ISO timestamp (UTC). Null to clear.")
-    dnd_enabled: Optional[bool] = None
-    dnd_start: Optional[str] = Field(None, description="DND start HH:MM (24h)")
-    dnd_end: Optional[str] = Field(None, description="DND end HH:MM (24h)")
-    dnd_days: Optional[List[int]] = Field(None, description="DND days [0..6] (Sun..Sat)")
-    # Flutter format preferences (takes precedence over individual DND fields)
+    # User preferences (Flutter format)
     preferences: Optional[dict] = Field(None, description="User preferences including DND/quiet hours")
 
 
@@ -569,34 +565,11 @@ async def update_device(
                     params.append(update_fields['snooze_until'])
                     param_idx += 1
 
-                # 3) Flutter preferences (direct JSONB update)
+                # 3) User preferences (direct JSONB update from Flutter)
                 if 'preferences' in update_fields and update_fields['preferences']:
-                    # Direct preferences update from Flutter client
+                    # Direct preferences update from Flutter client - clean and simple
                     set_clauses.append(f"preferences = ${param_idx}")
                     params.append(update_fields['preferences'])
-                    param_idx += 1
-
-                # 4) Legacy DND preferences (merge into JSONB preferences)
-                dnd_keys = ['dnd_enabled','dnd_start','dnd_end','dnd_days']
-                elif any(k in update_fields for k in dnd_keys):
-                    # Fetch existing preferences
-                    prefs_row = await conn.fetchrow("SELECT preferences FROM devices WHERE id = $1", target_device_id)
-                    prefs = prefs_row['preferences'] if prefs_row and prefs_row['preferences'] else {}
-                    dnd = prefs.get('dnd', {}) if isinstance(prefs, dict) else {}
-                    if 'dnd_enabled' in update_fields and update_fields['dnd_enabled'] is not None:
-                        dnd['enabled'] = bool(update_fields['dnd_enabled'])
-                    if 'dnd_start' in update_fields and update_fields['dnd_start']:
-                        dnd['start'] = update_fields['dnd_start']
-                    if 'dnd_end' in update_fields and update_fields['dnd_end']:
-                        dnd['end'] = update_fields['dnd_end']
-                    if 'dnd_days' in update_fields and update_fields['dnd_days'] is not None:
-                        dnd['days'] = update_fields['dnd_days']
-                    if isinstance(prefs, dict):
-                        prefs['dnd'] = dnd
-                    else:
-                        prefs = {'dnd': dnd}
-                    set_clauses.append(f"preferences = ${param_idx}")
-                    params.append(prefs)
                     param_idx += 1
                 
                 # Always update timestamps
