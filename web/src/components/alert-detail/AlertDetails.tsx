@@ -204,16 +204,13 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
               </div>
             </div>
           )}
-          <div
-            className="text-text-primary leading-relaxed prose prose-invert max-w-none"
-            dangerouslySetInnerHTML={{
-              __html: getCleanDescription()
-                .replace(/\n\n+/g, '</p><p>') // Double newlines = new paragraphs
-                .replace(/\n/g, '<br>') // Single newlines = line breaks
-                .replace(/^/, '<p>') // Start with opening <p>
-                .replace(/$/, '</p>') // End with closing </p>
-            }}
-          />
+          <div className="text-text-primary leading-relaxed max-w-none space-y-4">
+            {getCleanDescription().split(/\n\n+/).map((paragraph, index) => (
+              <p key={index} className="mb-4">
+                {paragraph.replace(/\n/g, ' ')}
+              </p>
+            ))}
+          </div>
         </div>
       )}
 
