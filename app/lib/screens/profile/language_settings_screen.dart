@@ -202,8 +202,8 @@ class LanguageSettingsScreen extends ConsumerWidget {
       );
     }
 
-    // Update language immediately to avoid modal hangs
-    final success = preferencesNotifier.setLanguageImmediate(languageCode);
+    // Update language and sync to backend for push notifications
+    final success = await preferencesNotifier.updateLanguage(languageCode);
 
     if (!context.mounted) return;
 
