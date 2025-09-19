@@ -1373,6 +1373,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   }
 
   Future<void> _shareNatively(String text, String url) async {
+    final l10n = AppLocalizations.of(context)!;
     try {
       // Use platform's native sharing
       final shareContent = '$text\n\n$url';
