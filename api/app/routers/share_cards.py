@@ -16,6 +16,7 @@ class MCPShareResponse(BaseModel):
     success: bool
     platforms_posted: List[str]
     failed_platforms: List[dict]
+    share_urls: dict
     message: str
 
 @router.get("/alerts/{aid}.png")
@@ -64,12 +65,14 @@ async def share_to_social_platforms(
         successful_platforms = []
         failed_platforms = []
 
-        # Post to each requested platform via MCP
+        # Generate share URLs for each requested platform
+        share_urls = {}
         for platform in request.platforms:
             try:
-                result = await _post_via_mcp(platform, share_content, beep_data)
+                result = await _post_via_url_scheme(platform, share_content, beep_data)
                 if result["success"]:
                     successful_platforms.append(platform)
+                    share_urls[platform] = result["share_url"]
                 else:
                     failed_platforms.append({
                         "platform": platform,
@@ -90,6 +93,7 @@ async def share_to_social_platforms(
             success=success,
             platforms_posted=successful_platforms,
             failed_platforms=failed_platforms,
+            share_urls=share_urls,
             message=message
         )
 
@@ -131,66 +135,26 @@ def _generate_share_content(beep_data: dict, locale: str) -> dict:
         "image_url": f"https://ufobeep.com/og/alerts/{beep_data['id']}.png"
     }
 
-async def _post_via_mcp(platform: str, content: dict, beep_data: dict) -> dict:
-    """Post content to a platform via MCP server"""
-    # MCP server endpoints mapping for all available platforms
-    mcp_endpoints = {
-        # Western platforms
-        "twitter": "http://localhost:3001/mcp/twitter",
-        "linkedin": "http://localhost:3001/mcp/linkedin",
-        "facebook": "http://localhost:3001/mcp/facebook",
-        "instagram": "http://localhost:3001/mcp/instagram",
-        "reddit": "http://localhost:3001/mcp/reddit",
-        "youtube": "http://localhost:3001/mcp/youtube",
-        "tiktok": "http://localhost:3001/mcp/tiktok",
-        "mastodon": "http://localhost:3001/mcp/mastodon",
+async def _post_via_url_scheme(platform: str, content: dict, beep_data: dict) -> dict:
+    """Generate share URLs for platforms that support URL-based sharing"""
+    share_text = f"{content['text']} {content['hashtags']}"
+    share_url = content["url"]
 
-        # Asian platforms
-        "wechat": "http://localhost:3002/mcp/wechat",
-        "weibo": "http://localhost:3002/mcp/weibo",
-        "qq": "http://localhost:3002/mcp/qq",
-        "douyin": "http://localhost:3002/mcp/douyin",
-        "xiaohongshu": "http://localhost:3002/mcp/xiaohongshu",
-        "bilibili": "http://localhost:3002/mcp/bilibili",
-        "line": "http://localhost:3002/mcp/line",
-
-        # Russian/Eastern European platforms
-        "vkontakte": "http://localhost:3003/mcp/vkontakte",
-        "odnoklassniki": "http://localhost:3003/mcp/odnoklassniki",
-
-        # Global messaging platforms
-        "telegram": "http://localhost:3004/mcp/telegram",
-        "whatsapp": "http://localhost:3004/mcp/whatsapp",
-        "discord": "http://localhost:3004/mcp/discord",
-
-        # Regional platforms
-        "mixi": "http://localhost:3005/mcp/mixi",        # Japan
-        "xing": "http://localhost:3005/mcp/xing",        # Germany
-        "naver": "http://localhost:3005/mcp/naver",      # Korea
-        "orkut": "http://localhost:3005/mcp/orkut"       # Brazil/India
+    share_urls = {
+        "twitter": f"https://twitter.com/intent/tweet?text={share_text}&url={share_url}",
+        "facebook": f"https://www.facebook.com/sharer/sharer.php?u={share_url}&quote={share_text}",
+        "reddit": f"https://reddit.com/submit?url={share_url}&title={share_text}",
+        "telegram": f"https://t.me/share/url?url={share_url}&text={share_text}",
+        "whatsapp": f"https://wa.me/?text={share_text} {share_url}"
     }
 
-    endpoint = mcp_endpoints.get(platform)
-    if not endpoint:
+    platform_url = share_urls.get(platform)
+    if not platform_url:
         return {"success": False, "error": f"Platform {platform} not supported"}
 
-    try:
-        async with httpx.AsyncClient() as client:
-            payload = {
-                "text": f"{content['text']} {content['hashtags']}",
-                "media_url": content.get("image_url"),
-                "link_url": content["url"]
-            }
-
-            response = await client.post(endpoint, json=payload, timeout=30.0)
-
-            if response.status_code == 200:
-                return {"success": True, "response": response.json()}
-            else:
-                return {
-                    "success": False,
-                    "error": f"HTTP {response.status_code}: {response.text}"
-                }
-
-    except Exception as e:
-        return {"success": False, "error": str(e)}
+    # For URL-based sharing, we return the URL for the frontend to open
+    return {
+        "success": True,
+        "share_url": platform_url,
+        "method": "url_scheme"
+    }

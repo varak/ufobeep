@@ -236,10 +236,14 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
       const result = await response.json()
 
       if (result.success) {
-        // Show success message
-        window.alert(`Successfully shared to ${result.platforms_posted.length} platform(s)!`)
+        // Open share URLs in new tabs
+        Object.entries(result.share_urls).forEach(([platform, url]) => {
+          window.open(url, '_blank')
+        })
+
         if (result.failed_platforms.length > 0) {
           console.warn('Some platforms failed:', result.failed_platforms)
+          window.alert(`Opened ${result.platforms_posted.length} platform(s). ${result.failed_platforms.length} failed.`)
         }
       } else {
         window.alert('Sharing failed. Please try again.')
@@ -772,25 +776,17 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
         </div>
       </div>
 
-      {/* Share button - moved to bottom right */}
-      <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-        <div className="relative">
-          <button
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              setShowShareMenu(!showShareMenu)
-            }}
-            className="p-1.5 bg-dark-background/80 hover:bg-brand-primary/20 rounded-lg border border-dark-border hover:border-brand-primary transition-all"
-            title="Share alert"
-          >
-            <svg className="w-4 h-4 text-text-secondary hover:text-brand-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-            </svg>
-          </button>
+      {/* Media Gallery Modal */}
+      <MediaGalleryModal
+        isOpen={isMediaModalOpen}
+        onClose={() => setIsMediaModalOpen(false)}
+        mediaFiles={alert.media_files || []}
+        initialIndex={selectedMediaIndex}
+        alertTitle={AlertTitleUtils.getShortTitle(alert)}
+      />
 
-          {/* Share menu */}
-          {showShareMenu && (
+      {/* Platform Selection Modal */}
+      {showPlatformModal && (
             <div className="absolute top-full right-0 mt-2 bg-dark-surface border border-dark-border rounded-lg shadow-xl z-10 min-w-48">
               <div className="p-2">
                 <button
@@ -887,40 +883,13 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
               Select platforms to share this UFO sighting report:
             </p>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+            <div className="grid grid-cols-2 gap-3 mb-6">
               {Object.entries({
-                // Western platforms
                 twitter: { name: "Twitter/X", icon: "🐦" },
                 facebook: { name: "Facebook", icon: "📘" },
-                instagram: { name: "Instagram", icon: "📷" },
-                linkedin: { name: "LinkedIn", icon: "💼" },
                 reddit: { name: "Reddit", icon: "🔴" },
-                youtube: { name: "YouTube", icon: "📺" },
-                tiktok: { name: "TikTok", icon: "🎵" },
-                mastodon: { name: "Mastodon", icon: "🐘" },
-
-                // Asian platforms
-                wechat: { name: "WeChat", icon: "💬" },
-                weibo: { name: "Weibo", icon: "🇨🇳" },
-                line: { name: "LINE", icon: "📱" },
-                qq: { name: "QQ", icon: "🐧" },
-                douyin: { name: "Douyin", icon: "🎬" },
-                xiaohongshu: { name: "XiaoHongShu", icon: "📖" },
-                bilibili: { name: "Bilibili", icon: "📹" },
-
-                // Russian/Eastern European
-                vkontakte: { name: "VKontakte", icon: "🔵" },
-                odnoklassniki: { name: "Odnoklassniki", icon: "🟠" },
-
-                // Global messaging
                 telegram: { name: "Telegram", icon: "✈️" },
-                whatsapp: { name: "WhatsApp", icon: "💚" },
-                discord: { name: "Discord", icon: "🎮" },
-
-                // Regional
-                mixi: { name: "Mixi", icon: "🇯🇵" },
-                xing: { name: "XING", icon: "🇩🇪" },
-                naver: { name: "Naver", icon: "🇰🇷" }
+                whatsapp: { name: "WhatsApp", icon: "💚" }
               }).map(([platform, info]) => (
                 <label key={platform} className="flex items-center space-x-2 p-3 border border-dark-border rounded hover:bg-dark-background cursor-pointer">
                   <input
