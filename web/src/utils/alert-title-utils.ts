@@ -36,47 +36,19 @@ export class AlertTitleUtils {
       return `UFOBeep ${t('ufo')} ${t('alert')}`;
     }
 
-    // MUFON case number or standard title
-    const caseNumber = alert.enrichment?.mufon_case_id;
-    return caseNumber
-      ? t('mufonCaseTitle', { caseNumber })
-      : `UFOBeep ${t('ufo')} ${t('alert')}`;
-    
-    // Check if alert has media
-    const hasMedia = alert.media_files && alert.media_files.length > 0;
-    
-    // Generate contextual title based on available data
-    if (hasMedia) {
-      const hasPhoto = alert.media_files?.some((media) => 
-        media.type.toLowerCase().includes('image')) || false;
-      const hasVideo = alert.media_files?.some((media) => 
-        media.type.toLowerCase().includes('video')) || false;
-      
-      if (hasPhoto && hasVideo) {
-        return 'Visual sighting (photo & video)';
-      } else if (hasVideo) {
-        return 'Visual sighting (video)';
-      } else if (hasPhoto) {
-        return 'Visual sighting (photo)';
-      } else {
-        return 'Visual sighting';
+    // For MUFON alerts, try to extract classification for shape-based titles
+    const classification = this.extractCleanClassification(alert.enrichment);
+
+    if (classification && classification !== 'unknown' && classification !== 'other') {
+      // Use shape-based title like "MUFON Triangle Sighting Report"
+      const shapeKey = this.getShapeTranslationKey(classification);
+      if (shapeKey) {
+        return `MUFON ${t(shapeKey)} ${t('sightingReport')}`;
       }
     }
-    
-    // Check if it's recent (within last hour)
-    const now = new Date();
-    const alertTime = new Date(alert.created_at);
-    const timeDiff = now.getTime() - alertTime.getTime();
-    const minutesDiff = timeDiff / (1000 * 60);
-    
-    if (minutesDiff < 60) {
-      return 'Recent sighting';
-    } else if (minutesDiff < 24 * 60) {
-      return 'Sighting today';
-    }
-    
-    // Final fallback
-    return 'Sighting';
+
+    // Fallback to generic MUFON title (no case number in hero)
+    return t('mufonGenericTitle');
   }
   
   /**
@@ -116,6 +88,39 @@ export class AlertTitleUtils {
     }
     
     return 'Sighting';
+  }
+
+  /**
+   * Extract clean classification from enrichment data
+   */
+  private static extractCleanClassification(enrichment: any): string | null {
+    if (!enrichment) return null;
+
+    let classification: string | null = null;
+    let confidence = 0.0;
+
+    // Always check confidence first from classification field
+    const classField = enrichment.classification;
+    if (classField && typeof classField === 'object') {
+      // Get confidence from the classification object
+      const confValue = classField.confidence;
+      if (typeof confValue === 'number') {
+        confidence = confValue;
+      }
+      // Get type from the classification object
+      classification = classField.type?.toString().toLowerCase().trim();
+    } else if (typeof classField === 'string') {
+      // Extract from string format like "type: sphere"
+      const match = classField.match(/type:\s*(\w+)/);
+      classification = match?.[1]?.toLowerCase().trim() || classField.toLowerCase().trim();
+    }
+
+    // Apply same 0.5 confidence threshold as backend
+    if (confidence > 0.0 && confidence < 0.5) {
+      return null;  // Too low confidence, don't show classification
+    }
+
+    return classification;
   }
 
   /**
