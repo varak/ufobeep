@@ -403,7 +403,14 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
         onClick={() => {
           // Save scroll position before navigating
           if (typeof window !== 'undefined') {
-            window.history.replaceState({ ...window.history.state, scrollY: window.scrollY }, '')
+            const currentState = window.history.state || {}
+            window.history.replaceState({
+              ...currentState,
+              scrollY: window.scrollY,
+              fromBeepList: true
+            }, '')
+            // Also save to sessionStorage as backup
+            sessionStorage.setItem('beepListScrollY', window.scrollY.toString())
           }
         }}>
         <div className="p-4">

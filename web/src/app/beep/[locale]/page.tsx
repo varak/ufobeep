@@ -98,10 +98,32 @@ export default function BeepLocalePage({ params }: BeepPageProps) {
   // Restore scroll position when navigating back
   useEffect(() => {
     // Check if we're coming back from a detail page
-    if (typeof window !== 'undefined' && window.history.state?.scrollY) {
-      window.scrollTo(0, window.history.state.scrollY)
+    if (typeof window !== 'undefined' && !loading) {
+      let scrollY = null
+
+      // Try to get scroll position from history state first
+      if (window.history.state?.scrollY) {
+        scrollY = window.history.state.scrollY
+      }
+      // Fallback to sessionStorage
+      else {
+        const savedScrollY = sessionStorage.getItem('beepListScrollY')
+        if (savedScrollY) {
+          scrollY = parseInt(savedScrollY, 10)
+        }
+      }
+
+      if (scrollY) {
+        // Use requestAnimationFrame to ensure DOM is rendered
+        requestAnimationFrame(() => {
+          window.scrollTo(0, scrollY)
+          // Clear the saved positions so they don't interfere with normal navigation
+          window.history.replaceState({ ...window.history.state, scrollY: null }, '')
+          sessionStorage.removeItem('beepListScrollY')
+        })
+      }
     }
-  }, [])
+  }, [loading]) // Depend on loading so it runs after content is loaded
   
   return (
     <div className="min-h-screen bg-dark-background text-text-primary">
