@@ -1345,13 +1345,13 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             // Copy link option
             ListTile(
               leading: const Icon(Icons.content_copy, color: AppColors.brandPrimary),
-              title: const Text('Copy Link', style: TextStyle(color: AppColors.textPrimary)),
+              title: Text(l10n.copyShortLink, style: const TextStyle(color: AppColors.textPrimary)),
               subtitle: Text(shareUrl, style: const TextStyle(color: AppColors.textSecondary)),
               onTap: () {
                 Clipboard.setData(ClipboardData(text: shareUrl));
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Link copied to clipboard')),
+                  SnackBar(content: Text(l10n.copyShortLink)),
                 );
               },
             ),
@@ -1359,8 +1359,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             // Native share option
             ListTile(
               leading: const Icon(Icons.share, color: AppColors.brandPrimary),
-              title: const Text('Share via Apps', style: TextStyle(color: AppColors.textPrimary)),
-              subtitle: const Text('Share to any installed app', style: TextStyle(color: AppColors.textSecondary)),
+              title: Text(l10n.shareAlert, style: const TextStyle(color: AppColors.textPrimary)),
+              subtitle: Text(l10n.shareAlert, style: const TextStyle(color: AppColors.textSecondary)),
               onTap: () async {
                 Navigator.pop(context);
                 await _shareNatively(shareText, shareUrl);
@@ -1389,7 +1389,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         await Clipboard.setData(ClipboardData(text: shareContent));
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Copied to clipboard')),
+            SnackBar(content: Text(l10n.copyShortLink)),
           );
         }
       }
@@ -1399,7 +1399,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       await Clipboard.setData(ClipboardData(text: '$text\n\n$url'));
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Copied to clipboard')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.copyShortLink)),
         );
       }
     }
@@ -1413,7 +1413,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
-      throw 'Could not launch sharing';
+      throw AppLocalizations.of(context)!.errorGeneric;
     }
   }
 
@@ -1425,7 +1425,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
-      throw 'Could not launch sharing';
+      throw AppLocalizations.of(context)!.errorGeneric;
     }
   }
 
