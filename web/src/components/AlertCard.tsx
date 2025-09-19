@@ -689,7 +689,7 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
                       className="w-full text-left px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-dark-background rounded flex items-center gap-2"
                     >
                       <span>{platform.icon}</span>
-                      {t('shareOn')} {platform.name}
+{platform.name}
                     </button>
                   ))}
                 </div>
