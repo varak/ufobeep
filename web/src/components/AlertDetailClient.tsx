@@ -186,12 +186,18 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
       <div className="max-w-4xl mx-auto">
         <button
           onClick={() => {
-            // Use router.back() to preserve scroll position and browser history
-            if (typeof window !== 'undefined' && window.history.length > 1) {
-              window.history.back()
-            } else {
-              // Fallback to direct navigation if no history
-              window.location.href = '/beep'
+            if (typeof window !== 'undefined') {
+              // Check if we have a saved beep list URL to return to
+              const savedUrl = sessionStorage.getItem('beepListUrl')
+              if (savedUrl) {
+                window.location.href = savedUrl
+              } else if (window.history.length > 1) {
+                // Try browser back if no saved URL
+                window.history.back()
+              } else {
+                // Final fallback to beep list
+                window.location.href = '/beep'
+              }
             }
           }}
           className="text-brand-primary hover:text-brand-primary-light transition-colors mb-6 inline-block cursor-pointer"

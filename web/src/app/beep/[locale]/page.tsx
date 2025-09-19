@@ -99,27 +99,18 @@ export default function BeepLocalePage({ params }: BeepPageProps) {
   useEffect(() => {
     // Check if we're coming back from a detail page
     if (typeof window !== 'undefined' && !loading) {
-      let scrollY = null
+      const savedScrollY = sessionStorage.getItem('beepListScrollY')
+      const savedUrl = sessionStorage.getItem('beepListUrl')
 
-      // Try to get scroll position from history state first
-      if (window.history.state?.scrollY) {
-        scrollY = window.history.state.scrollY
-      }
-      // Fallback to sessionStorage
-      else {
-        const savedScrollY = sessionStorage.getItem('beepListScrollY')
-        if (savedScrollY) {
-          scrollY = parseInt(savedScrollY, 10)
-        }
-      }
-
-      if (scrollY) {
+      // Only restore if we're on the same URL that was saved
+      if (savedScrollY && savedUrl && window.location.href === savedUrl) {
+        const scrollY = parseInt(savedScrollY, 10)
         // Use requestAnimationFrame to ensure DOM is rendered
         requestAnimationFrame(() => {
           window.scrollTo(0, scrollY)
-          // Clear the saved positions so they don't interfere with normal navigation
-          window.history.replaceState({ ...window.history.state, scrollY: null }, '')
+          // Clear the saved positions after successful restoration
           sessionStorage.removeItem('beepListScrollY')
+          sessionStorage.removeItem('beepListUrl')
         })
       }
     }

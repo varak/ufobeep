@@ -401,16 +401,10 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
         href={`/beep/${locale}/${getAlertSlug({ id: alert.id, title: alert.title, created_at: alert.created_at, location: alert.location, reporter_username: alert.reporter_username, description: alert.description, source: alert.source, external_url: alert.external_url, short_url: alert.short_url }, locale, { slugs: t('slugs', { returnObjects: true }) }, alert.short_url)}`}
         className="block"
         onClick={() => {
-          // Save scroll position before navigating
+          // Save scroll position before navigating - use sessionStorage to not interfere with history
           if (typeof window !== 'undefined') {
-            const currentState = window.history.state || {}
-            window.history.replaceState({
-              ...currentState,
-              scrollY: window.scrollY,
-              fromBeepList: true
-            }, '')
-            // Also save to sessionStorage as backup
             sessionStorage.setItem('beepListScrollY', window.scrollY.toString())
+            sessionStorage.setItem('beepListUrl', window.location.href)
           }
         }}>
         <div className="p-4">
