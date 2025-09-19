@@ -375,7 +375,7 @@ class PushNotificationService:
         # Truncate comment for preview
         comment_preview = comment_body[:80] + "..." if len(comment_body) > 80 else comment_body
         
-        # Create notification title
+        # Create notification title (English for now - language lookup needs user context)
         title = f"💬 {commenter_username} commented"
         if beep_title:
             title += f" on {beep_title[:30]}..."
@@ -539,7 +539,7 @@ class PushNotificationService:
 
 
 # Compatibility functions for legacy imports
-async def send_to_token(token: str, data: dict, title="UFOBeep", body="New sighting nearby"):
+async def send_to_token(token: str, data: dict, title=None, body=None):
     """Legacy compatibility function - send push notification to a specific FCM token"""
     try:
         messaging_client = get_messaging()

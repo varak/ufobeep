@@ -471,13 +471,11 @@ export function isRTLLocale(locale) {
 `);
 
     // Generate Flutter app configuration
-    const flutterConfig = Object.keys(LANGUAGES).map(code => `  ${code}.arb`).join('\n');
-    
+    // Generate clean l10n.yaml - Flutter auto-discovers ARB files in arb-dir
     const l10nYaml = `arb-dir: lib/l10n
-template-arb-file: app_en.arb  
+template-arb-file: app_en.arb
 output-localization-file: app_localizations.dart
-output-class: AppLocalizations
-${flutterConfig}`;
+output-class: AppLocalizations`;
 
     fs.writeFileSync(path.join(__dirname, '../app/l10n.yaml'), l10nYaml);
 

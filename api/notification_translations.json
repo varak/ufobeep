@@ -1,0 +1,250 @@
+{
+  "version": "1.0.0",
+  "generated": "2025-09-19T12:05:51.358Z",
+  "languages": [
+    "en",
+    "es",
+    "de",
+    "fr",
+    "pt",
+    "it",
+    "ru",
+    "ja",
+    "zh",
+    "ar",
+    "nl",
+    "pl",
+    "cs",
+    "tr",
+    "ko",
+    "hi",
+    "sv",
+    "da",
+    "no",
+    "fi",
+    "el",
+    "he"
+  ],
+  "translations": {
+    "en": {
+      "pushNotificationUfoAlert": "UFO Alert",
+      "pushNotificationAnomalyAlert": "Anomaly Alert",
+      "pushNotificationNearby": "Nearby",
+      "pushNotificationInYourArea": "in your area. Tap to view details.",
+      "pushNotificationCommented": "{username} commented",
+      "pushNotificationCommentedOn": "{username} commented on {beepTitle}",
+      "pushNotificationGeneric": "UFOBeep",
+      "pushNotificationNewSighting": "New sighting nearby"
+    },
+    "es": {
+      "pushNotificationUfoAlert": "OVNI Alerta",
+      "pushNotificationAnomalyAlert": "Alerta de anomalía",
+      "pushNotificationNearby": "Cerca",
+      "pushNotificationInYourArea": "en su área. Pulse para ver detalles.",
+      "pushNotificationCommented": "{username}_ comentado",
+      "pushNotificationCommentedOn": "{username}_ comentado {username}",
+      "pushNotificationGeneric": "UFOBeep",
+      "pushNotificationNewSighting": "Nuevo avistamiento cerca"
+    },
+    "de": {
+      "pushNotificationUfoAlert": "UFO Alarmstufe",
+      "pushNotificationAnomalyAlert": "Anomaly Alert",
+      "pushNotificationNearby": "In der Nähe",
+      "pushNotificationInYourArea": "in deiner Umgebung. Tippen Sie auf Details zu sehen.",
+      "pushNotificationCommented": "__PLACEHOLDER_0_ kommentiert",
+      "pushNotificationCommentedOn": "{username} kommentiert auf {username}_",
+      "pushNotificationGeneric": "UFOBeep",
+      "pushNotificationNewSighting": "Neue Sicht in der Nähe"
+    },
+    "fr": {
+      "pushNotificationUfoAlert": "OVNI Alerte",
+      "pushNotificationAnomalyAlert": "Alerte d'anomalie",
+      "pushNotificationNearby": "À proximité",
+      "pushNotificationInYourArea": "dans votre région. Appuyez sur pour voir les détails.",
+      "pushNotificationCommented": "__PLACEHODER_0__ commenté",
+      "pushNotificationCommentedOn": "{username} commente {username}",
+      "pushNotificationGeneric": "UFOBeep",
+      "pushNotificationNewSighting": "Nouvelle observation à proximité"
+    },
+    "pt": {
+      "pushNotificationUfoAlert": "UFO Alerta",
+      "pushNotificationAnomalyAlert": "Alerta de Anomalias",
+      "pushNotificationNearby": "Perto",
+      "pushNotificationInYourArea": "na sua área. Toque rapidamente para ver os detalhes.",
+      "pushNotificationCommented": "__PACEHOLDER_0___ comentado",
+      "pushNotificationCommentedOn": "{username} comentado em __PLACEHOLDER_1_",
+      "pushNotificationGeneric": "OVNIBeep",
+      "pushNotificationNewSighting": "Novo avistamento nas proximidades"
+    },
+    "it": {
+      "pushNotificationUfoAlert": "UFO Avviso",
+      "pushNotificationAnomalyAlert": "Allarme Anomalia",
+      "pushNotificationNearby": "Nelle vicinanze",
+      "pushNotificationInYourArea": "nella tua zona. Tocca per visualizzare i dettagli.",
+      "pushNotificationCommented": "{username} ha commentato",
+      "pushNotificationCommentedOn": "{username} ha commentato su {username}",
+      "pushNotificationGeneric": "UFOBeep",
+      "pushNotificationNewSighting": "Nuovi avvistamenti nelle vicinanze"
+    },
+    "ru": {
+      "pushNotificationUfoAlert": "НЛО Предупреждение",
+      "pushNotificationAnomalyAlert": "Предупреждение об аномалиях",
+      "pushNotificationNearby": "Рядом",
+      "pushNotificationInYourArea": "в вашем районе. Нажмите, чтобы просмотреть детали.",
+      "pushNotificationCommented": "{username} прокомментировал",
+      "pushNotificationCommentedOn": "{username} прокомментировал {username}",
+      "pushNotificationGeneric": "НЛО Бип",
+      "pushNotificationNewSighting": "Новый взгляд рядом"
+    },
+    "ja": {
+      "pushNotificationUfoAlert": "ユーチューブ アラート",
+      "pushNotificationAnomalyAlert": "異常アラート",
+      "pushNotificationNearby": "アクセス",
+      "pushNotificationInYourArea": "エリア内 タップすると詳細が表示されます.",
+      "pushNotificationCommented": "{username}_コメント",
+      "pushNotificationCommentedOn": "{username}_ にコメント _PLACEHOLDER_1___",
+      "pushNotificationGeneric": "UFOビープ",
+      "pushNotificationNewSighting": "近辺の新景気"
+    },
+    "zh": {
+      "pushNotificationUfoAlert": "不明飞行物 警报",
+      "pushNotificationAnomalyAlert": "异常警报",
+      "pushNotificationNearby": "临近",
+      "pushNotificationInYourArea": "在你的区域。 点击查看细节.",
+      "pushNotificationCommented": "– PLACEHOLDER_0_ 评论",
+      "pushNotificationCommentedOn": "–PLACEHOLDER_0__评论_PLACEHOLDER_1_",
+      "pushNotificationGeneric": "打开",
+      "pushNotificationNewSighting": "附近新出现"
+    },
+    "ar": {
+      "pushNotificationUfoAlert": "UFO إنذار",
+      "pushNotificationAnomalyAlert": "Anomaly Alert",
+      "pushNotificationNearby": "تقريبا",
+      "pushNotificationInYourArea": "في منطقتك تلاعب في التفاصيل.",
+      "pushNotificationCommented": "_BAR_",
+      "pushNotificationCommentedOn": "_BAR_ _BAR_",
+      "pushNotificationGeneric": "UFOBeep",
+      "pushNotificationNewSighting": "رؤية جديدة قريبة"
+    },
+    "nl": {
+      "pushNotificationUfoAlert": "UFO Waarschuwing",
+      "pushNotificationAnomalyAlert": "Anomaly Alert",
+      "pushNotificationNearby": "In de buurt",
+      "pushNotificationInYourArea": "in uw gebied. Tik op details weergeven.",
+      "pushNotificationCommented": "{username}commentaar",
+      "pushNotificationCommentedOn": "__PLAATSHOLDER_0__ commentaar op __PLAATSHOLDER_1__",
+      "pushNotificationGeneric": "UFOBEEP",
+      "pushNotificationNewSighting": "Nieuwe waarnemingen in de buurt"
+    },
+    "pl": {
+      "pushNotificationUfoAlert": "UFO Alarm",
+      "pushNotificationAnomalyAlert": "Alert",
+      "pushNotificationNearby": "Niedaleko",
+      "pushNotificationInYourArea": "w twoim rejonie. Dotknij, aby zobaczyć szczegóły.",
+      "pushNotificationCommented": "_ _ PLACESENER _ 0 _ _ skomentowane",
+      "pushNotificationCommentedOn": "_ _ PLACESECRET _ 0 _ _ skomentował _ _ PLACESECRET _ 1 _ _",
+      "pushNotificationGeneric": "UFOBeep",
+      "pushNotificationNewSighting": "Nowy widok w pobliżu"
+    },
+    "cs": {
+      "pushNotificationUfoAlert": "UFO Varování",
+      "pushNotificationAnomalyAlert": "Anomální poplach",
+      "pushNotificationNearby": "Blízko",
+      "pushNotificationInYourArea": "ve vaší oblasti. Klepněte na možnost Zobrazit detaily.",
+      "pushNotificationCommented": "_ _ PLACETETERER _ 0 _ _ komentáře",
+      "pushNotificationCommentedOn": "_ _ PLACETIER _ 0 _ _ komentuje _ _ PLACETIER _ 1 _ _",
+      "pushNotificationGeneric": "UFOBEep",
+      "pushNotificationNewSighting": "Nové pozorování v blízkosti"
+    },
+    "tr": {
+      "pushNotificationUfoAlert": "UFO UFO Uyarı",
+      "pushNotificationAnomalyAlert": "Anomaly Alert",
+      "pushNotificationNearby": "Nearby",
+      "pushNotificationInYourArea": "bölgenizde. Ayrıntıları görüntülemek için Tap.",
+      "pushNotificationCommented": "{username} yorum",
+      "pushNotificationCommentedOn": "{username}, {username}",
+      "pushNotificationGeneric": "UFOBeep",
+      "pushNotificationNewSighting": "Yakınlarda Yeni Görmek"
+    },
+    "ko": {
+      "pushNotificationUfoAlert": "사이트맵 지원하다",
+      "pushNotificationAnomalyAlert": "Anomaly 경고",
+      "pushNotificationNearby": "이름 *",
+      "pushNotificationInYourArea": "당신의 지역. 상세보기를 탭합니다.",
+      "pushNotificationCommented": "{username} 댓글",
+      "pushNotificationCommentedOn": "{username}에 대한 의견 {username}",
+      "pushNotificationGeneric": "UFO버프",
+      "pushNotificationNewSighting": "주변 관광"
+    },
+    "hi": {
+      "pushNotificationUfoAlert": "यूएफओ चेतावनी",
+      "pushNotificationAnomalyAlert": "Anomaly चेतावनी",
+      "pushNotificationNearby": "नजदीक",
+      "pushNotificationInYourArea": "अपने क्षेत्र में। विवरण देखने के लिए टैप करें।.",
+      "pushNotificationCommented": "{username}_________________________________________________________________________________________________________________________________",
+      "pushNotificationCommentedOn": "{username}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+      "pushNotificationGeneric": "यूएफओबीप",
+      "pushNotificationNewSighting": "पास में नया दर्शन"
+    },
+    "sv": {
+      "pushNotificationUfoAlert": "UFO Alert",
+      "pushNotificationAnomalyAlert": "Anomaly Alert",
+      "pushNotificationNearby": "I närheten",
+      "pushNotificationInYourArea": "i ditt område. Tryck för att visa detaljer.",
+      "pushNotificationCommented": "{username} kommenterade",
+      "pushNotificationCommentedOn": "{username} kommenterade {username}_",
+      "pushNotificationGeneric": "UFOBeep",
+      "pushNotificationNewSighting": "Ny observation i närheten"
+    },
+    "da": {
+      "pushNotificationUfoAlert": "UFO Indberetning",
+      "pushNotificationAnomalyAlert": "Anomali alarm",
+      "pushNotificationNearby": "I nærheden",
+      "pushNotificationInYourArea": "i dit område. Tryk på for at se detaljer.",
+      "pushNotificationCommented": "_ _ PLACEREPER _ 0 _ _ kommenterede",
+      "pushNotificationCommentedOn": "_ _ PLACEREPORT _ 0 _ _ kommenteret _ _ PLACEREPORT _ 1 _ _",
+      "pushNotificationGeneric": "UFOBeep",
+      "pushNotificationNewSighting": "Ny observation i nærheden"
+    },
+    "no": {
+      "pushNotificationUfoAlert": "UFO Alert",
+      "pushNotificationAnomalyAlert": "Anomaly Alert",
+      "pushNotificationNearby": "Nearby",
+      "pushNotificationInYourArea": "in your area. Tap to view details.",
+      "pushNotificationCommented": "{username} commented",
+      "pushNotificationCommentedOn": "{username} commented on {beepTitle}",
+      "pushNotificationGeneric": "UFOBeep",
+      "pushNotificationNewSighting": "New sighting nearby"
+    },
+    "fi": {
+      "pushNotificationUfoAlert": "UFO Varoitus",
+      "pushNotificationAnomalyAlert": "Anomaliahälytys",
+      "pushNotificationNearby": "Lähellä",
+      "pushNotificationInYourArea": "sinun alueellasi. Napauta nähdäksesi yksityiskohdat.",
+      "pushNotificationCommented": "__Placeholder_0__ kommentoi",
+      "pushNotificationCommentedOn": "__PASSIHOLDER_0__ kommentoi __PASSIHOLDER_1__",
+      "pushNotificationGeneric": "UFO- piippi",
+      "pushNotificationNewSighting": "Uusi havainto lähellä"
+    },
+    "el": {
+      "pushNotificationUfoAlert": "ΑΤΙΑ Συναγερμός",
+      "pushNotificationAnomalyAlert": "Ανωμαλία",
+      "pushNotificationNearby": "Κοντά",
+      "pushNotificationInYourArea": "στην περιοχή σου. Πατήστε για να δείτε λεπτομέρειες.",
+      "pushNotificationCommented": "{username} σχολίασε",
+      "pushNotificationCommentedOn": "_{username}_ σχολίασε στο __PLACEHOLDER_1_",
+      "pushNotificationGeneric": "ΑΤΙΑ μπιπ",
+      "pushNotificationNewSighting": "Νέα θέαση κοντά"
+    },
+    "he": {
+      "pushNotificationUfoAlert": "עב\"ם התראה",
+      "pushNotificationAnomalyAlert": "אזהרה אנונימית",
+      "pushNotificationNearby": "בקרבת מקום",
+      "pushNotificationInYourArea": "באזור שלך. הקש כדי להציג פרטים.",
+      "pushNotificationCommented": "שם הסרטון: PLACEHOLDER_0_",
+      "pushNotificationCommentedOn": "PL_PLACEHOLDER_0___ commented{username}_____________________________________________________________________________________",
+      "pushNotificationGeneric": "עב\"ם",
+      "pushNotificationNewSighting": "מראה חדש סמוך"
+    }
+  }
+}

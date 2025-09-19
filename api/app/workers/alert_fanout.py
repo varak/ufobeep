@@ -298,32 +298,19 @@ class AlertFanoutWorker:
                     
         return push_targets
         
-    def _create_notification_content(self, sighting: SightingEvent) -> Tuple[str, str]:
-        """Create notification title and body"""
-        
-        # Create engaging title
-        shape_emoji = {
-            "circle": "⭕",
-            "triangle": "🔺", 
-            "diamond": "🔶",
-            "disc": "💿",
-            "sphere": "⚪",
-            "cylinder": "🥫",
-            "unknown": "🛸"
-        }.get(sighting.shape or "unknown", "🛸")
-        
-        title = f"{shape_emoji} UFO Sighting Nearby"
-        
-        # Create informative body
-        if sighting.shape:
-            body = f"{sighting.shape.title()} formation reported"
-        else:
-            body = "Unidentified aerial phenomenon reported"
-            
-        # Add distance context in the worker that has user location
-        # For now, use generic messaging
-        body += " in your area. Tap to view details."
-        
+    def _create_notification_content(self, sighting: SightingEvent, user_language: str = "en") -> Tuple[str, str]:
+        """Create notification title and body in user's preferred language"""
+
+        from app.services.notification_translation_service import (
+            get_ufo_alert_title, get_sighting_notification_body
+        )
+
+        # Simple title - just "UFO Alert" in user's language
+        title = f"🛸 {get_ufo_alert_title(user_language)}"
+
+        # Simple body - just generic message in user's language
+        body = get_sighting_notification_body(user_language)
+
         return title, body
         
     def _update_alert_history(
