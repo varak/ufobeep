@@ -1326,14 +1326,16 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.darkSurface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (context) => Container(
-        margin: const EdgeInsets.all(16),
-        child: GlassCard(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Text(
               l10n.shareAlert,
               style: const TextStyle(
@@ -1369,7 +1371,6 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               },
             ),
           ],
-          ),
         ),
       ),
     );
