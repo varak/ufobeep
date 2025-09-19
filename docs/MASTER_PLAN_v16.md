@@ -10,7 +10,7 @@ Guardrails: keep `/alerts`, `/media/uploads`; proximity & device location must s
 - ✅ **Sprint A**: Multi-Media Alerts - COMPLETED
 - ✅ **Sprint B**: Comments + Follows + Push - COMPLETED  
 - ✅ **URL Architecture**: Smart Short URLs + Multilingual Support - COMPLETED
-- 🔄 **Sprint C**: Share Cards + Share→Compose + Sleep/DND - IN PROGRESS
+- ✅ **Sprint C**: Share Cards + Share→Compose + Sleep/DND - MOSTLY COMPLETED
 - ⏳ **Sprint D**: Map & Ops - PENDING
 
 ## 🚨 **Critical Fixes Completed (August-September 2025)**
@@ -33,6 +33,11 @@ Guardrails: keep `/alerts`, `/media/uploads`; proximity & device location must s
 - ✅ **Translation Key Expansion**: 28+ new keys added for weather, location, satellite, aircraft sections
 - ✅ **AlertTitleUtils Fixed**: Eliminated English fallbacks, requires translation function for all languages
 - ✅ **Web Component Unification**: Removed duplicate inline sections, uses only proper card components
+- ✅ **Multi-Platform Social Sharing**: Language-aware sharing to Twitter, Facebook, Reddit, Telegram, WhatsApp + regional platforms
+- ✅ **Regional Platform Support**: VKontakte (Russian), XING (German), Weibo (Chinese), LINE (Japanese) via URL schemes
+- ✅ **Automatic Language Detection**: Mobile app detects phone language and switches interface automatically
+- ✅ **Video Distortion Fix**: Removed forced dimensions, proper aspect ratio preservation in fullscreen
+- ✅ **Description Formatting**: Proper paragraph breaks for long UFO reports based on original newlines
 
 ## Sprint A — Multi-Media Alerts
 [api] Keep MP14 endpoints. Add Idempotency on POST `/media/uploads`, `/alerts`.
@@ -70,6 +75,23 @@ Future<void> appendMedia(int alertId, List<Map<String,dynamic>> media) async {
 ```
 
 ✅ **Acceptance**: create 3‑image alert; first as preview; no dupes on retry. **STATUS: WORKING**
+
+## Sprint C — Share Cards + Share→Compose + Sleep/DND ✅ MOSTLY COMPLETED
+
+**✅ Share-to-Beep Functionality**:
+- Share from Gallery → UFOBeep → Create Beep working on mobile
+- Supports single and multiple photo sharing
+- Proper queue system for unauthenticated users
+
+**✅ Multi-Platform Social Sharing**:
+- Web: Language-aware platform selection (Twitter, Facebook, Reddit, Telegram, WhatsApp)
+- Regional platforms: XING (German), VKontakte (Russian), Weibo (Chinese), LINE (Japanese)
+- Mobile: Share button opens native share sheet for any installed app
+- Uses UFOBeep short URLs for clean sharing
+- Translation-only system - no hardcoded English text
+
+**⏳ Sleep/DND Functionality**:
+- Status: PENDING - Do Not Disturb and quiet hours not yet implemented
 
 ## Sprint B — Comments + Follows + Push ✅ COMPLETED
 [api] Tables `comments`, `follows`. Endpoints: GET/POST `/alerts/{id}/comments`; POST `/alerts/{id}/follow`.
