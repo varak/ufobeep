@@ -12,7 +12,7 @@ abstract class AlertTitleUtils {
       // Try to get clean classification from enrichment data
       String? classification = _extractCleanClassification(alert.enrichment);
 
-      if (classification != null && classification.isNotEmpty) {
+      if (classification != null && classification.isNotEmpty && classification != 'unknown' && classification != 'other') {
         // Use same working logic as alerts tab
         final shapeKey = _getShapeTranslationKey(classification);
         if (shapeKey != null) {
