@@ -11,6 +11,7 @@ import { convertToProxyUrl, convertMediaFilesUrls } from '@/utils/media-url-util
 import { getAlertSlug, getShortAlertUrl } from '@/utils/slug'
 import { formatDistance, getUnitPreference } from '@/utils/units'
 import { UnitConversion } from '@/utils/unitConversion'
+import { getPlatformsForLocale, generateShareUrl } from '@/utils/regional-platforms'
 
 interface Alert {
   id: string
@@ -174,21 +175,17 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
     setShowShareMenu(false)
   }
 
+  // Get available platforms for current locale
+  const availablePlatforms = getPlatformsForLocale(locale)
+
   // Individual platform sharing functions
-  const shareToPlatform = (platform: string) => {
+  const shareToPlatform = (platformKey: string) => {
     const alertUrl = `${window.location.origin}${getShortAlertUrl(alert, locale)}`
     const shareText = `UFO Sighting Alert: ${alert.description || 'Anomaly reported'} - ${formatLocation(alert.location)}`
 
-    const platformUrls = {
-      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(alertUrl)}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(alertUrl)}&quote=${encodeURIComponent(shareText)}`,
-      reddit: `https://reddit.com/submit?url=${encodeURIComponent(alertUrl)}&title=${encodeURIComponent(shareText)}`,
-      telegram: `https://t.me/share/url?url=${encodeURIComponent(alertUrl)}&text=${encodeURIComponent(shareText)}`,
-      whatsapp: `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + alertUrl)}`
-    }
-
-    const url = platformUrls[platform as keyof typeof platformUrls]
-    if (url) {
+    const platform = availablePlatforms.find(p => p.key === platformKey)
+    if (platform) {
+      const url = generateShareUrl(platform, shareText, alertUrl)
       window.open(url, '_blank')
       setShowShareMenu(false)
     }
@@ -685,45 +682,16 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
 
                   <div className="border-t border-dark-border my-1"></div>
 
-                  <button
-                    onClick={() => shareToPlatform('twitter')}
-                    className="w-full text-left px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-dark-background rounded flex items-center gap-2"
-                  >
-                    <span className="text-blue-400">🐦</span>
-                    Share on Twitter/X
-                  </button>
-
-                  <button
-                    onClick={() => shareToPlatform('facebook')}
-                    className="w-full text-left px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-dark-background rounded flex items-center gap-2"
-                  >
-                    <span className="text-blue-600">📘</span>
-                    Share on Facebook
-                  </button>
-
-                  <button
-                    onClick={() => shareToPlatform('reddit')}
-                    className="w-full text-left px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-dark-background rounded flex items-center gap-2"
-                  >
-                    <span className="text-orange-500">🔴</span>
-                    Share on Reddit
-                  </button>
-
-                  <button
-                    onClick={() => shareToPlatform('telegram')}
-                    className="w-full text-left px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-dark-background rounded flex items-center gap-2"
-                  >
-                    <span className="text-blue-500">✈️</span>
-                    Share on Telegram
-                  </button>
-
-                  <button
-                    onClick={() => shareToPlatform('whatsapp')}
-                    className="w-full text-left px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-dark-background rounded flex items-center gap-2"
-                  >
-                    <span className="text-green-500">💚</span>
-                    Share on WhatsApp
-                  </button>
+                  {availablePlatforms.map(platform => (
+                    <button
+                      key={platform.key}
+                      onClick={() => shareToPlatform(platform.key)}
+                      className="w-full text-left px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-dark-background rounded flex items-center gap-2"
+                    >
+                      <span>{platform.icon}</span>
+                      Share on {platform.name}
+                    </button>
+                  ))}
                 </div>
               </div>
             )}
