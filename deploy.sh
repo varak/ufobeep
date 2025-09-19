@@ -264,23 +264,30 @@ if [ "$DEPLOY_APK" = true ]; then
                 echo ""
                 echo "📱 Processing device: $device"
 
-                # Step 1: Uninstall (ignore failures)
-                echo "  🗑️  Uninstalling old version..."
-                timeout 30 adb -s "$device" uninstall com.ufobeep >/dev/null 2>&1 || echo "  ➡️  No previous version"
-
-                # Step 2: Install with clear feedback
-                echo "  📦 Installing new APK..."
+                # Try to preserve data first with install -r (without -d flag)
+                echo "  🔄 Trying to preserve user data..."
                 if timeout 90 adb -s "$device" install -r "$APK_PATH" 2>/dev/null; then
-                    echo "  ✅ INSTALL SUCCESS on $device"
+                    echo "  ✅ INSTALL SUCCESS on $device (data preserved)"
+                else
+                    echo "  ⚠️  Data preservation failed, trying clean install..."
+                    # Fall back to uninstall + install
+                    echo "  🗑️  Uninstalling old version..."
+                    timeout 30 adb -s "$device" uninstall com.ufobeep >/dev/null 2>&1 || echo "  ➡️  No previous version"
 
-                    # Step 3: Force restart app
+                    echo "  📦 Installing new APK..."
+                    if timeout 90 adb -s "$device" install -r "$APK_PATH" 2>/dev/null; then
+                        echo "  ✅ INSTALL SUCCESS on $device (clean install)"
+                    else
+                        echo -e "  ${RED}❌ INSTALL FAILED on $device${NC}"
+                    fi
+                fi
+
+                # Force restart app for both successful cases
+                if [ $? -eq 0 ]; then
                     echo "  🔄 Restarting app..."
                     timeout 5 adb -s "$device" shell am force-stop com.ufobeep >/dev/null 2>&1 || true
                     echo "  ✅ RESTART COMPLETE on $device"
-
                     INSTALL_SUCCESS=$((INSTALL_SUCCESS + 1))
-                else
-                    echo -e "  ${RED}❌ INSTALL FAILED on $device${NC}"
                 fi
             done
             
