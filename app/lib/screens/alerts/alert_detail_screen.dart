@@ -1330,9 +1330,13 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.darkSurface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      backgroundColor: AppColors.nightSkyMiddle,
+      shape: RoundedRectangleBorder(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        side: BorderSide(
+          color: AppColors.glassCardBorder,
+          width: 1,
+        ),
       ),
       builder: (context) => Container(
         padding: const EdgeInsets.all(16),
