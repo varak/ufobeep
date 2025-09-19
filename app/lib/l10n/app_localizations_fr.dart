@@ -1021,6 +1021,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get shareAlert => 'Partager l\'alerte';
 
   @override
+  String get ufoSightingAlert => 'OVNI Alerte de surveillance';
+
+  @override
   String get previousPage => 'Précédent';
 
   @override

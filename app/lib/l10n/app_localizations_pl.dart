@@ -1012,6 +1012,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get shareAlert => 'Alert akcji';
 
   @override
+  String get ufoSightingAlert => 'UFO Ostrzeżenie';
+
+  @override
   String get previousPage => 'Poprzedni';
 
   @override

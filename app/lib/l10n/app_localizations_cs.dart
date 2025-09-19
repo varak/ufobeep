@@ -1006,6 +1006,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get shareAlert => 'Upozornění o sdílení';
 
   @override
+  String get ufoSightingAlert => 'UFO Upozornění na pozorování';
+
+  @override
   String get previousPage => 'Předchozí';
 
   @override

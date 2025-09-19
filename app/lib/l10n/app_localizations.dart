@@ -1992,6 +1992,12 @@ abstract class AppLocalizations {
   /// **'Share alert'**
   String get shareAlert;
 
+  /// No description provided for @ufoSightingAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'UFO Sighting Alert'**
+  String get ufoSightingAlert;
+
   /// No description provided for @previousPage.
   ///
   /// In en, this message translates to:

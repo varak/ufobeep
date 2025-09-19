@@ -1014,6 +1014,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get shareAlert => 'Κοινοποίηση ειδοποίησης';
 
   @override
+  String get ufoSightingAlert => 'ΑΤΙΑ Εντοπισμός συναγερμού';
+
+  @override
   String get previousPage => 'Προηγούμενο';
 
   @override

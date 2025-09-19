@@ -1007,6 +1007,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get shareAlert => 'Dela alert';
 
   @override
+  String get ufoSightingAlert => 'UFO Sighting Alert';
+
+  @override
   String get previousPage => 'Föregående';
 
   @override

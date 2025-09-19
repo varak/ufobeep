@@ -1007,6 +1007,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get shareAlert => 'Jaa hälytys';
 
   @override
+  String get ufoSightingAlert => 'UFO Havaintovaroitus';
+
+  @override
   String get previousPage => 'Edellinen';
 
   @override

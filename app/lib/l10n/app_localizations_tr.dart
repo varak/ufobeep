@@ -1010,6 +1010,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get shareAlert => 'Paylaş';
 
   @override
+  String get ufoSightingAlert => 'UFO UFO Sighting Alert';
+
+  @override
   String get previousPage => 'Önceki';
 
   @override

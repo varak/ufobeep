@@ -996,6 +996,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get shareAlert => 'המונחים:';
 
   @override
+  String get ufoSightingAlert => 'עב\"ם אזהרה';
+
+  @override
   String get previousPage => 'הקודם';
 
   @override

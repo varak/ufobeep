@@ -984,6 +984,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get shareAlert => '共享提醒';
 
   @override
+  String get ufoSightingAlert => '不明飞行物 观察警报';
+
+  @override
   String get previousPage => '上一个';
 
   @override

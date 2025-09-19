@@ -1008,6 +1008,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get shareAlert => 'Alert delen';
 
   @override
+  String get ufoSightingAlert => 'UFO Waarnemingsalarm';
+
+  @override
   String get previousPage => 'Vorige';
 
   @override

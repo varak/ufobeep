@@ -207,7 +207,11 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
           <div
             className="text-text-primary leading-relaxed prose prose-invert max-w-none"
             dangerouslySetInnerHTML={{
-              __html: getCleanDescription().replace(/\n/g, '<br>')
+              __html: getCleanDescription()
+                .replace(/\n\n+/g, '</p><p>') // Double newlines = new paragraphs
+                .replace(/\n/g, '<br>') // Single newlines = line breaks
+                .replace(/^/, '<p>') // Start with opening <p>
+                .replace(/$/, '</p>') // End with closing </p>
             }}
           />
         </div>

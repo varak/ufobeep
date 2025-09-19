@@ -1008,6 +1008,9 @@ class AppLocalizationsDa extends AppLocalizations {
   String get shareAlert => 'Del alarm';
 
   @override
+  String get ufoSightingAlert => 'UFO Observationsadvarsel';
+
+  @override
   String get previousPage => 'Forrige';
 
   @override

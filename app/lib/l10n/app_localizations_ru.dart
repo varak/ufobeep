@@ -1020,6 +1020,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get shareAlert => 'Поделиться предупреждением';
 
   @override
+  String get ufoSightingAlert => 'НЛО Сигнал тревоги';
+
+  @override
   String get previousPage => 'Предыдущий';
 
   @override

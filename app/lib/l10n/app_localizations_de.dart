@@ -1010,6 +1010,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get shareAlert => 'Alarmstufe';
 
   @override
+  String get ufoSightingAlert => 'UFO Sighting Alert';
+
+  @override
   String get previousPage => 'Vorherige';
 
   @override

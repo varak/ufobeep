@@ -1002,6 +1002,9 @@ class AppLocalizationsNo extends AppLocalizations {
   String get shareAlert => 'Share alert';
 
   @override
+  String get ufoSightingAlert => 'UFO Sighting Alert';
+
+  @override
   String get previousPage => 'Previous';
 
   @override

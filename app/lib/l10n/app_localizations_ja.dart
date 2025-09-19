@@ -985,6 +985,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get shareAlert => 'アラートを共有する';
 
   @override
+  String get ufoSightingAlert => 'ユーチューブ アラートの閲覧';
+
+  @override
   String get previousPage => '新着情報';
 
   @override

@@ -986,6 +986,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get shareAlert => '비밀번호';
 
   @override
+  String get ufoSightingAlert => '사이트맵 연락처';
+
+  @override
   String get previousPage => '이름 *';
 
   @override
