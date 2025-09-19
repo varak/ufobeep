@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../providers/alerts_provider.dart';
 import '../../providers/app_state.dart';
@@ -397,9 +398,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               actions: [
                 IconButton(
                   icon: const Icon(Icons.share),
-                  onPressed: () {
-                    // TODO: Share alert
-                  },
+                  onPressed: () => _showShareOptions(alert),
                 ),
             ],
           ),
@@ -1315,6 +1314,80 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             debugPrint('Error focusing comment input: $e');
           }
         });
+      }
+    }
+  }
+
+  void _showShareOptions(Alert alert) {
+    final shortUrl = ShortUrlUtils.getShortUrl(alert.id);
+    final shareUrl = 'https://ufobeep.com/$shortUrl';
+    final shareText = 'UFO Sighting Alert: ${alert.description ?? "Anomaly reported"} - ${alert.locationName ?? "Unknown location"}';
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.darkSurface,
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Share UFO Sighting',
+              style: const TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Copy link option
+            ListTile(
+              leading: const Icon(Icons.content_copy, color: AppColors.brandPrimary),
+              title: const Text('Copy Link', style: TextStyle(color: AppColors.textPrimary)),
+              subtitle: Text(shareUrl, style: const TextStyle(color: AppColors.textSecondary)),
+              onTap: () {
+                Clipboard.setData(ClipboardData(text: shareUrl));
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Link copied to clipboard')),
+                );
+              },
+            ),
+
+            // Native share option
+            ListTile(
+              leading: const Icon(Icons.share, color: AppColors.brandPrimary),
+              title: const Text('Share via Apps', style: TextStyle(color: AppColors.textPrimary)),
+              subtitle: const Text('Share to any installed app', style: TextStyle(color: AppColors.textSecondary)),
+              onTap: () async {
+                Navigator.pop(context);
+                if (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS) {
+                  // Use platform channel for native sharing on mobile
+                  await _shareNatively(shareText, shareUrl);
+                }
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _shareNatively(String text, String url) async {
+    try {
+      // Use method channel to trigger native sharing
+      const platform = MethodChannel('com.ufobeep/share');
+      await platform.invokeMethod('share', {'text': text, 'url': url});
+    } catch (e) {
+      debugPrint('Native sharing failed: $e');
+      // Fallback to clipboard
+      await Clipboard.setData(ClipboardData(text: '$text $url'));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Copied to clipboard')),
+        );
       }
     }
   }
