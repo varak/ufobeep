@@ -184,9 +184,20 @@ export default function AlertDetailClient({ params }: { params: { id: string; sl
   return (
     <main className="min-h-screen py-8 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
-        <Link href={`/beep#alert-${alert.id}`} className="text-brand-primary hover:text-brand-primary-light transition-colors mb-6 inline-block">
+        <button
+          onClick={() => {
+            // Use router.back() to preserve scroll position and browser history
+            if (typeof window !== 'undefined' && window.history.length > 1) {
+              window.history.back()
+            } else {
+              // Fallback to direct navigation if no history
+              window.location.href = '/beep'
+            }
+          }}
+          className="text-brand-primary hover:text-brand-primary-light transition-colors mb-6 inline-block cursor-pointer"
+        >
           ← Back to All Alerts
-        </Link>
+        </button>
 
         <AlertHero alert={alert} openImageIndex={openImageIndex} />
 

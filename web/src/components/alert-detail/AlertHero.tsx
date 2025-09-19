@@ -46,9 +46,12 @@ export default function AlertHero({ alert, openImageIndex, locale = 'en' }: Aler
 
   const handleCloseModal = () => {
     setIsMediaModalOpen(false)
-    const url = new URL(window.location.href)
-    url.searchParams.delete('openImage')
-    router.replace(url.pathname + url.search, { scroll: false })
+    // Only clean URL if it has openImage parameter, use replaceState to avoid affecting back button
+    if (window.location.search.includes('openImage')) {
+      const url = new URL(window.location.href)
+      url.searchParams.delete('openImage')
+      window.history.replaceState(window.history.state, '', url.pathname + url.search)
+    }
     setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100)
   }
 
