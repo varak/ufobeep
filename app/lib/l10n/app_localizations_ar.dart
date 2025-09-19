@@ -404,6 +404,34 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get pushNotificationUfoAlert => 'UFO إنذار';
+
+  @override
+  String get pushNotificationAnomalyAlert => 'Anomaly Alert';
+
+  @override
+  String get pushNotificationNearby => 'تقريبا';
+
+  @override
+  String get pushNotificationInYourArea => 'في منطقتك تلاعب في التفاصيل.';
+
+  @override
+  String pushNotificationCommented(Object username) {
+    return '_BAR_';
+  }
+
+  @override
+  String pushNotificationCommentedOn(Object beepTitle, Object username) {
+    return '_BAR_ _BAR_';
+  }
+
+  @override
+  String get pushNotificationGeneric => 'UFOBeep';
+
+  @override
+  String get pushNotificationNewSighting => 'رؤية جديدة قريبة';
+
+  @override
   String get language => 'اللغة';
 
   @override

@@ -409,6 +409,35 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
+  String get pushNotificationUfoAlert => 'ΑΤΙΑ Συναγερμός';
+
+  @override
+  String get pushNotificationAnomalyAlert => 'Ανωμαλία';
+
+  @override
+  String get pushNotificationNearby => 'Κοντά';
+
+  @override
+  String get pushNotificationInYourArea =>
+      'στην περιοχή σου. Πατήστε για να δείτε λεπτομέρειες.';
+
+  @override
+  String pushNotificationCommented(Object username) {
+    return '$username σχολίασε';
+  }
+
+  @override
+  String pushNotificationCommentedOn(Object beepTitle, Object username) {
+    return '_${username}_ σχολίασε στο __PLACEHOLDER_1_';
+  }
+
+  @override
+  String get pushNotificationGeneric => 'ΑΤΙΑ μπιπ';
+
+  @override
+  String get pushNotificationNewSighting => 'Νέα θέαση κοντά';
+
+  @override
   String get language => 'Γλώσσα';
 
   @override

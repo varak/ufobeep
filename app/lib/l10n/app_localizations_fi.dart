@@ -407,6 +407,35 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
+  String get pushNotificationUfoAlert => 'UFO Varoitus';
+
+  @override
+  String get pushNotificationAnomalyAlert => 'Anomaliahälytys';
+
+  @override
+  String get pushNotificationNearby => 'Lähellä';
+
+  @override
+  String get pushNotificationInYourArea =>
+      'sinun alueellasi. Napauta nähdäksesi yksityiskohdat.';
+
+  @override
+  String pushNotificationCommented(Object username) {
+    return '__Placeholder_0__ kommentoi';
+  }
+
+  @override
+  String pushNotificationCommentedOn(Object beepTitle, Object username) {
+    return '__PASSIHOLDER_0__ kommentoi __PASSIHOLDER_1__';
+  }
+
+  @override
+  String get pushNotificationGeneric => 'UFO- piippi';
+
+  @override
+  String get pushNotificationNewSighting => 'Uusi havainto lähellä';
+
+  @override
   String get language => 'Kieli';
 
   @override

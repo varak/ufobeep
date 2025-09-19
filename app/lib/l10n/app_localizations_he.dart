@@ -401,6 +401,34 @@ class AppLocalizationsHe extends AppLocalizations {
   }
 
   @override
+  String get pushNotificationUfoAlert => 'עב\"ם התראה';
+
+  @override
+  String get pushNotificationAnomalyAlert => 'אזהרה אנונימית';
+
+  @override
+  String get pushNotificationNearby => 'בקרבת מקום';
+
+  @override
+  String get pushNotificationInYourArea => 'באזור שלך. הקש כדי להציג פרטים.';
+
+  @override
+  String pushNotificationCommented(Object username) {
+    return 'שם הסרטון: PLACEHOLDER_0_';
+  }
+
+  @override
+  String pushNotificationCommentedOn(Object beepTitle, Object username) {
+    return 'PL_PLACEHOLDER_0___ commented${username}_____________________________________________________________________________________';
+  }
+
+  @override
+  String get pushNotificationGeneric => 'עב\"ם';
+
+  @override
+  String get pushNotificationNewSighting => 'מראה חדש סמוך';
+
+  @override
   String get language => 'שפה';
 
   @override

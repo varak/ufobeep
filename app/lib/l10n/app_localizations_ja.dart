@@ -398,6 +398,34 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get pushNotificationUfoAlert => 'ユーチューブ アラート';
+
+  @override
+  String get pushNotificationAnomalyAlert => '異常アラート';
+
+  @override
+  String get pushNotificationNearby => 'アクセス';
+
+  @override
+  String get pushNotificationInYourArea => 'エリア内 タップすると詳細が表示されます.';
+
+  @override
+  String pushNotificationCommented(Object username) {
+    return '${username}_コメント';
+  }
+
+  @override
+  String pushNotificationCommentedOn(Object beepTitle, Object username) {
+    return '${username}_ にコメント _PLACEHOLDER_1___';
+  }
+
+  @override
+  String get pushNotificationGeneric => 'UFOビープ';
+
+  @override
+  String get pushNotificationNewSighting => '近辺の新景気';
+
+  @override
   String get language => '用語集';
 
   @override

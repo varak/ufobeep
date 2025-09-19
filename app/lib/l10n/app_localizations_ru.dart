@@ -408,6 +408,35 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get pushNotificationUfoAlert => 'НЛО Предупреждение';
+
+  @override
+  String get pushNotificationAnomalyAlert => 'Предупреждение об аномалиях';
+
+  @override
+  String get pushNotificationNearby => 'Рядом';
+
+  @override
+  String get pushNotificationInYourArea =>
+      'в вашем районе. Нажмите, чтобы просмотреть детали.';
+
+  @override
+  String pushNotificationCommented(Object username) {
+    return '$username прокомментировал';
+  }
+
+  @override
+  String pushNotificationCommentedOn(Object beepTitle, Object username) {
+    return '$username прокомментировал $username';
+  }
+
+  @override
+  String get pushNotificationGeneric => 'НЛО Бип';
+
+  @override
+  String get pushNotificationNewSighting => 'Новый взгляд рядом';
+
+  @override
   String get language => 'Язык языка';
 
   @override

@@ -402,6 +402,34 @@ class AppLocalizationsNo extends AppLocalizations {
   }
 
   @override
+  String get pushNotificationUfoAlert => 'UFO Alert';
+
+  @override
+  String get pushNotificationAnomalyAlert => 'Anomaly Alert';
+
+  @override
+  String get pushNotificationNearby => 'Nearby';
+
+  @override
+  String get pushNotificationInYourArea => 'in your area. Tap to view details.';
+
+  @override
+  String pushNotificationCommented(Object username) {
+    return '$username commented';
+  }
+
+  @override
+  String pushNotificationCommentedOn(Object beepTitle, Object username) {
+    return '$username commented on $beepTitle';
+  }
+
+  @override
+  String get pushNotificationGeneric => 'UFOBeep';
+
+  @override
+  String get pushNotificationNewSighting => 'New sighting nearby';
+
+  @override
   String get language => 'Language';
 
   @override

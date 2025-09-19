@@ -409,6 +409,36 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String get pushNotificationUfoAlert => 'UFO Avviso';
+
+  @override
+  String get pushNotificationAnomalyAlert => 'Allarme Anomalia';
+
+  @override
+  String get pushNotificationNearby => 'Nelle vicinanze';
+
+  @override
+  String get pushNotificationInYourArea =>
+      'nella tua zona. Tocca per visualizzare i dettagli.';
+
+  @override
+  String pushNotificationCommented(Object username) {
+    return '$username ha commentato';
+  }
+
+  @override
+  String pushNotificationCommentedOn(Object beepTitle, Object username) {
+    return '$username ha commentato su $username';
+  }
+
+  @override
+  String get pushNotificationGeneric => 'UFOBeep';
+
+  @override
+  String get pushNotificationNewSighting =>
+      'Nuovi avvistamenti nelle vicinanze';
+
+  @override
   String get language => 'Lingua';
 
   @override

@@ -398,6 +398,34 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get pushNotificationUfoAlert => '사이트맵 지원하다';
+
+  @override
+  String get pushNotificationAnomalyAlert => 'Anomaly 경고';
+
+  @override
+  String get pushNotificationNearby => '이름 *';
+
+  @override
+  String get pushNotificationInYourArea => '당신의 지역. 상세보기를 탭합니다.';
+
+  @override
+  String pushNotificationCommented(Object username) {
+    return '$username 댓글';
+  }
+
+  @override
+  String pushNotificationCommentedOn(Object beepTitle, Object username) {
+    return '$username에 대한 의견 $username';
+  }
+
+  @override
+  String get pushNotificationGeneric => 'UFO버프';
+
+  @override
+  String get pushNotificationNewSighting => '주변 관광';
+
+  @override
   String get language => '* 이름';
 
   @override

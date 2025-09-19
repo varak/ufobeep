@@ -864,6 +864,54 @@ abstract class AppLocalizations {
   /// **'Quiet hours: {start} - {end}'**
   String quietHoursScheduled(Object end, Object start);
 
+  /// No description provided for @pushNotificationUfoAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'UFO Alert'**
+  String get pushNotificationUfoAlert;
+
+  /// No description provided for @pushNotificationAnomalyAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'Anomaly Alert'**
+  String get pushNotificationAnomalyAlert;
+
+  /// No description provided for @pushNotificationNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby'**
+  String get pushNotificationNearby;
+
+  /// No description provided for @pushNotificationInYourArea.
+  ///
+  /// In en, this message translates to:
+  /// **'in your area. Tap to view details.'**
+  String get pushNotificationInYourArea;
+
+  /// No description provided for @pushNotificationCommented.
+  ///
+  /// In en, this message translates to:
+  /// **'{username} commented'**
+  String pushNotificationCommented(Object username);
+
+  /// No description provided for @pushNotificationCommentedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'{username} commented on {beepTitle}'**
+  String pushNotificationCommentedOn(Object beepTitle, Object username);
+
+  /// No description provided for @pushNotificationGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'UFOBeep'**
+  String get pushNotificationGeneric;
+
+  /// No description provided for @pushNotificationNewSighting.
+  ///
+  /// In en, this message translates to:
+  /// **'New sighting nearby'**
+  String get pushNotificationNewSighting;
+
   /// No description provided for @language.
   ///
   /// In en, this message translates to:

@@ -408,6 +408,35 @@ class AppLocalizationsDa extends AppLocalizations {
   }
 
   @override
+  String get pushNotificationUfoAlert => 'UFO Indberetning';
+
+  @override
+  String get pushNotificationAnomalyAlert => 'Anomali alarm';
+
+  @override
+  String get pushNotificationNearby => 'I nærheden';
+
+  @override
+  String get pushNotificationInYourArea =>
+      'i dit område. Tryk på for at se detaljer.';
+
+  @override
+  String pushNotificationCommented(Object username) {
+    return '_ _ PLACEREPER _ 0 _ _ kommenterede';
+  }
+
+  @override
+  String pushNotificationCommentedOn(Object beepTitle, Object username) {
+    return '_ _ PLACEREPORT _ 0 _ _ kommenteret _ _ PLACEREPORT _ 1 _ _';
+  }
+
+  @override
+  String get pushNotificationGeneric => 'UFOBeep';
+
+  @override
+  String get pushNotificationNewSighting => 'Ny observation i nærheden';
+
+  @override
   String get language => 'Sprog';
 
   @override

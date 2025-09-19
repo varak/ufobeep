@@ -398,6 +398,34 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get pushNotificationUfoAlert => '不明飞行物 警报';
+
+  @override
+  String get pushNotificationAnomalyAlert => '异常警报';
+
+  @override
+  String get pushNotificationNearby => '临近';
+
+  @override
+  String get pushNotificationInYourArea => '在你的区域。 点击查看细节.';
+
+  @override
+  String pushNotificationCommented(Object username) {
+    return '– PLACEHOLDER_0_ 评论';
+  }
+
+  @override
+  String pushNotificationCommentedOn(Object beepTitle, Object username) {
+    return '–PLACEHOLDER_0__评论_PLACEHOLDER_1_';
+  }
+
+  @override
+  String get pushNotificationGeneric => '打开';
+
+  @override
+  String get pushNotificationNewSighting => '附近新出现';
+
+  @override
   String get language => '语言';
 
   @override

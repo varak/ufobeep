@@ -406,6 +406,35 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
+  String get pushNotificationUfoAlert => 'यूएफओ चेतावनी';
+
+  @override
+  String get pushNotificationAnomalyAlert => 'Anomaly चेतावनी';
+
+  @override
+  String get pushNotificationNearby => 'नजदीक';
+
+  @override
+  String get pushNotificationInYourArea =>
+      'अपने क्षेत्र में। विवरण देखने के लिए टैप करें।.';
+
+  @override
+  String pushNotificationCommented(Object username) {
+    return '${username}_________________________________________________________________________________________________________________________________';
+  }
+
+  @override
+  String pushNotificationCommentedOn(Object beepTitle, Object username) {
+    return '${username}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+  }
+
+  @override
+  String get pushNotificationGeneric => 'यूएफओबीप';
+
+  @override
+  String get pushNotificationNewSighting => 'पास में नया दर्शन';
+
+  @override
   String get language => 'भाषा';
 
   @override

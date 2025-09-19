@@ -407,6 +407,35 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
+  String get pushNotificationUfoAlert => 'UFO Varování';
+
+  @override
+  String get pushNotificationAnomalyAlert => 'Anomální poplach';
+
+  @override
+  String get pushNotificationNearby => 'Blízko';
+
+  @override
+  String get pushNotificationInYourArea =>
+      've vaší oblasti. Klepněte na možnost Zobrazit detaily.';
+
+  @override
+  String pushNotificationCommented(Object username) {
+    return '_ _ PLACETETERER _ 0 _ _ komentáře';
+  }
+
+  @override
+  String pushNotificationCommentedOn(Object beepTitle, Object username) {
+    return '_ _ PLACETIER _ 0 _ _ komentuje _ _ PLACETIER _ 1 _ _';
+  }
+
+  @override
+  String get pushNotificationGeneric => 'UFOBEep';
+
+  @override
+  String get pushNotificationNewSighting => 'Nové pozorování v blízkosti';
+
+  @override
   String get language => 'Jazyk';
 
   @override
