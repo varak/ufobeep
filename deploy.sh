@@ -264,69 +264,23 @@ if [ "$DEPLOY_APK" = true ]; then
                 echo ""
                 echo "📱 Processing device: $device"
 
-                if [ "$PRESERVE_DATA" = true ]; then
-                    # Try to preserve user data by skipping uninstall
-                    echo "  💾 Preserving user data (skipping uninstall)..."
-                    echo "  📦 Installing new APK..."
-                    if timeout 90 adb -s "$device" install -r -d "$APK_PATH" 2>/dev/null; then
-                        echo "  ✅ INSTALL SUCCESS on $device (data preserved)"
+                # Step 1: Uninstall (ignore failures)
+                echo "  🗑️  Uninstalling old version..."
+                timeout 30 adb -s "$device" uninstall com.ufobeep >/dev/null 2>&1 || echo "  ➡️  No previous version"
 
-                        # Step 3: Force restart app
-                        echo "  🔄 Restarting app..."
-                        timeout 5 adb -s "$device" shell am force-stop com.ufobeep >/dev/null 2>&1 || true
-                        echo "  ✅ RESTART COMPLETE on $device"
+                # Step 2: Install with clear feedback
+                echo "  📦 Installing new APK..."
+                if timeout 90 adb -s "$device" install -r "$APK_PATH" 2>/dev/null; then
+                    echo "  ✅ INSTALL SUCCESS on $device"
 
-                        INSTALL_SUCCESS=$((INSTALL_SUCCESS + 1))
-                    else
-                        echo -e "  ${YELLOW}⚠️  Data preservation failed, trying clean install...${NC}"
-                        # Fall back to uninstall + install
-                        echo "  🗑️  Uninstalling old version..."
-                        timeout 30 adb -s "$device" uninstall com.ufobeep >/dev/null 2>&1 || echo "  ➡️  No previous version"
+                    # Step 3: Force restart app
+                    echo "  🔄 Restarting app..."
+                    timeout 5 adb -s "$device" shell am force-stop com.ufobeep >/dev/null 2>&1 || true
+                    echo "  ✅ RESTART COMPLETE on $device"
 
-                        echo "  📦 Installing new APK..."
-                        if timeout 90 adb -s "$device" install -r "$APK_PATH" 2>/dev/null; then
-                            echo "  ✅ INSTALL SUCCESS on $device (clean install)"
-
-                            echo "  🔄 Restarting app..."
-                            timeout 5 adb -s "$device" shell am force-stop com.ufobeep >/dev/null 2>&1 || true
-                            echo "  ✅ RESTART COMPLETE on $device"
-
-                            INSTALL_SUCCESS=$((INSTALL_SUCCESS + 1))
-                        else
-                            echo -e "  ${RED}❌ INSTALL FAILED on $device${NC}"
-                        fi
-                    fi
+                    INSTALL_SUCCESS=$((INSTALL_SUCCESS + 1))
                 else
-                    # Default behavior: try smart install (reinstall first, uninstall only if needed)
-                    echo "  🔄 Trying smart install (preserve data if possible)..."
-                    if timeout 90 adb -s "$device" install -r -d "$APK_PATH" 2>/dev/null; then
-                        echo "  ✅ INSTALL SUCCESS on $device (data preserved)"
-
-                        # Step 3: Force restart app
-                        echo "  🔄 Restarting app..."
-                        timeout 5 adb -s "$device" shell am force-stop com.ufobeep >/dev/null 2>&1 || true
-                        echo "  ✅ RESTART COMPLETE on $device"
-
-                        INSTALL_SUCCESS=$((INSTALL_SUCCESS + 1))
-                    else
-                        echo -e "  ${YELLOW}⚠️  Smart install failed, trying clean install...${NC}"
-                        # Fall back to uninstall + install
-                        echo "  🗑️  Uninstalling old version..."
-                        timeout 30 adb -s "$device" uninstall com.ufobeep >/dev/null 2>&1 || echo "  ➡️  No previous version"
-
-                        echo "  📦 Installing new APK..."
-                        if timeout 90 adb -s "$device" install -r "$APK_PATH" 2>/dev/null; then
-                            echo "  ✅ INSTALL SUCCESS on $device (clean install)"
-
-                            echo "  🔄 Restarting app..."
-                            timeout 5 adb -s "$device" shell am force-stop com.ufobeep >/dev/null 2>&1 || true
-                            echo "  ✅ RESTART COMPLETE on $device"
-
-                            INSTALL_SUCCESS=$((INSTALL_SUCCESS + 1))
-                        else
-                            echo -e "  ${RED}❌ INSTALL FAILED on $device${NC}"
-                        fi
-                    fi
+                    echo -e "  ${RED}❌ INSTALL FAILED on $device${NC}"
                 fi
             done
             
