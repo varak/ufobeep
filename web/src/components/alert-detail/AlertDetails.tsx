@@ -138,7 +138,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
   // Individual platform sharing functions
   const shareToPlatform = (platformKey: string) => {
     const alertUrl = `${window.location.origin}${getShortAlertUrl(alert, locale)}`
-    const shareText = `UFO Sighting Alert: ${alert.description || 'Anomaly reported'} - ${alert.location?.name || 'Unknown location'}`
+    const shareText = `${t('ufoSightingAlert')}: ${alert.description || t('anomalyReported')} - ${alert.location?.name || t('unknownLocation')}`
 
     const platform = availablePlatforms.find(p => p.key === platformKey)
     if (platform) {
@@ -360,7 +360,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                         </svg>
-                        Copy alert link
+                        {t('copyShortLink')}
                       </button>
 
                       <div className="border-t border-dark-border my-1"></div>
@@ -372,7 +372,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
                           className="w-full text-left px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-dark-background rounded flex items-center gap-2"
                         >
                           <span>{platform.icon}</span>
-                          Share on {platform.name}
+                          {t('shareOn')} {platform.name}
                         </button>
                       ))}
 
@@ -390,7 +390,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                           </svg>
-                          Share via apps
+                          {t('shareAlert')}
                         </button>
                       )}
                     </div>
