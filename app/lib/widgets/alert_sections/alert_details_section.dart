@@ -17,12 +17,14 @@ class AlertDetailsSection extends StatelessWidget {
     this.showDescription = true,
     this.showLocation = true,
     this.units = 'metric',
+    this.onShareTap,
   });
 
   final Alert alert;
   final bool showDescription;
   final bool showLocation;
   final String units;
+  final VoidCallback? onShareTap;
 
   @override
   Widget build(BuildContext context) {
@@ -545,7 +547,7 @@ class AlertDetailsSection extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {
+                      onPressed: onShareTap ?? () {
                         Clipboard.setData(ClipboardData(text: shareLink));
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

@@ -417,7 +417,11 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 const SizedBox(height: 24),
                 
                 // Alert details
-                AlertDetailsSection(alert: alert, units: (ref.read(userPreferencesProvider)?.units ?? 'metric')),
+                AlertDetailsSection(
+                  alert: alert,
+                  units: (ref.read(userPreferencesProvider)?.units ?? 'metric'),
+                  onShareTap: () => _showShareOptions(alert),
+                ),
                 const SizedBox(height: 16),
                 
                 
