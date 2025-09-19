@@ -25,6 +25,7 @@ import '../../services/api_client.dart';
 import '../../services/ui_feedback.dart';
 import '../../widgets/glass_card.dart';
 import '../../l10n/app_localizations.dart';
+import '../../models/user_preferences.dart';
 import '../../services/comments_service.dart';
 import '../../services/push_notification_service.dart';
 import '../../models/comment.dart';
@@ -421,7 +422,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                   alert: alert,
                   units: (ref.read(userPreferencesProvider)?.units ?? 'metric'),
                   use24HourTime: ref.read(userPreferencesProvider)?.use24HourTime ??
-                                 UserPreferences._getDefault24HourForLanguage(
+                                 UserPreferences.getDefault24HourForLanguage(
                                    ref.read(userPreferencesProvider)?.language ?? 'en'),
                   onShareTap: () => _showShareOptions(alert),
                 ),

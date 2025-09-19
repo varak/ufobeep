@@ -151,7 +151,7 @@ class UserPreferences {
       quietHoursEnd: quietHoursEnd ?? defaultQuietEnd,
       allowEmergencyOverride: allowEmergencyOverride,
       dndUntil: dndUntil,
-      use24HourTime: use24HourTime ?? _getDefault24HourForLanguage(language),
+      use24HourTime: use24HourTime ?? getDefault24HourForLanguage(language),
       lastUpdated: lastUpdated,
     );
   }
@@ -294,8 +294,8 @@ class UserPreferences {
     return languageToQuietHours[languageCode] ?? (22, 7); // Default to 10 PM - 7 AM
   }
 
-  /// Internal method to get default 24-hour time format for language
-  static bool _getDefault24HourForLanguage(String languageCode) {
+  /// Get default 24-hour time format for language
+  static bool getDefault24HourForLanguage(String languageCode) {
     const Map<String, bool> languageTo24Hour = {
       'en': false,  // English - 12-hour with AM/PM (US style)
       'es': true,   // Spanish - 24-hour
