@@ -77,6 +77,9 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
   const [showShareMenu, setShowShareMenu] = useState(false)
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
+  const [showPlatformModal, setShowPlatformModal] = useState(false)
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([])
+  const [sharingInProgress, setSharingInProgress] = useState(false)
 
   // Helper function to get detail URL with optional image parameter
   const getDetailUrl = (imageIndex?: number) => {
@@ -167,8 +170,7 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
         break
         
       case 'social':
-        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(alertUrl)}`
-        window.open(twitterUrl, '_blank')
+        setShowPlatformModal(true)
         break
     }
     
@@ -210,6 +212,45 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
     } else {
       // Fallback for desktop - copy media URL
       navigator.clipboard.writeText(mediaUrl).catch(console.error)
+    }
+  }
+
+  // Handle social media sharing via MCP
+  const handleSocialShare = async () => {
+    if (selectedPlatforms.length === 0) return
+
+    setSharingInProgress(true)
+    try {
+      const response = await fetch('/api/og/share', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          beep_id: alert.id,
+          platforms: selectedPlatforms,
+          locale: locale
+        }),
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        // Show success message
+        alert(`Successfully shared to ${result.platforms_posted.length} platform(s)!`)
+        if (result.failed_platforms.length > 0) {
+          console.warn('Some platforms failed:', result.failed_platforms)
+        }
+      } else {
+        alert('Sharing failed. Please try again.')
+      }
+    } catch (error) {
+      console.error('Share error:', error)
+      alert('Sharing failed. Please check your connection.')
+    } finally {
+      setSharingInProgress(false)
+      setShowPlatformModal(false)
+      setSelectedPlatforms([])
     }
   }
 
@@ -724,6 +765,18 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
                     Share via apps
                   </button>
                 )}
+
+                <div className="border-t border-dark-border my-1"></div>
+
+                <button
+                  onClick={(e) => handleShare(e, 'social')}
+                  className="w-full text-left px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-dark-background rounded flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                  </svg>
+                  Share to social media
+                </button>
               </div>
             </div>
           )}
@@ -738,6 +791,97 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
         initialIndex={selectedMediaIndex}
         alertTitle={AlertTitleUtils.getShortTitle(alert)}
       />
+
+      {/* Platform Selection Modal */}
+      {showPlatformModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-dark-surface border border-dark-border rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-text-primary">Share to Social Media</h3>
+              <button
+                onClick={() => setShowPlatformModal(false)}
+                className="text-text-secondary hover:text-text-primary"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="text-text-secondary text-sm mb-4">
+              Select platforms to share this UFO sighting report:
+            </p>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+              {Object.entries({
+                // Western platforms
+                twitter: { name: "Twitter/X", icon: "🐦" },
+                facebook: { name: "Facebook", icon: "📘" },
+                instagram: { name: "Instagram", icon: "📷" },
+                linkedin: { name: "LinkedIn", icon: "💼" },
+                reddit: { name: "Reddit", icon: "🔴" },
+                youtube: { name: "YouTube", icon: "📺" },
+                tiktok: { name: "TikTok", icon: "🎵" },
+                mastodon: { name: "Mastodon", icon: "🐘" },
+
+                // Asian platforms
+                wechat: { name: "WeChat", icon: "💬" },
+                weibo: { name: "Weibo", icon: "🇨🇳" },
+                line: { name: "LINE", icon: "📱" },
+                qq: { name: "QQ", icon: "🐧" },
+                douyin: { name: "Douyin", icon: "🎬" },
+                xiaohongshu: { name: "XiaoHongShu", icon: "📖" },
+                bilibili: { name: "Bilibili", icon: "📹" },
+
+                // Russian/Eastern European
+                vkontakte: { name: "VKontakte", icon: "🔵" },
+                odnoklassniki: { name: "Odnoklassniki", icon: "🟠" },
+
+                // Global messaging
+                telegram: { name: "Telegram", icon: "✈️" },
+                whatsapp: { name: "WhatsApp", icon: "💚" },
+                discord: { name: "Discord", icon: "🎮" },
+
+                // Regional
+                mixi: { name: "Mixi", icon: "🇯🇵" },
+                xing: { name: "XING", icon: "🇩🇪" },
+                naver: { name: "Naver", icon: "🇰🇷" }
+              }).map(([platform, info]) => (
+                <label key={platform} className="flex items-center space-x-2 p-3 border border-dark-border rounded hover:bg-dark-background cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={selectedPlatforms.includes(platform)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedPlatforms([...selectedPlatforms, platform])
+                      } else {
+                        setSelectedPlatforms(selectedPlatforms.filter(p => p !== platform))
+                      }
+                    }}
+                    className="rounded border-dark-border"
+                  />
+                  <span className="text-xl">{info.icon}</span>
+                  <span className="text-text-primary text-sm">{info.name}</span>
+                </label>
+              ))}
+            </div>
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowPlatformModal(false)}
+                className="px-4 py-2 text-text-secondary hover:text-text-primary border border-dark-border rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSocialShare}
+                disabled={selectedPlatforms.length === 0 || sharingInProgress}
+                className="px-4 py-2 bg-brand-primary text-text-inverse rounded hover:bg-brand-primary-dark disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {sharingInProgress ? 'Sharing...' : `Share to ${selectedPlatforms.length} platform${selectedPlatforms.length !== 1 ? 's' : ''}`}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
