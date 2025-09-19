@@ -368,22 +368,23 @@ class AppLocalizationsPl extends AppLocalizations {
   String get quietHoursDesc => 'Alarmy ciszy między wybranymi godzinami.';
 
   @override
-  String get quietHoursEnabled => 'Enable quiet hours';
+  String get quietHoursEnabled => 'Włącz ciche godziny';
 
   @override
-  String get quietHoursFrom => 'From';
+  String get quietHoursFrom => 'Od';
 
   @override
-  String get quietHoursUntil => 'Until';
+  String get quietHoursUntil => 'Do';
 
   @override
-  String get quietHoursDefaultTime => 'Default quiet hours';
+  String get quietHoursDefaultTime => 'Domyślne godziny ciszy';
 
   @override
-  String get emergencyOverride => 'Emergency override';
+  String get emergencyOverride => 'Niepotrzebne skreślić';
 
   @override
-  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
+  String get emergencyOverrideDesc =>
+      'Należy zezwolić na pilne wpisy w godzinach ciszy';
 
   @override
   String get dndMode => 'Nie przeszkadzać';
@@ -393,18 +394,18 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND enabled until $time';
+    return 'DND włączone do _ _ PLACEScorter _ 0 _ _';
   }
 
   @override
-  String get dndDisabled => 'DND disabled';
+  String get dndDisabled => 'Wyłączony DND';
 
   @override
-  String get quietHoursActive => 'Quiet hours active';
+  String get quietHoursActive => 'Godziny ciszy aktywne';
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Quiet hours: $start - $end';
+    return 'Godziny ciszy: _ _ PLACESECRET _ 0 _ _ _ - _ PLACESECRET _ 1 _ _';
   }
 
   @override

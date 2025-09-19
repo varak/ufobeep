@@ -368,22 +368,23 @@ class AppLocalizationsEl extends AppLocalizations {
   String get quietHoursDesc => 'Συναγερμός σιωπής μεταξύ επιλεγμένων ωρών.';
 
   @override
-  String get quietHoursEnabled => 'Enable quiet hours';
+  String get quietHoursEnabled => 'Ενεργοποίηση ωρών ησυχίας';
 
   @override
-  String get quietHoursFrom => 'From';
+  String get quietHoursFrom => 'Από';
 
   @override
-  String get quietHoursUntil => 'Until';
+  String get quietHoursUntil => 'Μέχρι';
 
   @override
-  String get quietHoursDefaultTime => 'Default quiet hours';
+  String get quietHoursDefaultTime => 'Προκαθορισμένες ώρες ησυχίας';
 
   @override
-  String get emergencyOverride => 'Emergency override';
+  String get emergencyOverride => 'Παράκαμψη έκτακτης ανάγκης';
 
   @override
-  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
+  String get emergencyOverrideDesc =>
+      'Επίτρεψε επείγουσες ειδοποιήσεις κατά τη διάρκεια ωρών ηρεμίας';
 
   @override
   String get dndMode => 'Μην ενοχλείστε';
@@ -393,18 +394,18 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND enabled until $time';
+    return 'DND ενεργοποιημένο μέχρι $time';
   }
 
   @override
-  String get dndDisabled => 'DND disabled';
+  String get dndDisabled => 'Απενεργοποίηση DND';
 
   @override
-  String get quietHoursActive => 'Quiet hours active';
+  String get quietHoursActive => 'Ώρες ηρεμίας ενεργές';
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Quiet hours: $start - $end';
+    return 'Ώρες ησυχίας: _________________________';
   }
 
   @override

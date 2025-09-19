@@ -368,22 +368,22 @@ class AppLocalizationsDa extends AppLocalizations {
   String get quietHoursDesc => 'Tavshedsadvarsler mellem udvalgte timer.';
 
   @override
-  String get quietHoursEnabled => 'Enable quiet hours';
+  String get quietHoursEnabled => 'Aktivér stille timer';
 
   @override
-  String get quietHoursFrom => 'From';
+  String get quietHoursFrom => 'Fra';
 
   @override
-  String get quietHoursUntil => 'Until';
+  String get quietHoursUntil => 'Indtil';
 
   @override
-  String get quietHoursDefaultTime => 'Default quiet hours';
+  String get quietHoursDefaultTime => 'Standard stille timer';
 
   @override
-  String get emergencyOverride => 'Emergency override';
+  String get emergencyOverride => 'Nødstyring';
 
   @override
-  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
+  String get emergencyOverrideDesc => 'Tillad hurtig varsling i stille timer';
 
   @override
   String get dndMode => 'Må ikke forstyrres';
@@ -393,18 +393,18 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND enabled until $time';
+    return 'DND aktiveret indtil _ _ PLACEREPER _ 0 _ _';
   }
 
   @override
-  String get dndDisabled => 'DND disabled';
+  String get dndDisabled => 'DND deaktiveret';
 
   @override
-  String get quietHoursActive => 'Quiet hours active';
+  String get quietHoursActive => 'Stille timer aktive';
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Quiet hours: $start - $end';
+    return 'Stille timer: _ _ PLACEREPORT _ 0 _ - _ _ PLACEREPORT _ 1 _ _';
   }
 
   @override

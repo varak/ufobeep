@@ -368,22 +368,22 @@ class AppLocalizationsRu extends AppLocalizations {
       'Предупреждение о молчании между выбранными часами.';
 
   @override
-  String get quietHoursEnabled => 'Enable quiet hours';
+  String get quietHoursEnabled => 'Включите тихие часы';
 
   @override
-  String get quietHoursFrom => 'From';
+  String get quietHoursFrom => 'Из';
 
   @override
-  String get quietHoursUntil => 'Until';
+  String get quietHoursUntil => 'Пока';
 
   @override
-  String get quietHoursDefaultTime => 'Default quiet hours';
+  String get quietHoursDefaultTime => 'По умолчанию тихие часы';
 
   @override
-  String get emergencyOverride => 'Emergency override';
+  String get emergencyOverride => 'Аварийная отмена';
 
   @override
-  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
+  String get emergencyOverrideDesc => 'Срочные оповещения в тихие часы';
 
   @override
   String get dndMode => 'Не беспокоить';
@@ -393,18 +393,18 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND enabled until $time';
+    return 'DND включен до $time';
   }
 
   @override
-  String get dndDisabled => 'DND disabled';
+  String get dndDisabled => 'DND отключен';
 
   @override
-  String get quietHoursActive => 'Quiet hours active';
+  String get quietHoursActive => 'Тихие часы активны';
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Quiet hours: $start - $end';
+    return 'Тихие часы: $start - $start';
   }
 
   @override

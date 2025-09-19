@@ -358,22 +358,22 @@ class AppLocalizationsZh extends AppLocalizations {
   String get quietHoursDesc => '选定时数之间的静态提示 .';
 
   @override
-  String get quietHoursEnabled => 'Enable quiet hours';
+  String get quietHoursEnabled => '启用安静时间';
 
   @override
-  String get quietHoursFrom => 'From';
+  String get quietHoursFrom => '从';
 
   @override
-  String get quietHoursUntil => 'Until';
+  String get quietHoursUntil => '直至';
 
   @override
-  String get quietHoursDefaultTime => 'Default quiet hours';
+  String get quietHoursDefaultTime => '默认安静时间';
 
   @override
-  String get emergencyOverride => 'Emergency override';
+  String get emergencyOverride => '紧急控制';
 
   @override
-  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
+  String get emergencyOverrideDesc => '允许静时紧急报警';
 
   @override
   String get dndMode => '不要烦恼';
@@ -383,18 +383,18 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND enabled until $time';
+    return 'DND 启用至 __ PLACEHOLDER_ 0___';
   }
 
   @override
-  String get dndDisabled => 'DND disabled';
+  String get dndDisabled => 'DND 已禁用';
 
   @override
-  String get quietHoursActive => 'Quiet hours active';
+  String get quietHoursActive => '静默时间活动';
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Quiet hours: $start - $end';
+    return '安静时间: (原始内容存档于2017-09-01) (中文(中国大陆) )';
   }
 
   @override

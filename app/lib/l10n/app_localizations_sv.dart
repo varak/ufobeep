@@ -368,22 +368,23 @@ class AppLocalizationsSv extends AppLocalizations {
   String get quietHoursDesc => 'Tystnadsvarningar mellan utvalda timmar.';
 
   @override
-  String get quietHoursEnabled => 'Enable quiet hours';
+  String get quietHoursEnabled => 'Aktivera tysta timmar';
 
   @override
-  String get quietHoursFrom => 'From';
+  String get quietHoursFrom => 'Från';
 
   @override
-  String get quietHoursUntil => 'Until';
+  String get quietHoursUntil => 'Fram till';
 
   @override
-  String get quietHoursDefaultTime => 'Default quiet hours';
+  String get quietHoursDefaultTime => 'Standard tysta timmar';
 
   @override
-  String get emergencyOverride => 'Emergency override';
+  String get emergencyOverride => 'Nödläge överskrider';
 
   @override
-  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
+  String get emergencyOverrideDesc =>
+      'Tillåt akuta varningar under tysta timmar';
 
   @override
   String get dndMode => 'Stör inte';
@@ -393,18 +394,18 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND enabled until $time';
+    return 'DND aktiverad till ${time}__';
   }
 
   @override
-  String get dndDisabled => 'DND disabled';
+  String get dndDisabled => 'DND inaktiverad';
 
   @override
-  String get quietHoursActive => 'Quiet hours active';
+  String get quietHoursActive => 'Tyst timmar aktiv';
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Quiet hours: $start - $end';
+    return 'Tyst timmar: $start ${start}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override

@@ -366,22 +366,23 @@ class AppLocalizationsFi extends AppLocalizations {
       'Hiljaiset hälytykset valittujen tuntien välillä.';
 
   @override
-  String get quietHoursEnabled => 'Enable quiet hours';
+  String get quietHoursEnabled => 'Käytä hiljaisia tunteja';
 
   @override
-  String get quietHoursFrom => 'From';
+  String get quietHoursFrom => 'Alkaen';
 
   @override
-  String get quietHoursUntil => 'Until';
+  String get quietHoursUntil => 'Asti';
 
   @override
-  String get quietHoursDefaultTime => 'Default quiet hours';
+  String get quietHoursDefaultTime => 'Oletus hiljaiset tunnit';
 
   @override
-  String get emergencyOverride => 'Emergency override';
+  String get emergencyOverride => 'Hätäohitus';
 
   @override
-  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
+  String get emergencyOverrideDesc =>
+      'Kiireellisten kuulutusten salliminen hiljaisina aikoina';
 
   @override
   String get dndMode => 'Älä häiritse';
@@ -391,18 +392,18 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND enabled until $time';
+    return 'DND on käytössä kunnes __PAIKKAHOLDER_0__';
   }
 
   @override
-  String get dndDisabled => 'DND disabled';
+  String get dndDisabled => 'DND ei käytössä';
 
   @override
-  String get quietHoursActive => 'Quiet hours active';
+  String get quietHoursActive => 'Hiljaiset työajat';
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Quiet hours: $start - $end';
+    return 'Hiljaiset tunnit: __Placeholder_0__ - __Placeholder_1_';
   }
 
   @override

@@ -358,22 +358,22 @@ class AppLocalizationsJa extends AppLocalizations {
   String get quietHoursDesc => '選択した時間間のサイレンスアラート.';
 
   @override
-  String get quietHoursEnabled => 'Enable quiet hours';
+  String get quietHoursEnabled => '静かな時間を有効にする';
 
   @override
-  String get quietHoursFrom => 'From';
+  String get quietHoursFrom => '詳しくはこちら';
 
   @override
-  String get quietHoursUntil => 'Until';
+  String get quietHoursUntil => 'まで';
 
   @override
-  String get quietHoursDefaultTime => 'Default quiet hours';
+  String get quietHoursDefaultTime => 'デフォルトの静かな時間';
 
   @override
-  String get emergencyOverride => 'Emergency override';
+  String get emergencyOverride => '緊急オーバーライド';
 
   @override
-  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
+  String get emergencyOverrideDesc => '静かな時間の間に緊急のアラートを許可する';
 
   @override
   String get dndMode => '蒸留しない';
@@ -383,18 +383,18 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND enabled until $time';
+    return 'DND が $time まで有効';
   }
 
   @override
-  String get dndDisabled => 'DND disabled';
+  String get dndDisabled => 'DND 無効';
 
   @override
-  String get quietHoursActive => 'Quiet hours active';
+  String get quietHoursActive => '活動的な静かな時間';
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Quiet hours: $start - $end';
+    return '静かな時間: ${start}_________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override

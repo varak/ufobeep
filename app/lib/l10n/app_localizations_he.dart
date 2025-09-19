@@ -361,22 +361,22 @@ class AppLocalizationsHe extends AppLocalizations {
   String get quietHoursDesc => 'שתיקה מזהירה בין שעות נבחרות.';
 
   @override
-  String get quietHoursEnabled => 'Enable quiet hours';
+  String get quietHoursEnabled => 'שעות שקטות';
 
   @override
-  String get quietHoursFrom => 'From';
+  String get quietHoursFrom => 'מתוך';
 
   @override
-  String get quietHoursUntil => 'Until';
+  String get quietHoursUntil => 'עד';
 
   @override
-  String get quietHoursDefaultTime => 'Default quiet hours';
+  String get quietHoursDefaultTime => 'שעות שקטות';
 
   @override
-  String get emergencyOverride => 'Emergency override';
+  String get emergencyOverride => 'חירום';
 
   @override
-  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
+  String get emergencyOverrideDesc => 'לאפשר התראה דחופה בשעות שקטות';
 
   @override
   String get dndMode => 'אל תתבלבל';
@@ -386,18 +386,18 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND enabled until $time';
+    return 'DND זמין עד_PLACEHOLDER_0___________________';
   }
 
   @override
-  String get dndDisabled => 'DND disabled';
+  String get dndDisabled => 'DND';
 
   @override
-  String get quietHoursActive => 'Quiet hours active';
+  String get quietHoursActive => 'שעות שקט פעיל';
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Quiet hours: $start - $end';
+    return 'שעות שקטות: שם הסרטון: PLACEHOLDER__0_____${start}______________________________________________________________________________';
   }
 
   @override

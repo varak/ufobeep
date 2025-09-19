@@ -365,22 +365,23 @@ class AppLocalizationsHi extends AppLocalizations {
   String get quietHoursDesc => 'चयनित घंटों के बीच मौन अलर्ट।.';
 
   @override
-  String get quietHoursEnabled => 'Enable quiet hours';
+  String get quietHoursEnabled => 'शांत घंटे';
 
   @override
-  String get quietHoursFrom => 'From';
+  String get quietHoursFrom => 'से';
 
   @override
-  String get quietHoursUntil => 'Until';
+  String get quietHoursUntil => 'जब तक';
 
   @override
-  String get quietHoursDefaultTime => 'Default quiet hours';
+  String get quietHoursDefaultTime => 'डिफ़ॉल्ट शांत घंटे';
 
   @override
-  String get emergencyOverride => 'Emergency override';
+  String get emergencyOverride => 'आपातकालीन ओवरराइड';
 
   @override
-  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
+  String get emergencyOverrideDesc =>
+      'शांत घंटों के दौरान तत्काल अलर्ट की अनुमति दें';
 
   @override
   String get dndMode => 'Disturb';
@@ -390,18 +391,18 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND enabled until $time';
+    return 'डीएनडी ने $time';
   }
 
   @override
-  String get dndDisabled => 'DND disabled';
+  String get dndDisabled => 'DND विकलांग';
 
   @override
-  String get quietHoursActive => 'Quiet hours active';
+  String get quietHoursActive => 'शांत घंटे सक्रिय';
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Quiet hours: $start - $end';
+    return 'शांत समय: _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _';
   }
 
   @override

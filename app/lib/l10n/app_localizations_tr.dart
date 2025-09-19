@@ -368,22 +368,23 @@ class AppLocalizationsTr extends AppLocalizations {
   String get quietHoursDesc => 'Seçilen saatler arasında sessizlik uyarıları.';
 
   @override
-  String get quietHoursEnabled => 'Enable quiet hours';
+  String get quietHoursEnabled => 'Enable sessiz saatler';
 
   @override
   String get quietHoursFrom => 'From';
 
   @override
-  String get quietHoursUntil => 'Until';
+  String get quietHoursUntil => 'Olana kadar';
 
   @override
-  String get quietHoursDefaultTime => 'Default quiet hours';
+  String get quietHoursDefaultTime => 'Varsayılan sessiz saatler';
 
   @override
-  String get emergencyOverride => 'Emergency override';
+  String get emergencyOverride => 'Acil durum';
 
   @override
-  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
+  String get emergencyOverrideDesc =>
+      'Sessiz saatler boyunca acil uyarılara izin verin';
 
   @override
   String get dndMode => 'Yapmayın';
@@ -393,18 +394,18 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND enabled until $time';
+    return 'DND, $time';
   }
 
   @override
-  String get dndDisabled => 'DND disabled';
+  String get dndDisabled => 'DND engelli';
 
   @override
-  String get quietHoursActive => 'Quiet hours active';
+  String get quietHoursActive => 'Sessiz saatler aktif';
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Quiet hours: $start - $end';
+    return 'Sessiz saatler: $start - $start';
   }
 
   @override

@@ -358,22 +358,22 @@ class AppLocalizationsKo extends AppLocalizations {
   String get quietHoursDesc => '선택된 시간 사이에 침묵 경고.';
 
   @override
-  String get quietHoursEnabled => 'Enable quiet hours';
+  String get quietHoursEnabled => '조용한 시간';
 
   @override
-  String get quietHoursFrom => 'From';
+  String get quietHoursFrom => '이름 *';
 
   @override
-  String get quietHoursUntil => 'Until';
+  String get quietHoursUntil => '까지';
 
   @override
-  String get quietHoursDefaultTime => 'Default quiet hours';
+  String get quietHoursDefaultTime => '기본 조용한 시간';
 
   @override
-  String get emergencyOverride => 'Emergency override';
+  String get emergencyOverride => '비상 override';
 
   @override
-  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
+  String get emergencyOverrideDesc => '조용한 시간 동안 긴급 경고를 허용';
 
   @override
   String get dndMode => '뚱 베어';
@@ -383,18 +383,18 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND enabled until $time';
+    return '$time까지 DND 활성화';
   }
 
   @override
-  String get dndDisabled => 'DND disabled';
+  String get dndDisabled => 'DND 사용';
 
   @override
-  String get quietHoursActive => 'Quiet hours active';
+  String get quietHoursActive => '활동 시간';
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Quiet hours: $start - $end';
+    return '영업시간: $start - $start';
   }
 
   @override

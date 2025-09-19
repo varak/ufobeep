@@ -368,22 +368,23 @@ class AppLocalizationsIt extends AppLocalizations {
   String get quietHoursDesc => 'Silenzio avvisi tra le ore selezionate.';
 
   @override
-  String get quietHoursEnabled => 'Enable quiet hours';
+  String get quietHoursEnabled => 'Abilitare ore tranquille';
 
   @override
-  String get quietHoursFrom => 'From';
+  String get quietHoursFrom => 'Da';
 
   @override
-  String get quietHoursUntil => 'Until';
+  String get quietHoursUntil => 'Fino a';
 
   @override
-  String get quietHoursDefaultTime => 'Default quiet hours';
+  String get quietHoursDefaultTime => 'Ore tranquille predefinite';
 
   @override
-  String get emergencyOverride => 'Emergency override';
+  String get emergencyOverride => 'Override di emergenza';
 
   @override
-  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
+  String get emergencyOverrideDesc =>
+      'Consentire avvisi urgenti durante ore tranquille';
 
   @override
   String get dndMode => 'Non disturbare';
@@ -393,18 +394,18 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND enabled until $time';
+    return 'DND abilitato fino a $time';
   }
 
   @override
-  String get dndDisabled => 'DND disabled';
+  String get dndDisabled => 'DISOCCUPATI';
 
   @override
-  String get quietHoursActive => 'Quiet hours active';
+  String get quietHoursActive => 'Ore tranquille attive';
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Quiet hours: $start - $end';
+    return 'Ore tranquille: Traduzione:';
   }
 
   @override

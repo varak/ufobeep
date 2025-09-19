@@ -369,22 +369,23 @@ class AppLocalizationsNl extends AppLocalizations {
   String get quietHoursDesc => 'Stiltemeldingen tussen geselecteerde uren.';
 
   @override
-  String get quietHoursEnabled => 'Enable quiet hours';
+  String get quietHoursEnabled => 'Rustige uren inschakelen';
 
   @override
-  String get quietHoursFrom => 'From';
+  String get quietHoursFrom => 'Van';
 
   @override
-  String get quietHoursUntil => 'Until';
+  String get quietHoursUntil => 'Tot';
 
   @override
-  String get quietHoursDefaultTime => 'Default quiet hours';
+  String get quietHoursDefaultTime => 'Standaard rustige uren';
 
   @override
-  String get emergencyOverride => 'Emergency override';
+  String get emergencyOverride => 'Noodoverschrijving';
 
   @override
-  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
+  String get emergencyOverrideDesc =>
+      'Noodoproepen tijdens stille uren toestaan';
 
   @override
   String get dndMode => 'Niet storen';
@@ -394,18 +395,18 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND enabled until $time';
+    return 'DND ingeschakeld tot $time';
   }
 
   @override
-  String get dndDisabled => 'DND disabled';
+  String get dndDisabled => 'DND uitgeschakeld';
 
   @override
-  String get quietHoursActive => 'Quiet hours active';
+  String get quietHoursActive => 'Rustige uren actief';
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Quiet hours: $start - $end';
+    return 'Rustige uren: __PLAATSHOLDER_0__ - __PLAATSHOLDER_1__';
   }
 
   @override
