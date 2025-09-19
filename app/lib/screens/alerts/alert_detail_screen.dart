@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -1325,13 +1326,14 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.darkSurface,
+      backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        margin: const EdgeInsets.all(16),
+        child: GlassCard(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
             Text(
               l10n.shareAlert,
               style: const TextStyle(
@@ -1367,6 +1369,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               },
             ),
           ],
+          ),
         ),
       ),
     );
@@ -1375,59 +1378,23 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   Future<void> _shareNatively(String text, String url) async {
     final l10n = AppLocalizations.of(context)!;
     try {
-      // Use platform's native sharing
+      // Use share_plus for proper native sharing
       final shareContent = '$text\n\n$url';
-
-      // Try to use platform channel for native sharing
-      if (defaultTargetPlatform == TargetPlatform.android) {
-        // On Android, use ACTION_SEND intent
-        await _launchAndroidShare(shareContent);
-      } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-        // On iOS, use UIActivityViewController equivalent
-        await _launchIOSShare(shareContent);
-      } else {
-        // Fallback to clipboard for other platforms
-        await Clipboard.setData(ClipboardData(text: shareContent));
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(l10n.copyShortLink)),
-          );
-        }
-      }
+      await Share.share(
+        shareContent,
+        subject: l10n.ufoSightingAlert,
+      );
     } catch (e) {
-      debugPrint('Sharing failed: $e');
+      debugPrint('Native sharing failed: $e');
       // Fallback to clipboard
       await Clipboard.setData(ClipboardData(text: '$text\n\n$url'));
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.copyShortLink)),
+          SnackBar(content: Text(l10n.copyShortLink)),
         );
       }
     }
   }
 
-  Future<void> _launchAndroidShare(String content) async {
-    final uri = Uri(
-      scheme: 'sms',
-      queryParameters: {'body': content},
-    );
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      throw AppLocalizations.of(context)!.errorGeneric;
-    }
-  }
-
-  Future<void> _launchIOSShare(String content) async {
-    final uri = Uri(
-      scheme: 'sms',
-      queryParameters: {'body': content},
-    );
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      throw AppLocalizations.of(context)!.errorGeneric;
-    }
-  }
 
 }
