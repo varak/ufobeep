@@ -122,8 +122,8 @@ class AlertDetailsSection extends StatelessWidget {
             _buildDetailRow(
               Icons.access_time,
               AppLocalizations.of(context)!.timeLabel,
-              _formatDateTime(context, alert.createdAt),
-              subtitle: _formatFullDateTime(alert.createdAt),
+              _formatFullDateTime(alert.createdAt),
+              subtitle: _formatDateTime(context, alert.createdAt),
             ),
 
             // Reporter info - same condition as alerts list
