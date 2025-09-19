@@ -232,10 +232,10 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <span className="text-text-tertiary text-sm font-medium">{t('timeLabel')}</span>
-              <span className="text-text-primary text-sm">{formatFullDate(alert.created_at)}</span>
+              <span className="text-text-primary text-sm">{formatDate(alert.created_at)}</span>
             </div>
-            <div className="text-text-primary text-xs mt-1">
-              {formatDate(alert.created_at)}
+            <div className="text-text-tertiary text-xs mt-1">
+              {formatFullDate(alert.created_at)}
             </div>
           </div>
         </div>
