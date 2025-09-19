@@ -37,13 +37,6 @@ export default function AlertHero({ alert, openImageIndex, locale = 'en' }: Aler
   const hasMedia = alert.media_files && alert.media_files.length > 0
   const hasDescription = alert.description?.trim()
 
-  // Debug locale and translation
-  console.log('AlertHero debug:')
-  console.log('- locale passed:', locale)
-  console.log('- beepOnly translation:', t('beepOnly'))
-  console.log('- localStorage locale:', typeof window !== 'undefined' ? localStorage.getItem('preferred-language') : 'SSR')
-
-
   const handleCloseModal = () => {
     setIsMediaModalOpen(false)
     // Only clean URL if it has openImage parameter, use replaceState to avoid affecting back button
