@@ -48,7 +48,7 @@ export class AlertTitleUtils {
     }
 
     // Fallback to generic MUFON title (no case number in hero)
-    return t('mufonGenericTitle');
+    return `MUFON ${t('sightingReport')}`;
   }
   
   /**
