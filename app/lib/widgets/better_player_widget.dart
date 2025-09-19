@@ -97,6 +97,7 @@ class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
       final betterPlayerConfiguration = BetterPlayerConfiguration(
         autoPlay: widget.autoPlay,
         looping: false,
+        fit: BoxFit.contain, // Preserve aspect ratio, don't stretch
         controlsConfiguration: BetterPlayerControlsConfiguration(
           showControls: widget.showControls,
           enableSkips: false,

@@ -566,13 +566,13 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
   Widget _buildFullscreenMediaContent(String mediaUrl, String mediaType) {
     if (mediaType == 'video') {
-      // For videos, use BetterPlayerWidget in fullscreen with enhanced codec support
-      return BetterPlayerWidget(
-        videoUrl: mediaUrl,
-        width: double.infinity,
-        height: double.infinity,
-        autoPlay: true,
-        showControls: true,
+      // For videos, use BetterPlayerWidget with proper aspect ratio preservation
+      return Center(
+        child: BetterPlayerWidget(
+          videoUrl: mediaUrl,
+          autoPlay: true,
+          showControls: true,
+        ),
       );
     } else {
       // For images, use InteractiveViewer for zoom functionality
