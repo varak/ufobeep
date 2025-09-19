@@ -14,16 +14,10 @@ abstract class AlertTitleUtils {
 
       if (classification != null && classification.isNotEmpty) {
         // Use classification-aware title format
-        // Use same working logic as alerts tab
-        final shapeKey = _getShapeTranslationKey(classification);
-        if (shapeKey != null) {
-          final shapeTranslation = _getShapeTranslation(l10n, shapeKey);
-          return 'MUFON $shapeTranslation ${l10n.sightingReport}';
-        }
-        return 'MUFON ${l10n.sightingReport}';
+        return l10n.mufonTitleFormat(classification);
       } else {
-        // Use generic title for unknown/low confidence (no case number in hero)
-        return 'MUFON ${l10n.sightingReport}';
+        // Fallback to case title
+        return l10n.mufonCaseTitle(caseNumber);
       }
     }
 
