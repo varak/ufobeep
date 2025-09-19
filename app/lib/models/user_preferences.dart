@@ -361,7 +361,6 @@ class RegistrationData {
       email: email,
       language: language,
       alertRangeKm: alertRangeKm,
-      enablePushNotifications: enableNotifications,
       lastUpdated: DateTime.now(),
     );
   }
