@@ -237,16 +237,16 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
 
       if (result.success) {
         // Show success message
-        alert(`Successfully shared to ${result.platforms_posted.length} platform(s)!`)
+        window.alert(`Successfully shared to ${result.platforms_posted.length} platform(s)!`)
         if (result.failed_platforms.length > 0) {
           console.warn('Some platforms failed:', result.failed_platforms)
         }
       } else {
-        alert('Sharing failed. Please try again.')
+        window.alert('Sharing failed. Please try again.')
       }
     } catch (error) {
       console.error('Share error:', error)
-      alert('Sharing failed. Please check your connection.')
+      window.alert('Sharing failed. Please check your connection.')
     } finally {
       setSharingInProgress(false)
       setShowPlatformModal(false)
