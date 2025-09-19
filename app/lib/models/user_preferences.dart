@@ -90,8 +90,8 @@ class UserPreferences {
     this.mediaOnlyAlerts,
     this.ignoreAnonymousBeeps,
     this.quietHoursEnabled = false,
-    this.quietHoursStart = 22,
-    this.quietHoursEnd = 7,
+    this.quietHoursStart = 22, // Will be overridden by language-aware defaults
+    this.quietHoursEnd = 7,    // Will be overridden by language-aware defaults
     this.allowEmergencyOverride = true,
     this.dndUntil,
     this.use24HourTime = true,
@@ -127,6 +127,8 @@ class UserPreferences {
     bool? use24HourTime,
     DateTime? lastUpdated,
   }) {
+    final (defaultQuietStart, defaultQuietEnd) = _getDefaultQuietHoursForLanguage(language);
+
     return UserPreferences(
       displayName: displayName,
       email: email,
@@ -145,8 +147,8 @@ class UserPreferences {
       mediaOnlyAlerts: mediaOnlyAlerts,
       ignoreAnonymousBeeps: ignoreAnonymousBeeps,
       quietHoursEnabled: quietHoursEnabled,
-      quietHoursStart: quietHoursStart,
-      quietHoursEnd: quietHoursEnd,
+      quietHoursStart: quietHoursStart ?? defaultQuietStart,
+      quietHoursEnd: quietHoursEnd ?? defaultQuietEnd,
       allowEmergencyOverride: allowEmergencyOverride,
       dndUntil: dndUntil,
       use24HourTime: use24HourTime ?? _getDefault24HourForLanguage(language),
@@ -270,6 +272,26 @@ class UserPreferences {
       'he': 'metric',    // Hebrew
     };
     return languageToUnits[languageCode.toLowerCase()] ?? 'metric';
+  }
+
+  /// Internal method to get default quiet hours for language/culture
+  static (int, int) _getDefaultQuietHoursForLanguage(String languageCode) {
+    // Returns (start_hour, end_hour) based on cultural sleep patterns
+    const Map<String, (int, int)> languageToQuietHours = {
+      'en': (22, 7),   // English - 10 PM to 7 AM (North American pattern)
+      'es': (23, 8),   // Spanish - 11 PM to 8 AM (European/Latin pattern)
+      'fr': (23, 8),   // French - 11 PM to 8 AM (European pattern)
+      'de': (22, 7),   // German - 10 PM to 7 AM (Central European pattern)
+      'it': (23, 8),   // Italian - 11 PM to 8 AM (Mediterranean pattern)
+      'ru': (23, 8),   // Russian - 11 PM to 8 AM (Eastern European pattern)
+      'zh': (22, 7),   // Chinese - 10 PM to 7 AM (East Asian pattern)
+      'ja': (23, 7),   // Japanese - 11 PM to 7 AM (Japanese pattern)
+      'ko': (23, 7),   // Korean - 11 PM to 7 AM (Korean pattern)
+      'ar': (24, 8),   // Arabic - 12 AM to 8 AM (Middle Eastern pattern)
+      'pt': (23, 8),   // Portuguese - 11 PM to 8 AM (Brazilian/Portuguese pattern)
+    };
+
+    return languageToQuietHours[languageCode] ?? (22, 7); // Default to 10 PM - 7 AM
   }
 
   /// Internal method to get default 24-hour time format for language

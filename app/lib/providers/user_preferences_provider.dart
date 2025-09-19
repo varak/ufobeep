@@ -88,9 +88,22 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
       
       debugPrint('📱 Device ID for sync: $deviceId');
       
-      // Prepare API request with snooze_until field
+      // Prepare API request with preferences
       final Map<String, dynamic> updateData = {
         'snooze_until': prefs.dndUntil?.toUtc().toIso8601String(), // null to disable DND
+        'preferences': {
+          // Sync Flutter format DND/quiet hours to backend
+          'quietHoursEnabled': prefs.quietHoursEnabled,
+          'quietHoursStart': prefs.quietHoursStart,
+          'quietHoursEnd': prefs.quietHoursEnd,
+          'allowEmergencyOverride': prefs.allowEmergencyOverride,
+          'dndUntil': prefs.dndUntil?.toUtc().toIso8601String(),
+          // Include other user preferences
+          'alertRangeKm': prefs.alertRangeKm,
+          'enablePushNotifications': prefs.enablePushNotifications,
+          'language': prefs.language,
+          'units': prefs.units,
+        }
       };
       
       debugPrint('📡 Sending PUT /devices/$deviceId with data: $updateData');

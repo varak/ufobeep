@@ -466,38 +466,46 @@ class PushNotificationService:
         now_utc = datetime.now(timezone.utc)
 
         def in_dnd_window(pref: Dict[str, Any]) -> bool:
-            dnd = (pref.get("preferences") or {}).get("dnd") or {}
-            if not dnd.get("enabled"):
-                return False
+            preferences = pref.get("preferences") or {}
+
+            # Support Flutter format (quietHoursEnabled, quietHoursStart, quietHoursEnd)
+            if preferences.get("quietHoursEnabled"):
+                start_hour = preferences.get("quietHoursStart", 22)  # Default 10 PM
+                end_hour = preferences.get("quietHoursEnd", 7)       # Default 7 AM
+            else:
+                # Support legacy format (dnd.enabled, dnd.start, dnd.end)
+                dnd = preferences.get("dnd") or {}
+                if not dnd.get("enabled"):
+                    return False
+                try:
+                    start = dnd.get("start") or "22:00"
+                    end = dnd.get("end") or "07:00"
+                    start_hour = int(start.split(":", 1)[0])
+                    end_hour = int(end.split(":", 1)[0])
+                except Exception:
+                    return False
+
             try:
                 tzname = pref.get("timezone", "UTC")
                 tz = ZoneInfo(tzname)
             except Exception:
                 tz = ZoneInfo("UTC")
             local_now = now_utc.astimezone(tz)
-            start = dnd.get("start") or "22:00"
-            end = dnd.get("end") or "07:00"
-            days = dnd.get("days")  # Optional list of ints 0..6 (Sun..Sat)
-            # Day check
-            if isinstance(days, list) and len(days) > 0:
-                # Python weekday: Monday is 0, Sunday is 6; convert to 0=Sun..6=Sat
-                dow = (local_now.weekday() + 1) % 7
-                if dow not in days:
-                    return False
-            try:
-                sh, sm = [int(x) for x in start.split(":", 1)]
-                eh, em = [int(x) for x in end.split(":", 1)]
-            except Exception:
-                return False
-            start_minutes = sh * 60 + sm
-            end_minutes = eh * 60 + em
-            cur_minutes = local_now.hour * 60 + local_now.minute
-            if start_minutes <= end_minutes:
-                # Same-day window
-                return start_minutes <= cur_minutes < end_minutes
-            else:
-                # Wrap-around (e.g., 22:00–07:00)
-                return cur_minutes >= start_minutes or cur_minutes < end_minutes
+
+            # Convert to minutes for comparison (ignore seconds/minutes for simplicity)
+            current_hour = local_now.hour
+
+            # Handle overnight quiet hours (e.g., 22:00 - 07:00)
+            if start_hour != end_hour:
+                if start_hour < end_hour:
+                    # Same day range (e.g., 8:00 - 17:00)
+                    return start_hour <= current_hour < end_hour
+                else:
+                    # Overnight range (e.g., 22:00 - 07:00)
+                    return current_hour >= start_hour or current_hour < end_hour
+
+            # If start == end, no quiet hours active
+            return False
 
         filtered: List[PushTarget] = []
         for t in targets:
@@ -512,9 +520,24 @@ class PushNotificationService:
             # Device-level snooze/DND
             p = device_prefs.get((t.user_id, t.device_id))
             if p:
+                # Check snooze_until (legacy format)
                 su = p.get("snooze_until")
                 if su and isinstance(su, datetime) and su.tzinfo is not None and su > now_utc:
                     continue
+
+                # Check dndUntil (Flutter format)
+                preferences = p.get("preferences") or {}
+                dnd_until = preferences.get("dndUntil")
+                if dnd_until:
+                    try:
+                        if isinstance(dnd_until, str):
+                            dnd_until = datetime.fromisoformat(dnd_until.replace('Z', '+00:00'))
+                        if isinstance(dnd_until, datetime) and dnd_until > now_utc:
+                            continue
+                    except Exception as e:
+                        logger.warning(f"Invalid dndUntil format: {dnd_until}, error: {e}")
+
+                # Check quiet hours
                 if in_dnd_window(p):
                     continue
             filtered.append(t)
