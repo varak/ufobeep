@@ -500,6 +500,7 @@
   "anomalyReported": "Anomalie rapportée",
   "copyShortLink": "Copier le lien court",
   "shareAlert": "Partager l'alerte",
+  "ufoSightingAlert": "OVNI Alerte de surveillance",
   "previousPage": "Précédent",
   "nextPage": "Suivant",
   "pageOf": "Page {currentPage} de {totalPages} ({totalCount} bips totaux)",

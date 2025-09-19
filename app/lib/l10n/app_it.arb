@@ -500,6 +500,7 @@
   "anomalyReported": "Anomalia riportata",
   "copyShortLink": "Copia collegamento breve",
   "shareAlert": "Condividi alert",
+  "ufoSightingAlert": "UFO Avviso di tenuta",
   "previousPage": "Precedente",
   "nextPage": "Il prossimo",
   "pageOf": "Pagina {currentPage} di {totalPages}_ (_PLACEHOLDER_2___ total beeps)",

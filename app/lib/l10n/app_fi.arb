@@ -500,6 +500,7 @@
   "anomalyReported": "Anomalia",
   "copyShortLink": "Kopioi lyhyt linkki",
   "shareAlert": "Jaa hälytys",
+  "ufoSightingAlert": "UFO Havaintovaroitus",
   "previousPage": "Edellinen",
   "nextPage": "Seuraava",
   "pageOf": "Sivu __PASSIHOLDER_0__ of _PASSIHOLDER_1__ (__PASSIHOLDER_2_ total piips)",

@@ -500,6 +500,7 @@
   "anomalyReported": "Об аномалии сообщили",
   "copyShortLink": "Скопировать короткую ссылку",
   "shareAlert": "Поделиться предупреждением",
+  "ufoSightingAlert": "НЛО Сигнал тревоги",
   "previousPage": "Предыдущий",
   "nextPage": "Следующий",
   "pageOf": "Страница {currentPage}_{totalPages} ({totalCount} полные звуковые сигналы)",

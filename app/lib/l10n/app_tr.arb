@@ -500,6 +500,7 @@
   "anomalyReported": "Anomaly bildirildi",
   "copyShortLink": "Kısa bağlantı",
   "shareAlert": "Paylaş",
+  "ufoSightingAlert": "UFO UFO Sighting Alert",
   "previousPage": "Önceki",
   "nextPage": "Sonraki",
   "pageOf": "Sayfa {currentPage} of {totalPages} ({totalCount} total beeps)",
