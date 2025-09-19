@@ -13,6 +13,7 @@ import '../../providers/user_preferences_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../config/environment.dart';
 import '../../widgets/glass_card.dart';
+import '../../widgets/profile/language_selector.dart';
 import '../admin/admin_screen.dart';
 import '../../l10n/app_localizations.dart';
 
@@ -830,15 +831,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   void _showLanguageSelector(UserPreferences preferences) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Language'),
-        content: Text('Current: ${preferences.language.toUpperCase()}'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
-          ),
-        ],
+      builder: (context) => LanguageSelectorDialog(
+        selectedLanguage: preferences.language,
+        onLanguageChanged: (newLanguage) {
+          // Update language and sync to backend
+          ref.read(userPreferencesProvider.notifier).updateLanguage(newLanguage);
+        },
       ),
     );
   }
