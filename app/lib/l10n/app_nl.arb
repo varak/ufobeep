@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "weg",
+  "distanceAway": "__PLAATSHOLDER_0___",
   "@distanceAway": {
     "placeholders": {
       "distance": {

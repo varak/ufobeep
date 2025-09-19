@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "uzaktan uzakta",
+  "distanceAway": "{distance}",
   "@distanceAway": {
     "placeholders": {
       "distance": {

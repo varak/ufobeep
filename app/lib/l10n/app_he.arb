@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "משם",
+  "distanceAway": "שם הסרטון: PLACEHOLDER_0______",
   "@distanceAway": {
     "placeholders": {
       "distance": {

@@ -46,7 +46,7 @@
   "openSettings": "Offene Einstellungen",
   "reportedBy": "Bericht {username}",
   "reportedAt": "Bericht {timeAgo}",
-  "distanceAway": "weg",
+  "distanceAway": "{distance}",
   "bearingToObject": "Objektträger: {bearing}°",
   "openCompass": "Offener Kompass",
   "openAR": "Open AR Overlay",

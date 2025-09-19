@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "daleko",
+  "distanceAway": "_ _ PLACESENT _ 0 _ _",
   "@distanceAway": {
     "placeholders": {
       "distance": {

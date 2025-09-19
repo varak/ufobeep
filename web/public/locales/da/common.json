@@ -46,7 +46,7 @@
   "openSettings": "Åbn indstillinger",
   "reportedBy": "Rapporteret af _ _ PLACEREPER _ 0 _ _",
   "reportedAt": "Rapporteret _ _ PLACEREPORT _ 0 _ _",
-  "distanceAway": "væk",
+  "distanceAway": "_ _ PLACEREPORT _ 0 _ _",
   "bearingToObject": "Leje til objekt: _ _ _ PLACEREPER _ 0 _ _ °",
   "openCompass": "Åbn kompas",
   "openAR": "Åbne AR-overlay",

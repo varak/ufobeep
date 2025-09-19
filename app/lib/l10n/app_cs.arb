@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "pryč",
+  "distanceAway": "_ _ PLACETETERER _ 0 _ _",
   "@distanceAway": {
     "placeholders": {
       "distance": {

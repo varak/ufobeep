@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "væk",
+  "distanceAway": "_ _ PLACEREPORT _ 0 _ _",
   "@distanceAway": {
     "placeholders": {
       "distance": {

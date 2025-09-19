@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "pois",
+  "distanceAway": "__PAIKKAHOLDER_0___",
   "@distanceAway": {
     "placeholders": {
       "distance": {

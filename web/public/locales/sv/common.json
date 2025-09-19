@@ -46,7 +46,7 @@
   "openSettings": "Öppna inställningar",
   "reportedBy": "Rapporterad av {username}__",
   "reportedAt": "Rapporterad {timeAgo}__",
-  "distanceAway": "bort",
+  "distanceAway": "{distance}",
   "bearingToObject": "Bär mot objekt: __PLACEHOLDER_0_°",
   "openCompass": "Öppen kompass",
   "openAR": "Open AR Overlay",

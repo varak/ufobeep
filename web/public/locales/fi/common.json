@@ -46,7 +46,7 @@
   "openSettings": "Avaa asetukset",
   "reportedBy": "Ilmoittanut __PAIKKAHOLDER_0__",
   "reportedAt": "Raportoitu __PAIKKAHOLDER_0___",
-  "distanceAway": "pois",
+  "distanceAway": "__PAIKKAHOLDER_0___",
   "bearingToObject": "Kohde: __PAIKKAHOLDER_0_°",
   "openCompass": "Avoin kompassi",
   "openAR": "Avaa AR-overlay",

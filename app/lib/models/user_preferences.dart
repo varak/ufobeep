@@ -52,8 +52,6 @@ class UserPreferences {
   final String? email;
   final String language;
   final double alertRangeKm;
-  final bool enablePushNotifications;
-  final bool enableLocationAlerts;
   final bool enableArCompass;
   final bool enablePilotMode;
   final List<String> alertCategories;
@@ -77,8 +75,6 @@ class UserPreferences {
     this.email,
     this.language = 'en',
     this.alertRangeKm = 10.0,
-    this.enablePushNotifications = true,
-    this.enableLocationAlerts = true,
     this.enableArCompass = true,
     this.enablePilotMode = false,
     this.alertCategories = const ['ufo', 'anomaly', 'aircraft'],
@@ -107,8 +103,6 @@ class UserPreferences {
     String? email,
     String language = 'en',
     double alertRangeKm = 10.0,
-    bool enablePushNotifications = true,
-    bool enableLocationAlerts = true,
     bool enableArCompass = true,
     bool enablePilotMode = false,
     List<String> alertCategories = const ['ufo', 'anomaly', 'aircraft'],
@@ -134,8 +128,6 @@ class UserPreferences {
       email: email,
       language: language,
       alertRangeKm: alertRangeKm,
-      enablePushNotifications: enablePushNotifications,
-      enableLocationAlerts: enableLocationAlerts,
       enableArCompass: enableArCompass,
       enablePilotMode: enablePilotMode,
       alertCategories: alertCategories,
@@ -163,8 +155,6 @@ class UserPreferences {
     String? email,
     String? language,
     double? alertRangeKm,
-    bool? enablePushNotifications,
-    bool? enableLocationAlerts,
     bool? enableArCompass,
     bool? enablePilotMode,
     List<String>? alertCategories,
@@ -188,8 +178,6 @@ class UserPreferences {
       email: email ?? this.email,
       language: language ?? this.language,
       alertRangeKm: alertRangeKm ?? this.alertRangeKm,
-      enablePushNotifications: enablePushNotifications ?? this.enablePushNotifications,
-      enableLocationAlerts: enableLocationAlerts ?? this.enableLocationAlerts,
       enableArCompass: enableArCompass ?? this.enableArCompass,
       enablePilotMode: enablePilotMode ?? this.enablePilotMode,
       alertCategories: alertCategories ?? this.alertCategories,

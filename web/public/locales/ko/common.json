@@ -46,7 +46,7 @@
   "openSettings": "설정 열기",
   "reportedBy": "{username}에 의해 신고",
   "reportedAt": "{timeAgo}에 대하여",
-  "distanceAway": "뚱 베어",
+  "distanceAway": "₢ 킹",
   "bearingToObject": "객체에 베어링 : {bearing}°",
   "openCompass": "열린 compass",
   "openAR": "AR 오버레이를 엽니다",

@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "longe",
+  "distanceAway": "__PACELODER_0_",
   "@distanceAway": {
     "placeholders": {
       "distance": {

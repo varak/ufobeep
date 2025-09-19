@@ -295,8 +295,6 @@ class _NotificationManagementScreenState
           _buildQuietHoursSection(preferences),
           const SizedBox(height: 24),
           _buildSubscriptionsSection(),
-          const SizedBox(height: 24),
-          _buildNotificationTypesSection(preferences),
         ],
       ),
     );
@@ -560,61 +558,6 @@ class _NotificationManagementScreenState
     );
   }
 
-  Widget _buildNotificationTypesSection(UserPreferences preferences) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Notification Types',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 12),
-        GlassCard(
-          child: Column(
-            children: [
-              SwitchListTile(
-                secondary: const Icon(Icons.location_on, color: AppColors.brandPrimary),
-                title: const Text(
-                  'Location Alerts',
-                  style: TextStyle(color: Colors.white),
-                ),
-                subtitle: const Text(
-                  'New sightings in your area',
-                  style: TextStyle(color: Colors.white70),
-                ),
-                value: preferences.enableLocationAlerts,
-                onChanged: (value) => _updatePreference(
-                  preferences.copyWith(enableLocationAlerts: value),
-                ),
-                activeColor: AppColors.brandPrimary,
-              ),
-              const Divider(color: Colors.white30),
-              SwitchListTile(
-                secondary: const Icon(Icons.push_pin, color: AppColors.brandPrimary),
-                title: const Text(
-                  'Push Notifications',
-                  style: TextStyle(color: Colors.white),
-                ),
-                subtitle: const Text(
-                  'All notification types',
-                  style: TextStyle(color: Colors.white70),
-                ),
-                value: preferences.enablePushNotifications,
-                onChanged: (value) => _updatePreference(
-                  preferences.copyWith(enablePushNotifications: value),
-                ),
-                activeColor: AppColors.brandPrimary,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
 
   Future<void> _showUnfollowDialog(String sightingId, String title) async {
     return showDialog<void>(

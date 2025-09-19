@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "уходить",
+  "distanceAway": "{distance}",
   "@distanceAway": {
     "placeholders": {
       "distance": {

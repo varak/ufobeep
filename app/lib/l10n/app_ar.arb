@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "بعيدا",
+  "distanceAway": "_",
   "@distanceAway": {
     "placeholders": {
       "distance": {

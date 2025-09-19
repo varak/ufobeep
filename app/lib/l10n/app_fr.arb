@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "loin",
+  "distanceAway": "_PLACEHOLDER_0__",
   "@distanceAway": {
     "placeholders": {
       "distance": {

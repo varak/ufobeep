@@ -46,7 +46,7 @@
   "openSettings": "Открытые настройки",
   "reportedBy": "Об этом сообщает {username}",
   "reportedAt": "Об этом сообщает {timeAgo}",
-  "distanceAway": "уходить",
+  "distanceAway": "{distance}",
   "bearingToObject": "Возражение: {bearing}°",
   "openCompass": "Открытый компас",
   "openAR": "Оверлей Open AR",

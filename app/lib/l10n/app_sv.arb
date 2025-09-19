@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "bort",
+  "distanceAway": "{distance}",
   "@distanceAway": {
     "placeholders": {
       "distance": {

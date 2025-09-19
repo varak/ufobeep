@@ -46,7 +46,7 @@
   "openSettings": "Configuración abierta",
   "reportedBy": "Reportado por {username}",
   "reportedAt": "Reportado {timeAgo}",
-  "distanceAway": "lejos",
+  "distanceAway": "{distance}",
   "bearingToObject": "Rodamiento de objeto: {bearing}_°",
   "openCompass": "Brújula abierta",
   "openAR": "Open AR overlay",

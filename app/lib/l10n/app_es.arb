@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "lejos",
+  "distanceAway": "{distance}",
   "@distanceAway": {
     "placeholders": {
       "distance": {

@@ -46,7 +46,7 @@
   "openSettings": "Açık ayarlar",
   "reportedBy": "{username}",
   "reportedAt": "Reported {timeAgo}",
-  "distanceAway": "uzaktan uzakta",
+  "distanceAway": "{distance}",
   "bearingToObject": "Nesneye göre: {bearing}°",
   "openCompass": "Open compass",
   "openAR": "Open AR overlay",

@@ -46,7 +46,7 @@
   "openSettings": "Instellingen openen",
   "reportedBy": "Gerapporteerd door {username}",
   "reportedAt": "Gerapporteerd __PLAATSHOLDER_0__",
-  "distanceAway": "weg",
+  "distanceAway": "__PLAATSHOLDER_0___",
   "bearingToObject": "Richting naar object: __PLAATSHOLDER_0__°",
   "openCompass": "Open kompas",
   "openAR": "Open AR-overlay",

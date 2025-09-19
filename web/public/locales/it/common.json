@@ -46,7 +46,7 @@
   "openSettings": "Impostazioni aperte",
   "reportedBy": "Segnalato da {username}",
   "reportedAt": "Relazione {timeAgo}",
-  "distanceAway": "via",
+  "distanceAway": "#",
   "bearingToObject": "Cuscinetto per oggetto: {bearing}°",
   "openCompass": "Bussola aperta",
   "openAR": "Sovrapposizione AR aperta",

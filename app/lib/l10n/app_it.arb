@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "via",
+  "distanceAway": "#",
   "@distanceAway": {
     "placeholders": {
       "distance": {

@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "दूर",
+  "distanceAway": "_",
   "@distanceAway": {
     "placeholders": {
       "distance": {

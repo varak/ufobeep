@@ -46,7 +46,7 @@
   "openSettings": "Abrir configurações",
   "reportedBy": "Reportado por __PLACEHOLDER_0_",
   "reportedAt": "Reportado {timeAgo}",
-  "distanceAway": "longe",
+  "distanceAway": "__PACELODER_0_",
   "bearingToObject": "Rolamento para objeto: {bearing}_°",
   "openCompass": "Abrir bússola",
   "openAR": "Abrir sobreposição do AR",

@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "离开",
+  "distanceAway": "– 地点/地点/地点/地点/地点/地点",
   "@distanceAway": {
     "placeholders": {
       "distance": {

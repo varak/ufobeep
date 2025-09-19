@@ -100,7 +100,6 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
           'dndUntil': prefs.dndUntil?.toUtc().toIso8601String(),
           // Include other user preferences
           'alertRangeKm': prefs.alertRangeKm,
-          'enablePushNotifications': prefs.enablePushNotifications,
           'language': prefs.language,
           'units': prefs.units,
         }
@@ -182,23 +181,6 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
     return false;
   }
 
-  Future<bool> togglePushNotifications() async {
-    if (state != null) {
-      return updatePreferences(state!.copyWith(
-        enablePushNotifications: !state!.enablePushNotifications,
-      ));
-    }
-    return false;
-  }
-
-  Future<bool> toggleLocationAlerts() async {
-    if (state != null) {
-      return updatePreferences(state!.copyWith(
-        enableLocationAlerts: !state!.enableLocationAlerts,
-      ));
-    }
-    return false;
-  }
 
   Future<bool> toggleArCompass() async {
     if (state != null) {

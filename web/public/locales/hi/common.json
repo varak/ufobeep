@@ -46,7 +46,7 @@
   "openSettings": "ओपन सेटिंग्स",
   "reportedBy": "द्वारा रिपोर्ट किया गया _PLACEHOLDER_0_",
   "reportedAt": "रिपोर्ट {timeAgo}",
-  "distanceAway": "दूर",
+  "distanceAway": "_",
   "bearingToObject": "ऑब्जेक्ट करने के लिए असर: __PLACEHOLDER_0_°",
   "openCompass": "ओपन कम्पास",
   "openAR": "ओपन एआर ओवरले",

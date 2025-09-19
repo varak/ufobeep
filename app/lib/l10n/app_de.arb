@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "weg",
+  "distanceAway": "{distance}",
   "@distanceAway": {
     "placeholders": {
       "distance": {

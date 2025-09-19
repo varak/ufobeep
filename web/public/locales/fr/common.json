@@ -46,7 +46,7 @@
   "openSettings": "Ouvrir les paramètres",
   "reportedBy": "Signalé par __PLACEHODER_0__",
   "reportedAt": "Rapporté __PLACEHODER_0__",
-  "distanceAway": "loin",
+  "distanceAway": "_PLACEHOLDER_0__",
   "bearingToObject": "Roulement à l'objet : {bearing}°",
   "openCompass": "Boussole ouverte",
   "openAR": "Superposition AR ouverte",
