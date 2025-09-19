@@ -66,26 +66,6 @@ export default function AlertHero({ alert, openImageIndex, locale = 'en' }: Aler
     }
   }, [openImageIndex, hasMedia, alert.media_files])
 
-  // Handle browser back button when modal is open
-  useEffect(() => {
-    const handlePopState = (e: PopStateEvent) => {
-      if (isMediaModalOpen) {
-        // Browser back button pressed while modal is open - go to beep list
-        e.preventDefault()
-        const savedUrl = sessionStorage.getItem('beepListUrl')
-        if (savedUrl) {
-          window.location.href = savedUrl
-        } else {
-          window.location.href = '/beep'
-        }
-      }
-    }
-
-    if (isMediaModalOpen) {
-      window.addEventListener('popstate', handlePopState)
-      return () => window.removeEventListener('popstate', handlePopState)
-    }
-  }, [isMediaModalOpen])
 
   return (
     <div className="bg-dark-surface border border-dark-border rounded-lg overflow-hidden mb-6">
@@ -132,10 +112,6 @@ export default function AlertHero({ alert, openImageIndex, locale = 'en' }: Aler
                 onClick={() => {
                   setSelectedMediaIndex(index)
                   setIsMediaModalOpen(true)
-                  // Add a history entry for the modal so back button works
-                  if (typeof window !== 'undefined') {
-                    window.history.pushState({ mediaModalOpen: true }, '', window.location.href)
-                  }
                 }}
               >
                 <img 
@@ -188,6 +164,17 @@ export default function AlertHero({ alert, openImageIndex, locale = 'en' }: Aler
         mediaFiles={alert.media_files || []}
         initialIndex={selectedMediaIndex}
         alertTitle={alert.title}
+        onBackToList={() => {
+          // Go directly back to beep list with scroll position
+          if (typeof window !== 'undefined') {
+            const savedUrl = sessionStorage.getItem('beepListUrl')
+            if (savedUrl) {
+              window.location.href = savedUrl
+            } else {
+              window.location.href = '/beep'
+            }
+          }
+        }}
       />
     </div>
   )
