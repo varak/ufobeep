@@ -1319,7 +1319,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   }
 
   void _showShareOptions(Alert alert) {
-    final shortUrl = alert.id; // Use alert ID directly for now
+    final shortUrl = alert.shortUrl ?? alert.id; // Use shortUrl if available, fallback to ID
     final shareUrl = 'https://ufobeep.com/$shortUrl';
     final shareText = 'UFO Sighting Alert: ${alert.description ?? "Anomaly reported"} - ${alert.locationName ?? "Unknown location"}';
 
