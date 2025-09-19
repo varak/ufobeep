@@ -1319,9 +1319,9 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   }
 
   void _showShareOptions(Alert alert) {
-    final shortUrl = alert.shortUrl ?? alert.id; // Use shortUrl if available, fallback to ID
-    final shareUrl = 'https://ufobeep.com/$shortUrl';
-    final shareText = 'UFO Sighting Alert: ${alert.description ?? "Anomaly reported"} - ${alert.locationName ?? "Unknown location"}';
+    final l10n = AppLocalizations.of(context)!;
+    final shareUrl = 'https://ufobeep.com/${alert.shortUrl}';
+    final shareText = '${l10n.ufoSightingAlert}: ${alert.description ?? l10n.anomalyReported} - ${alert.locationName ?? l10n.unknownLocation}';
 
     showModalBottomSheet(
       context: context,
@@ -1333,7 +1333,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Share UFO Sighting',
+              l10n.shareAlert,
               style: const TextStyle(
                 color: AppColors.textPrimary,
                 fontSize: 18,
@@ -1374,28 +1374,58 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
   Future<void> _shareNatively(String text, String url) async {
     try {
-      // Simple text sharing - Android/iOS will show system share sheet
+      // Use platform's native sharing
       final shareContent = '$text\n\n$url';
-      await Clipboard.setData(ClipboardData(text: shareContent));
 
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${AppLocalizations.of(context)!.copyShortLink} - Ready to paste in any app'),
-            backgroundColor: AppColors.brandPrimary,
-          ),
-        );
+      // Try to use platform channel for native sharing
+      if (defaultTargetPlatform == TargetPlatform.android) {
+        // On Android, use ACTION_SEND intent
+        await _launchAndroidShare(shareContent);
+      } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+        // On iOS, use UIActivityViewController equivalent
+        await _launchIOSShare(shareContent);
+      } else {
+        // Fallback to clipboard for other platforms
+        await Clipboard.setData(ClipboardData(text: shareContent));
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Copied to clipboard')),
+          );
+        }
       }
     } catch (e) {
       debugPrint('Sharing failed: $e');
+      // Fallback to clipboard
+      await Clipboard.setData(ClipboardData(text: '$text\n\n$url'));
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Share failed'),
-            backgroundColor: AppColors.semanticError,
-          ),
+          const SnackBar(content: Text('Copied to clipboard')),
         );
       }
+    }
+  }
+
+  Future<void> _launchAndroidShare(String content) async {
+    final uri = Uri(
+      scheme: 'sms',
+      queryParameters: {'body': content},
+    );
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch sharing';
+    }
+  }
+
+  Future<void> _launchIOSShare(String content) async {
+    final uri = Uri(
+      scheme: 'sms',
+      queryParameters: {'body': content},
+    );
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch sharing';
     }
   }
 
