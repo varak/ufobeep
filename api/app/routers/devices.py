@@ -570,8 +570,9 @@ async def update_device(
                 if 'preferences' in update_fields and update_fields['preferences']:
                     # Direct preferences update from Flutter client - clean and simple
                     print(f"🔧 BACKEND: Updating preferences for device {target_device_id}: {update_fields['preferences']}")
-                    set_clauses.append(f"preferences = ${param_idx}")
-                    params.append(update_fields['preferences'])
+                    set_clauses.append(f"preferences = ${param_idx}::jsonb")
+                    import json
+                    params.append(json.dumps(update_fields['preferences']))
                     param_idx += 1
                 
                 # Always update timestamps
