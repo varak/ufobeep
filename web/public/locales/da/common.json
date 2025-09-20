@@ -453,6 +453,6 @@
   "errorNotFound": "Bip ikke fundet",
   "errorLoadError": "Kunne ikke indlæse bip detaljer",
   "addedToUfobeep": "Tilføjet UFOBeep",
-  "mufonDatabaseReport": "MUFON Databaserapport",
+  "mufonDatabaseReport": "MUFON Sagsnummer:",
   "failed": "Mislykkedes"
 }

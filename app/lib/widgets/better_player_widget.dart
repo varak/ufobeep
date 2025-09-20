@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:better_player_plus/better_player_plus.dart';
+import 'package:video_player/video_player.dart';
 import '../theme/app_theme.dart';
 
 class BetterPlayerWidget extends StatefulWidget {
@@ -22,7 +22,7 @@ class BetterPlayerWidget extends StatefulWidget {
     this.returnRoute,
     this.autoPlay = false,
     this.showControls = true,
-    this.initializationTimeout = const Duration(seconds: 30),
+    this.initializationTimeout = const Duration(seconds: 15),
   }) : assert(videoUrl != null || videoFile != null, 'Either videoUrl or videoFile must be provided');
 
   @override
@@ -30,10 +30,11 @@ class BetterPlayerWidget extends StatefulWidget {
 }
 
 class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
-  BetterPlayerController? _betterPlayerController;
+  VideoPlayerController? _controller;
   bool _isInitialized = false;
   bool _hasError = false;
   String? _errorMessage;
+  bool _showControls = true;
 
   @override
   void initState() {
@@ -43,18 +44,36 @@ class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
 
   Future<void> _initializePlayer() async {
     try {
-      debugPrint('🎥 BETTER_PLAYER: Starting initialization...');
-      debugPrint('🎥 BETTER_PLAYER: Device info - mounted: $mounted');
+      debugPrint('🎥 VIDEO_PLAYER: Starting initialization...');
 
-      // Add timeout for tablet compatibility
+      // Create video player controller
+      if (widget.videoFile != null) {
+        debugPrint('🎥 VIDEO_PLAYER: Initializing with local file: ${widget.videoFile!.path}');
+        _controller = VideoPlayerController.file(widget.videoFile!);
+      } else {
+        debugPrint('🎥 VIDEO_PLAYER: Initializing with network URL: ${widget.videoUrl!}');
+        _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl!));
+      }
+
+      // Add timeout handling
       await Future.any([
-        _doInitializePlayer(),
-        Future.delayed(widget.initializationTimeout!).then((_) => throw 'Initialization timeout'),
+        _controller!.initialize(),
+        Future.delayed(widget.initializationTimeout!).then((_) => throw 'Player initialization timeout'),
       ]);
+
+      if (widget.autoPlay) {
+        await _controller!.play();
+      }
+
+      if (mounted) {
+        setState(() {
+          _isInitialized = true;
+        });
+      }
+
+      debugPrint('🎥 VIDEO_PLAYER: Player initialized successfully');
     } catch (e) {
-      debugPrint('❌ BETTER_PLAYER: Failed to initialize player: $e');
-      debugPrint('❌ BETTER_PLAYER: Video URL was: ${widget.videoUrl}');
-      debugPrint('❌ BETTER_PLAYER: Video file was: ${widget.videoFile?.path}');
+      debugPrint('❌ VIDEO_PLAYER: Failed to initialize player: $e');
 
       if (mounted) {
         setState(() {
@@ -66,10 +85,16 @@ class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
     }
   }
 
-  Future<void> _doInitializePlayer() async {
-      // Create data source
-      BetterPlayerDataSource dataSource;
+  void _togglePlayPause() {
+    if (_controller?.value.isPlaying ?? false) {
+      _controller?.pause();
+    } else {
+      _controller?.play();
+    }
+    setState(() {});
+  }
 
+<<<<<<< HEAD
       if (widget.videoFile != null) {
         debugPrint('🎥 BETTER_PLAYER: Initializing with local file: ${widget.videoFile!.path}');
         final fileExists = await widget.videoFile!.exists();
@@ -106,88 +131,24 @@ class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
           progressBarPlayedColor: AppColors.brandPrimary,
           progressBarHandleColor: AppColors.brandPrimary,
           loadingColor: AppColors.brandPrimary,
+=======
+  void _toggleFullscreen() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => FullscreenVideoPlayer(
+          controller: _controller!,
+          videoUrl: widget.videoUrl,
+          videoFile: widget.videoFile,
+>>>>>>> 424fef2ae161eac8f086121080c3975b25412cc9
         ),
-        placeholder: Container(
-          color: AppColors.darkSurface,
-          child: const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(color: AppColors.brandPrimary),
-                SizedBox(height: 12),
-                Text(
-                  'Loading video...',
-                  style: TextStyle(color: AppColors.textSecondary),
-                ),
-              ],
-            ),
-          ),
-        ),
-        errorBuilder: (context, errorMessage) {
-          return Container(
-            color: AppColors.darkSurface,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.error_outline,
-                    color: AppColors.semanticError,
-                    size: 48,
-                  ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'Video failed to load',
-                    style: TextStyle(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    errorMessage ?? 'Unknown video error',
-                    style: const TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 12,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-
-      debugPrint('🎥 BETTER_PLAYER: Creating controller...');
-      _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
-
-      // Add event listener for debugging tablet issues
-      _betterPlayerController!.addEventsListener((BetterPlayerEvent event) {
-        debugPrint('🎥 BETTER_PLAYER: Event - ${event.betterPlayerEventType}');
-        if (event.betterPlayerEventType == BetterPlayerEventType.initialized) {
-          debugPrint('🎥 BETTER_PLAYER: Video successfully initialized');
-        } else if (event.betterPlayerEventType == BetterPlayerEventType.exception) {
-          debugPrint('❌ BETTER_PLAYER: Exception occurred: ${event.parameters}');
-        }
-      });
-
-      debugPrint('🎥 BETTER_PLAYER: Setting up data source...');
-      await _betterPlayerController!.setupDataSource(dataSource);
-
-      if (mounted) {
-        setState(() {
-          _isInitialized = true;
-        });
-      }
-
-      debugPrint('🎥 BETTER_PLAYER: Player initialized successfully');
+      ),
+    );
   }
 
   @override
   void dispose() {
-    debugPrint('🎥 BETTER_PLAYER: Disposing controller...');
-    _betterPlayerController?.dispose();
+    debugPrint('🎥 VIDEO_PLAYER: Disposing controller...');
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -247,7 +208,7 @@ class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
     }
 
     // Show loading state while initializing
-    if (!_isInitialized || _betterPlayerController == null) {
+    if (!_isInitialized || _controller == null) {
       return Container(
         width: widget.width ?? double.infinity,
         height: widget.height ?? 300,
@@ -272,9 +233,259 @@ class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
     return Container(
       width: widget.width ?? double.infinity,
       height: widget.height ?? 300,
-      child: BetterPlayer(
-        controller: _betterPlayerController!,
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            _showControls = !_showControls;
+          });
+        },
+        child: Stack(
+          children: [
+            // Video player
+            SizedBox.expand(
+              child: FittedBox(
+                fit: BoxFit.cover,
+                child: SizedBox(
+                  width: _controller!.value.size.width,
+                  height: _controller!.value.size.height,
+                  child: VideoPlayer(_controller!),
+                ),
+              ),
+            ),
+
+            // Controls overlay
+            if (widget.showControls && _showControls)
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.black.withOpacity(0.3),
+                        Colors.transparent,
+                        Colors.black.withOpacity(0.7),
+                      ],
+                      stops: const [0.0, 0.5, 1.0],
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      // Top controls (empty for now)
+                      const SizedBox(height: 8),
+
+                      const Spacer(),
+
+                      // Center play/pause button
+                      Center(
+                        child: IconButton(
+                          iconSize: 64,
+                          icon: Icon(
+                            _controller!.value.isPlaying ? Icons.pause_circle_filled : Icons.play_circle_filled,
+                            color: Colors.white,
+                          ),
+                          onPressed: _togglePlayPause,
+                        ),
+                      ),
+
+                      const Spacer(),
+
+                      // Bottom controls
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                                color: Colors.white,
+                              ),
+                              onPressed: _togglePlayPause,
+                            ),
+                            Expanded(
+                              child: VideoProgressIndicator(
+                                _controller!,
+                                allowScrubbing: true,
+                                colors: const VideoProgressColors(
+                                  playedColor: AppColors.brandPrimary,
+                                  bufferedColor: Colors.grey,
+                                  backgroundColor: Colors.white24,
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.fullscreen, color: Colors.white),
+                              onPressed: _toggleFullscreen,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
+  }
+}
+
+class FullscreenVideoPlayer extends StatefulWidget {
+  final VideoPlayerController controller;
+  final String? videoUrl;
+  final File? videoFile;
+
+  const FullscreenVideoPlayer({
+    super.key,
+    required this.controller,
+    this.videoUrl,
+    this.videoFile,
+  });
+
+  @override
+  State<FullscreenVideoPlayer> createState() => _FullscreenVideoPlayerState();
+}
+
+class _FullscreenVideoPlayerState extends State<FullscreenVideoPlayer> {
+  bool _showControls = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: GestureDetector(
+        onTap: () {
+          setState(() {
+            _showControls = !_showControls;
+          });
+        },
+        child: Stack(
+          children: [
+            // Full screen video
+            Center(
+              child: AspectRatio(
+                aspectRatio: widget.controller.value.aspectRatio,
+                child: VideoPlayer(widget.controller),
+              ),
+            ),
+
+            // Controls overlay
+            if (_showControls)
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.black.withOpacity(0.7),
+                        Colors.transparent,
+                        Colors.black.withOpacity(0.7),
+                      ],
+                      stops: const [0.0, 0.5, 1.0],
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      // Top controls
+                      SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.arrow_back, color: Colors.white, size: 32),
+                                onPressed: () => Navigator.of(context).pop(),
+                              ),
+                              const Spacer(),
+                              IconButton(
+                                icon: const Icon(Icons.fullscreen_exit, color: Colors.white, size: 32),
+                                onPressed: () => Navigator.of(context).pop(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      const Spacer(),
+
+                      // Center play/pause button
+                      Center(
+                        child: IconButton(
+                          iconSize: 80,
+                          icon: Icon(
+                            widget.controller.value.isPlaying ? Icons.pause_circle_filled : Icons.play_circle_filled,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            if (widget.controller.value.isPlaying) {
+                              widget.controller.pause();
+                            } else {
+                              widget.controller.play();
+                            }
+                            setState(() {});
+                          },
+                        ),
+                      ),
+
+                      const Spacer(),
+
+                      // Bottom controls
+                      SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  widget.controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                                  color: Colors.white,
+                                  size: 32,
+                                ),
+                                onPressed: () {
+                                  if (widget.controller.value.isPlaying) {
+                                    widget.controller.pause();
+                                  } else {
+                                    widget.controller.play();
+                                  }
+                                  setState(() {});
+                                },
+                              ),
+                              Expanded(
+                                child: VideoProgressIndicator(
+                                  widget.controller,
+                                  allowScrubbing: true,
+                                  colors: const VideoProgressColors(
+                                    playedColor: AppColors.brandPrimary,
+                                    bufferedColor: Colors.grey,
+                                    backgroundColor: Colors.white24,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Text(
+                                '${_formatDuration(widget.controller.value.position)} / ${_formatDuration(widget.controller.value.duration)}',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+    return '$minutes:$seconds';
   }
 }

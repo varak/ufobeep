@@ -41,7 +41,9 @@ abstract class AlertTitleUtils {
           if (shapeKey != null) {
             // Build translated title: "MUFON [TranslatedShape] [TranslatedSightingReport]"
             final shapeTranslation = _getShapeTranslation(l10n, shapeKey);
-            return 'MUFON $shapeTranslation ${l10n.sightingReport}';
+            if (shapeTranslation != null) {
+              return 'MUFON $shapeTranslation ${l10n.sightingReport}';
+            }
           }
         }
         // Generic MUFON title
@@ -148,7 +150,7 @@ abstract class AlertTitleUtils {
   }
 
   /// Get shape translation using AppLocalizations
-  static String _getShapeTranslation(AppLocalizations l10n, String shapeKey) {
+  static String? _getShapeTranslation(AppLocalizations l10n, String shapeKey) {
     switch (shapeKey) {
       case 'mufonTriangle':
         return l10n.mufonTriangle;
@@ -185,7 +187,9 @@ abstract class AlertTitleUtils {
       case 'mufonEgg':
         return l10n.mufonEgg;
       default:
-        return l10n.mufonUnknown;
+        // RULE: Never return useless fallbacks like "unknown" or "other"
+        // If no proper classification exists, return null to use generic title
+        return null;
     }
   }
 

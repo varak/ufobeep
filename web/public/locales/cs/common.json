@@ -453,6 +453,6 @@
   "errorNotFound": "Píp nenalezen",
   "errorLoadError": "Nepodařilo se načíst detaily pípnutí",
   "addedToUfobeep": "Přidáno do UFOBeep",
-  "mufonDatabaseReport": "MUFON Databázová zpráva",
+  "mufonDatabaseReport": "MUFON Číslo případu:",
   "failed": "Selhalo"
 }

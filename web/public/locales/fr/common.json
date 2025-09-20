@@ -453,6 +453,6 @@
   "errorNotFound": "Bip non trouvé",
   "errorLoadError": "Impossible de charger les détails du bip",
   "addedToUfobeep": "Ajouté à UFOBeep",
-  "mufonDatabaseReport": "MUFON Rapport de base de données",
+  "mufonDatabaseReport": "MUFON Numéro de cas:",
   "failed": "Échec"
 }

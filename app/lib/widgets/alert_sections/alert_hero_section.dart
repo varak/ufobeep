@@ -5,6 +5,7 @@ import '../../theme/app_theme.dart';
 import '../../utils/alert_title_utils.dart';
 import '../better_player_widget.dart';
 import '../glass_card.dart';
+import '../simple_media_gallery.dart';
 
 class AlertHeroSection extends StatelessWidget {
   const AlertHeroSection({
@@ -263,77 +264,23 @@ class AlertHeroSection extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    // If there's only one media file, show it as before
-    if (alert.mediaFiles.length == 1) {
-      return _buildSingleMediaDisplay(alert.mediaFiles.first);
-    }
+    // Convert alert media files to SharedMediaGallery format
+    final mediaItems = alert.mediaFiles.map((media) {
+      final mediaUrl = media['web_url'] as String? ?? media['url'] as String? ?? '';
+      final apiType = media['type'] as String? ?? 'image';
 
-    // If there are multiple files, show a horizontal gallery
-    return _buildMediaGallery();
-  }
-
-  Widget _buildSingleMediaDisplay(Map<String, dynamic> media) {
-    // Use web-optimized URL for detail view
-    String mediaUrl = media['web_url'] as String? ?? media['url'] as String? ?? '';
-    
-    // For videos, use original URL
-    final apiType = media['type'] as String? ?? 'image';
-    if (apiType == 'video') {
-      mediaUrl = media['url'] as String? ?? '';
-    }
-    
-    if (mediaUrl.isEmpty) {
-      return Container(
-        width: double.infinity,
-        height: 200,
-        decoration: const BoxDecoration(
-          color: AppColors.darkBackground,
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(16),
-            bottomRight: Radius.circular(16),
-          ),
-        ),
-        child: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.broken_image, size: 48, color: AppColors.textTertiary),
-              SizedBox(height: 8),
-              Text('Media unavailable', style: TextStyle(color: AppColors.textTertiary)),
-            ],
-          ),
-        ),
+      return MediaItem(
+        id: '${alert.id}_${alert.mediaFiles.indexOf(media)}',
+        type: apiType == 'video' ? 'video' : 'image',
+        url: apiType == 'video' ? (media['url'] as String? ?? '') : mediaUrl,
+        thumbnail: apiType == 'video' ? mediaUrl : null,
+        title: 'UFO Sighting Media ${alert.mediaFiles.indexOf(media) + 1}',
+        alt: 'Media from UFO sighting on ${alert.createdAt.toLocal().toString().split(' ')[0]}',
       );
-    }
+    }).toList();
 
-    return GestureDetector(
-      onTap: () => onMediaTap?.call(0),
-      child: Container(
-        width: double.infinity,
-        constraints: const BoxConstraints(
-          maxHeight: 300,
-          minHeight: 200,
-        ),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(16),
-            bottomRight: Radius.circular(16),
-          ),
-        ),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(16),
-            bottomRight: Radius.circular(16),
-          ),
-          child: _buildMediaImage(mediaUrl, apiType),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMediaGallery() {
+    // Use shared media gallery
     return Container(
-      height: 200,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(16),
@@ -345,125 +292,14 @@ class AlertHeroSection extends StatelessWidget {
           bottomLeft: Radius.circular(16),
           bottomRight: Radius.circular(16),
         ),
-        child: Stack(
-          children: [
-            // Horizontal scrollable gallery
-            ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: alert.mediaFiles.length,
-              itemBuilder: (context, index) {
-                final media = alert.mediaFiles[index];
-                String mediaUrl = media['web_url'] as String? ?? media['url'] as String? ?? '';
-                final apiType = media['type'] as String? ?? 'image';
-                
-                if (apiType == 'video') {
-                  mediaUrl = media['url'] as String? ?? '';
-                }
-
-                return GestureDetector(
-                  onTap: () => onMediaTap?.call(index),
-                  child: Container(
-                    width: 200,
-                    margin: EdgeInsets.only(right: index < alert.mediaFiles.length - 1 ? 8 : 0),
-                    child: _buildMediaImage(mediaUrl, apiType),
-                  ),
-                );
-              },
-            ),
-            // Media count indicator
-            Positioned(
-              top: 12,
-              right: 12,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.7),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.photo_library,
-                      size: 14,
-                      color: Colors.white,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      '${alert.mediaFiles.length}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+        child: SimpleMediaGallery(
+          items: mediaItems,
+          enableLazyLoading: true,
         ),
       ),
     );
   }
 
-  Widget _buildMediaImage(String mediaUrl, String apiType) {
-    if (mediaUrl.isEmpty) {
-      return Container(
-        color: AppColors.darkBackground,
-        child: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.broken_image, size: 48, color: AppColors.textTertiary),
-              SizedBox(height: 8),
-              Text('Media unavailable', style: TextStyle(color: AppColors.textTertiary)),
-            ],
-          ),
-        ),
-      );
-    }
-
-    // For videos, use the BetterPlayerWidget with enhanced codec support
-    if (apiType == 'video') {
-      return BetterPlayerWidget(
-        videoUrl: mediaUrl,
-        width: double.infinity,
-        height: double.infinity,
-        autoPlay: false,
-        showControls: true,
-      );
-    }
-
-    // For images, use Image.network
-    return Image.network(
-      mediaUrl,
-      fit: BoxFit.cover,
-      width: double.infinity,
-      height: double.infinity,
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) return child;
-        return const Center(
-          child: CircularProgressIndicator(color: AppColors.brandPrimary),
-        );
-      },
-      errorBuilder: (context, error, stackTrace) {
-        return Container(
-          color: AppColors.darkBackground,
-          child: const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.error, size: 48, color: AppColors.semanticError),
-                SizedBox(height: 8),
-                Text('Failed to load image', style: TextStyle(color: AppColors.textSecondary)),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
 
   String _formatDateTime(BuildContext context, DateTime dateTime) {
     // Ensure both times are in the same timezone (local)

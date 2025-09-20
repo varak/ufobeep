@@ -453,6 +453,6 @@
   "errorNotFound": "Piep niet gevonden",
   "errorLoadError": "Kon piepgegevens niet laden",
   "addedToUfobeep": "Toegevoegd aan UFObeep",
-  "mufonDatabaseReport": "MUFON Databaserapport",
+  "mufonDatabaseReport": "MUFON Zaaknummer:",
   "failed": "Mislukt"
 }

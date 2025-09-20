@@ -453,6 +453,6 @@
   "errorNotFound": "Beep no encontrada",
   "errorLoadError": "Failed to load beep details",
   "addedToUfobeep": "Añadido a UFOBeep",
-  "mufonDatabaseReport": "MUFON Informe de base de datos",
+  "mufonDatabaseReport": "MUFON Número de caso:",
   "failed": "Failed"
 }
