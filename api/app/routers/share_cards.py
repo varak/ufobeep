@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw, ImageFont
 from pydantic import BaseModel
 from typing import List, Optional
 import io, datetime, httpx, json
-from ..auth import require_current_user_id
+from ..core.auth import require_current_user_id
 
 router = APIRouter(prefix="/og", tags=["share-cards"])
 
