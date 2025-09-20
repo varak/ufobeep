@@ -1,9 +1,13 @@
 from datetime import datetime, timedelta, timezone
 from jose import JWTError, jwt
 from app.config.environment import settings
+from fastapi import HTTPException, status, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from typing import Optional
 import logging
 
 logger = logging.getLogger(__name__)
+security = HTTPBearer(auto_error=False)
 
 def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
     """Create JWT access token"""
@@ -68,3 +72,34 @@ def verify_access_token(token: str) -> dict:
     except Exception as e:
         logger.error(f"Error verifying access token: {e}")
         raise
+
+
+async def get_current_user_id(token: Optional[HTTPAuthorizationCredentials] = Depends(security)) -> Optional[str]:
+    """Extract user ID from JWT token"""
+    if not token:
+        return None
+
+    try:
+        payload = verify_access_token(token.credentials)
+        user_id = payload.get("sub") or payload.get("user_id")
+        return user_id
+    except Exception:
+        return None
+
+
+async def require_current_user_id(token: Optional[HTTPAuthorizationCredentials] = Depends(security)) -> str:
+    """Require authenticated user and return user ID"""
+    if not token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication required"
+        )
+
+    user_id = await get_current_user_id(token)
+    if not user_id:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired authentication token"
+        )
+
+    return user_id
