@@ -568,9 +568,14 @@ async def send_to_token(token: str, data: dict, title=None, body=None):
                 priority="high",  # High priority for background delivery
                 notification=messaging.AndroidNotification(
                     channel_id="ufobeep_beeps",
-                    sound="default"
+                    sound="default",
+                    priority="high"  # Also set notification-level priority
                 ),
                 data={k: str(v) for k, v in data.items()}
+            ),
+            # Set message-level priority for FCM routing
+            fcm_options=messaging.FCMOptions(
+                analytics_label="proximity_alert"
             )
         )
         
