@@ -428,8 +428,14 @@ class ProximityAlertService:
                             )
                             alert_data["bearing"] = str(round(bearing, 1))
                     
-                    # Get device preferences for language
+                    # Get device preferences for language (handle both dict and JSON string)
                     device_prefs = device.get('preferences', {})
+                    if isinstance(device_prefs, str):
+                        try:
+                            import json
+                            device_prefs = json.loads(device_prefs)
+                        except:
+                            device_prefs = {}
                     user_language = device_prefs.get('language', 'en')
                     device_title, device_body = self._get_alert_message(5.0, witness_count, alert_level, user_language)
 
