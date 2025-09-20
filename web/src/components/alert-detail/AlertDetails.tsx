@@ -202,10 +202,8 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
                 <span className="text-blue-400">🛸</span>
                 <span className="text-blue-300 font-medium">
                   {(() => {
-                    // Extract case number from external_id (e.g., "mufon_140382" → "140382")
-                    const caseNumber = alert.enrichment?.mufon_case_id ||
-                                     alert.enrichment_data?.mufon_case_id ||
-                                     (alert.external_id?.startsWith('mufon_') ? alert.external_id.replace('mufon_', '') : null)
+                    // Use same logic as mobile app
+                    const caseNumber = alert.enrichment?.mufon_case_number
                     return caseNumber
                       ? t('mufonCaseTitle', { caseNumber })
                       : t('mufonDatabaseReport')
