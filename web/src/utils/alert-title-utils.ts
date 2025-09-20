@@ -5,7 +5,7 @@ interface Alert {
   created_at: string
   reporter_username?: string | null
   source?: string | null
-  enrichment?: {
+  enrichment_data?: {
     classification?: {
       type: string
       confidence?: number
@@ -37,7 +37,7 @@ export class AlertTitleUtils {
     }
 
     // For MUFON alerts, try to extract classification for shape-based titles
-    const classification = this.extractCleanClassification(alert.enrichment);
+    const classification = this.extractCleanClassification(alert.enrichment_data);
 
     if (classification && classification !== 'unknown' && classification !== 'other') {
       // Use shape-based title like "MUFON Triangle Sighting Report"

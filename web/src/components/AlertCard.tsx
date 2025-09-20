@@ -48,10 +48,14 @@ interface Alert {
   distance_km?: number
   comment_count?: number
   short_url?: string
-  enrichment?: {
+  enrichment_data?: {
     short_description?: string
     mufon_case_id?: string
     sighting_datetime?: string
+    classification?: {
+      type: string
+      confidence?: number
+    }
     [key: string]: any
   }
 }
@@ -98,9 +102,9 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
 
   // Smart description selection for preview cards
   const getPreviewDescription = () => {
-    // MUFON alerts have short_description in enrichment
-    if (alert.enrichment?.short_description) {
-      return alert.enrichment.short_description
+    // MUFON alerts have short_description in enrichment_data
+    if (alert.enrichment_data?.short_description) {
+      return alert.enrichment_data.short_description
     }
     // For MUFON alerts, clean up the description by removing duplicate metadata
     if (alert.reporter_username === 'MUFON' && alert.description) {
@@ -349,7 +353,7 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
                 {(() => {
                   // Clean up location name to avoid duplication
                   let locationName = alert.reporter_username === 'MUFON' 
-                    ? (alert.enrichment?.location_raw || alert.location?.name || formatLocation(alert.location))
+                    ? (alert.enrichment_data?.location_raw || alert.location?.name || formatLocation(alert.location))
                     : (alert.location?.name || formatLocation(alert.location))
                   
                   // Remove duplicate state/country suffixes
@@ -467,7 +471,7 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
                 {(() => {
                   // Clean up location name to avoid duplication
                   let locationName = alert.reporter_username === 'MUFON' 
-                    ? (alert.enrichment?.location_raw || alert.location?.name || formatLocation(alert.location))
+                    ? (alert.enrichment_data?.location_raw || alert.location?.name || formatLocation(alert.location))
                     : (alert.location?.name || formatLocation(alert.location))
                   
                   // Remove duplicate state/country suffixes

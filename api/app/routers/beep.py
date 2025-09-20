@@ -103,7 +103,7 @@ def format_alert_response(alert, user_lat=None, user_lon=None):
         "matrix_room_id": "",
         "reporter_id": alert.reporter_id or "",
         "reporter_username": "MUFON" if getattr(alert, 'source', None) == "mufon" else alert.reporter_username,
-        "enrichment": alert.enrichment or {},
+        "enrichment_data": alert.enrichment or {},
         "photo_analysis": [],
         "total_confirmations": alert.witness_count,
         "can_confirm_witness": True,
