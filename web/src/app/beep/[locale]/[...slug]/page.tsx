@@ -170,8 +170,8 @@ export default function AlertDetailPage() {
           const res = await fetch(`/api/beep/${shortId}`)
           if (res.ok) {
             const data = await res.json()
-            if (data.success && data.data?.alert) {
-              targetAlert = data.data.alert
+            if (data.success && data.data) {
+              targetAlert = data.data
             }
           }
         } catch (error) {
