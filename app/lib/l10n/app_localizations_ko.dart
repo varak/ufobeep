@@ -1297,7 +1297,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get addedToUfobeep => 'UFOBeep에 추가';
 
   @override
-  String get mufonDatabaseReport => '사이트맵 Database 보고';
+  String get mufonDatabaseReport => '사이트맵 케이스 번호:';
 
   @override
   String get copyShortLinkTitle => '클립보드에 링크 복사';

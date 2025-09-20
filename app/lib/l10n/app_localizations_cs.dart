@@ -1321,7 +1321,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get addedToUfobeep => 'Přidáno do UFOBeep';
 
   @override
-  String get mufonDatabaseReport => 'MUFON Databázová zpráva';
+  String get mufonDatabaseReport => 'MUFON Číslo případu:';
 
   @override
   String get copyShortLinkTitle => 'Kopírovat odkaz do schránky';

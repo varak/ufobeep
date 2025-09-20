@@ -94,44 +94,7 @@ class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
     setState(() {});
   }
 
-<<<<<<< HEAD
-      if (widget.videoFile != null) {
-        debugPrint('🎥 BETTER_PLAYER: Initializing with local file: ${widget.videoFile!.path}');
-        final fileExists = await widget.videoFile!.exists();
-        debugPrint('🎥 BETTER_PLAYER: File exists: $fileExists');
-        dataSource = BetterPlayerDataSource(
-          BetterPlayerDataSourceType.file,
-          widget.videoFile!.path,
-        );
-      } else {
-        debugPrint('🎥 BETTER_PLAYER: Initializing with network URL: ${widget.videoUrl!}');
-        dataSource = BetterPlayerDataSource(
-          BetterPlayerDataSourceType.network,
-          widget.videoUrl!,
-          // Add configuration for better codec support
-          bufferingConfiguration: const BetterPlayerBufferingConfiguration(
-            minBufferMs: 3000,        // Increased for tablets
-            maxBufferMs: 15000,       // Increased buffer for better stability
-            bufferForPlaybackMs: 1500, // Slightly higher threshold
-            bufferForPlaybackAfterRebufferMs: 3000, // More rebuffer protection
-          ),
-        );
-      }
 
-      // Create better player configuration
-      final betterPlayerConfiguration = BetterPlayerConfiguration(
-        autoPlay: widget.autoPlay,
-        looping: false,
-        fit: BoxFit.contain, // Preserve aspect ratio, don't stretch
-        controlsConfiguration: BetterPlayerControlsConfiguration(
-          showControls: widget.showControls,
-          enableSkips: false,
-          enableFullscreen: true, // Enable fullscreen controls
-          controlBarColor: AppColors.darkSurface.withOpacity(0.8),
-          progressBarPlayedColor: AppColors.brandPrimary,
-          progressBarHandleColor: AppColors.brandPrimary,
-          loadingColor: AppColors.brandPrimary,
-=======
   void _toggleFullscreen() {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -139,7 +102,6 @@ class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
           controller: _controller!,
           videoUrl: widget.videoUrl,
           videoFile: widget.videoFile,
->>>>>>> 424fef2ae161eac8f086121080c3975b25412cc9
         ),
       ),
     );

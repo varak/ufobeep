@@ -1322,7 +1322,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get addedToUfobeep => 'Toegevoegd aan UFObeep';
 
   @override
-  String get mufonDatabaseReport => 'MUFON Databaserapport';
+  String get mufonDatabaseReport => 'MUFON Zaaknummer:';
 
   @override
   String get copyShortLinkTitle => 'Verwijzing naar klembord kopiëren';

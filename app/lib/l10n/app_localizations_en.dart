@@ -1313,7 +1313,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addedToUfobeep => 'Added to UFOBeep';
 
   @override
-  String get mufonDatabaseReport => 'MUFON Database Report';
+  String get mufonDatabaseReport => 'MUFON Case Number:';
 
   @override
   String get copyShortLinkTitle => 'Copy link to clipboard';

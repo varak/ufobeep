@@ -1310,7 +1310,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get addedToUfobeep => 'مضافا إليها';
 
   @override
-  String get mufonDatabaseReport => 'MUFON تقرير قاعدة البيانات';
+  String get mufonDatabaseReport => 'MUFON القضية رقم:';
 
   @override
   String get copyShortLinkTitle => 'وصلة نسخ إلى لوح مشبك';

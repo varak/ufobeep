@@ -1307,7 +1307,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get addedToUfobeep => 'תגית: UFOBeep';
 
   @override
-  String get mufonDatabaseReport => 'MUFON דוח מסד נתונים';
+  String get mufonDatabaseReport => 'MUFON מקרה מספר:';
 
   @override
   String get copyShortLinkTitle => 'קישור ל-Creboard';

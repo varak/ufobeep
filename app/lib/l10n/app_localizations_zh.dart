@@ -1295,7 +1295,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get addedToUfobeep => '添加到UFOBEP';
 
   @override
-  String get mufonDatabaseReport => '毛里求斯 数据库报告';
+  String get mufonDatabaseReport => '毛里求斯 案件编号 :';
 
   @override
   String get copyShortLinkTitle => '复制链接到剪贴板';

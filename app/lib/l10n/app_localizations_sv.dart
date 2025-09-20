@@ -1320,7 +1320,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get addedToUfobeep => 'Tillagd till UFOBeep';
 
   @override
-  String get mufonDatabaseReport => 'Mufonen Databasrapport';
+  String get mufonDatabaseReport => 'Mufonen Fallnummer:';
 
   @override
   String get copyShortLinkTitle => 'Kopiera länk till Clipboard';

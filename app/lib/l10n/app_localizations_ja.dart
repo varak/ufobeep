@@ -1296,7 +1296,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get addedToUfobeep => 'UFOBeep に追加';
 
   @override
-  String get mufonDatabaseReport => 'MUFONについて データベースレポート';
+  String get mufonDatabaseReport => 'MUFONについて 場合数:';
 
   @override
   String get copyShortLinkTitle => 'クリップボードへのリンクをコピーする';

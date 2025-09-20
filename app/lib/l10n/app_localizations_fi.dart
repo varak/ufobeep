@@ -1321,7 +1321,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get addedToUfobeep => 'Lisätty UFO- piippiin';
 
   @override
-  String get mufonDatabaseReport => 'MUFON Tietokantaraportti';
+  String get mufonDatabaseReport => 'MUFON Tapausnumero:';
 
   @override
   String get copyShortLinkTitle => 'Kopioi linkki leikepöydälle';

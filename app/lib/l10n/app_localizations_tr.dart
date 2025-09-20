@@ -1324,7 +1324,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get addedToUfobeep => 'UFOBeep';
 
   @override
-  String get mufonDatabaseReport => 'MUFON Veritabanı Raporu';
+  String get mufonDatabaseReport => 'MUFON Vaka Numarası:';
 
   @override
   String get copyShortLinkTitle => 'Klip için kopya link';

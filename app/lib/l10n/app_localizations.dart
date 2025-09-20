@@ -2583,7 +2583,7 @@ abstract class AppLocalizations {
   /// No description provided for @mufonDatabaseReport.
   ///
   /// In en, this message translates to:
-  /// **'MUFON Database Report'**
+  /// **'MUFON Case Number:'**
   String get mufonDatabaseReport;
 
   /// No description provided for @copyShortLinkTitle.

@@ -1329,7 +1329,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get addedToUfobeep => 'Προστέθηκε στο UFOBeep';
 
   @override
-  String get mufonDatabaseReport => 'ΜΟΥΦΟΝ Έκθεση βάσης δεδομένων';
+  String get mufonDatabaseReport => 'ΜΟΥΦΟΝ Αριθμός υπόθεσης:';
 
   @override
   String get copyShortLinkTitle => 'Αντιγραφή δεσμού στο πρόχειρο';
