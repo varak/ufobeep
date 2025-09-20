@@ -232,7 +232,8 @@ class ProximityAlertService:
                                 'device_lat': row['lat'],
                                 'device_lon': row['lon'],
                                 'user_alert_range': user_alert_range,
-                                'quiet_hours_bypassed': in_quiet_hours == False and dnd_settings.get('enabled')
+                                'quiet_hours_bypassed': in_quiet_hours == False and dnd_settings.get('enabled'),
+                                'preferences': row['preferences']
                             })
                     else:
                         # No location data - include only if user's range >= 25km (fallback for no-location devices)
@@ -242,7 +243,8 @@ class ProximityAlertService:
                                 'push_token': row['push_token'],
                                 'platform': row['platform'],
                                 'distance_km': 25.0,  # Default distance for no-location devices
-                                'user_alert_range': user_alert_range
+                                'user_alert_range': user_alert_range,
+                                'preferences': row['preferences']
                             })
                 
                 devices.sort(key=lambda d: d['distance_km'])
@@ -325,7 +327,8 @@ class ProximityAlertService:
                             'distance_km': round(distance_km, 2),
                             'device_lat': device_lat,
                             'device_lon': device_lon,
-                            'user_alert_range': user_alert_range
+                            'user_alert_range': user_alert_range,
+                            'preferences': row['preferences']
                         })
                         logger.info(f"FALLBACK: Device {row['device_id']} INCLUDED (distance: {distance_km:.2f}km, user range: {user_alert_range}km)")
                 
