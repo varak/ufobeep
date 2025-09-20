@@ -426,8 +426,15 @@ class ProximityAlertService:
                             )
                             alert_data["bearing"] = str(round(bearing, 1))
                     
-                    # Generate notification in device's language
-                    user_language = (device.get('preferences') or {}).get('language', 'en')
+                    # Generate notification in device's language - NO FALLBACKS
+                    device_prefs = device.get('preferences')
+                    if not device_prefs:
+                        raise Exception(f"DEVICE {device['device_id']}: NO PREFERENCES FOUND - device data: {device}")
+
+                    user_language = device_prefs.get('language')
+                    if not user_language:
+                        raise Exception(f"DEVICE {device['device_id']}: NO LANGUAGE IN PREFERENCES - prefs: {device_prefs}")
+
                     device_title, device_body = self._get_alert_message(5.0, witness_count, alert_level, user_language)
 
                     logger.info(f"TEMP DEBUG: Sending to device {device['device_id']} in language {user_language}: {device_title}")
