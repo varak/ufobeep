@@ -36,7 +36,6 @@ export class AlertTitleUtils {
       return `UFOBeep ${t('ufo')} ${t('alert')}`;
     }
 
-<<<<<<< HEAD
     // For MUFON alerts, try to extract classification for shape-based titles
     const classification = this.extractCleanClassification(alert.enrichment);
 
@@ -45,32 +44,7 @@ export class AlertTitleUtils {
       const shapeKey = this.getShapeTranslationKey(classification);
       if (shapeKey) {
         return `MUFON ${t(shapeKey)} ${t('sightingReport')}`;
-=======
-    // MUFON case number or standard title
-    const caseNumber = alert.enrichment?.mufon_case_id;
-    return caseNumber
-      ? t('mufonCaseTitle', { caseNumber })
-      : `UFOBeep ${t('ufo')} ${t('alert')}`;
-    
-    // Check if alert has media
-    const hasMedia = alert.media_files?.length ?? 0 > 0;
-    
-    // Generate contextual title based on available data
-    if (hasMedia) {
-      const hasPhoto = alert.media_files?.some((media) => 
-        media.type.toLowerCase().includes('image')) || false;
-      const hasVideo = alert.media_files?.some((media) => 
-        media.type.toLowerCase().includes('video')) || false;
-      
-      if (hasPhoto && hasVideo) {
-        return 'Visual sighting (photo & video)';
-      } else if (hasVideo) {
-        return 'Visual sighting (video)';
-      } else if (hasPhoto) {
-        return 'Visual sighting (photo)';
-      } else {
-        return 'Visual sighting';
->>>>>>> 424fef2ae161eac8f086121080c3975b25412cc9
+      }
       }
     }
 
