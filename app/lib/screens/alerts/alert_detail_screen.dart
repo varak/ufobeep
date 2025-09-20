@@ -552,13 +552,17 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   }
 
   void _showFullscreenImage(Alert alert, [int startIndex = 0]) {
-    if (alert.mediaFiles.isEmpty) return;
+    print('DEBUG: _showFullscreenImage called with ${alert.mediaFiles.length} media files');
 
+    // Remove safety check to force errors
     final viewMedia = _toViewMedia(alert.mediaFiles);
+    print('DEBUG: converted to ${viewMedia.length} ViewMedia items');
+
     final title = AlertTitleUtils.getDynamicTitle(
       AppLocalizations.of(context)!,
       alert,
     );
+    print('DEBUG: calling BeepMediaViewer.open with title: $title');
 
     BeepMediaViewer.open(
       context,
@@ -566,6 +570,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       initialIndex: startIndex,
       title: title,
     );
+    print('DEBUG: BeepMediaViewer.open returned');
   }
 
   void _navigateToSighting(Alert alert, double bearing, double distance) {

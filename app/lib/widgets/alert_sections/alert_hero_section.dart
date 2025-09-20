@@ -295,6 +295,7 @@ class AlertHeroSection extends StatelessWidget {
         child: SimpleMediaGallery(
           items: mediaItems,
           enableLazyLoading: true,
+          onMediaOpen: (item, index) => onMediaTap?.call(index),
         ),
       ),
     );

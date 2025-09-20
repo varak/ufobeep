@@ -28,14 +28,16 @@ class _SimpleMediaGalleryState extends State<SimpleMediaGallery> {
   bool _isFullscreen = false;
 
   void _openMedia(int index) {
-    setState(() {
-      _currentIndex = index;
-      _isFullscreen = true;
-    });
-
+    // Call external handler instead of internal fullscreen
     final item = widget.items[index];
     widget.onMediaOpen?.call(item, index);
     widget.onMediaChange?.call(item, index);
+
+    // Disable internal fullscreen - use external viewer
+    // setState(() {
+    //   _currentIndex = index;
+    //   _isFullscreen = true;
+    // });
   }
 
   void _closeMedia() {
