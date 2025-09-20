@@ -8,7 +8,7 @@ import logging
 import aiohttp
 import asyncio
 from typing import List, Dict, Any, Optional, Union, Tuple
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from zoneinfo import ZoneInfo
 from enum import Enum
 from dataclasses import dataclass, asdict
@@ -566,16 +566,12 @@ async def send_to_token(token: str, data: dict, title=None, body=None):
             token=token,
             android=messaging.AndroidConfig(
                 priority="high",  # High priority for background delivery
+                ttl=timedelta(minutes=5),  # Short TTL for immediate delivery
                 notification=messaging.AndroidNotification(
                     channel_id="ufobeep_beeps",
-                    sound="default",
-                    priority="high"  # Also set notification-level priority
+                    sound="default"
                 ),
                 data={k: str(v) for k, v in data.items()}
-            ),
-            # Set message-level priority for FCM routing
-            fcm_options=messaging.FCMOptions(
-                analytics_label="proximity_alert"
             )
         )
         
