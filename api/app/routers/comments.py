@@ -302,7 +302,3 @@ async def get_user_subscriptions(user_id: str = Depends(_uid)) -> Dict[str, Any]
     
     return {"subscriptions": subscriptions}
 
-@router.get("/{sighting_id}/comments/stream", status_code=200)
-async def comments_stream(sighting_id: str) -> Dict[str, Any]:
-    """Handle legacy comment stream requests - return empty response to prevent 405 flood"""
-    return {"message": "Comment streaming not available", "status": "disabled"}

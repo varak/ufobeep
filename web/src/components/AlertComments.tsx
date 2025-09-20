@@ -248,13 +248,9 @@ export default function AlertComments({ alertId, locale = 'en' }: AlertCommentsP
         }
 
         websocket.onclose = () => {
-          console.log('[WebSocket] Connection closed, will retry in 5 seconds')
-          // Reconnect after 5 seconds
-          setTimeout(() => {
-            if (!websocket || websocket.readyState === WebSocket.CLOSED) {
-              connectWebSocket()
-            }
-          }, 5000)
+          console.log('[WebSocket] Connection closed - real-time comments unavailable')
+          // DO NOT RECONNECT - let it fail clearly to avoid API flooding
+          // Users can manually refresh page if needed
         }
 
       } catch (error) {
