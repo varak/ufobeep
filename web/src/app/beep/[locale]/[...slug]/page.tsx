@@ -246,7 +246,8 @@ export default function AlertDetailPage() {
   // Enhance the alert with classified title and enriched location for display
   const enhancedAlert = {
     ...alert,
-    title: getClassifiedTitle(alert, t),
+    enrichment: alert.enrichment_data, // Map enrichment_data to enrichment for AlertTitleUtils
+    title: getClassifiedTitle({...alert, enrichment: alert.enrichment_data}, t),
     location: {
       latitude: alert.location?.latitude || 0,
       longitude: alert.location?.longitude || 0,
