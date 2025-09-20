@@ -373,8 +373,10 @@ class PushNotificationService {
       }
     } catch (_) {}
     
-    // Show rich notification with action buttons
-    await _showRichNotification(sightingId, witnessCount, distance, locationName);
+    // Show rich notification with action buttons using FCM translated content
+    final fcmTitle = message.notification?.title;
+    final fcmBody = message.notification?.body;
+    await _showRichNotification(sightingId, witnessCount, distance, locationName, fcmTitle, fcmBody);
     
     // Play appropriate escalated alert sound based on witness count
     if (witnessCount >= 10) {
@@ -882,7 +884,7 @@ class PushNotificationService {
     }
   }
 
-  Future<void> _showRichNotification(String sightingId, int witnessCount, String? distance, String locationName) async {
+  Future<void> _showRichNotification(String sightingId, int witnessCount, String? distance, String locationName, String? fcmTitle, String? fcmBody) async {
     print('🔔 RICH NOTIF DEBUG: Showing rich notification for sighting $sightingId with $witnessCount witnesses');
     // Format distance for display
     String distanceText = '';
@@ -948,9 +950,24 @@ class PushNotificationService {
       iOS: iosDetails,
     );
     
-    // DISABLED: Local notifications to prevent duplicates
-    // FCM handles notification delivery directly from backend with proper translations
-    print('🔔 RICH NOTIF DEBUG: Skipping local notification - FCM handles delivery with translations');
+    // Show local notification for background delivery using FCM translated content
+    try {
+      // Use FCM translated content if available, otherwise fallback to English
+      final notificationTitle = fcmTitle ?? '$urgencyIndicator UFO Sighting';
+      final notificationBody = fcmBody ?? '$witnessText near $locationName$distanceText';
+
+      await _localNotifications.show(
+        sightingId.hashCode, // Use sighting ID hash as notification ID
+        notificationTitle,   // Use translated title from FCM
+        notificationBody,    // Use translated body from FCM
+        notificationDetails,
+        payload: '$sightingId|$witnessCount|$distance|$locationName',
+      );
+
+      print('🔔 RICH NOTIF DEBUG: ✅ Local notification shown with FCM content: "$notificationTitle"');
+    } catch (e) {
+      print('🔔 RICH NOTIF DEBUG: ❌ ERROR showing local notification: $e');
+    }
   }
   
   void _handleSeeItTooAction(String sightingIdRaw) async {
