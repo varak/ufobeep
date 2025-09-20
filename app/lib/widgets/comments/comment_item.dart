@@ -1,15 +1,32 @@
 import 'package:flutter/material.dart';
 import '../../models/comment.dart';
 import '../../theme/app_theme.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class CommentItem extends StatelessWidget {
   final Comment comment;
-  
+
   const CommentItem({
     super.key,
     required this.comment,
   });
+
+  String _formatTPlus(DateTime dateTime) {
+    final now = DateTime.now();
+    final diff = now.difference(dateTime);
+    final minutes = diff.inMinutes;
+
+    if (minutes < 60) {
+      return 'T+${minutes}m';
+    }
+    final hours = diff.inHours;
+    if (hours < 24) {
+      final remainingMinutes = minutes % 60;
+      return 'T+${hours}h${remainingMinutes}m';
+    }
+    final days = diff.inDays;
+    final remainingHours = hours % 24;
+    return 'T+${days}d${remainingHours}h';
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -53,7 +70,7 @@ class CommentItem extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      timeago.format(comment.createdAt),
+                      _formatTPlus(comment.createdAt),
                       style: const TextStyle(
                         color: AppColors.textTertiary,
                         fontSize: 12,
