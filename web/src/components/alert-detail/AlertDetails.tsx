@@ -199,14 +199,10 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
               <div className="flex items-center gap-2">
                 <span className="text-blue-400">🛸</span>
                 <span className="text-blue-300 font-medium">
-<<<<<<< HEAD
-                  {t('mufonCaseNumber')} {alert.enrichment_data?.mufon_case_number || alert.enrichment?.mufon_case_id || ''}
-=======
                   {alert.enrichment?.mufon_case_id
                     ? t('mufonCaseTitle', { caseNumber: alert.enrichment.mufon_case_id })
                     : t('mufonDatabaseReport')
                   }
->>>>>>> 424fef2ae161eac8f086121080c3975b25412cc9
                 </span>
               </div>
             </div>
@@ -380,7 +376,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
                           className="w-full text-left px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-dark-background rounded flex items-center gap-2"
                         >
                           <span>{platform.icon}</span>
-{platform.name}
+                          {platform.name}
                         </button>
                       ))}
 
