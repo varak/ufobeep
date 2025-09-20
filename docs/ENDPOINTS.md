@@ -1,5 +1,30 @@
 # API ENDPOINTS (Enhanced with NUFORC Integration)
 
+## ⚠️ CRITICAL DEVELOPER GUIDELINES
+
+### BEFORE Creating New Beep Endpoints
+**STOP!** Check if existing endpoints can be extended instead. We currently have duplicate endpoints causing bugs.
+
+**Existing Beep Lookup Endpoints:**
+- `GET /api/beep/{id}` - Used by **web detail pages** (flat structure)
+- `GET /api/beep/by-short-url/{id}` - Used by **Next.js middleware** (nested structure)
+
+**NEVER CREATE:**
+- `GET /api/beep/details/{id}` ❌
+- `GET /api/beep/lookup/{id}` ❌
+- `GET /api/beep/fetch/{id}` ❌
+- Any other beep lookup variant ❌
+
+**Required Response Format:**
+- Use `enrichment_data` (NOT `enrichment`)
+- Follow existing structure patterns
+- Test with both MUFON and UFOBeep data
+
+**Future Cleanup:**
+- Migrate middleware to use `/api/beep/{id}`
+- Remove `/by-short-url/` endpoint
+- Must test all short URL redirects work
+
 ## 🌐 URL Structure & Routing
 
 UFOBeep now supports both traditional long URLs and smart short URLs with automatic language detection:

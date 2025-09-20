@@ -505,7 +505,17 @@ async def get_alert_by_short_url(
     latitude: Optional[float] = None,
     longitude: Optional[float] = None
 ):
-    """Get specific alert by short URL - efficient endpoint to avoid fetching 1000 beeps"""
+    """Get specific alert by short URL - efficient endpoint to avoid fetching 1000 beeps
+
+    ⚠️ WARNING: This endpoint uses DIFFERENT response structure than /beep/{id}
+    - This returns: { data: { alert: {...} } } (nested)
+    - Main endpoint returns: { data: {...} } (flat)
+
+    Used ONLY by Next.js middleware for short URL redirects.
+    DO NOT USE for new features - use /beep/{id} instead.
+
+    TODO: Migrate middleware to use /beep/{id} and remove this endpoint.
+    """
     try:
         db_pool = await get_db()
         alerts_service = AlertsService(db_pool)
