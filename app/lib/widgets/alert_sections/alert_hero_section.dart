@@ -5,7 +5,8 @@ import '../../theme/app_theme.dart';
 import '../../utils/alert_title_utils.dart';
 import '../better_player_widget.dart';
 import '../glass_card.dart';
-import '../simple_media_gallery.dart';
+import '../media_grid.dart';
+import '../../models/view_media.dart';
 
 class AlertHeroSection extends StatelessWidget {
   const AlertHeroSection({
@@ -264,22 +265,24 @@ class AlertHeroSection extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    // Convert alert media files to SharedMediaGallery format
-    final mediaItems = alert.mediaFiles.map((media) {
+    // Convert alert media files to ViewMedia format
+    final viewMedia = alert.mediaFiles.map<ViewMedia>((media) {
       final mediaUrl = media['web_url'] as String? ?? media['url'] as String? ?? '';
       final apiType = media['type'] as String? ?? 'image';
+      final id = media['id'] as String? ?? '${alert.id}_${alert.mediaFiles.indexOf(media)}';
 
-      return MediaItem(
-        id: '${alert.id}_${alert.mediaFiles.indexOf(media)}',
+      return ViewMedia(
+        id: id,
         type: apiType == 'video' ? 'video' : 'image',
         url: apiType == 'video' ? (media['url'] as String? ?? '') : mediaUrl,
-        thumbnail: apiType == 'video' ? mediaUrl : null,
-        title: 'UFO Sighting Media ${alert.mediaFiles.indexOf(media) + 1}',
-        alt: 'Media from UFO sighting on ${alert.createdAt.toLocal().toString().split(' ')[0]}',
+        thumbUrl: apiType == 'video' ? mediaUrl : null,
+        caption: media['caption'] as String?,
       );
     }).toList();
 
-    // Use shared media gallery
+    final title = 'Media'; // Simple title for now
+
+    // Use direct media grid - no callbacks
     return Container(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -292,10 +295,9 @@ class AlertHeroSection extends StatelessWidget {
           bottomLeft: Radius.circular(16),
           bottomRight: Radius.circular(16),
         ),
-        child: SimpleMediaGallery(
-          items: mediaItems,
-          enableLazyLoading: true,
-          onMediaOpen: (item, index) => onMediaTap?.call(index),
+        child: MediaGrid(
+          items: viewMedia,
+          title: title,
         ),
       ),
     );

@@ -167,7 +167,7 @@ class _VideoPage extends StatelessWidget {
           child: BetterPlayerWidget(
             videoUrl: url,
             autoPlay: false,
-            showControls: true,
+            showControls: false, // Disable built-in controls, they stay too long
           ),
         ),
         if ((caption ?? '').isNotEmpty)
