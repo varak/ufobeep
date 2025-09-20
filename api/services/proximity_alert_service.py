@@ -171,7 +171,7 @@ class ProximityAlertService:
                 
                 # Get devices with user preferences for DND, quiet hours, and alert range
                 query = """
-                    SELECT
+                    SELECT DISTINCT ON (device_id)
                         device_id, push_token, platform, lat, lon,
                         alert_range_km, preferences, snooze_until
                     FROM devices
@@ -181,6 +181,7 @@ class ProximityAlertService:
                       AND device_id != $1
                       AND (last_seen IS NULL OR last_seen > NOW() - INTERVAL '24 hours')
                       AND (snooze_until IS NULL OR snooze_until <= NOW())
+                    ORDER BY device_id, updated_at DESC
                     LIMIT 1000
                 """
                 rows = await conn.fetch(query, exclude_device_id)
