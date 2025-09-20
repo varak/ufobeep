@@ -170,7 +170,9 @@ export default function AlertDetailPage() {
           const res = await fetch(`/api/beep/${shortId}`)
           if (res.ok) {
             const data = await res.json()
-            targetAlert = data.data || data
+            if (data.success && data.data) {
+              targetAlert = data.data
+            }
           }
         } catch (error) {
           console.error('Error fetching beep by short URL:', error)
