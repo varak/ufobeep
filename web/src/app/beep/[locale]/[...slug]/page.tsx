@@ -197,36 +197,11 @@ export default function AlertDetailPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [])
 
-  // Client-side redirect to canonical slug URL once we have the alert  
-  useEffect(() => {
-    if (!alert) return
-    
-    const currentSlug = params?.slug as string[]
-    if (!currentSlug) return
-    
-    const fullSlug = currentSlug.join('/')
-    
-    // Create enhanced alert for slug generation without causing re-renders
-    const tempEnhancedAlert = {
-      ...alert,
-      title: AlertTitleUtils.getContextualTitle(alert, t),
-      location: {
-        latitude: alert.location?.latitude || 0,
-        longitude: alert.location?.longitude || 0,
-        name: getEnrichedLocation(alert, t)
-      }
-    }
-    
-    // Generate expected slug
-    const expectedSlug = getAlertSlug(tempEnhancedAlert, locale, t)
-    
-    // If current slug doesn't match expected slug, redirect
-    if (expectedSlug && expectedSlug !== fullSlug) {
-      const qs = searchParams?.toString()
-      const url = `/beep/${locale}/${expectedSlug}${qs ? `?${qs}` : ''}`
-      router.replace(url)
-    }
-  }, [alert, params?.slug, router, searchParams, locale, t])
+  // DISABLED: Client-side redirect causes flickering when classification loads
+  // The middleware already handles proper redirects from short URLs
+  // useEffect(() => {
+  //   // Canonical redirect logic disabled to prevent flickering
+  // }, [])
   
   if (loading) {
     return (
