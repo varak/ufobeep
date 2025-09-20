@@ -948,20 +948,18 @@ class PushNotificationService {
       iOS: iosDetails,
     );
     
-    // Show the rich notification
-    try {
-      await _localNotifications.show(
-        sightingId.hashCode, // Use sighting ID hash as notification ID
-        '$urgencyIndicator UFO Sighting',
-        '$witnessText near $locationName$distanceText',
-        notificationDetails,
-        payload: '$sightingId|$witnessCount|$distance|$locationName',
-      );
-      
-      print('🔔 RICH NOTIF DEBUG: ✅ Successfully showed local notification for sighting $sightingId');
-    } catch (e) {
-      print('🔔 RICH NOTIF DEBUG: ❌ ERROR showing local notification: $e');
-    }
+    // DISABLED: Local notification creation to prevent duplicates with FCM notifications
+    // The backend now sends properly translated FCM notifications directly
+    print('🔔 RICH NOTIF DEBUG: Skipping local notification creation - using FCM notifications only');
+
+    // Legacy code kept for reference:
+    // await _localNotifications.show(
+    //   sightingId.hashCode,
+    //   '$urgencyIndicator UFO Sighting',
+    //   '$witnessText near $locationName$distanceText',
+    //   notificationDetails,
+    //   payload: '$sightingId|$witnessCount|$distance|$locationName',
+    // );
   }
   
   void _handleSeeItTooAction(String sightingIdRaw) async {
