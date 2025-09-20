@@ -45,7 +45,6 @@ export class AlertTitleUtils {
       if (shapeKey) {
         return `MUFON ${t(shapeKey)} ${t('sightingReport')}`;
       }
-      }
     }
 
     // Fallback to generic MUFON title (no case number in hero)
