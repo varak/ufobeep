@@ -75,26 +75,23 @@ class ProximityAlertService:
             if devices_5km:
                 # 5km: Close range - highest priority, escalated by witness count
                 level = alert_escalation if alert_escalation == "emergency" else "emergency"
-                title, body = self._get_alert_message(5.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_5km, sighting_id, level, title, body, witness_count, device_lat, device_lon, "UFO Sighting", beep_device_id))
+                # Don't generate title/body here - let _send_alert_batch do it per device language
+                tasks.append(self._send_alert_batch(devices_5km, sighting_id, level, None, None, witness_count, device_lat, device_lon, "UFO Sighting", beep_device_id))
                 
             if devices_15km_only:
                 # 15km: Local visibility - urgent unless escalated
                 level = "emergency" if alert_escalation == "emergency" else "urgent"
-                title, body = self._get_alert_message(15.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_15km_only, sighting_id, level, title, body, witness_count, device_lat, device_lon, "UFO Sighting", beep_device_id))
+                tasks.append(self._send_alert_batch(devices_15km_only, sighting_id, level, None, None, witness_count, device_lat, device_lon, "UFO Sighting", beep_device_id))
                 
             if devices_40km_only:
                 # 40km: Regional visibility - normal unless escalated
                 level = alert_escalation if alert_escalation in ["urgent", "emergency"] else "normal"
-                title, body = self._get_alert_message(40.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_40km_only, sighting_id, level, title, body, witness_count, device_lat, device_lon, "UFO Sighting", beep_device_id))
+                tasks.append(self._send_alert_batch(devices_40km_only, sighting_id, level, None, None, witness_count, device_lat, device_lon, "UFO Sighting", beep_device_id))
                 
             if devices_100km_only:
                 # 100km: Horizon visibility - normal unless emergency escalation
                 level = "emergency" if alert_escalation == "emergency" else "normal"
-                title, body = self._get_alert_message(100.0, witness_count, level)
-                tasks.append(self._send_alert_batch(devices_100km_only, sighting_id, level, title, body, witness_count, device_lat, device_lon, "UFO Sighting", beep_device_id))
+                tasks.append(self._send_alert_batch(devices_100km_only, sighting_id, level, None, None, witness_count, device_lat, device_lon, "UFO Sighting", beep_device_id))
             
             # Execute all alert batches concurrently
             if tasks:
@@ -426,10 +423,14 @@ class ProximityAlertService:
                             )
                             alert_data["bearing"] = str(round(bearing, 1))
                     
-                    logger.info(f"TEMP DEBUG: Sending to device {device['device_id']} with token {device['push_token'][:20]}...")
-                    
+                    # Generate notification in user's language
+                    user_language = (device.get('preferences') or {}).get('language', 'en')
+                    device_title, device_body = self._get_alert_message(5.0, witness_count, alert_level, user_language)
+
+                    logger.info(f"TEMP DEBUG: Sending to device {device['device_id']} in language {user_language}: {device_title}")
+
                     # Send to individual device using Firebase service
-                    response = await send_to_token(device['push_token'], alert_data, title=title, body=body)
+                    response = await send_to_token(device['push_token'], alert_data, title=device_title, body=device_body)
                     
                     if response:
                         success_count += 1
@@ -480,9 +481,19 @@ class ProximityAlertService:
         else:
             return "normal"     # Single witness - normal beep
     
-    def _get_alert_message(self, distance_km: float, witness_count: int, level: str) -> tuple[str, str]:
+    def _get_alert_message(self, distance_km: float, witness_count: int, level: str, user_language: str = "en") -> tuple[str, str]:
         """Generate appropriate alert title and body based on distance, witnesses, and level"""
-        
+
+        # Import translation service
+        from app.services.notification_translation_service import get_ufo_alert_title, get_sighting_notification_body
+
+        # Simple approach: just use UFO Alert + notification body in user's language
+        title = f"🛸 {get_ufo_alert_title(user_language)}"
+        body = get_sighting_notification_body(user_language)
+
+        return title, body
+
+        # OLD HARDCODED ENGLISH CODE BELOW - KEEPING FOR REFERENCE BUT NOT USING
         # Witness description
         if witness_count >= 10:
             witness_desc = f"MASS SIGHTING - {witness_count} witnesses"
