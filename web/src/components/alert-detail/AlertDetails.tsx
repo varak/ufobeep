@@ -194,13 +194,13 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
       {alert.description && (
         <div className="mb-6">
           {/* MUFON attribution with case number */}
-          {alert.username === 'MUFON' && (
+          {(alert.username === 'MUFON' || alert.source === 'mufon') && (
             <div className="mb-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
               <div className="flex items-center gap-2">
                 <span className="text-blue-400">🛸</span>
                 <span className="text-blue-300 font-medium">
-                  {alert.enrichment?.mufon_case_id
-                    ? t('mufonCaseTitle', { caseNumber: alert.enrichment.mufon_case_id })
+                  {(alert.enrichment?.mufon_case_id || alert.enrichment_data?.mufon_case_number)
+                    ? t('mufonCaseTitle', { caseNumber: alert.enrichment?.mufon_case_id || alert.enrichment_data?.mufon_case_number })
                     : t('mufonDatabaseReport')
                   }
                 </span>
