@@ -16,6 +16,8 @@ import '../../utils/alert_title_utils.dart';
 import '../../widgets/alert_sections/alert_hero_section.dart';
 import '../../widgets/alert_sections/alert_details_section.dart';
 import '../../widgets/alert_sections/alert_direction_section.dart';
+import '../../widgets/beep_media_viewer.dart';
+import '../../models/view_media.dart';
 import '../../widgets/alert_sections/alert_actions_section.dart';
 import '../../widgets/better_player_widget.dart';
 import '../../widgets/enrichment/enrichment_section.dart';
@@ -532,91 +534,38 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     );
   }
 
-  void _showFullscreenImage(Alert alert, [int startIndex = 0]) {
-    if (alert.mediaFiles.isEmpty) return;
-    
-    final media = alert.mediaFiles[startIndex];
-    final mediaUrl = media['url'] as String? ?? '';
-    final mediaType = media['type'] as String? ?? 'image';
-    
-    if (mediaUrl.isEmpty) return;
+  // Convert alert.mediaFiles to ViewMedia list for media viewer
+  List<ViewMedia> _toViewMedia(List<dynamic> rawMedia) {
+    return rawMedia.map<ViewMedia>((m) {
+      final type = (m['type'] ?? 'image').toString();
+      final url = (m['url'] ?? '').toString();
+      final id = (m['id'] ?? m['filename'] ?? url).toString();
 
-    showDialog(
-      context: context,
-      barrierColor: Colors.black87,
-      builder: (context) => Dialog.fullscreen(
-        backgroundColor: Colors.black,
-        child: Stack(
-          children: [
-            Center(
-              child: _buildFullscreenMediaContent(mediaUrl, mediaType),
-            ),
-            Positioned(
-              top: 40,
-              right: 20,
-              child: IconButton(
-                onPressed: () => Navigator.of(context).pop(),
-                icon: const Icon(
-                  Icons.close,
-                  color: Colors.white,
-                  size: 32,
-                ),
-                style: IconButton.styleFrom(
-                  backgroundColor: Colors.black54,
-                  shape: const CircleBorder(),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+      return ViewMedia(
+        id: id,
+        type: (type == 'video' || type == 'mp4') ? 'video' : 'image',
+        url: url,
+        thumbUrl: (m['thumbnail_url'] ?? m['thumb_url'])?.toString(),
+        caption: (m['caption'] ?? m['description'])?.toString(),
+      );
+    }).toList();
   }
 
-  Widget _buildFullscreenMediaContent(String mediaUrl, String mediaType) {
-    if (mediaType == 'video') {
-      // For videos, use BetterPlayerWidget with proper aspect ratio preservation
-      return Center(
-        child: BetterPlayerWidget(
-          videoUrl: mediaUrl,
-          autoPlay: true,
-          showControls: true,
-        ),
-      );
-    } else {
-      // For images, use InteractiveViewer for zoom functionality
-      return InteractiveViewer(
-        panEnabled: true,
-        boundaryMargin: const EdgeInsets.all(20),
-        minScale: 0.5,
-        maxScale: 4.0,
-        child: Image.network(
-          mediaUrl,
-          fit: BoxFit.contain,
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) return child;
-            return const Center(
-              child: CircularProgressIndicator(color: AppColors.brandPrimary),
-            );
-          },
-          errorBuilder: (context, error, stackTrace) {
-            return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.error, size: 64, color: AppColors.semanticError),
-                  SizedBox(height: 16),
-                  Text(
-                    'Failed to load image',
-                    style: TextStyle(color: AppColors.textSecondary, fontSize: 18),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-      );
-    }
+  void _showFullscreenImage(Alert alert, [int startIndex = 0]) {
+    if (alert.mediaFiles.isEmpty) return;
+
+    final viewMedia = _toViewMedia(alert.mediaFiles);
+    final title = AlertTitleUtils.getDynamicTitle(
+      AppLocalizations.of(context)!,
+      alert,
+    );
+
+    BeepMediaViewer.open(
+      context,
+      items: viewMedia,
+      initialIndex: startIndex,
+      title: title,
+    );
   }
 
   void _navigateToSighting(Alert alert, double bearing, double distance) {

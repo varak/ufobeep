@@ -48,6 +48,8 @@ dependencies:
   gal: ^2.3.0
   audioplayers: ^6.0.0  # <-- Audio playback for Phase 0 alert sounds
   video_player: ^2.9.2  # <-- Video playback for composition screen
+  cached_network_image: ^3.4.1  # <-- Efficient image loading for media viewer
+  photo_view: ^0.15.0  # <-- Pinch-zoom and gallery support for media viewer
 # better_player_plus: ^1.0.8  # <-- Replaced with native video_player for tablet compatibility
   timeago: ^3.7.0       # <-- Time formatting for comments
   
