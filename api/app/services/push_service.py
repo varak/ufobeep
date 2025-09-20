@@ -556,7 +556,7 @@ async def send_to_token(token: str, data: dict, title=None, body=None):
         return None
         
     try:
-        # Create Firebase message
+        # Create Firebase message with high priority for background delivery
         message = messaging.Message(
             notification=messaging.Notification(
                 title=title,
@@ -565,6 +565,7 @@ async def send_to_token(token: str, data: dict, title=None, body=None):
             data={k: str(v) for k, v in data.items()},
             token=token,
             android=messaging.AndroidConfig(
+                priority="high",  # High priority for background delivery
                 notification=messaging.AndroidNotification(
                     channel_id="ufobeep_beeps",
                     sound="default"
