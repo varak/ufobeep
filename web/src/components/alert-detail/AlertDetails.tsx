@@ -196,7 +196,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
       {alert.description && (
         <div className="mb-6">
           {/* MUFON attribution with case number */}
-          {(alert.username === 'MUFON' || alert.reporter_username === 'MUFON' || alert.source === 'mufon') && (
+          {alert.source === 'mufon' && (
             <div className="mb-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
               <div className="flex items-center gap-2">
                 <span className="text-blue-400">🛸</span>
