@@ -569,10 +569,18 @@ async def update_device(
                 # 3) User preferences (direct JSONB update from Flutter)
                 if 'preferences' in update_fields and update_fields['preferences']:
                     # Direct preferences update from Flutter client - clean and simple
-                    print(f"🔧 BACKEND: Updating preferences for device {target_device_id}: {update_fields['preferences']}")
+                    prefs = update_fields['preferences']
+                    print(f"🔧 BACKEND: Updating preferences for device {target_device_id}: {prefs}")
+
+                    # Log language preference specifically for notification debugging
+                    if 'language' in prefs:
+                        print(f"🌍 LANGUAGE: Device {device_id} language preference updated to: {prefs['language']}")
+                    else:
+                        print(f"⚠️  LANGUAGE: No language preference in update for device {device_id}")
+
                     set_clauses.append(f"preferences = ${param_idx}::jsonb")
                     import json
-                    params.append(json.dumps(update_fields['preferences']))
+                    params.append(json.dumps(prefs))
                     param_idx += 1
                 
                 # Always update timestamps

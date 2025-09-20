@@ -437,6 +437,10 @@ class ProximityAlertService:
                         except:
                             device_prefs = {}
                     user_language = device_prefs.get('language', 'en')
+
+                    # Log language detection for debugging
+                    logger.info(f"🌍 NOTIFICATION: Device {device['device_id']} - detected language: {user_language} (from prefs: {device_prefs})")
+
                     device_title, device_body = self._get_alert_message(5.0, witness_count, alert_level, user_language)
 
                     # Send to individual device using Firebase service
