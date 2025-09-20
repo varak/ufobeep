@@ -221,23 +221,6 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
         </div>
       )}
 
-      {/* Classification - Show shape classification if available */}
-      {alert.enrichment_data?.classification && (
-        <div className="flex items-start gap-3 mb-4">
-          <span className="text-text-tertiary mt-0.5">🔍</span>
-          <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <span className="text-text-tertiary text-sm font-medium">Classification:</span>
-              <span className="text-text-primary text-sm capitalize">{alert.enrichment_data.classification.type}</span>
-              {alert.enrichment_data.classification.confidence && (
-                <span className="text-text-tertiary text-xs">
-                  ({Math.round(alert.enrichment_data.classification.confidence * 100)}% confidence)
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Time - Show MUFON times if available, otherwise show UFOBeep time */}
       {(alert.source === 'mufon' || alert.username === 'MUFON') ? (
