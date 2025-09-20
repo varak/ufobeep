@@ -948,25 +948,9 @@ class PushNotificationService {
       iOS: iosDetails,
     );
     
-    // Show local notification using translated content from FCM message
-    // This is required for background delivery when app is closed
-    try {
-      // Use the translated title and body from FCM message if available, otherwise fallback to English
-      final fcmTitle = message.notification?.title ?? '$urgencyIndicator UFO Sighting';
-      final fcmBody = message.notification?.body ?? '$witnessText near $locationName$distanceText';
-
-      await _localNotifications.show(
-        sightingId.hashCode, // Use sighting ID hash as notification ID
-        fcmTitle,  // Use translated title from backend
-        fcmBody,   // Use translated body from backend
-        notificationDetails,
-        payload: '$sightingId|$witnessCount|$distance|$locationName',
-      );
-
-      print('🔔 RICH NOTIF DEBUG: ✅ Showed local notification with FCM content: "$fcmTitle"');
-    } catch (e) {
-      print('🔔 RICH NOTIF DEBUG: ❌ ERROR showing local notification: $e');
-    }
+    // DISABLED: Local notifications to prevent duplicates
+    // FCM handles notification delivery directly from backend with proper translations
+    print('🔔 RICH NOTIF DEBUG: Skipping local notification - FCM handles delivery with translations');
   }
   
   void _handleSeeItTooAction(String sightingIdRaw) async {
