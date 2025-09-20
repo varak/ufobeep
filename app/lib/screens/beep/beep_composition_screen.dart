@@ -367,7 +367,11 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
           if (!isVideo) { // Only photos have EXIF GPS data
             try {
               wd.mark("extracting metadata from ${mediaFile.path}");
-              final photoMetadata = await PhotoMetadataService.extractComprehensiveMetadata(mediaFile);
+              // Add timeout to prevent metadata extraction from blocking submission
+              final photoMetadata = await Future.any([
+                PhotoMetadataService.extractComprehensiveMetadata(mediaFile),
+                Future.delayed(Duration(seconds: 3), () => throw TimeoutException('Metadata timeout', Duration(seconds: 3))),
+              ]);
               final locationData = photoMetadata['location'];
               
               if (locationData != null && 
@@ -495,8 +499,8 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       }
     }
     
-    // Check if any files failed to upload
-    if (uploadedCount == 0) {
+    // Check if any files failed to upload (only if we had files to upload)
+    if (_mediaFiles.isNotEmpty && uploadedCount == 0) {
       throw Exception('No files could be uploaded');
     } else if (uploadedCount < _mediaFiles.length) {
       // Some files failed - show warning but continue
