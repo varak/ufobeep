@@ -171,16 +171,17 @@ class ProximityAlertService:
                 
                 # Get devices with user preferences for DND, quiet hours, and alert range
                 query = """
-                    SELECT 
+                    SELECT DISTINCT ON (device_id)
                         device_id, push_token, platform, lat, lon,
                         alert_range_km, preferences, snooze_until
-                    FROM devices 
-                    WHERE is_active = true 
+                    FROM devices
+                    WHERE is_active = true
                       AND push_enabled = true
                       AND push_token IS NOT NULL
                       AND device_id != $1
                       AND (last_seen IS NULL OR last_seen > NOW() - INTERVAL '24 hours')
                       AND (snooze_until IS NULL OR snooze_until <= NOW())
+                    ORDER BY device_id, updated_at DESC
                     LIMIT 1000
                 """
                 rows = await conn.fetch(query, exclude_device_id)
@@ -261,17 +262,18 @@ class ProximityAlertService:
             async with self.db_pool.acquire() as conn:
                 # Get all devices with location data AND recent activity (24h freshness)  
                 query = """
-                    SELECT 
+                    SELECT DISTINCT ON (device_id)
                         device_id, push_token, platform, lat, lon,
                         alert_range_km, preferences, snooze_until
-                    FROM devices 
-                    WHERE is_active = true 
+                    FROM devices
+                    WHERE is_active = true
                       AND push_token IS NOT NULL
                       AND device_id != $1
                       AND (lat IS NOT NULL AND lon IS NOT NULL)
                       AND lat != 0.0 AND lon != 0.0
                       AND (last_seen IS NULL OR last_seen > NOW() - INTERVAL '24 hours')
                       AND (snooze_until IS NULL OR snooze_until <= NOW())
+                    ORDER BY device_id, updated_at DESC
                 """
                 
                 rows = await conn.fetch(query, exclude_device_id)

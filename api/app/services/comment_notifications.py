@@ -137,7 +137,7 @@ class CommentNotificationService:
         async with pool.acquire() as conn:
             # Get active devices with push tokens for the users
             rows = await conn.fetch("""
-                SELECT
+                SELECT DISTINCT ON (d.device_id)
                     d.device_id,
                     d.push_token,
                     d.push_provider,
@@ -153,6 +153,7 @@ class CommentNotificationService:
                 AND d.push_enabled = true
                 AND d.push_token IS NOT NULL
                 AND d.push_token != ''
+                ORDER BY d.device_id, d.updated_at DESC
             """, user_ids)
         
         targets = []
