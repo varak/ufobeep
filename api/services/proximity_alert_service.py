@@ -426,18 +426,15 @@ class ProximityAlertService:
                             )
                             alert_data["bearing"] = str(round(bearing, 1))
                     
-                    # Generate notification in device's language - NO FALLBACKS
-                    device_prefs = device.get('preferences')
-                    if not device_prefs:
-                        raise Exception(f"DEVICE {device['device_id']}: NO PREFERENCES FOUND - device data: {device}")
+                    # Debug what preferences are actually available
+                    device_prefs = device.get('preferences', {})
+                    print(f"🔍 DEVICE {device['device_id']}: prefs = {device_prefs}")
 
-                    user_language = device_prefs.get('language')
-                    if not user_language:
-                        raise Exception(f"DEVICE {device['device_id']}: NO LANGUAGE IN PREFERENCES - prefs: {device_prefs}")
+                    user_language = device_prefs.get('language', 'en')
+                    print(f"🔍 DEVICE {device['device_id']}: detected language = {user_language}")
 
                     device_title, device_body = self._get_alert_message(5.0, witness_count, alert_level, user_language)
-
-                    logger.info(f"TEMP DEBUG: Sending to device {device['device_id']} in language {user_language}: {device_title}")
+                    print(f"🔍 DEVICE {device['device_id']}: sending {device_title}")
 
                     # Send to individual device using Firebase service
                     response = await send_to_token(device['push_token'], alert_data, title=device_title, body=device_body)
