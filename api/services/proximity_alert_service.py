@@ -389,13 +389,11 @@ class ProximityAlertService:
             # Send individualized alerts with device-specific bearing and distance
             success_count = 0
             
-            logger.info(f"TEMP DEBUG: Sending to {len(devices)} devices with old approach")
-            
             for device in devices:
                 try:
                     # Skip self-notification
                     if device['device_id'] == submitter_device_id:
-                        logger.info(f"TEMP DEBUG: Skipping self-notification for device {device['device_id']}")
+                        logger.debug(f"Skipping self-notification for device {device['device_id']}")
                         continue
                         
                     # Prepare alert data with sighting location for compass navigation
@@ -430,30 +428,25 @@ class ProximityAlertService:
                             )
                             alert_data["bearing"] = str(round(bearing, 1))
                     
-                    # Debug what preferences are actually available
+                    # Get device preferences for language
                     device_prefs = device.get('preferences', {})
-                    print(f"🔍 DEVICE {device['device_id']}: prefs = {device_prefs}")
-
                     user_language = device_prefs.get('language', 'en')
-                    print(f"🔍 DEVICE {device['device_id']}: detected language = {user_language}")
-
                     device_title, device_body = self._get_alert_message(5.0, witness_count, alert_level, user_language)
-                    print(f"🔍 DEVICE {device['device_id']}: sending {device_title}")
 
                     # Send to individual device using Firebase service
                     response = await send_to_token(device['push_token'], alert_data, title=device_title, body=device_body)
                     
                     if response:
                         success_count += 1
-                        logger.info(f"TEMP DEBUG: Successfully sent to device {device['device_id']}")
+                        logger.debug(f"Successfully sent to device {device['device_id']}")
                     else:
-                        logger.warning(f"TEMP DEBUG: Failed to send to device {device['device_id']}")
+                        logger.warning(f"Failed to send to device {device['device_id']}")
                         
                 except Exception as e:
                     logger.error(f"Error sending alert to device {device.get('device_id', 'unknown')}: {e}")
                     continue
             
-            logger.info(f"Alert batch {alert_level}: {success_count}/{len(devices)} sent successfully via old approach")
+            logger.info(f"Alert batch {alert_level}: {success_count}/{len(devices)} sent successfully")
             return success_count
             
         except Exception as e:
