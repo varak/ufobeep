@@ -63,5 +63,9 @@
   "ufobeepOnly": "केवल UFOBeep",
   "ufobeepOnlyDescription": "केवल मूल UFOBeep रिपोर्ट (MUFON डेटाबेस को छोड़कर) दिखाएं",
   "alertDistanceRange": "चेतावनी दूरी रेंज",
-  "alertBrowsing": "चेतावनी ब्राउज़िंग"
+  "alertBrowsing": "चेतावनी ब्राउज़िंग",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "केवल UFOBeep",
+  "alertRadius": "चेतावनी त्रिज्या",
+  "alertMeForUfobeep": "मुझे UFOBeep (real-time) के लिए चेतावनी दें"
 }

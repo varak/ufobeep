@@ -668,5 +668,20 @@
   "pushAlertsWithinDistance": "इस रेंज के भीतर सूचनाएं प्राप्त करें",
   "showAlertsWhenBrowsing": "क्या आप सूची में देखते हैं फ़िल्टर",
   "heroMainTagline": "जब UFOs पास में देखा जाता है तो अपने फोन पर एक बीप प्राप्त करें",
-  "heroSecondaryTagline": "जब और कहाँ आकाश को देखने के लिए"
+  "heroSecondaryTagline": "जब और कहाँ आकाश को देखने के लिए",
+  "sourceFilters": "स्रोत",
+  "sourceFiltersDescription": "अपनी फ़ीड में कौन सी रिपोर्ट दिखाई देती है",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "केवल UFOBeep",
+  "mufonOnlySource": "केवल MUFON",
+  "browseFilters": "दृश्य",
+  "browseFiltersDescription": "अलर्ट कैसे देखें और सॉर्ट करें",
+  "sortByNewest": "नवीनतम",
+  "sortByNearest": "निकटतम",
+  "sortBy": "द्वारा क्रमबद्ध",
+  "pushAlertsTitle": "पुश अलर्ट",
+  "pushAlertsDescription": "अपने फोन को क्या पिंग करता है",
+  "alertRadius": "चेतावनी त्रिज्या",
+  "alertMeForUfobeep": "मुझे UFOBeep (real-time) के लिए चेतावनी दें",
+  "mufonNoPushInfo": "MUFON रिपोर्ट को रात में आयात किया जाता है और पुश अलर्ट को ट्रिगर नहीं करता है"
 }

@@ -668,5 +668,20 @@
   "pushAlertsWithinDistance": "이 범위 내에서 알림 받기",
   "showAlertsWhenBrowsing": "목록에서 볼 수있는 필터",
   "heroMainTagline": "UFO가 근처에 자리 잡을 때 휴대폰에 벳을 끄십시오",
-  "heroSecondaryTagline": "하늘을 바라보는 곳"
+  "heroSecondaryTagline": "하늘을 바라보는 곳",
+  "sourceFilters": "이름 *",
+  "sourceFiltersDescription": "어떤 보고서가 피드에 나타낸다",
+  "ufobeepAndMufon": "UFOBeep + 멀티",
+  "ufobeepOnlySource": "UFOBeep 만",
+  "mufonOnlySource": "MUFON만",
+  "browseFilters": "계정 만들기",
+  "browseFiltersDescription": "표시 및 정렬 경고",
+  "sortByNewest": "더 알아보기",
+  "sortByNearest": "이름 *",
+  "sortBy": "정렬 기준",
+  "pushAlertsTitle": "푸시 알림",
+  "pushAlertsDescription": "휴대폰 번호",
+  "alertRadius": "Alert 반경",
+  "alertMeForUfobeep": "UFOBeep에 대한 경고 (현실 시간)",
+  "mufonNoPushInfo": "MUFON 보고서는 밤에 수입되고 경고를 유발하지 않습니다"
 }

@@ -668,5 +668,20 @@
   "pushAlertsWithinDistance": "この範囲内で通知を取得する",
   "showAlertsWhenBrowsing": "リストで見るものをフィルタリング",
   "heroMainTagline": "UFOが近くにあるときに電話機にビープをつけましょう",
-  "heroSecondaryTagline": "空を眺める時と場所を調べる"
+  "heroSecondaryTagline": "空を眺める時と場所を調べる",
+  "sourceFilters": "ソース",
+  "sourceFiltersDescription": "フィードに表示されるレポートを選択する",
+  "ufobeepAndMufon": "UFOBeep + MUFONの",
+  "ufobeepOnlySource": "UFOBeepのみ",
+  "mufonOnlySource": "MUFONのみ",
+  "browseFilters": "ブラウザ",
+  "browseFiltersDescription": "アラートの表示とソート方法",
+  "sortByNewest": "新着情報",
+  "sortByNearest": "最近の投稿",
+  "sortBy": "並び替え",
+  "pushAlertsTitle": "プッシュ通知",
+  "pushAlertsDescription": "あなたの携帯電話をpings",
+  "alertRadius": "アラート半径",
+  "alertMeForUfobeep": "UFOBeep(リアルタイム)の通知",
+  "mufonNoPushInfo": "MUFONレポートは、夜間にインポートされ、プッシュアラートをトリガーしません"
 }

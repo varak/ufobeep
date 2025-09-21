@@ -1540,4 +1540,52 @@ class AppLocalizationsDa extends AppLocalizations {
   @override
   String get heroSecondaryTagline =>
       'Find ud af hvornår og hvor man kan se på himlen';
+
+  @override
+  String get sourceFilters => 'Kilde';
+
+  @override
+  String get sourceFiltersDescription =>
+      'Vælg hvilke rapporter der vises i din feed';
+
+  @override
+  String get ufobeepAndMufon => 'UFOBeep + MUFON';
+
+  @override
+  String get ufobeepOnlySource => 'Kun UFOBeep';
+
+  @override
+  String get mufonOnlySource => 'Kun MUFON';
+
+  @override
+  String get browseFilters => 'Gennemse';
+
+  @override
+  String get browseFiltersDescription =>
+      'Hvordan man ser og sorterer indberetninger';
+
+  @override
+  String get sortByNewest => 'Nyeste';
+
+  @override
+  String get sortByNearest => 'Nærmeste';
+
+  @override
+  String get sortBy => 'Sortér efter';
+
+  @override
+  String get pushAlertsTitle => 'Push Alerts';
+
+  @override
+  String get pushAlertsDescription => 'Hvad pings din telefon';
+
+  @override
+  String get alertRadius => 'Alarm Radius';
+
+  @override
+  String get alertMeForUfobeep => 'Advar mig for UFOBeep (realtid)';
+
+  @override
+  String get mufonNoPushInfo =>
+      'MUFON-rapporter importeres hver nat og udløser ikke push-advarsler';
 }

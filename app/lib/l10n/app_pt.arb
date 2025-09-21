@@ -668,5 +668,20 @@
   "pushAlertsWithinDistance": "Obter notificações dentro deste intervalo",
   "showAlertsWhenBrowsing": "Filtrar o que vê na lista",
   "heroMainTagline": "Obter um sinal no seu telefone quando OVNIs são vistos nas proximidades",
-  "heroSecondaryTagline": "Descubra quando e onde olhar para o céu"
+  "heroSecondaryTagline": "Descubra quando e onde olhar para o céu",
+  "sourceFilters": "Origem",
+  "sourceFiltersDescription": "Escolha quais relatórios aparecem na sua fonte",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "Apenas OVNIBeep",
+  "mufonOnlySource": "Apenas MUFON",
+  "browseFilters": "Navegar",
+  "browseFiltersDescription": "Como visualizar e classificar alertas",
+  "sortByNewest": "Mais recente",
+  "sortByNearest": "Mais perto",
+  "sortBy": "Ordenar por",
+  "pushAlertsTitle": "Ativar Alertas",
+  "pushAlertsDescription": "O que pings seu telefone",
+  "alertRadius": "Alertar o Raio",
+  "alertMeForUfobeep": "Alerta-me para UFOBeep (em tempo real)",
+  "mufonNoPushInfo": "Relatórios MUFON são importados todas as noites e não acionam alertas push"
 }

@@ -1538,4 +1538,51 @@ class AppLocalizationsSv extends AppLocalizations {
   @override
   String get heroSecondaryTagline =>
       'Ta reda på när och var du ska titta på himlen';
+
+  @override
+  String get sourceFilters => 'Källa';
+
+  @override
+  String get sourceFiltersDescription =>
+      'Välj vilka rapporter som visas i ditt flöde';
+
+  @override
+  String get ufobeepAndMufon => 'UFOBeep + MUFON';
+
+  @override
+  String get ufobeepOnlySource => 'UFOBeep endast';
+
+  @override
+  String get mufonOnlySource => 'Mufon bara';
+
+  @override
+  String get browseFilters => 'Bläddra';
+
+  @override
+  String get browseFiltersDescription => 'Hur man ser och sorterar varningar';
+
+  @override
+  String get sortByNewest => 'Nyaste';
+
+  @override
+  String get sortByNearest => 'Närmast';
+
+  @override
+  String get sortBy => 'Sort by';
+
+  @override
+  String get pushAlertsTitle => 'Push Alerts';
+
+  @override
+  String get pushAlertsDescription => 'Vad pingar din telefon';
+
+  @override
+  String get alertRadius => 'Alert Radius';
+
+  @override
+  String get alertMeForUfobeep => 'Alert me for UFOBeep (realtid)';
+
+  @override
+  String get mufonNoPushInfo =>
+      'MUFON-rapporter importeras nattligt och utlöser inte push-varningar';
 }

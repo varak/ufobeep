@@ -1538,4 +1538,51 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get heroSecondaryTagline => 'Selvitä milloin ja missä katsoa taivasta';
+
+  @override
+  String get sourceFilters => 'Lähde';
+
+  @override
+  String get sourceFiltersDescription => 'Valitse mitkä raportit syötteestäsi';
+
+  @override
+  String get ufobeepAndMufon => 'UFO- piikki + MUFON';
+
+  @override
+  String get ufobeepOnlySource => 'Vain UFO- piippi';
+
+  @override
+  String get mufonOnlySource => 'Vain MUFON';
+
+  @override
+  String get browseFilters => 'Selaa';
+
+  @override
+  String get browseFiltersDescription =>
+      'Kuulutusten katselu ja lajitteleminen';
+
+  @override
+  String get sortByNewest => 'Uusin';
+
+  @override
+  String get sortByNearest => 'Lähin';
+
+  @override
+  String get sortBy => 'Järjestä';
+
+  @override
+  String get pushAlertsTitle => 'Työnnä hälytykset';
+
+  @override
+  String get pushAlertsDescription => 'Mikä soi puhelimessasi';
+
+  @override
+  String get alertRadius => 'Hälytys Säde';
+
+  @override
+  String get alertMeForUfobeep => 'Hälytä minut UFOBeep (reaaliaikainen)';
+
+  @override
+  String get mufonNoPushInfo =>
+      'MUFON-raportit tuodaan yöllä, eivätkä ne laukaise työntökuulutuksia';
 }

@@ -668,5 +668,20 @@
   "pushAlertsWithinDistance": "Получите уведомления в этом диапазоне",
   "showAlertsWhenBrowsing": "Отфильтровать то, что вы видите в списке",
   "heroMainTagline": "Позвоните по телефону, когда НЛО будут замечены поблизости",
-  "heroSecondaryTagline": "Узнайте, когда и где смотреть на небо"
+  "heroSecondaryTagline": "Узнайте, когда и где смотреть на небо",
+  "sourceFilters": "Источник",
+  "sourceFiltersDescription": "Выберите, какие отчеты появляются в вашей ленте",
+  "ufobeepAndMufon": "НЛОБИП + МУФОН",
+  "ufobeepOnlySource": "НЛО-пип только",
+  "mufonOnlySource": "Только МУФОН",
+  "browseFilters": "Просматривать",
+  "browseFiltersDescription": "Как просматривать и сортировать оповещения",
+  "sortByNewest": "Новейший",
+  "sortByNearest": "Ближайший",
+  "sortBy": "Сортировать по",
+  "pushAlertsTitle": "Push Alert",
+  "pushAlertsDescription": "Что пингует ваш телефон",
+  "alertRadius": "Предупреждение Радиус",
+  "alertMeForUfobeep": "Предупредите меня об НЛОБипе (в реальном времени)",
+  "mufonNoPushInfo": "Сообщения MUFON импортируются ночью и не вызывают push-оповещений"
 }

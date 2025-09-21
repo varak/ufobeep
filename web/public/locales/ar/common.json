@@ -385,6 +385,17 @@
   "showAlertsWhenBrowsing": "اكتب ما تراه في القائمة",
   "heroMainTagline": "الحصول على الصافرة على هاتفك عندما يتم رصد الأجسام الطائرة في الجوار",
   "heroSecondaryTagline": "معرفة متى وأين للنظر إلى السماء",
+  "sourceFilters": "المصدر",
+  "sourceFiltersDescription": "اختر أي تقارير تظهر في غلافك",
+  "mufonOnlySource": "فقط",
+  "browseFilters": "Browse",
+  "browseFiltersDescription": "كيفية مشاهدة وفرز الإنذارات",
+  "sortByNewest": "Newest",
+  "sortByNearest": "أقرب",
+  "sortBy": "نوعا ما",
+  "pushAlertsTitle": "تنبيهات",
+  "pushAlertsDescription": "ما يدق هاتفك",
+  "mufonNoPushInfo": "تستورد تقارير وزارة المالية الوطنية ليلاً ولا تطلق إنذارات بالدفع",
   "errorGeneric": "حدث شيء خاطئ.",
   "welcomeTitle": "مرحبا بكم في UFOBeep",
   "welcomeSubtitle": "في الوقت الحقيقي تنبيه يو إف أو بالقرب منك",
@@ -476,5 +487,9 @@
   "ufobeepOnly": "UFOBeep Only",
   "ufobeepOnlyDescription": "لا تظهر سوى التقارير الأصلية عن الأشعة فوق البنفسجية (باستثناء قاعدة بيانات مونفون)",
   "alertDistanceRange": "Alert Distance Range",
-  "alertBrowsing": "إنذار بروز"
+  "alertBrowsing": "إنذار بروز",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "UFOBeep فقط",
+  "alertRadius": "Alert Radius",
+  "alertMeForUfobeep": "تنبيه لي ل OFOBeep (الوقت الحقيقي)"
 }

@@ -63,5 +63,9 @@
   "ufobeepOnly": "UFOBeep Solo",
   "ufobeepOnlyDescription": "Mostra solo report originali UFOBeep (escluso database MUFON)",
   "alertDistanceRange": "Distanza di allarme",
-  "alertBrowsing": "Avviso di navigazione"
+  "alertBrowsing": "Avviso di navigazione",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "UFOBeep solo",
+  "alertRadius": "Allerta Radius",
+  "alertMeForUfobeep": "Avvisami per UFOBeep (ora reale)"
 }

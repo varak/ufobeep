@@ -63,5 +63,9 @@
   "ufobeepOnly": "UFOBeep Only",
   "ufobeepOnlyDescription": "Sadece orijinal UFOBeep raporları ( MUFON veritabanı hariç)",
   "alertDistanceRange": "Alert Distance Range",
-  "alertBrowsing": "Uyarı Browsing"
+  "alertBrowsing": "Uyarı Browsing",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "UFOBeep sadece",
+  "alertRadius": "Uyarı Radius",
+  "alertMeForUfobeep": "Beni UFOBeep için (gerçek zamanlı)"
 }

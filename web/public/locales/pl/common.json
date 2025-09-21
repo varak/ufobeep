@@ -385,6 +385,17 @@
   "showAlertsWhenBrowsing": "Filtruj to, co widzisz na liście",
   "heroMainTagline": "Odezwij się, gdy UFO będzie w pobliżu",
   "heroSecondaryTagline": "Dowiedz się, kiedy i gdzie patrzeć na niebo",
+  "sourceFilters": "Źródło",
+  "sourceFiltersDescription": "Wybierz, które raporty pojawiają się w paszy",
+  "mufonOnlySource": "Tylko MUFON",
+  "browseFilters": "Przeglądaj",
+  "browseFiltersDescription": "Jak przeglądać i sortować alarmy",
+  "sortByNewest": "Newest",
+  "sortByNearest": "Najbliższy",
+  "sortBy": "Sortuj według",
+  "pushAlertsTitle": "Wpisy",
+  "pushAlertsDescription": "Co to za telefon",
+  "mufonNoPushInfo": "Raporty MUFON są importowane nocą i nie uruchamiają alarmów",
   "errorGeneric": "Coś poszło nie tak.",
   "welcomeTitle": "Witamy w UFOBeep",
   "welcomeSubtitle": "Real- time UFO alerts near you",
@@ -476,5 +487,9 @@
   "ufobeepOnly": "Tylko UFOBeep",
   "ufobeepOnlyDescription": "Pokaż tylko oryginalne raporty UFOBeep (z wyłączeniem bazy danych MUFON)",
   "alertDistanceRange": "Alert Zakres odległości",
-  "alertBrowsing": "Ostrzeżenie Przeglądanie"
+  "alertBrowsing": "Ostrzeżenie Przeglądanie",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "Tylko UFOBeep",
+  "alertRadius": "Alarm Radius",
+  "alertMeForUfobeep": "Zawiadom mnie o UFOBeep (czas rzeczywistym)"
 }

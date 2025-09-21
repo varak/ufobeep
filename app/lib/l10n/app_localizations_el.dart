@@ -1550,4 +1550,53 @@ class AppLocalizationsEl extends AppLocalizations {
   @override
   String get heroSecondaryTagline =>
       'Μάθε πότε και πού να κοιτάξεις τον ουρανό';
+
+  @override
+  String get sourceFilters => 'Πηγή';
+
+  @override
+  String get sourceFiltersDescription =>
+      'Επιλέξτε ποιες αναφορές εμφανίζονται στη ροή σας';
+
+  @override
+  String get ufobeepAndMufon => 'UFOBeep + MUFON';
+
+  @override
+  String get ufobeepOnlySource => 'Μόνο UFOBeep';
+
+  @override
+  String get mufonOnlySource => 'Μόνο MUFON';
+
+  @override
+  String get browseFilters => 'Περιήγηση';
+
+  @override
+  String get browseFiltersDescription =>
+      'Πώς να δείτε και να ταξινομήσετε τις ειδοποιήσεις';
+
+  @override
+  String get sortByNewest => 'Νεότερο';
+
+  @override
+  String get sortByNearest => 'Πλησιέστερο';
+
+  @override
+  String get sortBy => 'Ταξινόμηση κατά';
+
+  @override
+  String get pushAlertsTitle => 'Συναγερμοί ώθησης';
+
+  @override
+  String get pushAlertsDescription => 'Τι pings το τηλέφωνό σας';
+
+  @override
+  String get alertRadius => 'Ακτίνα ειδοποίησης';
+
+  @override
+  String get alertMeForUfobeep =>
+      'Ειδοποίησέ με για UFOBeep (σε πραγματικό χρόνο)';
+
+  @override
+  String get mufonNoPushInfo =>
+      'Οι αναφορές MUFON εισάγονται τη νύχτα και δεν ενεργοποιούν ειδοποιήσεις ώθησης';
 }

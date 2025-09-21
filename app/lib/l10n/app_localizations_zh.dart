@@ -1506,4 +1506,49 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get heroSecondaryTagline => '找出何时何地看天空';
+
+  @override
+  String get sourceFilters => '来源';
+
+  @override
+  String get sourceFiltersDescription => '选择种子中出现的报告';
+
+  @override
+  String get ufobeepAndMufon => 'UFOBEP + 毛里求斯';
+
+  @override
+  String get ufobeepOnlySource => '仅限UUOBEP';
+
+  @override
+  String get mufonOnlySource => '仅指毛里求斯';
+
+  @override
+  String get browseFilters => '浏览';
+
+  @override
+  String get browseFiltersDescription => '如何查看和排序提醒';
+
+  @override
+  String get sortByNewest => '最新数据';
+
+  @override
+  String get sortByNearest => '最接近';
+
+  @override
+  String get sortBy => '排序为';
+
+  @override
+  String get pushAlertsTitle => '推进提醒';
+
+  @override
+  String get pushAlertsDescription => '手机响什么';
+
+  @override
+  String get alertRadius => '提醒半径';
+
+  @override
+  String get alertMeForUfobeep => '通知我UFOBEP(实时)';
+
+  @override
+  String get mufonNoPushInfo => 'MUFON报告是夜间输入的,不会触发推力警报';
 }

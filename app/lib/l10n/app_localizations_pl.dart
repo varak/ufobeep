@@ -1545,4 +1545,51 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get heroSecondaryTagline =>
       'Dowiedz się, kiedy i gdzie patrzeć na niebo';
+
+  @override
+  String get sourceFilters => 'Źródło';
+
+  @override
+  String get sourceFiltersDescription =>
+      'Wybierz, które raporty pojawiają się w paszy';
+
+  @override
+  String get ufobeepAndMufon => 'UFOBeep + MUFON';
+
+  @override
+  String get ufobeepOnlySource => 'Tylko UFOBeep';
+
+  @override
+  String get mufonOnlySource => 'Tylko MUFON';
+
+  @override
+  String get browseFilters => 'Przeglądaj';
+
+  @override
+  String get browseFiltersDescription => 'Jak przeglądać i sortować alarmy';
+
+  @override
+  String get sortByNewest => 'Newest';
+
+  @override
+  String get sortByNearest => 'Najbliższy';
+
+  @override
+  String get sortBy => 'Sortuj według';
+
+  @override
+  String get pushAlertsTitle => 'Wpisy';
+
+  @override
+  String get pushAlertsDescription => 'Co to za telefon';
+
+  @override
+  String get alertRadius => 'Alarm Radius';
+
+  @override
+  String get alertMeForUfobeep => 'Zawiadom mnie o UFOBeep (czas rzeczywistym)';
+
+  @override
+  String get mufonNoPushInfo =>
+      'Raporty MUFON są importowane nocą i nie uruchamiają alarmów';
 }

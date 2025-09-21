@@ -385,6 +385,17 @@
   "showAlertsWhenBrowsing": "Listede gördüğünüz filtre",
   "heroMainTagline": "UFO'ların yakınlaştığında telefonunuzda bir beep alın",
   "heroSecondaryTagline": "Ne zaman ve gökyüzüne bakmak için öğrenin",
+  "sourceFilters": "Kaynak Kaynağı",
+  "sourceFiltersDescription": "Hangi raporların feed'inizde göründüğünü seçin",
+  "mufonOnlySource": "MUFON sadece",
+  "browseFilters": "Göze Göz",
+  "browseFiltersDescription": "Nasıl görüntülemek ve tür uyarılar",
+  "sortByNewest": "Newest",
+  "sortByNearest": "En yakın",
+  "sortBy": "Sort by Sort by Sort",
+  "pushAlertsTitle": "Push Alerts",
+  "pushAlertsDescription": "Telefonunuzu ne yapıyor",
+  "mufonNoPushInfo": "MUFON raporları gece ithal edilir ve uyarıları tetiklemezler",
   "errorGeneric": "Bir şey yanlış gitti.",
   "welcomeTitle": "UFOBeep'e hoş geldiniz",
   "welcomeSubtitle": "Gerçek zamanlı UFO, size yakın uyarılar",
@@ -476,5 +487,9 @@
   "ufobeepOnly": "UFOBeep Only",
   "ufobeepOnlyDescription": "Sadece orijinal UFOBeep raporları ( MUFON veritabanı hariç)",
   "alertDistanceRange": "Alert Distance Range",
-  "alertBrowsing": "Uyarı Browsing"
+  "alertBrowsing": "Uyarı Browsing",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "UFOBeep sadece",
+  "alertRadius": "Uyarı Radius",
+  "alertMeForUfobeep": "Beni UFOBeep için (gerçek zamanlı)"
 }

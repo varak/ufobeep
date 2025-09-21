@@ -63,5 +63,9 @@
   "ufobeepOnly": "UFOBeepのみ",
   "ufobeepOnlyDescription": "オリジナルの UFOBeep レポートのみ(MUFON データベースを除く)",
   "alertDistanceRange": "アラート距離範囲",
-  "alertBrowsing": "アラートブラウジング"
+  "alertBrowsing": "アラートブラウジング",
+  "ufobeepAndMufon": "UFOBeep + MUFONの",
+  "ufobeepOnlySource": "UFOBeepのみ",
+  "alertRadius": "アラート半径",
+  "alertMeForUfobeep": "UFOBeep(リアルタイム)の通知"
 }

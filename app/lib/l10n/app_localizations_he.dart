@@ -1520,4 +1520,50 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get heroSecondaryTagline => 'גלה מתי והיכן להסתכל על השמיים';
+
+  @override
+  String get sourceFilters => 'מקור Source';
+
+  @override
+  String get sourceFiltersDescription => 'בחרו אילו דוחות מופיעים בהזנתכם';
+
+  @override
+  String get ufobeepAndMufon => 'UFOBeep + MUFON';
+
+  @override
+  String get ufobeepOnlySource => 'עב\"מ רק';
+
+  @override
+  String get mufonOnlySource => 'רק';
+
+  @override
+  String get browseFilters => 'Browse';
+
+  @override
+  String get browseFiltersDescription => 'כיצד להציג ולמיין התראות';
+
+  @override
+  String get sortByNewest => 'חדש';
+
+  @override
+  String get sortByNearest => 'קרוב';
+
+  @override
+  String get sortBy => 'על ידי';
+
+  @override
+  String get pushAlertsTitle => 'תגית: Push';
+
+  @override
+  String get pushAlertsDescription => 'מה מוריד את הטלפון שלך';
+
+  @override
+  String get alertRadius => 'תגית: Radius';
+
+  @override
+  String get alertMeForUfobeep => 'התראה לי על עב\"ם (זמן אמת)';
+
+  @override
+  String get mufonNoPushInfo =>
+      'דוחות MUFON מיובאים בלילה ואינם מעוררים התראות';
 }

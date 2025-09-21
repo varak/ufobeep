@@ -385,6 +385,17 @@
   "showAlertsWhenBrowsing": "Φιλτράρισμα όσων βλέπετε στη λίστα",
   "heroMainTagline": "Πάρτε ένα μπιπ στο τηλέφωνό σας όταν UFOs εντοπίζονται κοντά",
   "heroSecondaryTagline": "Μάθε πότε και πού να κοιτάξεις τον ουρανό",
+  "sourceFilters": "Πηγή",
+  "sourceFiltersDescription": "Επιλέξτε ποιες αναφορές εμφανίζονται στη ροή σας",
+  "mufonOnlySource": "Μόνο MUFON",
+  "browseFilters": "Περιήγηση",
+  "browseFiltersDescription": "Πώς να δείτε και να ταξινομήσετε τις ειδοποιήσεις",
+  "sortByNewest": "Νεότερο",
+  "sortByNearest": "Πλησιέστερο",
+  "sortBy": "Ταξινόμηση κατά",
+  "pushAlertsTitle": "Συναγερμοί ώθησης",
+  "pushAlertsDescription": "Τι pings το τηλέφωνό σας",
+  "mufonNoPushInfo": "Οι αναφορές MUFON εισάγονται τη νύχτα και δεν ενεργοποιούν ειδοποιήσεις ώθησης",
   "errorGeneric": "Κάτι πήγε στραβά.",
   "welcomeTitle": "Καλώς ήρθατε στο UFOBeep",
   "welcomeSubtitle": "Σε πραγματικό χρόνο UFO ειδοποιήσεις κοντά σας",
@@ -476,5 +487,9 @@
   "ufobeepOnly": "Μόνο UFOBeep",
   "ufobeepOnlyDescription": "Εμφάνιση μόνο πρωτότυπων αναφορών UFOBeep (αποκλείστε τη βάση δεδομένων MUFON)",
   "alertDistanceRange": "Ειδοποίηση εύρους απόστασης",
-  "alertBrowsing": "Προειδοποίηση περιήγησης"
+  "alertBrowsing": "Προειδοποίηση περιήγησης",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "Μόνο UFOBeep",
+  "alertRadius": "Ακτίνα ειδοποίησης",
+  "alertMeForUfobeep": "Ειδοποίησέ με για UFOBeep (σε πραγματικό χρόνο)"
 }

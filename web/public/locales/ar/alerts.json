@@ -63,5 +63,9 @@
   "ufobeepOnly": "UFOBeep Only",
   "ufobeepOnlyDescription": "لا تظهر سوى التقارير الأصلية عن الأشعة فوق البنفسجية (باستثناء قاعدة بيانات مونفون)",
   "alertDistanceRange": "Alert Distance Range",
-  "alertBrowsing": "إنذار بروز"
+  "alertBrowsing": "إنذار بروز",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "UFOBeep فقط",
+  "alertRadius": "Alert Radius",
+  "alertMeForUfobeep": "تنبيه لي ل OFOBeep (الوقت الحقيقي)"
 }

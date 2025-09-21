@@ -63,5 +63,9 @@
   "ufobeepOnly": "UFObeep alleen",
   "ufobeepOnlyDescription": "Alleen originele UFObeep-rapporten tonen (exclusief MUFON-database)",
   "alertDistanceRange": "Waarschuwingsafstand",
-  "alertBrowsing": "Alert bladeren"
+  "alertBrowsing": "Alert bladeren",
+  "ufobeepAndMufon": "UFOBEEP + MUFON",
+  "ufobeepOnlySource": "UFObeep alleen",
+  "alertRadius": "Waarschuw Straal",
+  "alertMeForUfobeep": "Waarschuw me voor UFObeep (real-time)"
 }

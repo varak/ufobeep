@@ -385,6 +385,17 @@
   "showAlertsWhenBrowsing": "Filtern, was Sie in der Liste sehen",
   "heroMainTagline": "Erhalten Sie einen Piep auf Ihrem Handy, wenn UFOs in der Nähe entdeckt werden",
   "heroSecondaryTagline": "Finden Sie heraus, wann und wo Sie den Himmel sehen",
+  "sourceFilters": "Quelle",
+  "sourceFiltersDescription": "Wählen Sie, welche Berichte in Ihrem Feed erscheinen",
+  "mufonOnlySource": "Nur MUFON",
+  "browseFilters": "Nach oben",
+  "browseFiltersDescription": "Wie man Alarme sieht und sortiert",
+  "sortByNewest": "Neues",
+  "sortByNearest": "Nächst",
+  "sortBy": "Sortieren nach",
+  "pushAlertsTitle": "Pressalerts",
+  "pushAlertsDescription": "Was pings your phone",
+  "mufonNoPushInfo": "MUFON-Berichte werden nachts importiert und keine Push-Benachrichtigungen auslösen",
   "errorGeneric": "Etwas ging schief.",
   "welcomeTitle": "Willkommen bei UFOBeep",
   "welcomeSubtitle": "Echtzeit-UFO-Benachrichtigungen in Ihrer Nähe",
@@ -476,5 +487,9 @@
   "ufobeepOnly": "Nur noch",
   "ufobeepOnlyDescription": "Nur originale UFOBeep-Berichte anzeigen (ohne MUFON-Datenbank)",
   "alertDistanceRange": "Alarm Entfernungsbereich",
-  "alertBrowsing": "Alert Browsing"
+  "alertBrowsing": "Alert Browsing",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "UFOBeep nur",
+  "alertRadius": "Über uns",
+  "alertMeForUfobeep": "Alarmieren Sie mich für UFOBeep (real-time)"
 }

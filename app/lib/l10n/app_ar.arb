@@ -668,5 +668,20 @@
   "pushAlertsWithinDistance": "الحصول على الإخطارات في هذا النطاق",
   "showAlertsWhenBrowsing": "اكتب ما تراه في القائمة",
   "heroMainTagline": "الحصول على الصافرة على هاتفك عندما يتم رصد الأجسام الطائرة في الجوار",
-  "heroSecondaryTagline": "معرفة متى وأين للنظر إلى السماء"
+  "heroSecondaryTagline": "معرفة متى وأين للنظر إلى السماء",
+  "sourceFilters": "المصدر",
+  "sourceFiltersDescription": "اختر أي تقارير تظهر في غلافك",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "UFOBeep فقط",
+  "mufonOnlySource": "فقط",
+  "browseFilters": "Browse",
+  "browseFiltersDescription": "كيفية مشاهدة وفرز الإنذارات",
+  "sortByNewest": "Newest",
+  "sortByNearest": "أقرب",
+  "sortBy": "نوعا ما",
+  "pushAlertsTitle": "تنبيهات",
+  "pushAlertsDescription": "ما يدق هاتفك",
+  "alertRadius": "Alert Radius",
+  "alertMeForUfobeep": "تنبيه لي ل OFOBeep (الوقت الحقيقي)",
+  "mufonNoPushInfo": "تستورد تقارير وزارة المالية الوطنية ليلاً ولا تطلق إنذارات بالدفع"
 }

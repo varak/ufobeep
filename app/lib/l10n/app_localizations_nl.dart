@@ -1542,4 +1542,52 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get heroSecondaryTagline =>
       'Zoek uit wanneer en waar naar de hemel te kijken';
+
+  @override
+  String get sourceFilters => 'Bron';
+
+  @override
+  String get sourceFiltersDescription =>
+      'Kies welke rapporten in uw feed verschijnen';
+
+  @override
+  String get ufobeepAndMufon => 'UFOBEEP + MUFON';
+
+  @override
+  String get ufobeepOnlySource => 'UFObeep alleen';
+
+  @override
+  String get mufonOnlySource => 'Uitsluitend MUFON';
+
+  @override
+  String get browseFilters => 'Bladeren';
+
+  @override
+  String get browseFiltersDescription =>
+      'Hoe waarschuwingen te bekijken en te sorteren';
+
+  @override
+  String get sortByNewest => 'Nieuwste';
+
+  @override
+  String get sortByNearest => 'Dichtstbijzijnde';
+
+  @override
+  String get sortBy => 'Sorteren op';
+
+  @override
+  String get pushAlertsTitle => 'Waarschuwingen indrukken';
+
+  @override
+  String get pushAlertsDescription => 'Wat pings je telefoon';
+
+  @override
+  String get alertRadius => 'Waarschuw Straal';
+
+  @override
+  String get alertMeForUfobeep => 'Waarschuw me voor UFObeep (real-time)';
+
+  @override
+  String get mufonNoPushInfo =>
+      'MUFON rapporten worden \'s nachts geïmporteerd en niet push waarschuwingen veroorzaken';
 }

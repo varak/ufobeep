@@ -7,7 +7,7 @@ import '../../models/alerts_filter.dart';
 import '../../models/user_preferences.dart';
 import '../../models/alert_enrichment.dart';
 import '../../services/visibility_service.dart';
-import '../../widgets/alerts_filter_dialog.dart';
+import '../../widgets/simplified_filter_dialog.dart';
 import '../../l10n/app_localizations.dart';
 import '../../widgets/alert_card.dart';
 import '../../widgets/alerts/visibility_indicator.dart';
@@ -77,7 +77,7 @@ class AlertsScreen extends ConsumerWidget {
           onPressed: () {
             showDialog(
               context: context,
-              builder: (context) => const AlertsFilterDialog(),
+              builder: (context) => const SimplifiedFilterDialog(),
             );
           },
           tooltip: 'Filters',

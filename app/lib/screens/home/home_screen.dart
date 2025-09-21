@@ -6,7 +6,7 @@ import 'package:latlong2/latlong.dart';
 import '../../providers/alerts_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../models/alerts_filter.dart';
-import '../../widgets/alerts_filter_dialog.dart';
+import '../../widgets/simplified_filter_dialog.dart';
 import '../../widgets/alert_card.dart';
 import '../../widgets/map_widget.dart';
 import '../../widgets/glass_card.dart';
@@ -114,7 +114,7 @@ class HomeScreen extends ConsumerWidget {
           onPressed: () {
             showDialog(
               context: context,
-              builder: (context) => const AlertsFilterDialog(),
+              builder: (context) => const SimplifiedFilterDialog(),
             );
           },
         ),

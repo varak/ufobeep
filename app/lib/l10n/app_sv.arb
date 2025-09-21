@@ -668,5 +668,20 @@
   "pushAlertsWithinDistance": "Få meddelanden inom detta område",
   "showAlertsWhenBrowsing": "Filtrera vad du ser i listan",
   "heroMainTagline": "Få ett pip på din telefon när UFOs finns i närheten",
-  "heroSecondaryTagline": "Ta reda på när och var du ska titta på himlen"
+  "heroSecondaryTagline": "Ta reda på när och var du ska titta på himlen",
+  "sourceFilters": "Källa",
+  "sourceFiltersDescription": "Välj vilka rapporter som visas i ditt flöde",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "UFOBeep endast",
+  "mufonOnlySource": "Mufon bara",
+  "browseFilters": "Bläddra",
+  "browseFiltersDescription": "Hur man ser och sorterar varningar",
+  "sortByNewest": "Nyaste",
+  "sortByNearest": "Närmast",
+  "sortBy": "Sort by",
+  "pushAlertsTitle": "Push Alerts",
+  "pushAlertsDescription": "Vad pingar din telefon",
+  "alertRadius": "Alert Radius",
+  "alertMeForUfobeep": "Alert me for UFOBeep (realtid)",
+  "mufonNoPushInfo": "MUFON-rapporter importeras nattligt och utlöser inte push-varningar"
 }

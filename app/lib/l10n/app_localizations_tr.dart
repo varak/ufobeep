@@ -1542,4 +1542,51 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get heroSecondaryTagline =>
       'Ne zaman ve gökyüzüne bakmak için öğrenin';
+
+  @override
+  String get sourceFilters => 'Kaynak Kaynağı';
+
+  @override
+  String get sourceFiltersDescription =>
+      'Hangi raporların feed\'inizde göründüğünü seçin';
+
+  @override
+  String get ufobeepAndMufon => 'UFOBeep + MUFON';
+
+  @override
+  String get ufobeepOnlySource => 'UFOBeep sadece';
+
+  @override
+  String get mufonOnlySource => 'MUFON sadece';
+
+  @override
+  String get browseFilters => 'Göze Göz';
+
+  @override
+  String get browseFiltersDescription => 'Nasıl görüntülemek ve tür uyarılar';
+
+  @override
+  String get sortByNewest => 'Newest';
+
+  @override
+  String get sortByNearest => 'En yakın';
+
+  @override
+  String get sortBy => 'Sort by Sort by Sort';
+
+  @override
+  String get pushAlertsTitle => 'Push Alerts';
+
+  @override
+  String get pushAlertsDescription => 'Telefonunuzu ne yapıyor';
+
+  @override
+  String get alertRadius => 'Uyarı Radius';
+
+  @override
+  String get alertMeForUfobeep => 'Beni UFOBeep için (gerçek zamanlı)';
+
+  @override
+  String get mufonNoPushInfo =>
+      'MUFON raporları gece ithal edilir ve uyarıları tetiklemezler';
 }

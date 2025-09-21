@@ -63,5 +63,9 @@
   "ufobeepOnly": "Ufobeep bara",
   "ufobeepOnlyDescription": "Visa endast original UFOBeep-rapporter (exkludera MUFON-databas)",
   "alertDistanceRange": "Alert Distance Range",
-  "alertBrowsing": "Alert Browsing"
+  "alertBrowsing": "Alert Browsing",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "UFOBeep endast",
+  "alertRadius": "Alert Radius",
+  "alertMeForUfobeep": "Alert me for UFOBeep (realtid)"
 }

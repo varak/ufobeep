@@ -1540,4 +1540,51 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get heroSecondaryTagline => 'Zjistěte, kdy a kde se dívat na oblohu';
+
+  @override
+  String get sourceFilters => 'Zdroj';
+
+  @override
+  String get sourceFiltersDescription =>
+      'Vyberte si, které zprávy se objeví ve vašem krmivu';
+
+  @override
+  String get ufobeepAndMufon => 'UFOBEep + MUFON';
+
+  @override
+  String get ufobeepOnlySource => 'Pouze UFOBeep';
+
+  @override
+  String get mufonOnlySource => 'Pouze mufon';
+
+  @override
+  String get browseFilters => 'Procházet';
+
+  @override
+  String get browseFiltersDescription => 'Jak zobrazit a třídit záznamy';
+
+  @override
+  String get sortByNewest => 'Nejnovější';
+
+  @override
+  String get sortByNearest => 'Nejbližší';
+
+  @override
+  String get sortBy => 'Řadit podle';
+
+  @override
+  String get pushAlertsTitle => 'Tlačit výstrahy';
+
+  @override
+  String get pushAlertsDescription => 'What ping your phone';
+
+  @override
+  String get alertRadius => 'Alarm radius';
+
+  @override
+  String get alertMeForUfobeep => 'Upozorněte mě na UFOBeep (real-time)';
+
+  @override
+  String get mufonNoPushInfo =>
+      'Zprávy MUFON jsou dováženy v noci a nespouštějí upozornění na tlačení';
 }

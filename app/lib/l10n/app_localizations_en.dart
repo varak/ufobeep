@@ -1530,4 +1530,51 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get heroSecondaryTagline =>
       'Find out when and where to look at the sky';
+
+  @override
+  String get sourceFilters => 'Source';
+
+  @override
+  String get sourceFiltersDescription =>
+      'Choose which reports appear in your feed';
+
+  @override
+  String get ufobeepAndMufon => 'UFOBeep + MUFON';
+
+  @override
+  String get ufobeepOnlySource => 'UFOBeep only';
+
+  @override
+  String get mufonOnlySource => 'MUFON only';
+
+  @override
+  String get browseFilters => 'Browse';
+
+  @override
+  String get browseFiltersDescription => 'How to view and sort alerts';
+
+  @override
+  String get sortByNewest => 'Newest';
+
+  @override
+  String get sortByNearest => 'Nearest';
+
+  @override
+  String get sortBy => 'Sort by';
+
+  @override
+  String get pushAlertsTitle => 'Push Alerts';
+
+  @override
+  String get pushAlertsDescription => 'What pings your phone';
+
+  @override
+  String get alertRadius => 'Alert Radius';
+
+  @override
+  String get alertMeForUfobeep => 'Alert me for UFOBeep (real-time)';
+
+  @override
+  String get mufonNoPushInfo =>
+      'MUFON reports are imported nightly and do not trigger push alerts';
 }

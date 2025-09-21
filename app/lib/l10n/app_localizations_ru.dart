@@ -1554,4 +1554,53 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get heroSecondaryTagline => 'Узнайте, когда и где смотреть на небо';
+
+  @override
+  String get sourceFilters => 'Источник';
+
+  @override
+  String get sourceFiltersDescription =>
+      'Выберите, какие отчеты появляются в вашей ленте';
+
+  @override
+  String get ufobeepAndMufon => 'НЛОБИП + МУФОН';
+
+  @override
+  String get ufobeepOnlySource => 'НЛО-пип только';
+
+  @override
+  String get mufonOnlySource => 'Только МУФОН';
+
+  @override
+  String get browseFilters => 'Просматривать';
+
+  @override
+  String get browseFiltersDescription =>
+      'Как просматривать и сортировать оповещения';
+
+  @override
+  String get sortByNewest => 'Новейший';
+
+  @override
+  String get sortByNearest => 'Ближайший';
+
+  @override
+  String get sortBy => 'Сортировать по';
+
+  @override
+  String get pushAlertsTitle => 'Push Alert';
+
+  @override
+  String get pushAlertsDescription => 'Что пингует ваш телефон';
+
+  @override
+  String get alertRadius => 'Предупреждение Радиус';
+
+  @override
+  String get alertMeForUfobeep =>
+      'Предупредите меня об НЛОБипе (в реальном времени)';
+
+  @override
+  String get mufonNoPushInfo =>
+      'Сообщения MUFON импортируются ночью и не вызывают push-оповещений';
 }

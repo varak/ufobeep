@@ -668,5 +668,20 @@
   "pushAlertsWithinDistance": "Erhalten Sie Benachrichtigungen in diesem Bereich",
   "showAlertsWhenBrowsing": "Filtern, was Sie in der Liste sehen",
   "heroMainTagline": "Erhalten Sie einen Piep auf Ihrem Handy, wenn UFOs in der Nähe entdeckt werden",
-  "heroSecondaryTagline": "Finden Sie heraus, wann und wo Sie den Himmel sehen"
+  "heroSecondaryTagline": "Finden Sie heraus, wann und wo Sie den Himmel sehen",
+  "sourceFilters": "Quelle",
+  "sourceFiltersDescription": "Wählen Sie, welche Berichte in Ihrem Feed erscheinen",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "UFOBeep nur",
+  "mufonOnlySource": "Nur MUFON",
+  "browseFilters": "Nach oben",
+  "browseFiltersDescription": "Wie man Alarme sieht und sortiert",
+  "sortByNewest": "Neues",
+  "sortByNearest": "Nächst",
+  "sortBy": "Sortieren nach",
+  "pushAlertsTitle": "Pressalerts",
+  "pushAlertsDescription": "Was pings your phone",
+  "alertRadius": "Über uns",
+  "alertMeForUfobeep": "Alarmieren Sie mich für UFOBeep (real-time)",
+  "mufonNoPushInfo": "MUFON-Berichte werden nachts importiert und keine Push-Benachrichtigungen auslösen"
 }

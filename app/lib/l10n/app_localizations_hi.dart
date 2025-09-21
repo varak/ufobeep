@@ -1536,4 +1536,51 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get heroSecondaryTagline => 'जब और कहाँ आकाश को देखने के लिए';
+
+  @override
+  String get sourceFilters => 'स्रोत';
+
+  @override
+  String get sourceFiltersDescription =>
+      'अपनी फ़ीड में कौन सी रिपोर्ट दिखाई देती है';
+
+  @override
+  String get ufobeepAndMufon => 'UFOBeep + MUFON';
+
+  @override
+  String get ufobeepOnlySource => 'केवल UFOBeep';
+
+  @override
+  String get mufonOnlySource => 'केवल MUFON';
+
+  @override
+  String get browseFilters => 'दृश्य';
+
+  @override
+  String get browseFiltersDescription => 'अलर्ट कैसे देखें और सॉर्ट करें';
+
+  @override
+  String get sortByNewest => 'नवीनतम';
+
+  @override
+  String get sortByNearest => 'निकटतम';
+
+  @override
+  String get sortBy => 'द्वारा क्रमबद्ध';
+
+  @override
+  String get pushAlertsTitle => 'पुश अलर्ट';
+
+  @override
+  String get pushAlertsDescription => 'अपने फोन को क्या पिंग करता है';
+
+  @override
+  String get alertRadius => 'चेतावनी त्रिज्या';
+
+  @override
+  String get alertMeForUfobeep => 'मुझे UFOBeep (real-time) के लिए चेतावनी दें';
+
+  @override
+  String get mufonNoPushInfo =>
+      'MUFON रिपोर्ट को रात में आयात किया जाता है और पुश अलर्ट को ट्रिगर नहीं करता है';
 }

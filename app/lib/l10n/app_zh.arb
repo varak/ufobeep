@@ -668,5 +668,20 @@
   "pushAlertsWithinDistance": "在此范围内获取通知",
   "showAlertsWhenBrowsing": "过滤列表中看到的内容",
   "heroMainTagline": "当不明飞行物在附近发现时,在手机上鸣声",
-  "heroSecondaryTagline": "找出何时何地看天空"
+  "heroSecondaryTagline": "找出何时何地看天空",
+  "sourceFilters": "来源",
+  "sourceFiltersDescription": "选择种子中出现的报告",
+  "ufobeepAndMufon": "UFOBEP + 毛里求斯",
+  "ufobeepOnlySource": "仅限UUOBEP",
+  "mufonOnlySource": "仅指毛里求斯",
+  "browseFilters": "浏览",
+  "browseFiltersDescription": "如何查看和排序提醒",
+  "sortByNewest": "最新数据",
+  "sortByNearest": "最接近",
+  "sortBy": "排序为",
+  "pushAlertsTitle": "推进提醒",
+  "pushAlertsDescription": "手机响什么",
+  "alertRadius": "提醒半径",
+  "alertMeForUfobeep": "通知我UFOBEP(实时)",
+  "mufonNoPushInfo": "MUFON报告是夜间输入的,不会触发推力警报"
 }

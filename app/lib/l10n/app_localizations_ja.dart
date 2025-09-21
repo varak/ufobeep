@@ -1507,4 +1507,49 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get heroSecondaryTagline => '空を眺める時と場所を調べる';
+
+  @override
+  String get sourceFilters => 'ソース';
+
+  @override
+  String get sourceFiltersDescription => 'フィードに表示されるレポートを選択する';
+
+  @override
+  String get ufobeepAndMufon => 'UFOBeep + MUFONの';
+
+  @override
+  String get ufobeepOnlySource => 'UFOBeepのみ';
+
+  @override
+  String get mufonOnlySource => 'MUFONのみ';
+
+  @override
+  String get browseFilters => 'ブラウザ';
+
+  @override
+  String get browseFiltersDescription => 'アラートの表示とソート方法';
+
+  @override
+  String get sortByNewest => '新着情報';
+
+  @override
+  String get sortByNearest => '最近の投稿';
+
+  @override
+  String get sortBy => '並び替え';
+
+  @override
+  String get pushAlertsTitle => 'プッシュ通知';
+
+  @override
+  String get pushAlertsDescription => 'あなたの携帯電話をpings';
+
+  @override
+  String get alertRadius => 'アラート半径';
+
+  @override
+  String get alertMeForUfobeep => 'UFOBeep(リアルタイム)の通知';
+
+  @override
+  String get mufonNoPushInfo => 'MUFONレポートは、夜間にインポートされ、プッシュアラートをトリガーしません';
 }

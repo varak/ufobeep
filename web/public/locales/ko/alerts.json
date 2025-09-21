@@ -63,5 +63,9 @@
   "ufobeepOnly": "UFOBeep 만",
   "ufobeepOnlyDescription": "원래 UFOBeep 보고서 만 표시 (MUFON 데이터베이스 제외)",
   "alertDistanceRange": "출력 거리 범위",
-  "alertBrowsing": "비밀번호"
+  "alertBrowsing": "비밀번호",
+  "ufobeepAndMufon": "UFOBeep + 멀티",
+  "ufobeepOnlySource": "UFOBeep 만",
+  "alertRadius": "Alert 반경",
+  "alertMeForUfobeep": "UFOBeep에 대한 경고 (현실 시간)"
 }

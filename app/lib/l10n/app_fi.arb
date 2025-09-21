@@ -668,5 +668,20 @@
   "pushAlertsWithinDistance": "Hanki ilmoituksia tälle alueelle",
   "showAlertsWhenBrowsing": "Suodata mitä näet luettelossa",
   "heroMainTagline": "Soita puhelimeen, kun ufot ovat lähellä",
-  "heroSecondaryTagline": "Selvitä milloin ja missä katsoa taivasta"
+  "heroSecondaryTagline": "Selvitä milloin ja missä katsoa taivasta",
+  "sourceFilters": "Lähde",
+  "sourceFiltersDescription": "Valitse mitkä raportit syötteestäsi",
+  "ufobeepAndMufon": "UFO- piikki + MUFON",
+  "ufobeepOnlySource": "Vain UFO- piippi",
+  "mufonOnlySource": "Vain MUFON",
+  "browseFilters": "Selaa",
+  "browseFiltersDescription": "Kuulutusten katselu ja lajitteleminen",
+  "sortByNewest": "Uusin",
+  "sortByNearest": "Lähin",
+  "sortBy": "Järjestä",
+  "pushAlertsTitle": "Työnnä hälytykset",
+  "pushAlertsDescription": "Mikä soi puhelimessasi",
+  "alertRadius": "Hälytys Säde",
+  "alertMeForUfobeep": "Hälytä minut UFOBeep (reaaliaikainen)",
+  "mufonNoPushInfo": "MUFON-raportit tuodaan yöllä, eivätkä ne laukaise työntökuulutuksia"
 }

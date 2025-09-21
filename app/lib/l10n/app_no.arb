@@ -668,5 +668,20 @@
   "pushAlertsWithinDistance": "Get notifications within this range",
   "showAlertsWhenBrowsing": "Filter what you see in the list",
   "heroMainTagline": "Get a beep on your phone when UFOs are spotted nearby",
-  "heroSecondaryTagline": "Find out when and where to look at the sky"
+  "heroSecondaryTagline": "Find out when and where to look at the sky",
+  "sourceFilters": "Source",
+  "sourceFiltersDescription": "Choose which reports appear in your feed",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "UFOBeep only",
+  "mufonOnlySource": "MUFON only",
+  "browseFilters": "Browse",
+  "browseFiltersDescription": "How to view and sort alerts",
+  "sortByNewest": "Newest",
+  "sortByNearest": "Nearest",
+  "sortBy": "Sort by",
+  "pushAlertsTitle": "Push Alerts",
+  "pushAlertsDescription": "What pings your phone",
+  "alertRadius": "Alert Radius",
+  "alertMeForUfobeep": "Alert me for UFOBeep (real-time)",
+  "mufonNoPushInfo": "MUFON reports are imported nightly and do not trigger push alerts"
 }

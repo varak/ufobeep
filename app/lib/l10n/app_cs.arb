@@ -668,5 +668,20 @@
   "pushAlertsWithinDistance": "Získat oznámení v rámci tohoto rozsahu",
   "showAlertsWhenBrowsing": "Filtrovat to, co vidíte v seznamu",
   "heroMainTagline": "Zapípněte si na telefon, když je poblíž spatřeno UFO",
-  "heroSecondaryTagline": "Zjistěte, kdy a kde se dívat na oblohu"
+  "heroSecondaryTagline": "Zjistěte, kdy a kde se dívat na oblohu",
+  "sourceFilters": "Zdroj",
+  "sourceFiltersDescription": "Vyberte si, které zprávy se objeví ve vašem krmivu",
+  "ufobeepAndMufon": "UFOBEep + MUFON",
+  "ufobeepOnlySource": "Pouze UFOBeep",
+  "mufonOnlySource": "Pouze mufon",
+  "browseFilters": "Procházet",
+  "browseFiltersDescription": "Jak zobrazit a třídit záznamy",
+  "sortByNewest": "Nejnovější",
+  "sortByNearest": "Nejbližší",
+  "sortBy": "Řadit podle",
+  "pushAlertsTitle": "Tlačit výstrahy",
+  "pushAlertsDescription": "What ping your phone",
+  "alertRadius": "Alarm radius",
+  "alertMeForUfobeep": "Upozorněte mě na UFOBeep (real-time)",
+  "mufonNoPushInfo": "Zprávy MUFON jsou dováženy v noci a nespouštějí upozornění na tlačení"
 }

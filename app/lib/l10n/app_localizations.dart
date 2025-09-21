@@ -3005,6 +3005,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Find out when and where to look at the sky'**
   String get heroSecondaryTagline;
+
+  /// No description provided for @sourceFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Source'**
+  String get sourceFilters;
+
+  /// No description provided for @sourceFiltersDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose which reports appear in your feed'**
+  String get sourceFiltersDescription;
+
+  /// No description provided for @ufobeepAndMufon.
+  ///
+  /// In en, this message translates to:
+  /// **'UFOBeep + MUFON'**
+  String get ufobeepAndMufon;
+
+  /// No description provided for @ufobeepOnlySource.
+  ///
+  /// In en, this message translates to:
+  /// **'UFOBeep only'**
+  String get ufobeepOnlySource;
+
+  /// No description provided for @mufonOnlySource.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON only'**
+  String get mufonOnlySource;
+
+  /// No description provided for @browseFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse'**
+  String get browseFilters;
+
+  /// No description provided for @browseFiltersDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'How to view and sort alerts'**
+  String get browseFiltersDescription;
+
+  /// No description provided for @sortByNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest'**
+  String get sortByNewest;
+
+  /// No description provided for @sortByNearest.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearest'**
+  String get sortByNearest;
+
+  /// No description provided for @sortBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get sortBy;
+
+  /// No description provided for @pushAlertsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Push Alerts'**
+  String get pushAlertsTitle;
+
+  /// No description provided for @pushAlertsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'What pings your phone'**
+  String get pushAlertsDescription;
+
+  /// No description provided for @alertRadius.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert Radius'**
+  String get alertRadius;
+
+  /// No description provided for @alertMeForUfobeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert me for UFOBeep (real-time)'**
+  String get alertMeForUfobeep;
+
+  /// No description provided for @mufonNoPushInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON reports are imported nightly and do not trigger push alerts'**
+  String get mufonNoPushInfo;
 }
 
 class _AppLocalizationsDelegate

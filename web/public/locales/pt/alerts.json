@@ -63,5 +63,9 @@
   "ufobeepOnly": "Apenas OVNIBeep",
   "ufobeepOnlyDescription": "Mostrar apenas os relatórios originais do UFOBeep (exclua a base de dados MUFON)",
   "alertDistanceRange": "Intervalo de Distância do Alerta",
-  "alertBrowsing": "Alerta de Navegação"
+  "alertBrowsing": "Alerta de Navegação",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "Apenas OVNIBeep",
+  "alertRadius": "Alertar o Raio",
+  "alertMeForUfobeep": "Alerta-me para UFOBeep (em tempo real)"
 }

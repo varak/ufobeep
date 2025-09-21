@@ -63,5 +63,9 @@
   "ufobeepOnly": "Tylko UFOBeep",
   "ufobeepOnlyDescription": "Pokaż tylko oryginalne raporty UFOBeep (z wyłączeniem bazy danych MUFON)",
   "alertDistanceRange": "Alert Zakres odległości",
-  "alertBrowsing": "Ostrzeżenie Przeglądanie"
+  "alertBrowsing": "Ostrzeżenie Przeglądanie",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "Tylko UFOBeep",
+  "alertRadius": "Alarm Radius",
+  "alertMeForUfobeep": "Zawiadom mnie o UFOBeep (czas rzeczywistym)"
 }

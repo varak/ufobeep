@@ -385,6 +385,17 @@
   "showAlertsWhenBrowsing": "Filtrar lo que ves en la lista",
   "heroMainTagline": "Obtenga una señal en su teléfono cuando los OVNIs están cerca",
   "heroSecondaryTagline": "Descubre cuándo y dónde mirar el cielo",
+  "sourceFilters": "Fuente",
+  "sourceFiltersDescription": "Elija qué informes aparecen en su alimentación",
+  "mufonOnlySource": "MUFON",
+  "browseFilters": "Navega",
+  "browseFiltersDescription": "Cómo ver y ordenar alertas",
+  "sortByNewest": "Más reciente",
+  "sortByNearest": "Más cercano",
+  "sortBy": "Ordenar por",
+  "pushAlertsTitle": "Alertas de empuje",
+  "pushAlertsDescription": "¿Qué pings tu teléfono",
+  "mufonNoPushInfo": "Los informes de MUFON son importados nocturnamente y no activan alertas de presión",
   "errorGeneric": "Algo salió mal.",
   "welcomeTitle": "Bienvenido a UFOBeep",
   "welcomeSubtitle": "Alertas de OVNI en tiempo real cerca de usted",
@@ -476,5 +487,9 @@
   "ufobeepOnly": "UFOBeep Only",
   "ufobeepOnlyDescription": "Mostrar sólo informes originales de UFOBeep (excluya la base de datos MUFON)",
   "alertDistanceRange": "Distancia de alerta",
-  "alertBrowsing": "Alerta Browsing"
+  "alertBrowsing": "Alerta Browsing",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "OVNI solo",
+  "alertRadius": "Alerta Radius",
+  "alertMeForUfobeep": "Alertame para UFOBeep (tiempo real)"
 }

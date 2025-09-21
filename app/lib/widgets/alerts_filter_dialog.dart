@@ -7,6 +7,9 @@ import '../providers/alerts_provider.dart';
 import '../providers/user_preferences_provider.dart';
 import '../l10n/app_localizations.dart';
 
+enum SourceFilter { both, ufobeepOnly, mufonOnly }
+enum SortOption { newest, nearest }
+
 class AlertsFilterDialog extends ConsumerStatefulWidget {
   const AlertsFilterDialog({super.key});
 
@@ -16,17 +19,29 @@ class AlertsFilterDialog extends ConsumerStatefulWidget {
 
 class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
   AlertsFilter? _workingFilter;
-  double _distanceSliderValue = 100.0;
+
+  // Simplified filter state
+  SourceFilter _sourceFilter = SourceFilter.both;
+  SortOption _sortOption = SortOption.newest;
+  double _pushRadiusKm = 30.0;
+  bool _ufobeepAlertsEnabled = true;
   
   @override
   void initState() {
     super.initState();
-    // Initialize working filter from current state
-    _workingFilter = ref.read(alertsFilterStateProvider);
-    // Initialize slider value based on current filter
-    _distanceSliderValue = _workingFilter!.maxDistanceKm == null
-        ? 100.0
-        : ((_workingFilter!.maxDistanceKm! - 5.0) / 195.0) * 100.0;
+    // Initialize from current filter state
+    final currentFilter = ref.read(alertsFilterStateProvider);
+    _workingFilter = currentFilter;
+
+    // Initialize simplified state from current filter
+    if (currentFilter.showUfoBeepOnly == true) {
+      _sourceFilter = SourceFilter.ufobeepOnly;
+    } else {
+      _sourceFilter = SourceFilter.both; // Default to both sources
+    }
+
+    _pushRadiusKm = currentFilter.alertRangeKm ?? 30.0;
+    _ufobeepAlertsEnabled = true; // Default enabled
   }
 
   void _updateWorkingFilter(AlertsFilter filter) {
@@ -65,28 +80,19 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
 
   @override
   Widget build(BuildContext context) {
-    // Initialize working filter from current state if not set
-    _workingFilter ??= ref.read(alertsFilterStateProvider);
+    final l10n = AppLocalizations.of(context)!;
 
     return Dialog(
       backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
         width: double.infinity,
         constraints: const BoxConstraints(maxHeight: 600),
         decoration: BoxDecoration(
           color: AppColors.nightSkyMiddle.withOpacity(0.95),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: AppColors.glassCardBorder,
-            width: 1,
-          ),
+          border: Border.all(color: AppColors.glassCardBorder, width: 1),
           boxShadow: const [
-            BoxShadow(
-              blurRadius: 18,
-              offset: Offset(0, 6),
-              color: Colors.black26,
-            ),
+            BoxShadow(blurRadius: 18, offset: Offset(0, 6), color: Colors.black26),
           ],
         ),
         child: Column(
@@ -94,16 +100,9 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
           children: [
             // Header
             Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: AppColors.nightSkyMiddle.withOpacity(0.6),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                ),
-              ),
+              padding: const EdgeInsets.all(16),
               child: Text(
-                AppLocalizations.of(context)!.filterAlerts,
+                l10n.filterAlerts,
                 style: const TextStyle(
                   color: AppColors.textPrimary,
                   fontSize: 20,
@@ -113,28 +112,22 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
             ),
 
             // Filter Content
-            Flexible(
+            Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // UFOBeep Only Toggle Section
-                    _buildSectionTitle(AppLocalizations.of(context)!.alertSource),
+                    // SOURCE CARD
+                    _buildSourceCard(l10n),
                     const SizedBox(height: 12),
-                    _buildUfoBeepOnlyToggle(),
-                    const SizedBox(height: 24),
 
-                    // Push Notifications Section
-                    _buildSectionTitle(AppLocalizations.of(context)!.pushNotifications),
-                    const SizedBox(height: 8),
-                    _buildNotificationRangeSlider(),
+                    // BROWSE CARD
+                    _buildBrowseCard(l10n),
+                    const SizedBox(height: 12),
+
+                    // PUSH ALERTS CARD
+                    _buildPushCard(l10n),
                     const SizedBox(height: 16),
-
-                    // Alert Browsing Section
-                    _buildSectionTitle(AppLocalizations.of(context)!.alertBrowsing),
-                    const SizedBox(height: 8),
-                    _buildViewingRangeSlider(),
                   ],
                 ),
               ),
@@ -142,12 +135,12 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
 
             // Footer Actions
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: AppColors.nightSkyMiddle.withOpacity(0.6),
                 borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(16),
-                  bottomRight: Radius.circular(16),
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
                 ),
               ),
               child: Row(
@@ -155,24 +148,18 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColors.textSecondary,
-                        side: const BorderSide(color: AppColors.darkBorder),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      child: Text(AppLocalizations.of(context)!.cancel),
+                      child: Text(l10n.cancel),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: _applyFilter,
+                      onPressed: _applyFilters,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.brandPrimary,
                         foregroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
                       ),
-                      child: Text(AppLocalizations.of(context)!.applyFilters),
+                      child: Text(l10n.applyFilters),
                     ),
                   ),
                 ],
@@ -248,47 +235,13 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
     }
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Current value display
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: AppColors.nightSkyMiddle.withOpacity(0.6),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
-          ),
-          child: Row(
-            children: [
-              const Icon(
-                Icons.location_on,
-                color: AppColors.brandPrimary,
-                size: 20,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                getViewingLabel(),
-                style: const TextStyle(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ),
-        
-        const SizedBox(height: 16),
-        
-        // Slider
+        // Compact viewing range control
         Row(
           children: [
-            const Text(
-              'Visibility',
-              style: TextStyle(
-                color: AppColors.textTertiary,
-                fontSize: 12,
-              ),
-            ),
+            const Icon(Icons.map, color: AppColors.brandPrimary, size: 16),
+            const SizedBox(width: 8),
+            Text(getViewingLabel(), style: const TextStyle(color: AppColors.textPrimary, fontSize: 14, fontWeight: FontWeight.w600)),
             Expanded(
               child: Slider(
                 value: _distanceSliderValue,
@@ -296,7 +249,7 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
                 max: 100.0,
                 divisions: 20,
                 activeColor: AppColors.brandPrimary,
-                inactiveColor: AppColors.darkBorder,
+                inactiveColor: AppColors.textTertiary,
                 onChanged: _updateDistanceFromSlider,
               ),
             ),
@@ -310,14 +263,10 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
           ],
         ),
         
-        // Helper text
-        const SizedBox(height: 8),
         Text(
-          'Drag to adjust how far you want to see alerts. Start from weather visibility distance up to showing all alerts regardless of distance.',
-          style: const TextStyle(
-            color: AppColors.textTertiary,
-            fontSize: 12,
-          ),
+          AppLocalizations.of(context)!.showAlertsWhenBrowsing,
+          style: const TextStyle(color: AppColors.textTertiary, fontSize: 10),
+          textAlign: TextAlign.center,
         ),
       ],
     );

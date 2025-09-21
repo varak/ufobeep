@@ -385,6 +385,17 @@
   "showAlertsWhenBrowsing": "Filtra ciò che vedi nella lista",
   "heroMainTagline": "Ottenere un segnale acustico sul telefono quando gli UFO sono individuati nelle vicinanze",
   "heroSecondaryTagline": "Scopri quando e dove guardare il cielo",
+  "sourceFilters": "Fonte",
+  "sourceFiltersDescription": "Scegli quali report appaiono nel tuo feed",
+  "mufonOnlySource": "MUFON solo",
+  "browseFilters": "Sfoglia",
+  "browseFiltersDescription": "Come visualizzare e ordinare avvisi",
+  "sortByNewest": "Nuovo",
+  "sortByNearest": "Più vicino",
+  "sortBy": "Ordina per",
+  "pushAlertsTitle": "Avvisi di spinta",
+  "pushAlertsDescription": "Quali pings il telefono",
+  "mufonNoPushInfo": "I rapporti MUFON sono importati di notte e non attivano gli avvisi push",
   "errorGeneric": "Qualcosa è andato storto.",
   "welcomeTitle": "Benvenuti a UFOBeep",
   "welcomeSubtitle": "Avvisi UFO in tempo reale vicino a te",
@@ -476,5 +487,9 @@
   "ufobeepOnly": "UFOBeep Solo",
   "ufobeepOnlyDescription": "Mostra solo report originali UFOBeep (escluso database MUFON)",
   "alertDistanceRange": "Distanza di allarme",
-  "alertBrowsing": "Avviso di navigazione"
+  "alertBrowsing": "Avviso di navigazione",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "UFOBeep solo",
+  "alertRadius": "Allerta Radius",
+  "alertMeForUfobeep": "Avvisami per UFOBeep (ora reale)"
 }

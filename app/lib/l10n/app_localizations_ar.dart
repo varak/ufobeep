@@ -1525,4 +1525,50 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get heroSecondaryTagline => 'معرفة متى وأين للنظر إلى السماء';
+
+  @override
+  String get sourceFilters => 'المصدر';
+
+  @override
+  String get sourceFiltersDescription => 'اختر أي تقارير تظهر في غلافك';
+
+  @override
+  String get ufobeepAndMufon => 'UFOBeep + MUFON';
+
+  @override
+  String get ufobeepOnlySource => 'UFOBeep فقط';
+
+  @override
+  String get mufonOnlySource => 'فقط';
+
+  @override
+  String get browseFilters => 'Browse';
+
+  @override
+  String get browseFiltersDescription => 'كيفية مشاهدة وفرز الإنذارات';
+
+  @override
+  String get sortByNewest => 'Newest';
+
+  @override
+  String get sortByNearest => 'أقرب';
+
+  @override
+  String get sortBy => 'نوعا ما';
+
+  @override
+  String get pushAlertsTitle => 'تنبيهات';
+
+  @override
+  String get pushAlertsDescription => 'ما يدق هاتفك';
+
+  @override
+  String get alertRadius => 'Alert Radius';
+
+  @override
+  String get alertMeForUfobeep => 'تنبيه لي ل OFOBeep (الوقت الحقيقي)';
+
+  @override
+  String get mufonNoPushInfo =>
+      'تستورد تقارير وزارة المالية الوطنية ليلاً ولا تطلق إنذارات بالدفع';
 }

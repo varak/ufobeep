@@ -1508,4 +1508,49 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get heroSecondaryTagline => '하늘을 바라보는 곳';
+
+  @override
+  String get sourceFilters => '이름 *';
+
+  @override
+  String get sourceFiltersDescription => '어떤 보고서가 피드에 나타낸다';
+
+  @override
+  String get ufobeepAndMufon => 'UFOBeep + 멀티';
+
+  @override
+  String get ufobeepOnlySource => 'UFOBeep 만';
+
+  @override
+  String get mufonOnlySource => 'MUFON만';
+
+  @override
+  String get browseFilters => '계정 만들기';
+
+  @override
+  String get browseFiltersDescription => '표시 및 정렬 경고';
+
+  @override
+  String get sortByNewest => '더 알아보기';
+
+  @override
+  String get sortByNearest => '이름 *';
+
+  @override
+  String get sortBy => '정렬 기준';
+
+  @override
+  String get pushAlertsTitle => '푸시 알림';
+
+  @override
+  String get pushAlertsDescription => '휴대폰 번호';
+
+  @override
+  String get alertRadius => 'Alert 반경';
+
+  @override
+  String get alertMeForUfobeep => 'UFOBeep에 대한 경고 (현실 시간)';
+
+  @override
+  String get mufonNoPushInfo => 'MUFON 보고서는 밤에 수입되고 경고를 유발하지 않습니다';
 }

@@ -668,5 +668,20 @@
   "pushAlertsWithinDistance": "קבל הודעות בטווח זה",
   "showAlertsWhenBrowsing": "פילטר מה שרואים ברשימה",
   "heroMainTagline": "קבל שעון בטלפון שלך כאשר עב\"מים נצפו בקרבת מקום",
-  "heroSecondaryTagline": "גלה מתי והיכן להסתכל על השמיים"
+  "heroSecondaryTagline": "גלה מתי והיכן להסתכל על השמיים",
+  "sourceFilters": "מקור Source",
+  "sourceFiltersDescription": "בחרו אילו דוחות מופיעים בהזנתכם",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "עב\"מ רק",
+  "mufonOnlySource": "רק",
+  "browseFilters": "Browse",
+  "browseFiltersDescription": "כיצד להציג ולמיין התראות",
+  "sortByNewest": "חדש",
+  "sortByNearest": "קרוב",
+  "sortBy": "על ידי",
+  "pushAlertsTitle": "תגית: Push",
+  "pushAlertsDescription": "מה מוריד את הטלפון שלך",
+  "alertRadius": "תגית: Radius",
+  "alertMeForUfobeep": "התראה לי על עב\"ם (זמן אמת)",
+  "mufonNoPushInfo": "דוחות MUFON מיובאים בלילה ואינם מעוררים התראות"
 }

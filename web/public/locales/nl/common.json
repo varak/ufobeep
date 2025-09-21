@@ -385,6 +385,17 @@
   "showAlertsWhenBrowsing": "Filter wat je ziet in de lijst",
   "heroMainTagline": "Haal een piep op je telefoon als UFO's in de buurt worden gezien",
   "heroSecondaryTagline": "Zoek uit wanneer en waar naar de hemel te kijken",
+  "sourceFilters": "Bron",
+  "sourceFiltersDescription": "Kies welke rapporten in uw feed verschijnen",
+  "mufonOnlySource": "Uitsluitend MUFON",
+  "browseFilters": "Bladeren",
+  "browseFiltersDescription": "Hoe waarschuwingen te bekijken en te sorteren",
+  "sortByNewest": "Nieuwste",
+  "sortByNearest": "Dichtstbijzijnde",
+  "sortBy": "Sorteren op",
+  "pushAlertsTitle": "Waarschuwingen indrukken",
+  "pushAlertsDescription": "Wat pings je telefoon",
+  "mufonNoPushInfo": "MUFON rapporten worden 's nachts geïmporteerd en niet push waarschuwingen veroorzaken",
   "errorGeneric": "Er ging iets mis.",
   "welcomeTitle": "Welkom bij UFObeep",
   "welcomeSubtitle": "Real-time UFO waarschuwingen in uw buurt",
@@ -476,5 +487,9 @@
   "ufobeepOnly": "UFObeep alleen",
   "ufobeepOnlyDescription": "Alleen originele UFObeep-rapporten tonen (exclusief MUFON-database)",
   "alertDistanceRange": "Waarschuwingsafstand",
-  "alertBrowsing": "Alert bladeren"
+  "alertBrowsing": "Alert bladeren",
+  "ufobeepAndMufon": "UFOBEEP + MUFON",
+  "ufobeepOnlySource": "UFObeep alleen",
+  "alertRadius": "Waarschuw Straal",
+  "alertMeForUfobeep": "Waarschuw me voor UFObeep (real-time)"
 }

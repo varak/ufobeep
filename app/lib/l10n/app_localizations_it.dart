@@ -1550,4 +1550,51 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get heroSecondaryTagline => 'Scopri quando e dove guardare il cielo';
+
+  @override
+  String get sourceFilters => 'Fonte';
+
+  @override
+  String get sourceFiltersDescription =>
+      'Scegli quali report appaiono nel tuo feed';
+
+  @override
+  String get ufobeepAndMufon => 'UFOBeep + MUFON';
+
+  @override
+  String get ufobeepOnlySource => 'UFOBeep solo';
+
+  @override
+  String get mufonOnlySource => 'MUFON solo';
+
+  @override
+  String get browseFilters => 'Sfoglia';
+
+  @override
+  String get browseFiltersDescription => 'Come visualizzare e ordinare avvisi';
+
+  @override
+  String get sortByNewest => 'Nuovo';
+
+  @override
+  String get sortByNearest => 'Più vicino';
+
+  @override
+  String get sortBy => 'Ordina per';
+
+  @override
+  String get pushAlertsTitle => 'Avvisi di spinta';
+
+  @override
+  String get pushAlertsDescription => 'Quali pings il telefono';
+
+  @override
+  String get alertRadius => 'Allerta Radius';
+
+  @override
+  String get alertMeForUfobeep => 'Avvisami per UFOBeep (ora reale)';
+
+  @override
+  String get mufonNoPushInfo =>
+      'I rapporti MUFON sono importati di notte e non attivano gli avvisi push';
 }

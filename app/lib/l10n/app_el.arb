@@ -668,5 +668,20 @@
   "pushAlertsWithinDistance": "Λήψη ειδοποιήσεων εντός αυτού του εύρους",
   "showAlertsWhenBrowsing": "Φιλτράρισμα όσων βλέπετε στη λίστα",
   "heroMainTagline": "Πάρτε ένα μπιπ στο τηλέφωνό σας όταν UFOs εντοπίζονται κοντά",
-  "heroSecondaryTagline": "Μάθε πότε και πού να κοιτάξεις τον ουρανό"
+  "heroSecondaryTagline": "Μάθε πότε και πού να κοιτάξεις τον ουρανό",
+  "sourceFilters": "Πηγή",
+  "sourceFiltersDescription": "Επιλέξτε ποιες αναφορές εμφανίζονται στη ροή σας",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "Μόνο UFOBeep",
+  "mufonOnlySource": "Μόνο MUFON",
+  "browseFilters": "Περιήγηση",
+  "browseFiltersDescription": "Πώς να δείτε και να ταξινομήσετε τις ειδοποιήσεις",
+  "sortByNewest": "Νεότερο",
+  "sortByNearest": "Πλησιέστερο",
+  "sortBy": "Ταξινόμηση κατά",
+  "pushAlertsTitle": "Συναγερμοί ώθησης",
+  "pushAlertsDescription": "Τι pings το τηλέφωνό σας",
+  "alertRadius": "Ακτίνα ειδοποίησης",
+  "alertMeForUfobeep": "Ειδοποίησέ με για UFOBeep (σε πραγματικό χρόνο)",
+  "mufonNoPushInfo": "Οι αναφορές MUFON εισάγονται τη νύχτα και δεν ενεργοποιούν ειδοποιήσεις ώθησης"
 }
