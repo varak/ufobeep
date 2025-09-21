@@ -94,9 +94,9 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
             // Header
             Container(
               padding: const EdgeInsets.all(20),
-              decoration: const BoxDecoration(
-                color: AppColors.darkBackground,
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: AppColors.nightSkyMiddle.withOpacity(0.6),
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(16),
                   topRight: Radius.circular(16),
                 ),
@@ -136,9 +136,9 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
             // Footer Actions
             Container(
               padding: const EdgeInsets.all(20),
-              decoration: const BoxDecoration(
-                color: AppColors.darkBackground,
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: AppColors.nightSkyMiddle.withOpacity(0.6),
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(16),
                   bottomRight: Radius.circular(16),
                 ),
