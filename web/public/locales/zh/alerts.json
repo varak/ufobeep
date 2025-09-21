@@ -58,5 +58,9 @@
   "ufobeepWitnesses": "证人",
   "ufobeepConfirmations": "确认",
   "ufobeepAlertLevel": "警报级别",
-  "addedToUfobeep": "添加到UFOBEP"
+  "addedToUfobeep": "添加到UFOBEP",
+  "alertSource": "警告来源",
+  "ufobeepOnly": "仅限UUOBEP",
+  "ufobeepOnlyDescription": "只显示原始UFOBEP报告(不包括MUFON数据库)",
+  "alertDistanceRange": "警报距离"
 }

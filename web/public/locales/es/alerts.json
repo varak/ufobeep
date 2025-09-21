@@ -58,5 +58,9 @@
   "ufobeepWitnesses": "Testigos",
   "ufobeepConfirmations": "Confirmaciones",
   "ufobeepAlertLevel": "Nivel de alerta",
-  "addedToUfobeep": "Añadido a UFOBeep"
+  "addedToUfobeep": "Añadido a UFOBeep",
+  "alertSource": "Fuente de alerta",
+  "ufobeepOnly": "UFOBeep Only",
+  "ufobeepOnlyDescription": "Mostrar sólo informes originales de UFOBeep (excluya la base de datos MUFON)",
+  "alertDistanceRange": "Distancia de alerta"
 }

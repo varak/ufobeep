@@ -368,6 +368,11 @@
   "postCommand": "コマンドの投稿",
   "clouds": "クラウド",
   "windLabel": "ウインド",
+  "filterAlerts": "フィルターアラート",
+  "showAllAlerts": "すべてのアラートを表示",
+  "showAll": "すべて表示",
+  "distanceSliderDescription": "アラートを表示する距離を調整するためにドラッグします。 距離に関係なくすべてのアラートを表示するまで、気象可視距離から始めます.",
+  "applyFilters": "フィルターを適用",
   "errorGeneric": "何かが間違っていた.",
   "welcomeTitle": "UFOBeepへようこそ",
   "welcomeSubtitle": "近くのリアルタイム UFO アラート",
@@ -454,5 +459,9 @@
   "errorLoadError": "ビープの詳細を読み込む失敗",
   "addedToUfobeep": "UFOBeep に追加",
   "mufonDatabaseReport": "MUFONについて 場合数:",
-  "failed": "失敗した"
+  "failed": "失敗した",
+  "alertSource": "アラートソース",
+  "ufobeepOnly": "UFOBeepのみ",
+  "ufobeepOnlyDescription": "オリジナルの UFOBeep レポートのみ(MUFON データベースを除く)",
+  "alertDistanceRange": "アラート距離範囲"
 }

@@ -58,5 +58,9 @@
   "ufobeepWitnesses": "Todistajat",
   "ufobeepConfirmations": "Vahvistukset",
   "ufobeepAlertLevel": "Varoitustaso",
-  "addedToUfobeep": "Lisätty UFO- piippiin"
+  "addedToUfobeep": "Lisätty UFO- piippiin",
+  "alertSource": "Varoituslähde",
+  "ufobeepOnly": "Vain UFO- piippaus",
+  "ufobeepOnlyDescription": "Näytä vain alkuperäiset UFOBeepin raportit (pois lukien MUFON-tietokanta)",
+  "alertDistanceRange": "Varoitusetäisyysalue"
 }

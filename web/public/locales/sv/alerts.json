@@ -58,5 +58,9 @@
   "ufobeepWitnesses": "Vittnen",
   "ufobeepConfirmations": "Bekräftelser",
   "ufobeepAlertLevel": "Alert Level",
-  "addedToUfobeep": "Tillagd till UFOBeep"
+  "addedToUfobeep": "Tillagd till UFOBeep",
+  "alertSource": "Alert Source",
+  "ufobeepOnly": "Ufobeep bara",
+  "ufobeepOnlyDescription": "Visa endast original UFOBeep-rapporter (exkludera MUFON-databas)",
+  "alertDistanceRange": "Alert Distance Range"
 }

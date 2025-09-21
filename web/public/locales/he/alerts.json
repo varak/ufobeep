@@ -58,5 +58,9 @@
   "ufobeepWitnesses": "עדים",
   "ufobeepConfirmations": "אישורים",
   "ufobeepAlertLevel": "רמת התראה",
-  "addedToUfobeep": "תגית: UFOBeep"
+  "addedToUfobeep": "תגית: UFOBeep",
+  "alertSource": "מקור התראה",
+  "ufobeepOnly": "עב\"מ רק",
+  "ufobeepOnlyDescription": "הצג רק דוחות עב\"מ מקוריים (לא כולל MUFON)",
+  "alertDistanceRange": "המונחים: Distance"
 }

@@ -368,6 +368,11 @@
   "postCommand": "पोस्ट कमांड",
   "clouds": "क्लाउड",
   "windLabel": "हवा",
+  "filterAlerts": "फ़िल्टर अलर्ट",
+  "showAllAlerts": "सभी अलर्ट दिखाएं",
+  "showAll": "सब दिखाओ",
+  "distanceSliderDescription": "जब तक आप अलर्ट देखना चाहते हैं, तब तक समायोजित करने के लिए खींचें। दूरी की परवाह किए बिना सभी अलर्ट दिखाने के लिए मौसम दृश्यता दूरी से शुरू करें।.",
+  "applyFilters": "फ़िल्टर लागू करें",
   "errorGeneric": "कुछ गलत हो गया।.",
   "welcomeTitle": "UFOBeep में आपका स्वागत है",
   "welcomeSubtitle": "रियल टाइम यूएफओ आपके पास अलर्ट करता है",
@@ -454,5 +459,9 @@
   "errorLoadError": "बीप विवरण लोड करने में विफल",
   "addedToUfobeep": "UFOBeep में जोड़ा गया",
   "mufonDatabaseReport": "MUFON प्रकरण संख्या:",
-  "failed": "विफल"
+  "failed": "विफल",
+  "alertSource": "चेतावनी स्रोत",
+  "ufobeepOnly": "केवल UFOBeep",
+  "ufobeepOnlyDescription": "केवल मूल UFOBeep रिपोर्ट (MUFON डेटाबेस को छोड़कर) दिखाएं",
+  "alertDistanceRange": "चेतावनी दूरी रेंज"
 }

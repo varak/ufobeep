@@ -368,6 +368,11 @@
   "postCommand": "邮局命令",
   "clouds": "云层",
   "windLabel": "风",
+  "filterAlerts": "过滤提醒",
+  "showAllAlerts": "显示全部提醒",
+  "showAll": "全部显示",
+  "distanceSliderDescription": "拖曳以调整要看到提示的距离 。 从天气可见度距离开始,到显示所有警报,无论距离.",
+  "applyFilters": "应用过滤器",
   "errorGeneric": "出了点问题.",
   "welcomeTitle": "欢迎来到UFOBEP",
   "welcomeSubtitle": "在你附近实时UFO警报",
@@ -454,5 +459,9 @@
   "errorLoadError": "装入哔声细节失败",
   "addedToUfobeep": "添加到UFOBEP",
   "mufonDatabaseReport": "毛里求斯 案件编号 :",
-  "failed": "失败"
+  "failed": "失败",
+  "alertSource": "警告来源",
+  "ufobeepOnly": "仅限UUOBEP",
+  "ufobeepOnlyDescription": "只显示原始UFOBEP报告(不包括MUFON数据库)",
+  "alertDistanceRange": "警报距离"
 }

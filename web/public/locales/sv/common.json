@@ -368,6 +368,11 @@
   "postCommand": "Postkommando",
   "clouds": "Moln",
   "windLabel": "Vind",
+  "filterAlerts": "Filter Alerts",
+  "showAllAlerts": "Visa alla varningar",
+  "showAll": "Visa alla",
+  "distanceSliderDescription": "Dra för att justera hur långt du vill se varningar. Börja från väder synlighet avstånd upp till att visa alla varningar oavsett avstånd.",
+  "applyFilters": "Applicera filter",
   "errorGeneric": "Något gick fel.",
   "welcomeTitle": "Välkommen till UFOBeep",
   "welcomeSubtitle": "UFO-varningar i realtid nära dig",
@@ -454,5 +459,9 @@
   "errorLoadError": "Misslyckades med att ladda beep detaljer",
   "addedToUfobeep": "Tillagd till UFOBeep",
   "mufonDatabaseReport": "Mufonen Fallnummer:",
-  "failed": "Misslyckades"
+  "failed": "Misslyckades",
+  "alertSource": "Alert Source",
+  "ufobeepOnly": "Ufobeep bara",
+  "ufobeepOnlyDescription": "Visa endast original UFOBeep-rapporter (exkludera MUFON-databas)",
+  "alertDistanceRange": "Alert Distance Range"
 }

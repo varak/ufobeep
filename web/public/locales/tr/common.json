@@ -368,6 +368,11 @@
   "postCommand": "Post Komutanlığı",
   "clouds": "Bulutlar",
   "windLabel": "Rüzgar Rüzgar Rüzgarı",
+  "filterAlerts": "Filtre Uyarıları",
+  "showAllAlerts": "Hepsini göster",
+  "showAll": "Hepsini göster",
+  "distanceSliderDescription": "Uyarıları görmek için ne kadar uzağa ayarlayın. Hava görünürlüğünden başlayarak, mesafeye bakılmaksızın tüm uyarıları göstermek için mesafeye başlayın.",
+  "applyFilters": "Uygulamalı Filtreler",
   "errorGeneric": "Bir şey yanlış gitti.",
   "welcomeTitle": "UFOBeep'e hoş geldiniz",
   "welcomeSubtitle": "Gerçek zamanlı UFO, size yakın uyarılar",
@@ -454,5 +459,9 @@
   "errorLoadError": "Beep detaylarını yüklemek için başarısız oldu",
   "addedToUfobeep": "UFOBeep",
   "mufonDatabaseReport": "MUFON Vaka Numarası:",
-  "failed": "Başarısızlık"
+  "failed": "Başarısızlık",
+  "alertSource": "Uyarı Kaynağı",
+  "ufobeepOnly": "UFOBeep Only",
+  "ufobeepOnlyDescription": "Sadece orijinal UFOBeep raporları ( MUFON veritabanı hariç)",
+  "alertDistanceRange": "Alert Distance Range"
 }

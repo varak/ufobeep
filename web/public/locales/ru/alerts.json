@@ -58,5 +58,9 @@
   "ufobeepWitnesses": "Свидетели",
   "ufobeepConfirmations": "Подтверждения",
   "ufobeepAlertLevel": "Уровень оповещения",
-  "addedToUfobeep": "Добавлено в UFOBeep"
+  "addedToUfobeep": "Добавлено в UFOBeep",
+  "alertSource": "Источник оповещения",
+  "ufobeepOnly": "НЛО только гудит",
+  "ufobeepOnlyDescription": "Показать только оригинальные отчеты UFOBeep (за исключением базы данных MUFON)",
+  "alertDistanceRange": "Дистанционный диапазон Alert"
 }

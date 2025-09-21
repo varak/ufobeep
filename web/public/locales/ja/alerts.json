@@ -58,5 +58,9 @@
   "ufobeepWitnesses": "ウィッチネス",
   "ufobeepConfirmations": "確認事項",
   "ufobeepAlertLevel": "アラートレベル",
-  "addedToUfobeep": "UFOBeep に追加"
+  "addedToUfobeep": "UFOBeep に追加",
+  "alertSource": "アラートソース",
+  "ufobeepOnly": "UFOBeepのみ",
+  "ufobeepOnlyDescription": "オリジナルの UFOBeep レポートのみ(MUFON データベースを除く)",
+  "alertDistanceRange": "アラート距離範囲"
 }

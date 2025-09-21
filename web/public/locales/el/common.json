@@ -368,6 +368,11 @@
   "postCommand": "Αποστολή",
   "clouds": "Σύννεφα",
   "windLabel": "Άνεμος",
+  "filterAlerts": "Συναγερμοί φίλτρου",
+  "showAllAlerts": "Εμφάνιση όλων των ειδοποιήσεων",
+  "showAll": "Εμφάνιση όλων",
+  "distanceSliderDescription": "Σύρετε για να ρυθμίσετε πόσο μακριά θέλετε να δείτε ειδοποιήσεις. Ξεκινήστε από την απόσταση ορατότητας του καιρού μέχρι την εμφάνιση όλων των ειδοποιήσεων ανεξάρτητα από την απόσταση.",
+  "applyFilters": "Εφαρμογή φίλτρων",
   "errorGeneric": "Κάτι πήγε στραβά.",
   "welcomeTitle": "Καλώς ήρθατε στο UFOBeep",
   "welcomeSubtitle": "Σε πραγματικό χρόνο UFO ειδοποιήσεις κοντά σας",
@@ -454,5 +459,9 @@
   "errorLoadError": "Αποτυχία φόρτωσης λεπτομερειών ηχητικού σήματος",
   "addedToUfobeep": "Προστέθηκε στο UFOBeep",
   "mufonDatabaseReport": "ΜΟΥΦΟΝ Αριθμός υπόθεσης:",
-  "failed": "Αποτυχία"
+  "failed": "Αποτυχία",
+  "alertSource": "Ειδοποίηση πηγής",
+  "ufobeepOnly": "Μόνο UFOBeep",
+  "ufobeepOnlyDescription": "Εμφάνιση μόνο πρωτότυπων αναφορών UFOBeep (αποκλείστε τη βάση δεδομένων MUFON)",
+  "alertDistanceRange": "Ειδοποίηση εύρους απόστασης"
 }

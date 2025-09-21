@@ -368,6 +368,11 @@
   "postCommand": "Post- kommando",
   "clouds": "Skyer",
   "windLabel": "Vind",
+  "filterAlerts": "Filterrapporter",
+  "showAllAlerts": "Vis alle rapporter",
+  "showAll": "Vis alle",
+  "distanceSliderDescription": "Træk for at justere hvor langt du ønsker at se advarsler. Start fra vejrsigtbarhed afstand op til at vise alle indberetninger uanset afstand.",
+  "applyFilters": "Anvend filtre",
   "errorGeneric": "Noget gik galt.",
   "welcomeTitle": "Velkommen til UFOBeep",
   "welcomeSubtitle": "Real- time UFO advarsler i nærheden af dig",
@@ -454,5 +459,9 @@
   "errorLoadError": "Kunne ikke indlæse bip detaljer",
   "addedToUfobeep": "Tilføjet UFOBeep",
   "mufonDatabaseReport": "MUFON Sagsnummer:",
-  "failed": "Mislykkedes"
+  "failed": "Mislykkedes",
+  "alertSource": "Advarselskilde",
+  "ufobeepOnly": "Kun UFOBeep",
+  "ufobeepOnlyDescription": "Vis kun originale UFOBeep rapporter (udelukker MUFON database)",
+  "alertDistanceRange": "Advarselsafstand"
 }

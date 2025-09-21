@@ -368,6 +368,11 @@
   "postCommand": "Командование",
   "clouds": "Облака",
   "windLabel": "Ветер",
+  "filterAlerts": "Предупреждения фильтра",
+  "showAllAlerts": "Показать все оповещения",
+  "showAll": "Показать все",
+  "distanceSliderDescription": "Перетащите, чтобы отрегулировать, как далеко вы хотите видеть оповещения. Начните с расстояния видимости погоды, показывая все оповещения независимо от расстояния.",
+  "applyFilters": "Применять фильтры",
   "errorGeneric": "Что-то пошло не так.",
   "welcomeTitle": "Добро пожаловать в UFOBeep",
   "welcomeSubtitle": "НЛО в реальном времени рядом с вами",
@@ -454,5 +459,9 @@
   "errorLoadError": "Не удалось загрузить детали звукового сигнала",
   "addedToUfobeep": "Добавлено в UFOBeep",
   "mufonDatabaseReport": "МУФОН Номер дела:",
-  "failed": "Неудачник"
+  "failed": "Неудачник",
+  "alertSource": "Источник оповещения",
+  "ufobeepOnly": "НЛО только гудит",
+  "ufobeepOnlyDescription": "Показать только оригинальные отчеты UFOBeep (за исключением базы данных MUFON)",
+  "alertDistanceRange": "Дистанционный диапазон Alert"
 }

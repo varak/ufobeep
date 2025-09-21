@@ -58,5 +58,9 @@
   "ufobeepWitnesses": "Tanık Şahitler",
   "ufobeepConfirmations": "Onaylamalar",
   "ufobeepAlertLevel": "Uyarı Düzeyi",
-  "addedToUfobeep": "UFOBeep"
+  "addedToUfobeep": "UFOBeep",
+  "alertSource": "Uyarı Kaynağı",
+  "ufobeepOnly": "UFOBeep Only",
+  "ufobeepOnlyDescription": "Sadece orijinal UFOBeep raporları ( MUFON veritabanı hariç)",
+  "alertDistanceRange": "Alert Distance Range"
 }

@@ -368,6 +368,11 @@
   "postCommand": "Postikomento",
   "clouds": "Pilvet",
   "windLabel": "Tuuli",
+  "filterAlerts": "Suodatinhälytykset",
+  "showAllAlerts": "Näytä kaikki hälytykset",
+  "showAll": "Näytä kaikki",
+  "distanceSliderDescription": "Vedä säätää, kuinka pitkälle haluat nähdä hälytykset. Aloita säänäkyvyysetäisyydestä kaikkien kuulutusten näyttämiseen etäisyydestä riippumatta.",
+  "applyFilters": "Käytä suotimia",
   "errorGeneric": "Jokin meni pieleen.",
   "welcomeTitle": "Tervetuloa UFO- piippiin",
   "welcomeSubtitle": "Reaaliaikaiset UFO-hälytykset lähelläsi",
@@ -454,5 +459,9 @@
   "errorLoadError": "Piippauksen yksityiskohtia ei voitu ladata",
   "addedToUfobeep": "Lisätty UFO- piippiin",
   "mufonDatabaseReport": "MUFON Tapausnumero:",
-  "failed": "Ei onnistunut"
+  "failed": "Ei onnistunut",
+  "alertSource": "Varoituslähde",
+  "ufobeepOnly": "Vain UFO- piippaus",
+  "ufobeepOnlyDescription": "Näytä vain alkuperäiset UFOBeepin raportit (pois lukien MUFON-tietokanta)",
+  "alertDistanceRange": "Varoitusetäisyysalue"
 }

@@ -368,6 +368,11 @@
   "postCommand": "Comando post",
   "clouds": "Nuvole",
   "windLabel": "Vento vento",
+  "filterAlerts": "Filtri avvisi",
+  "showAllAlerts": "Mostra tutti gli avvisi",
+  "showAll": "Mostra tutto",
+  "distanceSliderDescription": "Trascina per regolare quanto si desidera vedere gli avvisi. Inizia dalla distanza di visibilità meteo fino a mostrare tutti gli avvisi indipendentemente dalla distanza.",
+  "applyFilters": "Applicare filtri",
   "errorGeneric": "Qualcosa è andato storto.",
   "welcomeTitle": "Benvenuti a UFOBeep",
   "welcomeSubtitle": "Avvisi UFO in tempo reale vicino a te",
@@ -454,5 +459,9 @@
   "errorLoadError": "Non caricare i dettagli del segnale acustico",
   "addedToUfobeep": "Aggiunto a UFOBeep",
   "mufonDatabaseReport": "MUFON Numero di causa:",
-  "failed": "Sfigato"
+  "failed": "Sfigato",
+  "alertSource": "Fonte di avviso",
+  "ufobeepOnly": "UFOBeep Solo",
+  "ufobeepOnlyDescription": "Mostra solo report originali UFOBeep (escluso database MUFON)",
+  "alertDistanceRange": "Distanza di allarme"
 }

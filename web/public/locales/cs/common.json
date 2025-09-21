@@ -368,6 +368,11 @@
   "postCommand": "Poštovní příkaz",
   "clouds": "Mraky",
   "windLabel": "Vítr",
+  "filterAlerts": "Comment",
+  "showAllAlerts": "Zobrazit všechny záznamy",
+  "showAll": "Zobrazit vše",
+  "distanceSliderDescription": "Přetáhněte nastavit, jak daleko chcete vidět upozornění. Začněte od meteorologické dohlednosti až po zobrazení všech záznamů bez ohledu na vzdálenost.",
+  "applyFilters": "Aplikovat filtry",
   "errorGeneric": "Něco se pokazilo.",
   "welcomeTitle": "Vítejte v UFOBeepu",
   "welcomeSubtitle": "Real-time UFO upozornění v blízkosti vás",
@@ -454,5 +459,9 @@
   "errorLoadError": "Nepodařilo se načíst detaily pípnutí",
   "addedToUfobeep": "Přidáno do UFOBeep",
   "mufonDatabaseReport": "MUFON Číslo případu:",
-  "failed": "Selhalo"
+  "failed": "Selhalo",
+  "alertSource": "Zdroj upozornění",
+  "ufobeepOnly": "Pouze UFOBeep",
+  "ufobeepOnlyDescription": "Zobrazit pouze originální UFOBeep reporty (bez databáze MUFON)",
+  "alertDistanceRange": "Varovné vzdálenosti"
 }

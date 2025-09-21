@@ -368,6 +368,11 @@
   "postCommand": "Post Command",
   "clouds": "Clouds",
   "windLabel": "Wind",
+  "filterAlerts": "Filter Alerts",
+  "showAllAlerts": "Show All Alerts",
+  "showAll": "Show All",
+  "distanceSliderDescription": "Drag to adjust how far you want to see alerts. Start from weather visibility distance up to showing all alerts regardless of distance.",
+  "applyFilters": "Apply Filters",
   "errorGeneric": "Something went wrong.",
   "welcomeTitle": "Welcome to UFOBeep",
   "welcomeSubtitle": "Real-time UFO alerts near you",
@@ -454,5 +459,9 @@
   "errorLoadError": "Failed to load beep details",
   "addedToUfobeep": "Added to UFOBeep",
   "mufonDatabaseReport": "MUFON Case Number:",
-  "failed": "Failed"
+  "failed": "Failed",
+  "alertSource": "Alert Source",
+  "ufobeepOnly": "UFOBeep Only",
+  "ufobeepOnlyDescription": "Show only original UFOBeep reports (exclude MUFON database)",
+  "alertDistanceRange": "Alert Distance Range"
 }

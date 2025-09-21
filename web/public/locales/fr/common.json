@@ -368,6 +368,11 @@
   "postCommand": "Poste de commandement",
   "clouds": "Nuages",
   "windLabel": "Vent",
+  "filterAlerts": "Alertes de filtrage",
+  "showAllAlerts": "Afficher toutes les alertes",
+  "showAll": "Afficher tout",
+  "distanceSliderDescription": "Faites glisser pour ajuster jusqu'où vous voulez voir les alertes. Commencez par la distance de visibilité météorologique jusqu'à montrer toutes les alertes quelle que soit la distance.",
+  "applyFilters": "Appliquer les filtres",
   "errorGeneric": "Quelque chose s'est mal passé.",
   "welcomeTitle": "Bienvenue à UFOBeep",
   "welcomeSubtitle": "Alertes OVNI en temps réel près de chez vous",
@@ -454,5 +459,9 @@
   "errorLoadError": "Impossible de charger les détails du bip",
   "addedToUfobeep": "Ajouté à UFOBeep",
   "mufonDatabaseReport": "MUFON Numéro de cas:",
-  "failed": "Échec"
+  "failed": "Échec",
+  "alertSource": "Source d'alerte",
+  "ufobeepOnly": "UFOBeep seulement",
+  "ufobeepOnlyDescription": "Afficher uniquement les rapports originaux UFOBeep (à l'exclusion de la base de données MUFON)",
+  "alertDistanceRange": "Distance d'alerte"
 }

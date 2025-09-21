@@ -58,5 +58,9 @@
   "ufobeepWitnesses": "Svědci",
   "ufobeepConfirmations": "Potvrzení",
   "ufobeepAlertLevel": "Úroveň upozornění",
-  "addedToUfobeep": "Přidáno do UFOBeep"
+  "addedToUfobeep": "Přidáno do UFOBeep",
+  "alertSource": "Zdroj upozornění",
+  "ufobeepOnly": "Pouze UFOBeep",
+  "ufobeepOnlyDescription": "Zobrazit pouze originální UFOBeep reporty (bez databáze MUFON)",
+  "alertDistanceRange": "Varovné vzdálenosti"
 }

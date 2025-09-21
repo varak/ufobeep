@@ -58,5 +58,9 @@
   "ufobeepWitnesses": "뚱 베어",
   "ufobeepConfirmations": "이름 *",
   "ufobeepAlertLevel": "출력 레벨",
-  "addedToUfobeep": "UFOBeep에 추가"
+  "addedToUfobeep": "UFOBeep에 추가",
+  "alertSource": "Alert 소스",
+  "ufobeepOnly": "UFOBeep 만",
+  "ufobeepOnlyDescription": "원래 UFOBeep 보고서 만 표시 (MUFON 데이터베이스 제외)",
+  "alertDistanceRange": "출력 거리 범위"
 }

@@ -368,6 +368,11 @@
   "postCommand": "포스트 명령",
   "clouds": "클라우드",
   "windLabel": "Ღ♥ღ",
+  "filterAlerts": "필터 경고",
+  "showAllAlerts": "모든 경고 표시",
+  "showAll": "모두보기",
+  "distanceSliderDescription": "경고를보고 싶은 방법을 조정합니다. 거리에 상관없이 모든 경고를 표시하기 위해 날씨 가시 거리에서 시작.",
+  "applyFilters": "필터 적용",
   "errorGeneric": "뭔가 잘못되었습니다.",
   "welcomeTitle": "UFOBeep에 오신 것을 환영합니다",
   "welcomeSubtitle": "실시간 UFO 알림",
@@ -454,5 +459,9 @@
   "errorLoadError": "Beep 세부사항을 적재하는 실패",
   "addedToUfobeep": "UFOBeep에 추가",
   "mufonDatabaseReport": "사이트맵 케이스 번호:",
-  "failed": "실패한"
+  "failed": "실패한",
+  "alertSource": "Alert 소스",
+  "ufobeepOnly": "UFOBeep 만",
+  "ufobeepOnlyDescription": "원래 UFOBeep 보고서 만 표시 (MUFON 데이터베이스 제외)",
+  "alertDistanceRange": "출력 거리 범위"
 }

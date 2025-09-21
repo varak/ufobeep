@@ -368,6 +368,11 @@
   "postCommand": "Post Command",
   "clouds": "Wolken",
   "windLabel": "Wind",
+  "filterAlerts": "Filter Alerts",
+  "showAllAlerts": "Alle Alarme anzeigen",
+  "showAll": "Alle anzeigen",
+  "distanceSliderDescription": "Ziehen Sie um, wie weit Sie Alarme sehen möchten. Beginnen Sie von der Entfernung der Wettersicht bis zu allen Warnungen unabhängig von der Entfernung.",
+  "applyFilters": "Filter anwenden",
   "errorGeneric": "Etwas ging schief.",
   "welcomeTitle": "Willkommen bei UFOBeep",
   "welcomeSubtitle": "Echtzeit-UFO-Benachrichtigungen in Ihrer Nähe",
@@ -454,5 +459,9 @@
   "errorLoadError": "Versäumt, um Details zu laden",
   "addedToUfobeep": "Zusätzlich zu UFOBeep",
   "mufonDatabaseReport": "MUFON Rechtssache:",
-  "failed": "Versäumt"
+  "failed": "Versäumt",
+  "alertSource": "Alert Source",
+  "ufobeepOnly": "Nur noch",
+  "ufobeepOnlyDescription": "Nur originale UFOBeep-Berichte anzeigen (ohne MUFON-Datenbank)",
+  "alertDistanceRange": "Alarm Entfernungsbereich"
 }
