@@ -169,22 +169,24 @@ class ProximityAlertService:
                 else:
                     logger.info("Rate limiting disabled - sending proximity alerts regardless of frequency")
                 
-                # Get devices with user preferences for DND, quiet hours, and alert range
+                # SPATIAL QUERY: Get devices within 200km using PostGIS spatial index
                 query = """
                     SELECT DISTINCT ON (device_id)
                         device_id, push_token, platform, lat, lon,
-                        alert_range_km, preferences, snooze_until
+                        alert_range_km, preferences, snooze_until,
+                        ST_Distance(location, ST_Point($2, $1)::geography) / 1000.0 as distance_km
                     FROM devices
                     WHERE is_active = true
                       AND push_enabled = true
                       AND push_token IS NOT NULL
-                      AND device_id != $1
+                      AND device_id != $3
+                      AND location IS NOT NULL
                       AND (last_seen IS NULL OR last_seen > NOW() - INTERVAL '24 hours')
                       AND (snooze_until IS NULL OR snooze_until <= NOW())
-                    ORDER BY device_id, updated_at DESC
-                    LIMIT 1000
+                      AND ST_DWithin(location, ST_Point($2, $1)::geography, 200000)
+                    ORDER BY device_id, updated_at DESC, distance_km
                 """
-                rows = await conn.fetch(query, exclude_device_id)
+                rows = await conn.fetch(query, lat, lon, exclude_device_id)
                 
                 # Filter devices based on user preferences and proximity
                 devices = []
@@ -192,7 +194,7 @@ class ProximityAlertService:
                 
                 for row in rows:
                     # Parse user preferences
-                    user_alert_range = row['alert_range_km'] or 10.0  # Default 10km if not set
+                    user_alert_range = row['alert_range_km'] or 30.0  # Visible default: 30km
                     preferences = row['preferences'] or {}
                     dnd_settings = preferences.get('dnd', {}) if isinstance(preferences, dict) else {}
                     
@@ -217,24 +219,23 @@ class ProximityAlertService:
                         logger.debug(f"Skipping device {row['device_id']} due to quiet hours")
                         continue
                     
-                    # Check distance against user's preferred range
-                    if row['lat'] is not None and row['lon'] is not None:
-                        # Calculate actual distance
-                        distance = self._calculate_distance(lat, lon, row['lat'], row['lon'])
-                        
-                        # Respect user's alert range preference instead of hardcoded radius_km
-                        if distance <= user_alert_range:
-                            devices.append({
-                                'device_id': row['device_id'],
-                                'push_token': row['push_token'],
-                                'platform': row['platform'],
-                                'distance_km': round(distance, 2),
-                                'device_lat': row['lat'],
-                                'device_lon': row['lon'],
-                                'user_alert_range': user_alert_range,
-                                'quiet_hours_bypassed': in_quiet_hours == False and dnd_settings.get('enabled'),
-                                'preferences': row['preferences']
-                            })
+                    # Use database-calculated distance (no Python calculations needed)
+                    distance_km = float(row['distance_km'])
+
+                    # Respect user's alert range preference
+                    if distance_km <= user_alert_range:
+                        devices.append({
+                            'device_id': row['device_id'],
+                            'push_token': row['push_token'],
+                            'platform': row['platform'],
+                            'distance_km': round(distance_km, 2),
+                            'device_lat': row['lat'],
+                            'device_lon': row['lon'],
+                            'user_alert_range': user_alert_range,
+                            'quiet_hours_bypassed': in_quiet_hours == False and dnd_settings.get('enabled'),
+                            'preferences': row['preferences']
+                        })
+                        logger.debug(f"SPATIAL: Device {row['device_id']} INCLUDED (distance: {distance_km:.2f}km, user range: {user_alert_range}km)")
                     else:
                         # No location data - include only if user's range >= 25km (fallback for no-location devices)
                         if user_alert_range >= 25.0:
@@ -262,23 +263,25 @@ class ProximityAlertService:
             logger.info(f"FALLBACK: Searching for devices within {radius_km}km of ({lat}, {lon}), excluding {exclude_device_id}")
             
             async with self.db_pool.acquire() as conn:
-                # Get all devices with location data AND recent activity (24h freshness)  
+                # SPATIAL QUERY: Get devices within maximum possible range (200km) using spatial index
                 query = """
                     SELECT
                         device_id, push_token, platform, lat, lon,
-                        alert_range_km, preferences, snooze_until
+                        alert_range_km, preferences, snooze_until,
+                        ST_Distance(location, ST_Point($2, $1)::geography) / 1000.0 as distance_km
                     FROM devices
                     WHERE is_active = true
                       AND push_token IS NOT NULL
-                      AND device_id != $1
-                      AND (lat IS NOT NULL AND lon IS NOT NULL)
-                      AND lat != 0.0 AND lon != 0.0
+                      AND device_id != $3
+                      AND location IS NOT NULL
                       AND (last_seen IS NULL OR last_seen > NOW() - INTERVAL '24 hours')
                       AND (snooze_until IS NULL OR snooze_until <= NOW())
+                      AND ST_DWithin(location, ST_Point($2, $1)::geography, 200000)
+                    ORDER BY distance_km
                 """
-                
-                rows = await conn.fetch(query, exclude_device_id)
-                logger.info(f"FALLBACK: Found {len(rows)} total active devices with location data")
+
+                rows = await conn.fetch(query, lat, lon, exclude_device_id)
+                logger.info(f"SPATIAL: Found {len(rows)} devices within 200km using spatial index")
                 
                 # Filter by user preferences and distance
                 nearby_devices = []
@@ -286,7 +289,7 @@ class ProximityAlertService:
                 
                 for row in rows:
                     # Parse user preferences
-                    user_alert_range = row['alert_range_km'] or 10.0  # Default 10km if not set
+                    user_alert_range = row['alert_range_km'] or 30.0  # Visible default: 30km
                     preferences = row['preferences'] or {}
                     dnd_settings = preferences.get('dnd', {}) if isinstance(preferences, dict) else {}
                     
