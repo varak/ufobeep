@@ -62,5 +62,6 @@
   "alertSource": "Varoituslähde",
   "ufobeepOnly": "Vain UFO- piippaus",
   "ufobeepOnlyDescription": "Näytä vain alkuperäiset UFOBeepin raportit (pois lukien MUFON-tietokanta)",
-  "alertDistanceRange": "Varoitusetäisyysalue"
+  "alertDistanceRange": "Varoitusetäisyysalue",
+  "alertBrowsing": "Hälytysselaus"
 }

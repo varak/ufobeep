@@ -62,5 +62,6 @@
   "alertSource": "Advarselskilde",
   "ufobeepOnly": "Kun UFOBeep",
   "ufobeepOnlyDescription": "Vis kun originale UFOBeep rapporter (udelukker MUFON database)",
-  "alertDistanceRange": "Advarselsafstand"
+  "alertDistanceRange": "Advarselsafstand",
+  "alertBrowsing": "Alert browsing"
 }

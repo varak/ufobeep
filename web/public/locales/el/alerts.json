@@ -62,5 +62,6 @@
   "alertSource": "Ειδοποίηση πηγής",
   "ufobeepOnly": "Μόνο UFOBeep",
   "ufobeepOnlyDescription": "Εμφάνιση μόνο πρωτότυπων αναφορών UFOBeep (αποκλείστε τη βάση δεδομένων MUFON)",
-  "alertDistanceRange": "Ειδοποίηση εύρους απόστασης"
+  "alertDistanceRange": "Ειδοποίηση εύρους απόστασης",
+  "alertBrowsing": "Προειδοποίηση περιήγησης"
 }

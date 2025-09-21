@@ -62,5 +62,6 @@
   "alertSource": "Zdroj upozornění",
   "ufobeepOnly": "Pouze UFOBeep",
   "ufobeepOnlyDescription": "Zobrazit pouze originální UFOBeep reporty (bez databáze MUFON)",
-  "alertDistanceRange": "Varovné vzdálenosti"
+  "alertDistanceRange": "Varovné vzdálenosti",
+  "alertBrowsing": "Name"
 }

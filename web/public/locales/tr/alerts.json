@@ -62,5 +62,6 @@
   "alertSource": "Uyarı Kaynağı",
   "ufobeepOnly": "UFOBeep Only",
   "ufobeepOnlyDescription": "Sadece orijinal UFOBeep raporları ( MUFON veritabanı hariç)",
-  "alertDistanceRange": "Alert Distance Range"
+  "alertDistanceRange": "Alert Distance Range",
+  "alertBrowsing": "Uyarı Browsing"
 }

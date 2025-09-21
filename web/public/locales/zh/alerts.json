@@ -62,5 +62,6 @@
   "alertSource": "警告来源",
   "ufobeepOnly": "仅限UUOBEP",
   "ufobeepOnlyDescription": "只显示原始UFOBEP报告(不包括MUFON数据库)",
-  "alertDistanceRange": "警报距离"
+  "alertDistanceRange": "警报距离",
+  "alertBrowsing": "提醒浏览"
 }

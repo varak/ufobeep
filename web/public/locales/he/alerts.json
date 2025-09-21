@@ -62,5 +62,6 @@
   "alertSource": "מקור התראה",
   "ufobeepOnly": "עב\"מ רק",
   "ufobeepOnlyDescription": "הצג רק דוחות עב\"מ מקוריים (לא כולל MUFON)",
-  "alertDistanceRange": "המונחים: Distance"
+  "alertDistanceRange": "המונחים: Distance",
+  "alertBrowsing": "תגית: Browsing"
 }

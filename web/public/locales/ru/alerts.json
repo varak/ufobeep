@@ -62,5 +62,6 @@
   "alertSource": "Источник оповещения",
   "ufobeepOnly": "НЛО только гудит",
   "ufobeepOnlyDescription": "Показать только оригинальные отчеты UFOBeep (за исключением базы данных MUFON)",
-  "alertDistanceRange": "Дистанционный диапазон Alert"
+  "alertDistanceRange": "Дистанционный диапазон Alert",
+  "alertBrowsing": "Оповещение о просмотре"
 }

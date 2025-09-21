@@ -62,5 +62,6 @@
   "alertSource": "Waarschuwingsbron",
   "ufobeepOnly": "UFObeep alleen",
   "ufobeepOnlyDescription": "Alleen originele UFObeep-rapporten tonen (exclusief MUFON-database)",
-  "alertDistanceRange": "Waarschuwingsafstand"
+  "alertDistanceRange": "Waarschuwingsafstand",
+  "alertBrowsing": "Alert bladeren"
 }

@@ -62,5 +62,6 @@
   "alertSource": "Fuente de alerta",
   "ufobeepOnly": "UFOBeep Only",
   "ufobeepOnlyDescription": "Mostrar sólo informes originales de UFOBeep (excluya la base de datos MUFON)",
-  "alertDistanceRange": "Distancia de alerta"
+  "alertDistanceRange": "Distancia de alerta",
+  "alertBrowsing": "Alerta Browsing"
 }
