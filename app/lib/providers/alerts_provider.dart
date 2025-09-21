@@ -347,25 +347,40 @@ class AlertsListData {
   final int total;
   final int currentPage;
   final bool hasMore;
+  final int totalPages;
+  final bool hasPrevPage;
+  final bool hasNextPage;
 
   const AlertsListData({
     required this.alerts,
     required this.total,
     required this.currentPage,
     required this.hasMore,
+    required this.totalPages,
+    required this.hasPrevPage,
+    required this.hasNextPage,
   });
+
+  // Getter for backward compatibility
+  int get page => currentPage;
 
   AlertsListData copyWith({
     List<Alert>? alerts,
     int? total,
     int? currentPage,
     bool? hasMore,
+    int? totalPages,
+    bool? hasPrevPage,
+    bool? hasNextPage,
   }) {
     return AlertsListData(
       alerts: alerts ?? this.alerts,
       total: total ?? this.total,
       currentPage: currentPage ?? this.currentPage,
       hasMore: hasMore ?? this.hasMore,
+      totalPages: totalPages ?? this.totalPages,
+      hasPrevPage: hasPrevPage ?? this.hasPrevPage,
+      hasNextPage: hasNextPage ?? this.hasNextPage,
     );
   }
 }
@@ -499,6 +514,34 @@ class AlertsList extends _$AlertsList {
     );
     
     state = AsyncData(alertsData);
+  }
+
+  Future<void> loadPage(int page) async {
+    try {
+      // Get user location for distance calculation
+      double? userLat, userLon;
+      try {
+        final location = await permissionService.getCurrentLocation();
+        if (location != null) {
+          userLat = location.latitude;
+          userLon = location.longitude;
+        }
+      } catch (e) {
+        debugPrint('Could not get user location for distance calculation: $e');
+      }
+
+      // Fetch specific page
+      final alertsData = await _fetchAlertsPage(
+        page: page,
+        latitude: userLat,
+        longitude: userLon,
+      );
+
+      state = AsyncData(alertsData);
+    } catch (e) {
+      debugPrint('Error loading page $page: $e');
+      state = AsyncError(e, StackTrace.current);
+    }
   }
 
   Future<void> loadMore({

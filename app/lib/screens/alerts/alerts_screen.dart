@@ -311,65 +311,79 @@ class AlertsScreen extends ConsumerWidget {
           ),
         ),
         
-        // Alerts list with pagination
+        // Alerts list with page-based pagination
         Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            itemCount: visibleAlerts.length + (alertsData?.hasMore == true ? 1 : 0), // +1 for load more button if has more
-            itemBuilder: (context, index) {
-              // Show load more button at the end
-              if (index == visibleAlerts.length) {
-                return _buildLoadMoreButton(context, ref, alertsData);
-              }
-              
-              final alert = visibleAlerts[index];
-              return AlertCard(alert: alert);
-            },
+          child: Column(
+            children: [
+              // Page indicators
+              if (alertsData != null)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Page info
+                      Text(
+                        'Page ${alertsData.page} of ${alertsData.totalPages}',
+                        style: const TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 14,
+                        ),
+                      ),
+                      // Navigation buttons
+                      Row(
+                        children: [
+                          // Previous page
+                          IconButton(
+                            onPressed: alertsData.hasPrevPage
+                                ? () => _goToPreviousPage(ref, alertsData.page)
+                                : null,
+                            icon: const Icon(Icons.chevron_left),
+                            color: alertsData.hasPrevPage
+                                ? AppColors.brandPrimary
+                                : AppColors.textTertiary,
+                          ),
+                          // Next page
+                          IconButton(
+                            onPressed: alertsData.hasNextPage
+                                ? () => _goToNextPage(ref, alertsData.page)
+                                : null,
+                            icon: const Icon(Icons.chevron_right),
+                            color: alertsData.hasNextPage
+                                ? AppColors.brandPrimary
+                                : AppColors.textTertiary,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              // Alerts list for current page
+              Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  itemCount: visibleAlerts.length,
+                  itemBuilder: (context, index) {
+                    final alert = visibleAlerts[index];
+                    return AlertCard(alert: alert);
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ],
     );
   }
 
-  Widget _buildLoadMoreButton(
-    BuildContext context, 
-    WidgetRef ref,
-    AlertsListData? alertsData,
-  ) {
-    if (alertsData == null || !alertsData.hasMore) {
-      return const SizedBox.shrink();
+  void _goToPreviousPage(WidgetRef ref, int currentPage) {
+    if (currentPage > 1) {
+      ref.read(alertsListProvider.notifier).loadPage(currentPage - 1);
     }
-    
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Center(
-        child: Column(
-          children: [
-            Text(
-              'Showing ${alertsData.alerts.length} of ${alertsData.total} alerts',
-              style: const TextStyle(
-                color: AppColors.textSecondary,
-                fontSize: 12,
-              ),
-            ),
-            const SizedBox(height: 8),
-            ElevatedButton.icon(
-              onPressed: () {
-                ref.read(alertsListProvider.notifier).loadMore();
-              },
-              icon: const Icon(Icons.expand_more),
-              label: Text(AppLocalizations.of(context)?.loadMoreAlerts ?? 'Load More Alerts'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.darkSurface,
-                foregroundColor: AppColors.brandPrimary,
-                side: const BorderSide(color: AppColors.brandPrimary),
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  }
+
+  void _goToNextPage(WidgetRef ref, int currentPage) {
+    ref.read(alertsListProvider.notifier).loadPage(currentPage + 1);
   }
 }
 

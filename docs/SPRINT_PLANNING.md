@@ -70,34 +70,54 @@
 ### Sprint 1 (Weeks 1-2): SCALING FOUNDATION - ZERO COST
 **Goal**: App survives 10K+ alerts without crashing
 
-#### API Backend Tasks
-- [ ] **Add page-based pagination** - `/api/beep?page=1&limit=20` endpoint
-- [ ] **Return pagination metadata** - `{data: alerts, page: 1, totalPages: 150, total: 3000}`
-- [ ] **Add database indexes** - created_at DESC, source+created_at, location fields
-- [ ] **Optimize queries** - Return only essential fields, not full enrichment_data
-- [ ] **Add page count calculations** - `CEIL(total_count / limit)` in queries
-- [ ] **Add query logging** - Identify slow queries with timing
-- [ ] **Database connection pooling** - Reuse connections efficiently
+#### STEP 1: Database Foundation (Day 1-2)
+- [ ] **1.1 Add database indexes** (5 mins each, zero downtime)
+  ```sql
+  CREATE INDEX idx_sightings_created_at_desc ON sightings(created_at DESC);
+  CREATE INDEX idx_sightings_source_created ON sightings(source, created_at DESC);
+  CREATE INDEX idx_devices_active_location ON devices(lat, lon) WHERE is_active = true;
+  ```
+- [ ] **1.2 Test index performance** - Run EXPLAIN ANALYZE on slow queries
+- [ ] **1.3 Verify existing queries faster** - Measure before/after times
+- [ ] **CHECKPOINT**: All existing queries must work, just faster
 
-#### Mobile App Tasks
-- [ ] **Implement PageView widget** - Swipeable pages instead of long lists
-- [ ] **Add page indicators** - "Page 5 of 150" display
-- [ ] **Page navigation controls** - Previous/Next buttons
-- [ ] **Cache multiple pages** - Keep current + 2 adjacent pages in memory
-- [ ] **Lazy image loading** - Load images when page becomes visible
-- [ ] **Jump to page dialog** - Allow direct page entry
-- [ ] **Fix memory leaks** - Dispose controllers on page changes
-- [ ] **Compress uploaded images** - Resize before upload
+#### STEP 2: API Pagination (Day 3-4)
+- [ ] **2.1 Add page parameter** - `/api/beep?page=1&limit=20` (keep existing as fallback)
+- [ ] **2.2 Return pagination metadata** - `{data, page, totalPages, total}`
+- [ ] **2.3 Test API endpoint** - Verify pages 1,2,3 return different data
+- [ ] **2.4 Test edge cases** - page=0, page=999999, invalid pages
+- [ ] **CHECKPOINT**: Old API (no page param) still works, new API works
 
-#### Web App Tasks
-- [ ] **Traditional pagination component** - 1 2 3 4 5 ... Next controls
-- [ ] **URL-based navigation** - `/beep?page=5` for bookmarkable pages
-- [ ] **Page size selector** - 10/20/50 alerts per page options
-- [ ] **"Go to page" input** - Direct navigation to any page number
-- [ ] **Optimize image loading** - Use proper sizing and compression
-- [ ] **Add loading states** - Better UX during page changes
+#### STEP 3: Mobile App Pagination (Day 5-7)
+- [ ] **3.1 Replace ListView with PageView** - Keep current data loading as fallback
+- [ ] **3.2 Add page indicators** - "Page X of Y" display
+- [ ] **3.3 Wire API pagination** - Call new API endpoint by page
+- [ ] **3.4 Test page navigation** - Swipe, previous/next buttons
+- [ ] **3.5 Add error handling** - Failed page loads show error, don't crash
+- [ ] **CHECKPOINT**: Can navigate pages smoothly, fallback to old list if page fails
 
-**Definition of Done**: App handles 50K alerts smoothly with <200MB memory usage
+#### STEP 4: Web App Pagination (Day 8-9)
+- [ ] **4.1 Add pagination component** - 1 2 3 4 5 ... Next controls
+- [ ] **4.2 Wire to API pagination** - Use new endpoint
+- [ ] **4.3 Add URL parameters** - `/beep?page=5` for bookmarks
+- [ ] **4.4 Test pagination flow** - Click through pages, verify URLs
+- [ ] **CHECKPOINT**: Web pagination works, old behavior available as fallback
+
+#### STEP 5: Performance Verification (Day 10)
+- [ ] **5.1 Memory testing** - Load app with 50K alerts, measure memory
+- [ ] **5.2 Speed testing** - Time page loads vs old "load all" method
+- [ ] **5.3 Database performance** - Verify queries under 100ms
+- [ ] **5.4 User testing** - Verify no functionality broken
+- [ ] **CHECKPOINT**: Performance goals met, no features broken
+
+### Testing Strategy (NO FALLBACKS TO DEBUG)
+- **Each step must work** before proceeding to next
+- **Fail loudly** - No silent fallbacks that hide problems
+- **Measure everything** - Before/after performance metrics
+- **Test edge cases** - Empty pages, large pages, network failures
+- **User testing** - Real usage patterns on all platforms
+
+**Definition of Done**: App handles 50K alerts with <200MB memory, <2s page loads
 
 ### Sprint 2 (Week 3): PERFORMANCE OPTIMIZATION - ZERO COST
 **Goal**: Fast, responsive user experience
