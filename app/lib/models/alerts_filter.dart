@@ -35,13 +35,14 @@ class AlertsFilter {
     bool? showUfoBeepOnly,
     AlertSortBy? sortBy,
     bool? ascending,
+    bool clearUfoBeepOnly = false,  // Explicit clear flag
   }) {
     return AlertsFilter(
       categories: categories ?? this.categories,
       maxDistanceKm: maxDistanceKm ?? this.maxDistanceKm,
       maxAgeHours: maxAgeHours ?? this.maxAgeHours,
       verifiedOnly: verifiedOnly ?? this.verifiedOnly,
-      showUfoBeepOnly: showUfoBeepOnly ?? this.showUfoBeepOnly,
+      showUfoBeepOnly: clearUfoBeepOnly ? null : (showUfoBeepOnly ?? this.showUfoBeepOnly),
       sortBy: sortBy ?? this.sortBy,
       ascending: ascending ?? this.ascending,
     );
@@ -51,7 +52,7 @@ class AlertsFilter {
   AlertsFilter clearDistance() => copyWith(maxDistanceKm: null);
   AlertsFilter clearAge() => copyWith(maxAgeHours: null);
   AlertsFilter clearVerified() => copyWith(verifiedOnly: null);
-  AlertsFilter clearUfoBeepOnly() => copyWith(showUfoBeepOnly: null);
+  AlertsFilter clearUfoBeepOnly() => copyWith(clearUfoBeepOnly: true);
   AlertsFilter clearCategories() => copyWith(categories: const {});
 
   // Reset all filters

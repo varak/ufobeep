@@ -14,17 +14,18 @@ class AlertsFilterDialog extends ConsumerStatefulWidget {
 }
 
 class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
-  late AlertsFilter _workingFilter;
-  late double _distanceSliderValue;
+  AlertsFilter? _workingFilter;
+  double _distanceSliderValue = 100.0;
   
   @override
   void initState() {
     super.initState();
+    // Initialize working filter from current state
     _workingFilter = ref.read(alertsFilterStateProvider);
-    // Initialize slider value: 0 = visibility (~5km), 100 = show all
-    _distanceSliderValue = _workingFilter.maxDistanceKm == null 
-        ? 100.0 
-        : ((_workingFilter.maxDistanceKm! - 5.0) / 195.0) * 100.0;
+    // Initialize slider value based on current filter
+    _distanceSliderValue = _workingFilter!.maxDistanceKm == null
+        ? 100.0
+        : ((_workingFilter!.maxDistanceKm! - 5.0) / 195.0) * 100.0;
   }
 
   void _updateWorkingFilter(AlertsFilter filter) {
@@ -34,7 +35,9 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
   }
 
   void _applyFilter() {
-    ref.read(alertsFilterStateProvider.notifier).updateFilter(_workingFilter);
+    if (_workingFilter != null) {
+      ref.read(alertsFilterStateProvider.notifier).updateFilter(_workingFilter!);
+    }
     Navigator.of(context).pop();
   }
 
@@ -50,23 +53,41 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
       _distanceSliderValue = value;
       if (value >= 100.0) {
         // Show all alerts
-        _workingFilter = _workingFilter.copyWith(maxDistanceKm: null);
+        _workingFilter = _workingFilter!.copyWith(maxDistanceKm: null);
       } else {
         // Map 0-100 to 5km-200km (weather visibility to very far)
         final distance = 5.0 + (value / 100.0) * 195.0;
-        _workingFilter = _workingFilter.copyWith(maxDistanceKm: distance);
+        _workingFilter = _workingFilter!.copyWith(maxDistanceKm: distance);
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    // Initialize working filter from current state if not set
+    _workingFilter ??= ref.read(alertsFilterStateProvider);
+
     return Dialog(
-      backgroundColor: AppColors.darkSurface,
+      backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
         width: double.infinity,
         constraints: const BoxConstraints(maxHeight: 600),
+        decoration: BoxDecoration(
+          color: AppColors.darkSurface.withOpacity(0.85),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: AppColors.brandPrimary.withOpacity(0.4),
+            width: 1.5,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.brandPrimary.withOpacity(0.1),
+              blurRadius: 20,
+              spreadRadius: 2,
+            ),
+          ],
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -80,22 +101,13 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
                   topRight: Radius.circular(16),
                 ),
               ),
-              child: Row(
-                children: [
-                  const Text(
-                    'Filter Alerts',
-                    style: TextStyle(
-                      color: AppColors.textPrimary,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const Spacer(),
-                  TextButton(
-                    onPressed: _resetFilter,
-                    child: const Text('Reset'),
-                  ),
-                ],
+              child: Text(
+                'Filter Alerts',
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
 
@@ -111,7 +123,7 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
                     const SizedBox(height: 12),
                     _buildUfoBeepOnlyToggle(),
                     const SizedBox(height: 24),
-                    
+
                     // Distance Slider Section
                     _buildSectionTitle('Alert Distance Range'),
                     const SizedBox(height: 12),
@@ -318,13 +330,22 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
             ),
           ),
           Switch(
-            value: _workingFilter.showUfoBeepOnly ?? false,
+            value: _workingFilter!.showUfoBeepOnly ?? false,
             onChanged: (value) {
-              _updateWorkingFilter(
-                _workingFilter.copyWith(
-                  showUfoBeepOnly: value ? true : null,
-                ),
-              );
+              print('DEBUG: Toggle switched to: $value');
+              print('DEBUG: Current _workingFilter.showUfoBeepOnly: ${_workingFilter!.showUfoBeepOnly}');
+
+              if (value) {
+                // Turn on UFOBeep only
+                final newFilter = _workingFilter!.copyWith(showUfoBeepOnly: true);
+                print('DEBUG: Setting UFOBeep ON, new filter: ${newFilter.showUfoBeepOnly}');
+                _updateWorkingFilter(newFilter);
+              } else {
+                // Turn off UFOBeep only - use clearUfoBeepOnly method
+                final newFilter = _workingFilter!.clearUfoBeepOnly();
+                print('DEBUG: Setting UFOBeep OFF, new filter: ${newFilter.showUfoBeepOnly}');
+                _updateWorkingFilter(newFilter);
+              }
             },
             activeColor: AppColors.brandPrimary,
             inactiveThumbColor: AppColors.textTertiary,
