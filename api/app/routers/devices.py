@@ -774,10 +774,10 @@ async def update_device_location(device_id: str, request: dict):
         db_pool = await get_db()
         
         async with db_pool.acquire() as conn:
-            # Update device location
+            # Update device location (both lat/lon and geometry for spatial queries)
             result = await conn.execute("""
-                UPDATE devices 
-                SET lat = $1, lon = $2, updated_at = NOW()
+                UPDATE devices
+                SET lat = $1, lon = $2, location = ST_Point($2, $1), updated_at = NOW()
                 WHERE device_id = $3
             """, lat, lon, device_id)
             
@@ -1044,11 +1044,11 @@ async def update_location(body: UpdateLocationIn, user_id: Optional[str] = Depen
         now = datetime.now(timezone.utc)
         
         async with db_pool.acquire() as conn:
-            # Update all active devices for this user
+            # Update all active devices for this user (both lat/lon and geometry)
             result = await conn.execute(
                 """
-                UPDATE devices 
-                SET lat = $1, lon = $2, last_seen = $3
+                UPDATE devices
+                SET lat = $1, lon = $2, location = ST_Point($2, $1), last_seen = $3
                 WHERE user_id = $4 AND push_enabled = TRUE
                 """,
                 body.lat, body.lon, now, user_id
