@@ -74,7 +74,7 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
         width: double.infinity,
         constraints: const BoxConstraints(maxHeight: 600),
         decoration: BoxDecoration(
-          color: AppColors.glassCardBg,
+          color: AppColors.nightSkyMiddle.withOpacity(0.95),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: AppColors.glassCardBorder,
@@ -296,7 +296,7 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: AppColors.brandPrimary.withOpacity(0.1),
+              color: AppColors.nightSkyMiddle.withOpacity(0.95),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(color: AppColors.brandPrimary.withOpacity(0.2)),
             ),
