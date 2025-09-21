@@ -1497,4 +1497,33 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get applyFilters => 'Käytä suotimia';
+
+  @override
+  String get notificationRange => 'Ilmoitusalue';
+
+  @override
+  String get notificationRangeDescription =>
+      'Hanki etsintäkuulutukset havaintoja varten tämän etäisyyden sisällä';
+
+  @override
+  String get viewingRange => 'Katselualue';
+
+  @override
+  String get viewingRangeDescription =>
+      'Näytä havaintoja tämän etäisyyden sisällä selattaessa';
+
+  @override
+  String get weatherVisibility => 'Säänäkyvyys (~10 km)';
+
+  @override
+  String get localArea => 'Paikallinen alue (25 km)';
+
+  @override
+  String get regional => 'Alueellinen';
+
+  @override
+  String get pushNotifications => 'Työnnä ilmoitukset';
+
+  @override
+  String get alertBrowsing => 'Hälytysselaus';
 }

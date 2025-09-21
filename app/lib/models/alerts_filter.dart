@@ -9,6 +9,7 @@ class AlertsFilter {
   final int? maxAgeHours;
   final bool? verifiedOnly;
   final bool? showUfoBeepOnly;
+  final double? alertRangeKm; // Notification range for push alerts
   final AlertSortBy sortBy;
   final bool ascending;
 
@@ -18,6 +19,7 @@ class AlertsFilter {
     this.maxAgeHours,
     this.verifiedOnly,
     this.showUfoBeepOnly,
+    this.alertRangeKm,
     this.sortBy = AlertSortBy.newest,
     this.ascending = false,
   });
@@ -33,6 +35,7 @@ class AlertsFilter {
     int? maxAgeHours,
     bool? verifiedOnly,
     bool? showUfoBeepOnly,
+    double? alertRangeKm,
     AlertSortBy? sortBy,
     bool? ascending,
     bool clearUfoBeepOnly = false,  // Explicit clear flag
@@ -43,6 +46,7 @@ class AlertsFilter {
       maxAgeHours: maxAgeHours ?? this.maxAgeHours,
       verifiedOnly: verifiedOnly ?? this.verifiedOnly,
       showUfoBeepOnly: clearUfoBeepOnly ? null : (showUfoBeepOnly ?? this.showUfoBeepOnly),
+      alertRangeKm: alertRangeKm ?? this.alertRangeKm,
       sortBy: sortBy ?? this.sortBy,
       ascending: ascending ?? this.ascending,
     );

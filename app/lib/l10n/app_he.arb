@@ -655,5 +655,14 @@
   "showAllAlerts": "הצג את כל האזהרות",
   "showAll": "הצג All",
   "distanceSliderDescription": "היכנסו עד כמה רחוק אתם רוצים לראות התראות. התחל ממזג אוויר חשיפה מרחוק כדי להראות את כל האזהרות ללא קשר למרחק.",
-  "applyFilters": "המונחים:"
+  "applyFilters": "המונחים:",
+  "notificationRange": "המונחים Range",
+  "notificationRangeDescription": "קבלו התראות לתצפיות במרחק זה",
+  "viewingRange": "תגית: Range",
+  "viewingRangeDescription": "מראה מראה במרחק זה בעת גלישה",
+  "weatherVisibility": "מזג אוויר (10 ק\"מ)",
+  "localArea": "האזור המקומי (25 ק\"מ)",
+  "regional": "האזור האזורי",
+  "pushNotifications": "תגית: Push Notification",
+  "alertBrowsing": "תגית: Browsing"
 }

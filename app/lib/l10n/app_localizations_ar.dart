@@ -1485,4 +1485,32 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get applyFilters => 'ملفات التطبيق';
+
+  @override
+  String get notificationRange => 'الإخطار';
+
+  @override
+  String get notificationRangeDescription =>
+      'الحصول على تنبيهات للمشاهدة في هذه المسافة';
+
+  @override
+  String get viewingRange => 'Viewing Range';
+
+  @override
+  String get viewingRangeDescription => 'مشاهدات في هذه المسافة';
+
+  @override
+  String get weatherVisibility => 'Weather Visibility (~10km)';
+
+  @override
+  String get localArea => 'المنطقة المحلية (25 كيلومترا)';
+
+  @override
+  String get regional => 'إقليمي';
+
+  @override
+  String get pushNotifications => 'الإخطارات بالدفع';
+
+  @override
+  String get alertBrowsing => 'إنذار بروز';
 }

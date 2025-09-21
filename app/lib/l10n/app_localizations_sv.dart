@@ -1495,4 +1495,33 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get applyFilters => 'Applicera filter';
+
+  @override
+  String get notificationRange => 'Anmälan Range';
+
+  @override
+  String get notificationRangeDescription =>
+      'Få push-varningar för observationer inom detta avstånd';
+
+  @override
+  String get viewingRange => 'Visa Range';
+
+  @override
+  String get viewingRangeDescription =>
+      'Visa observationer inom detta avstånd när du surfar';
+
+  @override
+  String get weatherVisibility => 'Vädersynlighet (~10 km)';
+
+  @override
+  String get localArea => 'Lokalt område (25 km)';
+
+  @override
+  String get regional => 'Regional';
+
+  @override
+  String get pushNotifications => 'Push Notifications';
+
+  @override
+  String get alertBrowsing => 'Alert Browsing';
 }

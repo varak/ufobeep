@@ -1506,4 +1506,33 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get applyFilters => 'Εφαρμογή φίλτρων';
+
+  @override
+  String get notificationRange => 'Εύρος κοινοποίησης';
+
+  @override
+  String get notificationRangeDescription =>
+      'Πάρτε ειδοποιήσεις ώθησης για θεάσεις σε αυτή την απόσταση';
+
+  @override
+  String get viewingRange => 'Προβολή εύρους';
+
+  @override
+  String get viewingRangeDescription =>
+      'Εμφάνιση προβολών σε αυτή την απόσταση κατά την περιήγηση';
+
+  @override
+  String get weatherVisibility => 'Ορατότητα καιρού (~10 χιλιόμετρα)';
+
+  @override
+  String get localArea => 'Τοπική περιοχή (25 χιλιόμετρα)';
+
+  @override
+  String get regional => 'Περιφερειακή';
+
+  @override
+  String get pushNotifications => 'Πιέστε τις ειδοποιήσεις';
+
+  @override
+  String get alertBrowsing => 'Προειδοποίηση περιήγησης';
 }

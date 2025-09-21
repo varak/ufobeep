@@ -655,5 +655,14 @@
   "showAllAlerts": "सभी अलर्ट दिखाएं",
   "showAll": "सब दिखाओ",
   "distanceSliderDescription": "जब तक आप अलर्ट देखना चाहते हैं, तब तक समायोजित करने के लिए खींचें। दूरी की परवाह किए बिना सभी अलर्ट दिखाने के लिए मौसम दृश्यता दूरी से शुरू करें।.",
-  "applyFilters": "फ़िल्टर लागू करें"
+  "applyFilters": "फ़िल्टर लागू करें",
+  "notificationRange": "अधिसूचना रेंज",
+  "notificationRangeDescription": "इस दूरी के भीतर दर्शन के लिए पुश अलर्ट प्राप्त करें",
+  "viewingRange": "देखने की रेंज",
+  "viewingRangeDescription": "ब्राउज़ करते समय इस दूरी के भीतर दर्शनों को दिखाएं",
+  "weatherVisibility": "मौसम दृश्यता (~10 किमी)",
+  "localArea": "स्थानीय क्षेत्र (25 km)",
+  "regional": "क्षेत्रीय",
+  "pushNotifications": "पुश नोटिफिकेशन",
+  "alertBrowsing": "चेतावनी ब्राउज़िंग"
 }

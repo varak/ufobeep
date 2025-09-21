@@ -655,5 +655,14 @@
   "showAllAlerts": "Visa alla varningar",
   "showAll": "Visa alla",
   "distanceSliderDescription": "Dra för att justera hur långt du vill se varningar. Börja från väder synlighet avstånd upp till att visa alla varningar oavsett avstånd.",
-  "applyFilters": "Applicera filter"
+  "applyFilters": "Applicera filter",
+  "notificationRange": "Anmälan Range",
+  "notificationRangeDescription": "Få push-varningar för observationer inom detta avstånd",
+  "viewingRange": "Visa Range",
+  "viewingRangeDescription": "Visa observationer inom detta avstånd när du surfar",
+  "weatherVisibility": "Vädersynlighet (~10 km)",
+  "localArea": "Lokalt område (25 km)",
+  "regional": "Regional",
+  "pushNotifications": "Push Notifications",
+  "alertBrowsing": "Alert Browsing"
 }

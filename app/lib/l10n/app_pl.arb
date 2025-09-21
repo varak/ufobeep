@@ -655,5 +655,14 @@
   "showAllAlerts": "Pokaż wszystkie alarmy",
   "showAll": "Pokaż wszystkie",
   "distanceSliderDescription": "Przeciągnij, aby dostosować, jak daleko chcesz zobaczyć alarmy. Rozpocznij od odległości widoczności pogody aż do wyświetlenia wszystkich wpisów niezależnie od odległości.",
-  "applyFilters": "Zastosuj filtry"
+  "applyFilters": "Zastosuj filtry",
+  "notificationRange": "Zakres zgłoszeń",
+  "notificationRangeDescription": "Pobierz alarmy push dla obserwacji w tej odległości",
+  "viewingRange": "Zakres przeglądania",
+  "viewingRangeDescription": "Pokaż widoczność w tej odległości podczas przeglądania",
+  "weatherVisibility": "Widoczność pogody (~ 10 km)",
+  "localArea": "Obszar lokalny (25km)",
+  "regional": "Regionalne",
+  "pushNotifications": "Powiadomienia o uruchomieniu",
+  "alertBrowsing": "Ostrzeżenie Przeglądanie"
 }

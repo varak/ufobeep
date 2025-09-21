@@ -1501,4 +1501,33 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get applyFilters => 'Filter anwenden';
+
+  @override
+  String get notificationRange => 'Meldebereich';
+
+  @override
+  String get notificationRangeDescription =>
+      'Holen Sie sich Push-Benachrichtigungen für Sehenswürdigkeiten in dieser Entfernung';
+
+  @override
+  String get viewingRange => 'Reichweite anzeigen';
+
+  @override
+  String get viewingRangeDescription =>
+      'Zeige Sichtungen in dieser Entfernung beim Surfen';
+
+  @override
+  String get weatherVisibility => 'Wetter Sichtbarkeit (~10km)';
+
+  @override
+  String get localArea => 'Gebiet (25km)';
+
+  @override
+  String get regional => 'Gebiet';
+
+  @override
+  String get pushNotifications => 'Push-Benachrichtigungen';
+
+  @override
+  String get alertBrowsing => 'Alert Browsing';
 }

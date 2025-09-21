@@ -655,5 +655,14 @@
   "showAllAlerts": "모든 경고 표시",
   "showAll": "모두보기",
   "distanceSliderDescription": "경고를보고 싶은 방법을 조정합니다. 거리에 상관없이 모든 경고를 표시하기 위해 날씨 가시 거리에서 시작.",
-  "applyFilters": "필터 적용"
+  "applyFilters": "필터 적용",
+  "notificationRange": "공지사항",
+  "notificationRangeDescription": "이 거리 내에서 광경을 위한 푸시 알림 받기",
+  "viewingRange": "보기 범위",
+  "viewingRangeDescription": "이 거리 내에서 시력 표시",
+  "weatherVisibility": "날씨 가시성 (10km)",
+  "localArea": "지역 (25km)",
+  "regional": "주요사업",
+  "pushNotifications": "푸시 알림",
+  "alertBrowsing": "비밀번호"
 }

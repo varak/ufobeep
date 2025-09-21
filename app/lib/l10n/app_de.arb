@@ -655,5 +655,14 @@
   "showAllAlerts": "Alle Alarme anzeigen",
   "showAll": "Alle anzeigen",
   "distanceSliderDescription": "Ziehen Sie um, wie weit Sie Alarme sehen möchten. Beginnen Sie von der Entfernung der Wettersicht bis zu allen Warnungen unabhängig von der Entfernung.",
-  "applyFilters": "Filter anwenden"
+  "applyFilters": "Filter anwenden",
+  "notificationRange": "Meldebereich",
+  "notificationRangeDescription": "Holen Sie sich Push-Benachrichtigungen für Sehenswürdigkeiten in dieser Entfernung",
+  "viewingRange": "Reichweite anzeigen",
+  "viewingRangeDescription": "Zeige Sichtungen in dieser Entfernung beim Surfen",
+  "weatherVisibility": "Wetter Sichtbarkeit (~10km)",
+  "localArea": "Gebiet (25km)",
+  "regional": "Gebiet",
+  "pushNotifications": "Push-Benachrichtigungen",
+  "alertBrowsing": "Alert Browsing"
 }

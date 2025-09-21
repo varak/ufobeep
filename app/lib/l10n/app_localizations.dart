@@ -2927,6 +2927,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Apply Filters'**
   String get applyFilters;
+
+  /// No description provided for @notificationRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Range'**
+  String get notificationRange;
+
+  /// No description provided for @notificationRangeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Get push alerts for sightings within this distance'**
+  String get notificationRangeDescription;
+
+  /// No description provided for @viewingRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Viewing Range'**
+  String get viewingRange;
+
+  /// No description provided for @viewingRangeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Show sightings within this distance when browsing'**
+  String get viewingRangeDescription;
+
+  /// No description provided for @weatherVisibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather Visibility (~10km)'**
+  String get weatherVisibility;
+
+  /// No description provided for @localArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Area (25km)'**
+  String get localArea;
+
+  /// No description provided for @regional.
+  ///
+  /// In en, this message translates to:
+  /// **'Regional'**
+  String get regional;
+
+  /// No description provided for @pushNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Push Notifications'**
+  String get pushNotifications;
+
+  /// No description provided for @alertBrowsing.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert Browsing'**
+  String get alertBrowsing;
 }
 
 class _AppLocalizationsDelegate

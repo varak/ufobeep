@@ -655,5 +655,14 @@
   "showAllAlerts": "Näytä kaikki hälytykset",
   "showAll": "Näytä kaikki",
   "distanceSliderDescription": "Vedä säätää, kuinka pitkälle haluat nähdä hälytykset. Aloita säänäkyvyysetäisyydestä kaikkien kuulutusten näyttämiseen etäisyydestä riippumatta.",
-  "applyFilters": "Käytä suotimia"
+  "applyFilters": "Käytä suotimia",
+  "notificationRange": "Ilmoitusalue",
+  "notificationRangeDescription": "Hanki etsintäkuulutukset havaintoja varten tämän etäisyyden sisällä",
+  "viewingRange": "Katselualue",
+  "viewingRangeDescription": "Näytä havaintoja tämän etäisyyden sisällä selattaessa",
+  "weatherVisibility": "Säänäkyvyys (~10 km)",
+  "localArea": "Paikallinen alue (25 km)",
+  "regional": "Alueellinen",
+  "pushNotifications": "Työnnä ilmoitukset",
+  "alertBrowsing": "Hälytysselaus"
 }

@@ -1470,4 +1470,31 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get applyFilters => '필터 적용';
+
+  @override
+  String get notificationRange => '공지사항';
+
+  @override
+  String get notificationRangeDescription => '이 거리 내에서 광경을 위한 푸시 알림 받기';
+
+  @override
+  String get viewingRange => '보기 범위';
+
+  @override
+  String get viewingRangeDescription => '이 거리 내에서 시력 표시';
+
+  @override
+  String get weatherVisibility => '날씨 가시성 (10km)';
+
+  @override
+  String get localArea => '지역 (25km)';
+
+  @override
+  String get regional => '주요사업';
+
+  @override
+  String get pushNotifications => '푸시 알림';
+
+  @override
+  String get alertBrowsing => '비밀번호';
 }

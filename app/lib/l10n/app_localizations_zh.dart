@@ -1468,4 +1468,31 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get applyFilters => '应用过滤器';
+
+  @override
+  String get notificationRange => '通知范围';
+
+  @override
+  String get notificationRangeDescription => '得到推进警报,在这个距离内看到';
+
+  @override
+  String get viewingRange => '查看范围';
+
+  @override
+  String get viewingRangeDescription => '浏览时显示此距离内的目视';
+
+  @override
+  String get weatherVisibility => '天气可见度( ~10km)';
+
+  @override
+  String get localArea => '地区(25公里)';
+
+  @override
+  String get regional => '区域';
+
+  @override
+  String get pushNotifications => '推动通知';
+
+  @override
+  String get alertBrowsing => '提醒浏览';
 }

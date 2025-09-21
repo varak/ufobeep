@@ -1498,4 +1498,33 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get applyFilters => 'Filters toepassen';
+
+  @override
+  String get notificationRange => 'Notificatiebereik';
+
+  @override
+  String get notificationRangeDescription =>
+      'Krijg push waarschuwingen voor waarnemingen binnen deze afstand';
+
+  @override
+  String get viewingRange => 'Beeldbereik';
+
+  @override
+  String get viewingRangeDescription =>
+      'Toon waarnemingen binnen deze afstand bij het surfen';
+
+  @override
+  String get weatherVisibility => 'Weerzicht (~10km)';
+
+  @override
+  String get localArea => 'Plaatselijk gebied (25 km)';
+
+  @override
+  String get regional => 'Regionaal';
+
+  @override
+  String get pushNotifications => 'Aanmeldingen pushen';
+
+  @override
+  String get alertBrowsing => 'Alert bladeren';
 }

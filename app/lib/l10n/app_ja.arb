@@ -655,5 +655,14 @@
   "showAllAlerts": "すべてのアラートを表示",
   "showAll": "すべて表示",
   "distanceSliderDescription": "アラートを表示する距離を調整するためにドラッグします。 距離に関係なくすべてのアラートを表示するまで、気象可視距離から始めます.",
-  "applyFilters": "フィルターを適用"
+  "applyFilters": "フィルターを適用",
+  "notificationRange": "通知範囲",
+  "notificationRangeDescription": "この距離内で視線のためのプッシュアラートを取得する",
+  "viewingRange": "眺めの範囲",
+  "viewingRangeDescription": "ブラウジング時にこの距離内で視力を表示",
+  "weatherVisibility": "天候の可視性(~10km)",
+  "localArea": "ローカルエリア (25km)",
+  "regional": "地域紹介",
+  "pushNotifications": "プッシュ通知",
+  "alertBrowsing": "アラートブラウジング"
 }

@@ -1510,4 +1510,33 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get applyFilters => 'Применять фильтры';
+
+  @override
+  String get notificationRange => 'Диапазон уведомлений';
+
+  @override
+  String get notificationRangeDescription =>
+      'Получите push-уведомления о наблюдениях на этом расстоянии';
+
+  @override
+  String get viewingRange => 'Посмотреть диапазон';
+
+  @override
+  String get viewingRangeDescription =>
+      'Показать наблюдения в пределах этого расстояния при просмотре';
+
+  @override
+  String get weatherVisibility => 'Видимость погоды (~ 10 км)';
+
+  @override
+  String get localArea => 'Местная территория (25 км)';
+
+  @override
+  String get regional => 'Региональный';
+
+  @override
+  String get pushNotifications => 'Push уведомления';
+
+  @override
+  String get alertBrowsing => 'Оповещение о просмотре';
 }

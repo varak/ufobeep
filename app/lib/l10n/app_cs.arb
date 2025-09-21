@@ -655,5 +655,14 @@
   "showAllAlerts": "Zobrazit všechny záznamy",
   "showAll": "Zobrazit vše",
   "distanceSliderDescription": "Přetáhněte nastavit, jak daleko chcete vidět upozornění. Začněte od meteorologické dohlednosti až po zobrazení všech záznamů bez ohledu na vzdálenost.",
-  "applyFilters": "Aplikovat filtry"
+  "applyFilters": "Aplikovat filtry",
+  "notificationRange": "Rozsah oznámení",
+  "notificationRangeDescription": "Získejte upozornění pro pozorování v této vzdálenosti",
+  "viewingRange": "Prohlížení rozsahu",
+  "viewingRangeDescription": "Zobrazit pozorování v této vzdálenosti při prohlížení",
+  "weatherVisibility": "Viditelnost počasí (~ 10 km)",
+  "localArea": "Místní oblast (25km)",
+  "regional": "Regionální",
+  "pushNotifications": "Stiskněte oznámení",
+  "alertBrowsing": "Name"
 }

@@ -1481,4 +1481,31 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get applyFilters => 'המונחים:';
+
+  @override
+  String get notificationRange => 'המונחים Range';
+
+  @override
+  String get notificationRangeDescription => 'קבלו התראות לתצפיות במרחק זה';
+
+  @override
+  String get viewingRange => 'תגית: Range';
+
+  @override
+  String get viewingRangeDescription => 'מראה מראה במרחק זה בעת גלישה';
+
+  @override
+  String get weatherVisibility => 'מזג אוויר (10 ק\"מ)';
+
+  @override
+  String get localArea => 'האזור המקומי (25 ק\"מ)';
+
+  @override
+  String get regional => 'האזור האזורי';
+
+  @override
+  String get pushNotifications => 'תגית: Push Notification';
+
+  @override
+  String get alertBrowsing => 'תגית: Browsing';
 }

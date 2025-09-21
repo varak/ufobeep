@@ -655,5 +655,14 @@
   "showAllAlerts": "Hepsini göster",
   "showAll": "Hepsini göster",
   "distanceSliderDescription": "Uyarıları görmek için ne kadar uzağa ayarlayın. Hava görünürlüğünden başlayarak, mesafeye bakılmaksızın tüm uyarıları göstermek için mesafeye başlayın.",
-  "applyFilters": "Uygulamalı Filtreler"
+  "applyFilters": "Uygulamalı Filtreler",
+  "notificationRange": "Bildirim Aralığı",
+  "notificationRangeDescription": "Bu mesafe içinde göz atmak için uyarılar alın",
+  "viewingRange": "Viewing Range",
+  "viewingRangeDescription": "Bu mesafedeki manzaraları göz önüne alındığında",
+  "weatherVisibility": "Hava Durumu Viability (~10km)",
+  "localArea": "Yerel Alan (25km)",
+  "regional": "Bölgesel",
+  "pushNotifications": "Push Bildirims",
+  "alertBrowsing": "Uyarı Browsing"
 }

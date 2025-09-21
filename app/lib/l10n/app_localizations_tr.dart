@@ -1499,4 +1499,33 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get applyFilters => 'Uygulamalı Filtreler';
+
+  @override
+  String get notificationRange => 'Bildirim Aralığı';
+
+  @override
+  String get notificationRangeDescription =>
+      'Bu mesafe içinde göz atmak için uyarılar alın';
+
+  @override
+  String get viewingRange => 'Viewing Range';
+
+  @override
+  String get viewingRangeDescription =>
+      'Bu mesafedeki manzaraları göz önüne alındığında';
+
+  @override
+  String get weatherVisibility => 'Hava Durumu Viability (~10km)';
+
+  @override
+  String get localArea => 'Yerel Alan (25km)';
+
+  @override
+  String get regional => 'Bölgesel';
+
+  @override
+  String get pushNotifications => 'Push Bildirims';
+
+  @override
+  String get alertBrowsing => 'Uyarı Browsing';
 }

@@ -1497,4 +1497,33 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get applyFilters => 'Aplikovat filtry';
+
+  @override
+  String get notificationRange => 'Rozsah oznámení';
+
+  @override
+  String get notificationRangeDescription =>
+      'Získejte upozornění pro pozorování v této vzdálenosti';
+
+  @override
+  String get viewingRange => 'Prohlížení rozsahu';
+
+  @override
+  String get viewingRangeDescription =>
+      'Zobrazit pozorování v této vzdálenosti při prohlížení';
+
+  @override
+  String get weatherVisibility => 'Viditelnost počasí (~ 10 km)';
+
+  @override
+  String get localArea => 'Místní oblast (25km)';
+
+  @override
+  String get regional => 'Regionální';
+
+  @override
+  String get pushNotifications => 'Stiskněte oznámení';
+
+  @override
+  String get alertBrowsing => 'Name';
 }

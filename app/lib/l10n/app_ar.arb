@@ -655,5 +655,14 @@
   "showAllAlerts": "اظهروا جميع التنبيهات",
   "showAll": "عرض",
   "distanceSliderDescription": "لنعدل إلى أي مدى تريد أن ترى تنبيهات ابدأ من مسافة ظهور الطقس حتى تظهر جميع الإنذارات بغض النظر عن المسافة.",
-  "applyFilters": "ملفات التطبيق"
+  "applyFilters": "ملفات التطبيق",
+  "notificationRange": "الإخطار",
+  "notificationRangeDescription": "الحصول على تنبيهات للمشاهدة في هذه المسافة",
+  "viewingRange": "Viewing Range",
+  "viewingRangeDescription": "مشاهدات في هذه المسافة",
+  "weatherVisibility": "Weather Visibility (~10km)",
+  "localArea": "المنطقة المحلية (25 كيلومترا)",
+  "regional": "إقليمي",
+  "pushNotifications": "الإخطارات بالدفع",
+  "alertBrowsing": "إنذار بروز"
 }

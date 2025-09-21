@@ -1503,4 +1503,33 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get applyFilters => 'Zastosuj filtry';
+
+  @override
+  String get notificationRange => 'Zakres zgłoszeń';
+
+  @override
+  String get notificationRangeDescription =>
+      'Pobierz alarmy push dla obserwacji w tej odległości';
+
+  @override
+  String get viewingRange => 'Zakres przeglądania';
+
+  @override
+  String get viewingRangeDescription =>
+      'Pokaż widoczność w tej odległości podczas przeglądania';
+
+  @override
+  String get weatherVisibility => 'Widoczność pogody (~ 10 km)';
+
+  @override
+  String get localArea => 'Obszar lokalny (25km)';
+
+  @override
+  String get regional => 'Regionalne';
+
+  @override
+  String get pushNotifications => 'Powiadomienia o uruchomieniu';
+
+  @override
+  String get alertBrowsing => 'Ostrzeżenie Przeglądanie';
 }

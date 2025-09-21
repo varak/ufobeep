@@ -1494,4 +1494,33 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get applyFilters => 'फ़िल्टर लागू करें';
+
+  @override
+  String get notificationRange => 'अधिसूचना रेंज';
+
+  @override
+  String get notificationRangeDescription =>
+      'इस दूरी के भीतर दर्शन के लिए पुश अलर्ट प्राप्त करें';
+
+  @override
+  String get viewingRange => 'देखने की रेंज';
+
+  @override
+  String get viewingRangeDescription =>
+      'ब्राउज़ करते समय इस दूरी के भीतर दर्शनों को दिखाएं';
+
+  @override
+  String get weatherVisibility => 'मौसम दृश्यता (~10 किमी)';
+
+  @override
+  String get localArea => 'स्थानीय क्षेत्र (25 km)';
+
+  @override
+  String get regional => 'क्षेत्रीय';
+
+  @override
+  String get pushNotifications => 'पुश नोटिफिकेशन';
+
+  @override
+  String get alertBrowsing => 'चेतावनी ब्राउज़िंग';
 }

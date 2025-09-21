@@ -1504,4 +1504,33 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get applyFilters => 'Aplicar os Filtros';
+
+  @override
+  String get notificationRange => 'Intervalo de Notificação';
+
+  @override
+  String get notificationRangeDescription =>
+      'Obter alertas para avistamentos dentro desta distância';
+
+  @override
+  String get viewingRange => 'Visualizando o Intervalo';
+
+  @override
+  String get viewingRangeDescription =>
+      'Mostrar avistamentos dentro desta distância ao navegar';
+
+  @override
+  String get weatherVisibility => 'Visibilidade do Tempo (~10km)';
+
+  @override
+  String get localArea => 'Área Local (25 km)';
+
+  @override
+  String get regional => 'Regional';
+
+  @override
+  String get pushNotifications => 'Push Notificações';
+
+  @override
+  String get alertBrowsing => 'Alerta de Navegação';
 }

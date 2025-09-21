@@ -655,5 +655,14 @@
   "showAllAlerts": "Mostrar todas las alertas",
   "showAll": "Mostrar todos",
   "distanceSliderDescription": "Arrastre para ajustar lo lejos que desea ver alertas. Comience desde la distancia de visibilidad del tiempo hasta mostrar todas las alertas independientemente de la distancia.",
-  "applyFilters": "Aplicar filtros"
+  "applyFilters": "Aplicar filtros",
+  "notificationRange": "Gama de notificación",
+  "notificationRangeDescription": "Obtener alertas de presión para los avistamientos dentro de esta distancia",
+  "viewingRange": "Alcance de visualización",
+  "viewingRangeDescription": "Mostrar avistamientos dentro de esta distancia al navegar",
+  "weatherVisibility": "Visibilidad meteorológica (~10km)",
+  "localArea": "Zona local (25 km)",
+  "regional": "Regional",
+  "pushNotifications": "Notificaciones push",
+  "alertBrowsing": "Alerta Browsing"
 }

@@ -655,5 +655,14 @@
   "showAllAlerts": "Mostra tutti gli avvisi",
   "showAll": "Mostra tutto",
   "distanceSliderDescription": "Trascina per regolare quanto si desidera vedere gli avvisi. Inizia dalla distanza di visibilità meteo fino a mostrare tutti gli avvisi indipendentemente dalla distanza.",
-  "applyFilters": "Applicare filtri"
+  "applyFilters": "Applicare filtri",
+  "notificationRange": "Gamma di notifica",
+  "notificationRangeDescription": "Ricevi avvisi push per avvistamenti a distanza",
+  "viewingRange": "Gamma di visualizzazione",
+  "viewingRangeDescription": "Mostra avvistamenti a questa distanza durante la navigazione",
+  "weatherVisibility": "Visibilità meteo (~10km)",
+  "localArea": "Area locale (25km)",
+  "regional": "Regione",
+  "pushNotifications": "Spingere le notifiche",
+  "alertBrowsing": "Avviso di navigazione"
 }

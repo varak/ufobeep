@@ -1469,4 +1469,31 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get applyFilters => 'フィルターを適用';
+
+  @override
+  String get notificationRange => '通知範囲';
+
+  @override
+  String get notificationRangeDescription => 'この距離内で視線のためのプッシュアラートを取得する';
+
+  @override
+  String get viewingRange => '眺めの範囲';
+
+  @override
+  String get viewingRangeDescription => 'ブラウジング時にこの距離内で視力を表示';
+
+  @override
+  String get weatherVisibility => '天候の可視性(~10km)';
+
+  @override
+  String get localArea => 'ローカルエリア (25km)';
+
+  @override
+  String get regional => '地域紹介';
+
+  @override
+  String get pushNotifications => 'プッシュ通知';
+
+  @override
+  String get alertBrowsing => 'アラートブラウジング';
 }

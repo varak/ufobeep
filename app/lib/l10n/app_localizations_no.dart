@@ -1488,4 +1488,33 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String get applyFilters => 'Apply Filters';
+
+  @override
+  String get notificationRange => 'Notification Range';
+
+  @override
+  String get notificationRangeDescription =>
+      'Get push alerts for sightings within this distance';
+
+  @override
+  String get viewingRange => 'Viewing Range';
+
+  @override
+  String get viewingRangeDescription =>
+      'Show sightings within this distance when browsing';
+
+  @override
+  String get weatherVisibility => 'Weather Visibility (~10km)';
+
+  @override
+  String get localArea => 'Local Area (25km)';
+
+  @override
+  String get regional => 'Regional';
+
+  @override
+  String get pushNotifications => 'Push Notifications';
+
+  @override
+  String get alertBrowsing => 'Alert Browsing';
 }

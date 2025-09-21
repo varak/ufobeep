@@ -655,5 +655,14 @@
   "showAllAlerts": "Vis alle rapporter",
   "showAll": "Vis alle",
   "distanceSliderDescription": "Træk for at justere hvor langt du ønsker at se advarsler. Start fra vejrsigtbarhed afstand op til at vise alle indberetninger uanset afstand.",
-  "applyFilters": "Anvend filtre"
+  "applyFilters": "Anvend filtre",
+  "notificationRange": "Meddelelsesområde",
+  "notificationRangeDescription": "Få push advarsler for observationer inden for denne afstand",
+  "viewingRange": "Visningsområde",
+  "viewingRangeDescription": "Vis observationer inden for denne afstand når du søger",
+  "weatherVisibility": "Vejrsigtbarhed (~ 10 km)",
+  "localArea": "Lokalt område (25 km)",
+  "regional": "Regionalt",
+  "pushNotifications": "Trykmeddelelser",
+  "alertBrowsing": "Alert browsing"
 }
