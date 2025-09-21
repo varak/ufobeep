@@ -5,6 +5,7 @@ import '../theme/app_theme.dart';
 import '../models/alerts_filter.dart';
 import '../providers/alerts_provider.dart';
 import '../providers/user_preferences_provider.dart';
+import '../l10n/app_localizations.dart';
 
 class AlertsFilterDialog extends ConsumerStatefulWidget {
   const AlertsFilterDialog({super.key});
@@ -102,7 +103,7 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
                 ),
               ),
               child: Text(
-                'Filter Alerts',
+                AppLocalizations.of(context)!.filterAlerts,
                 style: const TextStyle(
                   color: AppColors.textPrimary,
                   fontSize: 20,
@@ -119,13 +120,13 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // UFOBeep Only Toggle Section
-                    _buildSectionTitle('Alert Source'),
+                    _buildSectionTitle(AppLocalizations.of(context)!.alertSource),
                     const SizedBox(height: 12),
                     _buildUfoBeepOnlyToggle(),
                     const SizedBox(height: 24),
 
                     // Distance Slider Section
-                    _buildSectionTitle('Alert Distance Range'),
+                    _buildSectionTitle(AppLocalizations.of(context)!.alertDistanceRange),
                     const SizedBox(height: 12),
                     _buildDistanceSlider(),
                   ],
@@ -153,7 +154,7 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
                         side: const BorderSide(color: AppColors.darkBorder),
                         padding: const EdgeInsets.symmetric(vertical: 12),
                       ),
-                      child: const Text('Cancel'),
+                      child: Text(AppLocalizations.of(context)!.cancel),
                     ),
                   ),
                   const SizedBox(width: 12),
